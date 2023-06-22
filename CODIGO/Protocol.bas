@@ -1487,7 +1487,7 @@ Public Sub HandleDisconnect()
     Dim Frm As Form
     
     For Each Frm In Forms
-        If Frm.Name <> frmMain.Name And Frm.Name <> frmConnect.Name And Frm.Name <> frmMensaje.Name And Frm.Name <> frmBabelUI.Name Then
+        If Frm.Name <> frmMain.Name And Frm.Name <> frmConnect.Name And Frm.Name <> frmMensaje.Name And Frm.Name <> frmBabelUI.Name And Frm.Name <> frmDebugUI.Name Then
             Unload Frm
         End If
     Next
@@ -2059,8 +2059,12 @@ Private Sub HandleSafeModeOn()
     '
     '***************************************************
     On Error GoTo HandleSafeModeOn_Err
-        
-    Call frmMain.DibujarSeguro
+    If BabelInitialized Then
+        Call SetSafeState(e_SafeType.eAttack, 1)
+    Else
+        Call frmMain.DibujarSeguro
+    End If
+    
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_ACTIVADO, 65, 190, 156, False, False, False)
     
     Exit Sub
@@ -2082,8 +2086,12 @@ Private Sub HandleSafeModeOff()
     '***************************************************
     
     On Error GoTo HandleSafeModeOff_Err
+    If BabelInitialized Then
+        Call SetSafeState(e_SafeType.eAttack, 0)
+    Else
+        Call frmMain.DesDibujarSeguro
+    End If
     
-    Call frmMain.DesDibujarSeguro
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_DESACTIVADO, 65, 190, 156, False, False, False)
     
     Exit Sub
@@ -2104,8 +2112,11 @@ Private Sub HandlePartySafeOff()
     '***************************************************
     
     On Error GoTo HandlePartySafeOff_Err
-    
-    Call frmMain.ControlSeguroParty(False)
+    If BabelInitialized Then
+        Call SetSafeState(e_SafeType.eGroup, 0)
+    Else
+        Call frmMain.ControlSeguroParty(False)
+    End If
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_PARTY_OFF, 250, 250, 0, False, True, False)
     
     Exit Sub
@@ -2132,16 +2143,18 @@ Private Sub HandleClanSeguro()
     If SeguroClanX Then
     
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de clan desactivado.", 65, 190, 156, False, False, False)
-        frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-off.bmp")
+        If Not BabelInitialized Then frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-off.bmp")
         SeguroClanX = False
         
     Else
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de clan activado.", 65, 190, 156, False, False, False)
-        frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
+        If Not BabelInitialized Then frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
         SeguroClanX = True
 
     End If
-    
+    If BabelInitialized Then
+        Call SetSafeState(e_SafeType.eClan, IIf(SeguroClanX, 1, 0))
+    End If
     Exit Sub
 
 HandleClanSeguro_Err:
@@ -2154,32 +2167,34 @@ Private Sub HandleIntervals()
     
     On Error GoTo HandleIntervals_Err
 
-    IntervaloArco = Reader.ReadInt32()
-    IntervaloCaminar = Reader.ReadInt32()
-    IntervaloGolpe = Reader.ReadInt32()
-    IntervaloGolpeMagia = Reader.ReadInt32()
-    IntervaloMagia = Reader.ReadInt32()
-    IntervaloMagiaGolpe = Reader.ReadInt32()
-    IntervaloGolpeUsar = Reader.ReadInt32()
-    IntervaloTrabajoExtraer = Reader.ReadInt32()
-    IntervaloTrabajoConstruir = Reader.ReadInt32()
-    IntervaloUsarU = Reader.ReadInt32()
-    IntervaloUsarClic = Reader.ReadInt32()
-    IntervaloTirar = Reader.ReadInt32()
+    gIntervals.Bow = Reader.ReadInt32()
+    gIntervals.Walk = Reader.ReadInt32()
+    gIntervals.Hit = Reader.ReadInt32()
+    gIntervals.HitMagic = Reader.ReadInt32()
+    gIntervals.Magic = Reader.ReadInt32()
+    gIntervals.MagicHit = Reader.ReadInt32()
+    gIntervals.HitUseItem = Reader.ReadInt32()
+    gIntervals.ExtractWork = Reader.ReadInt32()
+    gIntervals.BuildWork = Reader.ReadInt32()
+    gIntervals.UseItemKey = Reader.ReadInt32()
+    gIntervals.UseItemClick = Reader.ReadInt32()
+    gIntervals.DropItem = Reader.ReadInt32()
     
+    If BabelInitialized Then
+        Call UpdateIntervals(gIntervals)
+    End If
     'Set the intervals of timers
-    Call MainTimer.SetInterval(TimersIndex.Attack, IntervaloGolpe)
-    Call MainTimer.SetInterval(TimersIndex.UseItemWithU, IntervaloUsarU)
-    Call MainTimer.SetInterval(TimersIndex.UseItemWithDblClick, IntervaloUsarClic)
+    Call MainTimer.SetInterval(TimersIndex.Attack, gIntervals.Hit)
+    Call MainTimer.SetInterval(TimersIndex.UseItemWithU, gIntervals.UseItemKey)
+    Call MainTimer.SetInterval(TimersIndex.UseItemWithDblClick, gIntervals.UseItemClick)
     Call MainTimer.SetInterval(TimersIndex.SendRPU, INT_SENTRPU)
-    Call MainTimer.SetInterval(TimersIndex.CastSpell, IntervaloMagia)
-    Call MainTimer.SetInterval(TimersIndex.Arrows, IntervaloArco)
-    Call MainTimer.SetInterval(TimersIndex.CastAttack, IntervaloMagiaGolpe)
-    Call MainTimer.SetInterval(TimersIndex.AttackSpell, IntervaloGolpeMagia)
-    Call MainTimer.SetInterval(TimersIndex.AttackUse, IntervaloGolpeUsar)
-    Call MainTimer.SetInterval(TimersIndex.Drop, IntervaloTirar)
-    Call MainTimer.SetInterval(TimersIndex.Walk, IntervaloCaminar)
-
+    Call MainTimer.SetInterval(TimersIndex.CastSpell, gIntervals.Magic)
+    Call MainTimer.SetInterval(TimersIndex.Arrows, gIntervals.Bow)
+    Call MainTimer.SetInterval(TimersIndex.CastAttack, gIntervals.MagicHit)
+    Call MainTimer.SetInterval(TimersIndex.AttackSpell, gIntervals.HitMagic)
+    Call MainTimer.SetInterval(TimersIndex.AttackUse, gIntervals.HitUseItem)
+    Call MainTimer.SetInterval(TimersIndex.Drop, gIntervals.DropItem)
+    Call MainTimer.SetInterval(TimersIndex.Walk, gIntervals.Walk)
     'Init timers
     Call MainTimer.Start(TimersIndex.Attack)
     Call MainTimer.Start(TimersIndex.UseItemWithU)
@@ -2209,8 +2224,20 @@ Private Sub HandleUpdateUserKey()
     
     Slot = Reader.ReadInt16
     Llave = Reader.ReadInt16
-
-    Call FrmKeyInv.InvKeys.SetItem(Slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0)
+    
+    If BabelInitialized Then
+        Dim SlotInfo As t_InvItem
+        SlotInfo.Amount = 1
+        SlotInfo.GrhIndex = ObjData(Llave).GrhIndex
+        SlotInfo.Name = ObjData(Llave).Name
+        SlotInfo.Slot = Slot
+        SlotInfo.OBJIndex = Llave
+        SlotInfo.ObjType = eObjType.otLlaves
+        Call SetKeySlot(SlotInfo)
+    Else
+        Call FrmKeyInv.InvKeys.SetItem(Slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0)
+    End If
+    
     
     Exit Sub
 
@@ -2227,8 +2254,12 @@ Private Sub HandleUpdateDM()
     Dim Value As Integer
 
     Value = Reader.ReadInt16
-
-    frmMain.lbldm = "+" & Value & "%"
+    
+    If BabelInitialized Then
+        Call UpdateMagicAttack(Value)
+    Else
+        frmMain.lbldm = "+" & Value & "%"
+    End If
     
     Exit Sub
 
@@ -2245,8 +2276,11 @@ Private Sub HandleUpdateRM()
     Dim Value As Integer
 
     Value = Reader.ReadInt16
-
-    frmMain.lblResis = "+" & Value
+    If BabelInitialized Then
+        Call UpdateMagicResistance(Value)
+    Else
+        frmMain.lblResis = "+" & Value
+    End If
     
     Exit Sub
 
@@ -2265,7 +2299,11 @@ Private Sub HandlePartySafeOn()
     '***************************************************
     On Error GoTo HandlePartySafeOn_Err
 
-    Call frmMain.ControlSeguroParty(True)
+    If BabelInitialized Then
+        Call SetSafeState(e_SafeType.eGroup, 1)
+    Else
+        Call frmMain.ControlSeguroParty(True)
+    End If
     Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_PARTY_ON, 250, 250, 0, False, True, False)
     
     Exit Sub
@@ -5200,6 +5238,8 @@ Private Sub HandleChangeSpellSlot()
         SpellInfo.Slot = Slot
         SpellInfo.SpellIndex = Index
         If Index >= 0 Then
+            SpellInfo.icon = HechizoData(Index).IconoIndex
+            SpellInfo.Cooldown = HechizoData(Index).Cooldown
             SpellInfo.SpellName = HechizoData(Index).nombre
         Else
             SpellInfo.SpellName = "(Vacio)"
@@ -5938,6 +5978,9 @@ Private Sub HandleUpdateCooldownType()
     Dim cdType As Byte
     cdType = Reader.ReadInt8()
     CdTimes(cdType) = GetTickCount()
+    If BabelInitialized Then
+        Call ActivateInterval(CDType)
+    End If
     Exit Sub
 
 HandleUpdateCooldownType_Err:
@@ -7255,7 +7298,11 @@ Private Sub HandleUserOnline()
     rdata = Reader.ReadInt16()
     
     usersOnline = rdata
-    frmMain.onlines = "Online: " & usersOnline
+    If BabelInitialized Then
+        Call UpdateOnlines(usersOnline)
+    Else
+        frmMain.onlines = "Online: " & usersOnline
+    End If
     
     Exit Sub
 
@@ -8420,13 +8467,18 @@ Private Sub HandleSeguroResu()
     
     If SeguroResuX Then
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección activado.", 65, 190, 156, False, False, False)
-        frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
+        If Not BabelInitialized Then
+            frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
+        End If
     Else
         Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección desactivado.", 65, 190, 156, False, False, False)
-        frmMain.ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
-
+        If Not BabelInitialized Then
+            frmMain.ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
+        End If
     End If
-    
+    If BabelInitialized Then
+        Call SetSafeState(e_SafeType.eResurrecion, IIf(SeguroResuX, 1, 0))
+    End If
 End Sub
 
 Private Sub HandleStopped()
@@ -8637,16 +8689,20 @@ Public Sub HandlePrivilegios()
     On Error GoTo errhandler
     
     EsGM = Reader.ReadBool
-    If EsGM Then
-        frmMain.panelGM.Visible = True
-        frmMain.createObj.Visible = True
-        frmMain.btnInvisible.Visible = True
-        frmMain.btnSpawn.Visible = True
+    If BabelInitialized Then
+        Call UpdateIsGameMaster(IIf(EsGM, 1, 0))
     Else
-        frmMain.panelGM.Visible = False
-        frmMain.createObj.Visible = False
-        frmMain.btnInvisible.Visible = False
-        frmMain.btnSpawn.Visible = False
+        If EsGM Then
+            frmMain.panelGM.visible = True
+            frmMain.createObj.visible = True
+            frmMain.btnInvisible.visible = True
+            frmMain.btnSpawn.visible = True
+        Else
+            frmMain.panelGM.visible = False
+            frmMain.createObj.visible = False
+            frmMain.btnInvisible.visible = False
+            frmMain.btnSpawn.visible = False
+        End If
     End If
     Exit Sub
 errhandler:

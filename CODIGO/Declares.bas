@@ -395,6 +395,23 @@ Public TargetYMacro            As Byte
 ' Constantes de intervalo
 Public Const INT_MACRO_HECHIS  As Integer = 500
 Public Const INT_MACRO_TRABAJO As Integer = 1200
+
+Public Type t_Intervals
+    Hit As Long
+    Bow As Long
+    Magic As Long
+    ExtractWork As Long
+    BuildWork As Long
+    Walk As Long
+    DropItem As Long
+    UseItemKey As Long
+    UseItemClick As Long
+    HitMagic As Long
+    MagicHit As Long
+    HitUseItem As Long
+End Type
+
+Public gIntervals As t_Intervals
 Public IntervaloGolpe          As Long
 Public IntervaloArco           As Long
 Public IntervaloMagia          As Long

@@ -441,7 +441,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1955,34 +1954,7 @@ Contadores_Timer_Err:
 End Sub
 
 Private Sub createObj_Click()
-    
-    On Error GoTo createObj_Click_Err
-    
-    Dim i As Long
-    For i = 1 To NumOBJs
-
-        If ObjData(i).Name <> "" Then
-
-            Dim subelemento As ListItem
-
-            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).Name)
-            
-            subelemento.SubItems(1) = i
-
-        End If
-
-    Next i
-    
-    Me.SetFocus
-    
-    FrmObjetos.Show , Me
-    
-    Exit Sub
-
-createObj_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.createObj_Click", Erl)
-    Resume Next
-    
+    Call OpenCreateObjectMenu
 End Sub
 
 Private Sub dobleclick_Timer()
@@ -3676,7 +3648,7 @@ Private Sub picInv_MouseMove(button As Integer, Shift As Integer, x As Single, y
         Select Case ObjData(Inventario.ObjIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.ObjIndex(Slot)).MinHit & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
                 ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.ObjIndex(Slot)).MinDef & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxDef

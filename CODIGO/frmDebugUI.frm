@@ -38,6 +38,7 @@ Attribute VB_Exposed = False
 Dim FrmMove As Boolean
 Dim DragX, Dragy As Integer
 Dim Pressing As Boolean
+
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err

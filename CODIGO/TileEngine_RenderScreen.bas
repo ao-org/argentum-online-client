@@ -715,8 +715,8 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             If Graficos_Particulas.Engine_MeteoParticle_Get <> 0 Then
             
                 'Screen positions were hardcoded by now
-                ScreenX = 250
-                ScreenY = 0
+                screenX = 250 + gameplay_render_offset.x
+                screenY = 0 + gameplay_render_offset.y
                 
                 Call Particle_Group_Render(MeteoParticle, ScreenX, ScreenY)
 
@@ -727,29 +727,29 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     End If
     
     Call Effect_Render_All
-    Call RenderCooldowns(710, 25)
+    Call renderCooldowns(710 + gameplay_render_offset.x, 25 + gameplay_render_offset.y)
     
     If InvasionActual Then
         
-        Call Engine_Draw_Box(190, 550, 356, 36, RGBA_From_Comp(0, 0, 0, 200))
-        Call Engine_Draw_Box(193, 553, 3.5 * InvasionPorcentajeVida, 30, RGBA_From_Comp(20, 196, 255, 200))
+        Call Engine_Draw_Box(190 + gameplay_render_offset.x, 550 + gameplay_render_offset.y, 356, 36, RGBA_From_Comp(0, 0, 0, 200))
+        Call Engine_Draw_Box(193 + gameplay_render_offset.x, 553 + gameplay_render_offset.y, 3.5 * InvasionPorcentajeVida, 30, RGBA_From_Comp(20, 196, 255, 200))
         
-        Call Engine_Draw_Box(340, 586, 54, 9, RGBA_From_Comp(0, 0, 0, 200))
-        Call Engine_Draw_Box(342, 588, 0.5 * InvasionPorcentajeTiempo, 5, RGBA_From_Comp(220, 200, 0, 200))
+        Call Engine_Draw_Box(340 + gameplay_render_offset.x, 586 + gameplay_render_offset.y, 54, 9, RGBA_From_Comp(0, 0, 0, 200))
+        Call Engine_Draw_Box(342 + gameplay_render_offset.x, 588 + gameplay_render_offset.y, 0.5 * InvasionPorcentajeTiempo, 5, RGBA_From_Comp(220, 200, 0, 200))
         
     End If
 
     If Pregunta Then
         
-        Call Engine_Draw_Box(283, 170, 190, 100, RGBA_From_Comp(150, 20, 3, 200))
-        Call Engine_Draw_Box(288, 175, 180, 90, RGBA_From_Comp(25, 25, 23, 200))
+        Call Engine_Draw_Box(283 + gameplay_render_offset.x, 170 + gameplay_render_offset.y, 190, 100, RGBA_From_Comp(150, 20, 3, 200))
+        Call Engine_Draw_Box(288 + gameplay_render_offset.x, 175 + gameplay_render_offset.y, 180, 90, RGBA_From_Comp(25, 25, 23, 200))
 
         Dim preguntaGrh As grh
         Call InitGrh(preguntaGrh, 32120)
         
-        Call Engine_Text_Render(PreguntaScreen, 290, 180, COLOR_WHITE, 1, True)
+        Call Engine_Text_Render(PreguntaScreen, 290 + gameplay_render_offset.x, 180 + gameplay_render_offset.y, COLOR_WHITE, 1, True)
         
-        Call Draw_Grh(preguntaGrh, 416, 233, 1, 0, COLOR_WHITE, False, 0, 0, 0)
+        Call Draw_Grh(preguntaGrh, 416 + gameplay_render_offset.x, 233 + gameplay_render_offset.y, 1, 0, COLOR_WHITE, False, 0, 0, 0)
 
     End If
 

@@ -1046,7 +1046,7 @@ Public Function GetLongerCdPercent(ByVal Slot As Integer) As Single
     Dim pendingTime, tempPending As Long
     Dim currTime As Long
     GetLongerCdPercent = 0
-    'test stung
+    'test stun
     currTime = GetTickCount()
     pendingTime = StunEndTime - currTime
     If pendingTime > 0 Then
@@ -1062,7 +1062,7 @@ Public Function GetLongerCdPercent(ByVal Slot As Integer) As Single
         End If
     End If
     'test global wp cd
-    If UserInventory(Slot).ObjType = 2 Or UserInventory(Slot).ObjType = 46 Then
+    If UserInventory(Slot).ObjType = 2 Then
         If cooldown_ataque.totalTime > 0 Then
             tempPending = currTime - cooldown_ataque.initialTime
             If tempPending > pendingTime And tempPending < cooldown_ataque.totalTime Then

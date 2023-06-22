@@ -49,7 +49,7 @@ Private Sub Form_Load()
 On Error GoTo Form_Load_Err
     
     ' Seteamos el caption hay que poner 20 aniversario
-    Me.Caption = "Login"
+    Me.Caption = "Argentum20"
     
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
     Call Form_RemoveTitleBar(Me)
@@ -147,7 +147,6 @@ Private Sub UIRenderArea_MouseDown(button As Integer, Shift As Integer, x As Sin
     btnConvert = ConvertMouseButton(button)
     If InputState.LastMouseY < 30 Then
         FrmMove = True
-        Debug.Print ("start Pos: " & Me.Top & ", " & Me.Left)
         DragX = x
         DragY = y
     End If

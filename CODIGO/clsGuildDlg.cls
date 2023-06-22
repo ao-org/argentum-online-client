@@ -173,9 +173,9 @@ Public Sub Draw()
             dY = (DIALOG_HEIGHT * i - offset - alphaOffset) / alphaOffset
             y = 88 - DIALOG_HEIGHT * i + offset
              If dy < 0 Then
-                Call Engine_Text_Render_No_Ladder(p_Dialogos(i).Texto, 5, -i * 14 + 115 + offset - 22, Color, p_Dialogos(i).status, 1, False, 0, Alpha)
+                Call Engine_Text_Render_No_Ladder(p_Dialogos(i).Texto, 5 + gameplay_render_offset.x, -i * 14 + 115 + offset - 22 + gameplay_render_offset.y, color, p_Dialogos(i).status, 1, False, 0, Alpha)
             Else
-                Call Engine_Text_Render_No_Ladder(p_Dialogos(i).Texto, 5, -i * 14 + 115 + offset - 22, Color, p_Dialogos(i).status, 1, False, 0, Alpha * (1 - dy))
+                Call Engine_Text_Render_No_Ladder(p_Dialogos(i).Texto, 5 + gameplay_render_offset.x, -i * 14 + 115 + offset - 22 + gameplay_render_offset.y, color, p_Dialogos(i).status, 1, False, 0, Alpha * (1 - dy))
             End If
         End If
 

@@ -192,10 +192,11 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If frmMain.Inventario.IsItemOnCd(frmMain.Inventario.GetActiveWeaponSlot) Then Exit Function
             If MainTimer.Check(TimersIndex.CastAttack, False) Then
                 If MainTimer.Check(TimersIndex.Attack) Then
+                    If BabelInitialized Then Call BabelUI.ActivateInterval(e_CdTypes.e_Melee)
                     Call MainTimer.Restart(TimersIndex.AttackSpell)
                     Call MainTimer.Restart(TimersIndex.AttackUse)
                     Set cooldown_ataque = New clsCooldown
-                    Call cooldown_ataque.Cooldown_Initialize(IntervaloGolpe, 36602)
+                    Call cooldown_ataque.Cooldown_Initialize(gIntervals.Hit, 36602)
                     Call WriteAttack
                 End If
     
@@ -277,20 +278,13 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If IntervaloPermiteLLamadaClan Then Call WriteMarcaDeClan
         
         Case BindKeys(5).KeyCode
-    
             If UserStats.estado = 1 Then
-    
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
                     Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
-    
                 End With
-    
                 Exit Function
-    
             End If
-    
-                If frmMain.Inventario.IsItemSelected Then Call WriteEquipItem(frmMain.Inventario.SelectedItem)
-      
+                Call EquipSelectedItem
         
         Case BindKeys(4).KeyCode
             Call UseItemKey

@@ -59,7 +59,8 @@ Public Sub UpdateRenderArea()
             DrawCount = DrawCount + 1
         End If
     Next i
-    Engine_Draw_Box StartX - HideShowRectWidth / 2, StartY - HideShowRectHeight / 2, HideShowRectWidth, HideShowRectHeight, RGBA_From_Comp(128, 128, 128, 255)
+    Engine_Draw_Box StartX - HideShowRectWidth / 2, StartY - HideShowRectHeight / 2, _
+                    HideShowRectWidth, HideShowRectHeight, RGBA_From_Comp(128, 128, 128, 255)
     HideShowRect.Top = StartY - HideShowRectHeight / 2
     HideShowRect.Left = StartX - HideShowRectWidth / 2 - 2
     HideShowRect.Right = HideShowRect.Left + HideShowRectWidth
@@ -79,8 +80,8 @@ Public Sub RenderGroup()
         CurrTime = GetTickCount()
         CurrentPivot = CurrentPivot + IIf(Hide, AnimationSpeed, -AnimationSpeed) * (CurrTime - LastFrameTime)
         If Hide Then
-            If CurrentPivot >= FrameWidth + StartX Then
-                CurrentPivot = FrameWidth + StartX
+            If CurrentPivot >= FrameWidth + StartX + gameplay_render_offset.x Then
+                CurrentPivot = FrameWidth + StartX + gameplay_render_offset.x
                 AnimationActive = False
             End If
         Else
@@ -94,23 +95,23 @@ Public Sub RenderGroup()
     For i = 0 To GroupSize - 1
         With GroupMembers(i)
             If .CharIndex <> UserCharIndex Then
-                Call Draw_GrhIndex(GroupBackgroundGrh, .RenderArea.Left - CurrentPivot, .RenderArea.Top)
-                Call Draw_Grh(.Head.Head(E_Heading.south), .RenderArea.Left - HeadOffsetX - CurrentPivot, .RenderArea.Top + HeadOffsetY, 1, 0, COLOR_WHITE, False, 0, 0)
+                Call Draw_GrhIndex(GroupBackgroundGrh, .RenderArea.Left - CurrentPivot + gameplay_render_offset.x, .RenderArea.Top + gameplay_render_offset.y)
+                Call Draw_Grh(.Head.Head(E_Heading.south), .RenderArea.Left - HeadOffsetX - CurrentPivot + gameplay_render_offset.x, .RenderArea.Top + HeadOffsetY + gameplay_render_offset.y, 1, 0, COLOR_WHITE, False, 0, 0)
                 Dim HpPlusShield As Long
                 HpPlusShield = .MaxHp + .Shield
                 HpBarSize = .MinHp / HpPlusShield
                 HpBarSize = HpBarSize * (HpBarEndX - HpBarStartX)
-                Engine_Draw_Box .RenderArea.Left + HpBarStartX - CurrentPivot, .RenderArea.Top + HpBarStartY, HpBarSize, 3, RGBA_From_Comp(178, 0, 0, 160)
+                Engine_Draw_Box .RenderArea.Left + HpBarStartX - CurrentPivot + gameplay_render_offset.x, .RenderArea.Top + HpBarStartY + gameplay_render_offset.y, HpBarSize, 3, RGBA_From_Comp(178, 0, 0, 160)
                 If .Shield > 0 Then
                     ShieldBardSize = .Shield / HpPlusShield
                     ShieldBardSize = ShieldBardSize * (HpBarEndX - HpBarStartX)
-                    Engine_Draw_Box .RenderArea.Left + HpBarStartX - CurrentPivot + HpBarSize, .RenderArea.Top + HpBarStartY, ShieldBardSize, 3, RGBA_From_Comp(162, 108, 16, 160)
+                    Engine_Draw_Box .RenderArea.Left + HpBarStartX - CurrentPivot + HpBarSize + gameplay_render_offset.x, .RenderArea.Top + HpBarStartY + gameplay_render_offset.y, ShieldBardSize, 3, RGBA_From_Comp(162, 108, 16, 160)
                 End If
-                Call Engine_Text_Render(.Name, .RenderArea.Left + TextStartX - CurrentPivot, .RenderArea.Top + TextStartY, temp_array, 1, True, 0, 128)
+                Call Engine_Text_Render(.Name, .RenderArea.Left + TextStartX - CurrentPivot + gameplay_render_offset.x, .RenderArea.Top + TextStartY + gameplay_render_offset.y, temp_array, 1, True, 0, 128)
             End If
         End With
     Next i
-    Call Draw_GrhIndex(ActiveArrowGrh, HideShowRect.Left, HideShowRect.Top)
+    Call Draw_GrhIndex(ActiveArrowGrh, HideShowRect.Left + gameplay_render_offset.x, HideShowRect.Top + gameplay_render_offset.y)
 End Sub
 
 Public Function HandleMouseInput(ByVal x As Integer, ByVal y As Integer) As Boolean

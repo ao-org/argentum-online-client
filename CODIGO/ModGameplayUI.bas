@@ -63,7 +63,7 @@ On Error GoTo OnClick_Err
                             If Not SendSkill Then
                                 Exit Sub
                             End If
-                            
+                            If BabelInitialized Then Call BabelUI.ActivateInterval(e_CdTypes.e_magic)
                             Call MainTimer.Restart(TimersIndex.CastAttack)
                             Call MainTimer.Restart(TimersIndex.CastSpell)
                         Else
@@ -74,14 +74,14 @@ On Error GoTo OnClick_Err
                                         Exit Sub
                                     End If
                                     Call MainTimer.Restart(TimersIndex.CastAttack)
-                                
+                                    If BabelInitialized Then Call BabelUI.ActivateInterval(e_CdTypes.e_magic)
                                 ElseIf ModoHechizos = SinBloqueo Then
                                     SendSkill = IIf((MouseX >= frmMain.renderer.ScaleLeft And MouseX <= 736 + frmMain.renderer.ScaleLeft And MouseY >= frmMain.renderer.ScaleTop And MouseY <= frmMain.renderer.ScaleTop + 608), True, False)
                                     
                                     If Not SendSkill Then
                                         Exit Sub
                                     End If
-                                
+                                    
                                     With FontTypes(FontTypeNames.FONTTYPE_TALK)
                                         Call ShowConsoleMsg("No puedes lanzar hechizos tan rápido.", .red, .green, .blue, .bold, .italic)
                                     End With
@@ -111,6 +111,7 @@ On Error GoTo OnClick_Err
                                     SendSkill = True
                                     Call MainTimer.Restart(TimersIndex.Attack) ' Prevengo flecha-golpe
                                     Call MainTimer.Restart(TimersIndex.CastSpell) ' flecha-hechizo
+                                    If BabelInitialized Then Call BabelUI.ActivateInterval(e_CdTypes.e_Ranged)
                                 End If
                             End If
                         End If
@@ -359,14 +360,17 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         SlotInfo.CanUse = podrausarlo
         SlotInfo.Equiped = Equipped
         SlotInfo.GrhIndex = GrhIndex
-        SlotInfo.MaxDef = MaxDef
-        SlotInfo.MinDef = MinDef
+        SlotInfo.MaxDef = ObjData(OBJIndex).MaxDef
+        SlotInfo.MinDef = ObjData(OBJIndex).MinDef
         SlotInfo.MaxHit = MaxHit
         SlotInfo.MinHit = MinHit
         SlotInfo.Name = Name
         SlotInfo.Slot = Slot
         SlotInfo.ObjIndex = ObjIndex
         SlotInfo.ObjType = ObjType
+        SlotInfo.Cooldown = ObjData(OBJIndex).Cooldown
+        SlotInfo.CDType = ObjData(OBJIndex).CDType
+        SlotInfo.CDMask = GetCDMaskForItem(ObjData(OBJIndex))
         Call SetInvSlot(SlotInfo)
     Else
         Call frmMain.Inventario.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, Def, Value, Name, CanUse)
@@ -488,7 +492,7 @@ Public Sub HandleEsc()
     End If
 End Sub
 Public Function IsDialogOpen() As Boolean
-    IsDialogOpen = pausa Or frmComerciar.visible Or frmComerciarUsu.visible Or frmBancoObj.visible Or frmGoliath.visible
+    IsDialogOpen = pausa Or frmComerciar.visible Or frmComerciarUsu.visible Or frmBancoObj.visible Or frmGoliath.visible Or IsGameDialogOpen
 End Function
 
 Public Function IsInputFocus() As Boolean
@@ -604,4 +608,37 @@ Public Sub RequestSkills()
     
     LlegaronSkills = True
     Call WriteRequestSkills
+End Sub
+
+Public Function IsUsableItem(ByRef ItemData As ObjDatas) As Boolean
+    CanUse = ItemData.ObjType = eObjType.otWeapon Or ItemData.ObjType = eObjType.otPociones Or _
+             ItemData.ObjType = eObjType.OtHerramientas Or ItemData.ObjType = eObjType.otInstrumentos Or _
+             ItemData.ObjType = eObjType.otNudillos Or ItemData.ObjType = eObjType.OtCofre
+End Function
+
+Public Sub EquipSelectedItem()
+    If BabelInitialized Then
+        If UserInventory.SelectedSlot < 1 Or UserInventory.SelectedSlot > UBound(UserInventory.Slots) Then Exit Sub
+        Call WriteEquipItem(UserInventory.SelectedSlot)
+    Else
+        If frmMain.Inventario.IsItemSelected Then Call WriteEquipItem(frmMain.Inventario.SelectedItem)
+    End If
+End Sub
+
+Public Sub OpenCreateObjectMenu()
+On Error GoTo createObj_Click_Err
+    Dim i As Long
+    For i = 1 To NumOBJs
+        If ObjData(i).Name <> "" Then
+            Dim subelemento As ListItem
+            Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).Name)
+            subelemento.SubItems(1) = i
+        End If
+    Next i
+    GetGameplayForm().SetFocus
+    FrmObjetos.Show , GetGameplayForm
+    Exit Sub
+createObj_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.createObj_Click", Erl)
+    Resume Next
 End Sub

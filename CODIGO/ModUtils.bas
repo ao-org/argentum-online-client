@@ -197,6 +197,7 @@ Public Type ObjDatas
     CreaLuz As String
     CreaParticulaPiso As Integer
     proyectil As Byte
+    Amunition As Byte
     Raices As Integer
     Madera As Integer
     MaderaElfica As Integer
@@ -248,7 +249,7 @@ Public Type HechizoDatas
     MinSkill As Byte
     StaRequerido As Integer
     IconoIndex As Long
-
+    Cooldown As Long
 End Type
 
 Public Type NameMapas

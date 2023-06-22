@@ -923,7 +923,8 @@ Sub Check_Keys()
         Not FrmGrupo.Visible And _
         Not FrmSastre.Visible And _
         Not FrmGmAyuda.Visible And _
-        Not frmCrafteo.Visible Then
+        Not frmCrafteo.visible And _
+        Not IsGameDialogOpen Then
  
         If IsInputFocus() And PermitirMoverse = 0 Then Exit Sub
  
