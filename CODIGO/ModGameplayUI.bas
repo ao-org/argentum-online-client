@@ -432,7 +432,7 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
     Dim ObjType As Byte
     ObjType = ObjData(ObjIndex).ObjType
     Select Case ObjType
-        Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otNudillos, eObjType.otAnillos, eObjType.otManchas
+        Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otAnillos, eObjType.otManchas
             If Not Equipped Then
                 Call WriteEquipItem(Slot)
             End If
@@ -613,7 +613,7 @@ End Sub
 Public Function IsUsableItem(ByRef ItemData As ObjDatas) As Boolean
     CanUse = ItemData.ObjType = eObjType.otWeapon Or ItemData.ObjType = eObjType.otPociones Or _
              ItemData.ObjType = eObjType.OtHerramientas Or ItemData.ObjType = eObjType.otInstrumentos Or _
-             ItemData.ObjType = eObjType.otNudillos Or ItemData.ObjType = eObjType.OtCofre
+             ItemData.ObjType = eObjType.OtCofre
 End Function
 
 Public Sub EquipSelectedItem()
