@@ -330,7 +330,7 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     
     On Error GoTo AddtoRichTextBox_Err
     
-    If BabelInitialized Then
+    If BabelInitialized And frmMain.RecTxt = RichTextBox Then
         Dim message As t_ChatMessage
         message.Text = Text
         message.TextColor.r = red
