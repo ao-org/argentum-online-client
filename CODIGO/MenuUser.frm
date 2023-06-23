@@ -198,20 +198,22 @@ Private Sub OpcionImg_Click(Index As Integer)
             
         Case 2
             TargetName = Replace(TargetName, " ", "+")
-
-            sndPrivateTo = TargetName
-            frmMain.SendTxt.Text = ("\" & sndPrivateTo & " ")
-
-            stxtbuffer = frmMain.SendTxt.Text
-            frmMain.SendTxt.SelStart = Len(frmMain.SendTxt.Text)
-            
-            If frmMain.SendTxtCmsg.Visible = False Then
-                frmMain.SendTxt.Visible = True
-                frmMain.SendTxt.SetFocus
+            If BabelInitialized Then
+                Call SetWhisperTarget(TargetName)
             Else
-               frmMain.SendTxtCmsg.SetFocus
+                sndPrivateTo = TargetName
+                frmMain.SendTxt.Text = ("\" & sndPrivateTo & " ")
+    
+                stxtbuffer = frmMain.SendTxt.Text
+                frmMain.SendTxt.SelStart = Len(frmMain.SendTxt.Text)
+                
+                If frmMain.SendTxtCmsg.visible = False Then
+                    frmMain.SendTxt.visible = True
+                    frmMain.SendTxt.SetFocus
+                Else
+                   frmMain.SendTxtCmsg.SetFocus
+                End If
             End If
-            
         Case 3
             frmRetos.Show
             frmRetos.Jugador(1).Text = TargetName

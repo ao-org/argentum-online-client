@@ -221,6 +221,7 @@ Public Declare Sub UpdateGameTime Lib "BabelUI.dll" (ByVal Hour As Long, ByVal M
 Public Declare Sub UpdateIsGameMaster Lib "BabelUI.dll" (ByVal NewState As Long)
 Public Declare Sub UpdateMagicResistance Lib "BabelUI.dll" (ByVal NewValue As Long)
 Public Declare Sub UpdateMagicAttack Lib "BabelUI.dll" (ByVal NewValue As Long)
+Public Declare Sub SetWhisperTarget Lib "BabelUI.dll" (ByVal UserName As String)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean

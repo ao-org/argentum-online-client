@@ -5785,7 +5785,7 @@ Private Sub HandleUpdateHungerAndThirst()
     
     If BabelInitialized Then
         BabelUI.UpdateDrinkValue (UserStats.MinAGU)
-        BabelUI.UpdateFoodValue (UserStats.MaxAGU)
+        BabelUI.UpdateFoodValue (UserStats.MinHAM)
     Else
         Call frmMain.UpdateFoodState
     End If

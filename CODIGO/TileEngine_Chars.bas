@@ -758,7 +758,7 @@ Public Function Get_PixelY_Of_Char(ByVal char_index As Integer) As Integer
     'Make sure it's a legal char_index
     If Char_Check(char_index) Then
         Get_PixelY_Of_Char = (charlist(char_index).Pos.y - 2 - UserPos.y) * 32 + frmMain.renderer.ScaleWidth / 2
-        Get_PixelY_Of_Char = Get_PixelY_Of_Char - 16
+        Get_PixelY_Of_Char = Get_PixelY_Of_Char - 16 + gameplay_render_offset.y
 
     End If
 
@@ -777,7 +777,7 @@ Public Function Get_Pixelx_Of_Char(ByVal char_index As Integer) As Integer
     'Make sure it's a legal char_index
     If Char_Check(char_index) Then
         Get_Pixelx_Of_Char = (charlist(char_index).Pos.x - UserPos.x) * 32 + frmMain.renderer.ScaleWidth / 2
-        Get_Pixelx_Of_Char = Get_Pixelx_Of_Char
+        Get_Pixelx_Of_Char = Get_Pixelx_Of_Char + gameplay_render_offset.x
 
     End If
 
