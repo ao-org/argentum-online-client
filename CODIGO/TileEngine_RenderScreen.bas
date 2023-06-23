@@ -771,17 +771,17 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         Call RGBAList(ColorBarraPesca, 255, 255, 255)
         Dim grh As grh
         grh.GrhIndex = GRH_BARRA_PESCA
-        Call Draw_Grh(grh, 239, 550, 0, 0, ColorBarraPesca())
+        Call Draw_Grh(Grh, 239 + gameplay_render_offset.x, 550 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
         grh.GrhIndex = GRH_CURSOR_PESCA
-        Call Draw_Grh(grh, 271 + PosicionBarra, 558, 0, 0, ColorBarraPesca())
+        Call Draw_Grh(Grh, 271 + PosicionBarra + gameplay_render_offset.x, 558 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
         Debug.Print PescandoEspecial
         For i = 1 To MAX_INTENTOS
             If intentosPesca(i) = 1 Then
                 grh.GrhIndex = GRH_CIRCULO_VERDE
-                Call Draw_Grh(grh, 394 + (i * 10), 573, 0, 0, ColorBarraPesca())
+                Call Draw_Grh(Grh, 394 + (i * 10) + gameplay_render_offset.x, 573 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
             ElseIf intentosPesca(i) = 2 Then
                 grh.GrhIndex = GRH_CIRCULO_ROJO
-                Call Draw_Grh(grh, 394 + (i * 10), 573, 0, 0, ColorBarraPesca())
+                Call Draw_Grh(Grh, 394 + (i * 10) + gameplay_render_offset.x, 573 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
             End If
         Next i
                 
@@ -926,9 +926,9 @@ Private Sub RenderScreen_NombreMapa()
         Dim Color(3) As RGBA
         Call RGBAList(Color(), 179, 95, 0, map_letter_a)
         
-        Call Grh_Render(letter_grh, 250, 300, Color())
+        Call Grh_Render(letter_grh, 250 + gameplay_render_offset.x, 300 + gameplay_render_offset.y, color())
         
-        Call Engine_Text_RenderGrande(letter_text, 360 - Engine_Text_Width(letter_text, False, 4) / 2, 1, Color(), 5, False, , CInt(map_letter_a))
+        Call Engine_Text_RenderGrande(letter_text, 360 - Engine_Text_Width(letter_text, False, 4) / 2 - gameplay_render_offset.x, 1 + gameplay_render_offset.y, color(), 5, False, , CInt(map_letter_a))
 
     End If
 
