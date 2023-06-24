@@ -105,7 +105,9 @@ Public Type t_InvItem
     Cooldown As Long
     CDType As Integer
     CDMask As Long
+    Amunition As Integer
     Name As String
+    Desc As String
 End Type
 
 Public Type t_GamePlayCallbacks

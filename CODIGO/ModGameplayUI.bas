@@ -371,6 +371,8 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         SlotInfo.Cooldown = ObjData(OBJIndex).Cooldown
         SlotInfo.CDType = ObjData(OBJIndex).CDType
         SlotInfo.CDMask = GetCDMaskForItem(ObjData(OBJIndex))
+        SlotInfo.Desc = ObjData(ObjIndex).Texto
+        SlotInfo.Amunition = ObjData(ObjIndex).Amunition
         Call SetInvSlot(SlotInfo)
     Else
         Call frmMain.Inventario.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, Def, Value, Name, CanUse)
