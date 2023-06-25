@@ -1487,7 +1487,7 @@ Public Sub HandleDisconnect()
     Dim Frm As Form
     
     For Each Frm In Forms
-        If Frm.Name <> frmMain.Name And Frm.Name <> frmConnect.Name And Frm.Name <> frmMensaje.Name And Frm.Name <> frmBabelUI.Name And Frm.Name <> frmDebugUI.Name Then
+        If ShouldUnloadForm(Frm.Name) Then
             Unload Frm
         End If
     Next
@@ -1504,10 +1504,18 @@ Public Sub HandleDisconnect()
     Exit Sub
 HandleDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDisconnect", Erl)
-    
-    
 End Sub
 
+Private Function ShouldUnloadForm(ByVal FormName As String) As Boolean
+    If FormName = frmMain.Name Then Exit Function
+    If FormName = frmConnect.Name Then Exit Function
+    If FormName = frmMensaje.Name Then Exit Function
+    If BabelInitialized Then
+        If FormName = frmBabelUI.Name Then Exit Function
+        If FormName = frmDebugUI.Name Then Exit Function
+    End If
+    ShouldUnloadForm = True
+End Function
 ''
 ' Handles the CommerceEnd message.
 

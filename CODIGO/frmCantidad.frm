@@ -355,33 +355,46 @@ Private Sub cmdTirarTodo_click()
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
 
     Call Sound.Sound_Play(SND_CLICK)
-
-    If frmMain.Inventario.SelectedItem = 0 Then Exit Sub
-
-    If frmMain.Inventario.SelectedItem <> FLAGORO Then
-        If ObjData(frmMain.Inventario.OBJIndex(frmMain.Inventario.SelectedItem)).Destruye = 0 Then
-            Call WriteDrop(frmMain.Inventario.SelectedItem, frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem))
+    Dim SelectedSlot As Integer
+    Dim ObjIndex As Integer
+    Dim Amount As Integer
+    If BabelInitialized Then
+        SelectedSlot = UserInventory.SelectedSlot
+        If SelectedSlot <> FLAGORO Then
+            ObjIndex = UserInventory.Slots(SelectedSlot).ObjIndex
+            Amount = UserInventory.Slots(SelectedSlot).Amount
+        End If
+    Else
+        SelectedSlot = frmMain.Inventario.SelectedItem
+        If SelectedSlot <> FLAGORO Then
+            ObjIndex = frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem)
+            Amount = frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem)
+        End If
+    End If
+    If SelectedSlot = 0 Then Exit Sub
+    
+    
+    If SelectedSlot <> FLAGORO Then
+        If ObjData(ObjIndex).Destruye = 0 Then
+            Call WriteDrop(SelectedSlot, Amount)
         Else
             PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
             Pregunta = True
-            DestItemSlot = frmMain.Inventario.SelectedItem
-            DestItemCant = frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem)
+            DestItemSlot = SelectedSlot
+            DestItemCant = Amount
             
             PreguntaLocal = True
             PreguntaNUM = 1
-
         End If
 
         Unload Me
     Else
-
         If UserStats.GLD > 100000 Then
-            Call WriteDrop(frmMain.Inventario.SelectedItem, 100000)
+            Call WriteDrop(SelectedSlot, 100000)
             Unload Me
         Else
-            Call WriteDrop(frmMain.Inventario.SelectedItem, UserStats.GLD)
+            Call WriteDrop(SelectedSlot, UserStats.GLD)
             Unload Me
-
         End If
 
     End If
