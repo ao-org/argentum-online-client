@@ -38,6 +38,7 @@ Attribute VB_Exposed = False
 Dim FrmMove As Boolean
 Dim DragX, Dragy As Integer
 Dim Pressing As Boolean
+
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
@@ -64,22 +65,22 @@ End Sub
 
 Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     FrmMove = True
-    DragX = x
-    Dragy = y
+    DragX = x * screen.TwipsPerPixelX
+    Dragy = y * screen.TwipsPerPixelY
 End Sub
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-Dim nX, nY
+Dim nX, nY As Long
     If FrmMove Then
-        nX = Me.Left + x - DragX
-        nY = Me.Top + y - Dragy
+        nX = Me.Left + x * screen.TwipsPerPixelX - DragX
+        nY = Me.Top + y * screen.TwipsPerPixelY - Dragy
         Me.Left = nX
         Me.Top = nY
     End If
 End Sub
 Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    Dim nX, nY
-    nX = Me.Left + x - DragX
-    nY = Me.Top + y - Dragy
+    Dim nX, nY As Long
+    nX = Me.Left + x * screen.TwipsPerPixelX - DragX
+    nY = Me.Top + y * screen.TwipsPerPixelY - Dragy
     Me.Left = nX
     Me.Top = nY
     FrmMove = False

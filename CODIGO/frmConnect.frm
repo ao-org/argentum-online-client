@@ -449,7 +449,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     UserPassword = CuentaPassword
                     StopCreandoCuenta = True
 
-                    If Connected Then
+                    If Connected And Not BabelInitialized Then
                         frmMain.ShowFPS.Enabled = True
                     End If
                     
@@ -792,24 +792,22 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     Exit Sub
                 End If
 
-                UserRaza = frmCrearPersonaje.lstRaza.ListIndex + 1
-                UserSexo = frmCrearPersonaje.lstGenero.ListIndex + 1
-                UserClase = frmCrearPersonaje.lstProfesion.ListIndex + 1
+                UserStats.Raza = frmCrearPersonaje.lstRaza.ListIndex + 1
+                UserStats.Sexo = frmCrearPersonaje.lstGenero.ListIndex + 1
+                UserStats.Clase = frmCrearPersonaje.lstProfesion.ListIndex + 1
                 
-                UserHogar = frmCrearPersonaje.lstHogar.ListIndex + 1
+                UserStats.Hogar = frmCrearPersonaje.lstHogar.ListIndex + 1
                
                 If frmCrearPersonaje.CheckData() Then
                     UserPassword = CuentaPassword
                     StopCreandoCuenta = True
 
-                    If Connected Then
+                    If Connected And Not BabelInitialized Then
                         frmMain.ShowFPS.enabled = True
                     End If
           
-                    Call Protocol_Writes.WriteLoginNewChar(userName, UserRaza, UserSexo, UserClase, MiCabeza, UserHogar)
+                    Call Protocol_Writes.WriteLoginNewChar(UserName, UserStats.Raza, UserStats.Sexo, UserStats.Clase, MiCabeza, UserStats.Hogar)
                 End If
-                
-
             End If
 
             Exit Sub

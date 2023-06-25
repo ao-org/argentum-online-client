@@ -4,6 +4,11 @@ Option Explicit
 Const CreateCharMap = 782
 Const CreateCharMapX = 25
 Const CreateCharMapY = 35
+
+'windows messages
+Private Const WM_DESTROY = &H2
+Private Const WM_MOUSEWHEEL = &H20A
+
 Private Type LOGINDATA
     User As Long
     UserLen As Long
@@ -61,11 +66,118 @@ Private Type BABELSETTINGS
     EnableDebug As Long
 End Type
 
+Public Type t_Color
+    r As Byte
+    G As Byte
+    b As Byte
+End Type
+
+Public Type t_ChatMessage
+    Sender As String
+    SenderColor As t_Color
+    Text As String
+    TextColor As t_Color
+    BoldText As Byte
+    ItalicText As Byte
+End Type
+
+Public Enum e_CDTypeMask
+    eBasicAttack = 1
+    eRangedAttack = 2
+    eMagic = 4
+    eUsable = 8
+    eCustom = 16
+End Enum
+
+Public Type t_InvItem
+    Slot As Byte
+    ObjIndex As Integer
+    GrhIndex As Long
+    ObjType As Byte
+    Equiped As Byte
+    CanUse As Byte
+    Amount As Integer
+    MinHit As Integer
+    MaxHit As Integer
+    MinDef As Integer
+    MaxDef As Integer
+    Value As Long
+    Cooldown As Long
+    CDType As Integer
+    CDMask As Long
+    Amunition As Integer
+    Name As String
+    Desc As String
+End Type
+
+Public Type t_GamePlayCallbacks
+    HandleConsoleMsg As Long
+    ShowDialog As Long
+    SelectInvSlot As Long
+    UseInvSlot As Long
+    SelectSpellSlot As Long
+    UseSpellSlot As Long
+    UpdateFocus As Long
+    UpdateOpenDialog As Long
+    OpenLink As Long
+    ClickGold As Long
+    MoveInvSlot As Long
+    RequestAction As Long
+    UseKey As Long
+    MoveSpellSlot As Long
+    RequestDeleteItem As Long
+End Type
+
+Public Type t_SpellSlot
+    Slot As Byte
+    SpellIndex As Integer
+    icon As Long
+    Cooldown As Long
+    SpellName As String
+End Type
+
+Public Enum e_ChatMode
+    NormalChat = 0
+    ClanChat = 1
+End Enum
+
+Public Enum e_ActionRequest
+    eMinimize = 1
+    eClose = 2
+    eOpenMinimap = 3
+    eOpenClanDialog = 4
+    eOpenChallenge = 5
+    eOpenKeys = 6
+    eOpenActiveQuest = 7
+    eGoHome = 8
+    eShowStats = 9
+    eUpdateGroupLock = 10
+    eUpdateClanSafeLock = 11
+    eUpdateAttackSafeLock = 12
+    eUpdateResurrectionLock = 13
+    eReportBug = 14
+    eRequestSkill = 15
+    eOpenGroupDialog = 16
+    eOpenGmPannel = 17
+    eOpenCreateObjMenu = 18
+    eOpenSpawnMenu = 19
+    eSetGmInvisible = 20
+    eDisplayHPInfo = 21
+End Enum
+
+Public Enum e_SafeType
+    eGroup = 1
+    eClan = 2
+    eAttack = 3
+    eResurrecion = 4
+End Enum
+
 Private ServerEnvironment As String
 
 Public Declare Function InitializeBabel Lib "BabelUI.dll" (ByRef Settings As BABELSETTINGS) As Boolean
 Public Declare Function GetBebelImageBuffer Lib "BabelUI.dll" Alias "GetImageBuffer" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
 Public Declare Sub BabelSendMouseEvent Lib "BabelUI.dll" Alias "SendMouseEvent" (ByVal PosX As Long, ByVal PosY As Long, ByVal EvtType As Long, ByVal button As Long)
+Public Declare Sub SendScrollEvent Lib "BabelUI.dll" (ByVal distance As Long)
 Public Declare Sub BabelSendKeyEvent Lib "BabelUI.dll" Alias "SendKeyEvent" (ByVal KeyCode As Integer, ByVal Shift As Boolean, ByVal EvtType As Long, ByVal CapsState As Boolean, ByVal Inspector As Boolean)
 Public Declare Function NextPowerOf2 Lib "BabelUI.dll" (ByVal original As Long) As Long
 Public Declare Sub RegisterCallbacks Lib "BabelUI.dll" (ByVal Login As Long, ByVal CloseClient As Long, ByVal CreateAccount As Long, ByVal SetHost As Long, ByVal ValidateAccountr As Long, ByVal ResendCode As Long, ByVal RequestPasswordReset As Long, _
@@ -81,10 +193,43 @@ Public Declare Sub RequestDeleteCode Lib "BabelUI.dll" ()
 Public Declare Sub RemoveCharacterFromList Lib "BabelUI.dll" (ByVal Index As Long)
 Public Declare Function GetTelemetry Lib "BabelUI.dll" (ByRef code As Byte, ByRef DataBuff As Byte, ByVal BuffSize As Long) As Long
 
+'Gameplay interface
+Public Declare Sub SetUserStats Lib "BabelUI.dll" (ByRef code As t_UserStats)
+Public Declare Sub SetUserName Lib "BabelUI.dll" (ByVal username As String)
+Public Declare Sub SendChatMessage Lib "BabelUI.dll" (ByRef message As t_ChatMessage)
+Public Declare Sub UpdateFps Lib "BabelUI.dll" (ByVal fps As Long)
+Public Declare Sub SetInventoryLevel Lib "BabelUI.dll" (ByVal fps As Long)
+Public Declare Sub RegisterGameplayCallbacks Lib "BabelUI.dll" (ByRef t_GamePlayCallbacks As t_GamePlayCallbacks)
+Public Declare Sub SetInvSlot Lib "BabelUI.dll" (ByRef SlotInfo As t_InvItem)
+Public Declare Sub SetSpellSlot Lib "BabelUI.dll" (ByRef SlotInfo As t_SpellSlot)
+Public Declare Sub UpdateHpValue Lib "BabelUI.dll" (ByVal Hp As Long, ByVal Shield As Long)
+Public Declare Sub UpdateManaValue Lib "BabelUI.dll" (ByVal NewValue As Long)
+Public Declare Sub UpdateStaminaValue Lib "BabelUI.dll" (ByVal NewValue As Long)
+Public Declare Sub UpdateDrinkValue Lib "BabelUI.dll" (ByVal NewValue As Long)
+Public Declare Sub UpdateFoodValue Lib "BabelUI.dll" (ByVal NewValue As Long)
+Public Declare Sub UpdateGold Lib "BabelUI.dll" (ByVal NewValue As Long)
+Public Declare Sub UpdateExp Lib "BabelUI.dll" (ByVal Current As Long, ByVal max As Long)
+Public Declare Sub OpenChat Lib "BabelUI.dll" (ByVal mode As Long)
+Public Declare Sub UpdateStrAndAgiBuff Lib "BabelUI.dll" (ByVal str As Byte, ByVal Agi As Byte, ByVal StrState As Byte, ByVal StrState As Byte)
+Public Declare Sub UpdateMapInfo Lib "BabelUI.dll" (ByVal MapNumber As Long, ByVal MapName As String, ByVal NpcCount As Integer, ByRef NpcList As t_QuestNPCMapData, ByVal IsSafe As Byte)
+Public Declare Sub UpdateUserPos Lib "BabelUI.dll" (ByVal TileX As Integer, ByVal TileY As Integer, ByRef MapPos As t_Position)
+Public Declare Sub UpdateGroupPos Lib "BabelUI.dll" (ByRef MapPos As t_Position, ByVal GroupIndex As Integer)
+Public Declare Sub SetKeySlot Lib "BabelUI.dll" (ByRef SlotInfo As t_InvItem)
+Public Declare Sub UpdateIntervals Lib "BabelUI.dll" (ByRef Intervals As t_Intervals)
+Public Declare Sub ActivateInterval Lib "BabelUI.dll" (ByVal IntervalType As Long)
+Public Declare Sub SetSafeState Lib "BabelUI.dll" (ByVal SafeType As Long, ByVal State As Long)
+Public Declare Sub UpdateOnlines Lib "BabelUI.dll" (ByVal NewValue As Long)
+Public Declare Sub UpdateGameTime Lib "BabelUI.dll" (ByVal Hour As Long, ByVal Minutes As Long)
+Public Declare Sub UpdateIsGameMaster Lib "BabelUI.dll" (ByVal NewState As Long)
+Public Declare Sub UpdateMagicResistance Lib "BabelUI.dll" (ByVal NewValue As Long)
+Public Declare Sub UpdateMagicAttack Lib "BabelUI.dll" (ByVal NewValue As Long)
+Public Declare Sub SetWhisperTarget Lib "BabelUI.dll" (ByVal UserName As String)
+
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
 Public Declare Function GetDebugImageBuffer Lib "BabelUI.dll" (ByRef Buffer As Byte, ByVal size As Long) As Boolean
 Public Declare Sub SendDebugMouseEvent Lib "BabelUI.dll" (ByVal PosX As Long, ByVal PosY As Long, ByVal EvtType As Long, ByVal button As Long)
+
 
 
 Public Enum MouseEvent
@@ -123,6 +268,8 @@ Public BabelInitialized As Boolean
 Public DebugInitialized As Boolean
 Public GetRemoteError As Boolean
 Public UseBabelUI As Boolean
+Public InputFocus As Boolean
+Public IsGameDialogOpen As Boolean
 
 Public Function ConvertMouseButton(ByVal button As Integer) As MouseButton
     Select Case button
@@ -150,7 +297,7 @@ End Function
 
 Public Function GetMainHwdn() As String
     If UseBabelUI Then
-        GetMainHwdn = frmBabelLogin.hwnd
+        GetMainHwdn = frmBabelUI.hwnd
     Else
         GetMainHwdn = frmConnect.hwnd
     End If
@@ -179,6 +326,27 @@ On Error GoTo InitializeUI_Err
 116     Set UITexture.Texture = SurfaceDB.CreateTexture(UITexture.TextureWidth, UITexture.TextureHeight)
 118     BabelInitialized = True
         Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB, AddressOf BabelUI.CreateAccount, AddressOf SetHostCB, AddressOf ValidateCodeCB, AddressOf ResendValidationCodeCB, AddressOf RequestPasswordResetCB, AddressOf RequestNewPasswordCB, AddressOf SelectCharacterPreviewCB, AddressOf LoginCharacterCB, AddressOf ReturnToLoginCB, AddressOf CreateCharacterCB, AddressOf RequestDeleteCharCB, AddressOf ConfirmDeleteCharCB, AddressOf TransferCharacterCB)
+        Dim GameplayCallbacks As t_GamePlayCallbacks
+        GameplayCallbacks.HandleConsoleMsg = FARPROC(AddressOf HandleConsoleMsgCB)
+        GameplayCallbacks.ShowDialog = FARPROC(AddressOf HandleShowDialogCB)
+        GameplayCallbacks.SelectInvSlot = FARPROC(AddressOf HandleSelectInvSlotCB)
+        GameplayCallbacks.UseInvSlot = FARPROC(AddressOf HandleUseInvSlotCB)
+        GameplayCallbacks.SelectSpellSlot = FARPROC(AddressOf HandleSelectSpellSlotCB)
+        GameplayCallbacks.UseSpellSlot = FARPROC(AddressOf HandleUseSpellSlotCB)
+        GameplayCallbacks.UpdateOpenDialog = FARPROC(AddressOf IsGameDialogOpenCB)
+        GameplayCallbacks.UpdateFocus = FARPROC(AddressOf HandleUpdateFocusStateCB)
+        GameplayCallbacks.OpenLink = FARPROC(AddressOf OpenLinkCB)
+        GameplayCallbacks.ClickGold = FARPROC(AddressOf ClickGoldCB)
+        GameplayCallbacks.MoveInvSlot = FARPROC(AddressOf MoveInvSlotDB)
+        GameplayCallbacks.RequestAction = FARPROC(AddressOf RequestActionCB)
+        GameplayCallbacks.UseKey = FARPROC(AddressOf UseKeyCB)
+        GameplayCallbacks.MoveSpellSlot = FARPROC(AddressOf MoveSpellSlotCB)
+        GameplayCallbacks.RequestDeleteItem = FARPROC(AddressOf RequestDeleteItemCB)
+        Call RegisterGameplayCallbacks(GameplayCallbacks)
+        GameplayDrawAreaRect.Top = StartRenderY
+        GameplayDrawAreaRect.Left = StartRenderX
+        GameplayDrawAreaRect.Bottom = GameplayDrawAreaRect.Top + Render_Main_Rect.Bottom
+        GameplayDrawAreaRect.Right = GameplayDrawAreaRect.Left + Render_Main_Rect.Right
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
     End If
@@ -418,3 +586,216 @@ Public Sub SendLoginCharacters(ByRef charlist() As UserCuentaPJS, ByVal charCoun
     Next i
     Call LoginSendCharacters
 End Sub
+
+Public Sub HandleConsoleMsgCB(ByRef msg As SINGLESTRINGPARAM)
+    Dim MsgStr As String
+    MsgStr = GetStringFromPtr(msg.Ptr, msg.Len)
+    Call HandleChatMsg(MsgStr)
+End Sub
+
+Public Sub HandleShowDialogCB(ByRef dialog As SINGLESTRINGPARAM)
+    Dim DialogName As String
+    DialogName = GetStringFromPtr(dialog.Ptr, dialog.Len)
+    Dim Frm As Form
+    Set Frm = Forms.Add(DialogName)
+    Frm.Show , frmBabelUI
+End Sub
+
+Public Sub HandleSelectInvSlotCB(ByVal Slot As Long)
+    Call ModGameplayUI.SelectItemSlot(Slot)
+End Sub
+
+Public Sub HandleUseInvSlotCB(ByVal Slot As Long)
+    Call ModGameplayUI.UserItemClick
+End Sub
+
+Public Sub HandleSelectSpellSlotCB(ByVal Slot As Long)
+
+End Sub
+
+Public Sub HandleUseSpellSlotCB(ByVal Slot As Long)
+    Call UseSpell(Slot, "")
+End Sub
+
+Public Sub HandleUpdateFocusStateCB(ByVal Focus As Boolean)
+    InputFocus = Focus > 0
+End Sub
+
+Public Sub IsGameDialogOpenCB(ByVal IsOpen As Boolean)
+    IsGameDialogOpen = IsOpen > 0
+End Sub
+
+Public Sub OpenLinkCB(ByRef link As SINGLESTRINGPARAM)
+    Dim Url As String
+    Url = GetStringFromPtr(link.Ptr, link.Len)
+    ShellExecute ByVal 0&, "open", _
+        Url, _
+        vbNullString, vbNullString, _
+        vbMaximizedFocus
+End Sub
+
+Public Sub ClickGoldCB()
+    UserInventory.SelectedSlot = FLAGORO
+    If UserStats.GLD > 0 Then
+        frmCantidad.Show , frmBabelUI
+    End If
+End Sub
+
+Public Sub MoveInvSlotDB(ByVal SourceSlot As Long, ByVal DestSlot As Long)
+    If DestSlot > 0 And SourceSlot <> DestSlot Then
+        Call WriteItemMove(SourceSlot, DestSlot)
+    End If
+End Sub
+
+Public Sub RequestActionCB(ByVal ActionId As Long)
+    Select Case ActionId
+    Case e_ActionRequest.eMinimize
+        frmBabelUI.WindowState = vbMinimized
+
+    Case e_ActionRequest.eClose
+        If frmCerrar.visible Then Exit Sub
+        Dim mForm As Form
+        For Each mForm In Forms
+            If mForm.hwnd <> frmBabelUI.hwnd Or mForm.hwnd <> frmDebugUI.hwnd Then Unload mForm
+            Set mForm = Nothing
+        Next
+        frmCerrar.Show , frmBabelUI
+
+    Case e_ActionRequest.eOpenMinimap
+        ExpMult = 1
+        OroMult = 1
+        Call frmMapaGrande.CalcularPosicionMAPA
+        frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
+        frmMapaGrande.Show , frmBabelUI
+
+    Case e_ActionRequest.eOpenClanDialog
+        If frmGuildLeader.visible Then Unload frmGuildLeader
+        Call WriteRequestGuildLeaderInfo
+
+    Case e_ActionRequest.eOpenChallenge
+        Call ParseUserCommand("/RETAR")
+
+    Case e_ActionRequest.eOpenKeys
+        ' Code for eOpenKeys case
+
+    Case e_ActionRequest.eOpenActiveQuest
+        Call WriteQuestListRequest
+
+    Case e_ActionRequest.eGoHome
+        Call ParseUserCommand("/HOGAR")
+
+    Case e_ActionRequest.eShowStats
+        LlegaronAtrib = False
+        LlegaronStats = False
+        Call WriteRequestAtributes
+        Call WriteRequestMiniStats
+
+    Case e_ActionRequest.eUpdateGroupLock
+        Call WriteParyToggle
+
+    Case e_ActionRequest.eUpdateClanSafeLock
+        Call WriteSeguroClan
+
+    Case e_ActionRequest.eUpdateAttackSafeLock
+        Call WriteSafeToggle
+
+    Case e_ActionRequest.eUpdateResurrectionLock
+        Call WriteSeguroResu
+
+    Case e_ActionRequest.eReportBug
+        FrmGmAyuda.Show vbModeless, frmBabelUI
+
+    Case e_ActionRequest.eRequestSkill
+        Call ModGameplayUI.RequestSkills
+        
+    Case e_ActionRequest.eOpenGroupDialog
+        If FrmGrupo.visible = False Then
+            Call WriteRequestGrupo
+        End If
+        
+    Case e_ActionRequest.eOpenGmPannel
+        frmPanelgm.Width = 4860
+        Call WriteSOSShowList
+        Call WriteGMPanel
+    Case e_ActionRequest.eOpenCreateObjMenu
+        Call OpenCreateObjectMenu
+        
+    Case e_ActionRequest.eOpenSpawnMenu
+        Call WriteSpawnListRequest
+        
+    Case e_ActionRequest.eSetGmInvisible
+        Call ParseUserCommand("/INVISIBLE")
+    Case e_ActionRequest.eDisplayHPInfo
+        Call ParseUserCommand("/PROMEDIO")
+End Select
+
+End Sub
+
+Public Sub UseKeyCB(ByVal KeyIndex As Long)
+    Call WriteUseKey(KeyIndex + 1)
+End Sub
+
+Public Sub MoveSpellSlotCB(ByVal FromSlot As Long, ByVal ToSlot As Long)
+    Dim Diff, AbsDiff, i As Long
+    Diff = FromSlot - ToSlot
+    AbsDiff = Abs(Diff)
+    For i = 0 To AbsDiff - 1
+        Call WriteMoveSpell(Diff > 0, FromSlot - (i * (Diff / AbsDiff)))
+    Next i
+End Sub
+
+Public Sub RequestDeleteItemCB(ByVal SelectedSlot As Long)
+    Call WriteDeleteItem(SelectedSlot)
+End Sub
+Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long
+        '<EhHeader>
+        On Error GoTo BabelEditWndProc_Err
+        '</EhHeader>
+
+100     Select Case uMsg
+           Case WM_MOUSEWHEEL
+            Dim delta As Long
+102         delta = HiWord(wParam)
+106         Call SendScrollEvent(delta)
+            '[other messages will go here later]
+108        Case WM_DESTROY
+110          Call UnSubclass(hwnd, PtrEditWndProc)
+        End Select
+       
+112     BabelEditWndProc = DefSubclassProc(hwnd, uMsg, wParam, lParam)
+        '<EhFooter>
+        Exit Function
+
+BabelEditWndProc_Err:
+        Debug.Print Err.Description & vbCrLf & _
+               "in Argentum20.BabelUI.BabelEditWndProc " & _
+               "at line " & Erl, _
+               vbExclamation + vbOKOnly, "Application Error"
+        Resume Next
+        '</EhFooter>
+End Function
+    
+Private Function PtrEditWndProc() As Long
+    PtrEditWndProc = FARPROC(AddressOf BabelEditWndProc)
+End Function
+
+Public Sub UpdateBuffState()
+    Call UpdateStrAndAgiBuff(UserStats.str, UserStats.Agi, UserStats.StrState, UserStats.AgiState)
+End Sub
+
+Public Function GetCDMaskForItem(ByRef Item As ObjDatas) As Long
+    If Item.ObjType = 2 Then
+        If Item.proyectil > 0 Then
+            GetCDMaskForItem = e_CDTypeMask.eRangedAttack
+        End If
+        If Item.Amunition = 0 Then
+            GetCDMaskForItem = GetCDMaskForItem Or e_CDTypeMask.eBasicAttack
+        End If
+    End If
+    If IsUsableItem(Item) Then
+        GetCDMaskForItem = GetCDMaskForItem Or e_CDTypeMask.eUsable
+    End If
+    If Item.CDType > 0 Then
+        GetCDMaskForItem = GetCDMaskForItem Or e_CDTypeMask.eCustom
+    End If
+End Function

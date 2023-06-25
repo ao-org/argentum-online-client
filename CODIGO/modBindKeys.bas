@@ -177,7 +177,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
     
     Select Case KeyCode
         Case BindKeys(1).KeyCode
-            If UserEstado = 1 Then
+            If UserStats.estado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
                     Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
@@ -192,10 +192,11 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If frmMain.Inventario.IsItemOnCd(frmMain.Inventario.GetActiveWeaponSlot) Then Exit Function
             If MainTimer.Check(TimersIndex.CastAttack, False) Then
                 If MainTimer.Check(TimersIndex.Attack) Then
+                    If BabelInitialized Then Call BabelUI.ActivateInterval(e_CdTypes.e_Melee)
                     Call MainTimer.Restart(TimersIndex.AttackSpell)
                     Call MainTimer.Restart(TimersIndex.AttackUse)
                     Set cooldown_ataque = New clsCooldown
-                    Call cooldown_ataque.Cooldown_Initialize(IntervaloGolpe, 36602)
+                    Call cooldown_ataque.Cooldown_Initialize(gIntervals.Hit, 36602)
                     Call WriteAttack
                 End If
     
@@ -203,7 +204,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
     
         Case BindKeys(2).KeyCode
     
-            If UserEstado = 1 Then
+            If UserStats.estado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
                     Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
@@ -223,7 +224,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
     
         Case BindKeys(3).KeyCode
     
-            If UserEstado = 1 Then
+            If UserStats.estado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
                     Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
@@ -255,7 +256,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             Call WriteParyToggle
         Case BindKeys(9).KeyCode
     
-            If UserEstado = 1 Then
+            If UserStats.estado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
                     Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
@@ -277,28 +278,16 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If IntervaloPermiteLLamadaClan Then Call WriteMarcaDeClan
         
         Case BindKeys(5).KeyCode
-    
-            If UserEstado = 1 Then
-    
+            If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
                     Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
-    
                 End With
-    
                 Exit Function
-    
             End If
-    
-                If frmMain.Inventario.IsItemSelected Then Call WriteEquipItem(frmMain.Inventario.SelectedItem)
-      
+                Call EquipSelectedItem
         
         Case BindKeys(4).KeyCode
-    
-            If Not MainTimer.Check(TimersIndex.AttackUse, False) Then Exit Function
-            If frmMain.Inventario.IsItemSelected Then
-                Call CountPacketIterations(packetControl(ClientPacketID.UseItemU), 100)
-                Call WriteUseItemU(frmMain.Inventario.SelectedItem)
-            End If
+            Call UseItemKey
         
         Case BindKeys(10).KeyCode
     
@@ -310,7 +299,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         
         Case BindKeys(11).KeyCode
     
-            If UserEstado = 1 Then
+            If UserStats.estado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
                     Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
@@ -327,8 +316,8 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             Call SaveSetting("OPCIONES", "FPSFLAG", FPSFLAG)
             
         Case BindKeys(21).KeyCode
-            If UserMinMAN = UserMaxMAN Then Exit Function
-            If UserEstado = 1 Then
+            If UserStats.minman = UserStats.maxman Then Exit Function
+            If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
                     Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
                 End With
@@ -340,7 +329,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             Call WriteQuit
     
         Case BindKeys(23).KeyCode
-            If UserEstado = 1 Then
+            If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
                     Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
                 End With
@@ -366,37 +355,51 @@ Accionar_Err:
 End Function
 
 Public Sub TirarItem()
-    
     On Error GoTo TirarItem_Err
-    
-
-    If (frmMain.Inventario.SelectedItem > 0 And frmMain.Inventario.SelectedItem < MAX_INVENTORY_SLOTS + 1) Or (frmMain.Inventario.SelectedItem = FLAGORO) Then
-        If frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem) = 1 Then
-        
-            If ObjData(frmMain.Inventario.OBJIndex(frmMain.Inventario.SelectedItem)).Destruye = 0 Then
-                Call WriteDrop(frmMain.Inventario.SelectedItem, 1)
-            Else
-                PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
-                Pregunta = True
-                DestItemSlot = frmMain.Inventario.SelectedItem
-                DestItemCant = 1
-                PreguntaLocal = True
-                PreguntaNUM = 1
-
-            End If
-
-        Else
-
-            If frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem) > 1 Then
-                frmCantidad.Picture = LoadInterface("cantidad.bmp")
-                frmCantidad.Show , frmMain
-
-            End If
-
+    If BabelInitialized Then
+        If UserInventory.SelectedSlot > 0 And UserInventory.SelectedSlot <= MAX_INVENTORY_SLOTS Then
+            With UserInventory.Slots(UserInventory.SelectedSlot)
+                If .Amount = 1 Then
+                    If ObjData(.ObjIndex).Destruye = 0 Then
+                        Call WriteDrop(UserInventory.SelectedSlot, 1)
+                    Else
+                        PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+                        Pregunta = True
+                        DestItemSlot = UserInventory.SelectedSlot
+                        DestItemCant = 1
+                        PreguntaLocal = True
+                        PreguntaNUM = 1
+                    End If
+                ElseIf .Amount > 1 Then
+                    frmCantidad.Picture = LoadInterface("cantidad.bmp")
+                    frmCantidad.Show , frmBabelUI
+                End If
+            End With
+        ElseIf UserInventory.SelectedSlot = FLAGORO Then
+            frmCantidad.Picture = LoadInterface("cantidad.bmp")
+                    frmCantidad.Show , frmBabelUI
         End If
-
+    Else
+        If (frmMain.Inventario.SelectedItem > 0 And frmMain.Inventario.SelectedItem < MAX_INVENTORY_SLOTS + 1) Or (frmMain.Inventario.SelectedItem = FLAGORO) Then
+            If frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem) = 1 Then
+                If ObjData(frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem)).Destruye = 0 Then
+                    Call WriteDrop(frmMain.Inventario.SelectedItem, 1)
+                Else
+                    PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+                    Pregunta = True
+                    DestItemSlot = frmMain.Inventario.SelectedItem
+                    DestItemCant = 1
+                    PreguntaLocal = True
+                    PreguntaNUM = 1
+                End If
+            Else
+                If frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem) > 1 Then
+                    frmCantidad.Picture = LoadInterface("cantidad.bmp")
+                    frmCantidad.Show , frmMain
+                End If
+            End If
+        End If
     End If
-
     
     Exit Sub
 

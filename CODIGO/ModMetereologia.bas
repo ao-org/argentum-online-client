@@ -189,8 +189,11 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
     UpdateLights = True
     
     
-    
-    frmMain.lblhora = Right$("00" & HoraActual, 2) & ":" & Right$("00" & Minutos, 2)
+    If BabelInitialized Then
+        Call UpdateGameTime(HoraActual, Minutos)
+    Else
+        frmMain.lblhora = Right$("00" & HoraActual, 2) & ":" & Right$("00" & Minutos, 2)
+    End If
     
     Exit Sub
 
@@ -220,7 +223,7 @@ Public Sub RestaurarLuz()
     
     On Error GoTo RestaurarLuz_Err
     
-    If UserEstado = 1 Then
+    If UserStats.Estado = 1 Then
         global_light = DeathColor
         
     ElseIf UserCiego Then

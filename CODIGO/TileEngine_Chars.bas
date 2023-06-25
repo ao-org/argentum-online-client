@@ -320,7 +320,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
 
     End With
     
-    If UserEstado <> 1 Then Call DoPasosFx(charindex)
+    If UserStats.Estado <> 1 Then Call DoPasosFx(CharIndex)
     
     'areas viejos
     If (nY < MinLimiteY) Or (nY > MaxLimiteY) Or (nX < MinLimiteX) Or (nX > MaxLimiteX) Then
@@ -758,7 +758,7 @@ Public Function Get_PixelY_Of_Char(ByVal char_index As Integer) As Integer
     'Make sure it's a legal char_index
     If Char_Check(char_index) Then
         Get_PixelY_Of_Char = (charlist(char_index).Pos.y - 2 - UserPos.y) * 32 + frmMain.renderer.ScaleWidth / 2
-        Get_PixelY_Of_Char = Get_PixelY_Of_Char - 16
+        Get_PixelY_Of_Char = Get_PixelY_Of_Char - 16 + gameplay_render_offset.y
 
     End If
 
@@ -777,7 +777,7 @@ Public Function Get_Pixelx_Of_Char(ByVal char_index As Integer) As Integer
     'Make sure it's a legal char_index
     If Char_Check(char_index) Then
         Get_Pixelx_Of_Char = (charlist(char_index).Pos.x - UserPos.x) * 32 + frmMain.renderer.ScaleWidth / 2
-        Get_Pixelx_Of_Char = Get_Pixelx_Of_Char
+        Get_Pixelx_Of_Char = Get_Pixelx_Of_Char + gameplay_render_offset.x
 
     End If
 

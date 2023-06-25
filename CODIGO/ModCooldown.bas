@@ -72,7 +72,7 @@ Public Sub renderCooldowns(ByVal x As Integer, ByVal y As Integer)
         y = y + CdDrawSize + Margin
     End If
     If CDList.EffectCount > 0 Then
-        y = Render_Main_Rect.Bottom - CdDrawSize - Margin
+        y = Render_Main_Rect.Bottom - CdDrawSize - Margin + gameplay_render_offset.y
         For i = 0 To CDList.EffectCount - 1
             Call DrawEffectCd(CurrentX, y, CDList.EffectList(i), CurrTime, colors)
             CurrentX = CurrentX - CdDrawSize - Margin

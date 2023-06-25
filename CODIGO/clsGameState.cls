@@ -48,6 +48,15 @@ Public Property Get state() As e_game_state
 End Property
 
 Public Property Let state(ByVal new_state As e_game_state)
+    If BabelInitialized Then
+        If new_state = e_game_state.e_state_gameplay_screen Then
+            gameplay_render_offset.x = StartRenderX
+            gameplay_render_offset.y = StartRenderY
+        Else
+            gameplay_render_offset.x = 0
+            gameplay_render_offset.y = 0
+        End If
+    End If
     cur_state = new_state
 End Property
 

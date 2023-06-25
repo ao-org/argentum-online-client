@@ -408,7 +408,7 @@ End Sub
 
 ''
 ' Writes the "PartySafeToggle" message to the outgoing data buffer.
-'
+'PartySafeOn
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteParyToggle()
         '<EhHeader>

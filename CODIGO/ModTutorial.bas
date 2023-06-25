@@ -164,13 +164,13 @@ Public Sub mostrarCartel(ByVal title As String, ByVal message As String, Optiona
     cartel_fade = 1
     cartel_visible = True
     
-    cartel_title_pos_x = CartelTitlePosX
-    cartel_title_pos_y = CartelTitlePosY
-    cartel_message_pos_x = CartelMessagePosX
-    cartel_message_pos_y = CartelMessagePosY
+    cartel_title_pos_x = CartelTitlePosX + gameplay_render_offset.x
+    cartel_title_pos_y = CartelTitlePosY + gameplay_render_offset.y
+    cartel_message_pos_x = CartelMessagePosX + gameplay_render_offset.x
+    cartel_message_pos_y = CartelMessagePosY + gameplay_render_offset.y
     
-    cartel_grh_pos_x = cartelGrhPosX
-    cartel_grh_pos_y = cartelGrhPosY
+    cartel_grh_pos_x = cartelGrhPosX + gameplay_render_offset.x
+    cartel_grh_pos_y = cartelGrhPosY + gameplay_render_offset.y
     grh_width = grhWidth
     grh_height = grhHeight
     text_message_render = cartel_message
@@ -238,7 +238,7 @@ Public Sub RenderScreen_Cartel()
     Call RGBAList(cartel_background_color(), cartel_background_color(0).r, cartel_background_color(0).G, cartel_background_color(0).B, cartel_fade)
     'Call Grh_Render(cartel_background_grh, 350, 556, cartel_background_color())
     If Not cartel_npc Then
-        Call Grh_Render_Advance(cartel_background_grh, 350, 615, 70, 644, cartel_background_color())
+        Call Grh_Render_Advance(cartel_background_grh, 350 + gameplay_render_offset.x, 615 + gameplay_render_offset.y, 70, 644, cartel_background_color())
     End If
     
     If UserCharIndex > 0 Then
@@ -251,9 +251,9 @@ Public Sub RenderScreen_Cartel()
         If cartel_duration = -1 Then
             Call RGBAList(cartel_continue_color(), 203, 156, 156, 255)
             If language = e_language.English Then
-                Call Engine_Text_Render_Cartel("Click left to continue...", 516, 572, cartel_continue_color(), 1, False, , cartel_fade)
+                Call Engine_Text_Render_Cartel("Click left to continue...", 516 + gameplay_render_offset.x, 572 + gameplay_render_offset.y, cartel_continue_color(), 1, False, , cartel_fade)
             Else
-                Call Engine_Text_Render_Cartel("Click para continuar...", 539, 572, cartel_continue_color(), 1, False, , cartel_fade)
+                Call Engine_Text_Render_Cartel("Click para continuar...", 539 + gameplay_render_offset.x, 572 + gameplay_render_offset.y, cartel_continue_color(), 1, False, , cartel_fade)
             End If
         End If
                 

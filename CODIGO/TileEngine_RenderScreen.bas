@@ -24,8 +24,7 @@ Public map_letter_grh        As grh
 Public map_letter_grh_next   As Long
 Public map_letter_a          As Single
 Public map_letter_fadestatus As Byte
-
-
+Public gameplay_render_offset As Vector2
 
 
 Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal HalfTileWidth As Integer, ByVal HalfTileHeight As Integer)
@@ -85,12 +84,12 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     MaxBufferedY = MaxY + TileBufferSizeY
 
     ' Screen start (with movement offset)
-    StartX = PixelOffsetX - MinX * TilePixelWidth
-    StartY = PixelOffsetY - MinY * TilePixelHeight
+    StartX = PixelOffsetX - MinX * TilePixelWidth + gameplay_render_offset.x
+    StartY = PixelOffsetY - MinY * TilePixelHeight + gameplay_render_offset.y
 
     ' Screen start with tiles buffered (for layer 2, chars, big objects, etc.)
-    StartBufferedX = TileBufferPixelOffsetX + PixelOffsetX
-    StartBufferedY = PixelOffsetY - TilePixelHeight
+    StartBufferedX = TileBufferPixelOffsetX + PixelOffsetX + gameplay_render_offset.x
+    StartBufferedY = PixelOffsetY - TilePixelHeight + gameplay_render_offset.y
 
     ' Add 1 tile to the left if going left, else add it to the right
     If PixelOffsetX > 0 Then
@@ -470,7 +469,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                         Amount = .OBJInfo.Amount
                     End If
                     Text = ObjData(.OBJInfo.ObjIndex).Name & " (" & Amount & ")"
-                    Call Engine_Text_Render(Text, MouseX + 15, MouseY, COLOR_WHITE, , , , 160)
+                    Call Engine_Text_Render(Text, MouseX + 15 + gameplay_render_offset.x, MouseY + gameplay_render_offset.y, COLOR_WHITE, , , , 160)
                 End If
             End If
         End With
@@ -716,8 +715,8 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             If Graficos_Particulas.Engine_MeteoParticle_Get <> 0 Then
             
                 'Screen positions were hardcoded by now
-                ScreenX = 250
-                ScreenY = 0
+                screenX = 250 + gameplay_render_offset.x
+                screenY = 0 + gameplay_render_offset.y
                 
                 Call Particle_Group_Render(MeteoParticle, ScreenX, ScreenY)
 
@@ -728,29 +727,29 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     End If
     
     Call Effect_Render_All
-    Call RenderCooldowns(710, 25)
+    Call renderCooldowns(710 + gameplay_render_offset.x, 25 + gameplay_render_offset.y)
     
     If InvasionActual Then
         
-        Call Engine_Draw_Box(190, 550, 356, 36, RGBA_From_Comp(0, 0, 0, 200))
-        Call Engine_Draw_Box(193, 553, 3.5 * InvasionPorcentajeVida, 30, RGBA_From_Comp(20, 196, 255, 200))
+        Call Engine_Draw_Box(190 + gameplay_render_offset.x, 550 + gameplay_render_offset.y, 356, 36, RGBA_From_Comp(0, 0, 0, 200))
+        Call Engine_Draw_Box(193 + gameplay_render_offset.x, 553 + gameplay_render_offset.y, 3.5 * InvasionPorcentajeVida, 30, RGBA_From_Comp(20, 196, 255, 200))
         
-        Call Engine_Draw_Box(340, 586, 54, 9, RGBA_From_Comp(0, 0, 0, 200))
-        Call Engine_Draw_Box(342, 588, 0.5 * InvasionPorcentajeTiempo, 5, RGBA_From_Comp(220, 200, 0, 200))
+        Call Engine_Draw_Box(340 + gameplay_render_offset.x, 586 + gameplay_render_offset.y, 54, 9, RGBA_From_Comp(0, 0, 0, 200))
+        Call Engine_Draw_Box(342 + gameplay_render_offset.x, 588 + gameplay_render_offset.y, 0.5 * InvasionPorcentajeTiempo, 5, RGBA_From_Comp(220, 200, 0, 200))
         
     End If
 
     If Pregunta Then
         
-        Call Engine_Draw_Box(283, 170, 190, 100, RGBA_From_Comp(150, 20, 3, 200))
-        Call Engine_Draw_Box(288, 175, 180, 90, RGBA_From_Comp(25, 25, 23, 200))
+        Call Engine_Draw_Box(283 + gameplay_render_offset.x, 170 + gameplay_render_offset.y, 190, 100, RGBA_From_Comp(150, 20, 3, 200))
+        Call Engine_Draw_Box(288 + gameplay_render_offset.x, 175 + gameplay_render_offset.y, 180, 90, RGBA_From_Comp(25, 25, 23, 200))
 
         Dim preguntaGrh As grh
         Call InitGrh(preguntaGrh, 32120)
         
-        Call Engine_Text_Render(PreguntaScreen, 290, 180, COLOR_WHITE, 1, True)
+        Call Engine_Text_Render(PreguntaScreen, 290 + gameplay_render_offset.x, 180 + gameplay_render_offset.y, COLOR_WHITE, 1, True)
         
-        Call Draw_Grh(preguntaGrh, 416, 233, 1, 0, COLOR_WHITE, False, 0, 0, 0)
+        Call Draw_Grh(preguntaGrh, 416 + gameplay_render_offset.x, 233 + gameplay_render_offset.y, 1, 0, COLOR_WHITE, False, 0, 0, 0)
 
     End If
 
@@ -772,17 +771,17 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         Call RGBAList(ColorBarraPesca, 255, 255, 255)
         Dim grh As grh
         grh.GrhIndex = GRH_BARRA_PESCA
-        Call Draw_Grh(grh, 239, 550, 0, 0, ColorBarraPesca())
+        Call Draw_Grh(Grh, 239 + gameplay_render_offset.x, 550 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
         grh.GrhIndex = GRH_CURSOR_PESCA
-        Call Draw_Grh(grh, 271 + PosicionBarra, 558, 0, 0, ColorBarraPesca())
+        Call Draw_Grh(Grh, 271 + PosicionBarra + gameplay_render_offset.x, 558 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
         Debug.Print PescandoEspecial
         For i = 1 To MAX_INTENTOS
             If intentosPesca(i) = 1 Then
                 grh.GrhIndex = GRH_CIRCULO_VERDE
-                Call Draw_Grh(grh, 394 + (i * 10), 573, 0, 0, ColorBarraPesca())
+                Call Draw_Grh(Grh, 394 + (i * 10) + gameplay_render_offset.x, 573 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
             ElseIf intentosPesca(i) = 2 Then
                 grh.GrhIndex = GRH_CIRCULO_ROJO
-                Call Draw_Grh(grh, 394 + (i * 10), 573, 0, 0, ColorBarraPesca())
+                Call Draw_Grh(Grh, 394 + (i * 10) + gameplay_render_offset.x, 573 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
             End If
         Next i
                 
@@ -927,9 +926,9 @@ Private Sub RenderScreen_NombreMapa()
         Dim Color(3) As RGBA
         Call RGBAList(Color(), 179, 95, 0, map_letter_a)
         
-        Call Grh_Render(letter_grh, 250, 300, Color())
+        Call Grh_Render(letter_grh, 250 + gameplay_render_offset.x, 300 + gameplay_render_offset.y, color())
         
-        Call Engine_Text_RenderGrande(letter_text, 360 - Engine_Text_Width(letter_text, False, 4) / 2, 1, Color(), 5, False, , CInt(map_letter_a))
+        Call Engine_Text_RenderGrande(letter_text, 360 - Engine_Text_Width(letter_text, False, 4) / 2 - gameplay_render_offset.x, 1 + gameplay_render_offset.y, color(), 5, False, , CInt(map_letter_a))
 
     End If
 

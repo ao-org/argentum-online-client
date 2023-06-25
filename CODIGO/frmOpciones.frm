@@ -1379,7 +1379,12 @@ Private Sub cmdcerrar_Click()
     
     Call GuardarOpciones
     Me.Visible = False
-    frmMain.SetFocus
+    
+    If BabelInitialized Then
+        frmBabelUI.SetFocus
+    Else
+        frmMain.SetFocus
+    End If
 
     
     Exit Sub
@@ -1533,7 +1538,7 @@ Public Sub Init()
     cbBloqueoHechizos.ListIndex = ModoHechizos
     scrSens.Value = SensibilidadMouse
     
-    Me.Show vbModeless, frmMain
+    Me.Show vbModeless, GetGameplayForm()
 
     
     Exit Sub

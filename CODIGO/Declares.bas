@@ -395,6 +395,23 @@ Public TargetYMacro            As Byte
 ' Constantes de intervalo
 Public Const INT_MACRO_HECHIS  As Integer = 500
 Public Const INT_MACRO_TRABAJO As Integer = 1200
+
+Public Type t_Intervals
+    Hit As Long
+    Bow As Long
+    Magic As Long
+    ExtractWork As Long
+    BuildWork As Long
+    Walk As Long
+    DropItem As Long
+    UseItemKey As Long
+    UseItemClick As Long
+    HitMagic As Long
+    MagicHit As Long
+    HitUseItem As Long
+End Type
+
+Public gIntervals As t_Intervals
 Public IntervaloGolpe          As Long
 Public IntervaloArco           As Long
 Public IntervaloMagia          As Long
@@ -718,13 +735,11 @@ Public Const MENSAJE_TRABAJO_PROYECTILES           As String = "Haz click sobre 
 Public Const MENSAJE_NENE                          As String = "Cantidad de NPCs: "
 
 'Inventario
-Type Inventory
+Type Slot
     ObjIndex As Integer
     Name As String
     GrhIndex As Long
-    '[Alejo]: tipo de datos ahora es Long
     Amount As Long
-    '[/Alejo]
     Equipped As Byte
     Valor As Single
     ObjType As Integer
@@ -732,6 +747,11 @@ Type Inventory
     MaxHit As Integer
     MinHit As Integer
     PuedeUsar As Byte
+End Type
+
+Public Type t_UserInvetory
+    Slots(1 To MAX_INVENTORY_SLOTS) As Slot
+    SelectedSlot As Integer
 End Type
 
 Type MakeObj
@@ -785,35 +805,54 @@ Enum eModoHechizos
     SinBloqueo
 End Enum
 
+Enum e_BuffSate
+    eNormal = 0
+    eMinBuff = 1
+    eHighBuff = 2
+    eBlink = 3
+End Enum
+
+Public Type t_UserStats
+    MaxHp As Integer
+    MinHp As Integer
+    HpShield As Long
+    maxman As Integer
+    minman As Integer
+    MaxSTA As Integer
+    MinSTA As Integer
+    MaxAGU As Byte
+    MinAGU As Byte
+    MaxHAM As Byte
+    MinHAM As Byte
+    GLD As Long
+    OroPorNivel As Long
+    Lvl As Integer
+    Clase As Byte
+    Sexo As Byte
+    Raza As Byte
+    Hogar As Byte
+    PasarNivel As Long
+    exp As Long
+    estado As Byte '0 = Vivo & 1 = Muerto
+    Str As Byte
+    Agi As Byte
+    StrState As e_BuffSate
+    AgiState As e_BuffSate
+End Type
+
 Public Nombres                                  As Boolean
 Public object_angle                             As Single
 'User status vars
-Global OtroInventario(1 To MAX_INVENTORY_SLOTS) As Inventory
-Public UserInventario(1 To MAX_INVENTORY_SLOTS) As Inventory
+Global OtroInventario(1 To MAX_INVENTORY_SLOTS) As Slot
 Public UserHechizos(1 To MAXHECHI)              As Integer
 Public UserHechizosInterval(1 To MAXHECHI)      As Integer
 Public UserMeditar                              As Boolean
 Public UserName                                 As String
 Public UserPassword                             As String
-Public UserMaxHp                                As Integer
-Public UserMinHp                                As Integer
-Public UserHpShield                             As Long
-Public UserMaxMAN                               As Integer
-Public UserMinMAN                               As Integer
-Public UserMaxSTA                               As Integer
-Public UserMinSTA                               As Integer
-Public UserMaxAGU                               As Byte
-Public UserMinAGU                               As Byte
-Public UserMaxHAM                               As Byte
-Public UserMinHAM                               As Byte
-Public UserGLD                                  As Long
-Public UserLvl                                  As Integer
-Public OroPorNivel                              As Long
+Public UserStats                                As t_UserStats
+Public UserInventory                            As t_UserInvetory
 Public UserPort                                 As Integer
 Public UserServerIP                             As String
-Public UserEstado                               As Byte '0 = Vivo & 1 = Muerto
-Public UserPasarNivel                           As Long
-Public UserExp                                  As Long
 Public UserEstadisticas                         As tEstadisticasUsu
 Public UserDescansar                            As Boolean
 Public Moviendose                               As Boolean
@@ -834,10 +873,7 @@ Public UserSaliendo                             As Boolean
 Public StunEndTime                              As Long
 Public TotalStunTime                            As Long
 Public Comerciando                              As Boolean
-Public UserClase                                As eClass
-Public UserSexo                                 As eGenero
-Public UserRaza                                 As eRaza
-Public UserHogar                                 As eCiudad
+
 'Declaraciones LADDER!
 Public SendingType                              As Byte
 Public sndPrivateTo                             As String
@@ -846,6 +882,9 @@ Public Const NUMATRIBUTOS                       As Byte = 5
 Public Const NUMCLASES                          As Byte = 12
 Public Const NUMRAZAS                           As Byte = 6
 Public Const NUMCIUDADES                        As Byte = 5
+
+
+
 
 Type tModRaza
     Fuerza As Integer

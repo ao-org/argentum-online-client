@@ -10,9 +10,9 @@ Begin VB.Form frmComerciar
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   595
+   ScaleHeight     =   476
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   680
+   ScaleWidth      =   544
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.Timer tmrNumber 
@@ -30,7 +30,7 @@ Begin VB.Form frmComerciar
       ClipControls    =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -41,9 +41,9 @@ Begin VB.Form frmComerciar
       Height          =   3660
       Left            =   600
       MousePointer    =   99  'Custom
-      ScaleHeight     =   305
+      ScaleHeight     =   244
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   574
+      ScaleWidth      =   459
       TabIndex        =   1
       Top             =   1605
       Width           =   6885
@@ -116,7 +116,7 @@ Begin VB.Form frmComerciar
       Caption         =   "(Vacío)"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -135,7 +135,7 @@ Begin VB.Form frmComerciar
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -372,7 +372,7 @@ Private Sub cmdComprar_Click()
  
     LasActionBuy = True
 
-    If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
+    If UserStats.GLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
         Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
     Else
         AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
@@ -664,11 +664,10 @@ Private Sub InvComNpc_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
         LasActionBuy = True
 
         ' Si tiene suficiente oro
-        If UserGLD >= InvComNpc.Valor(Drag) * Val(cantidad.Text) Then
+        If UserStats.GLD >= InvComNpc.Valor(Drag) * Val(cantidad.Text) Then
             Call WriteCommerceBuy(Drag, Val(cantidad.Text))
         Else
             AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
-
         End If
 
     End If

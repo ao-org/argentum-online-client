@@ -3,13 +3,13 @@ Begin VB.Form frmGoliath
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Operación bancaria"
-   ClientHeight    =   7212
+   ClientHeight    =   7215
    ClientLeft      =   0
-   ClientTop       =   -72
-   ClientWidth     =   8172
+   ClientTop       =   -75
+   ClientWidth     =   8175
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -20,9 +20,9 @@ Begin VB.Form frmGoliath
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   601
+   ScaleHeight     =   481
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   681
+   ScaleWidth      =   545
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.Frame frameRetirar 
@@ -40,7 +40,7 @@ Begin VB.Form frmGoliath
          BorderStyle     =   0  'None
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -90,7 +90,7 @@ Begin VB.Form frmGoliath
          BackStyle       =   0  'Transparent
          BeginProperty Font 
             Name            =   "Arial"
-            Size            =   6.6
+            Size            =   6.75
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -168,7 +168,7 @@ Begin VB.Form frmGoliath
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -261,7 +261,7 @@ Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
     lblDatos.ForeColor = RGB(235, 164, 14)
     
     txtname.BackColor = RGB(17, 18, 12)
-    Me.Show vbModeless, frmMain
+    Me.Show vbModeless, GetGameplayForm()
     
     Exit Sub
 
@@ -421,12 +421,12 @@ Private Sub cmdAceptar_Click()
             'Negativos y ceros
             If Val(txtDatos.Text) < 1 Then lblDatos.Caption = "Cantidad inválida."
             
-            If UserGLD <= 0 Then
+            If UserStats.GLD <= 0 Then
                 lblDatos.Caption = "No tienes oro para depositar."
                 Exit Sub
             End If
     
-            Call WriteBankDepositGold(min(Val(txtDatos.Text), UserGLD))
+            Call WriteBankDepositGold(min(Val(txtDatos.Text), UserStats.GLD))
 
         Case 2 'Retirar
             'Negativos y ceros

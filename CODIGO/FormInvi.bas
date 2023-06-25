@@ -151,41 +151,6 @@ Const WM_SYSCOMMAND As Long = &H112&
 
 Const MOUSE_MOVE    As Long = &HF012&
  
-Public Function TextoLineaRichTextBox(ByVal pControl As RichTextBox, ByVal pLinea As Long) As String
-    
-    On Error GoTo TextoLineaRichTextBox_Err
-    
-
-    
-
-    Dim vLongitudLinea As Long, vNumeroLinea As Long
-
-    Dim vTemporal      As String
-   
-    TextoLineaRichTextBox = ""
-   
-    vNumeroLinea = SendMessageLong(pControl.hWnd, EM_LINEINDEX, pLinea, 0&)
-    vLongitudLinea = SendMessageLong(pControl.hWnd, EM_LINELENGTH, vNumeroLinea, 0&) + 1
-    vTemporal = String$((vLongitudLinea + 2), 0)
-   
-    Mid$(vTemporal, 1, 1) = Chr$(vLongitudLinea And &HFF)
-    Mid$(vTemporal, 2, 1) = Chr$(vLongitudLinea \ &H100)
-   
-    vLongitudLinea = SendMessageString(pControl.hWnd, EM_GETLINE, pLinea, vTemporal)
-   
-    If (vLongitudLinea > 0) Then
-        TextoLineaRichTextBox = Left$(vTemporal, vLongitudLinea)
-
-    End If
-
-    
-    Exit Function
-
-TextoLineaRichTextBox_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.TextoLineaRichTextBox", Erl)
-    Resume Next
-    
-End Function
  
 ' Sacado de https://www.vbforums.com/showthread.php?379880-RESOLVED-Remove-Title-Bar-Off-Of-Form-Using-API-s
 ' Borro algunas partes innecesarias (WyroX)

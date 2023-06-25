@@ -225,7 +225,7 @@ End Sub
 Public Sub LoginCharacter(ByVal Name As String)
 On Error GoTo LogearPersonaje_Err
     username = Name
-    If Connected Then
+    If Connected And Not BabelInitialized Then
         frmMain.ShowFPS.enabled = True
     End If
 #If PYMMO = 0 Then
@@ -244,7 +244,7 @@ End Sub
 
 Public Sub ShowLogin()
     If UseBabelUI Then
-        frmBabelLogin.Show
+        frmBabelUI.Show
         BabelUI.SetActiveScreen ("login")
     Else
         frmConnect.Show
@@ -261,7 +261,7 @@ End Sub
 
 Public Sub ShowScharSelection()
     If UseBabelUI Then
-        frmBabelLogin.Show
+        frmBabelUI.Show
         BabelUI.SetActiveScreen ("charcter-selection")
     Else
         Call connectToLoginServer
@@ -270,16 +270,16 @@ End Sub
 
 Public Sub CreateCharacter(ByVal name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As Integer, ByVal Head As Integer, ByVal HomeCity As Integer)
     userName = name
-    UserRaza = Race
-    UserSexo = Gender
-    UserClase = Class
+    UserStats.Raza = Race
+    UserStats.Sexo = Gender
+    UserStats.Clase = Class
     MiCabeza = Head
-    UserHogar = HomeCity
+    UserStats.Hogar = HomeCity
 #If PYMMO = 1 Then
     Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
     Call LoginOrConnect(E_MODO.CrearNuevoPj)
 #Else
-    Call Protocol_Writes.WriteLoginNewChar(userName, UserRaza, UserSexo, UserClase, MiCabeza, UserHogar)
+    Call Protocol_Writes.WriteLoginNewChar(UserName, UserStats.Raza, UserStats.Sexo, UserStats.Clase, MiCabeza, UserStats.Hogar)
 #End If
     
 End Sub
@@ -308,4 +308,45 @@ Public Sub TransferChar(ByVal Name As String, ByVal DestinationAccunt As String)
     Debug.Assert Len(Name) > 0
     ModAuth.LoginOperation = e_operation.TransferCharacter
     Call connectToLoginServer
+End Sub
+
+Public Sub OnClientDisconnect(ByVal Error As Long)
+    On Error GoTo OnClientDisconnect_Err
+    If (Error = 10061) Then
+        If frmConnect.visible Then
+            Call DisplayError("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.", "connection-failure")
+        Else
+            Call DisplayError("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", "connection-failure")
+        End If
+    Else
+        frmConnect.MousePointer = 1
+        frmMain.ShowFPS.enabled = False
+        If (Error <> 0 And Error <> 2) Then
+            Call DisplayError("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", "connection-failure")
+            
+            If frmConnect.visible Then
+                Connected = False
+            Else
+                If (Connected) Then
+                    Call HandleDisconnect
+                End If
+            End If
+        Else
+            Call RegistrarError(Error, "Conexion cerrada", "OnClientDisconnect")
+            If frmConnect.visible Then
+                Connected = False
+            Else
+                If (Connected) Then
+                    Call HandleDisconnect
+                End If
+            End If
+            If Not GetRemoteError And Error > 0 Then
+                Call DisplayError("El servidor cerro la conexion.", "connection-closed")
+            End If
+        End If
+    End If
+    Exit Sub
+OnClientDisconnect_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModLogin.OnClientDisconnect", Erl)
+    Resume Next
 End Sub
