@@ -465,7 +465,7 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
 End Sub
 
 Public Sub HandleKeyUp(KeyCode As Integer, Shift As Integer)
-    If Not BabelUI.InputFocus Then
+    If Not IsInputFocus Then
         If Not IsDialogOpen Then
             If Accionar(KeyCode) Then
                 Exit Sub
