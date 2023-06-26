@@ -127,6 +127,14 @@ On Error GoTo Form_KeyUp_Err
     Dim CapsState As Boolean
     CapsState = GetKeyState(vbKeyCapital)
     Call BabelSendKeyEvent(KeyCode, Shift, kType_KeyUp, CapsState, False)
+    If KeyCode = vbKeyV And Shift = vbCtrlMask Then
+        ' Retrieve clipboard content
+        Dim clipboardText As String
+        clipboardText = GetClipboardText()
+        ' Prevent further processing of the Ctrl+V keystroke
+        Call PasteText(clipboardText)
+        KeyCode = 0
+    End If
 #If DEBUGGING = 1 Or Developer = 1 Then
     If Not DebugInitialized Then
         If Shift And KeyCode = 68 Then 'shift + d
@@ -208,4 +216,51 @@ Private Function IsInsideGameplayArea(ByVal MouseX As Integer, ByVal MouseY As I
     If MouseY < gameplay_render_offset.y Then Exit Function
     If MouseY > gameplay_render_offset.y + Render_Main_Rect.Bottom Then Exit Function
     IsInsideGameplayArea = True
+End Function
+
+Private Function GetClipboardText() As String
+    Dim clipboardData As Long
+    Dim clipboardText As String
+    Dim pointer As Long
+    Dim length As Long
+    ' Check if text format is available in clipboard
+    If IsClipboardFormatAvailable(CF_TEXT) Then
+        ' Open the clipboard
+        If OpenClipboard(Me.hwnd) Then
+            ' Get the clipboard data
+            clipboardData = GetClipboardData(CF_TEXT)
+            ' Lock the memory to get a pointer to the data
+            pointer = GlobalLock(clipboardData)
+            ' Calculate the length of the text
+            length = lstrlenA(pointer)
+            ' Allocate space for the text
+            clipboardText = Space$(length)
+            ' Copy the text from the clipboard to the string variable
+            CopyMemory ByVal clipboardText, ByVal pointer, length
+            ' Unlock the memory
+            GlobalUnlock pointer
+            ' Close the clipboard
+            CloseClipboard
+        End If
+    ElseIf IsClipboardFormatAvailable(CF_UNICODETEXT) Then
+        ' Open the clipboard
+        If OpenClipboard(Me.hwnd) Then
+            ' Get the clipboard data
+            clipboardData = GetClipboardData(CF_UNICODETEXT)
+            ' Lock the memory to get a pointer to the data
+            pointer = GlobalLock(clipboardData)
+            ' Calculate the length of the Unicode text
+            length = lstrlenA(pointer) * 2 ' Length in bytes
+            ' Allocate space for the Unicode text
+            clipboardText = Space$(length \ 2)
+            ' Copy the Unicode text from the clipboard to the string variable
+            CopyMemory ByVal StrPtr(clipboardText), ByVal pointer, length
+            ' Unlock the memory
+            GlobalUnlock pointer
+            ' Close the clipboard
+            CloseClipboard
+        End If
+    End If
+    ' Return the clipboard text
+    GetClipboardText = clipboardText
 End Function

@@ -72,6 +72,20 @@ Private Type PROCESS_INFORMATION
     dwThreadID As Long
 End Type
 
+' Clipboard formats
+Public Const CF_TEXT As Long = 1
+Public Const CF_UNICODETEXT As Long = 13
+Public Const CF_OEMTEXT As Long = 7
+' Windows API function declarations
+Public Declare Function GetClipboardData Lib "user32" (ByVal wFormat As Long) As Long
+Public Declare Function IsClipboardFormatAvailable Lib "user32" (ByVal wFormat As Long) As Long
+Public Declare Function OpenClipboard Lib "user32" (ByVal hwnd As Long) As Long
+Public Declare Function CloseClipboard Lib "user32" () As Long
+Public Declare Function GlobalLock Lib "kernel32" (ByVal hMem As Long) As Long
+Public Declare Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
+Public Declare Function lstrlenA Lib "kernel32" (ByVal lpString As Long) As Long
+
+
 Private Declare Function WaitForSingleObject Lib "kernel32" (ByVal hHandle As Long, ByVal dwMilliseconds As Long) As Long
 Private Declare Function CreateProcessA Lib "kernel32" (ByVal lpApplicationName As Long, ByVal lpCommandLine As String, lpProcessAttributes As Any, lpThreadAttributes As Any, ByVal bInheritHandles As Long, ByVal dwCreationFlags As Long, ByVal lpEnvironment As Long, ByVal lpCurrentDirectory As Long, lpStartupInfo As Any, lpProcessInformation As Any) As Long
 Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long

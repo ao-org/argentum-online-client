@@ -161,7 +161,7 @@ Public Const EM_SETPARAFORMAT = &H447
 Public Const PFM_LINESPACING = &H100&
 
 Public hlst As clsGraphicalList
-
+Public SelectedSpellSlot As Integer
 
 Public Function DirGraficos() As String
     
