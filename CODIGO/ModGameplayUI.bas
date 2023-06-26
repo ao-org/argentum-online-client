@@ -26,6 +26,7 @@ Public Sub SetupGameplayUI()
         frmMain.Width = D3DWindow.BackBufferWidth * screen.TwipsPerPixelX
         frmMain.Height = D3DWindow.BackBufferHeight * screen.TwipsPerPixelY
         frmMain.visible = True
+        ActiveInventoryTab = eInventory
     End If
 End Sub
 
@@ -352,12 +353,12 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         .ObjIndex = ObjIndex
         .ObjType = ObjType
         .Valor = Valor
-        .PuedeUsar = PuedeUsar
+        .PuedeUsar = CanUse
     End With
     If BabelInitialized Then
         Dim SlotInfo As t_InvItem
         SlotInfo.Amount = Amount
-        SlotInfo.CanUse = podrausarlo
+        SlotInfo.CanUse = CanUse
         SlotInfo.Equiped = Equipped
         SlotInfo.GrhIndex = GrhIndex
         SlotInfo.MaxDef = ObjData(OBJIndex).MaxDef
@@ -643,4 +644,38 @@ On Error GoTo createObj_Click_Err
 createObj_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.createObj_Click", Erl)
     Resume Next
+End Sub
+
+Public Sub SelectInvenrotyTab()
+    ActiveInventoryTab = eInventory
+    TempTick = GetTickCount And &H7FFFFFFF
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Inventario Then
+        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
+    End If
+    iClickTick = TempTick
+    LastMacroButton = tMacroButton.Inventario
+    If Seguido = 1 Then
+        If BabelInitialized Then
+            Call WriteNotifyInventarioHechizos(1, SelectedSpellSlot, 0)
+        Else
+            Call WriteNotifyInventarioHechizos(1, hlst.ListIndex, hlst.Scroll)
+        End If
+    End If
+End Sub
+
+Public Sub SelectSpellTab()
+    ActiveInventoryTab = eSpellList
+    TempTick = GetTickCount And &H7FFFFFFF
+    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Hechizos Then
+        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
+    End If
+    iClickTick = TempTick
+    LastMacroButton = tMacroButton.Hechizos
+    If Seguido = 1 Then
+        If BabelInitialized Then
+            Call WriteNotifyInventarioHechizos(2, SelectedSpellSlot, 0)
+        Else
+            Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
+        End If
+    End If
 End Sub

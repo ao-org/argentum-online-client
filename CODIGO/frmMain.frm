@@ -2600,40 +2600,17 @@ Private Sub imgHechizos_Click()
 End Sub
 
 Public Sub hechizosClick()
-  
     On Error GoTo hechizosClick_Err
-    
-
     If picHechiz.visible Then Exit Sub
     
-    TempTick = GetTickCount And &H7FFFFFFF
-    
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Hechizos Then
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-    End If
-    
-    iClickTick = TempTick
-    
-    LastMacroButton = tMacroButton.Hechizos
-    
+    Call SelectSpellTab
     panel.Picture = LoadInterface("centrohechizo.bmp")
-    
-    
-    If Seguido = 1 Then
-        Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
-    End If
-    
     picInv.visible = False
-    
     picHechiz.visible = True
-
     cmdlanzar.visible = True
-
     imgSpellInfo.visible = True
-
     cmdMoverHechi(0).visible = True
     cmdMoverHechi(1).visible = True
-
     frmMain.imgInvLock(0).visible = False
     frmMain.imgInvLock(1).visible = False
     frmMain.imgInvLock(2).visible = False
@@ -2705,39 +2682,21 @@ End Sub
 
 Public Sub inventoryClick()
     On Error GoTo inventoryClick_Err
-    
-
     If picInv.visible Then Exit Sub
 
-    TempTick = GetTickCount And &H7FFFFFFF
+    Call SelectInvenrotyTab
     
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Inventario Then
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-    End If
-    
-    iClickTick = TempTick
-    
-    LastMacroButton = tMacroButton.Inventario
-
     panel.Picture = LoadInterface("centroinventario.bmp")
-    'Call Audio.PlayWave(SND_CLICK)
     picInv.visible = True
     picHechiz.visible = False
     cmdlanzar.visible = False
     imgSpellInfo.visible = False
-    If Seguido = 1 Then
-        Call WriteNotifyInventarioHechizos(1, hlst.ListIndex, hlst.Scroll)
-    End If
-
     cmdMoverHechi(0).visible = False
     cmdMoverHechi(1).visible = False
-   ' Call Inventario.ReDraw
     frmMain.imgInvLock(0).visible = True
     frmMain.imgInvLock(1).visible = True
     frmMain.imgInvLock(2).visible = True
     imgDeleteItem.visible = True
-
-    
     Exit Sub
 
 inventoryClick_Err:
@@ -3648,7 +3607,7 @@ Private Sub picInv_MouseMove(button As Integer, Shift As Integer, x As Single, y
         Select Case ObjData(Inventario.ObjIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.ObjIndex(Slot)).MinHit & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
                 ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.ObjIndex(Slot)).MinDef & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxDef

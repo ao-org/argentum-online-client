@@ -38,6 +38,12 @@ Public Enum tMacroButton
     picInv = 5
 End Enum
 
+Public Enum e_ActiveTab
+    eInventory
+    eSpellList
+End Enum
+
+Public ActiveInventoryTab As e_ActiveTab
 Public LastMacroButton As Long
 
 Public LastOpenChatCounter As Long

@@ -163,6 +163,9 @@ Public Enum e_ActionRequest
     eOpenSpawnMenu = 19
     eSetGmInvisible = 20
     eDisplayHPInfo = 21
+    eOpenSettings = 22
+    eDisplayInventory = 23
+    eDisplaySpells = 24
 End Enum
 
 Public Enum e_SafeType
@@ -224,6 +227,7 @@ Public Declare Sub UpdateIsGameMaster Lib "BabelUI.dll" (ByVal NewState As Long)
 Public Declare Sub UpdateMagicResistance Lib "BabelUI.dll" (ByVal NewValue As Long)
 Public Declare Sub UpdateMagicAttack Lib "BabelUI.dll" (ByVal NewValue As Long)
 Public Declare Sub SetWhisperTarget Lib "BabelUI.dll" (ByVal UserName As String)
+Public Declare Sub PasteText Lib "BabelUI.dll" (ByVal Text As String)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -610,7 +614,7 @@ Public Sub HandleUseInvSlotCB(ByVal Slot As Long)
 End Sub
 
 Public Sub HandleSelectSpellSlotCB(ByVal Slot As Long)
-
+    SelectedSpellSlot = Slot
 End Sub
 
 Public Sub HandleUseSpellSlotCB(ByVal Slot As Long)
@@ -727,6 +731,12 @@ Public Sub RequestActionCB(ByVal ActionId As Long)
         Call ParseUserCommand("/INVISIBLE")
     Case e_ActionRequest.eDisplayHPInfo
         Call ParseUserCommand("/PROMEDIO")
+    Case e_ActionRequest.eOpenSettings
+        Call frmOpciones.init
+    Case e_ActionRequest.eDisplayInventory
+        Call SelectInvenrotyTab
+    Case e_ActionRequest.eDisplaySpells
+        Call SelectSpellTab
 End Select
 
 End Sub
