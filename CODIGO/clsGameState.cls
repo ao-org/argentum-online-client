@@ -48,6 +48,7 @@ Public Property Get state() As e_game_state
 End Property
 
 Public Property Let state(ByVal new_state As e_game_state)
+    Dim ScreenInfo As D3DDISPLAYMODE
     If BabelInitialized Then
         If new_state = e_game_state.e_state_gameplay_screen Then
             gameplay_render_offset.x = StartRenderX
@@ -62,7 +63,6 @@ Public Property Let state(ByVal new_state As e_game_state)
             gameplay_render_offset.y = 0
             GameplayDrawAreaRect.Top = 0
             GameplayDrawAreaRect.Left = 0
-            Dim ScreenInfo As D3DDISPLAYMODE
             Call get_game_resolution(ScreenInfo)
             GameplayDrawAreaRect.Bottom = ScreenInfo.Height
             GameplayDrawAreaRect.Right = ScreenInfo.Width
@@ -70,7 +70,6 @@ Public Property Let state(ByVal new_state As e_game_state)
     Else
         GameplayDrawAreaRect.Top = 0
         GameplayDrawAreaRect.Left = 0
-        Dim ScreenInfo As D3DDISPLAYMODE
         Call get_game_resolution(ScreenInfo)
         GameplayDrawAreaRect.Bottom = ScreenInfo.Height
         GameplayDrawAreaRect.Right = ScreenInfo.Width
