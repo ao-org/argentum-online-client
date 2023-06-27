@@ -347,10 +347,6 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.MoveSpellSlot = FARPROC(AddressOf MoveSpellSlotCB)
         GameplayCallbacks.RequestDeleteItem = FARPROC(AddressOf RequestDeleteItemCB)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
-        GameplayDrawAreaRect.Top = StartRenderY
-        GameplayDrawAreaRect.Left = StartRenderX
-        GameplayDrawAreaRect.Bottom = GameplayDrawAreaRect.Top + Render_Main_Rect.Bottom
-        GameplayDrawAreaRect.Right = GameplayDrawAreaRect.Left + Render_Main_Rect.Right
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
     End If
