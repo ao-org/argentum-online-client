@@ -358,7 +358,7 @@ Public Sub PresentComposedTexture(ByVal x As Integer, ByVal y As Integer, ByRef 
     
     x = x - ComposedTextureWidth \ 2 + 16
     y = y - ComposedTextureHeight + 32
-
+    If Not OverlapRect(GameplayDrawAreaRect, x, y, ComposedTextureWidth, ComposedTextureHeight) Then Exit Sub
     With SpriteBatch
 
         Call .SetTexture(ComposedTexture)

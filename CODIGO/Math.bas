@@ -104,3 +104,12 @@ End Function
 Public Function PointIsInsideRect(ByVal x As Integer, ByVal y As Integer, ByRef Rect As Rect) As Boolean
     PointIsInsideRect = x >= Rect.Left And x <= Rect.Right And y >= Rect.Top And y <= Rect.Bottom
 End Function
+
+Public Function OverlapRect(ByRef TargetRect As RECT, ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Heigth As Integer)
+    OverlapRect = True
+    If PointIsInsideRect(x, y, TargetRect) Then Exit Function
+    If PointIsInsideRect(x + Width, y, TargetRect) Then Exit Function
+    If PointIsInsideRect(x, y + Heigth, TargetRect) Then Exit Function
+    If PointIsInsideRect(x + Width, y + Heigth, TargetRect) Then Exit Function
+    OverlapRect = TargetRect.Left >= x And TargetRect.Left <= (x + Width) And TargetRect.Top >= y And TargetRect.Bottom <= y + Width
+End Function
