@@ -67,6 +67,13 @@ Public Property Let state(ByVal new_state As e_game_state)
             GameplayDrawAreaRect.Bottom = ScreenInfo.Height
             GameplayDrawAreaRect.Right = ScreenInfo.Width
         End If
+    Else
+        GameplayDrawAreaRect.Top = 0
+        GameplayDrawAreaRect.Left = 0
+        Dim ScreenInfo As D3DDISPLAYMODE
+        Call get_game_resolution(ScreenInfo)
+        GameplayDrawAreaRect.Bottom = ScreenInfo.Height
+        GameplayDrawAreaRect.Right = ScreenInfo.Width
     End If
     cur_state = new_state
 End Property
