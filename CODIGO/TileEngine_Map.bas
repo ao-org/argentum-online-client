@@ -153,17 +153,16 @@ Function EsArbol(ByVal GrhIndex As Long) As Boolean
     
     On Error GoTo EsArbol_Err
     
-    EsArbol = GrhIndex = 304 Or GrhIndex = 305 Or GrhIndex = 641 Or GrhIndex = 643 Or GrhIndex = 644 Or GrhIndex = 647 Or GrhIndex = 735 Or GrhIndex = 1121 Or GrhIndex = 1126 Or GrhIndex = 2931 Or _
-              GrhIndex = 12309 Or GrhIndex = 12310 Or GrhIndex = 16833 Or GrhIndex = 16834 Or GrhIndex = 7020 Or GrhIndex = 11903 Or GrhIndex = 11904 Or _
-              GrhIndex = 11905 Or GrhIndex = 11906 Or GrhIndex = 12160 Or GrhIndex = 15698 Or GrhIndex = 14504 Or GrhIndex = 15697 Or _
+    EsArbol = GrhIndex = 643 Or GrhIndex = 644 Or GrhIndex = 647 Or GrhIndex = 735 Or GrhIndex = 1121 Or GrhIndex = 2931 Or _
+              GrhIndex = 11903 Or GrhIndex = 11904 Or GrhIndex = 11905 Or GrhIndex = 14775 Or GrhIndex = 11906 Or _
+              GrhIndex = 15698 Or GrhIndex = 14504 Or GrhIndex = 14505 Or GrhIndex = 15697 Or GrhIndex = 15510 Or _
               (GrhIndex >= 12581 And GrhIndex <= 12586) Or (GrhIndex >= 12164 And GrhIndex <= 12179) Or _
-              (GrhIndex >= 26075 And GrhIndex <= 26081) Or GrhIndex = 26192 Or (GrhIndex >= 32142 And GrhIndex <= 32162) Or (GrhIndex >= 32343 And GrhIndex <= 32352) Or _
-              (GrhIndex >= 55626 And GrhIndex <= 55640) Or GrhIndex = 55642 Or _
-              (GrhIndex >= 50985 And GrhIndex <= 50991) Or (GrhIndex >= 2547 And GrhIndex <= 2549) Or (GrhIndex >= 6597 And GrhIndex <= 6598) Or (GrhIndex >= 15108 And GrhIndex <= 15110) Or GrhIndex = 11904 Or GrhIndex = 11905 Or GrhIndex = 11906 Or GrhIndex = 12160 Or _
-              GrhIndex = 7220 Or GrhIndex = 50990 Or GrhIndex = 6597 Or GrhIndex = 6598 Or GrhIndex = 2548 Or GrhIndex = 2549 Or _
-              GrhIndex = 463 Or GrhIndex = 1880 Or GrhIndex = 1878 Or GrhIndex = 9513 Or GrhIndex = 9514 Or GrhIndex = 9515 Or GrhIndex = 9518 Or GrhIndex = 9519 Or GrhIndex = 9520 Or GrhIndex = 9529 Or _
-              GrhIndex = 55633 Or GrhIndex = 55627 Or GrhIndex = 15510 Or GrhIndex = 14775 Or GrhIndex = 14687
-              
+              (GrhIndex >= 32142 And GrhIndex <= 32152) Or GrhIndex = 32154 Or (GrhIndex >= 55626 And GrhIndex <= 55640) Or GrhIndex = 55642 Or _
+              (GrhIndex >= 50985 And GrhIndex <= 50991) Or (GrhIndex >= 2547 And GrhIndex <= 2549) Or (GrhIndex >= 6597 And GrhIndex <= 6598) Or (GrhIndex >= 15108 And GrhIndex <= 15110) Or _
+              GrhIndex = 12160 Or GrhIndex = 7220 Or GrhIndex = 462 Or GrhIndex = 463 Or _
+              GrhIndex >= 1877 And GrhIndex <= 1881 Or GrhIndex = 1890 Or GrhIndex = 1892 Or GrhIndex = 433 Or GrhIndex = 460 Or GrhIndex = 461 Or _
+              GrhIndex = 9513 Or GrhIndex = 9514 Or GrhIndex = 9515 Or GrhIndex = 9518 Or GrhIndex = 9519 Or GrhIndex = 9520 Or GrhIndex = 9529 Or _
+              GrhIndex = 14687
     
     Exit Function
 
