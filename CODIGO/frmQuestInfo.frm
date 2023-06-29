@@ -497,26 +497,24 @@ Public Sub ListView1_Click()
     On Error GoTo ListView1_Click_Err
     
     If ListView1.SelectedItem Is Nothing Then Exit Sub
-
+    Dim x As Long
+    Dim y As Long
     If ListView1.SelectedItem.SubItems(2) <> "" Then
         If ListView1.SelectedItem.SubItems(3) = 0 Then
             PlayerView.BackColor = RGB(11, 11, 11)
             Call DibujarNPC(PlayerView, NpcData(ListView1.SelectedItem.SubItems(2)).Head, NpcData(ListView1.SelectedItem.SubItems(2)).Body, 3)
 
             npclbl.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
-    
+        ElseIf ListView1.SelectedItem.SubItems(3) = 2 Then
+            x = (PlayerView.ScaleWidth - GrhData(HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex).pixelWidth) / 2
+            y = (PlayerView.ScaleHeight - GrhData(HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex).pixelHeight) / 2
+            Call Grh_Render_To_Hdc(PlayerView, HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex, x, y, False, RGB(11, 11, 11))
+            npclbl.Caption = HechizoData(ListView1.SelectedItem.SubItems(2)).nombre & " (" & ListView1.SelectedItem.SubItems(1) & ")"
         Else
-
-            Dim x As Long
-
-            Dim y As Long
-        
             x = (PlayerView.ScaleWidth - GrhData(ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex).pixelWidth) / 2
             y = (PlayerView.ScaleHeight - GrhData(ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex).pixelHeight) / 2
             Call Grh_Render_To_Hdc(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False, RGB(11, 11, 11))
-        
             npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
-    
         End If
 
     End If
@@ -536,13 +534,17 @@ Public Sub ListView2_Click()
 
     If ListView2.SelectedItem Is Nothing Then Exit Sub
 
-    If ListView2.SelectedItem.SubItems(2) <> "" Then
- 
+    If ListView2.SelectedItem.SubItems(3) = 2 Then
+        Call Grh_Render_To_Hdc(picture1, HechizoData(ListView2.SelectedItem.SubItems(2)).IconoIndex, 0, 0, False, RGB(19, 14, 11))
+    ElseIf ListView2.SelectedItem.SubItems(2) <> "" Then
         Call Grh_Render_To_Hdc(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(19, 14, 11))
-    
     End If
     
-    objetolbl.Caption = ObjData(ListView2.SelectedItem.SubItems(2)).Name & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
+    If ListView2.SelectedItem.SubItems(3) = 2 Then
+        objetolbl.Caption = HechizoData(ListView2.SelectedItem.SubItems(2)).nombre & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
+    Else
+        objetolbl.Caption = ObjData(ListView2.SelectedItem.SubItems(2)).Name & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
+    End If
 
     
     Exit Sub
@@ -612,16 +614,19 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
             Next i
         End If
         If LBound(QuestList(QuestIndex).RequiredOBJ) > 0 Then  'Hay OBJs
-    
             For i = 1 To UBound(QuestList(QuestIndex).RequiredOBJ)
                 Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).OBJIndex).Name)
                 subelemento.SubItems(1) = QuestList(QuestIndex).RequiredOBJ(i).Amount
                 subelemento.SubItems(2) = QuestList(QuestIndex).RequiredOBJ(i).OBJIndex
                 subelemento.SubItems(3) = 1
             Next i
-    
         End If
-    
+        For i = 1 To UBound(QuestList(QuestIndex).RequiredSpellList)
+            Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , HechizoData(QuestList(QuestIndex).RequiredSpellList(i)).nombre)
+            subelemento.SubItems(1) = 1
+            subelemento.SubItems(2) = QuestList(QuestIndex).RequiredSpellList(i)
+            subelemento.SubItems(3) = 2
+        Next i
         
         If QuestList(QuestIndex).RewardGLD <> 0 Then
              Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
@@ -650,8 +655,8 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
         For i = 1 To QuestList(QuestIndex).RewardSkillCount
             Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , HechizoData(QuestList(QuestIndex).RewardSkill(i)).nombre)
             subelemento.SubItems(1) = 1
-            subelemento.SubItems(2) = ""
-            subelemento.SubItems(3) = 1
+            subelemento.SubItems(2) = QuestList(QuestIndex).RewardSkill(i)
+            subelemento.SubItems(3) = 2
         Next i
                 
         Call ListView1_Click
@@ -694,68 +699,54 @@ FrmQuestInfo.ListView1.ListItems.Clear
                
                     End If
                     
-                    
                     For i = 1 To UBound(QuestList(QuestIndex).RequiredNPC)
-                                                
-
                             Dim subelemento As ListItem
-    
                             Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(i).NpcIndex).Name)
-                           
                             subelemento.SubItems(1) = QuestList(QuestIndex).RequiredNPC(i).Amount
                             subelemento.SubItems(2) = QuestList(QuestIndex).RequiredNPC(i).NpcIndex
                             subelemento.SubItems(3) = 0
-
-    
                     Next i
-    
                 End If
-                    
     
                 If LBound(QuestList(QuestIndex).RequiredOBJ) > 0 Then  'Hay OBJs
-    
                     For i = 1 To UBound(QuestList(QuestIndex).RequiredOBJ)
                         Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).OBJIndex).Name)
                         subelemento.SubItems(1) = QuestList(QuestIndex).RequiredOBJ(i).Amount
                         subelemento.SubItems(2) = QuestList(QuestIndex).RequiredOBJ(i).OBJIndex
                         subelemento.SubItems(3) = 1
                     Next i
-    
                 End If
-        
+                For i = 1 To UBound(QuestList(QuestIndex).RequiredSpellList) 'hay spells
+                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).ObjIndex).Name)
+                    subelemento.SubItems(1) = 1
+                    subelemento.SubItems(2) = QuestList(QuestIndex).RequiredSpellList(i)
+                    subelemento.SubItems(3) = 2
+                Next i
                
                 Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
-                           
                 subelemento.SubItems(1) = QuestList(QuestIndex).RewardGLD
                 subelemento.SubItems(2) = 12
                 subelemento.SubItems(3) = 0
                
                 Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
-                           
                 subelemento.SubItems(1) = QuestList(QuestIndex).RewardEXP
                 subelemento.SubItems(2) = 608
                 subelemento.SubItems(3) = 1
-               
 
                 If UBound(QuestList(QuestIndex).RewardOBJ) > 0 Then
-                
-                    
                     For i = 1 To UBound(QuestList(QuestIndex).RewardOBJ)
-
-                                                                   
                         Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(QuestList(QuestIndex).RewardOBJ(i).OBJIndex).Name)
-                           
                         subelemento.SubItems(1) = QuestList(QuestIndex).RewardOBJ(i).Amount
                         subelemento.SubItems(2) = QuestList(QuestIndex).RewardOBJ(i).OBJIndex
                         subelemento.SubItems(3) = 1
-                               
-               
                     Next i
-    
                 End If
-
-
-    
+                For i = 1 To QuestList(QuestIndex).RewardSkillCount
+                    Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , HechizoData(QuestList(QuestIndex).RewardSkill(i)).nombre)
+                    subelemento.SubItems(1) = 1
+                    subelemento.SubItems(2) = ""
+                    subelemento.SubItems(3) = 2
+                Next i
     Exit Sub
 
 lstQuests_Click_Err:

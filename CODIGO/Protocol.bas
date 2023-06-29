@@ -8245,22 +8245,24 @@ Public Sub HandleNpcQuestListSend()
             End If
                
             tmpByte = Reader.ReadInt8
-    
             If tmpByte Then 'Hay OBJs
                 ReDim QuestList(QuestIndex).RequiredOBJ(1 To tmpByte)
-    
                 For i = 1 To tmpByte
-                   
                     QuestList(QuestIndex).RequiredOBJ(i).Amount = Reader.ReadInt16
                     QuestList(QuestIndex).RequiredOBJ(i).ObjIndex = Reader.ReadInt16
-
                 Next i
-
             Else
                 ReDim QuestList(QuestIndex).RequiredOBJ(0)
-    
             End If
-               
+            tmpByte = Reader.ReadInt8 ' required spells
+            If tmpByte Then
+                ReDim QuestList(QuestIndex).RequiredSpellList(1 To tmpByte)
+                For i = 1 To tmpByte
+                    QuestList(QuestIndex).RequiredSpellList(i) = Reader.ReadInt16
+                Next i
+            Else
+                ReDim QuestList(QuestIndex).RequiredSpellList(0)
+            End If
             QuestList(QuestIndex).RewardGLD = Reader.ReadInt32
             QuestList(QuestIndex).RewardEXP = Reader.ReadInt32
 
@@ -8858,19 +8860,22 @@ Public Sub HandleObjQuestListSend()
 
     If tmpByte Then 'Hay OBJs
         ReDim QuestList(QuestIndex).RequiredOBJ(1 To tmpByte)
-
         For i = 1 To tmpByte
-
             QuestList(QuestIndex).RequiredOBJ(i).Amount = Reader.ReadInt16
             QuestList(QuestIndex).RequiredOBJ(i).OBJIndex = Reader.ReadInt16
-
         Next i
-
     Else
         ReDim QuestList(QuestIndex).RequiredOBJ(0)
-
     End If
-
+    tmpByte = Reader.ReadInt8 ' required spells
+    If tmpByte Then
+        ReDim QuestList(QuestIndex).RequiredSpellList(1 To tmpByte)
+        For i = 1 To tmpByte
+            QuestList(QuestIndex).RequiredSpellList(i) = Reader.ReadInt16
+        Next i
+    Else
+        ReDim QuestList(QuestIndex).RequiredSpellList(0)
+    End If
     QuestList(QuestIndex).RewardGLD = Reader.ReadInt32
     QuestList(QuestIndex).RewardEXP = Reader.ReadInt32
 
