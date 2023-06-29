@@ -2190,6 +2190,7 @@ Sub CargarCuerpos()
             .HeadOffset.y = Val(Loader.GetValue(BodyKey, "HeadOffsetY")) + .BodyOffset.y
             .BodyIndex = i
             .IdleBody = Val(Loader.GetValue(BodyKey, "IdleBody"))
+            .AnimateOnIdle = Val(Loader.GetValue(BodyKey, "AnimateOnIdle"))
         End With
 
         If Std = 0 Then
