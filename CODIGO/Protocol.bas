@@ -1585,12 +1585,15 @@ Private Sub HandleCommerceInit()
 
     'Fill our inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
-
-        With frmMain.Inventario
-            Call frmComerciar.InvComUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
-
-        End With
-
+        If BabelInitialized Then
+            With UserInventory.Slots(i)
+                Call frmComerciar.InvComUsu.SetItem(i, .ObjIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+            End With
+        Else
+            With frmMain.Inventario
+                Call frmComerciar.InvComUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+            End With
+        End If
     Next i
 
     'Set state and show form
@@ -1623,14 +1626,17 @@ Private Sub HandleBankInit()
 
     'Fill our inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
-
-        With frmMain.Inventario
-            Call frmBancoObj.InvBankUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
-
-        End With
-
+        If BabelInitialized Then
+            With UserInventory.Slots(i)
+                Call frmBancoObj.InvBankUsu.SetItem(i, .ObjIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+            End With
+            
+        Else
+            With frmMain.Inventario
+                Call frmBancoObj.InvBankUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+            End With
+        End If
     Next i
-
     'Set state and show form
     Comerciando = True
 
@@ -1727,14 +1733,18 @@ Private Sub HandleUserCommerceInit()
     'Clears lists if necessary
     
     'Fill inventory list
-    With frmMain.Inventario
-
-        For i = 1 To MAX_INVENTORY_SLOTS
-            frmComerciarUsu.InvUser.SetItem i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), 0, 0, 0, 0, .ItemName(i), 0
-        Next i
-
-    End With
-        
+    For i = 1 To MAX_INVENTORY_SLOTS
+        If BabelInitialized Then
+            With UserInventory.Slots(i)
+                Call frmComerciarUsu.InvUser.SetItem(i, .ObjIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+            End With
+            
+        Else
+            With frmMain.Inventario
+                Call frmComerciarUsu.InvUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+            End With
+        End If
+    Next i
     frmComerciarUsu.lblMyGold.Caption = PonerPuntos(UserStats.GLD)
     
     Dim j As Byte
@@ -8563,13 +8573,18 @@ Private Sub HandleOpenCrafting()
     frmCrafteo.TipoGrhIndex = TipoCrafteo(TIPO).Icono
     
     Dim i As Long
-    'Fill our inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
-        With frmMain.Inventario
-            Call frmCrafteo.InvCraftUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
-        End With
+        If BabelInitialized Then
+            With UserInventory.Slots(i)
+                Call frmCrafteo.InvCraftUser.SetItem(i, .ObjIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+            End With
+            
+        Else
+            With frmMain.Inventario
+                Call frmCrafteo.InvCraftUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+            End With
+        End If
     Next i
-    
     For i = 1 To MAX_SLOTS_CRAFTEO
         Call frmCrafteo.InvCraftItems.ClearSlot(i)
     Next i

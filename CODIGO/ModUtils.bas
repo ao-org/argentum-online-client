@@ -488,6 +488,7 @@ Public lRegion             As Long
 Public Render_Connect_Rect As RECT
 Public Render_Main_Rect    As RECT
 Public GameplayDrawAreaRect As RECT
+Public RenderCullingRect As RECT
 
 Public Const StartRenderX = 10
 Public Const StartRenderY = 152
