@@ -168,6 +168,7 @@ Public Type BodyData
     BodyOffset As Position
     BodyIndex As Integer
     IdleBody As Integer
+    AnimateOnIdle As Integer
 End Type
 
 'Lista de cabezas

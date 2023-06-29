@@ -1695,6 +1695,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 .AnimatingBody = 0
                 If .iBody Then
                     .Body = BodyData(.iBody)
+                    .Body.Walk(.Heading).started = FrameTime
                 Else
                     .Body = BodyData(0)
                 End If
@@ -1722,7 +1723,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Else
                 'Stop animations
                 If .Navegando = False Or UserNadandoTrajeCaucho = True Then
-                    .Body.Walk(.Heading).started = 0
+                    If .Body.AnimateOnIdle = 0 Then
+                        .Body.Walk(.Heading).started = 0
+                    ElseIf .Body.Walk(.Heading).started = 0 Then
+                        .Body.Walk(.Heading).started = FrameTime
+                    End If
                     If Not .MovArmaEscudo Then
                         .Arma.WeaponWalk(.Heading).started = 0
                         .Escudo.ShieldWalk(.Heading).started = 0

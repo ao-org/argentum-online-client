@@ -4788,11 +4788,18 @@ Private Sub HandleCharAtaca()
     AnimAttack = Reader.ReadInt16()
     
     Dim grh As grh
-            
-    If AnimAttack > 0 Then
-        charlist(NpcIndex).Body = BodyData(AnimAttack)
-        charlist(NpcIndex).Body.Walk(charlist(NpcIndex).Heading).started = FrameTime
-    End If
+    With charlist(NpcIndex)
+        If AnimAttack > 0 Then
+            .Body = BodyData(AnimAttack)
+            .Body.Walk(.Heading).started = FrameTime
+        Else
+            If Not .Moving Then
+                .MovArmaEscudo = True
+                .Arma.WeaponWalk(.Heading).started = FrameTime
+                .Arma.WeaponWalk(.Heading).Loops = 0
+            End If
+        End If
+    End With
     
     'renderizo sangre si está sin montar ni navegar
     If danio > 0 And charlist(VictimIndex).Navegando = 0 Then Call SetCharacterFx(VictimIndex, 14, 0)
