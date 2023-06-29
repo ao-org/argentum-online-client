@@ -5441,7 +5441,7 @@ Private Sub HandleBlacksmithArmors()
         End If
         
         ' Escudos (16), Objetos Magicos (21) y Anillos (35) van en la misma lista
-        If tmpObj.ObjType = 16 Or tmpObj.ObjType = 35 Or tmpObj.ObjType = 21 Or tmpObj.ObjType = 100 Then
+        If tmpObj.ObjType = 16 Or tmpObj.ObjType = 35 Or tmpObj.ObjType = 21 Or tmpObj.ObjType = 100 Or tmpObj.ObjType = 30 Then
             EscudosHerrero(e).Index = DefensasHerrero(i).Index
             EscudosHerrero(e).LHierro = DefensasHerrero(i).LHierro
             EscudosHerrero(e).LPlata = DefensasHerrero(i).LPlata
