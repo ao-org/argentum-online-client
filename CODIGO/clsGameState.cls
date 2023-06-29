@@ -74,6 +74,7 @@ Public Property Let state(ByVal new_state As e_game_state)
         GameplayDrawAreaRect.Bottom = ScreenInfo.Height
         GameplayDrawAreaRect.Right = ScreenInfo.Width
     End If
+    RenderCullingRect = GameplayDrawAreaRect
     cur_state = new_state
 End Property
 

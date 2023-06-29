@@ -489,7 +489,7 @@ Public Sub Draw_GrhIndex(ByVal grh_index As Long, ByVal x As Integer, ByVal y As
     
 
     If grh_index <= 0 Then Exit Sub
-    If Not OverlapRect(GameplayDrawAreaRect, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
+    If Not OverlapRect(RenderCullingRect, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
     Call Batch_Textured_Box(x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, COLOR_WHITE)
 
     
@@ -507,7 +507,7 @@ Public Sub Draw_GrhColor(ByVal grh_index As Long, ByVal x As Integer, ByVal y As
     
 
     If grh_index <= 0 Then Exit Sub
-    If Not OverlapRect(GameplayDrawAreaRect, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
+    If Not OverlapRect(RenderCullingRect, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
     Call Batch_Textured_Box(x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, text_color)
     Exit Sub
 
@@ -523,7 +523,7 @@ Public Sub Draw_GrhFont(ByVal grh_index As Long, ByVal x As Integer, ByVal y As 
     
 
     If grh_index <= 0 Then Exit Sub
-    If Not OverlapRect(GameplayDrawAreaRect, x, y, GrhData(grh_index).pixelWidth + 1, GrhData(grh_index).pixelHeight + 1) Then Exit Sub
+    If Not OverlapRect(RenderCullingRect, x, y, GrhData(grh_index).pixelWidth + 1, GrhData(grh_index).pixelHeight + 1) Then Exit Sub
     Call Batch_Textured_Box_Advance(x, y, GrhData(grh_index).pixelWidth + 1, GrhData(grh_index).pixelHeight + 1, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, GrhData(grh_index).pixelWidth + 1, GrhData(grh_index).pixelHeight + 1, text_color)
 
     
@@ -541,7 +541,7 @@ Public Sub Draw_GrhIndexColor(ByVal grh_index As Long, ByVal x As Integer, ByVal
     
 
     If grh_index <= 0 Then Exit Sub
-    If Not OverlapRect(GameplayDrawAreaRect, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
+    If Not OverlapRect(RenderCullingRect, x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
     Call Batch_Textured_Box(x, y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, COLOR_WHITE, True)
 
     
@@ -594,7 +594,7 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
     End If
     
     With GrhData(CurrentGrhIndex)
-        If Not OverlapRect(GameplayDrawAreaRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
+        If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
         If .Tx2 = 0 And .FileNum > 0 Then
             Dim Texture As Direct3DTexture8
 
@@ -622,7 +622,7 @@ End Sub
 Public Sub DrawSingleGrh(ByVal GrhIndex As Long, screenPos As Vector2, Alpha As Single, angle As Single, ByRef rgb_list() As RGBA)
 On Error GoTo DrawSingleGrh_Err
     With GrhData(GrhIndex)
-        If Not OverlapRect(GameplayDrawAreaRect, screenPos.x, screenPos.y, .pixelWidth, .pixelHeight) Then Exit Sub
+        If Not OverlapRect(RenderCullingRect, screenPos.x, screenPos.y, .pixelWidth, .pixelHeight) Then Exit Sub
         If .Tx2 = 0 And .FileNum > 0 Then
             Dim Texture As Direct3DTexture8
 
@@ -686,7 +686,7 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
     End If
 
     With GrhData(CurrentGrhIndex)
-        If Not OverlapRect(GameplayDrawAreaRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
+        If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
         Dim Texture As Direct3DTexture8
 
         Dim TextureWidth As Long, TextureHeight As Long
@@ -829,7 +829,7 @@ Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal c
     End If
 
     With GrhData(CurrentGrhIndex)
-        If Not OverlapRect(GameplayDrawAreaRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
+        If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
         Dim Texture As Direct3DTexture8
 
         Dim TextureWidth As Long, TextureHeight As Long
@@ -904,7 +904,7 @@ Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Inte
         End If
 
     End If
-    If Not OverlapRect(GameplayDrawAreaRect, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight) Then Exit Sub
+    If Not OverlapRect(RenderCullingRect, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight) Then Exit Sub
     Static light_value(3) As RGBA
 
     light_value(0) = global_light
@@ -2537,7 +2537,7 @@ Public Sub DrawInterfaceComerciar()
     InvRect.Top = 0
     InvRect.Right = frmComerciar.interface.ScaleWidth
     InvRect.Bottom = frmComerciar.interface.ScaleHeight
-
+    RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
 
@@ -2615,7 +2615,7 @@ Public Sub DrawInterfaceComerciar()
 
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, frmComerciar.interface.hwnd)
-
+    RenderCullingRect = GameplayDrawAreaRect
     
     Exit Sub
 
@@ -2639,7 +2639,7 @@ Public Sub DrawInterfaceBovedaCuenta()
     InvRect.Top = 0
     InvRect.Right = frmBancoCuenta.interface.ScaleWidth
     InvRect.Bottom = frmBancoCuenta.interface.ScaleHeight
-
+    RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
 
@@ -2708,8 +2708,7 @@ Public Sub DrawInterfaceBovedaCuenta()
 
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hwnd)
-    Call Engine_EndScene(InvRect, frmBancoCuenta.interface.hwnd)
-
+    RenderCullingRect = GameplayDrawAreaRect
     
     Exit Sub
 
@@ -2733,7 +2732,7 @@ Public Sub DrawInterfaceBoveda()
     InvRect.Top = 0
     InvRect.Right = frmBancoObj.interface.ScaleWidth
     InvRect.Bottom = frmBancoObj.interface.ScaleHeight
-
+    RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
 
@@ -2802,7 +2801,7 @@ Public Sub DrawInterfaceBoveda()
 
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, frmBancoObj.interface.hwnd)
-
+    RenderCullingRect = GameplayDrawAreaRect
     
     Exit Sub
 
@@ -2826,7 +2825,7 @@ Public Sub DrawInterfaceKeys()
     InvRect.Top = 0
     InvRect.Right = FrmKeyInv.interface.ScaleWidth
     InvRect.Bottom = FrmKeyInv.interface.ScaleHeight
-
+    RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
 
@@ -2838,7 +2837,7 @@ Public Sub DrawInterfaceKeys()
 
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, FrmKeyInv.interface.hwnd)
-
+    RenderCullingRect = GameplayDrawAreaRect
     
     Exit Sub
 
@@ -2862,7 +2861,7 @@ Public Sub DrawInventoryComercio()
     InvRect.Top = 0
     InvRect.Right = frmComerciarUsu.picInv.ScaleWidth
     InvRect.Bottom = frmComerciarUsu.picInv.ScaleHeight
-
+    RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
     
@@ -2872,7 +2871,7 @@ Public Sub DrawInventoryComercio()
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, frmComerciarUsu.picInv.hwnd)
 
-    
+    RenderCullingRect = GameplayDrawAreaRect
     Exit Sub
 
 DrawInventorysComercio_Err:
@@ -2895,7 +2894,7 @@ Public Sub DrawInventoryUserComercio()
     InvRect.Top = 0
     InvRect.Right = frmComerciarUsu.picInvUserSell.ScaleWidth
     InvRect.Bottom = frmComerciarUsu.picInvUserSell.ScaleHeight
-
+    RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
     
@@ -2905,7 +2904,7 @@ Public Sub DrawInventoryUserComercio()
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, frmComerciarUsu.picInvUserSell.hwnd)
 
-    
+    RenderCullingRect = GameplayDrawAreaRect
     Exit Sub
 
 DrawInventoryUserComercio_Err:
@@ -2928,16 +2927,14 @@ Public Sub DrawInventoryOtherComercio()
     InvRect.Top = 0
     InvRect.Right = frmComerciarUsu.picInvOtherSell.ScaleWidth
     InvRect.Bottom = frmComerciarUsu.picInvOtherSell.ScaleHeight
-
+    RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
-    
     ' Dibujamos llaves
     Call frmComerciarUsu.InvOtherSell.DrawInventory
-    
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, frmComerciarUsu.picInvOtherSell.hwnd)
-
+    RenderCullingRect = GameplayDrawAreaRect
     
     Exit Sub
 
@@ -2959,7 +2956,7 @@ Public Sub DrawInterfaceCrafting()
     InvRect.Top = 0
     InvRect.Right = frmCrafteo.PicInven.ScaleWidth
     InvRect.Bottom = frmCrafteo.PicInven.ScaleHeight
-
+    RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
 
@@ -2990,7 +2987,7 @@ Public Sub DrawInterfaceCrafting()
 
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, frmCrafteo.PicInven.hwnd)
-
+    RenderCullingRect = GameplayDrawAreaRect
     Exit Sub
 
 DrawInterfaceBoveda_Err:
@@ -3046,7 +3043,7 @@ Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal
         screen_y = screen_y - Int(GrhData(grh_index).TileHeight * 32) + 32
 
     End If
-    If Not OverlapRect(GameplayDrawAreaRect, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
+    If Not OverlapRect(RenderCullingRect, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
     'Draw it to device
     'Device_Box_Textured_Render_Advance grh_index, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list, GrhData(grh_index).sX, GrhData(grh_index).sY, Width, Height, alpha_blend, grh.angle
     Call Batch_Textured_Box_Advance(screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, Width, Height, rgb_list, alpha_blend, grh.Angle)
@@ -3108,7 +3105,7 @@ Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_
         screen_y = screen_y - Int(GrhData(grh_index).TileHeight * 32) + 32
 
     End If
-    If Not OverlapRect(GameplayDrawAreaRect, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
+    If Not OverlapRect(RenderCullingRect, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
     'Draw it to device
     'Device_Box_Textured_Render grh_index, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list(), GrhData(grh_index).sX, GrhData(grh_index).sY, alpha_blend, grh.angle
     Call Batch_Textured_Box(screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, rgb_list, alpha_blend, grh.Angle)
@@ -4582,7 +4579,7 @@ Public Sub Draw_Grh_ItemInWater(ByRef grh As grh, ByVal x As Integer, ByVal y As
     End If
 
     With GrhData(CurrentGrhIndex)
-        If Not OverlapRect(GameplayDrawAreaRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
+        If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
         If .FileNum > 0 Then
             Dim Texture As Direct3DTexture8
 
@@ -4625,7 +4622,7 @@ Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, By
     
     On Error GoTo Draw_Grh_Precalculated_Err
 
-    If Not OverlapRect(GameplayDrawAreaRect, Grh.x - MinX * TilePixelWidth, Grh.y - TilePixelHeight * MinY + gameplay_render_offset.y, TilePixelWidth, TilePixelHeight) Then Exit Sub
+    If Not OverlapRect(RenderCullingRect, Grh.x - MinX * TilePixelWidth, Grh.y - TilePixelHeight * MinY + gameplay_render_offset.y, TilePixelWidth, TilePixelHeight) Then Exit Sub
 
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
@@ -4704,7 +4701,7 @@ Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width A
     
     On Error GoTo Engine_Draw_Box_Err
     
-    If Not OverlapRect(GameplayDrawAreaRect, x, y, Width, Height) Then Exit Sub
+    If Not OverlapRect(RenderCullingRect, x, y, Width, Height) Then Exit Sub
     Call RGBAList(temp_rgb, Color.r, Color.G, Color.B, Color.A)
 
     Call SpriteBatch.SetTexture(Nothing)
@@ -4746,7 +4743,7 @@ End Sub
 Public Sub Engine_Draw_Box_Border(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, Color As RGBA, ColorLine As RGBA)
     
     On Error GoTo Engine_Draw_Box_Border_Err
-    If Not OverlapRect(GameplayDrawAreaRect, x, y, Width, Height) Then Exit Sub
+    If Not OverlapRect(RenderCullingRect, x, y, Width, Height) Then Exit Sub
 
     Call Engine_Draw_Box(x, y, Width, Height, Color)
 

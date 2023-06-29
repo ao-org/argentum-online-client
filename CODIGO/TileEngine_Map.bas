@@ -326,7 +326,7 @@ Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
     If GrhData(grh.GrhIndex).TileHeight <> 1 Then
         y = y - Int(GrhData(CurrentGrhIndex).TileHeight * 32) + 32
     End If
-    If Not OverlapRect(GameplayDrawAreaRect, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight) Then Exit Sub
+    If Not OverlapRect(RenderCullingRect, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight) Then Exit Sub
     Call Batch_Textured_Box_Shadow(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, MapData(map_x, map_y).light_value)
     
     Exit Sub
