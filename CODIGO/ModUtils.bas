@@ -133,6 +133,7 @@ Public Type tQuest
     
     RequiredNPCs As Byte
     RequiredNPC() As tQuestNpc
+    RequiredSpellList() As Integer
     
     RewardGLD As Long
     RewardEXP As Long
