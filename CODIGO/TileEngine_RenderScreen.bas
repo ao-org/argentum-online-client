@@ -928,7 +928,7 @@ Private Sub RenderScreen_NombreMapa()
         
         Call Grh_Render(letter_grh, 250 + gameplay_render_offset.x, 300 + gameplay_render_offset.y, color())
         
-        Call Engine_Text_RenderGrande(letter_text, 360 - Engine_Text_Width(letter_text, False, 4) / 2 - gameplay_render_offset.x, 1 + gameplay_render_offset.y, color(), 5, False, , CInt(map_letter_a))
+        Call Engine_Text_RenderGrande(letter_text, 360 - Engine_Text_Width(letter_text, False, 4) / 2 + gameplay_render_offset.x, 1 + gameplay_render_offset.y, color(), 5, False, , CInt(map_letter_a))
 
     End If
 

@@ -35,9 +35,8 @@ Sub SwitchMap(ByVal map As Integer)
         End If
     Else
         Call DibujarMiniMapa
-        Call NameMapa(map)
     End If
-    
+    Call NameMapa(map)
     map_letter_a = 0
     CurMap = map
     If Musica Then
