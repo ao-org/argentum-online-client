@@ -4632,10 +4632,6 @@ Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVa
     personaje(Jugador).Top = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
 End Sub
 
-Public Sub GetMinimapPosition(ByRef x As Single, ByRef y As Single)
-    x = x * (100 - 2 * HalfWindowTileWidth - 4) / 100 + HalfWindowTileWidth + 2
-    y = y * (100 - 2 * HalfWindowTileHeight - 4) / 100 + HalfWindowTileHeight + 2
-End Sub
 
 Private Sub imgDeleteItem_Click()
     If Not frmMain.Inventario.IsItemSelected Then

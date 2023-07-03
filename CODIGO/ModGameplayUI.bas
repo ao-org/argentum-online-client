@@ -656,7 +656,7 @@ Public Sub SelectInvenrotyTab()
     LastMacroButton = tMacroButton.Inventario
     If Seguido = 1 Then
         If BabelInitialized Then
-            Call WriteNotifyInventarioHechizos(1, SelectedSpellSlot, 0)
+            Call WriteNotifyInventarioHechizos(1, SelectedSpellSlot, FirstSpellInListToRender)
         Else
             Call WriteNotifyInventarioHechizos(1, hlst.ListIndex, hlst.Scroll)
         End If
@@ -673,9 +673,14 @@ Public Sub SelectSpellTab()
     LastMacroButton = tMacroButton.Hechizos
     If Seguido = 1 Then
         If BabelInitialized Then
-            Call WriteNotifyInventarioHechizos(2, SelectedSpellSlot, 0)
+            Call WriteNotifyInventarioHechizos(2, SelectedSpellSlot, FirstSpellInListToRender)
         Else
             Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
         End If
     End If
+End Sub
+
+Public Sub GetMinimapPosition(ByRef x As Single, ByRef y As Single)
+    x = x * (100 - 2 * HalfWindowTileWidth - 4) / 100 + HalfWindowTileWidth + 2
+    y = y * (100 - 2 * HalfWindowTileHeight - 4) / 100 + HalfWindowTileHeight + 2
 End Sub

@@ -126,6 +126,8 @@ Public Type t_GamePlayCallbacks
     UseKey As Long
     MoveSpellSlot As Long
     RequestDeleteItem As Long
+    UpdateScrollPos As Long
+    TeleportToMiniMapPos As Long
 End Type
 
 Public Type t_SpellSlot
@@ -228,6 +230,11 @@ Public Declare Sub UpdateMagicResistance Lib "BabelUI.dll" (ByVal NewValue As Lo
 Public Declare Sub UpdateMagicAttack Lib "BabelUI.dll" (ByVal NewValue As Long)
 Public Declare Sub SetWhisperTarget Lib "BabelUI.dll" (ByVal UserName As String)
 Public Declare Sub PasteText Lib "BabelUI.dll" (ByVal Text As String)
+Public Declare Sub ReloadSettings Lib "BabelUI.dll" ()
+Public Declare Sub SetRemoteTrackingState Lib "BabelUI.dll" (ByVal State As Long)
+Public Declare Sub UpdateInvAndSpellTracking Lib "BabelUI.dll" (ByVal SelectedTab As Long, ByVal SelectedSpell As Long, ByVal FirstSpellToDisplay As Long)
+Public Declare Sub HandleRemoteUserClick Lib "BabelUI.dll" ()
+Public Declare Sub UpdateRemoteMousePos Lib "BabelUI.dll" (ByVal PosX As Long, ByVal PosY As Long)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -346,6 +353,8 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.UseKey = FARPROC(AddressOf UseKeyCB)
         GameplayCallbacks.MoveSpellSlot = FARPROC(AddressOf MoveSpellSlotCB)
         GameplayCallbacks.RequestDeleteItem = FARPROC(AddressOf RequestDeleteItemCB)
+        GameplayCallbacks.UpdateScrollPos = FARPROC(AddressOf UpdateSpellScrollPosCB)
+        GameplayCallbacks.TeleportToMiniMapPos = FARPROC(AddressOf TeleportToMiniMapPos)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -611,6 +620,9 @@ End Sub
 
 Public Sub HandleSelectSpellSlotCB(ByVal Slot As Long)
     SelectedSpellSlot = Slot
+    If Seguido = 1 Then
+        Call WriteNotifyInventarioHechizos(2, SelectedSpellSlot, FirstSpellInListToRender)
+    End If
 End Sub
 
 Public Sub HandleUseSpellSlotCB(ByVal Slot As Long)
@@ -753,6 +765,24 @@ End Sub
 Public Sub RequestDeleteItemCB(ByVal SelectedSlot As Long)
     Call WriteDeleteItem(SelectedSlot)
 End Sub
+
+Public Sub UpdateSpellScrollPosCB(ByVal FirestSpellInList As Long)
+    FirstSpellInListToRender = FirestSpellInList
+    If Seguido = 1 Then
+        Call WriteNotifyInventarioHechizos(2, SelectedSpellSlot, FirstSpellInListToRender)
+    End If
+End Sub
+
+Public Sub TeleportToMiniMapPos(ByVal PosX As Long, ByVal PosY As Long)
+    Dim x As Single
+    Dim y As Single
+    x = PosX
+    y = PosY
+    Call GetMinimapPosition(x, y)
+    Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(x) & " " & CByte(y))
+
+End Sub
+
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long
         '<EhHeader>
         On Error GoTo BabelEditWndProc_Err
