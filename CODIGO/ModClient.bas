@@ -50,27 +50,17 @@ Make_Transparent_Richtext_Err:
 End Sub
 
 Public Sub NameMapa(ByVal map As Long)
-    'Dim DarNombreMapa As String
-    
-    On Error GoTo NameMapa_Err
-    
-
-    'DarNombreMapa = DarNameMapa(Map)
-    frmMain.NameMapa.Caption = MapDat.map_name
-    
+On Error GoTo NameMapa_Err
+    If Not BabelInitialized Then
+        frmMain.NameMapa.Caption = MapDat.map_name
+    End If
     If QueRender = 0 Then
         Letter_Set 0, MapDat.map_name
     End If
-    
-    'Map_Letter_Fade_Set 1, 0
-
-    
     Exit Sub
-
 NameMapa_Err:
     Call RegistrarError(Err.number, Err.Description, "ModClient.NameMapa", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub PrintToConsole(Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean, Optional ByVal italic As Boolean, Optional ByVal bCrLf As Boolean, Optional ByVal FontTypeIndex As Byte = 0)
