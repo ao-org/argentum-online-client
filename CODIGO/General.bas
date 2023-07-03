@@ -162,6 +162,7 @@ Public Const PFM_LINESPACING = &H100&
 
 Public hlst As clsGraphicalList
 Public SelectedSpellSlot As Integer
+Public FirstSpellInListToRender As Integer
 
 Public Function DirGraficos() As String
     

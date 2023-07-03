@@ -4860,8 +4860,12 @@ Private Sub HandleRecievePosSeguimiento()
     PosX = Reader.ReadInt16()
     PosY = Reader.ReadInt16()
     
-    frmMain.shapexy.Left = posX - 6
-    frmMain.shapexy.Top = posY - 6
+    If BabelInitialized Then
+        Call UpdateRemoteMousePos(PosX, PosY)
+    Else
+        frmMain.shapexy.Left = PosX - 6
+        frmMain.shapexy.Top = PosY - 6
+    End If
     Exit Sub
     
 
@@ -4875,8 +4879,12 @@ Private Sub HandleCancelarSeguimiento()
     
     On Error GoTo CancelarSeguimiento_Err
     
-    frmMain.shapexy.Left = 1200
-    frmMain.shapexy.Top = 1200
+    If BabelInitialized Then
+        Call SetRemoteTrackingState(0)
+    Else
+        frmMain.shapexy.Left = 1200
+        frmMain.shapexy.Top = 1200
+    End If
     CharindexSeguido = 0
     OffsetLimitScreen = 32
     Exit Sub
@@ -4898,15 +4906,18 @@ Private Sub HandleGetInventarioHechizos()
     inventario_o_hechizos = Reader.ReadInt8()
     hechiSel = Reader.ReadInt8()
     scrollSel = Reader.ReadInt8()
-    'Clickeó en inventario
-    If inventario_o_hechizos = 1 Then
-        Call frmMain.inventoryClick
-    'Clickeó en hechizos
-    ElseIf inventario_o_hechizos = 2 Then
-        Call frmMain.hechizosClick
-        hlst.Scroll = scrollSel
-        hlst.ListIndex = hechiSel
-        
+    If BabelInitialized Then
+        Call UpdateInvAndSpellTracking(inventario_o_hechizos, hechiSel, scrollSel)
+    Else
+        'Clickeó en inventario
+        If inventario_o_hechizos = 1 Then
+            Call frmMain.inventoryClick
+        'Clickeó en hechizos
+        ElseIf inventario_o_hechizos = 2 Then
+            Call frmMain.hechizosClick
+            hlst.Scroll = scrollSel
+            hlst.ListIndex = hechiSel
+        End If
     End If
     Exit Sub
     
@@ -4924,12 +4935,16 @@ Private Sub HandleNotificarClienteCasteo()
     Dim value As Byte
     
     value = Reader.ReadInt8()
-    'Clickeó en inventario
-    If value = 1 Then
-        frmMain.shapexy.BackColor = RGB(0, 170, 0)
-    'Clickeó en hechizos
+    If BabelInitialized Then
+        Call HandleRemoteUserClick
     Else
-        frmMain.shapexy.BackColor = RGB(170, 0, 0)
+        'Clickeó en inventario
+        If Value = 1 Then
+            frmMain.shapexy.BackColor = RGB(0, 170, 0)
+        'Clickeó en hechizos
+        Else
+            frmMain.shapexy.BackColor = RGB(170, 0, 0)
+        End If
     End If
     Exit Sub
     
@@ -4950,6 +4965,9 @@ Private Sub HandleSendFollowingCharindex()
     UserCharIndex = charindex
     CharindexSeguido = charindex
     OffsetLimitScreen = 31
+    If BabelInitialized Then
+        Call SetRemoteTrackingState(1)
+    End If
     Exit Sub
     
 

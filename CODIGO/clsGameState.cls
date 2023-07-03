@@ -58,6 +58,7 @@ Public Property Let state(ByVal new_state As e_game_state)
             GameplayDrawAreaRect.Left = StartRenderX
             GameplayDrawAreaRect.Bottom = GameplayDrawAreaRect.Top + Render_Main_Rect.Bottom
             GameplayDrawAreaRect.Right = GameplayDrawAreaRect.Left + Render_Main_Rect.Right
+            Call ReloadSettings
         Else
             gameplay_render_offset.x = 0
             gameplay_render_offset.y = 0

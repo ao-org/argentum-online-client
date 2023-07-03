@@ -1382,6 +1382,7 @@ Private Sub cmdcerrar_Click()
     
     If BabelInitialized Then
         frmBabelUI.SetFocus
+        Call ReloadSettings
     Else
         frmMain.SetFocus
     End If

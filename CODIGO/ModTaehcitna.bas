@@ -126,24 +126,23 @@ Private Sub alterIndex(ByRef packetControl As t_packetControl)
 End Sub
 
 Public Sub efectoSangre()
-    
-
         
     If Seguido = 1 Then
+        Dim ActiveForm As Form
         Dim mouse As POINTAPI
         Dim MainLeft As Long
         Dim MainTop As Long
         Dim MainWidth As Long
         Dim MainHeight As Long
-        
-        MainWidth = frmMain.Width / 15
-        MainHeight = frmMain.Height / 15
+        Set ActiveForm = GetGameplayForm
+        MainWidth = ActiveForm.Width / 15
+        MainHeight = ActiveForm.Height / 15
         
         
         GetCursorPos mouse
         
-        MainLeft = frmMain.Left / 15
-        MainTop = frmMain.Top / 15
+        MainLeft = ActiveForm.Left / 15
+        MainTop = ActiveForm.Top / 15
         If mouse.x > MainLeft And mouse.y > MainTop And mouse.x < MainWidth + MainLeft And mouse.y < MainHeight + MainTop Then
             Cheat_X = mouse.x - MainLeft
             Cheat_Y = mouse.y - MainTop
