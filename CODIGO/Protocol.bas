@@ -8809,6 +8809,9 @@ Public Sub HandleSendSkillCdUpdate()
         Call AddOrUpdateEffect(DeBuffList, Effect)
     End If
     If Effect.EffectType = eCD Then
+        If Effect.id < 0 And BabelInitialized Then
+            Call StartSpellCd(-Effect.id, Effect.duration)
+        End If
         Call AddOrUpdateEffect(CDList, Effect)
     End If
 End Sub
