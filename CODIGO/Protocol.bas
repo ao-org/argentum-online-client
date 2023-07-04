@@ -4836,7 +4836,8 @@ Private Sub HandleNotificarClienteSeguido()
     On Error GoTo NotificarClienteSeguido_Err
     
     Seguido = Reader.ReadInt8
-    
+    LastSentPosX = -1
+    LastSentPosY = -1
     Exit Sub
     
 

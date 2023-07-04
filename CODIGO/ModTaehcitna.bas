@@ -22,6 +22,9 @@ Private Const MAX_COMPROBACIONES As Byte = 4
 Private Declare Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
 Private ContadorMacroClicks(1 To MAX_COMPROBACIONES) As Position
 
+Public LastSentPosX As Integer
+Public LastSentPosY As Integer
+
 Public Function ComprobarPosibleMacro(ByVal MouseX As Integer, ByVal MouseY As Integer) As Boolean
     Call CopyMemory(ContadorMacroClicks(2), ContadorMacroClicks(1), Len(ContadorMacroClicks(1)) * (MAX_COMPROBACIONES - 1))
     
@@ -146,8 +149,11 @@ Public Sub efectoSangre()
         If mouse.x > MainLeft And mouse.y > MainTop And mouse.x < MainWidth + MainLeft And mouse.y < MainHeight + MainTop Then
             Cheat_X = mouse.x - MainLeft
             Cheat_Y = mouse.y - MainTop
-            Call WriteSendPosSeguimiento(Cheat_X, Cheat_Y)
-            'Debug.Print "X: " & mouse.x - MainLeft & "|Y: " & mouse.y - MainTop & "|Main Pos X: " & MainLeft / 15 & "|Main Pos Y: " & MainTop / 15
+            If (LastSentPosX <> Cheat_X) Or LastSentPosY <> Cheat_Y Then
+                LastSentPosX = Cheat_X
+                LastSentPosY = Cheat_Y
+                Call WriteSendPosSeguimiento(Cheat_X, Cheat_Y)
+            End If
         End If
     End If
         
