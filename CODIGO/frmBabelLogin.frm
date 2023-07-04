@@ -137,7 +137,7 @@ On Error GoTo Form_KeyUp_Err
     End If
 #If DEBUGGING = 1 Or Developer = 1 Then
     If Not DebugInitialized Then
-        If Shift And KeyCode = 68 Then 'shift + d
+        If (Shift = (vbCtrlMask And vbShiftMask)) And KeyCode = 68 Then 'shift + d
             frmDebugUI.Show
         End If
     End If
