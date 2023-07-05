@@ -7804,19 +7804,21 @@ Private Sub HandleBindKeys()
 
     ChatCombate = Reader.ReadInt8()
     ChatGlobal = Reader.ReadInt8()
-
-    If ChatCombate = 1 Then
-        frmMain.CombateIcon.Picture = LoadInterface("infoapretado.bmp")
+    
+    If BabelInitialized Then
+        Call UpdateCombatAndGlobalChatSettings(ChatCombate, ChatGlobal)
     Else
-        frmMain.CombateIcon.Picture = LoadInterface("info.bmp")
-
-    End If
-
-    If ChatGlobal = 1 Then
-        frmMain.globalIcon.Picture = LoadInterface("globalapretado.bmp")
-    Else
-        frmMain.CombateIcon.Picture = LoadInterface("global.bmp")
-
+        If ChatCombate = 1 Then
+            frmMain.CombateIcon.Picture = LoadInterface("infoapretado.bmp")
+        Else
+            frmMain.CombateIcon.Picture = LoadInterface("info.bmp")
+        End If
+    
+        If ChatGlobal = 1 Then
+            frmMain.globalIcon.Picture = LoadInterface("globalapretado.bmp")
+        Else
+            frmMain.CombateIcon.Picture = LoadInterface("global.bmp")
+        End If
     End If
     
     Exit Sub
