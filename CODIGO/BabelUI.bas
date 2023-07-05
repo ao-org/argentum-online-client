@@ -128,6 +128,7 @@ Public Type t_GamePlayCallbacks
     RequestDeleteItem As Long
     UpdateScrollPos As Long
     TeleportToMiniMapPos As Long
+    UpdateCombatAndGlobalChat As Long
 End Type
 
 Public Type t_SpellSlot
@@ -236,6 +237,7 @@ Public Declare Sub UpdateInvAndSpellTracking Lib "BabelUI.dll" (ByVal SelectedTa
 Public Declare Sub HandleRemoteUserClick Lib "BabelUI.dll" ()
 Public Declare Sub UpdateRemoteMousePos Lib "BabelUI.dll" (ByVal PosX As Long, ByVal PosY As Long)
 Public Declare Sub StartSpellCd Lib "BabelUI.dll" (ByVal SpellId As Long, ByVal CdTime As Long)
+Public Declare Sub UpdateCombatAndGlobalChatSettings Lib "BabelUI.dll" (ByVal SpellId As Long, ByVal CdTime As Long)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -356,6 +358,7 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.RequestDeleteItem = FARPROC(AddressOf RequestDeleteItemCB)
         GameplayCallbacks.UpdateScrollPos = FARPROC(AddressOf UpdateSpellScrollPosCB)
         GameplayCallbacks.TeleportToMiniMapPos = FARPROC(AddressOf TeleportToMiniMapPos)
+        GameplayCallbacks.UpdateCombatAndGlobalChat = FARPROC(AddressOf UpdateCombatAndGlobalChatCB)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -782,6 +785,12 @@ Public Sub TeleportToMiniMapPos(ByVal PosX As Long, ByVal PosY As Long)
     Call GetMinimapPosition(x, y)
     Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(x) & " " & CByte(y))
 
+End Sub
+
+Public Sub UpdateCombatAndGlobalChatCB(ByVal CombatState As Long, ByVal GlobalState As Long)
+    ChatCombate = CombatState
+    ChatGlobal = GlobalState
+    Call WriteMacroPos
 End Sub
 
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long
