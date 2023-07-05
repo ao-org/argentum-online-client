@@ -1407,6 +1407,7 @@ Public Sub HandleDisconnect()
         frmMain.imgInvLock(i - 1).Picture = Nothing
     Next i
 
+    Dim EmptySlot As Slot
     For i = 1 To MAX_INVENTORY_SLOTS
         Call frmMain.Inventario.ClearSlot(i)
         Call frmBancoObj.InvBankUsu.ClearSlot(i)
@@ -1415,6 +1416,9 @@ Public Sub HandleDisconnect()
         Call frmBancoCuenta.InvBankUsuCuenta.ClearSlot(i)
         Call frmComerciarUsu.InvUser.ClearSlot(i)
         Call frmCrafteo.InvCraftUser.ClearSlot(i)
+        If BabelInitialized Then
+            UserInventory.Slots(i) = EmptySlot
+        End If
     Next i
 
     For i = 1 To MAX_BANCOINVENTORY_SLOTS
