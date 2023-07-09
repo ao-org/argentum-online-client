@@ -2319,7 +2319,7 @@ Public Sub Start()
 On Error GoTo Start_Err
     DoEvents
     Do While prgRun
-        If frmMain.WindowState <> vbMinimized Then
+        If GetGameplayForm().WindowState <> vbMinimized Then
             If UseBabelUI Then
                 Call UpdateUI
                 
@@ -2391,7 +2391,9 @@ On Error GoTo Start_Err
             Sound.Sound_Render
         Else
             Sleep 60&
-            Call frmMain.Inventario.ReDraw
+            If Not UseBabelUI Then
+                Call frmMain.Inventario.ReDraw
+            End If
         End If
 
         DoEvents
