@@ -3275,32 +3275,12 @@ Private Sub MenuOpciones_Click()
 End Sub
 
 Private Sub manabar_Click()
-    
-    On Error GoTo manabar_Click_Err
-    
-
-    If UserStats.minman = UserStats.maxman Then Exit Sub
-            
-    If UserStats.estado = 1 Then
-
-        With FontTypes(FontTypeNames.FONTTYPE_INFO)
-            Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
-
-        End With
-
-        Exit Sub
-
-    End If
-    
-    Call WriteMeditate
-
-    
+On Error GoTo manabar_Click_Err
+    Call RequestMeditate
     Exit Sub
-
 manabar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.manabar_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mapMundo_Click()

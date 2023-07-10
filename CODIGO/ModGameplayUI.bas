@@ -684,3 +684,14 @@ Public Sub GetMinimapPosition(ByRef x As Single, ByRef y As Single)
     x = x * (100 - 2 * HalfWindowTileWidth - 4) / 100 + HalfWindowTileWidth + 2
     y = y * (100 - 2 * HalfWindowTileHeight - 4) / 100 + HalfWindowTileHeight + 2
 End Sub
+
+Public Sub RequestMeditate()
+    If UserStats.minman = UserStats.maxman Then Exit Sub
+    If UserStats.estado = 1 Then
+        With FontTypes(FontTypeNames.FONTTYPE_INFO)
+            Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+        End With
+        Exit Sub
+    End If
+    Call WriteMeditate
+End Sub

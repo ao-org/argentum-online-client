@@ -169,6 +169,7 @@ Public Enum e_ActionRequest
     eOpenSettings = 22
     eDisplayInventory = 23
     eDisplaySpells = 24
+    eSetMeditate = 25
 End Enum
 
 Public Enum e_SafeType
@@ -749,6 +750,8 @@ Public Sub RequestActionCB(ByVal ActionId As Long)
         Call SelectInvenrotyTab
     Case e_ActionRequest.eDisplaySpells
         Call SelectSpellTab
+    Case e_ActionRequest.eSetMeditate
+        Call RequestMeditate
 End Select
 
 End Sub
