@@ -227,6 +227,10 @@ End Type
 
 Public mascota As tMascota
 
+Public Enum e_CharValue
+    eDontBlockTile = 1
+End Enum
+
 'Apariencia del personaje
 Public Type Char
     Navegando As Boolean
@@ -339,6 +343,7 @@ Public Type Char
     TranslationActive As Boolean
     TranslationStartTime As Long
     TranslationTime As Long
+    DontBlockTile As Boolean
 End Type
 
 'Info de un objeto
@@ -1133,7 +1138,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     If MapData(x, y).charindex > 0 Then
         With charlist(MapData(x, y).charindex)
 
-            If Not (.Muerto Or (.Invisible And .priv > charlist(UserCharIndex).priv)) Then
+            If Not (.Muerto Or (.Invisible And .priv > charlist(UserCharIndex).priv) Or .DontBlockTile) Then
                 Exit Function
             End If
 
