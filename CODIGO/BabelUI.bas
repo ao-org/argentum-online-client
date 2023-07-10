@@ -338,7 +338,7 @@ On Error GoTo InitializeUI_Err
 110     UITexture.TextureWidth = NextPowerOf2(Width)
 112     ReDim UITexture.ImageBuffer(UITexture.Height * UITexture.Width * pixelSize)
 114     UITexture.pixelSize = pixelSize
-116     Set UITexture.Texture = SurfaceDB.CreateTexture(UITexture.TextureWidth, UITexture.TextureHeight)
+116     Call InitializeTexture
 118     BabelInitialized = True
         Call RegisterCallbacks(AddressOf LoginCB, AddressOf CloseClientCB, AddressOf BabelUI.CreateAccount, AddressOf SetHostCB, AddressOf ValidateCodeCB, AddressOf ResendValidationCodeCB, AddressOf RequestPasswordResetCB, AddressOf RequestNewPasswordCB, AddressOf SelectCharacterPreviewCB, AddressOf LoginCharacterCB, AddressOf ReturnToLoginCB, AddressOf CreateCharacterCB, AddressOf RequestDeleteCharCB, AddressOf ConfirmDeleteCharCB, AddressOf TransferCharacterCB)
         Dim GameplayCallbacks As t_GamePlayCallbacks
@@ -367,6 +367,10 @@ On Error GoTo InitializeUI_Err
     Exit Sub
 InitializeUI_Err:
     Call RegistrarError(Err.Number, Err.Description, "BabelUI.InitializeUI", Erl)
+End Sub
+
+Public Sub InitializeTexture()
+    Set UITexture.Texture = SurfaceDB.CreateTexture(UITexture.TextureWidth, UITexture.TextureHeight)
 End Sub
 
 Public Sub InitializeInspectorUI(ByVal Width As Long, ByVal Height As Long)

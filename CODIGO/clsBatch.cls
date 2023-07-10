@@ -967,6 +967,11 @@ Flush_Err:
     
 End Sub
  
+Public Sub Release()
+    Set m_VBuffer = Nothing
+    Set m_IBuffer = Nothing
+End Sub
+
 Public Sub Initialize(ByVal Capacity As Long)
     
     On Error GoTo Initialize_Err
