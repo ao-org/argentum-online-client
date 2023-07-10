@@ -4790,6 +4790,6 @@ Public Sub UpdateBuff()
         frmMain.AgilidadLbl.ForeColor = vbWhite
     End If
 
-    frmMain.Fuerzalbl.Caption = UserStats.StrState
-    frmMain.AgilidadLbl.Caption = UserStats.AgiState
+    frmMain.Fuerzalbl.Caption = UserStats.str
+    frmMain.AgilidadLbl.Caption = UserStats.Agi
 End Sub

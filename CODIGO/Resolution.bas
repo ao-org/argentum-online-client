@@ -110,10 +110,10 @@ Public Sub SetResolution()
         End With
         
         lRes = ChangeDisplaySettings(MidevM, CDS_TEST)
-        
-        If frmMain.Visible Then frmMain.Top = 0: frmMain.Left = 0
+        Dim gameForm As Form
+        Set gameForm = GetGameplayForm
+        If gameForm.visible Then gameForm.Top = 0: gameForm.Left = 0
         If frmOpciones.Visible Then frmOpciones.Top = (Screen.Height - frmOpciones.Height) \ 2: frmOpciones.Left = (Screen.Width - frmOpciones.Width) \ 2
-        
         bResChange = True
     Else
         bResChange = False
@@ -156,12 +156,12 @@ Public Sub ResetResolution()
             .dmDisplayFrequency = oldFrequency
 
         End With
-        
         lRes = ChangeDisplaySettings(typDevM, CDS_TEST)
         
-        If frmMain.Visible Then frmMain.Top = (Screen.Height - frmMain.Height) \ 2: frmMain.Left = (Screen.Width - frmMain.Width) \ 2
+        Dim gameForm As Form
+        Set gameForm = GetGameplayForm
+        If gameForm.visible Then gameForm.Top = (screen.Height - gameForm.Height) \ 2: gameForm.Left = (screen.Width - gameForm.Width) \ 2
         If frmOpciones.Visible Then frmOpciones.Top = (Screen.Height - frmOpciones.Height) \ 2: frmOpciones.Left = (Screen.Width - frmOpciones.Width) \ 2
-
     End If
 
     

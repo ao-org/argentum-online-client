@@ -368,6 +368,17 @@ ErrHandler:
 
 End Sub
 
+Public Sub EngineReset()
+On Error GoTo Engine_Reset_Err
+    Call SpriteBatch.Release
+    Set SpriteBatch = Nothing
+    Call DirectDevice.Reset(D3DWindow)
+    Set SpriteBatch = New clsBatch
+    Call SpriteBatch.Initialize(2000)
+Engine_Reset_Err:
+    Debug.Print "Failed to reset error " + Err.Description
+End Sub
+
 Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
 
     Static SeRompe As Boolean
@@ -377,6 +388,9 @@ Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
 
     If DirectDevice.TestCooperativeLevel <> D3D_OK Then
         If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
+            If BabelInitialized Then
+                Set UITexture.Texture = Nothing
+            End If
             Call engine_init
             prgRun = True
             pausa = False
@@ -384,6 +398,12 @@ Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
             'FIX18
             lFrameTimer = 0
             FramesPerSecCounter = 0
+            If BabelInitialized Then
+                Call InitializeTexture
+            End If
+        ElseIf DirectDevice.TestCooperativeLevel = D3DERR_DEVICELOST Then
+            'Call EngineReset https://learn.microsoft.com/en-us/windows/win32/direct3d9/lost-devices
+            Debug.Print "Dx device lost, need to implement reset"
         End If
     End If
     If SeRompe Then
@@ -2214,7 +2234,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         End If
         
         'Barra de tiempo
-        If .BarTime < .MaxBarTime Then
+        If .BarTime < .MaxBarTime And Not .Invisible Then
             Call InitGrh(TempGrh, 839)
             Call RGBAList(Color, 255, 255, 255, 200)
 
