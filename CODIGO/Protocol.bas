@@ -265,6 +265,7 @@ Private Enum ServerPacketID
     UpdateTrap
     UpdateGroupInfo
     RequestTelemetry
+    UpdateCharValue 'updates some char index value based on enum
 #If PYMMO = 0 Then
     AccountCharacterList
 #End If
@@ -1013,6 +1014,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUpdateGroupInfo
         Case ServerPacketID.RequestTelemetry
             Call HandleRequestTelemetry
+        Case ServerPacketID.UpdateCharValue
+            Call HandleUpdateCharValue
         #If PYMMO = 0 Then
         Case ServerPacketID.AccountCharacterList
             Call HandleAccountCharacterList
@@ -3687,7 +3690,7 @@ Private Sub HandleCharacterCreate()
         .UserMaxMAN = Reader.ReadInt32()
         .simbolo = Reader.ReadInt8()
          Dim flags As Byte
-        
+        .DontBlockTile = False
         flags = Reader.ReadInt8()
         
                 
@@ -4522,6 +4525,23 @@ Private Sub HandleRequestTelemetry()
     Dim TelemetrySize As Long
     TelemetrySize = GetTelemetry(Buff(0), TelemetryBuff(0), 256)
     Call WriteSendTelemetry(TelemetryBuff, TelemetrySize)
+    Exit Sub
+HandleUpdateGroupInfo_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)
+End Sub
+
+Private Sub HandleUpdateCharValue()
+On Error GoTo HandleUpdateGroupInfo_Err
+    Dim CharIndex As Integer
+    Dim CharValueType As Integer
+    Dim Value As Long
+    CharIndex = Reader.ReadInt16
+    CharValueType = Reader.ReadInt16
+    Value = Reader.ReadInt32
+    Select Case CharValueType
+        Case e_CharValue.eDontBlockTile
+            charlist(CharIndex).DontBlockTile = Value
+    End Select
     Exit Sub
 HandleUpdateGroupInfo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)
