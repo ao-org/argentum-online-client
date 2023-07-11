@@ -352,7 +352,7 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         .Name = Name
         .ObjIndex = ObjIndex
         .ObjType = ObjType
-        .Valor = Valor
+        .Valor = Value
         .PuedeUsar = CanUse
     End With
     If BabelInitialized Then
@@ -369,6 +369,7 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         SlotInfo.Slot = Slot
         SlotInfo.ObjIndex = ObjIndex
         SlotInfo.ObjType = ObjType
+        SlotInfo.Value = Value
         SlotInfo.Cooldown = ObjData(OBJIndex).Cooldown
         SlotInfo.CDType = ObjData(OBJIndex).CDType
         SlotInfo.CDMask = GetCDMaskForItem(ObjData(OBJIndex))
