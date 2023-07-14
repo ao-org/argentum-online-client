@@ -593,10 +593,11 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
             Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf & "Quest: " & QuestList(QuestList(QuestIndex).RequiredQuest).nombre, 128, 128, 128)
         Else
             FrmQuestInfo.Text1.Text = ""
-            Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf, 128, 128, 128)
-        
+            Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel, 128, 128, 128)
         End If
-                
+        If QuestList(QuestIndex).RequiredSkill.SkillType > 0 Then
+            Call AddtoRichTextBox(Text1, SkillsNames(QuestList(QuestIndex).RequiredSkill.SkillType) & ": " & QuestList(QuestIndex).RequiredSkill.RequiredValue & vbCrLf, 128, 128, 128)
+        End If
         If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
             If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
                 FrmQuestInfo.ListView1.FlatScrollBar = False
