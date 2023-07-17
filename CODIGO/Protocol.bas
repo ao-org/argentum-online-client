@@ -8053,7 +8053,6 @@ Private Sub HandleQuestDetails()
 
             If QuestRequerida <> 0 Then
                 FrmQuests.detalle.Text = FrmQuests.detalle.Text & vbCrLf & "Quest: " & QuestList(QuestRequerida).nombre
-
             End If
 
            
@@ -8110,7 +8109,13 @@ Private Sub HandleQuestDetails()
                 Next i
 
             End If
-    
+            Dim RequiredSkill, RequiredValue As Byte
+            RequiredSkill = Reader.ReadInt8
+            RequiredValue = Reader.ReadInt8
+            If RequiredSkill > 0 Then
+                FrmQuests.detalle.Text = FrmQuests.detalle.Text & SkillsNames(RequiredSkill) & ": " & RequiredValue
+            End If
+            
             tmpStr = tmpStr & vbCrLf & "RECOMPENSAS" & vbCrLf
             Dim tmplong As Long
             tmplong = Reader.ReadInt32
@@ -8308,9 +8313,12 @@ Public Sub HandleNpcQuestListSend()
             Else
                 ReDim QuestList(QuestIndex).RequiredSpellList(0)
             End If
+            QuestList(QuestIndex).RequiredSkill.SkillType = Reader.ReadInt8
+            QuestList(QuestIndex).RequiredSkill.RequiredValue = Reader.ReadInt8
+            
             QuestList(QuestIndex).RewardGLD = Reader.ReadInt32
             QuestList(QuestIndex).RewardEXP = Reader.ReadInt32
-
+            
             tmpByte = Reader.ReadInt8
             If tmpByte Then
                 ReDim QuestList(QuestIndex).RewardOBJ(1 To tmpByte)
@@ -8928,6 +8936,8 @@ Public Sub HandleObjQuestListSend()
     Else
         ReDim QuestList(QuestIndex).RequiredSpellList(0)
     End If
+    QuestList(QuestIndex).RequiredSkill.SkillType = Reader.ReadInt8
+    QuestList(QuestIndex).RequiredSkill.RequiredValue = Reader.ReadInt8
     QuestList(QuestIndex).RewardGLD = Reader.ReadInt32
     QuestList(QuestIndex).RewardEXP = Reader.ReadInt32
 

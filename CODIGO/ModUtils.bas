@@ -118,6 +118,11 @@ End Type
 
 Public QuestList() As tQuest
 
+Public Type t_QuestSkill
+    SkillType As eSkill
+    RequiredValue As Byte
+End Type
+
 Public Type tQuest
 
     nombre As String
@@ -134,6 +139,7 @@ Public Type tQuest
     RequiredNPCs As Byte
     RequiredNPC() As tQuestNpc
     RequiredSpellList() As Integer
+    RequiredSkill As t_QuestSkill
     
     RewardGLD As Long
     RewardEXP As Long
