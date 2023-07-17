@@ -439,6 +439,8 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
         Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otAnillos, eObjType.otManchas
             If Not Equipped Then
                 Call WriteEquipItem(Slot)
+            Else
+                Call WriteUseItem(Slot)
             End If
         Case eObjType.otWeapon
             If ObjData(ObjIndex).proyectil = 1 And Equipped Then
