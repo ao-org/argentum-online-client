@@ -1519,7 +1519,7 @@ Private Function ShouldUnloadForm(ByVal FormName As String) As Boolean
     If FormName = frmMensaje.Name Then Exit Function
     If BabelInitialized Then
         If FormName = frmBabelUI.Name Then Exit Function
-        If FormName = frmDebugUI.Name Then Exit Function
+        If FormName = "frmDebugUI" Then Exit Function
     End If
     ShouldUnloadForm = True
 End Function
@@ -8818,6 +8818,7 @@ Public Sub HandleUpdateShopClienteCredits()
 End Sub
 
 Public Sub HandleSendSkillCdUpdate()
+On Error GoTo ErrHandler
     Dim Effect As t_ActiveEffect
     Dim ElapsedTime As Long
     Effect.TypeId = Reader.ReadInt16
@@ -8840,6 +8841,9 @@ Public Sub HandleSendSkillCdUpdate()
         End If
         Call AddOrUpdateEffect(CDList, Effect)
     End If
+    Exit Sub
+ErrHandler:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendSkillCdUpdate", Erl)
 End Sub
 
 Public Sub HandleObjQuestListSend()
