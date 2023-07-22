@@ -164,6 +164,8 @@ Function EsArbol(ByVal GrhIndex As Long) As Boolean
               GrhIndex = 14687 Or GrhIndex = 47726 Or GrhIndex = 12333 Or GrhIndex = 12330 Or GrhIndex = 20369 Or GrhIndex = 21120 Or GrhIndex = 21227 Or _
               GrhIndex = 21352 Or GrhIndex = 12332 Or GrhIndex = 21226
       
+              GrhIndex = 21352 Or GrhIndex = 12332 Or GrhIndex = 21226 Or GrhIndex = 8258 Or GrhIndex = 32118 Or GrhIndex = 32119 Or GrhIndex = 32129 Or GrhIndex = 32132 Or _
+              GrhIndex = 32133 Or GrhIndex = 32135
     Exit Function
 
 EsArbol_Err:
