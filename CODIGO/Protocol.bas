@@ -2486,7 +2486,7 @@ Private Sub HandleUpdateGold()
     UserStats.OroPorNivel = Reader.ReadInt32()
     
     If BabelInitialized Then
-        Call BabelUI.UpdateGold(UserStats.GLD)
+        Call BabelUI.UpdateGold(UserStats.GLD, UserStats.OroPorNivel)
     Else
         Call frmMain.UpdateGoldState
     End If
