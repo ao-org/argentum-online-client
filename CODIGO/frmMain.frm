@@ -441,6 +441,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4752,8 +4753,7 @@ End Sub
 
 Public Sub UpdateGoldState()
     GldLbl.Caption = PonerPuntos(UserStats.GLD)
-    'If UserGLD > UserLvl * OroPorNivel Then
-    If UserStats.GLD <= 100000 Then
+    If UserGLD > UserLvl * OroPorNivel Then
         GldLbl.ForeColor = vbRed
     Else
         GldLbl.ForeColor = &H80FFFF
