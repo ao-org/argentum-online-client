@@ -617,7 +617,7 @@ Public Sub RequestSkills()
 End Sub
 
 Public Function IsUsableItem(ByRef ItemData As ObjDatas) As Boolean
-    CanUse = ItemData.ObjType = eObjType.otWeapon Or ItemData.ObjType = eObjType.otPociones Or _
+    IsUsableItem = ItemData.ObjType = eObjType.otWeapon Or ItemData.ObjType = eObjType.otPociones Or _
              ItemData.ObjType = eObjType.OtHerramientas Or ItemData.ObjType = eObjType.otInstrumentos Or _
              ItemData.ObjType = eObjType.OtCofre
 End Function
