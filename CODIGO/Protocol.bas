@@ -1294,8 +1294,6 @@ Public Sub HandleDisconnect()
     Call resetearCartel
     If Not UseBabelUI Then
         frmConnect.visible = True
-    Else
-        frmBabelUI.visible = True
     End If
     #If PYMMO = 1 Then
         If g_game_state.state <> e_state_createchar_screen Then
@@ -3029,7 +3027,6 @@ Private Sub HandleTextOverTile()
     Duration = Reader.ReadInt16()
     OffsetY = Reader.ReadInt16()
     Animated = Reader.ReadBool()
-    Debug.Print "render text:" & Text & " at (" & x & ", " & y & ")"
     If InMapBounds(x, y) Then
         With MapData(x, y)
             Dim Index As Integer
