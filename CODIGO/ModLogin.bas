@@ -244,7 +244,9 @@ End Sub
 
 Public Sub ShowLogin()
     If UseBabelUI Then
-        frmBabelUI.Show
+        If Not frmBabelUI.visible Then
+            frmBabelUI.Show
+        End If
         BabelUI.SetActiveScreen ("login")
     Else
         frmConnect.Show
@@ -261,7 +263,6 @@ End Sub
 
 Public Sub ShowScharSelection()
     If UseBabelUI Then
-        frmBabelUI.Show
         BabelUI.SetActiveScreen ("charcter-selection")
     Else
         Call connectToLoginServer

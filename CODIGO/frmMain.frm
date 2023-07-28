@@ -4753,7 +4753,7 @@ End Sub
 
 Public Sub UpdateGoldState()
     GldLbl.Caption = PonerPuntos(UserStats.GLD)
-    If UserGLD > UserLvl * OroPorNivel Then
+    If UserStats.GLD > UserStats.Lvl * UserStats.OroPorNivel Then
         GldLbl.ForeColor = vbRed
     Else
         GldLbl.ForeColor = &H80FFFF
