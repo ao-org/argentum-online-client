@@ -4551,6 +4551,9 @@ On Error GoTo HandleStunStart_Err
     duration = Reader.ReadInt16()
     StunEndTime = GetTickCount() + duration
     TotalStunTime = duration
+    If BabelInitialized Then
+        Call ActivateStunTimer(Duration)
+    End If
     Exit Sub
 
 HandleStunStart_Err:

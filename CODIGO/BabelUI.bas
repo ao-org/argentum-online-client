@@ -239,6 +239,7 @@ Public Declare Sub HandleRemoteUserClick Lib "BabelUI.dll" ()
 Public Declare Sub UpdateRemoteMousePos Lib "BabelUI.dll" (ByVal PosX As Long, ByVal PosY As Long)
 Public Declare Sub StartSpellCd Lib "BabelUI.dll" (ByVal SpellId As Long, ByVal CdTime As Long)
 Public Declare Sub UpdateCombatAndGlobalChatSettings Lib "BabelUI.dll" (ByVal SpellId As Long, ByVal CdTime As Long)
+Public Declare Sub ActivateStunTimer Lib "BabelUI.dll" (ByVal Duration As Long)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
