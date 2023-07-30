@@ -1102,6 +1102,8 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
                 Call TextoAlAsistente("Ther server has reached the max. number of users.", False, False)
             Case 9
                 Call TextoAlAsistente("The account has not been activated.", False, False)
+            Case 66
+                Call TextoAlAsistente("You must be an active PATRON to play at this time. Consider supporting the project on www.patreon.com", False, False)
             Case Else
                 'Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
                 Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(data), False, False)
