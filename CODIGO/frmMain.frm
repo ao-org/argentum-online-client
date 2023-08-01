@@ -441,7 +441,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4695,15 +4694,9 @@ Public Sub UpdateStatsLayout()
 
     End If
     
-    If UserStats.GLD <= 100000 Then
-        frmMain.GldLbl.ForeColor = vbRed
-    Else
-        frmMain.GldLbl.ForeColor = &H80FFFF
-    End If
-
-    frmMain.GldLbl.Caption = PonerPuntos(UserStats.GLD)
-    frmMain.lblLvl.Caption = ListaClases(UserStats.Clase) & " - Nivel " & UserStats.Lvl
     
+    frmMain.lblLvl.Caption = ListaClases(UserStats.Clase) & " - Nivel " & UserStats.Lvl
+    Call frmMain.UpdateGoldState
     
 End Sub
 
