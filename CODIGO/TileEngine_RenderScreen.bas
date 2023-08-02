@@ -407,7 +407,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                        ' Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
 
                         ' Debajo del arbol
-                        If Abs(UserPos.x - x) <= 3 And (Abs(UserPos.y - y)) < 8 And (Abs(UserPos.y) < y) Then
+                        If Abs(UserPos.x - x) <= 3 And (Abs(UserPos.y - y)) < 12 And (Abs(UserPos.y) < y) Then
 
                             If .ArbolAlphaTimer <= 0 Then
                                 .ArbolAlphaTimer = lastMove
