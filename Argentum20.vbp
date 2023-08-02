@@ -141,6 +141,7 @@ Class=clsRenderer; CODIGO\clsRenderer.cls
 Module=ao20rendering; CODIGO\ao20rendering.bas
 Module=ModGameplayUI; CODIGO\ModGameplayUI.bas
 ResFile32="AO20.res"
+Class=clsTileEngineHelper; CODIGO\clsTileEngineHelper.cls
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
