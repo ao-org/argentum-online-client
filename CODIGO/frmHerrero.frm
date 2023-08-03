@@ -3,16 +3,16 @@ Begin VB.Form frmHerrero
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar con Herreria"
-   ClientHeight    =   6528
+   ClientHeight    =   6525
    ClientLeft      =   0
-   ClientTop       =   -96
-   ClientWidth     =   7056
+   ClientTop       =   -90
+   ClientWidth     =   7050
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   544
+   ScaleHeight     =   435
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   588
+   ScaleWidth      =   470
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.ListBox List2 
@@ -20,7 +20,7 @@ Begin VB.Form frmHerrero
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -28,7 +28,7 @@ Begin VB.Form frmHerrero
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1248
+      Height          =   1200
       Left            =   5760
       TabIndex        =   5
       Top             =   2520
@@ -39,7 +39,7 @@ Begin VB.Form frmHerrero
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -47,7 +47,7 @@ Begin VB.Form frmHerrero
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   2880
+      Height          =   2760
       Left            =   480
       TabIndex        =   4
       Top             =   2325
@@ -58,7 +58,7 @@ Begin VB.Form frmHerrero
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -66,7 +66,7 @@ Begin VB.Form frmHerrero
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1248
+      Height          =   1200
       Left            =   3840
       TabIndex        =   3
       Top             =   2520
@@ -134,7 +134,7 @@ Begin VB.Form frmHerrero
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -484,9 +484,9 @@ Private Sub cmdConstruir_Click()
             UserMacro.TIPO = 4
             UserMacro.Index = ArmasHerrero(lstArmas.ListIndex + 1).Index
             AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-            UserMacro.Intervalo = IntervaloTrabajoConstruir
+            UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
-            frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+            frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(ArmasHerrero(lstArmas.ListIndex + 1).Index)
@@ -503,9 +503,9 @@ Private Sub cmdConstruir_Click()
             UserMacro.TIPO = 4
             UserMacro.Index = ArmadurasHerrero(lstArmas.ListIndex).Index
             AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-            UserMacro.Intervalo = IntervaloTrabajoConstruir
+            UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
-            frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+            frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(ArmadurasHerrero(lstArmas.ListIndex).Index)
@@ -522,9 +522,9 @@ Private Sub cmdConstruir_Click()
             UserMacro.TIPO = 4
             UserMacro.Index = CascosHerrero(lstArmas.ListIndex).Index
             AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-            UserMacro.Intervalo = IntervaloTrabajoConstruir
+            UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
-            frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+            frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(CascosHerrero(lstArmas.ListIndex).Index)
@@ -541,9 +541,9 @@ Private Sub cmdConstruir_Click()
             UserMacro.TIPO = 4
             UserMacro.Index = EscudosHerrero(lstArmas.ListIndex).Index
             AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-            UserMacro.Intervalo = IntervaloTrabajoConstruir
+            UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
-            frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+            frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(EscudosHerrero(lstArmas.ListIndex).Index)

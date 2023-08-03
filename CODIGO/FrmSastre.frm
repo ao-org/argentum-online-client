@@ -3,15 +3,15 @@ Begin VB.Form FrmSastre
    BackColor       =   &H80000007&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar de sastre"
-   ClientHeight    =   5664
+   ClientHeight    =   5670
    ClientLeft      =   0
-   ClientTop       =   -72
-   ClientWidth     =   6528
+   ClientTop       =   -75
+   ClientWidth     =   6525
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5664
-   ScaleWidth      =   6528
+   ScaleHeight     =   5670
+   ScaleWidth      =   6525
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox cantidad 
@@ -43,7 +43,7 @@ Begin VB.Form FrmSastre
       Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -51,7 +51,7 @@ Begin VB.Form FrmSastre
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   636
+      Height          =   615
       ItemData        =   "FrmSastre.frx":0000
       Left            =   5535
       List            =   "FrmSastre.frx":0007
@@ -64,7 +64,7 @@ Begin VB.Form FrmSastre
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -72,7 +72,7 @@ Begin VB.Form FrmSastre
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   636
+      Height          =   615
       Left            =   3870
       TabIndex        =   2
       Top             =   2955
@@ -83,7 +83,7 @@ Begin VB.Form FrmSastre
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -91,7 +91,7 @@ Begin VB.Form FrmSastre
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   2880
+      Height          =   2760
       Left            =   720
       TabIndex        =   1
       Top             =   2160
@@ -116,7 +116,7 @@ Begin VB.Form FrmSastre
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -247,13 +247,13 @@ Private Sub Command3_Click()
 
     If indice = 1 Then
         If cantidad > 1 Then
-            UserMacro.Intervalo = IntervaloTrabajoConstruir
+            UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 3
             UserMacro.Index = SastreRopas(lstArmas.ListIndex + 1).Index
             AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
             UserMacro.Activado = True
-            frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+            frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftSastre(SastreRopas(lstArmas.ListIndex + 1).Index)
@@ -270,9 +270,9 @@ Private Sub Command3_Click()
             UserMacro.TIPO = 3
             UserMacro.Index = SastreGorros(lstArmas.ListIndex + 1).Index
             AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-            UserMacro.Intervalo = IntervaloTrabajoConstruir
+            UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
-            frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+            frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftSastre(SastreGorros(lstArmas.ListIndex + 1).Index)

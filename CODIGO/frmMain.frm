@@ -3236,7 +3236,7 @@ Public Sub ActivarMacroTrabajo()
     
     TargetXMacro = tX
     TargetYMacro = tY
-    macrotrabajo.Interval = IntervaloTrabajoConstruir
+    macrotrabajo.Interval = gIntervals.BuildWork
     macrotrabajo.enabled = True
     Call AddtoRichTextBox(frmMain.RecTxt, "Macro Trabajo ACTIVADO", 0, 200, 200, False, True, False)
 

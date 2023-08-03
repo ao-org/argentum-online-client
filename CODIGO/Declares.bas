@@ -419,18 +419,6 @@ Public Type t_Intervals
 End Type
 
 Public gIntervals As t_Intervals
-Public IntervaloGolpe          As Long
-Public IntervaloArco           As Long
-Public IntervaloMagia          As Long
-Public IntervaloTrabajoExtraer As Long
-Public IntervaloTrabajoConstruir As Long
-Public IntervaloCaminar        As Long
-Public IntervaloTirar          As Long
-Public IntervaloUsarU          As Long
-Public IntervaloUsarClic       As Long
-Public IntervaloGolpeMagia     As Long
-Public IntervaloMagiaGolpe     As Long
-Public IntervaloGolpeUsar      As Long
 Public Const INT_SENTRPU       As Integer = 2000
 Public MacroBltIndex           As Integer
 Public Const CASPER_BODY       As Integer = 830
