@@ -1216,7 +1216,7 @@ Private Sub HandleVelocidadToggle()
     
     charlist(UserCharIndex).Speeding = Reader.ReadReal32()
     
-    Call MainTimer.SetInterval(TimersIndex.Walk, IntervaloCaminar / charlist(UserCharIndex).Speeding)
+    Call MainTimer.SetInterval(TimersIndex.Walk, gIntervals.Walk / charlist(UserCharIndex).Speeding)
     
     Exit Sub
 
@@ -1242,10 +1242,10 @@ Private Sub HandleMacroTrabajoToggle()
     
         Call AddtoRichTextBox(frmMain.RecTxt, "Has comenzado a trabajar...", 2, 223, 51, 1, 0)
         
-        frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+        frmMain.MacroLadder.Interval = gIntervals.BuildWork
         frmMain.MacroLadder.Enabled = True
         
-        UserMacro.Intervalo = IntervaloTrabajoConstruir
+        UserMacro.Intervalo = gIntervals.BuildWork
         UserMacro.Activado = True
         UserMacro.cantidad = 999
         UserMacro.TIPO = 6
