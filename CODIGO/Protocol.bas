@@ -1168,8 +1168,7 @@ Private Sub HandleNavigateToggle()
     'Remove packet ID
     
     On Error GoTo HandleNavigateToggle_Err
-
-    UserNavegando = Not UserNavegando
+    UserNavegando = Reader.ReadBool()
     
     Exit Sub
 
