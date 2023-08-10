@@ -483,6 +483,9 @@ Public Sub HandleKeyUp(KeyCode As Integer, Shift As Integer)
                 Call WriteCancelarExit
             ElseIf KeyCode = 80 And PescandoEspecial Then
                 Call IntentarObtenerPezEspecial
+            ElseIf KeyCode = vbKeyF1 Then
+                Call ParseUserCommand("/SM")
+                Call ParseUserCommand("/IRA " & TargetName)
             End If
         End If
     ElseIf Not BabelInitialized Then
