@@ -11,8 +11,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
+' Argentum 20 Game Client
+'
+'    Copyright (C) 2023 Noland Studios LTD
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU Affero General Public License as published by
@@ -23,39 +24,20 @@ Attribute VB_Exposed = False
 '    but WITHOUT ANY WARRANTY; without even the implied warranty of
 '    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 '    GNU Affero General Public License for more details.
+'
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
+'    This program was based on Argentum Online 0.11.6
+'    Copyright (C) 2002 Márquez Pablo Ignacio
 '
-'*****************************************************************
-'CBufferMan - ImperiumAO - v1.3.0
+'    Argentum Online is based on Baronsoft's VB6 Online RPG
+'    You can contact the original creator of ORE at aaron@baronsoft.com
+'    for more information about ORE please visit http://www.baronsoft.com/
 '
-'Sound buffer manager based on Maraxus's texture manager.
 '
-'*****************************************************************
-'Respective portions copyrighted by contributors listed below.
 '
-'This library is free software; you can redistribute it and/or
-'modify it under the terms of the GNU Lesser General Public
-'License as published by the Free Software Foundation version 2.1 of
-'the License
-'
-'This library is distributed in the hope that it will be useful,
-'but WITHOUT ANY WARRANTY; without even the implied warranty of
-'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-'Lesser General Public License for more details.
-'
-'You should have received a copy of the GNU Lesser General Public
-'License along with this library; if not, write to the Free Software
-'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-'*****************************************************************
-'Maraxus (Juan Martín Sotuyo Dodero - juansotuyo@hotmail.com)
-'   - First Relase (as CTextureMan)
-'Barrin (Augusto José Rando - barrin@imperiumao.com.ar)
-'   - Modified to use sound buffers
-'   - Modified to copy buffers when already playing
-'*****************************************************************
 
 Option Explicit
 

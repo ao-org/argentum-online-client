@@ -4,15 +4,15 @@ Begin VB.Form frmAlqui
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar con alquimista"
-   ClientHeight    =   5604
+   ClientHeight    =   5610
    ClientLeft      =   0
-   ClientTop       =   -72
-   ClientWidth     =   6516
+   ClientTop       =   -75
+   ClientWidth     =   6510
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5604
-   ScaleWidth      =   6516
+   ScaleHeight     =   5610
+   ScaleWidth      =   6510
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.PictureBox picture1 
@@ -58,7 +58,7 @@ Begin VB.Form frmAlqui
       Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -66,7 +66,7 @@ Begin VB.Form frmAlqui
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1044
+      Height          =   1005
       ItemData        =   "frmAlqui.frx":0000
       Left            =   5520
       List            =   "frmAlqui.frx":0007
@@ -79,7 +79,7 @@ Begin VB.Form frmAlqui
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -87,7 +87,7 @@ Begin VB.Form frmAlqui
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1044
+      Height          =   1005
       Left            =   3840
       TabIndex        =   1
       Top             =   2960
@@ -98,7 +98,7 @@ Begin VB.Form frmAlqui
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -106,7 +106,7 @@ Begin VB.Form frmAlqui
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   3492
+      Height          =   3345
       Left            =   705
       TabIndex        =   0
       Top             =   1480
@@ -117,7 +117,7 @@ Begin VB.Form frmAlqui
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -151,8 +151,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
+' Argentum 20 Game Client
+'
+'    Copyright (C) 2023 Noland Studios LTD
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU Affero General Public License as published by
@@ -163,13 +164,19 @@ Attribute VB_Exposed = False
 '    but WITHOUT ANY WARRANTY; without even the implied warranty of
 '    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 '    GNU Affero General Public License for more details.
+'
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
+'    This program was based on Argentum Online 0.11.6
+'    Copyright (C) 2002 Márquez Pablo Ignacio
 '
-Private Sub Command1_Click()
-
-End Sub
+'    Argentum Online is based on Baronsoft's VB6 Online RPG
+'    You can contact the original creator of ORE at aaron@baronsoft.com
+'    for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'
 
 Private Sub Command3_Click()
     

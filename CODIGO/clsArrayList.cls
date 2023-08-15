@@ -11,8 +11,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
+' Argentum 20 Game Client
+'
+'    Copyright (C) 2023 Noland Studios LTD
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU Affero General Public License as published by
@@ -23,22 +24,19 @@ Attribute VB_Exposed = False
 '    but WITHOUT ANY WARRANTY; without even the implied warranty of
 '    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 '    GNU Affero General Public License for more details.
+'
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
+'    This program was based on Argentum Online 0.11.6
+'    Copyright (C) 2002 Márquez Pablo Ignacio
 '
-'***************************************************
-'Author: FrankoH298
-'Count ahora se llama GetLastItem (Recox)
-' Funciones:
-'           - Clear() - Limpia la lista
-'           - itemExist(item) - Te indica si el item existe
-'           - itemPos(item) - Te devuelve la posicion del item
-'           - Item(index) - Te devuelve el item en la posicion
-'           - Add() - Agrega un item a la lista
-'           - Remove() - Remueve el item de la lista
-'           - GetLastItem() - Te muestra el ultimo item de la lista
-'***************************************************
+'    Argentum Online is based on Baronsoft's VB6 Online RPG
+'    You can contact the original creator of ORE at aaron@baronsoft.com
+'    for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'
 
 Option Explicit
 

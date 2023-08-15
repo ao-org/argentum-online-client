@@ -1,6 +1,7 @@
 Attribute VB_Name = "Protocol"
-'    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
+' Argentum 20 Game Client
+'
+'    Copyright (C) 2023 Noland Studios LTD
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU Affero General Public License as published by
@@ -11,42 +12,20 @@ Attribute VB_Name = "Protocol"
 '    but WITHOUT ANY WARRANTY; without even the implied warranty of
 '    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 '    GNU Affero General Public License for more details.
+'
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
+'    This program was based on Argentum Online 0.11.6
+'    Copyright (C) 2002 Márquez Pablo Ignacio
 '
-'**************************************************************
-' Protocol.bas - Handles all incoming / outgoing messages for client-server communications.
-' Uses a binary protocol designed by myself.
+'    Argentum Online is based on Baronsoft's VB6 Online RPG
+'    You can contact the original creator of ORE at aaron@baronsoft.com
+'    for more information about ORE please visit http://www.baronsoft.com/
 '
-' Designed and implemented by Juan Martín Sotuyo Dodero (Maraxus)
-' (juansotuyo@gmail.com)
-'**************************************************************
+'
+'
 
-'**************************************************************************
-'This program is free software; you can redistribute it and/or modify
-'it under the terms of the Affero General Public License;
-'either version 1 of the License, or any later version.
-'
-'This program is distributed in the hope that it will be useful,
-'but WITHOUT ANY WARRANTY; without even the implied warranty of
-'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'Affero General Public License for more details.
-'
-'You should have received a copy of the Affero General Public License
-'along with this program; if not, you can find it at http://www.affero.org/oagpl.html
-'**************************************************************************
-
-''
-'Handles all incoming / outgoing packets for client - server communications
-'The binary prtocol here used was designed by Juan Martín Sotuyo Dodero.
-'This is the first time it's used in Alkon, though the second time it's coded.
-'This implementation has several enhacements from the first design.
-'
-' @file     Protocol.bas
-' @author   Juan Martín Sotuyo Dodero (Maraxus) juansotuyo@gmail.com
-' @version  1.0.0
-' @date     20060517
 
 Option Explicit
 
@@ -3187,7 +3166,7 @@ Private Sub HandleConsoleMessage()
 
         Case "HECINF"
             Hechizo = ReadField(2, chat, Asc("*"))
-            chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
+            chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).Nombre & vbCrLf & "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
 
         Case "ProMSG"
             Hechizo = ReadField(2, chat, Asc("*"))
@@ -7132,7 +7111,7 @@ Private Sub HandleShowSOSForm()
     sosList = Split(Reader.ReadString8(), SEPARATOR)
     
     For i = 0 To UBound(sosList())
-        nombre = ReadField(1, sosList(i), Asc("Ø"))
+        Nombre = ReadField(1, sosList(i), Asc("Ø"))
         Consulta = ReadField(2, sosList(i), Asc("Ø"))
         TipoDeConsulta = ReadField(3, sosList(i), Asc("Ø"))
         frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ")"

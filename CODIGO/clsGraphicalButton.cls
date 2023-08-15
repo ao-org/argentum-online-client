@@ -11,8 +11,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
+' Argentum 20 Game Client
+'
+'    Copyright (C) 2023 Noland Studios LTD
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU Affero General Public License as published by
@@ -23,31 +24,20 @@ Attribute VB_Exposed = False
 '    but WITHOUT ANY WARRANTY; without even the implied warranty of
 '    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 '    GNU Affero General Public License for more details.
+'
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
+'    This program was based on Argentum Online 0.11.6
+'    Copyright (C) 2002 Márquez Pablo Ignacio
 '
-'*****************************************************
-'Graphical Button
-'Designed and implemented by ZaMa
-'zaxtor@gmail.com
-'*****************************************************
+'    Argentum Online is based on Baronsoft's VB6 Online RPG
+'    You can contact the original creator of ORE at aaron@baronsoft.com
+'    for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'
 
-'**************************************************************************
-'This program is free software; you can redistribute it and/or modify
-'it under the terms of the GNU General Public License as published by
-'the Free Software Foundation; either version 2 of the License, or
-'(at your option) any later version.
-'
-'This program is distributed in the hope that it will be useful,
-'but WITHOUT ANY WARRANTY; without even the implied warranty of
-'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'Affero General Public License for more details.
-'
-'You should have received a copy of the GNU General Public License
-'along with this program; if not, write to the Free Software
-'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-'**************************************************************************
 Option Explicit
 
 Private WithEvents ButtonHolder As Image
@@ -62,11 +52,6 @@ Private Form_Movement As clsFormMovementManager
 Private OverButton As Boolean    'Indicates wether the mouse is over the button or not
 
 Public Sub Initialize(ByRef imgButton As Image, ByVal imgNormalPath As String, ByVal imgRollOverPath As String, ByVal imgClickPath As String, Optional ByRef Form As Form)
-'***************************************************
-'Author: ZaMa
-'Last Modify Date: 22/12/09
-'Sets the reference to the image container
-'***************************************************
     Set ButtonHolder = imgButton
     Set Form_Movement = New clsFormMovementManager
     Call Form_Movement.Initialize(Form)
