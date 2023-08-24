@@ -83,6 +83,8 @@ Private Enum e_KeyAction
     eHKey8 = 31
     eHKey9 = 32
     eHKey10 = 33
+    
+    [eMaxBinds]
 End Enum
 Public Sub LoadImpAoInit()
     
@@ -97,7 +99,7 @@ Public Sub LoadImpAoInit()
 
     Dim lC As Integer, tmpStr As String
 
-    NUMBINDS = Val(GetVar(File, "INIT", "NUMBINDS"))
+    NUMBINDS = eMaxBinds - 1
 
     ACCION1 = 0 'Val(GetVar(File, "INIT", "ACCION1"))
     ACCION2 = 1 'Val(GetVar(File, "INIT", "ACCION2"))
