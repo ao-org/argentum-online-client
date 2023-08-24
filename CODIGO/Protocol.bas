@@ -245,6 +245,7 @@ Private Enum ServerPacketID
     UpdateGroupInfo
     RequestTelemetry
     UpdateCharValue 'updates some char index value based on enum
+    SendClientToggles 'Get active feature Toggles from server
 #If PYMMO = 0 Then
     AccountCharacterList
 #End If
@@ -575,6 +576,8 @@ Public Enum ClientPacketID
     FeatureToggle
     ActionOnGroupFrame
     SendTelemetry
+    SetHotkeySlot
+    UseHKeySlot
     #If PYMMO = 0 Then
     CreateAccount
     LoginAccount
@@ -995,6 +998,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleRequestTelemetry
         Case ServerPacketID.UpdateCharValue
             Call HandleUpdateCharValue
+        Case ServerPacketID.SendClientToggles
+            Call HandleSendClientToggles
         #If PYMMO = 0 Then
         Case ServerPacketID.AccountCharacterList
             Call HandleAccountCharacterList
@@ -1465,6 +1470,8 @@ Public Sub HandleDisconnect()
     For i = 1 To LastChar + 1
         charlist(i).dialog = ""
     Next i
+    
+    Call ClearHotkeys
         
     'Unload all forms except frmMain and frmConnect
     Dim Frm As Form
@@ -5110,6 +5117,7 @@ Private Sub HandleChangeInventorySlot()
     Dim MinDef      As Integer
     Dim Value       As Single
     Dim podrausarlo As Byte
+    Dim IsBindable As Boolean
 
     Slot = Reader.ReadInt8()
     ObjIndex = Reader.ReadInt16()
@@ -5117,7 +5125,7 @@ Private Sub HandleChangeInventorySlot()
     Equipped = Reader.ReadBool()
     Value = Reader.ReadReal32()
     podrausarlo = Reader.ReadInt8()
-
+    IsBindable = Reader.ReadBool()
     Name = ObjData(ObjIndex).Name
     GrhIndex = ObjData(ObjIndex).GrhIndex
     ObjType = ObjData(ObjIndex).ObjType
@@ -5172,7 +5180,7 @@ Private Sub HandleChangeInventorySlot()
 
     End If
     
-    Call ModGameplayUI.SetInvItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+    Call ModGameplayUI.SetInvItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo, IsBindable)
     
     If frmComerciar.Visible Then
         Call frmComerciar.InvComUsu.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
@@ -5269,20 +5277,20 @@ Private Sub HandleChangeSpellSlot()
     On Error GoTo ErrHandler
     
     Dim Slot     As Byte
-
     Dim Index    As Integer
-
     Dim cooldown As Integer
-
+    Dim IsBindable As Boolean
+    
     Slot = Reader.ReadInt8()
     
     UserHechizos(Slot) = Reader.ReadInt16()
     Index = Reader.ReadInt16()
-    
+    IsBindable = Reader.ReadBool()
     If BabelInitialized Then
         Dim SpellInfo As t_SpellSlot
         SpellInfo.Slot = Slot
         SpellInfo.SpellIndex = Index
+        SpellInfo.IsBindable = IsBindable
         If Index >= 0 Then
             SpellInfo.icon = HechizoData(Index).IconoIndex
             SpellInfo.Cooldown = HechizoData(Index).Cooldown
@@ -8830,6 +8838,23 @@ On Error GoTo ErrHandler
     Exit Sub
 ErrHandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendSkillCdUpdate", Erl)
+End Sub
+
+Public Sub HandleSendClientToggles()
+On Error GoTo ErrHandler
+    Dim ToggleCount As Integer
+    ToggleCount = Reader.ReadInt16
+    Dim i As Integer
+    ReDim FeatureToggles(ToggleCount) As String
+    If BabelInitialized Then
+        Call BabelUI.ClearToggles
+    End If
+    For i = 0 To ToggleCount - 1
+        FeatureToggles(i) = Reader.ReadString8
+        If BabelInitialized Then Call BabelUI.ActivateFeatureToggle(FeatureToggles(i))
+    Next i
+ErrHandler:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendClientToggles", Erl)
 End Sub
 
 Public Sub HandleObjQuestListSend()

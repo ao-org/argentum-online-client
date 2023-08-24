@@ -192,6 +192,20 @@ Public Enum e_CdTypes
     [CDCount]
 End Enum
 
+Public Enum e_HotkeyType
+    Item = 1
+    Spell = 2
+    Unknown = 3
+End Enum
+
+Public Type t_HotkeyEntry
+    Type As Integer 'should be e_HotkeyType but enums are hard to serialize with with C since it can chance mem size
+    Index As Integer
+    LastKnownSlot As Integer
+End Type
+Public Const HotKeyCount As Integer = 10
+
+Public HotkeyList(HotKeyCount) As t_HotkeyEntry
 Public packetControl(1 To CANT_PACKETS_CONTROL) As t_packetControl
 Public Const NUM_PASOS       As Byte = 7
 Public Pasos()               As tPaso
@@ -222,6 +236,7 @@ Public DireccionDeCaminata   As String
 Public CaminandoMacro        As Boolean
 Public CaminarX              As Integer
 Public CaminarY              As Integer
+Public FeatureToggles()      As String
 
 Public character_screen_action    As e_connect_user_action
 Public Enum e_connect_user_action

@@ -49,7 +49,41 @@ Public BotonElegido     As Integer
 
 Public MacroTipoElegido As Byte
 
-
+Private Enum e_KeyAction
+    eAttack = 1
+    eLoot = 2
+    eDrop = 3
+    eUseItem = 4
+    eEquipItem = 5
+    eChangeSafe = 6
+    eHideNames = 7
+    ePartyToggle = 8
+    eSteal = 9
+    eRefreshPosition = 10
+    eHide = 11
+    eShowOnline = 12
+    eScreenShoot = 13
+    eMoveUp = 14
+    eMoveDown = 15
+    eMoveLeft = 16
+    eMoveRight = 17
+    eClanCall = 18
+    eGameStats = 19
+    eClanMark = 20
+    eMeditate = 21
+    eExitGame = 22
+    eTaming = 23
+    eHKey1 = 24
+    eHKey2 = 25
+    eHKey3 = 26
+    eHKey4 = 27
+    eHKey5 = 28
+    eHKey6 = 29
+    eHKey7 = 30
+    eHKey8 = 31
+    eHKey9 = 32
+    eHKey10 = 33
+End Enum
 Public Sub LoadImpAoInit()
     
     On Error GoTo LoadImpAoInit_Err
@@ -336,7 +370,26 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             Else
                 Call WriteWork(eSkill.Domar)
             End If
-    
+        Case BindKeys(e_KeyAction.eHKey1).KeyCode
+            Call DoHotKey(0)
+        Case BindKeys(e_KeyAction.eHKey2).KeyCode
+            Call DoHotKey(1)
+        Case BindKeys(e_KeyAction.eHKey3).KeyCode
+            Call DoHotKey(2)
+        Case BindKeys(e_KeyAction.eHKey4).KeyCode
+            Call DoHotKey(3)
+        Case BindKeys(e_KeyAction.eHKey5).KeyCode
+            Call DoHotKey(4)
+        Case BindKeys(e_KeyAction.eHKey6).KeyCode
+            Call DoHotKey(5)
+        Case BindKeys(e_KeyAction.eHKey7).KeyCode
+            Call DoHotKey(6)
+        Case BindKeys(e_KeyAction.eHKey8).KeyCode
+            Call DoHotKey(7)
+        Case BindKeys(e_KeyAction.eHKey9).KeyCode
+            Call DoHotKey(8)
+        Case BindKeys(e_KeyAction.eHKey10).KeyCode
+            Call DoHotKey(9)
         Case Else
             Accionar = False
             Exit Function
@@ -354,6 +407,15 @@ Accionar_Err:
     
 End Function
 
+Public Sub DoHotKey(ByVal HkSlot As Byte)
+    If UserStats.estado = 1 Then
+        With FontTypes(FontTypeNames.FONTTYPE_INFO)
+            Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+        End With
+    Else
+        Call WriteUseHKeySlot(HkSlot)
+    End If
+End Sub
 Public Sub TirarItem()
     On Error GoTo TirarItem_Err
     If BabelInitialized Then

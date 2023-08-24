@@ -21,6 +21,7 @@ Const CustomSettingsFile As String = "\..\Recursos\OUTPUT\Configuracion.ini"
 Const DefaultSettingsFile As String = "\..\Recursos\OUTPUT\DefaultSettings.ini"
 Const CustomKeyMappingFile As String = "\..\Recursos\OUTPUT\Teclas.ini"
 Const DefaultKeyMappingFile As String = "\..\Recursos\OUTPUT\DefaultKey.ini"
+Const HotKeySettingsFile As String = "\..\Recursos\OUTPUT\Hotkeys.ini"
 
 Public Function InitializeSettings() As Boolean
     
@@ -59,4 +60,31 @@ Public Function InitializeKeyMapping() As Boolean
     InitializeKeyMapping = True
 End Function
 
+Public Sub LoadHotkeys()
+    Dim i As Integer
+    Call ClearHotkeys
+    Dim FilePath As String
+    FilePath = App.path & HotKeySettingsFile
+    If Not FileExist(FilePath, vbArchive) Then
+        Exit Sub
+    End If
+    
+    For i = 0 To HotKeyCount - 1
+        HotkeyList(i).Index = Val(GetVar(FilePath, username, "BindIndex" & i))
+        HotkeyList(i).LastKnownSlot = Val(GetVar(FilePath, username, "LastSlot" & i))
+        HotkeyList(i).Type = Val(GetVar(FilePath, username, "Type" & i))
+        If BabelInitialized Then
+            Call BabelUI.UpdateHoykeySlot(i, HotkeyList(i))
+        End If
+        Call WriteSetHotkeySlot(i, HotkeyList(i).Index, HotkeyList(i).LastKnownSlot, HotkeyList(i).Type)
+    Next i
+End Sub
+
+Public Sub SaveHotkey(ByVal Index As Integer, ByVal LastKnownSlot As Integer, ByVal HotkeyType As e_HotkeyType, ByVal HotkeySlot As Integer)
+    Dim FilePath As String
+    FilePath = App.path & HotKeySettingsFile
+    Call General_Var_Write(FilePath, username, "BindIndex" & HotkeySlot, Index)
+    Call General_Var_Write(FilePath, username, "LastSlot" & HotkeySlot, LastKnownSlot)
+    Call General_Var_Write(FilePath, username, "Type" & HotkeySlot, HotkeyType)
+End Sub
 

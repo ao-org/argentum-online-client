@@ -6793,3 +6793,32 @@ WriteFeatureEnable_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFeatureEnable", Erl)
 End Sub
+
+Public Sub WriteSetHotkeySlot(ByVal SlotIndex As Byte, ByVal Index As Integer, ByVal LastKnownSlot As Integer, ByVal HotkeyType As e_HotkeyType)
+On Error GoTo WriteSetHotkeySlot_Err
+        
+100     Call Writer.WriteInt16(ClientPacketID.SetHotkeySlot)
+        Call Writer.WriteInt8(SlotIndex)
+        Call Writer.WriteInt16(Index)
+        Call Writer.WriteInt16(LastKnownSlot)
+        Call Writer.WriteInt8(HotkeyType)
+        Call modNetwork.Send(Writer)
+        Exit Sub
+
+WriteSetHotkeySlot_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSetHotkeySlot", Erl)
+End Sub
+
+Public Sub WriteUseHKeySlot(ByVal SlotIndex As Byte)
+On Error GoTo WriteUseHKeySlot_Err
+        
+100     Call Writer.WriteInt16(ClientPacketID.UseHKeySlot)
+        Call Writer.WriteInt8(SlotIndex)
+        Call modNetwork.Send(Writer)
+        Exit Sub
+
+WriteUseHKeySlot_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUseHKeySlot", Erl)
+End Sub
