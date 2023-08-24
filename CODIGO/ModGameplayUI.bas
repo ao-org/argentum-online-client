@@ -55,6 +55,7 @@ Public Sub SetupGameplayUI()
         frmMain.visible = True
         ActiveInventoryTab = eInventory
     End If
+    Call LoadHotkeys
 End Sub
 
 Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
@@ -366,7 +367,7 @@ End Sub
 
 Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amount As Integer, ByVal Equipped As Byte, _
                       ByVal GrhIndex As Long, ByVal ObjType As Integer, ByVal MaxHit As Integer, ByVal MinHit As Integer, _
-                      ByVal Def As Integer, ByVal Value As Single, ByVal Name As String, ByVal CanUse As Byte)
+                      ByVal Def As Integer, ByVal Value As Single, ByVal Name As String, ByVal CanUse As Byte, ByVal IsBindable As Byte)
 
     If Slot < 1 Or Slot > UBound(UserInventory.Slots) Then Exit Sub
     With UserInventory.Slots(Slot)
@@ -402,6 +403,7 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         SlotInfo.CDMask = GetCDMaskForItem(ObjData(OBJIndex))
         SlotInfo.Desc = ObjData(ObjIndex).Texto
         SlotInfo.Amunition = ObjData(ObjIndex).Amunition
+        SlotInfo.IsBindable = IsBindable
         Call SetInvSlot(SlotInfo)
     Else
         Call frmMain.Inventario.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, Def, Value, Name, CanUse)
@@ -724,4 +726,21 @@ Public Sub RequestMeditate()
         Exit Sub
     End If
     Call WriteMeditate
+End Sub
+
+Public Sub SetHotkey(ByVal Index As Integer, ByVal LastKnownSlot As Integer, ByVal HotkeyType As e_HotkeyType, ByVal HotkeySlot As Integer)
+    HotkeyList(HotkeySlot).Index = Index
+    HotkeyList(HotkeySlot).LastKnownSlot = LastKnownSlot
+    HotkeyList(HotkeySlot).Type = HotkeyType
+    Call SaveHotkey(Index, LastKnownSlot, HotkeyType, HotkeySlot)
+    Call WriteSetHotkeySlot(HotkeySlot, Index, LastKnownSlot, HotkeyType)
+End Sub
+
+Public Sub ClearHotkeys()
+    Dim i As Integer
+    For i = 0 To HotKeyCount - 1
+        HotkeyList(i).Index = -1
+        HotkeyList(i).LastKnownSlot = -1
+        HotkeyList(i).Type = Unknown
+    Next i
 End Sub

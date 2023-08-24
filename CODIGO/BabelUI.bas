@@ -106,6 +106,7 @@ Public Type t_InvItem
     CDType As Integer
     CDMask As Long
     Amunition As Integer
+    IsBindable As Byte
     Name As String
     Desc As String
 End Type
@@ -129,6 +130,7 @@ Public Type t_GamePlayCallbacks
     UpdateScrollPos As Long
     TeleportToMiniMapPos As Long
     UpdateCombatAndGlobalChat As Long
+    UpdateHotKeySlot As Long
 End Type
 
 Public Type t_SpellSlot
@@ -136,6 +138,7 @@ Public Type t_SpellSlot
     SpellIndex As Integer
     icon As Long
     Cooldown As Long
+    IsBindable As Byte
     SpellName As String
 End Type
 
@@ -240,6 +243,9 @@ Public Declare Sub UpdateRemoteMousePos Lib "BabelUI.dll" (ByVal PosX As Long, B
 Public Declare Sub StartSpellCd Lib "BabelUI.dll" (ByVal SpellId As Long, ByVal CdTime As Long)
 Public Declare Sub UpdateCombatAndGlobalChatSettings Lib "BabelUI.dll" (ByVal SpellId As Long, ByVal CdTime As Long)
 Public Declare Sub ActivateStunTimer Lib "BabelUI.dll" (ByVal Duration As Long)
+Public Declare Sub UpdateHoykeySlot Lib "BabelUI.dll" (ByVal SlotIndex As Long, ByRef SlotInfo As t_HotkeyEntry)
+Public Declare Sub ActivateFeatureToggle Lib "BabelUI.dll" (ByVal ToggleName As String)
+Public Declare Sub ClearToggles Lib "BabelUI.dll" ()
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -361,6 +367,7 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.UpdateScrollPos = FARPROC(AddressOf UpdateSpellScrollPosCB)
         GameplayCallbacks.TeleportToMiniMapPos = FARPROC(AddressOf TeleportToMiniMapPos)
         GameplayCallbacks.UpdateCombatAndGlobalChat = FARPROC(AddressOf UpdateCombatAndGlobalChatCB)
+        GameplayCallbacks.UpdateHotKeySlot = FARPROC(AddressOf UpdateHotkeySlotCB)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -785,6 +792,10 @@ Public Sub UpdateSpellScrollPosCB(ByVal FirestSpellInList As Long)
     End If
 End Sub
 
+Public Sub UpdateHotkeySlotCB(ByVal SlotIndex As Long, ByRef SlotInfo As t_HotkeyEntry)
+    Call SetHotkey(SlotInfo.Index, SlotInfo.LastKnownSlot, SlotInfo.Type, SlotIndex)
+End Sub
+
 Public Sub TeleportToMiniMapPos(ByVal PosX As Long, ByVal PosY As Long)
     Dim x As Single
     Dim y As Single
@@ -792,7 +803,6 @@ Public Sub TeleportToMiniMapPos(ByVal PosX As Long, ByVal PosY As Long)
     y = PosY
     Call GetMinimapPosition(x, y)
     Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(x) & " " & CByte(y))
-
 End Sub
 
 Public Sub UpdateCombatAndGlobalChatCB(ByVal CombatState As Long, ByVal GlobalState As Long)
