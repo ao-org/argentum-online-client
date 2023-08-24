@@ -8853,6 +8853,7 @@ On Error GoTo ErrHandler
         FeatureToggles(i) = Reader.ReadString8
         If BabelInitialized Then Call BabelUI.ActivateFeatureToggle(FeatureToggles(i))
     Next i
+    Exit Sub
 ErrHandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendClientToggles", Erl)
 End Sub
