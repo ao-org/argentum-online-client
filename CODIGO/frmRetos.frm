@@ -522,7 +522,7 @@ Private Sub Form_Load()
 
     Jugador(0) = UserName
     PocionesRojas = False
-    CaenItems = False
+    'CaenItems = False
     Call Aplicar_Transparencia(Me.hWnd, 240)
     Call FormParser.Parse_Form(Me)
 End Sub
@@ -563,23 +563,23 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y A
     End If
 End Sub
 
-Private Sub Image2_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    If CaenItems Then
-        CaenItems = False
-    Else
-        CaenItems = True
+'Private Sub Image2_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
+   ' If CaenItems Then
+    '    CaenItems = False
+   ' Else
+   '     CaenItems = True
 
-    End If
+   ' End If
         
-    If CaenItems = 0 Then
-        Image2.Picture = Nothing
-    Else
-        Image2.Picture = LoadInterface("check-amarillo.bmp")
+    'If CaenItems = 0 Then
+   '     Image2.Picture = Nothing
+   ' Else
+   '     Image2.Picture = LoadInterface("check-amarillo.bmp")
 
-    End If
+  '  End If
     
-    Exit Sub
-End Sub
+   ' Exit Sub
+'End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     If PocionesRojas Then
