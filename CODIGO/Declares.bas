@@ -192,6 +192,16 @@ Public Enum e_CdTypes
     [CDCount]
 End Enum
 
+Public Type t_DragState
+    active As Boolean
+    Grh As Long
+    PosX As Long
+    PosY As Long
+    DragType As Integer
+    DragIndex As Long
+    DragSlot As Integer
+End Type
+
 Public Enum e_HotkeyType
     Item = 1
     Spell = 2
@@ -205,6 +215,10 @@ Public Type t_HotkeyEntry
 End Type
 Public Const HotKeyCount As Integer = 10
 
+Public Enum e_FeatureToggleMask
+    eEnableHotkeys = 1
+End Enum
+Public HideHotkeys As Boolean
 Public HotkeyList(HotKeyCount) As t_HotkeyEntry
 Public packetControl(1 To CANT_PACKETS_CONTROL) As t_packetControl
 Public Const NUM_PASOS       As Byte = 7
@@ -236,7 +250,8 @@ Public DireccionDeCaminata   As String
 Public CaminandoMacro        As Boolean
 Public CaminarX              As Integer
 Public CaminarY              As Integer
-Public FeatureToggles()      As String
+Public FeatureToggles        As Long 'use values from e_FeatureToggleMask
+Public gDragState             As t_DragState
 
 Public character_screen_action    As e_connect_user_action
 Public Enum e_connect_user_action
@@ -757,6 +772,7 @@ Type Slot
     MaxHit As Integer
     MinHit As Integer
     PuedeUsar As Byte
+    IsBindable As Boolean
 End Type
 
 Public Type t_UserInvetory

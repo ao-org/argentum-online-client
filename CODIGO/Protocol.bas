@@ -5301,6 +5301,7 @@ Private Sub HandleChangeSpellSlot()
         Call BabelUI.SetSpellSlot(SpellInfo)
     Else
         If Index >= 0 Then
+            HechizoData(Index).IsBindable = IsBindable
             If Slot <= hlst.ListCount Then
                 hlst.List(Slot - 1) = HechizoData(Index).nombre
             Else
@@ -8845,13 +8846,17 @@ On Error GoTo ErrHandler
     Dim ToggleCount As Integer
     ToggleCount = Reader.ReadInt16
     Dim i As Integer
-    ReDim FeatureToggles(ToggleCount) As String
+    Dim ToggleName As String
     If BabelInitialized Then
         Call BabelUI.ClearToggles
     End If
     For i = 0 To ToggleCount - 1
-        FeatureToggles(i) = Reader.ReadString8
-        If BabelInitialized Then Call BabelUI.ActivateFeatureToggle(FeatureToggles(i))
+        ToggleName = Reader.ReadString8
+        If BabelInitialized Then Call BabelUI.ActivateFeatureToggle(ToggleName)
+        
+        If ToggleName = "hotokey-enabled" Then
+            Call SetMask(FeatureToggles, eEnableHotkeys)
+        End If
     Next i
     Exit Sub
 ErrHandler:

@@ -415,9 +415,12 @@ Public Sub DoHotKey(ByVal HkSlot As Byte)
             Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
         End With
     Else
-        Call WriteUseHKeySlot(HkSlot)
+        If IsSet(FeatureToggles, eEnableHotkeys) Then
+            Call WriteUseHKeySlot(HkSlot)
+        End If
     End If
 End Sub
+
 Public Sub TirarItem()
     On Error GoTo TirarItem_Err
     If BabelInitialized Then

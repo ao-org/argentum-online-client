@@ -19,7 +19,7 @@ Const AnimationSpeed = 0.03
 
 Const HideShowRectWidth = 10
 Const HideShowRectHeight = 40
-Const HideArrowGrh = 29548
+Public Const HideArrowGrh = 29548
 Const ShowArrowGrh = 29549
 
 Public Type t_GroupEntry
