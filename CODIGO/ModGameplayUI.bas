@@ -382,6 +382,7 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         .ObjType = ObjType
         .Valor = Value
         .PuedeUsar = CanUse
+        .IsBindable = IsBindable > 0
     End With
     If BabelInitialized Then
         Dim SlotInfo As t_InvItem

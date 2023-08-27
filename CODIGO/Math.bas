@@ -113,3 +113,20 @@ Public Function OverlapRect(ByRef TargetRect As RECT, ByVal x As Integer, ByVal 
     If PointIsInsideRect(x + Width, y + Heigth, TargetRect) Then Exit Function
     OverlapRect = TargetRect.Left >= x And TargetRect.Left <= (x + Width) And TargetRect.Top >= y And TargetRect.Bottom <= y + Width
 End Function
+
+Public Sub SetMask(ByRef Mask As Long, ByVal Value As Long)
+    Mask = Mask Or Value
+End Sub
+
+Public Function IsSet(ByVal Mask As Long, ByVal Value As Long) As Boolean
+    IsSet = (Mask And Value) > 0
+End Function
+
+Public Sub UnsetMask(ByRef Mask As Long, ByVal Value As Long)
+    Mask = Mask And Not Value
+End Sub
+
+Public Sub ResetMask(ByRef Mask As Long)
+    Mask = 0
+End Sub
+

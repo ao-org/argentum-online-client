@@ -441,6 +441,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2152,51 +2153,75 @@ imgInventario_MouseMove_Err:
 End Sub
 
 Private Sub picHechiz_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
-If y < 0 Then y = 0
-If y > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then y = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
-If x < picHechiz.ScaleWidth - 10 Then
-    hlst.ListIndex = Int(y / hlst.Pixel_Alto) + hlst.Scroll
-    hlst.DownBarrita = 0
-    If Seguido = 1 Then
-        Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
-    End If
-Else
-    hlst.DownBarrita = y - hlst.Scroll * (picHechiz.ScaleHeight - hlst.BarraHeight) / (hlst.ListCount - hlst.VisibleCount)
-End If
-End Sub
-
-Private Sub picHechiz_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
-If button = 1 Then
-    Dim yy As Integer
-    yy = y
-    If yy < 0 Then yy = 0
-    If yy > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then yy = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
-    If hlst.DownBarrita > 0 Then
-        hlst.Scroll = (y - hlst.DownBarrita) * (hlst.ListCount - hlst.VisibleCount) / (picHechiz.ScaleHeight - hlst.BarraHeight)
-    Else
-        hlst.ListIndex = Int(yy / hlst.Pixel_Alto) + hlst.Scroll
+    If y < 0 Then y = 0
+    If y > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then y = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
+    If x < picHechiz.ScaleWidth - 10 Then
+        hlst.ListIndex = Int(y / hlst.Pixel_Alto) + hlst.Scroll
+        hlst.DownBarrita = 0
+        If button = vbRightButton Then
+            gDragState.DragSlot = hlst.ListIndex + 1
+            gDragState.DragIndex = UserHechizos(gDragState.DragSlot)
+            If HechizoData(gDragState.DragIndex).IsBindable Then
+                gDragState.DragType = e_HotkeyType.Spell
+                gDragState.Grh = HechizoData(gDragState.DragIndex).IconoIndex
+                gDragState.PosX = -500
+                gDragState.PosY = -500
+                gDragState.active = True
+            Else
+                gDragState.DragSlot = 0
+                gDragState.DragIndex = 0
+            End If
+        End If
         If Seguido = 1 Then
             Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
         End If
-        If ScrollArrastrar = 0 Then
-            If (y < yy) Then hlst.Scroll = hlst.Scroll - 1
-            If (y > yy) Then hlst.Scroll = hlst.Scroll + 1
-        End If
+    Else
+        hlst.DownBarrita = y - hlst.Scroll * (picHechiz.ScaleHeight - hlst.BarraHeight) / (hlst.ListCount - hlst.VisibleCount)
     End If
-ElseIf button = 0 Then
-    hlst.ShowBarrita = x > picHechiz.ScaleWidth - hlst.BarraWidth * 2
-End If
+End Sub
+
+Private Sub picHechiz_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
+    If button = 1 Then
+        Dim yy As Integer
+        yy = y
+        If yy < 0 Then yy = 0
+        If yy > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then yy = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
+        If hlst.DownBarrita > 0 Then
+            hlst.Scroll = (y - hlst.DownBarrita) * (hlst.ListCount - hlst.VisibleCount) / (picHechiz.ScaleHeight - hlst.BarraHeight)
+        Else
+            hlst.ListIndex = Int(yy / hlst.Pixel_Alto) + hlst.Scroll
+            If Seguido = 1 Then
+                Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
+            End If
+            If ScrollArrastrar = 0 Then
+                If (y < yy) Then hlst.Scroll = hlst.Scroll - 1
+                If (y > yy) Then hlst.Scroll = hlst.Scroll + 1
+            End If
+        End If
+    ElseIf button = 0 Then
+        hlst.ShowBarrita = x > picHechiz.ScaleWidth - hlst.BarraWidth * 2
+    End If
+    
+    If gDragState.active Then
+        gDragState.PosX = x + picHechiz.Left + picHechiz.Container.Left
+        gDragState.PosY = y + picHechiz.Top + picHechiz.Container.Top
+    End If
 End Sub
 
 Private Sub picHechiz_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
-hlst.DownBarrita = 0
+    hlst.DownBarrita = 0
+    If button = vbRightButton And gDragState.active Then
+        Call frmMain.OnDragEnd
+    End If
 End Sub
 
 Private Sub picInv_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     If Not picInv.visible Then Exit Sub
     
     If dobleclick.Interval = 0 Then dobleclick.Interval = 1000
-    
+    If button = vbRightButton And gDragState.active Then
+        Call frmMain.OnDragEnd
+    End If
     If button = 1 Then
         dobleclick.Interval = 1000
         totalclicks = totalclicks + 1
@@ -2254,7 +2279,10 @@ Private Sub Form_MouseUp(button As Integer, Shift As Integer, x As Single, y As 
     
     clicX = x
     clicY = y
-
+    If gDragState.active And button = vbRightButton Then
+        Call OnDragEnd
+        gDragState.active = False
+    End If
     
     Exit Sub
 
@@ -3760,6 +3788,7 @@ Private Sub renderer_MouseUp(button As Integer, Shift As Integer, x As Single, y
     clicY = y
     If button = vbLeftButton Then
         If HandleMouseInput(x, y) Then
+        ElseIf HandleHotkeyArrowInput(x, y) Then
         ElseIf Pregunta Then
             If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
                 If PreguntaLocal Then
@@ -3816,7 +3845,10 @@ Private Sub renderer_MouseUp(button As Integer, Shift As Integer, x As Single, y
         End If
     
     ElseIf button = vbRightButton Then
-        
+        If gDragState.active Then
+            Call OnDragEnd
+            gDragState.active = False
+        End If
         Dim charindex As Integer
         charindex = MapData(tX, tY).charindex
         
@@ -3877,29 +3909,8 @@ Private Sub renderer_MouseMove(button As Integer, Shift As Integer, x As Single,
     On Error GoTo renderer_MouseMove_Err
 
     DisableURLDetect
-
+    
     Call Form_MouseMove(button, Shift, renderer.Left + x, renderer.Top + y)
-
-    'If DropItem Then
-
-    ' frmMain.UsandoDrag = False
-    ' Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
-    'Call WriteDropItem(DropIndex, tX, tY, CantidadDrop)
-    ' DropItem = False
-    ' DropIndex = 0
-    ' TimeDrop = 0
-    ' DropActivo = False
-    ' CantidadDrop = 0
-    ' Call FormParser.Parse_Form(frmMain)
-    
-    ' End If
-    
-    'LucesCuadradas.Light_Remove (10)
-    
-    'LucesCuadradas.Light_Create tX, tY, &HFFFFFFF, 1, 10
-    'LucesCuadradas.Light_Render_All
-    
-    
     Exit Sub
 
 renderer_MouseMove_Err:
@@ -4253,7 +4264,10 @@ End Sub
 Private Sub Form_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Form_MouseMove_Err
-
+    If gDragState.active Then
+        gDragState.PosX = x
+        gDragState.PosY = y
+    End If
     ' Disable links checking (not over consola)
     StopCheckingLinks
     
@@ -4786,3 +4800,23 @@ Public Sub UpdateBuff()
     frmMain.Fuerzalbl.Caption = UserStats.str
     frmMain.AgilidadLbl.Caption = UserStats.Agi
 End Sub
+
+Public Sub OnDragEnd()
+    If gDragState.PosX > hotkey_render_posX And gDragState.PosX < hotkey_render_posX + 36 * 10 And _
+       gDragState.PosY > renderer.Top + renderer.Height - hotkey_render_posY And gDragState.PosY < renderer.Top + renderer.Height - (hotkey_render_posY - 36) Then
+       Dim TargetSlot As Integer
+       TargetSlot = (gDragState.PosX - hotkey_render_posX) \ 36
+       Call SetHotkey(gDragState.DragIndex, gDragState.DragSlot, gDragState.DragType, TargetSlot)
+    End If
+    gDragState.active = False
+End Sub
+
+Public Function HandleHotkeyArrowInput(ByVal x As Integer, ByVal y As Integer) As Boolean
+    If x > hotkey_arrow_posx And x < hotkey_arrow_posx + 10 And _
+       y > renderer.Height - hotkey_arrow_posy And y < renderer.Height Then
+        HandleHotkeyArrowInput = True
+        HideHotkeys = Not HideHotkeys
+        Call SaveHideHotkeys
+    End If
+    HandleHotkeyArrowInput = False
+End Function

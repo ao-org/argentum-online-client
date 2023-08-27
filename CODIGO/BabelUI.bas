@@ -131,6 +131,7 @@ Public Type t_GamePlayCallbacks
     TeleportToMiniMapPos As Long
     UpdateCombatAndGlobalChat As Long
     UpdateHotKeySlot As Long
+    UpdateHideHotkeyState As Long
 End Type
 
 Public Type t_SpellSlot
@@ -246,6 +247,7 @@ Public Declare Sub ActivateStunTimer Lib "BabelUI.dll" (ByVal Duration As Long)
 Public Declare Sub UpdateHoykeySlot Lib "BabelUI.dll" (ByVal SlotIndex As Long, ByRef SlotInfo As t_HotkeyEntry)
 Public Declare Sub ActivateFeatureToggle Lib "BabelUI.dll" (ByVal ToggleName As String)
 Public Declare Sub ClearToggles Lib "BabelUI.dll" ()
+Public Declare Sub SetHotkeyHideState Lib "BabelUI.dll" (ByVal HideHotkeyState As Long)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -368,6 +370,7 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.TeleportToMiniMapPos = FARPROC(AddressOf TeleportToMiniMapPos)
         GameplayCallbacks.UpdateCombatAndGlobalChat = FARPROC(AddressOf UpdateCombatAndGlobalChatCB)
         GameplayCallbacks.UpdateHotKeySlot = FARPROC(AddressOf UpdateHotkeySlotCB)
+        GameplayCallbacks.UpdateHideHotkeyState = FARPROC(AddressOf UpdateHideHotkeyCB)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -794,6 +797,11 @@ End Sub
 
 Public Sub UpdateHotkeySlotCB(ByVal SlotIndex As Long, ByRef SlotInfo As t_HotkeyEntry)
     Call SetHotkey(SlotInfo.Index, SlotInfo.LastKnownSlot, SlotInfo.Type, SlotIndex)
+End Sub
+
+Public Sub UpdateHideHotkeyCB(ByVal State As Integer)
+    HideHotkeys = State > 0
+    Call SaveHideHotkeys
 End Sub
 
 Public Sub TeleportToMiniMapPos(ByVal PosX As Long, ByVal PosY As Long)

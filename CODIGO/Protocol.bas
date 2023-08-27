@@ -5046,10 +5046,11 @@ Private Sub HandleWorkRequestTarget()
     UsingSkillREcibido = Reader.ReadInt8()
     casteaArea = Reader.ReadBool()
     RadioHechizoArea = Reader.ReadInt8()
-    
+    Dim Frm As Form
+    Set Frm = GetGameplayForm
     If EstaSiguiendo Then Exit Sub
     If UsingSkillREcibido = 0 Then
-        frmMain.MousePointer = 0
+        Frm.MousePointer = 0
         Call FormParser.Parse_Form(frmMain, E_NORMAL)
         UsingSkill = UsingSkillREcibido
         Exit Sub
@@ -5057,8 +5058,7 @@ Private Sub HandleWorkRequestTarget()
 
     If UsingSkillREcibido = UsingSkill Then Exit Sub
     UsingSkill = UsingSkillREcibido
-    Dim Frm As Form
-    Set Frm = GetGameplayForm
+    
     Frm.MousePointer = 2
     Select Case UsingSkill
         Case magia, eSkill.TargetableItem
@@ -5301,6 +5301,7 @@ Private Sub HandleChangeSpellSlot()
         Call BabelUI.SetSpellSlot(SpellInfo)
     Else
         If Index >= 0 Then
+            HechizoData(Index).IsBindable = IsBindable
             If Slot <= hlst.ListCount Then
                 hlst.List(Slot - 1) = HechizoData(Index).nombre
             Else
@@ -8845,13 +8846,17 @@ On Error GoTo ErrHandler
     Dim ToggleCount As Integer
     ToggleCount = Reader.ReadInt16
     Dim i As Integer
-    ReDim FeatureToggles(ToggleCount) As String
+    Dim ToggleName As String
     If BabelInitialized Then
         Call BabelUI.ClearToggles
     End If
     For i = 0 To ToggleCount - 1
-        FeatureToggles(i) = Reader.ReadString8
-        If BabelInitialized Then Call BabelUI.ActivateFeatureToggle(FeatureToggles(i))
+        ToggleName = Reader.ReadString8
+        If BabelInitialized Then Call BabelUI.ActivateFeatureToggle(ToggleName)
+        
+        If ToggleName = "hotokey-enabled" Then
+            Call SetMask(FeatureToggles, eEnableHotkeys)
+        End If
     Next i
     Exit Sub
 ErrHandler:

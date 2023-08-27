@@ -78,6 +78,10 @@ Public Sub LoadHotkeys()
         End If
         Call WriteSetHotkeySlot(i, HotkeyList(i).Index, HotkeyList(i).LastKnownSlot, HotkeyList(i).Type)
     Next i
+    HideHotkeys = Val(GetVar(FilePath, UserName, "HideHotkeys"))
+    If BabelInitialized Then
+        Call BabelUI.SetHotkeyHideState(IIf(HideHotkeys, 1, 0))
+    End If
 End Sub
 
 Public Sub SaveHotkey(ByVal Index As Integer, ByVal LastKnownSlot As Integer, ByVal HotkeyType As e_HotkeyType, ByVal HotkeySlot As Integer)
@@ -88,3 +92,8 @@ Public Sub SaveHotkey(ByVal Index As Integer, ByVal LastKnownSlot As Integer, By
     Call General_Var_Write(FilePath, username, "Type" & HotkeySlot, HotkeyType)
 End Sub
 
+Public Sub SaveHideHotkeys()
+    Dim FilePath As String
+    FilePath = App.path & HotKeySettingsFile
+    Call General_Var_Write(FilePath, UserName, "HideHotkeys", IIf(HideHotkeys, 1, 0))
+End Sub

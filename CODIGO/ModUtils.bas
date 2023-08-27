@@ -257,6 +257,7 @@ Public Type HechizoDatas
     StaRequerido As Integer
     IconoIndex As Long
     Cooldown As Long
+    IsBindable As Boolean
 End Type
 
 Public Type NameMapas
