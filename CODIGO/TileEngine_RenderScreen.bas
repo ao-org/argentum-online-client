@@ -222,7 +222,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
    ' Call SetRGBA(MapData(15, 15).light_value(0), 255, 20, 20)
     'size 96x96 - mitad = 48
-    If casteaArea And MouseX > 0 And MouseY > 0 And frmMain.MousePointer = 2 Then
+    If casteaArea And MouseX > 0 And MouseY > 0 And GetGameplayForm.MousePointer = 2 Then
         Call Draw_Grh(grhSpellArea, MouseX - 48, MouseY - 48, 0, 1, temp_color, True, , , 70)
     End If
     

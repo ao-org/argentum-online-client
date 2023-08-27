@@ -123,10 +123,11 @@ Public Function HandleMouseInput(ByVal x As Integer, ByVal y As Integer) As Bool
                 HandleMouseInput = True
                 If MainTimer.Check(TimersIndex.CastSpell) Then
                     Call WriteActionOnGroupFrame(GroupMembers(i).GroupId)
+                    Call FormParser.Parse_Form(GetGameplayForm)
                     UsaLanzar = False
                     UsingSkill = 0
                     If CursoresGraficos = 0 Then
-                        frmMain.MousePointer = vbDefault
+                        GetGameplayForm.MousePointer = vbDefault
                     End If
                 End If
             End If

@@ -416,6 +416,14 @@ Public Sub DoHotKey(ByVal HkSlot As Byte)
         End With
     Else
         If IsSet(FeatureToggles, eEnableHotkeys) Then
+            If HotkeyList(HkSlot).Index > 0 Then
+                Call FormParser.Parse_Form(GetGameplayForm)
+                    UsaLanzar = False
+                    UsingSkill = 0
+                    If CursoresGraficos = 0 Then
+                        GetGameplayForm.MousePointer = vbDefault
+                    End If
+            End If
             Call WriteUseHKeySlot(HkSlot)
         End If
     End If
