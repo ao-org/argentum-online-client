@@ -731,7 +731,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
     Call Effect_Render_All
     
-    If Not BabelInitialized And IsSet(FeatureToggles, eEnableHotkeys) Then
+    If Not BabelInitialized And IsSet(FeatureToggles, eEnableHotkeys) And g_game_state.state = e_state_gameplay_screen Then
         Dim color(3) As RGBA
         Call RGBAList(color, 255, 255, 255, 200)
         Dim ArrowPos As Vector2

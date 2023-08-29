@@ -898,10 +898,10 @@ Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Si
     ' Calculo el slot
     Dim Slot As Byte
     
-    If x > HALF_ITEM_SIZE And _
-       y > HALF_ITEM_SIZE And _
-       x < InventoryWindow.ScaleWidth - HALF_ITEM_SIZE And _
-       y < InventoryWindow.ScaleHeight - HALF_ITEM_SIZE Then
+    If x > 0 And _
+       y > 0 And _
+       x < InventoryWindow.ScaleWidth And _
+       y < InventoryWindow.ScaleHeight Then
         Slot = GetSlot(x, y)
     Else
         Slot = 0
