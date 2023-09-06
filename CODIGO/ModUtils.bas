@@ -211,6 +211,7 @@ Public Type ObjDatas
     PielLobo As Integer
     PielOsoPardo As Integer
     PielOsoPolar As Integer
+    PielLoboNegro As Integer
     LingH As Integer
     LingP As Integer
     LingO As Integer

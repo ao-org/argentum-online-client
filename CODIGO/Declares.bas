@@ -512,6 +512,7 @@ Type tSasteria
     PielLobo As Integer
     PielOsoPardo As Integer
     PielOsoPolar As Integer
+    PielLoboNegro As Integer
     Index As Integer
 End Type
 
