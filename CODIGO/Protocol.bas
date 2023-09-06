@@ -5572,7 +5572,7 @@ Private Sub HandleSastreObjects()
         ObjSastre(i).PielLobo = ObjData(ObjSastre(i).Index).PielLobo
         ObjSastre(i).PielOsoPardo = ObjData(ObjSastre(i).Index).PielOsoPardo
         ObjSastre(i).PielOsoPolar = ObjData(ObjSastre(i).Index).PielOsoPolar
-
+        ObjSastre(i).PielLoboNegro = ObjData(ObjSastre(i).Index).PielLoboNegro
     Next i
     
     Dim r As Byte
@@ -5591,6 +5591,7 @@ Private Sub HandleSastreObjects()
             SastreRopas(r).PielLobo = ObjSastre(i).PielLobo
             SastreRopas(r).PielOsoPardo = ObjSastre(i).PielOsoPardo
             SastreRopas(r).PielOsoPolar = ObjSastre(i).PielOsoPolar
+            SastreRopas(G).PielLoboNegro = ObjSastre(i).PielLoboNegro
             r = r + 1
 
         End If
@@ -5600,6 +5601,7 @@ Private Sub HandleSastreObjects()
             SastreGorros(G).PielLobo = ObjSastre(i).PielLobo
             SastreGorros(G).PielOsoPardo = ObjSastre(i).PielOsoPardo
             SastreGorros(G).PielOsoPolar = ObjSastre(i).PielOsoPolar
+            SastreGorros(G).PielLoboNegro = ObjSastre(i).PielLoboNegro
             G = G + 1
 
         End If

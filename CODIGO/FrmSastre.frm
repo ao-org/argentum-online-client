@@ -51,7 +51,7 @@ Begin VB.Form FrmSastre
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   615
+      Height          =   810
       ItemData        =   "FrmSastre.frx":0000
       Left            =   5535
       List            =   "FrmSastre.frx":0007
@@ -72,7 +72,7 @@ Begin VB.Form FrmSastre
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   615
+      Height          =   810
       Left            =   3870
       TabIndex        =   2
       Top             =   2955
@@ -182,6 +182,7 @@ Attribute VB_Exposed = False
 '
 Private indice As Byte
 
+Const BlackWolfIndex = 1146
 Private Sub Command1_Click()
     
     On Error GoTo Command1_Click_Err
@@ -436,6 +437,8 @@ Private Sub List1_Click()
         grh = 699
     ElseIf List1.ListIndex = 2 Then
         grh = 698
+    ElseIf List1.ListIndex = 3 Then
+        Grh = ObjData(BlackWolfIndex).GrhIndex
 
     End If
 
@@ -462,18 +465,21 @@ Private Sub lstArmas_Click()
     List1.AddItem ("Piel de lobo")
     List1.AddItem ("Piel de oso pardo")
     List1.AddItem ("Piel de oso polar")
+    List1.AddItem ("Piel de lobo negro")
 
     If indice = 1 Then
         Call Grh_Render_To_Hdc(picture1, ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
         List2.AddItem (ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).PielLobo)
         List2.AddItem (ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).PielOsoPardo)
         List2.AddItem (ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).PielOsoPolar)
+        List2.AddItem (ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).PielLoboNegro)
         desc.Caption = "Defensa: " & ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).MinDef & "/" & ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).MaxDef
     ElseIf indice = 2 Then
         Call Grh_Render_To_Hdc(picture1, ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
         List2.AddItem (ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).PielLobo)
         List2.AddItem (ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).PielOsoPardo)
         List2.AddItem (ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).PielOsoPolar)
+        List2.AddItem (ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).PielLoboNegro)
         desc.Caption = "Defensa: " & ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).MinDef & "/" & ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).MaxDef
 
     End If
