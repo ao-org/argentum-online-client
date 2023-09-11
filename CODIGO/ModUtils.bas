@@ -215,6 +215,7 @@ Public Type ObjDatas
     LingH As Integer
     LingP As Integer
     LingO As Integer
+    Coal As Integer
     Destruye As Byte
     SkHerreria As Byte
     SkPociones As Byte

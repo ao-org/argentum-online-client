@@ -128,8 +128,8 @@ Public Sub SetActiveEnvironment(ByVal environment As String)
     Next k
     IPdelServidor = ServerSettings.GetValue(environment, "ServerIp" & serverOpt)
     PuertoDelServidor = ServerSettings.GetValue(environment, "PortPort" & serverOpt)
-    IPdelServidorLogin = ServerSettings.GetValue(environment, "LoginIp" & serverOpt)
-    PuertoDelServidorLogin = ServerSettings.GetValue(environment, "LoginPort" & serverOpt)
+    IPdelServidorLogin = ServerSettings.GetValue(environment, "LoginIp" & loginOpt)
+    PuertoDelServidorLogin = ServerSettings.GetValue(environment, "LoginPort" & loginOpt)
     Debug.Print "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
     Debug.Print "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
 End Sub

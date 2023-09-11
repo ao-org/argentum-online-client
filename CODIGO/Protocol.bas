@@ -5391,7 +5391,7 @@ Private Sub HandleBlacksmithWeapons()
         ArmasHerrero(i).LHierro = Reader.ReadInt16()  'The iron needed
         ArmasHerrero(i).LPlata = Reader.ReadInt16()    'The silver needed
         ArmasHerrero(i).LOro = Reader.ReadInt16()    'The gold needed
-        
+        ArmasHerrero(i).Coal = Reader.ReadInt16()   'The coal needed
         ' Call frmHerrero.lstArmas.AddItem(tmp)
     Next i
     
@@ -5440,7 +5440,7 @@ Private Sub HandleBlacksmithArmors()
         DefensasHerrero(i).LHierro = Reader.ReadInt16()   'The iron needed
         DefensasHerrero(i).LPlata = Reader.ReadInt16()   'The silver needed
         DefensasHerrero(i).LOro = Reader.ReadInt16()   'The gold needed
-        
+        DefensasHerrero(i).Coal = Reader.ReadInt16()   'The coal needed
         ' Call frmHerrero.lstArmaduras.AddItem(tmp)
         DefensasHerrero(i).Index = Reader.ReadInt16()
     Next i

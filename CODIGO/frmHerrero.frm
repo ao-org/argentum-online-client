@@ -648,12 +648,14 @@ Private Sub lstArmas_Click()
     List1.AddItem ("Lingote de hierro")
     List1.AddItem ("Lingo de plata")
     List1.AddItem ("Lingotes de Oro")
+    List1.AddItem ("Carbon")
 
     If Index = 1 Then
         Call Grh_Render_To_Hdc(picture1, ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
         List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingH)
         List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingP)
         List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingO)
+        List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).Coal)
         desc.Caption = "Golpe: " & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MinHit & "/" & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MaxHit
     
     ElseIf Index = 2 Then
@@ -661,18 +663,21 @@ Private Sub lstArmas_Click()
         List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingH)
         List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingP)
         List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingO)
+        List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).Coal)
         desc.Caption = "Defensa: " & ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).MaxDef
     ElseIf Index = 3 Then
         Call Grh_Render_To_Hdc(picture1, ObjData(CascosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
         List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingH)
         List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingP)
         List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingO)
+        List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).Coal)
         desc.Caption = "Defensa: " & ObjData(CascosHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(CascosHerrero(lstArmas.ListIndex).Index).MaxDef
     ElseIf Index = 4 Then
         Call Grh_Render_To_Hdc(picture1, ObjData(EscudosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
         List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingH)
         List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingP)
         List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingO)
+        List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).Coal)
         desc.Caption = "Defensa: " & ObjData(EscudosHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(EscudosHerrero(lstArmas.ListIndex).Index).MaxDef
 
     End If
