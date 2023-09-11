@@ -824,6 +824,8 @@ End Sub
 
 Public Sub HandleQuestionResponseCB(ByVal Response As Integer)
     Call HandleQuestionResponse(Response > 0)
+End Sub
+
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long
         '<EhHeader>
         On Error GoTo BabelEditWndProc_Err
