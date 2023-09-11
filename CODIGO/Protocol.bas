@@ -8390,16 +8390,16 @@ Private Sub HandleShowPregunta()
     
     Dim msg As String
 
-    PreguntaScreen = Reader.ReadString8()
-    Pregunta = True
-    
+    msg = Reader.ReadString8()
+    If BabelInitialized Then
+        ShowQuestion (msg)
+    Else
+        PreguntaScreen = msg
+        Pregunta = True
+    End If
     Exit Sub
-
 ErrHandler:
-
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPregunta", Erl)
-    
-
 End Sub
 
 Private Sub HandleDatosGrupo()

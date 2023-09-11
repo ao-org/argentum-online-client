@@ -561,10 +561,13 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/DENUNCIAR"
                 If notNullArguments Then
-                    PreguntaScreen = "¿Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia."
-                    Pregunta = True
+                    If BabelInitialized Then
+                        Call ShowQuestion("¿Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia.")
+                    Else
+                        PreguntaScreen = "¿Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia."
+                        Pregunta = True
+                    End If
                     TargetName = ArgumentosRaw
-    
                     PreguntaLocal = True
                     PreguntaNUM = 2
                 Else

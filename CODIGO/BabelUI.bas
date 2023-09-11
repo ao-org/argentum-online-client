@@ -132,6 +132,7 @@ Public Type t_GamePlayCallbacks
     UpdateCombatAndGlobalChat As Long
     UpdateHotKeySlot As Long
     UpdateHideHotkeyState As Long
+    HandleQuestionResponse As Long
 End Type
 
 Public Type t_SpellSlot
@@ -248,6 +249,7 @@ Public Declare Sub UpdateHoykeySlot Lib "BabelUI.dll" (ByVal SlotIndex As Long, 
 Public Declare Sub ActivateFeatureToggle Lib "BabelUI.dll" (ByVal ToggleName As String)
 Public Declare Sub ClearToggles Lib "BabelUI.dll" ()
 Public Declare Sub SetHotkeyHideState Lib "BabelUI.dll" (ByVal HideHotkeyState As Long)
+Public Declare Sub ShowQuestion Lib "BabelUI.dll" (ByVal QuestionText As String)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -371,6 +373,7 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.UpdateCombatAndGlobalChat = FARPROC(AddressOf UpdateCombatAndGlobalChatCB)
         GameplayCallbacks.UpdateHotKeySlot = FARPROC(AddressOf UpdateHotkeySlotCB)
         GameplayCallbacks.UpdateHideHotkeyState = FARPROC(AddressOf UpdateHideHotkeyCB)
+        GameplayCallbacks.HandleQuestionResponse = FARPROC(AddressOf HandleQuestionResponseCB)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -819,6 +822,8 @@ Public Sub UpdateCombatAndGlobalChatCB(ByVal CombatState As Long, ByVal GlobalSt
     Call WriteMacroPos
 End Sub
 
+Public Sub HandleQuestionResponseCB(ByVal Response As Integer)
+    Call HandleQuestionResponse(Response > 0)
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long
         '<EhHeader>
         On Error GoTo BabelEditWndProc_Err
