@@ -44,6 +44,7 @@ Public Sub SetupGameplayUI()
         frmMain.picInv.visible = True
         frmMain.picHechiz.visible = False
         frmMain.cmdlanzar.visible = False
+        
         frmMain.imgSpellInfo.visible = False
         frmMain.cmdMoverHechi(0).visible = False
         frmMain.cmdMoverHechi(1).visible = False

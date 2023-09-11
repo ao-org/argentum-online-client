@@ -505,6 +505,7 @@ Type tHerreria
     LHierro As Integer
     LPlata As Integer
     LOro As Integer
+    Coal As Integer
     Index As Integer
 End Type
 
