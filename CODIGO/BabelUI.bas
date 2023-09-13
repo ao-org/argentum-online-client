@@ -250,6 +250,8 @@ Public Declare Sub ActivateFeatureToggle Lib "BabelUI.dll" (ByVal ToggleName As 
 Public Declare Sub ClearToggles Lib "BabelUI.dll" ()
 Public Declare Sub SetHotkeyHideState Lib "BabelUI.dll" (ByVal HideHotkeyState As Long)
 Public Declare Sub ShowQuestion Lib "BabelUI.dll" (ByVal QuestionText As String)
+Public Declare Sub OpenMerchant Lib "BabelUI.dll" ()
+Public Declare Sub UpdateMerchantSlot Lib "BabelUI.dll" (ByRef SlotInfo As t_InvItem)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean

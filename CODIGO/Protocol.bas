@@ -1572,7 +1572,10 @@ Private Sub HandleCommerceInit()
     Dim NpcName As String
 
     NpcName = Reader.ReadString8()
-
+    If BabelInitialized Then
+        Call OpenMerchant
+        Exit Sub
+    End If
     'Fill our inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
         If BabelInitialized Then
@@ -1721,7 +1724,6 @@ Private Sub HandleUserCommerceInit()
     Dim i As Long
     
     'Clears lists if necessary
-    
     'Fill inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
         If BabelInitialized Then
@@ -5807,8 +5809,31 @@ Private Sub HandleChangeNPCInventorySlot()
         .Def = ObjData(.ObjIndex).MaxDef
         .PuedeUsar = Reader.ReadInt8()
         
-        Call frmComerciar.InvComNpc.SetItem(Slot, .ObjIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
-        
+        If BabelInitialized Then
+            Dim SlotInfo As t_InvItem
+            SlotInfo.Amount = .Amount
+            SlotInfo.CanUse = .PuedeUsar
+            SlotInfo.Equiped = False
+            SlotInfo.GrhIndex = .GrhIndex
+            SlotInfo.MaxDef = .Def
+            SlotInfo.MinDef = .Def
+            SlotInfo.MaxHit = .MaxHit
+            SlotInfo.MinHit = .MinHit
+            SlotInfo.Name = .Name
+            SlotInfo.Slot = Slot
+            SlotInfo.ObjIndex = .ObjIndex
+            SlotInfo.ObjType = .ObjType
+            SlotInfo.Value = .Valor
+            SlotInfo.Cooldown = ObjData(.ObjIndex).Cooldown
+            SlotInfo.CDType = ObjData(.ObjIndex).CDType
+            SlotInfo.CDMask = GetCDMaskForItem(ObjData(.ObjIndex))
+            SlotInfo.desc = ObjData(.ObjIndex).Texto
+            SlotInfo.Amunition = ObjData(.ObjIndex).Amunition
+            SlotInfo.IsBindable = False
+            Call UpdateMerchantSlot(SlotInfo)
+        Else
+            Call frmComerciar.InvComNpc.SetItem(Slot, .ObjIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        End If
     End With
     
     Exit Sub
