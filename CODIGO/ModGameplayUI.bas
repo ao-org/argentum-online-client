@@ -63,12 +63,13 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
 On Error GoTo OnClick_Err
 
     If pausa Then Exit Sub
-    
+    If IsGameDialogOpen Then Exit Sub
     If mascota.visible Then
         If Sqr((MouseX - mascota.PosX) ^ 2 + (MouseY - mascota.PosY) ^ 2) < 30 Then
             mascota.dialog = ""
         End If
     End If
+    
     
     If cartel_visible Then
         If MouseX > 50 And MouseY > 478 And MouseX < 671 And MouseY < 585 Then

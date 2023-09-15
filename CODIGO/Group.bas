@@ -43,6 +43,7 @@ Public AnimationActive As Boolean
 Public ActiveArrowGrh As Long
 Public Sub Clear()
     GroupSize = 0
+    Hide = False
 End Sub
 
 Public Sub UpdateRenderArea()
@@ -65,7 +66,11 @@ Public Sub UpdateRenderArea()
     HideShowRect.Left = StartX - HideShowRectWidth / 2 - 2
     HideShowRect.Right = HideShowRect.Left + HideShowRectWidth
     HideShowRect.Bottom = HideShowRect.Top + HideShowRectHeight
-    CurrentPivot = 0
+    If Hide Then
+        CurrentPivot = FrameWidth + StartX + gameplay_render_offset.x
+    Else
+        CurrentPivot = 0
+    End If
     ActiveArrowGrh = IIf(Hide, HideArrowGrh, ShowArrowGrh)
 End Sub
 
@@ -117,23 +122,25 @@ End Sub
 Public Function HandleMouseInput(ByVal x As Integer, ByVal y As Integer) As Boolean
     Dim i As Integer
     If GroupSize < 1 Then Exit Function
-    For i = 0 To GroupSize - 1
-        If PointIsInsideRect(x, y, GroupMembers(i).RenderArea) Then
-            If UsingSkill = magia Then
-                HandleMouseInput = True
-                If MainTimer.Check(TimersIndex.CastSpell) Then
-                    Call WriteActionOnGroupFrame(GroupMembers(i).GroupId)
-                    Call FormParser.Parse_Form(GetGameplayForm)
-                    UsaLanzar = False
-                    UsingSkill = 0
-                    If CursoresGraficos = 0 Then
-                        GetGameplayForm.MousePointer = vbDefault
+    If Not Hide Then
+        For i = 0 To GroupSize - 1
+            If PointIsInsideRect(x, y, GroupMembers(i).RenderArea) Then
+                If UsingSkill = magia Then
+                    HandleMouseInput = True
+                    If MainTimer.Check(TimersIndex.CastSpell) Then
+                        Call WriteActionOnGroupFrame(GroupMembers(i).GroupId)
+                        Call FormParser.Parse_Form(GetGameplayForm)
+                        UsaLanzar = False
+                        UsingSkill = 0
+                        If CursoresGraficos = 0 Then
+                            GetGameplayForm.MousePointer = vbDefault
+                        End If
                     End If
                 End If
+                Exit Function
             End If
-            Exit Function
-        End If
-    Next i
+        Next i
+    End If
     If PointIsInsideRect(x, y, HideShowRect) Then
         AnimationActive = True
         LastFrameTime = GetTickCount()

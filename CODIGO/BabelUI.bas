@@ -133,6 +133,10 @@ Public Type t_GamePlayCallbacks
     UpdateHotKeySlot As Long
     UpdateHideHotkeyState As Long
     HandleQuestionResponse As Long
+    MoveMerchanSlot As Long
+    CloseMerchant As Long
+    BuyItem As Long
+    SellItem As Long
 End Type
 
 Public Type t_SpellSlot
@@ -376,6 +380,10 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.UpdateHotKeySlot = FARPROC(AddressOf UpdateHotkeySlotCB)
         GameplayCallbacks.UpdateHideHotkeyState = FARPROC(AddressOf UpdateHideHotkeyCB)
         GameplayCallbacks.HandleQuestionResponse = FARPROC(AddressOf HandleQuestionResponseCB)
+        GameplayCallbacks.MoveMerchanSlot = FARPROC(AddressOf HandleMoveMerchanSlotCB)
+        GameplayCallbacks.CloseMerchant = FARPROC(AddressOf HandleCloseMerchantCB)
+        GameplayCallbacks.BuyItem = FARPROC(AddressOf HandleBuyItemCB)
+        GameplayCallbacks.SellItem = FARPROC(AddressOf HandleSellItemCB)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -828,6 +836,20 @@ Public Sub HandleQuestionResponseCB(ByVal Response As Integer)
     Call HandleQuestionResponse(Response > 0)
 End Sub
 
+Public Sub HandleMoveMerchanSlotCB(ByVal FromSlot As Integer, ByVal ToSlot As Integer)
+End Sub
+Public Sub HandleCloseMerchantCB()
+    Call WriteCommerceEnd
+End Sub
+Public Sub HandleBuyItemCB(ByVal Slot As Integer, ByVal Amount As Integer)
+    Call WriteCommerceBuy(Slot, Amount)
+End Sub
+
+Public Sub HandleSellItemCB(ByVal Slot As Integer, ByVal Amount As Integer)
+    Call WriteCommerceSell(Slot, Amount)
+End Sub
+
+        
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long
         '<EhHeader>
         On Error GoTo BabelEditWndProc_Err
