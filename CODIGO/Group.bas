@@ -52,13 +52,15 @@ Public Sub UpdateRenderArea()
     Dim RenderStartY As Integer
     RenderStartY = StartY - (SpacingY * (GroupSize - 1)) / 2
     For i = 0 To GroupSize - 1
-        If GroupMembers(i).CharIndex <> UserCharIndex Then
-            GroupMembers(i).RenderArea.Left = StartX
-            GroupMembers(i).RenderArea.Top = RenderStartY + SpacingY * DrawCount
-            GroupMembers(i).RenderArea.Right = GroupMembers(i).RenderArea.Left + FrameWidth
-            GroupMembers(i).RenderArea.Bottom = GroupMembers(i).RenderArea.Top + FrameHeight
-            DrawCount = DrawCount + 1
-        End If
+        With GroupMembers(i)
+            If .CharIndex <> UserCharIndex Then
+                .RenderArea.Left = StartX
+                .RenderArea.Top = RenderStartY + SpacingY * DrawCount
+                .RenderArea.Right = .RenderArea.Left + FrameWidth
+                .RenderArea.Bottom = .RenderArea.Top + FrameHeight
+                DrawCount = DrawCount + 1
+            End If
+        End With
     Next i
     Engine_Draw_Box StartX - HideShowRectWidth / 2, StartY - HideShowRectHeight / 2, _
                     HideShowRectWidth, HideShowRectHeight, RGBA_From_Comp(128, 128, 128, 255)
@@ -124,21 +126,23 @@ Public Function HandleMouseInput(ByVal x As Integer, ByVal y As Integer) As Bool
     If GroupSize < 1 Then Exit Function
     If Not Hide Then
         For i = 0 To GroupSize - 1
-            If PointIsInsideRect(x, y, GroupMembers(i).RenderArea) Then
-                If UsingSkill = magia Then
-                    HandleMouseInput = True
-                    If MainTimer.Check(TimersIndex.CastSpell) Then
-                        Call WriteActionOnGroupFrame(GroupMembers(i).GroupId)
-                        Call FormParser.Parse_Form(GetGameplayForm)
-                        UsaLanzar = False
-                        UsingSkill = 0
-                        If CursoresGraficos = 0 Then
-                            GetGameplayForm.MousePointer = vbDefault
+            With GroupMembers(i)
+                If PointIsInsideRect(x, y, .RenderArea) Then
+                    If UsingSkill = magia Then
+                        HandleMouseInput = True
+                        If MainTimer.Check(TimersIndex.CastSpell) Then
+                            Call WriteActionOnGroupFrame(.GroupId)
+                            Call FormParser.Parse_Form(GetGameplayForm)
+                            UsaLanzar = False
+                            UsingSkill = 0
+                            If CursoresGraficos = 0 Then
+                                GetGameplayForm.MousePointer = vbDefault
+                            End If
                         End If
                     End If
+                    Exit Function
                 End If
-                Exit Function
-            End If
+            End With
         Next i
     End If
     If PointIsInsideRect(x, y, HideShowRect) Then
