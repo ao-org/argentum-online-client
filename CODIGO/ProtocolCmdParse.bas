@@ -1510,10 +1510,10 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/BANIPLIST"
-                Call WriteBannedIPList
+                Call ShowConsoleMsg("Not supported.")
                 
             Case "/BANIPRELOAD"
-                Call WriteBannedIPReload
+                Call ShowConsoleMsg("Not supported.")
                 
             Case "/MIEMBROSCLAN"
 
@@ -1536,39 +1536,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/BANIP"
-
-                If CantidadArgumentos = 2 Then
-
-                    Call WriteBanIP(ArgumentosAll(0), ArgumentosAll(1))
-
-                Else
-                
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /banip IP motivo o /banip nick motivo.")
-
-                End If
+                Call ShowConsoleMsg("Not supported.")
                 
             Case "/UNBANIP"
 
-                If notNullArguments Then
-                
-                    If validipv4str(ArgumentosRaw) Then
-                    
-                        Call WriteUnbanIP(str2ipv4l(ArgumentosRaw))
-                        
-                    Else
-                    
-                        'No es una IP
-                        Call ShowConsoleMsg("IP incorrecta. Utilice /unbanip IP.")
-
-                    End If
-
-                Else
-                
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /unbanip IP.")
-
-                End If
+               Call ShowConsoleMsg("Not supported.")
                 
             Case "/CI"
 

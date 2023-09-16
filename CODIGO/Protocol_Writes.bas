@@ -4675,45 +4675,7 @@ WriteAskTrigger_Err:
         '</EhFooter>
 End Sub
 
-''
-' Writes the "BannedIPList" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteBannedIPList()
-        '<EhHeader>
-        On Error GoTo WriteBannedIPList_Err
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.BannedIPList)
-    
-102     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
 
-WriteBannedIPList_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBannedIPList", Erl)
-        '</EhFooter>
-End Sub
-
-''
-' Writes the "BannedIPReload" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteBannedIPReload()
-        '<EhHeader>
-        On Error GoTo WriteBannedIPReload_Err
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.BannedIPReload)
-    
-102     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteBannedIPReload_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBannedIPReload", Erl)
-        '</EhFooter>
-End Sub
 
 ''
 ' Writes the "GuildBan" message to the outgoing data buffer.
@@ -4737,62 +4699,7 @@ WriteGuildBan_Err:
         '</EhFooter>
 End Sub
 
-''
-' Writes the "BanIP" message to the outgoing data buffer.
-'
-' @param    byIp    If set to true, we are banning by IP, otherwise the ip of a given character.
-' @param    IP      The IP for which to search for players. Must be an array of 4 elements with the 4 components of the IP.
-' @param    nick    The nick of the player whose ip will be banned.
-' @param    reason  The reason for the ban.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteBanIP(ByVal NickOrIP As String, ByVal reason As String)
-        '<EhHeader>
-        On Error GoTo WriteBanIP_Err
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.banip)
-102     Call Writer.WriteString8(NickOrIP)
-104     Call Writer.WriteString8(reason)
-    
-106     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
 
-WriteBanIP_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteBanIP", Erl)
-        '</EhFooter>
-End Sub
-
-''
-' Writes the "UnbanIP" message to the outgoing data buffer.
-'
-' @param    IP The IP for which to search for players. Must be an array of 4 elements with the 4 components of the IP.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteUnbanIP(ByRef IP() As Byte)
-        '<EhHeader>
-        On Error GoTo WriteUnbanIP_Err
-        '</EhHeader>
-
-100     If UBound(IP()) - LBound(IP()) + 1 <> 4 Then Exit Sub   'Invalid IP
-
-        Dim i As Long
-
-102     Call Writer.WriteInt16(ClientPacketID.UnBanIp)
-
-104     For i = LBound(IP()) To UBound(IP())
-106         Call Writer.WriteInt8(IP(i))
-108     Next i
-
-110     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteUnbanIP_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUnbanIP", Erl)
-        '</EhFooter>
-End Sub
 
 ''
 ' Writes the "CreateItem" message to the outgoing data buffer.

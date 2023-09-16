@@ -1555,24 +1555,12 @@ Private Sub cmdAccion_Click(Index As Integer)
             If LenB(Nick) <> 0 Then Call WriteGoNearby(Nick)
 
         Case 17 '/BANIP IP 0.12.1
-            tmp = InputBox("Escriba la dirección IP a banear.", "")
-            reason = InputBox("Escriba el motivo del baneo.", "")
-
-            If MsgBox("¿Estás seguro que deseas banear la IP """ & tmp & ", debido a " & reason & """?", vbYesNo + vbQuestion) = vbYes Then
-                Call ParseUserCommand("/BANIP " & tmp & " " & reason)
-
-            End If
-
+            Call ShowConsoleMsg("Not supported.")
         Case 18 '/bov nick
 
         Case 19 '/BANED IP AND PERSONAJE 0.12.1   REVISAR
     
-            If MsgBox("¿Estás seguro que deseas banear la IP y el personaje """ & nick & """?", vbYesNo + vbQuestion) = vbYes Then
-        
-                Call ParseUserCommand("/banip " & Nick & " panelgm")
-
-                'Call WriteBanIP(False, str2ipv4l("0.0.0.0"), ArgumentosAll(0), Right$(ArgumentosRaw, Len(ArgumentosRaw) - Len(ArgumentosAll(0)) - 1))
-            End If
+            Call ShowConsoleMsg("Not supported.")
 
         Case 20 '/PENAS NICK 0.12.1
             Call WritePunishments(Nick)
@@ -1592,7 +1580,7 @@ Private Sub cmdAccion_Click(Index As Integer)
             Call WriteWorking
 
         Case 25 '/BANIPLIST 0.12.1
-            Call WriteBannedIPList
+            Call ShowConsoleMsg("Not supported.")
 
         Case 26 '/BLOQ 0.12.1
             Call WriteTileBlockedToggle
@@ -2118,25 +2106,6 @@ Cuerpo_Click_Err:
     
 End Sub
 
-Private Sub Desbanear_Click()
-    
-    On Error GoTo Desbanear_Click_Err
-    
-    tmp = InputBox("Escriba la dirección IP a desbanear", "")
-
-    If MsgBox("¿Estás seguro que deseas desbanear la IP """ & tmp & """?", vbYesNo + vbQuestion) = vbYes Then
-        Call ParseUserCommand("/UNBANIP " & tmp)
-
-    End If
-
-    
-    Exit Sub
-
-Desbanear_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Desbanear_Click", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub Destrabar_Click()
     
@@ -2465,7 +2434,7 @@ Private Sub mnuBorrar_Click()
     
     TIPO = General_Field_Read(1, ProximamentTipo, ")")
     
-    Call WriteSOSRemove(nick & "Ø" & txtMsg & "Ø" & tipo)
+    Call WriteSOSRemove(nick & "Ø" & txtMsg & "Ø" & TIPO)
     
     Call List1.RemoveItem(List1.ListIndex)
     Call List2.RemoveItem(elitem)

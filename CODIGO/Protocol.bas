@@ -30,9 +30,6 @@ Attribute VB_Name = "Protocol"
 Option Explicit
 
 ''
-' TODO : /BANIP y /UNBANIP ya no trabajan con nicks. Esto lo puede mentir en forma local el cliente con un paquete a NickToIp
-
-''
 'When we have a list of strings, we use this to separate them and prevent
 'having too many string lengths in the queue. Yes, each string is NULL-terminated :P
 Private Const SEPARATOR As String * 1 = vbNullChar
@@ -421,12 +418,8 @@ Public Enum ClientPacketID
     CouncilKick             '/KICKCONSE
     SetTrigger              '/TRIGGER
     AskTrigger              '/TRIGGER with no args
-    BannedIPList            '/BANIPLIST
-    BannedIPReload          '/BANIPRELOAD
     GuildMemberList         '/MIEMBROSCLAN
     GuildBan                '/BANCLAN
-    banip                   '/BANIP
-    UnBanIp                 '/UNBANIP
     CreateItem              '/CI
     DestroyItems            '/DEST
     ChaosLegionKick         '/NOCAOS
