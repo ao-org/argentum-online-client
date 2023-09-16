@@ -132,6 +132,12 @@ Public Type t_GamePlayCallbacks
     UpdateCombatAndGlobalChat As Long
     UpdateHotKeySlot As Long
     UpdateHideHotkeyState As Long
+    HandleQuestionResponse As Long
+    MoveMerchanSlot As Long
+    CloseMerchant As Long
+    BuyItem As Long
+    SellItem As Long
+    BuyAOShop As Long
 End Type
 
 Public Type t_SpellSlot
@@ -141,6 +147,11 @@ Public Type t_SpellSlot
     Cooldown As Long
     IsBindable As Byte
     SpellName As String
+End Type
+
+Public Type t_ShopItem
+    ObjIndex As Long
+    Price As Long
 End Type
 
 Public Enum e_ChatMode
@@ -248,6 +259,10 @@ Public Declare Sub UpdateHoykeySlot Lib "BabelUI.dll" (ByVal SlotIndex As Long, 
 Public Declare Sub ActivateFeatureToggle Lib "BabelUI.dll" (ByVal ToggleName As String)
 Public Declare Sub ClearToggles Lib "BabelUI.dll" ()
 Public Declare Sub SetHotkeyHideState Lib "BabelUI.dll" (ByVal HideHotkeyState As Long)
+Public Declare Sub ShowQuestion Lib "BabelUI.dll" (ByVal QuestionText As String)
+Public Declare Sub OpenMerchant Lib "BabelUI.dll" ()
+Public Declare Sub UpdateMerchantSlot Lib "BabelUI.dll" (ByRef SlotInfo As t_InvItem)
+Public Declare Sub OpenAo20Shop Lib "BabelUI.dll" (ByVal AvailableCredits As Long, ByVal ItemCount As Long, ByRef ItemList As t_ShopItem)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -371,6 +386,13 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.UpdateCombatAndGlobalChat = FARPROC(AddressOf UpdateCombatAndGlobalChatCB)
         GameplayCallbacks.UpdateHotKeySlot = FARPROC(AddressOf UpdateHotkeySlotCB)
         GameplayCallbacks.UpdateHideHotkeyState = FARPROC(AddressOf UpdateHideHotkeyCB)
+        GameplayCallbacks.HandleQuestionResponse = FARPROC(AddressOf HandleQuestionResponseCB)
+        GameplayCallbacks.MoveMerchanSlot = FARPROC(AddressOf HandleMoveMerchanSlotCB)
+        GameplayCallbacks.CloseMerchant = FARPROC(AddressOf HandleCloseMerchantCB)
+        GameplayCallbacks.BuyItem = FARPROC(AddressOf HandleBuyItemCB)
+        GameplayCallbacks.SellItem = FARPROC(AddressOf HandleSellItemCB)
+        GameplayCallbacks.BuyAOShop = FARPROC(AddressOf HandleBuyAoShopCB)
+        
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -819,6 +841,27 @@ Public Sub UpdateCombatAndGlobalChatCB(ByVal CombatState As Long, ByVal GlobalSt
     Call WriteMacroPos
 End Sub
 
+Public Sub HandleQuestionResponseCB(ByVal Response As Integer)
+    Call HandleQuestionResponse(Response > 0)
+End Sub
+
+Public Sub HandleMoveMerchanSlotCB(ByVal FromSlot As Integer, ByVal ToSlot As Integer)
+End Sub
+Public Sub HandleCloseMerchantCB()
+    Call WriteCommerceEnd
+End Sub
+Public Sub HandleBuyItemCB(ByVal Slot As Integer, ByVal Amount As Integer)
+    Call WriteCommerceBuy(Slot, Amount)
+End Sub
+
+Public Sub HandleSellItemCB(ByVal Slot As Integer, ByVal Amount As Integer)
+    Call WriteCommerceSell(Slot, Amount)
+End Sub
+
+Public Sub HandleBuyAoShopCB(ByVal ObjIndex As Integer)
+    Call writeBuyShopItem(ObjIndex)
+End Sub
+        
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long
         '<EhHeader>
         On Error GoTo BabelEditWndProc_Err

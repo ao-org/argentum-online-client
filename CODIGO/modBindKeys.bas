@@ -438,8 +438,12 @@ Public Sub TirarItem()
                     If ObjData(.ObjIndex).Destruye = 0 Then
                         Call WriteDrop(UserInventory.SelectedSlot, 1)
                     Else
-                        PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
-                        Pregunta = True
+                        If BabelInitialized Then
+                            Call ShowQuestion("El item se destruira al tirarlo ¿Esta seguro?")
+                        Else
+                            PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+                            Pregunta = True
+                        End If
                         DestItemSlot = UserInventory.SelectedSlot
                         DestItemCant = 1
                         PreguntaLocal = True
@@ -460,8 +464,12 @@ Public Sub TirarItem()
                 If ObjData(frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem)).Destruye = 0 Then
                     Call WriteDrop(frmMain.Inventario.SelectedItem, 1)
                 Else
-                    PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
-                    Pregunta = True
+                    If BabelInitialized Then
+                        Call ShowQuestion("El item se destruira al tirarlo ¿Esta seguro?")
+                    Else
+                        PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+                        Pregunta = True
+                    End If
                     DestItemSlot = frmMain.Inventario.SelectedItem
                     DestItemCant = 1
                     PreguntaLocal = True

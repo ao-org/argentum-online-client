@@ -346,8 +346,12 @@ Private Sub ThrowItem(ByVal SlotIndex As Integer, ByVal ObjIndex As Integer, ByV
         If ObjData(ObjIndex).Destruye = 0 Then
             Call WriteDrop(SlotIndex, Amount)
         Else
-            PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
-            Pregunta = True
+            If BabelInitialized Then
+                Call ShowQuestion("El item se destruira al tirarlo ¿Esta seguro?")
+            Else
+                PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+                Pregunta = True
+            End If
             DestItemSlot = SlotIndex
             DestItemCant = Amount
             PreguntaLocal = True
@@ -389,8 +393,12 @@ Private Sub cmdTirarTodo_click()
         If ObjData(ObjIndex).Destruye = 0 Then
             Call WriteDrop(SelectedSlot, Amount)
         Else
-            PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
-            Pregunta = True
+            If BabelInitialized Then
+                Call ShowQuestion("El item se destruira al tirarlo ¿Esta seguro?")
+            Else
+                PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+                Pregunta = True
+            End If
             DestItemSlot = SelectedSlot
             DestItemCant = Amount
             

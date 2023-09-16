@@ -1565,7 +1565,10 @@ Private Sub HandleCommerceInit()
     Dim NpcName As String
 
     NpcName = Reader.ReadString8()
-
+    If BabelInitialized Then
+        Call OpenMerchant
+        Exit Sub
+    End If
     'Fill our inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
         If BabelInitialized Then
@@ -1714,7 +1717,6 @@ Private Sub HandleUserCommerceInit()
     Dim i As Long
     
     'Clears lists if necessary
-    
     'Fill inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
         If BabelInitialized Then
@@ -5800,8 +5802,31 @@ Private Sub HandleChangeNPCInventorySlot()
         .Def = ObjData(.ObjIndex).MaxDef
         .PuedeUsar = Reader.ReadInt8()
         
-        Call frmComerciar.InvComNpc.SetItem(Slot, .ObjIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
-        
+        If BabelInitialized Then
+            Dim SlotInfo As t_InvItem
+            SlotInfo.Amount = .Amount
+            SlotInfo.CanUse = .PuedeUsar
+            SlotInfo.Equiped = False
+            SlotInfo.GrhIndex = .GrhIndex
+            SlotInfo.MaxDef = .Def
+            SlotInfo.MinDef = .Def
+            SlotInfo.MaxHit = .MaxHit
+            SlotInfo.MinHit = .MinHit
+            SlotInfo.Name = .Name
+            SlotInfo.Slot = Slot
+            SlotInfo.ObjIndex = .ObjIndex
+            SlotInfo.ObjType = .ObjType
+            SlotInfo.Value = .Valor
+            SlotInfo.Cooldown = ObjData(.ObjIndex).Cooldown
+            SlotInfo.CDType = ObjData(.ObjIndex).CDType
+            SlotInfo.CDMask = GetCDMaskForItem(ObjData(.ObjIndex))
+            SlotInfo.desc = ObjData(.ObjIndex).Texto
+            SlotInfo.Amunition = ObjData(.ObjIndex).Amunition
+            SlotInfo.IsBindable = False
+            Call UpdateMerchantSlot(SlotInfo)
+        Else
+            Call frmComerciar.InvComNpc.SetItem(Slot, .ObjIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        End If
     End With
     
     Exit Sub
@@ -8383,16 +8408,16 @@ Private Sub HandleShowPregunta()
     
     Dim msg As String
 
-    PreguntaScreen = Reader.ReadString8()
-    Pregunta = True
-    
+    msg = Reader.ReadString8()
+    If BabelInitialized Then
+        ShowQuestion (msg)
+    Else
+        PreguntaScreen = msg
+        Pregunta = True
+    End If
     Exit Sub
-
 ErrHandler:
-
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPregunta", Erl)
-    
-
 End Sub
 
 Private Sub HandleDatosGrupo()
@@ -8789,17 +8814,28 @@ Public Sub HandleShopInit()
     credits_shopAO20 = Reader.ReadInt32
     frmShopAO20.lblCredits.Caption = credits_shopAO20
     
-    ReDim ObjShop(1 To cant_obj_shop) As ObjDatas
-    
-    For i = 1 To cant_obj_shop
-        ObjShop(i).objNum = Reader.ReadInt32
-        ObjShop(i).Valor = Reader.ReadInt32
-        ObjShop(i).Name = Reader.ReadString8
-         
-        Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " (Valor: " & ObjShop(i).Valor & ")", i - 1)
-    Next i
-    
-    frmShopAO20.Show , GetGameplayForm()
+    If BabelInitialized Then
+        Dim ObjList() As t_ShopItem
+        ReDim ObjList(1 To cant_obj_shop) As t_ShopItem
+        Dim Str As String
+        For i = 1 To cant_obj_shop
+            ObjList(i).ObjIndex = Reader.ReadInt32
+            ObjList(i).Price = Reader.ReadInt32
+            Str = Reader.ReadString8
+        Next i
+        Call OpenAo20Shop(credits_shopAO20, cant_obj_shop, ObjList(1))
+    Else
+        ReDim ObjShop(1 To cant_obj_shop) As ObjDatas
+        
+        For i = 1 To cant_obj_shop
+            ObjShop(i).ObjNum = Reader.ReadInt32
+            ObjShop(i).Valor = Reader.ReadInt32
+            ObjShop(i).Name = Reader.ReadString8
+             
+            Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " (Valor: " & ObjShop(i).Valor & ")", i - 1)
+        Next i
+        frmShopAO20.Show , GetGameplayForm()
+    End If
 End Sub
 
 Public Sub HandleUpdateShopClienteCredits()

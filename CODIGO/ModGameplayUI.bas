@@ -63,12 +63,13 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
 On Error GoTo OnClick_Err
 
     If pausa Then Exit Sub
-    
+    If IsGameDialogOpen Then Exit Sub
     If mascota.visible Then
         If Sqr((MouseX - mascota.PosX) ^ 2 + (MouseY - mascota.PosY) ^ 2) < 30 Then
             mascota.dialog = ""
         End If
     End If
+    
     
     If cartel_visible Then
         If MouseX > 50 And MouseY > 478 And MouseX < 671 And MouseY < 585 Then
@@ -232,6 +233,29 @@ OnClick_Err:
     Resume Next
 End Sub
 
+Public Sub HandleQuestionResponse(ByVal Result As Boolean)
+    If PreguntaLocal Then
+        If Result Then
+            Select Case PreguntaNUM
+                Case 1 '¿Destruir item?
+                    Call WriteDrop(DestItemSlot, DestItemCant)
+                Case 2 ' Denunciar
+                    Call WriteDenounce(TargetName)
+            End Select
+        Else
+            Select Case PreguntaNUM
+                Case 1
+                    DestItemSlot = 0
+                    DestItemCant = 0
+            End Select
+        End If
+    Else
+        Call WriteResponderPregunta(Result)
+    End If
+    Pregunta = False
+    PreguntaLocal = False
+End Sub
+
 Public Sub HandleGameplayAreaMouseUp(ByVal button As Integer, ByVal x As Integer, ByVal y As Integer, ByVal FormTop As Long, _
                                      ByVal FormLeft As Long, ByVal FormHeight As Long, ByRef GameplayArea As RECT)
     clicX = x
@@ -240,38 +264,10 @@ Public Sub HandleGameplayAreaMouseUp(ByVal button As Integer, ByVal x As Integer
         If HandleMouseInput(x, y) Then
         ElseIf Pregunta Then
             If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
-                If PreguntaLocal Then
-                    Select Case PreguntaNUM
-                        Case 1
-                            Pregunta = False
-                            DestItemSlot = 0
-                            DestItemCant = 0
-                            PreguntaLocal = False
-                        Case 2 ' Denunciar
-                            Pregunta = False
-                            PreguntaLocal = False
-                    End Select
-                Else
-                    Call WriteResponderPregunta(False)
-                    Pregunta = False
-                End If
+                Call HandleQuestionResponse(False)
                 Exit Sub
             ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then
-                If PreguntaLocal Then
-                    Select Case PreguntaNUM
-                        Case 1 '¿Destruir item?
-                            Call WriteDrop(DestItemSlot, DestItemCant)
-                            Pregunta = False
-                            PreguntaLocal = False
-                        Case 2 ' Denunciar
-                            Call WriteDenounce(TargetName)
-                            Pregunta = False
-                            PreguntaLocal = False
-                    End Select
-                Else
-                    Call WriteResponderPregunta(True)
-                    Pregunta = False
-                End If
+                Call HandleQuestionResponse(True)
                 Exit Sub
             End If
         End If
