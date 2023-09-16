@@ -8821,17 +8821,28 @@ Public Sub HandleShopInit()
     credits_shopAO20 = Reader.ReadInt32
     frmShopAO20.lblCredits.Caption = credits_shopAO20
     
-    ReDim ObjShop(1 To cant_obj_shop) As ObjDatas
-    
-    For i = 1 To cant_obj_shop
-        ObjShop(i).objNum = Reader.ReadInt32
-        ObjShop(i).Valor = Reader.ReadInt32
-        ObjShop(i).Name = Reader.ReadString8
-         
-        Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " (Valor: " & ObjShop(i).Valor & ")", i - 1)
-    Next i
-    
-    frmShopAO20.Show , GetGameplayForm()
+    If BabelInitialized Then
+        Dim ObjList() As t_ShopItem
+        ReDim ObjList(1 To cant_obj_shop) As t_ShopItem
+        Dim Str As String
+        For i = 1 To cant_obj_shop
+            ObjList(i).ObjIndex = Reader.ReadInt32
+            ObjList(i).Price = Reader.ReadInt32
+            Str = Reader.ReadString8
+        Next i
+        Call OpenAo20Shop(credits_shopAO20, cant_obj_shop, ObjList(1))
+    Else
+        ReDim ObjShop(1 To cant_obj_shop) As ObjDatas
+        
+        For i = 1 To cant_obj_shop
+            ObjShop(i).ObjNum = Reader.ReadInt32
+            ObjShop(i).Valor = Reader.ReadInt32
+            ObjShop(i).Name = Reader.ReadString8
+             
+            Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " (Valor: " & ObjShop(i).Valor & ")", i - 1)
+        Next i
+        frmShopAO20.Show , GetGameplayForm()
+    End If
 End Sub
 
 Public Sub HandleUpdateShopClienteCredits()

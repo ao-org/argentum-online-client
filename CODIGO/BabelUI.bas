@@ -137,6 +137,7 @@ Public Type t_GamePlayCallbacks
     CloseMerchant As Long
     BuyItem As Long
     SellItem As Long
+    BuyAOShop As Long
 End Type
 
 Public Type t_SpellSlot
@@ -146,6 +147,11 @@ Public Type t_SpellSlot
     Cooldown As Long
     IsBindable As Byte
     SpellName As String
+End Type
+
+Public Type t_ShopItem
+    ObjIndex As Long
+    Price As Long
 End Type
 
 Public Enum e_ChatMode
@@ -256,6 +262,7 @@ Public Declare Sub SetHotkeyHideState Lib "BabelUI.dll" (ByVal HideHotkeyState A
 Public Declare Sub ShowQuestion Lib "BabelUI.dll" (ByVal QuestionText As String)
 Public Declare Sub OpenMerchant Lib "BabelUI.dll" ()
 Public Declare Sub UpdateMerchantSlot Lib "BabelUI.dll" (ByRef SlotInfo As t_InvItem)
+Public Declare Sub OpenAo20Shop Lib "BabelUI.dll" (ByVal AvailableCredits As Long, ByVal ItemCount As Long, ByRef ItemList As t_ShopItem)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -384,6 +391,8 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.CloseMerchant = FARPROC(AddressOf HandleCloseMerchantCB)
         GameplayCallbacks.BuyItem = FARPROC(AddressOf HandleBuyItemCB)
         GameplayCallbacks.SellItem = FARPROC(AddressOf HandleSellItemCB)
+        GameplayCallbacks.BuyAOShop = FARPROC(AddressOf HandleBuyAoShopCB)
+        
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -849,6 +858,9 @@ Public Sub HandleSellItemCB(ByVal Slot As Integer, ByVal Amount As Integer)
     Call WriteCommerceSell(Slot, Amount)
 End Sub
 
+Public Sub HandleBuyAoShopCB(ByVal ObjIndex As Integer)
+    Call writeBuyShopItem(ObjIndex)
+End Sub
         
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long
         '<EhHeader>
