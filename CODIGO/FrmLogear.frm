@@ -338,6 +338,7 @@ Private Sub Form_Load()
     Call CargarLst
     Call LoadButtons
     If Not BabelUI.UseBabelUI Then
+        Call InitServerAddress
         Call SetActiveServer(txtIp.Text, txtPort.Text)
     End If
     Exit Sub
