@@ -1093,7 +1093,7 @@ On Error GoTo Main_Err
     
     Call SetNpcsRenderText
     Call cargarTutoriales
-
+    Call InitializeEffectArrays
 
     CheckMD5 = GetMd5
     SessionOpened = False
