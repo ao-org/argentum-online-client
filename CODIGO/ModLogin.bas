@@ -360,7 +360,9 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
                 End If
             End If
         Else
-            Call RegistrarError(Error, "Conexion cerrada", "OnClientDisconnect")
+            If Error <> 0 Then
+                Call RegistrarError(Error, "Conexion cerrada", "OnClientDisconnect")
+            End If
             If frmConnect.visible Then
                 Connected = False
             Else

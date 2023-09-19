@@ -1720,55 +1720,55 @@ End Function
 
 Public Sub DibujarMiniMapa()
     
-    On Error GoTo DibujarMiniMapa_Err
+        On Error GoTo DibujarMiniMapa_Err
 
-    frmMain.MiniMap.Picture = LoadMinimap(UserMap)
-    'Pintamos los NPCs en Minimapa:
-    If ListNPCMapData(UserMap).NpcList(1).NPCNumber > 0 Then
-        Dim i As Long
-        For i = 1 To MAX_QUESTNPCS_VISIBLE
-            Dim posX As Long
-            Dim posY As Long
+100     frmMain.MiniMap.Picture = LoadMinimap(UserMap)
+        'Pintamos los NPCs en Minimapa:
+102     If ListNPCMapData(UserMap).NpcCount > 0 Then
+            Dim i As Long
+104         For i = 1 To MAX_QUESTNPCS_VISIBLE
+                Dim PosX As Long
+                Dim PosY As Long
             
-            PosX = ListNPCMapData(UserMap).NpcList(i).Position.x
-            PosY = ListNPCMapData(UserMap).NpcList(i).Position.y
-            
-            
-            Dim color As Long
-            
-            Select Case ListNPCMapData(UserMap).NpcList(i).state
-                Case 1
-                    color = RGB(0, 198, 254)
-                Case 2
-                    color = RGB(255, 201, 14)
-                    Case Else
-                    color = RGB(255, 201, 14)
-            End Select
+106             PosX = ListNPCMapData(UserMap).NpcList(i).Position.x
+108             PosY = ListNPCMapData(UserMap).NpcList(i).Position.y
             
             
+                Dim color As Long
             
-            Call SetPixel(frmMain.MiniMap.hdc, posX + 1, posY, color)
-            Call SetPixel(frmMain.MiniMap.hdc, posX, posY + 1, color)
-            Call SetPixel(frmMain.MiniMap.hdc, posX + 1, posY + 1, color)
-            Call SetPixel(frmMain.MiniMap.hdc, posX, posY, color)
+110             Select Case ListNPCMapData(UserMap).NpcList(i).State
+                    Case 1
+112                     color = RGB(0, 198, 254)
+114                 Case 2
+116                     color = RGB(255, 201, 14)
+118                     Case Else
+120                     color = RGB(255, 201, 14)
+                End Select
             
-            Call SetPixel(frmMain.MiniMap.hdc, posX, posY - 1, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX + 1, posY - 1, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX + 2, posY, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX + 2, posY + 1, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX + 1, posY + 2, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX, posY + 2, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX - 1, posY + 1, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX - 1, posY, &H808080)
+            
+            
+122             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY, color)
+124             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 1, color)
+126             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 1, color)
+128             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY, color)
+            
+130             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 1, &H808080)
+132             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY - 1, &H808080)
+134             Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY, &H808080)
+136             Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY + 1, &H808080)
+138             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 2, &H808080)
+140             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 2, &H808080)
+142             Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY + 1, &H808080)
+144             Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY, &H808080)
 
-        Next i
+146         Next i
         
-        frmMain.MiniMap.Refresh
-    End If
-    Exit Sub
+148         frmMain.MiniMap.Refresh
+        End If
+        Exit Sub
 
 DibujarMiniMapa_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.DibujarMiniMapa", Erl)
+150     Call RegistrarError(Err.Number, Err.Description, "ModUtils.DibujarMiniMapa", Erl)
     
 End Sub
 

@@ -50,6 +50,7 @@ End Enum
 Public Enum e_DebugCommands
     eGetLastLogs
     eConnectionState
+    eUserIdsState
 End Enum
 
 ''
@@ -2186,6 +2187,8 @@ Private Sub HandleReqDebugCmd(ByRef arguments() As String, ByVal argCount As Int
                 Next i
                 arguments(0) = username
                 Call WriteRequestDebug(e_DebugCommands.eConnectionState, arguments, 1)
+            ElseIf eType = "USERIDS" Then
+                Call WriteRequestDebug(e_DebugCommands.eUserIdsState, arguments(), 0)
             Else
                 Call ShowConsoleMsg("Parametros incorrectos.")
             End If

@@ -5682,10 +5682,12 @@ End Sub
 Private Sub HandleErrorMessage()
     On Error GoTo ErrHandler
     GetRemoteError = True
+    Dim str As String
+    str = Reader.ReadString8()
     If UseBabelUI Then
-        Call BabelUI.DisplayError(Reader.ReadString8(), "")
+        Call BabelUI.DisplayError(str, "")
     Else
-        Call MsgBox(Reader.ReadString8())
+        Call MsgBox(str)
     End If
     Exit Sub
 ErrHandler:
@@ -7140,7 +7142,7 @@ Private Sub HandleShowSOSForm()
     sosList = Split(Reader.ReadString8(), SEPARATOR)
     
     For i = 0 To UBound(sosList())
-        Nombre = ReadField(1, sosList(i), Asc("Ø"))
+        nombre = ReadField(1, sosList(i), Asc("Ø"))
         Consulta = ReadField(2, sosList(i), Asc("Ø"))
         TipoDeConsulta = ReadField(3, sosList(i), Asc("Ø"))
         frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ")"
@@ -8844,32 +8846,32 @@ Public Sub HandleUpdateShopClienteCredits()
 End Sub
 
 Public Sub HandleSendSkillCdUpdate()
-On Error GoTo ErrHandler
-    Dim Effect As t_ActiveEffect
-    Dim ElapsedTime As Long
-    Effect.TypeId = Reader.ReadInt16
-    Effect.Id = Reader.ReadInt32
-    ElapsedTime = Reader.ReadInt32
-    Effect.Duration = Reader.ReadInt32
-    Effect.EffectType = Reader.ReadInt8
-    Effect.Grh = EffectResources(Effect.TypeId).GrhId
-    Effect.startTime = GetTickCount() - (Effect.duration - ElapsedTime)
-    Effect.StackCount = Reader.ReadInt16()
-    If Effect.EffectType = eBuff Then
-        Call AddOrUpdateEffect(BuffList, Effect)
-    End If
-    If Effect.EffectType = eDebuff Then
-        Call AddOrUpdateEffect(DeBuffList, Effect)
-    End If
-    If Effect.EffectType = eCD Then
-        If Effect.id < 0 And BabelInitialized Then
-            Call StartSpellCd(-Effect.id, Effect.duration)
+    On Error GoTo ErrHandler
+        Dim Effect As t_ActiveEffect
+        Dim ElapsedTime As Long
+100     Effect.TypeId = Reader.ReadInt16
+102     Effect.id = Reader.ReadInt32
+104     ElapsedTime = Reader.ReadInt32
+106     Effect.Duration = Reader.ReadInt32
+108     Effect.EffectType = Reader.ReadInt8
+110     Effect.Grh = EffectResources(Effect.TypeId).GrhId
+112     Effect.startTime = GetTickCount() - (Effect.Duration - ElapsedTime)
+114     Effect.StackCount = Reader.ReadInt16()
+116     If Effect.EffectType = eBuff Then
+118         Call AddOrUpdateEffect(BuffList, Effect)
         End If
-        Call AddOrUpdateEffect(CDList, Effect)
-    End If
-    Exit Sub
+120     If Effect.EffectType = eDebuff Then
+122         Call AddOrUpdateEffect(DeBuffList, Effect)
+        End If
+124     If Effect.EffectType = eCD Then
+126         If Effect.id < 0 And BabelInitialized Then
+128             Call StartSpellCd(-Effect.id, Effect.Duration)
+            End If
+130         Call AddOrUpdateEffect(CDList, Effect)
+        End If
+        Exit Sub
 ErrHandler:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendSkillCdUpdate", Erl)
+132     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendSkillCdUpdate " & Effect.TypeId, Erl)
 End Sub
 
 Public Sub HandleSendClientToggles()
