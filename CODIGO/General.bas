@@ -1051,6 +1051,21 @@ FileExist_Err:
     
 End Function
 
+Sub InitServerAddress()
+    servers_login_connections(1) = "191.233.31.13:6500"
+    servers_login_connections(2) = "191.233.31.13:6502"
+    servers_login_connections(3) = "191.233.31.13:6500"
+    servers_login_connections(4) = "191.233.31.13:6502"
+    servers_login_connections(5) = "191.233.31.13:6500"
+    servers_login_connections(6) = "191.233.31.13:6502"
+    
+    servers_world_connections(1) = "191.233.31.13:6501"
+    servers_world_connections(2) = "191.233.31.13:6501"
+    servers_world_connections(3) = "191.233.31.13:6501"
+    servers_world_connections(4) = "191.233.31.13:6501"
+    servers_world_connections(5) = "191.233.31.13:6501"
+    servers_world_connections(6) = "191.233.31.13:6501"
+End Sub
 
 Sub Main()
 
@@ -1116,19 +1131,8 @@ On Error GoTo Main_Err
         End If
     End If
         
-    servers_login_connections(1) = "20.195.162.204:6500"
-    servers_login_connections(2) = "20.195.162.204:6502"
-    servers_login_connections(3) = "20.195.162.204:6500"
-    servers_login_connections(4) = "20.195.162.204:6502"
-    servers_login_connections(5) = "20.195.162.204:6500"
-    servers_login_connections(6) = "20.195.162.204:6502"
+    Call InitServerAddress
     
-    servers_world_connections(1) = "20.195.162.204:6501"
-    servers_world_connections(2) = "20.195.162.204:6501"
-    servers_world_connections(3) = "20.195.162.204:6501"
-    servers_world_connections(4) = "20.195.162.204:6501"
-    servers_world_connections(5) = "20.195.162.204:6501"
-    servers_world_connections(6) = "20.195.162.204:6501"
     
     Call SetDefaultServer
     Call ComprobarEstado
