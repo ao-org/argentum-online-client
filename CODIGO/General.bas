@@ -78,9 +78,7 @@ Private Declare Sub InitCommonControls Lib "comctl32" ()
 
 Public bFogata As Boolean
 
-Public servers_login_connections(1 To 8) As String
-Public servers_world_connections(1 To 4) As String
-
+Public ServerIpCount As Integer
 'Very percise counter 64bit system counter
 Public Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCount As Currency) As Long
 
@@ -1050,22 +1048,6 @@ FileExist_Err:
     
 End Function
 
-Sub InitServerAddress()
-    servers_login_connections(1) = "20.226.22.141:6500"
-    servers_login_connections(2) = "20.226.22.141:6502"
-    servers_login_connections(3) = "20.226.64.99:6500"
-    servers_login_connections(4) = "20.226.64.99:6502"
-    servers_login_connections(5) = "20.226.22.145:6500"
-    servers_login_connections(6) = "20.226.22.145:6502"
-	servers_login_connections(7) = "20.197.177.238:6500"
-	servers_login_connections(8) = "20.197.177.238:6502"
-    
-    servers_world_connections(1) = "20.226.22.141:6501"
-    servers_world_connections(2) = "20.226.64.99:6501"
-    servers_world_connections(3) = "20.226.22.145:6501"
-    servers_world_connections(4) = "20.197.177.238:6501"
-End Sub
-
 Sub Main()
 
 On Error GoTo Main_Err
@@ -1129,9 +1111,6 @@ On Error GoTo Main_Err
             Call CloseClient
         End If
     End If
-        
-    Call InitServerAddress
-    
     
     Call SetDefaultServer
     Call ComprobarEstado
@@ -1196,24 +1175,6 @@ Com_Err:
     Resume Next
 End Sub
 
-Public Function get_logging_server() As String
-    Dim value As Long
-    Dim k As Integer
-    For k = 1 To 100
-        Value = RandomNumber(1, UBound(servers_login_connections))
-    Next k
-    get_logging_server = servers_login_connections(Value)
-End Function
-
-Public Function get_world_server() As String
-    Dim Value As Long
-    Dim k As Integer
-    For k = 1 To 100
-        Value = RandomNumber(1, UBound(servers_world_connections))
-    Next k
-    get_world_server = servers_world_connections(Value)
-End Function
-
 Public Function SetDefaultServer()
 On Error GoTo SetDefaultServer_Err
 
@@ -1223,15 +1184,8 @@ On Error GoTo SetDefaultServer_Err
     IPdelServidor = IPdelServidorLogin
     PuertoDelServidor = 7667
 #Else
-    Dim serverLogin() As String
-    serverLogin = Split(get_logging_server(), ":")
-    IPdelServidorLogin = serverLogin(0)
-    PuertoDelServidorLogin = serverLogin(1)
     
-    Dim serverWorld() As String
-    serverWorld = Split(get_world_server(), ":")
-    IPdelServidor = serverWorld(0)
-    PuertoDelServidor = serverWorld(1)
+    Call SetActiveEnvironment("Production")
 #End If
     Exit Function
 SetDefaultServer_Err:
