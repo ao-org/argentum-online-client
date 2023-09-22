@@ -78,9 +78,8 @@ Private Declare Sub InitCommonControls Lib "comctl32" ()
 
 Public bFogata As Boolean
 
-Public servers_login_connections(1 To 6) As String
-Public servers_world_connections(1 To 6) As String
-
+Public servers_login_connections(1 To 8) As String
+Public servers_world_connections(1 To 4) As String
 
 'Very percise counter 64bit system counter
 Public Declare Function QueryPerformanceCounter Lib "kernel32" (lpPerformanceCount As Currency) As Long
@@ -1052,19 +1051,19 @@ FileExist_Err:
 End Function
 
 Sub InitServerAddress()
-    servers_login_connections(1) = "191.233.31.13:6500"
-    servers_login_connections(2) = "191.233.31.13:6502"
-    servers_login_connections(3) = "191.233.31.13:6500"
-    servers_login_connections(4) = "191.233.31.13:6502"
-    servers_login_connections(5) = "191.233.31.13:6500"
-    servers_login_connections(6) = "191.233.31.13:6502"
+    servers_login_connections(1) = "20.226.22.141:6500"
+    servers_login_connections(2) = "20.226.22.141:6502"
+    servers_login_connections(3) = "20.226.64.99:6500"
+    servers_login_connections(4) = "20.226.64.99:6502"
+    servers_login_connections(5) = "20.226.22.145:6500"
+    servers_login_connections(6) = "20.226.22.145:6502"
+	servers_login_connections(7) = "20.197.177.238:6500"
+	servers_login_connections(8) = "20.197.177.238:6502"
     
-    servers_world_connections(1) = "191.233.31.13:6501"
-    servers_world_connections(2) = "191.233.31.13:6501"
-    servers_world_connections(3) = "191.233.31.13:6501"
-    servers_world_connections(4) = "191.233.31.13:6501"
-    servers_world_connections(5) = "191.233.31.13:6501"
-    servers_world_connections(6) = "191.233.31.13:6501"
+    servers_world_connections(1) = "20.226.22.141:6501"
+    servers_world_connections(2) = "20.226.64.99:6501"
+    servers_world_connections(3) = "20.226.22.145:6501"
+    servers_world_connections(4) = "20.197.177.238:6501"
 End Sub
 
 Sub Main()
