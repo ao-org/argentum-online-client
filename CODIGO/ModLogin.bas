@@ -116,12 +116,11 @@ Public Sub SetActiveEnvironment(ByVal environment As String)
     Environment = "Production"
 #End If
     Dim loginServers As Integer
-    Dim serverCount As Integer
     loginServers = Val(ServerSettings.GetValue(environment, "LoginCount"))
-    serverCount = Val(ServerSettings.GetValue(environment, "ServerCount"))
+    ServerIpCount = Val(ServerSettings.GetValue(environment, "ServerCount"))
     Dim loginOpt, serverOpt, k As Integer
     For k = 1 To 100
-        serverOpt = RandomNumber(1, serverCount)
+        serverOpt = RandomNumber(1, ServerIpCount)
     Next k
     For k = 1 To 100
         loginOpt = RandomNumber(1, loginServers)
