@@ -3699,13 +3699,22 @@ Private Sub HandleCharacterCreate()
 
         .Muerto = (Body = CASPER_BODY_IDLE)
         Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, Cart, ParticulaFx, appear)
-
-        If .Idle Or .Navegando Then
-            'Start animation
-            .Body.Walk(.Heading).Started = FrameTime
-
-        End If
         
+        If .Navegando = False Or UserNadandoTrajeCaucho = True Then
+            If .Body.AnimateOnIdle = 0 Then
+                .Body.Walk(.Heading).started = 0
+            ElseIf .Body.Walk(.Heading).started = 0 Then
+                .Body.Walk(.Heading).started = FrameTime
+            End If
+            If Not .MovArmaEscudo Then
+                .Arma.WeaponWalk(.Heading).started = 0
+                .Escudo.ShieldWalk(.Heading).started = 0
+            End If
+            If .Body.IdleBody > 0 Then
+                .Body = BodyData(.Body.IdleBody)
+                .Body.Walk(.Heading).started = FrameTime
+            End If
+        End If
     End With
     
     Call RefreshAllChars
@@ -3918,7 +3927,7 @@ Private Sub HandleCharacterChange()
     Dim headIndex As Integer
 
     charindex = Reader.ReadInt16()
-    
+
     With charlist(charindex)
         tempint = Reader.ReadInt16()
 
@@ -3989,13 +3998,25 @@ Private Sub HandleCharacterChange()
         flags = Reader.ReadInt8()
         
         .Idle = flags And &O1
-        
         .Navegando = flags And &O2
         
-        If .Idle Or .Navegando Then
-            'Start animation
-            .Body.Walk(.Heading).Started = FrameTime
-
+        If .Idle Then
+            If .Navegando = False Or UserNadandoTrajeCaucho = True Then
+                If .Body.AnimateOnIdle = 0 Then
+                    .Body.Walk(.Heading).started = 0
+                ElseIf .Body.Walk(.Heading).started = 0 Then
+                    .Body.Walk(.Heading).started = FrameTime
+                End If
+                If Not .MovArmaEscudo Then
+                    .Arma.WeaponWalk(.Heading).started = 0
+                    .Escudo.ShieldWalk(.Heading).started = 0
+                End If
+                If .Body.IdleBody > 0 Then
+                    .Body = BodyData(.Body.IdleBody)
+                    .Body.Walk(.Heading).started = FrameTime
+                    
+                End If
+            End If
         End If
 
     End With
@@ -4004,8 +4025,6 @@ Private Sub HandleCharacterChange()
 
 HandleCharacterChange_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterChange", Erl)
-    
-    
 End Sub
 
 ''

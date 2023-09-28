@@ -225,25 +225,13 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
     '*****************************************************************
     
     On Error GoTo Char_Move_by_Head_Err
-    
-
-    If nHeading = 0 Then
-        Debug.Print "Heading: " & nHeading
-
-    End If
-
-    
+       
 
     Dim addx As Integer
-
     Dim addy As Integer
-
     Dim x    As Integer
-
     Dim y    As Integer
-
     Dim nX   As Integer
-
     Dim nY   As Integer
     
     With charlist(charindex)
@@ -292,7 +280,6 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         .scrollDirectionY = addy
         
         .Idle = False
-
         If Not .Moving Then
 
             If .Muerto Then
@@ -440,7 +427,6 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
 
         .LastStep = FrameTime
         .Idle = False
-
         If Not .Moving Then
         
             If .Muerto Then
