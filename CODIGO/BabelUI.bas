@@ -101,7 +101,7 @@ Public Type t_InvItem
     MaxHit As Integer
     MinDef As Integer
     MaxDef As Integer
-    Value As Long
+    Value As Single
     Cooldown As Long
     CDType As Integer
     CDMask As Long
@@ -138,6 +138,7 @@ Public Type t_GamePlayCallbacks
     BuyItem As Long
     SellItem As Long
     BuyAOShop As Long
+    UpdateIntSetting As Long
 End Type
 
 Public Type t_SpellSlot
@@ -185,6 +186,36 @@ Public Enum e_ActionRequest
     eDisplayInventory = 23
     eDisplaySpells = 24
     eSetMeditate = 25
+    eOpenKeySettings = 26
+    eSaveSettings = 27
+End Enum
+
+Public Enum e_UpdateSetting
+    eCopyDialogsEnabled = 1
+    eWriteAndMove = 2
+    eBlockSpellListScroll = 3
+    eThrowSpellLockBehavior = 4
+    eMouseSens = 5
+    eUserGraphicCursor = 6
+    eLanguage = 7
+    eRenderNpcText = 8
+    eTutorialEnabled = 9
+    eShowFps = 10
+    eMoveGameWindow = 11
+    eCharacterBreathing = 12
+    eFullScreen = 13
+    eDisplayFloorItemInfo = 14
+    eDisplayFullNumbersInventory = 15
+    eEnableBabelUI = 16
+    eEnableMusic = 17
+    eEnableFx = 18
+    eEnableAmbient = 19
+    eSailFx = 20
+    eInvertChannels = 21
+    eMusicVolume = 22
+    eFxVolume = 23
+    eAmbientVolume = 24
+    eLightSettings = 25
 End Enum
 
 Public Enum e_SafeType
@@ -392,7 +423,7 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.BuyItem = FARPROC(AddressOf HandleBuyItemCB)
         GameplayCallbacks.SellItem = FARPROC(AddressOf HandleSellItemCB)
         GameplayCallbacks.BuyAOShop = FARPROC(AddressOf HandleBuyAoShopCB)
-        
+        GameplayCallbacks.UpdateIntSetting = FARPROC(AddressOf HandleUpdateIntSetting)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -789,6 +820,10 @@ Public Sub RequestActionCB(ByVal ActionId As Long)
         Call SelectSpellTab
     Case e_ActionRequest.eSetMeditate
         Call RequestMeditate
+    Case e_ActionRequest.eOpenKeySettings
+        Call frmCustomKeys.Show(vbModeless, GetGameplayForm)
+    Case e_ActionRequest.eSaveSettings
+        Call GuardarOpciones
 End Select
 
 End Sub
@@ -860,6 +895,111 @@ End Sub
 
 Public Sub HandleBuyAoShopCB(ByVal ObjIndex As Integer)
     Call writeBuyShopItem(ObjIndex)
+End Sub
+
+Public Sub HandleUpdateIntSetting(ByVal SettingType As Long, ByVal Value As Long)
+On Error GoTo HandleUpdateIntSetting_Err
+    Select Case SettingType
+        Case eCopyDialogsEnabled
+            CopiarDialogoAConsola = Value
+        Case eWriteAndMove
+            PermitirMoverse = Value
+        Case eBlockSpellListScroll
+            ScrollArrastrar = Value
+        Case eThrowSpellLockBehavior
+            ModoHechizos = Value
+        Case eMouseSens
+            SensibilidadMouse = Value
+            Call General_Set_Mouse_Speed(Value)
+        Case eUserGraphicCursor
+            CursoresGraficos = Value > 0
+            Call SaveSetting("VIDEO", "CursoresGraficos", Value)
+        Case eLanguage
+            Call SaveSetting("OPCIONES", "Localization", Value)
+        Case eRenderNpcText
+            npcs_en_render = Value
+            Call SaveSetting("OPCIONES", "NpcsEnRender", Value)
+        Case eTutorialEnabled
+            MostrarTutorial = Value
+            If MostrarTutorial Then
+                Dim i As Long
+                
+                For i = 1 To UBound(tutorial)
+                    Call SaveSetting("TUTORIAL" & i, "Activo", 1)
+                    tutorial(i).Activo = 1
+                Next i
+            End If
+            Call SaveSetting("INITTUTORIAL", "MostrarTutorial", Value)
+        Case eShowFps
+            FPSFLAG = Value
+        Case eMoveGameWindow
+            MoverVentana = Value
+        Case eCharacterBreathing
+            MostrarRespiracion = Value > 0
+        Case eFullScreen
+            Debug.Print "Update full screen " & Value
+            If PantallaCompleta = (Value > 0) Then Exit Sub
+            PantallaCompleta = Value > 0
+            If PantallaCompleta Then
+                Call SetResolution
+            Else
+                Call ResetResolution
+            End If
+        Case eDisplayFloorItemInfo
+            InfoItemsEnRender = Value > 0
+        Case eDisplayFullNumbersInventory
+            NumerosCompletosInventario = Value > 0
+        Case eEnableBabelUI
+            Call SaveSetting("OPCIONES", "UseExperimentalUI", Value)
+        Case eEnableMusic
+            If Value = 0 Then
+                Sound.Music_Stop
+                Musica = CONST_DESHABILITADA
+            Else
+                Musica = CONST_MP3
+                Sound.NextMusic = MapDat.music_numberHi
+                Sound.Fading = 100
+            End If
+        Case eEnableFx
+            Fx = Value
+            If Value = 0 Then
+                Call Sound.Sound_Stop_All
+            End If
+        Case eEnableAmbient
+            If Value = 0 Then
+                AmbientalActivated = 0
+                Sound.LastAmbienteActual = 0
+                Sound.AmbienteActual = 0
+                Sound.Ambient_Stop
+            Else
+                AmbientalActivated = 1
+                Call AmbientarAudio(UserMap)
+
+            End If
+        Case eSailFx
+            FxNavega = Value
+        Case eInvertChannels
+            InvertirSonido = Value
+            Sound.InvertirSonido = Value > 0
+        Case eMusicVolume
+            If Musica <> CONST_DESHABILITADA Then
+                Sound.Music_Volume_Set Value
+                Sound.VolumenActualMusicMax = Value
+                VolMusic = Sound.VolumenActualMusicMax
+            End If
+        Case eFxVolume
+            Sound.VolumenActual = Value
+            VolFX = Sound.VolumenActual
+        Case eAmbientVolume
+            Sound.Ambient_Volume_Set Value
+            VolAmbient = Value
+        Case eLightSettings
+            Call SaveSetting("VIDEO", "LuzGlobal", Value)
+            selected_light = Value
+    End Select
+    Exit Sub
+HandleUpdateIntSetting_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command1_Click", Erl)
 End Sub
         
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long
