@@ -141,23 +141,12 @@ Public Sub ResetResolution()
     'Last Modified By: Juan Martín Sotuyo Dodero (Maraxus)
     ' 03/29/2008: Maraxus - Properly restores display depth and frequency.
     '***************************************************
-    Dim typDevM As typDevMODE
+
     Dim lRes    As Long
     
     If bResChange Then
 
-        lRes = EnumDisplaySettings(0, ENUM_CURRENT_SETTINGS, typDevM)
-        
-        With typDevM
-            .dmFields = DM_PELSWIDTH Or DM_PELSHEIGHT Or DM_BITSPERPEL Or DM_DISPLAYFREQUENCY
-            .dmPelsWidth = oldResWidth
-            .dmPelsHeight = oldResHeight
-            .dmBitsPerPel = oldDepth
-            .dmDisplayFrequency = oldFrequency
-
-        End With
-        lRes = ChangeDisplaySettings(typDevM, CDS_TEST)
-        
+        lRes = ChangeDisplaySettings(ByVal 0, 0)
         Dim gameForm As Form
         Set gameForm = GetGameplayForm
         If gameForm.visible Then gameForm.Top = (screen.Height - gameForm.Height) \ 2: gameForm.Left = (screen.Width - gameForm.Width) \ 2
