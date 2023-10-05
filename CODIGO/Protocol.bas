@@ -40,545 +40,6 @@ Private IterationsHID   As Integer
 
 Private Const MAX_ITERATIONS_HID = 200
 
-Private Enum ServerPacketID
-
-    Connected
-    logged                  ' LOGGED  0
-    RemoveDialogs           ' QTDL
-    RemoveCharDialog        ' QDL
-    NavigateToggle          ' NAVEG
-    EquiteToggle
-    Disconnect              ' FINOK
-    CommerceEnd             ' FINCOMOK
-    BankEnd                 ' FINBANOK
-    CommerceInit            ' INITCOM
-    BankInit                ' INITBANCO
-    UserCommerceInit        ' INITCOMUSU   10
-    UserCommerceEnd         ' FINCOMUSUOK
-    ShowBlacksmithForm      ' SFH
-    ShowCarpenterForm       ' SFC
-    NPCKillUser             ' 6
-    BlockedWithShieldUser   ' 7
-    BlockedWithShieldOther  ' 8
-    CharSwing               ' U1
-    SafeModeOn              ' SEGON
-    SafeModeOff             ' SEGOFF 20
-    PartySafeOn
-    PartySafeOff
-    CantUseWhileMeditating  ' M!
-    UpdateSta               ' ASS
-    UpdateMana              ' ASM
-    UpdateHP                ' ASH
-    UpdateGold              ' ASG
-    UpdateExp               ' ASE 30
-    ChangeMap               ' CM
-    PosUpdate               ' PU
-    NPCHitUser              ' N2
-    UserHittedByUser        ' N4
-    UserHittedUser          ' N5
-    ChatOverHead            ' ||
-    LocaleChatOverHead
-    ConsoleMsg              ' || - Beware!! its the same as above, but it was properly splitted
-    GuildChat               ' |+   40
-    ShowMessageBox          ' !!
-    MostrarCuenta
-    CharacterCreate         ' CC
-    CharacterRemove         ' BP
-    CharacterMove           ' MP, +, * and _ '
-    CharacterTranslate
-    UserIndexInServer       ' IU
-    UserCharIndexInServer   ' IP
-    ForceCharMove
-    CharacterChange         ' CP
-    ObjectCreate            ' HO
-    fxpiso
-    ObjectDelete            ' BO  50
-    BlockPosition           ' BQ
-    PlayMIDI                ' TM
-    PlayWave                ' TW
-    guildList               ' GL
-    AreaChanged             ' CA
-    PauseToggle             ' BKW
-    RainToggle              ' LLU
-    CreateFX                ' CFX
-    UpdateUserStats         ' EST
-    WorkRequestTarget       ' T01 60
-    ChangeInventorySlot     ' CSI
-    InventoryUnlockSlots
-    ChangeBankSlot          ' SBO
-    ChangeSpellSlot         ' SHS
-    Atributes               ' ATR
-    BlacksmithWeapons       ' LAH
-    BlacksmithArmors        ' LAR
-    CarpenterObjects        ' OBR
-    RestOK                  ' DOK
-    ErrorMsg                ' ERR
-    Blind                   ' CEGU 70
-    Dumb                    ' DUMB
-    ShowSignal              ' MCAR
-    ChangeNPCInventorySlot  ' NPCI
-    UpdateHungerAndThirst   ' EHYS
-    MiniStats               ' MEST
-    LevelUp                 ' SUNI
-    AddForumMsg             ' FMSG
-    ShowForumForm           ' MFOR
-    SetInvisible            ' NOVER 80
-    MeditateToggle          ' MEDOK
-    BlindNoMore             ' NSEGUE
-    DumbNoMore              ' NESTUP
-    SendSkills              ' SKILLS
-    TrainerCreatureList     ' LSTCRI
-    guildNews               ' GUILDNE
-    OfferDetails            ' PEACEDE & ALLIEDE
-    AlianceProposalsList    ' ALLIEPR
-    PeaceProposalsList      ' PEACEPR 90
-    CharacterInfo           ' CHRINFO
-    GuildLeaderInfo         ' LEADERI
-    GuildDetails            ' CLANDET
-    ShowGuildFundationForm  ' SHOWFUN
-    ParalizeOK              ' PARADOK
-    StunStart               ' Stun start time
-    ShowUserRequest         ' PETICIO
-    ChangeUserTradeSlot     ' COMUSUINV
-    'SendNight              ' NOC
-    UpdateTagAndStatus
-    FYA
-    CerrarleCliente
-    Contadores
-    ShowPapiro
-    UpdateCooldownType
-    
-    'GM messages
-    SpawnListt               ' SPL
-    ShowSOSForm             ' MSOS
-    ShowMOTDEditionForm     ' ZMOTD
-    ShowGMPanelForm         ' ABPANEL
-    UserNameList            ' LISTUSU
-    UserOnline '110
-    ParticleFX
-    ParticleFXToFloor
-    ParticleFXWithDestino
-    ParticleFXWithDestinoXY
-    hora
-    Light
-    AuraToChar
-    SpeedToChar
-    LightToFloor
-    NieveToggle
-    NieblaToggle
-    Goliath
-    TextOverChar
-    TextOverTile
-    TextCharDrop
-    ConsoleCharText
-    FlashScreen
-    AlquimistaObj
-    ShowAlquimiaForm
-    SastreObj
-    ShowSastreForm ' 126
-    VelocidadToggle
-    MacroTrabajoToggle
-    BindKeys
-    ShowFrmLogear
-    ShowFrmMapa
-    InmovilizadoOK
-    BarFx
-    LocaleMsg
-    ShowPregunta
-    DatosGrupo
-    ubicacion
-    ArmaMov
-    EscudoMov
-    ViajarForm
-    NadarToggle
-    ShowFundarClanForm
-    CharUpdateHP
-    CharUpdateMAN
-    PosLLamadaDeClan
-    QuestDetails
-    QuestListSend
-    NpcQuestListSend
-    UpdateNPCSimbolo
-    ClanSeguro
-    Intervals
-    UpdateUserKey
-    UpdateRM
-    UpdateDM
-    SeguroResu
-    Stopped
-    InvasionInfo
-    CommerceRecieveChatMessage
-    DoAnimation
-    OpenCrafting
-    CraftingItem
-    CraftingCatalyst
-    CraftingResult
-    ForceUpdate
-    GuardNotice
-    AnswerReset
-    ObjQuestListSend
-    UpdateBankGld
-    PelearConPezEspecial
-    Privilegios
-    ShopInit
-    UpdateShopClienteCredits
-    SendSkillCdUpdate
-    UpdateFlag
-    CharAtaca
-    NotificarClienteSeguido
-    RecievePosSeguimiento
-    CancelarSeguimiento
-    GetInventarioHechizos
-    NotificarClienteCasteo
-    SendFollowingCharindex
-    ForceCharMoveSiguiendo
-    PosUpdateUserChar
-    PosUpdateChar
-    PlayWaveStep
-    ShopPjsInit
-    DebugDataResponse
-    CreateProjectile
-    UpdateTrap
-    UpdateGroupInfo
-    RequestTelemetry
-    UpdateCharValue 'updates some char index value based on enum
-    SendClientToggles 'Get active feature Toggles from server
-#If PYMMO = 0 Then
-    AccountCharacterList
-#End If
-    [PacketCount]
-End Enum
-
-Public Enum ClientPacketID
-    '--------------------
-    CraftCarpenter          'CNC
-    WorkLeftClick           'WLC
-    CreateNewGuild          'CIG
-    SpellInfo               'INFS
-    EquipItem               'EQUI
-    ChangeHeading           'CHEA
-    ModifySkills            'SKSE
-    Train                   'ENTR
-    CommerceBuy             'COMP
-    BankExtractItem         'RETI
-    CommerceSell            'VEND
-    BankDeposit             'DEPO
-    ForumPost               'DEMSG
-    MoveSpell               'DESPHE
-    ClanCodexUpdate         'DESCOD
-    UserCommerceOffer       'OFRECER
-    GuildAcceptPeace        'ACEPPEAT
-    GuildRejectAlliance     'RECPALIA
-    GuildRejectPeace        'RECPPEAT
-    GuildAcceptAlliance     'ACEPALIA
-    GuildOfferPeace         'PEACEOFF
-    GuildOfferAlliance      'ALLIEOFF
-    GuildAllianceDetails    'ALLIEDET
-    GuildPeaceDetails       'PEACEDET
-    GuildRequestJoinerInfo  'ENVCOMEN
-    GuildAlliancePropList   'ENVALPRO
-    GuildPeacePropList      'ENVPROPP
-    GuildDeclareWar         'DECGUERR
-    GuildNewWebsite         'NEWWEBSI
-    GuildAcceptNewMember    'ACEPTARI
-    GuildRejectNewMember    'RECHAZAR
-    GuildKickMember         'ECHARCLA
-    GuildUpdateNews         'ACTGNEWS
-    GuildMemberInfo         '1HRINFO<
-    GuildOpenElections      'ABREELEC
-    GuildRequestMembership  'SOLICITUD
-    GuildRequestDetails     'CLANDETAILS
-    Online                  '/ONLINE
-    Quit                    '/SALIR
-    GuildLeave              '/SALIRCLAN
-    RequestAccountState     '/BALANCE
-    PetStand                '/QUIETO
-    PetFollow               '/ACOMPAÑAR
-    PetLeave                '/LIBERAR
-    GrupoMsg                '/GrupoMsg
-    TrainList               '/ENTRENAR
-    Rest                    '/DESCANSAR
-    Meditate                '/MEDITAR
-    Resucitate              '/RESUCITAR
-    Heal                    '/CURAR
-    Help                    '/AYUDA
-    RequestStats            '/EST
-    CommerceStart           '/COMERCIAR
-    BankStart               '/BOVEDA
-    Enlist                  '/ENLISTAR
-    Information             '/INFORMACION
-    Reward                  '/RECOMPENSA
-    RequestMOTD             '/MOTD
-    UpTime                  '/UPTIME
-    GuildMessage            '/CMSG
-    GuildOnline             '/ONLINECLAN
-    CouncilMessage          '/BMSG
-    RoleMasterRequest       '/ROL
-    ChangeDescription       '/DESC
-    GuildVote               '/VOTO
-    punishments             '/PENAS
-    Gamble                  '/APOSTAR
-    LeaveFaction            '/RETIRAR ( with no arguments )
-    BankExtractGold         '/RETIRAR ( with arguments )
-    BankDepositGold         '/DEPOSITAR
-    Denounce                '/DENUNCIAR
-    LoginExistingChar       'OLOGIN
-    LoginNewChar            'NLOGIN
-    Talk                    ';
-    Yell                    '-
-    Whisper                 '\
-    Walk                    'M
-    RequestPositionUpdate   'RPU
-    Attack                  'AT
-    PickUp                  'AG
-    SafeToggle              '/SEG & SEG  (SEG's behaviour has to be coded in the client)
-    PartySafeToggle
-    RequestGuildLeaderInfo  'GLINFO
-    RequestAtributes        'ATR
-    RequestSkills           'ESKI
-    RequestMiniStats        'FEST
-    CommerceEnd             'FINCOM
-    UserCommerceEnd         'FINCOMUSU
-    BankEnd                 'FINBAN
-    UserCommerceOk          'COMUSUOK
-    UserCommerceReject      'COMUSUNO
-    Drop                    'TI
-    CastSpell               'LH
-    LeftClick               'LC
-    DoubleClick             'RC
-    Work                    'UK
-    UseSpellMacro           'UMH
-    UseItem                 'USA
-    CraftBlacksmith         'CNS
-    
-    'GM messages
-    GMMessage               '/GMSG
-    showName                '/SHOWNAME
-    OnlineRoyalArmy         '/ONLINEREAL
-    OnlineChaosLegion       '/ONLINECAOS
-    GoNearby                '/IRCERCA
-    comment                 '/REM
-    serverTime              '/HORA
-    Where                   '/DONDE
-    CreaturesInMap          '/NENE
-    WarpMeToTarget          '/TELEPLOC
-    WarpChar                '/TELEP
-    Silence                 '/SILENCIAR
-    SOSShowList             '/SHOW SOS
-    SOSRemove               'SOSDONE
-    GoToChar                '/IRA
-    Invisible               '/INVISIBLE
-    GMPanel                 '/PANELGM
-    RequestUserList         'LISTUSU
-    Working                 '/TRABAJANDO
-    Hiding                  '/OCULTANDO
-    Jail                    '/CARCEL
-    KillNPC                 '/RMATA
-    WarnUser                '/ADVERTENCIA
-    EditChar                '/MOD
-    RequestCharInfo         '/INFO
-    RequestCharStats        '/STAT
-    RequestCharGold         '/BAL
-    RequestCharInventory    '/INV
-    RequestCharBank         '/BOV
-    RequestCharSkills       '/SKILLS
-    ReviveChar              '/REVIVIR
-    OnlineGM                '/ONLINEGM
-    OnlineMap               '/ONLINEMAP
-    Forgive                 '/PERDON
-    Kick                    '/ECHAR
-    Execute                 '/EJECUTAR
-    BanChar                 '/BAN
-    UnbanChar               '/UNBAN
-    NPCFollow               '/SEGUIR
-    SummonChar              '/SUM
-    SpawnListRequest        '/CC
-    SpawnCreature           'SPA
-    ResetNPCInventory       '/RESETINV
-    CleanWorld              '/LIMPIAR
-    ServerMessage           '/RMSG
-    NickToIP                '/NICK2IP
-    IPToNick                '/IP2NICK
-    GuildOnlineMembers      '/ONCLAN
-    TeleportCreate          '/CT
-    TeleportDestroy         '/DT
-    RainToggle              '/LLUVIA
-    SetCharDescription      '/SETDESC
-    ForceMIDIToMap          '/FORCEMIDIMAP
-    ForceWAVEToMap          '/FORCEWAVMAP
-    RoyalArmyMessage        '/REALMSG
-    ChaosLegionMessage      '/CAOSMSG
-    TalkAsNPC               '/TALKAS
-    DestroyAllItemsInArea   '/MASSDEST
-    AcceptRoyalCouncilMember '/ACEPTCONSE
-    AcceptChaosCouncilMember '/ACEPTCONSECAOS
-    ItemsInTheFloor         '/PISO
-    MakeDumb                '/ESTUPIDO
-    MakeDumbNoMore          '/NOESTUPIDO
-    CouncilKick             '/KICKCONSE
-    SetTrigger              '/TRIGGER
-    AskTrigger              '/TRIGGER with no args
-    GuildMemberList         '/MIEMBROSCLAN
-    GuildBan                '/BANCLAN
-    CreateItem              '/CI
-    DestroyItems            '/DEST
-    ChaosLegionKick         '/NOCAOS
-    RoyalArmyKick           '/NOREAL
-    ForceMIDIAll            '/FORCEMIDI
-    ForceWAVEAll            '/FORCEWAV
-    RemovePunishment        '/BORRARPENA
-    TileBlockedToggle       '/BLOQ
-    KillNPCNoRespawn        '/MATA
-    KillAllNearbyNPCs       '/MASSKILL
-    LastIP                  '/LASTIP
-    ChangeMOTD              '/MOTDCAMBIA
-    SetMOTD                 'ZMOTD
-    SystemMessage           '/SMSG
-    CreateNPC               '/ACC
-    CreateNPCWithRespawn    '/RACC
-    ImperialArmour          '/AI1 - 4
-    ChaosArmour             '/AC1 - 4
-    NavigateToggle          '/NAVE
-    ServerOpenToUsersToggle '/HABILITAR
-    Participar              '/PARTICIPAR
-    TurnCriminal            '/CONDEN
-    ResetFactions           '/RAJAR
-    RemoveCharFromGuild     '/RAJARCLAN
-    AlterName               '/ANAME
-    DoBackUp                '/DOBACKUP
-    ShowGuildMessages       '/SHOWCMSG
-    ChangeMapInfoPK         '/MODMAPINFO PK
-    ChangeMapInfoBackup     '/MODMAPINFO BACKUP
-    ChangeMapInfoRestricted '/MODMAPINFO RESTRINGIR
-    ChangeMapInfoNoMagic    '/MODMAPINFO MAGIASINEFECTO
-    ChangeMapInfoNoInvi     '/MODMAPINFO INVISINEFECTO
-    ChangeMapInfoNoResu     '/MODMAPINFO RESUSINEFECTO
-    ChangeMapInfoLand       '/MODMAPINFO TERRENO
-    ChangeMapInfoZone       '/MODMAPINFO ZONA
-    ChangeMapSetting        '/MODSETTING setting value
-    SaveChars               '/GRABAR
-    CleanSOS                '/BORRAR SOS
-    ShowServerForm          '/SHOW INT
-    night                   '/NOCHE
-    KickAllChars            '/ECHARTODOSPJS
-    ReloadNPCs              '/RELOADNPCS
-    ReloadServerIni         '/RELOADSINI
-    ReloadSpells            '/RELOADHECHIZOS
-    ReloadObjects           '/RELOADOBJ
-    ChatColor               '/CHATCOLOR
-    Ignored                 '/IGNORADO
-    CheckSlot               '/SLOT
-    
-    'Nuevas Ladder
-    SetSpeed                '/SPEED
-    GlobalMessage           '/CONSOLA
-    GlobalOnOff
-    UseKey
-    Day
-    SetTime
-    DonateGold              '/DONAR
-    Promedio                '/PROMEDIO
-    GiveItem                '/DAR
-    OfertaInicial
-    OfertaDeSubasta
-    QuestionGM
-    CuentaRegresiva
-    PossUser
-    Duel
-    AcceptDuel
-    CancelDuel
-    QuitDuel
-    NieveToggle
-    NieblaToggle
-    TransFerGold
-    Moveitem
-    Genio
-    Casarse
-    CraftAlquimista
-    FlagTrabajar
-    CraftSastre
-    MensajeUser
-    TraerBoveda
-    CompletarAccion
-    InvitarGrupo
-    ResponderPregunta
-    RequestGrupo
-    AbandonarGrupo
-    HecharDeGrupo
-    MacroPossent
-    SubastaInfo
-    BanCuenta
-    UnbanCuenta
-    CerrarCliente
-    EventoInfo
-    CrearEvento
-    BanTemporal
-    CancelarExit
-    CrearTorneo
-    ComenzarTorneo
-    CancelarTorneo
-    BusquedaTesoro
-    CompletarViaje
-    BovedaMoveItem
-    QuieroFundarClan
-    llamadadeclan
-    MarcaDeClanPack
-    MarcaDeGMPack
-    Quest
-    QuestAccept
-    QuestListRequest
-    QuestDetailsRequest
-    QuestAbandon
-    SeguroClan
-    Home                    '/HOGAR
-    Consulta                '/CONSULTA
-    GetMapInfo              '/MAPINFO
-    FinEvento
-    SeguroResu
-    CuentaExtractItem
-    CuentaDeposit
-    CreateEvent
-    CommerceSendChatMessage
-    LogMacroClickHechizo
-    AddItemCrafting
-    RemoveItemCrafting
-    AddCatalyst
-    RemoveCatalyst
-    CraftItem
-    CloseCrafting
-    MoveCraftItem
-    PetLeaveAll
-    ResetChar              '/RESET NICK
-    ResetearPersonaje
-    DeleteItem
-    FinalizarPescaEspecial
-    RomperCania
-    UseItemU
-    RepeatMacro
-    BuyShopItem
-    PerdonFaccion              '/PERDONFACCION NAME
-    StartEvent           '/EVENTO CAPTURA/LOBBY
-    CancelarEvento          '/CANCELAREVENTO
-    SeguirMouse
-    SendPosSeguimiento
-    NotifyInventarioHechizos
-    PublicarPersonajeMAO
-    EventoFaccionario
-    RequestDebug '/RequestDebug consulta info debug al server, para gms
-    LobbyCommand
-    FeatureToggle
-    ActionOnGroupFrame
-    SendTelemetry
-    SetHotkeySlot
-    UseHKeySlot
-    #If PYMMO = 0 Then
-    CreateAccount
-    LoginAccount
-    DeleteCharacter
-    #End If
-    [PacketCount]
-End Enum
-
 Private Reader As Network.Reader
 
 ''
@@ -597,404 +58,404 @@ On Error GoTo HandleIncomingData_Err
     #End If
    ' Debug.Print PacketId
     Select Case PacketID
-        Case ServerPacketID.Connected
+        Case ServerPacketID.eConnected
             Call HandleConnected
-        Case ServerPacketID.logged
+        Case ServerPacketID.elogged
             Call HandleLogged
-        Case ServerPacketID.RemoveDialogs
+        Case ServerPacketID.eRemoveDialogs
             Call HandleRemoveDialogs
-        Case ServerPacketID.RemoveCharDialog
+        Case ServerPacketID.eRemoveCharDialog
             Call HandleRemoveCharDialog
-        Case ServerPacketID.NavigateToggle
+        Case ServerPacketID.eNavigateToggle
             Call HandleNavigateToggle
-        Case ServerPacketID.EquiteToggle
+        Case ServerPacketID.eEquiteToggle
             Call HandleEquiteToggle
-        Case ServerPacketID.Disconnect
+        Case ServerPacketID.eDisconnect
             Call HandleDisconnect
-        Case ServerPacketID.CommerceEnd
+        Case ServerPacketID.eCommerceEnd
             Call HandleCommerceEnd
-        Case ServerPacketID.BankEnd
+        Case ServerPacketID.eBankEnd
             Call HandleBankEnd
-        Case ServerPacketID.CommerceInit
+        Case ServerPacketID.eCommerceInit
             Call HandleCommerceInit
-        Case ServerPacketID.BankInit
+        Case ServerPacketID.eBankInit
             Call HandleBankInit
-        Case ServerPacketID.UserCommerceInit
+        Case ServerPacketID.eUserCommerceInit
             Call HandleUserCommerceInit
-        Case ServerPacketID.UserCommerceEnd
+        Case ServerPacketID.eUserCommerceEnd
             Call HandleUserCommerceEnd
-        Case ServerPacketID.ShowBlacksmithForm
+        Case ServerPacketID.eShowBlacksmithForm
             Call HandleShowBlacksmithForm
-        Case ServerPacketID.ShowCarpenterForm
+        Case ServerPacketID.eShowCarpenterForm
             Call HandleShowCarpenterForm
-        Case ServerPacketID.NPCKillUser
+        Case ServerPacketID.eNPCKillUser
             Call HandleNPCKillUser
-        Case ServerPacketID.BlockedWithShieldUser
+        Case ServerPacketID.eBlockedWithShieldUser
             Call HandleBlockedWithShieldUser
-        Case ServerPacketID.BlockedWithShieldOther
+        Case ServerPacketID.eBlockedWithShieldOther
             Call HandleBlockedWithShieldOther
-        Case ServerPacketID.CharSwing
+        Case ServerPacketID.eCharSwing
             Call HandleCharSwing
-        Case ServerPacketID.SafeModeOn
+        Case ServerPacketID.eSafeModeOn
             Call HandleSafeModeOn
-        Case ServerPacketID.SafeModeOff
+        Case ServerPacketID.eSafeModeOff
             Call HandleSafeModeOff
-        Case ServerPacketID.PartySafeOn
+        Case ServerPacketID.ePartySafeOn
             Call HandlePartySafeOn
-        Case ServerPacketID.PartySafeOff
+        Case ServerPacketID.ePartySafeOff
             Call HandlePartySafeOff
-        Case ServerPacketID.CantUseWhileMeditating
+        Case ServerPacketID.eCantUseWhileMeditating
             Call HandleCantUseWhileMeditating
-        Case ServerPacketID.UpdateSta
+        Case ServerPacketID.eUpdateSta
             Call HandleUpdateSta
-        Case ServerPacketID.UpdateMana
+        Case ServerPacketID.eUpdateMana
             Call HandleUpdateMana
-        Case ServerPacketID.UpdateHP
+        Case ServerPacketID.eUpdateHP
             Call HandleUpdateHP
-        Case ServerPacketID.UpdateGold
+        Case ServerPacketID.eUpdateGold
             Call HandleUpdateGold
-        Case ServerPacketID.UpdateExp
+        Case ServerPacketID.eUpdateExp
             Call HandleUpdateExp
-        Case ServerPacketID.ChangeMap
+        Case ServerPacketID.eChangeMap
             Call HandleChangeMap
-        Case ServerPacketID.PosUpdate
+        Case ServerPacketID.ePosUpdate
             Call HandlePosUpdate
-        Case ServerPacketID.PosUpdateUserChar
+        Case ServerPacketID.ePosUpdateUserChar
             Call HandlePosUpdateUserChar
-        Case ServerPacketID.PosUpdateChar
+        Case ServerPacketID.ePosUpdateChar
             Call HandlePosUpdateChar
-        Case ServerPacketID.NPCHitUser
+        Case ServerPacketID.eNPCHitUser
             Call HandleNPCHitUser
-        Case ServerPacketID.UserHittedByUser
+        Case ServerPacketID.eUserHittedByUser
             Call HandleUserHittedByUser
-        Case ServerPacketID.UserHittedUser
+        Case ServerPacketID.eUserHittedUser
             Call HandleUserHittedUser
-        Case ServerPacketID.ChatOverHead
+        Case ServerPacketID.eChatOverHead
             Call HandleChatOverHead
-        Case ServerPacketID.LocaleChatOverHead
+        Case ServerPacketID.eLocaleChatOverHead
             Call HandleLocaleChatOverHead
-        Case ServerPacketID.ConsoleMsg
+        Case ServerPacketID.eConsoleMsg
             Call HandleConsoleMessage
-        Case ServerPacketID.GuildChat
+        Case ServerPacketID.eGuildChat
             Call HandleGuildChat
-        Case ServerPacketID.ShowMessageBox
+        Case ServerPacketID.eShowMessageBox
             Call HandleShowMessageBox
-        Case ServerPacketID.MostrarCuenta
+        Case ServerPacketID.eMostrarCuenta
             Call HandleMostrarCuenta
-        Case ServerPacketID.CharacterCreate
+        Case ServerPacketID.eCharacterCreate
             Call HandleCharacterCreate
-        Case ServerPacketID.UpdateFlag
+        Case ServerPacketID.eUpdateFlag
             Call HandleUpdateFlag
-        Case ServerPacketID.CharacterRemove
+        Case ServerPacketID.eCharacterRemove
             Call HandleCharacterRemove
-        Case ServerPacketID.CharacterMove
+        Case ServerPacketID.eCharacterMove
             Call HandleCharacterMove
-        Case ServerPacketID.CharacterTranslate
+        Case ServerPacketID.eCharacterTranslate
             Call HandleCharacterTranslate
-        Case ServerPacketID.UserIndexInServer
+        Case ServerPacketID.eUserIndexInServer
             Call HandleUserIndexInServer
-        Case ServerPacketID.UserCharIndexInServer
+        Case ServerPacketID.eUserCharIndexInServer
             Call HandleUserCharIndexInServer
-        Case ServerPacketID.ForceCharMove
+        Case ServerPacketID.eForceCharMove
             Call HandleForceCharMove
-        Case ServerPacketID.ForceCharMoveSiguiendo
+        Case ServerPacketID.eForceCharMoveSiguiendo
             Call HandleForceCharMoveSiguiendo
-        Case ServerPacketID.CharacterChange
+        Case ServerPacketID.eCharacterChange
             Call HandleCharacterChange
-        Case ServerPacketID.ObjectCreate
+        Case ServerPacketID.eObjectCreate
             Call HandleObjectCreate
-        Case ServerPacketID.fxpiso
+        Case ServerPacketID.efxpiso
             Call HandleFxPiso
-        Case ServerPacketID.ObjectDelete
+        Case ServerPacketID.eObjectDelete
             Call HandleObjectDelete
-        Case ServerPacketID.BlockPosition
+        Case ServerPacketID.eBlockPosition
             Call HandleBlockPosition
-        Case ServerPacketID.PlayMIDI
+        Case ServerPacketID.ePlayMIDI
             Call HandlePlayMIDI
-        Case ServerPacketID.PlayWave
+        Case ServerPacketID.ePlayWave
             Call HandlePlayWave
-        Case ServerPacketID.PlayWaveStep
+        Case ServerPacketID.ePlayWaveStep
             Call HandlePlayWaveStep
-        Case ServerPacketID.guildList
+        Case ServerPacketID.eguildList
             Call HandleGuildList
-        Case ServerPacketID.AreaChanged
+        Case ServerPacketID.eAreaChanged
             Call HandleAreaChanged
-        Case ServerPacketID.PauseToggle
+        Case ServerPacketID.ePauseToggle
             Call HandlePauseToggle
-        Case ServerPacketID.RainToggle
+        Case ServerPacketID.eRainToggle
             Call HandleRainToggle
-        Case ServerPacketID.CreateFX
+        Case ServerPacketID.eCreateFX
             Call HandleCreateFX
-        Case ServerPacketID.CharAtaca
+        Case ServerPacketID.eCharAtaca
             Call HandleCharAtaca
-        Case ServerPacketID.RecievePosSeguimiento
+        Case ServerPacketID.eRecievePosSeguimiento
             Call HandleRecievePosSeguimiento
-        Case ServerPacketID.CancelarSeguimiento
+        Case ServerPacketID.eCancelarSeguimiento
             Call HandleCancelarSeguimiento
-        Case ServerPacketID.GetInventarioHechizos
+        Case ServerPacketID.eGetInventarioHechizos
             Call HandleGetInventarioHechizos
-        Case ServerPacketID.NotificarClienteCasteo
+        Case ServerPacketID.eNotificarClienteCasteo
             Call HandleNotificarClienteCasteo
-        Case ServerPacketID.SendFollowingCharindex
+        Case ServerPacketID.eSendFollowingCharindex
             Call HandleSendFollowingCharindex
-        Case ServerPacketID.NotificarClienteSeguido
+        Case ServerPacketID.eNotificarClienteSeguido
             Call HandleNotificarClienteSeguido
-        Case ServerPacketID.UpdateUserStats
+        Case ServerPacketID.eUpdateUserStats
             Call HandleUpdateUserStats
-        Case ServerPacketID.WorkRequestTarget
+        Case ServerPacketID.eWorkRequestTarget
             Call HandleWorkRequestTarget
-        Case ServerPacketID.ChangeInventorySlot
+        Case ServerPacketID.eChangeInventorySlot
             Call HandleChangeInventorySlot
-        Case ServerPacketID.InventoryUnlockSlots
+        Case ServerPacketID.eInventoryUnlockSlots
             Call HandleInventoryUnlockSlots
-        Case ServerPacketID.ChangeBankSlot
+        Case ServerPacketID.eChangeBankSlot
             Call HandleChangeBankSlot
-        Case ServerPacketID.ChangeSpellSlot
+        Case ServerPacketID.eChangeSpellSlot
             Call HandleChangeSpellSlot
-        Case ServerPacketID.Atributes
+        Case ServerPacketID.eAtributes
             Call HandleAtributes
-        Case ServerPacketID.BlacksmithWeapons
+        Case ServerPacketID.eBlacksmithWeapons
             Call HandleBlacksmithWeapons
-        Case ServerPacketID.BlacksmithArmors
+        Case ServerPacketID.eBlacksmithArmors
             Call HandleBlacksmithArmors
-        Case ServerPacketID.CarpenterObjects
+        Case ServerPacketID.eCarpenterObjects
             Call HandleCarpenterObjects
-        Case ServerPacketID.RestOK
+        Case ServerPacketID.eRestOK
             Call HandleRestOK
-        Case ServerPacketID.ErrorMsg
+        Case ServerPacketID.eErrorMsg
             Call HandleErrorMessage
-        Case ServerPacketID.Blind
+        Case ServerPacketID.eBlind
             Call HandleBlind
-        Case ServerPacketID.Dumb
+        Case ServerPacketID.eDumb
             Call HandleDumb
-        Case ServerPacketID.ShowSignal
+        Case ServerPacketID.eShowSignal
             Call HandleShowSignal
-        Case ServerPacketID.ChangeNPCInventorySlot
+        Case ServerPacketID.eChangeNPCInventorySlot
             Call HandleChangeNPCInventorySlot
-        Case ServerPacketID.UpdateHungerAndThirst
+        Case ServerPacketID.eUpdateHungerAndThirst
             Call HandleUpdateHungerAndThirst
-        Case ServerPacketID.MiniStats
+        Case ServerPacketID.eMiniStats
             Call HandleMiniStats
-        Case ServerPacketID.LevelUp
+        Case ServerPacketID.eLevelUp
             Call HandleLevelUp
-        Case ServerPacketID.AddForumMsg
+        Case ServerPacketID.eAddForumMsg
             Call HandleAddForumMessage
-        Case ServerPacketID.ShowForumForm
+        Case ServerPacketID.eShowForumForm
             Call HandleShowForumForm
-        Case ServerPacketID.SetInvisible
+        Case ServerPacketID.eSetInvisible
             Call HandleSetInvisible
-        Case ServerPacketID.MeditateToggle
+        Case ServerPacketID.eMeditateToggle
             Call HandleMeditateToggle
-        Case ServerPacketID.BlindNoMore
+        Case ServerPacketID.eBlindNoMore
             Call HandleBlindNoMore
-        Case ServerPacketID.DumbNoMore
+        Case ServerPacketID.eDumbNoMore
             Call HandleDumbNoMore
-        Case ServerPacketID.SendSkills
+        Case ServerPacketID.eSendSkills
             Call HandleSendSkills
-        Case ServerPacketID.TrainerCreatureList
+        Case ServerPacketID.eTrainerCreatureList
             Call HandleTrainerCreatureList
-        Case ServerPacketID.guildNews
+        Case ServerPacketID.eguildNews
             Call HandleGuildNews
-        Case ServerPacketID.OfferDetails
+        Case ServerPacketID.eOfferDetails
             Call HandleOfferDetails
-        Case ServerPacketID.AlianceProposalsList
+        Case ServerPacketID.eAlianceProposalsList
             Call HandleAlianceProposalsList
-        Case ServerPacketID.PeaceProposalsList
+        Case ServerPacketID.ePeaceProposalsList
             Call HandlePeaceProposalsList
-        Case ServerPacketID.CharacterInfo
+        Case ServerPacketID.eCharacterInfo
             Call HandleCharacterInfo
-        Case ServerPacketID.GuildLeaderInfo
+        Case ServerPacketID.eGuildLeaderInfo
             Call HandleGuildLeaderInfo
-        Case ServerPacketID.GuildDetails
+        Case ServerPacketID.eGuildDetails
             Call HandleGuildDetails
-        Case ServerPacketID.ShowGuildFundationForm
+        Case ServerPacketID.eShowGuildFundationForm
             Call HandleShowGuildFundationForm
-        Case ServerPacketID.ParalizeOK
+        Case ServerPacketID.eParalizeOK
             Call HandleParalizeOK
-        Case ServerPacketID.StunStart
+        Case ServerPacketID.eStunStart
             Call HandleStunStart
-        Case ServerPacketID.ShowUserRequest
+        Case ServerPacketID.eShowUserRequest
             Call HandleShowUserRequest
-        Case ServerPacketID.ChangeUserTradeSlot
+        Case ServerPacketID.eChangeUserTradeSlot
             Call HandleChangeUserTradeSlot
         'Case ServerPacketID.SendNight
         '    Call HandleSendNight
-        Case ServerPacketID.UpdateTagAndStatus
+        Case ServerPacketID.eUpdateTagAndStatus
             Call HandleUpdateTagAndStatus
-        Case ServerPacketID.FYA
+        Case ServerPacketID.eFYA
             Call HandleFYA
-        Case ServerPacketID.CerrarleCliente
+        Case ServerPacketID.eCerrarleCliente
             Call HandleCerrarleCliente
-        Case ServerPacketID.Contadores
+        Case ServerPacketID.eContadores
             Call HandleContadores
-        Case ServerPacketID.ShowPapiro
+        Case ServerPacketID.eShowPapiro
             Call HandleShowPapiro
-        Case ServerPacketID.UpdateCooldownType
+        Case ServerPacketID.eUpdateCooldownType
             Call HandleUpdateCooldownType
-        Case ServerPacketID.SpawnListt
+        Case ServerPacketID.eSpawnListt
             Call HandleSpawnList
-        Case ServerPacketID.ShowSOSForm
+        Case ServerPacketID.eShowSOSForm
             Call HandleShowSOSForm
-        Case ServerPacketID.ShowMOTDEditionForm
+        Case ServerPacketID.eShowMOTDEditionForm
             Call HandleShowMOTDEditionForm
-        Case ServerPacketID.ShowGMPanelForm
+        Case ServerPacketID.eShowGMPanelForm
             Call HandleShowGMPanelForm
-        Case ServerPacketID.UserNameList
+        Case ServerPacketID.eUserNameList
             Call HandleUserNameList
-        Case ServerPacketID.UserOnline
+        Case ServerPacketID.eUserOnline
             Call HandleUserOnline
-        Case ServerPacketID.ParticleFX
+        Case ServerPacketID.eParticleFX
             Call HandleParticleFX
-        Case ServerPacketID.ParticleFXToFloor
+        Case ServerPacketID.eParticleFXToFloor
             Call HandleParticleFXToFloor
-        Case ServerPacketID.ParticleFXWithDestino
+        Case ServerPacketID.eParticleFXWithDestino
             Call HandleParticleFXWithDestino
-        Case ServerPacketID.ParticleFXWithDestinoXY
+        Case ServerPacketID.eParticleFXWithDestinoXY
             Call HandleParticleFXWithDestinoXY
-        Case ServerPacketID.hora
+        Case ServerPacketID.ehora
             Call HandleHora
-        Case ServerPacketID.Light
+        Case ServerPacketID.eLight
             Call HandleLight
-        Case ServerPacketID.AuraToChar
+        Case ServerPacketID.eAuraToChar
             Call HandleAuraToChar
-        Case ServerPacketID.SpeedToChar
+        Case ServerPacketID.eSpeedToChar
             Call HandleSpeedToChar
-        Case ServerPacketID.LightToFloor
+        Case ServerPacketID.eLightToFloor
             Call HandleLightToFloor
-        Case ServerPacketID.NieveToggle
+        Case ServerPacketID.eNieveToggle
             Call HandleNieveToggle
-        Case ServerPacketID.NieblaToggle
+        Case ServerPacketID.eNieblaToggle
             Call HandleNieblaToggle
-        Case ServerPacketID.Goliath
+        Case ServerPacketID.eGoliath
             Call HandleGoliath
-        Case ServerPacketID.TextOverChar
+        Case ServerPacketID.eTextOverChar
             Call HandleTextOverChar
-        Case ServerPacketID.TextOverTile
+        Case ServerPacketID.eTextOverTile
             Call HandleTextOverTile
-        Case ServerPacketID.TextCharDrop
+        Case ServerPacketID.eTextCharDrop
             Call HandleTextCharDrop
-        Case ServerPacketID.ConsoleCharText
+        Case ServerPacketID.eConsoleCharText
             Call HandleConsoleCharText
-        Case ServerPacketID.FlashScreen
+        Case ServerPacketID.eFlashScreen
             Call HandleFlashScreen
-        Case ServerPacketID.AlquimistaObj
+        Case ServerPacketID.eAlquimistaObj
             Call HandleAlquimiaObjects
-        Case ServerPacketID.ShowAlquimiaForm
+        Case ServerPacketID.eShowAlquimiaForm
             Call HandleShowAlquimiaForm
-        Case ServerPacketID.SastreObj
+        Case ServerPacketID.eSastreObj
             Call HandleSastreObjects
-        Case ServerPacketID.ShowSastreForm
+        Case ServerPacketID.eShowSastreForm
             Call HandleShowSastreForm
-        Case ServerPacketID.VelocidadToggle
+        Case ServerPacketID.eVelocidadToggle
             Call HandleVelocidadToggle
-        Case ServerPacketID.MacroTrabajoToggle
+        Case ServerPacketID.eMacroTrabajoToggle
             Call HandleMacroTrabajoToggle
-        Case ServerPacketID.BindKeys
+        Case ServerPacketID.eBindKeys
             Call HandleBindKeys
-        Case ServerPacketID.ShowFrmLogear
+        Case ServerPacketID.eShowFrmLogear
             Call HandleShowFrmLogear
-        Case ServerPacketID.ShowFrmMapa
+        Case ServerPacketID.eShowFrmMapa
             Call HandleShowFrmMapa
-        Case ServerPacketID.InmovilizadoOK
+        Case ServerPacketID.eInmovilizadoOK
             Call HandleInmovilizadoOK
-        Case ServerPacketID.BarFx
+        Case ServerPacketID.eBarFx
             Call HandleBarFx
-        Case ServerPacketID.LocaleMsg
+        Case ServerPacketID.eLocaleMsg
             Call HandleLocaleMsg
-        Case ServerPacketID.ShowPregunta
+        Case ServerPacketID.eShowPregunta
             Call HandleShowPregunta
-        Case ServerPacketID.DatosGrupo
+        Case ServerPacketID.eDatosGrupo
             Call HandleDatosGrupo
-        Case ServerPacketID.ubicacion
+        Case ServerPacketID.eubicacion
             Call HandleUbicacion
-        Case ServerPacketID.ArmaMov
+        Case ServerPacketID.eArmaMov
             Call HandleArmaMov
-        Case ServerPacketID.EscudoMov
+        Case ServerPacketID.eEscudoMov
             Call HandleEscudoMov
-        Case ServerPacketID.ViajarForm
+        Case ServerPacketID.eViajarForm
             Call HandleViajarForm
-        Case ServerPacketID.NadarToggle
+        Case ServerPacketID.eNadarToggle
             Call HandleNadarToggle
-        Case ServerPacketID.ShowFundarClanForm
+        Case ServerPacketID.eShowFundarClanForm
             Call HandleShowFundarClanForm
-        Case ServerPacketID.CharUpdateHP
+        Case ServerPacketID.eCharUpdateHP
             Call HandleCharUpdateHP
-        Case ServerPacketID.CharUpdateMAN
+        Case ServerPacketID.eCharUpdateMAN
             Call HandleCharUpdateMAN
-        Case ServerPacketID.PosLLamadaDeClan
+        Case ServerPacketID.ePosLLamadaDeClan
             Call HandlePosLLamadaDeClan
-        Case ServerPacketID.QuestDetails
+        Case ServerPacketID.eQuestDetails
             Call HandleQuestDetails
-        Case ServerPacketID.QuestListSend
+        Case ServerPacketID.eQuestListSend
             Call HandleQuestListSend
-        Case ServerPacketID.NpcQuestListSend
+        Case ServerPacketID.eNpcQuestListSend
             Call HandleNpcQuestListSend
-        Case ServerPacketID.UpdateNPCSimbolo
+        Case ServerPacketID.eUpdateNPCSimbolo
             Call HandleUpdateNPCSimbolo
-        Case ServerPacketID.ClanSeguro
+        Case ServerPacketID.eClanSeguro
             Call HandleClanSeguro
-        Case ServerPacketID.Intervals
+        Case ServerPacketID.eIntervals
             Call HandleIntervals
-        Case ServerPacketID.UpdateUserKey
+        Case ServerPacketID.eUpdateUserKey
             Call HandleUpdateUserKey
-        Case ServerPacketID.UpdateRM
+        Case ServerPacketID.eUpdateRM
             Call HandleUpdateRM
-        Case ServerPacketID.UpdateDM
+        Case ServerPacketID.eUpdateDM
             Call HandleUpdateDM
-        Case ServerPacketID.SeguroResu
+        Case ServerPacketID.eSeguroResu
             Call HandleSeguroResu
-        Case ServerPacketID.Stopped
+        Case ServerPacketID.eStopped
             Call HandleStopped
-        Case ServerPacketID.InvasionInfo
+        Case ServerPacketID.eInvasionInfo
             Call HandleInvasionInfo
-        Case ServerPacketID.CommerceRecieveChatMessage
+        Case ServerPacketID.eCommerceRecieveChatMessage
             Call HandleCommerceRecieveChatMessage
-        Case ServerPacketID.DoAnimation
+        Case ServerPacketID.eDoAnimation
             Call HandleDoAnimation
-        Case ServerPacketID.OpenCrafting
+        Case ServerPacketID.eOpenCrafting
             Call HandleOpenCrafting
-        Case ServerPacketID.CraftingItem
+        Case ServerPacketID.eCraftingItem
             Call HandleCraftingItem
-        Case ServerPacketID.CraftingCatalyst
+        Case ServerPacketID.eCraftingCatalyst
             Call HandleCraftingCatalyst
-        Case ServerPacketID.CraftingResult
+        Case ServerPacketID.eCraftingResult
             Call HandleCraftingResult
-        Case ServerPacketID.ForceUpdate
+        Case ServerPacketID.eForceUpdate
             Call HandleForceUpdate
-        Case ServerPacketID.AnswerReset
+        Case ServerPacketID.eAnswerReset
             Call HandleAnswerReset
-        Case ServerPacketID.ObjQuestListSend
+        Case ServerPacketID.eObjQuestListSend
             Call HandleObjQuestListSend
-        Case ServerPacketID.UpdateBankGld
+        Case ServerPacketID.eUpdateBankGld
             Call HandleUpdateBankGld
-        Case ServerPacketID.PelearConPezEspecial
+        Case ServerPacketID.ePelearConPezEspecial
             Call HandlePelearConPezEspecial
-        Case ServerPacketID.Privilegios
+        Case ServerPacketID.ePrivilegios
             Call HandlePrivilegios
-        Case ServerPacketID.ShopInit
+        Case ServerPacketID.eShopInit
             Call HandleShopInit
-        Case ServerPacketID.ShopPjsInit
+        Case ServerPacketID.eShopPjsInit
             Call HandleShopPjsInit
-        Case ServerPacketID.UpdateShopClienteCredits
+        Case ServerPacketID.eUpdateShopClienteCredits
             Call HandleUpdateShopClienteCredits
-        Case ServerPacketID.SendSkillCdUpdate
+        Case ServerPacketID.eSendSkillCdUpdate
             Call HandleSendSkillCdUpdate
-        Case ServerPacketID.DebugDataResponse
+        Case ServerPacketID.eDebugDataResponse
             Call HandleDebugDataResponse
-        Case ServerPacketID.CreateProjectile
+        Case ServerPacketID.eCreateProjectile
             Call HandleCreateProjectile
-        Case ServerPacketID.UpdateTrap
+        Case ServerPacketID.eUpdateTrap
             Call HandleUpdateTrapState
-        Case ServerPacketID.UpdateGroupInfo
+        Case ServerPacketID.eUpdateGroupInfo
             Call HandleUpdateGroupInfo
-        Case ServerPacketID.RequestTelemetry
+        Case ServerPacketID.eRequestTelemetry
             Call HandleRequestTelemetry
-        Case ServerPacketID.UpdateCharValue
+        Case ServerPacketID.eUpdateCharValue
             Call HandleUpdateCharValue
-        Case ServerPacketID.SendClientToggles
+        Case ServerPacketID.eSendClientToggles
             Call HandleSendClientToggles
         #If PYMMO = 0 Then
-        Case ServerPacketID.AccountCharacterList
+        Case ServerPacketID.eAccountCharacterList
             Call HandleAccountCharacterList
         #End If
         Case Else

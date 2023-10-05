@@ -141,6 +141,7 @@ Class=clsRenderer; CODIGO\clsRenderer.cls
 Module=ao20rendering; CODIGO\ao20rendering.bas
 Module=ModGameplayUI; CODIGO\ModGameplayUI.bas
 ResFile32="AO20.res"
+Module=PacketId; CODIGO\PacketId.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
