@@ -338,6 +338,7 @@ Public BabelInitialized As Boolean
 Public DebugInitialized As Boolean
 Public GetRemoteError As Boolean
 Public UseBabelUI As Boolean
+Public SaveUseBabelUI As Boolean
 Public InputFocus As Boolean
 Public IsGameDialogOpen As Boolean
 
@@ -357,6 +358,7 @@ End Function
 Public Function CheckAndSetBabelUIUsage() As Boolean
 On Error GoTo CheckAndSetBabelUIUsage_Err
 100    UseBabelUI = Val(GetSetting("OPCIONES", "UseExperimentalUI"))
+       SaveUseBabelUI = UseBabelUI
 102    LogError ("Initilalize UI: " & UseBabelUI)
 104    CheckAndSetBabelUIUsage = UseBabelUI
     Exit Function
@@ -950,6 +952,7 @@ On Error GoTo HandleUpdateIntSetting_Err
         Case eDisplayFullNumbersInventory
             NumerosCompletosInventario = Value > 0
         Case eEnableBabelUI
+            SaveUseBabelUI = Value
             Call SaveSetting("OPCIONES", "UseExperimentalUI", Value)
         Case eEnableMusic
             If Value = 0 Then

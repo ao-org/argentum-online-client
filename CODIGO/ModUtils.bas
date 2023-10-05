@@ -1476,6 +1476,7 @@ Sub GuardarOpciones()
     Call SaveSetting("OPCIONES", "MoverVentana", MoverVentana)
     Call SaveSetting("OPCIONES", "PermitirMoverse", PermitirMoverse)
     Call SaveSetting("OPCIONES", "ScrollArrastrar", ScrollArrastrar)
+    Call SaveSetting("OPCIONES", "UseExperimentalUI", IIf(SaveUseBabelUI, 1, 0))
     
     Call SaveSetting("OPCIONES", "CopiarDialogoAConsola", CopiarDialogoAConsola)
     Call SaveSetting("OPCIONES", "FPSFLAG", FPSFLAG)
