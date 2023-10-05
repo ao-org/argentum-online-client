@@ -1,6 +1,6 @@
 Attribute VB_Name = "PacketId"
 Public Enum ServerPacketID
-
+    eMinPacket
     eConnected
     elogged                  ' LOGGED  0
     eRemoveDialogs           ' QTDL
@@ -205,10 +205,12 @@ Public Enum ServerPacketID
 #If PYMMO = 0 Then
     eAccountCharacterList
 #End If
+    eMaxPacket
     [PacketCount]
 End Enum
 
 Public Enum ClientPacketID
+    eMinPacket
     '--------------------
     eCraftCarpenter          'CNC
     eWorkLeftClick           'WLC
@@ -535,6 +537,7 @@ Public Enum ClientPacketID
     eLoginAccount
     eDeleteCharacter
     #End If
+    eMaxPacket
     [PacketCount]
 End Enum
 
