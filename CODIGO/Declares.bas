@@ -220,7 +220,7 @@ Public Enum e_FeatureToggleMask
 End Enum
 Public HideHotkeys As Boolean
 Public HotkeyList(HotKeyCount) As t_HotkeyEntry
-Public packetControl(1 To CANT_PACKETS_CONTROL) As t_packetControl
+Public packetControl(ClientPacketID.eMinPacket To ClientPacketID.eMaxPacket) As t_packetControl
 Public Const NUM_PASOS       As Byte = 7
 Public Pasos()               As tPaso
 Public PosXMacro             As Integer
