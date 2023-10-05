@@ -84,7 +84,7 @@ On Error GoTo OnClick_Err
         If Not Comerciando Then
             If MouseShift = 0 Then
                 If UsingSkill = 0 Or frmMain.MacroLadder.enabled Then
-                    Call CountPacketIterations(packetControl(ClientPacketID.LeftClick), 150)
+                    Call CountPacketIterations(packetControl(ClientPacketID.eLeftClick), 150)
                     Call WriteLeftClick(tX, tY)
                 Else
                     Dim SendSkill As Boolean
@@ -431,7 +431,7 @@ End Function
 
 Public Sub UseItemKey()
     If Not MainTimer.Check(TimersIndex.AttackUse, False) Then Exit Sub
-        Call CountPacketIterations(packetControl(ClientPacketID.UseItemU), 100)
+        Call CountPacketIterations(packetControl(ClientPacketID.eUseItemU), 100)
         If BabelInitialized Then
             If UserInventory.SelectedSlot > 0 And UserInventory.SelectedSlot <= UBound(UserInventory.Slots) Then
                 Call WriteUseItemU(UserInventory.SelectedSlot)
@@ -490,7 +490,7 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
                 Call WriteEquipItem(Slot)
             End If
         Case Else
-            Call CountPacketIterations(packetControl(ClientPacketID.UseItem), 180)
+            Call CountPacketIterations(packetControl(ClientPacketID.eUseItem), 180)
             Call WriteUseItem(Slot)
     End Select
 End Sub
