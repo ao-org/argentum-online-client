@@ -1379,19 +1379,14 @@ IntervaloPermiteConectar_Err:
 End Function
 Sub initPacketControl()
     Dim i As Long, j As Long
-    
-    'ReDim packetControl(1 To CANT_PACKETS_CONTROL) As t_packetControl
-    
-    For i = 1 To CANT_PACKETS_CONTROL
+    For i = LBound(packetControl) To UBound(packetControl)
         With packetControl(i)
             .last_count = 0
-           ' .cant_iterations = 0
            For j = 1 To 10
                 .iterations(j) = 0
             Next j
         End With
     Next i
-    
 End Sub
 Sub load_game_settings()
 
