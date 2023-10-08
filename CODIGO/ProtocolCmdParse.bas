@@ -45,6 +45,7 @@ Public Enum e_LobbyCommandId
     eForceReset
     eSetTeamSize
     eAddPlayer
+    eSetInscriptionPrice
 End Enum
 
 Public Enum e_DebugCommands
@@ -2384,6 +2385,14 @@ Private Sub ConfigLobbyAddPlayer(ByRef arguments() As String, ByVal argCount As 
     End If
 End Sub
 
+Private Sub ConfigLobbySetPrice(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        Call WriteLobbyCommand(e_LobbyCommandId.eSetInscriptionPrice, arguments(1))
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY SETPRICE CantidadDeOro")
+    End If
+End Sub
+
 Private Sub ConfigLobbySetTeamSize(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 2 Then
         Dim premade As Byte
@@ -2451,12 +2460,14 @@ Private Sub ConfigLobby(ByRef arguments() As String, ByVal argCount As Integer)
             Call ConfigLobbySetTeamSize(arguments(), argCount)
         ElseIf eType = "ADDPLAYER" Then
             Call ConfigLobbyAddPlayer(arguments(), argCount)
+        ElseIf eType = "SETPRICE" Then
+            Call ConfigLobbySetPrice(arguments(), argCount)
         Else
-            Call ShowConsoleMsg("Parametro invalido. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK/FORCERESET/SETTEAMSIZE/ADDPLAYER")
+            Call ShowConsoleMsg("Parametro invalido. Utilice /CONFIGLOBBY SETPRICE/SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK/FORCERESET/SETTEAMSIZE/ADDPLAYER")
         End If
     Else
         'Avisar que falta el parametro
-        Call ShowConsoleMsg("Faltan parámetros. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK")
+        Call ShowConsoleMsg("Faltan parámetros. Utilice /CONFIGLOBBY SETPRICE/SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK")
     End If
 End Sub
 ''

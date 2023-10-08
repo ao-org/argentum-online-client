@@ -170,7 +170,6 @@ Public Type t_packetCounters
 End Type
 
 Public packetCounters As t_packetCounters
-Public Const CANT_PACKETS_CONTROL As Long = 400
 
 Public Type t_packetControl
     last_count As Long
