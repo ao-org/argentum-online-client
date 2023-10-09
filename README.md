@@ -1,4 +1,4 @@
-### ⚔️ Por favor considera apoyarnos en [https://www.patreon.com/nolandstudios](https://www.patreon.com/nolandstudios) ⚔️
+#### ⚔️ Por favor considera apoyarnos en [https://www.patreon.com/nolandstudios](https://www.patreon.com/nolandstudios) ⚔️
 
 # 🐲 AO20 CLIENTE 🧙🏻
 Código fuente del cliente de Argentum20.
