@@ -325,8 +325,14 @@ Begin VB.Form frmOpciones
          Left            =   240
          List            =   "frmOpciones.frx":01C5
          TabIndex        =   21
-         Top             =   3720
+         Top             =   3960
          Width           =   2175
+      End
+      Begin VB.Image CheckUI 
+         Height          =   255
+         Left            =   270
+         Top             =   3495
+         Width           =   255
       End
       Begin VB.Image num_comp_inv 
          Height          =   255
@@ -871,6 +877,27 @@ Private Sub Check8_Click()
 
 Check8_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check8_MouseUp", Erl)
+    Resume Next
+End Sub
+
+Private Sub CheckUI_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error GoTo CheckUI_MouseUp_Err
+    
+
+    SaveUseBabelUI = Not SaveUseBabelUI
+
+    If Not SaveUseBabelUI Then
+        CheckUI.Picture = Nothing
+    Else
+        CheckUI.Picture = LoadInterface("check-amarillo.bmp")
+        Call MsgBox("Deberás reiniciar el cliente para que esta configuración tome efecto.", vbExclamation)
+    End If
+
+    
+    Exit Sub
+
+CheckUI_MouseUp_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.CheckUI_MouseUp", Erl)
     Resume Next
 End Sub
 
@@ -1465,8 +1492,15 @@ Public Sub Init()
         Check4.Picture = Nothing
     Else
         Check4.Picture = LoadInterface("check-amarillo.bmp")
-
     End If
+    
+    If Not UseBabelUI Then
+        CheckUI.Picture = Nothing
+    Else
+        CheckUI.Picture = LoadInterface("check-amarillo.bmp")
+    End If
+    
+    
     
     If ScrollArrastrar = 0 Then
         Check8.Picture = Nothing

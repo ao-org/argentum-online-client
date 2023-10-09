@@ -99,6 +99,15 @@ Public Sub EraseChar(ByVal charindex As Integer, Optional ByVal notCancelMe As B
     If charlist(charindex).active = 0 Then Exit Sub
     If charindex = UserCharIndex And Not notCancelMe Then Exit Sub
     
+    Dim i As Integer
+    For i = 0 To UBound(Effect)
+        If Effect(i).DestinoChar = CharIndex Then
+            Effect(i).DestX = charlist(CharIndex).Pos.x
+            Effect(i).DesyY = charlist(CharIndex).Pos.y
+            Effect(i).DestinoChar = 0
+        End If
+    Next i
+    
     charlist(charindex).active = 0
     
     'Update lastchar
