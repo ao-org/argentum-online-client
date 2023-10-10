@@ -819,7 +819,7 @@ Public Function Music_Stop() As Boolean
         Music_Stop = True
 
     Else
-        dmPerf.StopEx dmSeg, 0, 0
+        If Not dmSeg Is Nothing Then dmPerf.StopEx dmSeg, 0, 0
         Music_Stop = True
     End If
         

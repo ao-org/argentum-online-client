@@ -320,7 +320,7 @@ Private Sub Form_Load()
 
     On Error GoTo Form_Load_Err
     
-    Call FormParser.Parse_Form(Me)
+    If Not FormParser Is Nothing Then Call FormParser.Parse_Form(Me)
     
     Call CargarCuentasGuardadas
     Call Aplicar_Transparencia(Me.hwnd, 240)
