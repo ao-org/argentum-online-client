@@ -264,7 +264,7 @@ Public Declare Sub UpdateGold Lib "BabelUI.dll" (ByVal NewValue As Long, ByVal S
 Public Declare Sub UpdateExp Lib "BabelUI.dll" (ByVal Current As Long, ByVal max As Long)
 Public Declare Sub OpenChat Lib "BabelUI.dll" (ByVal mode As Long)
 Public Declare Sub UpdateStrAndAgiBuff Lib "BabelUI.dll" (ByVal str As Byte, ByVal Agi As Byte, ByVal StrState As Byte, ByVal StrState As Byte)
-Public Declare Sub UpdateMapInfo Lib "BabelUI.dll" (ByVal MapNumber As Long, ByVal MapName As String, ByVal NpcCount As Integer, ByRef NpcList As t_QuestNPCMapData, ByVal IsSafe As Byte)
+Public Declare Sub UpdateMapInfo Lib "BabelUI.dll" (ByVal MapNumber As Long, ByVal MiniMapFile As Long, ByVal MapName As String, ByVal NpcCount As Integer, ByRef NpcList As t_QuestNPCMapData, ByVal IsSafe As Byte)
 Public Declare Sub UpdateUserPos Lib "BabelUI.dll" (ByVal TileX As Integer, ByVal TileY As Integer, ByRef MapPos As t_Position)
 Public Declare Sub UpdateGroupPos Lib "BabelUI.dll" (ByRef MapPos As t_Position, ByVal GroupIndex As Integer)
 Public Declare Sub SetKeySlot Lib "BabelUI.dll" (ByRef SlotInfo As t_InvItem)
@@ -604,12 +604,12 @@ End Sub
 Public Sub SelectCharacterPreviewCB(ByVal charindex As Long)
     charindex = charindex + 1
     If charindex < LBound(Pjs) Or charindex > CantidadDePersonajesEnCuenta Then
-        Call SwitchMap(CreateCharMap)
+        Call SwitchMap(CreateCharMap, CreateCharMap)
         RenderCuenta_PosX = CreateCharMapX
         RenderCuenta_PosY = CreateCharMapY
         g_game_state.state = e_state_createchar_screen
     Else
-        Call SwitchMap(Pjs(charindex).Mapa)
+        Call SwitchMap(Pjs(CharIndex).Mapa, Pjs(CharIndex).Mapa)
         RenderCuenta_PosX = Pjs(charindex).PosX
         RenderCuenta_PosY = Pjs(charindex).PosY
     End If
@@ -976,7 +976,7 @@ On Error GoTo HandleUpdateIntSetting_Err
                 Sound.Ambient_Stop
             Else
                 AmbientalActivated = 1
-                Call AmbientarAudio(UserMap)
+                Call AmbientarAudio(ResourceMap)
 
             End If
         Case eSailFx

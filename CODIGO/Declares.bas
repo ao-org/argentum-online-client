@@ -1029,6 +1029,7 @@ Public Connected         As Boolean 'True when connected to server
 Public FullLogout        As Boolean
 Public DownloadingMap    As Boolean 'Currently downloading a map from server
 Public UserMap           As Integer
+Public ResourceMap       As Integer
 Public LastRenderMap     As Integer
 
 'Control

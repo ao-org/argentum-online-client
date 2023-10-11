@@ -719,7 +719,7 @@ Sub General_Set_Connect()
     EntradaX = 10
     
     UserMap = randomMap()
-    Call SwitchMap(UserMap)
+    Call SwitchMap(UserMap, UserMap)
 
     If g_game_state.state() <> e_state_connect_screen Then
         Call ShowLogin
@@ -1718,21 +1718,21 @@ Public Sub DibujarMiniMapa()
     
         On Error GoTo DibujarMiniMapa_Err
 
-100     frmMain.MiniMap.Picture = LoadMinimap(UserMap)
+100     frmMain.MiniMap.Picture = LoadMinimap(ResourceMap)
         'Pintamos los NPCs en Minimapa:
-102     If ListNPCMapData(UserMap).NpcCount > 0 Then
+102     If ListNPCMapData(ResourceMap).NpcCount > 0 Then
             Dim i As Long
 104         For i = 1 To MAX_QUESTNPCS_VISIBLE
                 Dim PosX As Long
                 Dim PosY As Long
             
-106             PosX = ListNPCMapData(UserMap).NpcList(i).Position.x
-108             PosY = ListNPCMapData(UserMap).NpcList(i).Position.y
+106             PosX = ListNPCMapData(ResourceMap).NpcList(i).Position.x
+108             PosY = ListNPCMapData(ResourceMap).NpcList(i).Position.y
             
             
                 Dim color As Long
             
-110             Select Case ListNPCMapData(UserMap).NpcList(i).State
+110             Select Case ListNPCMapData(ResourceMap).NpcList(i).State
                     Case 1
 112                     color = RGB(0, 198, 254)
 114                 Case 2

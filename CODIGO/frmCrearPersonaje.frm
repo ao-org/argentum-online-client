@@ -955,7 +955,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         EntradaY = 1
         EntradaX = 1
     
-        Call SwitchMap(UserMap)
+        Call SwitchMap(UserMap, UserMap)
         If Not UseBabelUI Then
             frmConnect.visible = True
         End If

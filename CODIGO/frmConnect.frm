@@ -568,7 +568,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     AlphaNiebla = 3
                     CPHeading = 3
                     CPEquipado = True
-                    Call SwitchMap(UserMap)
+                    Call SwitchMap(UserMap, UserMap)
                     g_game_state.state = e_state_createchar_screen
                     Call IniciarCrearPj
                     frmConnect.txtNombre.Visible = True
@@ -903,7 +903,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     AlphaNiebla = 3
                     CPHeading = 3
                     CPEquipado = True
-                    Call SwitchMap(UserMap)
+                    Call SwitchMap(UserMap, UserMap)
                     g_game_state.state = e_state_createchar_screen
  
 

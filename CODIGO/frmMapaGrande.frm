@@ -4,19 +4,19 @@ Begin VB.Form frmMapaGrande
    Appearance      =   0  'Flat
    BackColor       =   &H80000006&
    BorderStyle     =   0  'None
-   ClientHeight    =   10788
+   ClientHeight    =   10785
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   11568
+   ClientWidth     =   11565
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   899
+   ScaleHeight     =   719
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   964
+   ScaleWidth      =   771
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.PictureBox PlayerView 
@@ -54,7 +54,7 @@ Begin VB.Form frmMapaGrande
       TabIndex        =   3
       Top             =   3900
       Width           =   2595
-      _ExtentX        =   4572
+      _ExtentX        =   4577
       _ExtentY        =   1693
       View            =   3
       LabelEdit       =   1
@@ -141,9 +141,9 @@ Begin VB.Form frmMapaGrande
       ForeColor       =   &H80000008&
       Height          =   8910
       Left            =   480
-      ScaleHeight     =   743
+      ScaleHeight     =   594
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   640
+      ScaleWidth      =   512
       TabIndex        =   0
       Top             =   1410
       Width           =   7680
@@ -242,7 +242,7 @@ Begin VB.Form frmMapaGrande
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -280,7 +280,7 @@ Begin VB.Form frmMapaGrande
       Caption         =   "La informacion del mapa esta aquí."
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -452,7 +452,7 @@ Private Const MAPAS_ANCHO = 19
 Private Const MAPAS_ALTO = 22
 
 Private Sub Form_Activate()
-    Call CargarDatosMapa(UserMap)
+    Call CargarDatosMapa(ResourceMap)
     If ListView1.ListItems.count > 0 Then
         Call ListView1_ItemClick(ListView1.ListItems.Item(1))
     End If
@@ -878,8 +878,8 @@ Public Sub CalcularPosicionMAPA()
     
     frmMapaGrande.lblMapInfo(0) = MapDat.map_name & "(" & UserMap & ")"
 
-    If NameMaps(UserMap).desc <> "" Then
-        frmMapaGrande.Label1.Caption = NameMaps(UserMap).desc
+    If NameMaps(ResourceMap).desc <> "" Then
+        frmMapaGrande.Label1.Caption = NameMaps(ResourceMap).desc
     Else
         frmMapaGrande.Label1.Caption = "Sin información relevante."
 
@@ -933,7 +933,7 @@ Public Sub CalcularPosicionMAPA()
 
     End If
     
-    Call CargarDatosMapa(UserMap)
+    Call CargarDatosMapa(ResourceMap)
     
     Exit Sub
 
