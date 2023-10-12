@@ -948,7 +948,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     End If
 
     If x > 148 And x < 246 And y > 630 And y < 670 Then 'Boton > Volver
-        Call Sound.Sound_Play(SND_CLICK)
+        Call ao20audio.playwav(SND_CLICK)
 
         UserMap = 307
         AlphaNiebla = 25
@@ -965,7 +965,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     End If
 
     If x > 731 And x < 829 And y > 630 And y < 670 Then 'Boton > Crear
-        Call Sound.Sound_Play(SND_CLICK)
+        Call ao20audio.playwav(SND_CLICK)
 
         Dim k As Object
 

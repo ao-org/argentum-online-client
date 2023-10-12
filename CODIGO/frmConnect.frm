@@ -248,9 +248,6 @@ Form_Load_Err:
     
 End Sub
 
-
-
-
 Private Sub render_DblClick()
 On Error GoTo render_DblClick_Err
     Select Case g_game_state.state()
@@ -259,7 +256,7 @@ On Error GoTo render_DblClick_Err
             
             If PJSeleccionado < 1 Then Exit Sub
 
-            Call Sound.Sound_Play(SND_CLICK)
+            Call ao20audio.playwav(SND_CLICK)
 
             If IntervaloPermiteConectar Then
                 Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
@@ -423,7 +420,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
-                Call Sound.Sound_Play(SND_CLICK)
+                Call ao20audio.playwav(SND_CLICK)
                 AlphaNiebla = 25
                 EntradaY = 1
                 EntradaX = 1
@@ -436,7 +433,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
             
             If x >= 532 And x < 532 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Crear
-                Call Sound.Sound_Play(SND_CLICK)
+                Call ao20audio.playwav(SND_CLICK)
 
                 Dim k As Object
 
@@ -573,7 +570,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     Call IniciarCrearPj
                     frmConnect.txtNombre.Visible = True
                     frmConnect.txtNombre.SetFocus
-                    Call Sound.Sound_Play(SND_DICE)
+                    Call ao20audio.playwav(SND_DICE)
                Case e_action_transfer_character
                     If Char = 0 Then Exit Sub
                     TransferCharname = Pjs(Char).nombre
@@ -594,7 +591,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 Case e_action_login_character
                     If PJSeleccionado < 1 Then Exit Sub
                     If IntervaloPermiteConectar Then
-                        Call Sound.Sound_Play(SND_CLICK)
+                        Call ao20audio.playwav(SND_CLICK)
                         Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
                     End If
             End Select
@@ -772,7 +769,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
-                Call Sound.Sound_Play(SND_CLICK)
+                Call ao20audio.playwav(SND_CLICK)
                 'UserMap = 323
                 AlphaNiebla = 25
                 EntradaY = 1
@@ -789,7 +786,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
             
             If x >= 532 And x < 532 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Crear
-                Call Sound.Sound_Play(SND_CLICK)
+                Call ao20audio.playwav(SND_CLICK)
 
                 Dim k As Object
 
@@ -911,7 +908,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     frmConnect.txtNombre.visible = True
                     frmConnect.txtNombre.SetFocus
         
-                    Call Sound.Sound_Play(SND_DICE)
+                    Call ao20audio.playwav(SND_DICE)
                 Case e_action_delete_character
 
                     If Char = 0 Then Exit Sub
@@ -953,7 +950,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     If PJSeleccionado < 1 Then Exit Sub
 
                     If IntervaloPermiteConectar Then
-                        Call Sound.Sound_Play(SND_CLICK)
+                        Call ao20audio.playwav(SND_CLICK)
                         Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
 
                     End If

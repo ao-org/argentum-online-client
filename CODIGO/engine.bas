@@ -2076,24 +2076,36 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
     
             'Draw name over head
-            
-          '  If Nombres Then
             Nombres = Not MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).zone.OcultarNombre
+     
+                
             If UserCharIndex > 0 Then
-                If Sound.MusicActual <> MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica And MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica > 0 Then
-                    Sound.Music_Stop
-                    Sound.Music_Load MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica, Sound.VolumenActualMusicMax
-                    Sound.Fading = 100
-                    Sound.Music_Play
-                ElseIf MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica = 0 And Sound.MusicActual <> MapDat.music_numberLow Then
-                    Sound.Music_Stop
-                    Sound.Music_Load MapDat.music_numberLow, Sound.VolumenActualMusicMax
-                    Sound.Fading = 100
-                    Sound.Music_Play
-                End If
+             With charlist(UserCharIndex)
+                 Dim new_music As Integer
+                 new_music = MapData(.Pos.x, .Pos.y).zone.Musica
+                 
+                 If new_music > 0 Then
+                     Call ao20audio.playmidi(new_music, True)
+                 Else
+                     
+                     Call ao20audio.playmidi(MapDat.music_numberLow, True)
+                 End If
+             End With
             End If
-            
-           ' End If
+    
+'            If UserCharIndex > 0 Then
+'                If Sound.MusicActual <> MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica And MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica > 0 Then
+'                    Sound.Music_Stop
+'                    Sound.Music_Load MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica, Sound.VolumenActualMusicMax
+'                    Sound.Fading = 100
+'                    Sound.Music_Play
+'                ElseIf MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica = 0 And Sound.MusicActual <> MapDat.music_numberLow Then
+'                    Sound.Music_Stop
+'                    Sound.Music_Load MapDat.music_numberLow, Sound.VolumenActualMusicMax
+'                    Sound.Fading = 100
+'                    Sound.Music_Play
+'                End If
+'            End If
 
            
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
@@ -2413,8 +2425,7 @@ On Error GoTo Start_Err
                     End If
 
             End Select
-            
-            Sound.Sound_Render
+
         Else
             Sleep 60&
             If Not UseBabelUI Then
@@ -4409,7 +4420,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 If (.End_Effect <> 0) And .DestinoChar <> 0 Then
                     If .DestinoChar <> 0 Then
                         Call General_Char_Particle_Create(.End_Effect, .DestinoChar, .End_Loops)
-                        Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y), Sound.Calculate_Pan(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y))
+                        Call ao20audio.playwav(.wav)
                         .Slot_Used = False
                         Exit Sub
 
@@ -4420,14 +4431,14 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 If (.End_Effect <> 0) And .DestinoChar = 0 Then
                     MapData(.DestX, .DesyY).particle_group = 0
                     General_Particle_Create .End_Effect, .DestX, .DesyY, .End_Loops
-                    Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(.DestX, .DesyY), Sound.Calculate_Pan(.DestX, .DesyY))
+                    Call ao20audio.playwav(.wav)
                     .Slot_Used = False
                     Exit Sub
 
                 End If
             
                 If (.FxEnd_Effect > 0) And .DestinoChar <> 0 Then
-                    Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y), Sound.Calculate_Pan(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y))
+                    Call ao20audio.playwav(.wav)
                     Call SetCharacterFx(.DestinoChar, .FxEnd_Effect, .End_Loops)
                     .Slot_Used = False
                     Exit Sub
@@ -4435,7 +4446,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 End If
             
                 If (.FxEnd_Effect > 0) And (.DestinoChar = 0) Then
-                    Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(.DestX, .DesyY), Sound.Calculate_Pan(.DestX, .DesyY))
+                    Call ao20audio.playwav(.wav)
               
                     Call SetMapFx(.DestX, .DesyY, .FxEnd_Effect, 0)
                     .Slot_Used = False

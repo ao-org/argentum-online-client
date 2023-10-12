@@ -804,12 +804,8 @@ Public Sub HandleDisconnect()
     frmMain.ImgSegClan.Visible = False
     frmMain.ImgSegResu.Visible = False
     initPacketControl
-    'Stop audio
-    If Sonido Then
-        Sound.Sound_Stop_All
-        Sound.Ambient_Stop
-
-    End If
+  
+    Call ao20audio.stopallplayback
 
     Call CleanDialogs
     
@@ -1499,10 +1495,7 @@ Private Sub HandleCharSwing()
 
         End If
         
-        Call Sound.Sound_Play(2, False, Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y)) ' Swing
-        
-        ' If ShowFX And .Invisible = False Then Call SetCharacterFx(charindex, 90, 0)
-         
+        Call ao20audio.playwav(2)
         
     End With
     
@@ -2632,7 +2625,7 @@ Private Sub HandleConsoleMessage()
 
         Case "HECINF"
             Hechizo = ReadField(2, chat, Asc("*"))
-            chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).Nombre & vbCrLf & "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
+            chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
 
         Case "ProMSG"
             Hechizo = ReadField(2, chat, Asc("*"))
@@ -2901,7 +2894,7 @@ On Error GoTo ErrHandler
             frmMensaje.msg.Caption = mensaje
             frmMensaje.Show , GetGameplayForm()
         Case e_state_connect_screen
-            Call Sound.Sound_Play(SND_EXCLAMACION)
+            Call ao20audio.playwav(SND_EXCLAMACION)
             Call TextoAlAsistente(mensaje, False, False)
             Call Long_2_RGBAList(textcolorAsistente, -1)
         Case e_state_account_screen
@@ -2934,9 +2927,9 @@ On Error GoTo ErrHandler
     
     SugerenciaAMostrar = RandomNumber(1, NumSug)
         
-    Call Sound.Sound_Play(192)
+    Call ao20audio.playwav(192)
     
-    Call Sound.Sound_Stop(SND_LLUVIAIN)
+    Call ao20audio.stopwav(SND_LLUVIAIN)
       
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
@@ -3726,17 +3719,17 @@ Private Sub HandlePlayWave()
     If wave = 404 And MapDat.niebla = 0 Then Exit Sub
     
     If cancelLastWave Then
-        Call Sound.Sound_Stop(CStr(wave))
+        Call ao20audio.stopwav(CStr(wave))
         If cancelLastWave = 2 Then Exit Sub
     End If
     
     If srcX = 0 Or srcY = 0 Then
-        Call Sound.Sound_Play(CStr(wave), False, 0, 0)
+        Call ao20audio.playwav(CStr(wave), False, 0, 0)
     Else
 
         If Not EstaEnArea(srcX, srcY) Then
         Else
-            Call Sound.Sound_Play(CStr(wave), False, Sound.Calculate_Volume(srcX, srcY), Sound.Calculate_Pan(srcX, srcY))
+            Call ao20audio.playwav(CStr(wave), False)
         End If
 
     End If
@@ -4189,13 +4182,11 @@ Private Sub HandleRainToggle()
         If MapDat.LLUVIA Then
 
             If bTecho Then
-                Call Sound.Sound_Play(192)
+                Call ao20audio.playwav(192)
             Else
-                Call Sound.Sound_Play(195)
-
+                Call ao20audio.playwav(195)
             End If
 
-            Call Sound.Ambient_Stop
 
             Call Graficos_Particulas.Engine_MeteoParticle_Set(-1)
 
@@ -4306,7 +4297,7 @@ Private Sub HandleCharAtaca()
         
     
     If charlist(UserCharIndex).Muerto = False Then
-        Call Sound.Sound_Play(CStr(IIf(danio = -1, 2, 10)), False, Sound.Calculate_Volume(charlist(NpcIndex).Pos.x, charlist(NpcIndex).Pos.y), Sound.Calculate_Pan(charlist(NpcIndex).Pos.x, charlist(NpcIndex).Pos.y))
+        Call ao20audio.playwav(CStr(IIf(danio = -1, 2, 10)))
     End If
         
     Exit Sub
@@ -8261,7 +8252,7 @@ Public Sub HandlePelearConPezEspecial()
         intentosPesca(i) = 0
     Next i
     PescandoEspecial = True
-    Call Sound.Sound_Play(55)
+    Call ao20audio.playwav(55)
     ContadorIntentosPescaEspecial_Fallados = 0
     ContadorIntentosPescaEspecial_Acertados = 0
     startTimePezEspecial = GetTickCount()

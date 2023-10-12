@@ -906,15 +906,7 @@ Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single
     On Error GoTo chkInvertir_MouseUp_Err
     
 
-    If InvertirSonido = 1 Then
-        InvertirSonido = 0
-            
-        Sound.InvertirSonido = False
-    Else
-        InvertirSonido = 1
-        Sound.InvertirSonido = True
 
-    End If
         
     If InvertirSonido = 0 Then
         chkInvertir.Picture = Nothing
@@ -946,25 +938,22 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
     On Error GoTo chkO_MouseUp_Err
     
 
-    Call Sound.Sound_Play(SND_CLICK)
+    Call ao20audio.playwav(SND_CLICK)
 
     Select Case Index
 
         Case 0
 
-            If Musica <> CONST_DESHABILITADA Then
-                Sound.Music_Stop
-                Musica = CONST_DESHABILITADA
+            If ao20audio.MusicEnabled Then
+                ao20audio.stopallplayback
+                ao20audio.MusicEnabled = False
                 scrMidi.Enabled = False
             Else
-                Musica = CONST_MP3
+                ao20audio.MusicEnabled = True
                 scrMidi.Enabled = True
-                Sound.NextMusic = MapDat.music_numberHi
-                Sound.Fading = 100
-
             End If
 
-            If Musica = 0 Then
+            If Not ao20audio.MusicEnabled Then
                 chko(0).Picture = Nothing
             Else
                 chko(0).Picture = LoadInterface("check-amarillo.bmp")
@@ -973,20 +962,20 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
 
         Case 1
 
-            If fX = 1 Then
-                fX = 0
+            If ao20audio.FxEnabled Then
+                ao20audio.FxEnabled = 0
                 chko(2).Enabled = False
                 scrVolume.Enabled = False
             
-                Call Sound.Sound_Stop_All
+                Call ao20audio.stopallplayback
             Else
-                fX = 1
+                ao20audio.FxEnabled = 1
                 chko(2).Enabled = True
                 scrVolume.Enabled = True
 
             End If
         
-            If fX = 0 Then
+            If ao20audio.FxEnabled = 0 Then
                 chko(1).Picture = Nothing
             Else
                 chko(1).Picture = LoadInterface("check-amarillo.bmp")
@@ -1014,9 +1003,6 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
             If AmbientalActivated = 1 Then
                 HScroll1.Enabled = False
                 AmbientalActivated = 0
-                Sound.LastAmbienteActual = 0
-                Sound.AmbienteActual = 0
-                Sound.Ambient_Stop
             Else
                 HScroll1.Enabled = True
                 AmbientalActivated = 1
@@ -1509,7 +1495,7 @@ Public Sub Init()
 
     End If
     
-    If Musica = 0 Then
+    If ao20audio.MusicEnabled = 0 Then
         chko(0).Picture = Nothing
     Else
         chko(0).Picture = LoadInterface("check-amarillo.bmp")
@@ -1541,7 +1527,7 @@ Public Sub Init()
         chko(3).Picture = LoadInterface("check-amarillo.bmp")
     End If
 
-    If fX = 0 Then
+    If ao20audio.FxEnabled = 0 Then
         chko(1).Picture = Nothing
     Else
         chko(1).Picture = LoadInterface("check-amarillo.bmp")
@@ -1599,10 +1585,6 @@ End Sub
 Private Sub HScroll1_Change()
     
     On Error GoTo HScroll1_Change_Err
-    
-    Sound.Ambient_Volume_Set HScroll1.Value
-    VolAmbient = HScroll1.Value
-
     
     Exit Sub
 
@@ -1663,14 +1645,7 @@ Private Sub scrMidi_Change()
     On Error GoTo scrMidi_Change_Err
     
 
-    If Musica <> CONST_DESHABILITADA Then
-        Sound.Music_Volume_Set scrMidi.Value
-        Sound.VolumenActualMusicMax = scrMidi.Value
-        VolMusic = Sound.VolumenActualMusicMax
-
-    End If
-
-    
+       
     Exit Sub
 
 scrMidi_Change_Err:
@@ -1701,8 +1676,8 @@ Private Sub scrVolume_Change()
     
     On Error GoTo scrVolume_Change_Err
     
-    Sound.VolumenActual = scrVolume.Value
-    VolFX = Sound.VolumenActual
+'    Sound.VolumenActual = scrVolume.Value
+'    VolFX = Sound.VolumenActual
 
     
     Exit Sub

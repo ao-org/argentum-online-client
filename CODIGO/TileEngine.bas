@@ -754,7 +754,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
             If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
                 If .Speeding > 1.3 Then
                    
-                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    Call ao20audio.playwav(Pasos(CONST_CABALLO).wav(1))
                     Exit Sub
 
                 End If
@@ -765,10 +765,10 @@ Sub DoPasosFx(ByVal charindex As Integer)
                     If MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
                         FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
                         TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                        Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                        Call ao20audio.playwav(Pasos(TerrenoDePaso).wav(1))
                     End If
                 Else
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    Call ao20audio.playwav(Pasos(TerrenoDePaso).wav(2))
 
                 End If
 
@@ -779,7 +779,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
     Else
 
         If charlist(UserCharIndex).Muerto = False Then
-            Call Sound.Sound_Play(SND_NAVEGANDO)
+            Call ao20audio.playwav(SND_NAVEGANDO)
 
             '  Call Audio.PlayWave(SND_NAVEGANDO, charlist(charindex).Pos.x, charlist(charindex).Pos.y)
         End If
@@ -808,7 +808,7 @@ Sub DoPasosInvi(ByVal Grh As Long, ByVal distancia As Byte, ByVal balance As Int
         FileNum = GrhData(grh).FileNum
         TerrenoDePaso = GetTerrenoDePaso(FileNum)
         
-        Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(IIf(step, 1, 2)), , Sound.Calculate_Volume_by_distance(distancia), Sound.Calculate_Pan_By_Distance(distancia, balance))
+        Call ao20audio.playwav(Pasos(TerrenoDePaso).wav(IIf(step, 1, 2)))
     End If
     
     Exit Sub
@@ -834,7 +834,7 @@ Sub DoPasosFxWithoutPos(ByVal charindex As Integer)
             If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
                 If .Speeding > 1.3 Then
                    
-                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    Call ao20audio.playwav(Pasos(CONST_CABALLO).wav(1))
                     Exit Sub
 
                 End If
@@ -845,10 +845,10 @@ Sub DoPasosFxWithoutPos(ByVal charindex As Integer)
                     If MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
                         FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
                         TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                        Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                        Call ao20audio.playwav(Pasos(TerrenoDePaso).wav(1))
                     End If
                 Else
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+                    Call ao20audio.playwav(Pasos(TerrenoDePaso).wav(2))
 
                 End If
 
@@ -859,7 +859,7 @@ Sub DoPasosFxWithoutPos(ByVal charindex As Integer)
     Else
 
         If FxNavega And charlist(UserCharIndex).Muerto = False Then
-            Call Sound.Sound_Play(SND_NAVEGANDO)
+            Call ao20audio.playwav(SND_NAVEGANDO)
 
             '  Call Audio.PlayWave(SND_NAVEGANDO, charlist(charindex).Pos.x, charlist(charindex).Pos.y)
         End If

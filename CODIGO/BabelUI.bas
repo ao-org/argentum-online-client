@@ -990,46 +990,32 @@ On Error GoTo HandleUpdateIntSetting_Err
             Call SaveSetting("OPCIONES", "UseExperimentalUI", Value)
         Case eEnableMusic
             If Value = 0 Then
-                Sound.Music_Stop
-                Musica = CONST_DESHABILITADA
+                ao20audio.stopallplayback
+                ao20audio.MusicEnabled = 0
             Else
-                Musica = CONST_MP3
-                Sound.NextMusic = MapDat.music_numberHi
-                Sound.Fading = 100
+                ao20audio.MusicEnabled = 0
             End If
         Case eEnableFx
-            Fx = Value
+            ao20audio.FxEnabled = Value
             If Value = 0 Then
-                Call Sound.Sound_Stop_All
+                Call ao20audio.stopallplayback
             End If
         Case eEnableAmbient
             If Value = 0 Then
-                AmbientalActivated = 0
-                Sound.LastAmbienteActual = 0
-                Sound.AmbienteActual = 0
-                Sound.Ambient_Stop
-            Else
-                AmbientalActivated = 1
-                Call AmbientarAudio(ResourceMap)
-
+              'todo
             End If
         Case eSailFx
             FxNavega = Value
         Case eInvertChannels
             InvertirSonido = Value
-            Sound.InvertirSonido = Value > 0
         Case eMusicVolume
-            If Musica <> CONST_DESHABILITADA Then
-                Sound.Music_Volume_Set Value
-                Sound.VolumenActualMusicMax = Value
-                VolMusic = Sound.VolumenActualMusicMax
+            If ao20audio.MusicEnabled Then
+                'Set music value to Value
             End If
         Case eFxVolume
-            Sound.VolumenActual = Value
-            VolFX = Sound.VolumenActual
+                   
         Case eAmbientVolume
-            Sound.Ambient_Volume_Set Value
-            VolAmbient = Value
+        
         Case eLightSettings
             Call SaveSetting("VIDEO", "LuzGlobal", Value)
             selected_light = Value

@@ -19,3 +19,16 @@ Option Explicit
 
 Public renderer                         As clsRenderer
 
+Public Function get_wav_files_path() As String
+    get_wav_files_path = App.path & "\..\Recursos"
+End Function
+
+Public Function get_mp3_files_path() As String
+    get_mp3_files_path = App.path & "\MP3\"
+End Function
+
+Public Function get_midi_files_path() As String
+    get_midi_files_path = get_wav_files_path
+End Function
+
+

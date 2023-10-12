@@ -1914,8 +1914,8 @@ Private Sub Contadores_Timer()
         DrogaCounter = DrogaCounter - 1
 
         If DrogaCounter <= 12 And DrogaCounter > 0 Then
-            Call Sound.Sound_Stop(SND_DOPA)
-            Call Sound.Sound_Play(SND_DOPA)
+            Call ao20audio.stopwav(SND_DOPA)
+            Call ao20audio.playwav(SND_DOPA)
             If UserStats.StrState <> eBlink Then
                 UserStats.StrState = eBlink
                 UserStats.AgiState = eBlink
