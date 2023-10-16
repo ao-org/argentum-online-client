@@ -1494,9 +1494,7 @@ Private Sub HandleCharSwing()
             Call SetCharacterDialogFx(CharIndex, IIf(CharIndex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
 
         End If
-        
-        Call ao20audio.playwav(2)
-        
+        Call ao20audio.playwav(2, False, ao20audio.calculate_charfx_volume(.Pos), ao20audio.calculate_charfx_pan(.Pos))
     End With
     
     Exit Sub
@@ -3730,12 +3728,14 @@ Private Sub HandlePlayWave()
         If Not EstaEnArea(srcX, srcY) Then
         Else
             Call ao20audio.playwav(CStr(wave), False)
+            Dim p As Position
+            p.x = srcX
+            p.y = srcY
+            Call ao20audio.playwav(CStr(wave), False, ao20audio.calculate_charfx_volume(p), ao20audio.calculate_charfx_pan(p))
         End If
 
     End If
-    
-    ' Call Audio.PlayWave(CStr(wave) & ".wav", srcX, srcY)
-    
+   
     Exit Sub
 
 HandlePlayWave_Err:
@@ -4297,7 +4297,7 @@ Private Sub HandleCharAtaca()
         
     
     If charlist(UserCharIndex).Muerto = False Then
-        Call ao20audio.playwav(CStr(IIf(danio = -1, 2, 10)))
+        Call ao20audio.playwav(CStr(IIf(danio = -1, 2, 10)), False, ao20audio.calculate_charfx_volume(charlist(NpcIndex).Pos), ao20audio.calculate_charfx_pan(charlist(NpcIndex).Pos))
     End If
         
     Exit Sub

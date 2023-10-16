@@ -1013,9 +1013,9 @@ On Error GoTo HandleUpdateIntSetting_Err
                 'Set music value to Value
             End If
         Case eFxVolume
-                   
+            VolFX = Value
         Case eAmbientVolume
-        
+            VolAmbient = Value
         Case eLightSettings
             Call SaveSetting("VIDEO", "LuzGlobal", Value)
             selected_light = Value

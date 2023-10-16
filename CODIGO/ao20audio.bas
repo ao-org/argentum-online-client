@@ -85,6 +85,89 @@ Public Function get_compressed_resources_path() As String
  get_compressed_resources_path = App.path & "\..\Recursos\OUTPUT\"
 End Function
 
+Public Function calculate_charfx_volume(ByRef Pos As Position) As Long
+On Error GoTo calculate_charfx_volumen:
+    Dim total_distance As Integer, curr_x As Integer, curr_y As Integer
+    total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
+    If (total_distance = 0) Then
+        calculate_charfx_volume = VolFX
+    ElseIf total_distance <= 19 Then
+        calculate_charfx_volume = VolFX - (total_distance * 120)
+    End If
+    If total_distance > 19 Then calculate_charfx_volume = -4000
+    If calculate_charfx_volume < -4000 Then calculate_charfx_volume = -4000
+    Exit Function
+calculate_charfx_volumen:
+    Call RegistrarError(Err.Number, Err.Description, "calculate_charfx_volume", Erl)
+    Resume Next
+End Function
+            
+Public Function calculate_charfx_pan(ByRef Pos As Position) As Long
+On Error GoTo calculate_charfx_pan_err:
+    Dim total_distance As Integer, position_sgn As Integer, curr_x As Integer, curr_y As Integer
+    calculate_charfx_pan = 0
+    total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
+    If InvertirSonido = True Then
+        If Pos.x < UserPos.x Then
+            position_sgn = -1
+        Else
+            position_sgn = 1
+        End If
+    Else
+        If Pos.x > UserPos.x Then
+            position_sgn = -1
+        Else
+            position_sgn = 1
+        End If
+    End If
+    If (total_distance = 0) Or (Pos.x = UserPos.x) Then
+        calculate_charfx_pan = 0
+    ElseIf total_distance < 19 Then
+        calculate_charfx_pan = position_sgn * (total_distance * 500)
+    Else
+        calculate_charfx_pan = position_sgn * 9000
+    End If
+    Exit Function
+calculate_charfx_pan_err:
+    Call RegistrarError(Err.Number, Err.Description, "calculate_charfx_pan", Erl)
+    Resume Next
+End Function
+
+Public Function calculate_charfx_pan_by_distance(ByVal total_distance As Integer, position_sgn As Integer) As Long
+On Error GoTo calculate_charfx_pan_by_distance_err:
+    If InvertirSonido Then
+        position_sgn = position_sgn * -1
+    End If
+    If (total_distance = 0) Or (position_sgn = 0) Then
+        calculate_charfx_pan_by_distance = 0
+    ElseIf total_distance < 19 Then
+        calculate_charfx_pan_by_distance = position_sgn * (total_distance * 500)
+    Else
+        calculate_charfx_pan_by_distance = position_sgn * 9000
+    End If
+    Exit Function
+
+calculate_charfx_pan_by_distance_err:
+    Call RegistrarError(Err.Number, Err.Description, "clsSoundEngine.Calculate_Pan_By_Distance", Erl)
+    Resume Next
+
+End Function
+Public Function calculate_charfx_volume_by_distance(ByVal distance As Byte) As Long
+On Error GoTo calculate_charfx_volume_by_distance_err:
+    distance = Abs(distance)
+    If (distance = 0) Then
+        calculate_charfx_volume_by_distance = VolFX
+    ElseIf distance <= 19 Then
+        calculate_charfx_volume_by_distance = VolFX - (distance * 120)
+    End If
+    If distance > 19 Then calculate_charfx_volume_by_distance = -4000
+    If calculate_charfx_volume_by_distance < -4000 Then calculate_charfx_volume_by_distance = -4000
+    Exit Function
+calculate_charfx_volume_by_distance_err:
+    Call RegistrarError(Err.Number, Err.Description, "calculate_charfx_volume_by_distance", Erl)
+    Resume Next
+
+End Function
 
 
 

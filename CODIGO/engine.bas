@@ -4375,8 +4375,6 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
         target_Angle = Engine_GetAngle(.Now_X, .Now_Y, CInt(.Viaje_X), CInt(.Viaje_Y))
     
         'Actualiza la posición del efecto.
-        '.Now_X = (.Now_X + Sin(target_Angle * DegreeToRadian) * .ViajeSpeed)
-        '.Now_Y = (.Now_Y - Cos(target_Angle * DegreeToRadian) * .ViajeSpeed)
         .Now_X = (.Now_X + Sin(target_Angle * DegreeToRadian) * .ViajeSpeed * timerTicksPerFrame * 9)
         .Now_Y = (.Now_Y - Cos(target_Angle * DegreeToRadian) * .ViajeSpeed * timerTicksPerFrame * 9)
         'Si hay posición dibuja.
@@ -4405,7 +4403,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 If (.End_Effect <> 0) And .DestinoChar <> 0 Then
                     If .DestinoChar <> 0 Then
                         Call General_Char_Particle_Create(.End_Effect, .DestinoChar, .End_Loops)
-                        Call ao20audio.playwav(.wav)
+                        Call ao20audio.playwav(.wav, False, ao20audio.calculate_charfx_volume(charlist(.DestinoChar).Pos), ao20audio.calculate_charfx_pan(charlist(.DestinoChar).Pos))
                         .Slot_Used = False
                         Exit Sub
 
@@ -4417,13 +4415,17 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                     MapData(.DestX, .DesyY).particle_group = 0
                     General_Particle_Create .End_Effect, .DestX, .DesyY, .End_Loops
                     Call ao20audio.playwav(.wav)
+                    Dim dest_pos As Position
+                    dest_pos.x = .DestX
+                    dest_pos.y = .DesyY
+                    Call ao20audio.playwav(.wav, False, ao20audio.calculate_charfx_volume(dest_pos), ao20audio.calculate_charfx_pan(dest_pos))
                     .Slot_Used = False
                     Exit Sub
 
                 End If
             
                 If (.FxEnd_Effect > 0) And .DestinoChar <> 0 Then
-                    Call ao20audio.playwav(.wav)
+                    Call ao20audio.playwav(.wav, False, ao20audio.calculate_charfx_volume(charlist(.DestinoChar).Pos), ao20audio.calculate_charfx_pan(charlist(.DestinoChar).Pos))
                     Call SetCharacterFx(.DestinoChar, .FxEnd_Effect, .End_Loops)
                     .Slot_Used = False
                     Exit Sub
@@ -4431,8 +4433,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 End If
             
                 If (.FxEnd_Effect > 0) And (.DestinoChar = 0) Then
-                    Call ao20audio.playwav(.wav)
-              
+                    Call ao20audio.playwav(.wav, False, ao20audio.calculate_charfx_volume(charlist(.DestinoChar).Pos), ao20audio.calculate_charfx_pan(charlist(.DestinoChar).Pos))
                     Call SetMapFx(.DestX, .DesyY, .FxEnd_Effect, 0)
                     .Slot_Used = False
                     Exit Sub
