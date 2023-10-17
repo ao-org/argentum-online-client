@@ -1362,7 +1362,7 @@ Sub load_game_settings()
     AudioEnabled = GetSetting("AUDIO", "Sonido")
     FxEnabled = GetSetting("AUDIO", "Fx")
     
-    AmbientalActivated = GetSetting("AUDIO", "AmbientalActivated")
+    AmbientEnabled = GetSetting("AUDIO", "AmbientalActivated")
     InvertirSonido = GetSetting("AUDIO", "InvertirSonido")
     
     'Musica y Sonido - Volumen
@@ -1425,7 +1425,7 @@ Sub GuardarOpciones()
     Call SaveSetting("AUDIO", "VolMusic", VolMusic)
     Call SaveSetting("AUDIO", "Volfx", VolFX)
     Call SaveSetting("AUDIO", "VolAmbient", VolAmbient)
-    Call SaveSetting("AUDIO", "AmbientalActivated", AmbientalActivated)
+    Call SaveSetting("AUDIO", "ao20audio.AmbientEnabled", ao20audio.AmbientEnabled)
     
     Call SaveSetting("OPCIONES", "MoverVentana", MoverVentana)
     Call SaveSetting("OPCIONES", "PermitirMoverse", PermitirMoverse)
@@ -1582,60 +1582,6 @@ PonerPuntos_Err:
     Resume Next
     
 End Function
-
-Sub AmbientarAudio(ByVal UserMap As Long)
-    
-    On Error GoTo AmbientarAudio_Err
-    
-'
-'
-'
-'    Dim wav As Integer
-'
-'    If EsNoche Then
-'
-'        wav = ReadField(1, Val(MapDat.ambient), Asc("-"))
-'
-'        If Sound.AmbienteActual <> wav Then
-'            Sound.LastAmbienteActual = wav
-'        End If
-'
-'        Sound.Ambient_Play
-'
-'        If wav = 0 Then
-'            Sound.Ambient_Stop
-'        End If
-'
-'        '  AmbientalesBufferIndex = Audio.PlayWave(Wav & ".wav", , , LoopStyle.Enabled)
-'    Else
-'
-'        wav = ReadField(2, Val(MapDat.ambient), Asc("-"))
-'
-'        If wav = 0 Then Exit Sub
-'        If Sound.AmbienteActual <> wav Then
-'            Sound.LastAmbienteActual = wav
-'
-'        End If
-'
-'        If wav = 0 Then
-'            Sound.Ambient_Stop
-'
-'        End If
-'
-'        '  AmbientalesBufferIndex = Audio.PlayWave(Wav & ".wav", , , LoopStyle.Enabled)
-'    End If
-'
-'    Sound.Ambient_Volume_Set VolAmbient
-'    'Debug.Print VolAmbient
-
-    
-    Exit Sub
-
-AmbientarAudio_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.AmbientarAudio", Erl)
-    Resume Next
-    
-End Sub
 
 Public Function General_Var_Get(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
     
@@ -2100,7 +2046,7 @@ End Sub
 Public Sub Client_UnInitialize_DirectX_Objects()
     
     On Error GoTo Client_UnInitialize_DirectX_Objects_Err
-    Set ao20audio.audio_engine = Nothing
+    Set ao20audio.AudioEngine = Nothing
     Exit Sub
 
 Client_UnInitialize_DirectX_Objects_Err:

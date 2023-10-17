@@ -1053,7 +1053,7 @@ On Error GoTo Main_Err
     Call engine_init 'initializes DX
     Debug.Assert Not DirectX Is Nothing
     
-    Call ao20audio.create_audio_engine(frmConnect.hwnd, DirectX, ao20audio.audio_engine)
+    Call ao20audio.CreateAudioEngine(frmConnect.hwnd, DirectX, ao20audio.AudioEngine)
 #End If
     Call InitCommonControls
 
@@ -1129,7 +1129,7 @@ On Error GoTo Main_Err
  
     
     
-    Set audio_engine = Nothing
+    Set AudioEngine = Nothing
     Exit Sub
 
 Main_Err:

@@ -1002,7 +1002,11 @@ On Error GoTo HandleUpdateIntSetting_Err
             End If
         Case eEnableAmbient
             If Value = 0 Then
-              'todo
+                ao20audio.AmbientEnabled = 0
+                Call ao20audio.StopAmbientAudio
+            Else
+                ao20audio.AmbientEnabled = 1
+                Call ao20audio.PlayAmbientAudio(UserMap)
             End If
         Case eSailFx
             FxNavega = Value

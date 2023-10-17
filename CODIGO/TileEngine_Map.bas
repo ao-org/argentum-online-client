@@ -45,7 +45,7 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
         
         If MapDat.music_numberLow > 0 Then
         
-            If ao20audio.get_current_midi_name(1) <> str(MapDat.music_numberLow) Then
+            If ao20audio.GetCurrentMidiName(1) <> str(MapDat.music_numberLow) Then
                 'NextMusic = MapDat.music_numberLow
             End If
 
@@ -53,7 +53,7 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
 
             If MapDat.music_numberHi > 0 Then
                 
-                If ao20audio.get_current_midi_name(1) <> str(MapDat.music_numberHi) Then
+                If ao20audio.GetCurrentMidiName(1) <> str(MapDat.music_numberHi) Then
 '                    NextMusic = MapDat.music_numberHi
                 End If
                
@@ -73,8 +73,8 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
 
     End If
     
-    If AmbientalActivated = 1 Then
-        Call AmbientarAudio(ResourceMap)
+    If ao20audio.AmbientEnabled = 1 Then
+        Call ao20audio.PlayAmbientAudio(map)
     End If
 
     If MapDat.Seguro = 1 Then
@@ -209,7 +209,7 @@ End Function
 
 Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String) As Boolean
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto Jos  Rando
     '*****************************************************************
     
     On Error GoTo Letter_Set_Err
@@ -249,7 +249,7 @@ End Sub
 Public Function Map_FX_Group_Next_Open(ByVal x As Byte, ByVal y As Byte) As Integer
 
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto Jos  Rando
     '*****************************************************************
     On Error GoTo ErrorHandler:
 

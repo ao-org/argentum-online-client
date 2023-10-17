@@ -290,7 +290,6 @@ Public CopiarDialogoAConsola       As Byte
 Public ScrollArrastrar             As Byte
 Public LastScroll                  As Byte
 Public InfoItemsEnRender           As Boolean
-Public AmbientalActivated          As Byte
 Public InvertirSonido              As Byte
 Public VolMusic                    As Long
 Public VolFX                       As Long

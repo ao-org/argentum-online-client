@@ -145,14 +145,14 @@ On Error GoTo Error_Handl
     With track
     
         #If Compresion = 1 Then
-                If Extract_File(Midi, get_compressed_resources_path(), file_str & ".mid", Windows_Temp_Dir, ResourcesPassword, False) Then
+                If Extract_File(Midi, GetCompressedResourcesPath(), file_str & ".mid", Windows_Temp_Dir, ResourcesPassword, False) Then
                     Set .directMusicSegment = .directMusicLoader.LoadSegment(Windows_Temp_Dir & file_str & ".mid")
                     .directMusicSegment.SetStandardMidiFile
                     .directMusicSegment.Download .directMusicPath
                 End If
         #Else
            Dim PathToFile As String
-           PathToFile = ao20audio.get_midi_files_path() & file_str & ".mid"
+           PathToFile = ao20audio.GetMidiFilesPath() & file_str & ".mid"
             If FileExist(PathToFile, vbArchive) Then
                 Set .directMusicSegment = .directMusicLoader.LoadSegment(PathToFile)
                 .directMusicSegment.SetStandardMidiFile
@@ -186,7 +186,7 @@ On Error GoTo create_wav_buffer_from_file_Err
     Dim filename_with_extension As String: filename_with_extension = file_name & ".wav"
     #If Compresion Then
         If Extraido = False Then
-            If Extract_File(wav, get_compressed_resources_path(), file_name & ".wav", Windows_Temp_Dir, ResourcesPassword, False) Then
+            If Extract_File(wav, GetCompressedResourcesPath(), file_name & ".wav", Windows_Temp_Dir, ResourcesPassword, False) Then
                 Set new_buffer = mDirectSound.CreateSoundBufferFromFile(Windows_Temp_Dir & file_name & ".wav", dsbd)
                 Delete_File Windows_Temp_Dir & filename_with_extension
                 create_wav_buffer_from_file = True
@@ -199,7 +199,7 @@ On Error GoTo create_wav_buffer_from_file_Err
         End If
     #Else
         Dim PathToFile As String
-        PathToFile = ao20audio.get_wav_files_path() & filename_with_extension
+        PathToFile = ao20audio.GetWavFilesPath() & filename_with_extension
         If FileExist(PathToFile, vbArchive) Then
             Set new_buffer = mDirectSound.CreateSoundBufferFromFile(PathToFile, dsbd)
             create_wav_buffer_from_file = True
@@ -271,8 +271,7 @@ End Function
 
 Private Function get_free_wav_track() As Integer
         Dim i As Integer
-        
-        For i = 1 To UBound(mAudioTracks)
+        For i = 1 To UBound(mAudioTracks) - 1
             With mAudioTracks(i)
                 If .buffer Is Nothing Then
                     get_free_wav_track = i
@@ -289,11 +288,52 @@ Private Function get_free_wav_track() As Integer
             End With
         Next i
         get_free_wav_track = -1
+End Function
+Public Function stop_ambient() As Long
+On Error GoTo stop_ambient_Error_Handl
+    stop_ambient = -1
+    With mAudioTracks(UBound(mAudioTracks))
+            If Not .Buffer Is Nothing Then
+                .Buffer.Stop
+                .Buffer.SetCurrentPosition 0
+            End If
+    End With
+    stop_ambient = 0
+    Exit Function
+stop_ambient_Error_Handl:
+End Function
+Public Function play_ambient(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0) As Long
+On Error GoTo play_ambient_Error_Handl
+    Debug.Assert id > 0
+    play_ambient = -1
+    If (id <= 0) Then Exit Function
+
+    If mBuffer(id) Is Nothing Then
+        Dim i As Integer
+        Call create_wav_buffer_from_file(id, mBuffer(id))
+        Debug.Assert Not mBuffer(id) Is Nothing
+        If mBuffer(id) Is Nothing Then
+            play_ambient = -1
+            Exit Function
+        End If
+    End If
+    
+    Dim tid As Integer
+    tid = UBound(mAudioTracks)
+    Debug.Print "play_ambient, track " & tid & " id: " & id
+    With mAudioTracks(tid)
+            .Name = id
+            Set .Buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(id))
+            Call start_playing(.Buffer, IIf(looping, DSBPLAY_LOOPING, DSBPLAY_DEFAULT), volume, pan)
+   End With
+   play_ambient = 0
+   Exit Function
+
+play_ambient_Error_Handl:
 
 End Function
-
 Public Function play_wav(ByVal sound_id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0) As Long
-On Error GoTo Error_Handl
+On Error GoTo play_wav_Error_Handl
     Debug.Assert sound_id > 0
     play_wav = -1
     If (sound_id <= 0) Then Exit Function
@@ -323,13 +363,13 @@ On Error GoTo Error_Handl
     End If
     Exit Function
 
-Error_Handl:
+play_wav_Error_Handl:
 
 End Function
 
 
 Public Function play_midi(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
-On Error GoTo Error_Handl
+On Error GoTo play_midi_Error_Handl
     Debug.Assert id > 0
     play_midi = -1
     If (id <= 0) Then Exit Function
@@ -346,7 +386,7 @@ On Error GoTo Error_Handl
     play_midi = 0
     Exit Function
 
-Error_Handl:
+play_midi_Error_Handl:
 
 End Function
 
@@ -365,6 +405,7 @@ Public Function stop_wav(ByVal sound_id As Integer) As Long
             End If
      End With
     End If
+    stop_wav = 0
         
     Exit Function
 Error_Handl:

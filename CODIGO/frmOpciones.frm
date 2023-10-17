@@ -542,7 +542,7 @@ Private Declare Function ReleaseCapture Lib "user32" () As Long
 
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
-' función Api para aplicar la transparencia a la ventana
+' funci n Api para aplicar la transparencia a la ventana
 Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 ' Funciones api para los estilos de la ventana
@@ -599,7 +599,7 @@ Is_Transparent_Err:
     
 End Function
   
-'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
+'Funci n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
     
     On Error GoTo Aplicar_Transparencia_Err
@@ -735,7 +735,7 @@ Private Sub cbLenguaje_Click()
         Select Case cbLenguaje.ListIndex
         
             Case 0
-                message = "Para que los cambios surjan efecto deberá volver a abrir el cliente."
+                message = "Para que los cambios surjan efecto deber  volver a abrir el cliente."
                 title = "Cambiar Idioma"
             
             Case 1
@@ -851,7 +851,7 @@ Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         Call SaveSetting("VIDEO", "CursoresGraficos", 0)
     End If
     
-    MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
+    MsgBox "Para que los cambios en esta opci n sean reflejados, deber  reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
 
     Exit Sub
 
@@ -890,7 +890,7 @@ Private Sub CheckUI_MouseUp(Button As Integer, Shift As Integer, X As Single, Y 
         CheckUI.Picture = Nothing
     Else
         CheckUI.Picture = LoadInterface("check-amarillo.bmp")
-        Call MsgBox("Deberás reiniciar el cliente para que esta configuración tome efecto.", vbExclamation)
+        Call MsgBox("Deber s reiniciar el cliente para que esta configuraci n tome efecto.", vbExclamation)
     End If
 
     
@@ -1000,17 +1000,16 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
 
         Case 3
 
-            If AmbientalActivated = 1 Then
+            If ao20audio.AmbientEnabled = 1 Then
                 HScroll1.Enabled = False
-                AmbientalActivated = 0
+                ao20audio.AmbientEnabled = 0
             Else
                 HScroll1.Enabled = True
-                AmbientalActivated = 1
-                Call AmbientarAudio(ResourceMap)
-
+                ao20audio.AmbientEnabled = 1
+                Call ao20audio.PlayAmbientAudio(UserMap)
             End If
 
-            If AmbientalActivated = 0 Then
+            If ao20audio.AmbientEnabled = 0 Then
                 chko(3).Picture = Nothing
             Else
                 chko(3).Picture = LoadInterface("check-amarillo.bmp")
@@ -1521,7 +1520,7 @@ Public Sub Init()
         Respiracion.Picture = Nothing
     End If
     
-    If AmbientalActivated = 0 Then
+    If ao20audio.AmbientEnabled = 0 Then
         chko(3).Picture = Nothing
     Else
         chko(3).Picture = LoadInterface("check-amarillo.bmp")
