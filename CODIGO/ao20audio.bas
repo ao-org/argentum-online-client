@@ -96,28 +96,28 @@ End Function
 Public Function GetCompressedResourcesPath() As String
  GetCompressedResourcesPath = App.path & "\..\Recursos\OUTPUT\"
 End Function
-Public Function ComputeCharfixVolume(ByRef Pos As Position) As Long
-On Error GoTo ComputeCharfixVolumenErr:
+Public Function ComputeCharFxVolume(ByRef Pos As Position) As Long
+On Error GoTo ComputeCharFxVolumenErr:
     Dim total_distance As Integer, curr_x As Integer, curr_y As Integer
     total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
     If (total_distance = 0) Then
-        ComputeCharfixVolume = VolFX
+        ComputeCharFxVolume = VolFX
     ElseIf total_distance <= 19 Then
-        ComputeCharfixVolume = VolFX - (total_distance * 120)
+        ComputeCharFxVolume = VolFX - (total_distance * 120)
     End If
-    If total_distance > 19 Then ComputeCharfixVolume = -4000
-    If ComputeCharfixVolume < -4000 Then ComputeCharfixVolume = -4000
+    If total_distance > 19 Then ComputeCharFxVolume = -4000
+    If ComputeCharFxVolume < -4000 Then ComputeCharFxVolume = -4000
     Exit Function
-ComputeCharfixVolumenErr:
-    Call RegistrarError(Err.Number, Err.Description, "ComputeCharfixVolume", Erl)
+ComputeCharFxVolumenErr:
+    Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxVolume", Erl)
     Resume Next
 End Function
-Public Function ComputeCharfixPan(ByRef Pos As Position) As Long
-On Error GoTo ComputeCharfixPanErr:
+Public Function ComputeCharFxPan(ByRef Pos As Position) As Long
+On Error GoTo ComputeCharFxPanErr:
     Dim total_distance As Integer, position_sgn As Integer, curr_x As Integer, curr_y As Integer
-    ComputeCharfixPan = 0
+    ComputeCharFxPan = 0
     total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
-    If InvertirSonido = True Then
+    If InvertirSonido = False Then
         If Pos.x < UserPos.x Then
             position_sgn = -1
         Else
@@ -131,49 +131,49 @@ On Error GoTo ComputeCharfixPanErr:
         End If
     End If
     If (total_distance = 0) Or (Pos.x = UserPos.x) Then
-        ComputeCharfixPan = 0
+        ComputeCharFxPan = 0
     ElseIf total_distance < 19 Then
-        ComputeCharfixPan = position_sgn * (total_distance * 500)
+        ComputeCharFxPan = position_sgn * (total_distance * 500)
     Else
-        ComputeCharfixPan = position_sgn * 9000
+        ComputeCharFxPan = position_sgn * 9000
     End If
     Exit Function
-ComputeCharfixPanErr:
-    Call RegistrarError(Err.Number, Err.Description, "ComputeCharfixPan", Erl)
+ComputeCharFxPanErr:
+    Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxPan", Erl)
     Resume Next
 End Function
 
-Public Function ComputeCharfixPanByDistance(ByVal total_distance As Integer, position_sgn As Integer) As Long
-On Error GoTo ComputeCharfixPanByDistance_err:
+Public Function ComputeCharFxPanByDistance(ByVal total_distance As Integer, position_sgn As Integer) As Long
+On Error GoTo ComputeCharFxPanByDistance_err:
     If InvertirSonido Then
         position_sgn = position_sgn * -1
     End If
     If (total_distance = 0) Or (position_sgn = 0) Then
-        ComputeCharfixPanByDistance = 0
+        ComputeCharFxPanByDistance = 0
     ElseIf total_distance < 19 Then
-        ComputeCharfixPanByDistance = position_sgn * (total_distance * 500)
+        ComputeCharFxPanByDistance = position_sgn * (total_distance * 500)
     Else
-        ComputeCharfixPanByDistance = position_sgn * 9000
+        ComputeCharFxPanByDistance = position_sgn * 9000
     End If
     Exit Function
 
-ComputeCharfixPanByDistance_err:
+ComputeCharFxPanByDistance_err:
     Call RegistrarError(Err.Number, Err.Description, "clsSoundEngine.Calculate_Pan_By_Distance", Erl)
     Resume Next
 End Function
-Public Function ComputeCharfixVolumeByDistance(ByVal distance As Byte) As Long
-On Error GoTo ComputeCharfixVolumeByDistance_err:
+Public Function ComputeCharFxVolumeByDistance(ByVal distance As Byte) As Long
+On Error GoTo ComputeCharFxVolumeByDistance_err:
     distance = Abs(distance)
     If (distance = 0) Then
-        ComputeCharfixVolumeByDistance = VolFX
+        ComputeCharFxVolumeByDistance = VolFX
     ElseIf distance <= 19 Then
-        ComputeCharfixVolumeByDistance = VolFX - (distance * 120)
+        ComputeCharFxVolumeByDistance = VolFX - (distance * 120)
     End If
-    If distance > 19 Then ComputeCharfixVolumeByDistance = -4000
-    If ComputeCharfixVolumeByDistance < -4000 Then ComputeCharfixVolumeByDistance = -4000
+    If distance > 19 Then ComputeCharFxVolumeByDistance = -4000
+    If ComputeCharFxVolumeByDistance < -4000 Then ComputeCharFxVolumeByDistance = -4000
     Exit Function
-ComputeCharfixVolumeByDistance_err:
-    Call RegistrarError(Err.Number, Err.Description, "ComputeCharfixVolumeByDistance", Erl)
+ComputeCharFxVolumeByDistance_err:
+    Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxVolumeByDistance", Erl)
     Resume Next
 End Function
 

@@ -752,8 +752,8 @@ Sub DoPasosFx(ByVal charindex As Integer)
         With charlist(charindex)
             Dim steps_vol As Long
             Dim steps_pan As Long
-            steps_vol = ao20audio.ComputeCharfixVolume(.Pos)
-            steps_pan = ao20audio.ComputeCharfixPan(.Pos)
+            steps_vol = ao20audio.ComputeCharFxVolume(.Pos)
+            steps_pan = ao20audio.ComputeCharFxPan(.Pos)
             If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
                 If .Speeding > 1.3 Then
                     Call ao20audio.playwav(Pasos(CONST_CABALLO).wav(1), False, steps_vol, steps_pan)
@@ -800,8 +800,8 @@ On Error GoTo DoPasosInvi_Err
         TerrenoDePaso = GetTerrenoDePaso(FileNum)
         Dim steps_vol As Long
         Dim steps_pan As Long
-        steps_vol = ao20audio.ComputeCharfixVolumeByDistance(distancia)
-        steps_pan = ao20audio.ComputeCharfixPanByDistance(distancia, balance)
+        steps_vol = ao20audio.ComputeCharFxVolumeByDistance(distancia)
+        steps_pan = ao20audio.ComputeCharFxPanByDistance(distancia, balance)
         Call ao20audio.playwav(Pasos(TerrenoDePaso).wav(IIf(step, 1, 2)), False, steps_vol, steps_pan)
     End If
     
@@ -826,8 +826,8 @@ Sub DoPasosFxWithoutPos(ByVal charindex As Integer)
         With charlist(charindex)
             Dim steps_vol As Long
             Dim steps_pan As Long
-            steps_vol = ao20audio.ComputeCharfixVolume(.Pos)
-            steps_pan = ao20audio.ComputeCharfixPan(.Pos)
+            steps_vol = ao20audio.ComputeCharFxVolume(.Pos)
+            steps_pan = ao20audio.ComputeCharFxPan(.Pos)
             If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
                 If .Speeding > 1.3 Then
                     Call ao20audio.playwav(Pasos(CONST_CABALLO).wav(1), False, steps_vol, steps_pan)
