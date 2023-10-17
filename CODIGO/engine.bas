@@ -4433,6 +4433,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 End If
             
                 If (.FxEnd_Effect > 0) And (.DestinoChar = 0) Then
+                    Dim p As Position
                     p.x = .DestX
                     p.y = .DesyY
                     Call ao20audio.playwav(.wav, False, ao20audio.ComputeCharFxVolume(p), ao20audio.ComputeCharFxPan(p))

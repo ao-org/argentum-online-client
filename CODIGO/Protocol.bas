@@ -3686,20 +3686,8 @@ HandlePlayMIDI_Err:
     
 End Sub
 
-''
-' Handles the PlayWave message.
-
 Private Sub HandlePlayWave()
-    
-    On Error GoTo HandlePlayWave_Err
-
-    '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 08/14/07
-    'Last Modified by: Rapsodius
-    'Added support for 3D Sounds.
-    '***************************************************
-        
+On Error GoTo HandlePlayWave_Err
     Dim wave As Integer
     Dim srcX As Byte
     Dim srcY As Byte
@@ -3724,24 +3712,17 @@ Private Sub HandlePlayWave()
     If srcX = 0 Or srcY = 0 Then
         Call ao20audio.playwav(CStr(wave), False, 0, 0)
     Else
-
         If Not EstaEnArea(srcX, srcY) Then
         Else
-            Call ao20audio.playwav(CStr(wave), False)
             Dim p As Position
             p.x = srcX
             p.y = srcY
             Call ao20audio.playwav(CStr(wave), False, ao20audio.ComputeCharFxVolume(P), ao20audio.ComputeCharFxPan(P))
         End If
-
     End If
-   
     Exit Sub
-
 HandlePlayWave_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePlayWave", Erl)
-    
-    
 End Sub
 
 ''
@@ -4163,13 +4144,6 @@ HandlePauseToggle_Err:
 End Sub
 
 Private Sub HandleRainToggle()
-    '**
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '**
-    'Remove packet ID
-
     On Error GoTo HandleRainToggle_Err
 
 
@@ -4187,7 +4161,7 @@ Private Sub HandleRainToggle()
                 Call ao20audio.playwav(195)
             End If
 
-
+            Call ao20audio.StopAmbientAudio
             Call Graficos_Particulas.Engine_MeteoParticle_Set(-1)
 
         End If
@@ -4200,7 +4174,6 @@ Private Sub HandleRainToggle()
 
         End If
 
-        ' Call Audio.StopWave(AmbientalesBufferIndex)
     End If
 
 

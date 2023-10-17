@@ -905,10 +905,8 @@ Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single
     On Error GoTo chkInvertir_MouseUp_Err
     If InvertirSonido = 1 Then
         InvertirSonido = 0
-        Sound.InvertirSonido = False
     Else
         InvertirSonido = 1
-        Sound.InvertirSonido = True
     End If
         
     If InvertirSonido = 0 Then
