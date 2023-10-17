@@ -902,11 +902,14 @@ CheckUI_MouseUp_Err:
 End Sub
 
 Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo chkInvertir_MouseUp_Err
-    
-
-
+    If InvertirSonido = 1 Then
+        InvertirSonido = 0
+        Sound.InvertirSonido = False
+    Else
+        InvertirSonido = 1
+        Sound.InvertirSonido = True
+    End If
         
     If InvertirSonido = 0 Then
         chkInvertir.Picture = Nothing
@@ -914,8 +917,7 @@ Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single
         chkInvertir.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
-
-    
+  
     Exit Sub
 
 chkInvertir_MouseUp_Err:
@@ -1584,7 +1586,8 @@ End Sub
 Private Sub HScroll1_Change()
     
     On Error GoTo HScroll1_Change_Err
-    
+    ao20audio.SetAmbientVolume (HScroll1.Value)
+    Call ao20audio.PlayAmbientAudio(CurMap)
     Exit Sub
 
 HScroll1_Change_Err:
@@ -1643,7 +1646,7 @@ Private Sub scrMidi_Change()
     
     On Error GoTo scrMidi_Change_Err
     
-
+    Call ao20audio.SetMusicVolume(scrMidi.Value)
        
     Exit Sub
 
@@ -1672,17 +1675,11 @@ scrSens_Change_Err:
 End Sub
 
 Private Sub scrVolume_Change()
-    
-    On Error GoTo scrVolume_Change_Err
-    
-'    Sound.VolumenActual = scrVolume.Value
-'    VolFX = Sound.VolumenActual
-
-    
+On Error GoTo scrVolume_Change_Err
+    Call ao20audio.SetFxVolume(scrVolume.Value)
+    Call ao20audio.playwav(SND_RESUCITAR, False, scrVolume.Value)
     Exit Sub
-
 scrVolume_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolume_Change", Erl)
     Resume Next
-    
 End Sub

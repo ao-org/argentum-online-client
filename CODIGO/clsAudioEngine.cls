@@ -367,6 +367,17 @@ play_wav_Error_Handl:
 
 End Function
 
+Public Sub apply_music_volume(ByVal volume As Long)
+    Dim i As Integer
+    For i = 1 To UBound(mMidiTrack)
+            With mMidiTrack(i)
+                If Not .directMusicSegmentState Is Nothing Then
+                       .directMusicPerformance.SetMasterVolume volume
+                End If
+            End With
+    Next i
+End Sub
+
 
 Public Function play_midi(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
 On Error GoTo play_midi_Error_Handl
@@ -380,6 +391,7 @@ On Error GoTo play_midi_Error_Handl
             Call load_midi(mMidiTrack(1), id)
             .directMusicPerformance.StopEx .directMusicSegment, 0, 0
             Set .directMusicSegmentState = .directMusicPerformance.PlaySegmentEx(.directMusicSegment, 0, 0, Nothing, .directMusicPath)
+            .directMusicPerformance.SetMasterVolume volume
         End If
     End With
 
@@ -454,6 +466,11 @@ Private Sub set_members_to_nothing()
                 Set .directMusicPath = Nothing
             End With
     Next i
+    
+    For i = LBound(mBuffer) To UBound(mBuffer)
+        Set mBuffer(i) = Nothing
+    Next i
+    
     Set mDirectX = Nothing
     Set mDirectSound = Nothing
     Set mDirectSoundEnum = Nothing

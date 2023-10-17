@@ -1014,7 +1014,7 @@ On Error GoTo HandleUpdateIntSetting_Err
             InvertirSonido = Value
         Case eMusicVolume
             If ao20audio.MusicEnabled Then
-                'Set music value to Value
+                Call ao20audio.SetMusicVolume(Value)
             End If
         Case eFxVolume
             VolFX = Value

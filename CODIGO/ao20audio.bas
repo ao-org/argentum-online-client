@@ -22,9 +22,14 @@ Public MusicEnabled As Boolean
 Public FxEnabled As Boolean
 Public AudioEnabled As Boolean
 Public AmbientEnabled As Boolean
+Private CurMusicVolume As Long
+Private CurAmbientVolume As Long
+Private CurFxVolume As Long
+
 Public Sub CreateAudioEngine(ByVal hwnd As Long, ByRef dx8 As DirectX8, ByRef renderer As clsAudioEngine)
 On Error GoTo AudioEngineInitErr:
     If AudioEnabled Then
+        CurMusicVolume = 0
         Set AudioEngine = New clsAudioEngine
         Call AudioEngine.init(dx8, hwnd)
         Debug.Print "Audio Engine OK"
@@ -54,6 +59,7 @@ Public Sub PlayAmbientAudio(ByVal UserMap As Long)
             wav = ReadField(2, Val(MapDat.ambient), Asc("-"))
             If wav = 0 Then Exit Sub
         End If
+        Call ao20audio.AudioEngine.play_ambient(wav, True, CurAmbientVolume)
     End If
 End Sub
 Public Function playwav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0) As Long
@@ -176,6 +182,17 @@ ComputeCharFxVolumeByDistance_err:
     Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxVolumeByDistance", Erl)
     Resume Next
 End Function
+Public Sub SetMusicVolume(ByVal NewVolume As Long)
+    CurMusicVolume = NewVolume
+    If AudioEnabled And MusicEnabled Then
+        Call ao20audio.AudioEngine.apply_music_volume(NewVolume)
+    End If
+End Sub
+Public Sub SetAmbientVolume(ByVal NewVolume As Long)
+    CurAmbientVolume = NewVolume
+End Sub
 
-
+Public Sub SetFxVolume(ByVal NewVolume As Long)
+    CurFxVolume = NewVolume
+End Sub
 
