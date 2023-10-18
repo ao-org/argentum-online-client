@@ -1003,6 +1003,7 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
             If ao20audio.AmbientEnabled = 1 Then
                 HScroll1.Enabled = False
                 ao20audio.AmbientEnabled = 0
+                Call ao20audio.StopAmbientAudio
             Else
                 HScroll1.Enabled = True
                 ao20audio.AmbientEnabled = 1
