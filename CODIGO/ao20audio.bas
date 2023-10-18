@@ -44,14 +44,16 @@ AudioEngineInitErr:
     Debug.Print "Error Number Returned: " & Err.Number
     End
 End Sub
+
 Public Function StopAmbientAudio() As Long
     StopAmbientAudio = -1
-    If AudioEnabled And AmbientEnabled Then
+    If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
         StopAmbientAudio = ao20audio.AudioEngine.stop_ambient
     End If
 End Function
+
 Public Sub PlayAmbientAudio(ByVal UserMap As Long)
-    If AudioEnabled And AmbientEnabled Then
+    If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
         Dim wav As Integer
         If EsNoche Then
             wav = ReadField(1, Val(MapDat.ambient), Asc("-"))
@@ -62,46 +64,56 @@ Public Sub PlayAmbientAudio(ByVal UserMap As Long)
         Call ao20audio.AudioEngine.play_ambient(wav, True, CurAmbientVolume)
     End If
 End Sub
+
 Public Function playwav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0) As Long
     playwav = -1
-    If AudioEnabled And FxEnabled Then
+    If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
         PlayWav = ao20audio.AudioEngine.play_wav(id, looping, volume, pan)
     End If
 End Function
+
 Public Function stopwav(ByVal id As Integer) As Long
    stopwav = -1
-    If AudioEnabled And FxEnabled Then
+    If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
         StopWav = ao20audio.AudioEngine.stop_wav(id)
     End If
 End Function
+
 Public Function playmidi(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
     playmidi = -1
-    If AudioEnabled And MusicEnabled Then
+    If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
         PlayMidi = ao20audio.AudioEngine.play_midi(id, looping, volume)
     End If
 End Function
+
 Public Sub stopallplayback()
-    If AudioEnabled And MusicEnabled Then
+    If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
         Call ao20audio.AudioEngine.stop_all_playback
     End If
 End Sub
+
 Public Function GetCurrentMidiName(ByVal track_id As Integer) As String
-    If AudioEnabled And MusicEnabled Then
+    If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
         GetCurrentMidiName = ao20audio.AudioEngine.get_midi_track_name(track_id)
     End If
 End Function
+
 Public Function GetWavFilesPath() As String
     GetWavFilesPath = App.path & "\..\Recursos\WAV\"
 End Function
+
 Public Function GetMp3FilesPath() As String
     GetMp3FilesPath = App.path & "\MP3\"
 End Function
+
 Public Function GetMidiFilesPath() As String
     GetMidiFilesPath = App.path & "/../Recursos/midi/"
 End Function
+
 Public Function GetCompressedResourcesPath() As String
  GetCompressedResourcesPath = App.path & "\..\Recursos\OUTPUT\"
 End Function
+
 Public Function ComputeCharFxVolume(ByRef Pos As Position) As Long
 On Error GoTo ComputeCharFxVolumenErr:
     Dim total_distance As Integer, curr_x As Integer, curr_y As Integer
@@ -118,6 +130,7 @@ ComputeCharFxVolumenErr:
     Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxVolume", Erl)
     Resume Next
 End Function
+
 Public Function ComputeCharFxPan(ByRef Pos As Position) As Long
 On Error GoTo ComputeCharFxPanErr:
     Dim total_distance As Integer, position_sgn As Integer, curr_x As Integer, curr_y As Integer
@@ -167,6 +180,7 @@ ComputeCharFxPanByDistance_err:
     Call RegistrarError(Err.Number, Err.Description, "clsSoundEngine.Calculate_Pan_By_Distance", Erl)
     Resume Next
 End Function
+
 Public Function ComputeCharFxVolumeByDistance(ByVal distance As Byte) As Long
 On Error GoTo ComputeCharFxVolumeByDistance_err:
     distance = Abs(distance)
@@ -188,6 +202,7 @@ Public Sub SetMusicVolume(ByVal NewVolume As Long)
         Call ao20audio.AudioEngine.apply_music_volume(NewVolume)
     End If
 End Sub
+
 Public Sub SetAmbientVolume(ByVal NewVolume As Long)
     CurAmbientVolume = NewVolume
 End Sub

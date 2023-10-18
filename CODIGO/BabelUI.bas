@@ -993,7 +993,7 @@ On Error GoTo HandleUpdateIntSetting_Err
                 ao20audio.stopallplayback
                 ao20audio.MusicEnabled = 0
             Else
-                ao20audio.MusicEnabled = 0
+                ao20audio.MusicEnabled = 1
             End If
         Case eEnableFx
             ao20audio.FxEnabled = Value

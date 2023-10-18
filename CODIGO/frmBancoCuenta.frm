@@ -467,7 +467,7 @@ End Sub
 Private Sub Form_Unload(Cancel As Integer)
     
     On Error GoTo Form_Unload_Err
-    
+    Call ao20audio.PlayWav(SND_CLICK)
     If Not Protocol_Writes.writer_is_nothing Then
         Call WriteBankEnd
     End If
