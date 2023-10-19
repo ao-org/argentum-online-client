@@ -1882,54 +1882,21 @@ End Sub
 
 Private Sub cmdBorrarInformes_Click()
     Dim ruta As String
+    Dim archivos As Variant
+    Dim i As Integer
+
     ' Obtén la ruta del directorio del ejecutable
     ruta = App.path
 
-    ' Borra los archivos si existen en la ruta especificada
-    If dir(ruta & "\MacroOcultar.txt") <> "" Then
-        Kill ruta & "\MacroOcultar.txt"
-    End If
+    ' Definir los nombres de los archivos
+    archivos = Array("MacroOcultar.txt", "MacroUseItemU.txt", "MacroUseItem.txt", "MacroGuildMessage.txt", "MacroLeftClick.txt", "MacroChangeHeading.txt", "MacroCoordenadas.txt", "MacroDeClick.txt", "MacroInasistido.txt", "MacroCarteleo.txt", "MacroDePaquetes.txt", "MacroTotal.txt")
 
-    If dir(ruta & "\MacroUseItemU.txt") <> "" Then
-        Kill ruta & "\MacroUseItemU.txt"
-    End If
-
-    If dir(ruta & "\MacroUseItem.txt") <> "" Then
-        Kill ruta & "\MacroUseItem.txt"
-    End If
-
-    If dir(ruta & "\MacroGuildMessage.txt") <> "" Then
-        Kill ruta & "\MacroGuildMessage.txt"
-    End If
-
-    If dir(ruta & "\MacroLeftClick.txt") <> "" Then
-        Kill ruta & "\MacroLeftClick.txt"
-    End If
-
-    If dir(ruta & "\MacroChangeHeading.txt") <> "" Then
-        Kill ruta & "\MacroChangeHeading.txt"
-    End If
-    
-    If dir(ruta & "\MacroCoordenadas.txt") <> "" Then
-        Kill ruta & "\MacroCoordenadas.txt"
-    End If
-    
-    If dir(ruta & "\MacroDeClick.txt") <> "" Then
-        Kill ruta & "\MacroDeClick.txt"
-    End If
-    
-    If dir(ruta & "\MacroInasistido.txt") <> "" Then
-        Kill ruta & "\MacroInasistido.txt"
-    End If
-    
-    If dir(ruta & "\MacroCarteleo.txt") <> "" Then
-        Kill ruta & "\MacroCarteleo.txt"
-    End If
-    
-    If dir(ruta & "\MacroTotal.txt") <> "" Then
-        Kill ruta & "\MacroTotal.txt"
-    End If
-
+    ' Verificar y eliminar cada archivo en la lista
+    For i = LBound(archivos) To UBound(archivos)
+        If dir(ruta & "\" & archivos(i)) <> "" Then
+            Kill ruta & "\" & archivos(i)
+        End If
+    Next i
 End Sub
 
 
