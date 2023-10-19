@@ -31,7 +31,7 @@ On Error GoTo AudioEngineInitErr:
     If AudioEnabled Then
         CurMusicVolume = 0
         Set AudioEngine = New clsAudioEngine
-        Call AudioEngine.init(dx8, hwnd)
+        Call AudioEngine.Init(dx8, hwnd)
         Debug.Print "Audio Engine OK"
         Exit Sub
     Else
@@ -48,7 +48,7 @@ End Sub
 Public Function StopAmbientAudio() As Long
     StopAmbientAudio = -1
     If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
-        StopAmbientAudio = ao20audio.AudioEngine.stop_ambient
+        StopAmbientAudio = ao20audio.AudioEngine.StopAmbient
     End If
 End Function
 
@@ -61,40 +61,40 @@ Public Sub PlayAmbientAudio(ByVal UserMap As Long)
             wav = ReadField(2, Val(MapDat.ambient), Asc("-"))
             If wav = 0 Then Exit Sub
         End If
-        Call ao20audio.AudioEngine.play_ambient(wav, True, CurAmbientVolume)
+        Call ao20audio.AudioEngine.PlayAmbient(wav, True, CurAmbientVolume)
     End If
 End Sub
 
 Public Function PlayWav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0) As Long
     PlayWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
-        PlayWav = ao20audio.AudioEngine.play_wav(id, looping, volume, pan)
+        PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, volume, pan)
     End If
 End Function
 
 Public Function StopWav(ByVal id As Integer) As Long
    StopWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
-        StopWav = ao20audio.AudioEngine.stop_wav(id)
+        StopWav = ao20audio.AudioEngine.StopWav(id)
     End If
 End Function
 
 Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
     PlayMidi = -1
     If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
-        PlayMidi = ao20audio.AudioEngine.play_midi(id, looping, volume)
+        PlayMidi = ao20audio.AudioEngine.PlayMidi(id, looping, volume)
     End If
 End Function
 
 Public Sub StopAllPlayback()
     If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
-        Call ao20audio.AudioEngine.stop_all_playback
+        Call ao20audio.AudioEngine.StopAllPlayback
     End If
 End Sub
 
 Public Function GetCurrentMidiName(ByVal track_id As Integer) As String
     If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
-        GetCurrentMidiName = ao20audio.AudioEngine.get_midi_track_name(track_id)
+        GetCurrentMidiName = ao20audio.AudioEngine.GetMidiTrackName(track_id)
     End If
 End Function
 
@@ -199,7 +199,7 @@ End Function
 Public Sub SetMusicVolume(ByVal NewVolume As Long)
     CurMusicVolume = NewVolume
     If AudioEnabled And MusicEnabled Then
-        Call ao20audio.AudioEngine.apply_music_volume(NewVolume)
+        Call ao20audio.AudioEngine.ApplyMusicVolume(NewVolume)
     End If
 End Sub
 
