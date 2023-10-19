@@ -6684,7 +6684,12 @@ Private Sub HandleShowGMPanelForm()
     #If DEBUGGING = 1 Then
         frmPanelgm.FraControlMacros.visible = False
     #End If
-
+    
+    frmPanelgm.txtHeadNumero = Reader.ReadInt16
+    frmPanelgm.txtBodyYo = Reader.ReadInt16
+    frmPanelgm.txtCasco = Reader.ReadInt16
+    frmPanelgm.txtArma = Reader.ReadInt16
+    frmPanelgm.txtEscudo = Reader.ReadInt16
     frmPanelgm.Show vbModeless, GetGameplayForm()
     
     MiCargo = charlist(UserCharIndex).priv
