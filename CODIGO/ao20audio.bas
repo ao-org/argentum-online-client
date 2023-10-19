@@ -65,28 +65,28 @@ Public Sub PlayAmbientAudio(ByVal UserMap As Long)
     End If
 End Sub
 
-Public Function playwav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0) As Long
-    playwav = -1
+Public Function PlayWav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0) As Long
+    PlayWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
         PlayWav = ao20audio.AudioEngine.play_wav(id, looping, volume, pan)
     End If
 End Function
 
-Public Function stopwav(ByVal id As Integer) As Long
-   stopwav = -1
+Public Function StopWav(ByVal id As Integer) As Long
+   StopWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
         StopWav = ao20audio.AudioEngine.stop_wav(id)
     End If
 End Function
 
-Public Function playmidi(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
-    playmidi = -1
+Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
+    PlayMidi = -1
     If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
         PlayMidi = ao20audio.AudioEngine.play_midi(id, looping, volume)
     End If
 End Function
 
-Public Sub stopallplayback()
+Public Sub StopAllPlayback()
     If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
         Call ao20audio.AudioEngine.stop_all_playback
     End If
