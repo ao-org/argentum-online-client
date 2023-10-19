@@ -609,7 +609,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             LastClickAsistente = ClickEnAsistenteRandom
              If (x > 490 And x < 522) And (y > 297 And y < 357) Then
                 If ClickEnAsistenteRandom = 1 Then
-                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/", False, False)
+                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://steamcommunity.com/app/1956740/discussions/", False, False)
                 End If
                 If ClickEnAsistenteRandom = 2 Then
                     Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!", False, False)
@@ -977,7 +977,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
              If (x > 490 And x < 522) And (y > 297 And y < 357) Then
              
                 If ClickEnAsistenteRandom = 1 Then
-                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/", False, True)
+                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://steamcommunity.com/app/1956740/discussions/", False, True)
 
                 End If
 
