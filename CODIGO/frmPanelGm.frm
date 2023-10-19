@@ -3524,7 +3524,7 @@ Public Sub CadenaChat(ByVal chat As String)
                 ' Elimina espacios en blanco al principio y al final del nombre
                 nombre = Trim(nombre)
                 If frmPanelgm.chkAutoName.Value = 1 Then frmPanelgm.cboListaUsus.Text = nombre
-                    If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "CheatdeAO20.txt")
+                    If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
                     If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroDePaquetes.txt")
                 End If
         End If
