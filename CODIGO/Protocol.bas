@@ -2699,7 +2699,10 @@ Private Sub HandleConsoleMessage()
 
         With FontTypes(FontIndex)
             Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
-
+            If EsGM Then
+                Call frmPanelgm.CadenaChat(chat)
+            End If
+            
         End With
 
     End If
@@ -6678,12 +6681,10 @@ Private Sub HandleShowGMPanelForm()
     
     Dim MiCargo As Integer
     
-    
-    frmPanelgm.txtHeadNumero = Reader.ReadInt16
-    frmPanelgm.txtBodyYo = Reader.ReadInt16
-    frmPanelgm.txtCasco = Reader.ReadInt16
-    frmPanelgm.txtArma = Reader.ReadInt16
-    frmPanelgm.txtEscudo = Reader.ReadInt16
+    #If DEBUGGING = 1 Then
+        frmPanelgm.FraControlMacros.visible = False
+    #End If
+
     frmPanelgm.Show vbModeless, GetGameplayForm()
     
     MiCargo = charlist(UserCharIndex).priv
@@ -6702,16 +6703,16 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.cmdConsulta.Visible = False
         frmPanelgm.cmdMatarNPC.Visible = False
         frmPanelgm.cmdEventos.Visible = False
-        frmPanelgm.cmdBody0(2).Visible = False
-        frmPanelgm.cmdHead0.Visible = False
+        frmPanelgm.cmdMapaSeguro.visible = False
+        frmPanelgm.cmdInvisible.visible = False
         frmPanelgm.SendGlobal.Visible = False
         frmPanelgm.Mensajeria.Visible = False
         frmPanelgm.cmdMapeo.Visible = False
         frmPanelgm.cmdMapeo.Enabled = False
         frmPanelgm.cmdcrearevento.Enabled = False
         frmPanelgm.cmdcrearevento.Visible = False
-        frmPanelgm.txtMod.Width = 4580
-        frmPanelgm.Height = 7580
+        frmPanelgm.txtMod.Width = 4560
+        frmPanelgm.Height = 5080
         frmPanelgm.mnuTraer.Visible = False
         frmPanelgm.mnuIra.Visible = False
                 
@@ -6719,9 +6720,13 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.Admin(0).Visible = False
         frmPanelgm.cmdcrearevento.Enabled = False
         frmPanelgm.cmdcrearevento.Visible = False
+        frmPanelgm.cmdMapeo.visible = False
+        frmPanelgm.cmdMapeo.enabled = False
         
         Case 4 ' Dios
         frmPanelgm.Admin(0).Visible = False
+        frmPanelgm.cmdMapeo.visible = False
+        frmPanelgm.cmdMapeo.enabled = False
         
         Case 5
         
