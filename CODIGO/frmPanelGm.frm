@@ -3509,7 +3509,7 @@ Public Sub CadenaChat(ByVal chat As String)
         Cadena = chat
 
         ' Divide la cadena en partes utilizando "Control de paquetes -> El usuario" como separador
-        partes = Split(Cadena, "Control de paquetes -> El usuario")
+        partes = Split(Cadena, "Control Paquetes---> El usuario")
 
         ' Verifica si hay al menos dos partes en la matriz resultante
         If UBound(partes) >= 1 Then
