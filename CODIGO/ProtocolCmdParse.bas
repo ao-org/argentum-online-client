@@ -1806,8 +1806,13 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteServerOpenToUsersToggle
             
             Case "/PARTICIPAR"  '
-                Call WriteParticipar
-                
+                If CantidadArgumentos < 1 Then
+                    Call WriteParticipar(-1, "")
+                ElseIf CantidadArgumentos < 2 Then
+                    Call WriteParticipar(ArgumentosAll(0), "")
+                Else
+                    Call WriteParticipar(ArgumentosAll(0), ArgumentosAll(1))
+                End If
             Case "/CONDEN"
 
                 If notNullArguments Then
@@ -2200,7 +2205,14 @@ End Sub
 Private Sub StartCaptureTheFlag(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 6 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) And ValidNumber(arguments(4), eNumber_Types.ent_Long) And ValidNumber(arguments(5), eNumber_Types.ent_Long) Then
-            Call WrtieStartCapture(arguments(1), arguments(2), arguments(3), arguments(4), arguments(5))
+            Dim LobbyInfo As t_NewScenearioSettings
+            LobbyInfo.ScenearioType = 1
+            LobbyInfo.MaxPlayers = arguments(1)
+            LobbyInfo.RoundAmount = arguments(2)
+            LobbyInfo.MinLevel = arguments(3)
+            LobbyInfo.MaxLevel = arguments(4)
+            LobbyInfo.InscriptionFee = arguments(5)
+            Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO CAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO NIVEL_MAXIMO PRECIO.")
@@ -2213,7 +2225,12 @@ End Sub
 Private Sub StartLobby(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 3 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
-            Call WriteStartLobby(0, arguments(1), arguments(2), arguments(3))
+            Dim LobbyInfo As t_NewScenearioSettings
+            LobbyInfo.ScenearioType = 0
+            LobbyInfo.MaxPlayers = arguments(1)
+            LobbyInfo.MinLevel = arguments(2)
+            LobbyInfo.MaxLevel = arguments(3)
+            Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO LOBBY PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
@@ -2226,7 +2243,12 @@ End Sub
 Private Sub StartCustomMap(ByVal mapType As Byte, ByVal name As String, ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 3 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
-            Call WriteStartLobby(mapType, arguments(1), arguments(2), arguments(3))
+            Dim LobbyInfo As t_NewScenearioSettings
+            LobbyInfo.ScenearioType = mapType
+            LobbyInfo.MaxPlayers = arguments(1)
+            LobbyInfo.MinLevel = arguments(2)
+            LobbyInfo.MaxLevel = arguments(3)
+            Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")

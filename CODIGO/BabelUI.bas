@@ -139,6 +139,8 @@ Public Type t_GamePlayCallbacks
     SellItem As Long
     BuyAOShop As Long
     UpdateIntSetting As Long
+    CreateNewScenario As Long
+    JoinScenario As Long
 End Type
 
 Public Type t_SpellSlot
@@ -225,6 +227,34 @@ Public Enum e_SafeType
     eResurrecion = 4
 End Enum
 
+Public Type t_LobbyData
+    Index As Integer
+    id As Integer
+    Description As String
+    ScenarioType As String
+    MinLevel As Integer
+    MaxLevel As Integer
+    MinPlayers As Integer
+    MaxPlayers As Integer
+    RegisteredPlayers As Integer
+    TeamSize As Integer
+    TeamType As Integer
+    InscriptionPrice As Long
+    IsPrivate As Byte
+End Type
+
+Public Type t_NewScenearioSettings
+    MinLevel As Byte
+    MaxLevel As Byte
+    MinPlayers As Byte
+    MaxPlayers As Byte
+    TeamSize As Byte
+    TeamType As Byte
+    InscriptionFee As Long
+    ScenearioType As Byte
+    RoundAmount As Byte
+End Type
+
 Private ServerEnvironment As String
 
 Public Declare Function InitializeBabel Lib "BabelUI.dll" (ByRef Settings As BABELSETTINGS) As Boolean
@@ -294,6 +324,8 @@ Public Declare Sub ShowQuestion Lib "BabelUI.dll" (ByVal QuestionText As String)
 Public Declare Sub OpenMerchant Lib "BabelUI.dll" ()
 Public Declare Sub UpdateMerchantSlot Lib "BabelUI.dll" (ByRef SlotInfo As t_InvItem)
 Public Declare Sub OpenAo20Shop Lib "BabelUI.dll" (ByVal AvailableCredits As Long, ByVal ItemCount As Long, ByRef ItemList As t_ShopItem)
+Public Declare Sub OpenLobbyList Lib "BabelUI.dll" ()
+Public Declare Sub UpdateLobby Lib "BabelUI.dll" (ByRef LobbyInfo As t_LobbyData)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -426,6 +458,8 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.SellItem = FARPROC(AddressOf HandleSellItemCB)
         GameplayCallbacks.BuyAOShop = FARPROC(AddressOf HandleBuyAoShopCB)
         GameplayCallbacks.UpdateIntSetting = FARPROC(AddressOf HandleUpdateIntSetting)
+        GameplayCallbacks.CreateNewScenario = FARPROC(AddressOf HandleCreateNewScenarioCB)
+        GameplayCallbacks.JoinScenario = FARPROC(AddressOf HandleJoinScenarioCB)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -1004,7 +1038,27 @@ On Error GoTo HandleUpdateIntSetting_Err
 HandleUpdateIntSetting_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command1_Click", Erl)
 End Sub
-        
+     
+Public Sub HandleCreateNewScenarioCB(ByRef Settings As t_NewScenearioSettings, ByRef StringSettings As DOUBLESTRINGPARAM)
+    Dim Description As String
+    Dim Password As String
+    If StringSettings.FirstLen > 0 Then
+        Description = GetStringFromPtr(StringSettings.FirstPtr, StringSettings.FirstLen)
+    End If
+    If StringSettings.SecondLen > 0 Then
+        Password = GetStringFromPtr(StringSettings.SecondPtr, StringSettings.SecondLen)
+    End If
+    Call WriteStartLobby(1, Settings, Description, Password)
+End Sub
+
+Public Sub HandleJoinScenarioCB(ByVal ScenarioId As Long, ByRef PasswordParam As SINGLESTRINGPARAM)
+    Dim Password As String
+    If PasswordParam.Len > 0 Then
+        Password = GetStringFromPtr(PasswordParam.Ptr, PasswordParam.Len)
+    End If
+    Call WriteParticipar(ScenarioId, Password)
+End Sub
+
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long
         '<EhHeader>
         On Error GoTo BabelEditWndProc_Err
