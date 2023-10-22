@@ -3874,7 +3874,7 @@ On Error GoTo RenderAccountCharacters_Err
         Else
             LastPJSeleccionado = PJSeleccionado
             If PJSeleccionado <> 0 Then
-                Call SwitchMap(Pjs(PJSeleccionado).Mapa, Pjs(PJSeleccionado).Mapa)
+                Call SwitchMap(Pjs(PJSeleccionado).Mapa)
                 RenderCuenta_PosX = Pjs(PJSeleccionado).posX
                 RenderCuenta_PosY = Pjs(PJSeleccionado).PosY
             End If

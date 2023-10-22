@@ -638,12 +638,12 @@ End Sub
 Public Sub SelectCharacterPreviewCB(ByVal charindex As Long)
     charindex = charindex + 1
     If charindex < LBound(Pjs) Or charindex > CantidadDePersonajesEnCuenta Then
-        Call SwitchMap(CreateCharMap, CreateCharMap)
+        Call SwitchMap(CreateCharMap)
         RenderCuenta_PosX = CreateCharMapX
         RenderCuenta_PosY = CreateCharMapY
         g_game_state.state = e_state_createchar_screen
     Else
-        Call SwitchMap(Pjs(CharIndex).Mapa, Pjs(CharIndex).Mapa)
+        Call SwitchMap(Pjs(CharIndex).Mapa)
         RenderCuenta_PosX = Pjs(charindex).PosX
         RenderCuenta_PosY = Pjs(charindex).PosY
     End If

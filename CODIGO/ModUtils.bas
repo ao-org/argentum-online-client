@@ -719,7 +719,7 @@ Sub General_Set_Connect()
     EntradaX = 10
     
     UserMap = randomMap()
-    Call SwitchMap(UserMap, UserMap)
+    Call SwitchMap(UserMap)
 
     If g_game_state.state() <> e_state_connect_screen Then
         Call ShowLogin

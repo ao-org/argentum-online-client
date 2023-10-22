@@ -17,9 +17,12 @@ Attribute VB_Name = "TileEngine_Map"
 '
 Option Explicit
 
-Sub SwitchMap(ByVal map As Integer, ByVal NewResourceMap As Integer)
+Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0)
     
     On Error GoTo SwitchMap_Err
+    If NewResourceMap < 1 Then
+        NewResourceMap = Map
+    End If
     ResourceMap = NewResourceMap
     'Cargamos el mapa.
     Call Recursos.CargarMapa(ResourceMap)

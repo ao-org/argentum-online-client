@@ -1120,7 +1120,7 @@ On Error GoTo Main_Err
     UpdateLights = False
     LastOffset2X = 0
     LastOffset2Y = 0
-    Call SwitchMap(UserMap, UserMap)
+    Call SwitchMap(UserMap)
     
     Dialogos.font = frmMain.font
     DialogosClanes.font = frmMain.font

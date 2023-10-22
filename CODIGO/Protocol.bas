@@ -821,7 +821,7 @@ Public Sub HandleDisconnect()
     EntradaY = 1
     EntradaX = 1
     Call EraseChar(UserCharIndex, True)
-    Call SwitchMap(UserMap, UserMap)
+    Call SwitchMap(UserMap)
     
     frmMain.personaje(1).Visible = False
     frmMain.personaje(2).Visible = False
@@ -8657,7 +8657,7 @@ Public Sub HandleAccountCharacterList()
         LastPJSeleccionado = 1
         
         If Pjs(1).Mapa <> 0 Then
-            Call SwitchMap(Pjs(1).Mapa, Pjs(1).Mapa)
+            Call SwitchMap(Pjs(1).Mapa)
             RenderCuenta_PosX = Pjs(1).posX
             RenderCuenta_PosY = Pjs(1).posY
         End If
