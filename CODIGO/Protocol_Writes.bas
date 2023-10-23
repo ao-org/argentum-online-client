@@ -332,6 +332,7 @@ Public Sub WriteAttack()
 100     Call Writer.WriteInt16(ClientPacketID.eAttack)
         packetCounters.TS_Attack = packetCounters.TS_Attack + 1
         Call Writer.WriteInt32(packetCounters.TS_Attack)
+        Call Writer.WriteInt8(charlist(UserCharIndex).Heading)
     
 102     Call modNetwork.Send(Writer)
         '<EhFooter>
