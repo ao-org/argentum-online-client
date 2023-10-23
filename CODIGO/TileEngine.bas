@@ -748,30 +748,42 @@ Sub DoPasosFx(ByVal charindex As Integer)
     Static FileNum       As Integer
 
     If Not charlist(charindex).Navegando Then
+
         With charlist(charindex)
-            Dim steps_vol As Long
-            Dim steps_pan As Long
-            steps_vol = ao20audio.ComputeCharFxVolume(.Pos)
-            steps_pan = ao20audio.ComputeCharFxPan(.Pos)
+
             If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
                 If .Speeding > 1.3 Then
-                    Call ao20audio.playwav(Pasos(CONST_CABALLO).wav(1), False, steps_vol, steps_pan)
+                   
+                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
                     Exit Sub
+
                 End If
+           
                 .Pie = Not .Pie
+
                 If .Pie Then
                     If MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
                         FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
-                        TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                        If TerrenoDePaso <> CONST_AGUA Then
-                          Call ao20audio.PlayWav(Pasos(TerrenoDePaso).wav(1), False, steps_vol, steps_pan)
-                        End If
+                        TerrenoDePaso = GetTerrenoDePaso(FileNum, MapData(.Pos.x, .Pos.y).Graphic(2).GrhIndex)
+                        Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
                     End If
                 Else
-                    Call ao20audio.playwav(Pasos(TerrenoDePaso).wav(2), False, steps_vol, steps_pan)
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+
                 End If
+
             End If
+
         End With
+
+    Else
+
+        If charlist(UserCharIndex).Muerto = False Then
+            Call Sound.Sound_Play(SND_NAVEGANDO)
+
+            '  Call Audio.PlayWave(SND_NAVEGANDO, charlist(charindex).Pos.x, charlist(charindex).Pos.y)
+        End If
+
     End If
 
     
@@ -783,18 +795,20 @@ DoPasosFx_Err:
     
 End Sub
 
-Sub DoPasosInvi(ByVal Grh As Long, ByVal distancia As Byte, ByVal balance As Integer, ByVal step As Boolean)
-On Error GoTo DoPasosInvi_Err
+Sub DoPasosInvi(ByVal Grh As Long, ByVal Grh2 As Long, ByVal distancia As Byte, ByVal balance As Integer, ByVal step As Boolean)
+    
+    On Error GoTo DoPasosInvi_Err
+    
+
     Static TerrenoDePaso As TipoPaso
+
     Dim FileNum As Long
+
     If grh > 0 Then
         FileNum = GrhData(grh).FileNum
-        TerrenoDePaso = GetTerrenoDePaso(FileNum)
-        Dim steps_vol As Long
-        Dim steps_pan As Long
-        steps_vol = ao20audio.ComputeCharFxVolumeByDistance(distancia)
-        steps_pan = ao20audio.ComputeCharFxPanByDistance(distancia, balance)
-        Call ao20audio.playwav(Pasos(TerrenoDePaso).wav(IIf(step, 1, 2)), False, steps_vol, steps_pan)
+        TerrenoDePaso = GetTerrenoDePaso(FileNum, Grh2)
+        
+        Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(IIf(step, 1, 2)), , Sound.Calculate_Volume_by_distance(distancia), Sound.Calculate_Pan_By_Distance(distancia, balance))
     End If
     
     Exit Sub
@@ -816,13 +830,11 @@ Sub DoPasosFxWithoutPos(ByVal charindex As Integer)
     If Not UserNavegando Then
 
         With charlist(charindex)
-            Dim steps_vol As Long
-            Dim steps_pan As Long
-            steps_vol = ao20audio.ComputeCharFxVolume(.Pos)
-            steps_pan = ao20audio.ComputeCharFxPan(.Pos)
+
             If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
                 If .Speeding > 1.3 Then
-                    Call ao20audio.playwav(Pasos(CONST_CABALLO).wav(1), False, steps_vol, steps_pan)
+                   
+                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
                     Exit Sub
 
                 End If
@@ -832,19 +844,28 @@ Sub DoPasosFxWithoutPos(ByVal charindex As Integer)
                 If .Pie Then
                     If MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
                         FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
-                        TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                        Call ao20audio.playwav(Pasos(TerrenoDePaso).wav(1), False, steps_vol, steps_pan)
+                        TerrenoDePaso = GetTerrenoDePaso(FileNum, MapData(.Pos.x, .Pos.y).Graphic(2).GrhIndex)
+                        Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
                     End If
                 Else
-                    Call ao20audio.playwav(Pasos(TerrenoDePaso).wav(2), False, steps_vol, steps_pan)
+                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
+
                 End If
+
             End If
+
         End With
+
     Else
+
         If FxNavega And charlist(UserCharIndex).Muerto = False Then
-            Call ao20audio.playwav(SND_NAVEGANDO)
+            Call Sound.Sound_Play(SND_NAVEGANDO)
+
+            '  Call Audio.PlayWave(SND_NAVEGANDO, charlist(charindex).Pos.x, charlist(charindex).Pos.y)
         End If
+
     End If
+
     
     Exit Sub
 
@@ -854,7 +875,7 @@ DoPasosFx_Err:
     
 End Sub
 
-Public Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
+Public Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer, ByVal Layer2Grh As Long) As TipoPaso
     
     On Error GoTo GetTerrenoDePaso_Err
     
@@ -871,7 +892,7 @@ Public Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
     ElseIf (TerrainFileNum >= 6018 And TerrainFileNum <= 6021) Or (TerrainFileNum = 186 Or TerrainFileNum = 8007) Then
         GetTerrenoDePaso = CONST_DESIERTO
         Exit Function
-    ElseIf TerrainFileNum = 20 Then
+    ElseIf TerrainFileNum = 20 And Layer2Grh = 0 Then
          GetTerrenoDePaso = CONST_AGUA
         Exit Function
     Else

@@ -3722,16 +3722,18 @@ Private Sub HandlePlayWaveStep()
     On Error GoTo HandlePlayWaveStep_Err
         
     Dim grh As Long
+    Dim Grh2 As Long
     Dim distance As Byte
     Dim balance As Integer
     Dim step As Boolean
     
 100 Grh = Reader.ReadInt32()
+101 Grh2 = Reader.ReadInt32()
 102 distance = Reader.ReadInt8()
 104 balance = Reader.ReadInt16()
 106 step = Reader.ReadBool()
     
-108 Call DoPasosInvi(Grh, distance, balance, step)
+108 Call DoPasosInvi(Grh, Grh2, distance, balance, step)
     
     
     Exit Sub
