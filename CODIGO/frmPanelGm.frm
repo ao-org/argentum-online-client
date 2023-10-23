@@ -189,6 +189,7 @@ Begin VB.Form frmPanelgm
          BackColor       =   &H80000007&
          Caption         =   "AutoName"
          ForeColor       =   &H00FFFFFF&
+
          Height          =   255
          Left            =   3360
          TabIndex        =   55
@@ -636,7 +637,6 @@ Begin VB.Form frmPanelgm
       TabIndex        =   11
       TabStop         =   0   'False
       Top             =   6720
-      Width           =   1575
    End
    Begin VB.TextBox txtMod 
       BackColor       =   &H00FFFFFF&
