@@ -1523,6 +1523,7 @@ Private Sub HandleSafeModeOn()
     '
     '***************************************************
     On Error GoTo HandleSafeModeOn_Err
+    SeguroGame = True
     If BabelInitialized Then
         Call SetSafeState(e_SafeType.eAttack, 1)
     Else
@@ -1550,6 +1551,7 @@ Private Sub HandleSafeModeOff()
     '***************************************************
     
     On Error GoTo HandleSafeModeOff_Err
+    SeguroGame = False
     If BabelInitialized Then
         Call SetSafeState(e_SafeType.eAttack, 0)
     Else

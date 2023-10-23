@@ -448,6 +448,14 @@ cantidad_Change_Err:
     
 End Sub
 
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error GoTo Form_MouseMove_Err
+    MoverForm
+    Exit Sub
+Form_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.Form_MouseMove", Erl)
+    Resume Next
+End Sub
 Private Sub Form_Unload(Cancel As Integer)
     
     On Error GoTo Form_Unload_Err
