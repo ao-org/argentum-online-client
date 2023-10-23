@@ -473,11 +473,11 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Eventos"
       Height          =   360
-      Left            =   3120
+      Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   25
       TabStop         =   0   'False
-      Top             =   5760
+      Top             =   720
       Width           =   1590
    End
    Begin VB.CommandButton cmdIrCerca 
