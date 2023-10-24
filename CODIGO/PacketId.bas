@@ -202,6 +202,7 @@ Public Enum ServerPacketID
     eRequestTelemetry
     eUpdateCharValue 'updates some char index value based on enum
     eSendClientToggles 'Get active feature Toggles from server
+    eReportLobbyList
 #If PYMMO = 0 Then
     eAccountCharacterList
 #End If
@@ -532,6 +533,7 @@ Public Enum ClientPacketID
     eSendTelemetry
     eSetHotkeySlot
     eUseHKeySlot
+    eRequestLobbyList
     #If PYMMO = 0 Then
     eCreateAccount
     eLoginAccount

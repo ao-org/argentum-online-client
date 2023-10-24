@@ -17,26 +17,28 @@ Attribute VB_Name = "TileEngine_Map"
 '
 Option Explicit
 
-Sub SwitchMap(ByVal map As Integer)
+Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0)
     
     On Error GoTo SwitchMap_Err
-    
-    
+    If NewResourceMap < 1 Then
+        NewResourceMap = Map
+    End If
+    ResourceMap = NewResourceMap
     'Cargamos el mapa.
-    Call Recursos.CargarMapa(map)
+    Call Recursos.CargarMapa(ResourceMap)
 
     map_light = global_light
     If BabelInitialized Then
-        If ListNPCMapData(map).NpcCount > 0 Then
-            Call UpdateMapInfo(map, MapDat.map_name, ListNPCMapData(map).NpcCount, ListNPCMapData(map).NpcList(1), MapDat.Seguro)
+        If ListNPCMapData(ResourceMap).NpcCount > 0 Then
+            Call UpdateMapInfo(map, ResourceMap, MapDat.map_name, ListNPCMapData(ResourceMap).NpcCount, ListNPCMapData(ResourceMap).NpcList(1), MapDat.Seguro)
         Else
             Dim EmptyNpc As t_QuestNPCMapData
-            Call UpdateMapInfo(map, MapDat.map_name, ListNPCMapData(map).NpcCount, EmptyNpc, MapDat.Seguro)
+            Call UpdateMapInfo(map, ResourceMap, MapDat.map_name, ListNPCMapData(ResourceMap).NpcCount, EmptyNpc, MapDat.Seguro)
         End If
     Else
         Call DibujarMiniMapa
     End If
-    Call NameMapa(map)
+    Call NameMapa(ResourceMap)
     map_letter_a = 0
     CurMap = map
     If Musica Then
@@ -78,7 +80,7 @@ Sub SwitchMap(ByVal map As Integer)
     End If
     
     If AmbientalActivated = 1 Then
-        Call AmbientarAudio(map)
+        Call AmbientarAudio(ResourceMap)
     End If
 
     If MapDat.Seguro = 1 Then

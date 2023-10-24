@@ -3163,53 +3163,27 @@ WriteWarpChar_Err:
         '</EhFooter>
 End Sub
 
-Public Sub WrtieStartCapture(ByVal players As Integer, _
-                             ByVal rounds As Byte, _
-                             ByVal minLevel As Byte, _
-                             ByVal maxLevel As Byte, _
-                             ByVal price As Long)
-On Error GoTo WrtieStartCapture_Err
-100     Call Writer.WriteInt16(ClientPacketID.eStartEvent)
-102     Call Writer.WriteInt8(1)
-103     Call Writer.WriteInt16(players)
-104     Call Writer.WriteInt8(rounds)
-106     Call Writer.WriteInt8(minLevel)
-107     Call Writer.WriteInt8(maxLevel)
-108     Call Writer.WriteInt32(price)
-110     Call modNetwork.Send(Writer)
-        Exit Sub
-WrtieStartCapture_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WrtieStartCapture", Erl)
-End Sub
-
-Public Sub WriteStartLobby(ByVal lobbyType As Byte, ByVal numPlayers As Integer, _
-                             ByVal minLevel As Byte, _
-                             ByVal maxLevel As Byte)
+Public Sub WriteStartLobby(ByVal LobbyType As Byte, ByRef LobbySettings As t_NewScenearioSettings, ByVal Description As String, ByVal Password As String)
 On Error GoTo WriteStartLobby_Err
 100     Call Writer.WriteInt16(ClientPacketID.eStartEvent)
 102     Call Writer.WriteInt8(lobbyType)
-103     Call Writer.WriteInt16(numPlayers)
-106     Call Writer.WriteInt8(minLevel)
-107     Call Writer.WriteInt8(maxLevel)
-110     Call modNetwork.Send(Writer)
+103     Call Writer.WriteInt8(LobbySettings.ScenearioType)
+104     Call Writer.WriteInt8(LobbySettings.MinLevel)
+106     Call Writer.WriteInt8(LobbySettings.MaxLevel)
+108     Call Writer.WriteInt8(LobbySettings.MinPlayers)
+110     Call Writer.WriteInt8(LobbySettings.MaxPlayers)
+112     Call Writer.WriteInt8(LobbySettings.TeamSize)
+114     Call Writer.WriteInt8(LobbySettings.TeamType)
+115     Call Writer.WriteInt8(LobbySettings.RoundAmount)
+116     Call Writer.WriteInt32(LobbySettings.InscriptionFee)
+118     Call Writer.WriteString8(Description)
+120     Call Writer.WriteString8(Password)
+122     Call modNetwork.Send(Writer)
         Exit Sub
 WriteStartLobby_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteStartLobby", Erl)
     
-End Sub
-
-Public Sub WriteStartEvent(ByVal eventType As Byte)
-On Error GoTo WriteIniciarCaptura_Err
-100     Call Writer.WriteInt16(ClientPacketID.eStartEvent)
-102     Call Writer.WriteInt8(eventType)
-'110     Call modNetwork.Send(Writer)
-        Exit Sub
-
-WriteIniciarCaptura_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteIniciarCaptura", Erl)
 End Sub
 
 Public Sub WriteCancelarEvento()
@@ -5140,13 +5114,14 @@ End Sub
 ' Writes the "Participar" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteParticipar()
+Public Sub WriteParticipar(ByVal RoomId As Integer, ByVal Password As String)
         '<EhHeader>
         On Error GoTo WriteParticipar_Err
         '</EhHeader>
 100     Call Writer.WriteInt16(ClientPacketID.eParticipar)
-    
-102     Call modNetwork.Send(Writer)
+102     Call Writer.WriteInt16(RoomId)
+104     Call Writer.WriteString8(Password)
+106     Call modNetwork.Send(Writer)
         '<EhFooter>
         Exit Sub
 

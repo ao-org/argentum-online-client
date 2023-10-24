@@ -454,6 +454,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUpdateCharValue
         Case ServerPacketID.eSendClientToggles
             Call HandleSendClientToggles
+        Case ServerPacketID.eReportLobbyList
+            Call HandleReportLobbyList
         #If PYMMO = 0 Then
         Case ServerPacketID.eAccountCharacterList
             Call HandleAccountCharacterList
@@ -1956,6 +1958,7 @@ End Sub
 Private Sub HandleChangeMap()
     On Error GoTo HandleChangeMap_Err
     UserMap = Reader.ReadInt16()
+    ResourceMap = Reader.ReadInt16()
     If bRain Then
         If Not MapDat.LLUVIA Then
             frmMain.IsPlaying = PlayLoop.plNone
@@ -1973,7 +1976,7 @@ Private Sub HandleChangeMap()
     If frmGoliath.Visible Then Unload frmGoliath
     If FrmViajes.Visible Then Unload FrmViajes
     If frmCantidad.Visible Then Unload frmCantidad
-    Call SwitchMap(UserMap)
+    Call SwitchMap(UserMap, ResourceMap)
     Exit Sub
 
 HandleChangeMap_Err:
@@ -7188,49 +7191,49 @@ End Sub
 
 Private Sub HandleAuraToChar()
     
-    On Error GoTo HandleAuraToChar_Err
+        On Error GoTo HandleAuraToChar_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/0
-    '
-    '***************************************************
+        '***************************************************
+        'Author: Juan Martín Sotuyo Dodero (Maraxus)
+        'Last Modification: 05/17/0
+        '
+        '***************************************************
     
-    Dim charindex      As Integer
+        Dim CharIndex      As Integer
 
-    Dim ParticulaIndex As String
+        Dim ParticulaIndex As String
 
-    Dim Remove         As Boolean
+        Dim Remove         As Boolean
 
-    Dim TIPO           As Byte
+        Dim TIPO           As Byte
      
-    charindex = Reader.ReadInt16()
-    ParticulaIndex = Reader.ReadString8()
+100     CharIndex = Reader.ReadInt16()
+102     ParticulaIndex = Reader.ReadString8()
 
-    Remove = Reader.ReadBool()
-    TIPO = Reader.ReadInt8()
+104     Remove = Reader.ReadBool()
+106     TIPO = Reader.ReadInt8()
     
-    If TIPO = 1 Then
-        charlist(charindex).Arma_Aura = ParticulaIndex
-    ElseIf TIPO = 2 Then
-        charlist(charindex).Body_Aura = ParticulaIndex
-    ElseIf TIPO = 3 Then
-        charlist(charindex).Escudo_Aura = ParticulaIndex
-    ElseIf TIPO = 4 Then
-        charlist(charindex).Head_Aura = ParticulaIndex
-    ElseIf TIPO = 5 Then
-        charlist(charindex).Otra_Aura = ParticulaIndex
-    ElseIf TIPO = 6 Then
-        charlist(charindex).DM_Aura = ParticulaIndex
-    Else
-        charlist(charindex).RM_Aura = ParticulaIndex
+108     If TIPO = 1 Then
+110         charlist(CharIndex).Arma_Aura = ParticulaIndex
+112     ElseIf TIPO = 2 Then
+114         charlist(CharIndex).Body_Aura = ParticulaIndex
+116     ElseIf TIPO = 3 Then
+118         charlist(CharIndex).Escudo_Aura = ParticulaIndex
+120     ElseIf TIPO = 4 Then
+122         charlist(CharIndex).Head_Aura = ParticulaIndex
+124     ElseIf TIPO = 5 Then
+126         charlist(CharIndex).Otra_Aura = ParticulaIndex
+128     ElseIf TIPO = 6 Then
+130         charlist(CharIndex).DM_Aura = ParticulaIndex
+        Else
+132         charlist(CharIndex).RM_Aura = ParticulaIndex
 
-    End If
+        End If
     
-    Exit Sub
+        Exit Sub
 
 HandleAuraToChar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAuraToChar", Erl)
+134     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAuraToChar", Erl)
     
     
 End Sub
@@ -8565,6 +8568,36 @@ HandleDebugResponse_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDebugResponse", Erl)
 End Sub
 
+Public Sub HandleReportLobbyList()
+On Error GoTo HandleReportLobbyList_Err
+    Dim OpenLobbyCount As Integer
+    Dim LobbyList() As t_LobbyData
+    
+    OpenLobbyCount = Reader.ReadInt16
+    ReDim LobbyList(OpenLobbyCount) As t_LobbyData
+    Dim i As Integer
+    If BabelInitialized Then Call OpenLobbyList
+    For i = 0 To OpenLobbyCount - 1
+        LobbyList(i).Index = i
+        LobbyList(i).id = Reader.ReadInt16
+        LobbyList(i).Description = Reader.ReadString8
+        LobbyList(i).ScenarioType = Reader.ReadString8
+        LobbyList(i).MinLevel = Reader.ReadInt16
+        LobbyList(i).MaxLevel = Reader.ReadInt16
+        LobbyList(i).MinPlayers = Reader.ReadInt16
+        LobbyList(i).MaxPlayers = Reader.ReadInt16
+        LobbyList(i).RegisteredPlayers = Reader.ReadInt16
+        LobbyList(i).TeamSize = Reader.ReadInt16
+        LobbyList(i).TeamType = Reader.ReadInt16
+        LobbyList(i).InscriptionPrice = Reader.ReadInt32
+        LobbyList(i).IsPrivate = Reader.ReadInt8
+        If BabelInitialized Then Call UpdateLobby(LobbyList(i))
+    Next i
+    Exit Sub
+HandleReportLobbyList_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDebugResponse", Erl)
+End Sub
+
 #If PYMMO = 0 Then
     
 Public Sub HandleAccountCharacterList()
@@ -8643,3 +8676,4 @@ Public Sub HandleAccountCharacterList()
     Call LoadCharacterSelectionScreen
 End Sub
 #End If
+

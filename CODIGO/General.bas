@@ -425,40 +425,26 @@ Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, O
     If ret = 0 Then Debug.Print "Error al setear el espaciado entre líneas del RichTextBox."
 End Sub
 
-'TODO : Never was sure this is really necessary....
-'TODO : 08/03/2006 - (AlejoLp) Esto hay que volarlo...
 Public Sub RefreshAllChars()
-    
-    On Error GoTo RefreshAllChars_Err
-    
-
-    '*****************************************************************
-    'Goes through the charlist and replots all the characters on the map
-    'Used to make sure everyone is visible
-    '*****************************************************************
-    Dim loopc As Long
-    
-    For loopc = 1 To LastChar
-    
-        If charlist(loopc).active = 1 Then
-           If charlist(loopc).Invisible Then
-                If Not ((charlist(UserCharIndex).clan_nivel < 6 Or charlist(loopc).clan_index = 0 Or charlist(loopc).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(loopc).Navegando) And Not (distance(charlist(loopc).Pos.x, charlist(loopc).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(loopc).dialog_life = 0 And charlist(loopc).FxCount = 0 And charlist(loopc).particle_count = 0) Then
-                    MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
+        On Error GoTo RefreshAllChars_Err
+        'Goes through the charlist and replots all the characters on the map
+        'Used to make sure everyone is visible
+        Dim loopC As Long
+100     For loopC = 1 To LastChar
+102         If charlist(loopC).active = 1 Then
+104            If charlist(loopC).Invisible Then
+106                 If Not ((charlist(UserCharIndex).clan_nivel < 6 Or charlist(loopC).clan_index = 0 Or charlist(loopC).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(loopC).Navegando) And Not (distance(charlist(loopC).Pos.x, charlist(loopC).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(loopC).dialog_life = 0 And charlist(loopC).FxCount = 0 And charlist(loopC).particle_count = 0) Then
+108                     MapData(charlist(loopC).Pos.x, charlist(loopC).Pos.y).CharIndex = loopC
+                    End If
+                Else
+110                 MapData(charlist(loopC).Pos.x, charlist(loopC).Pos.y).CharIndex = loopC
                 End If
-            Else
-                MapData(charlist(loopc).Pos.x, charlist(loopc).Pos.y).charindex = loopc
             End If
-        End If
-
-    Next loopc
-
-    
-    Exit Sub
-
+112     Next loopC
+        Exit Sub
 RefreshAllChars_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Mod_General.RefreshAllChars", Erl)
-    Resume Next
-    
+114     Call RegistrarError(Err.Number, Err.Description, "Mod_General.RefreshAllChars", Erl)
+116     Resume Next
 End Sub
 
 Function AsciiValidos(ByVal cad As String) As Boolean

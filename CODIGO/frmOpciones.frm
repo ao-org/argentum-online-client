@@ -1020,7 +1020,7 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
             Else
                 HScroll1.Enabled = True
                 AmbientalActivated = 1
-                Call AmbientarAudio(UserMap)
+                Call AmbientarAudio(ResourceMap)
 
             End If
 
