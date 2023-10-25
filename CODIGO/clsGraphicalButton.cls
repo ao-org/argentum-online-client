@@ -75,7 +75,7 @@ Private Sub ButtonHolder_MouseDown(Button As Integer, Shift As Integer, X As Sin
 '***************************************************
 
     ButtonHolder.Picture = ClickButtonImage
-    Call Sound.Sound_Play(SND_CLICK)
+    Call ao20audio.playwav(SND_CLICK)
 End Sub
 
 Private Sub ButtonHolder_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -95,7 +95,7 @@ Private Sub ButtonHolder_MouseMove(Button As Integer, Shift As Integer, X As Sin
         OverButton = True
 
         Set Form_Movement.LastButtonPressed = Me
-        Call Sound.Sound_Play(SND_CLICK_OVER)
+        Call ao20audio.playwav(SND_CLICK_OVER)
     End If
 End Sub
 

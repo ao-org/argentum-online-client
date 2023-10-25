@@ -294,7 +294,7 @@ Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As 
     On Error GoTo cmdMasMenos_MouseDown_Err
     
 
-    Call Sound.Sound_Play(SND_CLICK)
+    Call ao20audio.playwav(SND_CLICK)
 
     Select Case Index
 
@@ -410,7 +410,7 @@ Private Sub Image1_Click(Index As Integer)
     
     On Error GoTo Image1_Click_Err
     
-    Call Sound.Sound_Play(SND_CLICK)
+    Call ao20audio.playwav(SND_CLICK)
 
     If Not IsNumeric(cantidad.Text) Then Exit Sub
     If Val(cantidad.Text) <= 0 Then Exit Sub
@@ -467,8 +467,7 @@ End Sub
 Private Sub Form_Unload(Cancel As Integer)
     
     On Error GoTo Form_Unload_Err
-    
-    Call Sound.Sound_Play(SND_CLICK)
+    Call ao20audio.PlayWav(SND_CLICK)
     If Not Protocol_Writes.writer_is_nothing Then
         Call WriteBankEnd
     End If

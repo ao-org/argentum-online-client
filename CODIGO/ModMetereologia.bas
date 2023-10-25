@@ -156,10 +156,10 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
             End If
             
             If TimeIndex = NightIndex Then
-                Call Sound.Sound_Play(FXSound.Lobo_Sound, False, 0, 0)
+                Call ao20audio.playwav(FXSound.Lobo_Sound, False, 0, 0)
     
             ElseIf TimeIndex = MorningIndex Then
-                Call Sound.Sound_Play(FXSound.Gallo_Sound, False, 0, 0)
+                Call ao20audio.playwav(FXSound.Gallo_Sound, False, 0, 0)
     
             End If
         End If

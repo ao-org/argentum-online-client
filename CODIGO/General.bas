@@ -1051,6 +1051,9 @@ On Error GoTo Main_Err
     Call new_engine_init(ao20rendering.renderer)
 #Else
     Call engine_init 'initializes DX
+    Debug.Assert Not DirectX Is Nothing
+    
+    Call ao20audio.CreateAudioEngine(frmConnect.hwnd, DirectX, ao20audio.AudioEngine)
 #End If
     Call InitCommonControls
 
@@ -1088,16 +1091,7 @@ On Error GoTo Main_Err
     End If
     Call Frmcarga.Show
 
-    If Sonido Then
-    
-        If Sound.Initialize_Engine(frmConnect.hwnd, App.Path & "\..\Recursos", App.Path & "\MP3\", App.Path & "\..\Recursos", False, True, True, VolFX, VolMusic, InvertirSonido) Then
-            Call Sound.Ambient_Volume_Set(VolAmbient)
-        Else
-            Call MsgBox("¡No se ha logrado iniciar el engine de DirectSound! Reinstale los últimos controladores de DirectX desde ao20.com.ar", vbCritical, "Saliendo")
-            Call CloseClient
-        End If
-    End If
-    
+   
     Call SetDefaultServer
     Call ComprobarEstado
     Call CargarLst
@@ -1134,6 +1128,8 @@ On Error GoTo Main_Err
     Call Start
  
     
+    
+    Set AudioEngine = Nothing
     Exit Sub
 
 Main_Err:
@@ -1484,10 +1480,9 @@ Public Sub CloseClient()
     Call GuardarOpciones
     
     Call PrevInstance.ReleaseInstance
-    Call Client_UnInitialize_DirectX_Objects
+  
     
-    Sound.Music_Stop
-    Sound.Engine_DeInitialize
+    ao20audio.stopallplayback
     EngineRun = False
     
     Call General_Set_Mouse_Speed(SensibilidadMouseOriginal)
@@ -1515,12 +1510,8 @@ Public Sub CloseClient()
     Set frmBancoCuenta.InvBovedaCuenta = Nothing
     
     Set FrmKeyInv.InvKeys = Nothing
-    
-    ' Call UnloadAllForms
-    End
-
-    
-    Exit Sub
+      Call Client_UnInitialize_DirectX_Objects
+   Exit Sub
 
 CloseClient_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.CloseClient", Erl)

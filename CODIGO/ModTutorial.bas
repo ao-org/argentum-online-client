@@ -101,8 +101,8 @@ Public Sub nextCartel()
         text_duration_total = text_duration
         If text_duration_total = 0 Then text_duration_total = 1
         sonido_activado = True
-        Call Sound.Sound_Stop(TYPING_SOUND)
-        Call Sound.Sound_Play(TYPING_SOUND)
+        Call ao20audio.stopwav(TYPING_SOUND)
+        Call ao20audio.playwav(TYPING_SOUND)
         cartel_message = tutorial(tutorial_index).textos(cartel_index + 1)
     Else
         Call toggleTutorialActivo(tutorial_index)
@@ -115,7 +115,7 @@ Public Sub cerrarCartel()
     cartel_index = 0
     cartel_duration = 0
     If mascota.visible Then mascota.visible = False
-        Call Sound.Sound_Stop(TYPING_SOUND)
+        Call ao20audio.stopwav(TYPING_SOUND)
 End Sub
 Public Sub resetearCartel()
     tutorial_index = 0
@@ -178,8 +178,8 @@ Public Sub mostrarCartel(ByVal title As String, ByVal message As String, Optiona
         text_length = Len(cartel_message)
         text_duration = Len(cartel_message) * 16
         text_duration_total = text_duration
-        Call Sound.Sound_Stop(TYPING_SOUND)
-        Call Sound.Sound_Play(TYPING_SOUND)
+        Call ao20audio.stopwav(TYPING_SOUND)
+        Call ao20audio.playwav(TYPING_SOUND)
         If text_duration_total = 0 Then text_duration_total = 1
         sonido_activado = True
     End If
@@ -225,7 +225,7 @@ Public Sub RenderScreen_Cartel()
         Dim charCount As Integer
         charCount = (text_duration * text_length) / text_duration_total
         If charCount = 0 And sonido_activado Then
-            Call Sound.Sound_Stop(TYPING_SOUND)
+            Call ao20audio.stopwav(TYPING_SOUND)
             sonido_activado = False
         End If
         text_message_render = Left(cartel_message, text_length - charCount)

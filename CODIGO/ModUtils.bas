@@ -736,8 +736,8 @@ Sub General_Set_Connect()
     frmMain.STAShp.Picture = LoadInterface("barradeenergia.bmp")
     frmMain.Hpshp.Picture = LoadInterface("barradevida.bmp")
     frmMain.shieldBar.Picture = LoadInterface("shield-bar.bmp", False)
-            
-    Sound.Sound_Play CStr(SND_LLUVIAIN), True, 0, 0
+    Call ao20audio.playwav(SND_LLUVIAIN, True, 0, 0)
+
     AlphaNiebla = 10
     
     Call Graficos_Particulas.Engine_spell_Particle_Set(41)
@@ -751,8 +751,8 @@ Sub General_Set_Connect()
     
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
 
-    Sound.Music_Load 1, Sound.VolumenActualMusicMax
-    Sound.Music_Play
+    Call ao20audio.playmidi(16)
+    
     mFadingMusicMod = 0
     CurMp3 = 1
     Call GoToLogIn
@@ -1142,48 +1142,6 @@ MensajeAdvertencia_Err:
     
 End Sub
 
-Public Sub ReproducirMp3(ByVal mp3 As Byte)
-    
-    On Error GoTo ReproducirMp3_Err
-    
-
-    If mp3 <> CurMp3 Then
-        If mp3 <> 0 Then
-            NextMP3 = mp3
-            mFadingMusicMod = 0
-
-            ' frmMain.TimerMusica.Enabled = True
-        End If
-
-    End If
-
-    
-    Exit Sub
-
-ReproducirMp3_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ReproducirMp3", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub ForzarMp3(ByVal mp3 As Byte)
-    
-    On Error GoTo ForzarMp3_Err
-    
-
-    If mp3 = 0 Then Exit Sub
-
-    mFadingMusicMod = 0
-    CurMp3 = mp3
-
-    
-    Exit Sub
-
-ForzarMp3_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ForzarMp3", Erl)
-    Resume Next
-    
-End Sub
 
 Public Sub CargarCuentasGuardadas()
 
@@ -1399,11 +1357,12 @@ Sub load_game_settings()
         Call MsgBox("¡No se puede cargar el archivo de opciones! La reinstalacion del juego podria solucionar el problema.", vbCritical, "Error al cargar")
         End
     End If
-    'Musica y Sonido
-    Musica = GetSetting("AUDIO", "Musica")
-    Sonido = GetSetting("AUDIO", "Sonido")
-    Fx = GetSetting("AUDIO", "Fx")
-    AmbientalActivated = GetSetting("AUDIO", "AmbientalActivated")
+
+    MusicEnabled = GetSetting("AUDIO", "Musica")
+    AudioEnabled = GetSetting("AUDIO", "Sonido")
+    FxEnabled = GetSetting("AUDIO", "Fx")
+    
+    AmbientEnabled = GetSetting("AUDIO", "AmbientalActivated")
     InvertirSonido = GetSetting("AUDIO", "InvertirSonido")
     
     'Musica y Sonido - Volumen
@@ -1461,12 +1420,12 @@ Sub GuardarOpciones()
     #If PYMMO = 0 Or DEBUGGING = 1 Then
     Call SaveSetting("INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
     #End If
-    Call SaveSetting("AUDIO", "Musica", Musica)
-    Call SaveSetting("AUDIO", "Fx", Fx)
+    Call SaveSetting("AUDIO", "Musica", MusicEnabled)
+    Call SaveSetting("AUDIO", "Fx", FxEnabled)
     Call SaveSetting("AUDIO", "VolMusic", VolMusic)
     Call SaveSetting("AUDIO", "Volfx", VolFX)
     Call SaveSetting("AUDIO", "VolAmbient", VolAmbient)
-    Call SaveSetting("AUDIO", "AmbientalActivated", AmbientalActivated)
+    Call SaveSetting("AUDIO", "ao20audio.AmbientEnabled", ao20audio.AmbientEnabled)
     
     Call SaveSetting("OPCIONES", "MoverVentana", MoverVentana)
     Call SaveSetting("OPCIONES", "PermitirMoverse", PermitirMoverse)
@@ -1623,60 +1582,6 @@ PonerPuntos_Err:
     Resume Next
     
 End Function
-
-Sub AmbientarAudio(ByVal UserMap As Long)
-    
-    On Error GoTo AmbientarAudio_Err
-    
-
-    
-
-    Dim wav As Integer
-
-    If EsNoche Then
-   
-        wav = ReadField(1, Val(MapDat.ambient), Asc("-"))
-
-        If Sound.AmbienteActual <> wav Then
-            Sound.LastAmbienteActual = wav
-        End If
-         
-        Sound.Ambient_Play
-
-        If wav = 0 Then
-            Sound.Ambient_Stop
-        End If
-
-        '  AmbientalesBufferIndex = Audio.PlayWave(Wav & ".wav", , , LoopStyle.Enabled)
-    Else
-   
-        wav = ReadField(2, Val(MapDat.ambient), Asc("-"))
-
-        If wav = 0 Then Exit Sub
-        If Sound.AmbienteActual <> wav Then
-            Sound.LastAmbienteActual = wav
-
-        End If
-
-        If wav = 0 Then
-            Sound.Ambient_Stop
-
-        End If
-
-        '  AmbientalesBufferIndex = Audio.PlayWave(Wav & ".wav", , , LoopStyle.Enabled)
-    End If
-
-    Sound.Ambient_Volume_Set VolAmbient
-    'Debug.Print VolAmbient
-
-    
-    Exit Sub
-
-AmbientarAudio_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.AmbientarAudio", Erl)
-    Resume Next
-    
-End Sub
 
 Public Function General_Var_Get(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
     
@@ -2122,25 +2027,11 @@ Public Sub EndGame(Optional ByVal Closed_ByUser As Boolean = False, Optional ByV
     On Error GoTo EndGame_Err
     
 
-    
-
-    Sound.Engine_DeInitialize
-    Sound.Music_Stop
-    Set Sound = Nothing
-
     prgRun = False
 
-    '0. Cerramos el socket
     Call modNetwork.Disconnect
-
-    '2. Eliminamos objetos DX
     Call Client_UnInitialize_DirectX_Objects
-
-    '6. Cerramos los forms y nos vamos
     Call UnloadAllForms
-
-    '7. Adiós MuteX - Restauramos MouseSpeed
-
     End
 
     
@@ -2155,17 +2046,7 @@ End Sub
 Public Sub Client_UnInitialize_DirectX_Objects()
     
     On Error GoTo Client_UnInitialize_DirectX_Objects_Err
-    
-
-    
-
-    '1. Cerramos el engine de sonido y borramos buffers
-    Sound.Engine_DeInitialize
-    Set Sound = Nothing
-
-    '2. Cerramos el engine gráfico y borramos textures
-
-    
+    Set ao20audio.AudioEngine = Nothing
     Exit Sub
 
 Client_UnInitialize_DirectX_Objects_Err:

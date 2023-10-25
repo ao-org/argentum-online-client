@@ -290,9 +290,6 @@ Public CopiarDialogoAConsola       As Byte
 Public ScrollArrastrar             As Byte
 Public LastScroll                  As Byte
 Public InfoItemsEnRender           As Boolean
-Public Musica                      As Byte
-Public fX                          As Byte
-Public AmbientalActivated          As Byte
 Public InvertirSonido              As Byte
 Public VolMusic                    As Long
 Public VolFX                       As Long
@@ -301,7 +298,6 @@ Public FxNavega                    As Byte
 Public ChatCombate                 As Byte
 Public ChatGlobal                  As Byte
 Public PantallaCompleta            As Boolean
-Public Sonido                      As Byte
 Public MostrarIconosMeteorologicos As Byte
 Public OpcionMenu                  As Byte
 Public EntradaX                    As Byte
@@ -401,7 +397,7 @@ Public StreamFile As String
 Public NumAuras   As Byte
 Public InvOroComUsu(2)         As New clsGrapchicalInventory ' Inventarios de oro (ambos usuarios)
 Public InvOfferComUsu(1)       As New clsGrapchicalInventory ' Inventarios de ofertas (ambos usuarios)
-Public Sound                   As New clsSoundEngine
+
 Public Audio_MP3_Load          As Boolean
 Public Audio_MP3_Play          As Boolean
 ''

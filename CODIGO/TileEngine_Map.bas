@@ -41,30 +41,24 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
     Call NameMapa(ResourceMap)
     map_letter_a = 0
     CurMap = map
-    If Musica Then
+    If ao20audio.MusicEnabled Then
         
         If MapDat.music_numberLow > 0 Then
         
-            If Sound.MusicActual <> MapDat.music_numberLow Then
-                Sound.NextMusic = MapDat.music_numberLow
-                Sound.Fading = 200
+            If ao20audio.GetCurrentMidiName(1) <> str(MapDat.music_numberLow) Then
+                'NextMusic = MapDat.music_numberLow
             End If
 
         Else
 
             If MapDat.music_numberHi > 0 Then
                 
-                If Sound.MusicActual <> MapDat.music_numberHi Then
-                    Sound.NextMusic = MapDat.music_numberHi
-                    Sound.Fading = 100
+                If ao20audio.GetCurrentMidiName(1) <> str(MapDat.music_numberHi) Then
+'                    NextMusic = MapDat.music_numberHi
                 End If
-
-                Call ReproducirMp3(MapDat.music_numberHi)
+               
+                Call ao20audio.playmidi(MapDat.music_numberHi, 0, 0)
                 
-                Call Sound.Music_Load(MapDat.music_numberHi, 0, 0)
-                
-                Call Sound.Music_Play
-
             End If
 
         End If
@@ -79,8 +73,8 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
 
     End If
     
-    If AmbientalActivated = 1 Then
-        Call AmbientarAudio(ResourceMap)
+    If ao20audio.AmbientEnabled = 1 Then
+        Call ao20audio.PlayAmbientAudio(map)
     End If
 
     If MapDat.Seguro = 1 Then
@@ -215,7 +209,7 @@ End Function
 
 Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String) As Boolean
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto Jos  Rando
     '*****************************************************************
     
     On Error GoTo Letter_Set_Err
@@ -255,7 +249,7 @@ End Sub
 Public Function Map_FX_Group_Next_Open(ByVal x As Byte, ByVal y As Byte) As Integer
 
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto Jos  Rando
     '*****************************************************************
     On Error GoTo ErrorHandler:
 

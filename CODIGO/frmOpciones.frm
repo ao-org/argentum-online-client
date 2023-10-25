@@ -542,7 +542,7 @@ Private Declare Function ReleaseCapture Lib "user32" () As Long
 
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
-' función Api para aplicar la transparencia a la ventana
+' funci n Api para aplicar la transparencia a la ventana
 Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 ' Funciones api para los estilos de la ventana
@@ -599,7 +599,7 @@ Is_Transparent_Err:
     
 End Function
   
-'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
+'Funci n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
     
     On Error GoTo Aplicar_Transparencia_Err
@@ -735,7 +735,7 @@ Private Sub cbLenguaje_Click()
         Select Case cbLenguaje.ListIndex
         
             Case 0
-                message = "Para que los cambios surjan efecto deberá volver a abrir el cliente."
+                message = "Para que los cambios surjan efecto deber  volver a abrir el cliente."
                 title = "Cambiar Idioma"
             
             Case 1
@@ -851,7 +851,7 @@ Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         Call SaveSetting("VIDEO", "CursoresGraficos", 0)
     End If
     
-    MsgBox "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
+    MsgBox "Para que los cambios en esta opci n sean reflejados, deber  reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
 
     Exit Sub
 
@@ -890,7 +890,7 @@ Private Sub CheckUI_MouseUp(Button As Integer, Shift As Integer, X As Single, Y 
         CheckUI.Picture = Nothing
     Else
         CheckUI.Picture = LoadInterface("check-amarillo.bmp")
-        Call MsgBox("Deberás reiniciar el cliente para que esta configuración tome efecto.", vbExclamation)
+        Call MsgBox("Deber s reiniciar el cliente para que esta configuraci n tome efecto.", vbExclamation)
     End If
 
     
@@ -902,18 +902,11 @@ CheckUI_MouseUp_Err:
 End Sub
 
 Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo chkInvertir_MouseUp_Err
-    
-
     If InvertirSonido = 1 Then
         InvertirSonido = 0
-            
-        Sound.InvertirSonido = False
     Else
         InvertirSonido = 1
-        Sound.InvertirSonido = True
-
     End If
         
     If InvertirSonido = 0 Then
@@ -922,8 +915,7 @@ Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single
         chkInvertir.Picture = LoadInterface("check-amarillo.bmp")
 
     End If
-
-    
+  
     Exit Sub
 
 chkInvertir_MouseUp_Err:
@@ -946,25 +938,22 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
     On Error GoTo chkO_MouseUp_Err
     
 
-    Call Sound.Sound_Play(SND_CLICK)
+    Call ao20audio.playwav(SND_CLICK)
 
     Select Case Index
 
         Case 0
 
-            If Musica <> CONST_DESHABILITADA Then
-                Sound.Music_Stop
-                Musica = CONST_DESHABILITADA
+            If ao20audio.MusicEnabled Then
+                ao20audio.stopallplayback
+                ao20audio.MusicEnabled = False
                 scrMidi.Enabled = False
             Else
-                Musica = CONST_MP3
+                ao20audio.MusicEnabled = True
                 scrMidi.Enabled = True
-                Sound.NextMusic = MapDat.music_numberHi
-                Sound.Fading = 100
-
             End If
 
-            If Musica = 0 Then
+            If Not ao20audio.MusicEnabled Then
                 chko(0).Picture = Nothing
             Else
                 chko(0).Picture = LoadInterface("check-amarillo.bmp")
@@ -973,20 +962,20 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
 
         Case 1
 
-            If fX = 1 Then
-                fX = 0
+            If ao20audio.FxEnabled Then
+                ao20audio.FxEnabled = 0
                 chko(2).Enabled = False
                 scrVolume.Enabled = False
             
-                Call Sound.Sound_Stop_All
+                Call ao20audio.stopallplayback
             Else
-                fX = 1
+                ao20audio.FxEnabled = 1
                 chko(2).Enabled = True
                 scrVolume.Enabled = True
 
             End If
         
-            If fX = 0 Then
+            If ao20audio.FxEnabled = 0 Then
                 chko(1).Picture = Nothing
             Else
                 chko(1).Picture = LoadInterface("check-amarillo.bmp")
@@ -1011,20 +1000,17 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
 
         Case 3
 
-            If AmbientalActivated = 1 Then
+            If ao20audio.AmbientEnabled = 1 Then
                 HScroll1.Enabled = False
-                AmbientalActivated = 0
-                Sound.LastAmbienteActual = 0
-                Sound.AmbienteActual = 0
-                Sound.Ambient_Stop
+                ao20audio.AmbientEnabled = 0
+                Call ao20audio.StopAmbientAudio
             Else
                 HScroll1.Enabled = True
-                AmbientalActivated = 1
-                Call AmbientarAudio(ResourceMap)
-
+                ao20audio.AmbientEnabled = 1
+                Call ao20audio.PlayAmbientAudio(UserMap)
             End If
 
-            If AmbientalActivated = 0 Then
+            If ao20audio.AmbientEnabled = 0 Then
                 chko(3).Picture = Nothing
             Else
                 chko(3).Picture = LoadInterface("check-amarillo.bmp")
@@ -1509,7 +1495,7 @@ Public Sub Init()
 
     End If
     
-    If Musica = 0 Then
+    If ao20audio.MusicEnabled = 0 Then
         chko(0).Picture = Nothing
     Else
         chko(0).Picture = LoadInterface("check-amarillo.bmp")
@@ -1535,13 +1521,13 @@ Public Sub Init()
         Respiracion.Picture = Nothing
     End If
     
-    If AmbientalActivated = 0 Then
+    If ao20audio.AmbientEnabled = 0 Then
         chko(3).Picture = Nothing
     Else
         chko(3).Picture = LoadInterface("check-amarillo.bmp")
     End If
 
-    If fX = 0 Then
+    If ao20audio.FxEnabled = 0 Then
         chko(1).Picture = Nothing
     Else
         chko(1).Picture = LoadInterface("check-amarillo.bmp")
@@ -1599,11 +1585,8 @@ End Sub
 Private Sub HScroll1_Change()
     
     On Error GoTo HScroll1_Change_Err
-    
-    Sound.Ambient_Volume_Set HScroll1.Value
-    VolAmbient = HScroll1.Value
-
-    
+    ao20audio.SetAmbientVolume (HScroll1.Value)
+    Call ao20audio.PlayAmbientAudio(CurMap)
     Exit Sub
 
 HScroll1_Change_Err:
@@ -1662,15 +1645,8 @@ Private Sub scrMidi_Change()
     
     On Error GoTo scrMidi_Change_Err
     
-
-    If Musica <> CONST_DESHABILITADA Then
-        Sound.Music_Volume_Set scrMidi.Value
-        Sound.VolumenActualMusicMax = scrMidi.Value
-        VolMusic = Sound.VolumenActualMusicMax
-
-    End If
-
-    
+    Call ao20audio.SetMusicVolume(scrMidi.Value)
+       
     Exit Sub
 
 scrMidi_Change_Err:
@@ -1698,17 +1674,11 @@ scrSens_Change_Err:
 End Sub
 
 Private Sub scrVolume_Change()
-    
-    On Error GoTo scrVolume_Change_Err
-    
-    Sound.VolumenActual = scrVolume.Value
-    VolFX = Sound.VolumenActual
-
-    
+On Error GoTo scrVolume_Change_Err
+    Call ao20audio.SetFxVolume(scrVolume.Value)
+    Call ao20audio.playwav(SND_RESUCITAR, False, scrVolume.Value)
     Exit Sub
-
 scrVolume_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolume_Change", Erl)
     Resume Next
-    
 End Sub

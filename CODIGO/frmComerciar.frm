@@ -398,7 +398,7 @@ Private Sub addRemove_Click(Index As Integer)
     
     On Error GoTo addRemove_Click_Err
     
-    Call Sound.Sound_Play(SND_CLICK)
+    Call ao20audio.playwav(SND_CLICK)
 
     Select Case Index
 

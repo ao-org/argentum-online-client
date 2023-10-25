@@ -316,7 +316,7 @@ Private Sub cmdTirar_click()
     On Error GoTo tirar_click_Err
     
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
-    Call Sound.Sound_Play(SND_CLICK)
+    Call ao20audio.playwav(SND_CLICK)
     If LenB(frmCantidad.Text1.Text) > 0 Then
         If Not IsNumeric(frmCantidad.Text1.Text) Then Exit Sub  'Should never happen
         If BabelInitialized Then
@@ -369,7 +369,7 @@ Private Sub cmdTirarTodo_click()
 
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
 
-    Call Sound.Sound_Play(SND_CLICK)
+    Call ao20audio.playwav(SND_CLICK)
     Dim SelectedSlot As Integer
     Dim ObjIndex As Integer
     Dim Amount As Integer
