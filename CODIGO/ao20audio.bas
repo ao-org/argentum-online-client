@@ -29,7 +29,6 @@ Private CurFxVolume As Long
 Public Sub CreateAudioEngine(ByVal hwnd As Long, ByRef dx8 As DirectX8, ByRef renderer As clsAudioEngine)
 On Error GoTo AudioEngineInitErr:
     If AudioEnabled Then
-        CurMusicVolume = 0
         Set AudioEngine = New clsAudioEngine
         Call AudioEngine.Init(dx8, hwnd)
         Debug.Print "Audio Engine OK"
@@ -43,6 +42,20 @@ AudioEngineInitErr:
     Call MsgBox("Error creating audio engine", vbCritical, "Argentum20")
     Debug.Print "Error Number Returned: " & Err.Number
     End
+End Sub
+Public Sub SetMusicVolume(ByVal NewVolume As Long)
+    CurMusicVolume = NewVolume
+    If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
+        Call ao20audio.AudioEngine.ApplyMusicVolume(NewVolume)
+    End If
+End Sub
+
+Public Sub SetAmbientVolume(ByVal NewVolume As Long)
+    CurAmbientVolume = NewVolume
+End Sub
+
+Public Sub SetFxVolume(ByVal NewVolume As Long)
+    CurFxVolume = NewVolume
 End Sub
 
 Public Function StopAmbientAudio() As Long
@@ -68,7 +81,7 @@ End Sub
 Public Function PlayWav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0) As Long
     PlayWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
-        PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, volume, pan)
+        PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, min(CurFxVolume, volume), pan)
     End If
 End Function
 
@@ -82,7 +95,7 @@ End Function
 Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
     PlayMidi = -1
     If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
-        PlayMidi = ao20audio.AudioEngine.PlayMidi(id, looping, volume)
+        PlayMidi = ao20audio.AudioEngine.PlayMidi(id, looping, CurMusicVolume)
     End If
 End Function
 
@@ -196,18 +209,5 @@ ComputeCharFxVolumeByDistance_err:
     Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxVolumeByDistance", Erl)
     Resume Next
 End Function
-Public Sub SetMusicVolume(ByVal NewVolume As Long)
-    CurMusicVolume = NewVolume
-    If AudioEnabled And MusicEnabled Then
-        Call ao20audio.AudioEngine.ApplyMusicVolume(NewVolume)
-    End If
-End Sub
 
-Public Sub SetAmbientVolume(ByVal NewVolume As Long)
-    CurAmbientVolume = NewVolume
-End Sub
-
-Public Sub SetFxVolume(ByVal NewVolume As Long)
-    CurFxVolume = NewVolume
-End Sub
 

@@ -1371,6 +1371,8 @@ Sub load_game_settings()
     VolFX = Val(GetSetting("AUDIO", "VolFX"))
     VolAmbient = Val(GetSetting("AUDIO", "VolAmbient"))
     
+    Call ao20audio.SetMusicVolume(VolMusic)
+    Call ao20audio.SetFxVolume(VolFX)
     'Video
     PantallaCompleta = GetSetting("VIDEO", "PantallaCompleta")
     CursoresGraficos = IIf(RunningInVB, 0, GetSetting("VIDEO", "CursoresGraficos"))
