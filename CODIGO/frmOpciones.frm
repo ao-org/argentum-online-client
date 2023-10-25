@@ -1644,7 +1644,7 @@ End Sub
 Private Sub scrMidi_Change()
     
     On Error GoTo scrMidi_Change_Err
-    
+    VolMusic = scrMidi.Value
     Call ao20audio.SetMusicVolume(scrMidi.Value)
        
     Exit Sub
@@ -1675,6 +1675,7 @@ End Sub
 
 Private Sub scrVolume_Change()
 On Error GoTo scrVolume_Change_Err
+    VolFX = scrVolume.Value
     Call ao20audio.SetFxVolume(scrVolume.Value)
     Call ao20audio.playwav(SND_RESUCITAR, False, scrVolume.Value)
     Exit Sub
