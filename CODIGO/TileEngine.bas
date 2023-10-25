@@ -748,7 +748,6 @@ Sub DoPasosFx(ByVal charindex As Integer)
     Static FileNum       As Integer
 
     If Not charlist(charindex).Navegando Then
-
         With charlist(charindex)
             Dim steps_vol As Long
             Dim steps_pan As Long
@@ -759,27 +758,20 @@ Sub DoPasosFx(ByVal charindex As Integer)
                     Call ao20audio.playwav(Pasos(CONST_CABALLO).wav(1), False, steps_vol, steps_pan)
                     Exit Sub
                 End If
-           
                 .Pie = Not .Pie
-
                 If .Pie Then
                     If MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
                         FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
                         TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                        Call ao20audio.playwav(Pasos(TerrenoDePaso).wav(1), False, steps_vol, steps_pan)
+                        If TerrenoDePaso <> CONST_AGUA Then
+                          Call ao20audio.PlayWav(Pasos(TerrenoDePaso).wav(1), False, steps_vol, steps_pan)
+                        End If
                     End If
                 Else
                     Call ao20audio.playwav(Pasos(TerrenoDePaso).wav(2), False, steps_vol, steps_pan)
                 End If
-
             End If
-
         End With
-
-    Else
-        If charlist(UserCharIndex).Muerto = False Then
-            Call ao20audio.playwav(SND_NAVEGANDO)
-        End If
     End If
 
     

@@ -736,7 +736,7 @@ Sub General_Set_Connect()
     frmMain.STAShp.Picture = LoadInterface("barradeenergia.bmp")
     frmMain.Hpshp.Picture = LoadInterface("barradevida.bmp")
     frmMain.shieldBar.Picture = LoadInterface("shield-bar.bmp", False)
-    Call ao20audio.playwav(SND_LLUVIAIN, True, 0, 0)
+
 
     AlphaNiebla = 10
     
@@ -751,7 +751,7 @@ Sub General_Set_Connect()
     
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
 
-    Call ao20audio.playmidi(16)
+    Call ao20audio.PlayMidi(6)
     
     mFadingMusicMod = 0
     CurMp3 = 1
