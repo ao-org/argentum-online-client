@@ -1105,7 +1105,7 @@ On Error GoTo Main_Err
     Call LoadBuffResources
     Call InitilializeProjectiles
     Call InitializeTeamColors
-    
+    Call InitializeAntiCheat
     FrameTime = GetTickCount()
     UserMap = 1
     AlphaNiebla = 75
@@ -1478,7 +1478,7 @@ Public Sub CloseClient()
     UserSaliendo = True
 
     Call SaveConfig
-    
+    Call UnloadAC
     Call PrevInstance.ReleaseInstance
   
     
