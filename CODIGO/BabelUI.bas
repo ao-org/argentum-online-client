@@ -1013,13 +1013,16 @@ On Error GoTo HandleUpdateIntSetting_Err
         Case eInvertChannels
             InvertirSonido = Value
         Case eMusicVolume
+            VolMusic = Value
             If ao20audio.MusicEnabled Then
                 Call ao20audio.SetMusicVolume(Value)
             End If
         Case eFxVolume
             VolFX = Value
+            Call ao20audio.SetFxVolume(Value)
         Case eAmbientVolume
             VolAmbient = Value
+            Call ao20audio.SetAmbientVolume(Value)
         Case eLightSettings
             Call SaveSetting("VIDEO", "LuzGlobal", Value)
             selected_light = Value
