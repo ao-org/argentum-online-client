@@ -3212,34 +3212,23 @@ ErrHandler:
 
 End Sub
 
-''
-' Handles the CharacterRemove message.
-
 Private Sub HandleCharacterRemove()
-    
-    On Error GoTo HandleCharacterRemove_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+On Error GoTo HandleCharacterRemove_Err
     Dim charindex   As Integer
-    Dim dbgid As Integer
-    
     Dim Desvanecido As Boolean
     Dim fueWarp As Boolean
+    
     charindex = Reader.ReadInt16()
     Desvanecido = Reader.ReadBool()
     fueWarp = Reader.ReadBool()
+    
     If Desvanecido And charlist(charindex).EsNpc = True Then
         Call CrearFantasma(charindex)
     End If
 
     Call EraseChar(CharIndex, fueWarp)
     Call RefreshAllChars
-    
+    Call ao20audio.StopWavByLabel(CStr(CharIndex))
     Exit Sub
 
 HandleCharacterRemove_Err:
@@ -5722,17 +5711,10 @@ HandleSetInvisible_Err:
 End Sub
 
 
-''
-' Handles the MeditateToggle message.
-
 Private Sub HandleMeditateToggle()
-    '***************************************************
-    'Remove packet ID
-    
-    On Error GoTo HandleMeditateToggle_Err
+On Error GoTo HandleMeditateToggle_Err
     
     Dim charindex As Integer, fX As Integer
-    
     Dim x As Byte, y As Byte
     
     charindex = Reader.ReadInt16
@@ -5753,33 +5735,26 @@ Private Sub HandleMeditateToggle()
     
     If charindex = UserCharIndex Then
         UserMeditar = (fX <> 0)
-        
         If UserMeditar Then
-
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
                 Call ShowConsoleMsg("Comienzas a meditar.", .red, .green, .blue, .bold, .italic)
-
             End With
-
         Else
-
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
                 Call ShowConsoleMsg("Has dejado de meditar.", .red, .green, .blue, .bold, .italic)
-
             End With
-
         End If
-
     End If
     
     With charlist(charindex)
-
         If fX <> 0 Then
             Call StartFx(.ActiveAnimation, Fx, -1)
+            Call ao20audio.PlayWav(158, True, ao20audio.ComputeCharFxVolume(.Pos), ao20audio.ComputeCharFxPan(.Pos), "meditate" & CStr(CharIndex))
+        
         Else
+            Call ao20audio.StopWav(158, "meditate" & CStr(CharIndex))
             Call ChangeToClip(.ActiveAnimation, 3)
         End If
-
     End With
     
     Exit Sub

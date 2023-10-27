@@ -78,17 +78,24 @@ Public Sub PlayAmbientAudio(ByVal UserMap As Long)
     End If
 End Sub
 
-Public Function PlayWav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0) As Long
+Public Function PlayWav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
     PlayWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
-        PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, min(CurFxVolume, volume), pan)
+        PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, min(CurFxVolume, volume), pan, label)
     End If
 End Function
 
-Public Function StopWav(ByVal id As Integer) As Long
+Public Function StopWav(ByVal id As Integer, Optional ByVal label As String = "") As Long
    StopWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
-        StopWav = ao20audio.AudioEngine.StopWav(id)
+        StopWav = ao20audio.AudioEngine.StopWav(id, label)
+    End If
+End Function
+
+Public Function StopAllWavsMatchingLabel(ByVal label As String) As Long
+    StopAllWavsMatchingLabel = -1
+    If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
+        StopAllWavsMatchingLabel = ao20audio.AudioEngine.StopAllWavsMatchingLabel(label)
     End If
 End Function
 
@@ -116,11 +123,11 @@ Public Function GetWavFilesPath() As String
 End Function
 
 Public Function GetMp3FilesPath() As String
-    GetMp3FilesPath = App.path & "\MP3\"
+    GetMp3FilesPath = App.path & "\..\Recursos\MP3\"
 End Function
 
 Public Function GetMidiFilesPath() As String
-    GetMidiFilesPath = App.path & "/../Recursos/midi/"
+    GetMidiFilesPath = App.path & "\..\Recursos\MIDI\"
 End Function
 
 Public Function GetCompressedResourcesPath() As String

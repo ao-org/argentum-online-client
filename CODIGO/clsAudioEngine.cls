@@ -38,6 +38,7 @@ Private mBuffer(0 To 9999) As DirectSoundSecondaryBuffer8
 
 Private Type AudioTrack
     Name As String
+    label As String
     Buffer As DirectSoundSecondaryBuffer8
 End Type
 
@@ -234,13 +235,13 @@ ErrorHandler:
 
 End Function
 
-Private Function FindTrackByName(ByVal Name As String) As Integer
+Private Function FindTrackByName(ByVal Name As String, Optional ByVal label As String = "") As Integer
         Dim i As Integer
         For i = 1 To UBound(mAudioTracks)
             With mAudioTracks(i)
                 If Not .Buffer Is Nothing Then
                     Dim sf As CONST_DSBSTATUSFLAGS: sf = .Buffer.GetStatus
-                    If (Name = .Name) And (DSBSTATUS_PLAYING And sf) = DSBSTATUS_PLAYING And (DSBSTATUS_LOOPING And sf) = DSBSTATUS_LOOPING Then
+                    If (Name = .Name) And (label = .label) And (DSBSTATUS_PLAYING And sf) = DSBSTATUS_PLAYING And (DSBSTATUS_LOOPING And sf) = DSBSTATUS_LOOPING Then
                         FindTrackByName = i
                         Exit Function
                     End If
@@ -316,7 +317,7 @@ PlayAmbient_Error_Handl:
 
 End Function
 
-Public Function PlayWav(ByVal sound_id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0) As Long
+Public Function PlayWav(ByVal sound_id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
 On Error GoTo PlayWav_Error_Handl
     Debug.Assert sound_id > 0
     PlayWav = -1
@@ -338,6 +339,7 @@ On Error GoTo PlayWav_Error_Handl
     If (tid > -1) Then
         With mAudioTracks(tid)
             .Name = sound_id
+            .label = label
             Set .Buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(sound_id))
             Call StartPlaying(.Buffer, IIf(looping, DSBPLAY_LOOPING, DSBPLAY_DEFAULT), volume, pan)
         End With
@@ -386,13 +388,35 @@ PlayMidi_Error_Handl:
 
 End Function
 
-Public Function StopWav(ByVal sound_id As Integer) As Long
+Public Function StopAllWavsMatchingLabel(ByVal label As String) As Long
+    'Stops any wav playing on any track if the label matches the given as a parameter
+    On Error GoTo Error_Handl
+    StopAllWavsMatchingLabel = -1
+    If (label = "") Then Exit Function
+    Dim i As Integer
+    For i = 1 To UBound(mAudioTracks)
+            With mAudioTracks(i)
+                If Not .Buffer Is Nothing Then
+                    Dim sf As CONST_DSBSTATUSFLAGS: sf = .Buffer.GetStatus
+                    If (label = .label) And (DSBSTATUS_PLAYING And sf) = DSBSTATUS_PLAYING And (DSBSTATUS_LOOPING And sf) = DSBSTATUS_LOOPING Then
+                        .Buffer.Stop
+                        .Buffer.SetCurrentPosition 0
+                        Exit Function
+                    End If
+                End If
+            End With
+    Next i
+    StopAllWavsMatchingLabel = 0
+    Exit Function
+Error_Handl:
+End Function
+
+Public Function StopWav(ByVal sound_id As Integer, Optional ByVal label As String = "") As Long
     On Error GoTo Error_Handl
     Debug.Assert sound_id > 0
     StopWav = -1
     If (sound_id <= 0) Then Exit Function
-
-    Dim tid As Integer: tid = FindTrackByName(sound_id)
+    Dim tid As Integer: tid = FindTrackByName(sound_id, label)
     If tid > -1 Then
      With mAudioTracks(tid)
             If Not .Buffer Is Nothing Then
