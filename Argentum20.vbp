@@ -142,6 +142,7 @@ Module=PacketId; CODIGO\PacketId.bas
 Class=clsAudioEngine; CODIGO\clsAudioEngine.cls
 Module=ao20audio; CODIGO\ao20audio.bas
 ResFile32="AO20.res"
+Module=ao20config; CODIGO\ao20config.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""

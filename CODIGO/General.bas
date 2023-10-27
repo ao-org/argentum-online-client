@@ -1040,7 +1040,7 @@ On Error GoTo Main_Err
     Set FormParser = New clsCursor
     Call FormParser.Init
     
-    Call load_game_settings
+    Call LoadConfig
     
     Call CheckResources
     If PantallaCompleta Then
@@ -1477,7 +1477,7 @@ Public Sub CloseClient()
     
     UserSaliendo = True
 
-    Call GuardarOpciones
+    Call SaveConfig
     
     Call PrevInstance.ReleaseInstance
   
