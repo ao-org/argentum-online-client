@@ -17,6 +17,23 @@ Attribute VB_Name = "ao20audio"
 '
 Option Explicit
 
+'Sonidos
+Public Const SND_EXCLAMACION   As Integer = 451
+Public Const SND_CLICK         As String = 500
+Public Const SND_CLICK_OVER    As String = 501
+Public Const SND_NAVEGANDO     As Integer = 50
+Public Const SND_OVER          As Integer = 0
+Public Const SND_DICE          As Integer = 188
+Public Const SND_FUEGO         As Integer = 116
+Public Const SND_LLUVIAIN      As Integer = 191
+Public Const SND_LLUVIAOUT     As Integer = 194
+Public Const SND_NIEVEIN       As Integer = 191
+Public Const SND_NIEVEOUT      As Integer = 194
+Public Const SND_RESUCITAR     As Integer = 104
+Public Const SND_CURAR         As Integer = 101
+Public Const SND_DOPA          As Integer = 77
+Public Const SND_MEDITATE      As Integer = 158
+
 Public AudioEngine As clsAudioEngine
 Public MusicEnabled As Boolean
 Public FxEnabled As Boolean
@@ -78,17 +95,24 @@ Public Sub PlayAmbientAudio(ByVal UserMap As Long)
     End If
 End Sub
 
-Public Function PlayWav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0) As Long
+Public Function PlayWav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
     PlayWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
-        PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, min(CurFxVolume, volume), pan)
+        PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, min(CurFxVolume, volume), pan, label)
     End If
 End Function
 
-Public Function StopWav(ByVal id As Integer) As Long
+Public Function StopWav(ByVal id As Integer, Optional ByVal label As String = "") As Long
    StopWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
-        StopWav = ao20audio.AudioEngine.StopWav(id)
+        StopWav = ao20audio.AudioEngine.StopWav(id, label)
+    End If
+End Function
+
+Public Function StopAllWavsMatchingLabel(ByVal label As String) As Long
+    StopAllWavsMatchingLabel = -1
+    If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
+        StopAllWavsMatchingLabel = ao20audio.AudioEngine.StopAllWavsMatchingLabel(label)
     End If
 End Function
 
@@ -116,11 +140,11 @@ Public Function GetWavFilesPath() As String
 End Function
 
 Public Function GetMp3FilesPath() As String
-    GetMp3FilesPath = App.path & "\MP3\"
+    GetMp3FilesPath = App.path & "\..\Recursos\MP3\"
 End Function
 
 Public Function GetMidiFilesPath() As String
-    GetMidiFilesPath = App.path & "/../Recursos/midi/"
+    GetMidiFilesPath = App.path & "\..\Recursos\MIDI\"
 End Function
 
 Public Function GetCompressedResourcesPath() As String
