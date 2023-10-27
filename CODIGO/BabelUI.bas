@@ -859,7 +859,7 @@ Public Sub RequestActionCB(ByVal ActionId As Long)
     Case e_ActionRequest.eOpenKeySettings
         Call frmCustomKeys.Show(vbModeless, GetGameplayForm)
     Case e_ActionRequest.eSaveSettings
-        Call GuardarOpciones
+        Call SaveConfig
 End Select
 
 End Sub

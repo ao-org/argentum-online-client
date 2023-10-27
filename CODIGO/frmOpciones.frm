@@ -1390,7 +1390,7 @@ Private Sub cmdcerrar_Click()
     
     On Error GoTo cmdcerrar_Click_Err
     
-    Call GuardarOpciones
+    Call SaveConfig
     Me.Visible = False
     
     If BabelInitialized Then

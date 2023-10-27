@@ -37,6 +37,7 @@ Public Function InitializeSettings() As Boolean
     InitializeSettings = True
 End Function
 
+
 Public Function GetSetting(ByVal Section As String, ByVal Name As String) As String
     Dim currentValue As String
     currentValue = GetVar(App.path & CustomSettingsFile, Section, Name)
@@ -44,6 +45,21 @@ Public Function GetSetting(ByVal Section As String, ByVal Name As String) As Str
         currentValue = GetVar(App.path & DefaultSettingsFile, Section, Name)
     End If
     GetSetting = currentValue
+End Function
+
+Public Function GetSettingAsByte(ByVal Section As String, ByVal Name As String, ByVal DefaultValue As Byte) As Byte
+On Error GoTo GetSettingAsByteErr:
+    GetSettingAsByte = DefaultValue
+    Dim value As String
+    value = GetSetting(Section, Name)
+    If value = "" Then Exit Function
+    GetSettingAsByte = CByte(value)
+    Exit Function
+GetSettingAsByteErr:
+    
+    Call LogError("Error in GetSettingAsByte Section: " & Section & " Name: " & Name & " Actual value: " & value)
+
+    GetSettingAsByte = DefaultValue
 End Function
 
 Public Sub SaveSetting(ByVal Section As String, ByVal Name As String, ByVal Value As String)

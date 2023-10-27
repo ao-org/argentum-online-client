@@ -35,10 +35,10 @@ Public Const SND_DOPA          As Integer = 77
 Public Const SND_MEDITATE      As Integer = 158
 
 Public AudioEngine As clsAudioEngine
-Public MusicEnabled As Boolean
-Public FxEnabled As Boolean
-Public AudioEnabled As Boolean
-Public AmbientEnabled As Boolean
+Public MusicEnabled As Byte
+Public FxEnabled As Byte
+Public AudioEnabled As Byte
+Public AmbientEnabled As Byte
 Private CurMusicVolume As Long
 Private CurAmbientVolume As Long
 Private CurFxVolume As Long
@@ -89,9 +89,10 @@ Public Sub PlayAmbientAudio(ByVal UserMap As Long)
             wav = ReadField(1, Val(MapDat.ambient), Asc("-"))
         Else
             wav = ReadField(2, Val(MapDat.ambient), Asc("-"))
-            If wav = 0 Then Exit Sub
         End If
-        Call ao20audio.AudioEngine.PlayAmbient(wav, True, CurAmbientVolume)
+        If wav <> 0 Then
+                Call ao20audio.AudioEngine.PlayAmbient(wav, True, CurAmbientVolume)
+        End If
     End If
 End Sub
 
