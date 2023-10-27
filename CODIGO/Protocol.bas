@@ -3228,7 +3228,7 @@ On Error GoTo HandleCharacterRemove_Err
 
     Call EraseChar(CharIndex, fueWarp)
     Call RefreshAllChars
-    Call ao20audio.StopWavByLabel(CStr(CharIndex))
+    Call ao20audio.StopAllWavsMatchingLabel("meditate" & CStr(CharIndex))
     Exit Sub
 
 HandleCharacterRemove_Err:
