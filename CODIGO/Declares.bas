@@ -404,21 +404,6 @@ Public Audio_MP3_Play          As Boolean
 'The main timer of the game.
 Public MainTimer               As New clsTimer
 
-'Sonidos
-Public Const SND_EXCLAMACION   As Integer = 451
-Public Const SND_CLICK         As String = 500
-Public Const SND_CLICK_OVER    As String = 501
-Public Const SND_NAVEGANDO     As Integer = 50
-Public Const SND_OVER          As Integer = 0
-Public Const SND_DICE          As Integer = 188
-Public Const SND_FUEGO         As Integer = 116
-Public Const SND_LLUVIAIN      As Integer = 191
-Public Const SND_LLUVIAOUT     As Integer = 194
-Public Const SND_NIEVEIN       As Integer = 191
-Public Const SND_NIEVEOUT      As Integer = 194
-Public Const SND_RESUCITAR     As Integer = 104
-Public Const SND_CURAR         As Integer = 101
-Public Const SND_DOPA          As Byte = 77
 Public TargetXMacro            As Byte
 Public TargetYMacro            As Byte
 

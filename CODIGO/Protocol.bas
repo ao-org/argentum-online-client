@@ -5749,10 +5749,9 @@ On Error GoTo HandleMeditateToggle_Err
     With charlist(charindex)
         If fX <> 0 Then
             Call StartFx(.ActiveAnimation, Fx, -1)
-            Call ao20audio.PlayWav(158, True, ao20audio.ComputeCharFxVolume(.Pos), ao20audio.ComputeCharFxPan(.Pos), "meditate" & CStr(CharIndex))
-        
+            Call ao20audio.PlayWav(SND_MEDITATE, True, ao20audio.ComputeCharFxVolume(.Pos), ao20audio.ComputeCharFxPan(.Pos), "meditate" & CStr(CharIndex))
         Else
-            Call ao20audio.StopWav(158, "meditate" & CStr(CharIndex))
+            Call ao20audio.StopWav(SND_MEDITATE, "meditate" & CStr(CharIndex))
             Call ChangeToClip(.ActiveAnimation, 3)
         End If
     End With

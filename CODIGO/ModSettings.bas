@@ -27,8 +27,10 @@ Public Function InitializeSettings() As Boolean
     
     If Not FileExist(App.path & DefaultSettingsFile, vbArchive) Then
         InitializeSettings = False
+        Call MsgBox("Cannot find file " & App.path & DefaultSettingsFile, vbInformation + vbOKOnly, "Warning")
         Exit Function
     End If
+    
     If Not FileExist(App.path & CustomSettingsFile, vbArchive) Then
         Call FileSystem.FileCopy(App.path & DefaultSettingsFile, App.path & CustomSettingsFile)
     End If

@@ -165,8 +165,6 @@ Public Sub LoadCharacterSelectionScreen()
     
     SugerenciaAMostrar = RandomNumber(1, NumSug)
     Call ao20audio.playwav(192)
-    Call ao20audio.stopwav(SND_LLUVIAIN)
-    
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)

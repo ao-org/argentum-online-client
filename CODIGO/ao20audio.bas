@@ -17,6 +17,23 @@ Attribute VB_Name = "ao20audio"
 '
 Option Explicit
 
+'Sonidos
+Public Const SND_EXCLAMACION   As Integer = 451
+Public Const SND_CLICK         As String = 500
+Public Const SND_CLICK_OVER    As String = 501
+Public Const SND_NAVEGANDO     As Integer = 50
+Public Const SND_OVER          As Integer = 0
+Public Const SND_DICE          As Integer = 188
+Public Const SND_FUEGO         As Integer = 116
+Public Const SND_LLUVIAIN      As Integer = 191
+Public Const SND_LLUVIAOUT     As Integer = 194
+Public Const SND_NIEVEIN       As Integer = 191
+Public Const SND_NIEVEOUT      As Integer = 194
+Public Const SND_RESUCITAR     As Integer = 104
+Public Const SND_CURAR         As Integer = 101
+Public Const SND_DOPA          As Integer = 77
+Public Const SND_MEDITATE      As Integer = 158
+
 Public AudioEngine As clsAudioEngine
 Public MusicEnabled As Boolean
 Public FxEnabled As Boolean
