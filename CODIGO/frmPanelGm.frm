@@ -23,6 +23,16 @@ Begin VB.Form frmPanelgm
    ScaleWidth      =   7155
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.CommandButton cmdTrabajando 
+      BackColor       =   &H8000000A&
+      Caption         =   "Trabajando"
+      Height          =   360
+      Left            =   2040
+      Style           =   1  'Graphical
+      TabIndex        =   71
+      Top             =   3840
+      Width           =   1335
+   End
    Begin VB.Frame FraControlMacros 
       BackColor       =   &H80000013&
       Caption         =   "Control Macros"
@@ -156,7 +166,7 @@ Begin VB.Form frmPanelgm
       Begin VB.CommandButton cmdBorrarInformes 
          BackColor       =   &H8000000A&
          Caption         =   "Borrar Informes"
-         Height          =   570
+         Height          =   690
          Left            =   3240
          Style           =   1  'Graphical
          TabIndex        =   58
@@ -189,7 +199,6 @@ Begin VB.Form frmPanelgm
          BackColor       =   &H80000007&
          Caption         =   "AutoName"
          ForeColor       =   &H00FFFFFF&
-
          Height          =   255
          Left            =   3360
          TabIndex        =   55
@@ -310,11 +319,11 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Mapeo"
       Height          =   360
-      Left            =   2040
+      Left            =   3480
       Style           =   1  'Graphical
       TabIndex        =   44
-      Top             =   3840
-      Width           =   1335
+      Top             =   3360
+      Width           =   1215
    End
    Begin VB.CommandButton cmdBloqueoPos 
       BackColor       =   &H8000000A&
@@ -507,11 +516,11 @@ Begin VB.Form frmPanelgm
       BackColor       =   &H8000000A&
       Caption         =   "Invisible"
       Height          =   360
-      Left            =   3480
+      Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   22
       TabStop         =   0   'False
-      Top             =   3360
+      Top             =   1320
       Width           =   1215
    End
    Begin VB.CommandButton cmdMatarNPC 
@@ -637,6 +646,7 @@ Begin VB.Form frmPanelgm
       TabIndex        =   11
       TabStop         =   0   'False
       Top             =   6720
+      Width           =   1200
    End
    Begin VB.TextBox txtMod 
       BackColor       =   &H00FFFFFF&
@@ -704,12 +714,12 @@ Begin VB.Form frmPanelgm
    Begin VB.CommandButton cmdCerrar 
       BackColor       =   &H8000000A&
       Caption         =   "Cerrar"
-      Height          =   375
-      Left            =   3480
+      Height          =   320
+      Left            =   3840
       Style           =   1  'Graphical
       TabIndex        =   5
-      Top             =   3840
-      Width           =   1215
+      Top             =   4320
+      Width           =   855
    End
    Begin VB.CommandButton cmdSeleccionarPersonaje 
       BackColor       =   &H8000000A&
@@ -747,14 +757,14 @@ Begin VB.Form frmPanelgm
    End
    Begin VB.CommandButton cmdActualiza 
       BackColor       =   &H8000000A&
-      Caption         =   "&Actualiza"
-      Height          =   315
-      Left            =   3840
+      Caption         =   "Usuarios"
+      Height          =   360
+      Left            =   3480
       Style           =   1  'Graphical
       TabIndex        =   2
       TabStop         =   0   'False
-      Top             =   4320
-      Width           =   855
+      Top             =   3840
+      Width           =   1215
    End
    Begin VB.ComboBox cboListaUsus 
       BackColor       =   &H8000000A&
@@ -2132,7 +2142,7 @@ Private Sub cmdInvisible_Click()
 End Sub
 
 Private Sub cmdIrCerca_Click()
-
+    Call ParseUserCommand("/SM ")
     tmpUser = cboListaUsus.Text
     Call WriteGoNearby(tmpUser)
 
@@ -2267,6 +2277,11 @@ End Sub
 
 Private Sub cmdSUMUser_Click()
     Call WriteSummonChar(cboListaUsus.Text)
+End Sub
+
+Private Sub cmdTrabajando_Click()
+    Call WriteWorking
+    Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub Command1_Click()
@@ -3494,6 +3509,27 @@ Public Sub CadenaChat(ByVal chat As String)
 
         ' La cadena original
         Cadena = chat
+        
+        ' Divide la cadena en partes utilizando "Usuarios trabajando:" como separador
+        partes = Split(Cadena, "Usuarios trabajando:")
+
+        ' Verifica si hay al menos dos partes en la matriz resultante
+            If UBound(partes) >= 1 Then
+                Debug.Print " trabajando"
+                
+                ' Limpia el contenido actual del ComboBox
+                cboListaUsus.Clear
+                
+                ' Divide la parte en nombres individuales
+                Dim nombres As Variant
+                nombres = Split(partes(1), ",")
+                
+                ' Agrega cada nombre al ComboBox después de eliminar los espacios adicionales
+                Dim i As Integer
+                For i = 0 To UBound(nombres)
+                    cboListaUsus.AddItem Trim(nombres(i))
+                Next i
+            End If
 
         ' Divide la cadena en partes utilizando "Control de paquetes -> El usuario" como separador
         partes = Split(Cadena, "Control Paquetes---> El usuario")
