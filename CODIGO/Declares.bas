@@ -1062,6 +1062,21 @@ Public Type tIndiceFx
 
 End Type
 
+Public Type t_LobbyData
+    Index As Integer
+    id As Integer
+    Description As String
+    ScenarioType As String
+    MinLevel As Integer
+    MaxLevel As Integer
+    MinPlayers As Integer
+    MaxPlayers As Integer
+    RegisteredPlayers As Integer
+    TeamSize As Integer
+    TeamType As Integer
+    InscriptionPrice As Long
+    IsPrivate As Byte
+End Type
 
 ' Load custom font
 Public Declare Function AddFontResourceEx Lib "gdi32.dll" Alias "AddFontResourceExA" (ByVal lpcstr As String, ByVal dword As Long, ByRef DESIGNVECTOR) As Long
@@ -1082,6 +1097,8 @@ Public Const DISTANCIA_ENVIO_DATOS As Byte = 3
 
 Public cooldown_ataque As New clsCooldown
 Public cooldown_hechizo As New clsCooldown
+
+Public LobbyList() As t_LobbyData
 
 Public Function IsStun() As Boolean
     IsStun = StunEndTime >= GetTickCount()

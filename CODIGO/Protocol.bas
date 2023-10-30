@@ -8509,14 +8509,13 @@ End Sub
 Public Sub HandleReportLobbyList()
 On Error GoTo HandleReportLobbyList_Err
     Dim OpenLobbyCount As Integer
-    Dim LobbyList() As t_LobbyData
     
     OpenLobbyCount = Reader.ReadInt16
-    ReDim LobbyList(OpenLobbyCount) As t_LobbyData
+    ReDim LobbyList(1 To OpenLobbyCount) As t_LobbyData
     Dim i As Integer
     If BabelInitialized Then Call OpenLobbyList
-    For i = 0 To OpenLobbyCount - 1
-        LobbyList(i).Index = i
+    For i = 1 To OpenLobbyCount
+        LobbyList(i).Index = i - 1
         LobbyList(i).id = Reader.ReadInt16
         LobbyList(i).Description = Reader.ReadString8
         LobbyList(i).ScenarioType = Reader.ReadString8
@@ -8531,6 +8530,10 @@ On Error GoTo HandleReportLobbyList_Err
         LobbyList(i).IsPrivate = Reader.ReadInt8
         If BabelInitialized Then Call UpdateLobby(LobbyList(i))
     Next i
+    
+    If Not BabelInitialized Then
+        frmLobbyBattleground.Show
+    End If
     Exit Sub
 HandleReportLobbyList_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDebugResponse", Erl)

@@ -227,22 +227,6 @@ Public Enum e_SafeType
     eResurrecion = 4
 End Enum
 
-Public Type t_LobbyData
-    Index As Integer
-    id As Integer
-    Description As String
-    ScenarioType As String
-    MinLevel As Integer
-    MaxLevel As Integer
-    MinPlayers As Integer
-    MaxPlayers As Integer
-    RegisteredPlayers As Integer
-    TeamSize As Integer
-    TeamType As Integer
-    InscriptionPrice As Long
-    IsPrivate As Byte
-End Type
-
 Public Type t_NewScenearioSettings
     MinLevel As Byte
     MaxLevel As Byte
