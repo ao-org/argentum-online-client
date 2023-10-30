@@ -3515,7 +3515,6 @@ Public Sub CadenaChat(ByVal chat As String)
 
         ' Verifica si hay al menos dos partes en la matriz resultante
             If UBound(partes) >= 1 Then
-                Debug.Print " trabajando"
                 
                 ' Limpia el contenido actual del ComboBox
                 cboListaUsus.Clear
