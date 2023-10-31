@@ -71,7 +71,7 @@ Attribute VB_Exposed = False
 Dim MouseIndex As Integer
 Dim Scroll As Integer
 Const MAX_LIST As Integer = 6
-
+Dim LobbyList() As t_LobbyData
 Private Sub btnCrear_Click()
     frmCreateBattleground.Show
     Unload Me
@@ -80,6 +80,10 @@ End Sub
 Private Sub Form_Load()
     ListRefresh
 End Sub
+Friend Sub SetLobbyList(ByRef List() As t_LobbyData)
+    LobbyList = List
+End Sub
+
 Private Sub pEvents_Click()
 On Error GoTo ErrHandler:
     Dim Password As String

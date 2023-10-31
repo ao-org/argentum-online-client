@@ -8509,9 +8509,9 @@ End Sub
 Public Sub HandleReportLobbyList()
 On Error GoTo HandleReportLobbyList_Err
     Dim OpenLobbyCount As Integer
-    
+    Dim LobbyList() As t_LobbyData
     OpenLobbyCount = Reader.ReadInt16
-    ReDim LobbyList(1 To OpenLobbyCount) As t_LobbyData
+    ReDim LobbyList(OpenLobbyCount) As t_LobbyData
     Dim i As Integer
     If BabelInitialized Then Call OpenLobbyList
     For i = 1 To OpenLobbyCount
@@ -8532,6 +8532,7 @@ On Error GoTo HandleReportLobbyList_Err
     Next i
     
     If Not BabelInitialized Then
+        Call frmLobbyBattleground.SetLobbyList(LobbyList)
         frmLobbyBattleground.Show
     End If
     Exit Sub

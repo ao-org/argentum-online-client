@@ -1098,8 +1098,6 @@ Public Const DISTANCIA_ENVIO_DATOS As Byte = 3
 Public cooldown_ataque As New clsCooldown
 Public cooldown_hechizo As New clsCooldown
 
-Public LobbyList() As t_LobbyData
-
 Public Function IsStun() As Boolean
     IsStun = StunEndTime >= GetTickCount()
 End Function
