@@ -1804,10 +1804,7 @@ Public Sub DibujarSeguro()
     On Error GoTo DibujarSeguro_Err
     
     ImgSeg = LoadInterface("boton-seguro-ciudadano-on.bmp")
-    
-    SeguroGame = True
 
-    
     Exit Sub
 
 DibujarSeguro_Err:
@@ -1821,10 +1818,6 @@ Public Sub DesDibujarSeguro()
     On Error GoTo DesDibujarSeguro_Err
     
     ImgSeg = LoadInterface("boton-seguro-ciudadano-off.bmp")
-    
-    SeguroGame = False
-
-    
     Exit Sub
 
 DesDibujarSeguro_Err:
