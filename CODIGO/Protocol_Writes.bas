@@ -6704,3 +6704,18 @@ WriteUseHKeySlot_Err:
         Call Writer.Clear
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUseHKeySlot", Erl)
 End Sub
+
+Public Sub WriteAntiCheatMessage(ByVal Data As Long, ByVal DataSize As Long)
+    On Error GoTo WriteAntiCheatMessage_Err
+        Dim Buffer() As Byte
+        ReDim Buffer(0 To (DataSize - 1)) As Byte
+        CopyMemory Buffer(0), ByVal Data, DataSize
+        Call Writer.WriteInt16(ClientPacketID.eAntiCheatMessage)
+        Call Writer.WriteSafeArrayInt8(Buffer)
+        Call modNetwork.Send(Writer)
+        Exit Sub
+WriteAntiCheatMessage_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAntiCheatMessage", Erl)
+End Sub
+

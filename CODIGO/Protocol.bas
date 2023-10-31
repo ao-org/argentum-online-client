@@ -454,6 +454,10 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUpdateCharValue
         Case ServerPacketID.eSendClientToggles
             Call HandleSendClientToggles
+        Case ServerPacketID.eAntiCheatMessage
+            Call HandleAntiCheatMessage
+        Case ServerPacketID.eAntiCheatStartSession
+            Call HandleAntiCheatStartSession
         Case ServerPacketID.eReportLobbyList
             Call HandleReportLobbyList
         #If PYMMO = 0 Then
@@ -922,7 +926,7 @@ Public Sub HandleDisconnect()
     For i = 1 To LastChar + 1
         charlist(i).dialog = ""
     Next i
-    
+    Call EndAntiCheatSession
     Call ClearHotkeys
         
     'Unload all forms except frmMain and frmConnect
@@ -8504,6 +8508,24 @@ Public Sub HandleDebugDataResponse()
     Exit Sub
 HandleDebugResponse_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDebugResponse", Erl)
+End Sub
+
+Public Sub HandleAntiCheatStartSession()
+On Error GoTo HandleAntiCheatStartSession_Err
+    Call BeginAntiCheatSession
+    Exit Sub
+HandleAntiCheatStartSession_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAntiCheatStartSession", Erl)
+End Sub
+
+Public Sub HandleAntiCheatMessage()
+On Error GoTo HandleAntiCheatMessage_Err
+    Dim Buffer() As Byte
+    Call Reader.ReadSafeArrayInt8(Buffer)
+    Call HandleAntiCheatServerMessage(Buffer)
+    Exit Sub
+HandleAntiCheatMessage_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAntiCheatMessage", Erl)
 End Sub
 
 Public Sub HandleReportLobbyList()

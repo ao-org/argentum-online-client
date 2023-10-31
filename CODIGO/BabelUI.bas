@@ -38,19 +38,19 @@ Private Type NEWCHARACTERDATA
     City As Long
 End Type
 
-Private Type SINGLESTRINGPARAM
+Public Type SINGLESTRINGPARAM
     Ptr As Long
     Len As Long
 End Type
 
-Private Type DOUBLESTRINGPARAM
+Public Type DOUBLESTRINGPARAM
     FirstPtr As Long
     FirstLen As Long
     SecondPtr As Long
     SecondLen As Long
 End Type
 
-Private Type TRIPLESTRINGPARAM
+Public Type TRIPLESTRINGPARAM
     FirstPtr As Long
     FirstLen As Long
     SecondPtr As Long
@@ -59,7 +59,7 @@ Private Type TRIPLESTRINGPARAM
     ThirdLen As Long
 End Type
 
-Private Type BABELSETTINGS
+Public Type BABELSETTINGS
     Width As Long
     Height As Long
     Compresed As Long
@@ -531,7 +531,7 @@ UpdateInspectorUI_Err:
     Call RegistrarError(Err.Number, Err.Description, "BabelUI.UpdateInspectorUI", Erl)
 End Sub
 
-Private Function GetStringFromPtr(ByVal Ptr As Long, ByVal size As Long) As String
+Public Function GetStringFromPtr(ByVal Ptr As Long, ByVal size As Long) As String
     Dim Buffer() As Byte
     ReDim Buffer(0 To (size - 1)) As Byte
     CopyMemory Buffer(0), ByVal Ptr, size

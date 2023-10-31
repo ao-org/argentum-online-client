@@ -1,10 +1,10 @@
 {
 	"title"											: "Argentum test",
 	"executable"									: "Argentum.exe",
-	"productid"										: "f575e8cfb4f342ffabb8928d95d94732",
-	"sandboxid"										: "a5a1d81c8b074ca1ac98bd4dc38df7f2",
-	"deploymentid"									: "532ddd68743f4ffa8d303532ac6e9cdd",
-	"requested_splash"								: "EasyAntiCheat/SplashScreen.png",
+	"productid"										: "2e3da01ba58743e8ac2f0291f1473689",
+	"sandboxid"										: "94167c9b90784badb496e396ea34cf40",
+	"deploymentid"									: "23024917b2ed4cfb80360b40d6f57625",
+	"requested_splash"								: "EasyAntiCheat/SplashScreenAO.png",
 	"wait_for_game_process_exit"					: "false",
 	"hide_bootstrapper"								: "false",
 	"hide_gui"										: "false"
