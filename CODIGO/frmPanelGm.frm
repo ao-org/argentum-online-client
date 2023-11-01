@@ -34,9 +34,8 @@ Begin VB.Form frmPanelgm
       Width           =   1335
    End
    Begin VB.Frame FraControlMacros 
-      BackColor       =   &H80000013&
-      Caption         =   "Control Macros"
-      ForeColor       =   &H00FFFFFF&
+      BackColor       =   &H80000001&
+      ForeColor       =   &H00C0C0C0&
       Height          =   2535
       Left            =   120
       TabIndex        =   54
@@ -176,13 +175,12 @@ Begin VB.Form frmPanelgm
       End
       Begin VB.CheckBox chkInfoTXT 
          BackColor       =   &H80000007&
-         Caption         =   "Info TXT"
-         ForeColor       =   &H00FFFFFF&
+         ForeColor       =   &H00C0C0C0&
          Height          =   255
          Left            =   3360
          TabIndex        =   57
          Top             =   480
-         Width           =   975
+         Width           =   255
       End
       Begin VB.CommandButton cmdSeguirMouse 
          BackColor       =   &H8000000A&
@@ -197,24 +195,42 @@ Begin VB.Form frmPanelgm
       End
       Begin VB.CheckBox chkAutoName 
          BackColor       =   &H80000007&
-         Caption         =   "AutoName"
-         ForeColor       =   &H00FFFFFF&
+         ForeColor       =   &H00C0C0C0&
          Height          =   255
          Left            =   3360
          TabIndex        =   55
          Top             =   240
-         Width           =   1095
+         Width           =   255
+      End
+      Begin VB.Label Label3 
+         BackColor       =   &H00000000&
+         Caption         =   "GrabarTXT"
+         ForeColor       =   &H00C0C0C0&
+         Height          =   195
+         Left            =   3600
+         TabIndex        =   74
+         Top             =   480
+         Width           =   855
+      End
+      Begin VB.Label Label2 
+         BackColor       =   &H00000000&
+         Caption         =   "AutoName"
+         ForeColor       =   &H00C0C0C0&
+         Height          =   195
+         Left            =   3600
+         TabIndex        =   73
+         Top             =   260
+         Width           =   735
       End
    End
    Begin VB.CheckBox chkVerPanel 
-      BackColor       =   &H80000007&
-      Caption         =   "Ver panel /MOD "
-      ForeColor       =   &H00FFFFFF&
+      BackColor       =   &H00000000&
+      ForeColor       =   &H80000005&
       Height          =   255
       Left            =   3240
       TabIndex        =   69
       Top             =   7680
-      Width           =   1455
+      Width           =   255
    End
    Begin VB.CommandButton cmdButtonActualizarListaGms 
       BackColor       =   &H80000018&
@@ -791,6 +807,16 @@ Begin VB.Form frmPanelgm
       Top             =   600
       Width           =   4560
    End
+   Begin VB.Label Label1 
+      BackColor       =   &H00000000&
+      Caption         =   "Ver panel /MOD "
+      ForeColor       =   &H00C0C0C0&
+      Height          =   200
+      Left            =   3500
+      TabIndex        =   72
+      Top             =   7710
+      Width           =   1215
+   End
    Begin VB.Label lblEscudo 
       Alignment       =   1  'Right Justify
       AutoSize        =   -1  'True
@@ -908,7 +934,7 @@ Begin VB.Form frmPanelgm
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Dialogo del GM + Enter"
-      ForeColor       =   &H80000010&
+      ForeColor       =   &H00C0C0C0&
       Height          =   195
       Left            =   240
       TabIndex        =   21
