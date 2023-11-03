@@ -370,10 +370,10 @@ On Error GoTo PlayMidi_Error_Handl
     Debug.Assert id > 0
     PlayMidi = -1
     If (id <= 0) Then Exit Function
-    
+    Dim id_as_str As String: id_as_str = str(id)
     With mMidiTrack(1)
-        If .Name <> id Then
-            .Name = id
+        If .Name <> id_as_str Then
+            .Name = id_as_str
             Call LoadMidi(mMidiTrack(1), id)
             .directMusicPerformance.StopEx .directMusicSegment, 0, 0
             Set .directMusicSegmentState = .directMusicPerformance.PlaySegmentEx(.directMusicSegment, 0, 0, Nothing, .directMusicPath)
@@ -454,7 +454,7 @@ End Sub
 
 
 Private Sub SetMembersToNothing()
-    Call StopAllPlayback
+On Error Resume Next
     
     Dim i As Integer
     For i = 1 To UBound(mAudioTracks)
@@ -490,5 +490,16 @@ End Sub
 
 
 Private Sub Class_Terminate()
-SetMembersToNothing
+On Error Resume Next
+    Err.Clear
+    StopAllPlayback
+    Dim i As Integer
+    For i = 1 To UBound(mMidiTrack)
+            With mMidiTrack(i)
+                If Not .directMusicPerformance Is Nothing Then
+                    Call .directMusicPerformance.CloseDown
+                End If
+            End With
+    Next i
+    SetMembersToNothing
 End Sub
