@@ -3767,40 +3767,13 @@ Private Sub HandlePosLLamadaDeClan()
     srcX = Reader.ReadInt8()
     srcY = Reader.ReadInt8()
 
-    Dim idmap As Integer
-
-    
-    LLamadaDeclanMapa = map
-    idmap = ObtenerIdMapaDeLlamadaDeClan(map)
-
-    Dim x As Long
-
-    Dim y As Long
-    
-    x = (idmap - 1) Mod 14
-    y = Int((idmap - 1) / 14)
-
-    'frmMapaGrande.lblAllies.Top = Y * 32
-    'frmMapaGrande.lblAllies.Left = X * 32
-
-    frmMapaGrande.llamadadeclan.Top = y * 32 + (srcX / 4.5)
-    frmMapaGrande.llamadadeclan.Left = x * 32 + (srcY / 4.5)
-
-    frmMapaGrande.llamadadeclan.Visible = True
-
-    frmMain.LlamaDeclan.Enabled = True
-
-    frmMapaGrande.Shape2.Visible = True
-
-    frmMapaGrande.Shape2.Top = y * 32
-    frmMapaGrande.Shape2.Left = x * 32
-
     LLamadaDeclanX = srcX
     LLamadaDeclanY = srcY
-
-    HayLLamadaDeclan = True
-    
-    ' Call Audio.PlayWave(CStr(wave) & ".wav", srcX, srcY)
+    If BabelInitialized Then
+        Call ShowClanCall(Map, srcX, srcY)
+    Else
+        Call frmMapaGrande.ShowClanCall(Map, srcX, srcY)
+    End If
     
     Exit Sub
 
@@ -5838,10 +5811,15 @@ Private Sub HandleSendSkills()
 
     If LlegaronSkills Then
         Alocados = SkillPoints
-        frmEstadisticas.puntos.Caption = SkillPoints
-        frmEstadisticas.Iniciar_Labels
-        frmEstadisticas.Picture = LoadInterface("ventanaskills.bmp")
-        frmEstadisticas.Show , GetGameplayForm()
+        If BabelInitialized Then
+            Call OpenSkillDialog(SkillPoints, UserSkills(1), UBound(UserSkills))
+        Else
+            frmEstadisticas.Puntos.Caption = SkillPoints
+            frmEstadisticas.Iniciar_Labels
+            frmEstadisticas.Picture = LoadInterface("ventanaskills.bmp")
+            frmEstadisticas.Show , GetGameplayForm()
+        End If
+        
         LlegaronSkills = False
     End If
     

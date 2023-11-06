@@ -141,6 +141,7 @@ Public Type t_GamePlayCallbacks
     UpdateIntSetting As Long
     CreateNewScenario As Long
     JoinScenario As Long
+    UpdateSkillList As Long
 End Type
 
 Public Type t_SpellSlot
@@ -190,6 +191,7 @@ Public Enum e_ActionRequest
     eSetMeditate = 25
     eOpenKeySettings = 26
     eSaveSettings = 27
+    eTeleportToMap = 28
 End Enum
 
 Public Enum e_UpdateSetting
@@ -218,6 +220,7 @@ Public Enum e_UpdateSetting
     eFxVolume = 23
     eAmbientVolume = 24
     eLightSettings = 25
+    eDisableDungeonLighting = 26
 End Enum
 
 Public Enum e_SafeType
@@ -310,6 +313,8 @@ Public Declare Sub UpdateMerchantSlot Lib "BabelUI.dll" (ByRef SlotInfo As t_Inv
 Public Declare Sub OpenAo20Shop Lib "BabelUI.dll" (ByVal AvailableCredits As Long, ByVal ItemCount As Long, ByRef ItemList As t_ShopItem)
 Public Declare Sub OpenLobbyList Lib "BabelUI.dll" ()
 Public Declare Sub UpdateLobby Lib "BabelUI.dll" (ByRef LobbyInfo As t_LobbyData)
+Public Declare Sub ShowClanCall Lib "BabelUI.dll" (ByVal map As Long, ByVal PosX As Long, ByVal PosY As Long)
+Public Declare Sub OpenSkillDialog Lib "BabelUI.dll" (ByVal AvailableSkills As Long, ByRef SkillList As Byte, ByVal SkillListSize As Integer)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -444,6 +449,7 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.UpdateIntSetting = FARPROC(AddressOf HandleUpdateIntSetting)
         GameplayCallbacks.CreateNewScenario = FARPROC(AddressOf HandleCreateNewScenarioCB)
         GameplayCallbacks.JoinScenario = FARPROC(AddressOf HandleJoinScenarioCB)
+        GameplayCallbacks.UpdateSkillList = FARPROC(AddressOf HandleUpdateSkillCB)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -752,7 +758,7 @@ Public Sub MoveInvSlotDB(ByVal SourceSlot As Long, ByVal DestSlot As Long)
     End If
 End Sub
 
-Public Sub RequestActionCB(ByVal ActionId As Long)
+Public Sub RequestActionCB(ByVal ActionId As Long, ByVal ExtraValue As Long)
     Select Case ActionId
     Case e_ActionRequest.eMinimize
         frmBabelUI.WindowState = vbMinimized
@@ -844,6 +850,8 @@ Public Sub RequestActionCB(ByVal ActionId As Long)
         Call frmCustomKeys.Show(vbModeless, GetGameplayForm)
     Case e_ActionRequest.eSaveSettings
         Call SaveConfig
+    Case e_ActionRequest.eTeleportToMap
+        Call ParseUserCommand("/TELEP YO " & ExtraValue & " " & 50 & " " & 50)
 End Select
 
 End Sub
@@ -1010,6 +1018,8 @@ On Error GoTo HandleUpdateIntSetting_Err
         Case eLightSettings
             Call SaveSetting("VIDEO", "LuzGlobal", Value)
             selected_light = Value
+        Case eDisableDungeonLighting
+            DisableDungeonLighting = Value > 0
     End Select
     Exit Sub
 HandleUpdateIntSetting_Err:
@@ -1034,6 +1044,25 @@ Public Sub HandleJoinScenarioCB(ByVal ScenarioId As Long, ByRef PasswordParam As
         Password = GetStringFromPtr(PasswordParam.Ptr, PasswordParam.Len)
     End If
     Call WriteParticipar(ScenarioId, Password)
+End Sub
+
+Public Sub HandleUpdateSkillCB(ByVal SkillCount As Long, ByVal SkillList As Long)
+    Dim Buffer() As Long
+    ReDim Buffer(0 To (SkillCount - 1)) As Long
+    CopyMemory Buffer(0), ByVal SkillList, SkillCount * 4
+    Dim skills() As Byte
+    ReDim skills(1 To (SkillCount)) As Byte
+    Dim i As Integer
+    Dim AssignedCount As Integer
+    For i = 1 To SkillCount
+        skills(i) = Buffer(i - 1)
+        AssignedCount = AssignedCount + skills(i)
+    Next i
+    If AssignedCount > SkillPoints Then
+        Exit Sub
+    End If
+    SkillPoints = SkillPoints - AssignedCount
+    Call WriteModifySkills(skills)
 End Sub
 
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long

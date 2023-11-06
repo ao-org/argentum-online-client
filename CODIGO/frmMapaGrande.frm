@@ -942,3 +942,22 @@ CalcularPosicionMAPA_Err:
     Resume Next
     
 End Sub
+
+Public Sub ShowClanCall(ByVal Map As Integer, ByVal PosX As Integer, ByVal PosY As Integer)
+    Dim idmap As Integer
+    LLamadaDeclanMapa = Map
+    idmap = ObtenerIdMapaDeLlamadaDeClan(Map)
+
+    Dim x As Long
+    Dim y As Long
+    x = (idmap - 1) Mod 14
+    y = Int((idmap - 1) / 14)
+    
+    llamadadeclan.Top = y * 32 + (PosX / 4.5)
+    llamadadeclan.Left = x * 32 + (PosY / 4.5)
+    llamadadeclan.visible = True
+    frmMain.LlamaDeclan.enabled = True
+    Shape2.visible = True
+    Shape2.Top = y * 32
+    Shape2.Left = x * 32
+End Sub
