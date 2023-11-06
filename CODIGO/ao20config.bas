@@ -103,6 +103,7 @@ Sub LoadConfig()
     UtilizarPreCarga = GetSetting("VIDEO", "UtilizarPreCarga")
     InfoItemsEnRender = Val(GetSetting("VIDEO", "InfoItemsEnRender"))
     ModoAceleracion = GetSetting("VIDEO", "Aceleracion")
+    DisableDungeonLighting = Val(GetSetting("VIDEO", "DisableDungeonLighting"))
 
     Dim value As String
     value = GetSetting("VIDEO", "MostrarRespiracion")

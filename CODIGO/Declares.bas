@@ -65,7 +65,6 @@ Public FormParser                       As clsCursor
 Public HoraMundo                        As Long
 Public DuracionDia                      As Long
 Public EsGM                             As Boolean
-Public HayLLamadaDeclan                 As Boolean
 Public MapInfoEspeciales                As String
 Public LLamadaDeclanMapa                As Integer
 Public LLamadaDeclanX                   As Byte
@@ -298,6 +297,7 @@ Public FxNavega                    As Byte
 Public ChatCombate                 As Byte
 Public ChatGlobal                  As Byte
 Public PantallaCompleta            As Boolean
+Public DisableDungeonLighting      As Boolean
 Public MostrarIconosMeteorologicos As Byte
 Public OpcionMenu                  As Byte
 Public EntradaX                    As Byte
