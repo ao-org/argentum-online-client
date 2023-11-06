@@ -2422,6 +2422,7 @@ On Error GoTo Start_Err
 
         Call modNetwork.Poll
         Call svb_run_callbacks
+        Call UpdateAntiCheat
     Loop
 
     EngineRun = False

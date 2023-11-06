@@ -229,7 +229,7 @@ Public Sub RestaurarLuz()
     ElseIf UserCiego Then
         global_light = BlindColor
         
-    ElseIf MapDat.zone = "DUNGEON" Then
+    ElseIf MapDat.zone = "DUNGEON" And Not DisableDungeonLighting Then
         global_light = DungeonColor
         
     ElseIf TimeIndex >= 0 Then

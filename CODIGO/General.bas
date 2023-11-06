@@ -1037,22 +1037,21 @@ End Function
 Sub Main()
 
 On Error GoTo Main_Err
-    Set FormParser = New clsCursor
-    Call FormParser.Init
     
     Call LoadConfig
-    
+    Call SetLanguageApplication
+    Call Frmcarga.Show
+    Set FormParser = New clsCursor
+    Call FormParser.Init
     Call CheckResources
     If PantallaCompleta Then
         Call Resolution.SetResolution
     End If
-    
 #If EXPERIMENTAL_RENDERER Then
     Call new_engine_init(ao20rendering.renderer)
 #Else
     Call engine_init 'initializes DX
     Debug.Assert Not DirectX Is Nothing
-    
     Call ao20audio.CreateAudioEngine(frmConnect.hwnd, DirectX, ao20audio.AudioEngine)
 #End If
     Call InitCommonControls
@@ -1074,12 +1073,10 @@ On Error GoTo Main_Err
 
 
     Call initPacketControl
-    Call SetLanguageApplication
     
     Call SetNpcsRenderText
     Call cargarTutoriales
     Call InitializeEffectArrays
-
     CheckMD5 = GetMd5
     SessionOpened = False
     
@@ -1089,9 +1086,7 @@ On Error GoTo Main_Err
         Call Load(frmConnect)
         Call Load(FrmLogear)
     End If
-    Call Frmcarga.Show
 
-   
     Call SetDefaultServer
     Call ComprobarEstado
     Call CargarLst
@@ -1105,7 +1100,7 @@ On Error GoTo Main_Err
     Call LoadBuffResources
     Call InitilializeProjectiles
     Call InitializeTeamColors
-    
+    Call InitializeAntiCheat
     FrameTime = GetTickCount()
     UserMap = 1
     AlphaNiebla = 75
@@ -1126,9 +1121,7 @@ On Error GoTo Main_Err
     Call General_Set_Connect
     Call engine.GetElapsedTime
     Call Start
- 
-    
-    
+
     Set AudioEngine = Nothing
     Exit Sub
 
@@ -1474,11 +1467,10 @@ Public Sub CloseClient()
     ' Allow new instances of the client to be opened
     
     On Error GoTo CloseClient_Err
-    
     UserSaliendo = True
 
     Call SaveConfig
-    
+    Call UnloadAntiCheat
     Call PrevInstance.ReleaseInstance
   
     
