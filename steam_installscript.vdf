@@ -1,0 +1,28 @@
+"InstallScript"
+{
+	"Run Process"
+	{
+		"Epic_Anticheat_Install"
+		{
+			"Process 1" "%INSTALLDIR%\\Cliente\\EasyAntiCheat\\EasyAntiCheat_EOS_Setup.exe install 2e3da01ba58743e8ac2f0291f1473689"
+		}	
+	}
+	"Run Process On Uninstall"
+	{
+		"Epic_Anticheat_Uninstall"
+		{
+			"Process 1" "%INSTALLDIR%\\Cliente\\EasyAntiCheat\\EasyAntiCheat_EOS_Setup.exe uninstall 2e3da01ba58743e8ac2f0291f1473689"
+		}	
+	}
+	"Run Process"
+	{
+		"64bits_Register_Dlls_AO20"
+		{
+			"Process 1" "regcom.bat"
+			"Requirement_OS"
+			{
+				"Is64BitWindows"  "1"
+			}
+		}	
+	}
+}
