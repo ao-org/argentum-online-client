@@ -1056,7 +1056,7 @@ On Error GoTo Main_Err
 #End If
     Call InitCommonControls
 
-    #If DEBUGGING = 0 Then
+    #If DEBUGGING = 0 Or ENABLE_ANTICHEAT = 1 Then
         SetDllDirectory App.Path
         Dim steam_init_result As Long
         steam_init_result = svb_init_steam(1956740)
