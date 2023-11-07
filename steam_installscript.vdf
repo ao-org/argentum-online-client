@@ -18,7 +18,7 @@
 	{
 		"64bits_Register_Dlls_AO20"
 		{
-			"Process 1" "regcom.bat"
+			"Process 1" "%INSTALLDIR%\\Argentum20\\Cliente\\regcom.bat"
 			"Requirement_OS"
 			{
 				"Is64BitWindows"  "1"
