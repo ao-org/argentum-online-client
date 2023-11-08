@@ -4,14 +4,17 @@
 	{
 		"Epic_Anticheat_Install"
 		{
-			"Process 1" "%INSTALLDIR%\\Argentum20\\Cliente\\EasyAntiCheat\\EasyAntiCheat_EOS_Setup.exe install 2e3da01ba58743e8ac2f0291f1473689"
+		    "HasRunKey" "HKEY_LOCAL_MACHINE\Software\Valve\Steam\Apps\Argentum20-EAC"
+			"Process 1" "%INSTALLDIR%\\Argentum20\\Cliente\\EasyAntiCheat\\EasyAntiCheat_EOS_Setup.exe"
+			"Command 1" "install 2e3da01ba58743e8ac2f0291f1473689"			
 		}	
 	}
 	"Run Process On Uninstall"
 	{
 		"Epic_Anticheat_Uninstall"
 		{
-			"Process 1" "%INSTALLDIR%\\Argentum20\\Cliente\\EasyAntiCheat\\EasyAntiCheat_EOS_Setup.exe uninstall 2e3da01ba58743e8ac2f0291f1473689"
+			"Process 1" "%INSTALLDIR%\\Argentum20\\Cliente\\EasyAntiCheat\\EasyAntiCheat_EOS_Setup.exe"
+			"Command 1" "uninstall 2e3da01ba58743e8ac2f0291f1473689"
 		}	
 	}
 }
