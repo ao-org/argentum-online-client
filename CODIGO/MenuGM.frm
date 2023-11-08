@@ -273,7 +273,7 @@ Begin VB.Form MenuGM
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "SKILLS"
+      Caption         =   "INVENTARIO"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -524,7 +524,7 @@ Private Sub OpcionImg_Click(Index As Integer)
             Call ParseUserCommand("/BOV " & TargetName)
 
         Case 6
-            Call ParseUserCommand("/Skills " & TargetName)
+            Call ParseUserCommand("/INV " & TargetName)
             
         Case 7
             Call ParseUserCommand("/revivir " & TargetName)
