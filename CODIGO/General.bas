@@ -1037,7 +1037,7 @@ End Function
 Sub Main()
 
 On Error GoTo Main_Err
-    
+    Call Application.DeleteFile(ao20config.GetErrorLogFilename())
     Call LoadConfig
     Call SetLanguageApplication
     Call Frmcarga.Show
