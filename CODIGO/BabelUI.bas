@@ -142,6 +142,7 @@ Public Type t_GamePlayCallbacks
     CreateNewScenario As Long
     JoinScenario As Long
     UpdateSkillList As Long
+    SendGuildRequest As Long
 End Type
 
 Public Type t_SpellSlot
@@ -192,6 +193,7 @@ Public Enum e_ActionRequest
     eOpenKeySettings = 26
     eSaveSettings = 27
     eTeleportToMap = 28
+    eDisplayGuildDetails = 29
 End Enum
 
 Public Enum e_UpdateSetting
@@ -240,6 +242,17 @@ Public Type t_NewScenearioSettings
     InscriptionFee As Long
     ScenearioType As Byte
     RoundAmount As Byte
+End Type
+
+Public Type t_GuildInfo
+    Name As String
+    Founder As String
+    CreationDate As String
+    Leader As String
+    MemberCount As Integer
+    Aligment As String
+    Description As String
+    Level As Byte
 End Type
 
 Private ServerEnvironment As String
@@ -313,8 +326,11 @@ Public Declare Sub UpdateMerchantSlot Lib "BabelUI.dll" (ByRef SlotInfo As t_Inv
 Public Declare Sub OpenAo20Shop Lib "BabelUI.dll" (ByVal AvailableCredits As Long, ByVal ItemCount As Long, ByRef ItemList As t_ShopItem)
 Public Declare Sub OpenLobbyList Lib "BabelUI.dll" ()
 Public Declare Sub UpdateLobby Lib "BabelUI.dll" (ByRef LobbyInfo As t_LobbyData)
-Public Declare Sub ShowClanCall Lib "BabelUI.dll" (ByVal map As Long, ByVal PosX As Long, ByVal PosY As Long)
+Public Declare Sub ShowGuildCall Lib "BabelUI.dll" (ByVal map As Long, ByVal PosX As Long, ByVal PosY As Long)
 Public Declare Sub OpenSkillDialog Lib "BabelUI.dll" (ByVal AvailableSkills As Long, ByRef SkillList As Byte, ByVal SkillListSize As Integer)
+Public Declare Sub OpenGuildList Lib "BabelUI.dll" (ByVal ClanCount As Long)
+Public Declare Sub SetGuildInfo Lib "BabelUI.dll" (ByVal Index As Long, ByRef ClanInfo As Tclan)
+Public Declare Sub SetGuildBrief Lib "BabelUI.dll" (ByRef GuildDetails As t_GuildInfo)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -450,6 +466,7 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.CreateNewScenario = FARPROC(AddressOf HandleCreateNewScenarioCB)
         GameplayCallbacks.JoinScenario = FARPROC(AddressOf HandleJoinScenarioCB)
         GameplayCallbacks.UpdateSkillList = FARPROC(AddressOf HandleUpdateSkillCB)
+        GameplayCallbacks.SendGuildRequest = FARPROC(AddressOf SendGuildRequestCB)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -852,6 +869,15 @@ Public Sub RequestActionCB(ByVal ActionId As Long, ByVal ExtraValue As Long)
         Call SaveConfig
     Case e_ActionRequest.eTeleportToMap
         Call ParseUserCommand("/TELEP YO " & ExtraValue & " " & 50 & " " & 50)
+    Case e_ActionRequest.eDisplayGuildDetails
+        Dim i As Integer
+        For i = LBound(ClanesList) To UBound(ClanesList)
+            If ClanesList(i).indice = ExtraValue Then
+                Call WriteGuildRequestDetails(ClanesList(i).nombre)
+                Exit Sub
+            End If
+        Next i
+        
 End Select
 
 End Sub
@@ -1063,6 +1089,18 @@ Public Sub HandleUpdateSkillCB(ByVal SkillCount As Long, ByVal SkillList As Long
     End If
     SkillPoints = SkillPoints - AssignedCount
     Call WriteModifySkills(skills)
+End Sub
+
+Public Sub SendGuildRequestCB(ByRef Request As DOUBLESTRINGPARAM)
+    Dim Description As String
+    Dim TargetGuild As String
+    If Request.FirstLen > 0 Then
+        TargetGuild = GetStringFromPtr(Request.FirstPtr, Request.FirstLen)
+    End If
+    If Request.SecondLen > 0 Then
+        Description = GetStringFromPtr(Request.SecondPtr, Request.SecondLen)
+    End If
+    Call WriteGuildRequestMembership(TargetGuild, Replace(Replace(Description, ",", ";"), vbCrLf, "º"))
 End Sub
 
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long

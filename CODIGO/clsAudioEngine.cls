@@ -198,7 +198,7 @@ On Error GoTo CreateWavBufferFromFile_Err
     Exit Function
 
 CreateWavBufferFromFile_Err:
-    Call RegistrarError(Err.Number, Err.Description, "clsAudioEngine.CreateWavBufferFromFile", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsAudioEngine.CreateWavBufferFromFile " & file_name, Erl)
     Resume Next
     
 End Function
