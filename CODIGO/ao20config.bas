@@ -22,7 +22,11 @@ Public Const OPTION_SOUND_ENABLED As String = "Sound"
 Public Const OPTION_FX_ENABLED As String = "Fx"
 Public Const OPTION_AMBIENT_ENABLED As String = "AmbientEnabled"
 Public Const OPTION_INVERTLR_CHANNELS_ENABLED As String = "InverLRChannels"
-    
+
+Public Function GetErrorLogFilename() As String
+   GetErrorLogFilename = App.path & "\logs\Errores.log"
+End Function
+
 
 Sub SaveConfig()
     On Error GoTo SaveConfig_Err

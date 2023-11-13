@@ -23,31 +23,43 @@ Begin VB.Form frmPanelgm
    ScaleWidth      =   7155
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.CommandButton cmdTrabajando 
-      BackColor       =   &H8000000A&
-      Caption         =   "Trabajando"
-      Height          =   360
-      Left            =   2040
-      Style           =   1  'Graphical
-      TabIndex        =   71
-      Top             =   3840
-      Width           =   1335
-   End
    Begin VB.Frame FraControlMacros 
       BackColor       =   &H80000001&
       ForeColor       =   &H00C0C0C0&
       Height          =   2535
       Left            =   120
-      TabIndex        =   54
+      TabIndex        =   53
       Top             =   4680
       Width           =   4575
+      Begin VB.CommandButton cmdInventario 
+         BackColor       =   &H8000000A&
+         Caption         =   "Inventario"
+         Height          =   330
+         Left            =   3240
+         Style           =   1  'Graphical
+         TabIndex        =   75
+         TabStop         =   0   'False
+         Top             =   960
+         Width           =   1215
+      End
+      Begin VB.CommandButton cmdIrCerca 
+         BackColor       =   &H8000000A&
+         Caption         =   "Ir Cerca"
+         Height          =   330
+         Left            =   120
+         Style           =   1  'Graphical
+         TabIndex        =   74
+         TabStop         =   0   'False
+         Top             =   240
+         Width           =   1455
+      End
       Begin VB.CommandButton cmdBalance 
          BackColor       =   &H8000000A&
          Caption         =   "Balance"
          Height          =   330
          Left            =   120
          Style           =   1  'Graphical
-         TabIndex        =   70
+         TabIndex        =   69
          TabStop         =   0   'False
          Top             =   960
          Width           =   1455
@@ -58,7 +70,7 @@ Begin VB.Form frmPanelgm
          Height          =   330
          Left            =   120
          Style           =   1  'Graphical
-         TabIndex        =   68
+         TabIndex        =   67
          TabStop         =   0   'False
          Top             =   2040
          Width           =   1455
@@ -69,7 +81,7 @@ Begin VB.Form frmPanelgm
          Height          =   330
          Left            =   120
          Style           =   1  'Graphical
-         TabIndex        =   67
+         TabIndex        =   66
          TabStop         =   0   'False
          Top             =   1680
          Width           =   1455
@@ -80,7 +92,7 @@ Begin VB.Form frmPanelgm
          Height          =   330
          Left            =   1680
          Style           =   1  'Graphical
-         TabIndex        =   66
+         TabIndex        =   65
          TabStop         =   0   'False
          Top             =   960
          Width           =   1455
@@ -91,7 +103,7 @@ Begin VB.Form frmPanelgm
          Height          =   330
          Left            =   1680
          Style           =   1  'Graphical
-         TabIndex        =   65
+         TabIndex        =   64
          TabStop         =   0   'False
          Top             =   1320
          Width           =   1455
@@ -102,7 +114,7 @@ Begin VB.Form frmPanelgm
          Height          =   330
          Left            =   1680
          Style           =   1  'Graphical
-         TabIndex        =   64
+         TabIndex        =   63
          TabStop         =   0   'False
          Top             =   2040
          Width           =   1455
@@ -113,7 +125,7 @@ Begin VB.Form frmPanelgm
          Height          =   330
          Left            =   1680
          Style           =   1  'Graphical
-         TabIndex        =   63
+         TabIndex        =   62
          TabStop         =   0   'False
          Top             =   1680
          Width           =   1455
@@ -122,12 +134,12 @@ Begin VB.Form frmPanelgm
          BackColor       =   &H8000000A&
          Caption         =   "STAT"
          Height          =   330
-         Left            =   1680
+         Left            =   3240
          Style           =   1  'Graphical
-         TabIndex        =   62
+         TabIndex        =   61
          TabStop         =   0   'False
-         Top             =   600
-         Width           =   1455
+         Top             =   1320
+         Width           =   1215
       End
       Begin VB.CommandButton cmdInfo 
          BackColor       =   &H8000000A&
@@ -135,7 +147,7 @@ Begin VB.Form frmPanelgm
          Height          =   330
          Left            =   120
          Style           =   1  'Graphical
-         TabIndex        =   61
+         TabIndex        =   60
          TabStop         =   0   'False
          Top             =   600
          Width           =   1455
@@ -146,9 +158,9 @@ Begin VB.Form frmPanelgm
          Height          =   330
          Left            =   1680
          Style           =   1  'Graphical
-         TabIndex        =   60
+         TabIndex        =   59
          TabStop         =   0   'False
-         Top             =   240
+         Top             =   600
          Width           =   1455
       End
       Begin VB.CommandButton cmdSUMUser 
@@ -157,9 +169,9 @@ Begin VB.Form frmPanelgm
          Height          =   330
          Left            =   120
          Style           =   1  'Graphical
-         TabIndex        =   59
+         TabIndex        =   58
          TabStop         =   0   'False
-         Top             =   240
+         Top             =   1320
          Width           =   1455
       End
       Begin VB.CommandButton cmdBorrarInformes 
@@ -168,7 +180,7 @@ Begin VB.Form frmPanelgm
          Height          =   690
          Left            =   3240
          Style           =   1  'Graphical
-         TabIndex        =   58
+         TabIndex        =   57
          TabStop         =   0   'False
          Top             =   1680
          Width           =   1215
@@ -178,7 +190,7 @@ Begin VB.Form frmPanelgm
          ForeColor       =   &H00C0C0C0&
          Height          =   255
          Left            =   3360
-         TabIndex        =   57
+         TabIndex        =   56
          Top             =   480
          Width           =   255
       End
@@ -186,11 +198,11 @@ Begin VB.Form frmPanelgm
          BackColor       =   &H8000000A&
          Caption         =   "Seguir Mouse"
          Height          =   330
-         Left            =   120
+         Left            =   1680
          Style           =   1  'Graphical
-         TabIndex        =   56
+         TabIndex        =   55
          TabStop         =   0   'False
-         Top             =   1320
+         Top             =   240
          Width           =   1455
       End
       Begin VB.CheckBox chkAutoName 
@@ -198,7 +210,7 @@ Begin VB.Form frmPanelgm
          ForeColor       =   &H00C0C0C0&
          Height          =   255
          Left            =   3360
-         TabIndex        =   55
+         TabIndex        =   54
          Top             =   240
          Width           =   255
       End
@@ -208,7 +220,7 @@ Begin VB.Form frmPanelgm
          ForeColor       =   &H00C0C0C0&
          Height          =   195
          Left            =   3600
-         TabIndex        =   74
+         TabIndex        =   73
          Top             =   480
          Width           =   855
       End
@@ -218,18 +230,29 @@ Begin VB.Form frmPanelgm
          ForeColor       =   &H00C0C0C0&
          Height          =   195
          Left            =   3600
-         TabIndex        =   73
+         TabIndex        =   72
          Top             =   260
          Width           =   735
       End
+   End
+   Begin VB.CommandButton cmdTrabajando 
+      BackColor       =   &H8000000A&
+      Caption         =   "Actualizar Trabajadores"
+      Height          =   360
+      Left            =   120
+      Style           =   1  'Graphical
+      TabIndex        =   70
+      Top             =   3840
+      Width           =   2175
    End
    Begin VB.CheckBox chkVerPanel 
       BackColor       =   &H00000000&
       ForeColor       =   &H80000005&
       Height          =   255
       Left            =   3240
-      TabIndex        =   69
+      TabIndex        =   68
       Top             =   7680
+      Value           =   1  'Checked
       Width           =   255
    End
    Begin VB.CommandButton cmdButtonActualizarListaGms 
@@ -238,7 +261,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   3720
       Style           =   1  'Graphical
-      TabIndex        =   53
+      TabIndex        =   52
       TabStop         =   0   'False
       Top             =   240
       Width           =   855
@@ -249,7 +272,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   4800
       Style           =   1  'Graphical
-      TabIndex        =   52
+      TabIndex        =   51
       Top             =   6120
       Width           =   2295
    End
@@ -259,7 +282,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   4800
       Style           =   1  'Graphical
-      TabIndex        =   51
+      TabIndex        =   50
       Top             =   5640
       Width           =   2295
    End
@@ -269,7 +292,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   4800
       Style           =   1  'Graphical
-      TabIndex        =   50
+      TabIndex        =   49
       Top             =   5160
       Width           =   2295
    End
@@ -286,7 +309,7 @@ Begin VB.Form frmPanelgm
       EndProperty
       Height          =   375
       Left            =   6600
-      TabIndex        =   49
+      TabIndex        =   48
       Text            =   "5"
       Top             =   4200
       Width           =   495
@@ -297,7 +320,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   4800
       Style           =   1  'Graphical
-      TabIndex        =   48
+      TabIndex        =   47
       Top             =   4200
       Width           =   1695
    End
@@ -307,7 +330,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   4800
       Style           =   1  'Graphical
-      TabIndex        =   47
+      TabIndex        =   46
       Top             =   6600
       Width           =   2295
    End
@@ -317,7 +340,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   6000
       Style           =   1  'Graphical
-      TabIndex        =   46
+      TabIndex        =   45
       Top             =   4680
       Width           =   1110
    End
@@ -327,7 +350,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   4800
       Style           =   1  'Graphical
-      TabIndex        =   45
+      TabIndex        =   44
       Top             =   4680
       Width           =   1095
    End
@@ -337,7 +360,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   3480
       Style           =   1  'Graphical
-      TabIndex        =   44
+      TabIndex        =   43
       Top             =   3360
       Width           =   1215
    End
@@ -347,7 +370,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   4800
       Style           =   1  'Graphical
-      TabIndex        =   43
+      TabIndex        =   42
       Top             =   120
       Width           =   2295
    End
@@ -357,7 +380,7 @@ Begin VB.Form frmPanelgm
       Height          =   300
       Left            =   3840
       Style           =   1  'Graphical
-      TabIndex        =   42
+      TabIndex        =   41
       TabStop         =   0   'False
       Top             =   7320
       Width           =   800
@@ -367,7 +390,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Index           =   1
       Left            =   1200
-      TabIndex        =   41
+      TabIndex        =   40
       Top             =   5760
       Width           =   390
    End
@@ -384,7 +407,7 @@ Begin VB.Form frmPanelgm
       EndProperty
       Height          =   375
       Left            =   1680
-      TabIndex        =   40
+      TabIndex        =   39
       Text            =   "0"
       Top             =   5760
       Width           =   735
@@ -394,7 +417,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Index           =   0
       Left            =   2520
-      TabIndex        =   39
+      TabIndex        =   38
       Top             =   5760
       Width           =   375
    End
@@ -404,7 +427,7 @@ Begin VB.Form frmPanelgm
       Index           =   1
       Left            =   1200
       MaskColor       =   &H80000006&
-      TabIndex        =   37
+      TabIndex        =   36
       Top             =   6240
       Width           =   375
    End
@@ -421,7 +444,7 @@ Begin VB.Form frmPanelgm
       EndProperty
       Height          =   405
       Left            =   1680
-      TabIndex        =   36
+      TabIndex        =   35
       Text            =   "0"
       Top             =   6240
       Width           =   700
@@ -433,7 +456,7 @@ Begin VB.Form frmPanelgm
       Index           =   0
       Left            =   2520
       MaskColor       =   &H80000006&
-      TabIndex        =   35
+      TabIndex        =   34
       Top             =   6240
       Width           =   375
    End
@@ -442,7 +465,7 @@ Begin VB.Form frmPanelgm
       Height          =   405
       Left            =   1200
       MaskColor       =   &H80000006&
-      TabIndex        =   33
+      TabIndex        =   32
       Top             =   6720
       Width           =   375
    End
@@ -452,7 +475,7 @@ Begin VB.Form frmPanelgm
       Height          =   405
       Left            =   2520
       MaskColor       =   &H80000006&
-      TabIndex        =   32
+      TabIndex        =   31
       Top             =   6720
       Width           =   375
    End
@@ -469,7 +492,7 @@ Begin VB.Form frmPanelgm
       EndProperty
       Height          =   405
       Left            =   1680
-      TabIndex        =   31
+      TabIndex        =   30
       Text            =   "0"
       Top             =   6720
       Width           =   700
@@ -480,7 +503,7 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   2040
       Style           =   1  'Graphical
-      TabIndex        =   29
+      TabIndex        =   28
       TabStop         =   0   'False
       Top             =   3360
       Width           =   1335
@@ -491,7 +514,7 @@ Begin VB.Form frmPanelgm
       Height          =   375
       Left            =   3480
       Style           =   1  'Graphical
-      TabIndex        =   28
+      TabIndex        =   27
       Top             =   8040
       Width           =   1215
    End
@@ -501,21 +524,10 @@ Begin VB.Form frmPanelgm
       Height          =   360
       Left            =   4800
       Style           =   1  'Graphical
-      TabIndex        =   25
+      TabIndex        =   24
       TabStop         =   0   'False
       Top             =   720
       Width           =   1590
-   End
-   Begin VB.CommandButton cmdIrCerca 
-      BackColor       =   &H8000000A&
-      Caption         =   "Ir Cerca"
-      Height          =   360
-      Left            =   120
-      Style           =   1  'Graphical
-      TabIndex        =   24
-      TabStop         =   0   'False
-      Top             =   3840
-      Width           =   1815
    End
    Begin VB.CommandButton cmdInformación 
       BackColor       =   &H8000000A&
@@ -773,14 +785,14 @@ Begin VB.Form frmPanelgm
    End
    Begin VB.CommandButton cmdActualiza 
       BackColor       =   &H8000000A&
-      Caption         =   "Usuarios"
+      Caption         =   "Actualizar Usuarios"
       Height          =   360
-      Left            =   3480
+      Left            =   2400
       Style           =   1  'Graphical
       TabIndex        =   2
       TabStop         =   0   'False
       Top             =   3840
-      Width           =   1215
+      Width           =   2295
    End
    Begin VB.ComboBox cboListaUsus 
       BackColor       =   &H8000000A&
@@ -813,7 +825,7 @@ Begin VB.Form frmPanelgm
       ForeColor       =   &H00C0C0C0&
       Height          =   200
       Left            =   3500
-      TabIndex        =   72
+      TabIndex        =   71
       Top             =   7710
       Width           =   1215
    End
@@ -836,7 +848,7 @@ Begin VB.Form frmPanelgm
       Height          =   285
       Index           =   0
       Left            =   0
-      TabIndex        =   38
+      TabIndex        =   37
       Top             =   5760
       Width           =   975
    End
@@ -859,7 +871,7 @@ Begin VB.Form frmPanelgm
       Height          =   285
       Index           =   3
       Left            =   240
-      TabIndex        =   34
+      TabIndex        =   33
       Top             =   6240
       Width           =   735
    End
@@ -882,7 +894,7 @@ Begin VB.Form frmPanelgm
       Height          =   285
       Index           =   2
       Left            =   240
-      TabIndex        =   30
+      TabIndex        =   29
       Top             =   6720
       Width           =   735
    End
@@ -904,7 +916,7 @@ Begin VB.Form frmPanelgm
       Height          =   285
       Index           =   1
       Left            =   240
-      TabIndex        =   27
+      TabIndex        =   26
       Top             =   4920
       Width           =   735
    End
@@ -926,7 +938,7 @@ Begin VB.Form frmPanelgm
       Height          =   285
       Index           =   0
       Left            =   120
-      TabIndex        =   26
+      TabIndex        =   25
       Top             =   5400
       Width           =   885
    End
@@ -1622,8 +1634,6 @@ CerrarProceso_Click_Err:
     
 End Sub
 
-
-
 Private Sub chkVerPanel_Click()
     If chkVerPanel.Value = 1 Then
         FraControlMacros.visible = False
@@ -2152,6 +2162,12 @@ Private Sub cmdInsertarTrigger_Click()
 
 End Sub
 
+Private Sub cmdInventario_Click()
+    tmpUser = cboListaUsus.Text
+    Call ParseUserCommand("/INV " & tmpUser)
+    Call frmPanelgm.txtMod.SetFocus
+End Sub
+
 Private Sub cmdInvisibilidadSi_Click()
 
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "SININVI")
@@ -2657,12 +2673,12 @@ Private Sub List1_DblClick()
         Call WriteGoNearby(tmpUser)
 End Sub
 
-Private Sub List1_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub List1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo List1_MouseDown_Err
     
 
-    If button = vbRightButton Then
+    If Button = vbRightButton Then
         PopUpMenu mnuUsuario
 
     End If
