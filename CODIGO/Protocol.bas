@@ -3774,7 +3774,7 @@ Private Sub HandlePosLLamadaDeClan()
     LLamadaDeclanX = srcX
     LLamadaDeclanY = srcY
     If BabelInitialized Then
-        Call ShowClanCall(Map, srcX, srcY)
+        Call ShowGuildCall(map, srcX, srcY)
     Else
         Call frmMapaGrande.ShowClanCall(Map, srcX, srcY)
     End If
@@ -4028,13 +4028,21 @@ Private Sub HandleGuildList()
         ListaClanes = True
         
         Dim i As Long
-
+        If BabelInitialized Then
+            Call OpenGuildList(UBound(ClanesList) + 1)
+        End If
         For i = 0 To UBound(guilds())
             ClanesList(i).nombre = ReadField(1, guilds(i), Asc("-"))
             ClanesList(i).Alineacion = Val(ReadField(2, guilds(i), Asc("-")))
             ClanesList(i).indice = i
+            If BabelInitialized Then
+                Call SetGuildInfo(i, ClanesList(i))
+            End If
         Next i
         
+        If BabelInitialized Then
+            Exit Sub
+        End If
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
             Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
@@ -4046,11 +4054,7 @@ Private Sub HandleGuildList()
     COLOR_AZUL = RGB(0, 0, 0)
     
     Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
-
     Call frmGuildAdm.Show(vbModeless, GetGameplayForm())
-    
-    Exit Sub
-    
     Exit Sub
 
 ErrHandler:
@@ -6300,17 +6304,30 @@ Private Sub HandleGuildDetails()
         If Not .EsLeader Then
 
         End If
+        Dim GuildDetails As t_GuildInfo
+        GuildDetails.Name = Reader.ReadString8()
+        GuildDetails.Founder = Reader.ReadString8
+        GuildDetails.CreationDate = Reader.ReadString8()
+        GuildDetails.Leader = Reader.ReadString8()
+        GuildDetails.MemberCount = Reader.ReadInt16()
+        GuildDetails.Aligment = Reader.ReadString8()
+        GuildDetails.Description = Reader.ReadString8()
+        GuildDetails.Level = Reader.ReadInt8()
+        If BabelInitialized Then
+            Call SetGuildBrief(GuildDetails)
+            Exit Sub
+        End If
         
-        .nombre.Caption = "Nombre:" & Reader.ReadString8()
-        .fundador.Caption = "Fundador:" & Reader.ReadString8()
-        .creacion.Caption = "Fecha de creacion:" & Reader.ReadString8()
-        .lider.Caption = "Líder:" & Reader.ReadString8()
-        .miembros.Caption = "Miembros:" & Reader.ReadInt16()
+        .nombre.Caption = "Nombre:" & GuildDetails.Name
+        .fundador.Caption = "Fundador:" & GuildDetails.Founder
+        .creacion.Caption = "Fecha de creacion:" & GuildDetails.CreationDate
+        .lider.Caption = "Líder:" & GuildDetails.Leader
+        .miembros.Caption = "Miembros:" & GuildDetails.MemberCount
         
-        .lblAlineacion.Caption = "Alineación: " & Reader.ReadString8()
+        .lblAlineacion.Caption = "Alineación: " & GuildDetails.Aligment
         
-        .desc.Text = Reader.ReadString8()
-        .nivel.Caption = "Nivel de clan: " & Reader.ReadInt8()
+        .desc.Text = GuildDetails.Description
+        .nivel.Caption = "Nivel de clan: " & GuildDetails.Level
 
     End With
     
@@ -7157,7 +7174,7 @@ Private Sub HandleAuraToChar()
         Exit Sub
 
 HandleAuraToChar_Err:
-134     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAuraToChar", Erl)
+134     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAuraToChar " & CharIndex, Erl)
     
     
 End Sub

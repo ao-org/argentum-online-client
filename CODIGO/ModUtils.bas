@@ -28,9 +28,9 @@ Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As I
 'get mac adress
 
 Public Type Tclan
-    nombre As String
     Alineacion As Byte
     indice As Integer
+    nombre As String
 End Type
 
 Public ListaClanes      As Boolean
