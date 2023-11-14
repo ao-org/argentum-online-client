@@ -3,6 +3,7 @@
 
 # Declare file types.
 # The - is a negation symbol, so  -text it means"not" text
+start_protected_game -text
 *.exe binary
 *.msv binary
 *.frx binary
