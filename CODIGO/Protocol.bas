@@ -6658,6 +6658,8 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.Mensajeria.Visible = False
         frmPanelgm.cmdMapeo.Visible = False
         frmPanelgm.cmdMapeo.Enabled = False
+        frmPanelgm.cmdCerrarCliente.visible = False
+        frmPanelgm.cmdCerrarCliente.enabled = False
         frmPanelgm.cmdcrearevento.Enabled = False
         frmPanelgm.cmdcrearevento.Visible = False
         frmPanelgm.txtMod.Width = 4560
@@ -6671,11 +6673,15 @@ Private Sub HandleShowGMPanelForm()
         frmPanelgm.cmdcrearevento.Visible = False
         frmPanelgm.cmdMapeo.visible = False
         frmPanelgm.cmdMapeo.enabled = False
+        frmPanelgm.cmdCerrarCliente.visible = False
+        frmPanelgm.cmdCerrarCliente.enabled = False
         
         Case 4 ' Dios
         frmPanelgm.Admin(0).Visible = False
         frmPanelgm.cmdMapeo.visible = False
         frmPanelgm.cmdMapeo.enabled = False
+        frmPanelgm.cmdCerrarCliente.visible = False
+        frmPanelgm.cmdCerrarCliente.enabled = False
         
         Case 5
         
