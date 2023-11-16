@@ -23,6 +23,212 @@ Begin VB.Form frmPanelgm
    ScaleWidth      =   7155
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.Frame MacrosCheat 
+      BackColor       =   &H80000007&
+      Height          =   4095
+      Left            =   4800
+      TabIndex        =   76
+      Top             =   1440
+      Width           =   2295
+      Begin VB.TextBox txtSegundos 
+         Height          =   285
+         Left            =   1680
+         TabIndex        =   87
+         Text            =   "1.5"
+         Top             =   720
+         Width           =   375
+      End
+      Begin VB.CheckBox chkCoordenadas 
+         BackColor       =   &H80000007&
+         Caption         =   "Coordenadas"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H8000000B&
+         Height          =   255
+         Left            =   240
+         TabIndex        =   86
+         Top             =   2160
+         Width           =   1575
+      End
+      Begin VB.CheckBox chkLeftClick 
+         BackColor       =   &H80000001&
+         Caption         =   "LeftClick"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H8000000B&
+         Height          =   240
+         Left            =   240
+         TabIndex        =   85
+         Top             =   1200
+         Width           =   1575
+      End
+      Begin VB.CheckBox chkUsarItem 
+         BackColor       =   &H80000001&
+         Caption         =   "UsarItem"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H8000000B&
+         Height          =   255
+         Left            =   240
+         TabIndex        =   84
+         Top             =   960
+         Width           =   1335
+      End
+      Begin VB.CheckBox chkOcultar 
+         BackColor       =   &H80000001&
+         Caption         =   "Ocultar"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H8000000B&
+         Height          =   255
+         Left            =   240
+         TabIndex        =   83
+         Top             =   720
+         Width           =   1455
+      End
+      Begin VB.CheckBox chkPaquetes 
+         BackColor       =   &H80000001&
+         Caption         =   "Paquetes"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H8000000B&
+         Height          =   255
+         Left            =   240
+         TabIndex        =   82
+         Top             =   1680
+         Width           =   1455
+      End
+      Begin VB.CheckBox chkAntiCheat 
+         BackColor       =   &H80000007&
+         Caption         =   "AntiCheat"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H8000000B&
+         Height          =   255
+         Left            =   240
+         TabIndex        =   81
+         Top             =   240
+         Width           =   1575
+      End
+      Begin VB.CheckBox chkInasistido 
+         BackColor       =   &H80000007&
+         Caption         =   "Inasistido"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H8000000B&
+         Height          =   255
+         Left            =   240
+         TabIndex        =   80
+         Top             =   2640
+         Width           =   1575
+      End
+      Begin VB.CheckBox chkIRAUser 
+         BackColor       =   &H80000007&
+         Caption         =   "IRA User"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H8000000B&
+         Height          =   255
+         Left            =   240
+         TabIndex        =   79
+         Top             =   3720
+         Width           =   1215
+      End
+      Begin VB.CheckBox chkClicks 
+         BackColor       =   &H80000001&
+         Caption         =   "Clicks"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H8000000B&
+         Height          =   255
+         Left            =   240
+         TabIndex        =   78
+         Top             =   2400
+         Width           =   1335
+      End
+      Begin VB.CheckBox chkCarteleo 
+         BackColor       =   &H80000007&
+         Caption         =   "Carteleo"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H8000000B&
+         Height          =   255
+         Left            =   240
+         TabIndex        =   77
+         Top             =   2880
+         Width           =   1455
+      End
+   End
    Begin VB.Frame FraControlMacros 
       BackColor       =   &H80000001&
       ForeColor       =   &H00C0C0C0&
@@ -273,7 +479,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   51
-      Top             =   6120
+      Top             =   7560
       Width           =   2295
    End
    Begin VB.CommandButton cmdMagiaSin 
@@ -283,7 +489,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   50
-      Top             =   5640
+      Top             =   7080
       Width           =   2295
    End
    Begin VB.CommandButton cmdRestringirMapa 
@@ -293,7 +499,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   49
-      Top             =   5160
+      Top             =   6600
       Width           =   2295
    End
    Begin VB.TextBox txtTextTriggers 
@@ -311,7 +517,7 @@ Begin VB.Form frmPanelgm
       Left            =   6600
       TabIndex        =   48
       Text            =   "5"
-      Top             =   4200
+      Top             =   5640
       Width           =   495
    End
    Begin VB.CommandButton cmdInsertarTrigger 
@@ -321,7 +527,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   47
-      Top             =   4200
+      Top             =   5640
       Width           =   1695
    End
    Begin VB.CommandButton cmdRecargarObjetos 
@@ -331,7 +537,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   46
-      Top             =   6600
+      Top             =   8040
       Width           =   2295
    End
    Begin VB.CommandButton cmdInseguro 
@@ -341,7 +547,7 @@ Begin VB.Form frmPanelgm
       Left            =   6000
       Style           =   1  'Graphical
       TabIndex        =   45
-      Top             =   4680
+      Top             =   6120
       Width           =   1110
    End
    Begin VB.CommandButton cmdSeguro 
@@ -351,7 +557,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   44
-      Top             =   4680
+      Top             =   6120
       Width           =   1095
    End
    Begin VB.CommandButton cmdMapeo 
@@ -526,8 +732,8 @@ Begin VB.Form frmPanelgm
       Style           =   1  'Graphical
       TabIndex        =   24
       TabStop         =   0   'False
-      Top             =   720
-      Width           =   1590
+      Top             =   600
+      Width           =   2295
    End
    Begin VB.CommandButton cmdInformación 
       BackColor       =   &H8000000A&
@@ -548,8 +754,8 @@ Begin VB.Form frmPanelgm
       Style           =   1  'Graphical
       TabIndex        =   22
       TabStop         =   0   'False
-      Top             =   1320
-      Width           =   1215
+      Top             =   1080
+      Width           =   2295
    End
    Begin VB.CommandButton cmdMatarNPC 
       BackColor       =   &H8000000A&
@@ -3590,6 +3796,7 @@ Public Sub CadenaChat(ByVal chat As String)
                 If frmPanelgm.chkAutoName.Value = 1 Then frmPanelgm.cboListaUsus.Text = nombre
                     If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
                     If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroDePaquetes.txt")
+                    If frmPanelgm.chkPaquetes.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
                 End If
         End If
 
@@ -3608,24 +3815,42 @@ Public Sub CadenaChat(ByVal chat As String)
                     nombre = Left(nombre, posicionBarra - 1)
                     ' Elimina espacios en blanco al principio y al final del nombre
                     nombre = Trim(nombre)
+                    
+                    ' Declarar TiempoAnterior como Static fuera de la función
+                    Static TiempoAnterior As Single
             
                     ' Verificar si la cadena contiene ciertos textos utilizando Select Case
                     Select Case True
                         Case InStr(Cadena, "Ocultar") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Ocultar ", "MacroOcultar.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                            If frmPanelgm.chkOcultar.Value = 1 Then
+                                If frmPanelgm.cboListaUsus.Text = nombre Then
+                                    ' Obtener el tiempo actual en milisegundos
+                                    Dim TiempoActual As Single
+                                    TiempoActual = Timer
+                                    
+                                    If TiempoActual - TiempoAnterior < frmPanelgm.txtSegundos Then
+                                        Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                                    End If
+                                    TiempoAnterior = TiempoActual
+                                End If
+                            End If
                         Case InStr(Cadena, "UseItemU") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem U ", "MacroUseItemU.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                            If frmPanelgm.chkUsarItem.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
                         Case InStr(Cadena, "UseItem") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem ", "MacroUseItem.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                            If frmPanelgm.chkUsarItem.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
                         Case InStr(Cadena, "GuildMessage") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de GuildMessage ", "MacroGuildMessage.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                         Case InStr(Cadena, "LeftClick") > 0
                             Resultado = GuardarTextoEnArchivo(nombre & ",Macro de LeftClick ", "MacroLeftClick.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                            If frmPanelgm.chkLeftClick.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
                         Case InStr(Cadena, "ChangeHeading") > 0
                             Resultado = GuardarTextoEnArchivo(nombre & ",Macro de ChangeHeading ", "MacroChangeHeading.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
@@ -3663,15 +3888,19 @@ Public Sub CadenaChat(ByVal chat As String)
                         Case InStr(Cadena, "COORDENADAS.") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Cordenadas", "MacroCoordenadas.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                            If frmPanelgm.chkCoordenadas.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
                         Case InStr(Cadena, ").") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de click", "MacroDeClick.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                            If frmPanelgm.chkClicks.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
                         Case InStr(Cadena, "INASISTIDO.") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro Inasistido", "MacroInasistido.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                            If frmPanelgm.chkInasistido.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
                         Case InStr(Cadena, "CARTELEO.") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Carteleo", "MacroCarteleo.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                            If frmPanelgm.chkCarteleo.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
                         Case Else
                             ' Manejar el caso en el que no hay coincidencias
                     End Select
