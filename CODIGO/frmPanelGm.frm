@@ -245,7 +245,7 @@ Begin VB.Form frmPanelgm
          Style           =   1  'Graphical
          TabIndex        =   75
          TabStop         =   0   'False
-         Top             =   960
+         Top             =   1320
          Width           =   1215
       End
       Begin VB.CommandButton cmdIrCerca 
@@ -259,16 +259,16 @@ Begin VB.Form frmPanelgm
          Top             =   240
          Width           =   1455
       End
-      Begin VB.CommandButton cmdBalance 
+      Begin VB.CommandButton cmdCerrarCliente 
          BackColor       =   &H8000000A&
-         Caption         =   "Balance"
+         Caption         =   "Cerrar Cliente"
          Height          =   330
-         Left            =   120
+         Left            =   3240
          Style           =   1  'Graphical
          TabIndex        =   69
          TabStop         =   0   'False
          Top             =   960
-         Width           =   1455
+         Width           =   1215
       End
       Begin VB.CommandButton cmdBanPJ 
          BackColor       =   &H8000000A&
@@ -340,12 +340,12 @@ Begin VB.Form frmPanelgm
          BackColor       =   &H8000000A&
          Caption         =   "STAT"
          Height          =   330
-         Left            =   3240
+         Left            =   120
          Style           =   1  'Graphical
          TabIndex        =   61
          TabStop         =   0   'False
-         Top             =   1320
-         Width           =   1215
+         Top             =   960
+         Width           =   1455
       End
       Begin VB.CommandButton cmdInfo 
          BackColor       =   &H8000000A&
@@ -479,7 +479,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   51
-      Top             =   7560
+      Top             =   6480
       Width           =   2295
    End
    Begin VB.CommandButton cmdMagiaSin 
@@ -489,7 +489,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   50
-      Top             =   7080
+      Top             =   6000
       Width           =   2295
    End
    Begin VB.CommandButton cmdRestringirMapa 
@@ -499,7 +499,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   49
-      Top             =   6600
+      Top             =   5520
       Width           =   2295
    End
    Begin VB.TextBox txtTextTriggers 
@@ -517,7 +517,7 @@ Begin VB.Form frmPanelgm
       Left            =   6600
       TabIndex        =   48
       Text            =   "5"
-      Top             =   5640
+      Top             =   4560
       Width           =   495
    End
    Begin VB.CommandButton cmdInsertarTrigger 
@@ -527,7 +527,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   47
-      Top             =   5640
+      Top             =   4560
       Width           =   1695
    End
    Begin VB.CommandButton cmdRecargarObjetos 
@@ -537,7 +537,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   46
-      Top             =   8040
+      Top             =   6960
       Width           =   2295
    End
    Begin VB.CommandButton cmdInseguro 
@@ -547,7 +547,7 @@ Begin VB.Form frmPanelgm
       Left            =   6000
       Style           =   1  'Graphical
       TabIndex        =   45
-      Top             =   6120
+      Top             =   5040
       Width           =   1110
    End
    Begin VB.CommandButton cmdSeguro 
@@ -557,7 +557,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   44
-      Top             =   6120
+      Top             =   5040
       Width           =   1095
    End
    Begin VB.CommandButton cmdMapeo 
@@ -2089,10 +2089,12 @@ cmdActualiza_Click_Err:
     
 End Sub
 
-Private Sub cmdBalance_Click()
+Private Sub cmdCerrarCliente_Click()
     tmpUser = cboListaUsus.Text
-    Call WriteRequestCharGold(tmpUser)
+    Call ParseUserCommand("/SM ")
     Call frmPanelgm.txtMod.SetFocus
+    Call WriteGoNearby(tmpUser)
+    Call WriteCerraCliente(tmpUser)
 End Sub
 
 Private Sub cmdBanPJ_Click()
