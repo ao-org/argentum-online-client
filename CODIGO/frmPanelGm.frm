@@ -34,7 +34,7 @@ Begin VB.Form frmPanelgm
          Height          =   285
          Left            =   1680
          TabIndex        =   87
-         Text            =   "1.5"
+         Text            =   "1"
          Top             =   720
          Width           =   375
       End
@@ -55,7 +55,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   86
          Top             =   2160
-         Width           =   1575
+         Width           =   255
       End
       Begin VB.CheckBox chkLeftClick 
          BackColor       =   &H80000001&
@@ -74,7 +74,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   85
          Top             =   1200
-         Width           =   1575
+         Width           =   255
       End
       Begin VB.CheckBox chkUsarItem 
          BackColor       =   &H80000001&
@@ -93,7 +93,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   84
          Top             =   960
-         Width           =   1335
+         Width           =   255
       End
       Begin VB.CheckBox chkOcultar 
          BackColor       =   &H80000001&
@@ -112,7 +112,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   83
          Top             =   720
-         Width           =   1455
+         Width           =   255
       End
       Begin VB.CheckBox chkPaquetes 
          BackColor       =   &H80000001&
@@ -131,7 +131,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   82
          Top             =   1680
-         Width           =   1455
+         Width           =   255
       End
       Begin VB.CheckBox chkAntiCheat 
          BackColor       =   &H80000007&
@@ -150,7 +150,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   81
          Top             =   240
-         Width           =   1575
+         Width           =   255
       End
       Begin VB.CheckBox chkInasistido 
          BackColor       =   &H80000007&
@@ -169,7 +169,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   80
          Top             =   2640
-         Width           =   1575
+         Width           =   255
       End
       Begin VB.CheckBox chkIRAUser 
          BackColor       =   &H80000007&
@@ -188,7 +188,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   79
          Top             =   3720
-         Width           =   1215
+         Width           =   255
       End
       Begin VB.CheckBox chkClicks 
          BackColor       =   &H80000001&
@@ -207,7 +207,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   78
          Top             =   2400
-         Width           =   1335
+         Width           =   255
       End
       Begin VB.CheckBox chkCarteleo 
          BackColor       =   &H80000007&
@@ -226,7 +226,127 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   77
          Top             =   2880
-         Width           =   1455
+         Width           =   255
+      End
+      Begin VB.Label lblIraUser 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Ira User"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   97
+         Top             =   3720
+         Width           =   930
+      End
+      Begin VB.Label lblCarteleo 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Carteleo"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   2
+         Left            =   600
+         TabIndex        =   96
+         Top             =   2880
+         Width           =   930
+      End
+      Begin VB.Label lblInasistido 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Inasistido"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   95
+         Top             =   2640
+         Width           =   930
+      End
+      Begin VB.Label lblClicks 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Clicks"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   94
+         Top             =   2400
+         Width           =   390
+      End
+      Begin VB.Label lblInasistido 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cordenadas"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   1
+         Left            =   600
+         TabIndex        =   93
+         Top             =   2160
+         Width           =   930
+      End
+      Begin VB.Label lblPaquetes 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Paquetes"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   92
+         Top             =   1680
+         Width           =   690
+      End
+      Begin VB.Label lblLeftClick 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "LeftClick"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   1
+         Left            =   600
+         TabIndex        =   91
+         Top             =   1200
+         Width           =   690
+      End
+      Begin VB.Label lblUsarItem 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "UsarItem"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   90
+         Top             =   960
+         Width           =   690
+      End
+      Begin VB.Label lblOcultar 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Ocultar"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   1
+         Left            =   600
+         TabIndex        =   89
+         Top             =   720
+         Width           =   690
+      End
+      Begin VB.Label lblAnticheat 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Anticheat"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   88
+         Top             =   240
+         Width           =   690
       End
    End
    Begin VB.Frame FraControlMacros 
@@ -479,7 +599,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   51
-      Top             =   6480
+      Top             =   6840
       Width           =   2295
    End
    Begin VB.CommandButton cmdMagiaSin 
@@ -489,7 +609,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   50
-      Top             =   6000
+      Top             =   6360
       Width           =   2295
    End
    Begin VB.CommandButton cmdRestringirMapa 
@@ -499,7 +619,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   49
-      Top             =   5520
+      Top             =   5880
       Width           =   2295
    End
    Begin VB.TextBox txtTextTriggers 
@@ -537,7 +657,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   46
-      Top             =   6960
+      Top             =   7320
       Width           =   2295
    End
    Begin VB.CommandButton cmdInseguro 
