@@ -150,6 +150,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   81
          Top             =   240
+         Value           =   1  'Checked
          Width           =   255
       End
       Begin VB.CheckBox chkInasistido 
@@ -599,7 +600,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   51
-      Top             =   6840
+      Top             =   6600
       Width           =   2295
    End
    Begin VB.CommandButton cmdMagiaSin 
@@ -609,7 +610,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   50
-      Top             =   6360
+      Top             =   6120
       Width           =   2295
    End
    Begin VB.CommandButton cmdRestringirMapa 
@@ -619,7 +620,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   49
-      Top             =   5880
+      Top             =   5640
       Width           =   2295
    End
    Begin VB.TextBox txtTextTriggers 
@@ -657,7 +658,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   46
-      Top             =   7320
+      Top             =   7080
       Width           =   2295
    End
    Begin VB.CommandButton cmdInseguro 
@@ -1958,6 +1959,19 @@ CerrarProceso_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CerrarProceso_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub chkAntiCheat_Click()
+    If chkAntiCheat.Value = 0 Then
+        chkOcultar.Value = False
+        chkUsarItem.Value = False
+        chkLeftClick.Value = False
+        chkPaquetes.Value = False
+        chkCoordenadas.Value = False
+        chkClicks.Value = False
+        chkInasistido.Value = False
+        chkCarteleo.Value = False
+    End If
 End Sub
 
 Private Sub chkVerPanel_Click()
