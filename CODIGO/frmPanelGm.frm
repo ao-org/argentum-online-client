@@ -3929,11 +3929,11 @@ Public Sub CadenaChat(ByVal chat As String)
                 nombre = Left(nombre, posicionBarra - 1)
                 ' Elimina espacios en blanco al principio y al final del nombre
                 nombre = Trim(nombre)
-                If frmPanelgm.chkAutoName.Value = 1 Then frmPanelgm.cboListaUsus.Text = nombre
-                    If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
-                    If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroDePaquetes.txt")
-                    If frmPanelgm.chkPaquetes.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
-                End If
+                frmPanelgm.cboListaUsus.Text = nombre
+                If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+                If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroDePaquetes.txt")
+                If frmPanelgm.chkPaquetes.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+            End If
         End If
 
             ' Divide la cadena en partes utilizando "Control de macro---> El usuario" como separador
@@ -3954,7 +3954,7 @@ Public Sub CadenaChat(ByVal chat As String)
                     
                     ' Declarar TiempoAnterior como Static fuera de la función
                     Static TiempoAnterior As Single
-            
+                    frmPanelgm.cboListaUsus.Text = nombre
                     ' Verificar si la cadena contiene ciertos textos utilizando Select Case
                     Select Case True
                         Case InStr(Cadena, "Ocultar") > 0
@@ -4018,7 +4018,7 @@ Public Sub CadenaChat(ByVal chat As String)
                     nombre = Left(nombre, posicionBarra - 1)
                     ' Elimina espacios en blanco al principio y al final del nombre
                     nombre = Trim(nombre)
-            
+                    frmPanelgm.cboListaUsus.Text = nombre
                     ' Verificar si la cadena contiene ciertos textos utilizando Select Case
                     Select Case True
                         Case InStr(Cadena, "COORDENADAS.") > 0
