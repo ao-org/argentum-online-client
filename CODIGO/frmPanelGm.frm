@@ -3929,10 +3929,9 @@ Public Sub CadenaChat(ByVal chat As String)
                 nombre = Left(nombre, posicionBarra - 1)
                 ' Elimina espacios en blanco al principio y al final del nombre
                 nombre = Trim(nombre)
-                frmPanelgm.cboListaUsus.Text = nombre
                 If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
                 If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroDePaquetes.txt")
-                If frmPanelgm.chkPaquetes.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                If frmPanelgm.chkPaquetes.Value = 1 Then Call WriteCerraCliente(nombre)
             End If
         End If
 
@@ -3954,7 +3953,7 @@ Public Sub CadenaChat(ByVal chat As String)
                     
                     ' Declarar TiempoAnterior como Static fuera de la función
                     Static TiempoAnterior As Single
-                    frmPanelgm.cboListaUsus.Text = nombre
+
                     ' Verificar si la cadena contiene ciertos textos utilizando Select Case
                     Select Case True
                         Case InStr(Cadena, "Ocultar") > 0
@@ -3967,7 +3966,7 @@ Public Sub CadenaChat(ByVal chat As String)
                                     TiempoActual = Timer
                                     
                                     If TiempoActual - TiempoAnterior < frmPanelgm.txtSegundos Then
-                                        Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                                        Call WriteCerraCliente(nombre)
                                     End If
                                     TiempoAnterior = TiempoActual
                                 End If
@@ -3975,18 +3974,18 @@ Public Sub CadenaChat(ByVal chat As String)
                         Case InStr(Cadena, "UseItemU") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem U ", "MacroUseItemU.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkUsarItem.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkUsarItem.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case InStr(Cadena, "UseItem") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem ", "MacroUseItem.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkUsarItem.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkUsarItem.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case InStr(Cadena, "GuildMessage") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de GuildMessage ", "MacroGuildMessage.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                         Case InStr(Cadena, "LeftClick") > 0
                             Resultado = GuardarTextoEnArchivo(nombre & ",Macro de LeftClick ", "MacroLeftClick.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkLeftClick.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkLeftClick.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case InStr(Cadena, "ChangeHeading") > 0
                             Resultado = GuardarTextoEnArchivo(nombre & ",Macro de ChangeHeading ", "MacroChangeHeading.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
@@ -4018,25 +4017,25 @@ Public Sub CadenaChat(ByVal chat As String)
                     nombre = Left(nombre, posicionBarra - 1)
                     ' Elimina espacios en blanco al principio y al final del nombre
                     nombre = Trim(nombre)
-                    frmPanelgm.cboListaUsus.Text = nombre
+
                     ' Verificar si la cadena contiene ciertos textos utilizando Select Case
                     Select Case True
                         Case InStr(Cadena, "COORDENADAS.") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Cordenadas", "MacroCoordenadas.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkCoordenadas.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkCoordenadas.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case InStr(Cadena, ").") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de click", "MacroDeClick.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkClicks.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkClicks.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case InStr(Cadena, "INASISTIDO.") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro Inasistido", "MacroInasistido.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkInasistido.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkInasistido.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case InStr(Cadena, "CARTELEO.") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Carteleo", "MacroCarteleo.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkCarteleo.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkCarteleo.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case Else
                             ' Manejar el caso en el que no hay coincidencias
                     End Select
