@@ -34,7 +34,7 @@ Begin VB.Form frmPanelgm
          Height          =   285
          Left            =   1680
          TabIndex        =   87
-         Text            =   "1.5"
+         Text            =   "1"
          Top             =   720
          Width           =   375
       End
@@ -55,7 +55,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   86
          Top             =   2160
-         Width           =   1575
+         Width           =   255
       End
       Begin VB.CheckBox chkLeftClick 
          BackColor       =   &H80000001&
@@ -74,7 +74,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   85
          Top             =   1200
-         Width           =   1575
+         Width           =   255
       End
       Begin VB.CheckBox chkUsarItem 
          BackColor       =   &H80000001&
@@ -93,7 +93,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   84
          Top             =   960
-         Width           =   1335
+         Width           =   255
       End
       Begin VB.CheckBox chkOcultar 
          BackColor       =   &H80000001&
@@ -112,7 +112,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   83
          Top             =   720
-         Width           =   1455
+         Width           =   255
       End
       Begin VB.CheckBox chkPaquetes 
          BackColor       =   &H80000001&
@@ -131,7 +131,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   82
          Top             =   1680
-         Width           =   1455
+         Width           =   255
       End
       Begin VB.CheckBox chkAntiCheat 
          BackColor       =   &H80000007&
@@ -150,7 +150,8 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   81
          Top             =   240
-         Width           =   1575
+         Value           =   1  'Checked
+         Width           =   255
       End
       Begin VB.CheckBox chkInasistido 
          BackColor       =   &H80000007&
@@ -169,7 +170,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   80
          Top             =   2640
-         Width           =   1575
+         Width           =   255
       End
       Begin VB.CheckBox chkIRAUser 
          BackColor       =   &H80000007&
@@ -188,7 +189,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   79
          Top             =   3720
-         Width           =   1215
+         Width           =   255
       End
       Begin VB.CheckBox chkClicks 
          BackColor       =   &H80000001&
@@ -207,7 +208,7 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   78
          Top             =   2400
-         Width           =   1335
+         Width           =   255
       End
       Begin VB.CheckBox chkCarteleo 
          BackColor       =   &H80000007&
@@ -226,7 +227,127 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   77
          Top             =   2880
-         Width           =   1455
+         Width           =   255
+      End
+      Begin VB.Label lblIraUser 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Ira User"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   97
+         Top             =   3720
+         Width           =   930
+      End
+      Begin VB.Label lblCarteleo 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Carteleo"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   2
+         Left            =   600
+         TabIndex        =   96
+         Top             =   2880
+         Width           =   930
+      End
+      Begin VB.Label lblInasistido 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Inasistido"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   95
+         Top             =   2640
+         Width           =   930
+      End
+      Begin VB.Label lblClicks 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Clicks"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   94
+         Top             =   2400
+         Width           =   390
+      End
+      Begin VB.Label lblInasistido 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cordenadas"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   1
+         Left            =   600
+         TabIndex        =   93
+         Top             =   2160
+         Width           =   930
+      End
+      Begin VB.Label lblPaquetes 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Paquetes"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   92
+         Top             =   1680
+         Width           =   690
+      End
+      Begin VB.Label lblLeftClick 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "LeftClick"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   1
+         Left            =   600
+         TabIndex        =   91
+         Top             =   1200
+         Width           =   690
+      End
+      Begin VB.Label lblUsarItem 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "UsarItem"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   90
+         Top             =   960
+         Width           =   690
+      End
+      Begin VB.Label lblOcultar 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Ocultar"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   1
+         Left            =   600
+         TabIndex        =   89
+         Top             =   720
+         Width           =   690
+      End
+      Begin VB.Label lblAnticheat 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Anticheat"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   88
+         Top             =   240
+         Width           =   690
       End
    End
    Begin VB.Frame FraControlMacros 
@@ -479,7 +600,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   51
-      Top             =   6480
+      Top             =   6600
       Width           =   2295
    End
    Begin VB.CommandButton cmdMagiaSin 
@@ -489,7 +610,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   50
-      Top             =   6000
+      Top             =   6120
       Width           =   2295
    End
    Begin VB.CommandButton cmdRestringirMapa 
@@ -499,7 +620,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   49
-      Top             =   5520
+      Top             =   5640
       Width           =   2295
    End
    Begin VB.TextBox txtTextTriggers 
@@ -537,7 +658,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   46
-      Top             =   6960
+      Top             =   7080
       Width           =   2295
    End
    Begin VB.CommandButton cmdInseguro 
@@ -1838,6 +1959,19 @@ CerrarProceso_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CerrarProceso_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub chkAntiCheat_Click()
+    If chkAntiCheat.Value = 0 Then
+        chkOcultar.Value = False
+        chkUsarItem.Value = False
+        chkLeftClick.Value = False
+        chkPaquetes.Value = False
+        chkCoordenadas.Value = False
+        chkClicks.Value = False
+        chkInasistido.Value = False
+        chkCarteleo.Value = False
+    End If
 End Sub
 
 Private Sub chkVerPanel_Click()
@@ -3795,11 +3929,10 @@ Public Sub CadenaChat(ByVal chat As String)
                 nombre = Left(nombre, posicionBarra - 1)
                 ' Elimina espacios en blanco al principio y al final del nombre
                 nombre = Trim(nombre)
-                If frmPanelgm.chkAutoName.Value = 1 Then frmPanelgm.cboListaUsus.Text = nombre
-                    If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
-                    If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroDePaquetes.txt")
-                    If frmPanelgm.chkPaquetes.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
-                End If
+                If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+                If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroDePaquetes.txt")
+                If frmPanelgm.chkPaquetes.Value = 1 Then Call WriteCerraCliente(nombre)
+            End If
         End If
 
             ' Divide la cadena en partes utilizando "Control de macro---> El usuario" como separador
@@ -3820,7 +3953,7 @@ Public Sub CadenaChat(ByVal chat As String)
                     
                     ' Declarar TiempoAnterior como Static fuera de la función
                     Static TiempoAnterior As Single
-            
+
                     ' Verificar si la cadena contiene ciertos textos utilizando Select Case
                     Select Case True
                         Case InStr(Cadena, "Ocultar") > 0
@@ -3833,7 +3966,7 @@ Public Sub CadenaChat(ByVal chat As String)
                                     TiempoActual = Timer
                                     
                                     If TiempoActual - TiempoAnterior < frmPanelgm.txtSegundos Then
-                                        Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                                        Call WriteCerraCliente(nombre)
                                     End If
                                     TiempoAnterior = TiempoActual
                                 End If
@@ -3841,18 +3974,18 @@ Public Sub CadenaChat(ByVal chat As String)
                         Case InStr(Cadena, "UseItemU") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem U ", "MacroUseItemU.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkUsarItem.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkUsarItem.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case InStr(Cadena, "UseItem") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem ", "MacroUseItem.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkUsarItem.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkUsarItem.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case InStr(Cadena, "GuildMessage") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de GuildMessage ", "MacroGuildMessage.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                         Case InStr(Cadena, "LeftClick") > 0
                             Resultado = GuardarTextoEnArchivo(nombre & ",Macro de LeftClick ", "MacroLeftClick.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkLeftClick.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkLeftClick.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case InStr(Cadena, "ChangeHeading") > 0
                             Resultado = GuardarTextoEnArchivo(nombre & ",Macro de ChangeHeading ", "MacroChangeHeading.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
@@ -3884,25 +4017,25 @@ Public Sub CadenaChat(ByVal chat As String)
                     nombre = Left(nombre, posicionBarra - 1)
                     ' Elimina espacios en blanco al principio y al final del nombre
                     nombre = Trim(nombre)
-            
+
                     ' Verificar si la cadena contiene ciertos textos utilizando Select Case
                     Select Case True
                         Case InStr(Cadena, "COORDENADAS.") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Cordenadas", "MacroCoordenadas.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkCoordenadas.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkCoordenadas.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case InStr(Cadena, ").") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de click", "MacroDeClick.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkClicks.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkClicks.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case InStr(Cadena, "INASISTIDO.") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro Inasistido", "MacroInasistido.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkInasistido.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkInasistido.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case InStr(Cadena, "CARTELEO.") > 0
                             If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Carteleo", "MacroCarteleo.txt")
                             'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkCarteleo.Value = 1 Then Call WriteCerraCliente(frmPanelgm.cboListaUsus.Text)
+                            If frmPanelgm.chkCarteleo.Value = 1 Then Call WriteCerraCliente(nombre)
                         Case Else
                             ' Manejar el caso en el que no hay coincidencias
                     End Select
