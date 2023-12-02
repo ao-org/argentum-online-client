@@ -1,0 +1,15 @@
+#!/bin/bash
+echo "VB6 Git Ignore Case Pre-commit hook is running."
+
+# Run your custom script
+./git_ignore_case.sh
+
+# Check the exit code of your script
+if [ $? -ne 0 ]; then
+    echo "VB6 Git Ignore Case Pre-commit hook failed. Commit aborted."
+    exit 1
+fi
+
+echo "VB6 Git Ignore Case Pre-commit hook finished."
+# If your script passes, allow the commit to proceed
+exit 0
