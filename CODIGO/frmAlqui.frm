@@ -395,6 +395,12 @@ Private Sub lstArmas_Click()
     frmAlqui.List1.AddItem ("Raices")
     frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Raices)
     
+    frmAlqui.List1.AddItem ("Botella")
+    frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Botella)
+    
+    frmAlqui.List1.AddItem ("Cuchara")
+    frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Cuchara)
+    
     desc.Caption = ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Texto
 
     Call Grh_Render_To_Hdc(picture1, ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).GrhIndex, 0, 0, False)
