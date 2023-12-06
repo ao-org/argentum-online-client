@@ -164,7 +164,7 @@ On Error GoTo OnClick_Err
                         End If
                     End If
                     
-                    If (UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or _
+                    If (UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Alquimia Or UsingSkill = eSkill.Mineria Or _
                         UsingSkill = FundirMetal Or UsingSkill = eSkill.TargetableItem) Then
                         If MainTimer.Check(TimersIndex.CastSpell) Then
                             Call WriteWorkLeftClick(tX, tY, UsingSkill)
