@@ -191,14 +191,14 @@ Private Sub Command3_Click()
 
     End If
 
-    If cantidad > 0 Then
+    If cantidad > 1 Then
         UserMacro.cantidad = cantidad
         UserMacro.TIPO = 1
         UserMacro.Index = ObjAlquimista(lstArmas.ListIndex + 1)
         AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
         UserMacro.Intervalo = IntervaloTrabajo
         UserMacro.Activado = True
-        frmMain.MacroLadder.Interval = IntervaloTrabajo
+        frmMain.MacroLadder.Interval = gIntervals.BuildWork
         frmMain.MacroLadder.Enabled = True
     Else
         Call WriteCraftAlquimista(ObjAlquimista(lstArmas.ListIndex + 1))
