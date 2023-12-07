@@ -205,6 +205,7 @@ Public Type ObjDatas
     CreaParticulaPiso As Integer
     proyectil As Byte
     Amunition As Byte
+    Hechizo As Integer
     Raices As Integer
     Cuchara As Integer
     Botella As Integer
