@@ -392,14 +392,19 @@ Private Sub lstArmas_Click()
     DR.Bottom = 32
     Call frmAlqui.List1.Clear
     Call frmAlqui.List2.Clear
-    frmAlqui.List1.AddItem ("Raices")
-    frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Raices)
     
-    frmAlqui.List1.AddItem ("Botella")
-    frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Botella)
-    
-    frmAlqui.List1.AddItem ("Cuchara")
-    frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Cuchara)
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Raices) > 0 Then
+        frmAlqui.List1.AddItem ("Raices")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Raices)
+    End If
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Botella) > 0 Then
+        frmAlqui.List1.AddItem ("Botella")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Botella)
+    End If
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Cuchara) > 0 Then
+        frmAlqui.List1.AddItem ("Cuchara")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Cuchara)
+    End If
     
     desc.Caption = ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Texto
 
