@@ -406,6 +406,96 @@ Private Sub lstArmas_Click()
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Cuchara)
     End If
     
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Mortero) > 0 Then
+        frmAlqui.List1.AddItem ("Mortero")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Mortero)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FrascoAlq) > 0 Then
+        frmAlqui.List1.AddItem ("FrascoAlq")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FrascoAlq)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FrascoElixir) > 0 Then
+        frmAlqui.List1.AddItem ("FrascoElixir")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FrascoElixir)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Dosificador) > 0 Then
+        frmAlqui.List1.AddItem ("Dosificador")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Dosificador)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Orquidea) > 0 Then
+        frmAlqui.List1.AddItem ("Orquidea")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Orquidea)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Carmesi) > 0 Then
+        frmAlqui.List1.AddItem ("Carmesi")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Carmesi)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).HongoDeLuz) > 0 Then
+        frmAlqui.List1.AddItem ("HongoDeLuz")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).HongoDeLuz)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Esporas) > 0 Then
+        frmAlqui.List1.AddItem ("Esporas")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Esporas)
+    End If
+
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Tuna) > 0 Then
+        frmAlqui.List1.AddItem ("Tuna")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Tuna)
+    End If
+
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Cala) > 0 Then
+        frmAlqui.List1.AddItem ("Cala")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Cala)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).ColaDeZorro) > 0 Then
+        frmAlqui.List1.AddItem ("ColaDeZorro")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).ColaDeZorro)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FlorOceano) > 0 Then
+        frmAlqui.List1.AddItem ("FlorOceano")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FlorOceano)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FlorRoja) > 0 Then
+        frmAlqui.List1.AddItem ("FlorRoja")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FlorRoja)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Hierva) > 0 Then
+        frmAlqui.List1.AddItem ("Hierva")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Hierva)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).HojasDeRin) > 0 Then
+        frmAlqui.List1.AddItem ("HojasDeRin")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).HojasDeRin)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).HojasRojas) > 0 Then
+        frmAlqui.List1.AddItem ("HojasRojas")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).HojasRojas)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).SemillasPros) > 0 Then
+        frmAlqui.List1.AddItem ("SemillasPros")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).SemillasPros)
+    End If
+    
+    If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Pimiento) > 0 Then
+        frmAlqui.List1.AddItem ("Pimiento")
+        frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Pimiento)
+    End If
+    
     desc.Caption = ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Texto
 
     Call Grh_Render_To_Hdc(picture1, ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).GrhIndex, 0, 0, False)
