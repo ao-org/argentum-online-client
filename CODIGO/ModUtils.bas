@@ -209,6 +209,24 @@ Public Type ObjDatas
     Raices As Integer
     Cuchara As Integer
     Botella As Integer
+    Mortero As Integer
+    FrascoAlq As Integer
+    FrascoElixir As Integer
+    Dosificador As Integer
+    Orquidea As Integer
+    Carmesi As Integer
+    HongoDeLuz As Integer
+    Esporas As Integer
+    Tuna As Integer
+    Cala As Integer
+    ColaDeZorro As Integer
+    FlorOceano As Integer
+    FlorRoja As Integer
+    Hierva As Integer
+    HojasDeRin As Integer
+    HojasRojas As Integer
+    SemillasPros As Integer
+    Pimiento As Integer
     Madera As Integer
     MaderaElfica As Integer
     PielLobo As Integer
