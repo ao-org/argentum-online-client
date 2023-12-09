@@ -24,6 +24,3 @@ REGSVR32 /s %SystemRoot%\SysWOW64\MSINET.OCX
 
 copy "!mypath!RICHTX32.OCX" %SystemRoot%\SysWOW64
 REGSVR32 /s %SystemRoot%\SysWOW64\RICHTX32.OCX
-
-copy "!mypath!DX8VB.DLL" %SystemRoot%\SysWOW64
-REGSVR32 /s %SystemRoot%\SysWOW64\DX8VB.DLL
