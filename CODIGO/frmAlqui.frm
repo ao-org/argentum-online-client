@@ -4,15 +4,15 @@ Begin VB.Form frmAlqui
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar con alquimista"
-   ClientHeight    =   5610
+   ClientHeight    =   7080
    ClientLeft      =   0
    ClientTop       =   -75
-   ClientWidth     =   6510
+   ClientWidth     =   6480
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5610
-   ScaleWidth      =   6510
+   ScaleHeight     =   7080
+   ScaleWidth      =   6480
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.PictureBox picture1 
@@ -21,12 +21,12 @@ Begin VB.Form frmAlqui
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   465
-      Left            =   4750
+      Left            =   4800
       ScaleHeight     =   32
       ScaleMode       =   0  'User
       ScaleWidth      =   32
       TabIndex        =   4
-      Top             =   1760
+      Top             =   1920
       Width           =   480
    End
    Begin VB.TextBox cantidad 
@@ -49,7 +49,7 @@ Begin VB.Form frmAlqui
       MaxLength       =   3
       TabIndex        =   3
       Text            =   "1"
-      Top             =   4480
+      Top             =   5640
       Width           =   660
    End
    Begin VB.ListBox List2 
@@ -66,13 +66,13 @@ Begin VB.Form frmAlqui
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1005
+      Height          =   1200
       ItemData        =   "frmAlqui.frx":0000
       Left            =   5520
       List            =   "frmAlqui.frx":0007
       TabIndex        =   2
-      Top             =   2960
-      Width           =   525
+      Top             =   3840
+      Width           =   435
    End
    Begin VB.ListBox List1 
       Appearance      =   0  'Flat
@@ -87,11 +87,11 @@ Begin VB.Form frmAlqui
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1005
-      Left            =   3840
+      Height          =   1200
+      Left            =   4080
       TabIndex        =   1
-      Top             =   2960
-      Width           =   1605
+      Top             =   3840
+      Width           =   1245
    End
    Begin VB.ListBox lstArmas 
       Appearance      =   0  'Flat
@@ -106,11 +106,33 @@ Begin VB.Form frmAlqui
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   3345
-      Left            =   705
+      Height          =   3540
+      Left            =   585
       TabIndex        =   0
       Top             =   1480
-      Width           =   2440
+      Width           =   2910
+   End
+   Begin VB.Image salir 
+      Height          =   375
+      Left            =   6000
+      Top             =   0
+      Width           =   495
+   End
+   Begin VB.Image cmdMasMenos 
+      Height          =   315
+      Index           =   0
+      Left            =   3300
+      Tag             =   "0"
+      Top             =   5640
+      Width           =   315
+   End
+   Begin VB.Image cmdMasMenos 
+      Height          =   315
+      Index           =   1
+      Left            =   4680
+      Tag             =   "0"
+      Top             =   5640
+      Width           =   315
    End
    Begin VB.Label desc 
       Alignment       =   2  'Center
@@ -125,25 +147,25 @@ Begin VB.Form frmAlqui
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   255
-      Left            =   3600
+      Height          =   735
+      Left            =   4080
       TabIndex        =   5
-      Top             =   2400
-      Width           =   2775
+      Top             =   2640
+      Width           =   1815
    End
    Begin VB.Image Command3 
-      Height          =   450
-      Left            =   4590
+      Height          =   400
+      Left            =   3530
       Tag             =   "0"
-      Top             =   4420
-      Width           =   1740
+      Top             =   6350
+      Width           =   1950
    End
    Begin VB.Image Command4 
-      Height          =   465
-      Left            =   3960
+      Height          =   400
+      Left            =   1080
       Tag             =   "0"
-      Top             =   4990
-      Width           =   2130
+      Top             =   6350
+      Width           =   1950
    End
 End
 Attribute VB_Name = "frmAlqui"
@@ -177,6 +199,39 @@ Attribute VB_Exposed = False
 '
 '
 '
+
+Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo cmdMasMenos_MouseDown_Err
+    
+
+    Call ao20audio.PlayWav(SND_CLICK)
+
+    Select Case Index
+
+        Case 0
+            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-off.bmp")
+            cantidad.Text = str((Val(cantidad.Text) - 1))
+            m_Increment = -1
+
+        Case 1
+            cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-off.bmp")
+            cantidad.Text = str((Val(cantidad.Text) + 1))
+            m_Increment = 1
+
+    End Select
+
+    tmrNumber.Interval = 10
+    tmrNumber.enabled = True
+
+    
+    Exit Sub
+
+cmdMasMenos_MouseDown_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoCuenta.cmdMasMenos_MouseDown", Erl)
+    Resume Next
+    
+End Sub
 
 Private Sub Command3_Click()
     
@@ -304,7 +359,6 @@ Private Sub List1_Click()
     DR.Right = 32
     DR.Bottom = 32
     Call Grh_Render_To_Hdc(picture1, 21926, 0, 0, False)
-
     
     Exit Sub
 
@@ -326,7 +380,7 @@ Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command3.Tag = "0" Then
-        Command3.Picture = LoadInterface("trabajar_construirhover.bmp")
+        Command3.Picture = LoadInterface("boton-elaborar-over.bmp")
         Command3.Tag = "1"
 
     End If
@@ -355,7 +409,7 @@ Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command4.Tag = "0" Then
-        Command4.Picture = LoadInterface("trabajar_salirhover.bmp")
+        Command4.Picture = LoadInterface("boton-cancelar-over.bmp")
         Command4.Tag = "1"
 
     End If
@@ -509,3 +563,15 @@ lstArmas_Click_Err:
     
 End Sub
 
+Private Sub salir_Click()
+    On Error GoTo salir_Click_Err
+    
+    Unload Me
+
+    
+    Exit Sub
+
+salir_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmBancoCuenta.salir_Click", Erl)
+    Resume Next
+End Sub

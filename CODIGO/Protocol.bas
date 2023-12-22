@@ -1336,7 +1336,7 @@ Private Sub HandleShowAlquimiaForm()
         
     Else
     
-        frmAlqui.Picture = LoadInterface("alquimia.bmp")
+        frmAlqui.Picture = LoadInterface("ventanaalquimia.bmp")
     
         COLOR_AZUL = RGB(0, 0, 0)
         
