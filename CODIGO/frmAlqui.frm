@@ -21,12 +21,12 @@ Begin VB.Form frmAlqui
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   465
-      Left            =   4800
+      Left            =   4780
       ScaleHeight     =   32
       ScaleMode       =   0  'User
       ScaleWidth      =   32
       TabIndex        =   4
-      Top             =   1920
+      Top             =   1890
       Width           =   480
    End
    Begin VB.TextBox cantidad 
@@ -49,7 +49,7 @@ Begin VB.Form frmAlqui
       MaxLength       =   3
       TabIndex        =   3
       Text            =   "1"
-      Top             =   5640
+      Top             =   5670
       Width           =   660
    End
    Begin VB.ListBox List2 
@@ -254,11 +254,11 @@ Private Sub Command3_Click()
         UserMacro.Intervalo = IntervaloTrabajo
         UserMacro.Activado = True
         frmMain.MacroLadder.Interval = gIntervals.BuildWork
-        frmMain.MacroLadder.Enabled = True
+        frmMain.MacroLadder.enabled = True
     Else
         Call WriteCraftAlquimista(ObjAlquimista(lstArmas.ListIndex + 1))
 
-        If frmMain.macrotrabajo.Enabled Then MacroBltIndex = ObjAlquimista(lstArmas.ListIndex + 1)
+        If frmMain.macrotrabajo.enabled Then MacroBltIndex = ObjAlquimista(lstArmas.ListIndex + 1)
     
     End If
 
@@ -268,7 +268,7 @@ Private Sub Command3_Click()
     Exit Sub
 
 Command3_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Command3_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Command3_Click", Erl)
     Resume Next
     
 End Sub
@@ -283,7 +283,7 @@ Private Sub Command4_Click()
     Exit Sub
 
 Command4_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Command4_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Command4_Click", Erl)
     Resume Next
     
 End Sub
@@ -302,7 +302,7 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Form_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Form_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -317,7 +317,7 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Form_Load", Erl)
     Resume Next
     
 End Sub
@@ -335,7 +335,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Form_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Form_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -363,7 +363,7 @@ Private Sub List1_Click()
     Exit Sub
 
 List1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmAlqui.List1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmAlqui.List1_Click", Erl)
     Resume Next
     
 End Sub
@@ -392,7 +392,7 @@ Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Exit Sub
 
 Command3_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Command3_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Command3_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -421,7 +421,7 @@ Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Exit Sub
 
 Command4_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmAlqui.Command4_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Command4_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -558,7 +558,7 @@ Private Sub lstArmas_Click()
     Exit Sub
 
 lstArmas_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmAlqui.lstArmas_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmAlqui.lstArmas_Click", Erl)
     Resume Next
     
 End Sub
