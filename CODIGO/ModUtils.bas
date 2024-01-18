@@ -779,9 +779,9 @@ Sub General_Set_Connect()
     Call GoToLogIn
     ClickEnAsistente = 0
     If CuentaRecordada.nombre <> "" Then
-        Call TextoAlAsistente("¡Bienvenido de nuevo! ¡Disfruta tu viaje por Argentum20!", False, True)
+        Call TextoAlAsistente("¡Bienvenido de nuevo! ¡Disfruta tu viaje por Argentum Online!", False, True)
     Else
-        Call TextoAlAsistente("¡Bienvenido a Argentum20! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.", False, True)
+        Call TextoAlAsistente("¡Bienvenido a Argentum Online! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.", False, True)
 
     End If
     
