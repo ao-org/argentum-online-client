@@ -729,7 +729,7 @@ Public Sub HandleDisconnect()
     Mod_Declaraciones.Connected = False
     
     Call ResetearUserMacro
-
+    
     'Close connection
     Call modNetwork.Disconnect
     
@@ -738,18 +738,14 @@ Public Sub HandleDisconnect()
     If Not UseBabelUI Then
         frmConnect.visible = True
     End If
-    #If PYMMO = 1 Then
-        If g_game_state.state <> e_state_createchar_screen Then
-            g_game_state.state = e_state_account_screen
-        End If
-    #ElseIf PYMMO = 0 Then
-       Call GoToLogIn
-    #End If
+    
     isLogged = False
+
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     
     ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
+    
 
     frmMain.picHechiz.Visible = False
     
@@ -812,8 +808,6 @@ Public Sub HandleDisconnect()
     Call ao20audio.stopallplayback
 
     Call CleanDialogs
-    
-    'frmMain.IsPlaying = PlayLoop.plNone
     
     'Show connection form
     UserMap = 1
@@ -939,12 +933,15 @@ Public Sub HandleDisconnect()
     Next
     
     #If PYMMO = 1 Then
-    If Not FullLogout Then
-        'Si no es un deslogueo completo, envío nuevamente la lista de Pjs.
-        Call connectToLoginServer
-    End If
+        If g_game_state.State <> e_state_createchar_screen Then
+            g_game_state.State = e_state_account_screen
+        End If
+        If Not FullLogout Then
+            'Si no es un deslogueo completo, envío nuevamente la lista de Pjs.
+            Call connectToLoginServer
+        End If
     #ElseIf PYMMO = 0 Then
-        Call ShowLogin
+        Call General_Set_Connect
     #End If
     
     Exit Sub
@@ -1956,11 +1953,7 @@ Private Sub HandleChangeMap()
     On Error GoTo HandleChangeMap_Err
     UserMap = Reader.ReadInt16()
     ResourceMap = Reader.ReadInt16()
-    If bRain Then
-        If Not MapDat.LLUVIA Then
-            frmMain.IsPlaying = PlayLoop.plNone
-        End If
-    End If
+
     If frmComerciar.Visible Then Unload frmComerciar
     If frmBancoObj.Visible Then Unload frmBancoObj
     If frmEstadisticas.Visible Then Unload frmEstadisticas
@@ -2010,7 +2003,7 @@ Private Sub HandlePosUpdate()
     charlist(UserCharIndex).Pos = UserPos
         
     'Are we under a roof?
-    bTecho = HayTecho(UserPos.x, UserPos.y)
+    UpdatePlayerRoof
                 
     'Update pos label and minimap
     Call UpdateMapPos
@@ -2055,7 +2048,7 @@ Private Sub HandlePosUpdateUserChar()
     charlist(charindex).Pos = UserPos
         
     'Are we under a roof?
-    bTecho = HayTecho(UserPos.x, UserPos.y)
+    UpdatePlayerRoof
                 
 
     Call RefreshAllChars
@@ -2930,11 +2923,7 @@ On Error GoTo ErrHandler
 
     
     SugerenciaAMostrar = RandomNumber(1, NumSug)
-        
-    Call ao20audio.playwav(192)
-    
-    Call ao20audio.stopwav(SND_LLUVIAIN)
-      
+
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
@@ -3020,7 +3009,7 @@ Private Sub HandleUserCharIndexInServer()
     UserPos = charlist(UserCharIndex).Pos
     
     'Are we under a roof?
-    bTecho = HayTecho(UserPos.x, UserPos.y)
+    UpdatePlayerRoof
     
     LastMove = FrameTime
     
@@ -4124,30 +4113,17 @@ Private Sub HandleRainToggle()
     bRain = Reader.ReadBool
 
     If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
+    If MapDat.LLUVIA = 0 Then Exit Sub
 
 
-    If Not bRain Then
-        If MapDat.LLUVIA Then
-
-            If bTecho Then
-                Call ao20audio.playwav(192)
-            Else
-                Call ao20audio.playwav(195)
-            End If
-
-            Call ao20audio.StopAmbientAudio
-            Call Graficos_Particulas.Engine_MeteoParticle_Set(-1)
-
-        End If
+    If bRain Then
+        Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_RAIN_IN_LOOP, SND_RAIN_OUT_LOOP))
+        Call Graficos_Particulas.Engine_MeteoParticle_Set(Particula_Lluvia, False)
 
     Else
-
-        If MapDat.LLUVIA Then
-
-            Call Graficos_Particulas.Engine_MeteoParticle_Set(Particula_Lluvia)
-
-        End If
-
+        Call ao20audio.PlayAmbientAudio(UserMap)
+        Call ao20audio.PlayAmbientWav(IIf(bTecho, SND_RAIN_IN_END, SND_RAIN_OUT_END))
+        Call Graficos_Particulas.Engine_MeteoParticle_Set(-1)
     End If
 
 
@@ -7224,20 +7200,17 @@ Private Sub HandleNieveToggle()
     bNieve = Reader.ReadBool
 
     If Not InMapBounds(UserPos.x, UserPos.y) Then Exit Sub
+    If MapDat.NIEVE = 0 Then Exit Sub
 
+    If bNieve Then
+        Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_NIEVEIN, SND_NIEVEOUT))
+        Call Graficos_Particulas.Engine_MeteoParticle_Set(Particula_Nieve, False)
 
-
-    If Not bNieve Then
-        If MapDat.NIEVE Then
-            Engine_MeteoParticle_Set (-1)
-        End If
     Else
-        If MapDat.NIEVE Then
-            Engine_MeteoParticle_Set (Particula_Nieve)
-        End If
+        Call ao20audio.PlayAmbientAudio(UserMap)
+        Call ao20audio.PlayAmbientWav(IIf(bTecho, SND_RAIN_IN_END, SND_RAIN_OUT_END))
+        Call Graficos_Particulas.Engine_MeteoParticle_Set(-1)
     End If
-
-
 
     Exit Sub
 
