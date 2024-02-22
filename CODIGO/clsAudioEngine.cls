@@ -241,7 +241,7 @@ Private Function FindTrackByName(ByVal Name As String, Optional ByVal label As S
             With mAudioTracks(i)
                 If Not .Buffer Is Nothing Then
                     Dim sf As CONST_DSBSTATUSFLAGS: sf = .Buffer.GetStatus
-                    If (Name = .Name) And (label = .label) And (DSBSTATUS_PLAYING And sf) = DSBSTATUS_PLAYING And (DSBSTATUS_LOOPING And sf) = DSBSTATUS_LOOPING Then
+                    If (Name = .Name) And (label = .label) And (DSBSTATUS_PLAYING And sf) = DSBSTATUS_PLAYING Then
                         FindTrackByName = i
                         Exit Function
                     End If
