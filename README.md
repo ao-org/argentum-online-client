@@ -4,7 +4,7 @@
 Código fuente del cliente de Argentum20.
 
 Para utilizar este cliente, necesitas el servidor correspondiente y assets:
-[argentum20-server](https://github.com/ao-org/argentum20-server)
+[argentum-online-server](https://github.com/ao-org/argentum-online-server)
 [Recursos](https://github.com/ao-org/Recursos)
 
 
