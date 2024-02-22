@@ -688,44 +688,41 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         ScreenY = ScreenY + TilePixelHeight
     Next y
 
-    If bRain Then
-    
-        If MapDat.LLUVIA Then
+    If MeteoParticle >= LBound(particle_group_list) And MeteoParticle <= UBound(particle_group_list) Then
+        If particle_group_list(MeteoParticle).active Then
+            If MapDat.LLUVIA Then
+                'Screen positions were hardcoded by now
+                screenX = 250
+                screenY = 0
+                
+                Call Particle_Group_Render(MeteoParticle, screenX, screenY)
+                
+                LastOffsetX = ParticleOffsetX
+                LastOffsetY = ParticleOffsetY
         
-            'Screen positions were hardcoded by now
-            ScreenX = 250
-            ScreenY = 0
+            End If
+        
+            If MapDat.NIEVE Then
             
-            Call Particle_Group_Render(MeteoParticle, ScreenX, ScreenY)
-            
-            LastOffsetX = ParticleOffsetX
-            LastOffsetY = ParticleOffsetY
-
+                If Graficos_Particulas.Engine_MeteoParticle_Get <> 0 Then
+                
+                    'Screen positions were hardcoded by now
+                    screenX = 250 + gameplay_render_offset.x
+                    screenY = 0 + gameplay_render_offset.y
+                    
+                    Call Particle_Group_Render(MeteoParticle, screenX, screenY)
+        
+                End If
+        
+            End If
+        Else
+            MeteoParticle = 0
         End If
-
     End If
 
     If AlphaNiebla Then
     
         If MapDat.niebla Then Call Engine_Weather_UpdateFog
-
-    End If
-
-    If bNieve Then
-    
-        If MapDat.NIEVE Then
-        
-            If Graficos_Particulas.Engine_MeteoParticle_Get <> 0 Then
-            
-                'Screen positions were hardcoded by now
-                screenX = 250 + gameplay_render_offset.x
-                screenY = 0 + gameplay_render_offset.y
-                
-                Call Particle_Group_Render(MeteoParticle, ScreenX, ScreenY)
-
-            End If
-
-        End If
 
     End If
     

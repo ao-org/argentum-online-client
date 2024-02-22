@@ -546,16 +546,6 @@ Private Type size
     cy As Long
 End Type
 
-'[CODE 001]:MatuX
-Public Enum PlayLoop
-    plNone = 0
-    plLluviain = 1
-    plLluviaout = 2
-End Enum
-
-'[END]'
-'
-'       [END]
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 
 Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
@@ -892,7 +882,7 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
         UserPos.y = tY
         UserMoving = True
         
-        bTecho = HayTecho(UserPos.x, UserPos.y)
+        UpdatePlayerRoof
         
         lastMove = FrameTime
 
@@ -1276,57 +1266,6 @@ Grh_Render_To_HdcSinBorrar_Err:
     
 End Sub
 
-
-Public Function RenderSounds()
-    
-    On Error GoTo RenderSounds_Err
-    
-
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 3/30/2008
-    'Actualiza todos los sonidos del mapa.
-    '**************************************************************
-    If bRain Then
-        If MapDat.LLUVIA Then
-        
-            If bTecho Then
-                If frmMain.IsPlaying <> PlayLoop.plLluviain Then
-                    '  If RainBufferIndex Then _
-                    '   Call Audio.StopWave(RainBufferIndex)
-                    ' RainBufferIndex = Audio.PlayWave("lluviain.wav", 0, 0, LoopStyle.Enabled)
-                    frmMain.IsPlaying = PlayLoop.plLluviain
-
-                End If
-
-            Else
-
-                If frmMain.IsPlaying <> PlayLoop.plLluviaout Then
-                
-                    ' If RainBufferIndex Then _
-                    '   Call Audio.StopWave(RainBufferIndex)
-                    '  RainBufferIndex = Audio.PlayWave("lluviaout.wav", 0, 0, LoopStyle.Enabled)
-                    frmMain.IsPlaying = PlayLoop.plLluviaout
-
-                End If
-
-            End If
-
-        End If
-
-    End If
-    
-    DoFogataFx
-
-    
-    Exit Function
-
-RenderSounds_Err:
-    Call RegistrarError(Err.Number, Err.Description, "TileEngine.RenderSounds", Erl)
-    Resume Next
-    
-End Function
-
 Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal grhIndex As Long) As Boolean
     
     On Error GoTo HayUserAbajo_Err
@@ -1536,4 +1475,16 @@ Public Sub ConvertToMinimapPosition(ByRef x As Single, ByRef y As Single, ByVal 
     '100x100 pixels for ~78x82 tiles
     x = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - MarkerWidth \ 2 - 1
     y = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - MarkerHeight \ 2 - 1
+End Sub
+
+Public Sub UpdatePlayerRoof()
+    Dim WasUnderRoof As Boolean: WasUnderRoof = bTecho
+    bTecho = HayTecho(UserPos.x, UserPos.y)
+    
+    If WasUnderRoof = bTecho Then Exit Sub
+    If bRain And MapDat.LLUVIA = 1 Then
+        Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_RAIN_IN_LOOP, SND_RAIN_OUT_LOOP))
+    ElseIf bNieve And MapDat.NIEVE = 1 Then
+        Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_NIEVEIN, SND_NIEVEOUT))
+    End If
 End Sub

@@ -24,6 +24,10 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
         NewResourceMap = Map
     End If
     ResourceMap = NewResourceMap
+    
+    Dim OldMapHadRain As Boolean: OldMapHadRain = (MapDat.LLUVIA = 1)
+    Dim OldMapHadSnow As Boolean: OldMapHadSnow = (MapDat.NIEVE = 1)
+    
     'Cargamos el mapa.
     Call Recursos.CargarMapa(ResourceMap)
 
@@ -38,7 +42,9 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
     Else
         Call DibujarMiniMapa
     End If
-    Call NameMapa(ResourceMap)
+    
+    If isLogged Then Call NameMapa(ResourceMap)
+    
     map_letter_a = 0
     CurMap = map
     If ao20audio.MusicEnabled Then
@@ -65,15 +71,32 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
 
     End If
 
-    If bRain And MapDat.LLUVIA Then
-        Call Graficos_Particulas.Engine_MeteoParticle_Set(Particula_Lluvia)
+    Dim HaveAudio As Boolean
     
-    ElseIf bNieve And MapDat.NIEVE Then
-        Call Graficos_Particulas.Engine_MeteoParticle_Set(Particula_Nieve)
-
+    If bRain Then
+        If MapDat.LLUVIA = 1 Then
+            Call Graficos_Particulas.Engine_MeteoParticle_Set(Particula_Lluvia)
+            
+            If Not OldMapHadRain Then
+                Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_RAIN_IN_LOOP, SND_RAIN_OUT_LOOP))
+            End If
+            HaveAudio = True
+        End If
     End If
+        
     
-    If ao20audio.AmbientEnabled = 1 Then
+    If bNieve Then
+        If MapDat.NIEVE = 1 Then
+            Call Graficos_Particulas.Engine_MeteoParticle_Set(Particula_Nieve)
+            
+            If Not HaveAudio And Not OldMapHadSnow Then
+                Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_NIEVEIN, SND_NIEVEOUT))
+            End If
+            HaveAudio = True
+        End If
+    End If
+
+    If Not HaveAudio Then
         Call ao20audio.PlayAmbientAudio(map)
     End If
 

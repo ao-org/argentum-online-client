@@ -25,8 +25,10 @@ Public Const SND_NAVEGANDO     As Integer = 50
 Public Const SND_OVER          As Integer = 0
 Public Const SND_DICE          As Integer = 188
 Public Const SND_FUEGO         As Integer = 116
-Public Const SND_LLUVIAIN      As Integer = 191
-Public Const SND_LLUVIAOUT     As Integer = 194
+Public Const SND_RAIN_IN_LOOP  As Integer = 191
+Public Const SND_RAIN_OUT_LOOP As Integer = 194
+Public Const SND_RAIN_IN_END   As Integer = 192
+Public Const SND_RAIN_OUT_END  As Integer = 195
 Public Const SND_NIEVEIN       As Integer = 191
 Public Const SND_NIEVEOUT      As Integer = 194
 Public Const SND_RESUCITAR     As Integer = 104
@@ -91,10 +93,25 @@ Public Sub PlayAmbientAudio(ByVal UserMap As Long)
             wav = ReadField(2, Val(MapDat.ambient), Asc("-"))
         End If
         If wav <> 0 Then
-                Call ao20audio.AudioEngine.PlayAmbient(wav, True, CurAmbientVolume)
+            Call ao20audio.AudioEngine.PlayAmbient(wav, True, CurAmbientVolume)
+        Else
+            Call StopAmbientAudio
         End If
     End If
 End Sub
+
+Public Sub PlayWeatherAudio(ByVal id As Integer)
+    If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
+        Call AudioEngine.PlayAmbient(id, True, CurAmbientVolume)
+    End If
+End Sub
+
+Public Function PlayAmbientWav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
+    PlayAmbientWav = -1
+    If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
+        PlayAmbientWav = ao20audio.AudioEngine.PlayWav(id, looping, CurAmbientVolume, pan, label)
+    End If
+End Function
 
 Public Function PlayWav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
     PlayWav = -1

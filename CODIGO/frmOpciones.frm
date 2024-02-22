@@ -1585,7 +1585,8 @@ End Sub
 Private Sub HScroll1_Change()
     
     On Error GoTo HScroll1_Change_Err
-    ao20audio.SetAmbientVolume (HScroll1.Value)
+    VolAmbient = HScroll1.Value
+    Call ao20audio.SetAmbientVolume(VolAmbient)
     Call ao20audio.PlayAmbientAudio(CurMap)
     Exit Sub
 

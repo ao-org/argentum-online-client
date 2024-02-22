@@ -117,12 +117,6 @@ Begin VB.Form frmMain
       Left            =   1080
       Top             =   2400
    End
-   Begin VB.Timer TimerLluvia 
-      Enabled         =   0   'False
-      Interval        =   50
-      Left            =   600
-      Top             =   2400
-   End
    Begin VB.Timer UpdateLight 
       Enabled         =   0   'False
       Interval        =   200
@@ -1498,8 +1492,6 @@ Private Declare Function ReleaseCapture Lib "user32" () As Long
 Public MouseBoton As Long
 
 Public MouseShift As Long
-
-Public IsPlaying  As Byte
 
 Public ShowPercentage As Boolean
 
@@ -4080,51 +4072,6 @@ Private Sub cerrarcuenta_Timer()
 cerrarcuenta_Timer_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.cerrarcuenta_Timer", Erl)
     Resume Next
-End Sub
-
-Private Sub TimerLluvia_Timer()
-    
-    On Error GoTo TimerLluvia_Timer_Err
-    
-
-    If bRain Then
-
-        If CantPartLLuvia < 250 Then
-
-            CantPartLLuvia = CantPartLLuvia + 1
-            Graficos_Particulas.Particle_Group_Edit (MeteoIndex)
-        Else
-            CantPartLLuvia = 250
-            TimerLluvia.enabled = False
-
-        End If
-
-    Else
-
-        If CantPartLLuvia > 0 Then
-            CantPartLLuvia = CantPartLLuvia - 1
-            Graficos_Particulas.Particle_Group_Edit (MeteoIndex)
-        Else
-    
-            Call Graficos_Particulas.Engine_MeteoParticle_Set(-1)
-            CantPartLLuvia = 0
-            TimerLluvia.enabled = False
-
-        End If
-
-    End If
-
-    
-    Exit Sub
-
-TimerLluvia_Timer_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.TimerLluvia_Timer", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub TimerMusica_Timer()
-
 End Sub
 
 Private Sub TimerNiebla_Timer()
