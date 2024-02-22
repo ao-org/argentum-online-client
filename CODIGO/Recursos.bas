@@ -2400,31 +2400,37 @@ Public Sub LoadComposedFx()
     ComposedFxData(1).Clips(1).Fx = 115
     ComposedFxData(1).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(1).Clips(1))
+    FxToAnimationMap(115) = 1
     
     ReDim ComposedFxData(2).Clips(1)
     ComposedFxData(2).Clips(1).fX = 116
     ComposedFxData(2).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(2).Clips(1))
+    FxToAnimationMap(116) = 2
     
     ReDim ComposedFxData(3).Clips(1)
     ComposedFxData(3).Clips(1).Fx = 117
     ComposedFxData(3).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(3).Clips(1))
+    FxToAnimationMap(117) = 3
     
     ReDim ComposedFxData(4).Clips(1)
     ComposedFxData(4).Clips(1).Fx = 118
     ComposedFxData(4).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(4).Clips(1))
+    FxToAnimationMap(118) = 4
     
     ReDim ComposedFxData(5).Clips(1)
     ComposedFxData(5).Clips(1).Fx = 119
     ComposedFxData(5).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(5).Clips(1))
+    FxToAnimationMap(119) = 5
     
     ReDim ComposedFxData(6).Clips(1)
     ComposedFxData(6).Clips(1).Fx = 120
     ComposedFxData(6).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(6).Clips(1))
+    FxToAnimationMap(120) = 6
     
     Call AddComposedMetitation(7, 122, 126)
     Call AddComposedMetitation(8, 123, 130)
