@@ -458,31 +458,42 @@ Private Sub lstArmas_Click()
     On Error GoTo lstArmas_Click_Err
     
 
+    Dim Obj As ObjDatas
     
+    If indice = 1 Then
+        Obj = ObjData(SastreRopas(lstArmas.ListIndex + 1).Index)
+    ElseIf indice = 2 Then
+        Obj = ObjData(SastreGorros(lstArmas.ListIndex + 1).Index)
+    Else
+        Exit Sub
+    End If
 
     List1.Clear
     List2.Clear
-    List1.AddItem ("Piel de lobo")
-    List1.AddItem ("Piel de oso pardo")
-    List1.AddItem ("Piel de oso polar")
-    List1.AddItem ("Piel de lobo negro")
-
-    If indice = 1 Then
-        Call Grh_Render_To_Hdc(picture1, ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
-        List2.AddItem (ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).PielLobo)
-        List2.AddItem (ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).PielOsoPardo)
-        List2.AddItem (ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).PielOsoPolar)
-        List2.AddItem (ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).PielLoboNegro)
-        desc.Caption = "Defensa: " & ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).MinDef & "/" & ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).MaxDef
-    ElseIf indice = 2 Then
-        Call Grh_Render_To_Hdc(picture1, ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
-        List2.AddItem (ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).PielLobo)
-        List2.AddItem (ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).PielOsoPardo)
-        List2.AddItem (ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).PielOsoPolar)
-        List2.AddItem (ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).PielLoboNegro)
-        desc.Caption = "Defensa: " & ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).MinDef & "/" & ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).MaxDef
-
+    
+    If Obj.PielLobo > 0 Then
+        List1.AddItem "Piel de lobo"
+        List2.AddItem Obj.PielLobo
     End If
+    
+    If Obj.PielOsoPardo > 0 Then
+        List1.AddItem "Piel de oso pardo"
+        List2.AddItem Obj.PielOsoPardo
+    End If
+    
+    If Obj.PielOsoPolar > 0 Then
+        List1.AddItem "Piel de oso polar"
+        List2.AddItem Obj.PielOsoPolar
+    End If
+    
+    If Obj.PielLoboNegro > 0 Then
+        List1.AddItem "Piel de lobo negro"
+        List2.AddItem Obj.PielLoboNegro
+    End If
+    
+    Call Grh_Render_To_Hdc(picture1, Obj.GrhIndex, 0, 0)
+    
+    desc.Caption = "Defensa: " & Obj.MinDef & "/" & Obj.MaxDef
 
     
     Exit Sub
