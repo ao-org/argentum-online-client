@@ -941,7 +941,9 @@ Public Sub HandleDisconnect()
             Call connectToLoginServer
         End If
     #ElseIf PYMMO = 0 Then
-        Call General_Set_Connect
+        If prgRun Then
+            Call General_Set_Connect
+        End If
     #End If
     
     Exit Sub
