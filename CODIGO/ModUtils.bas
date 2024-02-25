@@ -233,6 +233,8 @@ Public Type ObjDatas
     PielOsoPardo As Integer
     PielOsoPolar As Integer
     PielLoboNegro As Integer
+    PielTigre As Integer
+    PielTigreBengala As Integer
     LingH As Integer
     LingP As Integer
     LingO As Integer

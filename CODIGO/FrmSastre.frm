@@ -183,7 +183,10 @@ Attribute VB_Exposed = False
 '
 Private indice As Byte
 
+Const PielTigreBengalaIndex = 1145
+Const PielTigreIndex = 4339
 Const BlackWolfIndex = 1146
+
 Private Sub Command1_Click()
     
     On Error GoTo Command1_Click_Err
@@ -440,6 +443,11 @@ Private Sub List1_Click()
         grh = 698
     ElseIf List1.ListIndex = 3 Then
         Grh = ObjData(BlackWolfIndex).GrhIndex
+    ElseIf List1.ListIndex = 4 Then
+        Grh = ObjData(PielTigreIndex).GrhIndex
+    ElseIf List1.ListIndex = 5 Then
+        Grh = ObjData(PielTigreBengalaIndex).GrhIndex
+        
 
     End If
 
@@ -490,6 +498,16 @@ Private Sub lstArmas_Click()
     If Obj.PielLoboNegro > 0 Then
         List1.AddItem "Piel de lobo negro"
         List2.AddItem Obj.PielLoboNegro
+    End If
+    
+    If Obj.PielTigre > 0 Then
+        List1.AddItem "Piel de Tigre"
+        List2.AddItem Obj.PielTigre
+    End If
+    
+    If Obj.PielTigreBengala > 0 Then
+        List1.AddItem "Piel de Tigre de Bengala"
+        List2.AddItem Obj.PielTigreBengala
     End If
     
     Call Grh_Render_To_Hdc(picture1, Obj.GrhIndex, 0, 0)
