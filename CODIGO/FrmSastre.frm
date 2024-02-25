@@ -3,15 +3,16 @@ Begin VB.Form FrmSastre
    BackColor       =   &H80000007&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar de sastre"
-   ClientHeight    =   5670
+   ClientHeight    =   7125
    ClientLeft      =   0
    ClientTop       =   -75
-   ClientWidth     =   6525
+   ClientWidth     =   6480
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5670
-   ScaleWidth      =   6525
+   Picture         =   "FrmSastre.frx":0000
+   ScaleHeight     =   7125
+   ScaleWidth      =   6480
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox cantidad 
@@ -30,11 +31,11 @@ Begin VB.Form FrmSastre
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   250
-      Left            =   3750
+      Left            =   3840
       MaxLength       =   3
       TabIndex        =   4
       Text            =   "1"
-      Top             =   4500
+      Top             =   5640
       Width           =   660
    End
    Begin VB.ListBox List2 
@@ -51,13 +52,13 @@ Begin VB.Form FrmSastre
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   810
-      ItemData        =   "FrmSastre.frx":0000
-      Left            =   5535
-      List            =   "FrmSastre.frx":0007
+      Height          =   1200
+      ItemData        =   "FrmSastre.frx":96C60
+      Left            =   5655
+      List            =   "FrmSastre.frx":96C67
       TabIndex        =   3
-      Top             =   2955
-      Width           =   525
+      Top             =   3840
+      Width           =   405
    End
    Begin VB.ListBox List1 
       Appearance      =   0  'Flat
@@ -72,10 +73,10 @@ Begin VB.Form FrmSastre
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   810
-      Left            =   3870
+      Height          =   1200
+      Left            =   4080
       TabIndex        =   2
-      Top             =   2955
+      Top             =   3840
       Width           =   1605
    End
    Begin VB.ListBox lstArmas 
@@ -92,10 +93,10 @@ Begin VB.Form FrmSastre
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   2760
-      Left            =   720
+      Left            =   480
       TabIndex        =   1
       Top             =   2160
-      Width           =   2400
+      Width           =   3120
    End
    Begin VB.PictureBox picture1 
       Appearance      =   0  'Flat
@@ -103,12 +104,12 @@ Begin VB.Form FrmSastre
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   465
-      Left            =   4750
+      Left            =   4780
       ScaleHeight     =   32
       ScaleMode       =   0  'User
       ScaleWidth      =   32
       TabIndex        =   0
-      Top             =   1750
+      Top             =   1850
       Width           =   480
    End
    Begin VB.Label desc 
@@ -131,31 +132,31 @@ Begin VB.Form FrmSastre
       Width           =   2055
    End
    Begin VB.Image Command3 
-      Height          =   450
-      Left            =   4590
+      Height          =   400
+      Left            =   3530
       Tag             =   "0"
-      Top             =   4420
-      Width           =   1740
+      Top             =   6345
+      Width           =   1950
    End
    Begin VB.Image Command4 
-      Height          =   465
-      Left            =   3960
+      Height          =   400
+      Left            =   1080
       Tag             =   "0"
-      Top             =   4990
-      Width           =   2130
+      Top             =   6345
+      Width           =   1950
    End
    Begin VB.Image Command2 
       Height          =   585
-      Left            =   2100
+      Left            =   2190
       Tag             =   "0"
-      Top             =   1460
+      Top             =   1320
       Width           =   660
    End
    Begin VB.Image Command1 
       Height          =   585
-      Left            =   1050
+      Left            =   1140
       Tag             =   "0"
-      Top             =   1450
+      Top             =   1320
       Width           =   660
    End
 End
@@ -374,7 +375,7 @@ Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command3.Tag = "0" Then
-        Command3.Picture = LoadInterface("trabajar_construirhover.bmp")
+        Command3.Picture = LoadInterface("boton-elaborar-over.bmp")
         Command3.Tag = "1"
 
     End If
