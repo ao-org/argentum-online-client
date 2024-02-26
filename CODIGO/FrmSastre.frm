@@ -31,12 +31,12 @@ Begin VB.Form FrmSastre
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   250
-      Left            =   3840
+      Left            =   3960
       MaxLength       =   3
       TabIndex        =   4
       Text            =   "1"
       Top             =   5640
-      Width           =   660
+      Width           =   465
    End
    Begin VB.ListBox List2 
       Appearance      =   0  'Flat
@@ -58,7 +58,7 @@ Begin VB.Form FrmSastre
       List            =   "FrmSastre.frx":96C67
       TabIndex        =   3
       Top             =   3840
-      Width           =   405
+      Width           =   330
    End
    Begin VB.ListBox List1 
       Appearance      =   0  'Flat
@@ -74,7 +74,7 @@ Begin VB.Form FrmSastre
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   1200
-      Left            =   4080
+      Left            =   4020
       TabIndex        =   2
       Top             =   3840
       Width           =   1605
@@ -111,6 +111,27 @@ Begin VB.Form FrmSastre
       TabIndex        =   0
       Top             =   1850
       Width           =   480
+   End
+   Begin VB.Image Image3 
+      Height          =   315
+      Left            =   4680
+      Tag             =   "0"
+      Top             =   5640
+      Width           =   255
+   End
+   Begin VB.Image Image2 
+      Height          =   315
+      Left            =   3360
+      Tag             =   "0"
+      Top             =   5640
+      Width           =   255
+   End
+   Begin VB.Image Image1 
+      Height          =   405
+      Left            =   6000
+      Tag             =   "0"
+      Top             =   0
+      Width           =   510
    End
    Begin VB.Label desc 
       Alignment       =   2  'Center
@@ -186,6 +207,8 @@ Private indice As Byte
 Const PielTigreBengalaIndex = 1145
 Const PielTigreIndex = 4339
 Const BlackWolfIndex = 1146
+
+
 
 Private Sub Command1_Click()
     
@@ -321,7 +344,7 @@ Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command4.Tag = "0" Then
-        Command4.Picture = LoadInterface("trabajar_salirhover.bmp")
+        Command4.Picture = LoadInterface("boton-cancelar-over.bmp")
         Command4.Tag = "1"
 
     End If
@@ -426,6 +449,33 @@ Form_MouseMove_Err:
     
 End Sub
 
+Private Sub Image1_Click()
+    On Error GoTo Command4_Click_Err
+    
+    Unload Me
+
+    
+    Exit Sub
+
+Command4_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.Command4_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub Image2_Click()
+    If cantidad > 0 Then
+        cantidad = cantidad - 1
+    Else
+        Exit Sub
+    End If
+
+
+End Sub
+
+Private Sub Image3_Click()
+    cantidad = cantidad + 1
+End Sub
+
 Private Sub List1_Click()
     
     On Error GoTo List1_Click_Err
@@ -480,35 +530,34 @@ Private Sub lstArmas_Click()
     List1.Clear
     List2.Clear
     
-    If Obj.PielLobo > 0 Then
+    
         List1.AddItem "Piel de lobo"
         List2.AddItem Obj.PielLobo
-    End If
+
     
-    If Obj.PielOsoPardo > 0 Then
+ 
         List1.AddItem "Piel de oso pardo"
         List2.AddItem Obj.PielOsoPardo
-    End If
-    
-    If Obj.PielOsoPolar > 0 Then
+
+  
         List1.AddItem "Piel de oso polar"
         List2.AddItem Obj.PielOsoPolar
-    End If
+
     
-    If Obj.PielLoboNegro > 0 Then
+    
         List1.AddItem "Piel de lobo negro"
         List2.AddItem Obj.PielLoboNegro
-    End If
+
     
-    If Obj.PielTigre > 0 Then
+  
         List1.AddItem "Piel de Tigre"
         List2.AddItem Obj.PielTigre
-    End If
+
     
-    If Obj.PielTigreBengala > 0 Then
+   
         List1.AddItem "Piel de Tigre de Bengala"
         List2.AddItem Obj.PielTigreBengala
-    End If
+  
     
     Call Grh_Render_To_Hdc(picture1, Obj.GrhIndex, 0, 0)
     
