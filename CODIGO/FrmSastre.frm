@@ -529,36 +529,25 @@ Private Sub lstArmas_Click()
 
     List1.Clear
     List2.Clear
-    
-    
+        
         List1.AddItem "Piel de lobo"
         List2.AddItem Obj.PielLobo
-
     
- 
         List1.AddItem "Piel de oso pardo"
         List2.AddItem Obj.PielOsoPardo
-
   
         List1.AddItem "Piel de oso polar"
         List2.AddItem Obj.PielOsoPolar
-
-    
-    
+       
         List1.AddItem "Piel de lobo negro"
         List2.AddItem Obj.PielLoboNegro
-
-    
-  
+      
         List1.AddItem "Piel de Tigre"
         List2.AddItem Obj.PielTigre
-
     
-   
-        List1.AddItem "Piel de Tigre de Bengala"
+        List1.AddItem "Piel Tigre Bengala"
         List2.AddItem Obj.PielTigreBengala
-  
-    
+      
     Call Grh_Render_To_Hdc(picture1, Obj.GrhIndex, 0, 0)
     
     desc.Caption = "Defensa: " & Obj.MinDef & "/" & Obj.MaxDef
