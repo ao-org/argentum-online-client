@@ -1069,7 +1069,7 @@ Begin VB.Form frmPanelgm
    End
    Begin VB.CommandButton cmdCerrar 
       BackColor       =   &H8000000A&
-      Caption         =   "Cerrar"
+      Caption         =   "/ IR A"
       Height          =   320
       Left            =   3840
       Style           =   1  'Graphical
@@ -2328,22 +2328,11 @@ Private Sub cmdCarcel_Click()
 End Sub
 
 Private Sub cmdcerrar_Click()
-    
-    On Error GoTo cmdcerrar_Click_Err
-    
-
-    Me.visible = False
-    List1.Clear
-    List2.Clear
-    txtMsg.Text = ""
-
-    
-    Exit Sub
-
-cmdcerrar_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.cmdcerrar_Click", Erl)
-    Resume Next
-    
+     
+    Call ParseUserCommand("/SM ")
+    tmpUser = cboListaUsus.Text
+    Call WriteGoNearby(tmpUser)
+     
 End Sub
 
 Private Sub cmdOnline_Click()
