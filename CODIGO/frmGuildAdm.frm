@@ -223,7 +223,7 @@ Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanaclanes.bmp")
     
     Call LoadButtons
-    Combo1.ListIndex = 2
+    Combo1.ListIndex = 5
 
     
     Exit Sub
