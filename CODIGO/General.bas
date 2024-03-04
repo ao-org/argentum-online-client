@@ -1232,6 +1232,28 @@ GetVar_Err:
     
 End Function
 
+Function GetVarOrDefault(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal DefaultValue As String) As String
+    
+    On Error GoTo GetVarOrDefault_Err
+    
+
+    '*****************************************************************
+    'Gets a Var from a text file and if empty returns default value
+    '*****************************************************************
+
+    GetVarOrDefault = GetVar(File, Main, Var)
+    If GetVarOrDefault = vbNullString Then
+        GetVarOrDefault = DefaultValue
+    End If
+    
+    Exit Function
+
+GetVarOrDefault_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.GetVarOrDefault", Erl)
+    Resume Next
+    
+End Function
+
 '[CODE 002]:MatuX
 '
 '  Función para chequear el email

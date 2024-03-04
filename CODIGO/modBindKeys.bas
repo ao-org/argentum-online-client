@@ -101,9 +101,9 @@ Public Sub LoadImpAoInit()
 
     NUMBINDS = eMaxBinds - 1
 
-    ACCION1 = 0 'Val(GetVar(File, "INIT", "ACCION1"))
-    ACCION2 = 1 'Val(GetVar(File, "INIT", "ACCION2"))
-    ACCION3 = 4 'Val(GetVar(File, "INIT", "ACCION3"))
+    ACCION1 = Val(GetVarOrDefault(File, "INIT", "ACCION1", "0"))
+    ACCION2 = Val(GetVarOrDefault(File, "INIT", "ACCION2", "1"))
+    ACCION3 = Val(GetVarOrDefault(File, "INIT", "ACCION3", "4"))
 
     ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey
 
