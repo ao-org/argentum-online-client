@@ -1065,16 +1065,12 @@ Public Sub HandlePCList(ByVal bytesTotal As Long)
 End Sub
 
 Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
-
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleRequestAccountLogin", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Dim data() As Byte
-    
     frmConnect.AuthSocket.PeekData data, vbByte, bytesTotal
-    
     frmConnect.AuthSocket.GetData data, vbByte, 2
-    
     If data(0) = &HAF And data(1) = &HA1 Then
         Call DebugPrint("LOGIN-OK", 0, 255, 0, True)
         'Save the token which was used to authenticate
@@ -1105,8 +1101,7 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
             Case 66
                 Call TextoAlAsistente("You must be an active PATRON to play at this time. Consider supporting the project on www.patreon.com", False, False)
             Case Else
-                'Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data))
-                Call TextoAlAsistente("No se ha podido conectar intente más tarde. Error: " & AO20CryptoSysWrapper.ByteArrayToHex(data), False, False)
+                Call TextoAlAsistente("Please update the game, you're using an old build. We recommend closing and reopening steam to force the update.", False, False)
         End Select
     End If
 End Sub
