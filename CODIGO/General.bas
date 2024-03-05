@@ -433,8 +433,12 @@ Public Sub RefreshAllChars()
 100     For loopC = 1 To LastChar
 102         If charlist(loopC).active = 1 Then
 104            If charlist(loopC).Invisible Then
-106                 If Not ((charlist(UserCharIndex).clan_nivel < 6 Or charlist(loopC).clan_index = 0 Or charlist(loopC).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(loopC).Navegando) And Not (distance(charlist(loopC).Pos.x, charlist(loopC).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(loopC).dialog_life = 0 And charlist(loopC).FxCount = 0 And charlist(loopC).particle_count = 0) Then
+106                 If Not ((charlist(UserCharIndex).clan_nivel < 6 Or charlist(loopC).clan_index = 0 Or charlist(loopC).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(loopC).Navegando) And _
+                        Not (General_Distance_Get(charlist(loopC).Pos.x, charlist(loopC).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And _
+                        charlist(loopC).dialog_life = 0 And charlist(loopC).FxCount = 0 And charlist(loopC).particle_count = 0) Then
+
 108                     MapData(charlist(loopC).Pos.x, charlist(loopC).Pos.y).CharIndex = loopC
+
                     End If
                 Else
 110                 MapData(charlist(loopC).Pos.x, charlist(loopC).Pos.y).CharIndex = loopC
@@ -770,21 +774,21 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
             If EstaSiguiendo Then Exit Sub
             
             Call WriteWalk(Heading) 'We only walk if we are not meditating or resting
+
+            Call Char_Move_by_Head(UserCharIndex, Heading)
+            Call MoveScreen(Heading)
+            Call checkTutorial
             
             Dim i As Integer
             For i = 1 To LastChar
                 If charlist(i).Invisible And Not EsGM Then
                     If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < 6 Or charlist(i).clan_index = 0 Or charlist(i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
-                        If distance(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist(i).FxCount = 0 And charlist(i).particle_count = 0 Then
+                        If General_Distance_Get(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist(i).FxCount = 0 And charlist(i).particle_count = 0 Then
                             MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = 0
                         End If
                     End If
                 End If
             Next i
-
-            Call Char_Move_by_Head(UserCharIndex, Heading)
-            Call MoveScreen(Heading)
-            Call checkTutorial
         Else
 
             If Not UserAvisado Then

@@ -734,7 +734,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
    
     With charlist(CharIndex)
 
-        If Not .Muerto And EstaPCarea(CharIndex) And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
+        If Not .Muerto And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
             .Pie = Not .Pie
             
             Dim StepIndex As Byte: StepIndex = IIf(.Pie, 1, 2)
