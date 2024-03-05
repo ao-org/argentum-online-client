@@ -2090,6 +2090,8 @@ Private Sub HandlePosUpdateChar()
         MapData(x, y).charindex = charindex
         charlist(charindex).Pos.x = x
         charlist(charindex).Pos.y = y
+        charlist(CharIndex).MoveOffsetX = 0
+        charlist(CharIndex).MoveOffsetY = 0
     
     End If
     
@@ -3717,20 +3719,27 @@ End Sub
 Private Sub HandlePlayWaveStep()
     
     On Error GoTo HandlePlayWaveStep_Err
-        
+    
+    Dim CharIndex As Integer
     Dim grh As Long
     Dim Grh2 As Long
     Dim distance As Byte
     Dim balance As Integer
     Dim step As Boolean
     
-100 Grh = Reader.ReadInt32()
-101 Grh2 = Reader.ReadInt32()
-102 distance = Reader.ReadInt8()
-104 balance = Reader.ReadInt16()
-106 step = Reader.ReadBool()
+100 CharIndex = Reader.ReadInt16()
+102 Grh = Reader.ReadInt32()
+104 Grh2 = Reader.ReadInt32()
+106 distance = Reader.ReadInt8()
+108 balance = Reader.ReadInt16()
+110 step = Reader.ReadBool()
     
-108 Call DoPasosInvi(Grh, Grh2, distance, balance, step)
+112 Call DoPasosInvi(Grh, Grh2, distance, balance, step)
+
+    ' Esta invisible, lo sacamos del mapa para que no tosquee
+114 If MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharIndex = CharIndex Then
+116     MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharIndex = 0
+    End If
     
     
     Exit Sub
@@ -5652,14 +5661,22 @@ Private Sub HandleSetInvisible()
     
     If x + y > 0 Then
         With charlist(charindex)
-            If Not .Invisible And charindex <> UserCharIndex Then
-                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
-                .Pos.x = x
-                .Pos.y = y
-                MapData(x, y).charindex = charindex
-                If Abs(.MoveOffsetX) > 32 Or Abs(.MoveOffsetY) > 32 Or (.MoveOffsetX <> 0 And .MoveOffsetY <> 0) Then
-                    .MoveOffsetX = 0
-                    .MoveOffsetY = 0
+            If charindex <> UserCharIndex Then
+                If .Invisible Then
+                    If General_Distance_Get(x, y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS Then
+                        If MapData(.Pos.x, .Pos.y).CharIndex = charindex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
+                        .MoveOffsetX = 0
+                        .MoveOffsetY = 0
+                    End If
+                Else
+                    If MapData(.Pos.x, .Pos.y).CharIndex = charindex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
+                    .Pos.x = x
+                    .Pos.y = y
+                    MapData(x, y).CharIndex = charindex
+                    If Abs(.MoveOffsetX) > 32 Or Abs(.MoveOffsetY) > 32 Or (.MoveOffsetX <> 0 And .MoveOffsetY <> 0) Then
+                        .MoveOffsetX = 0
+                        .MoveOffsetY = 0
+                    End If
                 End If
             End If
         End With

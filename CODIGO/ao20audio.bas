@@ -171,15 +171,9 @@ End Function
 
 Public Function ComputeCharFxVolume(ByRef Pos As Position) As Long
 On Error GoTo ComputeCharFxVolumenErr:
-    Dim total_distance As Integer, curr_x As Integer, curr_y As Integer
-    total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
-    If (total_distance = 0) Then
-        ComputeCharFxVolume = VolFX
-    ElseIf total_distance <= 19 Then
-        ComputeCharFxVolume = VolFX - (total_distance * 120)
-    End If
-    If total_distance > 19 Then ComputeCharFxVolume = -4000
-    If ComputeCharFxVolume < -4000 Then ComputeCharFxVolume = -4000
+    Dim total_distance As Integer
+    total_distance = distance(Pos.x, Pos.y, UserPos.x, UserPos.y)
+    ComputeCharFxVolume = ComputeCharFxVolumeByDistance(total_distance)
     Exit Function
 ComputeCharFxVolumenErr:
     Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxVolume", Erl)
@@ -239,13 +233,14 @@ End Function
 Public Function ComputeCharFxVolumeByDistance(ByVal distance As Byte) As Long
 On Error GoTo ComputeCharFxVolumeByDistance_err:
     distance = Abs(distance)
-    If (distance = 0) Then
-        ComputeCharFxVolumeByDistance = VolFX
-    ElseIf distance <= 19 Then
-        ComputeCharFxVolumeByDistance = VolFX - (distance * 120)
+    If distance <= 8 Then
+        ComputeCharFxVolumeByDistance = VolFX - distance * 80
+    ElseIf distance < 20 Then
+        ComputeCharFxVolumeByDistance = VolFX - 640 - (distance - 8) * 200
+        If ComputeCharFxVolumeByDistance < -4000 Then ComputeCharFxVolumeByDistance = -4000
+    Else
+        ComputeCharFxVolumeByDistance = -4000
     End If
-    If distance > 19 Then ComputeCharFxVolumeByDistance = -4000
-    If ComputeCharFxVolumeByDistance < -4000 Then ComputeCharFxVolumeByDistance = -4000
     Exit Function
 ComputeCharFxVolumeByDistance_err:
     Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxVolumeByDistance", Erl)
