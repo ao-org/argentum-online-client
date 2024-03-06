@@ -1495,9 +1495,11 @@ Private Sub HandleCharSwing()
 
         If ShowText And NotificoTexto Then
             Call SetCharacterDialogFx(CharIndex, IIf(CharIndex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
-
         End If
-        Call ao20audio.playwav(2, False, ao20audio.ComputeCharFxVolume(.Pos), ao20audio.ComputeCharFxPan(.Pos))
+        
+        If EstaPCarea(CharIndex) Then
+            Call ao20audio.PlayWav(2, False, ao20audio.ComputeCharFxVolume(.Pos), ao20audio.ComputeCharFxPan(.Pos))
+        End If
     End With
     
     Exit Sub
@@ -3257,14 +3259,16 @@ Private Sub HandleCharacterMove()
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     
+    Call Char_Move_by_Pos(CharIndex, x, y)
+    Call RefreshAllChars
+    
     With charlist(charindex)
         ' Play steps sounds if the user is not an admin of any kind
         If .priv <> 1 And .priv <> 2 And .priv <> 3 And .priv <> 5 And .priv <> 25 Then
             Call DoPasosFx(charindex)
         End If
     End With
-    Call Char_Move_by_Pos(charindex, x, y)
-    Call RefreshAllChars
+
     Exit Sub
 
 HandleCharacterMove_Err:
@@ -3700,8 +3704,7 @@ On Error GoTo HandlePlayWave_Err
     If srcX = 0 Or srcY = 0 Then
         Call ao20audio.playwav(CStr(wave), False, 0, 0)
     Else
-        If Not EstaEnArea(srcX, srcY) Then
-        Else
+        If EstaEnArea(srcX, srcY) Then
             Dim p As Position
             p.x = srcX
             p.y = srcY
@@ -4230,7 +4233,7 @@ Private Sub HandleCharAtaca()
     If danio > 0 And charlist(VictimIndex).Navegando = 0 Then Call SetCharacterFx(VictimIndex, 14, 0)
         
     
-    If charlist(UserCharIndex).Muerto = False Then
+    If charlist(UserCharIndex).Muerto = False And EstaPCarea(NpcIndex) Then
         Call ao20audio.playwav(CStr(IIf(danio = -1, 2, 10)), False, ao20audio.ComputeCharFxVolume(charlist(NpcIndex).Pos), ao20audio.ComputeCharFxPan(charlist(NpcIndex).Pos))
     End If
         
@@ -5663,7 +5666,7 @@ Private Sub HandleSetInvisible()
         With charlist(charindex)
             If charindex <> UserCharIndex Then
                 If .Invisible Then
-                    If General_Distance_Get(x, y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS Then
+                    If Not IsCharVisible(CharIndex) And General_Distance_Get(x, y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS Then
                         If MapData(.Pos.x, .Pos.y).CharIndex = charindex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
                         .MoveOffsetX = 0
                         .MoveOffsetY = 0
@@ -5724,6 +5727,8 @@ On Error GoTo HandleMeditateToggle_Err
                 Call ShowConsoleMsg("Has dejado de meditar.", .red, .green, .blue, .bold, .italic)
             End With
         End If
+    Else
+        If Not EstaPCarea(CharIndex) Then Exit Sub
     End If
     
     With charlist(charindex)

@@ -476,7 +476,7 @@ Char_Move_by_Pos_Err:
     
 End Sub
 
-Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
+Public Function EstaPCarea(ByVal CharIndex As Integer) As Boolean
     
     On Error GoTo EstaPCarea_Err
     
