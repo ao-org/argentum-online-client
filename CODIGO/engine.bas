@@ -4404,7 +4404,9 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 If (.End_Effect <> 0) And .DestinoChar <> 0 Then
                     If .DestinoChar <> 0 Then
                         Call General_Char_Particle_Create(.End_Effect, .DestinoChar, .End_Loops)
-                        Call ao20audio.playwav(.wav, False, ao20audio.ComputeCharFxVolume(charlist(.DestinoChar).Pos), ao20audio.ComputeCharFxPan(charlist(.DestinoChar).Pos))
+                        If EstaPCarea(.DestinoChar) Then
+                            Call ao20audio.PlayWav(.wav, False, ao20audio.ComputeCharFxVolume(charlist(.DestinoChar).Pos), ao20audio.ComputeCharFxPan(charlist(.DestinoChar).Pos))
+                        End If
                         .Slot_Used = False
                         Exit Sub
 
@@ -4419,14 +4421,18 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                     Dim dest_pos As Position
                     dest_pos.x = .DestX
                     dest_pos.y = .DesyY
-                    Call ao20audio.playwav(.wav, False, ao20audio.ComputeCharFxVolume(dest_pos), ao20audio.ComputeCharFxPan(dest_pos))
+                    If EstaEnArea(.DestX, .DesyY) Then
+                        Call ao20audio.PlayWav(.wav, False, ao20audio.ComputeCharFxVolume(dest_pos), ao20audio.ComputeCharFxPan(dest_pos))
+                    End If
                     .Slot_Used = False
                     Exit Sub
 
                 End If
             
                 If (.FxEnd_Effect > 0) And .DestinoChar <> 0 Then
-                    Call ao20audio.playwav(.wav, False, ao20audio.ComputeCharFxVolume(charlist(.DestinoChar).Pos), ao20audio.ComputeCharFxPan(charlist(.DestinoChar).Pos))
+                    If EstaPCarea(.DestinoChar) Then
+                        Call ao20audio.PlayWav(.wav, False, ao20audio.ComputeCharFxVolume(charlist(.DestinoChar).Pos), ao20audio.ComputeCharFxPan(charlist(.DestinoChar).Pos))
+                    End If
                     Call SetCharacterFx(.DestinoChar, .FxEnd_Effect, .End_Loops)
                     .Slot_Used = False
                     Exit Sub
@@ -4437,7 +4443,9 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                     Dim p As Position
                     p.x = .DestX
                     p.y = .DesyY
-                    Call ao20audio.playwav(.wav, False, ao20audio.ComputeCharFxVolume(p), ao20audio.ComputeCharFxPan(p))
+                    If EstaEnArea(.DestX, .DesyY) Then
+                        Call ao20audio.PlayWav(.wav, False, ao20audio.ComputeCharFxVolume(P), ao20audio.ComputeCharFxPan(P))
+                    End If
                     Call SetMapFx(.DestX, .DesyY, .FxEnd_Effect, 0)
                     .Slot_Used = False
                     Exit Sub

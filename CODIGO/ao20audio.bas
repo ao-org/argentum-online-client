@@ -172,7 +172,7 @@ End Function
 Public Function ComputeCharFxVolume(ByRef Pos As Position) As Long
 On Error GoTo ComputeCharFxVolumenErr:
     Dim total_distance As Integer
-    total_distance = distance(Pos.x, Pos.y, UserPos.x, UserPos.y)
+    total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
     ComputeCharFxVolume = ComputeCharFxVolumeByDistance(total_distance)
     Exit Function
 ComputeCharFxVolumenErr:
@@ -233,10 +233,8 @@ End Function
 Public Function ComputeCharFxVolumeByDistance(ByVal distance As Byte) As Long
 On Error GoTo ComputeCharFxVolumeByDistance_err:
     distance = Abs(distance)
-    If distance <= 8 Then
-        ComputeCharFxVolumeByDistance = VolFX - distance * 80
-    ElseIf distance < 20 Then
-        ComputeCharFxVolumeByDistance = VolFX - 640 - (distance - 8) * 200
+    If distance < 20 Then
+        ComputeCharFxVolumeByDistance = VolFX - distance * 120
         If ComputeCharFxVolumeByDistance < -4000 Then ComputeCharFxVolumeByDistance = -4000
     Else
         ComputeCharFxVolumeByDistance = -4000
