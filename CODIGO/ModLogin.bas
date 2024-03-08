@@ -51,8 +51,6 @@ Public Sub DoLogin(ByVal account As String, ByVal password As String, ByVal stor
             ModAuth.LoginOperation = e_operation.Authenticate
             Call LoginOrConnect(E_MODO.IngresandoConCuenta)
         End If
-        Call SaveRAOInit
-
     End If
 
     Exit Sub

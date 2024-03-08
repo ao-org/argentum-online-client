@@ -81,7 +81,7 @@ Sub LoadConfig()
     Set DialogosClanes = New clsGuildDlg
     
     If InitializeSettings() Then
-        Call LoadImpAoInit
+        Call LoadBindedKeys
     Else
         Call MsgBox("¡No se puede cargar el archivo de opciones! La reinstalacion del juego podria solucionar el problema.", vbCritical, "Error al cargar")
         End

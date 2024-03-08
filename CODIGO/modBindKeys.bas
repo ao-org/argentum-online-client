@@ -37,11 +37,11 @@ Public ServerIndex      As String
 
 Public NUMBINDS         As Integer
 
-Public ACCION1          As Byte
+Public ACCION1          As e_MouseAction
 
-Public ACCION2          As Byte
+Public ACCION2          As e_MouseAction
 
-Public ACCION3          As Byte
+Public ACCION3          As e_MouseAction
 
 Public BindKeys()       As tBindedKey
 
@@ -49,7 +49,7 @@ Public BotonElegido     As Integer
 
 Public MacroTipoElegido As Byte
 
-Private Enum e_KeyAction
+Public Enum e_KeyAction
     eAttack = 1
     eLoot = 2
     eDrop = 3
@@ -83,50 +83,91 @@ Private Enum e_KeyAction
     eHKey8 = 31
     eHKey9 = 32
     eHKey10 = 33
+    eSendText = 34
     
     [eMaxBinds]
 End Enum
-Public Sub LoadImpAoInit()
+
+Public Enum e_MouseAction
+    eThrowOrLook
+    eInteract
+    eAttack
+    eWhisper
     
-    On Error GoTo LoadImpAoInit_Err
+    eUnknown
+End Enum
+
+Const CustomKeyMappingFile As String = "\..\Recursos\OUTPUT\Teclas.ini"
+Const DefaultKeyMappingFile As String = "\..\Recursos\OUTPUT\DefaultKey.ini"
+
+Public Sub LoadBindedKeys()
     
+    On Error GoTo LoadBindedKeys_Err
 
-    Windows_Temp_Dir = General_Get_Temp_Dir
-
-    Dim File As String
-    Call InitializeKeyMapping
-    File = App.Path & "\..\Recursos\OUTPUT\" & "Teclas.ini"
-
-    Dim lC As Integer, tmpStr As String
+    ' Si no existe el Teclas.ini lo creamos como copia del DefaultKey.ini
+    If Not FileExist(App.path & CustomKeyMappingFile, vbArchive) Then
+        Call FileSystem.FileCopy(App.path & DefaultKeyMappingFile, App.path & CustomKeyMappingFile)
+    End If
+    
+    Dim DefaultBinds As New clsIniManager
+    Call DefaultBinds.Initialize(App.path & DefaultKeyMappingFile)
+    
+    Dim UserBinds As New clsIniManager
+    Call UserBinds.Initialize(App.path & CustomKeyMappingFile)
 
     NUMBINDS = eMaxBinds - 1
 
-    ACCION1 = Val(GetVarOrDefault(File, "INIT", "ACCION1", "0"))
-    ACCION2 = Val(GetVarOrDefault(File, "INIT", "ACCION2", "1"))
-    ACCION3 = Val(GetVarOrDefault(File, "INIT", "ACCION3", "4"))
+    ACCION1 = GetAction(DefaultBinds, UserBinds, 1)
+    ACCION2 = GetAction(DefaultBinds, UserBinds, 2)
+    ACCION3 = GetAction(DefaultBinds, UserBinds, 3)
 
     ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey
 
-    lC = 0
+    Dim Index As Integer
+    Dim Bind As String
 
-    For lC = 1 To NUMBINDS
-        tmpStr = General_Var_Get(File, "USER", str(lC))
-        BindKeys(lC).KeyCode = Val(General_Field_Read(1, tmpStr, ","))
-        BindKeys(lC).Name = General_Field_Read(2, tmpStr, ",")
-    Next lC
+    For Index = 1 To NUMBINDS
+        Bind = GetBind(DefaultBinds, UserBinds, CStr(Index))
+        BindKeys(Index).KeyCode = Val(General_Field_Read(1, Bind, ","))
+        BindKeys(Index).Name = General_Field_Read(2, Bind, ",")
+    Next Index
 
+    Set DefaultBinds = Nothing
+    Set UserBinds = Nothing
     
     Exit Sub
 
-LoadImpAoInit_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.LoadImpAoInit", Erl)
+LoadBindedKeys_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.LoadBindedKeys", Erl)
     Resume Next
     
 End Sub
 
-Public Sub SaveRAOInit()
+Private Function GetAction(ByRef DefaultBinds As clsIniManager, ByRef UserBinds As clsIniManager, ByVal Index As Integer) As e_MouseAction
+    Dim Temp As String
+    Temp = UserBinds.GetValue("INIT", "ACCION" & Index)
+    GetAction = ParseMouseAction(Trim(Temp))
     
-    On Error GoTo SaveRAOInit_Err
+    If GetAction = e_MouseAction.eUnknown Then
+        GetAction = ParseOldMouseAction(Temp)
+        
+        If GetAction = e_MouseAction.eUnknown Then
+            Temp = DefaultBinds.GetValue("INIT", "ACCION" & Index)
+            GetAction = ParseMouseAction(Trim(Temp))
+        End If
+    End If
+End Function
+
+Private Function GetBind(ByRef DefaultBinds As clsIniManager, ByRef UserBinds As clsIniManager, ByVal Key As String) As String
+    GetBind = UserBinds.GetValue("USER", Key)
+    If GetBind = vbNullString Then
+        GetBind = DefaultBinds.GetValue("DEFAULTS", Key)
+    End If
+End Function
+
+Public Sub SaveBindedKeys()
+    
+    On Error GoTo SaveBindedKeys_Err
     
 
     Dim lC As Integer, Arch As String
@@ -135,12 +176,12 @@ Public Sub SaveRAOInit()
 
     Call General_Var_Write(Arch, "INIT", "NUMBINDS", Int(NUMBINDS))
 
-    Call General_Var_Write(Arch, "INIT", "ACCION1", ACCION1)
-    Call General_Var_Write(Arch, "INIT", "ACCION2", ACCION2)
-    Call General_Var_Write(Arch, "INIT", "ACCION3", ACCION3)
+    Call General_Var_Write(Arch, "INIT", "ACCION1", MouseActionToString(ACCION1))
+    Call General_Var_Write(Arch, "INIT", "ACCION2", MouseActionToString(ACCION2))
+    Call General_Var_Write(Arch, "INIT", "ACCION3", MouseActionToString(ACCION3))
 
     For lC = 1 To NUMBINDS
-        Call General_Var_Write(Arch, "User", str(lC), str(BindKeys(lC).KeyCode) & "," & BindKeys(lC).Name)
+        Call General_Var_Write(Arch, "USER", CStr(lC), CStr(BindKeys(lC).KeyCode) & "," & BindKeys(lC).Name)
     Next lC
 
     lC = 0
@@ -148,8 +189,8 @@ Public Sub SaveRAOInit()
     
     Exit Sub
 
-SaveRAOInit_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.SaveRAOInit", Erl)
+SaveBindedKeys_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.SaveBindedKeys", Erl)
     Resume Next
     
 End Sub
@@ -157,20 +198,18 @@ End Sub
 Sub LoadDefaultBinds()
     
     On Error GoTo LoadDefaultBinds_Err
-    
 
-    Dim Arch As String, lC As Integer
+    Dim DefaultBinds As New clsIniManager
+    Call DefaultBinds.Initialize(App.path & DefaultKeyMappingFile)
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Teclas.ini"
+    Dim Index As Integer, Temp As String
+    For Index = 1 To NUMBINDS
+        Temp = DefaultBinds.GetValue("DEFAULTS", CStr(Index))
+        BindKeys(Index).KeyCode = Val(General_Field_Read(1, Temp, ","))
+        BindKeys(Index).Name = General_Field_Read(2, Temp, ",")
+    Next Index
 
-    NUMBINDS = Val(General_Var_Get(Arch, "INIT", "NumBinds"))
-    ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey
-
-    For lC = 1 To NUMBINDS
-        BindKeys(lC).KeyCode = Val(General_Field_Read(1, General_Var_Get(Arch, "DEFAULTS", str(lC)), ","))
-        BindKeys(lC).Name = General_Field_Read(2, General_Var_Get(Arch, "DEFAULTS", str(lC)), ",")
-    Next lC
-
+    Set DefaultBinds = Nothing
     
     Exit Sub
 
@@ -183,20 +222,18 @@ End Sub
 Sub LoadDefaultBinds2()
     
     On Error GoTo LoadDefaultBinds2_Err
-    
 
-    Dim Arch As String, lC As Integer
+    Dim DefaultBinds As New clsIniManager
+    Call DefaultBinds.Initialize(App.path & DefaultKeyMappingFile)
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Teclas.ini"
+    Dim Index As Integer, Temp As String
+    For Index = 1 To NUMBINDS
+        Temp = DefaultBinds.GetValue("DEFAULTSMODERN", CStr(Index))
+        BindKeys(Index).KeyCode = Val(General_Field_Read(1, Temp, ","))
+        BindKeys(Index).Name = General_Field_Read(2, Temp, ",")
+    Next Index
 
-    NUMBINDS = Val(General_Var_Get(Arch, "INIT", "NumBinds"))
-    ReDim Preserve BindKeys(1 To NUMBINDS) As tBindedKey
-
-    For lC = 1 To NUMBINDS
-        BindKeys(lC).KeyCode = Val(General_Field_Read(1, General_Var_Get(Arch, "DEFAULTSMODERN", str(lC)), ","))
-        BindKeys(lC).Name = General_Field_Read(2, General_Var_Get(Arch, "DEFAULTSMODERN", str(lC)), ",")
-    Next lC
-
+    Set DefaultBinds = Nothing
     
     Exit Sub
 
@@ -537,3 +574,52 @@ BuscarObjEnInv_Err:
     
 End Function
 
+Private Function MouseActionToString(ByVal Action As e_MouseAction) As String
+    Select Case Action
+        Case e_MouseAction.eThrowOrLook
+            MouseActionToString = "THROW_LOOK"
+        Case e_MouseAction.eInteract
+            MouseActionToString = "INTERACT"
+        Case e_MouseAction.eAttack
+            MouseActionToString = "ATTACK"
+        Case e_MouseAction.eWhisper
+            MouseActionToString = "WHISPER"
+    End Select
+End Function
+
+Private Function ParseMouseAction(ByVal Str As String) As e_MouseAction
+    Select Case Str
+        Case "THROW_LOOK"
+            ParseMouseAction = e_MouseAction.eThrowOrLook
+        Case "INTERACT"
+            ParseMouseAction = e_MouseAction.eInteract
+        Case "ATTACK"
+            ParseMouseAction = e_MouseAction.eAttack
+        Case "WHISPER"
+            ParseMouseAction = e_MouseAction.eWhisper
+        Case Else
+            ParseMouseAction = e_MouseAction.eUnknown
+    End Select
+End Function
+
+Private Function ParseOldMouseAction(ByVal Str As String) As e_MouseAction
+    If Str = vbNullString Then
+        ParseOldMouseAction = e_MouseAction.eUnknown
+    End If
+
+    Dim Value As Integer
+    Value = Val(Str)
+
+    Select Case Value
+        Case 0
+            ParseOldMouseAction = e_MouseAction.eThrowOrLook
+        Case 1
+            ParseOldMouseAction = e_MouseAction.eInteract
+        Case 2
+            ParseOldMouseAction = e_MouseAction.eAttack
+        Case 4
+            ParseOldMouseAction = e_MouseAction.eWhisper
+        Case Else
+            ParseOldMouseAction = e_MouseAction.eUnknown
+    End Select
+End Function

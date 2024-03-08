@@ -25,6 +25,7 @@ Begin VB.Form FrmQuestInfo
       _ExtentY        =   5106
       _Version        =   393217
       BorderStyle     =   0
+      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
@@ -65,11 +66,11 @@ Begin VB.Form FrmQuestInfo
    End
    Begin MSComctlLib.ListView ListView1 
       Height          =   1560
-      Left            =   7320
+      Left            =   7310
       TabIndex        =   1
       Top             =   1680
-      Width           =   2230
-      _ExtentX        =   3942
+      Width           =   2250
+      _ExtentX        =   3969
       _ExtentY        =   2752
       View            =   3
       LabelEdit       =   1
@@ -93,13 +94,13 @@ Begin VB.Form FrmQuestInfo
       NumItems        =   4
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "Criatura"
-         Object.Width           =   3106
+         Object.Width           =   3175
       EndProperty
       BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
          SubItemIndex    =   1
          Text            =   "Cantidad"
-         Object.Width           =   706
+         Object.Width           =   794
       EndProperty
       BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
@@ -113,7 +114,7 @@ Begin VB.Form FrmQuestInfo
          Text            =   "Tipo"
          Object.Width           =   0
       EndProperty
-      Picture         =   "frmQuestInfo.frx":0083
+      Picture         =   "frmQuestInfo.frx":0082
    End
    Begin MSComctlLib.ListView ListView2 
       Height          =   2280
@@ -166,7 +167,7 @@ Begin VB.Form FrmQuestInfo
          Text            =   "Tipo"
          Object.Width           =   0
       EndProperty
-      Picture         =   "frmQuestInfo.frx":0954
+      Picture         =   "frmQuestInfo.frx":0953
    End
    Begin MSComctlLib.ListView ListViewQuest 
       Height          =   2640
@@ -601,14 +602,16 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
         If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
             If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
                 FrmQuestInfo.ListView1.FlatScrollBar = False
+                FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1550
             Else
                 FrmQuestInfo.ListView1.FlatScrollBar = True
+                FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1800
             End If
             
             
             For i = 1 To UBound(QuestList(QuestIndex).RequiredNPC)
                     Dim subelemento As ListItem
-                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(i).NpcIndex).Name)
+                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(1).NpcIndex).Name)
                     subelemento.SubItems(1) = QuestList(QuestIndex).RequiredNPC(i).Amount
                     subelemento.SubItems(2) = QuestList(QuestIndex).RequiredNPC(i).NpcIndex
                     subelemento.SubItems(3) = 0
@@ -695,9 +698,10 @@ FrmQuestInfo.ListView1.ListItems.Clear
                 If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
                     If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
                         FrmQuestInfo.ListView1.FlatScrollBar = False
+                        FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1550
                     Else
                         FrmQuestInfo.ListView1.FlatScrollBar = True
-               
+                        FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1800
                     End If
                     
                     For i = 1 To UBound(QuestList(QuestIndex).RequiredNPC)
