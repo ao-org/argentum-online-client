@@ -7397,9 +7397,10 @@ Private Sub HandleQuestDetails()
             If tmpByte Then 'Hay NPCs
                 If tmpByte > 5 Then
                     FrmQuestInfo.ListView1.FlatScrollBar = False
+                    FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1550
                 Else
                     FrmQuestInfo.ListView1.FlatScrollBar = True
-           
+                    FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1800
                 End If
 
                 For i = 1 To tmpByte
@@ -7721,9 +7722,10 @@ Public Sub HandleNpcQuestListSend()
             
                 If tmpByte > 5 Then
                     FrmQuestInfo.ListView1.FlatScrollBar = False
+                    FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1550
                 Else
                     FrmQuestInfo.ListView1.FlatScrollBar = True
-               
+                    FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1800
                 End If
                     
                 ReDim QuestList(QuestIndex).RequiredNPC(1 To tmpByte)
@@ -8376,9 +8378,10 @@ Public Sub HandleObjQuestListSend()
 
         If tmpByte > 5 Then
             FrmQuestInfo.ListView1.FlatScrollBar = False
+            FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1550
         Else
             FrmQuestInfo.ListView1.FlatScrollBar = True
-
+            FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1800
         End If
 
         ReDim QuestList(QuestIndex).RequiredNPC(1 To tmpByte)

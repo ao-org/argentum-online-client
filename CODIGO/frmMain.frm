@@ -435,6 +435,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3990,7 +3991,7 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
     
     On Error GoTo SendTxt_KeyUp_Err
     'Send text
-    If KeyCode = vbKeyReturn Then
+    If KeyCode = BindKeys(e_KeyAction.eSendText).KeyCode Then
         If LenB(stxtbuffer) <> 0 Then
             Call HandleChatMsg(stxtbuffer)
         End If
@@ -4037,8 +4038,14 @@ Private Sub computeLastElapsedTimeChat(ByVal tiempoTranscurridoCartel As Double)
     
 End Sub
 
+Private Sub SendTxtCmsg_KeyPress(KeyAscii As Integer)
+    If KeyAscii = BindKeys(e_KeyAction.eSendText).KeyCode Then
+        KeyAscii = 0
+    End If
+End Sub
+
 Private Sub SendTxtCmsg_KeyUp(KeyCode As Integer, Shift As Integer)
-  If KeyCode = vbKeyReturn Then
+  If KeyCode = BindKeys(e_KeyAction.eSendText).KeyCode Then
     If SendTxtCmsg.SelStart > 2 Then Call ParseUserCommand("/CMSG " & SendTxtCmsg.Text)
     SendTxtCmsg.visible = False
     SendTxtCmsg.Text = ""
@@ -4453,6 +4460,9 @@ Private Sub SendTxt_KeyPress(KeyAscii As Integer)
 
     If Not (KeyAscii = vbKeyBack) And Not (KeyAscii >= vbKeySpace And KeyAscii <= 250) Then KeyAscii = 0
 
+    If KeyAscii = BindKeys(e_KeyAction.eSendText).KeyCode Then
+        KeyAscii = 0
+    End If
     
     Exit Sub
 

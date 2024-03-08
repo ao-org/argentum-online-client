@@ -500,7 +500,7 @@ Public Sub HandleKeyUp(KeyCode As Integer, Shift As Integer)
         If Not IsDialogOpen Then
             If Accionar(KeyCode) Then
                 Exit Sub
-            ElseIf KeyCode = vbKeyReturn Then
+            ElseIf KeyCode = BindKeys(e_KeyAction.eSendText).KeyCode Then
                 Call OpenChatInput
             ElseIf KeyCode = vbKeyDelete Then
                 Call OpenAndFocusClanChat

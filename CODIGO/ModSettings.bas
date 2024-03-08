@@ -19,8 +19,6 @@ Option Explicit
 
 Const CustomSettingsFile As String = "\..\Recursos\OUTPUT\Configuracion.ini"
 Const DefaultSettingsFile As String = "\..\Recursos\OUTPUT\DefaultSettings.ini"
-Const CustomKeyMappingFile As String = "\..\Recursos\OUTPUT\Teclas.ini"
-Const DefaultKeyMappingFile As String = "\..\Recursos\OUTPUT\DefaultKey.ini"
 Const HotKeySettingsFile As String = "\..\Recursos\OUTPUT\Hotkeys.ini"
 
 Public Function InitializeSettings() As Boolean
@@ -65,18 +63,6 @@ End Function
 Public Sub SaveSetting(ByVal Section As String, ByVal Name As String, ByVal Value As String)
     Call WriteVar(App.path & CustomSettingsFile, Section, Name, Value)
 End Sub
-
-Public Function InitializeKeyMapping() As Boolean
-    
-    If Not FileExist(App.path & DefaultKeyMappingFile, vbArchive) Then
-        InitializeKeyMapping = False
-        Exit Function
-    End If
-    If Not FileExist(App.path & CustomKeyMappingFile, vbArchive) Then
-        Call FileSystem.FileCopy(App.path & DefaultKeyMappingFile, App.path & CustomKeyMappingFile)
-    End If
-    InitializeKeyMapping = True
-End Function
 
 Public Sub LoadHotkeys()
     Dim i As Integer
