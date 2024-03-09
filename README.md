@@ -25,6 +25,12 @@ chmod +x .githooks/pre-commit
 git config core.hooksPath .githooks
 ```
 
+Basically the pre-commit hook runs when you make a `git commit` and it will run the file `git_ignore_case.sh` to avoid false changes in the Pull Request. Is not perfect but it helps a lot. Please send the Pull Requests with only the neccesary code to be reviewed.
+
+In case you have problems setting locally your pre-commit hook you can run the file `git_ignore_case.sh` by just doing double click.
+
+![PR Image](https://steamuserimages-a.akamaihd.net/ugc/1829034638748296385/CCD6BAF674692E8D4C87CDCA56FF8EC06D93C2FB/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false)
+
 This pre-commit hook executes the `git_ignore_case.sh` script during a `git commit`, helping to avoid false changes in Pull Requests. While it's not a perfect solution, it significantly aids in keeping our project clean and review-friendly.
 
 ### If You Encounter Issues
