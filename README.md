@@ -7,9 +7,6 @@ Para utilizar este cliente, necesitas el servidor correspondiente y assets:
 [argentum-online-server](https://github.com/ao-org/argentum-online-server)
 [Recursos](https://github.com/ao-org/Recursos)
 
-
-## Por favor considera apoyarnos en [Patreon](https://www.patreon.com/nolandstudios)
-
 # 🛡️ Pull Requests
 
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/6wCZvvZ/image.png" alt="Precommit-hook" border="0"></a>
