@@ -1090,6 +1090,8 @@ On Error GoTo Main_Err
         Call Load(frmConnect)
         Call Load(FrmLogear)
     End If
+    
+    Windows_Temp_Dir = General_Get_Temp_Dir
 
     Call SetDefaultServer
     Call ComprobarEstado
