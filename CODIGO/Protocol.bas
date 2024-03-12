@@ -5667,6 +5667,13 @@ Private Sub HandleSetInvisible()
             If charindex <> UserCharIndex Then
                 If .Invisible Then
                     If Not IsCharVisible(CharIndex) And General_Distance_Get(x, y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS Then
+                        If .clan_index > 0 Then
+                            If .clan_index = charlist(UserCharIndex).clan_index And CharIndex <> UserCharIndex And .Muerto = 0 Then
+                                If .clan_nivel >= 6 Then
+                                    Exit Sub
+                                End If
+                            End If
+                        End If
                         If MapData(.Pos.x, .Pos.y).CharIndex = charindex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
                         .MoveOffsetX = 0
                         .MoveOffsetY = 0
