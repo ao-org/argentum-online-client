@@ -611,7 +611,7 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
             
             For i = 1 To UBound(QuestList(QuestIndex).RequiredNPC)
                     Dim subelemento As ListItem
-                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(1).NpcIndex).Name)
+                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(i).NpcIndex).Name)
                     subelemento.SubItems(1) = QuestList(QuestIndex).RequiredNPC(i).Amount
                     subelemento.SubItems(2) = QuestList(QuestIndex).RequiredNPC(i).NpcIndex
                     subelemento.SubItems(3) = 0
