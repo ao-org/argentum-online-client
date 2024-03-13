@@ -3081,6 +3081,7 @@ Private Sub HandleCharacterCreate()
         Fx = Reader.ReadInt16
         loopC = Reader.ReadInt16
         Call StartFx(.ActiveAnimation, Fx, loopC)
+        .Meditating = Fx <> 0
         
         Dim NombreYClan As String
         NombreYClan = Reader.ReadString8()   '
@@ -3439,7 +3440,10 @@ Private Sub HandleCharacterChange()
 
         End If
         
-        Call StartFx(.ActiveAnimation, Reader.ReadInt16)
+        Dim Fx As Integer: Fx = Reader.ReadInt16
+        Call StartFx(.ActiveAnimation, Fx)
+        
+        .Meditating = Fx <> 0
         
         Reader.ReadInt16 'Ignore loops
         
@@ -3739,11 +3743,12 @@ Private Sub HandlePlayWaveStep()
     
 112 Call DoPasosInvi(Grh, Grh2, distance, balance, step)
 
-    ' Esta invisible, lo sacamos del mapa para que no tosquee
-114 If MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharIndex = CharIndex Then
-116     MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharIndex = 0
-    End If
-    
+    With charlist(CharIndex)
+        ' Esta invisible, lo sacamos del mapa para que no tosquee
+114     If MapData(.Pos.x, .Pos.y).CharIndex = CharIndex Then
+116         MapData(.Pos.x, .Pos.y).CharIndex = 0
+        End If
+    End With
     
     Exit Sub
 
@@ -5674,6 +5679,7 @@ Private Sub HandleSetInvisible()
                                 End If
                             End If
                         End If
+                        If .Meditating Then Exit Sub
                         If MapData(.Pos.x, .Pos.y).CharIndex = charindex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
                         .MoveOffsetX = 0
                         .MoveOffsetY = 0
@@ -5712,6 +5718,8 @@ On Error GoTo HandleMeditateToggle_Err
     x = Reader.ReadInt8
     y = Reader.ReadInt8
     
+    charlist(CharIndex).Meditating = Fx <> 0
+    
     If x + y > 0 Then
         With charlist(charindex)
             If .Invisible And charindex <> UserCharIndex Then
@@ -5734,14 +5742,15 @@ On Error GoTo HandleMeditateToggle_Err
                 Call ShowConsoleMsg("Has dejado de meditar.", .red, .green, .blue, .bold, .italic)
             End With
         End If
-    Else
-        If Not EstaPCarea(CharIndex) Then Exit Sub
     End If
     
     With charlist(charindex)
         If fX <> 0 Then
             Call StartFx(.ActiveAnimation, Fx, -1)
-            Call ao20audio.PlayWav(SND_MEDITATE, True, ao20audio.ComputeCharFxVolume(.Pos), ao20audio.ComputeCharFxPan(.Pos), "meditate" & CStr(CharIndex))
+            ' Play sound only in PC area
+            If EstaPCarea(CharIndex) Then
+                Call ao20audio.PlayWav(SND_MEDITATE, True, ao20audio.ComputeCharFxVolume(.Pos), ao20audio.ComputeCharFxPan(.Pos), "meditate" & CStr(CharIndex))
+            End If
         Else
             Call ao20audio.StopWav(SND_MEDITATE, "meditate" & CStr(CharIndex))
             Call ChangeToClip(.ActiveAnimation, 3)

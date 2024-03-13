@@ -278,6 +278,8 @@ Public Type Char
     appear As Byte
     simbolo As Byte
     Idle As Boolean
+    
+    Meditating As Boolean
 
     Head_Aura As String
     Body_Aura As String
