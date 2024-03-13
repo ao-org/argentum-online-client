@@ -69,6 +69,7 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .MaxBarTime = 0
         .UserMaxHp = 0
         .UserMinHp = 0
+        .Meditating = False
         .ActiveAnimation.PlaybackState = Stopped
         .scrollDirectionX = 0
         .scrollDirectionY = 0
