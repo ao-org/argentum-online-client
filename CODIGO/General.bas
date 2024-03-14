@@ -1038,6 +1038,23 @@ FileExist_Err:
     
 End Function
 
+Private Sub SetMonitorDPI(ByVal scaleMonitor As String)
+
+    Dim appPath As String
+    Dim command As String
+
+    ' Get the current application directory
+    appPath = App.path
+    If Right(appPath, 1) <> "\" Then appPath = appPath & "\"
+
+    ' Construct the command with the full path to SetDPI.exe
+    command = appPath & "SetDPI.exe " & scaleMonitor
+
+    ' Execute the command
+    Shell command, vbNormalFocus
+
+End Sub
+
 Sub Main()
 
 On Error GoTo Main_Err
@@ -1045,6 +1062,8 @@ On Error GoTo Main_Err
     Call LoadConfig
     Call SetLanguageApplication
     Call Frmcarga.Show
+    ' Set the DPI scale for the monitor
+    Call SetMonitorDPI(100)
     Set FormParser = New clsCursor
     Call FormParser.Init
     Call CheckResources
