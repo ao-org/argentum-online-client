@@ -80,7 +80,21 @@ On Error GoTo OnClick_Err
             End If
         End If
     End If
-    If MouseButton = vbLeftButton And ACCION1 = 0 Or MouseButton = vbRightButton And ACCION2 = 0 Or MouseButton = 4 And ACCION3 = 0 Then
+    
+    Dim MouseAction As e_MouseAction
+    Select Case MouseButton
+        Case vbLeftButton
+            MouseAction = ACCION1
+        Case vbRightButton
+            MouseAction = ACCION2
+        Case vbMiddleButton
+            MouseAction = ACCION3
+        Case Else
+            Exit Sub
+    End Select
+    
+    
+    If MouseAction = e_MouseAction.eThrowOrLook Then
         If Not Comerciando Then
             If MouseShift = 0 Then
                 If UsingSkill = 0 Or frmMain.MacroLadder.enabled Then
@@ -201,7 +215,11 @@ On Error GoTo OnClick_Err
             End If
             If cartel Then cartel = False
         End If
-    ElseIf MouseButton = vbLeftButton And ACCION1 = 2 Or MouseButton = vbRightButton And ACCION2 = 2 Or MouseButton = 4 And ACCION3 = 2 Then
+
+    ElseIf MouseAction = e_MouseAction.eInteract Then
+        Call WriteDoubleClick(tX, tY)
+
+    ElseIf MouseAction = e_MouseAction.eAttack Then
         If UserDescansar Or UserMeditar Then Exit Sub
         If MainTimer.Check(TimersIndex.CastAttack, False) Then
             If MainTimer.Check(TimersIndex.Attack) Then
@@ -209,18 +227,21 @@ On Error GoTo OnClick_Err
                 Call WriteAttack
             End If
         End If
-    
-    ElseIf MouseButton = vbLeftButton And ACCION1 = 3 Or MouseButton = vbRightButton And ACCION2 = 3 Or MouseButton = 4 And ACCION3 = 3 Then
-            If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
-    ElseIf MouseButton = vbLeftButton And ACCION1 = 4 Or MouseButton = vbRightButton And ACCION2 = 4 Or MouseButton = 4 And ACCION3 = 4 Then
-        If MapData(tX, tY).CharIndex <> 0 Then
-            If charlist(MapData(tX, tY).CharIndex).nombre <> charlist(MapData(UserPos.x, UserPos.y).CharIndex).nombre Then
-                If charlist(MapData(tX, tY).CharIndex).esNpc = False Then
-                    SendTxt.Text = "\" & charlist(MapData(tX, tY).CharIndex).nombre & " "
-                    If SendTxtCmsg.visible = False Then
-                        SendTxt.visible = True
-                        SendTxt.SetFocus
-                        SendTxt.SelStart = Len(SendTxt.Text)
+
+    ElseIf MouseAction = e_MouseAction.eWhisper Then
+        Dim CharIndex As Integer
+        CharIndex = MapData(tX, tY).CharIndex
+        If CharIndex = 0 And tY < YMaxMapSize Then
+            CharIndex = MapData(tX, tY + 1).CharIndex
+        End If
+        If CharIndex <> 0 Then
+            If charlist(CharIndex).nombre <> charlist(UserCharIndex).nombre Then
+                If charlist(CharIndex).esNpc = False Then
+                    frmMain.SendTxt.Text = "\" & charlist(CharIndex).nombre & " "
+                    If frmMain.SendTxtCmsg.visible = False Then
+                        frmMain.SendTxt.visible = True
+                        frmMain.SendTxt.SetFocus
+                        frmMain.SendTxt.SelStart = Len(frmMain.SendTxt.Text)
                     End If
                 End If
             End If
