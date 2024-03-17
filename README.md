@@ -9,6 +9,9 @@ Welcome to the source code repository for the Argentum20 Client. This client is 
 - **Server:** [Argentum Online Server](https://github.com/ao-org/argentum-online-server)
 - **Assets:** [Resources](https://github.com/ao-org/Recursos)
 
+## Report bugs
+- **Please report the bugs in the Server repository to maintain all of the tickets in one place:** [Link](https://github.com/ao-org/Recursos](https://github.com/ao-org/argentum-online-server/issues))
+
 ## 🛡️ Contributing via Pull Requests
 
 We encourage contributions to the project! However, to maintain code quality and readability, please adhere to our guidelines, especially when dealing with the peculiarities of Visual Basic 6 IDE, which tends to change variable names, complicating the review process for Pull Requests.
