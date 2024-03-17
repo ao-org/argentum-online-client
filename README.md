@@ -2,14 +2,14 @@
 
 Please consider supporting our work on [Patreon](https://www.patreon.com/nolandstudios). Your support helps us continue developing and maintaining projects like this one. Every contribution makes a significant impact!
 
-## 🐲 AO20 Client 🧙‍♂️
+## 🐲 Argentum Online Client 🧙‍♂️
 
-Welcome to the source code repository for the Argentum20 Client. This client is a part of the larger Argentum Online game ecosystem. To fully utilize this client, you will need the corresponding server and assets:
+Welcome to the source code repository for the Argentum Online Client. To fully utilize this client, you will need the corresponding server and assets:
 
 - **Server:** [Argentum Online Server](https://github.com/ao-org/argentum-online-server)
 - **Assets:** [Resources](https://github.com/ao-org/Recursos)
 
-## Report bugs
+## 🐛 Report bugs
 - **Please report the bugs in the Server repository to maintain all of the tickets in one place:** [Link](https://github.com/ao-org/Recursos](https://github.com/ao-org/argentum-online-server/issues))
 
 ## 🛡️ Contributing via Pull Requests
