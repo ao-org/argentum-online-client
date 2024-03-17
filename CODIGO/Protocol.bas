@@ -6262,30 +6262,34 @@ Private Sub HandleGuildLeaderInfo()
             .porciento.Caption = "¡Nivel máximo!"
             .expcount.Caption = "¡Nivel máximo!"
         End If
+        
+        
+        Dim Padding As String
+        Padding = Space$(19)
 
         Select Case nivel
 
                Case 1
-                .beneficios = "Max miembros: 5"
+                .beneficios = Padding & "Max miembros: 5"
                 .maxMiembros = 5
             Case 2
-                .beneficios = "Pedir ayuda (G) / Max miembros: 7"
+                .beneficios = Padding & "Pedir ayuda (G) / Max miembros: 7"
                 .maxMiembros = 7
 
             Case 3
-                .beneficios = "Pedir ayuda (G) / Seguro de clan." & vbCrLf & "Max miembros: 7"
+                .beneficios = Padding & "Pedir ayuda (G) / Seguro de clan." & vbCrLf & "Max miembros: 7"
                 .maxMiembros = 7
 
             Case 4
-                .beneficios = "Pedir ayuda (G) / Seguro de clan. " & vbCrLf & "Max miembros: 12"
+                .beneficios = Padding & "Pedir ayuda (G) / Seguro de clan. " & vbCrLf & "Max miembros: 12"
                 .maxMiembros = 12
 
             Case 5
-                .beneficios = "Pedir ayuda (G) / Seguro de clan /  Ver vida y mana." & vbCrLf & " Max miembros: 15"
+                .beneficios = Padding & "Pedir ayuda (G) / Seguro de clan /  Ver vida y mana." & vbCrLf & "Max miembros: 15"
                 .maxMiembros = 15
                 
             Case 6
-                .beneficios = "Pedir ayuda (G) / Seguro de clan / Ver vida y mana/ Verse invisible." & vbCrLf & " Max miembros: 20"
+                .beneficios = Padding & "Pedir ayuda (G) / Seguro de clan / Ver vida y mana / Verse invisible." & vbCrLf & "Max miembros: 20"
                 .maxMiembros = 20
         End Select
         
