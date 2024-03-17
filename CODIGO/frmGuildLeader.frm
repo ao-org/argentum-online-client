@@ -206,7 +206,7 @@ Begin VB.Form frmGuildLeader
       Height          =   735
       Left            =   390
       TabIndex        =   3
-      Top             =   2775
+      Top             =   2550
       Width           =   3615
    End
    Begin VB.Image EXPBAR 
