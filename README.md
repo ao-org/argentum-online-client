@@ -43,3 +43,13 @@ If you have any trouble setting up the pre-commit hook locally, you can manually
 ![Contribution Guidelines](https://steamuserimages-a.akamaihd.net/ugc/1829034638748296385/CCD6BAF674692E8D4C87CDCA56FF8EC06D93C2FB/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false)
 
 We appreciate your interest in contributing to the AO20 Client. By following these guidelines, you help us maintain a high standard of code quality and ensure that your contributions can be efficiently reviewed and integrated.
+
+## Star History
+
+<a href="https://star-history.com/#ao-org/argentum-online-client&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=ao-org/argentum-online-client&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=ao-org/argentum-online-client&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=ao-org/argentum-online-client&type=Date" />
+  </picture>
+</a>
