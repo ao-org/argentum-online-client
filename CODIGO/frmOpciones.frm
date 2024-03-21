@@ -433,6 +433,7 @@ Begin VB.Form frmOpciones
       Left            =   5290
       Tag             =   "0"
       Top             =   6790
+      Visible         =   0   'False
       Width           =   2265
    End
    Begin VB.Image Command1 
@@ -1169,6 +1170,7 @@ Private Sub discord_Click()
     On Error GoTo discord_Click_Err
     
     ShellExecute Me.hwnd, "open", "https://discord.gg/e3juVbF", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://discord.gg/hvaA8eMm43", "", "", 0
 
     
     Exit Sub
@@ -1184,6 +1186,7 @@ Private Sub facebook_Click()
     On Error GoTo facebook_Click_Err
     
     ShellExecute Me.hwnd, "open", "https://ao20.com.ar/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://facebook.com/argentumonlineoficial", "", "", 0
 
     
     Exit Sub
@@ -1603,6 +1606,7 @@ Private Sub instagram_Click()
     On Error GoTo instagram_Click_Err
     
     ShellExecute Me.hwnd, "open", "https://ao20.com.ar/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://instagram.com/argentumonlineoficial", "", "", 0
 
     
     Exit Sub
