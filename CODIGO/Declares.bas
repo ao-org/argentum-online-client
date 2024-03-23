@@ -431,8 +431,8 @@ End Type
 Public gIntervals As t_Intervals
 Public Const INT_SENTRPU       As Integer = 2000
 Public MacroBltIndex           As Integer
-Public Const CASPER_BODY       As Integer = 830
-Public Const CASPER_BODY_IDLE  As Integer = 829
+Public Const CASPER_BODY       As Integer = 3034
+Public Const CASPER_BODY_IDLE  As Integer = 3036
 Public Const TIME_CASPER_IDLE  As Long = 300
 Public Const NUMATRIBUTES      As Byte = 5
 'Musica
