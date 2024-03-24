@@ -3347,7 +3347,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     intro = 1
 
     If intro = 1 Then
-        Draw_Grh BodyData(773).Walk(3), 490, 333, 1, 0, COLOR_WHITE
+        Draw_Grh BodyData(123).Walk(3), 490, 333, 1, 0, COLOR_WHITE
         Draw_Grh HeadData(118).Head(3), 490, 296, 1, 0, COLOR_WHITE
             
         Draw_Grh CascoAnimData(13).Head(3), 490, 294, 1, 0, COLOR_WHITE
