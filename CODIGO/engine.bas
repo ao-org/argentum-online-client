@@ -2039,13 +2039,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, 0, , True
 
                     ' Sombra
-                    PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, 0, True
-                    If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
-                    If LenB(.Arma_Aura) <> 0 And .Arma_Aura <> "0" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
-                    If LenB(.Otra_Aura) <> 0 And .Otra_Aura <> "0" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
-                    If LenB(.Escudo_Aura) <> 0 And .Escudo_Aura <> "0" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
-                    If LenB(.DM_Aura) <> 0 And .DM_Aura <> "0" Then Call Renderizar_Aura(.DM_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
-                    If LenB(.RM_Aura) <> 0 And .RM_Aura <> "0" Then Call Renderizar_Aura(.RM_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
+                    PresentComposedTexture PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + .Body.BodyOffset.Y, color, 0, True
+                    If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
+                    If LenB(.Head_Aura) <> 0 And .Head_Aura <> "0" Then Call Renderizar_Aura(.Head_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
+                    If LenB(.Arma_Aura) <> 0 And .Arma_Aura <> "0" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
+                    If LenB(.Otra_Aura) <> 0 And .Otra_Aura <> "0" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
+                    If LenB(.Escudo_Aura) <> 0 And .Escudo_Aura <> "0" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
+                    If LenB(.DM_Aura) <> 0 And .DM_Aura <> "0" Then Call Renderizar_Aura(.DM_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
+                    If LenB(.RM_Aura) <> 0 And .RM_Aura <> "0" Then Call Renderizar_Aura(.RM_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
                 End If
 
                 ' Char
