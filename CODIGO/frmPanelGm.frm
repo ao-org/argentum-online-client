@@ -4,8 +4,8 @@ Begin VB.Form frmPanelgm
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Panel GM"
    ClientHeight    =   8745
-   ClientLeft      =   18150
-   ClientTop       =   4710
+   ClientLeft      =   16095
+   ClientTop       =   3480
    ClientWidth     =   7155
    BeginProperty Font 
       Name            =   "Tahoma"
@@ -22,7 +22,6 @@ Begin VB.Form frmPanelgm
    ScaleHeight     =   8745
    ScaleWidth      =   7155
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   1  'CenterOwner
    Begin VB.Frame MacrosCheat 
       BackColor       =   &H80000007&
       Height          =   4095
