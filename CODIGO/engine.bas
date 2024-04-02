@@ -3349,9 +3349,9 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     If intro = 1 Then
         Draw_Grh BodyData(123).Walk(3), 490, 333, 1, 0, COLOR_WHITE
-        Draw_Grh HeadData(118).Head(3), 490, 296, 1, 0, COLOR_WHITE
+        Draw_Grh HeadData(118).Head(3), 490, 328, 1, 0, COLOR_WHITE
             
-        Draw_Grh CascoAnimData(13).Head(3), 490, 294, 1, 0, COLOR_WHITE
+        Draw_Grh CascoAnimData(13).Head(3), 490, 326, 1, 0, COLOR_WHITE
         Draw_Grh WeaponAnimData(6).WeaponWalk(3), 490, 333, 1, 0, COLOR_WHITE
         Engine_Text_Render "Gulfas Morgolock", 454, 367, ColorGM, 1
         Engine_Text_Render "<Creador del Mundo>", 443, 382, ColorGM, 1
