@@ -1111,28 +1111,7 @@ cmdCerrar_MouseMove_Err:
     
 End Sub
 
-Private Sub cmdChangePassword_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo cmdChangePassword_MouseMove_Err
-    
 
-    If cmdChangePassword.Tag = "0" Then
-        cmdChangePassword.Picture = LoadInterface("boton-cambiar-pass-over.bmp")
-        cmdChangePassword.Tag = "1"
-
-    End If
-
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
-
-    
-    Exit Sub
-
-cmdChangePassword_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdChangePassword_MouseMove", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub cmdWeb_Click()
     
@@ -1405,20 +1384,6 @@ Private Sub cmdcerrar_Click()
 
 cmdcerrar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdcerrar_Click", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub cmdChangePassword_Click()
-    
-    On Error GoTo cmdChangePassword_Click_Err
-    
-    Call ShellExecute(0, "open", "http://ao20.com.ar/recuperar", 0, 0, 1)
-    
-    Exit Sub
-
-cmdChangePassword_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdChangePassword_Click", Erl)
     Resume Next
     
 End Sub
