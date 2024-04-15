@@ -146,6 +146,7 @@ Module=ao20config; CODIGO\ao20config.bas
 Form=CODIGO\frmCreateBattleground.frm
 Form=CODIGO\frmLobbyBattleground.frm
 ResFile32="AO20.res"
+Module=ModValidateResources; CODIGO\ModValidateResources.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""

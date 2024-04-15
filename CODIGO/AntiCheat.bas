@@ -27,7 +27,8 @@ Private Declare Sub UnloadAC Lib "AOACClient.dll" ()
 Private Declare Sub Update Lib "AOACClient.dll" ()
 Private Declare Sub BeginSession Lib "AOACClient.dll" (ByRef userName As String)
 Private Declare Sub EndSession Lib "AOACClient.dll" ()
-Public Declare Sub HandleRemoteMessage Lib "AOACClient.dll" (ByRef Data As Byte, ByVal DataSize As Integer)
+Public Declare Sub HandleRemoteMessage Lib "AOACClient.dll" (ByRef data As Byte, ByVal DataSize As Integer)
+Public Declare Function GetCrc32 Lib "AOACClient.dll" (ByVal Path As String) As Long
 
 Public Sub InitializeAntiCheat()
 On Error GoTo InitializeAC_Err
