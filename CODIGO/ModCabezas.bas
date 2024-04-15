@@ -104,10 +104,10 @@ Sub DameOpciones()
                     Next i
     
                 Case "Enano"
-                    MiCabeza = RandomNumber(300, 329)
+                    MiCabeza = RandomNumber(300, 344)
                     Call DibujarCPJ(MiCabeza)
 
-                    For i = 300 To 329
+                    For i = 300 To 344
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
     
