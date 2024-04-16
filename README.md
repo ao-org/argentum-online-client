@@ -44,6 +44,13 @@ If you have any trouble setting up the pre-commit hook locally, you can manually
 
 We appreciate your interest in contributing to the AO20 Client. By following these guidelines, you help us maintain a high standard of code quality and ensure that your contributions can be efficiently reviewed and integrated.
 
+## Cryptography
+CryptoSys is used in Argentum Online to cipher sensitive data.
+
+- [https://www.cryptosys.net/api.html](https://www.cryptosys.net/api.html)
+
+Please note this is not free software and you will have to buy your own license to use CryptoSys
+
 ## Star History
 
 <a href="https://star-history.com/#ao-org/argentum-online-client&Date">
