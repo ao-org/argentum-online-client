@@ -21,7 +21,7 @@ Private Declare Function SetDllDirectory Lib "kernel32" Alias "SetDllDirectoryA"
 Private Declare Function svb_init_steam Lib "steam_vb.dll" (ByVal appid As Long) As Long
 Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 Private Declare Function svb_retlong Lib "steam_vb.dll" (ByVal Number As Long) As Long
-Public Declare Function svb_unlock_achivement Lib "steam_vb.dll" (ByVal name As String) As Long
+Public Declare Function svb_unlock_achivement Lib "steam_vb.dll" (ByVal Name As String) As Long
 
 Private Type Position
 
@@ -47,14 +47,14 @@ Private Type tWorldPos
 
 End Type
 
-Private Type grh
+Private Type Grh
 
     GrhIndex As Long
     framecounter As Single
     speed As Single
-    Started As Long
+    started As Long
     alpha_blend As Boolean
-    Angle As Single
+    angle As Single
 
 End Type
 
@@ -165,7 +165,7 @@ Public Function DirGraficos() As String
     
     On Error GoTo DirGraficos_Err
     
-    DirGraficos = App.Path & "\..\Recursos\Graficos\"
+    DirGraficos = App.path & "\..\Recursos\Graficos\"
 
     
     Exit Function
@@ -180,7 +180,7 @@ Public Function DirSound() As String
     
     On Error GoTo DirSound_Err
     
-    DirSound = App.Path & "\..\Recursos\wav\"
+    DirSound = App.path & "\..\Recursos\wav\"
 
     
     Exit Function
@@ -195,7 +195,7 @@ Public Function DirMidi() As String
     
     On Error GoTo DirMidi_Err
     
-    DirMidi = App.Path & "\..\Recursos\midi\"
+    DirMidi = App.path & "\..\Recursos\midi\"
 
     
     Exit Function
@@ -210,7 +210,7 @@ Public Function DirMapas() As String
     
     On Error GoTo DirMapas_Err
     
-    DirMapas = App.Path & "\..\Recursos\mapas\"
+    DirMapas = App.path & "\..\Recursos\mapas\"
 
     
     Exit Function
@@ -261,7 +261,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         Dim sMax As Long
         Dim sPos As Long
         Dim Pos As Long
-        Dim Ret As Long
+        Dim ret As Long
         
         Dim bHoldBar As Boolean
 
@@ -281,7 +281,7 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Op
         
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
-        Ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
+        ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
         Pos = tSI.nTrackPos
         Call GetScrollInfo(.hwnd, SB_VERT, tSI)
@@ -352,7 +352,7 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
     Dim sMax As Long
     Dim sPos As Long
     Dim Pos As Long
-    Dim Ret As Long
+    Dim ret As Long
     
     Dim bHoldBar As Boolean
     Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
@@ -368,7 +368,7 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
         
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
-        Ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
+        ret = GetScrollInfo(.hwnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
         Pos = tSI.nTrackPos
         Call GetScrollInfo(.hwnd, SB_VERT, tSI)
@@ -419,8 +419,8 @@ Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, O
         .dyLineSpacing = LineSpacing
     End With
 
-    Dim Ret As Long
-    Ret = SendMessage(rtbTarget.hwnd, EM_SETPARAFORMAT, 0&, Para)
+    Dim ret As Long
+    ret = SendMessage(rtbTarget.hwnd, EM_SETPARAFORMAT, 0&, Para)
     
     If ret = 0 Then Debug.Print "Error al setear el espaciado entre líneas del RichTextBox."
 End Sub
@@ -559,7 +559,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     
 
     'Validamos los datos del user
-    Dim loopc     As Long
+    Dim loopC     As Long
 
     Dim CharAscii As Integer
     
@@ -575,8 +575,8 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
 
     End If
     
-    For loopc = 1 To Len(CuentaPassword)
-        CharAscii = Asc(mid$(CuentaPassword, loopc, 1))
+    For loopC = 1 To Len(CuentaPassword)
+        CharAscii = Asc(mid$(CuentaPassword, loopC, 1))
 
         If Not LegalCharacter(CharAscii) Then
             MsgBox ("Password inválido. El caractér " & Chr$(CharAscii) & " no está permitido.")
@@ -584,7 +584,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
 
         End If
 
-    Next loopc
+    Next loopC
     
     CheckUserData = True
 
@@ -683,12 +683,12 @@ Sub SetConnected()
 
     'Vaciamos la cola de movimiento
     Call keysMovementPressedQueue.Clear
-    frmMain.UpdateDaytime.Enabled = True
+    frmMain.UpdateDaytime.enabled = True
     light_transition = 1#
     COLOR_AZUL = RGB(0, 0, 0)
     OpcionMenu = 0
     Call ResetContadores
-    frmMain.cerrarcuenta.Enabled = True
+    frmMain.cerrarcuenta.enabled = True
     engine.FadeInAlpha = 255
     isLogged = True
   
@@ -696,7 +696,7 @@ Sub SetConnected()
          If MostrarTutorial And tutorial_index <= 0 Then
             If tutorial(e_tutorialIndex.TUTORIAL_NUEVO_USER).Activo = 1 Then
                 tutorial_index = e_tutorialIndex.TUTORIAL_NUEVO_USER
-                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 490, 50, 100)
+                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).Grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 490, 50, 100)
             End If
         End If
     End If
@@ -782,9 +782,9 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
             Dim i As Integer
             For i = 1 To LastChar
                 If charlist(i).Invisible And Not EsGM And Not charlist(i).Meditating Then
-                    If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < 6 Or charlist(i).clan_index = 0 Or charlist(i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
+                    If MapData(charlist(i).Pos.x, charlist(i).Pos.y).CharIndex = i And (charlist(UserCharIndex).clan_nivel < 6 Or charlist(i).clan_index = 0 Or charlist(i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
                         If General_Distance_Get(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist(i).FxCount = 0 And charlist(i).particle_count = 0 Then
-                            MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = 0
+                            MapData(charlist(i).Pos.x, charlist(i).Pos.y).CharIndex = 0
                         End If
                     End If
                 End If
@@ -816,7 +816,7 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
     
     ' Update 3D sounds!
     ' Call Audio.MoveListener(UserPos.x, UserPos.y)
-    If frmMain.macrotrabajo.Enabled Then frmMain.DesactivarMacroTrabajo
+    If frmMain.macrotrabajo.enabled Then frmMain.DesactivarMacroTrabajo
     
     
     Exit Sub
@@ -888,29 +888,29 @@ Sub Check_Keys()
 
     Static lastMovement As Long
 
-    Dim Direccion As E_Heading
+    Dim direccion As E_Heading
     'Debug.Assert UserCharIndex > 0
     
-    Direccion = charlist(UserCharIndex).Heading
+    direccion = charlist(UserCharIndex).Heading
 
     If Not Application.IsAppActive() Then Exit Sub
     
 
     If Not pausa And _
-        g_game_state.state = e_state_gameplay_screen And _
-        Not frmComerciarUsu.Visible And _
-        Not frmBancoObj.Visible And _
-        Not frmOpciones.Visible And _
-        Not frmComerciar.Visible And _
-        Not frmGoliath.Visible And _
-        Not frmEstadisticas.Visible And _
-        Not frmStatistics.Visible And _
-        Not frmAlqui.Visible And _
-        Not frmCarp.Visible And _
-        Not frmHerrero.Visible And _
-        Not FrmGrupo.Visible And _
-        Not FrmSastre.Visible And _
-        Not FrmGmAyuda.Visible And _
+        g_game_state.State = e_state_gameplay_screen And _
+        Not frmComerciarUsu.visible And _
+        Not frmBancoObj.visible And _
+        Not frmOpciones.visible And _
+        Not frmComerciar.visible And _
+        Not frmGoliath.visible And _
+        Not frmEstadisticas.visible And _
+        Not frmStatistics.visible And _
+        Not frmAlqui.visible And _
+        Not frmCarp.visible And _
+        Not frmHerrero.visible And _
+        Not FrmGrupo.visible And _
+        Not FrmSastre.visible And _
+        Not FrmGmAyuda.visible And _
         Not frmCrafteo.visible And _
         Not IsGameDialogOpen Then
  
@@ -1048,6 +1048,10 @@ On Error GoTo Main_Err
     Set FormParser = New clsCursor
     Call FormParser.Init
     Call CheckResources
+    If Not ValidateResources Then
+        Call MsgBox("Recursos invalidos.", vbApplicationModal + vbInformation + vbOKOnly, "Recursos invalidos.")
+        End
+    End If
     If PantallaCompleta Then
         Call Resolution.SetResolution
     End If
@@ -1061,7 +1065,7 @@ On Error GoTo Main_Err
     Call InitCommonControls
 
     #If DEBUGGING = 0 Or ENABLE_ANTICHEAT = 1 Then
-        SetDllDirectory App.Path
+        SetDllDirectory App.path
         Dim steam_init_result As Long
         steam_init_result = svb_init_steam(1956740)
         Debug.Print "Init Steam " & steam_init_result
@@ -1159,7 +1163,7 @@ End Sub
 Public Function SetDefaultServer()
 On Error GoTo SetDefaultServer_Err
 
-#If PYMMO = 1 And DEVELOPER = 1 Then
+#If PYMMO = 1 And Developer = 1 Then
     IPdelServidorLogin = "127.0.0.1"
     PuertoDelServidorLogin = 4000
     IPdelServidor = IPdelServidorLogin
@@ -1194,14 +1198,14 @@ Public Function randomMap() As Integer
     End Select
 End Function
 
-Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
+Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
     '*****************************************************************
     'Writes a var to a text file
     '*****************************************************************
     
     On Error GoTo WriteVar_Err
     
-    writeprivateprofilestring Main, Var, value, File
+    writeprivateprofilestring Main, Var, Value, File
 
     
     Exit Sub
@@ -1330,7 +1334,7 @@ Public Sub LeerLineaComandos()
     Dim i   As Long
     
     'Parseo los comandos
-    t = Split(Command, " ")
+    t = Split(command, " ")
 
     For i = LBound(t) To UBound(t)
 
@@ -1502,7 +1506,7 @@ Public Sub CloseClient()
     Call PrevInstance.ReleaseInstance
   
     
-    ao20audio.stopallplayback
+    ao20audio.StopAllPlayback
     EngineRun = False
     
     Call General_Set_Mouse_Speed(SensibilidadMouseOriginal)
@@ -1663,15 +1667,15 @@ General_Get_Elapsed_Time_Err:
 End Function
 
 
-Public Function max(ByVal A As Variant, ByVal B As Variant) As Variant
+Public Function max(ByVal A As Variant, ByVal b As Variant) As Variant
     
     On Error GoTo max_Err
     
 
-    If A > B Then
+    If A > b Then
         max = A
     Else
-        max = B
+        max = b
 
     End If
 
@@ -1684,15 +1688,15 @@ max_Err:
     
 End Function
 
-Public Function min(ByVal A As Double, ByVal B As Double) As Variant
+Public Function min(ByVal A As Double, ByVal b As Double) As Variant
     
     On Error GoTo min_Err
     
 
-    If A < B Then
+    If A < b Then
         min = A
     Else
-        min = B
+        min = b
 
     End If
 
@@ -1748,7 +1752,7 @@ On Error GoTo ErrHandler
         #If Compresion = 1 Then
             Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
         #Else
-            Set LoadInterface = LoadPicture(App.Path & "/../Recursos/interface/" & LCase$(FileName))
+            Set LoadInterface = LoadPicture(App.path & "/../Recursos/interface/" & LCase$(FileName))
         #End If
     End If
 Exit Function
@@ -1765,7 +1769,7 @@ On Error GoTo ErrHandler
     #If Compresion = 1 Then
         Set LoadMinimap = General_Load_Minimap_From_Resource_Ex("mapa" & map & ".bmp", ResourcesPassword)
     #Else
-        Set LoadMinimap = LoadPicture(App.Path & "/../Recursos/Minimapas/Mapa" & map & ".bmp")
+        Set LoadMinimap = LoadPicture(App.path & "/../Recursos/Minimapas/Mapa" & map & ".bmp")
     #End If
     
 Exit Function
@@ -1867,7 +1871,7 @@ Public Function GetMd5() As String
 
 On Error GoTo Handler
 
-    GetMd5 = MD5File(App.Path & "\Argentum.exe")
+    GetMd5 = MD5File(App.path & "\Argentum.exe")
     
     Exit Function
     
@@ -1881,14 +1885,14 @@ Public Sub CheckResources()
 
     Dim data(1 To 200) As Byte
     
-    Dim handle As Integer
-    handle = FreeFile
+    Dim Handle As Integer
+    Handle = FreeFile
 
-    Open App.Path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #handle
+    Open App.path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #Handle
     
-    Get #handle, , data
+    Get #Handle, , data
     
-    Close #handle
+    Close #Handle
     
     Dim length As Integer
     length = data(UBound(data)) + data(UBound(data) - 1) * 256
@@ -1908,12 +1912,12 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
         Exit Function
     End If
     
-    Dim Temp As String
-    Temp = UCase$(nombre)
+    Dim temp As String
+    temp = UCase$(nombre)
     
     Dim i As Long, Char As Integer, LastChar As Integer
-    For i = 1 To Len(Temp)
-        Char = Asc(mid$(Temp, i, 1))
+    For i = 1 To Len(temp)
+        Char = Asc(mid$(temp, i, 1))
         
         If (Char < 65 Or Char > 90) And Char <> 32 Then
             Error = "Sólo se permites letras y espacios."
@@ -1927,7 +1931,7 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
         LastChar = Char
     Next
 
-    If Asc(mid$(Temp, 1, 1)) = 32 Or Asc(mid$(Temp, Len(Temp), 1)) = 32 Then
+    If Asc(mid$(temp, 1, 1)) = 32 Or Asc(mid$(temp, Len(temp), 1)) = 32 Then
         Error = "No se permiten espacios al inicio o al final."
         Exit Function
     End If
@@ -1991,16 +1995,16 @@ Public Function IntentarObtenerPezEspecial()
 End Function
 
 
-Public Function isValidEmail(email As String) As Boolean
+Public Function isValidEmail(Email As String) As Boolean
     Dim At As Integer
     Dim oneDot As Integer
     Dim twoDots As Integer
  
     isValidEmail = True
-    At = InStr(1, email, "@", vbTextCompare)
-    oneDot = InStr(At + 2, email, ".", vbTextCompare)
-    twoDots = InStr(At + 2, email, "..", vbTextCompare)
-    If At = 0 Or oneDot = 0 Or Not twoDots = 0 Or Right(email, 1) = "." Then isValidEmail = False
+    At = InStr(1, Email, "@", vbTextCompare)
+    oneDot = InStr(At + 2, Email, ".", vbTextCompare)
+    twoDots = InStr(At + 2, Email, "..", vbTextCompare)
+    If At = 0 Or oneDot = 0 Or Not twoDots = 0 Or Right(Email, 1) = "." Then isValidEmail = False
 End Function
 
 
