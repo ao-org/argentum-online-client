@@ -110,6 +110,10 @@ Sub DameOpciones()
                     For i = 200 To 229
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
+                    
+                    For i = 792 To 810
+                        frmCrearPersonaje.Cabeza.AddItem i
+                    Next i
     
                 Case "Enano"
                     MiCabeza = RandomNumber(300, 345)
