@@ -86,12 +86,20 @@ Sub DameOpciones()
                     For i = 1 To 41
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
+                    
+                    For i = 778 To 791
+                        frmCrearPersonaje.Cabeza.AddItem i
+                    Next i
 
                 Case "Elfo"
                     MiCabeza = RandomNumber(101, 132)
                     Call DibujarCPJ(MiCabeza)
 
                     For i = 101 To 132
+                        frmCrearPersonaje.Cabeza.AddItem i
+                    Next i
+                    
+                    For i = 531 To 545
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
     
@@ -104,7 +112,7 @@ Sub DameOpciones()
                     Next i
     
                 Case "Enano"
-                    MiCabeza = RandomNumber(300, 344)
+                    MiCabeza = RandomNumber(300, 345)
                     Call DibujarCPJ(MiCabeza)
 
                     For i = 300 To 344
@@ -145,12 +153,26 @@ Sub DameOpciones()
                     For i = 50 To 80
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
+                    
+                    ' Agregar cabezas adicionales
+                    For i = 187 To 190
+                        frmCrearPersonaje.Cabeza.AddItem i
+                    Next i
+                    
+                    ' Agregar cabezas adicionales
+                    For i = 230 To 246
+                        frmCrearPersonaje.Cabeza.AddItem i
+                    Next i
 
                 Case "Elfo"
                     MiCabeza = RandomNumber(150, 179)
                     Call DibujarCPJ(MiCabeza)
 
                     For i = 150 To 179
+                        frmCrearPersonaje.Cabeza.AddItem i
+                    Next i
+                    
+                    For i = 758 To 777
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
 
