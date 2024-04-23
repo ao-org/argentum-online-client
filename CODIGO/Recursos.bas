@@ -1756,7 +1756,7 @@ Public Sub CargarIndicesOBJ()
     For Npc = 1 To NumNpcs
         DoEvents
 
-        If Not (CBool(Val(Leer.GetValue("npc" & Npc, "NoMapInfo")))) Then
+        If (CBool(Val(Leer.GetValue("npc" & Npc, "NoMapInfo")))) Then
             GoTo Continue
         End If
         
