@@ -1756,9 +1756,9 @@ Public Sub CargarIndicesOBJ()
     For Npc = 1 To NumNpcs
         DoEvents
 
-        if(NpcData(Npc).NoMapInfo = CBool(Val(Leer.GetValue("npc" & Npc, "NoMapInfo"))))
+        If(NpcData(Npc).NoMapInfo = CBool(Val(Leer.GetValue("npc" & Npc, "NoMapInfo")))) Then
             Next Npc
-        end if
+        End If
         
         Select Case language
             Case e_language.English
