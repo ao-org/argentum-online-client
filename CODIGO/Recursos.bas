@@ -1755,10 +1755,6 @@ Public Sub CargarIndicesOBJ()
     
     For Npc = 1 To NumNpcs
         DoEvents
-
-        If(NpcData(Npc).NoMapInfo = CBool(Val(Leer.GetValue("npc" & Npc, "NoMapInfo")))) Then
-            Next Npc
-        End If
         
         Select Case language
             Case e_language.English
@@ -1786,7 +1782,7 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).ExpClan = Val(Leer.GetValue("npc" & Npc, "GiveEXPClan"))
         
         NpcData(Npc).PuedeInvocar = Val(Leer.GetValue("npc" & Npc, "PuedeInvocar"))
-        NpcData(Npc).NoMapInfo = CBool(Val(Leer.GetValue("npc" & Npc, "NoMapInfo")))
+       
         aux = Val(Leer.GetValue("npc" & Npc, "NumQuiza"))
 
         If aux = 0 Then
