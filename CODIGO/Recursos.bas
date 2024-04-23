@@ -1786,7 +1786,7 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).ExpClan = Val(Leer.GetValue("npc" & Npc, "GiveEXPClan"))
         
         NpcData(Npc).PuedeInvocar = Val(Leer.GetValue("npc" & Npc, "PuedeInvocar"))
-        NpcData(Npc).NoMapInfo = Cbool(Val(Leer.GetValue("npc" & Npc, "NoMapInfo")))
+        NpcData(Npc).NoMapInfo = CBool(Val(Leer.GetValue("npc" & Npc, "NoMapInfo")))
         aux = Val(Leer.GetValue("npc" & Npc, "NumQuiza"))
 
         If aux = 0 Then
