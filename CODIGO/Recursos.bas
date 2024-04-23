@@ -925,20 +925,23 @@ Sub CargarDatosMapa(ByVal map As Integer)
 
                 ' frmMapaGrande.ListView1.ListItems.Clear
                 For i = 1 To .NumeroNPCs
-                
-                    NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
+                    If NpcData(NPCs(i).NpcIndex).NoMapInfo = 1 Then
+                        GoTo cont
+                    End If
+                    
 
+                    NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
+cont:
                 Next i
                
                 For c = 1 To UBound(NpcWorlds)
 
                     If NpcWorlds(c) > 0 Then
 
-                        If c > 399 And c < 450 Or c > 499 Then
+                        If (c > 399 And c < 450 Or c > 499) And NpcData(c).NoMapInfo <> 1 Then
 
                             Dim subelemento As ListItem
-
-                            Set subelemento = frmMapaGrande.ListView1.ListItems.Add(, , NpcData(c).name)
+                     Set subelemento = frmMapaGrande.ListView1.ListItems.Add(, , NpcData(c).Name)
 
                             subelemento.SubItems(1) = NpcWorlds(c)
                             subelemento.SubItems(2) = c
@@ -1755,6 +1758,10 @@ Public Sub CargarIndicesOBJ()
     
     For Npc = 1 To NumNpcs
         DoEvents
+        If Val(Leer.GetValue("npc" & Npc, "NomapInfo")) > 0 Then
+            NpcData(Npc).NoMapInfo = Val(Leer.GetValue("npc" & Npc, "NoMapInfo"))
+            GoTo Continue
+        End If
         
         Select Case language
             Case e_language.English
@@ -1778,11 +1785,9 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).MaxHit = Val(Leer.GetValue("npc" & Npc, "MaxHit"))
         NpcData(Npc).MinHit = Val(Leer.GetValue("npc" & Npc, "MinHit"))
         NpcData(Npc).oro = Val(Leer.GetValue("npc" & Npc, "oro"))
-        
         NpcData(Npc).ExpClan = Val(Leer.GetValue("npc" & Npc, "GiveEXPClan"))
         
         NpcData(Npc).PuedeInvocar = Val(Leer.GetValue("npc" & Npc, "PuedeInvocar"))
-       
         aux = Val(Leer.GetValue("npc" & Npc, "NumQuiza"))
 
         If aux = 0 Then
@@ -1798,7 +1803,7 @@ Public Sub CargarIndicesOBJ()
             Next loopc
 
         End If
-
+Continue:
     Next Npc
     
     For Hechizo = 1 To NumHechizos
