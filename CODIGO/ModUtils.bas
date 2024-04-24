@@ -266,7 +266,6 @@ Public Type NpcDatas
     QuizaDropea() As Integer
     ExpClan As Long
     PuedeInvocar As Byte
-    NoMapInfo As Boolean
     NoMapInfo As Byte
     
 End Type
