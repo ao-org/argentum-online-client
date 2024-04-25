@@ -296,7 +296,13 @@ Public Sub CreateCharacter(ByVal name As String, ByVal Race As Integer, ByVal Ge
     userName = name
     UserStats.Raza = Race
     UserStats.Sexo = Gender
+
+    If Class >= 10 Then
+    UserStats.Clase = eClass.Bandit
+    Else
     UserStats.Clase = Class
+    End If
+
     MiCabeza = Head
     UserStats.Hogar = HomeCity
 #If PYMMO = 1 Then
