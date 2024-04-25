@@ -1392,7 +1392,7 @@ Private Sub InicializarNombres()
     ListaClases(eClass.paladin) = "Paladín"
     ListaClases(eClass.Hunter) = "Cazador"
     ListaClases(eClass.Trabajador) = "Trabajador"
-    ListaClases(eClass.Bandit) = "Bandido"
+    ListaClases(eClass.Bandit-2) = "Bandido" 'delete this harcoded -2 if pirate and thief return to be playable
     'ListaClases(eClass.Pirat) = "Pirata"
     'ListaClases(eClass.Thief) = "Ladrón"
 
