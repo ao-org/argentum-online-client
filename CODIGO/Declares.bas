@@ -566,6 +566,8 @@ Public Enum eClass
     paladin     'Paladín
     Hunter      'Cazador
     Trabajador  'Trabajador
+    Pirat       'Pirata
+    Thief       'Ladron
     Bandit      'Bandido
 End Enum
 
