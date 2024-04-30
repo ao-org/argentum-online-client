@@ -402,9 +402,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             If x > 297 And x < 314 And y > 321 And y < 340 Then 'ok
     
                 If frmCrearPersonaje.lstHogar.ListIndex < frmCrearPersonaje.lstHogar.ListCount - 1 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex + 1
+                   ' frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex + 1
                 Else
-                    frmCrearPersonaje.lstHogar.ListIndex = 0
+                    frmCrearPersonaje.lstHogar.ListIndex = 6
 
                 End If
 
@@ -412,9 +412,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
             If x > 416 And x < 433 And y > 323 And y < 338 Then 'ok
                 If frmCrearPersonaje.lstHogar.ListIndex - 1 < 0 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListCount - 1
+                    'frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListCount - 1
                 Else
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex - 1
+                    frmCrearPersonaje.lstHogar.ListIndex = 6
 
                 End If
 
@@ -451,7 +451,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 UserStats.Sexo = frmCrearPersonaje.lstGenero.ListIndex + 1
                 UserStats.Clase = frmCrearPersonaje.lstProfesion.ListIndex + 1
                 
-                UserStats.Hogar = frmCrearPersonaje.lstHogar.ListIndex + 1
+                UserStats.Hogar = 6 'frmCrearPersonaje.lstHogar.ListIndex + 1
                
                 If frmCrearPersonaje.CheckData() Then
                     UserPassword = CuentaPassword
@@ -751,9 +751,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             If x > 297 And x < 314 And y > 321 And y < 340 Then 'ok
     
                 If frmCrearPersonaje.lstHogar.ListIndex < frmCrearPersonaje.lstHogar.ListCount - 1 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex + 1
+                    'frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex + 1
                 Else
-                    frmCrearPersonaje.lstHogar.ListIndex = 0
+                    frmCrearPersonaje.lstHogar.ListIndex = 6
 
                 End If
 
@@ -761,9 +761,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
             If x > 416 And x < 433 And y > 323 And y < 338 Then 'ok
                 If frmCrearPersonaje.lstHogar.ListIndex - 1 < 0 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListCount - 1
+                    'rmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListCount - 1
                 Else
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex - 1
+                    frmCrearPersonaje.lstHogar.ListIndex = 6
 
                 End If
 
@@ -804,7 +804,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 UserStats.Sexo = frmCrearPersonaje.lstGenero.ListIndex + 1
                 UserStats.Clase = frmCrearPersonaje.lstProfesion.ListIndex + 1
                 
-                UserStats.Hogar = frmCrearPersonaje.lstHogar.ListIndex + 1
+                UserStats.Hogar = 6
                
                 If frmCrearPersonaje.CheckData() Then
                     UserPassword = CuentaPassword

@@ -1381,7 +1381,7 @@ Private Sub InicializarNombres()
     ListaCiudades(eCiudad.cBanderbill) = "Banderbill"
     ListaCiudades(eCiudad.cLindos) = "Lindos"
     ListaCiudades(eCiudad.cArghal) = "Arghal"
-   ' ListaCiudades(eCiudad.cHillidan) = "Hillidan"
+    ListaCiudades(eCiudad.cForgat) = "Forgat"
 
     ListaClases(eClass.Mage) = "Mago"
     ListaClases(eClass.Cleric) = "Clérigo"
