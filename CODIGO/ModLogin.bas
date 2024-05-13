@@ -166,9 +166,9 @@ Public Sub LoadCharacterSelectionScreen()
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
-    If FrmLogear.visible Then
-        Unload FrmLogear
-    End If
+    
+    If FrmLogear.visible Then Unload FrmLogear
+    If frmNewAccount.visible Then Unload frmNewAccount
     
     If frmMain.visible Then
         UserParalizado = False
