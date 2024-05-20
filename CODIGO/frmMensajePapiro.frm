@@ -16,7 +16,7 @@ Begin VB.Form frmMensajePapiro
    Begin VB.Label Stream2 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "Plus De Ulla"
+      Caption         =   "Plus"
       BeginProperty Font 
          Name            =   "Palatino Linotype"
          Size            =   9
@@ -36,7 +36,7 @@ Begin VB.Form frmMensajePapiro
    Begin VB.Label Stream1 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "Ao20 Oficial"
+      Caption         =   "Argentum Online Oficial"
       BeginProperty Font 
          Name            =   "Palatino Linotype"
          Size            =   9
@@ -48,10 +48,10 @@ Begin VB.Form frmMensajePapiro
       EndProperty
       ForeColor       =   &H00C00000&
       Height          =   255
-      Left            =   6720
+      Left            =   6360
       TabIndex        =   8
       Top             =   3600
-      Width           =   1575
+      Width           =   2295
    End
    Begin VB.Label CafecitoLink 
       Alignment       =   2  'Center
@@ -260,7 +260,7 @@ Private Const WS_EX_LAYERED = &H80000
 Private Const LWA_COLORKEY = &H1&
 
 Private Sub BasicInfoLink_Click()
-    Call OpenLink("https://ao20.com.ar/wiki")
+    Call OpenLink("https://www.ao20.com.ar/wiki")
 End Sub
 
 Private Sub CafecitoLink_Click(Index As Integer)
@@ -268,7 +268,7 @@ Private Sub CafecitoLink_Click(Index As Integer)
 End Sub
 
 Private Sub eventNews_Click()
-    Call OpenLink("https://discord.com/channels/761213868352471040/843170070275686420")
+    Call OpenLink("https://discord.com/channels/761213868352471040/1225542315507056762")
 End Sub
 
 Private Sub Form_Load()
@@ -283,11 +283,11 @@ Private Sub Form_LostFocus()
 End Sub
 
 Private Sub GameRulesLink_Click(Index As Integer)
-    Call OpenLink("https://ao20.com.ar/reglamento")
+    Call OpenLink("https://www.ao20.com.ar/reglamento")
 End Sub
 
 Private Sub HelpGuideLink_Click()
-    Call OpenLink("https://ao20.com.ar/wiki/guia/comenzar")
+    Call OpenLink("https://www.ao20.com.ar/wiki/guia-leveleo/leveleo-1-12")
 End Sub
 
 Private Sub Image1_Click()
@@ -311,9 +311,9 @@ Private Sub PatreonLink_Click(Index As Integer)
 End Sub
 
 Private Sub Stream1_Click()
-    Call OpenLink("https://www.twitch.tv/ao20oficial")
+    Call OpenLink(" https://www.twitch.tv/argentumonlineoficial")
 End Sub
 
 Private Sub Stream2_Click()
-    Call OpenLink("https://www.twitch.tv/PlusAo20")
+    Call OpenLink("https://www.twitch.tv/soygabrielplus")
 End Sub
