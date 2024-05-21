@@ -104,6 +104,11 @@ Public Sub LoadBindedKeys()
     
     On Error GoTo LoadBindedKeys_Err
 
+    If Not FileExist(App.path & DefaultKeyMappingFile, vbArchive) Then
+        MsgBox "Se requiere el archivo " & App.path & DefaultKeyMappingFile, vbCritical + vbOKOnly
+        End
+    End If
+
     ' Si no existe el Teclas.ini lo creamos como copia del DefaultKey.ini
     If Not FileExist(App.path & CustomKeyMappingFile, vbArchive) Then
         Call FileSystem.FileCopy(App.path & DefaultKeyMappingFile, App.path & CustomKeyMappingFile)
