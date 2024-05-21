@@ -104,11 +104,6 @@ Public Sub LoadBindedKeys()
     
     On Error GoTo LoadBindedKeys_Err
 
-    If Not FileExist(App.path & DefaultKeyMappingFile, vbArchive) Then
-        MsgBox "Se requiere el archivo " & App.path & DefaultKeyMappingFile, vbCritical + vbOKOnly
-        End
-    End If
-
     ' Si no existe el Teclas.ini lo creamos como copia del DefaultKey.ini
     If Not FileExist(App.path & CustomKeyMappingFile, vbArchive) Then
         Call FileSystem.FileCopy(App.path & DefaultKeyMappingFile, App.path & CustomKeyMappingFile)
@@ -258,7 +253,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserStats.estado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("ï¿½Estï¿½s muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
     
                 End With
     
@@ -285,7 +280,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserStats.estado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("ï¿½Estï¿½s muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
     
                 End With
     
@@ -305,7 +300,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserStats.estado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("ï¿½Estï¿½s muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
     
                 End With
     
@@ -322,7 +317,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
     
         Case BindKeys(6).KeyCode
             If SeguroGame Then
-                Call AddtoRichTextBox(frmMain.RecTxt, "Para desactivar el seguro escribe /SEG o usa el botï¿½n en la pestaï¿½a MENU en la esquina inferior derecha.", 255, 0, 0, True, False, False)
+                Call AddtoRichTextBox(frmMain.RecTxt, "Para desactivar el seguro escribe /SEG o usa el botón en la pestaña MENU en la esquina inferior derecha.", 255, 0, 0, True, False, False)
             Else
                 Call WriteSafeToggle
             End If
@@ -337,7 +332,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserStats.estado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("ï¿½Estï¿½s muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
     
                 End With
     
@@ -358,7 +353,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Case BindKeys(5).KeyCode
             If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("ï¿½Estï¿½s muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
                 End With
                 Exit Function
             End If
@@ -380,7 +375,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserStats.estado = 1 Then
     
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("ï¿½Estï¿½s muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
     
                 End With
     
@@ -397,7 +392,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserStats.minman = UserStats.maxman Then Exit Function
             If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("ï¿½Estï¿½s muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
                 End With
                 Exit Function
             End If
@@ -409,7 +404,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Case BindKeys(23).KeyCode
             If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg("ï¿½Estï¿½s muerto!", .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
                 End With
             Else
                 Call WriteWork(eSkill.Domar)
@@ -454,7 +449,7 @@ End Function
 Public Sub DoHotKey(ByVal HkSlot As Byte)
     If UserStats.estado = 1 Then
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
-            Call ShowConsoleMsg("ï¿½Estï¿½s muerto!", .red, .green, .blue, .bold, .italic)
+            Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
         End With
     Else
         If IsSet(FeatureToggles, eEnableHotkeys) Then
@@ -481,9 +476,9 @@ Public Sub TirarItem()
                         Call WriteDrop(UserInventory.SelectedSlot, 1)
                     Else
                         If BabelInitialized Then
-                            Call ShowQuestion("El item se destruira al tirarlo ï¿½Esta seguro?")
+                            Call ShowQuestion("El item se destruira al tirarlo ¿Esta seguro?")
                         Else
-                            PreguntaScreen = "El item se destruira al tirarlo ï¿½Esta seguro?"
+                            PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
                             Pregunta = True
                         End If
                         DestItemSlot = UserInventory.SelectedSlot
@@ -507,9 +502,9 @@ Public Sub TirarItem()
                     Call WriteDrop(frmMain.Inventario.SelectedItem, 1)
                 Else
                     If BabelInitialized Then
-                        Call ShowQuestion("El item se destruira al tirarlo ï¿½Esta seguro?")
+                        Call ShowQuestion("El item se destruira al tirarlo ¿Esta seguro?")
                     Else
-                        PreguntaScreen = "El item se destruira al tirarlo ï¿½Esta seguro?"
+                        PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
                         Pregunta = True
                     End If
                     DestItemSlot = frmMain.Inventario.SelectedItem
