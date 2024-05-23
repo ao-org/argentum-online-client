@@ -107,7 +107,7 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
             If tutorial(e_tutorialIndex.TUTORIAL_ZONA_INSEGURA).Activo = 1 Then
                 tutorial_index = e_tutorialIndex.TUTORIAL_ZONA_INSEGURA
                 'TUTORIAL MAPA INSEGURO
-                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).grh, _
+                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).Grh, 0, _
                 -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 64, 64)
             End If
         End If
