@@ -276,7 +276,7 @@ Public Sub RenderScreen_Cartel()
             Call Grh_Render_Advance(cartel_body_grh, cartel_grh_pos_x, cartel_grh_pos_y, grh_height, grh_width, cartel_icono_color())
         End If
         If cartel_head_grh.GrhIndex > 0 Then
-            Call Grh_Render_Advance(cartel_head_grh, cartel_grh_pos_x, cartel_grh_pos_y + offsetBody, grh_height, grh_width, cartel_icono_color())
+            Call Grh_Render_Advance(cartel_head_grh, cartel_grh_pos_x, cartel_grh_pos_y + offsetHead, grh_height, grh_width, cartel_icono_color())
         End If
     End If
     
