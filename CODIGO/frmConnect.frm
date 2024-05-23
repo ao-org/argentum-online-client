@@ -203,7 +203,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     On Error GoTo Form_KeyDown_Err
     
 
-    If KeyCode = 27 Then
+    If KeyCode = vbKeyEscape Then
         prgRun = False
         End
 
