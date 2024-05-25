@@ -709,7 +709,7 @@ Sub IniciarCrearPj()
     For i = LBound(ListaCiudades()) To UBound(ListaCiudades())
         frmCrearPersonaje.lstHogar.AddItem (ListaCiudades(i))
     Next i
-     frmCrearPersonaje.lstHogar.ListIndex = 5
+     frmCrearPersonaje.lstHogar.ListIndex = 0
 
     frmCrearPersonaje.lstProfesion.Clear
 
