@@ -980,8 +980,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         UserStats.Raza = lstRaza.ListIndex + 1
         UserStats.Sexo = lstGenero.ListIndex + 1
         UserStats.Clase = lstProfesion.ListIndex + 1
-        
-        UserStats.Hogar = 6
+        UserStats.Hogar = lstHogar.ListIndex + 1
             
         UserAtributos(1) = Val(lbFuerza.Caption) + Val(modfuerza.Caption)
         UserAtributos(2) = Val(lbAgilidad.Caption) + Val(modAgilidad.Caption)
