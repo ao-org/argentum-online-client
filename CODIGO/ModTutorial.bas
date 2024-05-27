@@ -126,8 +126,8 @@ Public Sub resetearCartel()
     cartel_visible = False
 End Sub
 'Duration = 0 calcula solo con largo de texto, Duration = -1 infinito
-Public Sub mostrarCartel(ByVal title As String, ByVal message As String, Optional ByVal headGrh As Long = 0, Optional ByVal bodyGrh As Long = 0, Optional ByVal Duration As Long = 0, Optional ByVal titleColor As Long = -1, Optional ByVal messageColor As Long = -1, Optional ByVal backgroundColor As Long = -1, Optional ByVal esNpc As Boolean = False, Optional ByVal CartelTitlePosX = 0, Optional ByVal CartelTitlePosY As Long = 0, Optional ByVal CartelMessagePosX As Long = 0, Optional ByVal CartelMessagePosY As Long = 0, Optional ByVal cartelGrhPosX As Long = 0, Optional ByVal cartelGrhPosY As Long = 0, Optional ByVal grhWidth As Long = 0, Optional ByVal grhHeight As Long = 0, Optional ByVal headOffsetY As Integer = 0)
-    
+
+Public Sub mostrarCartel(ByVal title As String, ByVal Message As String, Optional ByVal headGrh As Long = 0, Optional ByVal duration As Long = 0, Optional ByVal titleColor As Long = -1, Optional ByVal messageColor As Long = -1, Optional ByVal backgroundColor As Long = -1, Optional ByVal EsNpc As Boolean = False, Optional ByVal CartelTitlePosX = 0, Optional ByVal CartelTitlePosY As Long = 0, Optional ByVal CartelMessagePosX As Long = 0, Optional ByVal CartelMessagePosY As Long = 0, Optional ByVal cartelGrhPosX As Long = 0, Optional ByVal cartelGrhPosY As Long = 0, Optional ByVal grhWidth As Long = 0, Optional ByVal grhHeight As Long = 0, Optional ByVal bodyGrh As Long = 0, Optional ByVal HeadOffsetY As Integer = 0)
     Dim titleColor_byte() As Byte
     Dim messageColor_byte() As Byte
     Dim backgroundColor_byte() As Byte
@@ -277,6 +277,7 @@ Public Sub RenderScreen_Cartel()
         End If
         If cartel_head_grh.GrhIndex > 0 Then
             Call Grh_Render_Advance(cartel_head_grh, cartel_grh_pos_x, cartel_grh_pos_y + offsetHead, grh_height, grh_width, cartel_icono_color())
+            Call Grh_Render_Advance(cartel_head_grh, cartel_grh_pos_x, cartel_grh_pos_y + cartel_head_offset_y, grh_height, grh_width, cartel_icono_color())
         End If
     End If
     
@@ -502,7 +503,7 @@ Public Sub checkTutorial()
         '    If tutorial(e_tutorialIndex.TUTORIAL_NUEVO_USER).Activo = 1 Then
         '        tutorial_index = e_tutorialIndex.TUTORIAL_NUEVO_USER
         '        mascota.visible = True
-        '        Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), 275,0, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 490, 64, 64)
+        '        Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), 275, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 490, 64, 64)
         '    End If
         'End If
     Else

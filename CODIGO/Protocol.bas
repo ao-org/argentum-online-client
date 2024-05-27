@@ -1893,7 +1893,7 @@ On Error GoTo HandleUpdateHP_Err
         If MostrarTutorial And tutorial_index <= 0 Then
             If tutorial(e_tutorialIndex.TUTORIAL_Muerto).Activo = 1 Then
                 tutorial_index = e_tutorialIndex.TUTORIAL_Muerto
-                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).Grh, 0, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 50, 100)
+                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).Grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 50, 100)
             End If
         End If
         DrogaCounter = 0
@@ -2317,19 +2317,22 @@ On Error GoTo ErrHandler
         Case "NPCDESC"
             chat = NpcData(text).desc
             copiar = False
+            
             If npcs_en_render And tutorial_index <= 0 Then
                 Dim headGrh As Long
                 Dim bodyGrh As Long
                 headGrh = HeadData(NpcData(Text).Head).Head(3).GrhIndex
                 bodyGrh = GrhData(BodyData(NpcData(Text).Body).Walk(3).GrhIndex).Frames(1)
+                
                 If headGrh = 0 Then
-                    Call mostrarCartel(Split(NpcData(Text).Name, " <")(0), NpcData(Text).desc, 0, bodyGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, 50, 80, 0)
+                    Call mostrarCartel(Split(NpcData(Text).Name, " <")(0), NpcData(Text).desc, bodyGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, 50, 80, bodyGrh, 1)
                 Else
                     Dim headOffsetY As Integer
                     headOffsetY = CInt(BodyData(NpcData(Text).Body).HeadOffset.y)
-                    Call mostrarCartel(Split(NpcData(Text).Name, " <")(0), NpcData(Text).desc, headGrh, bodyGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, 38, 80, headOffsetY * 1.5)
+                    Call mostrarCartel(Split(NpcData(Text).Name, " <")(0), NpcData(Text).desc, headGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, 50, 100, bodyGrh, HeadOffsetY)
                 End If
             End If
+            
         Case "PMAG"
             chat = HechizoData(ReadField(2, chat, Asc("*"))).PalabrasMagicas
             If charlist(UserCharIndex).Muerto = True Then chat = ""
