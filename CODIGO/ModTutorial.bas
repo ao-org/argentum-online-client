@@ -147,7 +147,7 @@ Public Sub mostrarCartel(ByVal title As String, ByVal Message As String, Optiona
     End If
     
     If backgroundColor > -1 Then
-        messageColor_byte = Lng2RGBA(backgroundColor)
+        backgroundColor_byte = Lng2RGBA(backgroundColor)
         Call RGBAList(cartel_background_color(), backgroundColor_byte(0), backgroundColor_byte(1), backgroundColor_byte(2))
     Else
         Call RGBAList(cartel_background_color(), 255, 255, 255)
@@ -269,14 +269,13 @@ Public Sub RenderScreen_Cartel()
         End If
                 
         'Renderizo ícono
-        Dim offsetHead As Integer
         Call RGBAList(cartel_icono_color(), 255, 255, 255, cartel_fade)
+        
         If cartel_body_grh.GrhIndex > 0 Then
-            offsetHead = cartel_head_offset_y
             Call Grh_Render_Advance(cartel_body_grh, cartel_grh_pos_x, cartel_grh_pos_y, grh_height, grh_width, cartel_icono_color())
         End If
+        
         If cartel_head_grh.GrhIndex > 0 Then
-            Call Grh_Render_Advance(cartel_head_grh, cartel_grh_pos_x, cartel_grh_pos_y + offsetHead, grh_height, grh_width, cartel_icono_color())
             Call Grh_Render_Advance(cartel_head_grh, cartel_grh_pos_x, cartel_grh_pos_y + cartel_head_offset_y, grh_height, grh_width, cartel_icono_color())
         End If
     End If
