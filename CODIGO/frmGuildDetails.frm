@@ -1,15 +1,14 @@
 VERSION 5.00
 Begin VB.Form frmGuildDetails 
-   BorderStyle     =   4  'Fixed ToolWindow
+   BorderStyle     =   0  'None
    Caption         =   "Fundar Clan"
-   ClientHeight    =   3960
-   ClientLeft      =   48
-   ClientTop       =   216
-   ClientWidth     =   3348
-   ClipControls    =   0   'False
+   ClientHeight    =   4410
+   ClientLeft      =   0
+   ClientTop       =   -180
+   ClientWidth     =   3750
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,138 +18,104 @@ Begin VB.Form frmGuildDetails
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3960
-   ScaleWidth      =   3348
+   ScaleHeight     =   4410
+   ScaleWidth      =   3750
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
-   Begin VB.Frame Frame2 
-      Caption         =   "Nombre del clan"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.4
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
+   StartUpPosition =   1  'CenterOwner
+   Begin VB.TextBox txtDesc 
+      BackColor       =   &H00000000&
+      ForeColor       =   &H00E0E0E0&
       Height          =   855
-      Left            =   120
-      TabIndex        =   6
-      Top             =   120
-      Width           =   3135
-      Begin VB.TextBox txtClanName 
-         Alignment       =   2  'Center
-         ForeColor       =   &H00000000&
-         Height          =   285
-         Left            =   120
-         MaxLength       =   30
-         TabIndex        =   7
-         Top             =   240
-         Width           =   2895
-      End
-      Begin VB.Label Label3 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "Nota: No se toleraran nombres inapropiados."
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   6.6
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   495
-         Left            =   120
-         TabIndex        =   8
-         Top             =   555
-         Width           =   2805
-      End
-   End
-   Begin VB.Frame framAlign 
-      Caption         =   "Alineamiento"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.4
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   1275
-      Left            =   120
-      TabIndex        =   3
-      Top             =   2160
-      Width           =   3135
-      Begin VB.ComboBox Combo1 
-         Height          =   315
-         ItemData        =   "frmGuildDetails.frx":0000
-         Left            =   240
-         List            =   "frmGuildDetails.frx":0013
-         Style           =   2  'Dropdown List
-         TabIndex        =   4
-         Top             =   840
-         Width           =   2535
-      End
-      Begin VB.Label Label2 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "El alineamiento del clan es el que decide qué tipo de miembro podrá ingresar al clan y cuál no."
-         BeginProperty Font 
-            Name            =   "Tahoma"
-            Size            =   6.6
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   975
-         Left            =   120
-         TabIndex        =   5
-         Top             =   240
-         Width           =   2775
-      End
-   End
-   Begin VB.CommandButton Command1 
-      Caption         =   "Fundar clan"
-      Height          =   375
-      Index           =   1
-      Left            =   120
-      MouseIcon       =   "frmGuildDetails.frx":009D
-      MousePointer    =   99  'Custom
+      Left            =   360
+      MultiLine       =   -1  'True
+      ScrollBars      =   2  'Vertical
       TabIndex        =   2
-      Top             =   3480
-      Width           =   3120
+      Top             =   1600
+      Width           =   3015
    End
-   Begin VB.Frame frmDesc 
-      Caption         =   "Descripción"
+   Begin VB.TextBox txtClanName 
+      Alignment       =   2  'Center
+      BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   1215
-      Left            =   120
+      ForeColor       =   &H00E0E0E0&
+      Height          =   285
+      Left            =   360
+      MaxLength       =   30
       TabIndex        =   0
-      Top             =   960
-      Width           =   3135
-      Begin VB.TextBox txtDesc 
-         Height          =   855
-         Left            =   120
-         MultiLine       =   -1  'True
-         ScrollBars      =   2  'Vertical
-         TabIndex        =   1
-         Top             =   240
-         Width           =   2895
-      End
+      Top             =   780
+      Width           =   3015
+   End
+   Begin VB.ComboBox Combo1 
+      BackColor       =   &H00000000&
+      ForeColor       =   &H00E0E0E0&
+      Height          =   315
+      ItemData        =   "frmGuildDetails.frx":0000
+      Left            =   360
+      List            =   "frmGuildDetails.frx":0013
+      Style           =   2  'Dropdown List
+      TabIndex        =   3
+      Top             =   2800
+      Width           =   3015
+   End
+   Begin VB.Image cmdFundar 
+      Height          =   495
+      Left            =   850
+      Top             =   3700
+      Width           =   1695
+   End
+   Begin VB.Image cmdCerrar 
+      Height          =   375
+      Left            =   3280
+      Top             =   5
+      Width           =   375
+   End
+   Begin VB.Label Label1 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "El alineamiento del clan es el que decide qué tipo de miembro podrá ingresar al clan y cuál no."
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   6.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   855
+      Left            =   360
+      TabIndex        =   4
+      Top             =   3175
+      Width           =   3015
+   End
+   Begin VB.Label Label3 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "Nota: No se toleraran nombres inapropiados."
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   6.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   495
+      Left            =   360
+      TabIndex        =   1
+      Top             =   1090
+      Width           =   3045
    End
 End
 Attribute VB_Name = "frmGuildDetails"
@@ -207,20 +172,30 @@ Attribute VB_Exposed = False
 'Pablo Ignacio Márquez
 
 Option Explicit
+Private cBotonCerrar As clsGraphicalButton
+Private cBotonFundar As clsGraphicalButton
 
-
-Private Sub Command1_Click(Index As Integer)
+Private Sub loadButtons()
+    Set cBotonCerrar = New clsGraphicalButton
+    Set cBotonFundar = New clsGraphicalButton
     
-    On Error GoTo Command1_Click_Err
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+                                                
+    Call cBotonFundar.Initialize(cmdFundar, "boton-fundar-clan-default.bmp", _
+                                                    "boton-fundar-clan-over.bmp", _
+                                                    "boton-fundar-clan-off.bmp", Me)
+End Sub
+Private Sub cmdcerrar_Click()
+    Unload Me
+End Sub
+
+Private Sub cmdFundar_Click()
+
     
-
-    Select Case Index
-
-        Case 0
-            Unload Me
-        
-        Case 1
-
+    On Error GoTo cmdFundar_Click_Err
+    
             Dim fdesc      As String
 
             Dim Codex()    As String
@@ -291,14 +266,11 @@ Private Sub Command1_Click(Index As Integer)
 
             CreandoClan = False
             Unload Me
-            
-    End Select
-
-    
+               
     Exit Sub
 
-Command1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildDetails.Command1_Click", Erl)
+cmdFundar_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildDetails.cmdFundar_Click", Erl)
     Resume Next
     
 End Sub
@@ -318,13 +290,28 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-
+    Me.Picture = LoadInterface("ventanaclanes_fundar.bmp")
+    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Call loadButtons
     
     Exit Sub
+
 
 Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildDetails.Form_Load", Erl)
     Resume Next
     
 End Sub
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
+    Call MoverForm(Me.hwnd)
+    
+    Exit Sub
 
+Form_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildDetails.Form_MouseMove", Erl)
+    Resume Next
+    
+End Sub
