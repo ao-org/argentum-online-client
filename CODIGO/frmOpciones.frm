@@ -7,7 +7,7 @@ Begin VB.Form frmOpciones
    ClientHeight    =   7365
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   7980
+   ClientWidth     =   8040
    ControlBox      =   0   'False
    FillColor       =   &H00C0C0C0&
    BeginProperty Font 
@@ -24,7 +24,7 @@ Begin VB.Form frmOpciones
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   7365
-   ScaleWidth      =   7980
+   ScaleWidth      =   8040
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin InetCtlsObjects.Inet Inet1 
@@ -444,7 +444,7 @@ Begin VB.Form frmOpciones
    End
    Begin VB.Image cmdcerrar 
       Height          =   360
-      Left            =   7560
+      Left            =   7580
       Tag             =   "0"
       Top             =   0
       Width           =   435
@@ -566,6 +566,17 @@ Private Const HWND_NOTOPMOST = -2
 Private Const SWP_NOMOVE = &H2
 
 Private Const SWP_NOSIZE = &H1
+Private cBotonCerrar As clsGraphicalButton
+Private Sub loadButtons()
+
+    Set cBotonCerrar = New clsGraphicalButton
+
+    
+    Call cBotonCerrar.Initialize(cmdcerrar, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+
+End Sub
 
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
     
@@ -1195,7 +1206,7 @@ Private Sub Form_Load()
     BtnSolapa(0).Picture = LoadInterface("boton-jugabilidad-default.bmp")
     BtnSolapa(1).Picture = LoadInterface("boton-video-off.bmp")
     BtnSolapa(2).Picture = LoadInterface("boton-audio-off.bmp")
-
+    Call loadButtons
     Exit Sub
 
 Form_Load_Err:
