@@ -1,14 +1,14 @@
 VERSION 5.00
 Begin VB.Form frmGuildSol 
-   BorderStyle     =   4  'Fixed ToolWindow
+   BorderStyle     =   0  'None
    Caption         =   "Solicitud de ingreso"
-   ClientHeight    =   2964
-   ClientLeft      =   48
-   ClientTop       =   216
-   ClientWidth     =   4368
+   ClientHeight    =   3435
+   ClientLeft      =   0
+   ClientTop       =   -180
+   ClientWidth     =   4680
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -18,36 +18,40 @@ Begin VB.Form frmGuildSol
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2964
-   ScaleWidth      =   4368
+   ScaleHeight     =   3435
+   ScaleWidth      =   4680
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.CommandButton Command1 
-      Caption         =   "Enviar solicitud"
-      Height          =   495
-      Left            =   120
-      MouseIcon       =   "frmSolicitud.frx":0000
-      MousePointer    =   99  'Custom
-      TabIndex        =   2
-      Top             =   2400
-      Width           =   4095
-   End
    Begin VB.TextBox Text1 
+      BackColor       =   &H00000000&
+      ForeColor       =   &H00FFFFFF&
       Height          =   1215
-      Left            =   120
+      Left            =   280
       MaxLength       =   400
       MultiLine       =   -1  'True
       ScrollBars      =   2  'Vertical
       TabIndex        =   1
-      Top             =   1080
+      Top             =   1500
       Width           =   4095
+   End
+   Begin VB.Image cmdCerrar 
+      Height          =   375
+      Left            =   4215
+      Top             =   0
+      Width           =   375
+   End
+   Begin VB.Image cmdEnviarSolicitud 
+      Height          =   375
+      Left            =   700
+      Top             =   2800
+      Width           =   3615
    End
    Begin VB.Label Label1 
       Alignment       =   2  'Center
-      Caption         =   $"frmSolicitud.frx":0152
+      Caption         =   $"frmSolicitud.frx":0000
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -55,9 +59,10 @@ Begin VB.Form frmGuildSol
          Strikethrough   =   0   'False
       EndProperty
       Height          =   855
-      Left            =   120
+      Left            =   240
       TabIndex        =   0
-      Top             =   120
+      Top             =   480
+      Visible         =   0   'False
       Width           =   4095
    End
 End
@@ -117,10 +122,31 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Dim CName As String
+Private cBotonCerrar As clsGraphicalButton
+Private cBotonEnviarSolicitud As clsGraphicalButton
 
-Private Sub Command1_Click()
+Private Sub loadButtons()
+
+    Set cBotonCerrar = New clsGraphicalButton
+    Set cBotonEnviarSolicitud = New clsGraphicalButton
     
-    On Error GoTo Command1_Click_Err
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+                                                
+    Call cBotonEnviarSolicitud.Initialize(cmdEnviarSolicitud, "boton-enviarsolicitud-default.bmp", _
+                                                    "boton-enviarsolicitud-over.bmp", _
+                                                    "boton-enviarsolicitud-off.bmp", Me)
+                                                    
+End Sub
+
+Private Sub cmdCerrar_Click()
+    Unload Me
+End Sub
+
+Private Sub cmdEnviarSolicitud_Click()
+    
+    On Error GoTo cmdEnviarSolicitud_Click_Err
     
     Call WriteGuildRequestMembership(CName, Replace(Replace(Text1.Text, ",", ";"), vbCrLf, "º"))
 
@@ -129,8 +155,8 @@ Private Sub Command1_Click()
     
     Exit Sub
 
-Command1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildSol.Command1_Click", Erl)
+cmdEnviarSolicitud_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildSol.cmdEnviarSolicitud_Click", Erl)
     Resume Next
     
 End Sub
@@ -156,7 +182,9 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-
+    Me.Picture = LoadInterface("ventanaclanes_solicitud_ingreso.bmp")
+    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Call loadButtons
     
     Exit Sub
 
@@ -166,3 +194,16 @@ Form_Load_Err:
     
 End Sub
 
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
+    Call MoverForm(Me.hwnd)
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildSol.Form_MouseMove", Erl)
+    Resume Next
+    
+End Sub
