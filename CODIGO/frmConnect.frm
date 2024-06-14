@@ -733,6 +733,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
+            
             If x > 415 And x < 431 And y > 277 And y < 295 Then 'ok
                 If frmCrearPersonaje.lstGenero.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListCount - 1
@@ -742,27 +743,55 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 End If
 
             End If
-       
-            If x > 297 And x < 314 And y > 321 And y < 340 Then 'ok
-    
-                If frmCrearPersonaje.lstHogar.ListIndex < frmCrearPersonaje.lstHogar.ListCount - 1 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex + 1
-                Else
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex - 1
-
-                End If
+            
+            ' Hogar
+            ' Shugar: Arreglo los botones para seleccionar el hogar inicial.
+            ' También limito la selección del hogar a Ulla, Nix, Arghal y Forgat.
+            ' El frmCrearPersonaje.lstHogar.ListIndex arranca en 0: Ullathorpe
+            
+            
+            If x > 416 And x < 433 And y > 323 And y < 338 Then
+            
+                ' Botón de la derecha: es el que aumenta el index.
+                ' Si llega al índice máximo (que es el Count-1), vuelve a cero como un buffer circular
+                ' Uso Select Case para saltearme algunas ciudades, me quedo solo con:
+                ' 0: Ulla, 1: Nix, 4: Arghal, 5: Forgat
+                
+                Select Case frmCrearPersonaje.lstHogar.ListIndex
+                    Case 0
+                        frmCrearPersonaje.lstHogar.ListIndex = 1
+                    Case 1
+                        frmCrearPersonaje.lstHogar.ListIndex = 4
+                    Case 4
+                        frmCrearPersonaje.lstHogar.ListIndex = 5
+                    Case 5
+                        frmCrearPersonaje.lstHogar.ListIndex = 0
+                End Select
 
             End If
             
-            If x > 416 And x < 433 And y > 323 And y < 338 Then 'ok
-                If frmCrearPersonaje.lstHogar.ListIndex - 1 < 0 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListCount - 1
-                Else
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex - 1
-
-                End If
-
+            
+            If x > 297 And x < 314 And y > 321 And y < 340 Then
+                
+                ' Botón de la izquierda: es el que disminuye el index.
+                ' Si llega al índice 0, pasa al máximo como un buffer circular (que es Count-1)
+                ' Uso Select Case para saltearme algunas ciudades, me quedo solo con:
+                ' 0: Ulla, 1: Nix, 4: Arghal, 5: Forgat
+                
+                Select Case frmCrearPersonaje.lstHogar.ListIndex
+                    Case 0
+                        frmCrearPersonaje.lstHogar.ListIndex = 5
+                    Case 5
+                        frmCrearPersonaje.lstHogar.ListIndex = 4
+                    Case 4
+                        frmCrearPersonaje.lstHogar.ListIndex = 1
+                    Case 1
+                        frmCrearPersonaje.lstHogar.ListIndex = 0
+                End Select
+                
             End If
+
+            
             If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
                 Call ao20audio.playwav(SND_CLICK)
                 'UserMap = 323

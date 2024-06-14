@@ -651,6 +651,11 @@ Optional ByVal started As Long = -1, Optional ByVal loops As Integer = INFINITE_
         
         grh.Loops = Loops
         grh.speed = GrhData(grhIndex).speed / GrhData(grhIndex).NumFrames
+        
+        If Grh.speed = 0 Then
+            Grh.speed = 1
+        End If
+            
     Else
         grh.Started = 0
         grh.speed = 1
