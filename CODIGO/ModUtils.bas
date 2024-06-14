@@ -698,27 +698,26 @@ Sub IniciarCrearPj()
 
     Dim i As Integer
 
-    frmCrearPersonaje.lstRaza.Clear
 
+    frmCrearPersonaje.lstRaza.Clear
     For i = LBound(ListaRazas()) To UBound(ListaRazas())
         frmCrearPersonaje.lstRaza.AddItem ListaRazas(i)
     Next i
-     frmCrearPersonaje.lstRaza.ListIndex = 0
+    frmCrearPersonaje.lstRaza.ListIndex = 0
+    
     
     frmCrearPersonaje.lstHogar.Clear
     For i = LBound(ListaCiudades()) To UBound(ListaCiudades())
-        frmCrearPersonaje.lstHogar.AddItem (ListaCiudades(i))
+        frmCrearPersonaje.lstHogar.AddItem ListaCiudades(i)
     Next i
-     frmCrearPersonaje.lstHogar.ListIndex = 0
-
+    frmCrearPersonaje.lstHogar.ListIndex = 0
+    
+    
     frmCrearPersonaje.lstProfesion.Clear
-
     For i = LBound(ListaClases()) To UBound(ListaClases())
         frmCrearPersonaje.lstProfesion.AddItem ListaClases(i)
-    
     Next i
     frmCrearPersonaje.lstProfesion.ListIndex = 1
-    
     
         
     MiCabeza = Val(frmCrearPersonaje.Cabeza.List(1))

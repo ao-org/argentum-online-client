@@ -397,22 +397,21 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         
         
         
-        'ciudad
+            ' Hogar inicial
+            ' Shugar: Arreglo los botones para seleccionar el hogar inicial.
         
-            If x > 297 And x < 314 And y > 321 And y < 340 Then 'ok
-    
-                If frmCrearPersonaje.lstHogar.ListIndex < frmCrearPersonaje.lstHogar.ListCount - 1 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex + 1
-                Else
-                    frmCrearPersonaje.lstHogar.ListIndex = 0
-
-                End If
-
+            If x > 416 And x < 433 And y > 323 And y < 338 Then
+  
+                Call Rotacion_boton_adelante_ciudades
+                
             End If
             
-            If x > 416 And x < 433 And y > 323 And y < 338 Then 'ok
-                frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListCount - 1
+            If x > 297 And x < 314 And y > 321 And y < 340 Then
+            
+                Call Rotacion_boton_atras_ciudades
+                
             End If
+            
             
             If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
                 Call ao20audio.playwav(SND_CLICK)
@@ -733,6 +732,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
+            
             If x > 415 And x < 431 And y > 277 And y < 295 Then 'ok
                 If frmCrearPersonaje.lstGenero.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListCount - 1
@@ -742,27 +742,24 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 End If
 
             End If
-       
-            If x > 297 And x < 314 And y > 321 And y < 340 Then 'ok
-    
-                If frmCrearPersonaje.lstHogar.ListIndex < frmCrearPersonaje.lstHogar.ListCount - 1 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex + 1
-                Else
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex - 1
-
-                End If
+            
+            ' Hogar inicial
+            ' Shugar: Arreglo los botones para seleccionar el hogar inicial.
+            
+            If x > 416 And x < 433 And y > 323 And y < 338 Then
+            
+                Call Rotacion_boton_adelante_ciudades
 
             End If
             
-            If x > 416 And x < 433 And y > 323 And y < 338 Then 'ok
-                If frmCrearPersonaje.lstHogar.ListIndex - 1 < 0 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListCount - 1
-                Else
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex - 1
-
-                End If
-
+            
+            If x > 297 And x < 314 And y > 321 And y < 340 Then
+                
+                Call Rotacion_boton_atras_ciudades
+                
             End If
+
+            
             If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
                 Call ao20audio.playwav(SND_CLICK)
                 'UserMap = 323
@@ -1000,7 +997,45 @@ render_MouseUp_Err:
 End Sub
 #End If
 
+Private Sub Rotacion_boton_adelante_ciudades()
 
+    ' Shugar - 14/6/24
+    ' Limito la selección del hogar a Ulla, Nix, Arghal y Forgat.
+    ' Botón de la derecha: es el que aumenta el index.
+    ' Implementación de buffer circular, arranca en eCiudad.cUllathorpe
+  
+    Select Case frmCrearPersonaje.lstHogar.ListIndex
+        Case eCiudad.cUllathorpe - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cNix - 1
+        Case eCiudad.cNix - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cArghal - 1
+        Case eCiudad.cArghal - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cForgat - 1
+        Case eCiudad.cForgat - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cUllathorpe - 1
+    End Select
+
+End Sub
+
+Private Sub Rotacion_boton_atras_ciudades()
+    
+    ' Shugar - 14/6/24
+    ' Limito la selección del hogar a Ulla, Nix, Arghal y Forgat.
+    ' Botón de la izquierda: es el que disminuye el index.
+    ' Implementación de buffer circular, arranca en eCiudad.cUllathorpe
+    
+    Select Case frmCrearPersonaje.lstHogar.ListIndex
+        Case eCiudad.cUllathorpe - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cForgat - 1
+        Case eCiudad.cForgat - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cArghal - 1
+        Case eCiudad.cArghal - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cNix - 1
+        Case eCiudad.cNix - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cUllathorpe - 1
+    End Select
+
+End Sub
 
 Private Sub txtNombre_Change()
     
