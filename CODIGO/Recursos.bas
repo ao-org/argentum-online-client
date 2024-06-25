@@ -1825,7 +1825,7 @@ Continue:
     
     Hechizo = 1
     
-    For Hechizo = 1 To 350
+    For Hechizo = 1 To 750
         DoEvents
         NameMaps(Hechizo).name = Leer.GetValue("NameMapa", "Mapa" & Hechizo)
         NameMaps(Hechizo).desc = Leer.GetValue("NameMapa", "Mapa" & Hechizo & "Desc")
