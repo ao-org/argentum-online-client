@@ -6343,16 +6343,16 @@ Private Sub HandleGuildDetails()
             Exit Sub
         End If
         
-        .nombre.Caption = "Nombre:" & GuildDetails.Name
-        .fundador.Caption = "Fundador:" & GuildDetails.Founder
-        .creacion.Caption = "Fecha de creacion:" & GuildDetails.CreationDate
-        .lider.Caption = "Líder:" & GuildDetails.Leader
-        .miembros.Caption = "Miembros:" & GuildDetails.MemberCount
+        .nombre.Caption = GuildDetails.Name
+        .fundador.Caption = GuildDetails.Founder
+        .creacion.Caption = GuildDetails.CreationDate
+        .lider.Caption = GuildDetails.Leader
+        .miembros.Caption = GuildDetails.MemberCount
         
-        .lblAlineacion.Caption = "Alineación: " & GuildDetails.Aligment
+        .lblAlineacion.Caption = GuildDetails.Aligment
         
         .desc.Text = GuildDetails.Description
-        .nivel.Caption = "Nivel de clan: " & GuildDetails.Level
+        .nivel.Caption = GuildDetails.level
 
     End With
     
