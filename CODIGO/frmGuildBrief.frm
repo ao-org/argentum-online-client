@@ -313,19 +313,3 @@ Form_MouseMove_Err:
     Resume Next
     
 End Sub
-
-Public Function cargarInterface(Alineacion As String)
-
- Call FormParser.Parse_Form(Me)
-    Select Case Alineacion
-        Case "Neutral"
-            Me.Picture = LoadInterface("ventanaclanes_detalles.bmp")
-        Case "Ciudadano" Or "Armada Real"
-            Me.Picture = LoadInterface("ventanaclanes_detalles_ciuda.bmp")
-        Case "Criminal" Or "Legión Oscura"
-            Me.Picture = LoadInterface("ventanaclanes_detalles_criminal.bmp")
-    End Select
-    Call Aplicar_Transparencia(Me.hwnd, 240)
-    Exit Function
-    
-End Function
