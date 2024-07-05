@@ -5958,18 +5958,18 @@ Private Sub HandleGuildNews()
     ExpNe = Reader.ReadInt16()
      
     With frmGuildNews
-        .Frame4.Caption = "Total: " & cantidad & " miembros" '"Lista de miembros" ' - " & cantidad & " totales"
+        .lblMiembros.Caption = cantidad
      
         .expcount.Caption = expacu & "/" & ExpNe
         .EXPBAR.Width = (((expacu + 1 / 100) / (ExpNe + 1 / 100)) * 2370)
-        .nivel = "Nivel: " & ClanNivel
+        .lblNivel = ClanNivel
 
         If ExpNe > 0 Then
        
             .porciento.Caption = Round(CDbl(expacu) * CDbl(100) / CDbl(ExpNe), 0) & "%"
         Else
-            .porciento.Caption = "¡Nivel Maximo!"
-            .expcount.Caption = "¡Nivel Maximo!"
+            .porciento.Caption = "¡Nivel Máximo!"
+            .expcount.Caption = "¡Nivel Máximo!"
 
         End If
         
@@ -5981,19 +5981,19 @@ Private Sub HandleGuildNews()
                 .beneficios = "Max miembros: 5"
 
             Case 2
-                .beneficios = "Pedir ayuda (G) / Max miembros: 7"
+                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Max miembros: 7"
 
             Case 3
-                .beneficios = "Pedir ayuda (G) / Seguro de clan." & vbCrLf & "Max miembros: 7"
+                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Max miembros: 7"
 
             Case 4
-                .beneficios = "Pedir ayuda (G) / Seguro de clan. " & vbCrLf & "Max miembros: 12"
+                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Max miembros: 12"
 
             Case 5
-                .beneficios = "Pedir ayuda (G) / Seguro de clan /  Ver vida y mana." & vbCrLf & " Max miembros: 15"
+                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Ver vida y mana" & vbCrLf & " Max miembros: 15"
                 
             Case 6
-                .beneficios = "Pedir ayuda (G) / Seguro de clan / Ver vida y mana/ Verse invisible." & vbCrLf & " Max miembros: 20"
+                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Ver vida y mana" & vbCrLf & "Verse invisible" & vbCrLf & " Max miembros: 20"
         
         End Select
     
@@ -6346,7 +6346,8 @@ Private Sub HandleGuildDetails()
         .nombre.Caption = GuildDetails.Name
         .fundador.Caption = GuildDetails.Founder
         .creacion.Caption = GuildDetails.CreationDate
-        .lider.Caption = GuildDetails.Leader
+        '.lider.Caption = GuildDetails.Leader
+        .lider.Caption = GuildDetails.Founder 'Provisoriamente hacemos que se muestre el fundador como lider
         .miembros.Caption = GuildDetails.MemberCount
         
         .lblAlineacion.Caption = GuildDetails.Aligment
