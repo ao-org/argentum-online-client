@@ -6598,7 +6598,8 @@ Private Sub HandleShowSOSForm()
         nombre = ReadField(1, sosList(i), Asc("Ø"))
         Consulta = ReadField(2, sosList(i), Asc("Ø"))
         TipoDeConsulta = ReadField(3, sosList(i), Asc("Ø"))
-        frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ")"
+        FechaHoraDeConsulta = ReadField(4, sosList(i), Asc("Ø"))
+        frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ") - " & format(FechaHoraDeConsulta, "dd/MM/yyyy hh:mm AM/PM")
         frmPanelgm.List2.AddItem Consulta
     Next i
     
