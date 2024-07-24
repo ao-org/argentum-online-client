@@ -6592,6 +6592,8 @@ Private Sub HandleShowSOSForm()
 
     Dim TipoDeConsulta As String
     
+    Dim FechaHoraDeConsulta As Date
+    
     sosList = Split(Reader.ReadString8(), SEPARATOR)
     
     For i = 0 To UBound(sosList())
