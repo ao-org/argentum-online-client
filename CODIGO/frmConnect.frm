@@ -985,7 +985,7 @@ Private Sub Rotacion_boton_adelante_clase()
     ' Shugar - 27/7/24
     ' Saco de la selección de clases al Ladrón y al Pirata.
     ' Botón de la derecha: es el que aumenta el index.
-    ' Implementación de buffer circular, arranca en eCiudad.cUllathorpe
+    ' Implementación de buffer circular, arranca en eClass.Mage
   
     Select Case frmCrearPersonaje.lstProfesion.ListIndex
         Case eClass.Mage - 1
@@ -1017,7 +1017,7 @@ Private Sub Rotacion_boton_atras_clase()
     ' Shugar - 27/7/24
     ' Saco de la selección de clases al Ladrón y al Pirata.
     ' Botón de la izquierda: es el que disminuye el index.
-    ' Implementación de buffer circular, arranca en eCiudad.cUllathorpe
+    ' Implementación de buffer circular, arranca en eClass.Mage
     
     Select Case frmCrearPersonaje.lstProfesion.ListIndex
         Case eClass.Mage - 1
