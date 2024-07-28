@@ -331,28 +331,22 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 End If
 
             End If
-                        
-                
-                
+                       
+            ' Clase inicial
+            ' Shugar: Arreglo los botones para seleccionar la clase inicial.
+                       
             If x > 540 And x < 554 And y > 278 And y < 291 Then 'Boton izquierda clase
-                If frmCrearPersonaje.lstProfesion.ListIndex < frmCrearPersonaje.lstProfesion.ListCount - 1 Then
-                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex + 1
-                Else
-                    frmCrearPersonaje.lstProfesion.ListIndex = 0
-
-                End If
+                
+                Call Rotacion_boton_atras_clase
 
             End If
             
-            If x > 658 And x < 671 And y > 278 And y < 291 Then 'Boton Derecha cabezas
-                If frmCrearPersonaje.lstProfesion.ListIndex - 1 < 0 Then
-                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListCount - 1
-                Else
-                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex - 1
-
-                End If
+            If x > 658 And x < 671 And y > 278 And y < 291 Then 'Boton Derecha Clase
+                                
+                Call Rotacion_boton_adelante_clase
 
             End If
+
                 
             If x > 539 And x < 553 And y > 322 And y < 335 Then 'OK
                 If frmCrearPersonaje.lstRaza.ListIndex < frmCrearPersonaje.lstRaza.ListCount - 1 Then
@@ -369,7 +363,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListCount - 1
                 Else
                     frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListIndex - 1
-
                 End If
 
             End If
@@ -394,9 +387,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 End If
 
             End If
-        
-        
-        
+
             ' Hogar inicial
             ' Shugar: Arreglo los botones para seleccionar el hogar inicial.
         
@@ -444,7 +435,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 UserStats.Raza = frmCrearPersonaje.lstRaza.ListIndex + 1
                 UserStats.Sexo = frmCrearPersonaje.lstGenero.ListIndex + 1
                 UserStats.Clase = frmCrearPersonaje.lstProfesion.ListIndex + 1
-                
                 UserStats.Hogar = frmCrearPersonaje.lstHogar.ListIndex + 1
                
                 If frmCrearPersonaje.CheckData() Then
@@ -679,25 +669,18 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
                         
-                
+            ' Clase inicial
+            ' Shugar: Arreglo los botones para seleccionar la clase inicial.
                 
             If x > 540 And x < 554 And y > 278 And y < 291 Then 'Boton izquierda clase
-                If frmCrearPersonaje.lstProfesion.ListIndex < frmCrearPersonaje.lstProfesion.ListCount - 1 Then
-                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex + 1
-                Else
-                    frmCrearPersonaje.lstProfesion.ListIndex = 0
-
-                End If
+                
+                Call Rotacion_boton_atras_clase
 
             End If
             
-            If x > 658 And x < 671 And y > 278 And y < 291 Then 'Boton Derecha cabezas
-                If frmCrearPersonaje.lstProfesion.ListIndex - 1 < 0 Then
-                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListCount - 1
-                Else
-                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex - 1
-
-                End If
+            If x > 658 And x < 671 And y > 278 And y < 291 Then 'Boton Derecha clase
+                                
+                Call Rotacion_boton_adelante_clase
 
             End If
                 
@@ -996,6 +979,71 @@ render_MouseUp_Err:
     
 End Sub
 #End If
+
+Private Sub Rotacion_boton_adelante_clase()
+
+    ' Shugar - 27/7/24
+    ' Saco de la selección de clases al Ladrón y al Pirata.
+    ' Botón de la derecha: es el que aumenta el index.
+    ' Implementación de buffer circular, arranca en eClass.Mage
+  
+    Select Case frmCrearPersonaje.lstProfesion.ListIndex
+        Case eClass.Mage - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Druid - 1
+        Case eClass.Druid - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Bard - 1
+        Case eClass.Bard - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Cleric - 1
+        Case eClass.Cleric - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Assasin - 1
+        Case eClass.Assasin - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Bandit - 1
+        Case eClass.Bandit - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.paladin - 1
+        Case eClass.paladin - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Hunter - 1
+        Case eClass.Hunter - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Warrior - 1
+        Case eClass.Warrior - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Trabajador - 1
+        Case eClass.Trabajador - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Mage - 1
+    End Select
+
+End Sub
+
+Private Sub Rotacion_boton_atras_clase()
+    
+    ' Shugar - 27/7/24
+    ' Saco de la selección de clases al Ladrón y al Pirata.
+    ' Botón de la izquierda: es el que disminuye el index.
+    ' Implementación de buffer circular, arranca en eClass.Mage
+    
+    Select Case frmCrearPersonaje.lstProfesion.ListIndex
+        Case eClass.Mage - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Trabajador - 1
+        Case eClass.Druid - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Mage - 1
+        Case eClass.Bard - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Druid - 1
+        Case eClass.Cleric - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Bard - 1
+        Case eClass.Assasin - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Cleric - 1
+        Case eClass.Bandit - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Assasin - 1
+        Case eClass.paladin - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Bandit - 1
+        Case eClass.Hunter - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.paladin - 1
+        Case eClass.Warrior - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Hunter - 1
+        Case eClass.Trabajador - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Warrior - 1
+    End Select
+
+End Sub
+
 
 Private Sub Rotacion_boton_adelante_ciudades()
 

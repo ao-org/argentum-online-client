@@ -717,7 +717,7 @@ Sub IniciarCrearPj()
     For i = LBound(ListaClases()) To UBound(ListaClases())
         frmCrearPersonaje.lstProfesion.AddItem ListaClases(i)
     Next i
-    frmCrearPersonaje.lstProfesion.ListIndex = 1
+    frmCrearPersonaje.lstProfesion.ListIndex = 0
     
         
     MiCabeza = Val(frmCrearPersonaje.Cabeza.List(1))
