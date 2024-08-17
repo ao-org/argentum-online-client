@@ -63,3 +63,5 @@ Please note this is not free software and you will have to buy your own license 
     <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=ao-org/argentum-online-client&type=Date" />
   </picture>
 </a>
+
+
