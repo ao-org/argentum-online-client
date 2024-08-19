@@ -645,7 +645,7 @@ Private Sub lstArmas_Click()
 
     List1.Clear
     List2.Clear
-    List1.AddItem ("Lingote de hierro")
+    List1.AddItem ("Lingote de Hierro")
     List1.AddItem ("Lingote de Plata")
     List1.AddItem ("Lingote de Oro")
     List1.AddItem ("Carbon")
