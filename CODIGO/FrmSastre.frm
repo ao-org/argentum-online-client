@@ -545,7 +545,7 @@ Private Sub lstArmas_Click()
         List1.AddItem "Piel de Tigre"
         List2.AddItem Obj.PielTigre
     
-        List1.AddItem "Piel Tigre Bengala"
+        List1.AddItem "Piel de Tigre Bengala"
         List2.AddItem Obj.PielTigreBengala
       
     Call Grh_Render_To_Hdc(picture1, Obj.GrhIndex, 0, 0)
