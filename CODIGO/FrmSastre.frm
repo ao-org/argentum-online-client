@@ -126,7 +126,7 @@ Begin VB.Form FrmSastre
       Top             =   5640
       Width           =   255
    End
-   Begin VB.Image Image1 
+   Begin VB.Image cmdCerrar 
       Height          =   405
       Left            =   6000
       Tag             =   "0"
@@ -203,7 +203,7 @@ Attribute VB_Exposed = False
 '
 '
 Private indice As Byte
-
+Private cBotonCerrar As clsGraphicalButton
 Const PielTigreBengalaIndex = 1145
 Const PielTigreIndex = 4339
 Const BlackWolfIndex = 1146
@@ -367,7 +367,7 @@ Private Sub Form_Load()
     
     Call FormParser.Parse_Form(Me)
     indice = 1
-
+    Call loadButtons
     
     Exit Sub
 
@@ -422,7 +422,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
-
+    Call MoverForm(Me.hwnd)
+    
     If indice <> 1 Then
         Command1.Picture = Nothing
         Command1.Tag = "0"
@@ -449,17 +450,8 @@ Form_MouseMove_Err:
     
 End Sub
 
-Private Sub Image1_Click()
-    On Error GoTo Command4_Click_Err
-    
+Private Sub cmdCerrar_Click()
     Unload Me
-
-    
-    Exit Sub
-
-Command4_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.Command4_Click", Erl)
-    Resume Next
 End Sub
 
 Private Sub Image2_Click()
@@ -560,3 +552,13 @@ lstArmas_Click_Err:
     Resume Next
     
 End Sub
+
+Private Sub loadButtons()
+    Set cBotonCerrar = New clsGraphicalButton
+    
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+
+End Sub
+
