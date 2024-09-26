@@ -530,16 +530,16 @@ Private Sub lstArmas_Click()
     List1.Clear
     List2.Clear
         
-        List1.AddItem "Piel de lobo"
+        List1.AddItem "Piel de Lobo"
         List2.AddItem Obj.PielLobo
     
-        List1.AddItem "Piel de oso pardo"
+        List1.AddItem "Piel de Oso Pardo"
         List2.AddItem Obj.PielOsoPardo
   
-        List1.AddItem "Piel de oso polar"
+        List1.AddItem "Piel de Oso Polar"
         List2.AddItem Obj.PielOsoPolar
        
-        List1.AddItem "Piel de lobo negro"
+        List1.AddItem "Piel de Lobo Negro"
         List2.AddItem Obj.PielLoboNegro
       
         List1.AddItem "Piel de Tigre"
