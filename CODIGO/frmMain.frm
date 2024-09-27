@@ -435,7 +435,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1309,6 +1308,7 @@ Begin VB.Form frmMain
       TabIndex        =   5
       ToolTipText     =   "Numero de usuarios online"
       Top             =   0
+      Visible         =   0   'False
       Width           =   1665
    End
    Begin VB.Label Label2 
