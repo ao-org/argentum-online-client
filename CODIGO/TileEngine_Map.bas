@@ -167,30 +167,37 @@ HayLava_Err:
 End Function
 
 Function EsArbol(ByVal GrhIndex As Long) As Boolean
-    
-    On Error GoTo EsArbol_Err
-    
-    EsArbol = GrhIndex = 643 Or GrhIndex = 644 Or GrhIndex = 647 Or GrhIndex = 735 Or GrhIndex = 1121 Or GrhIndex = 2931 Or _
-              GrhIndex = 11903 Or GrhIndex = 11904 Or GrhIndex = 11905 Or GrhIndex = 14775 Or GrhIndex = 11906 Or _
-              GrhIndex = 70885 Or GrhIndex = 70884 Or GrhIndex = 71042 Or GrhIndex = 71041 Or _
-              GrhIndex = 15698 Or GrhIndex = 14504 Or GrhIndex = 14505 Or GrhIndex = 15697 Or GrhIndex = 15510 Or _
-              (GrhIndex >= 12581 And GrhIndex <= 12586) Or (GrhIndex >= 12164 And GrhIndex <= 12179) Or _
-              (GrhIndex >= 32142 And GrhIndex <= 32152) Or GrhIndex = 32154 Or (GrhIndex >= 55626 And GrhIndex <= 55640) Or GrhIndex = 55642 Or _
-              (GrhIndex >= 50985 And GrhIndex <= 50991) Or (GrhIndex >= 2547 And GrhIndex <= 2549) Or (GrhIndex >= 6597 And GrhIndex <= 6598) Or (GrhIndex >= 15108 And GrhIndex <= 15110) Or _
-              GrhIndex = 12160 Or GrhIndex = 7220 Or GrhIndex = 462 Or GrhIndex = 463 Or _
-              GrhIndex >= 1877 And GrhIndex <= 1881 Or GrhIndex = 1890 Or GrhIndex = 1892 Or GrhIndex = 433 Or GrhIndex = 460 Or GrhIndex = 461 Or _
-              GrhIndex = 9513 Or GrhIndex = 9514 Or GrhIndex = 9515 Or GrhIndex = 9518 Or GrhIndex = 9519 Or GrhIndex = 9520 Or GrhIndex = 9529 Or _
-              GrhIndex = 14687 Or GrhIndex = 47726 Or GrhIndex = 12333 Or GrhIndex = 12330 Or GrhIndex = 20369 Or GrhIndex = 21120 Or GrhIndex = 21227 Or _
-              GrhIndex = 21352 Or GrhIndex = 12332 Or GrhIndex = 21226
-      
-              GrhIndex = 21352 Or GrhIndex = 12332 Or GrhIndex = 21226 Or GrhIndex = 8258 Or GrhIndex = 32118 Or GrhIndex = 32119 Or GrhIndex = 32129 Or GrhIndex = 32132 Or _
-              GrhIndex = 32133 Or GrhIndex = 32135
-    Exit Function
+    On Error Resume Next
 
-EsArbol_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.EsArbol", Erl)
-    Resume Next
-    
+    ' List of valid GrhIndex values that represent trees
+    Dim validTreeIndices As Long
+    validTreeIndices = Array(643, 644, 647, 735, 1121, 2931, _
+                             11903, 11904, 11905, 14775, 11906, _
+                             70885, 70884, 71042, 71041, _
+                             15698, 14504, 14505, 15697, 15510, _
+                             12581, 12582, 12583, 12584, 12585, 12586, _
+                             12164, 12165, 12166, 12167, 12168, 12169, 12170, 12171, 12172, 12173, 12174, 12175, 12176, 12177, 12178, 12179, _
+                             32142, 32143, 32144, 32145, 32146, 32147, 32148, 32149, 32150, 32151, 32152, 32154, _
+                             55626, 55627, 55628, 55629, 55630, 55631, 55632, 55633, 55634, 55635, 55636, 55637, 55638, 55639, 55640, 55642, _
+                             50985, 50986, 50987, 50988, 50989, 50990, 50991, 2547, 2548, 2549, 6597, 6598, 15108, 15109, 15110, _
+                             12160, 7220, 462, 463, _
+                             1877, 1878, 1879, 1880, 1881, 1890, 1892, 433, 460, 461, _
+                             9513, 9514, 9515, 9518, 9519, 9520, 9529, _
+                             14687, 47726, 12333, 12330, 20369, 21120, 21227, _
+                             21352, 12332, 21226, 8258, 32118, 32119, 32129, 32132, _
+                             32133, 32135)
+
+    ' Check if GrhIndex is in the list of valid tree indices
+    Dim i As Long
+    For i = LBound(validTreeIndices) To UBound(validTreeIndices)
+        If GrhIndex = validTreeIndices(i) Then
+            EsArbol = True
+            Exit Function
+        End If
+    Next i
+
+    ' If GrhIndex is not in the list, return False
+    EsArbol = False
 End Function
 
 Function AgregarSombra(ByVal GrhIndex As Long) As Boolean
