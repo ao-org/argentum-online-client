@@ -8259,11 +8259,13 @@ Public Sub HandlePrivilegios()
             frmMain.createObj.visible = True
             frmMain.btnInvisible.visible = True
             frmMain.btnSpawn.visible = True
+            frmMain.onlines.visible = True
         Else
             frmMain.panelGM.visible = False
             frmMain.createObj.visible = False
             frmMain.btnInvisible.visible = False
             frmMain.btnSpawn.visible = False
+            frmMain.onlines.visible = False
         End If
     End If
     Exit Sub
