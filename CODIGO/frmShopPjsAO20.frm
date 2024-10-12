@@ -3,17 +3,27 @@ Begin VB.Form frmShopPjsAO20
    BackColor       =   &H00404040&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   2328
+   ClientHeight    =   3225
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   4776
+   ClientWidth     =   6570
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2328
-   ScaleWidth      =   4776
+   ScaleHeight     =   3225
+   ScaleWidth      =   6570
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.ComboBox cmbPaymentMethod 
+      BackColor       =   &H00FF80FF&
+      Height          =   315
+      Left            =   3360
+      TabIndex        =   5
+      Text            =   "Metodo de Pago"
+      ToolTipText     =   "Selecciona el metodo de pago para publicar el personaje"
+      Top             =   2160
+      Width           =   2415
+   End
    Begin VB.TextBox txtValor 
       Alignment       =   2  'Center
       BackColor       =   &H80000007&
@@ -29,20 +39,20 @@ Begin VB.Form frmShopPjsAO20
       EndProperty
       ForeColor       =   &H8000000B&
       Height          =   300
-      Left            =   720
+      Left            =   600
       TabIndex        =   0
-      Text            =   "0"
-      Top             =   960
-      Width           =   3015
+      Text            =   "50000"
+      Top             =   2160
+      Width           =   2415
    End
-   Begin VB.Label Label3 
+   Begin VB.Label lblCostGold 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
       Caption         =   "Costo por publicar: 100.000 monedas de oro"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -50,11 +60,11 @@ Begin VB.Form frmShopPjsAO20
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H0000FFFF&
-      Height          =   240
-      Left            =   80
+      Height          =   360
+      Left            =   360
       TabIndex        =   4
-      Top             =   2040
-      Width           =   4605
+      Top             =   1320
+      Width           =   5805
    End
    Begin VB.Label Label2 
       Alignment       =   2  'Center
@@ -71,35 +81,36 @@ Begin VB.Form frmShopPjsAO20
          Strikethrough   =   0   'False
       EndProperty
       Height          =   300
-      Left            =   4440
+      Left            =   6120
       TabIndex        =   3
       Top             =   120
       Width           =   225
    End
    Begin VB.Label lblPublicar 
       Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
+      BackColor       =   &H80000017&
+      BorderStyle     =   1  'Fixed Single
       Caption         =   "Publicar personaje"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   13.8
+         Size            =   13.5
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H8000000B&
+      ForeColor       =   &H0000FF00&
       Height          =   495
-      Left            =   840
+      Left            =   1800
       TabIndex        =   2
-      Top             =   1440
-      Width           =   2775
+      Top             =   2640
+      Width           =   2655
    End
    Begin VB.Label Label1 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "Ingrese el valor a publicar su personaje en ARS(Pesos Argentinos)"
+      Caption         =   "Ingrese el valor de venta en ARS(Pesos Argentinos) y seleccione metodo de pago publicar su personaje en MAO"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   12
@@ -111,10 +122,10 @@ Begin VB.Form frmShopPjsAO20
       EndProperty
       ForeColor       =   &H8000000B&
       Height          =   1215
-      Left            =   0
+      Left            =   240
       TabIndex        =   1
       Top             =   240
-      Width           =   4695
+      Width           =   5535
    End
 End
 Attribute VB_Name = "frmShopPjsAO20"
@@ -137,9 +148,12 @@ Attribute VB_Exposed = False
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
-'
-Private Sub Form_Load()
 
+Private Sub Form_Load()
+    lblCostGold.Caption = "Costo por publicar: 50.000 monedas de oro o 500 Creditos Patreon."
+    cmbPaymentMethod.AddItem "Oro"
+    cmbPaymentMethod.AddItem "Creditos Patreon"
+    cmbPaymentMethod.ListIndex = 0  ' Set default to Gold
 End Sub
 
 Private Sub Label2_Click()
@@ -147,17 +161,31 @@ Private Sub Label2_Click()
 End Sub
 
 Private Sub lblPublicar_Click()
-    If Val(txtValor.Text <= 0) Then
+    If Val(txtValor.Text) <= 0 Then
         Call MsgBox("El valor ingresado del personaje es inválido.")
         Exit Sub
     End If
     
-    If MsgBox("Estás publicando a " & username & " a un valor de " & txtValor.Text & ", se descontarán las 100.000 monedas de oro. En caso de querer cancelar la misma deberás hacerlo desde la página web.", vbYesNo + vbQuestion, "Publicar personaje") = vbYes Then
-        Call writePublicarPersonajeMAO(Val(txtValor.Text))
+    Dim paymentMethod As String
+    Dim costMessage As String
+    paymentMethod = cmbPaymentMethod.Text
+
+    Select Case paymentMethod
+        Case "Oro"
+            costMessage = "50.000 monedas de oro"
+        Case "Creditos Patreon"
+            costMessage = "500 Créditos Patreon"
+        Case Else
+            Call MsgBox("Por favor, seleccione un método de pago.")
+            Exit Sub
+    End Select
+
+    If MsgBox("Estás publicando a " & UserName & " a un valor de " & txtValor.Text & ", se descontarán " & costMessage & ".", vbYesNo + vbQuestion, "Publicar personaje") = vbYes Then
+        Call writePublicarPersonajeMAO(Val(txtValor.Text), paymentMethod)
         Call cerrarFormulario
     End If
-    
 End Sub
+
 Private Sub cerrarFormulario()
     txtValor.Text = ""
     Unload Me
