@@ -9,6 +9,14 @@ Welcome to the source code repository for the Argentum Online Client. To fully u
 - **Server:** [Argentum Online Server](https://github.com/ao-org/argentum-online-server)
 - **Assets:** [Resources](https://github.com/ao-org/Recursos)
 
+Important: Do not download the code using the "Download as ZIP" button on GitHub, as this can cause issues with file encoding and may corrupt some files. 
+
+To download the code correctly, use a Git client. The command to clone the repository from the command line is:
+
+```bash
+git clone https://www.github.com/ao-org/argentum-online-client
+```
+
 ## 🐛 Report bugs
 - **Please report the bugs in the Server repository to maintain all of the tickets in one place:** [Link](https://github.com/ao-org/Recursos](https://github.com/ao-org/argentum-online-server/issues))
 
