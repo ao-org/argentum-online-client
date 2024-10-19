@@ -531,6 +531,7 @@ On Error GoTo HandleLogged_Err
     frmMain.AgilidadLbl.Visible = True
     frmMain.oxigenolbl.Visible = True
     frmMain.imgDeleteItem.Visible = True
+    frmMain.oxigenolbl.visible = False
 
      lFrameTimer = 0
      FramesPerSecCounter = 0
@@ -792,6 +793,7 @@ Public Sub HandleDisconnect()
     frmMain.lblResis.Visible = True
     frmMain.lbldm.Visible = True
     frmMain.imgBugReport.Visible = False
+    frmMain.oxigenolbl.visible = False
     frmMain.panelinferior(0).Picture = Nothing
     frmMain.panelinferior(1).Picture = Nothing
     frmMain.mapMundo.Visible = False
