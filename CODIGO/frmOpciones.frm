@@ -894,15 +894,20 @@ End Sub
 Private Sub CheckUI_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     On Error GoTo CheckUI_MouseUp_Err
     
+    CheckUI.Picture = LoadInterface("check-amarillo.bmp")
+    Call MsgBox("UI momentaneamente deshabilitada", vbExclamation)
+    CheckUI.Picture = Nothing
 
-    SaveUseBabelUI = Not SaveUseBabelUI
+    '***PARA VOLVER A HABILITAR EL ACTIVADO/DESACTIVADO DE LA UI, BORRAR LAS TRES LINEAS DE ARRIBA Y DESCOMENTAR LAS DE ABAJO**
 
-    If Not SaveUseBabelUI Then
-        CheckUI.Picture = Nothing
-    Else
-        CheckUI.Picture = LoadInterface("check-amarillo.bmp")
-        Call MsgBox("Deber s reiniciar el cliente para que esta configuraci n tome efecto.", vbExclamation)
-    End If
+    'SaveUseBabelUI = Not SaveUseBabelUI
+
+    'If Not SaveUseBabelUI Then
+        'CheckUI.Picture = Nothing
+    'Else
+        'CheckUI.Picture = LoadInterface("check-amarillo.bmp")
+        'Call MsgBox("Debes reiniciar el cliente para que esta configuración tome efecto.", vbExclamation)
+    'End If
 
     
     Exit Sub
