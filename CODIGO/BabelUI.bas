@@ -394,6 +394,7 @@ End Function
 
 Public Function CheckAndSetBabelUIUsage() As Boolean
 On Error GoTo CheckAndSetBabelUIUsage_Err
+       Call SaveSetting("OPCIONES", "UseExperimentalUI", 0) 'En caso de querer habilitar la UI borrar esta linea
 100    UseBabelUI = Val(GetSetting("OPCIONES", "UseExperimentalUI"))
        SaveUseBabelUI = UseBabelUI
 102    LogError ("Initilalize UI: " & UseBabelUI)
