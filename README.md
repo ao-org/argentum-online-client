@@ -72,4 +72,11 @@ Please note this is not free software and you will have to buy your own license 
   </picture>
 </a>
 
+## Thank you
+
+A big thank you ❤️ to these amazing people for contributing to this project!
+
+<a href="https://github.com/ao-org/argentum-online-client/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ao-org/argentum-online-client" />
+</a>
 
