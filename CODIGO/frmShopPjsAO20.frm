@@ -39,7 +39,7 @@ Begin VB.Form frmShopPjsAO20
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "Costo por publicar: 100.000 monedas de oro"
+      Caption         =   "Costo por publicar: 20.000 monedas de oro"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   9.6
@@ -152,7 +152,7 @@ Private Sub lblPublicar_Click()
         Exit Sub
     End If
     
-    If MsgBox("Estás publicando a " & username & " a un valor de " & txtValor.Text & ", se descontarán las 100.000 monedas de oro. En caso de querer cancelar la misma deberás hacerlo desde la página web.", vbYesNo + vbQuestion, "Publicar personaje") = vbYes Then
+    If MsgBox("Estás publicando a " & username & " a un valor de " & txtValor.Text & ", se descontarán las 20.000 monedas de oro. En caso de querer cancelar la misma deberás hacerlo desde la página web.", vbYesNo + vbQuestion, "Publicar personaje") = vbYes Then
         Call writePublicarPersonajeMAO(Val(txtValor.Text))
         Call cerrarFormulario
     End If
