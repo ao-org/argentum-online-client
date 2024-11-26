@@ -233,7 +233,13 @@ Private Sub cmdHaveCode_Click()
    
     
     If Not isValidEmail(Me.txtEmail.Text) Then
-        MsgBox "El email ingresado es inválido."
+        If e_language.Spanish Then
+            MsgBox "El email ingresado es inválido."
+        Else
+            MsgBox "The email entered is invalid."
+            
+        End If
+        
         Exit Sub
     End If
     
