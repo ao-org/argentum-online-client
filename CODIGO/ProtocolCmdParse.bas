@@ -1354,9 +1354,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If notNullArguments Then
                     Call WriteNickToIP(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /nick2ip NICKNAME.")
-
+                    'Avisar que falta el parámetro
+                    If language = Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /nick2ip NICKNAME.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /nick2ip NICKNAME.")
                     End If
                 End If
                 
