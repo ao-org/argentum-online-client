@@ -1357,6 +1357,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg("Faltan parámetros. Utilice /nick2ip NICKNAME.")
 
+                    End If
                 End If
                 
             Case "/IP2NICK"
@@ -1366,14 +1367,20 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Call WriteIPToNick(str2ipv4l(ArgumentosRaw))
                     Else
                         'No es una IP
-                        Call ShowConsoleMsg("IP incorrecta. Utilice /ip2nick IP.")
-
+                        If language = Spanish Then
+                            Call ShowConsoleMsg("IP incorrecta. Utilice /ip2nick IP.")
+                        Else
+                            Call ShowConsoleMsg("Incorrect IP. Use /ip2nick IP.")
+                        End If
                     End If
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /ip2nick IP.")
-
+                    If language = Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /ip2nick IP.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /ip2nick IP.")
+                    End If
                 End If
                 
             Case "/ONCLAN"
