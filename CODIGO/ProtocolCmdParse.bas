@@ -1200,9 +1200,12 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If notNullArguments Then
                     Call WriteExecute(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /ejecutar NICKNAME.")
-
+                    'Avisar que falta el parámetro
+                    If language = Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /ejecutar NICKNAME.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /ejecutar NICKNAME.")
+                    End If
                 End If
                 
             Case "/BAN"
@@ -1213,15 +1216,21 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     If UBound(tmpArr) = 1 Then
                         Call WriteBanChar(tmpArr(0), tmpArr(1))
                     Else
-                        'Faltan los parametros con el formato propio
-                        Call ShowConsoleMsg("Formato incorrecto. Utilice /ban NICKNAME@MOTIVO.")
-
+                        'Faltan los parámetros con el formato propio
+                        If language = Spanish Then
+                            Call ShowConsoleMsg("Formato incorrecto. Utilice /ban NICKNAME@MOTIVO.")
+                        Else
+                            Call ShowConsoleMsg("Incorrect format. Use /ban NICKNAME@REASON.")
+                        End If
                     End If
 
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /ban NICKNAME@MOTIVO.")
-
+                    'Avisar que falta el parámetro
+                    If language = Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /ban NICKNAME@MOTIVO.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /ban NICKNAME@REASON.")
+                    End If
                 End If
                 
             Case "/BANCUENTA"
@@ -1232,15 +1241,21 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     If UBound(tmpArr) = 1 Then
                         Call WriteBanCuenta(tmpArr(0), tmpArr(1))
                     Else
-                        'Faltan los parametros con el formato propio
-                        Call ShowConsoleMsg("Formato incorrecto. Utilice /BANCUENTA NICKNAME@MOTIVO.")
-
+                        'Faltan los parámetros con el formato propio
+                        If language = Spanish Then
+                            Call ShowConsoleMsg("Formato incorrecto. Utilice /BANCUENTA NICKNAME@MOTIVO.")
+                        Else
+                            Call ShowConsoleMsg("Incorrect format. Use /BANCUENTA NICKNAME@REASON.")
+                        End If
                     End If
 
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /BANCUENTA NICKNAME@MOTIVO.")
-
+                    'Avisar que falta el parámetro
+                    If language = Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /BANCUENTA NICKNAME@MOTIVO.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /BANCUENTA NICKNAME@REASON.")
+                    End If
                 End If
                 
             Case "/UNBANCUENTA"
@@ -1249,9 +1264,12 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteUnBanCuenta(ArgumentosRaw)
     
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /UNBANCUENTA NICKNAME o EMAIL.")
-
+                    'Avisar que falta el parámetro
+                    If language = Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /UNBANCUENTA NICKNAME o EMAIL.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /UNBANCUENTA NICKNAME or EMAIL.")
+                    End If
                 End If
                 
             Case "/UNBAN"
@@ -1259,9 +1277,12 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If notNullArguments Then
                     Call WriteUnbanChar(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /unban NICKNAME.")
-
+                    'Avisar que falta el parámetro
+                    If language = Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /unban NICKNAME.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /unban NICKNAME.")
+                    End If
                 End If
                 
             Case "/SEGUIR"
@@ -1320,9 +1341,12 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If notNullArguments Then
                     Call WriteServerMessage(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
-
+                    'Avisar que falta el parámetro
+                    If language = Spanish Then
+                        Call ShowConsoleMsg("Escriba un mensaje.")
+                    Else
+                        Call ShowConsoleMsg("Please write a message.")
+                    End If
                 End If
                 
             Case "/NICK2IP"
