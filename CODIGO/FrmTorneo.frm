@@ -1271,31 +1271,65 @@ End Sub
 Private Sub cmdCrearElAbordaje_Click()
     ' Comprobar que txtAbordaje sea un número par
     If Not IsNumeric(txtAbordaje.Text) Or Val(txtAbordaje.Text) Mod 2 <> 0 Then
-        MsgBox "Por favor, ingrese un número par en cantidad de participantes.", vbExclamation, "Error"
+        MsgBox GetMessage("even_number_participants"), vbExclamation, GetMessage("error_title")
         Exit Sub
     End If
 
     ' Comprobar que txtAbordajelvlMin esté entre 1 y 47
     If Not IsNumeric(txtAbordajelvlMin.Text) Or Val(txtAbordajelvlMin.Text) < 1 Or Val(txtAbordajelvlMin.Text) > 47 Then
-        MsgBox "Por favor, ingrese un número entre 1 y 47 en el campo de Nivel Mínimo de Abordaje.", vbExclamation, "Error"
+        MsgBox GetMessage("level_min_abordaje_range"), vbExclamation, GetMessage("error_title")
         Exit Sub
     End If
 
     ' Comprobar que txtlvlAbordajeMax esté entre 1 y 47
     If Not IsNumeric(txtlvlAbordajeMax.Text) Or Val(txtlvlAbordajeMax.Text) < 1 Or Val(txtlvlAbordajeMax.Text) > 47 Then
-        MsgBox "Por favor, ingrese un número entre 1 y 47 en el campo de Nivel Máximo de Abordaje.", vbExclamation, "Error"
+        MsgBox GetMessage("level_max_abordaje_range"), vbExclamation, GetMessage("error_title")
         Exit Sub
     End If
 
     ' Comprobar que txtAbordajelvlMin sea menor que txtlvlAbordajeMax
     If Val(txtAbordajelvlMin.Text) >= Val(txtlvlAbordajeMax.Text) Then
-        MsgBox "El Nivel Mínimo de Abordaje debe ser menor que el Nivel Máximo de Abordaje.", vbExclamation, "Error"
+        MsgBox GetMessage("min_level_less_than_max_level"), vbExclamation, GetMessage("error_title")
         Exit Sub
     End If
 
     ' Si todas las validaciones pasan, llamar a ParseUserCommand
     Call ParseUserCommand("/crearevento navalconquest" & " " & txtAbordaje.Text & " " & txtAbordajelvlMin.Text & " " & txtlvlAbordajeMax.Text)
 End Sub
+
+Function GetMessage(key As String, Optional param As String = "") As String
+    If language = Spanish Then
+        Select Case key
+            Case "even_number_participants"
+                GetMessage = "Por favor, ingrese un número par en cantidad de participantes."
+            Case "level_min_abordaje_range"
+                GetMessage = "Por favor, ingrese un número entre 1 y 47 en el campo de Nivel Mínimo de Abordaje."
+            Case "level_max_abordaje_range"
+                GetMessage = "Por favor, ingrese un número entre 1 y 47 en el campo de Nivel Máximo de Abordaje."
+            Case "min_level_less_than_max_level"
+                GetMessage = "El Nivel Mínimo de Abordaje debe ser menor que el Nivel Máximo de Abordaje."
+            Case "error_title"
+                GetMessage = "Error"
+            Case Else
+                GetMessage = "Mensaje no definido."
+        End Select
+    Else
+        Select Case key
+            Case "even_number_participants"
+                GetMessage = "Please enter an even number for participants."
+            Case "level_min_abordaje_range"
+                GetMessage = "Please enter a number between 1 and 47 for the Minimum Abordaje Level."
+            Case "level_max_abordaje_range"
+                GetMessage = "Please enter a number between 1 and 47 for the Maximum Abordaje Level."
+            Case "min_level_less_than_max_level"
+                GetMessage = "The Minimum Abordaje Level must be less than the Maximum Abordaje Level."
+            Case "error_title"
+                GetMessage = "Error"
+            Case Else
+                GetMessage = "Message not defined."
+        End Select
+    End If
+End Function
 
 Private Sub cmdCrearEldeath_Click()
     ' Verificar que txtMinlvldeath esté entre 1 y 47 y no sea mayor que txtMaxlvldeath
@@ -1306,11 +1340,11 @@ Private Sub cmdCrearEldeath_Click()
             Call ParseUserCommand("/crearevento deathmatch " & txtPlayerDeath.Text & " " & txtMinlvldeath.Text & " " & txtMaxlvldeath.Text)
         Else
             ' Mostrar un mensaje de error si txtMaxlvldeath no cumple con las condiciones
-            MsgBox "El nivel máximo debe estar entre 1 y 47 y ser mayor o igual al nivel mínimo.", vbExclamation, "Error"
+            MsgBox GetMessage("max_level_greater_or_equal_to_min"), vbExclamation, GetMessage("error_title")
         End If
     Else
         ' Mostrar un mensaje de error si txtMinlvldeath no cumple con las condiciones
-        MsgBox "El nivel mínimo debe estar entre 1 y 47.", vbExclamation, "Error"
+        MsgBox GetMessage("min_level_range"), vbExclamation, GetMessage("error_title")
     End If
 End Sub
 
@@ -1372,20 +1406,40 @@ End Sub
 Private Sub txtValorGarrote_Change()
     Dim valor As Integer
 
+    ' Verificar si el valor ingresado es numérico
     If Not IsNumeric(txtValorGarrote.Text) Then
-        MsgBox "Por favor, introduce un valor numérico válido.", vbExclamation, "Error"
-        txtValorGarrote.Text = ""
-        Exit Sub
+        If language = Spanish Then
+            MsgBox "Por favor, introduce un valor numérico válido.", vbExclamation, "Error"
+        Else
+            MsgBox "Please enter a valid numeric value.", vbExclamation, "Error"
+        End If
+        txtValorGarrote.Text = "" ' Borra el contenido del TextBox
+        Exit Sub ' Sale del procedimiento
     End If
 
+    ' Convertir el valor a entero
     valor = CInt(txtValorGarrote.Text)
 
+    ' Verificar si el valor es mayor que 100,000
     If valor > 100000 Then
-        MsgBox "El valor no puede ser mayor que 100K.", vbExclamation, "Error"
-        txtValorGarrote.Text = ""
-        Exit Sub
+        If language = Spanish Then
+            MsgBox "El valor no puede ser mayor que 100K.", vbExclamation, "Error"
+        Else
+            MsgBox "The value cannot be greater than 100K.", vbExclamation, "Error"
+        End If
+        txtValorGarrote.Text = "" ' Borra el contenido del TextBox
+        Exit Sub ' Sale del procedimiento
     End If
 
-    Call ParseUserCommand("/configlobby setprice " & valor)
+    ' Ejecutar el comando directamente sin necesidad de llamar a una función
+    Dim Command As String
+    Command = "/configlobby setprice " & Valor
+
+    ' Mostrar el comando ejecutado (puedes reemplazar esto con el código que envíe el comando)
+    If language = Spanish Then
+        MsgBox "Comando ejecutado: " & Command, vbInformation, "Comando"
+    Else
+        MsgBox "Command executed: " & Command, vbInformation, "Command"
+    End If
 End Sub
 

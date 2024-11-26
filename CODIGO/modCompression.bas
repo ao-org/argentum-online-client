@@ -303,7 +303,7 @@ End Function
 
 ' Función para manejar los mensajes según el idioma seleccionado
 Function GetMessage(key As String, Optional param As String = "") As String
-    If e_language.Spanish Then
+    If language = Spanish Then
         Select Case key
             Case "resource_file_corrupted"
                 GetMessage = "El archivo de recursos " & param & " parece estar dañado."

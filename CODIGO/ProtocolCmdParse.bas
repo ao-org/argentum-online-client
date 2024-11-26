@@ -822,7 +822,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                             Call WriteJail(tmpArr(0), tmpArr(1), tmpArr(2))
                         Else
                             'No es numérico
-                            If e_language.Spanish Then
+                            If language = Spanish Then
                                 Call ShowConsoleMsg("Tiempo incorrecto. Utilice /carcel NICKNAME@MOTIVO@TIEMPO.")
                             Else
                                 Call ShowConsoleMsg("Incorrect time. Use /carcel NICKNAME@MOTIVE@TIME.")
@@ -830,7 +830,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         End If
                     Else
                         'Faltan los parámetros con el formato propio
-                        If e_language.Spanish Then
+                        If language = Spanish Then
                             Call ShowConsoleMsg("Formato incorrecto. Utilice /carcel NICKNAME@MOTIVO@TIEMPO.")
                         Else
                             Call ShowConsoleMsg("Incorrect format. Use /carcel NICKNAME@MOTIVE@TIME.")
@@ -838,7 +838,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     End If
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /carcel NICKNAME@MOTIVO@TIEMPO.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /carcel NICKNAME@MOTIVE@TIME.")
@@ -856,7 +856,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                             Call WriteCrearEvento(tmpArr(0), tmpArr(1), tmpArr(2))
                         Else
                             'No es numérico
-                            If e_language.Spanish Then
+                            If language = Spanish Then
                                 Call ShowConsoleMsg("Tiempo incorrecto. Utilice /CREAREVENTO TIPO@DURACION@MULTIPLICACION.")
                             Else
                                 Call ShowConsoleMsg("Incorrect time. Use /CREAREVENTO TYPE@DURATION@MULTIPLIER.")
@@ -864,7 +864,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         End If
                     Else
                         'Faltan los parámetros con el formato propio
-                        If e_language.Spanish Then
+                        If language = Spanish Then
                             Call ShowConsoleMsg("Formato incorrecto. Utilice /CREAREVENTO TIPO@DURACION@MULTIPLICACION.")
                         Else
                             Call ShowConsoleMsg("Incorrect format. Use /CREAREVENTO TYPE@DURATION@MULTIPLIER.")
@@ -872,7 +872,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     End If
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /CREAREVENTO TIPO@DURACION@MULTIPLICACION.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /CREAREVENTO TYPE@DURATION@MULTIPLIER.")
@@ -888,7 +888,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Call WriteWarnUser(tmpArr(0), tmpArr(1))
                     Else
                         'Faltan los parámetros con el formato propio
-                        If e_language.Spanish Then
+                        If language = Spanish Then
                             Call ShowConsoleMsg("Formato incorrecto. Utilice /advertencia NICKNAME@MOTIVO.")
                         Else
                             Call ShowConsoleMsg("Incorrect format. Use /advertencia NICKNAME@REASON.")
@@ -896,7 +896,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     End If
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /advertencia NICKNAME@MOTIVO.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /advertencia NICKNAME@REASON.")
@@ -913,7 +913,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Call WriteMensajeUser(tmpArr(0), tmpArr(1))
                     Else
                         'Faltan los parámetros con el formato propio
-                        If e_language.Spanish Then
+                        If language = Spanish Then
                             Call ShowConsoleMsg("Formato incorrecto. Utilice /MENSAJEINFORMACION NICKNAME@MENSAJE.")
                         Else
                             Call ShowConsoleMsg("Incorrect format. Use /MENSAJEINFORMACION NICKNAME@MESSAGE.")
@@ -921,7 +921,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     End If
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /MENSAJEINFORMACION NICKNAME@MENSAJE.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /MENSAJEINFORMACION NICKNAME@MESSAGE.")
@@ -1029,7 +1029,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         End If
                     Else
                         'Avisar que no existe el comando
-                        If e_language.Spanish Then
+                        If language = Spanish Then
                             Call ShowConsoleMsg("Comando incorrecto.")
                         Else
                             Call ShowConsoleMsg("Incorrect command.")
@@ -1039,7 +1039,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros.")
                     Else
                         Call ShowConsoleMsg("Missing parameters.")
@@ -1051,7 +1051,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharInfo(ArgumentosRaw)
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /info NICKNAME.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /info NICKNAME.")
@@ -1064,7 +1064,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharStats(ArgumentosRaw)
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /stat NICKNAME.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /stat NICKNAME.")
@@ -1077,7 +1077,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharGold(ArgumentosRaw)
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /bal NICKNAME.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /bal NICKNAME.")
@@ -1089,7 +1089,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharInventory(ArgumentosRaw)
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /inv NICKNAME.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /inv NICKNAME.")
@@ -1101,7 +1101,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharBank(ArgumentosRaw)
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /bov NICKNAME.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /bov NICKNAME.")
@@ -1114,7 +1114,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRequestCharSkills(ArgumentosRaw)
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /skills NICKNAME.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /skills NICKNAME.")
@@ -1126,7 +1126,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteReviveChar(ArgumentosRaw)
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /revivir NICKNAME.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /revivir NICKNAME.")
@@ -1142,7 +1142,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WritePerdonFaccion(ArgumentosRaw)
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /PERDONFACCION NICKNAME.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /PERDONFACCION NICKNAME.")
@@ -1165,7 +1165,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Call WriteDonateGold(ArgumentosRaw)
                     Else
                         'No es numerico
-                        If e_language.Spanish Then
+                        If language = Spanish Then
                             Call ShowConsoleMsg("Cantidad incorrecta. Utilice /donar CANTIDAD.")
                         Else
                             Call ShowConsoleMsg("Incorrect amount. Use /donar AMOUNT.")
@@ -1174,7 +1174,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /donar CANTIDAD.")
                     Else
                         Call ShowConsoleMsg("Missing parameters. Use /donar AMOUNT.")
@@ -1187,10 +1187,10 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteKick(ArgumentosRaw)
                 Else
                     'Avisar que falta el parámetro
-                    If e_language.Spanish Then
+                    If language = Spanish Then
                         Call ShowConsoleMsg("Faltan parámetros. Utilice /echar NICKNAME.")
                     Else
-                        Call ShowConsoleMsg("Missing parameters. Use /echar NICKNAME.")
+                        Call ShowConsoleMsg("Missing parameters. Use /kick NICKNAME.")
                     End If
                 End If
 
@@ -2074,7 +2074,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/CONSOLA"
             
                 'Ojo, no usar notNullArguments porque se usa el string Vacío para borrar cartel.
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                         Call ShowConsoleMsg("¡¡Estás muerto!! No puedes comunicarte con el mundo de los vivos.", .red, .green, .blue, .bold, .italic)
@@ -2124,11 +2124,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                     For i = 0 To UBound(Names)
                         frmRetos.Jugador(i + 1).Text = Names(i)
-                        frmRetos.Jugador(i + 1).Visible = True
+                        frmRetos.Jugador(i + 1).visible = True
                     Next
                     
                     If UBound(Names) Mod 2 = 1 Then
-                        frmRetos.Jugador(UBound(Names) + 2).Visible = True
+                        frmRetos.Jugador(UBound(Names) + 2).visible = True
                     End If
                 End If
                 
@@ -2169,7 +2169,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
         
     ElseIf Left$(Comando, 1) = "-" Then
 
-        If UserStats.Estado = 1 Then 'Muerto
+        If UserStats.estado = 1 Then 'Muerto
 
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
                 Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
@@ -2205,17 +2205,17 @@ Private Sub HandleMapSetting(ByRef arguments() As String, ByVal argCount As Inte
         Call ShowConsoleMsg("Parametros incorrectos.")
         Exit Sub
     End If
-    Dim settingType As Byte
+    Dim SettingType As Byte
     Select Case Trim$(UCase$(arguments(0)))
         Case "DROPITEMS"
-            settingType = 0
+            SettingType = 0
         Case "SAFEPVP"
-            settingType = 1
+            SettingType = 1
         Case Else
             Call ShowConsoleMsg("Parametros incorrectos.")
             Exit Sub
     End Select
-    Call WriteChangeMapSetting(settingType, arguments(1))
+    Call WriteChangeMapSetting(SettingType, arguments(1))
 End Sub
 
 Private Sub HandleFeatureToggle(ByRef arguments() As String, ByVal argCount As Integer)
@@ -2225,14 +2225,14 @@ Private Sub HandleFeatureToggle(ByRef arguments() As String, ByVal argCount As I
             Exit Sub
         End If
         Dim varName As String
-            Dim value As Byte
+            Dim Value As Byte
             varName = arguments(0)
             If Not ValidNumber(arguments(1), eNumber_Types.ent_Byte) Then
                 Call ShowConsoleMsg("Parametros incorrectos.")
                 Exit Sub
             End If
-            value = arguments(1)
-            Call WriteFeatureEnable(varName, value)
+            Value = arguments(1)
+            Call WriteFeatureEnable(varName, Value)
     End If
 End Sub
 
@@ -2244,15 +2244,15 @@ Private Sub HandleReqDebugCmd(ByRef arguments() As String, ByVal argCount As Int
             Dim eType As String
             eType = Trim$(UCase$(arguments(0)))
             If eType = "CONNECTION" Then
-                Dim username As String
+                Dim UserName As String
                 Dim i As Integer
                 For i = 1 To argCount - 1
-                    username = username & arguments(i)
+                    UserName = UserName & arguments(i)
                     If i < argCount - 1 Then
-                        username = username & " "
+                        UserName = UserName & " "
                     End If
                 Next i
-                arguments(0) = username
+                arguments(0) = UserName
                 Call WriteRequestDebug(e_DebugCommands.eConnectionState, arguments, 1)
             ElseIf eType = "USERIDS" Then
                 Call WriteRequestDebug(e_DebugCommands.eUserIdsState, arguments(), 0)
@@ -2301,7 +2301,7 @@ Private Sub StartLobby(ByRef arguments() As String, ByVal argCount As Integer)
     End If
 End Sub
 
-Private Sub StartCustomMap(ByVal mapType As Byte, ByVal name As String, ByRef arguments() As String, ByVal argCount As Integer)
+Private Sub StartCustomMap(ByVal mapType As Byte, ByVal Name As String, ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 3 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
             Dim LobbyInfo As t_NewScenearioSettings
@@ -2312,10 +2312,10 @@ Private Sub StartCustomMap(ByVal mapType As Byte, ByVal name As String, ByRef ar
             Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
-            Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
+            Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & Name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
         End If
     Else
-        Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & Name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
     End If
 End Sub
 
@@ -2563,7 +2563,7 @@ End Sub
 ' @param    bold Sets the font bold style.
 ' @param    italic Sets the font italic style.
 
-Public Sub ShowConsoleMsg(ByVal Message As String, Optional ByVal red As Integer = 255, Optional ByVal green As Integer = 255, Optional ByVal blue As Integer = 255, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False)
+Public Sub ShowConsoleMsg(ByVal message As String, Optional ByVal red As Integer = 255, Optional ByVal green As Integer = 255, Optional ByVal blue As Integer = 255, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False)
     '***************************************************
     'Author: Nicolas Matias Gonzalez (NIGO)
     'Last Modification: 01/03/07
@@ -2572,7 +2572,7 @@ Public Sub ShowConsoleMsg(ByVal Message As String, Optional ByVal red As Integer
     
     On Error GoTo ShowConsoleMsg_Err
     
-    Call AddtoRichTextBox(frmMain.RecTxt, Message, red, green, blue, bold, italic)
+    Call AddtoRichTextBox(frmMain.RecTxt, message, red, green, blue, bold, italic)
 
     
     Exit Sub

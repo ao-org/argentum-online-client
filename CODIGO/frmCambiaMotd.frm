@@ -201,14 +201,16 @@ Private Sub cmdOk_Click()
             Pos = InStr(Pos + 1, t(i), "~")
         Loop
 
+        ' Verificar si el número de delimitadores es incorrecto
         If N <> 5 Then
-            MsgBox "Error en el formato de la linea " & i + 1 & "."
+            MsgBox GetMessage("line_format_error") & " " & (i + 1) & ".", vbExclamation, "Argentum20 - Error"
             Exit Sub
 
         End If
 
     Next i
-    
+
+    ' Si todo es válido, guardar el texto y cerrar el formulario
     Call WriteSetMOTD(txtMotd.Text)
     Unload Me
 
@@ -220,6 +222,25 @@ cmdOk_Click_Err:
     Resume Next
     
 End Sub
+
+' Función para manejar los mensajes según el idioma seleccionado
+Function GetMessage(key As String) As String
+    If language = Spanish Then
+        Select Case key
+            Case "line_format_error"
+                GetMessage = "Error en el formato de la línea"
+            Case Else
+                GetMessage = "Mensaje no definido."
+        End Select
+    Else
+        Select Case key
+            Case "line_format_error"
+                GetMessage = "Error in the format of line"
+            Case Else
+                GetMessage = "Message not defined."
+        End Select
+    End If
+End Function
 
 'A partir de Command2_Click son todos buttons para agregar color al texto
 Private Sub cmdAzul_Click()

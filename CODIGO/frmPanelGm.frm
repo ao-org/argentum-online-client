@@ -2317,14 +2317,56 @@ Private Sub cmdCarcel_Click()
     Dim tmp As String
     Dim tmptime As String
     tmpUser = cboListaUsus.Text
-    tmp = InputBox("Escriba el motivo de Carcel .", "Carcel a " & TargetName)
-    tmptime = InputBox("Escriba el tiempo de Carcel .", "Tiempo de Carcel a " & TargetName)
+    
+    tmp = InputBox(GetMessage("jail_reason_prompt", TargetName), GetMessage("jail_reason_title", TargetName))
+    tmptime = InputBox(GetMessage("jail_time_prompt", TargetName), GetMessage("jail_time_title", TargetName))
+    
     If tmp = "" Or tmptime = "" Then
-        MsgBox "Faltan datos. Repita la acción.", vbExclamation, "Error"
+        MsgBox GetMessage("jail_missing_data"), vbExclamation, GetMessage("error_title")
     Else
         Call WriteJail(tmpUser, tmp, tmptime)
     End If
 End Sub
+
+' Función para manejar los mensajes según el idioma seleccionado
+Function GetMessage(key As String, Optional param As String = "") As String
+    If language = Spanish Then
+        Select Case key
+            Case "jail_reason_prompt"
+                GetMessage = "Escriba el motivo de Carcel."
+            Case "jail_reason_title"
+                GetMessage = "Carcel a " & param
+            Case "jail_time_prompt"
+                GetMessage = "Escriba el tiempo de Carcel."
+            Case "jail_time_title"
+                GetMessage = "Tiempo de Carcel a " & param
+            Case "jail_missing_data"
+                GetMessage = "Faltan datos. Repita la acción."
+            Case "error_title"
+                GetMessage = "Error"
+            Case Else
+                GetMessage = "Mensaje no definido."
+        End Select
+    Else
+        Select Case key
+            Case "jail_reason_prompt"
+                GetMessage = "Enter the jail reason."
+            Case "jail_reason_title"
+                GetMessage = "Jail to " & param
+            Case "jail_time_prompt"
+                GetMessage = "Enter the jail duration."
+            Case "jail_time_title"
+                GetMessage = "Jail time for " & param
+            Case "jail_missing_data"
+                GetMessage = "Missing data. Please repeat the action."
+            Case "error_title"
+                GetMessage = "Error"
+            Case Else
+                GetMessage = "Message not defined."
+        End Select
+    End If
+End Function
+
 
 Private Sub cmdcerrar_Click()
     

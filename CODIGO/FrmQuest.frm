@@ -427,48 +427,31 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     On Error GoTo Image1_MouseUp_Err
     
 
+    ' Verificar si hay misiones disponibles
     If lstQuests.ListCount = 0 Then
-        If e_language.Spanish Then
-            MsgBox "No tienes ninguna mision!", vbOKOnly + vbExclamation
-        Else
-            MsgBox "You don't have any mission!", vbOKOnly + vbExclamation
-        End If
-        
+        MsgBox GetMessage("no_missions"), vbOKOnly + vbExclamation, "Argentum20"
         Exit Sub
 
     End If
 
-    'Chequeamos si tiene algun item seleccionado.
+    ' Verificar si se ha seleccionado una misión
     If lstQuests.ListIndex < 0 Then
-    
-        If lstQuests.ListCount = 0 Then
-            If e_language.Spanish Then
-                MsgBox "Primero debes seleccionar una mision!", vbOKOnly + vbExclamation
-            Else
-                MsgBox "First you must select a mission!", vbOKOnly + vbExclamation
-            End If
-        
+        MsgBox GetMessage("select_mission"), vbOKOnly + vbExclamation, "Argentum20"
         Exit Sub
 
     End If
-            
-    Select Case MsgBox("Estas seguro que deseas abandonar la mision?", vbYesNo + vbExclamation)
 
-        Case vbYes  'Boton Si.
-            'Enviamos el paquete para abandonar la quest
-            Call WriteQuestAbandon(lstQuests.ListIndex + 1)
-            detalle.Text = ""
-            titulo.Caption = ""
-            picture1.Refresh
-            PlayerView.Refresh
-            ListView1.ListItems.Clear
-            ListView2.ListItems.Clear
-
-        Case vbNo   'Boton NO.
-            'Como selecciono que no, no hace nada.
-            Exit Sub
-
-    End Select
+    ' Confirmar si desea abandonar la misión
+    If MsgBox(GetMessage("confirm_abandon"), vbYesNo + vbExclamation, "Argentum20") = vbYes Then
+        ' Si confirma, enviar el paquete para abandonar la misión y limpiar la interfaz
+        Call WriteQuestAbandon(lstQuests.ListIndex + 1)
+        detalle.Text = ""
+        titulo.Caption = ""
+        picture1.Refresh
+        PlayerView.Refresh
+        ListView1.ListItems.Clear
+        ListView2.ListItems.Clear
+    End If
 
     
     Exit Sub
@@ -478,6 +461,33 @@ Image1_MouseUp_Err:
     Resume Next
     
 End Sub
+
+' Función para manejar los mensajes según el idioma seleccionado
+Function GetMessage(key As String) As String
+    If language = Spanish Then
+        Select Case key
+            Case "no_missions"
+                GetMessage = "¡No tienes ninguna misión!"
+            Case "select_mission"
+                GetMessage = "¡Primero debes seleccionar una misión!"
+            Case "confirm_abandon"
+                GetMessage = "¿Estás seguro de que deseas abandonar la misión?"
+            Case Else
+                GetMessage = "Mensaje no definido."
+        End Select
+    Else
+        Select Case key
+            Case "no_missions"
+                GetMessage = "You don't have any mission!"
+            Case "select_mission"
+                GetMessage = "First you must select a mission!"
+            Case "confirm_abandon"
+                GetMessage = "Are you sure you want to abandon the mission?"
+            Case Else
+                GetMessage = "Message not defined."
+        End Select
+    End If
+End Function
 
 Private Sub Image3_Click()
     

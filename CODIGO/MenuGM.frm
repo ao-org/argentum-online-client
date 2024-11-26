@@ -542,37 +542,35 @@ Private Sub OpcionImg_Click(Index As Integer)
             Call ParseUserCommand("/PENAS " & TargetName)
 
         Case 12
-            tmp = InputBox("Escriba el motivo del Silenciado.", "Silenciaso de " & TargetName)
+            tmp = InputBox(GetMessage("silenciar_reason"), GetMessage("silenciar_title") & TargetName)
             
             If tmp = "" Then
-                InputBox ("No se puede Silenciar si dar motivos a " & TargetName)
+                MsgBox GetMessage("silenciar_error") & TargetName, vbExclamation, "Error"
             Else
                 Call ParseUserCommand("/SILENCIAR " & TargetName & "@" & tmp)
             End If
             
         Case 13
-            tmp = InputBox("Escriba el motivo de la advertencia.", "Advertir a " & TargetName)
-'
+            tmp = InputBox(GetMessage("warn_reason"), GetMessage("warn_title") & TargetName)
+            
             If tmp = "" Then
-                InputBox ("No tiene advertencia a " & TargetName)
+                MsgBox GetMessage("warn_error") & TargetName, vbExclamation, "Error"
             Else
                 Call ParseUserCommand("/ADVERTENCIA " & TargetName & "@" & tmp)
             End If
         Case 14
-            tmp = InputBox("Escriba el motivo de Carcel .", "Carcel a " & TargetName)
-            tmptime = InputBox("Escriba el tiempo de Carcel .", "Tiempo de Carcel a " & TargetName)
+            tmp = InputBox(GetMessage("jail_reason"), GetMessage("jail_title") & TargetName)
+            tmptime = InputBox(GetMessage("jail_time"), GetMessage("jail_time_title") & TargetName)
             If tmp = "" Or tmptime = "" Then
-                MsgBox "Faltan datos. Repita la acción.", vbExclamation, "Error"
+                MsgBox GetMessage("jail_error"), vbExclamation, "Error"
             Else
                 Call WriteJail(TargetName, tmp, tmptime)
             End If
         Case 15
-        
-            Call ParseUserCommand("/BAN") ' ver ReyarB
-            tmp = InputBox("Escriba el motivo del BAN.", "Baneo de " & TargetName)
-
+            tmp = InputBox(GetMessage("ban_reason"), GetMessage("ban_title") & TargetName)
+            
             If tmp = "" Then
-                InputBox ("No se puede bannear si dar motivos a " & TargetName)
+                MsgBox GetMessage("ban_error") & TargetName, vbExclamation, "Error"
             Else
                 Call WriteBanChar(TargetName, tmp)
             End If
@@ -582,6 +580,77 @@ Private Sub OpcionImg_Click(Index As Integer)
     Unload Me
     
 End Sub
+
+' Función para manejar los mensajes según el idioma seleccionado
+Function GetMessage(key As String) As String
+    If language = Spanish Then
+        Select Case key
+            Case "silenciar_reason"
+                GetMessage = "Escriba el motivo del Silenciado:"
+            Case "silenciar_title"
+                GetMessage = "Silenciado de "
+            Case "silenciar_error"
+                GetMessage = "No se puede silenciar sin dar motivos a "
+            Case "warn_reason"
+                GetMessage = "Escriba el motivo de la advertencia:"
+            Case "warn_title"
+                GetMessage = "Advertencia a "
+            Case "warn_error"
+                GetMessage = "No se puede advertir sin dar motivos a "
+            Case "jail_reason"
+                GetMessage = "Escriba el motivo de la cárcel:"
+            Case "jail_title"
+                GetMessage = "Cárcel a "
+            Case "jail_time"
+                GetMessage = "Escriba el tiempo de cárcel:"
+            Case "jail_time_title"
+                GetMessage = "Tiempo de cárcel para "
+            Case "jail_error"
+                GetMessage = "Faltan datos. Repita la acción."
+            Case "ban_reason"
+                GetMessage = "Escriba el motivo del BAN:"
+            Case "ban_title"
+                GetMessage = "Baneo de "
+            Case "ban_error"
+                GetMessage = "No se puede banear sin dar motivos a "
+            Case Else
+                GetMessage = "Mensaje no definido."
+        End Select
+    Else
+        Select Case key
+            Case "silenciar_reason"
+                GetMessage = "Enter the reason for Silencing:"
+            Case "silenciar_title"
+                GetMessage = "Silence of "
+            Case "silenciar_error"
+                GetMessage = "You cannot silence without giving a reason to "
+            Case "warn_reason"
+                GetMessage = "Enter the reason for the warning:"
+            Case "warn_title"
+                GetMessage = "Warning to "
+            Case "warn_error"
+                GetMessage = "You cannot warn without giving a reason to "
+            Case "jail_reason"
+                GetMessage = "Enter the reason for jail:"
+            Case "jail_title"
+                GetMessage = "Jail to "
+            Case "jail_time"
+                GetMessage = "Enter the jail time:"
+            Case "jail_time_title"
+                GetMessage = "Jail time for "
+            Case "jail_error"
+                GetMessage = "Missing data. Repeat the action."
+            Case "ban_reason"
+                GetMessage = "Enter the reason for the BAN:"
+            Case "ban_title"
+                GetMessage = "Ban of "
+            Case "ban_error"
+                GetMessage = "You cannot ban without giving a reason to "
+            Case Else
+                GetMessage = "Message not defined."
+        End Select
+    End If
+End Function
 
 Private Sub OpcionImg_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
     If Over <> Index Then

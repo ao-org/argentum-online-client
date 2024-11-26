@@ -241,7 +241,7 @@ Private Sub Command3_Click()
     
     
     If lstArmas.ListIndex < 0 Then
-        MsgBox "Debes seleccionar un objeto de la lista"
+        MsgBox GetMessage("select_item_from_list"), vbExclamation, GetMessage("error_title")
         Exit Sub
 
     End If
@@ -250,7 +250,7 @@ Private Sub Command3_Click()
         UserMacro.cantidad = cantidad
         UserMacro.TIPO = 1
         UserMacro.Index = ObjAlquimista(lstArmas.ListIndex + 1)
-        AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+        AddtoRichTextBox frmMain.RecTxt, GetMessage("start_working"), 2, 51, 223, 1, 1
         UserMacro.Intervalo = IntervaloTrabajo
         UserMacro.Activado = True
         frmMain.MacroLadder.Interval = gIntervals.BuildWork
@@ -272,6 +272,32 @@ Command3_Click_Err:
     Resume Next
     
 End Sub
+
+Function GetMessage(key As String, Optional param As String = "") As String
+    If language = Spanish Then
+        Select Case key
+            Case "select_item_from_list"
+                GetMessage = "Debes seleccionar un objeto de la lista"
+            Case "start_working"
+                GetMessage = "Comienzas a trabajar."
+            Case "error_title"
+                GetMessage = "Error"
+            Case Else
+                GetMessage = "Mensaje no definido."
+        End Select
+    Else
+        Select Case key
+            Case "select_item_from_list"
+                GetMessage = "You must select an item from the list"
+            Case "start_working"
+                GetMessage = "You begin working."
+            Case "error_title"
+                GetMessage = "Error"
+            Case Else
+                GetMessage = "Message not defined."
+        End Select
+    End If
+End Function
 
 Private Sub Command4_Click()
     

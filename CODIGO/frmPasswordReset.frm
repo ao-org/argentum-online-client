@@ -233,18 +233,31 @@ Private Sub cmdHaveCode_Click()
    
     
     If Not isValidEmail(Me.txtEmail.Text) Then
-        If e_language.Spanish Then
-            MsgBox "El email ingresado es inválido."
-        Else
-            MsgBox "The email entered is invalid."
-            
-        End If
-        
+        MsgBox GetMessage("invalid_email"), vbExclamation, "Error"
         Exit Sub
     End If
     
     Call toggleTextboxs
 End Sub
+
+' Función para manejar los mensajes según el idioma seleccionado
+Function GetMessage(key As String) As String
+    If language = Spanish Then
+        Select Case key
+            Case "invalid_email"
+                GetMessage = "El email ingresado es inválido."
+            Case Else
+                GetMessage = "Mensaje no definido."
+        End Select
+    Else
+        Select Case key
+            Case "invalid_email"
+                GetMessage = "The email entered is invalid."
+            Case Else
+                GetMessage = "Message not defined."
+        End Select
+    End If
+End Function
 
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanarecuperarcontrasena.bmp")

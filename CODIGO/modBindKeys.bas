@@ -105,7 +105,7 @@ Public Sub LoadBindedKeys()
     On Error GoTo LoadBindedKeys_Err
 
     If Not FileExist(App.path & DefaultKeyMappingFile, vbArchive) Then
-        MsgBox "Se requiere el archivo " & App.path & DefaultKeyMappingFile, vbCritical + vbOKOnly
+        MsgBox GetMessage("keyfile_required", App.path & DefaultKeyMappingFile), vbCritical + vbOKOnly
         End
     End If
 
@@ -144,9 +144,37 @@ Public Sub LoadBindedKeys()
 
 LoadBindedKeys_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.LoadBindedKeys", Erl)
+    MsgBox GetMessage("error_loading_binds"), vbCritical, GetMessage("error_title")
     Resume Next
     
 End Sub
+
+' Función para manejar los mensajes según el idioma seleccionado
+Function GetMessage(key As String, Optional param As String = "") As String
+    If language = Spanish Then
+        Select Case key
+            Case "keyfile_required"
+                GetMessage = "Se requiere el archivo " & param
+            Case "error_loading_binds"
+                GetMessage = "Hubo un error al cargar las teclas. Intenta nuevamente."
+            Case "error_title"
+                GetMessage = "Error"
+            Case Else
+                GetMessage = "Mensaje no definido."
+        End Select
+    Else
+        Select Case key
+            Case "keyfile_required"
+                GetMessage = "The file " & param & " is required."
+            Case "error_loading_binds"
+                GetMessage = "There was an error loading the key bindings. Please try again."
+            Case "error_title"
+                GetMessage = "Error"
+            Case Else
+                GetMessage = "Message not defined."
+        End Select
+    End If
+End Function
 
 Private Function GetAction(ByRef DefaultBinds As clsIniManager, ByRef UserBinds As clsIniManager, ByVal Index As Integer) As e_MouseAction
     Dim Temp As String

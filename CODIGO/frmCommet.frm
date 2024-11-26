@@ -135,26 +135,27 @@ Private Sub Command1_Click()
     On Error GoTo Command1_Click_Err
     
 
-    If Text1 = "" Then
+    ' Validación inicial para texto vacío
+    If Text1.Text = "" Then
         If t = PAZ Or t = ALIANZA Then
-            MsgBox "Debes redactar un mensaje solicitando la paz o alianza al líder de " & Nombre
+            MsgBox GetMessage("guild_offer_empty")
         Else
-            MsgBox "Debes indicar el motivo por el cual rechazas la membresía de " & Nombre
-
+            MsgBox GetMessage("guild_reject_empty")
         End If
 
         Exit Sub
 
     End If
 
+    ' Lógica según el valor de 't'
     If t = PAZ Then
-        Call WriteGuildOfferPeace(Nombre, Replace(Text1, vbCrLf, "º"))
+        Call WriteGuildOfferPeace(nombre, Replace(Text1.Text, vbCrLf, "º"))
     ElseIf t = ALIANZA Then
-        Call WriteGuildOfferAlliance(Nombre, Replace(Text1, vbCrLf, "º"))
+        Call WriteGuildOfferAlliance(nombre, Replace(Text1.Text, vbCrLf, "º"))
     ElseIf t = RECHAZOPJ Then
         Call WriteGuildRejectNewMember(nombre, Replace(Replace(Text1.Text, ",", " "), vbCrLf, " "))
 
-        'Sacamos el char de la lista de aspirantes
+        ' Eliminar el personaje de la lista de aspirantes
         Dim i As Long
 
         For i = 0 To frmGuildLeader.solicitudes.ListCount - 1
@@ -183,6 +184,29 @@ Command1_Click_Err:
     Resume Next
     
 End Sub
+
+' Función para manejar los mensajes según el idioma seleccionado
+Function GetMessage(key As String) As String
+    If language = Spanish Then
+        Select Case key
+            Case "guild_offer_empty"
+                GetMessage = "Debes redactar un mensaje solicitando la paz o alianza al líder de " & nombre
+            Case "guild_reject_empty"
+                GetMessage = "Debes indicar el motivo por el cual rechazas la membresía de " & nombre
+            Case Else
+                GetMessage = "Mensaje no definido."
+        End Select
+    Else
+        Select Case key
+            Case "guild_offer_empty"
+                GetMessage = "You must write a message requesting peace or an alliance with the leader of " & nombre
+            Case "guild_reject_empty"
+                GetMessage = "You must specify the reason why you are rejecting the membership of " & nombre
+            Case Else
+                GetMessage = "Message not defined."
+        End Select
+    End If
+End Function
 
 Private Sub Command2_Click()
     

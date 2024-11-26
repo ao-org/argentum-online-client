@@ -861,8 +861,9 @@ Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         Check2.Picture = Nothing
         Call SaveSetting("VIDEO", "CursoresGraficos", 0)
     End If
-    
-    MsgBox "Para que los cambios en esta opci n sean reflejados, deber  reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
+
+    ' Mostrar mensaje en función del idioma
+    MsgBox GetMessage("restart_required"), vbQuestion, "Argentum20 - Warning"
 
     Exit Sub
 
@@ -871,6 +872,25 @@ Check2_MouseUp_Err:
     Resume Next
     
 End Sub
+
+' Función para manejar los mensajes según el idioma seleccionado
+Function GetMessage(key As String) As String
+    If language = Spanish Then
+        Select Case key
+            Case "restart_required"
+                GetMessage = "Para que los cambios en esta opción sean reflejados, deberá reiniciar el cliente."
+            Case Else
+                GetMessage = "Mensaje no definido."
+        End Select
+    Else
+        Select Case key
+            Case "restart_required"
+                GetMessage = "To apply the changes in this option, you must restart the client."
+            Case Else
+                GetMessage = "Message not defined."
+        End Select
+    End If
+End Function
 
 Private Sub Check8_Click()
     On Error GoTo Check8_MouseUp_Err

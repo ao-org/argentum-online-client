@@ -348,12 +348,12 @@ End Sub
 Private Sub cmdEditarDescripcion_Click()
     Dim fdesc As String
 
-    fdesc = InputBox("Ingrese la descripción:", "Modificar descripción")
+    fdesc = InputBox(GetMessage("enter_description"), GetMessage("modify_description"))
 
     fdesc = Replace(fdesc, vbCrLf, "º", , , vbBinaryCompare)
     
     If Not ValidDescriptionCharacters(fdesc) Then
-        MsgBox "La descripcion contiene caracteres invalidos"
+        MsgBox GetMessage("invalid_description")
         Exit Sub
     Else
         Call WriteClanCodexUpdate(fdesc)
@@ -364,6 +364,34 @@ Private Sub cmdEditarDescripcion_Click()
     Exit Sub
 
 End Sub
+
+' Función para manejar los mensajes según el idioma seleccionado
+Function GetMessage(key As String) As String
+    If language = Spanish Then
+        Select Case key
+            Case "enter_description"
+                GetMessage = "Ingrese la descripción:"
+            Case "modify_description"
+                GetMessage = "Modificar descripción"
+            Case "invalid_description"
+                GetMessage = "La descripción contiene caracteres inválidos."
+            Case Else
+                GetMessage = "Mensaje no definido."
+        End Select
+    Else
+        Select Case key
+            Case "enter_description"
+                GetMessage = "Enter the description:"
+            Case "modify_description"
+                GetMessage = "Modify description"
+            Case "invalid_description"
+                GetMessage = "The description contains invalid characters."
+            Case Else
+                GetMessage = "Message not defined."
+        End Select
+    End If
+End Function
+
 
 Private Sub Command4_Click()
     
