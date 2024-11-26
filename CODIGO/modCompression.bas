@@ -224,7 +224,7 @@ On Local Error GoTo ErrHandler
 
     'Check the file for validity
     If LOF(SourceFile) <> FileHead.lngFileSize Then
-        MsgBox "Resource file " & SourceFilePath & " seems to be corrupted.", , "Error"
+        MsgBox GetMessage("resource_file_corrupted", SourceFilePath), vbCritical + vbOKOnly
         Close SourceFile
         Erase InfoHead
         Exit Function
@@ -237,7 +237,7 @@ On Local Error GoTo ErrHandler
     PasswordHash = MD5String(Passwd)
     
     If PasswordHash <> FileHead.lngPassword Then
-        MsgBox "Invalid password to decrypt the file.", , "Error"
+        MsgBox GetMessage("invalid_password"), vbCritical + vbOKOnly
         Close SourceFile
         Erase InfoHead
         Exit Function
@@ -254,7 +254,7 @@ On Local Error GoTo ErrHandler
         
         'Check if there is enough memory
         If InfoHead(loopc).lngFileSizeUncompressed > General_Drive_Get_Free_Bytes(Left(App.Path, 3)) Then
-            MsgBox "There is not enough free memory to continue extracting files."
+            MsgBox GetMessage("not_enough_memory"), vbCritical, GetMessage("error_title")
             Exit Function
         End If
         
@@ -298,7 +298,42 @@ ErrHandler:
     Erase SourceData
     Erase InfoHead
     'Display an error message if it didn't work
-    MsgBox "Unable to decode binary file. Reason: " & Err.Number & " : " & Err.Description, vbOKOnly, "Error"
+    MsgBox GetMessage("unable_to_decode", Err.Number & " : " & Err.Description), vbCritical, GetMessage("error_title")
+End Function
+
+' Función para manejar los mensajes según el idioma seleccionado
+Function GetMessage(key As String, Optional param As String = "") As String
+    If e_language.Spanish Then
+        Select Case key
+            Case "resource_file_corrupted"
+                GetMessage = "El archivo de recursos " & param & " parece estar dañado."
+            Case "invalid_password"
+                GetMessage = "Contraseña inválida para descifrar el archivo."
+            Case "not_enough_memory"
+                GetMessage = "No hay suficiente memoria disponible para continuar extrayendo archivos."
+            Case "unable_to_decode"
+                GetMessage = "No se pudo decodificar el archivo binario. Razón: " & param
+            Case "error_title"
+                GetMessage = "Error"
+            Case Else
+                GetMessage = "Mensaje no definido."
+        End Select
+    Else
+        Select Case key
+            Case "resource_file_corrupted"
+                GetMessage = "The resource file " & param & " seems to be corrupted."
+            Case "invalid_password"
+                GetMessage = "Invalid password to decrypt the file."
+            Case "not_enough_memory"
+                GetMessage = "There is not enough free memory to continue extracting files."
+            Case "unable_to_decode"
+                GetMessage = "Unable to decode binary file. Reason: " & param
+            Case "error_title"
+                GetMessage = "Error"
+            Case Else
+                GetMessage = "Message not defined."
+        End Select
+    End If
 End Function
 
 Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As String, ByVal Passwd As String) As Boolean
