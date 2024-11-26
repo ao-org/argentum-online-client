@@ -816,94 +816,118 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/CARCEL"
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@")
-
+            
                     If UBound(tmpArr) = 2 Then
                         If ValidNumber(tmpArr(2), eNumber_Types.ent_Byte) Then
                             Call WriteJail(tmpArr(0), tmpArr(1), tmpArr(2))
                         Else
-                            'No es numerico
-                            Call ShowConsoleMsg("Tiempo incorrecto. Utilice /carcel NICKNAME@MOTIVO@TIEMPO.")
-
+                            'No es numérico
+                            If e_language.Spanish Then
+                                Call ShowConsoleMsg("Tiempo incorrecto. Utilice /carcel NICKNAME@MOTIVO@TIEMPO.")
+                            Else
+                                Call ShowConsoleMsg("Incorrect time. Use /carcel NICKNAME@MOTIVE@TIME.")
+                            End If
                         End If
-
                     Else
-                        'Faltan los parametros con el formato propio
-                        Call ShowConsoleMsg("Formato incorrecto. Utilice /carcel NICKNAME@MOTIVO@TIEMPO.")
-
+                        'Faltan los parámetros con el formato propio
+                        If e_language.Spanish Then
+                            Call ShowConsoleMsg("Formato incorrecto. Utilice /carcel NICKNAME@MOTIVO@TIEMPO.")
+                        Else
+                            Call ShowConsoleMsg("Incorrect format. Use /carcel NICKNAME@MOTIVE@TIME.")
+                        End If
                     End If
-
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /carcel NICKNAME@MOTIVO@TIEMPO.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /carcel NICKNAME@MOTIVO@TIEMPO.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /carcel NICKNAME@MOTIVE@TIME.")
+                    End If
                 End If
+
                 
             Case "/CREAREVENTO"
-
+            
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@")
-
+            
                     If UBound(tmpArr) = 2 Then
                         If ValidNumber(tmpArr(2), eNumber_Types.ent_Byte) Then
                             Call WriteCrearEvento(tmpArr(0), tmpArr(1), tmpArr(2))
                         Else
-                            'No es numerico
-                            Call ShowConsoleMsg("Tiempo incorrecto. Utilice /CREAREVENTO TIPO@DURACION@MULTIPLICACION.")
-
+                            'No es numérico
+                            If e_language.Spanish Then
+                                Call ShowConsoleMsg("Tiempo incorrecto. Utilice /CREAREVENTO TIPO@DURACION@MULTIPLICACION.")
+                            Else
+                                Call ShowConsoleMsg("Incorrect time. Use /CREAREVENTO TYPE@DURATION@MULTIPLIER.")
+                            End If
                         End If
-
                     Else
-                        'Faltan los parametros con el formato propio
-                        Call ShowConsoleMsg("Formato incorrecto. Utilice /CREAREVENTO TIPO@DURACION@MULTIPLICACION.")
-
+                        'Faltan los parámetros con el formato propio
+                        If e_language.Spanish Then
+                            Call ShowConsoleMsg("Formato incorrecto. Utilice /CREAREVENTO TIPO@DURACION@MULTIPLICACION.")
+                        Else
+                            Call ShowConsoleMsg("Incorrect format. Use /CREAREVENTO TYPE@DURATION@MULTIPLIER.")
+                        End If
                     End If
-
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /CREAREVENTO TIPO@DURACION@MULTIPLICACION.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /CREAREVENTO TIPO@DURACION@MULTIPLICACION.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /CREAREVENTO TYPE@DURATION@MULTIPLIER.")
+                    End If
                 End If
                 
-            Case "/RMATA"
-                Call WriteKillNPC
-                
             Case "/ADVERTENCIA"
-
+            
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@", 2)
-
+            
                     If UBound(tmpArr) = 1 Then
                         Call WriteWarnUser(tmpArr(0), tmpArr(1))
                     Else
-                        'Faltan los parametros con el formato propio
-                        Call ShowConsoleMsg("Formato incorrecto. Utilice /advertencia NICKNAME@MOTIVO.")
-
+                        'Faltan los parámetros con el formato propio
+                        If e_language.Spanish Then
+                            Call ShowConsoleMsg("Formato incorrecto. Utilice /advertencia NICKNAME@MOTIVO.")
+                        Else
+                            Call ShowConsoleMsg("Incorrect format. Use /advertencia NICKNAME@REASON.")
+                        End If
                     End If
-
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /advertencia NICKNAME@MOTIVO.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /advertencia NICKNAME@MOTIVO.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /advertencia NICKNAME@REASON.")
+                    End If
                 End If
+
                 
             Case "/MENSAJEINFORMACION"
-
+            
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@", 2)
-
+            
                     If UBound(tmpArr) = 1 Then
                         Call WriteMensajeUser(tmpArr(0), tmpArr(1))
                     Else
-                        'Faltan los parametros con el formato propio
-                        Call ShowConsoleMsg("Formato incorrecto. Utilice /MENSAJEINFORMACION NICKNAME@MENSAJE.")
-
+                        'Faltan los parámetros con el formato propio
+                        If e_language.Spanish Then
+                            Call ShowConsoleMsg("Formato incorrecto. Utilice /MENSAJEINFORMACION NICKNAME@MENSAJE.")
+                        Else
+                            Call ShowConsoleMsg("Incorrect format. Use /MENSAJEINFORMACION NICKNAME@MESSAGE.")
+                        End If
                     End If
-
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /MENSAJEINFORMACION NICKNAME@MENSAJE.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /MENSAJEINFORMACION NICKNAME@MENSAJE.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /MENSAJEINFORMACION NICKNAME@MESSAGE.")
+                    End If
                 End If
+
                 
             Case "/MOD"
 
@@ -1002,102 +1026,129 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                             Call WriteEditChar(ArgumentosAll(0), tmpInt, ArgumentosAll(2), "")
                         Else
                             Call WriteEditChar(ArgumentosAll(0), tmpInt, ArgumentosAll(2), ArgumentosAll(3))
-
                         End If
-
                     Else
-                        'Avisar que no exite el comando
-                        Call ShowConsoleMsg("Comando incorrecto.")
-
+                        'Avisar que no existe el comando
+                        If e_language.Spanish Then
+                            Call ShowConsoleMsg("Comando incorrecto.")
+                        Else
+                            Call ShowConsoleMsg("Incorrect command.")
+                        End If
                     End If
 
+
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters.")
+                    End If
                 End If
-                
-            Case "/INFO"
 
+            Case "/INFO"
                 If notNullArguments Then
                     Call WriteRequestCharInfo(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /info NICKNAME.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /info NICKNAME.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /info NICKNAME.")
+                    End If
                 End If
+
                 
             Case "/STAT"
-
                 If notNullArguments Then
                     Call WriteRequestCharStats(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /stat NICKNAME.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /stat NICKNAME.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /stat NICKNAME.")
+                    End If
                 End If
+
                 
             Case "/BAL"
-
                 If notNullArguments Then
                     Call WriteRequestCharGold(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /bal NICKNAME.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /bal NICKNAME.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /bal NICKNAME.")
+                    End If
                 End If
-                
+            
             Case "/INV"
-
                 If notNullArguments Then
                     Call WriteRequestCharInventory(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /inv NICKNAME.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /inv NICKNAME.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /inv NICKNAME.")
+                    End If
                 End If
-                
+            
             Case "/BOV"
-
                 If notNullArguments Then
                     Call WriteRequestCharBank(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /bov NICKNAME.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /bov NICKNAME.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /bov NICKNAME.")
+                    End If
                 End If
-                
+            
+                            
             Case "/SKILLS"
-
                 If notNullArguments Then
                     Call WriteRequestCharSkills(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /skills NICKNAME.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /skills NICKNAME.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /skills NICKNAME.")
+                    End If
                 End If
-                
+            
             Case "/REVIVIR"
-
                 If notNullArguments Then
                     Call WriteReviveChar(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /revivir NICKNAME.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /revivir NICKNAME.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /revivir NICKNAME.")
+                    End If
                 End If
+
                 
             Case "/SM"
                 Call WriteSeguirMouse(ArgumentosRaw)
                 
             Case "/PERDONFACCION"
-
                 If notNullArguments Then
                     Call WritePerdonFaccion(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /PERDONFACCION NICKNAME.")
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /PERDONFACCION NICKNAME.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /PERDONFACCION NICKNAME.")
+                    End If
                 End If
+
                 
             Case "/ONLINEGM"
                 Call WriteOnlineGM
@@ -1114,25 +1165,35 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Call WriteDonateGold(ArgumentosRaw)
                     Else
                         'No es numerico
-                        Call ShowConsoleMsg("Cantidad incorecta. Utilice /donar CANTIDAD.")
-
+                        If e_language.Spanish Then
+                            Call ShowConsoleMsg("Cantidad incorrecta. Utilice /donar CANTIDAD.")
+                        Else
+                            Call ShowConsoleMsg("Incorrect amount. Use /donar AMOUNT.")
+                        End If
                     End If
-
+            
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /donar CANTIDAD.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /donar CANTIDAD.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /donar AMOUNT.")
+                    End If
                 End If
+
                 
             Case "/ECHAR"
-
                 If notNullArguments Then
                     Call WriteKick(ArgumentosRaw)
                 Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /echar NICKNAME.")
-
+                    'Avisar que falta el parámetro
+                    If e_language.Spanish Then
+                        Call ShowConsoleMsg("Faltan parámetros. Utilice /echar NICKNAME.")
+                    Else
+                        Call ShowConsoleMsg("Missing parameters. Use /echar NICKNAME.")
+                    End If
                 End If
+
                 
             Case "/EJECUTAR"
 
