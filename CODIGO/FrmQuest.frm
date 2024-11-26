@@ -428,14 +428,26 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
 
     If lstQuests.ListCount = 0 Then
-        MsgBox "No tienes ninguna mision!", vbOKOnly + vbExclamation
+        If e_language.Spanish Then
+            MsgBox "No tienes ninguna mision!", vbOKOnly + vbExclamation
+        Else
+            MsgBox "You don't have any mission!", vbOKOnly + vbExclamation
+        End If
+        
         Exit Sub
 
     End If
 
     'Chequeamos si tiene algun item seleccionado.
     If lstQuests.ListIndex < 0 Then
-        MsgBox "Primero debes seleccionar una mision!", vbOKOnly + vbExclamation
+    
+        If lstQuests.ListCount = 0 Then
+            If e_language.Spanish Then
+                MsgBox "Primero debes seleccionar una mision!", vbOKOnly + vbExclamation
+            Else
+                MsgBox "First you must select a mission!", vbOKOnly + vbExclamation
+            End If
+        
         Exit Sub
 
     End If
