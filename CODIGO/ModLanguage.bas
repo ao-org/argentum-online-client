@@ -33,6 +33,7 @@ Public Enum e_language
 End Enum
 
 Public language As e_language
+Public JsonLanguage As Object
      
 Private Function GetCountryName() As String
     Dim lID As Long, sBuf As String, lRet As Long
@@ -58,18 +59,60 @@ Public Function FileToString(strFileName As String) As String
     Close #IFile
 End Function
 
+Public Function DirLanguage() As String
+On Error GoTo DirLanguage_Err
+    DirLanguage = App.path & "\Languages\"
+    Exit Function
+DirLanguage_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.DirLanguage", Erl)
+    Resume Next
+End Function
+
 Public Sub SetLanguageApplication()
+    On Error GoTo ErrorHandler
+
     Dim Localization As String
+    Dim LangFilePath As String
+    Dim LangFileContent As String
+
+    ' Retrieve localization setting
     Localization = GetSetting("OPCIONES", "Localization")
+
+    ' If no localization is set, determine the default language based on system locale
     If Len(Localization) = 0 Then
         Select Case GetLocaleEngLanguage
-                Case "English"
-                    language = e_language.English
-                Case "Spanish"
-                    language = e_language.Spanish
+            Case "English"
+                language = e_language.English
+            Case "Spanish"
+                language = e_language.Spanish
+            Case Else
+                ' Default to English if system locale is unsupported
+                language = e_language.English
         End Select
-        Call SaveSetting("OPCIONES", "Localization", language)
+        ' Save the determined language as the default localization setting
+        SaveSetting "OPCIONES", "Localization", language
     Else
-         language = Localization
+        ' Use the stored localization setting
+        language = Localization
     End If
+
+    ' Build the file path for the language JSON file
+    LangFilePath = DirLanguage() & language & ".json"
+
+    ' Validate the existence of the language file
+    If dir(LangFilePath) = "" Then
+        Err.Raise vbObjectError + 1, "SetLanguageApplication", "Language file not found: " & LangFilePath
+    End If
+
+    ' Load and parse the language JSON file
+    LangFileContent = FileToString(LangFilePath)
+    Set JsonLanguage = JSON.parse(LangFileContent)
+
+    Exit Sub
+
+ErrorHandler:
+    MsgBox "Error in SetLanguageApplication: " & Err.Description, vbCritical, "Error"
+    ' Optional: Fallback to a default language in case of an error
+    language = e_language.English
 End Sub
+

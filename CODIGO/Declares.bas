@@ -699,7 +699,6 @@ Public Const FundirMetal                           As Integer = 88
 '
 
 Public Const MENSAJE_CRIATURA_FALLA_GOLPE          As String = "La criatura fallo el golpe."
-Public Const MENSAJE_CRIATURA_MATADO               As String = "La criatura te ha matado."
 Public Const MENSAJE_RECHAZO_ATAQUE_ESCUDO         As String = "Has rechazado el ataque con el escudo."
 Public Const MENSAJE_USUARIO_RECHAZO_ATAQUE_ESCUDO As String = "El usuario rechazo el ataque con su escudo."
 Public Const MENSAJE_FALLADO_GOLPE                 As String = "Has fallado el golpe."

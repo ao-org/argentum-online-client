@@ -1416,7 +1416,7 @@ Private Sub HandleNPCKillUser()
 
     On Error GoTo HandleNPCKillUser_Err
         
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_CRIATURA_MATADO, 255, 0, 0, True, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_CRIATURA_MATADO"), 255, 0, 0, True, False, False)
     
     Exit Sub
 
