@@ -2096,6 +2096,7 @@ Private Sub exp_MouseMove(button As Integer, Shift As Integer, x As Single, y As
 End Sub
 
 Private Sub Form_Activate()
+    renderer.Refresh
     
     On Error GoTo Form_Activate_Err
     
