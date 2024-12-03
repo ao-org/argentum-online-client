@@ -781,7 +781,7 @@ Sub General_Set_Connect()
     Call GoToLogIn
     ClickEnAsistente = 0
     If CuentaRecordada.nombre <> "" Then
-        Call TextoAlAsistente("¡Bienvenido de nuevo! ¡Disfruta tu viaje por Argentum Online!", False, True)
+        Call TextoAlAsistente(JsonLanguage.Item("LOGIN_SCREEN_WELCOME_MESSAGE"), False, True)
     Else
         Call TextoAlAsistente("¡Bienvenido a Argentum Online! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.", False, True)
 

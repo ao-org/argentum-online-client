@@ -221,6 +221,7 @@ DirMapas_Err:
     
 End Function
 
+
 Public Function RandomNumber(ByVal LowerBound As Long, ByVal UpperBound As Long) As Long
     'Initialize randomizer
     
