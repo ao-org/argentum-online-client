@@ -571,7 +571,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     End If
     
     If CuentaPassword = "" Then
-        MsgBox ("Ingrese un password.")
+        MsgBox (JsonLanguage.Item("MENSAJEBOX_INGRESE_PASSWORD"))
         Exit Function
 
     End If
@@ -580,7 +580,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
         CharAscii = Asc(mid$(CuentaPassword, loopC, 1))
 
         If Not LegalCharacter(CharAscii) Then
-            MsgBox ("Password inválido. El caractér " & Chr$(CharAscii) & " no está permitido.")
+            MsgBox (JsonLanguage.Item("MENSAJEBOX_PASSWORD_INVALIDO") & Chr$(CharAscii) & JsonLanguage.Item("MENSAJEBOX_NO_PERMITIDO"))
             Exit Function
 
         End If
@@ -1148,7 +1148,7 @@ End Sub
 
 Public Sub RegisterCom()
     On Error GoTo Com_Err:
-    If MsgBox("No se encontraron los componenetes com necesarios para iniciar el juego, desea instalarlos?", vbYesNo) = vbYes Then
+    If MsgBox(JsonLanguage.Item("MENSAJEBOX_COMPONENTES_FALTANTES"), vbYesNo) = vbYes Then
             If System.ShellExecuteEx("regcom.bat", App.path) Then
                 Call MsgBox("com files registered")
             Else

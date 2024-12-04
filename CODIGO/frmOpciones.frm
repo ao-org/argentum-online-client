@@ -862,7 +862,7 @@ Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         Call SaveSetting("VIDEO", "CursoresGraficos", 0)
     End If
     
-    MsgBox "Para que los cambios en esta opci n sean reflejados, deber  reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
+    MsgBox JsonLanguage.Item("MENSAJEBOX_REINICIAR_CLIENTE"), vbQuestion, JsonLanguage.Item("MENSAJEBOX_ADVERTENCIA") 'hay que poner 20 aniversario
 
     Exit Sub
 
@@ -1148,7 +1148,7 @@ Private Sub Command5_Click()
     
     On Error GoTo Command5_Click_Err
     
-    MsgBox ("Proximamente")
+    MsgBox JsonLanguage.Item("MENSAJEBOX_PROXIMAMENTE")
 
     
     Exit Sub

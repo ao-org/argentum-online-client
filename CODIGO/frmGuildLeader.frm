@@ -348,12 +348,12 @@ End Sub
 Private Sub cmdEditarDescripcion_Click()
     Dim fdesc As String
 
-    fdesc = InputBox("Ingrese la descripción:", "Modificar descripción")
+    fdesc = InputBox(JsonLanguage.Item("MENSAJEBOX_MODIFICAR_DESCRIPCION"), "Modify Description")
 
     fdesc = Replace(fdesc, vbCrLf, "º", , , vbBinaryCompare)
     
     If Not ValidDescriptionCharacters(fdesc) Then
-        MsgBox "La descripcion contiene caracteres invalidos"
+        MsgBox JsonLanguage.Item("MENSAJEBOX_DESCRIPCION_INVALIDA")
         Exit Sub
     Else
         Call WriteClanCodexUpdate(fdesc)

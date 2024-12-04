@@ -1344,7 +1344,7 @@ Private Sub Image1_Click()
     
 
     If RealizoCambios >= 1 Then
-        If MsgBox("Realizo cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
+        If MsgBox(JsonLanguage.Item("MENSAJEBOX_GUARDAR_SKILLPOINTS"), vbYesNo) = vbYes Then
 
             Dim skillChanges(NUMSKILLS) As Byte
 

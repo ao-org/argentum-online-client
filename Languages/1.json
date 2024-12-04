@@ -74,5 +74,25 @@
 	"MENSAJE_DEJAS_DE_TRABAJAR":"has dejado de trabajar",
 	"MENSAJE_NO_TIENES_ORO_SUFICIENTE":"No tenÃ©s suficiente oro.",
 	"MENSAJE_INFORMACION_DE_SKILL":"InformaciÃ³n del skill> ",
-	"MENSAJE_UBICACION_DE_COMPAÃ‘ERO":"UbicaciÃ³n de tu compaÃ±ero de clan que solicita ayuda: ("
+	"MENSAJE_UBICACION_DE_COMPAÃ‘ERO":"UbicaciÃ³n de tu compaÃ±ero de clan que solicita ayuda: (",
+	"MENSAJEBOX_BORRAR_PERSONAJE":"Â¿Esta seguro que desea borrar el personaje ",
+	"MENSAJEBOX_DE_LA_CUENTA":" de la cuenta?"
+	"MENSAJEBOX_BORRAR":"Borrar personaje",
+    "MENSAJEBOX_INGRESE_PASSWORD": "Ingrese un password.",
+    "MENSAJEBOX_PASSWORD_INVALIDO": "Password invÃ¡lido. El caractÃ©r ",
+    "MENSAJEBOX_NO_PERMITIDO": " no estÃ¡ permitido.",
+    "MENSAJEBOX_RECURSOS_INVALIDOS": "Recursos invalidos.",
+    "MENSAJEBOX_ERROR_EJECUCION": "Â¡Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga clic en Aceptar para salir.",
+    "MENSAJEBOX_COMPONENTES_FALTANTES": "No se encontraron los componenetes com necesarios para iniciar el juego, desea instalarlos?",
+    "MENSAJEBOX_ARCHIVOS_COM_REGISTRADOS": "com files registered",
+    "MENSAJEBOX_ARCHIVOS_COM_NO_REGISTRADOS": "Failed to register com files",
+    "MENSAJEBOX_GUARDAR_SKILLPOINTS": "Realizo cambios en sus skillpoints Â¿desea guardar antes de salir?",
+    "MENSAJEBOX_DESCRIPCION_INVALIDA": "La descripcion contiene caracteres invalidos",
+    "MENSAJEBOX_MODIFICAR_DESCRIPCION": "Ingrese la descripciÃ³n:",
+    "MENSAJEBOX_SOLICITAR_PAZ": "Debes redactar un mensaje solicitando la paz o alianza al lÃ­der de ",
+    "MENSAJEBOX_RECHAZAR_MEMBRESIA": "Debes indicar el motivo por el cual rechazas la membresÃ­a de ",
+    "MENSAJEBOX_PROXIMAMENTE": "Proximamente",
+    "MENSAJEBOX_REINICIAR_CLIENTE": "Para que los cambios en esta opci n sean reflejados, deber  reiniciar el cliente.",
+    "MENSAJEBOX_ADVERTENCIA": "Argentum20 - Advertencia",
+    "MENSAJEBOX_ERROR_FORMATO_LINEA": "Error en el formato de la linea "
 }
