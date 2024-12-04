@@ -45,10 +45,10 @@ Private Reader As Network.Reader
 ''
 ' Handles incoming data.
 
-Public Function HandleIncomingData(ByVal Message As Network.Reader) As Boolean
+Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
 On Error GoTo HandleIncomingData_Err
 
-    Set Reader = Message
+    Set Reader = message
     
     Dim PacketId As Long
     PacketId = Reader.ReadInt16
@@ -57,7 +57,7 @@ On Error GoTo HandleIncomingData_Err
         
     #End If
    ' Debug.Print PacketId
-    Select Case PacketID
+    Select Case PacketId
         Case ServerPacketID.eConnected
             Call HandleConnected
         Case ServerPacketID.elogged
@@ -468,8 +468,8 @@ On Error GoTo HandleIncomingData_Err
             Err.Raise &HDEADBEEF, "Invalid Message"
     End Select
     
-    If (Message.GetAvailable() > 0) Then
-        Err.Raise &HDEADBEEF, "HandleIncomingData", "El paquete '" & PacketID & "' se encuentra en mal estado con '" & Message.GetAvailable() & "' bytes de mas"
+    If (message.GetAvailable() > 0) Then
+        Err.Raise &HDEADBEEF, "HandleIncomingData", "El paquete '" & PacketId & "' se encuentra en mal estado con '" & message.GetAvailable() & "' bytes de mas"
     End If
 
     HandleIncomingData = True
@@ -479,7 +479,7 @@ HandleIncomingData_Err:
     Set Reader = Nothing
 
     If Err.Number <> 0 Then
-        Call RegistrarError(Err.Number, Err.Description & ". PacketID: " & PacketID, "Protocol.HandleIncomingData", Erl)
+        Call RegistrarError(Err.Number, Err.Description & ". PacketID: " & PacketId, "Protocol.HandleIncomingData", Erl)
        ' Call modNetwork.Disconnect
         
         HandleIncomingData = False
@@ -508,29 +508,29 @@ On Error GoTo HandleLogged_Err
     Nombres = True
     Pregunta = False
 
-    frmMain.stabar.Visible = True
+    frmMain.stabar.visible = True
     
     frmMain.panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
-    frmMain.HpBar.Visible = True
+    frmMain.HpBar.visible = True
 
     If UserStats.maxman <> 0 Then
-        frmMain.manabar.Visible = True
+        frmMain.manabar.visible = True
 
     End If
 
-    frmMain.hambar.Visible = True
-    frmMain.AGUbar.Visible = True
+    frmMain.hambar.visible = True
+    frmMain.AGUbar.visible = True
     frmMain.Hpshp.visible = (UserStats.MinHp > 0)
     frmMain.shieldBar.visible = (UserStats.HpShield > 0)
     frmMain.MANShp.visible = (UserStats.minman > 0)
     frmMain.STAShp.visible = (UserStats.MinSTA > 0)
     frmMain.AGUAsp.visible = (UserStats.MinAGU > 0)
     frmMain.COMIDAsp.visible = (UserStats.MinHAM > 0)
-    frmMain.GldLbl.Visible = True
-    frmMain.Fuerzalbl.Visible = True
-    frmMain.AgilidadLbl.Visible = True
-    frmMain.oxigenolbl.Visible = True
-    frmMain.imgDeleteItem.Visible = True
+    frmMain.GldLbl.visible = True
+    frmMain.Fuerzalbl.visible = True
+    frmMain.AgilidadLbl.visible = True
+    frmMain.oxigenolbl.visible = True
+    frmMain.imgDeleteItem.visible = True
     frmMain.oxigenolbl.visible = False
 
      lFrameTimer = 0
@@ -545,7 +545,7 @@ On Error GoTo HandleLogged_Err
     Call ResetAllCd
     
     Call SetConnected
-    g_game_state.state = e_state_gameplay_screen
+    g_game_state.State = e_state_gameplay_screen
     
     Exit Sub
 
@@ -684,10 +684,10 @@ Private Sub HandleMacroTrabajoToggle()
         
     Else
     
-        Call AddtoRichTextBox(frmMain.RecTxt, "Has comenzado a trabajar...", 2, 223, 51, 1, 0)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_INICIA"), 2, 223, 51, 1, 0)
         
         frmMain.MacroLadder.Interval = gIntervals.BuildWork
-        frmMain.MacroLadder.Enabled = True
+        frmMain.MacroLadder.enabled = True
         
         UserMacro.Intervalo = gIntervals.BuildWork
         UserMacro.Activado = True
@@ -748,66 +748,66 @@ Public Sub HandleDisconnect()
     ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
     
 
-    frmMain.picHechiz.Visible = False
+    frmMain.picHechiz.visible = False
     
-    frmMain.UpdateLight.Enabled = False
-    frmMain.UpdateDaytime.Enabled = False
+    frmMain.UpdateLight.enabled = False
+    frmMain.UpdateDaytime.enabled = False
     
-    frmMain.Visible = False
+    frmMain.visible = False
     
     Seguido = False
     
     OpcionMenu = 0
 
-    frmMain.picInv.Visible = True
-    frmMain.picHechiz.Visible = False
+    frmMain.picInv.visible = True
+    frmMain.picHechiz.visible = False
 
-    frmMain.cmdlanzar.Visible = False
+    frmMain.cmdlanzar.visible = False
     'frmMain.lblrefuerzolanzar.Visible = False
-    frmMain.cmdMoverHechi(0).Visible = False
-    frmMain.cmdMoverHechi(1).Visible = False
+    frmMain.cmdMoverHechi(0).visible = False
+    frmMain.cmdMoverHechi(1).visible = False
     
     QuePestañaInferior = 0
-    frmMain.stabar.Visible = True
-    frmMain.HpBar.Visible = True
-    frmMain.manabar.Visible = True
-    frmMain.hambar.Visible = True
-    frmMain.AGUbar.Visible = True
+    frmMain.stabar.visible = True
+    frmMain.HpBar.visible = True
+    frmMain.manabar.visible = True
+    frmMain.hambar.visible = True
+    frmMain.AGUbar.visible = True
     frmMain.shieldBar.visible = (UserStats.HpShield > 0)
-    frmMain.Hpshp.Visible = True
+    frmMain.Hpshp.visible = True
     frmMain.shieldBar.visible = True
-    frmMain.MANShp.Visible = True
-    frmMain.STAShp.Visible = True
-    frmMain.AGUAsp.Visible = True
-    frmMain.COMIDAsp.Visible = True
-    frmMain.GldLbl.Visible = True
-    frmMain.Fuerzalbl.Visible = True
-    frmMain.AgilidadLbl.Visible = True
-    frmMain.oxigenolbl.Visible = True
-    frmMain.QuestBoton.Visible = False
-    frmMain.ImgHogar.Visible = False
-    frmMain.lblWeapon.Visible = True
-    frmMain.lblShielder.Visible = True
-    frmMain.lblHelm.Visible = True
-    frmMain.lblArmor.Visible = True
-    frmMain.lblResis.Visible = True
-    frmMain.lbldm.Visible = True
-    frmMain.imgBugReport.Visible = False
+    frmMain.MANShp.visible = True
+    frmMain.STAShp.visible = True
+    frmMain.AGUAsp.visible = True
+    frmMain.COMIDAsp.visible = True
+    frmMain.GldLbl.visible = True
+    frmMain.Fuerzalbl.visible = True
+    frmMain.AgilidadLbl.visible = True
+    frmMain.oxigenolbl.visible = True
+    frmMain.QuestBoton.visible = False
+    frmMain.ImgHogar.visible = False
+    frmMain.lblWeapon.visible = True
+    frmMain.lblShielder.visible = True
+    frmMain.lblHelm.visible = True
+    frmMain.lblArmor.visible = True
+    frmMain.lblResis.visible = True
+    frmMain.lbldm.visible = True
+    frmMain.imgBugReport.visible = False
     frmMain.oxigenolbl.visible = False
     frmMain.panelinferior(0).Picture = Nothing
     frmMain.panelinferior(1).Picture = Nothing
-    frmMain.mapMundo.Visible = False
-    frmMain.Image5.Visible = False
-    frmMain.clanimg.Visible = False
-    frmMain.cmdLlavero.Visible = False
-    frmMain.QuestBoton.Visible = False
-    frmMain.ImgSeg.Visible = False
-    frmMain.ImgSegParty.Visible = False
-    frmMain.ImgSegClan.Visible = False
-    frmMain.ImgSegResu.Visible = False
+    frmMain.mapMundo.visible = False
+    frmMain.Image5.visible = False
+    frmMain.clanimg.visible = False
+    frmMain.cmdLlavero.visible = False
+    frmMain.QuestBoton.visible = False
+    frmMain.ImgSeg.visible = False
+    frmMain.ImgSegParty.visible = False
+    frmMain.ImgSegClan.visible = False
+    frmMain.ImgSegResu.visible = False
     initPacketControl
   
-    Call ao20audio.stopallplayback
+    Call ao20audio.StopAllPlayback
 
     Call CleanDialogs
     
@@ -819,11 +819,11 @@ Public Sub HandleDisconnect()
     Call EraseChar(UserCharIndex, True)
     Call SwitchMap(UserMap)
     
-    frmMain.personaje(1).Visible = False
-    frmMain.personaje(2).Visible = False
-    frmMain.personaje(3).Visible = False
-    frmMain.personaje(4).Visible = False
-    frmMain.personaje(5).Visible = False
+    frmMain.personaje(1).visible = False
+    frmMain.personaje(2).visible = False
+    frmMain.personaje(3).visible = False
+    frmMain.personaje(4).visible = False
+    frmMain.personaje(5).visible = False
     
     UserStats.Clase = 0
     UserStats.Sexo = 0
@@ -889,7 +889,7 @@ Public Sub HandleDisconnect()
     UserNadandoTrajeCaucho = False
     bRain = False
     AlphaNiebla = 30
-    frmMain.TimerNiebla.Enabled = False
+    frmMain.TimerNiebla.enabled = False
     bNiebla = False
     bNieve = False
     bFogata = False
@@ -898,10 +898,10 @@ Public Sub HandleDisconnect()
     Group.Clear
     InviCounter = 0
     DrogaCounter = 0
-    frmMain.Contadores.Enabled = False
+    frmMain.Contadores.enabled = False
     
     InvasionActual = 0
-    frmMain.Evento.Enabled = False
+    frmMain.Evento.enabled = False
      
     'Delete all kind of dialogs
     
@@ -1196,12 +1196,12 @@ Private Sub HandleUserCommerceInit()
     Next i
     frmComerciarUsu.lblMyGold.Caption = PonerPuntos(UserStats.GLD)
     
-    Dim j As Byte
+    Dim J As Byte
 
-    For j = 1 To 6
-        Call frmComerciarUsu.InvOtherSell.SetItem(j, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-        Call frmComerciarUsu.InvUserSell.SetItem(j, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-    Next j
+    For J = 1 To 6
+        Call frmComerciarUsu.InvOtherSell.SetItem(J, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Call frmComerciarUsu.InvUserSell.SetItem(J, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+    Next J
     
     'Set state and show form
     Comerciando = True
@@ -1252,7 +1252,7 @@ Private Sub HandleShowBlacksmithForm()
     
     On Error GoTo HandleShowBlacksmithForm_Err
     
-    If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
+    If frmMain.macrotrabajo.enabled And (MacroBltIndex > 0) Then
     
         Call WriteCraftBlacksmith(MacroBltIndex)
         
@@ -1331,7 +1331,7 @@ Private Sub HandleShowAlquimiaForm()
     
     On Error GoTo HandleShowAlquimiaForm_Err
     
-    If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
+    If frmMain.macrotrabajo.enabled And (MacroBltIndex > 0) Then
     
         Call WriteCraftAlquimista(MacroBltIndex)
         
@@ -1367,7 +1367,7 @@ Private Sub HandleShowSastreForm()
     
     On Error GoTo HandleShowSastreForm_Err
         
-    If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
+    If frmMain.macrotrabajo.enabled And (MacroBltIndex > 0) Then
     
         Call WriteCraftSastre(MacroBltIndex)
         
@@ -1438,7 +1438,7 @@ Private Sub HandleBlockedWithShieldUser()
     '***************************************************
     On Error GoTo HandleBlockedWithShieldUser_Err
         
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_RECHAZO_ATAQUE_ESCUDO, 255, 0, 0, True, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_RECHAZO_ATAQUE_ESCUDO"), 255, 0, 0, True, False, False)
     
     Exit Sub
 
@@ -1460,7 +1460,7 @@ Private Sub HandleBlockedWithShieldOther()
     '***************************************************
     On Error GoTo HandleBlockedWithShieldOther_Err
         
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_USUARIO_RECHAZO_ATAQUE_ESCUDO, 255, 0, 0, True, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_USUARIO_RECHAZO_ATAQUE_ESCUDO"), 255, 0, 0, True, False, False)
     
     Exit Sub
 
@@ -1477,9 +1477,9 @@ Private Sub HandleCharSwing()
     
     On Error GoTo HandleCharSwing_Err
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
 
-    charindex = Reader.ReadInt16
+    CharIndex = Reader.ReadInt16
     
     Dim ShowFX As Boolean
 
@@ -1493,7 +1493,7 @@ Private Sub HandleCharSwing()
     
     NotificoTexto = Reader.ReadBool
         
-    With charlist(charindex)
+    With charlist(CharIndex)
 
         If ShowText And NotificoTexto Then
             Call SetCharacterDialogFx(CharIndex, IIf(CharIndex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
@@ -1530,7 +1530,7 @@ Private Sub HandleSafeModeOn()
         Call frmMain.DibujarSeguro
     End If
     
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_ACTIVADO, 65, 190, 156, False, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_ACTIVADO"), 65, 190, 156, False, False, False)
     
     Exit Sub
 
@@ -1558,7 +1558,7 @@ Private Sub HandleSafeModeOff()
         Call frmMain.DesDibujarSeguro
     End If
     
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_DESACTIVADO, 65, 190, 156, False, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_DESACTIVADO"), 65, 190, 156, False, False, False)
     
     Exit Sub
 
@@ -1583,7 +1583,7 @@ Private Sub HandlePartySafeOff()
     Else
         Call frmMain.ControlSeguroParty(False)
     End If
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_PARTY_OFF, 250, 250, 0, False, True, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_PARTY_OFF"), 250, 250, 0, False, True, False)
     
     Exit Sub
 
@@ -1608,12 +1608,12 @@ Private Sub HandleClanSeguro()
     
     If SeguroClanX Then
     
-        Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de clan desactivado.", 65, 190, 156, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_CLAN_DESACTIVADO"), 65, 190, 156, False, False, False)
         If Not BabelInitialized Then frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-off.bmp")
         SeguroClanX = False
         
     Else
-        Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de clan activado.", 65, 190, 156, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_CLAN_ACTIVADO."), 65, 190, 156, False, False, False)
         If Not BabelInitialized Then frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
         SeguroClanX = True
 
@@ -1697,7 +1697,7 @@ Private Sub HandleUpdateUserKey()
         SlotInfo.GrhIndex = ObjData(Llave).GrhIndex
         SlotInfo.Name = ObjData(Llave).Name
         SlotInfo.Slot = Slot
-        SlotInfo.OBJIndex = Llave
+        SlotInfo.ObjIndex = Llave
         SlotInfo.ObjType = eObjType.otLlaves
         Call SetKeySlot(SlotInfo)
     Else
@@ -1770,7 +1770,7 @@ Private Sub HandlePartySafeOn()
     Else
         Call frmMain.ControlSeguroParty(True)
     End If
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_SEGURO_PARTY_ON, 250, 250, 0, False, True, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_PARTY_ON"), 250, 250, 0, False, True, False)
     
     Exit Sub
 
@@ -1792,7 +1792,7 @@ Private Sub HandleCantUseWhileMeditating()
 
     On Error GoTo HandleCantUseWhileMeditating_Err
 
-    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_USAR_MEDITANDO, 255, 0, 0, False, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_USAR_MEDITANDO"), 255, 0, 0, False, False, False)
     
     Exit Sub
 
@@ -1960,18 +1960,18 @@ Private Sub HandleChangeMap()
     UserMap = Reader.ReadInt16()
     ResourceMap = Reader.ReadInt16()
 
-    If frmComerciar.Visible Then Unload frmComerciar
-    If frmBancoObj.Visible Then Unload frmBancoObj
-    If frmEstadisticas.Visible Then Unload frmEstadisticas
-    If frmStatistics.Visible Then Unload frmStatistics
-    If frmHerrero.Visible Then Unload frmHerrero
-    If FrmSastre.Visible Then Unload FrmSastre
-    If frmAlqui.Visible Then Unload frmAlqui
-    If frmCarp.Visible Then Unload frmCarp
-    If FrmGrupo.Visible Then Unload FrmGrupo
-    If frmGoliath.Visible Then Unload frmGoliath
-    If FrmViajes.Visible Then Unload FrmViajes
-    If frmCantidad.Visible Then Unload frmCantidad
+    If frmComerciar.visible Then Unload frmComerciar
+    If frmBancoObj.visible Then Unload frmBancoObj
+    If frmEstadisticas.visible Then Unload frmEstadisticas
+    If frmStatistics.visible Then Unload frmStatistics
+    If frmHerrero.visible Then Unload frmHerrero
+    If FrmSastre.visible Then Unload FrmSastre
+    If frmAlqui.visible Then Unload frmAlqui
+    If frmCarp.visible Then Unload frmCarp
+    If FrmGrupo.visible Then Unload FrmGrupo
+    If frmGoliath.visible Then Unload frmGoliath
+    If FrmViajes.visible Then Unload FrmViajes
+    If frmCantidad.visible Then Unload frmCantidad
     Call SwitchMap(UserMap, ResourceMap)
     Exit Sub
 
@@ -1995,8 +1995,8 @@ Private Sub HandlePosUpdate()
     '***************************************************
 
     'Remove char from old position
-    If MapData(UserPos.x, UserPos.y).charindex = UserCharIndex Then
-        MapData(UserPos.x, UserPos.y).charindex = 0
+    If MapData(UserPos.x, UserPos.y).CharIndex = UserCharIndex Then
+        MapData(UserPos.x, UserPos.y).CharIndex = 0
 
     End If
     
@@ -2005,7 +2005,7 @@ Private Sub HandlePosUpdate()
     UserPos.y = Reader.ReadInt8()
 
     'Set char
-    MapData(UserPos.x, UserPos.y).charindex = UserCharIndex
+    MapData(UserPos.x, UserPos.y).CharIndex = UserCharIndex
     charlist(UserCharIndex).Pos = UserPos
         
     'Are we under a roof?
@@ -2042,16 +2042,16 @@ Private Sub HandlePosUpdateUserChar()
     UserPos.x = Reader.ReadInt8()
     UserPos.y = Reader.ReadInt8()
 
-    Dim charindex As Integer
-    charindex = Reader.ReadInt16()
+    Dim CharIndex As Integer
+    CharIndex = Reader.ReadInt16()
     
         'Remove char from old position
-    If MapData(temp_x, temp_y).charindex = charindex Then
-        MapData(temp_x, temp_y).charindex = 0
+    If MapData(temp_x, temp_y).CharIndex = CharIndex Then
+        MapData(temp_x, temp_y).CharIndex = 0
     End If
     'Set char
-    MapData(UserPos.x, UserPos.y).charindex = charindex
-    charlist(charindex).Pos = UserPos
+    MapData(UserPos.x, UserPos.y).CharIndex = CharIndex
+    charlist(CharIndex).Pos = UserPos
         
     'Are we under a roof?
     UpdatePlayerRoof
@@ -2075,25 +2075,25 @@ Private Sub HandlePosUpdateChar()
     
     On Error GoTo HandlePosUpdateChar_Err
 
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim x As Byte, y As Byte
     
     'Set new pos
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     
-    If charindex = 0 Then Exit Sub
+    If CharIndex = 0 Then Exit Sub
     
-    If charlist(charindex).Pos.x > 0 And charlist(charindex).Pos.y > 0 Then
+    If charlist(CharIndex).Pos.x > 0 And charlist(CharIndex).Pos.y > 0 Then
     
-        If MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = charindex Then
-            MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+        If MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharIndex = CharIndex Then
+            MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharIndex = 0
         End If
         
-        MapData(x, y).charindex = charindex
-        charlist(charindex).Pos.x = x
-        charlist(charindex).Pos.y = y
+        MapData(x, y).CharIndex = CharIndex
+        charlist(CharIndex).Pos.x = x
+        charlist(CharIndex).Pos.y = y
         charlist(CharIndex).MoveOffsetX = 0
         charlist(CharIndex).MoveOffsetY = 0
     
@@ -2126,22 +2126,22 @@ Private Sub HandleNPCHitUser()
     Select Case Lugar
 
         Case bCabeza
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CABEZA & DañoStr, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_CABEZA") & DañoStr, 255, 0, 0, True, False, False)
 
         Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_IZQ & DañoStr, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_BRAZO_IZQ") & DañoStr, 255, 0, 0, True, False, False)
 
         Case bBrazoDerecho
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_DER & DañoStr, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_BRAZO_DER") & DañoStr, 255, 0, 0, True, False, False)
 
         Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_IZQ & DañoStr, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_PIERNA_IZQ") & DañoStr, 255, 0, 0, True, False, False)
 
         Case bPiernaDerecha
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_DER & DañoStr, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_PIERNA_DER") & DañoStr, 255, 0, 0, True, False, False)
 
         Case bTorso
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_TORSO & DañoStr, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_TORSO") & DañoStr, 255, 0, 0, True, False, False)
 
     End Select
     
@@ -2189,22 +2189,22 @@ Private Sub HandleUserHittedByUser()
     Select Case Lugar
 
         Case bCabeza
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_CABEZA & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
+           ' Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item, attacker & ("MENSAJE_RECIVE_IMPACTO_CABEZA") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
+           ' Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item, attacker & ("MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bBrazoDerecho
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_BRAZO_DER & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
+            'Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item, attacker & ("MENSAJE_RECIVE_IMPACTO_BRAZO_DER") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
+            'Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item, attacker & ("MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bPiernaDerecha
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_PIERNA_DER & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
+            'Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item, attacker & ("MENSAJE_RECIVE_IMPACTO_PIERNA_DER") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bTorso
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & MENSAJE_RECIVE_IMPACTO_TORSO & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
+            'Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item, attacker & ("MENSAJE_RECIVE_IMPACTO_TORSO") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
 
     End Select
     
@@ -2252,22 +2252,22 @@ Private Sub HandleUserHittedUser()
     Select Case Lugar
 
         Case bCabeza
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_CABEZA & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & ("MENSAJE_PRODUCE_IMPACTO_CABEZA") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & ("MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bBrazoDerecho
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_BRAZO_DER & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & ("MENSAJE_PRODUCE_IMPACTO_BRAZO_DER") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & ("MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bPiernaDerecha
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_PIERNA_DER & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & ("MENSAJE_PRODUCE_IMPACTO_PIERNA_DER") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bTorso
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & victim & MENSAJE_PRODUCE_IMPACTO_TORSO & DañoStr & MENSAJE_2, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & ("MENSAJE_PRODUCE_IMPACTO_TORSO") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
 
     End Select
     
@@ -2280,22 +2280,22 @@ HandleUserHittedUser_Err:
 End Sub
 
 Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
-                                    ByVal charindex As Integer, _
-                                    ByVal Color As Long, _
+                                    ByVal CharIndex As Integer, _
+                                    ByVal color As Long, _
                                     ByVal EsSpell As Boolean, _
                                     ByVal x As Byte, _
                                     ByVal y As Byte, _
                                     ByVal RequiredMinDisplayTime As Integer, _
                                     ByVal MaxDisplayTime As Integer)
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     Dim QueEs      As String
     If x + y > 0 Then
-        With charlist(charindex)
-            If .Invisible And charindex <> UserCharIndex Then
-                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+        With charlist(CharIndex)
+            If .Invisible And CharIndex <> UserCharIndex Then
+                If MapData(.Pos.x, .Pos.y).CharIndex = CharIndex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
                 .Pos.x = x
                 .Pos.y = y
-                MapData(x, y).charindex = charindex
+                MapData(x, y).CharIndex = CharIndex
             End If
         End With
     End If
@@ -2303,7 +2303,7 @@ On Error GoTo ErrHandler
     'Optimizacion de protocolo por Ladder
     QueEs = ReadField(1, chat, Asc("*"))
     Dim TextColor As RGBA
-    TextColor = RGBA_From_Long(Color)
+    TextColor = RGBA_From_Long(color)
     Dim copiar As Boolean
 
     copiar = True
@@ -2312,12 +2312,12 @@ On Error GoTo ErrHandler
 
     duracion = 250
     
-    Dim text As String
-    text = ReadField(2, chat, Asc("*"))
+    Dim Text As String
+    Text = ReadField(2, chat, Asc("*"))
     
     Select Case QueEs
         Case "NPCDESC"
-            chat = NpcData(text).desc
+            chat = NpcData(Text).desc
             copiar = False
             
             If npcs_en_render And tutorial_index <= 0 Then
@@ -2329,8 +2329,8 @@ On Error GoTo ErrHandler
                 If headGrh = 0 Then
                     Call mostrarCartel(Split(NpcData(Text).Name, " <")(0), NpcData(Text).desc, bodyGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, 50, 80, bodyGrh, 1)
                 Else
-                    Dim headOffsetY As Integer
-                    headOffsetY = CInt(BodyData(NpcData(Text).Body).HeadOffset.y)
+                    Dim HeadOffsetY As Integer
+                    HeadOffsetY = CInt(BodyData(NpcData(Text).Body).HeadOffset.y)
                     Call mostrarCartel(Split(NpcData(Text).Name, " <")(0), NpcData(Text).desc, headGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, 50, 100, bodyGrh, HeadOffsetY)
                 End If
             End If
@@ -2357,26 +2357,26 @@ On Error GoTo ErrHandler
             duracion = 20
     End Select
    'Only add the chat if the character exists (a CharacterRemove may have been sent to the PC / NPC area before the buffer was flushed)
-    If charlist(charindex).active = 1 Then
-        Call Char_Dialog_Set(charindex, chat, Color, duracion, 30, 1, EsSpell, RequiredMinDisplayTime, MaxDisplayTime)
+    If charlist(CharIndex).active = 1 Then
+        Call Char_Dialog_Set(CharIndex, chat, color, duracion, 30, 1, EsSpell, RequiredMinDisplayTime, MaxDisplayTime)
     End If
     
-    If charlist(charindex).EsNpc = False Then
+    If charlist(CharIndex).EsNpc = False Then
         If CopiarDialogoAConsola = 1 And copiar Then
-            Call WriteChatOverHeadInConsole(CharIndex, chat, TextColor.R, TextColor.G, TextColor.B)
+            Call WriteChatOverHeadInConsole(CharIndex, chat, TextColor.r, TextColor.G, TextColor.b)
         End If
     End If
     Exit Sub
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChatOverHeadImpl", Erl)
 End Sub
 
 ' Handles the ChatOverHead message.
 Private Sub HandleLocaleChatOverHead()
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     Dim ChatId       As Integer
     Dim Params As String
-    Dim charindex  As Integer
+    Dim CharIndex  As Integer
     Dim TextColor As Long
     Dim IsSpell    As Boolean
     Dim x As Byte, y As Byte
@@ -2385,7 +2385,7 @@ Private Sub HandleLocaleChatOverHead()
     Dim LocalizedText As String
     ChatId = Reader.ReadInt16
     Params = Reader.ReadString8
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     TextColor = vbColor_2_Long(Reader.ReadInt32())
     IsSpell = Reader.ReadBool()
     x = Reader.ReadInt8()
@@ -2393,9 +2393,9 @@ Private Sub HandleLocaleChatOverHead()
     MinChatTime = Reader.ReadInt16()
     MaxChatTime = Reader.ReadInt16()
     LocalizedText = Locale_Parse_ServerMessage(ChatId, Params)
-    Call HandleChatOverHeadImpl(LocalizedText, charindex, TextColor, IsSpell, x, y, MinChatTime, MaxChatTime)
+    Call HandleChatOverHeadImpl(LocalizedText, CharIndex, TextColor, IsSpell, x, y, MinChatTime, MaxChatTime)
     Exit Sub
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLocaleChatOverHead", Erl)
 End Sub
 ' Handles the ChatOverHead message.
@@ -2406,10 +2406,10 @@ Private Sub HandleChatOverHead()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim chat       As String
-    Dim charindex  As Integer
+    Dim CharIndex  As Integer
     Dim colortexto As Long
     Dim QueEs      As String
     Dim EsSpell    As Boolean
@@ -2417,39 +2417,39 @@ Private Sub HandleChatOverHead()
     Dim MinChatTime As Integer
     Dim MaxChatTime As Integer
     chat = Reader.ReadString8()
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     colortexto = vbColor_2_Long(Reader.ReadInt32())
     EsSpell = Reader.ReadBool()
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     MinChatTime = Reader.ReadInt16()
     MaxChatTime = Reader.ReadInt16()
-    Call HandleChatOverHeadImpl(chat, charindex, colortexto, EsSpell, x, y, MinChatTime, MaxChatTime)
+    Call HandleChatOverHeadImpl(chat, CharIndex, colortexto, EsSpell, x, y, MinChatTime, MaxChatTime)
     Exit Sub
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChatOverHead", Erl)
 End Sub
 
 Private Sub HandleTextOverChar()
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim chat      As String
 
-    Dim charindex As Integer
+    Dim CharIndex As Integer
 
-    Dim Color     As Long
+    Dim color     As Long
     
     chat = Reader.ReadString8()
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     
-    Color = Reader.ReadInt32()
+    color = Reader.ReadInt32()
     
-    Call SetCharacterDialogFx(charindex, chat, RGBA_From_vbColor(Color))
+    Call SetCharacterDialogFx(CharIndex, chat, RGBA_From_vbColor(color))
 
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverChar", Erl)
     
@@ -2458,19 +2458,19 @@ End Sub
 
 Private Sub HandleTextOverTile()
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim Text  As String
     Dim x As Integer
     Dim y As Integer
-    Dim Color As Long
+    Dim color As Long
     Dim Duration As Integer
     Dim OffsetY As Integer
     Dim Animated As Boolean
     Text = Reader.ReadString8()
     x = Reader.ReadInt16()
     y = Reader.ReadInt16()
-    Color = Reader.ReadInt32()
+    color = Reader.ReadInt32()
     Duration = Reader.ReadInt16()
     OffsetY = Reader.ReadInt16()
     Animated = Reader.ReadBool()
@@ -2491,7 +2491,7 @@ Private Sub HandleTextOverTile()
                 End If
             End If
             With .DialogEffects(Index)
-                .Color = RGBA_From_vbColor(Color)
+                .color = RGBA_From_vbColor(color)
                 .Start = FrameTime
                 .Text = Text
                 .offset.x = 0
@@ -2503,7 +2503,7 @@ Private Sub HandleTextOverTile()
     End If
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverTile", Erl)
     
@@ -2512,23 +2512,23 @@ End Sub
 
 Private Sub HandleTextCharDrop()
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim Text      As String
-    Dim charindex As Integer
-    Dim Color     As Long
-    Dim duration As Integer
+    Dim CharIndex As Integer
+    Dim color     As Long
+    Dim Duration As Integer
     Dim Animated As Boolean
     
     Text = Reader.ReadString8()
-    charindex = Reader.ReadInt16()
-    Color = Reader.ReadInt32()
-    duration = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
+    color = Reader.ReadInt32()
+    Duration = Reader.ReadInt16()
     Animated = Reader.ReadBool()
-    If charindex = 0 Then Exit Sub
+    If CharIndex = 0 Then Exit Sub
     Dim x As Integer, y As Integer, OffsetX As Integer, OffsetY As Integer
     
-    With charlist(charindex)
+    With charlist(CharIndex)
         x = .Pos.x
         y = .Pos.y
         OffsetX = .MoveOffsetX + .Body.HeadOffset.x
@@ -2555,30 +2555,30 @@ Private Sub HandleTextCharDrop()
             
             With .DialogEffects(Index)
             
-                .Color = RGBA_From_vbColor(Color)
+                .color = RGBA_From_vbColor(color)
                 .Start = FrameTime
                 .Text = Text
                 .offset.x = OffsetX
                 .offset.y = OffsetY
-                .duration = duration
+                .Duration = Duration
                 .Animated = Animated
             End With
         End With
     End If
     Exit Sub
     
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextCharDrop", Erl)
 End Sub
 
 Private Sub HandleConsoleCharText()
     Dim Text      As String
-    Dim Color     As Long
+    Dim color     As Long
     Dim SourceName As String
     Dim SourceStatus As Integer
     Dim Privileges As Integer
     Text = Reader.ReadString8()
-    Color = Reader.ReadInt32()
+    color = Reader.ReadInt32()
     SourceName = Reader.ReadString8()
     SourceStatus = Reader.ReadInt16()
     Privileges = Reader.ReadInt16()
@@ -2586,7 +2586,7 @@ Private Sub HandleConsoleCharText()
         Privileges = Log(Privileges) / Log(2)
     End If
     Dim TextColor As RGBA
-    TextColor = RGBA_From_vbColor(Color)
+    TextColor = RGBA_From_vbColor(color)
     
     Call WriteConsoleUserChat(Text, SourceName, TextColor.r, TextColor.G, TextColor.b, SourceStatus, Privileges)
 End Sub
@@ -2601,14 +2601,14 @@ Private Sub HandleConsoleMessage()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim chat      As String
     Dim FontIndex As Integer
     Dim str       As String
     Dim r         As Byte
     Dim G         As Byte
-    Dim B         As Byte
+    Dim b         As Byte
     Dim QueEs     As String
     Dim NpcName   As String
     Dim objname   As String
@@ -2693,13 +2693,13 @@ Private Sub HandleConsoleMessage()
         str = ReadField(4, chat, 126)
 
         If Val(str) > 255 Then
-            B = 255
+            b = 255
         Else
-            B = Val(str)
+            b = Val(str)
 
         End If
             
-        Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, G, B, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
+        Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, G, b, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
     
     Else
 
@@ -2717,7 +2717,7 @@ Private Sub HandleConsoleMessage()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleConsoleMessage", Erl)
     
@@ -2732,7 +2732,7 @@ Private Sub HandleLocaleMsg()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim chat      As String
 
@@ -2744,7 +2744,7 @@ Private Sub HandleLocaleMsg()
 
     Dim G         As Byte
 
-    Dim B         As Byte
+    Dim b         As Byte
 
     Dim QueEs     As String
 
@@ -2788,13 +2788,13 @@ Private Sub HandleLocaleMsg()
         str = ReadField(4, chat, 126)
 
         If Val(str) > 255 Then
-            B = 255
+            b = 255
         Else
-            B = Val(str)
+            b = Val(str)
 
         End If
             
-        Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, G, B, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
+        Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, G, b, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
     Else
 
         With FontTypes(FontIndex)
@@ -2806,7 +2806,7 @@ Private Sub HandleLocaleMsg()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLocaleMsg", Erl)
     
@@ -2824,7 +2824,7 @@ Private Sub HandleGuildChat()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim chat As String
 
@@ -2836,11 +2836,11 @@ Private Sub HandleGuildChat()
 
     Dim G    As Byte
 
-    Dim B    As Byte
+    Dim b    As Byte
 
     Dim tmp  As Integer
 
-    Dim Cont As Integer
+    Dim cont As Integer
     
     status = Reader.ReadInt8()
     chat = Reader.ReadString8()
@@ -2868,12 +2868,12 @@ Private Sub HandleGuildChat()
             str = ReadField(4, chat, 126)
     
             If Val(str) > 255 Then
-                B = 255
+                b = 255
             Else
-                B = Val(str)
+                b = Val(str)
             End If
                 
-            Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, G, B, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, G, b, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
         Else
             With FontTypes(FontTypeNames.FONTTYPE_GUILDMSG)
                 Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
@@ -2885,7 +2885,7 @@ Private Sub HandleGuildChat()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildChat", Erl)
     
@@ -2893,18 +2893,18 @@ ErrHandler:
 End Sub
 
 Private Sub HandleShowMessageBox()
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     
     Dim mensaje As String
 
     mensaje = Reader.ReadString8()
 
-    Select Case g_game_state.state()
+    Select Case g_game_state.State()
         Case e_state_gameplay_screen
             frmMensaje.msg.Caption = mensaje
             frmMensaje.Show , GetGameplayForm()
         Case e_state_connect_screen
-            Call ao20audio.playwav(SND_EXCLAMACION)
+            Call ao20audio.PlayWav(SND_EXCLAMACION)
             Call TextoAlAsistente(mensaje, False, False)
             Call Long_2_RGBAList(textcolorAsistente, -1)
         Case e_state_account_screen
@@ -2917,7 +2917,7 @@ On Error GoTo ErrHandler
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowMessageBox", Erl)
     
@@ -2925,14 +2925,14 @@ ErrHandler:
 End Sub
 
 Private Sub HandleMostrarCuenta()
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     
     AlphaNiebla = 30
     If Not UseBabelUI Then
                 frmConnect.visible = True
     End If
      
-    g_game_state.state = e_state_account_screen
+    g_game_state.State = e_state_account_screen
 
     
     SugerenciaAMostrar = RandomNumber(1, NumSug)
@@ -2941,13 +2941,13 @@ On Error GoTo ErrHandler
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
     
-    If FrmLogear.Visible Then
+    If FrmLogear.visible Then
         Unload FrmLogear
 
         'Unload frmConnect
     End If
     
-    If frmMain.Visible Then
+    If frmMain.visible Then
         '  frmMain.Visible = False
         
         UserParalizado = False
@@ -2955,7 +2955,7 @@ On Error GoTo ErrHandler
         UserStopped = False
         
         InvasionActual = 0
-        frmMain.Evento.Enabled = False
+        frmMain.Evento.enabled = False
      
         'BUG CLONES
         Dim i As Integer
@@ -2964,17 +2964,17 @@ On Error GoTo ErrHandler
             Call EraseChar(i)
         Next i
         
-        frmMain.personaje(1).Visible = False
-        frmMain.personaje(2).Visible = False
-        frmMain.personaje(3).Visible = False
-        frmMain.personaje(4).Visible = False
-        frmMain.personaje(5).Visible = False
+        frmMain.personaje(1).visible = False
+        frmMain.personaje(2).visible = False
+        frmMain.personaje(3).visible = False
+        frmMain.personaje(4).visible = False
+        frmMain.personaje(5).visible = False
 
     End If
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMostrarCuenta", Erl)
     
@@ -3024,7 +3024,7 @@ Private Sub HandleUserCharIndexInServer()
     'Are we under a roof?
     UpdatePlayerRoof
     
-    LastMove = FrameTime
+    lastMove = FrameTime
     
     If MapDat.Seguro = 1 Then
         frmMain.Coord.ForeColor = RGB(0, 170, 0)
@@ -3053,16 +3053,16 @@ Private Sub HandleCharacterCreate()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
-    Dim charindex     As Integer
+    Dim CharIndex     As Integer
     Dim Body          As Integer
     Dim Head          As Integer
     Dim Heading       As E_Heading
     Dim x             As Byte
     Dim y             As Byte
     Dim weapon        As Integer
-    Dim shield        As Integer
+    Dim Shield        As Integer
     Dim helmet        As Integer
     Dim privs         As Integer
     Dim Cart          As Integer
@@ -3071,7 +3071,7 @@ Private Sub HandleCharacterCreate()
     Dim appear        As Byte
     Dim group_index   As Integer
     
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
 
     Body = Reader.ReadInt16()
     Head = Reader.ReadInt16()
@@ -3079,11 +3079,11 @@ Private Sub HandleCharacterCreate()
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     weapon = Reader.ReadInt16()
-    shield = Reader.ReadInt16()
+    Shield = Reader.ReadInt16()
     helmet = Reader.ReadInt16()
     Cart = Reader.ReadInt16()
     
-    With charlist(charindex)
+    With charlist(CharIndex)
         Dim loopC, Fx As Integer
         Fx = Reader.ReadInt16
         loopC = Reader.ReadInt16
@@ -3148,9 +3148,9 @@ Private Sub HandleCharacterCreate()
         
           
         If (.Pos.x <> 0 And .Pos.y <> 0) Then
-            If MapData(.Pos.x, .Pos.y).charindex = charindex Then
+            If MapData(.Pos.x, .Pos.y).CharIndex = CharIndex Then
                 'Erase the old character from map
-                MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+                MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharIndex = 0
 
             End If
 
@@ -3165,7 +3165,7 @@ Private Sub HandleCharacterCreate()
         End If
 
         .Muerto = (Body = CASPER_BODY_IDLE)
-        Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, shield, helmet, Cart, ParticulaFx, appear)
+        Call MakeChar(CharIndex, Body, Head, Heading, x, y, weapon, Shield, helmet, Cart, ParticulaFx, appear)
         
         If .Navegando = False Or UserNadandoTrajeCaucho = True Then
             If .Body.AnimateOnIdle = 0 Then
@@ -3188,7 +3188,7 @@ Private Sub HandleCharacterCreate()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterCreate", Erl)
     
@@ -3198,23 +3198,23 @@ End Sub
 
 Private Sub HandleUpdateFlag()
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim flag As Long
     
     
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     flag = Reader.ReadInt8()
     
-    With charlist(charindex)
+    With charlist(CharIndex)
         .banderaIndex = flag
     End With
     
 
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverChar", Erl)
     
@@ -3223,16 +3223,16 @@ End Sub
 
 Private Sub HandleCharacterRemove()
 On Error GoTo HandleCharacterRemove_Err
-    Dim charindex   As Integer
+    Dim CharIndex   As Integer
     Dim Desvanecido As Boolean
     Dim fueWarp As Boolean
     
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     Desvanecido = Reader.ReadBool()
     fueWarp = Reader.ReadBool()
     
-    If Desvanecido And charlist(charindex).EsNpc = True Then
-        Call CrearFantasma(charindex)
+    If Desvanecido And charlist(CharIndex).EsNpc = True Then
+        Call CrearFantasma(CharIndex)
     End If
 
     Call EraseChar(CharIndex, fueWarp)
@@ -3259,21 +3259,21 @@ Private Sub HandleCharacterMove()
     '
     '***************************************************
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim x         As Byte
     Dim y         As Byte
     Dim dir       As Byte
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     
     Call Char_Move_by_Pos(CharIndex, x, y)
     Call RefreshAllChars
     
-    With charlist(charindex)
+    With charlist(CharIndex)
         ' Play steps sounds if the user is not an admin of any kind
         If .priv <> 1 And .priv <> 2 And .priv <> 3 And .priv <> 5 And .priv <> 25 Then
-            Call DoPasosFx(charindex)
+            Call DoPasosFx(CharIndex)
         End If
     End With
 
@@ -3285,15 +3285,15 @@ End Sub
 
 Private Sub HandleCharacterTranslate()
 On Error GoTo HandleCharacterTranslate_Err
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim TileX     As Byte
     Dim TileY     As Byte
     Dim TranslationTime As Long
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     TileX = Reader.ReadInt8()
     TileY = Reader.ReadInt8()
     TranslationTime = Reader.ReadInt32()
-    Call TranslateCharacterToPos(charindex, TileX, TileY, TranslationTime)
+    Call TranslateCharacterToPos(CharIndex, TileX, TileY, TranslationTime)
     Call RefreshAllChars
     Exit Sub
 HandleCharacterTranslate_Err:
@@ -3306,15 +3306,15 @@ Private Sub HandleForceCharMove()
     
     On Error GoTo HandleForceCharMove_Err
     
-    Dim Direccion As Byte
-    Direccion = Reader.ReadInt8()
+    Dim direccion As Byte
+    direccion = Reader.ReadInt8()
     
     Moviendose = True
     
     Call MainTimer.Restart(TimersIndex.Walk)
 
-    Call Char_Move_by_Head(UserCharIndex, Direccion)
-    Call MoveScreen(Direccion)
+    Call Char_Move_by_Head(UserCharIndex, direccion)
+    Call MoveScreen(direccion)
     
     Call UpdateMapPos
     
@@ -3341,8 +3341,8 @@ Private Sub HandleForceCharMoveSiguiendo()
     
     On Error GoTo HandleForceCharMoveSiguiendo_Err
     
-    Dim Direccion As Byte
-    Direccion = Reader.ReadInt8()
+    Dim direccion As Byte
+    direccion = Reader.ReadInt8()
     Moviendose = True
     
     Call MainTimer.Restart(TimersIndex.Walk)
@@ -3359,8 +3359,8 @@ Private Sub HandleForceCharMoveSiguiendo()
         frmMain.Coord.ForeColor = RGB(170, 0, 0)
     End If
     
-    Call Char_Move_by_Head(CharindexSeguido, Direccion)
-    Call MoveScreen(Direccion)
+    Call Char_Move_by_Head(CharindexSeguido, direccion)
+    Call MoveScreen(direccion)
     'Call RefreshAllChars
     
     Exit Sub
@@ -3378,22 +3378,22 @@ Private Sub HandleCharacterChange()
     
     On Error GoTo HandleCharacterChange_Err
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
 
-    Dim tempint   As Integer
+    Dim TempInt   As Integer
 
     Dim headIndex As Integer
 
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
 
-    With charlist(charindex)
-        tempint = Reader.ReadInt16()
+    With charlist(CharIndex)
+        TempInt = Reader.ReadInt16()
 
-        If tempint < LBound(BodyData()) Or tempint > UBound(BodyData()) Then
+        If TempInt < LBound(BodyData()) Or TempInt > UBound(BodyData()) Then
             .Body = BodyData(0)
         Else
-            .Body = BodyData(tempint)
-            .iBody = tempint
+            .Body = BodyData(TempInt)
+            .iBody = TempInt
 
         End If
         
@@ -3413,19 +3413,19 @@ Private Sub HandleCharacterChange()
         
         .Heading = Reader.ReadInt8()
         
-        tempint = Reader.ReadInt16()
+        TempInt = Reader.ReadInt16()
 
         If TempInt <> 0 And TempInt <= UBound(WeaponAnimData) Then
             .Arma = WeaponAnimData(TempInt)
         End If
 
-        tempint = Reader.ReadInt16()
+        TempInt = Reader.ReadInt16()
 
         If TempInt <> 0 And TempInt <= UBound(ShieldAnimData) Then
             .Escudo = ShieldAnimData(TempInt)
         End If
         
-        tempint = Reader.ReadInt16()
+        TempInt = Reader.ReadInt16()
 
         If TempInt <> 0 And TempInt <= UBound(CascoAnimData) Then
             .Casco = CascoAnimData(TempInt)
@@ -3509,7 +3509,7 @@ Private Sub HandleObjectCreate()
     
     Dim Amount   As Integer
 
-    Dim Color    As RGBA
+    Dim color    As RGBA
 
     Dim Rango    As Byte
 
@@ -3531,16 +3531,16 @@ Private Sub HandleObjectCreate()
     Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.GrhIndex)
     
     If ObjData(ObjIndex).CreaLuz <> "" Then
-        Call Long_2_RGBA(Color, Val(ReadField(2, ObjData(ObjIndex).CreaLuz, Asc(":"))))
+        Call Long_2_RGBA(color, Val(ReadField(2, ObjData(ObjIndex).CreaLuz, Asc(":"))))
         Rango = Val(ReadField(1, ObjData(ObjIndex).CreaLuz, Asc(":")))
-        MapData(x, y).luz.Color = Color
+        MapData(x, y).luz.color = color
         MapData(x, y).luz.Rango = Rango
         
         If Rango < 100 Then
             id = x & y
-            LucesCuadradas.Light_Create x, y, Color, Rango, id
+            LucesCuadradas.Light_Create x, y, color, Rango, id
         Else
-            LucesRedondas.Create_Light_To_Map x, y, Color, Rango - 99
+            LucesRedondas.Create_Light_To_Map x, y, color, Rango - 99
         End If
         
     End If
@@ -3572,13 +3572,13 @@ Private Sub HandleFxPiso()
 
     Dim y  As Byte
 
-    Dim fX As Byte
+    Dim Fx As Byte
 
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
-    fX = Reader.ReadInt16()
+    Fx = Reader.ReadInt16()
     
-    Call SetMapFx(x, y, fX, 0)
+    Call SetMapFx(x, y, Fx, 0)
     
     Exit Sub
 
@@ -3613,7 +3613,7 @@ Private Sub HandleObjectDelete()
     If ObjData(MapData(x, y).OBJInfo.ObjIndex).CreaLuz <> "" Then
         id = LucesCuadradas.Light_Find(x & y)
         LucesCuadradas.Light_Remove id
-        MapData(x, y).luz.Color = COLOR_EMPTY
+        MapData(x, y).luz.color = COLOR_EMPTY
         MapData(x, y).luz.Rango = 0
        ' LucesCuadradas.Light_Render_All
 
@@ -3648,14 +3648,14 @@ Private Sub HandleBlockPosition()
     '
     '***************************************************
     
-    Dim x As Byte, y As Byte, B As Byte
+    Dim x As Byte, y As Byte, b As Byte
     
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
-    B = Reader.ReadInt8()
+    b = Reader.ReadInt8()
 
     MapData(x, y).Blocked = MapData(x, y).Blocked And Not eBlock.ALL_SIDES
-    MapData(x, y).Blocked = MapData(x, y).Blocked Or B
+    MapData(x, y).Blocked = MapData(x, y).Blocked Or b
     
     Exit Sub
 
@@ -3708,18 +3708,18 @@ On Error GoTo HandlePlayWave_Err
     If wave = 404 And MapDat.niebla = 0 Then Exit Sub
     
     If cancelLastWave Then
-        Call ao20audio.stopwav(CStr(wave))
+        Call ao20audio.StopWav(CStr(wave))
         If cancelLastWave = 2 Then Exit Sub
     End If
     
     If srcX = 0 Or srcY = 0 Then
-        Call ao20audio.playwav(CStr(wave), False, 0, 0)
+        Call ao20audio.PlayWav(CStr(wave), False, 0, 0)
     Else
         If EstaEnArea(srcX, srcY) Then
             Dim p As Position
             p.x = srcX
             p.y = srcY
-            Call ao20audio.playwav(CStr(wave), False, ao20audio.ComputeCharFxVolume(P), ao20audio.ComputeCharFxPan(P))
+            Call ao20audio.PlayWav(CStr(wave), False, ao20audio.ComputeCharFxVolume(p), ao20audio.ComputeCharFxPan(p))
         End If
     End If
     Exit Sub
@@ -3735,7 +3735,7 @@ Private Sub HandlePlayWaveStep()
     On Error GoTo HandlePlayWaveStep_Err
     
     Dim CharIndex As Integer
-    Dim grh As Long
+    Dim Grh As Long
     Dim Grh2 As Long
     Dim distance As Byte
     Dim balance As Integer
@@ -3791,7 +3791,7 @@ Private Sub HandlePosLLamadaDeClan()
     If BabelInitialized Then
         Call ShowGuildCall(map, srcX, srcY)
     Else
-        Call frmMapaGrande.ShowClanCall(Map, srcX, srcY)
+        Call frmMapaGrande.ShowClanCall(map, srcX, srcY)
     End If
     
     Exit Sub
@@ -3805,13 +3805,13 @@ End Sub
 Private Sub HandleCharUpdateHP()
     
 On Error GoTo HandleCharUpdateHP_Err
-    Dim charindex As Integer
-    Dim minhp     As Long
-    Dim maxhp     As Long
+    Dim CharIndex As Integer
+    Dim MinHp     As Long
+    Dim MaxHp     As Long
     Dim Shield As Long
-    charindex = Reader.ReadInt16()
-    minhp = Reader.ReadInt32()
-    maxhp = Reader.ReadInt32()
+    CharIndex = Reader.ReadInt16()
+    MinHp = Reader.ReadInt32()
+    MaxHp = Reader.ReadInt32()
     Shield = Reader.ReadInt32()
     If Group.GroupSize > 0 Then
         Dim i As Integer
@@ -3823,8 +3823,8 @@ On Error GoTo HandleCharUpdateHP_Err
             End If
         Next i
     End If
-    charlist(charindex).UserMinHp = minhp
-    charlist(charindex).UserMaxHp = maxhp
+    charlist(CharIndex).UserMinHp = MinHp
+    charlist(CharIndex).UserMaxHp = MaxHp
     charlist(CharIndex).Shield = Shield
     Exit Sub
 
@@ -3836,18 +3836,18 @@ Private Sub HandleCharUpdateMAN()
     
     On Error GoTo HandleCharUpdateHP_Err
 
-    Dim charindex As Integer
+    Dim CharIndex As Integer
 
     Dim minman     As Long
 
     Dim maxman     As Long
     
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     minman = Reader.ReadInt32()
     maxman = Reader.ReadInt32()
 
-    charlist(charindex).UserMinMAN = minman
-    charlist(charindex).UserMaxMAN = maxman
+    charlist(CharIndex).UserMinMAN = minman
+    charlist(CharIndex).UserMaxMAN = maxman
     
     Exit Sub
 
@@ -3863,16 +3863,16 @@ Private Sub HandleArmaMov()
 
     '***************************************************
 
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim isRanged As Byte
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     isRanged = Reader.ReadInt8()
 
-    With charlist(charindex)
+    With charlist(CharIndex)
 
         If Not .Moving Then
             .MovArmaEscudo = True
-            .Arma.WeaponWalk(.Heading).Started = FrameTime
+            .Arma.WeaponWalk(.Heading).started = FrameTime
             .Arma.WeaponWalk(.Heading).Loops = 0
         End If
     End With
@@ -3902,11 +3902,11 @@ End Sub
 
 Private Sub HandleUpdateTrapState()
     Dim x, y As Byte
-    Dim state As Byte
-    state = Reader.ReadInt8()
+    Dim State As Byte
+    State = Reader.ReadInt8()
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
-    If state > 0 Then
+    If State > 0 Then
         Call InitGrh(MapData(x, y).Trap, 38370)
     Else
         MapData(x, y).Trap.GrhIndex = 0
@@ -3972,10 +3972,10 @@ End Sub
 Private Sub HandleStunStart()
 On Error GoTo HandleStunStart_Err
     If EstaSiguiendo Then Exit Sub
-    Dim duration As Integer
-    duration = Reader.ReadInt16()
-    StunEndTime = GetTickCount() + duration
-    TotalStunTime = duration
+    Dim Duration As Integer
+    Duration = Reader.ReadInt16()
+    StunEndTime = GetTickCount() + Duration
+    TotalStunTime = Duration
     If BabelInitialized Then
         Call ActivateStunTimer(Duration)
     End If
@@ -3991,15 +3991,15 @@ Private Sub HandleEscudoMov()
 
     '***************************************************
 
-    Dim charindex As Integer
+    Dim CharIndex As Integer
 
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
 
-    With charlist(charindex)
+    With charlist(CharIndex)
 
         If Not .Moving Then
             .MovArmaEscudo = True
-            .Escudo.ShieldWalk(.Heading).Started = FrameTime
+            .Escudo.ShieldWalk(.Heading).started = FrameTime
             .Escudo.ShieldWalk(.Heading).Loops = 0
 
         End If
@@ -4025,7 +4025,7 @@ Private Sub HandleGuildList()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     'Clear guild's list
     frmGuildAdm.guildslist.Clear
@@ -4072,7 +4072,7 @@ Private Sub HandleGuildList()
     Call frmGuildAdm.Show(vbModeless, GetGameplayForm())
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildList", Erl)
     
@@ -4175,32 +4175,32 @@ Private Sub HandleCreateFX()
     '
     '***************************************************
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
 
-    Dim fX        As Integer
+    Dim Fx        As Integer
 
     Dim Loops     As Integer
     
     Dim x As Byte, y As Byte
         
-    charindex = Reader.ReadInt16()
-    fX = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
+    Fx = Reader.ReadInt16()
     Loops = Reader.ReadInt16()
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     
     If x + y > 0 Then
-        With charlist(charindex)
-            If .Invisible And charindex <> UserCharIndex Then
-                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+        With charlist(CharIndex)
+            If .Invisible And CharIndex <> UserCharIndex Then
+                If MapData(.Pos.x, .Pos.y).CharIndex = CharIndex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
                 .Pos.x = x
                 .Pos.y = y
-                MapData(x, y).charindex = charindex
+                MapData(x, y).CharIndex = CharIndex
             End If
         End With
     End If
     
-    Call SetCharacterFx(charindex, fX, Loops)
+    Call SetCharacterFx(CharIndex, Fx, Loops)
     
     Exit Sub
 
@@ -4227,7 +4227,7 @@ Private Sub HandleCharAtaca()
     danio = Reader.ReadInt32()
     AnimAttack = Reader.ReadInt16()
     
-    Dim grh As grh
+    Dim Grh As Grh
     With charlist(NpcIndex)
         If AnimAttack > 0 Then
             .Body = BodyData(AnimAttack)
@@ -4246,7 +4246,7 @@ Private Sub HandleCharAtaca()
         
     
     If charlist(UserCharIndex).Muerto = False And EstaPCarea(NpcIndex) Then
-        Call ao20audio.playwav(CStr(IIf(danio = -1, 2, 10)), False, ao20audio.ComputeCharFxVolume(charlist(NpcIndex).Pos), ao20audio.ComputeCharFxPan(charlist(NpcIndex).Pos))
+        Call ao20audio.PlayWav(CStr(IIf(danio = -1, 2, 10)), False, ao20audio.ComputeCharFxVolume(charlist(NpcIndex).Pos), ao20audio.ComputeCharFxPan(charlist(NpcIndex).Pos))
     End If
         
     Exit Sub
@@ -4363,9 +4363,9 @@ Private Sub HandleNotificarClienteCasteo()
     
     On Error GoTo NotificarClienteCasteo_Err
     
-    Dim value As Byte
+    Dim Value As Byte
     
-    value = Reader.ReadInt8()
+    Value = Reader.ReadInt8()
     If BabelInitialized Then
         Call HandleRemoteUserClick
     Else
@@ -4391,10 +4391,10 @@ Private Sub HandleSendFollowingCharindex()
     
     On Error GoTo SendFollowingCharindex_Err
     
-    Dim charindex As Integer
-    charindex = Reader.ReadInt16()
-    UserCharIndex = charindex
-    CharindexSeguido = charindex
+    Dim CharIndex As Integer
+    CharIndex = Reader.ReadInt16()
+    UserCharIndex = CharIndex
+    CharindexSeguido = CharIndex
     OffsetLimitScreen = 31
     If BabelInitialized Then
         Call SetRemoteTrackingState(1)
@@ -4484,27 +4484,27 @@ Private Sub HandleWorkRequestTarget()
     Select Case UsingSkill
         Case magia, eSkill.TargetableItem
             Call FormParser.Parse_Form(Frm, E_CAST)
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_MAGIA"), 100, 100, 120, 0, 0)
         Case Robar
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_ROBAR, 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_ROBAR"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case FundirMetal
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_FUNDIRMETAL, 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_FUNDIRMETAL"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case Proyectiles
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_PROYECTILES, 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_PROYECTILES"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_ARROW)
         Case eSkill.Talar, eSkill.Alquimia, eSkill.Carpinteria, eSkill.Herreria, eSkill.Mineria, eSkill.Pescar
             Call AddtoRichTextBox(frmMain.RecTxt, "Has click donde deseas trabajar...", 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case Grupo
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_MAGIA"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case MarcaDeClan
-            Call AddtoRichTextBox(frmMain.RecTxt, "Seleccione el personaje que desea marcar..", 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_PERSONAJE_A_MARCAR"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case MarcaDeGM
-            Call AddtoRichTextBox(frmMain.RecTxt, "Seleccione el personaje que desea marcar..", 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_PERSONAJE_A_MARCAR"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
     End Select
     Exit Sub
@@ -4523,7 +4523,7 @@ Private Sub HandleChangeInventorySlot()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim Slot        As Byte
     Dim ObjIndex    As Integer
@@ -4603,22 +4603,22 @@ Private Sub HandleChangeInventorySlot()
     
     Call ModGameplayUI.SetInvItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo, IsBindable)
     
-    If frmComerciar.Visible Then
+    If frmComerciar.visible Then
         Call frmComerciar.InvComUsu.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
 
-    ElseIf frmBancoObj.Visible Then
+    ElseIf frmBancoObj.visible Then
         Call frmBancoObj.InvBankUsu.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
         
-    ElseIf frmBancoCuenta.Visible Then
+    ElseIf frmBancoCuenta.visible Then
         Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
     
-    ElseIf frmCrafteo.Visible Then
+    ElseIf frmCrafteo.visible Then
         Call frmCrafteo.InvCraftUser.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
     End If
 
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeInventorySlot", Erl)
     
@@ -4650,7 +4650,7 @@ Private Sub HandleChangeBankSlot()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim Slot As Byte
     Dim BankSlot As Slot
@@ -4677,7 +4677,7 @@ Private Sub HandleChangeBankSlot()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeBankSlot", Erl)
     
@@ -4695,11 +4695,11 @@ Private Sub HandleChangeSpellSlot()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim Slot     As Byte
     Dim Index    As Integer
-    Dim cooldown As Integer
+    Dim Cooldown As Integer
     Dim IsBindable As Boolean
     
     Slot = Reader.ReadInt8()
@@ -4739,7 +4739,7 @@ Private Sub HandleChangeSpellSlot()
         End If
     End If
     Exit Sub
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeSpellSlot", Erl)
 End Sub
 
@@ -4794,7 +4794,7 @@ Private Sub HandleBlacksmithWeapons()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim count As Integer
 
@@ -4826,7 +4826,7 @@ Private Sub HandleBlacksmithWeapons()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithWeapons", Erl)
     
@@ -4844,7 +4844,7 @@ Private Sub HandleBlacksmithArmors()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim count As Integer
 
@@ -4866,12 +4866,12 @@ Private Sub HandleBlacksmithArmors()
         DefensasHerrero(i).Index = Reader.ReadInt16()
     Next i
         
-    Dim A      As Byte
+    Dim a      As Byte
     Dim e      As Byte
     Dim c      As Byte
     Dim tmpObj As ObjDatas
 
-    A = 0
+    a = 0
     e = 0
     c = 0
     
@@ -4883,11 +4883,11 @@ Private Sub HandleBlacksmithArmors()
         
         If tmpObj.ObjType = 3 Then
            
-            ArmadurasHerrero(A).Index = DefensasHerrero(i).Index
-            ArmadurasHerrero(A).LHierro = DefensasHerrero(i).LHierro
-            ArmadurasHerrero(A).LPlata = DefensasHerrero(i).LPlata
-            ArmadurasHerrero(A).LOro = DefensasHerrero(i).LOro
-            A = A + 1
+            ArmadurasHerrero(a).Index = DefensasHerrero(i).Index
+            ArmadurasHerrero(a).LHierro = DefensasHerrero(i).LHierro
+            ArmadurasHerrero(a).LPlata = DefensasHerrero(i).LPlata
+            ArmadurasHerrero(a).LOro = DefensasHerrero(i).LOro
+            a = a + 1
 
         End If
         
@@ -4916,7 +4916,7 @@ Private Sub HandleBlacksmithArmors()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithArmors", Erl)
     
@@ -4934,7 +4934,7 @@ Private Sub HandleCarpenterObjects()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim count As Integer
 
@@ -4958,7 +4958,7 @@ Private Sub HandleCarpenterObjects()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCarpenterObjects", Erl)
     
@@ -4971,7 +4971,7 @@ Private Sub HandleSastreObjects()
     'Author: Ladder
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim count As Integer
 
@@ -5031,7 +5031,7 @@ Private Sub HandleSastreObjects()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSastreObjects", Erl)
     
@@ -5047,7 +5047,7 @@ Private Sub HandleAlquimiaObjects()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim count As Integer
 
@@ -5075,7 +5075,7 @@ Private Sub HandleAlquimiaObjects()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAlquimiaObjects", Erl)
     
@@ -5106,7 +5106,7 @@ HandleRestOK_Err:
 End Sub
 
 Private Sub HandleErrorMessage()
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     GetRemoteError = True
     Dim str As String
     str = Reader.ReadString8()
@@ -5116,7 +5116,7 @@ Private Sub HandleErrorMessage()
         Call MsgBox(str)
     End If
     Exit Sub
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleErrorMessage", Erl)
 End Sub
 
@@ -5181,19 +5181,19 @@ Private Sub HandleShowSignal()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim tmp As String
-    Dim grh As Integer
+    Dim Grh As Integer
 
     tmp = ObjData(Reader.ReadInt16()).Texto
-    grh = Reader.ReadInt16()
+    Grh = Reader.ReadInt16()
     
-    Call InitCartel(tmp, grh)
+    Call InitCartel(tmp, Grh)
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSignal", Erl)
     
@@ -5211,7 +5211,7 @@ Private Sub HandleChangeNPCInventorySlot()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim Slot As Byte
     Slot = Reader.ReadInt8()
@@ -5261,7 +5261,7 @@ Private Sub HandleChangeNPCInventorySlot()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeNPCInventorySlot", Erl)
     
@@ -5326,9 +5326,9 @@ Private Sub HandleLight()
     
     On Error GoTo HandleLight_Err
  
-    Dim Color As String
+    Dim color As String
     
-    Color = Reader.ReadString8()
+    color = Reader.ReadString8()
 
     'Call SetGlobalLight(Map_light_base)
     
@@ -5352,12 +5352,12 @@ Private Sub HandleFYA()
     
     UserAtributos(eAtributos.Fuerza) = Reader.ReadInt8()
     UserAtributos(eAtributos.Agilidad) = Reader.ReadInt8()
-    UserStats.Str = UserAtributos(eAtributos.Fuerza)
+    UserStats.str = UserAtributos(eAtributos.Fuerza)
     UserStats.Agi = UserAtributos(eAtributos.Agilidad)
     DrogaCounter = Reader.ReadInt16()
-    If UserStats.Str >= 35 Then
+    If UserStats.str >= 35 Then
         UserStats.StrState = eHighBuff
-    ElseIf UserStats.Str >= 25 Then
+    ElseIf UserStats.str >= 25 Then
         UserStats.StrState = eMinBuff
     Else
         UserStats.StrState = eNormal
@@ -5371,7 +5371,7 @@ Private Sub HandleFYA()
     End If
     
     If DrogaCounter > 0 Then
-        frmMain.Contadores.Enabled = True
+        frmMain.Contadores.enabled = True
     End If
     
     If BabelInitialized Then
@@ -5453,7 +5453,7 @@ Private Sub HandleContadores()
     DrogaCounter = Reader.ReadInt16()
     
 
-    frmMain.Contadores.Enabled = True
+    frmMain.Contadores.enabled = True
     
     Exit Sub
 
@@ -5478,9 +5478,9 @@ End Sub
 Private Sub HandleUpdateCooldownType()
     On Error GoTo HandleUpdateCooldownType_Err
     
-    Dim cdType As Byte
-    cdType = Reader.ReadInt8()
-    CdTimes(cdType) = GetTickCount()
+    Dim CDType As Byte
+    CDType = Reader.ReadInt8()
+    CdTimes(CDType) = GetTickCount()
     If BabelInitialized Then
         Call ActivateInterval(CDType)
     End If
@@ -5501,18 +5501,18 @@ Private Sub HandleFlashScreen()
     'Last Modification: 05/17/06
     '
     '***************************************************
-    Dim Color As Long, duracion As Long, ignorar As Boolean
+    Dim color As Long, duracion As Long, ignorar As Boolean
     
-    Color = Reader.ReadInt32()
+    color = Reader.ReadInt32()
     duracion = Reader.ReadInt32()
     ignorar = Reader.ReadBool()
     
-    Dim r, G, B As Byte
+    Dim r, G, b As Byte
 
-    B = (Color And 16711680) / 65536
-    G = (Color And 65280) / 256
-    r = Color And 255
-    Color = D3DColorARGB(255, r, G, B)
+    b = (color And 16711680) / 65536
+    G = (color And 65280) / 256
+    r = color And 255
+    color = D3DColorARGB(255, r, G, b)
 
     If Not MapDat.niebla = 1 And Not ignorar Then
         'Debug.Print "trueno cancelado"
@@ -5521,7 +5521,7 @@ Private Sub HandleFlashScreen()
 
     End If
 
-    Call EfectoEnPantalla(Color, duracion)
+    Call EfectoEnPantalla(color, duracion)
     
     Exit Sub
 
@@ -5609,18 +5609,18 @@ Private Sub HandleAddForumMessage()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim title   As String
 
-    Dim Message As String
+    Dim message As String
     
     title = Reader.ReadString8()
-    Message = Reader.ReadString8()
+    message = Reader.ReadString8()
 
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAddForumMessage", Erl)
     
@@ -5665,18 +5665,18 @@ Private Sub HandleSetInvisible()
     '
     '***************************************************
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
     Dim x As Byte, y As Byte
-    charindex = Reader.ReadInt16()
-    charlist(charindex).Invisible = Reader.ReadBool()
-    charlist(charindex).TimerI = 0
+    CharIndex = Reader.ReadInt16()
+    charlist(CharIndex).Invisible = Reader.ReadBool()
+    charlist(CharIndex).TimerI = 0
     
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     
     If x + y > 0 Then
-        With charlist(charindex)
-            If charindex <> UserCharIndex Then
+        With charlist(CharIndex)
+            If CharIndex <> UserCharIndex Then
                 If .Invisible Then
                     If Not IsCharVisible(CharIndex) And General_Distance_Get(x, y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS Then
                         If .clan_index > 0 Then
@@ -5687,15 +5687,15 @@ Private Sub HandleSetInvisible()
                             End If
                         End If
                         If .Meditating Then Exit Sub
-                        If MapData(.Pos.x, .Pos.y).CharIndex = charindex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
+                        If MapData(.Pos.x, .Pos.y).CharIndex = CharIndex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
                         .MoveOffsetX = 0
                         .MoveOffsetY = 0
                     End If
                 Else
-                    If MapData(.Pos.x, .Pos.y).CharIndex = charindex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
+                    If MapData(.Pos.x, .Pos.y).CharIndex = CharIndex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
                     .Pos.x = x
                     .Pos.y = y
-                    MapData(x, y).CharIndex = charindex
+                    MapData(x, y).CharIndex = CharIndex
                     If Abs(.MoveOffsetX) > 32 Or Abs(.MoveOffsetY) > 32 Or (.MoveOffsetX <> 0 And .MoveOffsetY <> 0) Then
                         .MoveOffsetX = 0
                         .MoveOffsetY = 0
@@ -5717,29 +5717,29 @@ End Sub
 Private Sub HandleMeditateToggle()
 On Error GoTo HandleMeditateToggle_Err
     
-    Dim charindex As Integer, fX As Integer
+    Dim CharIndex As Integer, Fx As Integer
     Dim x As Byte, y As Byte
     
-    charindex = Reader.ReadInt16
-    fX = Reader.ReadInt16
+    CharIndex = Reader.ReadInt16
+    Fx = Reader.ReadInt16
     x = Reader.ReadInt8
     y = Reader.ReadInt8
     
     charlist(CharIndex).Meditating = Fx <> 0
     
     If x + y > 0 Then
-        With charlist(charindex)
-            If .Invisible And charindex <> UserCharIndex Then
-                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+        With charlist(CharIndex)
+            If .Invisible And CharIndex <> UserCharIndex Then
+                If MapData(.Pos.x, .Pos.y).CharIndex = CharIndex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
                 .Pos.x = x
                 .Pos.y = y
-                MapData(x, y).charindex = charindex
+                MapData(x, y).CharIndex = CharIndex
             End If
         End With
     End If
     
-    If charindex = UserCharIndex Then
-        UserMeditar = (fX <> 0)
+    If CharIndex = UserCharIndex Then
+        UserMeditar = (Fx <> 0)
         If UserMeditar Then
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
                 Call ShowConsoleMsg("Comienzas a meditar.", .red, .green, .blue, .bold, .italic)
@@ -5751,8 +5751,8 @@ On Error GoTo HandleMeditateToggle_Err
         End If
     End If
     
-    With charlist(charindex)
-        If fX <> 0 Then
+    With charlist(CharIndex)
+        If Fx <> 0 Then
             Call StartFx(.ActiveAnimation, Fx, -1)
             ' Play sound only in PC area
             If EstaPCarea(CharIndex) Then
@@ -5873,7 +5873,7 @@ Private Sub HandleTrainerCreatureList()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim creatures() As String
 
@@ -5889,7 +5889,7 @@ Private Sub HandleTrainerCreatureList()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTrainerCreatureList", Erl)
     
@@ -5907,7 +5907,7 @@ Private Sub HandleGuildNews()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     ' Dim guildList() As String
     Dim List()      As String
@@ -6005,7 +6005,7 @@ Private Sub HandleGuildNews()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildNews", Erl)
     
@@ -6023,13 +6023,13 @@ Private Sub HandleOfferDetails()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Call frmUserRequest.recievePeticion(Reader.ReadString8())
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleOfferDetails", Erl)
     
@@ -6047,7 +6047,7 @@ Private Sub HandleAlianceProposalsList()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim guildList() As String
 
@@ -6064,7 +6064,7 @@ Private Sub HandleAlianceProposalsList()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAlianceProposalsList", Erl)
     
@@ -6082,7 +6082,7 @@ Private Sub HandlePeaceProposalsList()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim guildList() As String
 
@@ -6099,7 +6099,7 @@ Private Sub HandlePeaceProposalsList()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePeaceProposalsList", Erl)
     
@@ -6117,20 +6117,20 @@ Private Sub HandleCharacterInfo()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     With frmCharInfo
 
         If .frmType = CharInfoFrmType.frmMembers Then
-            .Rechazar.Visible = False
-            .Aceptar.Visible = False
-            .Echar.Visible = True
-            .desc.Visible = False
+            .Rechazar.visible = False
+            .Aceptar.visible = False
+            .Echar.visible = True
+            .desc.visible = False
         Else
-            .Rechazar.Visible = True
-            .Aceptar.Visible = True
-            .Echar.Visible = False
-            .desc.Visible = True
+            .Rechazar.visible = True
+            .Aceptar.visible = True
+            .Echar.visible = False
+            .desc.visible = True
 
         End If
     
@@ -6144,7 +6144,7 @@ Private Sub HandleCharacterInfo()
         .Raza.Caption = "Raza: " & ListaRazas(Reader.ReadInt8())
         .Clase.Caption = "Clase: " & ListaClases(Reader.ReadInt8())
 
-        .nivel.Caption = "Nivel: " & Reader.ReadInt8()
+        .Nivel.Caption = "Nivel: " & Reader.ReadInt8()
         .oro.Caption = "Oro: " & Reader.ReadInt32()
         .Banco.Caption = "Banco: " & Reader.ReadInt32()
     
@@ -6175,7 +6175,7 @@ Private Sub HandleCharacterInfo()
         
     Exit Sub
     
-ErrHandler:
+errhandler:
     
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterInfo", Erl)
     
@@ -6193,7 +6193,7 @@ Private Sub HandleGuildLeaderInfo()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim str As String
     
@@ -6251,10 +6251,10 @@ Private Sub HandleGuildLeaderInfo()
 
         Dim ExpNe  As Integer
 
-        Dim nivel  As Byte
+        Dim Nivel  As Byte
          
-        nivel = Reader.ReadInt8()
-        .nivel = "Nivel: " & nivel
+        Nivel = Reader.ReadInt8()
+        .Nivel = "Nivel: " & Nivel
         
         expacu = Reader.ReadInt16()
         ExpNe = Reader.ReadInt16()
@@ -6274,7 +6274,7 @@ Private Sub HandleGuildLeaderInfo()
         Dim Padding As String
         Padding = Space$(19)
 
-        Select Case nivel
+        Select Case Nivel
 
                Case 1
                 .beneficios = Padding & "Max miembros: 5"
@@ -6306,7 +6306,7 @@ Private Sub HandleGuildLeaderInfo()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildLeaderInfo", Erl)
     
@@ -6324,7 +6324,7 @@ Private Sub HandleGuildDetails()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     With frmGuildBrief
 
@@ -6339,7 +6339,7 @@ Private Sub HandleGuildDetails()
         GuildDetails.MemberCount = Reader.ReadInt16()
         GuildDetails.Aligment = Reader.ReadString8()
         GuildDetails.Description = Reader.ReadString8()
-        GuildDetails.Level = Reader.ReadInt8()
+        GuildDetails.level = Reader.ReadInt8()
         If BabelInitialized Then
             Call SetGuildBrief(GuildDetails)
             Exit Sub
@@ -6355,7 +6355,7 @@ Private Sub HandleGuildDetails()
         .lblAlineacion.Caption = GuildDetails.Aligment
         
         .desc.Text = GuildDetails.Description
-        .nivel.Caption = GuildDetails.level
+        .Nivel.Caption = GuildDetails.level
 
     End With
     
@@ -6363,7 +6363,7 @@ Private Sub HandleGuildDetails()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildDetails", Erl)
     
@@ -6447,14 +6447,14 @@ Private Sub HandleShowUserRequest()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Call frmUserRequest.recievePeticion(Reader.ReadString8())
     Call frmUserRequest.Show(vbModeless, GetGameplayForm())
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowUserRequest", Erl)
     
@@ -6472,7 +6472,7 @@ Private Sub HandleChangeUserTradeSlot()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim miOferta As Boolean
     
@@ -6532,11 +6532,11 @@ Private Sub HandleChangeUserTradeSlot()
     
     End If
     
-    frmComerciarUsu.lblEstadoResp.Visible = False
+    frmComerciarUsu.lblEstadoResp.visible = False
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeUserTradeSlot", Erl)
     
@@ -6554,7 +6554,7 @@ Private Sub HandleSpawnList()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     frmSpawnList.ListaCompleta = Reader.ReadBool
 
@@ -6564,7 +6564,7 @@ Private Sub HandleSpawnList()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSpawnList", Erl)
     
@@ -6582,7 +6582,7 @@ Private Sub HandleShowSOSForm()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim sosList()      As String
 
@@ -6609,7 +6609,7 @@ Private Sub HandleShowSOSForm()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSOSForm", Erl)
     
@@ -6627,14 +6627,14 @@ Private Sub HandleShowMOTDEditionForm()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     frmCambiaMotd.txtMotd.Text = Reader.ReadString8()
     frmCambiaMotd.Show , GetGameplayForm()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowMOTDEditionForm", Erl)
     
@@ -6672,43 +6672,43 @@ Private Sub HandleShowGMPanelForm()
     Select Case MiCargo ' ReyarB ajustar privilejios
     
         Case 1
-        frmPanelgm.mnuChar.Visible = False
-        frmPanelgm.cmdHerramientas.Visible = False
-        frmPanelgm.Admin(0).Visible = False
+        frmPanelgm.mnuChar.visible = False
+        frmPanelgm.cmdHerramientas.visible = False
+        frmPanelgm.Admin(0).visible = False
         
         Case 2 'Consejeros
-        frmPanelgm.mnuChar.Visible = False
-        frmPanelgm.cmdHerramientas.Visible = False
-        frmPanelgm.Admin(0).Visible = False
-        frmPanelgm.cmdConsulta.Visible = False
-        frmPanelgm.cmdMatarNPC.Visible = False
-        frmPanelgm.cmdEventos.Visible = False
+        frmPanelgm.mnuChar.visible = False
+        frmPanelgm.cmdHerramientas.visible = False
+        frmPanelgm.Admin(0).visible = False
+        frmPanelgm.cmdConsulta.visible = False
+        frmPanelgm.cmdMatarNPC.visible = False
+        frmPanelgm.cmdEventos.visible = False
         frmPanelgm.cmdMapaSeguro.visible = False
         frmPanelgm.cmdInvisible.visible = False
-        frmPanelgm.SendGlobal.Visible = False
-        frmPanelgm.Mensajeria.Visible = False
-        frmPanelgm.cmdMapeo.Visible = False
-        frmPanelgm.cmdMapeo.Enabled = False
+        frmPanelgm.SendGlobal.visible = False
+        frmPanelgm.Mensajeria.visible = False
+        frmPanelgm.cmdMapeo.visible = False
+        frmPanelgm.cmdMapeo.enabled = False
         frmPanelgm.cmdCerrarCliente.visible = False
         frmPanelgm.cmdCerrarCliente.enabled = False
-        frmPanelgm.cmdcrearevento.Enabled = False
-        frmPanelgm.cmdcrearevento.Visible = False
+        frmPanelgm.cmdcrearevento.enabled = False
+        frmPanelgm.cmdcrearevento.visible = False
         frmPanelgm.txtMod.Width = 4560
         frmPanelgm.Height = 5080
-        frmPanelgm.mnuTraer.Visible = False
-        frmPanelgm.mnuIra.Visible = False
+        frmPanelgm.mnuTraer.visible = False
+        frmPanelgm.mnuIra.visible = False
                 
         Case 3 ' Semidios
-        frmPanelgm.Admin(0).Visible = False
-        frmPanelgm.cmdcrearevento.Enabled = False
-        frmPanelgm.cmdcrearevento.Visible = False
+        frmPanelgm.Admin(0).visible = False
+        frmPanelgm.cmdcrearevento.enabled = False
+        frmPanelgm.cmdcrearevento.visible = False
         frmPanelgm.cmdMapeo.visible = False
         frmPanelgm.cmdMapeo.enabled = False
         frmPanelgm.cmdCerrarCliente.visible = False
         frmPanelgm.cmdCerrarCliente.enabled = False
         
         Case 4 ' Dios
-        frmPanelgm.Admin(0).Visible = False
+        frmPanelgm.Admin(0).visible = False
         frmPanelgm.cmdMapeo.visible = False
         frmPanelgm.cmdMapeo.enabled = False
         frmPanelgm.cmdCerrarCliente.visible = False
@@ -6759,7 +6759,7 @@ Private Sub HandleUserNameList()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim userList() As String
 
@@ -6767,7 +6767,7 @@ Private Sub HandleUserNameList()
     
     userList = Split(Reader.ReadString8(), SEPARATOR)
     
-    If frmPanelgm.Visible Then
+    If frmPanelgm.visible Then
         frmPanelgm.cboListaUsus.Clear
 
         For i = 0 To UBound(userList())
@@ -6780,7 +6780,7 @@ Private Sub HandleUserNameList()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserNameList", Erl)
     
@@ -6798,9 +6798,9 @@ Private Sub HandleUpdateTagAndStatus()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
-    Dim charindex   As Integer
+    Dim CharIndex   As Integer
 
     Dim status      As Byte
 
@@ -6808,7 +6808,7 @@ Private Sub HandleUpdateTagAndStatus()
 
     Dim group_index As Integer
     
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     status = Reader.ReadInt8()
     NombreYClan = Reader.ReadString8()
         
@@ -6818,19 +6818,19 @@ Private Sub HandleUpdateTagAndStatus()
     If Pos = 0 Then Pos = InStr(NombreYClan, "[")
     If Pos = 0 Then Pos = Len(NombreYClan) + 2
     
-    charlist(charindex).nombre = Left$(NombreYClan, Pos - 2)
-    charlist(charindex).clan = mid$(NombreYClan, Pos)
+    charlist(CharIndex).nombre = Left$(NombreYClan, Pos - 2)
+    charlist(CharIndex).clan = mid$(NombreYClan, Pos)
     
     group_index = Reader.ReadInt16()
     
     'Update char status adn tag!
-    charlist(charindex).status = status
+    charlist(CharIndex).status = status
     
-    charlist(charindex).group_index = group_index
+    charlist(CharIndex).group_index = group_index
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateTagAndStatus", Erl)
     
@@ -6839,7 +6839,7 @@ End Sub
 
 Private Sub HandleUserOnline()
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim rdata As Integer
     
@@ -6854,7 +6854,7 @@ Private Sub HandleUserOnline()
     
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserOnline", Erl)
     
@@ -6904,7 +6904,7 @@ Private Sub HandleParticleFXToFloor()
             MapData(x, y).particle_group = 0
             General_Particle_Create ParticulaIndex, x, y, Time
         Else
-            Call General_Char_Particle_Create(ParticulaIndex, MapData(x, y).charindex, Time)
+            Call General_Char_Particle_Create(ParticulaIndex, MapData(x, y).CharIndex, Time)
 
         End If
 
@@ -6932,7 +6932,7 @@ Private Sub HandleLightToFloor()
 
     Dim y           As Byte
 
-    Dim Color       As Long
+    Dim color       As Long
     
     Dim color_value As RGBA
 
@@ -6940,16 +6940,16 @@ Private Sub HandleLightToFloor()
      
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
-    Color = Reader.ReadInt32()
+    color = Reader.ReadInt32()
     Rango = Reader.ReadInt8()
     
-    Call Long_2_RGBA(color_value, Color)
+    Call Long_2_RGBA(color_value, color)
 
     Dim id  As Long
 
     Dim id2 As Long
 
-    If Color = 0 Then
+    If color = 0 Then
    
         If MapData(x, y).luz.Rango > 100 Then
             LucesRedondas.Delete_Light_To_Map x, y
@@ -6957,7 +6957,7 @@ Private Sub HandleLightToFloor()
         Else
             id = LucesCuadradas.Light_Find(x & y)
             LucesCuadradas.Light_Remove id
-            MapData(x, y).luz.Color = COLOR_EMPTY
+            MapData(x, y).luz.color = COLOR_EMPTY
             MapData(x, y).luz.Rango = 0
             Exit Sub
 
@@ -6965,7 +6965,7 @@ Private Sub HandleLightToFloor()
 
     End If
     
-    MapData(x, y).luz.Color = color_value
+    MapData(x, y).luz.color = color_value
     MapData(x, y).luz.Rango = Rango
     
     If Rango < 100 Then
@@ -6994,47 +6994,47 @@ Private Sub HandleParticleFX()
     '
     '***************************************************
     
-    Dim charindex      As Integer
+    Dim CharIndex      As Integer
 
     Dim ParticulaIndex As Integer
 
     Dim Time           As Long
 
     Dim Remove         As Boolean
-    Dim grh            As Long
+    Dim Grh            As Long
     
     Dim x As Byte, y As Byte
     
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     ParticulaIndex = Reader.ReadInt16()
     Time = Reader.ReadInt32()
     Remove = Reader.ReadBool()
-    grh = Reader.ReadInt32()
+    Grh = Reader.ReadInt32()
     
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     
     If x + y > 0 Then
-        With charlist(charindex)
-            If .Invisible And charindex <> UserCharIndex Then
-                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+        With charlist(CharIndex)
+            If .Invisible And CharIndex <> UserCharIndex Then
+                If MapData(.Pos.x, .Pos.y).CharIndex = CharIndex Then MapData(.Pos.x, .Pos.y).CharIndex = 0
                 .Pos.x = x
                 .Pos.y = y
-                MapData(x, y).charindex = charindex
+                MapData(x, y).CharIndex = CharIndex
             End If
         End With
     End If
     If Remove Then
-        Call Char_Particle_Group_Remove(charindex, ParticulaIndex)
-        charlist(charindex).Particula = 0
+        Call Char_Particle_Group_Remove(CharIndex, ParticulaIndex)
+        charlist(CharIndex).Particula = 0
     
     Else
-        charlist(charindex).Particula = ParticulaIndex
-        charlist(charindex).ParticulaTime = Time
-        If grh > 0 Then
-            Call General_Char_Particle_Create(ParticulaIndex, charindex, Time, grh)
+        charlist(CharIndex).Particula = ParticulaIndex
+        charlist(CharIndex).ParticulaTime = Time
+        If Grh > 0 Then
+            Call General_Char_Particle_Create(ParticulaIndex, CharIndex, Time, Grh)
         Else
-            Call General_Char_Particle_Create(ParticulaIndex, charindex, Time)
+            Call General_Char_Particle_Create(ParticulaIndex, CharIndex, Time)
         End If
 
     End If
@@ -7069,7 +7069,7 @@ Private Sub HandleParticleFXWithDestino()
 
     Dim wav            As Integer
 
-    Dim fX             As Integer
+    Dim Fx             As Integer
     
     Dim x As Byte, y As Byte
     Emisor = Reader.ReadInt16()
@@ -7079,24 +7079,24 @@ Private Sub HandleParticleFXWithDestino()
 
     Time = Reader.ReadInt32()
     wav = Reader.ReadInt16()
-    fX = Reader.ReadInt16()
+    Fx = Reader.ReadInt16()
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     
     If x + y > 0 Then
         With charlist(receptor)
            If .Invisible And receptor <> UserCharIndex Then
-                If MapData(.Pos.x, .Pos.y).charindex = receptor Then MapData(.Pos.x, .Pos.y).charindex = 0
+                If MapData(.Pos.x, .Pos.y).CharIndex = receptor Then MapData(.Pos.x, .Pos.y).CharIndex = 0
                 .Pos.x = x
                 .Pos.y = y
-                MapData(x, y).charindex = receptor
+                MapData(x, y).CharIndex = receptor
             End If
         End With
     End If
 
     Engine_spell_Particle_Set (ParticulaViaje)
 
-    Call Effect_Begin(ParticulaViaje, 9, Get_Pixelx_Of_Char(Emisor), Get_PixelY_Of_Char(Emisor), ParticulaFinal, Time, receptor, Emisor, wav, fX)
+    Call Effect_Begin(ParticulaViaje, 9, Get_Pixelx_Of_Char(Emisor), Get_PixelY_Of_Char(Emisor), ParticulaFinal, Time, receptor, Emisor, wav, Fx)
 
     ' charlist(charindex).Particula = ParticulaIndex
     ' charlist(charindex).ParticulaTime = time
@@ -7131,7 +7131,7 @@ Private Sub HandleParticleFXWithDestinoXY()
 
     Dim wav            As Integer
 
-    Dim fX             As Integer
+    Dim Fx             As Integer
 
     Dim x              As Byte
 
@@ -7143,7 +7143,7 @@ Private Sub HandleParticleFXWithDestinoXY()
 
     Time = Reader.ReadInt32()
     wav = Reader.ReadInt16()
-    fX = Reader.ReadInt16()
+    Fx = Reader.ReadInt16()
     
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
@@ -7152,7 +7152,7 @@ Private Sub HandleParticleFXWithDestinoXY()
 
     Engine_spell_Particle_Set (ParticulaViaje)
 
-    Call Effect_BeginXY(ParticulaViaje, 9, Get_Pixelx_Of_Char(Emisor), Get_PixelY_Of_Char(Emisor), x, y, ParticulaFinal, Time, Emisor, wav, fX)
+    Call Effect_BeginXY(ParticulaViaje, 9, Get_Pixelx_Of_Char(Emisor), Get_PixelY_Of_Char(Emisor), x, y, ParticulaFinal, Time, Emisor, wav, Fx)
 
     ' charlist(charindex).Particula = ParticulaIndex
     ' charlist(charindex).ParticulaTime = time
@@ -7226,14 +7226,14 @@ Private Sub HandleSpeedToChar()
     '
     '***************************************************
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
 
     Dim Speeding  As Single
      
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     Speeding = Reader.ReadReal32()
    
-    charlist(charindex).Speeding = Speeding
+    charlist(CharIndex).Speeding = Speeding
     
     Exit Sub
 
@@ -7288,7 +7288,7 @@ Private Sub HandleNieblaToggle()
     MaxAlphaNiebla = Reader.ReadInt8()
             
     bNiebla = Not bNiebla
-    frmMain.TimerNiebla.Enabled = True
+    frmMain.TimerNiebla.enabled = True
     
     Exit Sub
 
@@ -7334,19 +7334,19 @@ Private Sub HandleBarFx()
     
     On Error GoTo HandleBarFx_Err
 
-    Dim charindex As Integer
+    Dim CharIndex As Integer
 
     Dim BarTime   As Integer
 
     Dim BarAccion As Byte
     
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     BarTime = Reader.ReadInt16()
     BarAccion = Reader.ReadInt8()
     
-    charlist(charindex).BarTime = 0
-    charlist(charindex).BarAccion = BarAccion
-    charlist(charindex).MaxBarTime = BarTime
+    charlist(CharIndex).BarTime = 0
+    charlist(CharIndex).BarAccion = BarAccion
+    charlist(CharIndex).MaxBarTime = BarTime
     
     Exit Sub
 
@@ -7363,7 +7363,7 @@ Private Sub HandleQuestDetails()
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim tmpStr         As String
 
@@ -7649,7 +7649,7 @@ Private Sub HandleQuestDetails()
     
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestDetails", Erl)
     
@@ -7663,7 +7663,7 @@ Public Sub HandleQuestListSend()
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim i       As Integer
     Dim tmpByte As Byte
@@ -7700,7 +7700,7 @@ Public Sub HandleQuestListSend()
 
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestListSend", Erl)
     
@@ -7714,13 +7714,13 @@ Public Sub HandleNpcQuestListSend()
     'Last modified: 31/01/2010 by Amraphen
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim tmpStr         As String
     Dim tmpByte        As Byte
     Dim QuestEmpezada  As Boolean
     Dim i              As Integer
-    Dim j              As Byte
+    Dim J              As Byte
     Dim cantidadnpc    As Integer
     Dim NpcIndex       As Integer
     Dim cantidadobj    As Integer
@@ -7738,7 +7738,7 @@ Public Sub HandleNpcQuestListSend()
 
         CantidadQuest = Reader.ReadInt8
             
-        For j = 1 To CantidadQuest
+        For J = 1 To CantidadQuest
         
             QuestIndex = Reader.ReadInt16
             
@@ -7852,7 +7852,7 @@ Public Sub HandleNpcQuestListSend()
             
             FrmQuestInfo.ListViewQuest.Refresh
                 
-        Next j
+        Next J
 
     'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest estï¿½ empezada o no.
     FrmQuestInfo.Show vbModeless, GetGameplayForm()
@@ -7861,7 +7861,7 @@ Public Sub HandleNpcQuestListSend()
     
     Exit Sub
     
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
     
@@ -7876,7 +7876,7 @@ Private Sub HandleShowPregunta()
     '
     '***************************************************
     
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim msg As String
 
@@ -7888,7 +7888,7 @@ Private Sub HandleShowPregunta()
         Pregunta = True
     End If
     Exit Sub
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPregunta", Erl)
 End Sub
 
@@ -8025,12 +8025,12 @@ Private Sub HandleSeguroResu()
     SeguroResuX = Reader.ReadBool()
     
     If SeguroResuX Then
-        Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección activado.", 65, 190, 156, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_RESURRECCION_ACTIVADO"), 65, 190, 156, False, False, False)
         If Not BabelInitialized Then
             frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
         End If
     Else
-        Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección desactivado.", 65, 190, 156, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_RESURRECCION_DESACTIVADO"), 65, 190, 156, False, False, False)
         If Not BabelInitialized Then
             frmMain.ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
         End If
@@ -8052,17 +8052,17 @@ Private Sub HandleInvasionInfo()
     InvasionPorcentajeVida = Reader.ReadInt8
     InvasionPorcentajeTiempo = Reader.ReadInt8
     
-    frmMain.Evento.Enabled = False
+    frmMain.Evento.enabled = False
     frmMain.Evento.Interval = 0
     frmMain.Evento.Interval = 10000
-    frmMain.Evento.Enabled = True
+    frmMain.Evento.enabled = True
 
 End Sub
 
 Private Sub HandleCommerceRecieveChatMessage()
     
-    Dim Message As String
-    Message = Reader.ReadString8
+    Dim message As String
+    message = Reader.ReadString8
         
     Call AddtoRichTextBox(frmComerciarUsu.RecTxt, message, 255, 255, 255, 0, False, True)
     
@@ -8072,19 +8072,19 @@ Private Sub HandleDoAnimation()
     
     On Error GoTo HandleCharacterChange_Err
     
-    Dim charindex As Integer
+    Dim CharIndex As Integer
 
-    Dim tempint   As Integer
+    Dim TempInt   As Integer
 
     Dim headIndex As Integer
 
-    charindex = Reader.ReadInt16()
+    CharIndex = Reader.ReadInt16()
     
-    With charlist(charindex)
+    With charlist(CharIndex)
         .AnimatingBody = Reader.ReadInt16()
         .Body = BodyData(.AnimatingBody)
         'Start animation
-        .Body.Walk(.Heading).Started = FrameTime
+        .Body.Walk(.Heading).started = FrameTime
         .Body.Walk(.Heading).Loops = 0
         .Idle = False
     End With
@@ -8185,7 +8185,7 @@ Private Sub HandleForceUpdate()
     
     Call MsgBox("¡Nueva versión disponible! Se abrirá el lanzador para que puedas actualizar.", vbOKOnly, "Argentum 20 - Noland Studios")
     
-    Shell App.Path & "\..\..\Launcher\LauncherAO20.exe"
+    Shell App.path & "\..\..\Launcher\LauncherAO20.exe"
     
     EngineRun = False
 
@@ -8199,7 +8199,7 @@ HandleCerrarleCliente_Err:
 End Sub
 
 Public Sub HandleAnswerReset()
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     If MsgBox("¿Está seguro que desea resetear el personaje? Los items que no sean depositados se perderán.", vbYesNo, "Resetear personaje") = vbYes Then
         Call WriteResetearPersonaje
@@ -8207,13 +8207,13 @@ Public Sub HandleAnswerReset()
 
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAnswerReset", Erl)
 End Sub
 Public Sub HandleUpdateBankGld()
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     Dim UserBoveOro As Long
         
@@ -8221,14 +8221,14 @@ Public Sub HandleUpdateBankGld()
     
     Call frmGoliath.UpdateBankGld(UserBoveOro)
     Exit Sub
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateBankGld", Erl)
 
 End Sub
 
 Public Sub HandlePelearConPezEspecial()
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
     
     PosicionBarra = 1
     DireccionBarra = 1
@@ -8238,13 +8238,13 @@ Public Sub HandlePelearConPezEspecial()
         intentosPesca(i) = 0
     Next i
     PescandoEspecial = True
-    Call ao20audio.playwav(55)
+    Call ao20audio.PlayWav(55)
     ContadorIntentosPescaEspecial_Fallados = 0
     ContadorIntentosPescaEspecial_Acertados = 0
     startTimePezEspecial = GetTickCount()
     Call Char_Dialog_Set(UserCharIndex, "Oh! Creo que tengo un super pez en mi linea, intentare obtenerlo con la letra P", &H1FFFF, 200, 130)
     Exit Sub
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePelearConPezEspecial", Erl)
 End Sub
@@ -8291,11 +8291,11 @@ Public Sub HandleShopInit()
     If BabelInitialized Then
         Dim ObjList() As t_ShopItem
         ReDim ObjList(1 To cant_obj_shop) As t_ShopItem
-        Dim Str As String
+        Dim str As String
         For i = 1 To cant_obj_shop
             ObjList(i).ObjIndex = Reader.ReadInt32
             ObjList(i).Price = Reader.ReadInt32
-            Str = Reader.ReadString8
+            str = Reader.ReadString8
         Next i
         Call OpenAo20Shop(credits_shopAO20, cant_obj_shop, ObjList(1))
     Else
@@ -8318,7 +8318,7 @@ Public Sub HandleUpdateShopClienteCredits()
 End Sub
 
 Public Sub HandleSendSkillCdUpdate()
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
         Dim Effect As t_ActiveEffect
         Dim ElapsedTime As Long
 100     Effect.TypeId = Reader.ReadInt16
@@ -8342,12 +8342,12 @@ Public Sub HandleSendSkillCdUpdate()
 130         Call AddOrUpdateEffect(CDList, Effect)
         End If
         Exit Sub
-ErrHandler:
+errhandler:
 132     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendSkillCdUpdate " & Effect.TypeId, Erl)
 End Sub
 
 Public Sub HandleSendClientToggles()
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     Dim ToggleCount As Integer
     ToggleCount = Reader.ReadInt16
     Dim i As Integer
@@ -8364,7 +8364,7 @@ On Error GoTo ErrHandler
         End If
     Next i
     Exit Sub
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendClientToggles", Erl)
 End Sub
 
@@ -8375,7 +8375,7 @@ Public Sub HandleObjQuestListSend()
     'Last modified: 29/08/2021 by HarThaoS
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim tmpStr         As String
     Dim tmpByte        As Byte
@@ -8384,7 +8384,7 @@ Public Sub HandleObjQuestListSend()
     Dim cantidadnpc    As Integer
     Dim NpcIndex       As Integer
     Dim cantidadobj    As Integer
-    Dim OBJIndex       As Integer
+    Dim ObjIndex       As Integer
     Dim QuestIndex     As Integer
     Dim estado         As Byte
     Dim LevelRequerido As Byte
@@ -8437,7 +8437,7 @@ Public Sub HandleObjQuestListSend()
         ReDim QuestList(QuestIndex).RequiredOBJ(1 To tmpByte)
         For i = 1 To tmpByte
             QuestList(QuestIndex).RequiredOBJ(i).Amount = Reader.ReadInt16
-            QuestList(QuestIndex).RequiredOBJ(i).OBJIndex = Reader.ReadInt16
+            QuestList(QuestIndex).RequiredOBJ(i).ObjIndex = Reader.ReadInt16
         Next i
     Else
         ReDim QuestList(QuestIndex).RequiredOBJ(0)
@@ -8465,7 +8465,7 @@ Public Sub HandleObjQuestListSend()
         For i = 1 To tmpByte
 
             QuestList(QuestIndex).RewardOBJ(i).Amount = Reader.ReadInt16
-            QuestList(QuestIndex).RewardOBJ(i).OBJIndex = Reader.ReadInt16
+            QuestList(QuestIndex).RewardOBJ(i).ObjIndex = Reader.ReadInt16
 
         Next i
 
@@ -8518,7 +8518,7 @@ Public Sub HandleObjQuestListSend()
 
     Exit Sub
 
-ErrHandler:
+errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
 
@@ -8533,16 +8533,16 @@ Public Sub HandleDebugDataResponse()
     Dim i As Integer
 
     cantidadDeMensajes = Reader.ReadInt16
-    Dim file As Integer: file = FreeFile
-    Open App.path & "\logs\RemoteError.log" For Append As #file
+    Dim File As Integer: File = FreeFile
+    Open App.path & "\logs\RemoteError.log" For Append As #File
     For i = 1 To cantidadDeMensajes
         mensaje = Reader.ReadString8
         If LenB(mensaje) <> 0 Then
-           Print #file, mensaje
-           Print #file, vbNullString
+           Print #File, mensaje
+           Print #File, vbNullString
         End If
     Next i
-    Close #file
+    Close #File
     Exit Sub
 HandleDebugResponse_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDebugResponse", Erl)
@@ -8614,9 +8614,9 @@ Public Sub HandleAccountCharacterList()
         Pjs(ii).Clase = 0
         Pjs(ii).Body = 0
         Pjs(ii).Mapa = 0
-        Pjs(ii).posX = 0
-        Pjs(ii).posY = 0
-        Pjs(ii).nivel = 0
+        Pjs(ii).PosX = 0
+        Pjs(ii).PosY = 0
+        Pjs(ii).Nivel = 0
         Pjs(ii).Criminal = 0
         Pjs(ii).Casco = 0
         Pjs(ii).Escudo = 0
@@ -8631,9 +8631,9 @@ Public Sub HandleAccountCharacterList()
         Pjs(ii).Head = Reader.ReadInt
         Pjs(ii).Clase = Reader.ReadInt
         Pjs(ii).Mapa = Reader.ReadInt
-        Pjs(ii).posX = Reader.ReadInt
-        Pjs(ii).posY = Reader.ReadInt
-        Pjs(ii).nivel = Reader.ReadInt
+        Pjs(ii).PosX = Reader.ReadInt
+        Pjs(ii).PosY = Reader.ReadInt
+        Pjs(ii).Nivel = Reader.ReadInt
         Pjs(ii).Criminal = Reader.ReadInt
         Pjs(ii).Casco = Reader.ReadInt
         Pjs(ii).Escudo = Reader.ReadInt
@@ -8646,16 +8646,16 @@ Public Sub HandleAccountCharacterList()
     For i = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
         Select Case Pjs(i).Criminal
             Case 0 'Criminal
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).B)
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).b)
                 Pjs(i).priv = 0
             Case 1 'Ciudadano
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).B)
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).b)
                 Pjs(i).priv = 0
             Case 2 'Caos
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).B)
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).b)
                 Pjs(i).priv = 0
             Case 3 'Armada
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).B)
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).b)
                 Pjs(i).priv = 0
             Case Else
         End Select
@@ -8670,8 +8670,8 @@ Public Sub HandleAccountCharacterList()
         
         If Pjs(1).Mapa <> 0 Then
             Call SwitchMap(Pjs(1).Mapa)
-            RenderCuenta_PosX = Pjs(1).posX
-            RenderCuenta_PosY = Pjs(1).posY
+            RenderCuenta_PosX = Pjs(1).PosX
+            RenderCuenta_PosY = Pjs(1).PosY
         End If
     End If
 

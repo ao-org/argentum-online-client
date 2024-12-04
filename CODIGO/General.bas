@@ -767,7 +767,7 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
             Call MainTimer.Restart(TimersIndex.Walk)
             
             If PescandoEspecial Then
-                Call AddtoRichTextBox(frmMain.RecTxt, "El pez ha roto tu linea de pesca.", 255, 0, 0, 1, 0)
+                Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
                 Call WriteRomperCania
                 PescandoEspecial = False
             End If
@@ -1986,7 +1986,7 @@ Public Function IntentarObtenerPezEspecial()
             Call WriteFinalizarPescaEspecial
         ElseIf ContadorIntentosPescaEspecial_Fallados >= 3 Then
             PescandoEspecial = False
-            Call AddtoRichTextBox(frmMain.RecTxt, "El pez ha roto tu linea de pesca.", 255, 0, 0, 1, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
             Call WriteRomperCania
         End If
     End If

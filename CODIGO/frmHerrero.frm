@@ -483,7 +483,7 @@ Private Sub cmdConstruir_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = ArmasHerrero(lstArmas.ListIndex + 1).Index
-            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR."), 2, 51, 223, 1, 1
             UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
             frmMain.MacroLadder.Interval = gIntervals.BuildWork
@@ -502,7 +502,7 @@ Private Sub cmdConstruir_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = ArmadurasHerrero(lstArmas.ListIndex).Index
-            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR"), 2, 51, 223, 1, 1
             UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
             frmMain.MacroLadder.Interval = gIntervals.BuildWork
@@ -521,7 +521,7 @@ Private Sub cmdConstruir_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = CascosHerrero(lstArmas.ListIndex).Index
-            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR."), 2, 51, 223, 1, 1
             UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
             frmMain.MacroLadder.Interval = gIntervals.BuildWork
@@ -540,7 +540,7 @@ Private Sub cmdConstruir_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = EscudosHerrero(lstArmas.ListIndex).Index
-            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR"), 2, 51, 223, 1, 1
             UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
             frmMain.MacroLadder.Interval = gIntervals.BuildWork
