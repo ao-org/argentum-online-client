@@ -684,7 +684,7 @@ Private Sub HandleMacroTrabajoToggle()
         
     Else
     
-        Call AddtoRichTextBox(frmMain.RecTxt, "Has comenzado a trabajar...", 2, 223, 51, 1, 0)
+        Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(504, ""), 2, 223, 51, 1, 0)
         
         frmMain.MacroLadder.Interval = gIntervals.BuildWork
         frmMain.MacroLadder.Enabled = True
@@ -1608,12 +1608,12 @@ Private Sub HandleClanSeguro()
     
     If SeguroClanX Then
     
-        Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de clan desactivado.", 65, 190, 156, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(505, ""), 65, 190, 156, False, False, False)
         If Not BabelInitialized Then frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-off.bmp")
         SeguroClanX = False
         
     Else
-        Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de clan activado.", 65, 190, 156, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(506, ""), 65, 190, 156, False, False, False)
         If Not BabelInitialized Then frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
         SeguroClanX = True
 
@@ -4495,16 +4495,16 @@ Private Sub HandleWorkRequestTarget()
             Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_PROYECTILES, 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_ARROW)
         Case eSkill.Talar, eSkill.Alquimia, eSkill.Carpinteria, eSkill.Herreria, eSkill.Mineria, eSkill.Pescar
-            Call AddtoRichTextBox(frmMain.RecTxt, "Has click donde deseas trabajar...", 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(522, ""), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case Grupo
             Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_TRABAJO_MAGIA, 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case MarcaDeClan
-            Call AddtoRichTextBox(frmMain.RecTxt, "Seleccione el personaje que desea marcar..", 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(523, ""), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case MarcaDeGM
-            Call AddtoRichTextBox(frmMain.RecTxt, "Seleccione el personaje que desea marcar..", 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(523, ""), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
     End Select
     Exit Sub
@@ -8025,12 +8025,12 @@ Private Sub HandleSeguroResu()
     SeguroResuX = Reader.ReadBool()
     
     If SeguroResuX Then
-        Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección activado.", 65, 190, 156, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(507, ""), 65, 190, 156, False, False, False)
         If Not BabelInitialized Then
             frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
         End If
     Else
-        Call AddtoRichTextBox(frmMain.RecTxt, "Seguro de resurrección desactivado.", 65, 190, 156, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(508, ""), 65, 190, 156, False, False, False)
         If Not BabelInitialized Then
             frmMain.ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
         End If

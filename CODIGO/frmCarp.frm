@@ -4,13 +4,13 @@ Begin VB.Form frmCarp
    BackColor       =   &H80000001&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar de carpintero"
-   ClientHeight    =   6528
+   ClientHeight    =   6525
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   7068
+   ClientWidth     =   7065
    BeginProperty Font 
       Name            =   "Verdana"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -20,9 +20,9 @@ Begin VB.Form frmCarp
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   544
+   ScaleHeight     =   435
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   589
+   ScaleWidth      =   471
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.ListBox lstArmas 
@@ -30,7 +30,7 @@ Begin VB.Form frmCarp
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -38,7 +38,7 @@ Begin VB.Form frmCarp
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   3696
+      Height          =   3540
       Left            =   525
       TabIndex        =   4
       Top             =   1440
@@ -49,7 +49,7 @@ Begin VB.Form frmCarp
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -57,7 +57,7 @@ Begin VB.Form frmCarp
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1248
+      Height          =   1200
       Left            =   3840
       TabIndex        =   3
       Top             =   2520
@@ -69,7 +69,7 @@ Begin VB.Form frmCarp
       Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -77,7 +77,7 @@ Begin VB.Form frmCarp
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1248
+      Height          =   1200
       ItemData        =   "frmCarp.frx":0000
       Left            =   5760
       List            =   "frmCarp.frx":0007
@@ -148,7 +148,7 @@ Begin VB.Form frmCarp
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -288,9 +288,9 @@ Private Sub cmdConstruir_Click()
 
     If cantidad > 0 Then
         Call WriteCraftCarpenter(ObjCarpintero(lstArmas.ListIndex + 1), CLng(cantidad))
-        Call AddtoRichTextBox(frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1)
+        Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(502, ""), 2, 51, 223, 1, 1)
     Else
-        Call AddtoRichTextBox(frmMain.RecTxt, "La cantidad debe ser mayor a 0.", 2, 51, 223, 1, 1)
+        Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(503, ""), 2, 51, 223, 1, 1)
     End If
 
     Unload Me

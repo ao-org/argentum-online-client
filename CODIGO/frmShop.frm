@@ -2,23 +2,23 @@ VERSION 5.00
 Begin VB.Form frmShopAO20 
    BorderStyle     =   0  'None
    Caption         =   "Tienda AO20"
-   ClientHeight    =   7128
+   ClientHeight    =   7125
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   6480
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   594
+   ScaleHeight     =   475
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   540
+   ScaleWidth      =   432
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.ListBox lstItemShopFilter 
       Appearance      =   0  'Flat
       BackColor       =   &H80000001&
       ForeColor       =   &H80000000&
-      Height          =   3288
+      Height          =   3150
       Left            =   360
       TabIndex        =   5
       Top             =   2400
@@ -28,7 +28,7 @@ Begin VB.Form frmShopAO20
       Appearance      =   0  'Flat
       BackColor       =   &H80000001&
       ForeColor       =   &H80000000&
-      Height          =   3288
+      Height          =   3150
       Left            =   360
       TabIndex        =   3
       Top             =   2400
@@ -41,9 +41,9 @@ Begin VB.Form frmShopAO20
       ForeColor       =   &H80000008&
       Height          =   495
       Left            =   4770
-      ScaleHeight     =   39
+      ScaleHeight     =   31
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   39
+      ScaleWidth      =   31
       TabIndex        =   2
       Top             =   2880
       Width           =   495
@@ -53,7 +53,7 @@ Begin VB.Form frmShopAO20
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -109,7 +109,7 @@ Begin VB.Form frmShopAO20
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -179,7 +179,7 @@ Private Sub Image3_Click()
     If credits_shopAO20 >= obj_to_buy.Valor Then
         Call writeBuyShopItem(obj_to_buy.objNum)
     Else
-        Call AddtoRichTextBox(frmMain.RecTxt, "No tienes suficientes créditos para comprar ese elemento. Puedes mejorar tu subscripción en el siguiente link: https://www.patreon.com/nolandstudios/membership", 255, 0, 0, True)
+        Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(494, ""), 255, 0, 0, True)
     End If
 End Sub
 

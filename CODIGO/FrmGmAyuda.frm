@@ -2,16 +2,16 @@ VERSION 5.00
 Begin VB.Form FrmGmAyuda 
    BorderStyle     =   0  'None
    Caption         =   "Formulario de mensaje a administradores"
-   ClientHeight    =   6528
-   ClientLeft      =   3228
-   ClientTop       =   1332
-   ClientWidth     =   7044
+   ClientHeight    =   6525
+   ClientLeft      =   3225
+   ClientTop       =   1335
+   ClientWidth     =   7050
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   544
+   ScaleHeight     =   435
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   587
+   ScaleWidth      =   470
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton cmdButtonEntrarForo 
@@ -27,7 +27,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Consulta regular"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -45,7 +45,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Descargo"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -63,7 +63,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Acusación"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -81,7 +81,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Sugerencia"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -99,7 +99,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Reporte de bug"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -117,7 +117,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Otro"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -135,7 +135,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Queja"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -154,7 +154,7 @@ Begin VB.Form FrmGmAyuda
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -330,10 +330,10 @@ Private Sub cmdEnviarMensaje_Click()
     
 
     If txtMotivo.Text = "" Then
-        Call AddtoRichTextBox(frmMain.RecTxt, "Debes escribir tu mensaje.", 255, 255, 255, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(509, ""), 255, 255, 255, False, False, False)
         Exit Sub
     ElseIf DarIndiceElegido = -1 Then
-        Call AddtoRichTextBox(frmMain.RecTxt, "Debes elegir el motivo de tu consulta.", 255, 255, 255, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(510, ""), 255, 255, 255, False, False, False)
         Exit Sub
     Else
         Call WriteQuestionGM(txtMotivo.Text, optConsulta(DarIndiceElegido).Caption)
@@ -377,25 +377,25 @@ Private Sub optConsult_Click(Index As Integer)
     Select Case Index
 
         Case 0
-            Call AddtoRichTextBox(frmMain.RecTxt, "¡Por favor explique correctamente el motivo de su consulta!", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(511, ""), 255, 255, 255, False, False, False)
 
         Case 1
-            Call AddtoRichTextBox(frmMain.RecTxt, "Deje el nombre del personaje del que está pidiendo descargo por una medida, conjunto con el administrador que está relacionado con ella.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(512, ""), 255, 255, 255, False, False, False)
 
         Case 2
-            Call AddtoRichTextBox(frmMain.RecTxt, "Se dará prioridad a su consulta enviando un mensaje a los administradores conectados, por favor utilize ésta opción responsablemente.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(513, ""), 255, 255, 255, False, False, False)
 
         Case 3
-            Call AddtoRichTextBox(frmMain.RecTxt, "Su sugerencia SERÁ leída por un miembro del staff, y será tomada en cuenta para futuros cambios.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(514, ""), 255, 255, 255, False, False, False)
 
         Case 4
-            Call AddtoRichTextBox(frmMain.RecTxt, "Explique de la forma más detallada la forma de repetir el error. El staff de programación lo resolverá lo antes posible.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(515, ""), 255, 255, 255, False, False, False)
 
         Case 5
-            Call AddtoRichTextBox(frmMain.RecTxt, "Deje la mayor cantidad de datos posibles, esta opción es para consultas que no entran en otras secciónes.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(516, ""), 255, 255, 255, False, False, False)
 
         Case 6
-            Call AddtoRichTextBox(frmMain.RecTxt, "En caso de ser una queja hacia un miembro del staff, deje principalmente hacia quien esta referida la queja, y los motivos dejando todos los detalles posibles", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, Locale_Parse_ServerMessage(517, ""), 255, 255, 255, False, False, False)
 
     End Select
 

@@ -1654,7 +1654,7 @@ Public Sub CargarIndicesOBJ()
     NumNpcs = Val(Leer.GetValue("INIT", "NumNpcs"))
     NumHechizos = Val(Leer.GetValue("INIT", "NumeroHechizo"))
     NumHechizos = Val(Leer.GetValue("INIT", "NumeroHechizo"))
-    NumLocaleMsg = Val(Leer.GetValue("INIT", "NumLocaleMsg"))
+    NumLocaleMsg = Val(Leer.GetValue("INIT", "NumLocaleSP_Msg"))
     NumQuest = Val(Leer.GetValue("INIT", "NUMQUESTS"))
     NumSug = Val(Leer.GetValue("INIT", "NUMSUGERENCIAS"))
 
@@ -1851,7 +1851,12 @@ Continue:
     
     For i = 1 To NumLocaleMsg
         DoEvents
-        Locale_SMG(i) = Leer.GetValue("msg", "Msg" & i)
+        If language = Spanish Then
+             Locale_SMG(i) = Leer.GetValue("SP_msg", "Msg" & i)
+        Else
+            Locale_SMG(i) = Leer.GetValue("EN_msg", "Msg" & i)
+        End If
+        
     Next i
     
     Dim SearchVar As String
