@@ -1825,7 +1825,7 @@ Public Sub ResetearUserMacro()
 
     End If
 
-    AddtoRichTextBox frmMain.RecTxt, "Has dejado de trabajar.", 223, 51, 2, 1, 0
+    AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEJAS_DE_TRABAJAR"), 223, 51, 2, 1, 0
 
     
     Exit Sub

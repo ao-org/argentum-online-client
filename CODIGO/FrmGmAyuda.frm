@@ -333,7 +333,7 @@ Private Sub cmdEnviarMensaje_Click()
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEBES_ESCRIBIR_TU_MENSAJE."), 255, 255, 255, False, False, False)
         Exit Sub
     ElseIf DarIndiceElegido = -1 Then
-        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEBES_ELEGIR_EL_MOTIVO_DE_TU_CONSULTA_DUPLICADO"), 255, 255, 255, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEBES_ELEGIR_EL_MOTIVO_DE_TU_CONSULTA"), 255, 255, 255, False, False, False)
         Exit Sub
     Else
         Call WriteQuestionGM(txtMotivo.Text, optConsulta(DarIndiceElegido).Caption)
@@ -377,7 +377,7 @@ Private Sub optConsult_Click(Index As Integer)
     Select Case Index
 
         Case 0
-            Call AddtoRichTextBox(frmMain.RecTxt, ("¡MENSAJE_EXPLIQUE_CORRECTAMENTE_EL_MOTIVO_DE_SU_CONSULTA"), 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("¡MENSAJE_EXPLIQUE_CORRECTAMENTE_EL_MOTIVO_DE_SU_CONSULTA"), 255, 255, 255, False, False, False)
 
         Case 1
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEJE_EL_NOMBRE_DEL_PERSONAJE_Y_ADMINISTRADOR"), 255, 255, 255, False, False, False)

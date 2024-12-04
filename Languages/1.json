@@ -47,10 +47,8 @@
 	"MENSAJE_EXPLIQUE_CORRECTAMENTE_EL_MOTIVO_DE_SU_CONSULTA":"Â¡Por favor explique correctamente el motivo de su consulta!",
 	"MENSAJE_DEJE_EL_NOMBRE_DEL_PERSONAJE_Y_ADMINISTRADOR":"Deje el nombre del personaje del que estÃ¡ pidiendo descargo por una medida, junto con el administrador relacionado.",
 	"MENSAJE_SE_PRIORIZARA_CONSULTA_A_ADMINISTRADORES":"Se darÃ¡ prioridad a su consulta enviando un mensaje a los administradores conectados. Por favor, utilice esta opciÃ³n responsablemente.",
-
 	"MENSAJE_SUGERENCIA_LEIDA_Y_TOMADA_EN_CUENTA": "Su sugerencia serÃ¡ leÃ­da por un miembro del staff y serÃ¡ tomada en cuenta para futuros cambios.",
 	"MENSAJE_EXPLIQUE_DETALLADAMENTE_EL_ERROR": "Explique de la forma mÃ¡s detallada cÃ³mo repetir el error. El staff de programaciÃ³n lo resolverÃ¡ lo antes posible.",
-
 	"MENSAJE_DEJE_DATOS_POSIBLES_PARA_CONSULTAS_GENERALES": "Deje la mayor cantidad de datos posibles. Esta opciÃ³n es para consultas que no entran en otras secciones.",
 	"MENSAJE_QUEJA_HACIA_MIEMBRO_DEL_STAFF": "En caso de ser una queja hacia un miembro del staff, indique a quiÃ©n estÃ¡ referida la queja y los motivos, dejando todos los detalles posibles.",
 	"MENSAJE_NO_PODES_AGARRAR_OBJETOS_MIENTRAS_COMERCIAS": "No puedes agarrar objetos mientras comercies.",
@@ -73,5 +71,8 @@
 	"MENSAJE_SELECCIONA_PERSONAJE_A_MARCAR": "Seleccione el personaje que desea marcar...",
 	"MENSAJE_SEGURO_RESURRECCION_ACTIVADO": "Seguro de resurrecciÃ³n activado.",
 	"MENSAJE_SEGURO_RESURRECCION_DESACTIVADO": "Seguro de resurrecciÃ³n desactivado.",
-	"MENSAJE_DEBES_ELEGIR_EL_MOTIVO_DE_TU_CONSULTA_DUPLICADO": "Debes elegir el motivo de tu consulta."
+	"MENSAJE_DEJAS_DE_TRABAJAR":"has dejado de trabajar",
+	"MENSAJE_NO_TIENES_ORO_SUFICIENTE":"No tenÃ©s suficiente oro.",
+	"MENSAJE_INFORMACION_DE_SKILL":"InformaciÃ³n del skill> ",
+	"MENSAJE_UBICACION_DE_COMPAÃ‘ERO":"UbicaciÃ³n de tu compaÃ±ero de clan que solicita ayuda: ("
 }
