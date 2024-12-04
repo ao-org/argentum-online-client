@@ -1429,7 +1429,7 @@ Private Sub skills_Click(Index As Integer)
     
     On Error GoTo skills_Click_Err
     
-    AddtoRichTextBox frmMain.RecTxt, "Información del skill> " & SkillsDesc(Index), 2, 51, 223, 1, 1
+    AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_INFORMACION_DE_SKILL") & SkillsDesc(Index), 2, 51, 223, 1, 1
 
     Exit Sub
 

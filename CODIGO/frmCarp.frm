@@ -288,9 +288,9 @@ Private Sub cmdConstruir_Click()
 
     If cantidad > 0 Then
         Call WriteCraftCarpenter(ObjCarpintero(lstArmas.ListIndex + 1), CLng(cantidad))
-        Call AddtoRichTextBox(frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR."), 2, 51, 223, 1, 1)
     Else
-        Call AddtoRichTextBox(frmMain.RecTxt, "La cantidad debe ser mayor a 0.", 2, 51, 223, 1, 1)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_LA_CANTIDAD_DEBE_SER_MAYOR_A_0."), 2, 51, 223, 1, 1)
     End If
 
     Unload Me

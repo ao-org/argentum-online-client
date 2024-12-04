@@ -296,7 +296,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If Not Comerciando Then
                 Call AgarrarItem
             Else
-                Call AddtoRichTextBox(frmMain.RecTxt, "No podes agarrar objetos mientras comercias", 255, 0, 32, False, False, False)
+                Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_PODES_AGARRAR_OBJETOS_MIENTRAS_COMERCIAS"), 255, 0, 32, False, False, False)
     
             End If
     
@@ -316,13 +316,13 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If Not Comerciando Then
                 Call TirarItem
             Else
-                Call AddtoRichTextBox(frmMain.RecTxt, "No podes tirar objetos mientras comercias", 255, 0, 32, False, False, False)
+                Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_PODES_TIRAR_OBJETOS_MIENTRAS_COMERCIAS"), 255, 0, 32, False, False, False)
     
             End If
     
         Case BindKeys(6).KeyCode
             If SeguroGame Then
-                Call AddtoRichTextBox(frmMain.RecTxt, "Para desactivar el seguro escribe /SEG o usa el botón en la pestaña MENU en la esquina inferior derecha.", 255, 0, 0, True, False, False)
+                Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DESACTIVAR_SEGURO_CON_SEG"), 255, 0, 0, True, False, False)
             Else
                 Call WriteSafeToggle
             End If

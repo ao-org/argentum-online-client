@@ -3134,7 +3134,7 @@ Private Sub Label7_Click()
     
     On Error GoTo Label7_Click_Err
     
-    Call AddtoRichTextBox(frmMain.RecTxt, "No tenes mensajes nuevos.", 255, 255, 255, False, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TENES_MENSAJES_NUEVOS"), 255, 255, 255, False, False, False)
 
     
     Exit Sub
@@ -3252,7 +3252,7 @@ Public Sub ActivarMacroTrabajo()
     TargetYMacro = tY
     macrotrabajo.Interval = gIntervals.BuildWork
     macrotrabajo.enabled = True
-    Call AddtoRichTextBox(frmMain.RecTxt, "Macro Trabajo ACTIVADO", 0, 200, 200, False, True, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_MACRO_TRABAJO_ACTIVADO"), 0, 200, 200, False, True, False)
 
     
     Exit Sub
@@ -3273,7 +3273,7 @@ Public Sub DesactivarMacroTrabajo()
     MacroBltIndex = 0
     UsingSkill = 0
     MousePointer = vbDefault
-    Call AddtoRichTextBox(frmMain.RecTxt, "Macro Trabajo DESACTIVADO", 0, 200, 200, False, True, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_MACRO_TRABAJO_DESACTIVADO"), 0, 200, 200, False, True, False)
 
     
     Exit Sub
@@ -4579,7 +4579,7 @@ End Sub
 
 Private Sub imgDeleteItem_Click()
     If Not frmMain.Inventario.IsItemSelected Then
-        Call AddtoRichTextBox(frmMain.RecTxt, "No tienes seleccionado ningún item", 255, 255, 255, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENE_ITEM_SELECCIONADO"), 255, 255, 255, False, False, False)
     Else
         If MsgBox("Seguro que desea eliminar el item?", vbYesNo, "Eliminar objeto") = vbYes Then
             Call WriteDeleteItem(frmMain.Inventario.SelectedItem)

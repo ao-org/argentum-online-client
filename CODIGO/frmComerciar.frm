@@ -375,7 +375,7 @@ Private Sub cmdComprar_Click()
     If UserStats.GLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
         Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
     Else
-        AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+        AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENES_ORO_SUFICIENTE"), 2, 51, 223, 1, 1
 
     End If
 End Sub
@@ -508,13 +508,6 @@ Private Sub interface_DblClick()
         If Not InvComNpc.IsItemSelected Then Exit Sub
     
         LasActionBuy = True
-
-      '  If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
-      '      Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
-      '  Else
-      '      AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
-
-      '  End If
         
     ElseIf InvComUsu.ClickedInside Then
     
@@ -675,7 +668,7 @@ Private Sub InvComNpc_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
         If UserStats.GLD >= InvComNpc.Valor(Drag) * Val(cantidad.Text) Then
             Call WriteCommerceBuy(Drag, Val(cantidad.Text))
         Else
-            AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENES_ORO_SUFICIENTE"), 2, 51, 223, 1, 1
         End If
 
     End If
