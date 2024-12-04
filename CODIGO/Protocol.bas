@@ -2189,22 +2189,22 @@ Private Sub HandleUserHittedByUser()
     Select Case Lugar
 
         Case bCabeza
-           ' Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item, attacker & ("MENSAJE_RECIVE_IMPACTO_CABEZA") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_CABEZA") & DañoStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bBrazoIzquierdo
-           ' Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item, attacker & ("MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ") & DañoStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bBrazoDerecho
-            'Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item, attacker & ("MENSAJE_RECIVE_IMPACTO_BRAZO_DER") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_BRAZO_DER") & DañoStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bPiernaIzquierda
-            'Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item, attacker & ("MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ") & DañoStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bPiernaDerecha
-            'Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item, attacker & ("MENSAJE_RECIVE_IMPACTO_PIERNA_DER") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_PIERNA_DER") & DañoStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, False, False)
 
         Case bTorso
-            'Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item, attacker & ("MENSAJE_RECIVE_IMPACTO_TORSO") & DañoStr & ("MENSAJE_2"), 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_TORSO") & DañoStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, False, False)
 
     End Select
     
