@@ -96,6 +96,7 @@
     "MENSAJEBOX_PROXIMAMENTE": "Coming soon",
     "MENSAJEBOX_REINICIAR_CLIENTE": "To reflect the changes in this option, you must restart the client.",
     "MENSAJEBOX_ADVERTENCIA": "Argentum20 - Warning",
-    "MENSAJEBOX_ERROR_FORMATO_LINEA": "Error in the format of line "
+    "MENSAJEBOX_ERROR_FORMATO_LINEA": "Error in the format of line ",
+	"MENSAJEBOX_TITULO_RECURSOS_INVALIDOS": "Invalid resources."
 }
 

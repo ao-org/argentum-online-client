@@ -94,5 +94,6 @@
     "MENSAJEBOX_PROXIMAMENTE": "Proximamente",
     "MENSAJEBOX_REINICIAR_CLIENTE": "Para que los cambios en esta opci n sean reflejados, deber  reiniciar el cliente.",
     "MENSAJEBOX_ADVERTENCIA": "Argentum20 - Advertencia",
-    "MENSAJEBOX_ERROR_FORMATO_LINEA": "Error en el formato de la linea "
+    "MENSAJEBOX_ERROR_FORMATO_LINEA": "Error en el formato de la linea ",
+	"MENSAJEBOX_TITULO_RECURSOS_INVALIDOS": "Recursos invÃ¡lidos."
 }
