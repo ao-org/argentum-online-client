@@ -8183,7 +8183,7 @@ End Sub
 Private Sub HandleForceUpdate()
     On Error GoTo HandleCerrarleCliente_Err
     
-    Call MsgBox("¡Nueva versión disponible! Se abrirá el lanzador para que puedas actualizar.", vbOKOnly, "Argentum 20 - Noland Studios")
+    Call MsgBox(JsonLanguage.Item("MENSAJEBOX_NUEVA_VERSION"), vbOKOnly, "Argentum 20 - Noland Studios")
     
     Shell App.path & "\..\..\Launcher\LauncherAO20.exe"
     
@@ -8201,7 +8201,7 @@ End Sub
 Public Sub HandleAnswerReset()
     On Error GoTo errhandler
 
-    If MsgBox("¿Está seguro que desea resetear el personaje? Los items que no sean depositados se perderán.", vbYesNo, "Resetear personaje") = vbYes Then
+    If MsgBox(JsonLanguage.Item("MENSAJEBOX_RESETEAR_PERSONAJE"), vbYesNo, "Resetear personaje") = vbYes Then
         Call WriteResetearPersonaje
     End If
 

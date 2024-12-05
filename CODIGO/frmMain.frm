@@ -4581,7 +4581,7 @@ Private Sub imgDeleteItem_Click()
     If Not frmMain.Inventario.IsItemSelected Then
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENE_ITEM_SELECCIONADO"), 255, 255, 255, False, False, False)
     Else
-        If MsgBox("Seguro que desea eliminar el item?", vbYesNo, "Eliminar objeto") = vbYes Then
+        If MsgBox(JsonLanguage.Item("MENSAJEBOX_ELIMINAR_ITEM"), vbYesNo, JsonLanguage.Item("MENSAJEBOX_TITULO_ELIMINAR_ITEM")) = vbYes Then
             Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
         End If
     End If

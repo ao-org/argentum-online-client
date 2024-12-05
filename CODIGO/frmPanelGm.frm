@@ -1835,10 +1835,10 @@ Private Sub BanCuenta_Click()
     
     On Error GoTo BanCuenta_Click_Err
     
-    tmp = InputBox("¿Motivo?", "Ingrese el motivo")
+    tmp = InputBox(JsonLanguage.Item("INPUTBOX_MOTIVO"), JsonLanguage.Item("INPUTBOX_TITULO"))
     nick = cboListaUsus.Text
 
-    If MsgBox("¿Estás seguro que desea banear la cuenta de """ & nick & """?", vbYesNo + vbQuestion) = vbYes Then
+    If MsgBox(JsonLanguage.Item("MENSAJEBOX_BANEAR_CUENTA") & " " & nick, vbYesNo + vbQuestion) = vbYes Then
         Call WriteBanCuenta(nick, tmp)
 
     End If
@@ -1857,7 +1857,8 @@ Private Sub BorrarPersonaje_Click()
     On Error GoTo BorrarPersonaje_Click_Err
     
 
-    If MsgBox("¿Estás seguro que desea Borrar el personaje " & cboListaUsus.Text & "?", vbYesNo + vbQuestion) = vbYes Then
+    If MsgBox(JsonLanguage.Item("MENSAJEBOX_BORRAR_PERSONAJE") & " " & cboListaUsus.Text, vbYesNo + vbQuestion) = vbYes Then
+
 
         Call ParseUserCommand("/KILLCHAR " & cboListaUsus.Text) ' ver ReyarB
     End If
@@ -2053,9 +2054,9 @@ Private Sub cmdAccion_Click(Index As Integer)
             Call WriteKick(nick)
 
         Case 1 '/BAN NICK MOTIVO 0.12.1
-            tmp = InputBox("¿Motivo?", "Ingrese el motivo")
+            tmp = InputBox(JsonLanguage.Item("MENSAJE_MOTIVO"), JsonLanguage.Item("TITULO_MOTIVO"))
 
-            If MsgBox("¿Estás seguro que desea banear al personaje """ & cboListaUsus.Text & """?", vbYesNo + vbQuestion) = vbYes Then
+            If MsgBox(JsonLanguage.Item("MENSAJEBOX_BANEAR_PERSONAJE") & " " & cboListaUsus.Text, vbYesNo + vbQuestion) = vbYes Then
                 Call WriteBanChar(nick, tmp)
 
             End If
@@ -2099,7 +2100,7 @@ Private Sub cmdAccion_Click(Index As Integer)
                 Call ParseUserCommand("/CARCEL " & nick & "@encarcelado via panelgm@" & tmp)
            
             Else
-                MsgBox ("Ingreso un tiempo invalido.")
+                MsgBox JsonLanguage.Item("MENSAJE_TIEMPO_INVALIDO")
             
             End If
 
@@ -2187,7 +2188,7 @@ Private Sub cmdAccion_Click(Index As Integer)
 
             tmp = InputBox("¿Minutos a silenciar? (hasta 255)", "")
 
-            If MsgBox("¿Estás seguro que desea silenciar al personaje """ & nick & """?", vbYesNo + vbQuestion) = vbYes Then
+            If MsgBox(JsonLanguage.Item("MENSAJE_SILENCIAR_PERSONAJE") & nick & """?", vbYesNo + vbQuestion) = vbYes Then
                 If tmp > 255 Then Exit Sub
                 Call ParseUserCommand("/SILENCIAR " & cboListaUsus.Text & "@" & tmp)
 
@@ -2320,7 +2321,7 @@ Private Sub cmdCarcel_Click()
     tmp = InputBox("Escriba el motivo de Carcel .", "Carcel a " & TargetName)
     tmptime = InputBox("Escriba el tiempo de Carcel .", "Tiempo de Carcel a " & TargetName)
     If tmp = "" Or tmptime = "" Then
-        MsgBox "Faltan datos. Repita la acción.", vbExclamation, "Error"
+        MsgBox JsonLanguage.Item("MENSAJE_FALTAN_DATOS"), vbExclamation, "Error"
     Else
         Call WriteJail(tmpUser, tmp, tmptime)
     End If
@@ -2891,7 +2892,7 @@ Private Sub finalizarevento_Click()
     On Error GoTo finalizarevento_Click_Err
     
 
-    If MsgBox("¿Estás seguro que deseas finalizar el evento?", vbYesNo + vbQuestion, "¡ATENCIÓN!") = vbYes Then
+    If MsgBox(JsonLanguage.Item("MENSAJE_FINALIZAR_EVENTO"), vbYesNo + vbQuestion, "¡ATENCIÓN!") = vbYes Then
         Call WriteFinEvento
     End If
 
@@ -3441,7 +3442,7 @@ Private Sub mnuReload_Click(Index As Integer)
 
         Case 7 'Reload sockets
 
-             If MsgBox("Al realizar esta acción reiniciará la API de Winsock. Se cerrarán todas las conexiones.", vbYesNo, "Advertencia") = vbYes Then
+             If MsgBox(JsonLanguage.Item("MENSAJE_REINICIAR_API"), vbYesNo, "Advertencia") = vbYes Then
                '   Call SendData("/RELOAD SOCK")
            End If
 
@@ -3640,10 +3641,11 @@ Private Sub Temporal_Click()
 
     Dim tmp2 As Byte
 
-    tmp2 = InputBox("¿Días?", "Ingrese cantidad de días (Maximo 255)")
-    tmp = InputBox("¿Motivo?", "Ingrese el motivo")
+    tmp2 = InputBox(JsonLanguage.Item("MENSAJE_CANTIDAD_DIAS"), JsonLanguage.Item("TITULO_CANTIDAD_DIAS"))
+    tmp = InputBox(JsonLanguage.Item("MENSAJE_MOTIVO"), JsonLanguage.Item("TITULO_MOTIVO"))
+    
+    If MsgBox(JsonLanguage.Item("MENSAJE_BANEAR_PERSONAJE") & " " & cboListaUsus.Text & " " & tmp2, vbYesNo + vbQuestion) = vbYes Then
 
-    If MsgBox("¿Estás seguro que deseas banear el personaje de """ & cboListaUsus.Text & """ por " & tmp2 & " días?", vbYesNo + vbQuestion) = vbYes Then
         Call WriteBanTemporal(cboListaUsus.Text, tmp, tmp2)
 
     End If
@@ -3766,7 +3768,8 @@ Private Sub UnbanPersonaje_Click()
     
     nick = cboListaUsus.Text
 
-    If MsgBox("¿Estás seguro que deseas removerle el ban al personaje """ & nick & """?", vbYesNo + vbQuestion) = vbYes Then
+    If MsgBox(JsonLanguage.Item("MENSAJEBOX_REMOVE_BAN") & " " & nick, vbYesNo + vbQuestion, "Confirmation") = vbYes Then
+
         Call WriteUnbanChar(nick)
 
     End If

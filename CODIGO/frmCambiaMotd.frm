@@ -202,7 +202,7 @@ Private Sub cmdOk_Click()
         Loop
 
         If N <> 5 Then
-            MsgBox "Error en el formato de la linea " & i + 1 & "."
+            MsgBox JsonLanguage.Item("MENSAJEBOX_ERROR_FORMATO_LINEA") & i + 1 & "."
             Exit Sub
 
         End If

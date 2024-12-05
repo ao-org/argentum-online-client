@@ -1222,7 +1222,7 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     Next
 
     If bCambio Then
-        Resultado = MsgBox("Realizo cambios en la configuración ¿desea guardar antes de salir?", vbQuestion + vbYesNoCancel, "Guardar cambios")
+        Resultado = MsgBox(JsonLanguage.Item("MENSAJEBOX_CAMBIOS_CONFIGURACION"), vbQuestion + vbYesNoCancel, "Guardar cambios")
 
         If Resultado = vbYes Then Call GuardaConfigEnVariables
 

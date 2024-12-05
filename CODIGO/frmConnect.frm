@@ -890,7 +890,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                     Dim tmp As String
 
-                    If MsgBox("¿Esta seguro que desea borrar el personaje " & DeleteUser & " de la cuenta?", vbYesNo + vbQuestion, "Borrar personaje") = vbYes Then
+                    If MsgBox(JsonLanguage.Item("MENSAJEBOX_BORRAR_PERSONAJE") & DeleteUser & JsonLanguage.Item("MENSAJEBOX_DE_LA_CUENTA"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJEBOX_BORRAR")) = vbYes Then
+
                         frmDeleteChar.Show , frmConnect
                         
             
