@@ -195,7 +195,7 @@ Private Sub cmdFundarClan_Click()
     If UserStats.Estado = 1 Then 'Muerto
 
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
-            Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+           Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
         End With
 
         Exit Sub

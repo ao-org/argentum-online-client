@@ -1887,7 +1887,7 @@ Private Sub BusqedaTesoro_Click()
 
         Call WriteBusquedaTesoro(CByte(tmp))
     Else
-        MsgBox ("Tipo invalido")
+        MsgBox JsonLanguage.Item("MENSAJE_TIPO_INVALIDO"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
 
     End If
 
@@ -2416,7 +2416,7 @@ Private Sub cmdEventos_Click()
 
         Call WriteBusquedaTesoro(CByte(tmp))
     Else
-        MsgBox ("Tipo invalido")
+        MsgBox JsonLanguage.Item("MENSAJE_TIPO_INVALIDO"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
 
     End If
     

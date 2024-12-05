@@ -1853,7 +1853,7 @@ Private Sub HandleUpdateMana()
     If UserMeditar And UserStats.minman - OldMana > 0 Then
 
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
-            Call ShowConsoleMsg("Has ganado " & UserStats.minman - OldMana & " de maná.", .red, .green, .blue, .bold, .italic)
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GANAR_MANA") & (UserStats.minman - OldMana) & JsonLanguage.Item("MENSAJE_DE_MANA"), .red, .green, .blue, .bold, .italic)
         End With
     End If
     
@@ -5742,11 +5742,11 @@ On Error GoTo HandleMeditateToggle_Err
         UserMeditar = (Fx <> 0)
         If UserMeditar Then
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("Comienzas a meditar.", .red, .green, .blue, .bold, .italic)
+                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_COMIENZAS_A_MEDITAR"), .red, .green, .blue, .bold, .italic)
             End With
         Else
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("Has dejado de meditar.", .red, .green, .blue, .bold, .italic)
+                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_HAS_DEJADO_DE_MEDITAR"), .red, .green, .blue, .bold, .italic)
             End With
         End If
     End If
