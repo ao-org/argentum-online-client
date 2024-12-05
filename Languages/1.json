@@ -110,7 +110,7 @@
 	"MENSAJEBOX_BANEAR_CUENTA": "Â¿EstÃ¡s seguro que desea banear la cuenta de ",
 	"MENSAJE_TIEMPO_INVALIDO": "Ingreso un tiempo invalido.",
 	"MENSAJE_SILENCIAR_PERSONAJE": "Â¿EstÃ¡s seguro que desea silenciar al personaje ",
-	"MENSAJE_FALTAN_DATOS": "Faltan datos. Por favor, repite la acciÃ³n.",
+	"MENSAJE_FALTAN_DATOS": "Faltan datos. Por favor, repite la acciÃ³n."
 	"MENSAJE_FINALIZAR_EVENTO": "Â¿EstÃ¡s seguro que deseas finalizar el evento?",
 	"MENSAJE_REINICIAR_API": "Al realizar esta acciÃ³n reiniciarÃ¡ la API de Winsock. Se cerrarÃ¡n todas las conexiones.",
 	"MENSAJE_BANEAR_PERSONAJE": "Â¿EstÃ¡s seguro que deseas banear el personaje ",	
@@ -150,3 +150,4 @@
 	"MENSAJE_ERROR_MOTOR_GRAFICO": "Ha ocurrido un error al iniciar el motor grÃ¡fico.",
     "MENSAJE_SUGERENCIA_DRIVERS": "AsegÃºrate de tener los drivers grÃ¡ficos actualizados y la librerÃ­a DX8VB.dll registrada correctamente.",
 }
+
