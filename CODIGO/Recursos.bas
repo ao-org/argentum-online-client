@@ -1850,8 +1850,14 @@ Continue:
     Next Hechizo
     
     For i = 1 To NumLocaleMsg
-        DoEvents
-        Locale_SMG(i) = Leer.GetValue("msg", "Msg" & i)
+    
+            DoEvents
+            If language = Spanish Then
+                 Locale_SMG(i) = Leer.GetValue("SP_msg", "Msg" & i)
+            Else
+                Locale_SMG(i) = Leer.GetValue("EN_msg", "Msg" & i)
+            End If
+
     Next i
     
     Dim SearchVar As String

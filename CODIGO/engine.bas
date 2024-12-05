@@ -290,8 +290,9 @@ On Error GoTo NewEngineInitErr:
     Exit Sub
     
 NewEngineInitErr:
-  Call MsgBox("Ha ocurrido un error al iniciar el motor grafico." & vbNewLine & _
-                "Asegúrate de tener los drivers gráficos actualizados y la librería DX8VB.dll registrada correctamente.", vbCritical, "Argentum20")
+    Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_MOTOR_GRAFICO") & vbNewLine & _
+            JsonLanguage.Item("MENSAJE_SUGERENCIA_DRIVERS"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
+
     
     Debug.Print "Error Number Returned: " & Err.Number
 
@@ -359,8 +360,8 @@ On Error Resume Next
     
 ErrHandler:
     
-    Call MsgBox("Ha ocurrido un error al iniciar el motor grafico." & vbNewLine & _
-                "Asegúrate de tener los drivers gráficos actualizados y la librería DX8VB.dll registrada correctamente.", vbCritical, "Argentum20")
+Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_MOTOR_GRAFICO") & vbNewLine & _
+            JsonLanguage.Item("MENSAJE_SUGERENCIA_DRIVERS"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
     
     Debug.Print "Error Number Returned: " & Err.Number
 

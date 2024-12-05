@@ -1387,7 +1387,7 @@ Private Sub imgCerrar_Click()
     On Error GoTo imgCerrar_Click_Err
     
     If RealizoCambios >= 1 Then
-        If MsgBox("Realizó cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
+        If MsgBox(JsonLanguage.Item("MENSAJEBOX_CAMBIOS_SKILLPOINTS"), vbYesNo) = vbYes Then
 
             Dim skillChanges(NUMSKILLS) As Byte
 

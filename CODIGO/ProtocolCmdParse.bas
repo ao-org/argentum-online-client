@@ -150,7 +150,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -164,7 +164,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -177,7 +177,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -190,7 +190,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -203,7 +203,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -216,7 +216,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -230,7 +230,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -243,7 +243,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/MEDITAR"
                 If UserStats.MinMAN = UserStats.MaxMAN Then
                     With FontTypes(FontTypeNames.FONTTYPE_INFOBOLD)
-                        Call ShowConsoleMsg("¡Tu maná está completo!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_MANA_COMPLETO"), .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -252,7 +252,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -288,7 +288,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -297,7 +297,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 ElseIf Comerciando Then 'Comerciando
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("Ya estás comerciando", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_YA_COMERCIANDO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -311,7 +311,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -342,7 +342,8 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteGuildMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
+
 
                 End If
                 
@@ -352,7 +353,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteGrupoMsg(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
         
@@ -364,7 +365,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteCouncilMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
                 
@@ -428,7 +429,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -466,7 +467,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -493,7 +494,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -521,7 +522,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -538,7 +539,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -597,7 +598,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteGMMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
                 
@@ -1260,7 +1261,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteServerMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
                 
@@ -1417,7 +1418,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRoyalArmyMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
                  
@@ -1427,7 +1428,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteChaosLegionMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
            
@@ -1437,7 +1438,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteTalkAsNPC(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
         
@@ -1727,7 +1728,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteSystemMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
                 
@@ -2036,7 +2037,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                             Call WriteGlobalMessage(ArgumentosRaw)
                         Else
                             'Avisar que falta el parametro
-                            Call ShowConsoleMsg("Escriba un mensaje.")
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                         End If
 
@@ -2111,7 +2112,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
         If UserStats.Estado = 1 Then 'Muerto
 
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+               Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
             End With
 

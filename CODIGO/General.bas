@@ -1050,7 +1050,7 @@ On Error GoTo Main_Err
     Call FormParser.Init
     Call CheckResources
     If Not ValidateResources Then
-        Call MsgBox("Recursos invalidos.", vbApplicationModal + vbInformation + vbOKOnly, "Recursos invalidos.")
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_RECURSOS_INVALIDOS"), vbApplicationModal + vbInformation + vbOKOnly, JsonLanguage.Item("MENSAJEBOX_TITULO_RECURSOS_INVALIDOS"))
         End
     End If
     If PantallaCompleta Then
@@ -1072,7 +1072,7 @@ On Error GoTo Main_Err
         Debug.Print "Init Steam " & steam_init_result
         If Not RunningInVB Then
             If FindPreviousInstance Then
-                Call MsgBox("¡Argentum Online ya esta corriendo! No es posible correr otra instancia del juego. Haga clic en Aceptar para salir.", vbApplicationModal + vbInformation + vbOKOnly, "Error al ejecutar")
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_EJECUCION"), vbApplicationModal + vbInformation + vbOKOnly, "Error")
                 End
             End If
  
@@ -1150,9 +1150,9 @@ Public Sub RegisterCom()
     On Error GoTo Com_Err:
     If MsgBox(JsonLanguage.Item("MENSAJEBOX_COMPONENTES_FALTANTES"), vbYesNo) = vbYes Then
             If System.ShellExecuteEx("regcom.bat", App.path) Then
-                Call MsgBox("com files registered")
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ARCHIVOS_COM_REGISTRADOS"), vbOKOnly, "Info")
             Else
-                Call MsgBox("Failed to register com files")
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ARCHIVOS_COM_NO_REGISTRADOS"), vbOKOnly, "Error")
             End If
         End If
         End
@@ -1877,7 +1877,7 @@ On Error GoTo Handler
     Exit Function
     
 Handler:
-    Call MsgBox("Error al comprobar el cliente del juego, por favor reinstale y vuelva a intentar.", vbOKOnly, "Cliente corrompido")
+    Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_CLIENTE_COMPROBAR"), vbOKOnly, JsonLanguage.Item("MENSAJEBOX_TITULO_CLIENTE_CORROMPIDO"))
     End
 
 End Function

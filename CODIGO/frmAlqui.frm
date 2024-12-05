@@ -241,7 +241,7 @@ Private Sub Command3_Click()
     
     
     If lstArmas.ListIndex < 0 Then
-        MsgBox "Debes seleccionar un objeto de la lista"
+        MsgBox JsonLanguage.Item("MENSAJE_SELECCIONAR_OBJETO"), vbExclamation + vbOKOnly
         Exit Sub
 
     End If

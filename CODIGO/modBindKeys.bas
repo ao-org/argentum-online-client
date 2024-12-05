@@ -105,7 +105,7 @@ Public Sub LoadBindedKeys()
     On Error GoTo LoadBindedKeys_Err
 
     If Not FileExist(App.path & DefaultKeyMappingFile, vbArchive) Then
-        MsgBox "Se requiere el archivo " & App.path & DefaultKeyMappingFile, vbCritical + vbOKOnly
+        MsgBox JsonLanguage.Item("MENSAJE_ARCHIVO_REQUERIDO") & App.path & DefaultKeyMappingFile, vbCritical + vbOKOnly, JsonLanguage.Item("TITULO_ERROR")
         End
     End If
 

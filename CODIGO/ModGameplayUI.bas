@@ -621,7 +621,7 @@ If pausa Then Exit Sub
     If SpellName <> "(Vacío)" Then
         If UserStats.estado = 1 Then
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+               Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
             End With
         Else
             If ModoHechizos = BloqueoLanzar Then
