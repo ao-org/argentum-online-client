@@ -895,7 +895,7 @@ Private Sub CheckUI_MouseUp(Button As Integer, Shift As Integer, X As Single, Y 
     On Error GoTo CheckUI_MouseUp_Err
     
     CheckUI.Picture = LoadInterface("check-amarillo.bmp")
-    Call MsgBox("UI momentaneamente deshabilitada", vbExclamation)
+    Call MsgBox(JsonLanguage.Item("MENSAJEBOX_UI_DESHABILITADA"), vbExclamation)
     CheckUI.Picture = Nothing
 
     '***PARA VOLVER A HABILITAR EL ACTIVADO/DESACTIVADO DE LA UI, BORRAR LAS TRES LINEAS DE ARRIBA Y DESCOMENTAR LAS DE ABAJO**

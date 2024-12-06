@@ -69,7 +69,7 @@ On Error Resume Next
     Err.Number = 0
     Set mDirectSoundEnum = mDirectX.GetDSEnum
     If Err.Number <> 0 Then
-                Call MsgBox("Fatal error DirectX.GetDSEnum", vbCritical, App.title)
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_ENUM"), vbCritical, App.title)
                 Debug.Print "Error Number Returned: " & Err.Number
                 InitSoundEngine = Err.Number
                 Exit Function
@@ -77,7 +77,7 @@ On Error Resume Next
     
     Set mDirectSound = DirectX.DirectSoundCreate(mDirectSoundEnum.GetGuid(1))
     If Err.Number <> 0 Then
-                Call MsgBox("Fatal error DirectX.DirectSoundCreate", vbCritical, App.title)
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_CREAR"), vbCritical, App.title)
                 Debug.Print "Error Number Returned: " & Err.Number
                 InitSoundEngine = Err.Number
                 Exit Function
@@ -93,14 +93,14 @@ On Error Resume Next
     With mMidiTrack(1)
             Set .directMusicLoader = dx8.DirectMusicLoaderCreate
             If Err.Number <> 0 Then
-                Call MsgBox("Fatal error DirectX.DirectMusicLoaderCreate", vbCritical, App.title)
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_MUSIC"), vbCritical, App.title)
                 Debug.Print "Error Number Returned: " & Err.Number
                 InitMusicEngine = Err.Number
                 Exit Function
             End If
             Set .directMusicPerformance = dx8.DirectMusicPerformanceCreate
             If Err.Number <> 0 Then
-                Call MsgBox("Fatal error  dx8.DirectMusicPerformanceCreate", vbCritical, App.title)
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_MUSIC_PERFORMANCE"), vbCritical, App.title)
                 Debug.Print "Error Number Returned: " & Err.Number
                 InitMusicEngine = Err.Number
                 Exit Function

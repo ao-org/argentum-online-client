@@ -305,7 +305,7 @@ On Error Resume Next
 
     Err.Clear
     If init_dx_objects() <> 0 Then
-        Call MsgBox("DirectX is not working", vbCritical, App.title)
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_DIRECTX_NO_FUNCIONA"), vbCritical, App.title)
         End
     End If
     
@@ -313,7 +313,7 @@ On Error Resume Next
     Call list_modes(DirectD3D)
 #End If
     If init_dx_device() <> 0 Then
-        Call MsgBox("Faied to init DX device", vbCritical, App.title)
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_INICIO_DISPOSITIVO_DX"), vbCritical, App.title)
         End
     End If
         

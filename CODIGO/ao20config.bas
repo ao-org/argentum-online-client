@@ -83,7 +83,7 @@ Sub LoadConfig()
     If InitializeSettings() Then
         Call LoadBindedKeys
     Else
-        Call MsgBox("¡No se puede cargar el archivo de opciones! La reinstalacion del juego podria solucionar el problema.", vbCritical, "Error al cargar")
+        Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_CARGAR_OPCIONES"), vbCritical, JsonLanguage.Item("TITULO_ERROR_CARGAR"))
         End
     End If
 
@@ -140,7 +140,8 @@ Sub LoadConfig()
     Exit Sub
     
 ErrorHandler:
-    Call MsgBox("Ha ocurrido un error al cargar la configuración del juego.", vbCritical, "Configuración del Juego")
+    Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_CARGAR_CONFIG"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_CONFIGURACION"))
+
     End
 End Sub
 

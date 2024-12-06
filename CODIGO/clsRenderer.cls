@@ -79,21 +79,21 @@ On Error Resume Next
     Err.Clear
     Set mDirectX = New DirectX8
     If Err.Number <> 0 Then
-                Call MsgBox("Fatal error creating DirectX8 objetct", vbCritical, App.title)
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX8"), vbCritical, App.title)
                 Debug.Print "Error Number Returned: " & Err.Number
                 Exit Function
     End If
     
     Set mDirectD3D = DirectX.Direct3DCreate()
     If Err.Number <> 0 Then
-                Call MsgBox("Fatal error creating DirectD3D objetct", vbCritical, App.title)
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTD3D"), vbCritical, App.title)
                 Debug.Print "Error Number Returned: " & Err.Number
                 Exit Function
     End If
     
     Set mDirectD3D8 = New D3DX8
     If Err.Number <> 0 Then
-                Call MsgBox("Fatal error creating DirectD3D8 objetct", vbCritical, App.title)
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTD3D8"), vbCritical, App.title)
                 Debug.Print "Error Number Returned: " & Err.Number
                 Exit Function
     End If
