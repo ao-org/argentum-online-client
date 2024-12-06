@@ -120,7 +120,7 @@ Public Sub IniciarMeteorologia()
     Call SetRGBA(BlindColor, 4, 4, 4)
     
     ' Dungeon
-    Call SetRGBA(DungeonColor, 130, 130, 130)
+    Call SetRGBA(DungeonColor, 190, 190, 190)
     
     TimeIndex = -1
 
@@ -156,10 +156,10 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
             End If
             
             If TimeIndex = NightIndex Then
-                Call Sound.Sound_Play(FXSound.Lobo_Sound, False, 0, 0)
+                Call ao20audio.playwav(FXSound.Lobo_Sound, False, 0, 0)
     
             ElseIf TimeIndex = MorningIndex Then
-                Call Sound.Sound_Play(FXSound.Gallo_Sound, False, 0, 0)
+                Call ao20audio.playwav(FXSound.Gallo_Sound, False, 0, 0)
     
             End If
         End If
@@ -229,7 +229,7 @@ Public Sub RestaurarLuz()
     ElseIf UserCiego Then
         global_light = BlindColor
         
-    ElseIf MapDat.zone = "DUNGEON" Then
+    ElseIf MapDat.zone = "DUNGEON" And Not DisableDungeonLighting Then
         global_light = DungeonColor
         
     ElseIf TimeIndex >= 0 Then

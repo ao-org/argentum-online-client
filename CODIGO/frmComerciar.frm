@@ -375,7 +375,7 @@ Private Sub cmdComprar_Click()
     If UserStats.GLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
         Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
     Else
-        AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+        AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENES_ORO_SUFICIENTE"), 2, 51, 223, 1, 1
 
     End If
 End Sub
@@ -398,7 +398,7 @@ Private Sub addRemove_Click(Index As Integer)
     
     On Error GoTo addRemove_Click_Err
     
-    Call Sound.Sound_Play(SND_CLICK)
+    Call ao20audio.playwav(SND_CLICK)
 
     Select Case Index
 
@@ -448,6 +448,14 @@ cantidad_Change_Err:
     
 End Sub
 
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error GoTo Form_MouseMove_Err
+    MoverForm
+    Exit Sub
+Form_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.Form_MouseMove", Erl)
+    Resume Next
+End Sub
 Private Sub Form_Unload(Cancel As Integer)
     
     On Error GoTo Form_Unload_Err
@@ -500,13 +508,6 @@ Private Sub interface_DblClick()
         If Not InvComNpc.IsItemSelected Then Exit Sub
     
         LasActionBuy = True
-
-      '  If UserGLD >= InvComNpc.Valor(InvComNpc.SelectedItem) * Val(cantidad) Then
-      '      Call WriteCommerceBuy(InvComNpc.SelectedItem, cantidad.Text)
-      '  Else
-      '      AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
-
-      '  End If
         
     ElseIf InvComUsu.ClickedInside Then
     
@@ -667,7 +668,7 @@ Private Sub InvComNpc_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, 
         If UserStats.GLD >= InvComNpc.Valor(Drag) * Val(cantidad.Text) Then
             Call WriteCommerceBuy(Drag, Val(cantidad.Text))
         Else
-            AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENES_ORO_SUFICIENTE"), 2, 51, 223, 1, 1
         End If
 
     End If

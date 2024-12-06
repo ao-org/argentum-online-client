@@ -45,11 +45,13 @@ Public Enum e_LobbyCommandId
     eForceReset
     eSetTeamSize
     eAddPlayer
+    eSetInscriptionPrice
 End Enum
 
 Public Enum e_DebugCommands
     eGetLastLogs
     eConnectionState
+    eUserIdsState
 End Enum
 
 ''
@@ -148,7 +150,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -162,7 +164,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -175,7 +177,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -188,7 +190,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -201,7 +203,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -214,7 +216,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -228,7 +230,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -241,7 +243,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/MEDITAR"
                 If UserStats.MinMAN = UserStats.MaxMAN Then
                     With FontTypes(FontTypeNames.FONTTYPE_INFOBOLD)
-                        Call ShowConsoleMsg("¡Tu maná está completo!", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_MANA_COMPLETO"), .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -250,7 +252,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
                     End With
 
                     Exit Sub
@@ -286,7 +288,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -295,7 +297,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 ElseIf Comerciando Then 'Comerciando
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("Ya estás comerciando", .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_YA_COMERCIANDO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -309,7 +311,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -340,7 +342,8 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteGuildMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
+
 
                 End If
                 
@@ -350,7 +353,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteGrupoMsg(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
         
@@ -362,7 +365,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteCouncilMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
                 
@@ -426,7 +429,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -464,7 +467,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -491,7 +494,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -519,7 +522,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -536,7 +539,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.Estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                        Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -561,10 +564,13 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 
             Case "/DENUNCIAR"
                 If notNullArguments Then
-                    PreguntaScreen = "¿Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia."
-                    Pregunta = True
+                    If BabelInitialized Then
+                        Call ShowQuestion("¿Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia.")
+                    Else
+                        PreguntaScreen = "¿Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia."
+                        Pregunta = True
+                    End If
                     TargetName = ArgumentosRaw
-    
                     PreguntaLocal = True
                     PreguntaNUM = 2
                 Else
@@ -592,7 +598,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteGMMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
                 
@@ -1255,7 +1261,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteServerMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
                 
@@ -1412,7 +1418,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRoyalArmyMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
                  
@@ -1422,7 +1428,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteChaosLegionMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
            
@@ -1432,7 +1438,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteTalkAsNPC(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
         
@@ -1510,10 +1516,10 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/BANIPLIST"
-                Call WriteBannedIPList
+                Call ShowConsoleMsg("Not supported.")
                 
             Case "/BANIPRELOAD"
-                Call WriteBannedIPReload
+                Call ShowConsoleMsg("Not supported.")
                 
             Case "/MIEMBROSCLAN"
 
@@ -1536,39 +1542,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
                 
             Case "/BANIP"
-
-                If CantidadArgumentos = 2 Then
-
-                    Call WriteBanIP(ArgumentosAll(0), ArgumentosAll(1))
-
-                Else
-                
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /banip IP motivo o /banip nick motivo.")
-
-                End If
+                Call ShowConsoleMsg("Not supported.")
                 
             Case "/UNBANIP"
 
-                If notNullArguments Then
-                
-                    If validipv4str(ArgumentosRaw) Then
-                    
-                        Call WriteUnbanIP(str2ipv4l(ArgumentosRaw))
-                        
-                    Else
-                    
-                        'No es una IP
-                        Call ShowConsoleMsg("IP incorrecta. Utilice /unbanip IP.")
-
-                    End If
-
-                Else
-                
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Faltan parámetros. Utilice /unbanip IP.")
-
-                End If
+               Call ShowConsoleMsg("Not supported.")
                 
             Case "/CI"
 
@@ -1750,7 +1728,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteSystemMessage(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg("Escriba un mensaje.")
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
                 
@@ -1829,8 +1807,13 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteServerOpenToUsersToggle
             
             Case "/PARTICIPAR"  '
-                Call WriteParticipar
-                
+                If CantidadArgumentos < 1 Then
+                    Call WriteParticipar(-1, "")
+                ElseIf CantidadArgumentos < 2 Then
+                    Call WriteParticipar(ArgumentosAll(0), "")
+                Else
+                    Call WriteParticipar(ArgumentosAll(0), ArgumentosAll(1))
+                End If
             Case "/CONDEN"
 
                 If notNullArguments Then
@@ -2054,7 +2037,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                             Call WriteGlobalMessage(ArgumentosRaw)
                         Else
                             'Avisar que falta el parametro
-                            Call ShowConsoleMsg("Escriba un mensaje.")
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                         End If
 
@@ -2129,7 +2112,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
         If UserStats.Estado = 1 Then 'Muerto
 
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+               Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
 
             End With
 
@@ -2211,6 +2194,8 @@ Private Sub HandleReqDebugCmd(ByRef arguments() As String, ByVal argCount As Int
                 Next i
                 arguments(0) = username
                 Call WriteRequestDebug(e_DebugCommands.eConnectionState, arguments, 1)
+            ElseIf eType = "USERIDS" Then
+                Call WriteRequestDebug(e_DebugCommands.eUserIdsState, arguments(), 0)
             Else
                 Call ShowConsoleMsg("Parametros incorrectos.")
             End If
@@ -2221,7 +2206,14 @@ End Sub
 Private Sub StartCaptureTheFlag(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 6 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) And ValidNumber(arguments(4), eNumber_Types.ent_Long) And ValidNumber(arguments(5), eNumber_Types.ent_Long) Then
-            Call WrtieStartCapture(arguments(1), arguments(2), arguments(3), arguments(4), arguments(5))
+            Dim LobbyInfo As t_NewScenearioSettings
+            LobbyInfo.ScenearioType = 1
+            LobbyInfo.MaxPlayers = arguments(1)
+            LobbyInfo.RoundAmount = arguments(2)
+            LobbyInfo.MinLevel = arguments(3)
+            LobbyInfo.MaxLevel = arguments(4)
+            LobbyInfo.InscriptionFee = arguments(5)
+            Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO CAPTURA PARTICIPANTES CANTIDAD_RONDAS NIVEL_MINIMO NIVEL_MAXIMO PRECIO.")
@@ -2234,7 +2226,12 @@ End Sub
 Private Sub StartLobby(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 3 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
-            Call WriteStartLobby(0, arguments(1), arguments(2), arguments(3))
+            Dim LobbyInfo As t_NewScenearioSettings
+            LobbyInfo.ScenearioType = 0
+            LobbyInfo.MaxPlayers = arguments(1)
+            LobbyInfo.MinLevel = arguments(2)
+            LobbyInfo.MaxLevel = arguments(3)
+            Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO LOBBY PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
@@ -2247,7 +2244,12 @@ End Sub
 Private Sub StartCustomMap(ByVal mapType As Byte, ByVal name As String, ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 3 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
-            Call WriteStartLobby(mapType, arguments(1), arguments(2), arguments(3))
+            Dim LobbyInfo As t_NewScenearioSettings
+            LobbyInfo.ScenearioType = mapType
+            LobbyInfo.MaxPlayers = arguments(1)
+            LobbyInfo.MinLevel = arguments(2)
+            LobbyInfo.MaxLevel = arguments(3)
+            Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
             Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
@@ -2406,6 +2408,14 @@ Private Sub ConfigLobbyAddPlayer(ByRef arguments() As String, ByVal argCount As 
     End If
 End Sub
 
+Private Sub ConfigLobbySetPrice(ByRef arguments() As String, ByVal argCount As Integer)
+    If argCount >= 2 Then
+        Call WriteLobbyCommand(e_LobbyCommandId.eSetInscriptionPrice, arguments(1))
+    Else
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CONFIGLOBBY SETPRICE CantidadDeOro")
+    End If
+End Sub
+
 Private Sub ConfigLobbySetTeamSize(ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 2 Then
         Dim premade As Byte
@@ -2473,12 +2483,14 @@ Private Sub ConfigLobby(ByRef arguments() As String, ByVal argCount As Integer)
             Call ConfigLobbySetTeamSize(arguments(), argCount)
         ElseIf eType = "ADDPLAYER" Then
             Call ConfigLobbyAddPlayer(arguments(), argCount)
+        ElseIf eType = "SETPRICE" Then
+            Call ConfigLobbySetPrice(arguments(), argCount)
         Else
-            Call ShowConsoleMsg("Parametro invalido. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK/FORCERESET/SETTEAMSIZE/ADDPLAYER")
+            Call ShowConsoleMsg("Parametro invalido. Utilice /CONFIGLOBBY SETPRICE/SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK/FORCERESET/SETTEAMSIZE/ADDPLAYER")
         End If
     Else
         'Avisar que falta el parametro
-        Call ShowConsoleMsg("Faltan parámetros. Utilice /CONFIGLOBBY SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK")
+        Call ShowConsoleMsg("Faltan parámetros. Utilice /CONFIGLOBBY SETPRICE/SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK")
     End If
 End Sub
 ''

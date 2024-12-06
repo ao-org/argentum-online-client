@@ -3,71 +3,69 @@ Begin VB.Form frmEstadisticas
    BackColor       =   &H00C0C0C0&
    BorderStyle     =   0  'None
    Caption         =   "Estadisticas"
-   ClientHeight    =   8652
+   ClientHeight    =   8655
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   7092
+   ClientWidth     =   7095
    Icon            =   "FrmEstadisticas.frx":0000
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   721
+   ScaleHeight     =   577
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   591
+   ScaleWidth      =   473
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.Image command1 
       Height          =   300
       Index           =   49
-      Left            =   0
+      Left            =   2040
       Tag             =   "0"
-      Top             =   0
+      Top             =   720
       Visible         =   0   'False
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   48
-      Left            =   0
+      Left            =   2520
       Tag             =   "0"
-      Top             =   0
+      Top             =   720
       Visible         =   0   'False
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   43
-      Left            =   0
+      Left            =   2205
       Tag             =   "0"
-      Top             =   0
-      Visible         =   0   'False
+      Top             =   7170
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   42
-      Left            =   0
+      Left            =   3120
       Tag             =   "0"
-      Top             =   0
-      Visible         =   0   'False
+      Top             =   7170
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   29
-      Left            =   0
+      Left            =   1440
       Tag             =   "0"
-      Top             =   0
+      Top             =   240
       Visible         =   0   'False
       Width           =   330
    End
    Begin VB.Image command1 
       Height          =   300
       Index           =   28
-      Left            =   0
+      Left            =   1920
       Tag             =   "0"
-      Top             =   0
+      Top             =   240
       Visible         =   0   'False
       Width           =   330
    End
@@ -78,7 +76,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -88,9 +86,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   0
-      Left            =   0
+      Left            =   720
       TabIndex        =   27
-      Top             =   0
+      Top             =   600
       Visible         =   0   'False
       Width           =   285
    End
@@ -101,7 +99,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -111,10 +109,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   22
-      Left            =   0
+      Left            =   2700
       TabIndex        =   26
-      Top             =   0
-      Visible         =   0   'False
+      Top             =   7200
       Width           =   285
    End
    Begin VB.Label text1 
@@ -124,7 +121,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -134,9 +131,9 @@ Begin VB.Form frmEstadisticas
       ForeColor       =   &H000EA4EB&
       Height          =   210
       Index           =   15
-      Left            =   0
+      Left            =   360
       TabIndex        =   25
-      Top             =   0
+      Top             =   600
       Visible         =   0   'False
       Width           =   285
    End
@@ -156,7 +153,7 @@ Begin VB.Form frmEstadisticas
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -194,7 +191,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -237,7 +234,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -291,7 +288,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -313,7 +310,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -351,7 +348,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -389,7 +386,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -411,7 +408,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -433,7 +430,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -455,7 +452,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -477,7 +474,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -499,7 +496,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -521,7 +518,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -543,7 +540,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -565,7 +562,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -587,7 +584,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -609,7 +606,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -631,7 +628,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -653,7 +650,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -675,7 +672,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -697,7 +694,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -719,7 +716,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -741,7 +738,7 @@ Begin VB.Form frmEstadisticas
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -759,7 +756,7 @@ Begin VB.Form frmEstadisticas
    Begin VB.Image command1 
       Height          =   300
       Index           =   0
-      Left            =   3105
+      Left            =   3120
       Tag             =   "0"
       Top             =   2235
       Width           =   330
@@ -897,7 +894,7 @@ Begin VB.Form frmEstadisticas
       Index           =   3
       Left            =   2205
       Tag             =   "0"
-      Top             =   6375
+      Top             =   6360
       Width           =   330
    End
    Begin VB.Image command1 
@@ -1347,7 +1344,7 @@ Private Sub Image1_Click()
     
 
     If RealizoCambios >= 1 Then
-        If MsgBox("Realizo cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
+        If MsgBox(JsonLanguage.Item("MENSAJEBOX_GUARDAR_SKILLPOINTS"), vbYesNo) = vbYes Then
 
             Dim skillChanges(NUMSKILLS) As Byte
 
@@ -1390,7 +1387,7 @@ Private Sub imgCerrar_Click()
     On Error GoTo imgCerrar_Click_Err
     
     If RealizoCambios >= 1 Then
-        If MsgBox("Realizó cambios en sus skillpoints ¿desea guardar antes de salir?", vbYesNo) = vbYes Then
+        If MsgBox(JsonLanguage.Item("MENSAJEBOX_CAMBIOS_SKILLPOINTS"), vbYesNo) = vbYes Then
 
             Dim skillChanges(NUMSKILLS) As Byte
 
@@ -1432,7 +1429,7 @@ Private Sub skills_Click(Index As Integer)
     
     On Error GoTo skills_Click_Err
     
-    AddtoRichTextBox frmMain.RecTxt, "Información del skill> " & SkillsDesc(Index), 2, 51, 223, 1, 1
+    AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_INFORMACION_DE_SKILL") & SkillsDesc(Index), 2, 51, 223, 1, 1
 
     Exit Sub
 

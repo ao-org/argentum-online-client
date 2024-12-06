@@ -38,19 +38,19 @@ Private Type NEWCHARACTERDATA
     City As Long
 End Type
 
-Private Type SINGLESTRINGPARAM
+Public Type SINGLESTRINGPARAM
     Ptr As Long
     Len As Long
 End Type
 
-Private Type DOUBLESTRINGPARAM
+Public Type DOUBLESTRINGPARAM
     FirstPtr As Long
     FirstLen As Long
     SecondPtr As Long
     SecondLen As Long
 End Type
 
-Private Type TRIPLESTRINGPARAM
+Public Type TRIPLESTRINGPARAM
     FirstPtr As Long
     FirstLen As Long
     SecondPtr As Long
@@ -59,7 +59,7 @@ Private Type TRIPLESTRINGPARAM
     ThirdLen As Long
 End Type
 
-Private Type BABELSETTINGS
+Public Type BABELSETTINGS
     Width As Long
     Height As Long
     Compresed As Long
@@ -101,11 +101,12 @@ Public Type t_InvItem
     MaxHit As Integer
     MinDef As Integer
     MaxDef As Integer
-    Value As Long
+    Value As Single
     Cooldown As Long
     CDType As Integer
     CDMask As Long
     Amunition As Integer
+    IsBindable As Byte
     Name As String
     Desc As String
 End Type
@@ -129,6 +130,19 @@ Public Type t_GamePlayCallbacks
     UpdateScrollPos As Long
     TeleportToMiniMapPos As Long
     UpdateCombatAndGlobalChat As Long
+    UpdateHotKeySlot As Long
+    UpdateHideHotkeyState As Long
+    HandleQuestionResponse As Long
+    MoveMerchanSlot As Long
+    CloseMerchant As Long
+    BuyItem As Long
+    SellItem As Long
+    BuyAOShop As Long
+    UpdateIntSetting As Long
+    CreateNewScenario As Long
+    JoinScenario As Long
+    UpdateSkillList As Long
+    SendGuildRequest As Long
 End Type
 
 Public Type t_SpellSlot
@@ -136,7 +150,13 @@ Public Type t_SpellSlot
     SpellIndex As Integer
     icon As Long
     Cooldown As Long
+    IsBindable As Byte
     SpellName As String
+End Type
+
+Public Type t_ShopItem
+    ObjIndex As Long
+    Price As Long
 End Type
 
 Public Enum e_ChatMode
@@ -170,6 +190,39 @@ Public Enum e_ActionRequest
     eDisplayInventory = 23
     eDisplaySpells = 24
     eSetMeditate = 25
+    eOpenKeySettings = 26
+    eSaveSettings = 27
+    eTeleportToMap = 28
+    eDisplayGuildDetails = 29
+End Enum
+
+Public Enum e_UpdateSetting
+    eCopyDialogsEnabled = 1
+    eWriteAndMove = 2
+    eBlockSpellListScroll = 3
+    eThrowSpellLockBehavior = 4
+    eMouseSens = 5
+    eUserGraphicCursor = 6
+    eLanguage = 7
+    eRenderNpcText = 8
+    eTutorialEnabled = 9
+    eShowFps = 10
+    eMoveGameWindow = 11
+    eCharacterBreathing = 12
+    eFullScreen = 13
+    eDisplayFloorItemInfo = 14
+    eDisplayFullNumbersInventory = 15
+    eEnableBabelUI = 16
+    eEnableMusic = 17
+    eEnableFx = 18
+    eEnableAmbient = 19
+    eSailFx = 20
+    eInvertChannels = 21
+    eMusicVolume = 22
+    eFxVolume = 23
+    eAmbientVolume = 24
+    eLightSettings = 25
+    eDisableDungeonLighting = 26
 End Enum
 
 Public Enum e_SafeType
@@ -178,6 +231,29 @@ Public Enum e_SafeType
     eAttack = 3
     eResurrecion = 4
 End Enum
+
+Public Type t_NewScenearioSettings
+    MinLevel As Byte
+    MaxLevel As Byte
+    MinPlayers As Byte
+    MaxPlayers As Byte
+    TeamSize As Byte
+    TeamType As Byte
+    InscriptionFee As Long
+    ScenearioType As Byte
+    RoundAmount As Byte
+End Type
+
+Public Type t_GuildInfo
+    Name As String
+    Founder As String
+    CreationDate As String
+    Leader As String
+    MemberCount As Integer
+    Aligment As String
+    Description As String
+    Level As Byte
+End Type
 
 Private ServerEnvironment As String
 
@@ -218,7 +294,7 @@ Public Declare Sub UpdateGold Lib "BabelUI.dll" (ByVal NewValue As Long, ByVal S
 Public Declare Sub UpdateExp Lib "BabelUI.dll" (ByVal Current As Long, ByVal max As Long)
 Public Declare Sub OpenChat Lib "BabelUI.dll" (ByVal mode As Long)
 Public Declare Sub UpdateStrAndAgiBuff Lib "BabelUI.dll" (ByVal str As Byte, ByVal Agi As Byte, ByVal StrState As Byte, ByVal StrState As Byte)
-Public Declare Sub UpdateMapInfo Lib "BabelUI.dll" (ByVal MapNumber As Long, ByVal MapName As String, ByVal NpcCount As Integer, ByRef NpcList As t_QuestNPCMapData, ByVal IsSafe As Byte)
+Public Declare Sub UpdateMapInfo Lib "BabelUI.dll" (ByVal MapNumber As Long, ByVal MiniMapFile As Long, ByVal MapName As String, ByVal NpcCount As Integer, ByRef NpcList As t_QuestNPCMapData, ByVal IsSafe As Byte)
 Public Declare Sub UpdateUserPos Lib "BabelUI.dll" (ByVal TileX As Integer, ByVal TileY As Integer, ByRef MapPos As t_Position)
 Public Declare Sub UpdateGroupPos Lib "BabelUI.dll" (ByRef MapPos As t_Position, ByVal GroupIndex As Integer)
 Public Declare Sub SetKeySlot Lib "BabelUI.dll" (ByRef SlotInfo As t_InvItem)
@@ -240,6 +316,21 @@ Public Declare Sub UpdateRemoteMousePos Lib "BabelUI.dll" (ByVal PosX As Long, B
 Public Declare Sub StartSpellCd Lib "BabelUI.dll" (ByVal SpellId As Long, ByVal CdTime As Long)
 Public Declare Sub UpdateCombatAndGlobalChatSettings Lib "BabelUI.dll" (ByVal SpellId As Long, ByVal CdTime As Long)
 Public Declare Sub ActivateStunTimer Lib "BabelUI.dll" (ByVal Duration As Long)
+Public Declare Sub UpdateHoykeySlot Lib "BabelUI.dll" (ByVal SlotIndex As Long, ByRef SlotInfo As t_HotkeyEntry)
+Public Declare Sub ActivateFeatureToggle Lib "BabelUI.dll" (ByVal ToggleName As String)
+Public Declare Sub ClearToggles Lib "BabelUI.dll" ()
+Public Declare Sub SetHotkeyHideState Lib "BabelUI.dll" (ByVal HideHotkeyState As Long)
+Public Declare Sub ShowQuestion Lib "BabelUI.dll" (ByVal QuestionText As String)
+Public Declare Sub OpenMerchant Lib "BabelUI.dll" ()
+Public Declare Sub UpdateMerchantSlot Lib "BabelUI.dll" (ByRef SlotInfo As t_InvItem)
+Public Declare Sub OpenAo20Shop Lib "BabelUI.dll" (ByVal AvailableCredits As Long, ByVal ItemCount As Long, ByRef ItemList As t_ShopItem)
+Public Declare Sub OpenLobbyList Lib "BabelUI.dll" ()
+Public Declare Sub UpdateLobby Lib "BabelUI.dll" (ByRef LobbyInfo As t_LobbyData)
+Public Declare Sub ShowGuildCall Lib "BabelUI.dll" (ByVal map As Long, ByVal PosX As Long, ByVal PosY As Long)
+Public Declare Sub OpenSkillDialog Lib "BabelUI.dll" (ByVal AvailableSkills As Long, ByRef SkillList As Byte, ByVal SkillListSize As Integer)
+Public Declare Sub OpenGuildList Lib "BabelUI.dll" (ByVal ClanCount As Long)
+Public Declare Sub SetGuildInfo Lib "BabelUI.dll" (ByVal Index As Long, ByRef ClanInfo As Tclan)
+Public Declare Sub SetGuildBrief Lib "BabelUI.dll" (ByRef GuildDetails As t_GuildInfo)
 
 'debug info
 Public Declare Function CreateDebugWindow Lib "BabelUI.dll" (ByVal Width As Long, ByVal Height As Long) As Boolean
@@ -284,6 +375,7 @@ Public BabelInitialized As Boolean
 Public DebugInitialized As Boolean
 Public GetRemoteError As Boolean
 Public UseBabelUI As Boolean
+Public SaveUseBabelUI As Boolean
 Public InputFocus As Boolean
 Public IsGameDialogOpen As Boolean
 
@@ -302,7 +394,9 @@ End Function
 
 Public Function CheckAndSetBabelUIUsage() As Boolean
 On Error GoTo CheckAndSetBabelUIUsage_Err
+       Call SaveSetting("OPCIONES", "UseExperimentalUI", 0) 'En caso de querer habilitar la UI borrar esta linea
 100    UseBabelUI = Val(GetSetting("OPCIONES", "UseExperimentalUI"))
+       SaveUseBabelUI = UseBabelUI
 102    LogError ("Initilalize UI: " & UseBabelUI)
 104    CheckAndSetBabelUIUsage = UseBabelUI
     Exit Function
@@ -361,6 +455,19 @@ On Error GoTo InitializeUI_Err
         GameplayCallbacks.UpdateScrollPos = FARPROC(AddressOf UpdateSpellScrollPosCB)
         GameplayCallbacks.TeleportToMiniMapPos = FARPROC(AddressOf TeleportToMiniMapPos)
         GameplayCallbacks.UpdateCombatAndGlobalChat = FARPROC(AddressOf UpdateCombatAndGlobalChatCB)
+        GameplayCallbacks.UpdateHotKeySlot = FARPROC(AddressOf UpdateHotkeySlotCB)
+        GameplayCallbacks.UpdateHideHotkeyState = FARPROC(AddressOf UpdateHideHotkeyCB)
+        GameplayCallbacks.HandleQuestionResponse = FARPROC(AddressOf HandleQuestionResponseCB)
+        GameplayCallbacks.MoveMerchanSlot = FARPROC(AddressOf HandleMoveMerchanSlotCB)
+        GameplayCallbacks.CloseMerchant = FARPROC(AddressOf HandleCloseMerchantCB)
+        GameplayCallbacks.BuyItem = FARPROC(AddressOf HandleBuyItemCB)
+        GameplayCallbacks.SellItem = FARPROC(AddressOf HandleSellItemCB)
+        GameplayCallbacks.BuyAOShop = FARPROC(AddressOf HandleBuyAoShopCB)
+        GameplayCallbacks.UpdateIntSetting = FARPROC(AddressOf HandleUpdateIntSetting)
+        GameplayCallbacks.CreateNewScenario = FARPROC(AddressOf HandleCreateNewScenarioCB)
+        GameplayCallbacks.JoinScenario = FARPROC(AddressOf HandleJoinScenarioCB)
+        GameplayCallbacks.UpdateSkillList = FARPROC(AddressOf HandleUpdateSkillCB)
+        GameplayCallbacks.SendGuildRequest = FARPROC(AddressOf SendGuildRequestCB)
         Call RegisterGameplayCallbacks(GameplayCallbacks)
     Else
         Call RegistrarError(0, "", "Failed to initialize babel UI with w:" & Width & " h:" & Height & " pixelSizee: " & pixelSize, 106)
@@ -448,7 +555,7 @@ UpdateInspectorUI_Err:
     Call RegistrarError(Err.Number, Err.Description, "BabelUI.UpdateInspectorUI", Erl)
 End Sub
 
-Private Function GetStringFromPtr(ByVal Ptr As Long, ByVal size As Long) As String
+Public Function GetStringFromPtr(ByVal Ptr As Long, ByVal size As Long) As String
     Dim Buffer() As Byte
     ReDim Buffer(0 To (size - 1)) As Byte
     CopyMemory Buffer(0), ByVal Ptr, size
@@ -544,7 +651,7 @@ Public Sub SelectCharacterPreviewCB(ByVal charindex As Long)
         RenderCuenta_PosY = CreateCharMapY
         g_game_state.state = e_state_createchar_screen
     Else
-        Call SwitchMap(Pjs(charindex).Mapa)
+        Call SwitchMap(Pjs(CharIndex).Mapa)
         RenderCuenta_PosX = Pjs(charindex).PosX
         RenderCuenta_PosY = Pjs(charindex).PosY
     End If
@@ -669,7 +776,7 @@ Public Sub MoveInvSlotDB(ByVal SourceSlot As Long, ByVal DestSlot As Long)
     End If
 End Sub
 
-Public Sub RequestActionCB(ByVal ActionId As Long)
+Public Sub RequestActionCB(ByVal ActionId As Long, ByVal ExtraValue As Long)
     Select Case ActionId
     Case e_ActionRequest.eMinimize
         frmBabelUI.WindowState = vbMinimized
@@ -757,6 +864,21 @@ Public Sub RequestActionCB(ByVal ActionId As Long)
         Call SelectSpellTab
     Case e_ActionRequest.eSetMeditate
         Call RequestMeditate
+    Case e_ActionRequest.eOpenKeySettings
+        Call frmCustomKeys.Show(vbModeless, GetGameplayForm)
+    Case e_ActionRequest.eSaveSettings
+        Call SaveConfig
+    Case e_ActionRequest.eTeleportToMap
+        Call ParseUserCommand("/TELEP YO " & ExtraValue & " " & 50 & " " & 50)
+    Case e_ActionRequest.eDisplayGuildDetails
+        Dim i As Integer
+        For i = LBound(ClanesList) To UBound(ClanesList)
+            If ClanesList(i).indice = ExtraValue Then
+                Call WriteGuildRequestDetails(ClanesList(i).nombre)
+                Exit Sub
+            End If
+        Next i
+        
 End Select
 
 End Sub
@@ -785,6 +907,15 @@ Public Sub UpdateSpellScrollPosCB(ByVal FirestSpellInList As Long)
     End If
 End Sub
 
+Public Sub UpdateHotkeySlotCB(ByVal SlotIndex As Long, ByRef SlotInfo As t_HotkeyEntry)
+    Call SetHotkey(SlotInfo.Index, SlotInfo.LastKnownSlot, SlotInfo.Type, SlotIndex)
+End Sub
+
+Public Sub UpdateHideHotkeyCB(ByVal State As Integer)
+    HideHotkeys = State > 0
+    Call SaveHideHotkeys
+End Sub
+
 Public Sub TeleportToMiniMapPos(ByVal PosX As Long, ByVal PosY As Long)
     Dim x As Single
     Dim y As Single
@@ -792,13 +923,185 @@ Public Sub TeleportToMiniMapPos(ByVal PosX As Long, ByVal PosY As Long)
     y = PosY
     Call GetMinimapPosition(x, y)
     Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(x) & " " & CByte(y))
-
 End Sub
 
 Public Sub UpdateCombatAndGlobalChatCB(ByVal CombatState As Long, ByVal GlobalState As Long)
     ChatCombate = CombatState
     ChatGlobal = GlobalState
     Call WriteMacroPos
+End Sub
+
+Public Sub HandleQuestionResponseCB(ByVal Response As Integer)
+    Call HandleQuestionResponse(Response > 0)
+End Sub
+
+Public Sub HandleMoveMerchanSlotCB(ByVal FromSlot As Integer, ByVal ToSlot As Integer)
+End Sub
+Public Sub HandleCloseMerchantCB()
+    Call WriteCommerceEnd
+End Sub
+Public Sub HandleBuyItemCB(ByVal Slot As Integer, ByVal Amount As Integer)
+    Call WriteCommerceBuy(Slot, Amount)
+End Sub
+
+Public Sub HandleSellItemCB(ByVal Slot As Integer, ByVal Amount As Integer)
+    Call WriteCommerceSell(Slot, Amount)
+End Sub
+
+Public Sub HandleBuyAoShopCB(ByVal ObjIndex As Integer)
+    Call writeBuyShopItem(ObjIndex)
+End Sub
+
+Public Sub HandleUpdateIntSetting(ByVal SettingType As Long, ByVal Value As Long)
+On Error GoTo HandleUpdateIntSetting_Err
+    Select Case SettingType
+        Case eCopyDialogsEnabled
+            CopiarDialogoAConsola = Value
+        Case eWriteAndMove
+            PermitirMoverse = Value
+        Case eBlockSpellListScroll
+            ScrollArrastrar = Value
+        Case eThrowSpellLockBehavior
+            ModoHechizos = Value
+        Case eMouseSens
+            SensibilidadMouse = Value
+            Call General_Set_Mouse_Speed(Value)
+        Case eUserGraphicCursor
+            CursoresGraficos = Value > 0
+            Call SaveSetting("VIDEO", "CursoresGraficos", Value)
+        Case eLanguage
+            Call SaveSetting("OPCIONES", "Localization", Value)
+        Case eRenderNpcText
+            npcs_en_render = Value
+            Call SaveSetting("OPCIONES", "NpcsEnRender", Value)
+        Case eTutorialEnabled
+            MostrarTutorial = Value
+            If MostrarTutorial Then
+                Dim i As Long
+                
+                For i = 1 To UBound(tutorial)
+                    Call SaveSetting("TUTORIAL" & i, "Activo", 1)
+                    tutorial(i).Activo = 1
+                Next i
+            End If
+            Call SaveSetting("INITTUTORIAL", "MostrarTutorial", Value)
+        Case eShowFps
+            FPSFLAG = Value
+        Case eMoveGameWindow
+            MoverVentana = Value
+        Case eCharacterBreathing
+            MostrarRespiracion = Value > 0
+        Case eFullScreen
+            Debug.Print "Update full screen " & Value
+            If PantallaCompleta = (Value > 0) Then Exit Sub
+            PantallaCompleta = Value > 0
+            If PantallaCompleta Then
+                Call SetResolution
+            Else
+                Call ResetResolution
+            End If
+        Case eDisplayFloorItemInfo
+            InfoItemsEnRender = Value > 0
+        Case eDisplayFullNumbersInventory
+            NumerosCompletosInventario = Value > 0
+        Case eEnableBabelUI
+            SaveUseBabelUI = Value
+            Call SaveSetting("OPCIONES", "UseExperimentalUI", Value)
+        Case eEnableMusic
+            If Value = 0 Then
+                ao20audio.stopallplayback
+                ao20audio.MusicEnabled = 0
+            Else
+                ao20audio.MusicEnabled = 1
+            End If
+        Case eEnableFx
+            ao20audio.FxEnabled = Value
+            If Value = 0 Then
+                Call ao20audio.stopallplayback
+            End If
+        Case eEnableAmbient
+            If Value = 0 Then
+                ao20audio.AmbientEnabled = 0
+                Call ao20audio.StopAmbientAudio
+            Else
+                ao20audio.AmbientEnabled = 1
+                Call ao20audio.PlayAmbientAudio(UserMap)
+            End If
+        Case eSailFx
+            FxNavega = Value
+        Case eInvertChannels
+            InvertirSonido = Value
+        Case eMusicVolume
+            VolMusic = Value
+            If ao20audio.MusicEnabled Then
+                Call ao20audio.SetMusicVolume(Value)
+            End If
+        Case eFxVolume
+            VolFX = Value
+            Call ao20audio.SetFxVolume(Value)
+        Case eAmbientVolume
+            VolAmbient = Value
+            Call ao20audio.SetAmbientVolume(Value)
+        Case eLightSettings
+            Call SaveSetting("VIDEO", "LuzGlobal", Value)
+            selected_light = Value
+        Case eDisableDungeonLighting
+            DisableDungeonLighting = Value > 0
+    End Select
+    Exit Sub
+HandleUpdateIntSetting_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command1_Click", Erl)
+End Sub
+     
+Public Sub HandleCreateNewScenarioCB(ByRef Settings As t_NewScenearioSettings, ByRef StringSettings As DOUBLESTRINGPARAM)
+    Dim Description As String
+    Dim Password As String
+    If StringSettings.FirstLen > 0 Then
+        Description = GetStringFromPtr(StringSettings.FirstPtr, StringSettings.FirstLen)
+    End If
+    If StringSettings.SecondLen > 0 Then
+        Password = GetStringFromPtr(StringSettings.SecondPtr, StringSettings.SecondLen)
+    End If
+    Call WriteStartLobby(1, Settings, Description, Password)
+End Sub
+
+Public Sub HandleJoinScenarioCB(ByVal ScenarioId As Long, ByRef PasswordParam As SINGLESTRINGPARAM)
+    Dim Password As String
+    If PasswordParam.Len > 0 Then
+        Password = GetStringFromPtr(PasswordParam.Ptr, PasswordParam.Len)
+    End If
+    Call WriteParticipar(ScenarioId, Password)
+End Sub
+
+Public Sub HandleUpdateSkillCB(ByVal SkillCount As Long, ByVal SkillList As Long)
+    Dim Buffer() As Long
+    ReDim Buffer(0 To (SkillCount - 1)) As Long
+    CopyMemory Buffer(0), ByVal SkillList, SkillCount * 4
+    Dim skills() As Byte
+    ReDim skills(1 To (SkillCount)) As Byte
+    Dim i As Integer
+    Dim AssignedCount As Integer
+    For i = 1 To SkillCount
+        skills(i) = Buffer(i - 1)
+        AssignedCount = AssignedCount + skills(i)
+    Next i
+    If AssignedCount > SkillPoints Then
+        Exit Sub
+    End If
+    SkillPoints = SkillPoints - AssignedCount
+    Call WriteModifySkills(skills)
+End Sub
+
+Public Sub SendGuildRequestCB(ByRef Request As DOUBLESTRINGPARAM)
+    Dim Description As String
+    Dim TargetGuild As String
+    If Request.FirstLen > 0 Then
+        TargetGuild = GetStringFromPtr(Request.FirstPtr, Request.FirstLen)
+    End If
+    If Request.SecondLen > 0 Then
+        Description = GetStringFromPtr(Request.SecondPtr, Request.SecondLen)
+    End If
+    Call WriteGuildRequestMembership(TargetGuild, Replace(Replace(Description, ",", ";"), vbCrLf, "º"))
 End Sub
 
 Public Function BabelEditWndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long, ByVal uIdSubclass As Long, ByVal dwRefData As Long) As Long

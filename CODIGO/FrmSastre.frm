@@ -3,15 +3,16 @@ Begin VB.Form FrmSastre
    BackColor       =   &H80000007&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar de sastre"
-   ClientHeight    =   5664
+   ClientHeight    =   7125
    ClientLeft      =   0
-   ClientTop       =   -72
-   ClientWidth     =   6528
+   ClientTop       =   -75
+   ClientWidth     =   6480
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5664
-   ScaleWidth      =   6528
+   Picture         =   "FrmSastre.frx":0000
+   ScaleHeight     =   7125
+   ScaleWidth      =   6480
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox cantidad 
@@ -30,12 +31,12 @@ Begin VB.Form FrmSastre
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   250
-      Left            =   3750
+      Left            =   3960
       MaxLength       =   3
       TabIndex        =   4
       Text            =   "1"
-      Top             =   4500
-      Width           =   660
+      Top             =   5640
+      Width           =   465
    End
    Begin VB.ListBox List2 
       Appearance      =   0  'Flat
@@ -43,7 +44,7 @@ Begin VB.Form FrmSastre
       Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -51,20 +52,20 @@ Begin VB.Form FrmSastre
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   636
-      ItemData        =   "FrmSastre.frx":0000
-      Left            =   5535
-      List            =   "FrmSastre.frx":0007
+      Height          =   1200
+      ItemData        =   "FrmSastre.frx":96C60
+      Left            =   5655
+      List            =   "FrmSastre.frx":96C67
       TabIndex        =   3
-      Top             =   2955
-      Width           =   525
+      Top             =   3840
+      Width           =   330
    End
    Begin VB.ListBox List1 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -72,10 +73,10 @@ Begin VB.Form FrmSastre
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   636
-      Left            =   3870
+      Height          =   1200
+      Left            =   4020
       TabIndex        =   2
-      Top             =   2955
+      Top             =   3840
       Width           =   1605
    End
    Begin VB.ListBox lstArmas 
@@ -83,7 +84,7 @@ Begin VB.Form FrmSastre
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -91,11 +92,11 @@ Begin VB.Form FrmSastre
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   2880
-      Left            =   720
+      Height          =   2760
+      Left            =   480
       TabIndex        =   1
       Top             =   2160
-      Width           =   2400
+      Width           =   3120
    End
    Begin VB.PictureBox picture1 
       Appearance      =   0  'Flat
@@ -103,20 +104,41 @@ Begin VB.Form FrmSastre
       BorderStyle     =   0  'None
       ForeColor       =   &H80000008&
       Height          =   465
-      Left            =   4750
+      Left            =   4780
       ScaleHeight     =   32
       ScaleMode       =   0  'User
       ScaleWidth      =   32
       TabIndex        =   0
-      Top             =   1750
+      Top             =   1850
       Width           =   480
+   End
+   Begin VB.Image Image3 
+      Height          =   315
+      Left            =   4680
+      Tag             =   "0"
+      Top             =   5640
+      Width           =   255
+   End
+   Begin VB.Image Image2 
+      Height          =   315
+      Left            =   3360
+      Tag             =   "0"
+      Top             =   5640
+      Width           =   255
+   End
+   Begin VB.Image cmdCerrar 
+      Height          =   405
+      Left            =   6000
+      Tag             =   "0"
+      Top             =   0
+      Width           =   510
    End
    Begin VB.Label desc 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -131,31 +153,31 @@ Begin VB.Form FrmSastre
       Width           =   2055
    End
    Begin VB.Image Command3 
-      Height          =   450
-      Left            =   4590
+      Height          =   400
+      Left            =   3530
       Tag             =   "0"
-      Top             =   4420
-      Width           =   1740
+      Top             =   6345
+      Width           =   1950
    End
    Begin VB.Image Command4 
-      Height          =   465
-      Left            =   3960
+      Height          =   400
+      Left            =   1080
       Tag             =   "0"
-      Top             =   4990
-      Width           =   2130
+      Top             =   6345
+      Width           =   1950
    End
    Begin VB.Image Command2 
       Height          =   585
-      Left            =   2100
+      Left            =   2190
       Tag             =   "0"
-      Top             =   1460
+      Top             =   1320
       Width           =   660
    End
    Begin VB.Image Command1 
       Height          =   585
-      Left            =   1050
+      Left            =   1140
       Tag             =   "0"
-      Top             =   1450
+      Top             =   1320
       Width           =   660
    End
 End
@@ -181,6 +203,12 @@ Attribute VB_Exposed = False
 '
 '
 Private indice As Byte
+Private cBotonCerrar As clsGraphicalButton
+Const PielTigreBengalaIndex = 1145
+Const PielTigreIndex = 4339
+Const BlackWolfIndex = 1146
+
+
 
 Private Sub Command1_Click()
     
@@ -247,13 +275,13 @@ Private Sub Command3_Click()
 
     If indice = 1 Then
         If cantidad > 1 Then
-            UserMacro.Intervalo = IntervaloTrabajoConstruir
+            UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 3
             UserMacro.Index = SastreRopas(lstArmas.ListIndex + 1).Index
-            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR."), 2, 51, 223, 1, 1
             UserMacro.Activado = True
-            frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+            frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftSastre(SastreRopas(lstArmas.ListIndex + 1).Index)
@@ -269,10 +297,10 @@ Private Sub Command3_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 3
             UserMacro.Index = SastreGorros(lstArmas.ListIndex + 1).Index
-            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-            UserMacro.Intervalo = IntervaloTrabajoConstruir
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR"), 2, 51, 223, 1, 1
+            UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
-            frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+            frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftSastre(SastreGorros(lstArmas.ListIndex + 1).Index)
@@ -316,7 +344,7 @@ Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command4.Tag = "0" Then
-        Command4.Picture = LoadInterface("trabajar_salirhover.bmp")
+        Command4.Picture = LoadInterface("boton-cancelar-over.bmp")
         Command4.Tag = "1"
 
     End If
@@ -339,7 +367,7 @@ Private Sub Form_Load()
     
     Call FormParser.Parse_Form(Me)
     indice = 1
-
+    Call loadButtons
     
     Exit Sub
 
@@ -373,7 +401,7 @@ Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single,
     
 
     If Command3.Tag = "0" Then
-        Command3.Picture = LoadInterface("trabajar_construirhover.bmp")
+        Command3.Picture = LoadInterface("boton-elaborar-over.bmp")
         Command3.Tag = "1"
 
     End If
@@ -394,7 +422,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
-
+    Call MoverForm(Me.hwnd)
+    
     If indice <> 1 Then
         Command1.Picture = Nothing
         Command1.Tag = "0"
@@ -421,6 +450,24 @@ Form_MouseMove_Err:
     
 End Sub
 
+Private Sub cmdCerrar_Click()
+    Unload Me
+End Sub
+
+Private Sub Image2_Click()
+    If cantidad > 0 Then
+        cantidad = cantidad - 1
+    Else
+        Exit Sub
+    End If
+
+
+End Sub
+
+Private Sub Image3_Click()
+    cantidad = cantidad + 1
+End Sub
+
 Private Sub List1_Click()
     
     On Error GoTo List1_Click_Err
@@ -436,6 +483,13 @@ Private Sub List1_Click()
         grh = 699
     ElseIf List1.ListIndex = 2 Then
         grh = 698
+    ElseIf List1.ListIndex = 3 Then
+        Grh = ObjData(BlackWolfIndex).GrhIndex
+    ElseIf List1.ListIndex = 4 Then
+        Grh = ObjData(PielTigreIndex).GrhIndex
+    ElseIf List1.ListIndex = 5 Then
+        Grh = ObjData(PielTigreBengalaIndex).GrhIndex
+        
 
     End If
 
@@ -455,28 +509,40 @@ Private Sub lstArmas_Click()
     On Error GoTo lstArmas_Click_Err
     
 
+    Dim Obj As ObjDatas
     
+    If indice = 1 Then
+        Obj = ObjData(SastreRopas(lstArmas.ListIndex + 1).Index)
+    ElseIf indice = 2 Then
+        Obj = ObjData(SastreGorros(lstArmas.ListIndex + 1).Index)
+    Else
+        Exit Sub
+    End If
 
     List1.Clear
     List2.Clear
-    List1.AddItem ("Piel de lobo")
-    List1.AddItem ("Piel de oso pardo")
-    List1.AddItem ("Piel de oso polar")
-
-    If indice = 1 Then
-        Call Grh_Render_To_Hdc(picture1, ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
-        List2.AddItem (ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).PielLobo)
-        List2.AddItem (ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).PielOsoPardo)
-        List2.AddItem (ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).PielOsoPolar)
-        desc.Caption = "Defensa: " & ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).MinDef & "/" & ObjData(SastreRopas(lstArmas.ListIndex + 1).Index).MaxDef
-    ElseIf indice = 2 Then
-        Call Grh_Render_To_Hdc(picture1, ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
-        List2.AddItem (ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).PielLobo)
-        List2.AddItem (ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).PielOsoPardo)
-        List2.AddItem (ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).PielOsoPolar)
-        desc.Caption = "Defensa: " & ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).MinDef & "/" & ObjData(SastreGorros(lstArmas.ListIndex + 1).Index).MaxDef
-
-    End If
+        
+        List1.AddItem "Piel de Lobo"
+        List2.AddItem Obj.PielLobo
+    
+        List1.AddItem "Piel de Oso Pardo"
+        List2.AddItem Obj.PielOsoPardo
+  
+        List1.AddItem "Piel de Oso Polar"
+        List2.AddItem Obj.PielOsoPolar
+       
+        List1.AddItem "Piel de Lobo Negro"
+        List2.AddItem Obj.PielLoboNegro
+      
+        List1.AddItem "Piel de Tigre"
+        List2.AddItem Obj.PielTigre
+    
+        List1.AddItem "Piel de Tigre Bengala"
+        List2.AddItem Obj.PielTigreBengala
+      
+    Call Grh_Render_To_Hdc(picture1, Obj.GrhIndex, 0, 0)
+    
+    desc.Caption = "Defensa: " & Obj.MinDef & "/" & Obj.MaxDef
 
     
     Exit Sub
@@ -486,3 +552,13 @@ lstArmas_Click_Err:
     Resume Next
     
 End Sub
+
+Private Sub loadButtons()
+    Set cBotonCerrar = New clsGraphicalButton
+    
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+
+End Sub
+

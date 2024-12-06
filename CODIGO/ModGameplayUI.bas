@@ -1,4 +1,31 @@
 Attribute VB_Name = "ModGameplayUI"
+' Argentum 20 Game Client
+'
+'    Copyright (C) 2023 Noland Studios LTD
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'    This program was based on Argentum Online 0.11.6
+'    Copyright (C) 2002 Márquez Pablo Ignacio
+'
+'    Argentum Online is based on Baronsoft's VB6 Online RPG
+'    You can contact the original creator of ORE at aaron@baronsoft.com
+'    for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'
+
 Public Sub SetupGameplayUI()
     If BabelInitialized Then
         Call BabelUI.SetActiveScreen("gameplay")
@@ -17,6 +44,7 @@ Public Sub SetupGameplayUI()
         frmMain.picInv.visible = True
         frmMain.picHechiz.visible = False
         frmMain.cmdlanzar.visible = False
+        
         frmMain.imgSpellInfo.visible = False
         frmMain.cmdMoverHechi(0).visible = False
         frmMain.cmdMoverHechi(1).visible = False
@@ -28,18 +56,20 @@ Public Sub SetupGameplayUI()
         frmMain.visible = True
         ActiveInventoryTab = eInventory
     End If
+    Call LoadHotkeys
 End Sub
 
 Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
 On Error GoTo OnClick_Err
 
     If pausa Then Exit Sub
-    
+    If IsGameDialogOpen Then Exit Sub
     If mascota.visible Then
         If Sqr((MouseX - mascota.PosX) ^ 2 + (MouseY - mascota.PosY) ^ 2) < 30 Then
             mascota.dialog = ""
         End If
     End If
+    
     
     If cartel_visible Then
         If MouseX > 50 And MouseY > 478 And MouseX < 671 And MouseY < 585 Then
@@ -50,11 +80,25 @@ On Error GoTo OnClick_Err
             End If
         End If
     End If
-    If MouseButton = vbLeftButton And ACCION1 = 0 Or MouseButton = vbRightButton And ACCION2 = 0 Or MouseButton = 4 And ACCION3 = 0 Then
+    
+    Dim MouseAction As e_MouseAction
+    Select Case MouseButton
+        Case vbLeftButton
+            MouseAction = ACCION1
+        Case vbRightButton
+            MouseAction = ACCION2
+        Case vbMiddleButton
+            MouseAction = ACCION3
+        Case Else
+            Exit Sub
+    End Select
+    
+    
+    If MouseAction = e_MouseAction.eThrowOrLook Then
         If Not Comerciando Then
             If MouseShift = 0 Then
                 If UsingSkill = 0 Or frmMain.MacroLadder.enabled Then
-                    Call CountPacketIterations(packetControl(ClientPacketID.LeftClick), 150)
+                    Call CountPacketIterations(packetControl(ClientPacketID.eLeftClick), 150)
                     Call WriteLeftClick(tX, tY)
                 Else
                     Dim SendSkill As Boolean
@@ -134,7 +178,7 @@ On Error GoTo OnClick_Err
                         End If
                     End If
                     
-                    If (UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or _
+                    If (UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Alquimia Or UsingSkill = eSkill.Mineria Or _
                         UsingSkill = FundirMetal Or UsingSkill = eSkill.TargetableItem) Then
                         If MainTimer.Check(TimersIndex.CastSpell) Then
                             Call WriteWorkLeftClick(tX, tY, UsingSkill)
@@ -171,7 +215,11 @@ On Error GoTo OnClick_Err
             End If
             If cartel Then cartel = False
         End If
-    ElseIf MouseButton = vbLeftButton And ACCION1 = 2 Or MouseButton = vbRightButton And ACCION2 = 2 Or MouseButton = 4 And ACCION3 = 2 Then
+
+    ElseIf MouseAction = e_MouseAction.eInteract Then
+        Call WriteDoubleClick(tX, tY)
+
+    ElseIf MouseAction = e_MouseAction.eAttack Then
         If UserDescansar Or UserMeditar Then Exit Sub
         If MainTimer.Check(TimersIndex.CastAttack, False) Then
             If MainTimer.Check(TimersIndex.Attack) Then
@@ -179,18 +227,21 @@ On Error GoTo OnClick_Err
                 Call WriteAttack
             End If
         End If
-    
-    ElseIf MouseButton = vbLeftButton And ACCION1 = 3 Or MouseButton = vbRightButton And ACCION2 = 3 Or MouseButton = 4 And ACCION3 = 3 Then
-            If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
-    ElseIf MouseButton = vbLeftButton And ACCION1 = 4 Or MouseButton = vbRightButton And ACCION2 = 4 Or MouseButton = 4 And ACCION3 = 4 Then
-        If MapData(tX, tY).CharIndex <> 0 Then
-            If charlist(MapData(tX, tY).CharIndex).nombre <> charlist(MapData(UserPos.x, UserPos.y).CharIndex).nombre Then
-                If charlist(MapData(tX, tY).CharIndex).esNpc = False Then
-                    SendTxt.Text = "\" & charlist(MapData(tX, tY).CharIndex).nombre & " "
-                    If SendTxtCmsg.visible = False Then
-                        SendTxt.visible = True
-                        SendTxt.SetFocus
-                        SendTxt.SelStart = Len(SendTxt.Text)
+
+    ElseIf MouseAction = e_MouseAction.eWhisper Then
+        Dim CharIndex As Integer
+        CharIndex = MapData(tX, tY).CharIndex
+        If CharIndex = 0 And tY < YMaxMapSize Then
+            CharIndex = MapData(tX, tY + 1).CharIndex
+        End If
+        If CharIndex <> 0 Then
+            If charlist(CharIndex).nombre <> charlist(UserCharIndex).nombre Then
+                If charlist(CharIndex).esNpc = False Then
+                    frmMain.SendTxt.Text = "\" & charlist(CharIndex).nombre & " "
+                    If frmMain.SendTxtCmsg.visible = False Then
+                        frmMain.SendTxt.visible = True
+                        frmMain.SendTxt.SetFocus
+                        frmMain.SendTxt.SelStart = Len(frmMain.SendTxt.Text)
                     End If
                 End If
             End If
@@ -203,6 +254,29 @@ OnClick_Err:
     Resume Next
 End Sub
 
+Public Sub HandleQuestionResponse(ByVal Result As Boolean)
+    If PreguntaLocal Then
+        If Result Then
+            Select Case PreguntaNUM
+                Case 1 '¿Destruir item?
+                    Call WriteDrop(DestItemSlot, DestItemCant)
+                Case 2 ' Denunciar
+                    Call WriteDenounce(TargetName)
+            End Select
+        Else
+            Select Case PreguntaNUM
+                Case 1
+                    DestItemSlot = 0
+                    DestItemCant = 0
+            End Select
+        End If
+    Else
+        Call WriteResponderPregunta(Result)
+    End If
+    Pregunta = False
+    PreguntaLocal = False
+End Sub
+
 Public Sub HandleGameplayAreaMouseUp(ByVal button As Integer, ByVal x As Integer, ByVal y As Integer, ByVal FormTop As Long, _
                                      ByVal FormLeft As Long, ByVal FormHeight As Long, ByRef GameplayArea As RECT)
     clicX = x
@@ -211,38 +285,10 @@ Public Sub HandleGameplayAreaMouseUp(ByVal button As Integer, ByVal x As Integer
         If HandleMouseInput(x, y) Then
         ElseIf Pregunta Then
             If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
-                If PreguntaLocal Then
-                    Select Case PreguntaNUM
-                        Case 1
-                            Pregunta = False
-                            DestItemSlot = 0
-                            DestItemCant = 0
-                            PreguntaLocal = False
-                        Case 2 ' Denunciar
-                            Pregunta = False
-                            PreguntaLocal = False
-                    End Select
-                Else
-                    Call WriteResponderPregunta(False)
-                    Pregunta = False
-                End If
+                Call HandleQuestionResponse(False)
                 Exit Sub
             ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then
-                If PreguntaLocal Then
-                    Select Case PreguntaNUM
-                        Case 1 '¿Destruir item?
-                            Call WriteDrop(DestItemSlot, DestItemCant)
-                            Pregunta = False
-                            PreguntaLocal = False
-                        Case 2 ' Denunciar
-                            Call WriteDenounce(TargetName)
-                            Pregunta = False
-                            PreguntaLocal = False
-                    End Select
-                Else
-                    Call WriteResponderPregunta(True)
-                    Pregunta = False
-                End If
+                Call HandleQuestionResponse(True)
                 Exit Sub
             End If
         End If
@@ -339,7 +385,7 @@ End Sub
 
 Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amount As Integer, ByVal Equipped As Byte, _
                       ByVal GrhIndex As Long, ByVal ObjType As Integer, ByVal MaxHit As Integer, ByVal MinHit As Integer, _
-                      ByVal Def As Integer, ByVal Value As Single, ByVal Name As String, ByVal CanUse As Byte)
+                      ByVal Def As Integer, ByVal Value As Single, ByVal Name As String, ByVal CanUse As Byte, ByVal IsBindable As Byte)
 
     If Slot < 1 Or Slot > UBound(UserInventory.Slots) Then Exit Sub
     With UserInventory.Slots(Slot)
@@ -354,6 +400,7 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         .ObjType = ObjType
         .Valor = Value
         .PuedeUsar = CanUse
+        .IsBindable = IsBindable > 0
     End With
     If BabelInitialized Then
         Dim SlotInfo As t_InvItem
@@ -375,6 +422,7 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         SlotInfo.CDMask = GetCDMaskForItem(ObjData(OBJIndex))
         SlotInfo.Desc = ObjData(ObjIndex).Texto
         SlotInfo.Amunition = ObjData(ObjIndex).Amunition
+        SlotInfo.IsBindable = IsBindable
         Call SetInvSlot(SlotInfo)
     Else
         Call frmMain.Inventario.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, Def, Value, Name, CanUse)
@@ -404,7 +452,7 @@ End Function
 
 Public Sub UseItemKey()
     If Not MainTimer.Check(TimersIndex.AttackUse, False) Then Exit Sub
-        Call CountPacketIterations(packetControl(ClientPacketID.UseItemU), 100)
+        Call CountPacketIterations(packetControl(ClientPacketID.eUseItemU), 100)
         If BabelInitialized Then
             If UserInventory.SelectedSlot > 0 And UserInventory.SelectedSlot <= UBound(UserInventory.Slots) Then
                 Call WriteUseItemU(UserInventory.SelectedSlot)
@@ -463,7 +511,7 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
                 Call WriteEquipItem(Slot)
             End If
         Case Else
-            Call CountPacketIterations(packetControl(ClientPacketID.UseItem), 180)
+            Call CountPacketIterations(packetControl(ClientPacketID.eUseItem), 180)
             Call WriteUseItem(Slot)
     End Select
 End Sub
@@ -473,7 +521,7 @@ Public Sub HandleKeyUp(KeyCode As Integer, Shift As Integer)
         If Not IsDialogOpen Then
             If Accionar(KeyCode) Then
                 Exit Sub
-            ElseIf KeyCode = vbKeyReturn Then
+            ElseIf KeyCode = BindKeys(e_KeyAction.eSendText).KeyCode Then
                 Call OpenChatInput
             ElseIf KeyCode = vbKeyDelete Then
                 Call OpenAndFocusClanChat
@@ -483,6 +531,9 @@ Public Sub HandleKeyUp(KeyCode As Integer, Shift As Integer)
                 Call WriteCancelarExit
             ElseIf KeyCode = 80 And PescandoEspecial Then
                 Call IntentarObtenerPezEspecial
+            ElseIf KeyCode = vbKeyF1 Then
+                Call ParseUserCommand("/SM")
+                Call ParseUserCommand("/IRA " & TargetName)
             End If
         End If
     ElseIf Not BabelInitialized Then
@@ -570,7 +621,7 @@ If pausa Then Exit Sub
     If SpellName <> "(Vacío)" Then
         If UserStats.estado = 1 Then
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+               Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
             End With
         Else
             If ModoHechizos = BloqueoLanzar Then
@@ -697,4 +748,21 @@ Public Sub RequestMeditate()
         Exit Sub
     End If
     Call WriteMeditate
+End Sub
+
+Public Sub SetHotkey(ByVal Index As Integer, ByVal LastKnownSlot As Integer, ByVal HotkeyType As e_HotkeyType, ByVal HotkeySlot As Integer)
+    HotkeyList(HotkeySlot).Index = Index
+    HotkeyList(HotkeySlot).LastKnownSlot = LastKnownSlot
+    HotkeyList(HotkeySlot).Type = HotkeyType
+    Call SaveHotkey(Index, LastKnownSlot, HotkeyType, HotkeySlot)
+    Call WriteSetHotkeySlot(HotkeySlot, Index, LastKnownSlot, HotkeyType)
+End Sub
+
+Public Sub ClearHotkeys()
+    Dim i As Integer
+    For i = 0 To HotKeyCount - 1
+        HotkeyList(i).Index = -1
+        HotkeyList(i).LastKnownSlot = -1
+        HotkeyList(i).Type = Unknown
+    Next i
 End Sub

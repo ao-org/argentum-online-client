@@ -3,16 +3,16 @@ Begin VB.Form frmHerrero
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar con Herreria"
-   ClientHeight    =   6528
+   ClientHeight    =   6525
    ClientLeft      =   0
-   ClientTop       =   -96
-   ClientWidth     =   7056
+   ClientTop       =   -90
+   ClientWidth     =   7050
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   544
+   ScaleHeight     =   435
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   588
+   ScaleWidth      =   470
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.ListBox List2 
@@ -20,7 +20,7 @@ Begin VB.Form frmHerrero
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -28,7 +28,7 @@ Begin VB.Form frmHerrero
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1248
+      Height          =   1200
       Left            =   5760
       TabIndex        =   5
       Top             =   2520
@@ -39,7 +39,7 @@ Begin VB.Form frmHerrero
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -47,7 +47,7 @@ Begin VB.Form frmHerrero
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   2880
+      Height          =   2760
       Left            =   480
       TabIndex        =   4
       Top             =   2325
@@ -58,7 +58,7 @@ Begin VB.Form frmHerrero
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -66,7 +66,7 @@ Begin VB.Form frmHerrero
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1248
+      Height          =   1200
       Left            =   3840
       TabIndex        =   3
       Top             =   2520
@@ -134,7 +134,7 @@ Begin VB.Form frmHerrero
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -483,10 +483,10 @@ Private Sub cmdConstruir_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = ArmasHerrero(lstArmas.ListIndex + 1).Index
-            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-            UserMacro.Intervalo = IntervaloTrabajoConstruir
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR."), 2, 51, 223, 1, 1
+            UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
-            frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+            frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(ArmasHerrero(lstArmas.ListIndex + 1).Index)
@@ -502,10 +502,10 @@ Private Sub cmdConstruir_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = ArmadurasHerrero(lstArmas.ListIndex).Index
-            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-            UserMacro.Intervalo = IntervaloTrabajoConstruir
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR"), 2, 51, 223, 1, 1
+            UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
-            frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+            frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(ArmadurasHerrero(lstArmas.ListIndex).Index)
@@ -521,10 +521,10 @@ Private Sub cmdConstruir_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = CascosHerrero(lstArmas.ListIndex).Index
-            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-            UserMacro.Intervalo = IntervaloTrabajoConstruir
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR."), 2, 51, 223, 1, 1
+            UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
-            frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+            frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(CascosHerrero(lstArmas.ListIndex).Index)
@@ -540,10 +540,10 @@ Private Sub cmdConstruir_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 4
             UserMacro.Index = EscudosHerrero(lstArmas.ListIndex).Index
-            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
-            UserMacro.Intervalo = IntervaloTrabajoConstruir
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR"), 2, 51, 223, 1, 1
+            UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
-            frmMain.MacroLadder.Interval = IntervaloTrabajoConstruir
+            frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
         Else
             Call WriteCraftBlacksmith(EscudosHerrero(lstArmas.ListIndex).Index)
@@ -645,15 +645,17 @@ Private Sub lstArmas_Click()
 
     List1.Clear
     List2.Clear
-    List1.AddItem ("Lingote de hierro")
-    List1.AddItem ("Lingo de plata")
-    List1.AddItem ("Lingotes de Oro")
+    List1.AddItem ("Lingote de Hierro")
+    List1.AddItem ("Lingote de Plata")
+    List1.AddItem ("Lingote de Oro")
+    List1.AddItem ("Carbon")
 
     If Index = 1 Then
         Call Grh_Render_To_Hdc(picture1, ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
         List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingH)
         List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingP)
         List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingO)
+        List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).Coal)
         desc.Caption = "Golpe: " & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MinHit & "/" & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MaxHit
     
     ElseIf Index = 2 Then
@@ -661,18 +663,21 @@ Private Sub lstArmas_Click()
         List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingH)
         List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingP)
         List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingO)
+        List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).Coal)
         desc.Caption = "Defensa: " & ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).MaxDef
     ElseIf Index = 3 Then
         Call Grh_Render_To_Hdc(picture1, ObjData(CascosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
         List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingH)
         List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingP)
         List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingO)
+        List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).Coal)
         desc.Caption = "Defensa: " & ObjData(CascosHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(CascosHerrero(lstArmas.ListIndex).Index).MaxDef
     ElseIf Index = 4 Then
         Call Grh_Render_To_Hdc(picture1, ObjData(EscudosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
         List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingH)
         List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingP)
         List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingO)
+        List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).Coal)
         desc.Caption = "Defensa: " & ObjData(EscudosHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(EscudosHerrero(lstArmas.ListIndex).Index).MaxDef
 
     End If

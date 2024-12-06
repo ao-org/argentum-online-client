@@ -19,7 +19,8 @@ Option Explicit
 
 Private cartel_title As String
 Private cartel_message As String
-Private cartel_icon As Long
+Private cartel_icon_head As Long
+Private cartel_icon_body As Long
 Private cartel_duration As Long
 
 Private cartel_fade As Single
@@ -37,7 +38,9 @@ Public mascota_text_color(3) As RGBA
 
 'GRHS
 Private cartel_background_grh As grh
-Private cartel_icon_grh As grh
+Private cartel_head_grh As Grh
+Private cartel_body_grh As Grh
+Private cartel_head_offset_y As Integer
 Private Const GRH_CARTEL_FONDO As Long = 22728
 
 'TAMAÑOS Y POSICIONES
@@ -101,8 +104,8 @@ Public Sub nextCartel()
         text_duration_total = text_duration
         If text_duration_total = 0 Then text_duration_total = 1
         sonido_activado = True
-        Call Sound.Sound_Stop(TYPING_SOUND)
-        Call Sound.Sound_Play(TYPING_SOUND)
+        Call ao20audio.stopwav(TYPING_SOUND)
+        Call ao20audio.playwav(TYPING_SOUND)
         cartel_message = tutorial(tutorial_index).textos(cartel_index + 1)
     Else
         Call toggleTutorialActivo(tutorial_index)
@@ -115,7 +118,7 @@ Public Sub cerrarCartel()
     cartel_index = 0
     cartel_duration = 0
     If mascota.visible Then mascota.visible = False
-        Call Sound.Sound_Stop(TYPING_SOUND)
+        Call ao20audio.stopwav(TYPING_SOUND)
 End Sub
 Public Sub resetearCartel()
     tutorial_index = 0
@@ -123,8 +126,8 @@ Public Sub resetearCartel()
     cartel_visible = False
 End Sub
 'Duration = 0 calcula solo con largo de texto, Duration = -1 infinito
-Public Sub mostrarCartel(ByVal title As String, ByVal message As String, Optional ByVal icon As Long = 0, Optional ByVal duration As Long = 0, Optional ByVal titleColor As Long = -1, Optional ByVal messageColor As Long = -1, Optional ByVal backgroundColor As Long = -1, Optional ByVal esNpc As Boolean = False, Optional ByVal CartelTitlePosX = 0, Optional ByVal CartelTitlePosY As Long = 0, Optional ByVal CartelMessagePosX As Long = 0, Optional ByVal CartelMessagePosY As Long = 0, Optional ByVal cartelGrhPosX As Long = 0, Optional ByVal cartelGrhPosY As Long = 0, Optional ByVal grhWidth As Long = 0, Optional ByVal grhHeight As Long = 0)
-    
+
+Public Sub mostrarCartel(ByVal title As String, ByVal Message As String, Optional ByVal headGrh As Long = 0, Optional ByVal duration As Long = 0, Optional ByVal titleColor As Long = -1, Optional ByVal messageColor As Long = -1, Optional ByVal backgroundColor As Long = -1, Optional ByVal EsNpc As Boolean = False, Optional ByVal CartelTitlePosX = 0, Optional ByVal CartelTitlePosY As Long = 0, Optional ByVal CartelMessagePosX As Long = 0, Optional ByVal CartelMessagePosY As Long = 0, Optional ByVal cartelGrhPosX As Long = 0, Optional ByVal cartelGrhPosY As Long = 0, Optional ByVal grhWidth As Long = 0, Optional ByVal grhHeight As Long = 0, Optional ByVal bodyGrh As Long = 0, Optional ByVal HeadOffsetY As Integer = 0)
     Dim titleColor_byte() As Byte
     Dim messageColor_byte() As Byte
     Dim backgroundColor_byte() As Byte
@@ -144,7 +147,7 @@ Public Sub mostrarCartel(ByVal title As String, ByVal message As String, Optiona
     End If
     
     If backgroundColor > -1 Then
-        messageColor_byte = Lng2RGBA(backgroundColor)
+        backgroundColor_byte = Lng2RGBA(backgroundColor)
         Call RGBAList(cartel_background_color(), backgroundColor_byte(0), backgroundColor_byte(1), backgroundColor_byte(2))
     Else
         Call RGBAList(cartel_background_color(), 255, 255, 255)
@@ -154,11 +157,19 @@ Public Sub mostrarCartel(ByVal title As String, ByVal message As String, Optiona
     Call InitGrh(cartel_background_grh, GRH_CARTEL_FONDO)
     
     'Inicializo GRG de ícono
-    Call InitGrh(cartel_icon_grh, icon)
+    cartel_head_grh.GrhIndex = 0
+    cartel_body_grh.GrhIndex = 0
+    cartel_head_offset_y = headOffsetY
+    
+    If headGrh > 0 Then
+        Call InitGrh(cartel_head_grh, headGrh)
+    End If
+    If bodyGrh > 0 Then
+        Call InitGrh(cartel_body_grh, bodyGrh)
+    End If
     
     cartel_title = title
     cartel_message = message
-    cartel_icon = icon
     cartel_duration = duration
     cartel_fadestatus = 1
     cartel_fade = 1
@@ -178,8 +189,8 @@ Public Sub mostrarCartel(ByVal title As String, ByVal message As String, Optiona
         text_length = Len(cartel_message)
         text_duration = Len(cartel_message) * 16
         text_duration_total = text_duration
-        Call Sound.Sound_Stop(TYPING_SOUND)
-        Call Sound.Sound_Play(TYPING_SOUND)
+        Call ao20audio.stopwav(TYPING_SOUND)
+        Call ao20audio.playwav(TYPING_SOUND)
         If text_duration_total = 0 Then text_duration_total = 1
         sonido_activado = True
     End If
@@ -225,7 +236,7 @@ Public Sub RenderScreen_Cartel()
         Dim charCount As Integer
         charCount = (text_duration * text_length) / text_duration_total
         If charCount = 0 And sonido_activado Then
-            Call Sound.Sound_Stop(TYPING_SOUND)
+            Call ao20audio.stopwav(TYPING_SOUND)
             sonido_activado = False
         End If
         text_message_render = Left(cartel_message, text_length - charCount)
@@ -259,7 +270,14 @@ Public Sub RenderScreen_Cartel()
                 
         'Renderizo ícono
         Call RGBAList(cartel_icono_color(), 255, 255, 255, cartel_fade)
-        Call Grh_Render_Advance(cartel_icon_grh, cartel_grh_pos_x, cartel_grh_pos_y, grh_height, grh_width, cartel_icono_color())
+        
+        If cartel_body_grh.GrhIndex > 0 Then
+            Call Grh_Render_Advance(cartel_body_grh, cartel_grh_pos_x, cartel_grh_pos_y, grh_height, grh_width, cartel_icono_color())
+        End If
+        
+        If cartel_head_grh.GrhIndex > 0 Then
+            Call Grh_Render_Advance(cartel_head_grh, cartel_grh_pos_x, cartel_grh_pos_y + cartel_head_offset_y, grh_height, grh_width, cartel_icono_color())
+        End If
     End If
     
     Exit Sub

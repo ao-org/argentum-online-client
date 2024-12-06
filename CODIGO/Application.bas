@@ -23,7 +23,7 @@ Private Type UltimoError
     Componente As String
     Contador As Byte
     ErrorCode As Long
-End Type: Private HistorialError As UltimoError
+End Type
 
 ''
 ' Checks if this is the active (foreground) application or not.
@@ -50,43 +50,23 @@ IsAppActive_Err:
     
 End Function
 
-Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByVal Componente As String, Optional ByVal Linea As Integer)
-    '**********************************************************
-    'Author: Jopi
-    'Guarda una descripcion detallada del error en Errores.log
-    '**********************************************************
-        
-        On Error GoTo RegistrarError_Err
-    
-        
-        
-        'Si lo del parametro Componente es ES IGUAL, al Componente del anterior error...
-100     If Componente = HistorialError.Componente And _
-           Numero = HistorialError.ErrorCode Then
-       
-           'Si ya recibimos error en el mismo componente 10 veces, es bastante probable que estemos en un bucle
-            'x lo que no hace falta registrar el error.
-102        ' If HistorialError.Contador = 10 Then
-           '     Debug.Print "Mismo error"
-           '     Debug.Assert False
-           '     Exit Sub
-           ' End If
-        
-            'Agregamos el error al historial.
-104         HistorialError.Contador = HistorialError.Contador + 1
-        
-        Else 'Si NO es igual, reestablecemos el contador.
 
-106         HistorialError.Contador = 0
-108         HistorialError.ErrorCode = Numero
-110         HistorialError.Componente = Componente
-            
-        End If
-    
-        'Registramos el error en Errores.log
+
+Public Sub DeleteFile(ByVal filename As String)
+On Error Resume Next
+    If Len(dir$(filename)) > 0 Then
+        Kill filename
+    End If
+End Sub
+
+
+Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByVal Componente As String, Optional ByVal Linea As Integer)
+ 
+On Error GoTo RegistrarError_Err
+
 112     Dim File As Integer: File = FreeFile
-        
-114     Open App.Path & "\logs\Errores.log" For Append As #File
+
+114     Open GetErrorLogFilename() For Append As #File
     
 116         Print #File, "Error: " & Numero
 118         Print #File, "Descripcion: " & Descripcion

@@ -3,12 +3,12 @@ Begin VB.Form FrmTorneo
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Organizacion de evento"
    ClientHeight    =   6180
-   ClientLeft      =   48
-   ClientTop       =   396
-   ClientWidth     =   4428
+   ClientLeft      =   12090
+   ClientTop       =   4080
+   ClientWidth     =   4425
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,14 +19,13 @@ Begin VB.Form FrmTorneo
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   6180
-   ScaleWidth      =   4428
+   ScaleWidth      =   4425
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
    Begin VB.Frame FraTorneosY 
       Caption         =   "Torneos y Eventos"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -66,7 +65,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Cancelar todos los eventos con Lobby"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -115,7 +114,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Configurar e Iniciar"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -139,11 +138,168 @@ Begin VB.Form FrmTorneo
          Width           =   2235
       End
    End
+   Begin VB.Frame FraAbordaje 
+      Caption         =   "Abordaje"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   6015
+      Left            =   120
+      TabIndex        =   85
+      Top             =   120
+      Visible         =   0   'False
+      Width           =   4215
+      Begin VB.CommandButton cmdCancelarAbordaje 
+         Caption         =   "Cancelar"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   2880
+         TabIndex        =   93
+         Top             =   5280
+         Width           =   990
+      End
+      Begin VB.TextBox txtAbordaje 
+         Height          =   285
+         Left            =   1200
+         TabIndex        =   92
+         Text            =   "12"
+         Top             =   1680
+         Width           =   975
+      End
+      Begin VB.TextBox txtlvlAbordajeMax 
+         Height          =   285
+         Left            =   1200
+         TabIndex        =   91
+         Text            =   "47"
+         Top             =   960
+         Width           =   975
+      End
+      Begin VB.TextBox txtAbordajelvlMin 
+         Height          =   285
+         Left            =   1200
+         TabIndex        =   90
+         Text            =   "1"
+         Top             =   600
+         Width           =   975
+      End
+      Begin VB.CommandButton cmdCrearElAbordaje 
+         Caption         =   "Crear el evento"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   89
+         Top             =   3960
+         Width           =   3495
+      End
+      Begin VB.CommandButton cmdIniciarAbordaje 
+         Caption         =   "Iniciar el Evento"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   88
+         Top             =   4680
+         Width           =   3495
+      End
+      Begin VB.CommandButton cmdAnunciarAbordaje 
+         Caption         =   "Anunciar el evento"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   87
+         Top             =   4320
+         Width           =   3495
+      End
+      Begin VB.CommandButton cmdVerAnotadosbordaje 
+         Caption         =   "Ver Anotados"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   86
+         Top             =   5280
+         Width           =   1335
+      End
+      Begin VB.Label lblCantidadAbordaje 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cantidad de participantes"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   96
+         Top             =   1440
+         Width           =   1845
+      End
+      Begin VB.Label lblNivelMaximoAbordaje 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nivel Maximo"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   95
+         Top             =   960
+         Width           =   930
+      End
+      Begin VB.Label lblNivelMinimoAbordaje 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nivel Minimo"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   94
+         Top             =   600
+         Width           =   870
+      End
+   End
    Begin VB.Frame FraDeathMach 
       Caption         =   "DeathMach"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -156,11 +312,27 @@ Begin VB.Form FrmTorneo
       Top             =   120
       Visible         =   0   'False
       Width           =   4215
+      Begin VB.TextBox txtEquipo 
+         Height          =   285
+         Left            =   2760
+         TabIndex        =   98
+         Text            =   "2"
+         Top             =   1800
+         Width           =   975
+      End
+      Begin VB.TextBox txtParti 
+         Height          =   285
+         Left            =   2760
+         TabIndex        =   97
+         Text            =   "1"
+         Top             =   2400
+         Width           =   975
+      End
       Begin VB.CommandButton cmdVerAnotados 
          Caption         =   "Ver Anotados"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -177,7 +349,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Anunciar el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -194,7 +366,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Iniciar el Evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -211,7 +383,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Crear el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -242,17 +414,17 @@ Begin VB.Form FrmTorneo
       End
       Begin VB.TextBox txtPlayerDeath 
          Height          =   285
-         Left            =   1200
+         Left            =   2760
          TabIndex        =   53
          Text            =   "1"
-         Top             =   1680
+         Top             =   1440
          Width           =   975
       End
       Begin VB.CommandButton cmdCancelarDeach 
          Caption         =   "Cancelar"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -264,6 +436,26 @@ Begin VB.Form FrmTorneo
          TabIndex        =   52
          Top             =   5280
          Width           =   990
+      End
+      Begin VB.Label lblCantidad 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Cantidad de mienbros por equipo"
+         Height          =   195
+         Left            =   240
+         TabIndex        =   100
+         Top             =   1800
+         Width           =   2370
+      End
+      Begin VB.Label lblValorDe 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Valor de inscripcion"
+         Height          =   195
+         Left            =   1200
+         TabIndex        =   99
+         Top             =   2400
+         Width           =   1365
       End
       Begin VB.Label lblNivelMinimodeath 
          AutoSize        =   -1  'True
@@ -290,7 +482,7 @@ Begin VB.Form FrmTorneo
          BackStyle       =   0  'Transparent
          Caption         =   "Cantidad de participantes"
          Height          =   195
-         Left            =   120
+         Left            =   720
          TabIndex        =   59
          Top             =   1440
          Width           =   1845
@@ -300,7 +492,7 @@ Begin VB.Form FrmTorneo
       Caption         =   "Captura de Bandera"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -317,7 +509,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Cancelar"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -334,7 +526,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Crear el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -352,7 +544,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Iniciar el Evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -369,7 +561,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Anunciar el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -478,7 +670,7 @@ Begin VB.Form FrmTorneo
       Caption         =   "Dia del Garrote"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -491,11 +683,19 @@ Begin VB.Form FrmTorneo
       Top             =   120
       Visible         =   0   'False
       Width           =   4215
+      Begin VB.TextBox txtValorGarrote 
+         Height          =   285
+         Left            =   1200
+         TabIndex        =   101
+         Text            =   "1"
+         Top             =   2280
+         Width           =   975
+      End
       Begin VB.CommandButton cmdVerAnotadosGarrote 
          Caption         =   "Ver Anotados"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -512,7 +712,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Cancelar"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -554,7 +754,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Crear el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -571,7 +771,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Iniciar el Evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -588,7 +788,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Anunciar el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -600,6 +800,16 @@ Begin VB.Form FrmTorneo
          TabIndex        =   41
          Top             =   4320
          Width           =   3495
+      End
+      Begin VB.Label lblValorGarrote 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Valor de inscripcion"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   102
+         Top             =   2040
+         Width           =   1365
       End
       Begin VB.Label lblCantidadDe 
          AutoSize        =   -1  'True
@@ -636,7 +846,7 @@ Begin VB.Form FrmTorneo
       Caption         =   "Torneos"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -653,7 +863,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Cancelar"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -751,7 +961,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Crear evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -869,7 +1079,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Reglas"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -887,7 +1097,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Nombre del evento"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
@@ -937,7 +1147,7 @@ Begin VB.Form FrmTorneo
          Caption         =   "Clases"
          BeginProperty Font 
             Name            =   "Tahoma"
-            Size            =   8.4
+            Size            =   8.25
             Charset         =   0
             Weight          =   400
             Underline       =   -1  'True
@@ -989,6 +1199,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private Sub cmdAnunciarAbordaje_Click()
+Call ParseUserCommand("/configlobby open ")
+End Sub
+
 '    Argentum 20 - Game Client Program
 '    Copyright (C) 2022 - Noland Studios
 '
@@ -1024,7 +1238,9 @@ Private Sub cmdCancelarDeach_Click()
 End Sub
 
 Private Sub cmdCancelarTodos_Click()
+    Call WriteCancelarTorneo
     Call ParseUserCommand("/configlobby end")
+    Call ParseUserCommand("/cancelarevento")
 End Sub
 
 Private Sub cmdCancelarTorneo_Click()
@@ -1034,34 +1250,83 @@ End Sub
 
 Private Sub cmdConfigurarE_Click()
 FrmTorneo.FraTorneosY.visible = False
-    If OptMatarCon.Value = True Then
+Select Case True
+    Case OptMatarCon.Value
         FrmTorneo.Frame2.visible = True
-    End If
-    If OptElDe.Value = True Then
+    Case OptElDe.Value
         FrmTorneo.FraDeathMach.visible = True
-    End If
-    If OptCapturaDe.Value = True Then
+    Case OptCapturaDe.Value
         FrmTorneo.FraCapturaDe.visible = True
-    End If
-        If OptTorneo.Value = True Then
+    Case OptTorneo.Value
         FrmTorneo.Frame1.visible = True
-    End If
+    Case OptAbordaje.Value
+        FrmTorneo.FraAbordaje.visible = True
+End Select
 End Sub
 
 Private Sub cmdCrearEl_Click()
 Call ParseUserCommand("/crearevento caceria " & txtPlayer & " " & txtNivelMinino & " " & txtNivelmax)
 End Sub
 
+Private Sub cmdCrearElAbordaje_Click()
+    ' Comprobar que txtAbordaje sea un número par
+    If Not IsNumeric(txtAbordaje.Text) Or Val(txtAbordaje.Text) Mod 2 <> 0 Then
+        MsgBox JsonLanguage.Item("MENSAJE_NUMERO_PAR_PARTICIPANTES"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
+        Exit Sub
+    End If
+
+    ' Comprobar que txtAbordajelvlMin esté entre 1 y 47
+    If Not IsNumeric(txtAbordajelvlMin.Text) Or Val(txtAbordajelvlMin.Text) < 1 Or Val(txtAbordajelvlMin.Text) > 47 Then
+        MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_ABORDAJE"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
+
+        Exit Sub
+    End If
+
+    ' Comprobar que txtlvlAbordajeMax esté entre 1 y 47
+    If Not IsNumeric(txtlvlAbordajeMax.Text) Or Val(txtlvlAbordajeMax.Text) < 1 Or Val(txtlvlAbordajeMax.Text) > 47 Then
+        MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO_ABORDAJE"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
+        Exit Sub
+    End If
+
+    ' Comprobar que txtAbordajelvlMin sea menor que txtlvlAbordajeMax
+    If Val(txtAbordajelvlMin.Text) >= Val(txtlvlAbordajeMax.Text) Then
+        MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_MAYOR_MAXIMO"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
+        Exit Sub
+    End If
+
+    ' Si todas las validaciones pasan, llamar a ParseUserCommand
+    Call ParseUserCommand("/crearevento navalconquest" & " " & txtAbordaje.Text & " " & txtAbordajelvlMin.Text & " " & txtlvlAbordajeMax.Text)
+End Sub
+
 Private Sub cmdCrearEldeath_Click()
-Call ParseUserCommand("/crearevento deathmatch " & txtPlayerDeath & " " & txtMinlvldeath & " " & txtMaxlvldeath)
+    ' Verificar que txtMinlvldeath esté entre 1 y 47 y no sea mayor que txtMaxlvldeath
+    If IsNumeric(txtMinlvldeath.Text) And CInt(txtMinlvldeath.Text) >= 1 And CInt(txtMinlvldeath.Text) <= 47 Then
+        ' Verificar que txtMaxlvldeath esté entre 1 y 47 y no sea menor que txtMinlvldeath
+        If IsNumeric(txtMaxlvldeath.Text) And CInt(txtMaxlvldeath.Text) >= 1 And CInt(txtMaxlvldeath.Text) <= 47 And CInt(txtMaxlvldeath.Text) >= CInt(txtMinlvldeath.Text) Then
+            ' Llamar a la función ParseUserCommand con los valores válidos
+            Call ParseUserCommand("/crearevento deathmatch " & txtPlayerDeath.Text & " " & txtMinlvldeath.Text & " " & txtMaxlvldeath.Text)
+        Else
+            ' Mostrar un mensaje de error si txtMaxlvldeath no cumple con las condiciones
+            MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
+        End If
+    Else
+        ' Mostrar un mensaje de error si txtMinlvldeath no cumple con las condiciones
+        MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
+    End If
+End Sub
+
+
+
+Private Sub cmdIniciarAbordaje_Click()
+    Call ParseUserCommand("/configlobby start")
 End Sub
 
 Private Sub cmdIniciarEl_Click()
-Call ParseUserCommand("/configlobby start")
+    Call ParseUserCommand("/configlobby start")
 End Sub
 
 Private Sub cmdIniciarEldeath_Click()
-Call ParseUserCommand("/configlobby start")
+    Call ParseUserCommand("/configlobby start")
 End Sub
 
 Private Sub cmdVerAnotados_Click()
@@ -1094,5 +1359,34 @@ End Sub
 Private Sub Command5_Click()
     FrmTorneo.FraCapturaDe.visible = False
     FrmTorneo.FraTorneosY.visible = True
+End Sub
+
+Private Sub txtEquipo_Change()
+Debug.Print txtEquipo
+    Call ParseUserCommand("/configlobby setteamsize " & txtEquipo)
+End Sub
+
+Private Sub txtParti_Change()
+    Call ParseUserCommand("/configlobby setprice " & txtParti)
+End Sub
+
+Private Sub txtValorGarrote_Change()
+    Dim valor As Integer
+
+    If Not IsNumeric(txtValorGarrote.Text) Then
+        MsgBox JsonLanguage.Item("MENSAJE_VALOR_NUMERO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
+        txtValorGarrote.Text = ""
+        Exit Sub
+    End If
+
+    valor = CInt(txtValorGarrote.Text)
+
+    If valor > 100000 Then
+        MsgBox JsonLanguage.Item("MENSAJE_VALOR_MAXIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
+        txtValorGarrote.Text = ""
+        Exit Sub
+    End If
+
+    Call ParseUserCommand("/configlobby setprice " & valor)
 End Sub
 

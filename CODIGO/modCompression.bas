@@ -379,7 +379,7 @@ On Local Error GoTo ErrHandler
     
     If RequiredSpace >= General_Drive_Get_Free_Bytes(Left(App.Path, 3)) Then
         Erase InfoHead
-        MsgBox "¡No hay espacio suficiente para extraer el archivo!", , "Error"
+        MsgBox JsonLanguage.Item("MENSAJE_ESPACIO_INSUFICIENTE"), vbExclamation + vbOKOnly, JsonLanguage.Item("TITULO_ERROR")
         Exit Function
     End If
     

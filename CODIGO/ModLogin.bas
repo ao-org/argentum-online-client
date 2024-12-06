@@ -1,4 +1,31 @@
 Attribute VB_Name = "ModLogin"
+' Argentum 20 Game Client
+'
+'    Copyright (C) 2023 Noland Studios LTD
+'
+'    This program is free software: you can redistribute it and/or modify
+'    it under the terms of the GNU Affero General Public License as published by
+'    the Free Software Foundation, either version 3 of the License, or
+'    (at your option) any later version.
+'
+'    This program is distributed in the hope that it will be useful,
+'    but WITHOUT ANY WARRANTY; without even the implied warranty of
+'    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+'    GNU Affero General Public License for more details.
+'
+'    You should have received a copy of the GNU Affero General Public License
+'    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'
+'    This program was based on Argentum Online 0.11.6
+'    Copyright (C) 2002 Márquez Pablo Ignacio
+'
+'    Argentum Online is based on Baronsoft's VB6 Online RPG
+'    You can contact the original creator of ORE at aaron@baronsoft.com
+'    for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'
+
 Option Explicit
 
 Dim ServerSettings As clsIniManager
@@ -24,8 +51,6 @@ Public Sub DoLogin(ByVal account As String, ByVal password As String, ByVal stor
             ModAuth.LoginOperation = e_operation.Authenticate
             Call LoginOrConnect(E_MODO.IngresandoConCuenta)
         End If
-        Call SaveRAOInit
-
     End If
 
     Exit Sub
@@ -89,20 +114,19 @@ Public Sub SetActiveEnvironment(ByVal environment As String)
     Environment = "Production"
 #End If
     Dim loginServers As Integer
-    Dim serverCount As Integer
     loginServers = Val(ServerSettings.GetValue(environment, "LoginCount"))
-    serverCount = Val(ServerSettings.GetValue(environment, "ServerCount"))
+    ServerIpCount = Val(ServerSettings.GetValue(environment, "ServerCount"))
     Dim loginOpt, serverOpt, k As Integer
     For k = 1 To 100
-        serverOpt = RandomNumber(1, serverCount)
+        serverOpt = RandomNumber(1, ServerIpCount)
     Next k
     For k = 1 To 100
         loginOpt = RandomNumber(1, loginServers)
     Next k
     IPdelServidor = ServerSettings.GetValue(environment, "ServerIp" & serverOpt)
     PuertoDelServidor = ServerSettings.GetValue(environment, "PortPort" & serverOpt)
-    IPdelServidorLogin = ServerSettings.GetValue(environment, "LoginIp" & serverOpt)
-    PuertoDelServidorLogin = ServerSettings.GetValue(environment, "LoginPort" & serverOpt)
+    IPdelServidorLogin = ServerSettings.GetValue(environment, "LoginIp" & loginOpt)
+    PuertoDelServidorLogin = ServerSettings.GetValue(environment, "LoginPort" & loginOpt)
     Debug.Print "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
     Debug.Print "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
 End Sub
@@ -138,14 +162,13 @@ Public Sub LoadCharacterSelectionScreen()
     End If
     
     SugerenciaAMostrar = RandomNumber(1, NumSug)
-    Call Sound.Sound_Play(192)
-    Call Sound.Sound_Stop(SND_LLUVIAIN)
+    Call ao20audio.playwav(192)
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
-    If FrmLogear.visible Then
-        Unload FrmLogear
-    End If
+    
+    If FrmLogear.visible Then Unload FrmLogear
+    If frmNewAccount.visible Then Unload frmNewAccount
     
     If frmMain.visible Then
         UserParalizado = False
@@ -333,7 +356,9 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
                 End If
             End If
         Else
-            Call RegistrarError(Error, "Conexion cerrada", "OnClientDisconnect")
+            If Error <> 0 Then
+                Call RegistrarError(Error, "Conexion cerrada", "OnClientDisconnect")
+            End If
             If frmConnect.visible Then
                 Connected = False
             Else

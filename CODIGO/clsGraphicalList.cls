@@ -153,6 +153,7 @@ p_ListCount = p_ListCount + 1
 If p_ListCount = 1 Then p_ListIndex = 0
 Dibujar
 End Sub
+
 Public Sub Clear()
 ReDim lista(0)
 p_ListCount = 0
@@ -160,50 +161,51 @@ p_ListIndex = -1
 p_Scroll = 0
 If Not ListPic Is Nothing Then Dibujar
 End Sub
+
 Private Sub Dibujar(Optional refreshPic As Boolean = True)
-Dim i As Integer
-Dim PosY As Integer
-If refreshPic Then ListPic.Cls
-Dim drawText As Boolean
-'If Not refreshPic And p_ListIndex = lastRendered Then Exit Sub
-For i = p_Scroll To p_Scroll + VisibleCount
-    If i < p_ListCount Then
-        PosY = (i - p_Scroll) * p_Pixel_Alto
-        
-        drawText = refreshPic Or lastRendered = i Or p_ListIndex = i
-
-        If Not refreshPic And lastRendered = i And p_ListIndex <> i Then
-            ListPic.Line (1, PosY)-(ListPic.ScaleWidth - 1, PosY + p_Pixel_Alto + 1), 0, BF
-        End If
-
-        If i = p_ListIndex Then
-            ListPic.Line (1, PosY)-(ListPic.ScaleWidth - 1, PosY + p_Pixel_Alto + 1), &H202020, BF
-            ListPic.Line (1, PosY)-(ListPic.ScaleWidth - 1, PosY + p_Pixel_Alto + 1), &H404040, B
-            ListPic.ForeColor = &H828282
+    Dim i As Integer
+    Dim PosY As Integer
+    If refreshPic Then ListPic.Cls
+    Dim drawText As Boolean
+    'If Not refreshPic And p_ListIndex = lastRendered Then Exit Sub
+    For i = p_Scroll To p_Scroll + VisibleCount
+        If i < p_ListCount Then
+            PosY = (i - p_Scroll) * p_Pixel_Alto
             
+            drawText = refreshPic Or lastRendered = i Or p_ListIndex = i
+    
+            If Not refreshPic And lastRendered = i And p_ListIndex <> i Then
+                ListPic.Line (1, PosY)-(ListPic.ScaleWidth - 1, PosY + p_Pixel_Alto + 1), 0, BF
+            End If
+    
+            If i = p_ListIndex Then
+                ListPic.Line (1, PosY)-(ListPic.ScaleWidth - 1, PosY + p_Pixel_Alto + 1), &H202020, BF
+                ListPic.Line (1, PosY)-(ListPic.ScaleWidth - 1, PosY + p_Pixel_Alto + 1), &H404040, B
+                ListPic.ForeColor = &H828282
+                
+            Else
+                ListPic.ForeColor = p_ForeColor
+            End If
+            ListPic.CurrentX = 4
+            ListPic.CurrentY = PosY
+            
+            If drawText Then
+                ListPic.Print lista(i)
+            End If
+        End If
+    Next i
+    ListPic.DrawStyle = 0
+    PosY = 0
+    If ShowBarrita Then
+        If VisibleCount < ListCount Then PosY = p_Scroll * (ListPic.ScaleHeight - BarraHeight) / (p_ListCount - VisibleCount)
+        Dim barritaColor As Long
+        If DownBarrita Then
+            barritaColor = &H505050
         Else
-            ListPic.ForeColor = p_ForeColor
+            barritaColor = &H404040
         End If
-        ListPic.CurrentX = 4
-        ListPic.CurrentY = PosY
-        
-        If drawText Then
-            ListPic.Print lista(i)
-        End If
+        ListPic.Line (ListPic.ScaleWidth - BarraWidth, PosY + 1)-(ListPic.ScaleWidth - 1, PosY + BarraHeight - 2), barritaColor, BF
+        ListPic.Line (ListPic.ScaleWidth - BarraWidth, PosY + 1)-(ListPic.ScaleWidth - 1, PosY + BarraHeight - 2), &H505050, B
     End If
-Next i
-ListPic.DrawStyle = 0
-PosY = 0
-If ShowBarrita Then
-    If VisibleCount < ListCount Then PosY = p_Scroll * (ListPic.ScaleHeight - BarraHeight) / (p_ListCount - VisibleCount)
-    Dim barritaColor As Long
-    If DownBarrita Then
-        barritaColor = &H505050
-    Else
-        barritaColor = &H404040
-    End If
-    ListPic.Line (ListPic.ScaleWidth - BarraWidth, PosY + 1)-(ListPic.ScaleWidth - 1, PosY + BarraHeight - 2), barritaColor, BF
-    ListPic.Line (ListPic.ScaleWidth - BarraWidth, PosY + 1)-(ListPic.ScaleWidth - 1, PosY + BarraHeight - 2), &H505050, B
-End If
 End Sub
 

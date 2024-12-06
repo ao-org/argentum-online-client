@@ -65,7 +65,6 @@ Public FormParser                       As clsCursor
 Public HoraMundo                        As Long
 Public DuracionDia                      As Long
 Public EsGM                             As Boolean
-Public HayLLamadaDeclan                 As Boolean
 Public MapInfoEspeciales                As String
 Public LLamadaDeclanMapa                As Integer
 Public LLamadaDeclanX                   As Byte
@@ -170,7 +169,6 @@ Public Type t_packetCounters
 End Type
 
 Public packetCounters As t_packetCounters
-Public Const CANT_PACKETS_CONTROL As Long = 400
 
 Public Type t_packetControl
     last_count As Long
@@ -192,7 +190,35 @@ Public Enum e_CdTypes
     [CDCount]
 End Enum
 
-Public packetControl(1 To CANT_PACKETS_CONTROL) As t_packetControl
+Public Type t_DragState
+    active As Boolean
+    Grh As Long
+    PosX As Long
+    PosY As Long
+    DragType As Integer
+    DragIndex As Long
+    DragSlot As Integer
+End Type
+
+Public Enum e_HotkeyType
+    Item = 1
+    Spell = 2
+    Unknown = 3
+End Enum
+
+Public Type t_HotkeyEntry
+    Type As Integer 'should be e_HotkeyType but enums are hard to serialize with with C since it can chance mem size
+    Index As Integer
+    LastKnownSlot As Integer
+End Type
+Public Const HotKeyCount As Integer = 10
+
+Public Enum e_FeatureToggleMask
+    eEnableHotkeys = 1
+End Enum
+Public HideHotkeys As Boolean
+Public HotkeyList(HotKeyCount) As t_HotkeyEntry
+Public packetControl(ClientPacketID.eMinPacket To ClientPacketID.eMaxPacket) As t_packetControl
 Public Const NUM_PASOS       As Byte = 7
 Public Pasos()               As tPaso
 Public PosXMacro             As Integer
@@ -222,6 +248,8 @@ Public DireccionDeCaminata   As String
 Public CaminandoMacro        As Boolean
 Public CaminarX              As Integer
 Public CaminarY              As Integer
+Public FeatureToggles        As Long 'use values from e_FeatureToggleMask
+Public gDragState             As t_DragState
 
 Public character_screen_action    As e_connect_user_action
 Public Enum e_connect_user_action
@@ -261,9 +289,6 @@ Public CopiarDialogoAConsola       As Byte
 Public ScrollArrastrar             As Byte
 Public LastScroll                  As Byte
 Public InfoItemsEnRender           As Boolean
-Public Musica                      As Byte
-Public fX                          As Byte
-Public AmbientalActivated          As Byte
 Public InvertirSonido              As Byte
 Public VolMusic                    As Long
 Public VolFX                       As Long
@@ -272,7 +297,7 @@ Public FxNavega                    As Byte
 Public ChatCombate                 As Byte
 Public ChatGlobal                  As Byte
 Public PantallaCompleta            As Boolean
-Public Sonido                      As Byte
+Public DisableDungeonLighting      As Boolean
 Public MostrarIconosMeteorologicos As Byte
 Public OpcionMenu                  As Byte
 Public EntradaX                    As Byte
@@ -372,28 +397,13 @@ Public StreamFile As String
 Public NumAuras   As Byte
 Public InvOroComUsu(2)         As New clsGrapchicalInventory ' Inventarios de oro (ambos usuarios)
 Public InvOfferComUsu(1)       As New clsGrapchicalInventory ' Inventarios de ofertas (ambos usuarios)
-Public Sound                   As New clsSoundEngine
+
 Public Audio_MP3_Load          As Boolean
 Public Audio_MP3_Play          As Boolean
 ''
 'The main timer of the game.
 Public MainTimer               As New clsTimer
 
-'Sonidos
-Public Const SND_EXCLAMACION   As Integer = 451
-Public Const SND_CLICK         As String = 500
-Public Const SND_CLICK_OVER    As String = 501
-Public Const SND_NAVEGANDO     As Integer = 50
-Public Const SND_OVER          As Integer = 0
-Public Const SND_DICE          As Integer = 188
-Public Const SND_FUEGO         As Integer = 116
-Public Const SND_LLUVIAIN      As Integer = 191
-Public Const SND_LLUVIAOUT     As Integer = 194
-Public Const SND_NIEVEIN       As Integer = 191
-Public Const SND_NIEVEOUT      As Integer = 194
-Public Const SND_RESUCITAR     As Integer = 104
-Public Const SND_CURAR         As Integer = 101
-Public Const SND_DOPA          As Byte = 77
 Public TargetXMacro            As Byte
 Public TargetYMacro            As Byte
 
@@ -419,18 +429,6 @@ Public Type t_Intervals
 End Type
 
 Public gIntervals As t_Intervals
-Public IntervaloGolpe          As Long
-Public IntervaloArco           As Long
-Public IntervaloMagia          As Long
-Public IntervaloTrabajoExtraer As Long
-Public IntervaloTrabajoConstruir As Long
-Public IntervaloCaminar        As Long
-Public IntervaloTirar          As Long
-Public IntervaloUsarU          As Long
-Public IntervaloUsarClic       As Long
-Public IntervaloGolpeMagia     As Long
-Public IntervaloMagiaGolpe     As Long
-Public IntervaloGolpeUsar      As Long
 Public Const INT_SENTRPU       As Integer = 2000
 Public MacroBltIndex           As Integer
 Public Const CASPER_BODY       As Integer = 830
@@ -487,6 +485,7 @@ Type tHerreria
     LHierro As Integer
     LPlata As Integer
     LOro As Integer
+    Coal As Integer
     Index As Integer
 End Type
 
@@ -494,6 +493,7 @@ Type tSasteria
     PielLobo As Integer
     PielOsoPardo As Integer
     PielOsoPolar As Integer
+    PielLoboNegro As Integer
     Index As Integer
 End Type
 
@@ -577,7 +577,7 @@ Public Enum eCiudad
     cBanderbill
     cLindos
     cArghal
-    cHillidan
+    cForgat
 End Enum
 
 Enum eRaza
@@ -692,54 +692,7 @@ End Enum
 
 Public Const FundirMetal                           As Integer = 88
 
-'
-' Mensajes
-'
-' MENSAJE_*  --> Mensajes de texto que se muestran en el cuadro de texto
-'
 
-Public Const MENSAJE_CRIATURA_FALLA_GOLPE          As String = "La criatura fallo el golpe."
-Public Const MENSAJE_CRIATURA_MATADO               As String = "La criatura te ha matado."
-Public Const MENSAJE_RECHAZO_ATAQUE_ESCUDO         As String = "Has rechazado el ataque con el escudo."
-Public Const MENSAJE_USUARIO_RECHAZO_ATAQUE_ESCUDO As String = "El usuario rechazo el ataque con su escudo."
-Public Const MENSAJE_FALLADO_GOLPE                 As String = "Has fallado el golpe."
-Public Const MENSAJE_SEGURO_ACTIVADO               As String = "Seguro de ataque activado."
-Public Const MENSAJE_SEGURO_DESACTIVADO            As String = "Seguro de ataque desactivado."
-Public Const MENSAJE_USAR_MEDITANDO                As String = "¡Estás meditando! Debes dejar de meditar para usar objetos."
-Public Const MENSAJE_SEGURO_PARTY_ON               As String = "Ahora nadie te podra invitar a un grupo."
-Public Const MENSAJE_SEGURO_PARTY_OFF              As String = "Ahora podras recibir solicitudes a grupos."
-Public Const MENSAJE_GOLPE_CABEZA                  As String = "La criatura te ha pegado en la cabeza por "
-Public Const MENSAJE_GOLPE_BRAZO_IZQ               As String = "La criatura te ha pegado el brazo izquierdo por "
-Public Const MENSAJE_GOLPE_BRAZO_DER               As String = "La criatura te ha pegado el brazo derecho por "
-Public Const MENSAJE_GOLPE_PIERNA_IZQ              As String = "La criatura te ha pegado la pierna izquierda por "
-Public Const MENSAJE_GOLPE_PIERNA_DER              As String = "La criatura te ha pegado la pierna derecha por "
-Public Const MENSAJE_GOLPE_TORSO                   As String = "La criatura te ha pegado en el torso por "
-' MENSAJE_[12]: Aparecen antes y despues del valor de los mensajes anteriores (MENSAJE_GOLPE_*)
-Public Const MENSAJE_1                             As String = "¡¡"
-Public Const MENSAJE_2                             As String = "."
-Public Const MENSAJE_GOLPE_CRIATURA_1              As String = "Le has pegado a la criatura por "
-Public Const MENSAJE_ATAQUE_FALLO                  As String = " te ataco y fallo."
-Public Const MENSAJE_RECIVE_IMPACTO_CABEZA         As String = " te ha pegado en la cabeza por "
-Public Const MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ      As String = " te ha pegado el brazo izquierdo por "
-Public Const MENSAJE_RECIVE_IMPACTO_BRAZO_DER      As String = " te ha pegado el brazo derecho por "
-Public Const MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ     As String = " te ha pegado la pierna izquierda por "
-Public Const MENSAJE_RECIVE_IMPACTO_PIERNA_DER     As String = " te ha pegado la pierna derecha por "
-Public Const MENSAJE_RECIVE_IMPACTO_TORSO          As String = " te ha pegado en el torso por "
-Public Const MENSAJE_PRODUCE_IMPACTO_1             As String = "Le has pegado a "
-Public Const MENSAJE_PRODUCE_IMPACTO_CABEZA        As String = " en la cabeza por "
-Public Const MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ     As String = " en el brazo izquierdo por "
-Public Const MENSAJE_PRODUCE_IMPACTO_BRAZO_DER     As String = " en el brazo derecho por "
-Public Const MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ    As String = " en la pierna izquierda por "
-Public Const MENSAJE_PRODUCE_IMPACTO_PIERNA_DER    As String = " en la pierna derecha por "
-Public Const MENSAJE_PRODUCE_IMPACTO_TORSO         As String = " en el torso por "
-Public Const MENSAJE_TRABAJO_MAGIA                 As String = "Haz click sobre el objetivo..."
-Public Const MENSAJE_TRABAJO_PESCA                 As String = "Haz click sobre el sitio donde quieres pescar..."
-Public Const MENSAJE_TRABAJO_ROBAR                 As String = "Haz click sobre la victima..."
-Public Const MENSAJE_TRABAJO_TALAR                 As String = "Haz click sobre el árbol..."
-Public Const MENSAJE_TRABAJO_MINERIA               As String = "Haz click sobre el yacimiento..."
-Public Const MENSAJE_TRABAJO_FUNDIRMETAL           As String = "Haz click sobre la fragua..."
-Public Const MENSAJE_TRABAJO_PROYECTILES           As String = "Haz click sobre la victima..."
-Public Const MENSAJE_NENE                          As String = "Cantidad de NPCs: "
 
 'Inventario
 Type Slot
@@ -754,6 +707,7 @@ Type Slot
     MaxHit As Integer
     MinHit As Integer
     PuedeUsar As Byte
+    IsBindable As Boolean
 End Type
 
 Public Type t_UserInvetory
@@ -888,7 +842,7 @@ Public Const NUMSKILLS                          As Byte = 24
 Public Const NUMATRIBUTOS                       As Byte = 5
 Public Const NUMCLASES                          As Byte = 12
 Public Const NUMRAZAS                           As Byte = 6
-Public Const NUMCIUDADES                        As Byte = 5
+Public Const NUMCIUDADES                        As Byte = 6
 
 
 
@@ -1009,6 +963,7 @@ Public Connected         As Boolean 'True when connected to server
 Public FullLogout        As Boolean
 Public DownloadingMap    As Boolean 'Currently downloading a map from server
 Public UserMap           As Integer
+Public ResourceMap       As Integer
 Public LastRenderMap     As Integer
 
 'Control
@@ -1060,6 +1015,21 @@ Public Type tIndiceFx
 
 End Type
 
+Public Type t_LobbyData
+    Index As Integer
+    id As Integer
+    Description As String
+    ScenarioType As String
+    MinLevel As Integer
+    MaxLevel As Integer
+    MinPlayers As Integer
+    MaxPlayers As Integer
+    RegisteredPlayers As Integer
+    TeamSize As Integer
+    TeamType As Integer
+    InscriptionPrice As Long
+    IsPrivate As Byte
+End Type
 
 ' Load custom font
 Public Declare Function AddFontResourceEx Lib "gdi32.dll" Alias "AddFontResourceExA" (ByVal lpcstr As String, ByVal dword As Long, ByRef DESIGNVECTOR) As Long

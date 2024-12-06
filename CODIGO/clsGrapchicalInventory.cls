@@ -11,8 +11,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
+' Argentum 20 Game Client
+'
+'    Copyright (C) 2023 Noland Studios LTD
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU Affero General Public License as published by
@@ -23,31 +24,20 @@ Attribute VB_Exposed = False
 '    but WITHOUT ANY WARRANTY; without even the implied warranty of
 '    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 '    GNU Affero General Public License for more details.
+'
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
+'    This program was based on Argentum Online 0.11.6
+'    Copyright (C) 2002 Márquez Pablo Ignacio
 '
-'*****************************************************
-'Graphical inventory for ORE 0.4.1
-'Designed and implemented by Juan Martín Sotuyo Dodero (Maraxus)
-'juansotuyo@hotmail.com
-'*****************************************************
+'    Argentum Online is based on Baronsoft's VB6 Online RPG
+'    You can contact the original creator of ORE at aaron@baronsoft.com
+'    for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'
 
-'**************************************************************************
-'This program is free software; you can redistribute it and/or modify
-'it under the terms of the GNU General Public License as published by
-'the Free Software Foundation; either version 2 of the License, or
-'(at your option) any later version.
-'
-'This program is distributed in the hope that it will be useful,
-'but WITHOUT ANY WARRANTY; without even the implied warranty of
-'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'Affero General Public License for more details.
-'
-'You should have received a copy of the GNU General Public License
-'along with this program; if not, write to the Free Software
-'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-'**************************************************************************
 
 Option Explicit
 
@@ -852,6 +842,15 @@ Private Sub InventoryWindow_MouseDown(Button As Integer, Shift As Integer, x As 
         ' Si hay un item, iniciamos el drag
         If Slot > 0 Then
             If UserInventory(Slot).GrhIndex > 0 Then
+                If UserInventory(Slot).IsBindable Then
+                    gDragState.active = True
+                    gDragState.Grh = UserInventory(Slot).GrhIndex
+                    gDragState.PosX = -500
+                    gDragState.PosY = -500
+                    gDragState.DragType = e_HotkeyType.Item
+                    gDragState.DragSlot = Slot
+                    gDragState.DragIndex = UserInventory(Slot).ObjIndex
+                End If
                 Dragging = Slot
                 XDrag = x
                 YDrag = y
@@ -870,26 +869,18 @@ InventoryWindow_MouseDown_Err:
 End Sub
 
 Private Sub InventoryWindow_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
-    On Error GoTo InventoryWindow_MouseMove_Err
-    
-
+On Error GoTo InventoryWindow_MouseMove_Err
     ' Si estamos arrastrando
     If Dragging > 0 Then
-
-        ' Mantenemos el item dentro del Picture
-        If x < HALF_ITEM_SIZE Then x = HALF_ITEM_SIZE
-        If y < HALF_ITEM_SIZE Then y = HALF_ITEM_SIZE
-        If x > InventoryWindow.ScaleWidth - HALF_ITEM_SIZE Then x = InventoryWindow.ScaleWidth - HALF_ITEM_SIZE
-        If y > InventoryWindow.ScaleHeight - HALF_ITEM_SIZE Then y = InventoryWindow.ScaleHeight - HALF_ITEM_SIZE
-
         XDrag = x
         YDrag = y
-
         InvNeedsRedraw = True
 
     End If
-
+    If gDragState.active Then
+        gDragState.PosX = x + InventoryWindow.Left + InventoryWindow.Container.Left
+        gDragState.PosY = y + InventoryWindow.Top + InventoryWindow.Container.Top
+    End If
     
     Exit Sub
 
@@ -903,27 +894,30 @@ Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Si
     
     On Error GoTo InventoryWindow_MouseUp_Err
     
-    
-    ' Me mantengo dentro de los límites
-    If x < HALF_ITEM_SIZE Then x = HALF_ITEM_SIZE
-    If y < HALF_ITEM_SIZE Then y = HALF_ITEM_SIZE
-    If x > InventoryWindow.ScaleWidth - HALF_ITEM_SIZE Then x = InventoryWindow.ScaleWidth - HALF_ITEM_SIZE
-    If y > InventoryWindow.ScaleHeight - HALF_ITEM_SIZE Then y = InventoryWindow.ScaleHeight - HALF_ITEM_SIZE
 
     ' Calculo el slot
     Dim Slot As Byte
-
-    Slot = GetSlot(x, y)
-
+    
+    If x > 0 And _
+       y > 0 And _
+       x < InventoryWindow.ScaleWidth And _
+       y < InventoryWindow.ScaleHeight Then
+        Slot = GetSlot(x, y)
+    Else
+        Slot = 0
+    End If
+        
     ' Si estamos arrastrando y soltamos el clic derecho
     If Dragging > 0 And Button = vbRightButton Then
         ' Disparo un evento para que la lógica del drag&drop sea independiente al inventario
-        RaiseEvent ItemDropped(Dragging, Slot, x, y)
-
+        If Slot > 0 Then
+            RaiseEvent ItemDropped(Dragging, Slot, x, y)
+        End If
         ' Dejo de dibujar el item arrastrado
         Dragging = 0
         InvNeedsRedraw = True
-
+        Call frmMain.OnDragEnd
+        
     End If
     
     ' Si es un slot válido

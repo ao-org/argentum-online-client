@@ -111,8 +111,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
+' Argentum 20 Game Client
+'
+'    Copyright (C) 2023 Noland Studios LTD
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU Affero General Public License as published by
@@ -123,10 +124,20 @@ Attribute VB_Exposed = False
 '    but WITHOUT ANY WARRANTY; without even the implied warranty of
 '    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 '    GNU Affero General Public License for more details.
+'
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
+'    This program was based on Argentum Online 0.11.6
+'    Copyright (C) 2002 Márquez Pablo Ignacio
 '
+'    Argentum Online is based on Baronsoft's VB6 Online RPG
+'    You can contact the original creator of ORE at aaron@baronsoft.com
+'    for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'
+
 Option Explicit
 
 Private Char As Byte
@@ -192,7 +203,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     On Error GoTo Form_KeyDown_Err
     
 
-    If KeyCode = 27 Then
+    If KeyCode = vbKeyEscape Then
         prgRun = False
         End
 
@@ -237,9 +248,6 @@ Form_Load_Err:
     
 End Sub
 
-
-
-
 Private Sub render_DblClick()
 On Error GoTo render_DblClick_Err
     Select Case g_game_state.state()
@@ -248,7 +256,7 @@ On Error GoTo render_DblClick_Err
             
             If PJSeleccionado < 1 Then Exit Sub
 
-            Call Sound.Sound_Play(SND_CLICK)
+            Call ao20audio.playwav(SND_CLICK)
 
             If IntervaloPermiteConectar Then
                 Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
@@ -323,28 +331,22 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 End If
 
             End If
-                        
-                
-                
+                       
+            ' Clase inicial
+            ' Shugar: Arreglo los botones para seleccionar la clase inicial.
+                       
             If x > 540 And x < 554 And y > 278 And y < 291 Then 'Boton izquierda clase
-                If frmCrearPersonaje.lstProfesion.ListIndex < frmCrearPersonaje.lstProfesion.ListCount - 1 Then
-                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex + 1
-                Else
-                    frmCrearPersonaje.lstProfesion.ListIndex = 0
-
-                End If
+                
+                Call Rotacion_boton_atras_clase
 
             End If
             
-            If x > 658 And x < 671 And y > 278 And y < 291 Then 'Boton Derecha cabezas
-                If frmCrearPersonaje.lstProfesion.ListIndex - 1 < 0 Then
-                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListCount - 1
-                Else
-                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex - 1
-
-                End If
+            If x > 658 And x < 671 And y > 278 And y < 291 Then 'Boton Derecha Clase
+                                
+                Call Rotacion_boton_adelante_clase
 
             End If
+
                 
             If x > 539 And x < 553 And y > 322 And y < 335 Then 'OK
                 If frmCrearPersonaje.lstRaza.ListIndex < frmCrearPersonaje.lstRaza.ListCount - 1 Then
@@ -361,7 +363,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListCount - 1
                 Else
                     frmCrearPersonaje.lstRaza.ListIndex = frmCrearPersonaje.lstRaza.ListIndex - 1
-
                 End If
 
             End If
@@ -386,33 +387,25 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 End If
 
             End If
-        
-        
-        
-        'ciudad
-        
-            If x > 297 And x < 314 And y > 321 And y < 340 Then 'ok
-    
-                If frmCrearPersonaje.lstHogar.ListIndex < frmCrearPersonaje.lstHogar.ListCount - 1 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex + 1
-                Else
-                    frmCrearPersonaje.lstHogar.ListIndex = 0
 
-                End If
-
+            ' Hogar inicial
+            ' Shugar: Arreglo los botones para seleccionar el hogar inicial.
+        
+            If x > 416 And x < 433 And y > 323 And y < 338 Then
+  
+                Call Rotacion_boton_adelante_ciudades
+                
             End If
             
-            If x > 416 And x < 433 And y > 323 And y < 338 Then 'ok
-                If frmCrearPersonaje.lstHogar.ListIndex - 1 < 0 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListCount - 1
-                Else
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex - 1
-
-                End If
-
+            If x > 297 And x < 314 And y > 321 And y < 340 Then
+            
+                Call Rotacion_boton_atras_ciudades
+                
             End If
+            
+            
             If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
-                Call Sound.Sound_Play(SND_CLICK)
+                Call ao20audio.playwav(SND_CLICK)
                 AlphaNiebla = 25
                 EntradaY = 1
                 EntradaX = 1
@@ -425,7 +418,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
             
             If x >= 532 And x < 532 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Crear
-                Call Sound.Sound_Play(SND_CLICK)
+                Call ao20audio.playwav(SND_CLICK)
 
                 Dim k As Object
 
@@ -442,7 +435,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 UserStats.Raza = frmCrearPersonaje.lstRaza.ListIndex + 1
                 UserStats.Sexo = frmCrearPersonaje.lstGenero.ListIndex + 1
                 UserStats.Clase = frmCrearPersonaje.lstProfesion.ListIndex + 1
-                
                 UserStats.Hogar = frmCrearPersonaje.lstHogar.ListIndex + 1
                
                 If frmCrearPersonaje.CheckData() Then
@@ -562,7 +554,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     Call IniciarCrearPj
                     frmConnect.txtNombre.Visible = True
                     frmConnect.txtNombre.SetFocus
-                    Call Sound.Sound_Play(SND_DICE)
+                    Call ao20audio.playwav(SND_DICE)
                Case e_action_transfer_character
                     If Char = 0 Then Exit Sub
                     TransferCharname = Pjs(Char).nombre
@@ -583,7 +575,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 Case e_action_login_character
                     If PJSeleccionado < 1 Then Exit Sub
                     If IntervaloPermiteConectar Then
-                        Call Sound.Sound_Play(SND_CLICK)
+                        Call ao20audio.playwav(SND_CLICK)
                         Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
                     End If
             End Select
@@ -598,7 +590,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             LastClickAsistente = ClickEnAsistenteRandom
              If (x > 490 And x < 522) And (y > 297 And y < 357) Then
                 If ClickEnAsistenteRandom = 1 Then
-                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/", False, False)
+                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://steamcommunity.com/app/1956740/discussions/", False, False)
                 End If
                 If ClickEnAsistenteRandom = 2 Then
                     Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!", False, False)
@@ -677,25 +669,18 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
                         
-                
+            ' Clase inicial
+            ' Shugar: Arreglo los botones para seleccionar la clase inicial.
                 
             If x > 540 And x < 554 And y > 278 And y < 291 Then 'Boton izquierda clase
-                If frmCrearPersonaje.lstProfesion.ListIndex < frmCrearPersonaje.lstProfesion.ListCount - 1 Then
-                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex + 1
-                Else
-                    frmCrearPersonaje.lstProfesion.ListIndex = 0
-
-                End If
+                
+                Call Rotacion_boton_atras_clase
 
             End If
             
-            If x > 658 And x < 671 And y > 278 And y < 291 Then 'Boton Derecha cabezas
-                If frmCrearPersonaje.lstProfesion.ListIndex - 1 < 0 Then
-                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListCount - 1
-                Else
-                    frmCrearPersonaje.lstProfesion.ListIndex = frmCrearPersonaje.lstProfesion.ListIndex - 1
-
-                End If
+            If x > 658 And x < 671 And y > 278 And y < 291 Then 'Boton Derecha clase
+                                
+                Call Rotacion_boton_adelante_clase
 
             End If
                 
@@ -730,6 +715,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
+            
             If x > 415 And x < 431 And y > 277 And y < 295 Then 'ok
                 If frmCrearPersonaje.lstGenero.ListIndex - 1 < 0 Then
                     frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListCount - 1
@@ -739,29 +725,26 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 End If
 
             End If
-       
-            If x > 297 And x < 314 And y > 321 And y < 340 Then 'ok
-    
-                If frmCrearPersonaje.lstHogar.ListIndex < frmCrearPersonaje.lstHogar.ListCount - 1 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex + 1
-                Else
-                    frmCrearPersonaje.lstHogar.ListIndex = 0
-
-                End If
+            
+            ' Hogar inicial
+            ' Shugar: Arreglo los botones para seleccionar el hogar inicial.
+            
+            If x > 416 And x < 433 And y > 323 And y < 338 Then
+            
+                Call Rotacion_boton_adelante_ciudades
 
             End If
             
-            If x > 416 And x < 433 And y > 323 And y < 338 Then 'ok
-                If frmCrearPersonaje.lstHogar.ListIndex - 1 < 0 Then
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListCount - 1
-                Else
-                    frmCrearPersonaje.lstHogar.ListIndex = frmCrearPersonaje.lstHogar.ListIndex - 1
-
-                End If
-
+            
+            If x > 297 And x < 314 And y > 321 And y < 340 Then
+                
+                Call Rotacion_boton_atras_ciudades
+                
             End If
+
+            
             If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
-                Call Sound.Sound_Play(SND_CLICK)
+                Call ao20audio.playwav(SND_CLICK)
                 'UserMap = 323
                 AlphaNiebla = 25
                 EntradaY = 1
@@ -778,7 +761,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
             
             If x >= 532 And x < 532 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Crear
-                Call Sound.Sound_Play(SND_CLICK)
+                Call ao20audio.playwav(SND_CLICK)
 
                 Dim k As Object
 
@@ -795,7 +778,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 UserStats.Raza = frmCrearPersonaje.lstRaza.ListIndex + 1
                 UserStats.Sexo = frmCrearPersonaje.lstGenero.ListIndex + 1
                 UserStats.Clase = frmCrearPersonaje.lstProfesion.ListIndex + 1
-                
                 UserStats.Hogar = frmCrearPersonaje.lstHogar.ListIndex + 1
                
                 If frmCrearPersonaje.CheckData() Then
@@ -900,7 +882,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     frmConnect.txtNombre.visible = True
                     frmConnect.txtNombre.SetFocus
         
-                    Call Sound.Sound_Play(SND_DICE)
+                    Call ao20audio.playwav(SND_DICE)
                 Case e_action_delete_character
 
                     If Char = 0 Then Exit Sub
@@ -908,7 +890,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                     Dim tmp As String
 
-                    If MsgBox("¿Esta seguro que desea borrar el personaje " & DeleteUser & " de la cuenta?", vbYesNo + vbQuestion, "Borrar personaje") = vbYes Then
+                    If MsgBox(JsonLanguage.Item("MENSAJEBOX_BORRAR_PERSONAJE") & DeleteUser & JsonLanguage.Item("MENSAJEBOX_DE_LA_CUENTA"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJEBOX_BORRAR")) = vbYes Then
+
                         frmDeleteChar.Show , frmConnect
                         
             
@@ -942,7 +925,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     If PJSeleccionado < 1 Then Exit Sub
 
                     If IntervaloPermiteConectar Then
-                        Call Sound.Sound_Play(SND_CLICK)
+                        Call ao20audio.playwav(SND_CLICK)
                         Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
 
                     End If
@@ -966,7 +949,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
              If (x > 490 And x < 522) And (y > 297 And y < 357) Then
              
                 If ClickEnAsistenteRandom = 1 Then
-                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://www.elmesonhostigado.com/foro/", False, True)
+                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://steamcommunity.com/app/1956740/discussions/", False, True)
 
                 End If
 
@@ -998,7 +981,110 @@ render_MouseUp_Err:
 End Sub
 #End If
 
+Private Sub Rotacion_boton_adelante_clase()
 
+    ' Shugar - 27/7/24
+    ' Saco de la selección de clases al Ladrón y al Pirata.
+    ' Botón de la derecha: es el que aumenta el index.
+    ' Implementación de buffer circular, arranca en eClass.Mage
+  
+    Select Case frmCrearPersonaje.lstProfesion.ListIndex
+        Case eClass.Mage - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Druid - 1
+        Case eClass.Druid - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Bard - 1
+        Case eClass.Bard - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Cleric - 1
+        Case eClass.Cleric - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Assasin - 1
+        Case eClass.Assasin - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Bandit - 1
+        Case eClass.Bandit - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.paladin - 1
+        Case eClass.paladin - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Hunter - 1
+        Case eClass.Hunter - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Warrior - 1
+        Case eClass.Warrior - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Trabajador - 1
+        Case eClass.Trabajador - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Mage - 1
+    End Select
+
+End Sub
+
+Private Sub Rotacion_boton_atras_clase()
+    
+    ' Shugar - 27/7/24
+    ' Saco de la selección de clases al Ladrón y al Pirata.
+    ' Botón de la izquierda: es el que disminuye el index.
+    ' Implementación de buffer circular, arranca en eClass.Mage
+    
+    Select Case frmCrearPersonaje.lstProfesion.ListIndex
+        Case eClass.Mage - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Trabajador - 1
+        Case eClass.Druid - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Mage - 1
+        Case eClass.Bard - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Druid - 1
+        Case eClass.Cleric - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Bard - 1
+        Case eClass.Assasin - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Cleric - 1
+        Case eClass.Bandit - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Assasin - 1
+        Case eClass.paladin - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Bandit - 1
+        Case eClass.Hunter - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.paladin - 1
+        Case eClass.Warrior - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Hunter - 1
+        Case eClass.Trabajador - 1
+            frmCrearPersonaje.lstProfesion.ListIndex = eClass.Warrior - 1
+    End Select
+
+End Sub
+
+
+Private Sub Rotacion_boton_adelante_ciudades()
+
+    ' Shugar - 14/6/24
+    ' Limito la selección del hogar a Ulla, Nix, Arghal y Forgat.
+    ' Botón de la derecha: es el que aumenta el index.
+    ' Implementación de buffer circular, arranca en eCiudad.cUllathorpe
+  
+    Select Case frmCrearPersonaje.lstHogar.ListIndex
+        Case eCiudad.cUllathorpe - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cNix - 1
+        Case eCiudad.cNix - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cArghal - 1
+        Case eCiudad.cArghal - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cForgat - 1
+        Case eCiudad.cForgat - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cUllathorpe - 1
+    End Select
+
+End Sub
+
+Private Sub Rotacion_boton_atras_ciudades()
+    
+    ' Shugar - 14/6/24
+    ' Limito la selección del hogar a Ulla, Nix, Arghal y Forgat.
+    ' Botón de la izquierda: es el que disminuye el index.
+    ' Implementación de buffer circular, arranca en eCiudad.cUllathorpe
+    
+    Select Case frmCrearPersonaje.lstHogar.ListIndex
+        Case eCiudad.cUllathorpe - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cForgat - 1
+        Case eCiudad.cForgat - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cArghal - 1
+        Case eCiudad.cArghal - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cNix - 1
+        Case eCiudad.cNix - 1
+            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cUllathorpe - 1
+    End Select
+
+End Sub
 
 Private Sub txtNombre_Change()
     

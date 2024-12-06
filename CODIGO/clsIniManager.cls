@@ -11,8 +11,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
+' Argentum 20 Game Client
+'
+'    Copyright (C) 2023 Noland Studios LTD
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU Affero General Public License as published by
@@ -23,53 +24,20 @@ Attribute VB_Exposed = False
 '    but WITHOUT ANY WARRANTY; without even the implied warranty of
 '    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 '    GNU Affero General Public License for more details.
+'
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
+'    This program was based on Argentum Online 0.11.6
+'    Copyright (C) 2002 Márquez Pablo Ignacio
 '
-'**************************************************************
-' clsIniManager.cls - Loads INI files into memory and applies Binary Search to get values at high speed.
-' Use it instead of GetVar when reading several values form the same file at once, otherwise it's not usefull.
-' Based in the idea of AlejoLP and his clsLeerInis.
+'    Argentum Online is based on Baronsoft's VB6 Online RPG
+'    You can contact the original creator of ORE at aaron@baronsoft.com
+'    for more information about ORE please visit http://www.baronsoft.com/
 '
-' Designed and implemented by Juan Martin Sotuyo Dodero (Maraxus)
-' (juansotuyo@gmail.com)
-'**************************************************************
+'
+'
 
-'**************************************************************************
-'This program is free software; you can redistribute it and/or modify
-'it under the terms of the Affero General Public License;
-'either version 1 of the License, or any later version.
-'
-'This program is distributed in the hope that it will be useful,
-'but WITHOUT ANY WARRANTY; without even the implied warranty of
-'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'Affero General Public License for more details.
-'
-'You should have received a copy of the Affero General Public License
-'along with this program; if not, you can find it at http://www.affero.org/oagpl.html
-'**************************************************************************
-
-''
-'Loads a complete INI file into memory and sorts it's data and keys for faster searches.
-'It is MUCH faster than GetPrivateProfileStringA if you search for several values within a file, otherwise stick to the API.
-'It's particularly usefull when you can keep a whole file in memory such as NPCs.dat'
-' Based in the idea of AlejoLP and his clsLeerInis.
-'
-' @author Juan Martin Sotuyo Dodero (Maraxus) juansotuyo@gmail.com
-' @version 1.1.0
-' @date 20060501
-
-'01/05/2006 - Juan Martin Sotuyo Dodero (Maraxus) - (juansotuyo@gmail.com)
-'   - First Release
-'
-'01/04/2008 - Juan Martin Sotuyo Dodero (Maraxus) - (juansotuyo@gmail.com)
-'   - Add: KeyExists method allows to check for valid section keys.
-'
-'10/10/2010 - Torres Patricio(Pato)
-'   - Add:  AddNode method to add a main node.
-'           AddKey method to add key into the refered main node.
-'           DumpFile method to dump the data into a file.
 
 Option Explicit
 Option Base 0

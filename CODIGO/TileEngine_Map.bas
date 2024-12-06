@@ -17,70 +17,89 @@ Attribute VB_Name = "TileEngine_Map"
 '
 Option Explicit
 
-Public TileEngineHelper As New clsTileEngineHelper
 
-Sub SwitchMap(ByVal map As Integer)
+Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0)
+
     
     On Error GoTo SwitchMap_Err
+    If NewResourceMap < 1 Then
+        NewResourceMap = Map
+    End If
+    ResourceMap = NewResourceMap
     
+    Dim OldMapHadRain As Boolean: OldMapHadRain = (MapDat.LLUVIA = 1)
+    Dim OldMapHadSnow As Boolean: OldMapHadSnow = (MapDat.NIEVE = 1)
     
     'Cargamos el mapa.
-    Call Recursos.CargarMapa(map)
+    Call Recursos.CargarMapa(ResourceMap)
 
     map_light = global_light
     If BabelInitialized Then
-        If ListNPCMapData(map).NpcCount > 0 Then
-            Call UpdateMapInfo(map, MapDat.map_name, ListNPCMapData(map).NpcCount, ListNPCMapData(map).NpcList(1), MapDat.Seguro)
+        If ListNPCMapData(ResourceMap).NpcCount > 0 Then
+            Call UpdateMapInfo(map, ResourceMap, MapDat.map_name, ListNPCMapData(ResourceMap).NpcCount, ListNPCMapData(ResourceMap).NpcList(1), MapDat.Seguro)
         Else
             Dim EmptyNpc As t_QuestNPCMapData
-            Call UpdateMapInfo(map, MapDat.map_name, ListNPCMapData(map).NpcCount, EmptyNpc, MapDat.Seguro)
+            Call UpdateMapInfo(map, ResourceMap, MapDat.map_name, ListNPCMapData(ResourceMap).NpcCount, EmptyNpc, MapDat.Seguro)
         End If
     Else
         Call DibujarMiniMapa
     End If
-    Call NameMapa(map)
+    
+    If isLogged Then Call NameMapa(ResourceMap)
+    
     map_letter_a = 0
     CurMap = map
-    If Musica Then
+    If ao20audio.MusicEnabled Then
         
         If MapDat.music_numberLow > 0 Then
         
-            If Sound.MusicActual <> MapDat.music_numberLow Then
-                Sound.NextMusic = MapDat.music_numberLow
-                Sound.Fading = 200
+            If ao20audio.GetCurrentMidiName(1) <> str(MapDat.music_numberLow) Then
+                'NextMusic = MapDat.music_numberLow
             End If
 
         Else
 
             If MapDat.music_numberHi > 0 Then
                 
-                If Sound.MusicActual <> MapDat.music_numberHi Then
-                    Sound.NextMusic = MapDat.music_numberHi
-                    Sound.Fading = 100
+                If ao20audio.GetCurrentMidiName(1) <> str(MapDat.music_numberHi) Then
+'                    NextMusic = MapDat.music_numberHi
                 End If
-
-                Call ReproducirMp3(MapDat.music_numberHi)
+               
+                Call ao20audio.playmidi(MapDat.music_numberHi, 0, 0)
                 
-                Call Sound.Music_Load(MapDat.music_numberHi, 0, 0)
-                
-                Call Sound.Music_Play
-
             End If
 
         End If
 
     End If
 
-    If bRain And MapDat.LLUVIA Then
-        Call Graficos_Particulas.Engine_MeteoParticle_Set(Particula_Lluvia)
+    Dim HaveAudio As Boolean
     
-    ElseIf bNieve And MapDat.NIEVE Then
-        Call Graficos_Particulas.Engine_MeteoParticle_Set(Particula_Nieve)
-
+    If bRain Then
+        If MapDat.LLUVIA = 1 Then
+            Call Graficos_Particulas.Engine_MeteoParticle_Set(Particula_Lluvia)
+            
+            If Not OldMapHadRain Then
+                Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_RAIN_IN_LOOP, SND_RAIN_OUT_LOOP))
+            End If
+            HaveAudio = True
+        End If
     End If
+        
     
-    If AmbientalActivated = 1 Then
-        Call AmbientarAudio(map)
+    If bNieve Then
+        If MapDat.NIEVE = 1 Then
+            Call Graficos_Particulas.Engine_MeteoParticle_Set(Particula_Nieve)
+            
+            If Not HaveAudio And Not OldMapHadSnow Then
+                Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_NIEVEIN, SND_NIEVEOUT))
+            End If
+            HaveAudio = True
+        End If
+    End If
+
+    If Not HaveAudio Then
+        Call ao20audio.PlayAmbientAudio(map)
     End If
 
     If MapDat.Seguro = 1 Then
@@ -90,8 +109,7 @@ Sub SwitchMap(ByVal map As Integer)
             If tutorial(e_tutorialIndex.TUTORIAL_ZONA_INSEGURA).Activo = 1 Then
                 tutorial_index = e_tutorialIndex.TUTORIAL_ZONA_INSEGURA
                 'TUTORIAL MAPA INSEGURO
-                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).grh, _
-                -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 64, 64)
+                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).Grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 64, 64)
             End If
         End If
         frmMain.Coord.ForeColor = RGB(170, 0, 0)
@@ -190,7 +208,7 @@ End Function
 
 Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String) As Boolean
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto Jos  Rando
     '*****************************************************************
     
     On Error GoTo Letter_Set_Err
@@ -230,7 +248,7 @@ End Sub
 Public Function Map_FX_Group_Next_Open(ByVal x As Byte, ByVal y As Byte) As Integer
 
     '*****************************************************************
-    'Author: Augusto José Rando
+    'Author: Augusto Jos  Rando
     '*****************************************************************
     On Error GoTo ErrorHandler:
 

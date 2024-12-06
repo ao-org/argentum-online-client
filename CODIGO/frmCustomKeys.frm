@@ -2,13 +2,13 @@ VERSION 5.00
 Begin VB.Form frmCustomKeys 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Configuración de controles"
-   ClientHeight    =   6108
-   ClientLeft      =   48
-   ClientTop       =   312
-   ClientWidth     =   6072
+   ClientHeight    =   7260
+   ClientLeft      =   45
+   ClientTop       =   315
+   ClientWidth     =   6075
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -18,11 +18,132 @@ Begin VB.Form frmCustomKeys
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   509
+   ScaleHeight     =   484
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   506
+   ScaleWidth      =   405
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   33
+      Left            =   4080
+      Locked          =   -1  'True
+      TabIndex        =   83
+      Top             =   2040
+      Width           =   1770
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   32
+      Left            =   5040
+      Locked          =   -1  'True
+      TabIndex        =   72
+      Top             =   6720
+      Width           =   930
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   31
+      Left            =   3840
+      Locked          =   -1  'True
+      TabIndex        =   71
+      Top             =   6720
+      Width           =   930
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   30
+      Left            =   2640
+      Locked          =   -1  'True
+      TabIndex        =   70
+      Top             =   6720
+      Width           =   930
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   29
+      Left            =   1440
+      Locked          =   -1  'True
+      TabIndex        =   69
+      Top             =   6720
+      Width           =   930
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   28
+      Left            =   240
+      Locked          =   -1  'True
+      TabIndex        =   68
+      Top             =   6720
+      Width           =   930
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   27
+      Left            =   5040
+      Locked          =   -1  'True
+      TabIndex        =   67
+      Top             =   6240
+      Width           =   930
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   26
+      Left            =   3840
+      Locked          =   -1  'True
+      TabIndex        =   66
+      Top             =   6240
+      Width           =   930
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   25
+      Left            =   2640
+      Locked          =   -1  'True
+      TabIndex        =   65
+      Top             =   6240
+      Width           =   930
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   24
+      Left            =   1440
+      Locked          =   -1  'True
+      TabIndex        =   64
+      Top             =   6240
+      Width           =   930
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   23
+      Left            =   240
+      Locked          =   -1  'True
+      TabIndex        =   63
+      Top             =   6240
+      Width           =   930
+   End
    Begin VB.TextBox txConfig 
       BackColor       =   &H00FFFFFF&
       ForeColor       =   &H00000000&
@@ -30,7 +151,7 @@ Begin VB.Form frmCustomKeys
       Index           =   22
       Left            =   4080
       Locked          =   -1  'True
-      TabIndex        =   61
+      TabIndex        =   60
       Top             =   1440
       Width           =   1770
    End
@@ -41,7 +162,7 @@ Begin VB.Form frmCustomKeys
       Index           =   21
       Left            =   4125
       Locked          =   -1  'True
-      TabIndex        =   58
+      TabIndex        =   57
       Top             =   840
       Width           =   1770
    End
@@ -52,7 +173,7 @@ Begin VB.Form frmCustomKeys
       Index           =   20
       Left            =   4125
       Locked          =   -1  'True
-      TabIndex        =   57
+      TabIndex        =   56
       Top             =   240
       Width           =   1770
    End
@@ -61,7 +182,7 @@ Begin VB.Form frmCustomKeys
       Index           =   19
       Left            =   2160
       Locked          =   -1  'True
-      TabIndex        =   55
+      TabIndex        =   54
       Top             =   3240
       Width           =   1770
    End
@@ -69,56 +190,47 @@ Begin VB.Form frmCustomKeys
       Caption         =   "Moderna"
       Height          =   255
       Left            =   4110
-      TabIndex        =   53
-      Top             =   4440
+      TabIndex        =   52
+      Top             =   5280
       Width           =   1215
    End
    Begin VB.OptionButton Option1 
       Caption         =   "Clásica"
       Height          =   255
       Left            =   4110
-      TabIndex        =   52
-      Top             =   4080
+      TabIndex        =   51
+      Top             =   4920
       Width           =   1215
    End
    Begin VB.ComboBox AccionList3 
       Height          =   315
       ItemData        =   "frmCustomKeys.frx":0000
-      Left            =   4110
-      List            =   "frmCustomKeys.frx":0013
+      Left            =   4080
+      List            =   "frmCustomKeys.frx":0010
       Style           =   2  'Dropdown List
-      TabIndex        =   49
-      Top             =   3360
-      Width           =   1815
+      TabIndex        =   48
+      Top             =   4080
+      Width           =   1935
    End
    Begin VB.ComboBox AccionList1 
       Height          =   315
-      ItemData        =   "frmCustomKeys.frx":007B
-      Left            =   4110
-      List            =   "frmCustomKeys.frx":008E
+      ItemData        =   "frmCustomKeys.frx":005E
+      Left            =   4080
+      List            =   "frmCustomKeys.frx":006E
       Style           =   2  'Dropdown List
-      TabIndex        =   46
-      Top             =   2160
-      Width           =   1815
+      TabIndex        =   45
+      Top             =   2880
+      Width           =   1935
    End
    Begin VB.ComboBox AccionList2 
       Height          =   315
-      ItemData        =   "frmCustomKeys.frx":00F6
-      Left            =   4110
-      List            =   "frmCustomKeys.frx":0109
-      Style           =   2  'Dropdown List
-      TabIndex        =   45
-      Top             =   2760
-      Width           =   1815
-   End
-   Begin VB.CommandButton cmdAccion 
-      Caption         =   "Salir"
-      Height          =   495
-      Index           =   2
+      ItemData        =   "frmCustomKeys.frx":00BC
       Left            =   4080
+      List            =   "frmCustomKeys.frx":00CC
+      Style           =   2  'Dropdown List
       TabIndex        =   44
-      Top             =   5400
-      Width           =   1695
+      Top             =   3480
+      Width           =   1935
    End
    Begin VB.CommandButton cmdAccion 
       Caption         =   "Guardar"
@@ -126,7 +238,7 @@ Begin VB.Form frmCustomKeys
       Index           =   0
       Left            =   4080
       TabIndex        =   43
-      Top             =   4800
+      Top             =   5640
       Width           =   1695
    End
    Begin VB.TextBox txConfig 
@@ -244,7 +356,7 @@ Begin VB.Form frmCustomKeys
       ForeColor       =   &H00000000&
       Height          =   300
       Index           =   10
-      Left            =   2115
+      Left            =   2175
       Locked          =   -1  'True
       TabIndex        =   13
       Top             =   5640
@@ -342,7 +454,7 @@ Begin VB.Form frmCustomKeys
       Caption         =   "Hablar"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -358,7 +470,7 @@ Begin VB.Form frmCustomKeys
       Begin VB.TextBox Text1 
          BeginProperty Font 
             Name            =   "MS Sans Serif"
-            Size            =   7.8
+            Size            =   8.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -376,7 +488,7 @@ Begin VB.Form frmCustomKeys
       Begin VB.TextBox Text1 
          BeginProperty Font 
             Name            =   "MS Sans Serif"
-            Size            =   7.8
+            Size            =   8.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -397,7 +509,7 @@ Begin VB.Form frmCustomKeys
          Caption         =   "Hablar al Clan"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
-            Size            =   7.8
+            Size            =   8.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -417,7 +529,7 @@ Begin VB.Form frmCustomKeys
          Caption         =   "Hablar a Todos"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
-            Size            =   7.8
+            Size            =   8.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -435,12 +547,156 @@ Begin VB.Form frmCustomKeys
    Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
+      Caption         =   "Enviar texto"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   22
+      Left            =   4080
+      TabIndex        =   84
+      Top             =   1800
+      Width           =   885
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "10"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   8
+      Left            =   4800
+      TabIndex        =   82
+      Top             =   6720
+      Width           =   210
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "9"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   7
+      Left            =   3720
+      TabIndex        =   81
+      Top             =   6720
+      Width           =   90
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "8"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   6
+      Left            =   2520
+      TabIndex        =   80
+      Top             =   6720
+      Width           =   90
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "7"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   5
+      Left            =   1320
+      TabIndex        =   79
+      Top             =   6720
+      Width           =   90
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "6"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   4
+      Left            =   120
+      TabIndex        =   78
+      Top             =   6720
+      Width           =   90
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "5"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   3
+      Left            =   4920
+      TabIndex        =   77
+      Top             =   6360
+      Width           =   90
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "4"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   2
+      Left            =   3720
+      TabIndex        =   76
+      Top             =   6360
+      Width           =   90
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "3"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   0
+      Left            =   2520
+      TabIndex        =   75
+      Top             =   6360
+      Width           =   90
+   End
+   Begin VB.Label lbl 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "2"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   1
+      Left            =   1320
+      TabIndex        =   74
+      Top             =   6360
+      Width           =   90
+   End
+   Begin VB.Label lblHotKeys 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "1"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   0
+      Left            =   120
+      TabIndex        =   73
+      Top             =   6360
+      Width           =   90
+   End
+   Begin VB.Label lblHotKeys 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "HotKeys"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   22
+      Left            =   240
+      TabIndex        =   62
+      Top             =   6000
+      Width           =   675
+   End
+   Begin VB.Label lblSalirDel 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
       Caption         =   "Domar"
       ForeColor       =   &H00000000&
       Height          =   195
       Index           =   21
       Left            =   4080
-      TabIndex        =   62
+      TabIndex        =   61
       Top             =   1200
       Width           =   465
    End
@@ -452,7 +708,7 @@ Begin VB.Form frmCustomKeys
       Height          =   195
       Index           =   20
       Left            =   4125
-      TabIndex        =   60
+      TabIndex        =   59
       Top             =   0
       Width           =   540
    End
@@ -464,7 +720,7 @@ Begin VB.Form frmCustomKeys
       Height          =   195
       Index           =   19
       Left            =   4125
-      TabIndex        =   59
+      TabIndex        =   58
       Top             =   600
       Width           =   1005
    End
@@ -476,7 +732,7 @@ Begin VB.Form frmCustomKeys
       Height          =   195
       Index           =   36
       Left            =   2160
-      TabIndex        =   56
+      TabIndex        =   55
       Top             =   3000
       Width           =   1500
    End
@@ -488,7 +744,7 @@ Begin VB.Form frmCustomKeys
       Height          =   195
       Index           =   35
       Left            =   2160
-      TabIndex        =   54
+      TabIndex        =   53
       Top             =   2400
       Width           =   1650
    End
@@ -498,7 +754,7 @@ Begin VB.Form frmCustomKeys
       Caption         =   "Configuración rapida:"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -509,8 +765,8 @@ Begin VB.Form frmCustomKeys
       Height          =   195
       Index           =   32
       Left            =   4110
-      TabIndex        =   51
-      Top             =   3720
+      TabIndex        =   50
+      Top             =   4560
       Width           =   1785
    End
    Begin VB.Label lblSalirDel 
@@ -519,7 +775,7 @@ Begin VB.Form frmCustomKeys
       Caption         =   "Acción Click 3"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -528,9 +784,9 @@ Begin VB.Form frmCustomKeys
       EndProperty
       Height          =   195
       Index           =   31
-      Left            =   4110
-      TabIndex        =   50
-      Top             =   3120
+      Left            =   4080
+      TabIndex        =   49
+      Top             =   3840
       Width           =   1140
    End
    Begin VB.Label lblSalirDel 
@@ -539,7 +795,7 @@ Begin VB.Form frmCustomKeys
       Caption         =   "Acción Click 1"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -548,9 +804,9 @@ Begin VB.Form frmCustomKeys
       EndProperty
       Height          =   195
       Index           =   33
-      Left            =   4110
-      TabIndex        =   48
-      Top             =   1920
+      Left            =   4080
+      TabIndex        =   47
+      Top             =   2640
       Width           =   1140
    End
    Begin VB.Label lblSalirDel 
@@ -559,7 +815,7 @@ Begin VB.Form frmCustomKeys
       Caption         =   "Acción Click 2"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -568,9 +824,9 @@ Begin VB.Form frmCustomKeys
       EndProperty
       Height          =   195
       Index           =   34
-      Left            =   4110
-      TabIndex        =   47
-      Top             =   2520
+      Left            =   4080
+      TabIndex        =   46
+      Top             =   3240
       Width           =   1140
    End
    Begin VB.Label lblSalirDel 
@@ -676,7 +932,7 @@ Begin VB.Form frmCustomKeys
       ForeColor       =   &H00000000&
       Height          =   195
       Index           =   3
-      Left            =   2115
+      Left            =   2175
       TabIndex        =   34
       Top             =   5400
       Width           =   690
@@ -825,7 +1081,7 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-Private TempVars(0 To 32) As Integer
+Private TempVars(eMaxBinds) As Integer
 
 Private Sub cmdAccion_Click(Index As Integer)
     
@@ -842,26 +1098,13 @@ Private Sub cmdAccion_Click(Index As Integer)
     
         Case 0
             Call GuardaConfigEnVariables
-            Call SaveRAOInit
+            Call SaveBindedKeys
 
         Case 1
             Call LoadDefaultBinds
             Call CargaConfigEnForm
-            Call SaveRAOInit
+            Call SaveBindedKeys
 
-        Case 2
-    
-            For i = 1 To NUMBINDS
-
-                If TempVars(i - 1) <> BindKeys(i).KeyCode Then
-                    bCambio = True
-                    Exit For
-
-                End If
-
-            Next
-            
-            Unload Me
     End Select
     Unload Me
 
@@ -886,11 +1129,10 @@ Private Sub GuardaConfigEnVariables()
         BindKeys(i).KeyCode = TempVars(i - 1)
     Next
 
-    ACCION1 = 0 'AccionList1.ListIndex
-    ACCION2 = 1 'AccionList2.ListIndex
-    ACCION3 = 4 'AccionList3.ListIndex
+    ACCION1 = IndexToMouseAction(AccionList1.ListIndex)
+    ACCION2 = IndexToMouseAction(AccionList2.ListIndex)
+    ACCION3 = IndexToMouseAction(AccionList3.ListIndex)
 
-    
     Exit Sub
 
 GuardaConfigEnVariables_Err:
@@ -911,9 +1153,9 @@ Private Sub CargaConfigEnForm()
         TempVars(i - 1) = BindKeys(i).KeyCode
     Next
 
-    AccionList1.ListIndex = ACCION1
-    AccionList2.ListIndex = ACCION2
-    AccionList3.ListIndex = ACCION3
+    AccionList1.ListIndex = MouseActionToIndex(ACCION1)
+    AccionList2.ListIndex = MouseActionToIndex(ACCION2)
+    AccionList3.ListIndex = MouseActionToIndex(ACCION3)
 
     
     Exit Sub
@@ -980,7 +1222,7 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     Next
 
     If bCambio Then
-        Resultado = MsgBox("Realizo cambios en la configuración ¿desea guardar antes de salir?", vbQuestion + vbYesNoCancel, "Guardar cambios")
+        Resultado = MsgBox(JsonLanguage.Item("MENSAJEBOX_CAMBIOS_CONFIGURACION"), vbQuestion + vbYesNoCancel, "Guardar cambios")
 
         If Resultado = vbYes Then Call GuardaConfigEnVariables
 
@@ -1003,7 +1245,7 @@ Private Sub Option1_Click()
     
     Call LoadDefaultBinds
     Call CargaConfigEnForm
-    Call SaveRAOInit
+    Call SaveBindedKeys
 
     
     Exit Sub
@@ -1022,7 +1264,7 @@ Private Sub Option2_Click()
 
     Call LoadDefaultBinds2
     Call CargaConfigEnForm
-    Call SaveRAOInit
+    Call SaveBindedKeys
 
     
     Exit Sub
@@ -1141,6 +1383,10 @@ Private Sub txConfig_KeyUp(Index As Integer, KeyCode As Integer, Shift As Intege
             Name = ","
         ElseIf KeyCode = 190 Then
             Name = "."
+        ElseIf KeyCode = vbKeyReturn Then
+            Name = "Enter"
+        ElseIf KeyCode = vbKeyBack Then
+            Name = "Borrar"
         Else
     
             Name = Chr(KeyCode)
@@ -1206,5 +1452,31 @@ AlreadyBinded_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.AlreadyBinded", Erl)
     Resume Next
     
+End Function
+
+Private Function MouseActionToIndex(ByVal Action As e_MouseAction) As Integer
+    Select Case Action
+        Case e_MouseAction.eThrowOrLook
+            MouseActionToIndex = 0
+        Case e_MouseAction.eInteract
+            MouseActionToIndex = 1
+        Case e_MouseAction.eAttack
+            MouseActionToIndex = 2
+        Case e_MouseAction.eWhisper
+            MouseActionToIndex = 3
+    End Select
+End Function
+
+Private Function IndexToMouseAction(ByVal Index As Integer) As e_MouseAction
+    Select Case Index
+        Case 0
+            IndexToMouseAction = e_MouseAction.eThrowOrLook
+        Case 1
+            IndexToMouseAction = e_MouseAction.eInteract
+        Case 2
+            IndexToMouseAction = e_MouseAction.eAttack
+        Case 3
+            IndexToMouseAction = e_MouseAction.eWhisper
+    End Select
 End Function
 

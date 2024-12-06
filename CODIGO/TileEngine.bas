@@ -278,6 +278,8 @@ Public Type Char
     appear As Byte
     simbolo As Byte
     Idle As Boolean
+    
+    Meditating As Boolean
 
     Head_Aura As String
     Body_Aura As String
@@ -546,16 +548,6 @@ Private Type size
     cy As Long
 End Type
 
-'[CODE 001]:MatuX
-Public Enum PlayLoop
-    plNone = 0
-    plLluviain = 1
-    plLluviaout = 2
-End Enum
-
-'[END]'
-'
-'       [END]
 '¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
 
 Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal hSrcDC As Long, ByVal xSrc As Long, ByVal ySrc As Long, ByVal dwRop As Long) As Long
@@ -659,6 +651,11 @@ Optional ByVal started As Long = -1, Optional ByVal loops As Integer = INFINITE_
         
         grh.Loops = Loops
         grh.speed = GrhData(grhIndex).speed / GrhData(grhIndex).NumFrames
+        
+        If Grh.speed = 0 Then
+            Grh.speed = 1
+        End If
+            
     Else
         grh.Started = 0
         grh.speed = 1
@@ -741,51 +738,41 @@ End Function
 Sub DoPasosFx(ByVal charindex As Integer)
     
     On Error GoTo DoPasosFx_Err
-    
+   
+    With charlist(CharIndex)
 
-    Static TerrenoDePaso As TipoPaso
-
-    Static FileNum       As Integer
-
-    If Not charlist(charindex).Navegando Then
-
-        With charlist(charindex)
-
-            If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
-                If .Speeding > 1.3 Then
-                   
-                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
-                    Exit Sub
-
+        If EstaPCarea(CharIndex) And Not .Muerto And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
+            .Pie = Not .Pie
+            
+            Dim StepIndex As Byte: StepIndex = IIf(.Pie, 1, 2)
+            Dim TerrenoDePaso As Byte
+            
+            If .Navegando Then
+                TerrenoDePaso = CONST_AGUA
+            ElseIf MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
+                Dim FileNum As Long: FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
+                TerrenoDePaso = GetTerrenoDePaso(FileNum, MapData(.Pos.x, .Pos.y).Graphic(2).GrhIndex)
+                If .Speeding > 1.2 And TerrenoDePaso = CONST_PISO Then
+                    TerrenoDePaso = CONST_CABALLO
                 End If
-           
-                .Pie = Not .Pie
-
-                If .Pie Then
-                    If MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
-                        FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
-                        TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                        Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
-                    End If
-                Else
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
-
-                End If
-
+            Else
+                TerrenoDePaso = CONST_PISO
             End If
 
-        End With
+            Dim steps_vol As Long
+            Dim steps_pan As Long
+            steps_vol = ao20audio.ComputeCharFxVolume(.Pos)
+            steps_pan = ao20audio.ComputeCharFxPan(.Pos)
 
-    Else
+            Dim SndIndex As Integer: SndIndex = Pasos(TerrenoDePaso).wav(StepIndex)
+            Dim SndLabel As String: SndLabel = "pasos" & CharIndex & "_" & StepIndex
 
-        If charlist(UserCharIndex).Muerto = False Then
-            Call Sound.Sound_Play(SND_NAVEGANDO)
+            Call ao20audio.StopWav(SndIndex, SndLabel)
+            Call ao20audio.PlayWav(SndIndex, False, steps_vol, steps_pan, SndLabel)
 
-            '  Call Audio.PlayWave(SND_NAVEGANDO, charlist(charindex).Pos.x, charlist(charindex).Pos.y)
         End If
-
-    End If
-
+    
+    End With
     
     Exit Sub
 
@@ -795,10 +782,8 @@ DoPasosFx_Err:
     
 End Sub
 
-Sub DoPasosInvi(ByVal Grh As Long, ByVal distancia As Byte, ByVal balance As Integer, ByVal step As Boolean)
-    
+Sub DoPasosInvi(ByVal Grh As Long, ByVal Grh2 As Long, ByVal distancia As Byte, ByVal balance As Integer, ByVal step As Boolean)
     On Error GoTo DoPasosInvi_Err
-    
 
     Static TerrenoDePaso As TipoPaso
 
@@ -806,9 +791,12 @@ Sub DoPasosInvi(ByVal Grh As Long, ByVal distancia As Byte, ByVal balance As Int
 
     If grh > 0 Then
         FileNum = GrhData(grh).FileNum
-        TerrenoDePaso = GetTerrenoDePaso(FileNum)
-        
-        Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(IIf(step, 1, 2)), , Sound.Calculate_Volume_by_distance(distancia), Sound.Calculate_Pan_By_Distance(distancia, balance))
+        TerrenoDePaso = GetTerrenoDePaso(FileNum, Grh2)
+        Dim steps_vol As Long
+        Dim steps_pan As Long
+        steps_vol = ao20audio.ComputeCharFxVolumeByDistance(distancia)
+        steps_pan = ao20audio.ComputeCharFxPanByDistance(distancia, balance)
+        Call ao20audio.PlayWav(Pasos(TerrenoDePaso).wav(IIf(step, 1, 2)), False, steps_vol, steps_pan)
     End If
     
     Exit Sub
@@ -818,64 +806,8 @@ DoPasosInvi_Err:
     Resume Next
     
 End Sub
-Sub DoPasosFxWithoutPos(ByVal charindex As Integer)
-    
-    On Error GoTo DoPasosFx_Err
-    
 
-    Static TerrenoDePaso As TipoPaso
-
-    Static FileNum       As Integer
-
-    If Not UserNavegando Then
-
-        With charlist(charindex)
-
-            If Not .Muerto And EstaPCarea(charindex) And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
-                If .Speeding > 1.3 Then
-                   
-                    Call Sound.Sound_Play(Pasos(CONST_CABALLO).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
-                    Exit Sub
-
-                End If
-           
-                .Pie = Not .Pie
-
-                If .Pie Then
-                    If MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
-                        FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
-                        TerrenoDePaso = GetTerrenoDePaso(FileNum)
-                        Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(1), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
-                    End If
-                Else
-                    Call Sound.Sound_Play(Pasos(TerrenoDePaso).wav(2), , Sound.Calculate_Volume(.Pos.x, .Pos.y), Sound.Calculate_Pan(.Pos.x, .Pos.y))
-
-                End If
-
-            End If
-
-        End With
-
-    Else
-
-        If FxNavega And charlist(UserCharIndex).Muerto = False Then
-            Call Sound.Sound_Play(SND_NAVEGANDO)
-
-            '  Call Audio.PlayWave(SND_NAVEGANDO, charlist(charindex).Pos.x, charlist(charindex).Pos.y)
-        End If
-
-    End If
-
-    
-    Exit Sub
-
-DoPasosFx_Err:
-    Call RegistrarError(Err.Number, Err.Description, "TileEngine.DoPasosFx", Erl)
-    Resume Next
-    
-End Sub
-
-Public Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
+Public Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer, ByVal Layer2Grh As Long) As TipoPaso
     
     On Error GoTo GetTerrenoDePaso_Err
     
@@ -892,7 +824,7 @@ Public Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer) As TipoPaso
     ElseIf (TerrainFileNum >= 6018 And TerrainFileNum <= 6021) Or (TerrainFileNum = 186 Or TerrainFileNum = 8007) Then
         GetTerrenoDePaso = CONST_DESIERTO
         Exit Function
-    ElseIf TerrainFileNum = 20 Then
+    ElseIf TerrainFileNum = 20 And Layer2Grh = 0 Then
          GetTerrenoDePaso = CONST_AGUA
         Exit Function
     Else
@@ -957,7 +889,7 @@ Sub MoveScreen(ByVal nHeading As E_Heading)
         UserPos.y = tY
         UserMoving = True
         
-        bTecho = HayTecho(UserPos.x, UserPos.y)
+        UpdatePlayerRoof
         
         lastMove = FrameTime
 
@@ -1177,7 +1109,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     
     If UserNavegando And MapData(x, y).Trigger = 8 And Not UserNadando And Not UserStats.estado = 1 Then
         If Not UserAvisadoBarca Then
-            Call AddtoRichTextBox(frmMain.RecTxt, "¡Atención! El agua es poco profunda, tu barca podria romperse, solo puedes caminar.", 255, 255, 255, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_AGUA_POCO_PROFUNDA_BARCA_PODRIA_ROMPERSE"), 255, 255, 255, True, False, False)
             UserAvisadoBarca = True
 
         End If
@@ -1188,7 +1120,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     
     If UserNavegando And MapData(x, y).Trigger = 11 And Not UserNadando And Not UserStats.estado = 1 Then
         If Not UserAvisadoBarca Then
-            Call AddtoRichTextBox(frmMain.RecTxt, "¡Atención! El terreno es rocoso y tu barca podria romperse, solo puedes nadar.", 255, 255, 255, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TERRENO_ROCOSO_BARCA_PODRIA_ROMPERSE"), 255, 255, 255, True, False, False)
             UserAvisadoBarca = True
 
         End If
@@ -1340,57 +1272,6 @@ Grh_Render_To_HdcSinBorrar_Err:
     Resume Next
     
 End Sub
-
-
-Public Function RenderSounds()
-    
-    On Error GoTo RenderSounds_Err
-    
-
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 3/30/2008
-    'Actualiza todos los sonidos del mapa.
-    '**************************************************************
-    If bRain Then
-        If MapDat.LLUVIA Then
-        
-            If bTecho Then
-                If frmMain.IsPlaying <> PlayLoop.plLluviain Then
-                    '  If RainBufferIndex Then _
-                    '   Call Audio.StopWave(RainBufferIndex)
-                    ' RainBufferIndex = Audio.PlayWave("lluviain.wav", 0, 0, LoopStyle.Enabled)
-                    frmMain.IsPlaying = PlayLoop.plLluviain
-
-                End If
-
-            Else
-
-                If frmMain.IsPlaying <> PlayLoop.plLluviaout Then
-                
-                    ' If RainBufferIndex Then _
-                    '   Call Audio.StopWave(RainBufferIndex)
-                    '  RainBufferIndex = Audio.PlayWave("lluviaout.wav", 0, 0, LoopStyle.Enabled)
-                    frmMain.IsPlaying = PlayLoop.plLluviaout
-
-                End If
-
-            End If
-
-        End If
-
-    End If
-    
-    DoFogataFx
-
-    
-    Exit Function
-
-RenderSounds_Err:
-    Call RegistrarError(Err.Number, Err.Description, "TileEngine.RenderSounds", Erl)
-    Resume Next
-    
-End Function
 
 Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal grhIndex As Long) As Boolean
     
@@ -1601,4 +1482,16 @@ Public Sub ConvertToMinimapPosition(ByRef x As Single, ByRef y As Single, ByVal 
     '100x100 pixels for ~78x82 tiles
     x = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - MarkerWidth \ 2 - 1
     y = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - MarkerHeight \ 2 - 1
+End Sub
+
+Public Sub UpdatePlayerRoof()
+    Dim WasUnderRoof As Boolean: WasUnderRoof = bTecho
+    bTecho = HayTecho(UserPos.x, UserPos.y)
+    
+    If WasUnderRoof = bTecho Then Exit Sub
+    If bRain And MapDat.LLUVIA = 1 Then
+        Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_RAIN_IN_LOOP, SND_RAIN_OUT_LOOP))
+    ElseIf bNieve And MapDat.NIEVE = 1 Then
+        Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_NIEVEIN, SND_NIEVEOUT))
+    End If
 End Sub

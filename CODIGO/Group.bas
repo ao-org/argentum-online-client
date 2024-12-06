@@ -19,7 +19,7 @@ Const AnimationSpeed = 0.03
 
 Const HideShowRectWidth = 10
 Const HideShowRectHeight = 40
-Const HideArrowGrh = 29548
+Public Const HideArrowGrh = 29548
 Const ShowArrowGrh = 29549
 
 Public Type t_GroupEntry
@@ -43,6 +43,7 @@ Public AnimationActive As Boolean
 Public ActiveArrowGrh As Long
 Public Sub Clear()
     GroupSize = 0
+    Hide = False
 End Sub
 
 Public Sub UpdateRenderArea()
@@ -51,13 +52,15 @@ Public Sub UpdateRenderArea()
     Dim RenderStartY As Integer
     RenderStartY = StartY - (SpacingY * (GroupSize - 1)) / 2
     For i = 0 To GroupSize - 1
-        If GroupMembers(i).CharIndex <> UserCharIndex Then
-            GroupMembers(i).RenderArea.Left = StartX
-            GroupMembers(i).RenderArea.Top = RenderStartY + SpacingY * DrawCount
-            GroupMembers(i).RenderArea.Right = GroupMembers(i).RenderArea.Left + FrameWidth
-            GroupMembers(i).RenderArea.Bottom = GroupMembers(i).RenderArea.Top + FrameHeight
-            DrawCount = DrawCount + 1
-        End If
+        With GroupMembers(i)
+            If .CharIndex <> UserCharIndex Then
+                .RenderArea.Left = StartX
+                .RenderArea.Top = RenderStartY + SpacingY * DrawCount
+                .RenderArea.Right = .RenderArea.Left + FrameWidth
+                .RenderArea.Bottom = .RenderArea.Top + FrameHeight
+                DrawCount = DrawCount + 1
+            End If
+        End With
     Next i
     Engine_Draw_Box StartX - HideShowRectWidth / 2, StartY - HideShowRectHeight / 2, _
                     HideShowRectWidth, HideShowRectHeight, RGBA_From_Comp(128, 128, 128, 255)
@@ -65,7 +68,11 @@ Public Sub UpdateRenderArea()
     HideShowRect.Left = StartX - HideShowRectWidth / 2 - 2
     HideShowRect.Right = HideShowRect.Left + HideShowRectWidth
     HideShowRect.Bottom = HideShowRect.Top + HideShowRectHeight
-    CurrentPivot = 0
+    If Hide Then
+        CurrentPivot = FrameWidth + StartX + gameplay_render_offset.x
+    Else
+        CurrentPivot = 0
+    End If
     ActiveArrowGrh = IIf(Hide, HideArrowGrh, ShowArrowGrh)
 End Sub
 
@@ -117,22 +124,27 @@ End Sub
 Public Function HandleMouseInput(ByVal x As Integer, ByVal y As Integer) As Boolean
     Dim i As Integer
     If GroupSize < 1 Then Exit Function
-    For i = 0 To GroupSize - 1
-        If PointIsInsideRect(x, y, GroupMembers(i).RenderArea) Then
-            If UsingSkill = magia Then
-                HandleMouseInput = True
-                If MainTimer.Check(TimersIndex.CastSpell) Then
-                    Call WriteActionOnGroupFrame(GroupMembers(i).GroupId)
-                    UsaLanzar = False
-                    UsingSkill = 0
-                    If CursoresGraficos = 0 Then
-                        frmMain.MousePointer = vbDefault
+    If Not Hide Then
+        For i = 0 To GroupSize - 1
+            With GroupMembers(i)
+                If PointIsInsideRect(x, y, .RenderArea) Then
+                    If UsingSkill = magia Then
+                        HandleMouseInput = True
+                        If MainTimer.Check(TimersIndex.CastSpell) Then
+                            Call WriteActionOnGroupFrame(.GroupId)
+                            Call FormParser.Parse_Form(GetGameplayForm)
+                            UsaLanzar = False
+                            UsingSkill = 0
+                            If CursoresGraficos = 0 Then
+                                GetGameplayForm.MousePointer = vbDefault
+                            End If
+                        End If
                     End If
+                    Exit Function
                 End If
-            End If
-            Exit Function
-        End If
-    Next i
+            End With
+        Next i
+    End If
     If PointIsInsideRect(x, y, HideShowRect) Then
         AnimationActive = True
         LastFrameTime = GetTickCount()

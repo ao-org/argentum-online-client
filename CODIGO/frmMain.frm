@@ -117,12 +117,6 @@ Begin VB.Form frmMain
       Left            =   1080
       Top             =   2400
    End
-   Begin VB.Timer TimerLluvia 
-      Enabled         =   0   'False
-      Interval        =   50
-      Left            =   600
-      Top             =   2400
-   End
    Begin VB.Timer UpdateLight 
       Enabled         =   0   'False
       Interval        =   200
@@ -1314,6 +1308,7 @@ Begin VB.Form frmMain
       TabIndex        =   5
       ToolTipText     =   "Numero de usuarios online"
       Top             =   0
+      Visible         =   0   'False
       Width           =   1665
    End
    Begin VB.Label Label2 
@@ -1498,8 +1493,6 @@ Private Declare Function ReleaseCapture Lib "user32" () As Long
 Public MouseBoton As Long
 
 Public MouseShift As Long
-
-Public IsPlaying  As Byte
 
 Public ShowPercentage As Boolean
 
@@ -1804,10 +1797,7 @@ Public Sub DibujarSeguro()
     On Error GoTo DibujarSeguro_Err
     
     ImgSeg = LoadInterface("boton-seguro-ciudadano-on.bmp")
-    
-    SeguroGame = True
 
-    
     Exit Sub
 
 DibujarSeguro_Err:
@@ -1821,10 +1811,6 @@ Public Sub DesDibujarSeguro()
     On Error GoTo DesDibujarSeguro_Err
     
     ImgSeg = LoadInterface("boton-seguro-ciudadano-off.bmp")
-    
-    SeguroGame = False
-
-    
     Exit Sub
 
 DesDibujarSeguro_Err:
@@ -1914,8 +1900,8 @@ Private Sub Contadores_Timer()
         DrogaCounter = DrogaCounter - 1
 
         If DrogaCounter <= 12 And DrogaCounter > 0 Then
-            Call Sound.Sound_Stop(SND_DOPA)
-            Call Sound.Sound_Play(SND_DOPA)
+            Call ao20audio.stopwav(SND_DOPA)
+            Call ao20audio.playwav(SND_DOPA)
             If UserStats.StrState <> eBlink Then
                 UserStats.StrState = eBlink
                 UserStats.AgiState = eBlink
@@ -2110,6 +2096,7 @@ Private Sub exp_MouseMove(button As Integer, Shift As Integer, x As Single, y As
 End Sub
 
 Private Sub Form_Activate()
+    renderer.Refresh
     
     On Error GoTo Form_Activate_Err
     
@@ -2152,51 +2139,75 @@ imgInventario_MouseMove_Err:
 End Sub
 
 Private Sub picHechiz_MouseDown(button As Integer, Shift As Integer, x As Single, y As Single)
-If y < 0 Then y = 0
-If y > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then y = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
-If x < picHechiz.ScaleWidth - 10 Then
-    hlst.ListIndex = Int(y / hlst.Pixel_Alto) + hlst.Scroll
-    hlst.DownBarrita = 0
-    If Seguido = 1 Then
-        Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
-    End If
-Else
-    hlst.DownBarrita = y - hlst.Scroll * (picHechiz.ScaleHeight - hlst.BarraHeight) / (hlst.ListCount - hlst.VisibleCount)
-End If
-End Sub
-
-Private Sub picHechiz_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
-If button = 1 Then
-    Dim yy As Integer
-    yy = y
-    If yy < 0 Then yy = 0
-    If yy > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then yy = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
-    If hlst.DownBarrita > 0 Then
-        hlst.Scroll = (y - hlst.DownBarrita) * (hlst.ListCount - hlst.VisibleCount) / (picHechiz.ScaleHeight - hlst.BarraHeight)
-    Else
-        hlst.ListIndex = Int(yy / hlst.Pixel_Alto) + hlst.Scroll
+    If y < 0 Then y = 0
+    If y > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then y = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
+    If x < picHechiz.ScaleWidth - 10 Then
+        hlst.ListIndex = Int(y / hlst.Pixel_Alto) + hlst.Scroll
+        hlst.DownBarrita = 0
+        If button = vbRightButton Then
+            gDragState.DragSlot = hlst.ListIndex + 1
+            gDragState.DragIndex = UserHechizos(gDragState.DragSlot)
+            If HechizoData(gDragState.DragIndex).IsBindable Then
+                gDragState.DragType = e_HotkeyType.Spell
+                gDragState.Grh = HechizoData(gDragState.DragIndex).IconoIndex
+                gDragState.PosX = -500
+                gDragState.PosY = -500
+                gDragState.active = True
+            Else
+                gDragState.DragSlot = 0
+                gDragState.DragIndex = 0
+            End If
+        End If
         If Seguido = 1 Then
             Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
         End If
-        If ScrollArrastrar = 0 Then
-            If (y < yy) Then hlst.Scroll = hlst.Scroll - 1
-            If (y > yy) Then hlst.Scroll = hlst.Scroll + 1
-        End If
+    Else
+        hlst.DownBarrita = y - hlst.Scroll * (picHechiz.ScaleHeight - hlst.BarraHeight) / (hlst.ListCount - hlst.VisibleCount)
     End If
-ElseIf button = 0 Then
-    hlst.ShowBarrita = x > picHechiz.ScaleWidth - hlst.BarraWidth * 2
-End If
+End Sub
+
+Private Sub picHechiz_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
+    If button = 1 Then
+        Dim yy As Integer
+        yy = y
+        If yy < 0 Then yy = 0
+        If yy > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then yy = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
+        If hlst.DownBarrita > 0 Then
+            hlst.Scroll = (y - hlst.DownBarrita) * (hlst.ListCount - hlst.VisibleCount) / (picHechiz.ScaleHeight - hlst.BarraHeight)
+        Else
+            hlst.ListIndex = Int(yy / hlst.Pixel_Alto) + hlst.Scroll
+            If Seguido = 1 Then
+                Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
+            End If
+            If ScrollArrastrar = 0 Then
+                If (y < yy) Then hlst.Scroll = hlst.Scroll - 1
+                If (y > yy) Then hlst.Scroll = hlst.Scroll + 1
+            End If
+        End If
+    ElseIf button = 0 Then
+        hlst.ShowBarrita = x > picHechiz.ScaleWidth - hlst.BarraWidth * 2
+    End If
+    
+    If gDragState.active Then
+        gDragState.PosX = x + picHechiz.Left + picHechiz.Container.Left
+        gDragState.PosY = y + picHechiz.Top + picHechiz.Container.Top
+    End If
 End Sub
 
 Private Sub picHechiz_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
-hlst.DownBarrita = 0
+    hlst.DownBarrita = 0
+    If button = vbRightButton And gDragState.active Then
+        Call frmMain.OnDragEnd
+    End If
 End Sub
 
 Private Sub picInv_MouseUp(button As Integer, Shift As Integer, x As Single, y As Single)
     If Not picInv.visible Then Exit Sub
     
     If dobleclick.Interval = 0 Then dobleclick.Interval = 1000
-    
+    If button = vbRightButton And gDragState.active Then
+        Call frmMain.OnDragEnd
+    End If
     If button = 1 Then
         dobleclick.Interval = 1000
         totalclicks = totalclicks + 1
@@ -2254,7 +2265,10 @@ Private Sub Form_MouseUp(button As Integer, Shift As Integer, x As Single, y As 
     
     clicX = x
     clicY = y
-
+    If gDragState.active And button = vbRightButton Then
+        Call OnDragEnd
+        gDragState.active = False
+    End If
     
     Exit Sub
 
@@ -3120,7 +3134,7 @@ Private Sub Label7_Click()
     
     On Error GoTo Label7_Click_Err
     
-    Call AddtoRichTextBox(frmMain.RecTxt, "No tenes mensajes nuevos.", 255, 255, 255, False, False, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TENES_MENSAJES_NUEVOS"), 255, 255, 255, False, False, False)
 
     
     Exit Sub
@@ -3236,9 +3250,9 @@ Public Sub ActivarMacroTrabajo()
     
     TargetXMacro = tX
     TargetYMacro = tY
-    macrotrabajo.Interval = IntervaloTrabajoConstruir
+    macrotrabajo.Interval = gIntervals.BuildWork
     macrotrabajo.enabled = True
-    Call AddtoRichTextBox(frmMain.RecTxt, "Macro Trabajo ACTIVADO", 0, 200, 200, False, True, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_MACRO_TRABAJO_ACTIVADO"), 0, 200, 200, False, True, False)
 
     
     Exit Sub
@@ -3259,7 +3273,7 @@ Public Sub DesactivarMacroTrabajo()
     MacroBltIndex = 0
     UsingSkill = 0
     MousePointer = vbDefault
-    Call AddtoRichTextBox(frmMain.RecTxt, "Macro Trabajo DESACTIVADO", 0, 200, 200, False, True, False)
+    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_MACRO_TRABAJO_DESACTIVADO"), 0, 200, 200, False, True, False)
 
     
     Exit Sub
@@ -3760,6 +3774,7 @@ Private Sub renderer_MouseUp(button As Integer, Shift As Integer, x As Single, y
     clicY = y
     If button = vbLeftButton Then
         If HandleMouseInput(x, y) Then
+        ElseIf HandleHotkeyArrowInput(x, y) Then
         ElseIf Pregunta Then
             If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
                 If PreguntaLocal Then
@@ -3816,7 +3831,10 @@ Private Sub renderer_MouseUp(button As Integer, Shift As Integer, x As Single, y
         End If
     
     ElseIf button = vbRightButton Then
-        
+        If gDragState.active Then
+            Call OnDragEnd
+            gDragState.active = False
+        End If
         Dim charindex As Integer
         charindex = MapData(tX, tY).charindex
         
@@ -3877,29 +3895,8 @@ Private Sub renderer_MouseMove(button As Integer, Shift As Integer, x As Single,
     On Error GoTo renderer_MouseMove_Err
 
     DisableURLDetect
-
+    
     Call Form_MouseMove(button, Shift, renderer.Left + x, renderer.Top + y)
-
-    'If DropItem Then
-
-    ' frmMain.UsandoDrag = False
-    ' Call ConvertCPtoTP(MouseX, MouseY, tX, tY)
-    'Call WriteDropItem(DropIndex, tX, tY, CantidadDrop)
-    ' DropItem = False
-    ' DropIndex = 0
-    ' TimeDrop = 0
-    ' DropActivo = False
-    ' CantidadDrop = 0
-    ' Call FormParser.Parse_Form(frmMain)
-    
-    ' End If
-    
-    'LucesCuadradas.Light_Remove (10)
-    
-    'LucesCuadradas.Light_Create tX, tY, &HFFFFFFF, 1, 10
-    'LucesCuadradas.Light_Render_All
-    
-    
     Exit Sub
 
 renderer_MouseMove_Err:
@@ -3995,7 +3992,7 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
     
     On Error GoTo SendTxt_KeyUp_Err
     'Send text
-    If KeyCode = vbKeyReturn Then
+    If KeyCode = BindKeys(e_KeyAction.eSendText).KeyCode Then
         If LenB(stxtbuffer) <> 0 Then
             Call HandleChatMsg(stxtbuffer)
         End If
@@ -4042,9 +4039,15 @@ Private Sub computeLastElapsedTimeChat(ByVal tiempoTranscurridoCartel As Double)
     
 End Sub
 
+Private Sub SendTxtCmsg_KeyPress(KeyAscii As Integer)
+    If KeyAscii = BindKeys(e_KeyAction.eSendText).KeyCode Then
+        KeyAscii = 0
+    End If
+End Sub
+
 Private Sub SendTxtCmsg_KeyUp(KeyCode As Integer, Shift As Integer)
-  If KeyCode = vbKeyReturn Then
-    If SendTxtCmsg.SelStart > 2 Then Call ParseUserCommand("/CMSG " & SendTxtCmsg.Text)
+  If KeyCode = BindKeys(e_KeyAction.eSendText).KeyCode Then
+    If SendTxtCmsg.Text <> vbNullString Then Call ParseUserCommand("/CMSG " & SendTxtCmsg.Text)
     SendTxtCmsg.visible = False
     SendTxtCmsg.Text = ""
     Call DialogosClanes.toggle_dialogs_visibility(False)
@@ -4077,51 +4080,6 @@ Private Sub cerrarcuenta_Timer()
 cerrarcuenta_Timer_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.cerrarcuenta_Timer", Erl)
     Resume Next
-End Sub
-
-Private Sub TimerLluvia_Timer()
-    
-    On Error GoTo TimerLluvia_Timer_Err
-    
-
-    If bRain Then
-
-        If CantPartLLuvia < 250 Then
-
-            CantPartLLuvia = CantPartLLuvia + 1
-            Graficos_Particulas.Particle_Group_Edit (MeteoIndex)
-        Else
-            CantPartLLuvia = 250
-            TimerLluvia.enabled = False
-
-        End If
-
-    Else
-
-        If CantPartLLuvia > 0 Then
-            CantPartLLuvia = CantPartLLuvia - 1
-            Graficos_Particulas.Particle_Group_Edit (MeteoIndex)
-        Else
-    
-            Call Graficos_Particulas.Engine_MeteoParticle_Set(-1)
-            CantPartLLuvia = 0
-            TimerLluvia.enabled = False
-
-        End If
-
-    End If
-
-    
-    Exit Sub
-
-TimerLluvia_Timer_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.TimerLluvia_Timer", Erl)
-    Resume Next
-    
-End Sub
-
-Private Sub TimerMusica_Timer()
-
 End Sub
 
 Private Sub TimerNiebla_Timer()
@@ -4253,7 +4211,10 @@ End Sub
 Private Sub Form_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Form_MouseMove_Err
-
+    If gDragState.active Then
+        gDragState.PosX = x
+        gDragState.PosY = y
+    End If
     ' Disable links checking (not over consola)
     StopCheckingLinks
     
@@ -4500,6 +4461,9 @@ Private Sub SendTxt_KeyPress(KeyAscii As Integer)
 
     If Not (KeyAscii = vbKeyBack) And Not (KeyAscii >= vbKeySpace And KeyAscii <= 250) Then KeyAscii = 0
 
+    If KeyAscii = BindKeys(e_KeyAction.eSendText).KeyCode Then
+        KeyAscii = 0
+    End If
     
     Exit Sub
 
@@ -4615,9 +4579,9 @@ End Sub
 
 Private Sub imgDeleteItem_Click()
     If Not frmMain.Inventario.IsItemSelected Then
-        Call AddtoRichTextBox(frmMain.RecTxt, "No tienes seleccionado ningún item", 255, 255, 255, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENE_ITEM_SELECCIONADO"), 255, 255, 255, False, False, False)
     Else
-        If MsgBox("Seguro que desea eliminar el item?", vbYesNo, "Eliminar objeto") = vbYes Then
+        If MsgBox(JsonLanguage.Item("MENSAJEBOX_ELIMINAR_ITEM"), vbYesNo, JsonLanguage.Item("MENSAJEBOX_TITULO_ELIMINAR_ITEM")) = vbYes Then
             Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
         End If
     End If
@@ -4786,3 +4750,23 @@ Public Sub UpdateBuff()
     frmMain.Fuerzalbl.Caption = UserStats.str
     frmMain.AgilidadLbl.Caption = UserStats.Agi
 End Sub
+
+Public Sub OnDragEnd()
+    If gDragState.PosX > hotkey_render_posX And gDragState.PosX < hotkey_render_posX + 36 * 10 And _
+       gDragState.PosY > renderer.Top + renderer.Height - hotkey_render_posY And gDragState.PosY < renderer.Top + renderer.Height - (hotkey_render_posY - 36) Then
+       Dim TargetSlot As Integer
+       TargetSlot = (gDragState.PosX - hotkey_render_posX) \ 36
+       Call SetHotkey(gDragState.DragIndex, gDragState.DragSlot, gDragState.DragType, TargetSlot)
+    End If
+    gDragState.active = False
+End Sub
+
+Public Function HandleHotkeyArrowInput(ByVal x As Integer, ByVal y As Integer) As Boolean
+    If x > hotkey_arrow_posx And x < hotkey_arrow_posx + 10 And _
+       y > renderer.Height - hotkey_arrow_posy And y < renderer.Height Then
+        HandleHotkeyArrowInput = True
+        HideHotkeys = Not HideHotkeys
+        Call SaveHideHotkeys
+    End If
+    HandleHotkeyArrowInput = False
+End Function

@@ -1,136 +1,144 @@
 VERSION 5.00
 Begin VB.Form frmGuildBrief 
-   BorderStyle     =   4  'Fixed ToolWindow
-   Caption         =   "Detalles del Clan"
-   ClientHeight    =   4092
-   ClientLeft      =   48
-   ClientTop       =   216
-   ClientWidth     =   4104
+   BorderStyle     =   0  'None
+   ClientHeight    =   4425
+   ClientLeft      =   0
+   ClientTop       =   -180
+   ClientWidth     =   4500
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
       Italic          =   0   'False
       Strikethrough   =   0   'False
    EndProperty
+   ForeColor       =   &H00000000&
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4092
-   ScaleWidth      =   4104
+   ScaleHeight     =   4425
+   ScaleWidth      =   4500
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.CommandButton Command2 
-      Caption         =   "Solicitar Ingreso"
-      Height          =   375
-      Left            =   120
-      MouseIcon       =   "frmGuildBrief.frx":0000
-      MousePointer    =   99  'Custom
-      TabIndex        =   8
-      Top             =   3600
-      Width           =   3855
-   End
-   Begin VB.Frame Frame3 
-      Caption         =   "Descripción"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.4
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   1335
-      Left            =   120
-      TabIndex        =   7
-      Top             =   2160
-      Width           =   3855
-      Begin VB.TextBox Desc 
-         Height          =   975
-         Left            =   120
-         Locked          =   -1  'True
-         MultiLine       =   -1  'True
-         ScrollBars      =   2  'Vertical
-         TabIndex        =   9
-         Top             =   240
-         Width           =   3615
-      End
-   End
-   Begin VB.Frame Frame1 
-      Caption         =   "Información del clan"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.4
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   1980
-      Left            =   120
+   Begin VB.TextBox Desc 
+      BackColor       =   &H00000000&
+      BorderStyle     =   0  'None
+      Enabled         =   0   'False
+      ForeColor       =   &H00FFFFFF&
+      Height          =   750
+      Left            =   650
+      Locked          =   -1  'True
+      MultiLine       =   -1  'True
+      ScrollBars      =   2  'Vertical
       TabIndex        =   0
-      Top             =   120
-      Width           =   3855
-      Begin VB.Label nivel 
-         Caption         =   "Nivel de clan:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   10
-         Top             =   1680
-         Width           =   3500
-      End
-      Begin VB.Label lblAlineacion 
-         Caption         =   "Alineacion:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   6
-         Top             =   1440
-         Width           =   3500
-      End
-      Begin VB.Label Miembros 
-         Caption         =   "Miembros:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   5
-         Top             =   1200
-         Width           =   3500
-      End
-      Begin VB.Label lider 
-         Caption         =   "Lider:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   4
-         Top             =   960
-         Width           =   3500
-      End
-      Begin VB.Label creacion 
-         Caption         =   "Fecha de creacion:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   3
-         Top             =   720
-         Width           =   3500
-      End
-      Begin VB.Label fundador 
-         Caption         =   "Fundador:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   2
-         Top             =   480
-         Width           =   3500
-      End
-      Begin VB.Label nombre 
-         Caption         =   "Nombre:"
-         Height          =   255
-         Left            =   120
-         TabIndex        =   1
-         Top             =   240
-         Width           =   3500
-      End
+      Top             =   2800
+      Width           =   3200
+   End
+   Begin VB.Label nombre 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "Nombre:"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Left            =   120
+      TabIndex        =   1
+      Top             =   270
+      Width           =   4245
+   End
+   Begin VB.Label nivel 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Nivel de clan:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Left            =   2805
+      TabIndex        =   7
+      Top             =   2240
+      Width           =   975
+   End
+   Begin VB.Label Miembros 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Miembros:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Left            =   2910
+      TabIndex        =   5
+      Top             =   1640
+      Width           =   765
+   End
+   Begin VB.Label lider 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Lider:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Left            =   1005
+      TabIndex        =   4
+      Top             =   1640
+      Width           =   435
+   End
+   Begin VB.Label lblAlineacion 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Alineacion:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Left            =   825
+      TabIndex        =   6
+      Top             =   2240
+      Width           =   795
+   End
+   Begin VB.Label fundador 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Fundador:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Left            =   840
+      TabIndex        =   2
+      Top             =   1040
+      Width           =   765
+   End
+   Begin VB.Label creacion 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Fecha de creacion:"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   195
+      Left            =   2595
+      TabIndex        =   3
+      Top             =   1055
+      Width           =   1395
+   End
+   Begin VB.Image cmdSolicitarIngreso 
+      Height          =   375
+      Left            =   630
+      Top             =   3720
+      Width           =   2775
+   End
+   Begin VB.Image cmdCerrar 
+      Height          =   375
+      Left            =   4025
+      Top             =   0
+      Width           =   375
    End
 End
 Attribute VB_Name = "frmGuildBrief"
@@ -189,6 +197,22 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public EsLeader As Boolean
+Private cBotonCerrar As clsGraphicalButton
+Private cBotonSolicitarIngreso As clsGraphicalButton
+Private Sub loadButtons()
+
+    Set cBotonCerrar = New clsGraphicalButton
+    Set cBotonSolicitarIngreso = New clsGraphicalButton
+    
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+                                                
+    Call cBotonSolicitarIngreso.Initialize(cmdSolicitarIngreso, "boton-solicitaringreso-default.bmp", _
+                                                    "boton-solicitaringreso-over.bmp", _
+                                                    "boton-solicitaringreso-off.bmp", Me)
+                                                    
+End Sub
 
 Private Sub aliado_Click()
     
@@ -208,18 +232,22 @@ aliado_Click_Err:
     
 End Sub
 
-Private Sub Command2_Click()
+Private Sub cmdcerrar_Click()
+    Unload Me
+End Sub
+
+Private Sub cmdSolicitarIngreso_Click()
     
-    On Error GoTo Command2_Click_Err
+    On Error GoTo cmdSolicitarIngreso_Click_Err
     
-    Call frmGuildSol.RecieveSolicitud(Right$(nombre, Len(nombre) - 7))
+    Call frmGuildSol.RecieveSolicitud(nombre)
     Call frmGuildSol.Show(vbModal, frmGuildBrief)
 
     
     Exit Sub
 
-Command2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.Command2_Click", Erl)
+cmdSolicitarIngreso_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildBrief.cmdSolicitarIngreso_Click", Erl)
     Resume Next
     
 End Sub
@@ -228,7 +256,7 @@ Private Sub Command3_Click()
     
     On Error GoTo Command3_Click_Err
     
-    frmCommet.nombre = Right(nombre.Caption, Len(nombre.Caption) - 7)
+    frmCommet.nombre = Right(nombre, Len(nombre) - 7)
     frmCommet.t = TIPO.PAZ
     frmCommet.Caption = "Ingrese propuesta de paz"
     Call frmCommet.Show(vbModal, frmGuildBrief)
@@ -241,14 +269,14 @@ Command3_Click_Err:
     Resume Next
     
 End Sub
-
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
-    
+       
     Call FormParser.Parse_Form(Me)
-
-    
+    Me.Picture = LoadInterface("ventanaclanes_detalles.bmp")
+    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Call loadButtons
     Exit Sub
 
 Form_Load_Err:
@@ -256,7 +284,6 @@ Form_Load_Err:
     Resume Next
     
 End Sub
-
 Private Sub Guerra_Click()
     
     On Error GoTo Guerra_Click_Err
@@ -273,3 +300,16 @@ Guerra_Click_Err:
     
 End Sub
 
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo Form_MouseMove_Err
+    
+    Call MoverForm(Me.hwnd)
+    
+    Exit Sub
+
+Form_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildBrief.Form_MouseMove", Erl)
+    Resume Next
+    
+End Sub

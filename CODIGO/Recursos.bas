@@ -925,20 +925,23 @@ Sub CargarDatosMapa(ByVal map As Integer)
 
                 ' frmMapaGrande.ListView1.ListItems.Clear
                 For i = 1 To .NumeroNPCs
-                
-                    NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
+                    If NpcData(NPCs(i).NpcIndex).NoMapInfo = 1 Then
+                        GoTo cont
+                    End If
+                    
 
+                    NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
+cont:
                 Next i
                
                 For c = 1 To UBound(NpcWorlds)
 
                     If NpcWorlds(c) > 0 Then
 
-                        If c > 399 And c < 450 Or c > 499 Then
+                        If (c > 399 And c < 450 Or c > 499) And NpcData(c).NoMapInfo <> 1 Then
 
                             Dim subelemento As ListItem
-
-                            Set subelemento = frmMapaGrande.ListView1.ListItems.Add(, , NpcData(c).name)
+                     Set subelemento = frmMapaGrande.ListView1.ListItems.Add(, , NpcData(c).Name)
 
                             subelemento.SubItems(1) = NpcWorlds(c)
                             subelemento.SubItems(2) = c
@@ -1698,15 +1701,40 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).CreaParticulaPiso = Val(Leer.GetValue("OBJ" & Obj, "CreaParticulaPiso"))
         ObjData(Obj).proyectil = Val(Leer.GetValue("OBJ" & Obj, "proyectil"))
         ObjData(Obj).Amunition = Val(Leer.GetValue("OBJ" & Obj, "MUNICIONES"))
+        ObjData(Obj).Hechizo = Val(Leer.GetValue("OBJ" & Obj, "Hechizo"))
         ObjData(Obj).Raices = Val(Leer.GetValue("OBJ" & Obj, "Raices"))
+        ObjData(Obj).Cuchara = Val(Leer.GetValue("OBJ" & Obj, "Cuchara"))
+        ObjData(Obj).Botella = Val(Leer.GetValue("OBJ" & Obj, "Botella"))
+        ObjData(Obj).Mortero = Val(Leer.GetValue("OBJ" & Obj, "Mortero"))
+        ObjData(Obj).FrascoAlq = Val(Leer.GetValue("OBJ" & Obj, "FrascoAlq"))
+        ObjData(Obj).FrascoElixir = Val(Leer.GetValue("OBJ" & Obj, "FrascoElixir"))
+        ObjData(Obj).Dosificador = Val(Leer.GetValue("OBJ" & Obj, "Dosificador"))
+        ObjData(Obj).Orquidea = Val(Leer.GetValue("OBJ" & Obj, "Orquidea"))
+        ObjData(Obj).Carmesi = Val(Leer.GetValue("OBJ" & Obj, "Carmesi"))
+        ObjData(Obj).HongoDeLuz = Val(Leer.GetValue("OBJ" & Obj, "HongoDeLuz"))
+        ObjData(Obj).Esporas = Val(Leer.GetValue("OBJ" & Obj, "Esporas"))
+        ObjData(Obj).Tuna = Val(Leer.GetValue("OBJ" & Obj, "Tuna"))
+        ObjData(Obj).Cala = Val(Leer.GetValue("OBJ" & Obj, "Cala"))
+        ObjData(Obj).ColaDeZorro = Val(Leer.GetValue("OBJ" & Obj, "ColaDeZorro"))
+        ObjData(Obj).FlorOceano = Val(Leer.GetValue("OBJ" & Obj, "FlorOceano"))
+        ObjData(Obj).FlorRoja = Val(Leer.GetValue("OBJ" & Obj, "FlorRoja"))
+        ObjData(Obj).Hierva = Val(Leer.GetValue("OBJ" & Obj, "Hierva"))
+        ObjData(Obj).HojasDeRin = Val(Leer.GetValue("OBJ" & Obj, "HojasDeRin"))
+        ObjData(Obj).HojasRojas = Val(Leer.GetValue("OBJ" & Obj, "HojasRojas"))
+        ObjData(Obj).SemillasPros = Val(Leer.GetValue("OBJ" & Obj, "SemillasPros"))
+        ObjData(Obj).Pimiento = Val(Leer.GetValue("OBJ" & Obj, "Pimiento"))
         ObjData(Obj).Madera = Val(Leer.GetValue("OBJ" & Obj, "Madera"))
         ObjData(Obj).MaderaElfica = Val(Leer.GetValue("OBJ" & Obj, "MaderaElfica"))
         ObjData(Obj).PielLobo = Val(Leer.GetValue("OBJ" & Obj, "PielLobo"))
         ObjData(Obj).PielOsoPardo = Val(Leer.GetValue("OBJ" & Obj, "PielOsoPardo"))
         ObjData(Obj).PielOsoPolar = Val(Leer.GetValue("OBJ" & Obj, "PielOsoPolar"))
+        ObjData(Obj).PielLoboNegro = Val(Leer.GetValue("OBJ" & Obj, "PielLoboNegro"))
+        ObjData(Obj).PielTigre = Val(Leer.GetValue("OBJ" & Obj, "PielTigre"))
+        ObjData(Obj).PielTigreBengala = Val(Leer.GetValue("OBJ" & Obj, "PielTigreBengala"))
         ObjData(Obj).LingH = Val(Leer.GetValue("OBJ" & Obj, "LingH"))
         ObjData(Obj).LingP = Val(Leer.GetValue("OBJ" & Obj, "LingP"))
         ObjData(Obj).LingO = Val(Leer.GetValue("OBJ" & Obj, "LingO"))
+        ObjData(Obj).Coal = Val(Leer.GetValue("OBJ" & Obj, "Coal"))
         ObjData(Obj).Destruye = Val(Leer.GetValue("OBJ" & Obj, "Destruye"))
         ObjData(Obj).SkHerreria = Val(Leer.GetValue("OBJ" & Obj, "SkHerreria"))
         ObjData(Obj).SkPociones = Val(Leer.GetValue("OBJ" & Obj, "SkPociones"))
@@ -1730,6 +1758,11 @@ Public Sub CargarIndicesOBJ()
     
     For Npc = 1 To NumNpcs
         DoEvents
+
+        If Val(Leer.GetValue("npc" & Npc, "NomapInfo")) > 0 Then
+            NpcData(Npc).NoMapInfo = Val(Leer.GetValue("npc" & Npc, "NoMapInfo"))
+            GoTo Continue
+        End If
         
         Select Case language
             Case e_language.English
@@ -1753,11 +1786,9 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).MaxHit = Val(Leer.GetValue("npc" & Npc, "MaxHit"))
         NpcData(Npc).MinHit = Val(Leer.GetValue("npc" & Npc, "MinHit"))
         NpcData(Npc).oro = Val(Leer.GetValue("npc" & Npc, "oro"))
-        
         NpcData(Npc).ExpClan = Val(Leer.GetValue("npc" & Npc, "GiveEXPClan"))
         
         NpcData(Npc).PuedeInvocar = Val(Leer.GetValue("npc" & Npc, "PuedeInvocar"))
-       
         aux = Val(Leer.GetValue("npc" & Npc, "NumQuiza"))
 
         If aux = 0 Then
@@ -1773,6 +1804,7 @@ Public Sub CargarIndicesOBJ()
             Next loopc
 
         End If
+Continue:
 
     Next Npc
     
@@ -1793,7 +1825,7 @@ Public Sub CargarIndicesOBJ()
     
     Hechizo = 1
     
-    For Hechizo = 1 To 350
+    For Hechizo = 1 To 750
         DoEvents
         NameMaps(Hechizo).name = Leer.GetValue("NameMapa", "Mapa" & Hechizo)
         NameMaps(Hechizo).desc = Leer.GetValue("NameMapa", "Mapa" & Hechizo & "Desc")
@@ -1817,9 +1849,15 @@ Public Sub CargarIndicesOBJ()
         Sugerencia(Hechizo) = Leer.GetValue("SUGERENCIAS", "SUGERENCIA" & Hechizo)
     Next Hechizo
     
-    For i = 1 To NumLocaleMsg
+For i = 1 To NumLocaleMsg
+
         DoEvents
-        Locale_SMG(i) = Leer.GetValue("msg", "Msg" & i)
+        If language = Spanish Then
+             Locale_SMG(i) = Leer.GetValue("SP_msg", "Msg" & i)
+        Else
+            Locale_SMG(i) = Leer.GetValue("EN_msg", "Msg" & i)
+        End If
+
     Next i
     
     Dim SearchVar As String
@@ -2377,31 +2415,37 @@ Public Sub LoadComposedFx()
     ComposedFxData(1).Clips(1).Fx = 115
     ComposedFxData(1).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(1).Clips(1))
+    FxToAnimationMap(115) = 1
     
     ReDim ComposedFxData(2).Clips(1)
     ComposedFxData(2).Clips(1).fX = 116
     ComposedFxData(2).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(2).Clips(1))
+    FxToAnimationMap(116) = 2
     
     ReDim ComposedFxData(3).Clips(1)
     ComposedFxData(3).Clips(1).Fx = 117
     ComposedFxData(3).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(3).Clips(1))
+    FxToAnimationMap(117) = 3
     
     ReDim ComposedFxData(4).Clips(1)
     ComposedFxData(4).Clips(1).Fx = 118
     ComposedFxData(4).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(4).Clips(1))
+    FxToAnimationMap(118) = 4
     
     ReDim ComposedFxData(5).Clips(1)
     ComposedFxData(5).Clips(1).Fx = 119
     ComposedFxData(5).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(5).Clips(1))
+    FxToAnimationMap(119) = 5
     
     ReDim ComposedFxData(6).Clips(1)
     ComposedFxData(6).Clips(1).Fx = 120
     ComposedFxData(6).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(6).Clips(1))
+    FxToAnimationMap(120) = 6
     
     Call AddComposedMetitation(7, 122, 126)
     Call AddComposedMetitation(8, 123, 130)

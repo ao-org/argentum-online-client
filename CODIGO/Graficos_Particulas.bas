@@ -724,6 +724,8 @@ Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal scree
 
     Dim no_move          As Boolean
     
+    If particle_group_index <= 0 Then Exit Sub
+    
     'Set colors
     'Exit Sub
     particle_group_index = min(particle_group_index, UBound(particle_group_list))
@@ -1043,7 +1045,7 @@ Map_Particle_Group_Get_Err:
     
 End Function
 
-Public Sub Engine_MeteoParticle_Set(ByVal meteo_part As Long)
+Public Sub Engine_MeteoParticle_Set(ByVal meteo_part As Long, Optional ByVal already_started As Boolean = True)
     '*****************************************************************
     'Author: Augusto José Rando
     'Last Modify Date: 6/11/2002
@@ -1063,8 +1065,14 @@ Public Sub Engine_MeteoParticle_Set(ByVal meteo_part As Long)
 
         Dim i As Integer
         For i = 1 To 500
-            Call Particle_Group_Render(MeteoIndex, -1000, -1000)
+            Call Particle_Group_Render(MeteoParticle, -1000, -1000)
         Next i
+        
+        If Not already_started Then
+            For i = 1 To UBound(particle_group_list(MeteoParticle).particle_stream)
+                particle_group_list(MeteoParticle).particle_stream(i).y = particle_group_list(MeteoParticle).particle_stream(i).y - particle_group_list(MeteoParticle).vecy2 * 30
+            Next i
+        End If
 
     End If
     

@@ -69,6 +69,7 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .MaxBarTime = 0
         .UserMaxHp = 0
         .UserMinHp = 0
+        .Meditating = False
         .ActiveAnimation.PlaybackState = Stopped
         .scrollDirectionX = 0
         .scrollDirectionY = 0
@@ -98,6 +99,15 @@ Public Sub EraseChar(ByVal charindex As Integer, Optional ByVal notCancelMe As B
     If charindex = 0 Then Exit Sub
     If charlist(charindex).active = 0 Then Exit Sub
     If charindex = UserCharIndex And Not notCancelMe Then Exit Sub
+    
+    Dim i As Integer
+    For i = LBound(Effect) To UBound(Effect)
+        If Effect(i).DestinoChar = CharIndex Then
+            Effect(i).DestX = charlist(CharIndex).Pos.x
+            Effect(i).DesyY = charlist(CharIndex).Pos.y
+            Effect(i).DestinoChar = 0
+        End If
+    Next i
     
     charlist(charindex).active = 0
     
@@ -225,25 +235,13 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
     '*****************************************************************
     
     On Error GoTo Char_Move_by_Head_Err
-    
-
-    If nHeading = 0 Then
-        Debug.Print "Heading: " & nHeading
-
-    End If
-
-    
+       
 
     Dim addx As Integer
-
     Dim addy As Integer
-
     Dim x    As Integer
-
     Dim y    As Integer
-
     Dim nX   As Integer
-
     Dim nY   As Integer
     
     With charlist(charindex)
@@ -292,7 +290,6 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         .scrollDirectionY = addy
         
         .Idle = False
-
         If Not .Moving Then
 
             If .Muerto Then
@@ -440,7 +437,6 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
 
         .LastStep = FrameTime
         .Idle = False
-
         If Not .Moving Then
         
             If .Muerto Then
@@ -481,7 +477,7 @@ Char_Move_by_Pos_Err:
     
 End Sub
 
-Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
+Public Function EstaPCarea(ByVal CharIndex As Integer) As Boolean
     
     On Error GoTo EstaPCarea_Err
     

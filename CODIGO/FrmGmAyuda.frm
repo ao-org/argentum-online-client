@@ -330,10 +330,10 @@ Private Sub cmdEnviarMensaje_Click()
     
 
     If txtMotivo.Text = "" Then
-        Call AddtoRichTextBox(frmMain.RecTxt, "Debes escribir tu mensaje.", 255, 255, 255, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEBES_ESCRIBIR_TU_MENSAJE."), 255, 255, 255, False, False, False)
         Exit Sub
     ElseIf DarIndiceElegido = -1 Then
-        Call AddtoRichTextBox(frmMain.RecTxt, "Debes elegir el motivo de tu consulta.", 255, 255, 255, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEBES_ELEGIR_EL_MOTIVO_DE_TU_CONSULTA"), 255, 255, 255, False, False, False)
         Exit Sub
     Else
         Call WriteQuestionGM(txtMotivo.Text, optConsulta(DarIndiceElegido).Caption)
@@ -377,25 +377,25 @@ Private Sub optConsult_Click(Index As Integer)
     Select Case Index
 
         Case 0
-            Call AddtoRichTextBox(frmMain.RecTxt, "¡Por favor explique correctamente el motivo de su consulta!", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("¡MENSAJE_EXPLIQUE_CORRECTAMENTE_EL_MOTIVO_DE_SU_CONSULTA"), 255, 255, 255, False, False, False)
 
         Case 1
-            Call AddtoRichTextBox(frmMain.RecTxt, "Deje el nombre del personaje del que está pidiendo descargo por una medida, conjunto con el administrador que está relacionado con ella.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEJE_EL_NOMBRE_DEL_PERSONAJE_Y_ADMINISTRADOR"), 255, 255, 255, False, False, False)
 
         Case 2
-            Call AddtoRichTextBox(frmMain.RecTxt, "Se dará prioridad a su consulta enviando un mensaje a los administradores conectados, por favor utilize ésta opción responsablemente.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SE_PRIORIZARA_CONSULTA_A_ADMINISTRADORES"), 255, 255, 255, False, False, False)
 
         Case 3
-            Call AddtoRichTextBox(frmMain.RecTxt, "Su sugerencia SERÁ leída por un miembro del staff, y será tomada en cuenta para futuros cambios.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SUGERENCIA_LEIDA_Y_TOMADA_EN_CUENTA"), 255, 255, 255, False, False, False)
 
         Case 4
-            Call AddtoRichTextBox(frmMain.RecTxt, "Explique de la forma más detallada la forma de repetir el error. El staff de programación lo resolverá lo antes posible.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_EXPLIQUE_DETALLADAMENTE_EL_ERROR"), 255, 255, 255, False, False, False)
 
         Case 5
-            Call AddtoRichTextBox(frmMain.RecTxt, "Deje la mayor cantidad de datos posibles, esta opción es para consultas que no entran en otras secciónes.", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEJE_DATOS_POSIBLES_PARA_CONSULTAS_GENERALES"), 255, 255, 255, False, False, False)
 
         Case 6
-            Call AddtoRichTextBox(frmMain.RecTxt, "En caso de ser una queja hacia un miembro del staff, deje principalmente hacia quien esta referida la queja, y los motivos dejando todos los detalles posibles", 255, 255, 255, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_QUEJA_HACIA_MIEMBRO_DEL_STAFF"), 255, 255, 255, False, False, False)
 
     End Select
 

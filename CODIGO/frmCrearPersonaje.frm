@@ -577,7 +577,7 @@ Attribute VB_Exposed = False
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
-'
+
 Option Explicit
 
 Dim AnimHead       As Byte
@@ -948,7 +948,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     End If
 
     If x > 148 And x < 246 And y > 630 And y < 670 Then 'Boton > Volver
-        Call Sound.Sound_Play(SND_CLICK)
+        Call ao20audio.playwav(SND_CLICK)
 
         UserMap = 307
         AlphaNiebla = 25
@@ -965,7 +965,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     End If
 
     If x > 731 And x < 829 And y > 630 And y < 670 Then 'Boton > Crear
-        Call Sound.Sound_Play(SND_CLICK)
+        Call ao20audio.playwav(SND_CLICK)
 
         Dim k As Object
 
@@ -980,7 +980,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         UserStats.Raza = lstRaza.ListIndex + 1
         UserStats.Sexo = lstGenero.ListIndex + 1
         UserStats.Clase = lstProfesion.ListIndex + 1
-        
         UserStats.Hogar = lstHogar.ListIndex + 1
             
         UserAtributos(1) = Val(lbFuerza.Caption) + Val(modfuerza.Caption)

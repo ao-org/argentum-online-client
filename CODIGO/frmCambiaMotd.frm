@@ -2,15 +2,15 @@ VERSION 5.00
 Begin VB.Form frmCambiaMotd 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   """ZMOTD"""
-   ClientHeight    =   5136
-   ClientLeft      =   48
-   ClientTop       =   216
-   ClientWidth     =   5172
+   ClientHeight    =   5145
+   ClientLeft      =   45
+   ClientTop       =   210
+   ClientWidth     =   5175
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5136
-   ScaleWidth      =   5172
+   ScaleHeight     =   5145
+   ScaleWidth      =   5175
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.CheckBox chkItalic 
@@ -99,7 +99,7 @@ Begin VB.Form frmCambiaMotd
       Caption         =   "Aceptar"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -127,7 +127,7 @@ Begin VB.Form frmCambiaMotd
       Caption         =   "No olvides agregar los colores al final de cada línea (ver tabla de abajo)"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -146,8 +146,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
+' Argentum 20 Game Client
+'
+'    Copyright (C) 2023 Noland Studios LTD
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU Affero General Public License as published by
@@ -158,29 +159,19 @@ Attribute VB_Exposed = False
 '    but WITHOUT ANY WARRANTY; without even the implied warranty of
 '    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 '    GNU Affero General Public License for more details.
+'
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
+'    This program was based on Argentum Online 0.11.6
+'    Copyright (C) 2002 Márquez Pablo Ignacio
 '
-'**************************************************************
-' frmCambiarMotd.frm
+'    Argentum Online is based on Baronsoft's VB6 Online RPG
+'    You can contact the original creator of ORE at aaron@baronsoft.com
+'    for more information about ORE please visit http://www.baronsoft.com/
 '
-'**************************************************************
-
-'**************************************************************************
-'This program is free software; you can redistribute it and/or modify
-'it under the terms of the Affero General Public License;
-'either version 1 of the License, or any later version.
 '
-'This program is distributed in the hope that it will be useful,
-'but WITHOUT ANY WARRANTY; without even the implied warranty of
-'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-'Affero General Public License for more details.
 '
-'You should have received a copy of the Affero General Public License
-'along with this program; if not, you can find it at http://www.affero.org/oagpl.html
-'**************************************************************************
-
 Option Explicit
 
 Private Sub cmdOk_Click()
@@ -211,7 +202,7 @@ Private Sub cmdOk_Click()
         Loop
 
         If N <> 5 Then
-            MsgBox "Error en el formato de la linea " & i + 1 & "."
+            MsgBox JsonLanguage.Item("MENSAJEBOX_ERROR_FORMATO_LINEA") & i + 1 & "."
             Exit Sub
 
         End If

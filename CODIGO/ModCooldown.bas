@@ -20,6 +20,12 @@ Const CdDrawSize As Integer = 32
 Const HalfCDDrawSize As Integer = CdDrawSize / 2
 Private colorCooldown As RGBA
 
+Public Sub InitializeEffectArrays()
+    ReDim BuffList.EffectList(ACTIVE_EFFECT_LIST_SIZE) As t_ActiveEffect
+    ReDim DeBuffList.EffectList(ACTIVE_EFFECT_LIST_SIZE) As t_ActiveEffect
+    ReDim CDList.EffectList(ACTIVE_EFFECT_LIST_SIZE) As t_ActiveEffect
+End Sub
+
 Private Sub DrawEffectCd(ByVal x As Integer, ByVal y As Integer, ByRef Effect As t_ActiveEffect, ByVal currTime As Long, ByRef colors() As RGBA)
     Dim Grh As Grh
     Dim angle As Single

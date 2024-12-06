@@ -90,8 +90,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-'    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
+' Argentum 20 Game Client
+'
+'    Copyright (C) 2023 Noland Studios LTD
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU Affero General Public License as published by
@@ -102,10 +103,20 @@ Attribute VB_Exposed = False
 '    but WITHOUT ANY WARRANTY; without even the implied warranty of
 '    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 '    GNU Affero General Public License for more details.
+'
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
+'    This program was based on Argentum Online 0.11.6
+'    Copyright (C) 2002 Márquez Pablo Ignacio
 '
+'    Argentum Online is based on Baronsoft's VB6 Online RPG
+'    You can contact the original creator of ORE at aaron@baronsoft.com
+'    for more information about ORE please visit http://www.baronsoft.com/
+'
+'
+'
+
 Public bmoving As Boolean
 
 Public dX      As Integer
@@ -305,7 +316,7 @@ Private Sub cmdTirar_click()
     On Error GoTo tirar_click_Err
     
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
-    Call Sound.Sound_Play(SND_CLICK)
+    Call ao20audio.playwav(SND_CLICK)
     If LenB(frmCantidad.Text1.Text) > 0 Then
         If Not IsNumeric(frmCantidad.Text1.Text) Then Exit Sub  'Should never happen
         If BabelInitialized Then
@@ -335,8 +346,12 @@ Private Sub ThrowItem(ByVal SlotIndex As Integer, ByVal ObjIndex As Integer, ByV
         If ObjData(ObjIndex).Destruye = 0 Then
             Call WriteDrop(SlotIndex, Amount)
         Else
-            PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
-            Pregunta = True
+            If BabelInitialized Then
+                Call ShowQuestion("El item se destruira al tirarlo ¿Esta seguro?")
+            Else
+                PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+                Pregunta = True
+            End If
             DestItemSlot = SlotIndex
             DestItemCant = Amount
             PreguntaLocal = True
@@ -354,7 +369,7 @@ Private Sub cmdTirarTodo_click()
 
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
 
-    Call Sound.Sound_Play(SND_CLICK)
+    Call ao20audio.playwav(SND_CLICK)
     Dim SelectedSlot As Integer
     Dim ObjIndex As Integer
     Dim Amount As Integer
@@ -378,8 +393,12 @@ Private Sub cmdTirarTodo_click()
         If ObjData(ObjIndex).Destruye = 0 Then
             Call WriteDrop(SelectedSlot, Amount)
         Else
-            PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
-            Pregunta = True
+            If BabelInitialized Then
+                Call ShowQuestion("El item se destruira al tirarlo ¿Esta seguro?")
+            Else
+                PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+                Pregunta = True
+            End If
             DestItemSlot = SelectedSlot
             DestItemCant = Amount
             

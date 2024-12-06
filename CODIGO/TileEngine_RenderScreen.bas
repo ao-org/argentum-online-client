@@ -25,7 +25,10 @@ Public map_letter_grh_next   As Long
 Public map_letter_a          As Single
 Public map_letter_fadestatus As Byte
 Public gameplay_render_offset As Vector2
-
+Public Const hotkey_render_posX = 200
+Public Const hotkey_render_posY = 40
+Public Const hotkey_arrow_posx = 200 + 36 * 5 - 5
+Public Const hotkey_arrow_posy = 10
 
 Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal HalfTileWidth As Integer, ByVal HalfTileHeight As Integer)
     
@@ -219,7 +222,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
    ' Call SetRGBA(MapData(15, 15).light_value(0), 255, 20, 20)
     'size 96x96 - mitad = 48
-    If casteaArea And MouseX > 0 And MouseY > 0 And frmMain.MousePointer = 2 Then
+    If casteaArea And MouseX > 0 And MouseY > 0 And GetGameplayForm.MousePointer = 2 Then
         Call Draw_Grh(grhSpellArea, MouseX - 48, MouseY - 48, 0, 1, temp_color, True, , , 70)
     End If
     
@@ -685,21 +688,36 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         ScreenY = ScreenY + TilePixelHeight
     Next y
 
-    If bRain Then
-    
-        If MapDat.LLUVIA Then
+    If MeteoParticle >= LBound(particle_group_list) And MeteoParticle <= UBound(particle_group_list) Then
+        If particle_group_list(MeteoParticle).active Then
+            If MapDat.LLUVIA Then
+                'Screen positions were hardcoded by now
+                screenX = 250
+                screenY = 0
+                
+                Call Particle_Group_Render(MeteoParticle, screenX, screenY)
+                
+                LastOffsetX = ParticleOffsetX
+                LastOffsetY = ParticleOffsetY
         
-            'Screen positions were hardcoded by now
-            ScreenX = 250
-            ScreenY = 0
+            End If
+        
+            If MapDat.NIEVE Then
             
-            Call Particle_Group_Render(MeteoParticle, ScreenX, ScreenY)
-            
-            LastOffsetX = ParticleOffsetX
-            LastOffsetY = ParticleOffsetY
-
+                If Graficos_Particulas.Engine_MeteoParticle_Get <> 0 Then
+                
+                    'Screen positions were hardcoded by now
+                    screenX = 250 + gameplay_render_offset.x
+                    screenY = 0 + gameplay_render_offset.y
+                    
+                    Call Particle_Group_Render(MeteoParticle, screenX, screenY)
+        
+                End If
+        
+            End If
+        Else
+            MeteoParticle = 0
         End If
-
     End If
 
     If AlphaNiebla Then
@@ -707,26 +725,28 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         If MapDat.niebla Then Call Engine_Weather_UpdateFog
 
     End If
-
-    If bNieve Then
-    
-        If MapDat.NIEVE Then
-        
-            If Graficos_Particulas.Engine_MeteoParticle_Get <> 0 Then
-            
-                'Screen positions were hardcoded by now
-                screenX = 250 + gameplay_render_offset.x
-                screenY = 0 + gameplay_render_offset.y
-                
-                Call Particle_Group_Render(MeteoParticle, ScreenX, ScreenY)
-
-            End If
-
-        End If
-
-    End If
     
     Call Effect_Render_All
+    
+    If Not BabelInitialized And IsSet(FeatureToggles, eEnableHotkeys) And g_game_state.state = e_state_gameplay_screen Then
+        Dim color(3) As RGBA
+        Call RGBAList(color, 255, 255, 255, 200)
+        Dim ArrowPos As Vector2
+        ArrowPos.x = hotkey_arrow_posx
+        ArrowPos.y = frmMain.renderer.Height - hotkey_arrow_posy
+        If HideHotkeys Then
+            Call DrawSingleGrh(HideArrowGrh, ArrowPos, 1, 270, color)
+        Else
+            For i = 0 To 9
+                Call DrawHotkey(i, i * 36 + hotkey_render_posX, frmMain.renderer.Height - hotkey_render_posY)
+            Next
+            Call DrawSingleGrh(HideArrowGrh, ArrowPos, 1, 90, color)
+            If gDragState.active Then
+                Call Draw_GrhColor(gDragState.Grh, gDragState.PosX - 16 - frmMain.renderer.Left, gDragState.PosY - frmMain.renderer.Top - 16, color)
+            End If
+        End If
+    End If
+    
     Call renderCooldowns(710 + gameplay_render_offset.x, 25 + gameplay_render_offset.y)
     
     If InvasionActual Then
@@ -803,7 +823,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         
         If (GetTickCount() - startTimePezEspecial) >= 20000 Then
             PescandoEspecial = False
-            Call AddtoRichTextBox(frmMain.RecTxt, "El pez ha roto tu linea de pesca.", 255, 0, 0, 1, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
             Call WriteRomperCania
         End If
         
@@ -939,5 +959,17 @@ RenderScreen_NombreMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderScreen_NombreMapa", Erl)
     Resume Next
     
+End Sub
+
+Private Sub DrawHotkey(ByVal HkIndex As Integer, ByVal PosX As Integer, ByVal PosY As Integer)
+    Call Draw_GrhIndex(GRH_INVENTORYSLOT, PosX, PosY)
+    If HotkeyList(HkIndex).Index > 0 Then
+        If HotkeyList(HkIndex).Type = e_HotkeyType.Item Then
+            Call Draw_GrhIndex(ObjData(HotkeyList(HkIndex).Index).GrhIndex, PosX, PosY)
+        ElseIf HotkeyList(HkIndex).Type = e_HotkeyType.Spell Then
+            Call Draw_GrhIndex(HechizoData(HotkeyList(HkIndex).Index).IconoIndex, PosX, PosY)
+        End If
+    End If
+    Call Engine_Text_Render(HkIndex + 1, PosX + 12, PosY, COLOR_WHITE, 1, True)
 End Sub
 

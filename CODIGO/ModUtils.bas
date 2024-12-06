@@ -28,9 +28,9 @@ Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As I
 'get mac adress
 
 Public Type Tclan
-    nombre As String
     Alineacion As Byte
     indice As Integer
+    nombre As String
 End Type
 
 Public ListaClanes      As Boolean
@@ -205,15 +205,40 @@ Public Type ObjDatas
     CreaParticulaPiso As Integer
     proyectil As Byte
     Amunition As Byte
+    Hechizo As Integer
     Raices As Integer
+    Cuchara As Integer
+    Botella As Integer
+    Mortero As Integer
+    FrascoAlq As Integer
+    FrascoElixir As Integer
+    Dosificador As Integer
+    Orquidea As Integer
+    Carmesi As Integer
+    HongoDeLuz As Integer
+    Esporas As Integer
+    Tuna As Integer
+    Cala As Integer
+    ColaDeZorro As Integer
+    FlorOceano As Integer
+    FlorRoja As Integer
+    Hierva As Integer
+    HojasDeRin As Integer
+    HojasRojas As Integer
+    SemillasPros As Integer
+    Pimiento As Integer
     Madera As Integer
     MaderaElfica As Integer
     PielLobo As Integer
     PielOsoPardo As Integer
     PielOsoPolar As Integer
+    PielLoboNegro As Integer
+    PielTigre As Integer
+    PielTigreBengala As Integer
     LingH As Integer
     LingP As Integer
     LingO As Integer
+    Coal As Integer
     Destruye As Byte
     SkHerreria As Byte
     SkPociones As Byte
@@ -241,6 +266,7 @@ Public Type NpcDatas
     QuizaDropea() As Integer
     ExpClan As Long
     PuedeInvocar As Byte
+    NoMapInfo As Byte
     
 End Type
 
@@ -257,6 +283,7 @@ Public Type HechizoDatas
     StaRequerido As Integer
     IconoIndex As Long
     Cooldown As Long
+    IsBindable As Boolean
 End Type
 
 Public Type NameMapas
@@ -671,27 +698,26 @@ Sub IniciarCrearPj()
 
     Dim i As Integer
 
-    frmCrearPersonaje.lstRaza.Clear
 
+    frmCrearPersonaje.lstRaza.Clear
     For i = LBound(ListaRazas()) To UBound(ListaRazas())
         frmCrearPersonaje.lstRaza.AddItem ListaRazas(i)
     Next i
-     frmCrearPersonaje.lstRaza.ListIndex = 0
+    frmCrearPersonaje.lstRaza.ListIndex = 0
+    
     
     frmCrearPersonaje.lstHogar.Clear
     For i = LBound(ListaCiudades()) To UBound(ListaCiudades())
-        frmCrearPersonaje.lstHogar.AddItem (ListaCiudades(i))
+        frmCrearPersonaje.lstHogar.AddItem ListaCiudades(i)
     Next i
-     frmCrearPersonaje.lstHogar.ListIndex = 0
-
+    frmCrearPersonaje.lstHogar.ListIndex = 0
+    
+    
     frmCrearPersonaje.lstProfesion.Clear
-
     For i = LBound(ListaClases()) To UBound(ListaClases())
         frmCrearPersonaje.lstProfesion.AddItem ListaClases(i)
-    
     Next i
-    frmCrearPersonaje.lstProfesion.ListIndex = 1
-    
+    frmCrearPersonaje.lstProfesion.ListIndex = 0
     
         
     MiCabeza = Val(frmCrearPersonaje.Cabeza.List(1))
@@ -733,8 +759,8 @@ Sub General_Set_Connect()
     frmMain.STAShp.Picture = LoadInterface("barradeenergia.bmp")
     frmMain.Hpshp.Picture = LoadInterface("barradevida.bmp")
     frmMain.shieldBar.Picture = LoadInterface("shield-bar.bmp", False)
-            
-    Sound.Sound_Play CStr(SND_LLUVIAIN), True, 0, 0
+
+
     AlphaNiebla = 10
     
     Call Graficos_Particulas.Engine_spell_Particle_Set(41)
@@ -748,16 +774,16 @@ Sub General_Set_Connect()
     
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
 
-    Sound.Music_Load 1, Sound.VolumenActualMusicMax
-    Sound.Music_Play
+    Call ao20audio.PlayMidi(6)
+    
     mFadingMusicMod = 0
     CurMp3 = 1
     Call GoToLogIn
     ClickEnAsistente = 0
     If CuentaRecordada.nombre <> "" Then
-        Call TextoAlAsistente("¡Bienvenido de nuevo! ¡Disfruta tu viaje por Argentum20!", False, True)
+        Call TextoAlAsistente(JsonLanguage.Item("LOGIN_SCREEN_WELCOME_MESSAGE"), False, True)
     Else
-        Call TextoAlAsistente("¡Bienvenido a Argentum20! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.", False, True)
+        Call TextoAlAsistente("¡Bienvenido a Argentum Online! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.", False, True)
 
     End If
     
@@ -1139,48 +1165,6 @@ MensajeAdvertencia_Err:
     
 End Sub
 
-Public Sub ReproducirMp3(ByVal mp3 As Byte)
-    
-    On Error GoTo ReproducirMp3_Err
-    
-
-    If mp3 <> CurMp3 Then
-        If mp3 <> 0 Then
-            NextMP3 = mp3
-            mFadingMusicMod = 0
-
-            ' frmMain.TimerMusica.Enabled = True
-        End If
-
-    End If
-
-    
-    Exit Sub
-
-ReproducirMp3_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ReproducirMp3", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub ForzarMp3(ByVal mp3 As Byte)
-    
-    On Error GoTo ForzarMp3_Err
-    
-
-    If mp3 = 0 Then Exit Sub
-
-    mFadingMusicMod = 0
-    CurMp3 = mp3
-
-    
-    Exit Sub
-
-ForzarMp3_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ForzarMp3", Erl)
-    Resume Next
-    
-End Sub
 
 Public Sub CargarCuentasGuardadas()
 
@@ -1376,128 +1360,16 @@ IntervaloPermiteConectar_Err:
 End Function
 Sub initPacketControl()
     Dim i As Long, j As Long
-    
-    'ReDim packetControl(1 To CANT_PACKETS_CONTROL) As t_packetControl
-    
-    For i = 1 To CANT_PACKETS_CONTROL
+    For i = LBound(packetControl) To UBound(packetControl)
         With packetControl(i)
             .last_count = 0
-           ' .cant_iterations = 0
            For j = 1 To 10
                 .iterations(j) = 0
             Next j
         End With
     Next i
-    
-End Sub
-Sub load_game_settings()
-
-    On Error GoTo ErrorHandler
-    Set DialogosClanes = New clsGuildDlg
-    
-    If InitializeSettings() Then
-        Call LoadImpAoInit
-    Else
-        Call MsgBox("¡No se puede cargar el archivo de opciones! La reinstalacion del juego podria solucionar el problema.", vbCritical, "Error al cargar")
-        End
-    End If
-    'Musica y Sonido
-    Musica = GetSetting("AUDIO", "Musica")
-    Sonido = GetSetting("AUDIO", "Sonido")
-    Fx = GetSetting("AUDIO", "Fx")
-    AmbientalActivated = GetSetting("AUDIO", "AmbientalActivated")
-    InvertirSonido = GetSetting("AUDIO", "InvertirSonido")
-    
-    'Musica y Sonido - Volumen
-    VolMusicFadding = VolMusic
-    VolMusic = Val(GetSetting("AUDIO", "VolMusic"))
-    VolFX = Val(GetSetting("AUDIO", "VolFX"))
-    VolAmbient = Val(GetSetting("AUDIO", "VolAmbient"))
-    
-    'Video
-    PantallaCompleta = GetSetting("VIDEO", "PantallaCompleta")
-    CursoresGraficos = IIf(RunningInVB, 0, GetSetting("VIDEO", "CursoresGraficos"))
-    UtilizarPreCarga = GetSetting("VIDEO", "UtilizarPreCarga")
-    InfoItemsEnRender = Val(GetSetting("VIDEO", "InfoItemsEnRender"))
-    ModoAceleracion = GetSetting("VIDEO", "Aceleracion")
-    
-    Dim Value As String
-    Value = GetSetting("VIDEO", "MostrarRespiracion")
-    MostrarRespiracion = IIf(LenB(Value) > 0, Val(Value), True)
-
-    FxNavega = GetSetting("OPCIONES", "FxNavega")
-    MostrarIconosMeteorologicos = GetSetting("OPCIONES", "MostrarIconosMeteorologicos")
-    CopiarDialogoAConsola = GetSetting("OPCIONES", "CopiarDialogoAConsola")
-    PermitirMoverse = GetSetting("OPCIONES", "PermitirMoverse")
-    ScrollArrastrar = Val(GetSetting("OPCIONES", "ScrollArrastrar"))
-    LastScroll = Val(GetSetting("OPCIONES", "LastScroll"))
-    
-    MoverVentana = GetSetting("OPCIONES", "MoverVentana")
-    FPSFLAG = GetSetting("OPCIONES", "FPSFLAG")
-    AlphaMacro = GetSetting("OPCIONES", "AlphaMacro")
-    ModoHechizos = Val(GetSetting("OPCIONES", "ModoHechizos"))
-    DialogosClanes.Activo = Val(GetSetting("OPCIONES", "DialogosClanes"))
-    NumerosCompletosInventario = Val(GetSetting("OPCIONES", "NumerosCompletosInventario"))
-    
-    'Init
-    #If PYMMO = 0 Or DEBUGGING = 1 Then
-        ServerIndex = GetSetting("INIT", "ServerIndex")
-    #End If
-
-    SensibilidadMouse = GetSetting("OPCIONES", "SensibilidadMouse")
-    If SensibilidadMouse = 0 Then: SensibilidadMouse = 10
-    SensibilidadMouseOriginal = General_Get_Mouse_Speed
-    Call General_Set_Mouse_Speed(SensibilidadMouse)
-    
-    'Dialogos clanes
-    Exit Sub
-    
-ErrorHandler:
-    Call MsgBox("Ha ocurrido un error al cargar la configuración del juego.", vbCritical, "Configuración del Juego")
-    End
 End Sub
 
-Sub GuardarOpciones()
-    On Error GoTo GuardarOpciones_Err
-    
-    #If PYMMO = 0 Or DEBUGGING = 1 Then
-    Call SaveSetting("INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
-    #End If
-    Call SaveSetting("AUDIO", "Musica", Musica)
-    Call SaveSetting("AUDIO", "Fx", Fx)
-    Call SaveSetting("AUDIO", "VolMusic", VolMusic)
-    Call SaveSetting("AUDIO", "Volfx", VolFX)
-    Call SaveSetting("AUDIO", "VolAmbient", VolAmbient)
-    Call SaveSetting("AUDIO", "AmbientalActivated", AmbientalActivated)
-    
-    Call SaveSetting("OPCIONES", "MoverVentana", MoverVentana)
-    Call SaveSetting("OPCIONES", "PermitirMoverse", PermitirMoverse)
-    Call SaveSetting("OPCIONES", "ScrollArrastrar", ScrollArrastrar)
-    
-    Call SaveSetting("OPCIONES", "CopiarDialogoAConsola", CopiarDialogoAConsola)
-    Call SaveSetting("OPCIONES", "FPSFLAG", FPSFLAG)
-    Call SaveSetting("OPCIONES", "AlphaMacro", AlphaMacro)
-    Call SaveSetting("OPCIONES", "ModoHechizos", ModoHechizos)
-    Call SaveSetting("OPCIONES", "FxNavega", FxNavega)
-    
-    Call SaveSetting("OPCIONES", "NumerosCompletosInventario", NumerosCompletosInventario)
-
-    Call SaveSetting("VIDEO", "MostrarRespiracion", IIf(MostrarRespiracion, 1, 0))
-    Call SaveSetting("VIDEO", "PantallaCompleta", IIf(PantallaCompleta, 1, 0))
-    Call SaveSetting("VIDEO", "InfoItemsEnRender", IIf(InfoItemsEnRender, 1, 0))
-    Call SaveSetting("VIDEO", "Aceleracion", ModoAceleracion)
-
-    Call SaveSetting("OPCIONES", "SensibilidadMouse", SensibilidadMouse)
-    Call SaveSetting("OPCIONES", "DialogosClanes", IIf(DialogosClanes.Activo, 1, 0))
-
-    
-    Exit Sub
-
-GuardarOpciones_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.GuardarOpciones", Erl)
-    Resume Next
-    
-End Sub
 
 Public Sub WriteConsoleUserChat(ByVal Text As String, ByVal userName As String, ByVal red As Byte, ByVal green As Byte, ByVal blue As Byte, ByVal userStatus As Integer, ByVal Privileges As Integer)
     Dim NameRed   As Byte
@@ -1625,60 +1497,6 @@ PonerPuntos_Err:
     
 End Function
 
-Sub AmbientarAudio(ByVal UserMap As Long)
-    
-    On Error GoTo AmbientarAudio_Err
-    
-
-    
-
-    Dim wav As Integer
-
-    If EsNoche Then
-   
-        wav = ReadField(1, Val(MapDat.ambient), Asc("-"))
-
-        If Sound.AmbienteActual <> wav Then
-            Sound.LastAmbienteActual = wav
-        End If
-         
-        Sound.Ambient_Play
-
-        If wav = 0 Then
-            Sound.Ambient_Stop
-        End If
-
-        '  AmbientalesBufferIndex = Audio.PlayWave(Wav & ".wav", , , LoopStyle.Enabled)
-    Else
-   
-        wav = ReadField(2, Val(MapDat.ambient), Asc("-"))
-
-        If wav = 0 Then Exit Sub
-        If Sound.AmbienteActual <> wav Then
-            Sound.LastAmbienteActual = wav
-
-        End If
-
-        If wav = 0 Then
-            Sound.Ambient_Stop
-
-        End If
-
-        '  AmbientalesBufferIndex = Audio.PlayWave(Wav & ".wav", , , LoopStyle.Enabled)
-    End If
-
-    Sound.Ambient_Volume_Set VolAmbient
-    'Debug.Print VolAmbient
-
-    
-    Exit Sub
-
-AmbientarAudio_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.AmbientarAudio", Erl)
-    Resume Next
-    
-End Sub
-
 Public Function General_Var_Get(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
     
     On Error GoTo General_Var_Get_Err
@@ -1717,55 +1535,55 @@ End Function
 
 Public Sub DibujarMiniMapa()
     
-    On Error GoTo DibujarMiniMapa_Err
+        On Error GoTo DibujarMiniMapa_Err
 
-    frmMain.MiniMap.Picture = LoadMinimap(UserMap)
-    'Pintamos los NPCs en Minimapa:
-    If ListNPCMapData(UserMap).NpcList(1).NPCNumber > 0 Then
-        Dim i As Long
-        For i = 1 To MAX_QUESTNPCS_VISIBLE
-            Dim posX As Long
-            Dim posY As Long
+100     frmMain.MiniMap.Picture = LoadMinimap(ResourceMap)
+        'Pintamos los NPCs en Minimapa:
+102     If ListNPCMapData(ResourceMap).NpcCount > 0 Then
+            Dim i As Long
+104         For i = 1 To MAX_QUESTNPCS_VISIBLE
+                Dim PosX As Long
+                Dim PosY As Long
             
-            PosX = ListNPCMapData(UserMap).NpcList(i).Position.x
-            PosY = ListNPCMapData(UserMap).NpcList(i).Position.y
-            
-            
-            Dim color As Long
-            
-            Select Case ListNPCMapData(UserMap).NpcList(i).state
-                Case 1
-                    color = RGB(0, 198, 254)
-                Case 2
-                    color = RGB(255, 201, 14)
-                    Case Else
-                    color = RGB(255, 201, 14)
-            End Select
+106             PosX = ListNPCMapData(ResourceMap).NpcList(i).Position.x
+108             PosY = ListNPCMapData(ResourceMap).NpcList(i).Position.y
             
             
+                Dim color As Long
             
-            Call SetPixel(frmMain.MiniMap.hdc, posX + 1, posY, color)
-            Call SetPixel(frmMain.MiniMap.hdc, posX, posY + 1, color)
-            Call SetPixel(frmMain.MiniMap.hdc, posX + 1, posY + 1, color)
-            Call SetPixel(frmMain.MiniMap.hdc, posX, posY, color)
+110             Select Case ListNPCMapData(ResourceMap).NpcList(i).State
+                    Case 1
+112                     color = RGB(0, 198, 254)
+114                 Case 2
+116                     color = RGB(255, 201, 14)
+118                     Case Else
+120                     color = RGB(255, 201, 14)
+                End Select
             
-            Call SetPixel(frmMain.MiniMap.hdc, posX, posY - 1, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX + 1, posY - 1, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX + 2, posY, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX + 2, posY + 1, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX + 1, posY + 2, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX, posY + 2, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX - 1, posY + 1, &H808080)
-            Call SetPixel(frmMain.MiniMap.hdc, posX - 1, posY, &H808080)
+            
+            
+122             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY, color)
+124             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 1, color)
+126             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 1, color)
+128             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY, color)
+            
+130             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 1, &H808080)
+132             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY - 1, &H808080)
+134             Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY, &H808080)
+136             Call SetPixel(frmMain.MiniMap.hdc, PosX + 2, PosY + 1, &H808080)
+138             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 2, &H808080)
+140             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 2, &H808080)
+142             Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY + 1, &H808080)
+144             Call SetPixel(frmMain.MiniMap.hdc, PosX - 1, PosY, &H808080)
 
-        Next i
+146         Next i
         
-        frmMain.MiniMap.Refresh
-    End If
-    Exit Sub
+148         frmMain.MiniMap.Refresh
+        End If
+        Exit Sub
 
 DibujarMiniMapa_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.DibujarMiniMapa", Erl)
+150     Call RegistrarError(Err.Number, Err.Description, "ModUtils.DibujarMiniMapa", Erl)
     
 End Sub
 
@@ -2007,7 +1825,7 @@ Public Sub ResetearUserMacro()
 
     End If
 
-    AddtoRichTextBox frmMain.RecTxt, "Has dejado de trabajar.", 223, 51, 2, 1, 0
+    AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEJAS_DE_TRABAJAR"), 223, 51, 2, 1, 0
 
     
     Exit Sub
@@ -2123,25 +1941,11 @@ Public Sub EndGame(Optional ByVal Closed_ByUser As Boolean = False, Optional ByV
     On Error GoTo EndGame_Err
     
 
-    
-
-    Sound.Engine_DeInitialize
-    Sound.Music_Stop
-    Set Sound = Nothing
-
     prgRun = False
 
-    '0. Cerramos el socket
     Call modNetwork.Disconnect
-
-    '2. Eliminamos objetos DX
     Call Client_UnInitialize_DirectX_Objects
-
-    '6. Cerramos los forms y nos vamos
     Call UnloadAllForms
-
-    '7. Adiós MuteX - Restauramos MouseSpeed
-
     End
 
     
@@ -2156,17 +1960,7 @@ End Sub
 Public Sub Client_UnInitialize_DirectX_Objects()
     
     On Error GoTo Client_UnInitialize_DirectX_Objects_Err
-    
-
-    
-
-    '1. Cerramos el engine de sonido y borramos buffers
-    Sound.Engine_DeInitialize
-    Set Sound = Nothing
-
-    '2. Cerramos el engine gráfico y borramos textures
-
-    
+    Set ao20audio.AudioEngine = Nothing
     Exit Sub
 
 Client_UnInitialize_DirectX_Objects_Err:

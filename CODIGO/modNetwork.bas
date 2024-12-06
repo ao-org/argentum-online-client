@@ -89,7 +89,7 @@ End Sub
 Public Sub RetryWithAnotherIp()
     Call Disconnect
     Call AddFailedIp(IPdelServidor, PuertoDelServidor)
-    If FailedListSize = UBound(servers_login_connections) Then
+    If FailedListSize = ServerIpCount Then
         Unload frmConnecting
         Exit Sub
     Else

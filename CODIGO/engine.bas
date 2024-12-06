@@ -290,8 +290,9 @@ On Error GoTo NewEngineInitErr:
     Exit Sub
     
 NewEngineInitErr:
-  Call MsgBox("Ha ocurrido un error al iniciar el motor grafico." & vbNewLine & _
-                "Asegúrate de tener los drivers gráficos actualizados y la librería DX8VB.dll registrada correctamente.", vbCritical, "Argentum20")
+    Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_MOTOR_GRAFICO") & vbNewLine & _
+            JsonLanguage.Item("MENSAJE_SUGERENCIA_DRIVERS"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
+
     
     Debug.Print "Error Number Returned: " & Err.Number
 
@@ -359,8 +360,8 @@ On Error Resume Next
     
 ErrHandler:
     
-    Call MsgBox("Ha ocurrido un error al iniciar el motor grafico." & vbNewLine & _
-                "Asegúrate de tener los drivers gráficos actualizados y la librería DX8VB.dll registrada correctamente.", vbCritical, "Argentum20")
+Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_MOTOR_GRAFICO") & vbNewLine & _
+            JsonLanguage.Item("MENSAJE_SUGERENCIA_DRIVERS"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
     
     Debug.Print "Error Number Returned: " & Err.Number
 
@@ -1563,9 +1564,9 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
 
                 End If
 
-                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True) + .dialog_offset_counter_y, temp_array, 1, True, MapData(x, y).charindex
+                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True) + .dialog_offset_counter_y -34, temp_array, 1, True, MapData(x, y).charindex
             Else
-                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True), temp_array, 1, True, MapData(x, y).charindex
+                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - 34 - Engine_Text_Height(.dialog, True), temp_array, 1, True, MapData(x, y).charindex
 
             End If
 
@@ -1918,7 +1919,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     End If
 
                     If .simbolo <> 0 Then
-                        Call Draw_GrhIndex(5257 + .simbolo, PixelOffsetX + 6 + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y - 12 - 10 * Sin((FrameTime Mod 31415) * 0.002) ^ 2)
+                        Call Draw_GrhIndex(5257 + .simbolo, PixelOffsetX + 6 + .Body.HeadOffset.x, PixelOffsetY + .Body.HeadOffset.y - 48 - 8 * Sin((FrameTime Mod 31415) * 0.002) ^ 2)
                     End If
                     
                 Else
@@ -2039,13 +2040,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, 0, , True
 
                     ' Sombra
-                    PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, 0, True
-                    If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
-                    If LenB(.Arma_Aura) <> 0 And .Arma_Aura <> "0" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
-                    If LenB(.Otra_Aura) <> 0 And .Otra_Aura <> "0" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
-                    If LenB(.Escudo_Aura) <> 0 And .Escudo_Aura <> "0" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
-                    If LenB(.DM_Aura) <> 0 And .DM_Aura <> "0" Then Call Renderizar_Aura(.DM_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
-                    If LenB(.RM_Aura) <> 0 And .RM_Aura <> "0" Then Call Renderizar_Aura(.RM_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, charindex)
+                    PresentComposedTexture PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + .Body.BodyOffset.Y, color, 0, True
+                    If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
+                    If LenB(.Head_Aura) <> 0 And .Head_Aura <> "0" Then Call Renderizar_Aura(.Head_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
+                    If LenB(.Arma_Aura) <> 0 And .Arma_Aura <> "0" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
+                    If LenB(.Otra_Aura) <> 0 And .Otra_Aura <> "0" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
+                    If LenB(.Escudo_Aura) <> 0 And .Escudo_Aura <> "0" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
+                    If LenB(.DM_Aura) <> 0 And .DM_Aura <> "0" Then Call Renderizar_Aura(.DM_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
+                    If LenB(.RM_Aura) <> 0 And .RM_Aura <> "0" Then Call Renderizar_Aura(.RM_Aura, PixelOffsetX + .Body.BodyOffset.X, PixelOffsetY + OffArma + .Body.BodyOffset.Y, X, Y, CharIndex)
                 End If
 
                 ' Char
@@ -2069,31 +2071,30 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             ' Si no, solo dibujamos body
             Else
-                Call Draw_Sombra(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, False, x, y)
+                If Not .Invisible Then
+                    Call Draw_Sombra(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, False, x, y)
+                End If
                 Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, Color, False, x, y)
             End If
     
             'Draw name over head
-            
-          '  If Nombres Then
             Nombres = Not MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).zone.OcultarNombre
+     
+                
             If UserCharIndex > 0 Then
-                If Sound.MusicActual <> MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica And MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica > 0 Then
-                    Sound.Music_Stop
-                    Sound.Music_Load MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica, Sound.VolumenActualMusicMax
-                    Sound.Fading = 100
-                    Sound.Music_Play
-                ElseIf MapData(charlist(UserCharIndex).Pos.x, charlist(UserCharIndex).Pos.y).zone.Musica = 0 And Sound.MusicActual <> MapDat.music_numberLow Then
-                    Sound.Music_Stop
-                    Sound.Music_Load MapDat.music_numberLow, Sound.VolumenActualMusicMax
-                    Sound.Fading = 100
-                    Sound.Music_Play
-                End If
+             With charlist(UserCharIndex)
+                 Dim new_music As Integer
+                 new_music = MapData(.Pos.x, .Pos.y).zone.Musica
+                 
+                 If new_music > 0 Then
+                     Call ao20audio.playmidi(new_music, True)
+                 Else
+                     
+                     Call ao20audio.playmidi(MapDat.music_numberLow, True)
+                 End If
+             End With
             End If
-            
-           ' End If
-
-           
+    
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
                 Pos = InStr(.nombre, "<")
                 If Pos = 0 Then Pos = InStr(.nombre, "[")
@@ -2197,6 +2198,10 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Else
                     Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
                 End If
+            ElseIf Nombres And .Team > 0 Then
+                line = "<Equipo " & .Team & ">"
+                Call RGBAList(NameColor, TeamColors(.Team).r, TeamColors(.Team).G, TeamColors(.Team).b, TeamColors(.Team).A)
+                Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
             End If
         End If
 
@@ -2407,8 +2412,7 @@ On Error GoTo Start_Err
                     End If
 
             End Select
-            
-            Sound.Sound_Render
+
         Else
             Sleep 60&
             If Not UseBabelUI Then
@@ -2420,6 +2424,7 @@ On Error GoTo Start_Err
 
         Call modNetwork.Poll
         Call svb_run_callbacks
+        Call UpdateAntiCheat
     Loop
 
     EngineRun = False
@@ -3344,10 +3349,10 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
     intro = 1
 
     If intro = 1 Then
-        Draw_Grh BodyData(773).Walk(3), 490, 333, 1, 0, COLOR_WHITE
-        Draw_Grh HeadData(118).Head(3), 490, 296, 1, 0, COLOR_WHITE
+        Draw_Grh BodyData(123).Walk(3), 490, 333, 1, 0, COLOR_WHITE
+        Draw_Grh HeadData(118).Head(3), 490, 328, 1, 0, COLOR_WHITE
             
-        Draw_Grh CascoAnimData(13).Head(3), 490, 294, 1, 0, COLOR_WHITE
+        Draw_Grh CascoAnimData(13).Head(3), 490, 326, 1, 0, COLOR_WHITE
         Draw_Grh WeaponAnimData(6).WeaponWalk(3), 490, 333, 1, 0, COLOR_WHITE
         Engine_Text_Render "Gulfas Morgolock", 454, 367, ColorGM, 1
         Engine_Text_Render "<Creador del Mundo>", 443, 382, ColorGM, 1
@@ -4373,8 +4378,6 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
         target_Angle = Engine_GetAngle(.Now_X, .Now_Y, CInt(.Viaje_X), CInt(.Viaje_Y))
     
         'Actualiza la posición del efecto.
-        '.Now_X = (.Now_X + Sin(target_Angle * DegreeToRadian) * .ViajeSpeed)
-        '.Now_Y = (.Now_Y - Cos(target_Angle * DegreeToRadian) * .ViajeSpeed)
         .Now_X = (.Now_X + Sin(target_Angle * DegreeToRadian) * .ViajeSpeed * timerTicksPerFrame * 9)
         .Now_Y = (.Now_Y - Cos(target_Angle * DegreeToRadian) * .ViajeSpeed * timerTicksPerFrame * 9)
         'Si hay posición dibuja.
@@ -4403,7 +4406,9 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 If (.End_Effect <> 0) And .DestinoChar <> 0 Then
                     If .DestinoChar <> 0 Then
                         Call General_Char_Particle_Create(.End_Effect, .DestinoChar, .End_Loops)
-                        Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y), Sound.Calculate_Pan(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y))
+                        If EstaPCarea(.DestinoChar) Then
+                            Call ao20audio.PlayWav(.wav, False, ao20audio.ComputeCharFxVolume(charlist(.DestinoChar).Pos), ao20audio.ComputeCharFxPan(charlist(.DestinoChar).Pos))
+                        End If
                         .Slot_Used = False
                         Exit Sub
 
@@ -4414,14 +4419,22 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 If (.End_Effect <> 0) And .DestinoChar = 0 Then
                     MapData(.DestX, .DesyY).particle_group = 0
                     General_Particle_Create .End_Effect, .DestX, .DesyY, .End_Loops
-                    Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(.DestX, .DesyY), Sound.Calculate_Pan(.DestX, .DesyY))
+                    Call ao20audio.playwav(.wav)
+                    Dim dest_pos As Position
+                    dest_pos.x = .DestX
+                    dest_pos.y = .DesyY
+                    If EstaEnArea(.DestX, .DesyY) Then
+                        Call ao20audio.PlayWav(.wav, False, ao20audio.ComputeCharFxVolume(dest_pos), ao20audio.ComputeCharFxPan(dest_pos))
+                    End If
                     .Slot_Used = False
                     Exit Sub
 
                 End If
             
                 If (.FxEnd_Effect > 0) And .DestinoChar <> 0 Then
-                    Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y), Sound.Calculate_Pan(charlist(.DestinoChar).Pos.x, charlist(.DestinoChar).Pos.y))
+                    If EstaPCarea(.DestinoChar) Then
+                        Call ao20audio.PlayWav(.wav, False, ao20audio.ComputeCharFxVolume(charlist(.DestinoChar).Pos), ao20audio.ComputeCharFxPan(charlist(.DestinoChar).Pos))
+                    End If
                     Call SetCharacterFx(.DestinoChar, .FxEnd_Effect, .End_Loops)
                     .Slot_Used = False
                     Exit Sub
@@ -4429,8 +4442,12 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 End If
             
                 If (.FxEnd_Effect > 0) And (.DestinoChar = 0) Then
-                    Call Sound.Sound_Play(.wav, , Sound.Calculate_Volume(.DestX, .DesyY), Sound.Calculate_Pan(.DestX, .DesyY))
-              
+                    Dim p As Position
+                    p.x = .DestX
+                    p.y = .DesyY
+                    If EstaEnArea(.DestX, .DesyY) Then
+                        Call ao20audio.PlayWav(.wav, False, ao20audio.ComputeCharFxVolume(P), ao20audio.ComputeCharFxPan(P))
+                    End If
                     Call SetMapFx(.DestX, .DesyY, .FxEnd_Effect, 0)
                     .Slot_Used = False
                     Exit Sub
