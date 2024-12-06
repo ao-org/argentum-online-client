@@ -17,7 +17,9 @@ Attribute VB_Name = "TileEngine_Map"
 '
 Option Explicit
 
+
 Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0)
+
     
     On Error GoTo SwitchMap_Err
     If NewResourceMap < 1 Then
@@ -166,32 +168,7 @@ HayLava_Err:
     
 End Function
 
-Function EsArbol(ByVal GrhIndex As Long) As Boolean
-    
-    On Error GoTo EsArbol_Err
-    
-    EsArbol = GrhIndex = 643 Or GrhIndex = 644 Or GrhIndex = 647 Or GrhIndex = 735 Or GrhIndex = 1121 Or GrhIndex = 2931 Or _
-              GrhIndex = 11903 Or GrhIndex = 11904 Or GrhIndex = 11905 Or GrhIndex = 14775 Or GrhIndex = 11906 Or _
-              GrhIndex = 70885 Or GrhIndex = 70884 Or GrhIndex = 71042 Or GrhIndex = 71041 Or _
-              GrhIndex = 15698 Or GrhIndex = 14504 Or GrhIndex = 14505 Or GrhIndex = 15697 Or GrhIndex = 15510 Or _
-              (GrhIndex >= 12581 And GrhIndex <= 12586) Or (GrhIndex >= 12164 And GrhIndex <= 12179) Or _
-              (GrhIndex >= 32142 And GrhIndex <= 32152) Or GrhIndex = 32154 Or (GrhIndex >= 55626 And GrhIndex <= 55640) Or GrhIndex = 55642 Or _
-              (GrhIndex >= 50985 And GrhIndex <= 50991) Or (GrhIndex >= 2547 And GrhIndex <= 2549) Or (GrhIndex >= 6597 And GrhIndex <= 6598) Or (GrhIndex >= 15108 And GrhIndex <= 15110) Or _
-              GrhIndex = 12160 Or GrhIndex = 7220 Or GrhIndex = 462 Or GrhIndex = 463 Or _
-              GrhIndex >= 1877 And GrhIndex <= 1881 Or GrhIndex = 1890 Or GrhIndex = 1892 Or GrhIndex = 433 Or GrhIndex = 460 Or GrhIndex = 461 Or _
-              GrhIndex = 9513 Or GrhIndex = 9514 Or GrhIndex = 9515 Or GrhIndex = 9518 Or GrhIndex = 9519 Or GrhIndex = 9520 Or GrhIndex = 9529 Or _
-              GrhIndex = 14687 Or GrhIndex = 47726 Or GrhIndex = 12333 Or GrhIndex = 12330 Or GrhIndex = 20369 Or GrhIndex = 21120 Or GrhIndex = 21227 Or _
-              GrhIndex = 21352 Or GrhIndex = 12332 Or GrhIndex = 21226
-      
-              GrhIndex = 21352 Or GrhIndex = 12332 Or GrhIndex = 21226 Or GrhIndex = 8258 Or GrhIndex = 32118 Or GrhIndex = 32119 Or GrhIndex = 32129 Or GrhIndex = 32132 Or _
-              GrhIndex = 32133 Or GrhIndex = 32135
-    Exit Function
 
-EsArbol_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.EsArbol", Erl)
-    Resume Next
-    
-End Function
 
 Function AgregarSombra(ByVal GrhIndex As Long) As Boolean
     

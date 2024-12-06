@@ -150,6 +150,7 @@ Module=ModValidateResources; CODIGO\ModValidateResources.bas
 Module=ModLanguage; CODIGO\ModLanguage.bas
 Module=JSON; CODIGO\VBJson\JSON.bas
 ResFile32="AO20.res"
+Class=clsTileEngineHelper; CODIGO\clsTileEngineHelper.cls
 Class=cStringBuilder; CODIGO\VBJson\cStringBuilder.cls
 IconForm="frmMain"
 Startup="Sub Main"

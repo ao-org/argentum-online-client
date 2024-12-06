@@ -1180,7 +1180,7 @@ Public Sub CargarMapa(ByVal map As Integer)
             
                 InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).GrhIndex
 
-                If EsArbol(L3(i).GrhIndex) Then
+                If TileEngine.TileEngineHelper.IsIndexTree(L3(i).GrhIndex) Then
                     MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_ARBOL
                 End If
             Next i

@@ -17,6 +17,9 @@ Attribute VB_Name = "TileEngine"
 '
 Option Explicit
 
+Public TileEngineHelper As New clsTileEngineHelper
+
+
 Public PreguntaScreen        As String
 
 Public Pregunta              As Boolean
