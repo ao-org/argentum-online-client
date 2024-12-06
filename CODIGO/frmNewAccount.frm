@@ -258,7 +258,7 @@ Private Sub btnCreateAccount_Click()
         Call calculateCaptcha
     Else
         Call calculateCaptcha
-        Call TextoAlAsistente("Por favor revise el captcha.", False, False)
+        Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_REVISA_CAPTCHA"), False, False)
         lblCaptchaError.Visible = True
     End If
 End Sub
@@ -358,6 +358,6 @@ Private Sub lblResendVerificationCode_Click()
     If isValidEmail(txtValidateMail) Then
         Call ResendValidationCode(Me.txtValidateMail.Text)
     Else
-        Call TextoAlAsistente("El email ingresado es inválido.", False, False)
+        Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO"), False, False)
     End If
 End Sub

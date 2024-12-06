@@ -516,7 +516,7 @@ Function CheckUserDataLoged() As Boolean
     
     
     If CuentaEmail = "" Or Not CheckMailString(CuentaEmail) Then
-        Call TextoAlAsistente("El email es inválido.", False, False)
+        Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO"), False, False)
         Exit Function
 
     End If
@@ -536,7 +536,7 @@ Function CheckUserDataLoged() As Boolean
     ' Next loopc
     
     If CuentaPassword = "" Then
-        Call TextoAlAsistente("Ingrese la contraseña de la cuenta.", False, False)
+        Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_INGRESE_CONTRASENA"), False, False)
         'frmMensaje.msg.Caption = "Ingrese un password."
         ' frmMensaje.Show vbModal
         Exit Function
@@ -565,7 +565,7 @@ Function CheckUserData(ByVal checkemail As Boolean) As Boolean
     Dim CharAscii As Integer
     
     If CuentaEmail = "" Or Not CheckMailString(CuentaEmail) Then
-        Call TextoAlAsistente("El email es inválido.", False, False)
+        Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO"), False, False)
         Exit Function
 
     End If
@@ -1909,7 +1909,7 @@ End Sub
 Function ValidarNombre(nombre As String, Error As String) As Boolean
 
     If Len(nombre) < 3 Or Len(nombre) > 18 Then
-        Error = "Debes ingresar un nombre entre 3 y 18 caracteres"
+        Error = JsonLanguage.Item("ERROR_NOMBRE_LONGITUD_INVALIDA")
         Exit Function
     End If
     
@@ -1921,11 +1921,11 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
         Char = Asc(mid$(temp, i, 1))
         
         If (Char < 65 Or Char > 90) And Char <> 32 Then
-            Error = "Sólo se permites letras y espacios."
+            Error = JsonLanguage.Item("ERROR_CARACTERES_INVALIDOS")
             Exit Function
         
         ElseIf Char = 32 And LastChar = 32 Then
-            Error = "No se permiten espacios consecutivos."
+            Error = JsonLanguage.Item("ERROR_ESPACIOS_CONSECUTIVOS")
             Exit Function
         End If
         
@@ -1933,7 +1933,7 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
     Next
 
     If Asc(mid$(temp, 1, 1)) = 32 Or Asc(mid$(temp, Len(temp), 1)) = 32 Then
-        Error = "No se permiten espacios al inicio o al final."
+        Error = JsonLanguage.Item("ERROR_ESPACIOS_INICIO_FIN")
         Exit Function
     End If
     

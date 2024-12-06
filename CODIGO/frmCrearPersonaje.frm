@@ -591,21 +591,21 @@ Function CheckData() As Boolean
 
     If UserStats.Raza = 0 Then
         frmMensaje.Show , frmConnect
-        frmMensaje.msg.Caption = "Seleccione la raza del personaje."
+        frmMensaje.msg.Caption = JsonLanguage.Item("MENSAJEBOX_SELECCION_RAZA")
         Exit Function
 
     End If
 
     If MiCabeza = 0 Then
         frmMensaje.Show , frmConnect
-        frmMensaje.msg.Caption = "Seleccione una cabeza para el personaje."
+        frmMensaje.msg.Caption = JsonLanguage.Item("MENSAJEBOX_SELECCION_CABEZA")
         Exit Function
 
     End If
 
     If UserStats.Sexo = 0 Then
         frmMensaje.Show , frmConnect
-        frmMensaje.msg.Caption = "Seleccione el sexo del personaje."
+        frmMensaje.msg.Caption = JsonLanguage.Item("MENSAJEBOX_SELECCION_SEXO")
         Exit Function
 
     End If
@@ -614,7 +614,7 @@ Function CheckData() As Boolean
     
     If UserStats.Hogar = 0 Then
         frmMensaje.Show , frmConnect
-        frmMensaje.msg.Caption = "Seleccione el hogar del personaje."
+        frmMensaje.msg.Caption = JsonLanguage.Item("MENSAJEBOX_SELECCION_HOGAR")
         Exit Function
 
     End If
@@ -622,7 +622,7 @@ Function CheckData() As Boolean
 
     If UserStats.Clase = 0 Then
         frmMensaje.Show , frmConnect
-        frmMensaje.msg.Caption = "Seleccione la clase del personaje."
+        frmMensaje.msg.Caption = JsonLanguage.Item("MENSAJEBOX_SELECCION_CLASE")
         Exit Function
 
     End If

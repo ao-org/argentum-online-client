@@ -383,12 +383,12 @@ Private Sub chkRecordar_Click()
 
     If chkRecordar.Tag = "0" Then
         chkRecordar.Picture = LoadInterface("check-amarillo.bmp")
-        Call TextoAlAsistente("¡Recordare la cuenta para la proxima!", False, True)
+        Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_RECORDAR_CUENTA"), False, True)
         chkRecordar.Tag = "1"
     Else
         chkRecordar.Picture = Nothing
         chkRecordar.Tag = "0"
-        Call TextoAlAsistente("¡No recordare nada!", False, True)
+        Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_NO_RECORDAR"), False, True)
     End If
 
     

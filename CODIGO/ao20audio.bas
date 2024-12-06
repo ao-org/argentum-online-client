@@ -58,7 +58,7 @@ On Error GoTo AudioEngineInitErr:
     
     Exit Sub
 AudioEngineInitErr:
-    Call MsgBox("Error creating audio engine", vbCritical, "Argentum20")
+    Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_CREACION_ENGINE_AUDIO"), vbCritical, "Argentum20")
     Debug.Print "Error Number Returned: " & Err.Number
     End
 End Sub

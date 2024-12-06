@@ -386,14 +386,14 @@ On Error GoTo ErrHandler:
     Dim Settings As t_NewScenearioSettings
 
     If Len(tName.Text) < 3 Then
-        Call MsgBox("El nombre de la partida debe ser más largo.", vbExclamation)
+        Call MsgBox(JsonLanguage.Item("MENSAJE_NOMBRE_PARTIDA_CORTO"), vbExclamation)
         tName.SetFocus
         Exit Sub
     End If
 
     Settings.InscriptionFee = Val(tCosto.Text)
     If Settings.InscriptionFee < 0 Or Settings.InscriptionFee > 10000000 Then
-        Call MsgBox("El costo de la partida es inválido.", vbExclamation)
+        Call MsgBox(JsonLanguage.Item("MENSAJE_COSTO_PARTIDA_INVALIDO"), vbExclamation)
         tCosto.SetFocus
         Exit Sub
     End If
@@ -401,7 +401,7 @@ On Error GoTo ErrHandler:
     Settings.MinLevel = Val(tMinLvl.Text)
     Settings.MaxLevel = Val(tMaxLvl.Text)
     If Settings.MinLevel > Settings.MaxLevel Or Settings.MinLevel > 47 Or Settings.MinLevel < 1 Or Settings.MaxLevel > 47 Or Settings.MaxLevel < 1 Then
-        Call MsgBox("El límite de niveles es inválido.", vbExclamation)
+        Call MsgBox(JsonLanguage.Item("MENSAJE_LIMITES_NIVELES_INVALIDOS"), vbExclamation)
         tMinLvl.SetFocus
         Exit Sub
     End If
@@ -409,13 +409,15 @@ On Error GoTo ErrHandler:
     Settings.MinPlayers = Val(tMinPlayers.Text)
     Settings.MaxPlayers = Val(tMaxPlayers.Text)
     If Settings.MinPlayers > Settings.MaxPlayers Or Settings.MinPlayers > 40 Or Settings.MinPlayers < 2 Or Settings.MaxPlayers > 40 Or Settings.MaxPlayers < 2 Then
-        Call MsgBox("El límite de jugadores es inválido.", vbExclamation)
+        Call MsgBox(JsonLanguage.Item("MENSAJE_LIMITES_JUGADORES_INVALIDOS"), vbExclamation)
+
         tMinPlayers.SetFocus
         Exit Sub
     End If
     Settings.TeamSize = Val(tSize.Text)
     If Settings.MinPlayers Mod Settings.TeamSize <> 0 Or Settings.MaxPlayers Mod Settings.TeamSize <> 0 Then
-        Call MsgBox("El límite de jugadores debe ser divisible por el tamaño de los equipos.", vbExclamation)
+        Call MsgBox(JsonLanguage.Item("MENSAJE_LIMITE_JUGADORES_DIVISIBLE"), vbExclamation)
+
         tSize.SetFocus
         Exit Sub
     End If

@@ -148,11 +148,11 @@ End Sub
 
 Private Sub lblPublicar_Click()
     If Val(txtValor.Text <= 0) Then
-        Call MsgBox("El valor ingresado del personaje es inválido.")
+        Call MsgBox(JsonLanguage.Item("MENSAJE_VALOR_PERSONAJE_INVALIDO"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
         Exit Sub
     End If
     
-    If MsgBox("Estás publicando a " & username & " a un valor de " & txtValor.Text & ", se descontarán las 20.000 monedas de oro. En caso de querer cancelar la misma deberás hacerlo desde la página web.", vbYesNo + vbQuestion, "Publicar personaje") = vbYes Then
+    If MsgBox(JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE") & UserName & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_VALOR") & txtValor.Text & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_COSTO"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJE_TITULO_PUBLICAR_PERSONAJE")) = vbYes Then
         Call writePublicarPersonajeMAO(Val(txtValor.Text))
         Call cerrarFormulario
     End If

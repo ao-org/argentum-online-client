@@ -25,7 +25,7 @@ Public Function InitializeSettings() As Boolean
     
     If Not FileExist(App.path & DefaultSettingsFile, vbArchive) Then
         InitializeSettings = False
-        Call MsgBox("Cannot find file " & App.path & DefaultSettingsFile, vbInformation + vbOKOnly, "Warning")
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ARCHIVO_NO_ENCONTRADO") & App.path & DefaultSettingsFile, vbInformation + vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ADVERTENCIA"))
         Exit Function
     End If
     

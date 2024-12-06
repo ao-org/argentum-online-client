@@ -2755,13 +2755,13 @@ hErr:
     If Err.Number <> 0 Then
         
         If Err.Number = 53 Then
-            Call MsgBox("El archivo Graficos.ini no existe. Por favor, reinstale el juego.", , "Argentum 20")
+            Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ARCHIVO_GRAFICOS_NO_EXISTE"), vbOKOnly + vbExclamation, JsonLanguage.Item("MENSAJEBOX_ARGENTUM_TITULO"))
         
         ElseIf grh > 0 Then
-            Call MsgBox("Hay un error en Graficos.ini con el Grh" & grh & ".", , "Argentum 20")
+            Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_GRAFIOS_GRH") & Grh & ".", vbOKOnly + vbExclamation, JsonLanguage.Item("MENSAJEBOX_ARGENTUM_TITULO"))
         
         Else
-            Call MsgBox("Hay un error en Graficos.ini. Por favor, reinstale el juego.", , "Argentum 20")
+            Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_GRAFICOS"), vbOKOnly + vbExclamation, JsonLanguage.Item("MENSAJEBOX_ARGENTUM_TITULO"))
         End If
         
         Call CloseClient
@@ -2952,7 +2952,7 @@ Sub CargarColores()
     
     If Not FileExist(archivoC, vbArchive) Then
         'TODO : Si hay que reinstalar, porque no cierra???
-        Call MsgBox("ERROR: no se ha podido cargar los colores. Falta el archivo colores.dat, reinstale el juego", vbCritical + vbOKOnly)
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_COLORES"), vbCritical + vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ERROR_TITULO"))
         Exit Sub
 
     End If
@@ -3250,7 +3250,7 @@ Function LoadFont(name As String) As Boolean
     LoadFont = AddFontResourceEx(App.path & "\..\Recursos\OUTPUT\" & name, FR_PRIVATE, 0&) <> 0
 
     If Not YaMostreError And Not LoadFont Then
-        Call MsgBox("No se pudieron cargar algunas fuentes, reinstale el juego para repararlas.", vbOKOnly, "Error al cargar - Argentum20")
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_FUENTES"), vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ERROR_CARGA"))
         YaMostreError = True
     End If
 End Function

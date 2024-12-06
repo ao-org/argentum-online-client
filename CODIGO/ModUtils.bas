@@ -783,7 +783,7 @@ Sub General_Set_Connect()
     If CuentaRecordada.nombre <> "" Then
         Call TextoAlAsistente(JsonLanguage.Item("LOGIN_SCREEN_WELCOME_MESSAGE"), False, True)
     Else
-        Call TextoAlAsistente("¡Bienvenido a Argentum Online! ¿Ya tenes tu cuenta? Logea! sino, toca sobre Cuenta para crearte una.", False, True)
+        Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_BIENVENIDO"), False, True)
 
     End If
     

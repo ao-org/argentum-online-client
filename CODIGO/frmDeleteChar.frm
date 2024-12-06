@@ -89,7 +89,7 @@ Private Sub btnAceptar_Click()
         delete_char_validate_code = frmDeleteChar.txtDeleteCharCode.Text
         Unload Me
     Else
-        Call MsgBox("El código ingresado es inválido.")
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_CODIGO_INVALIDO"), vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ERROR"))
     End If
 End Sub
 

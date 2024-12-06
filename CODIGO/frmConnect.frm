@@ -176,9 +176,7 @@ Private Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
 End Sub
 
 Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
-    Call TextoAlAsistente("Servidor Offline, intente nuevamente.", False, SessionOpened)
-
-
+    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_SERVIDOR_OFFLINE"), False, SessionOpened)
     
 End Sub
 
@@ -542,7 +540,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     CloseClient
                 Case e_action_create_character
                     If CantidadDePersonajesEnCuenta >= 10 Then
-                        Call MensajeAdvertencia("Has alcanzado el limite de personajes creados por cuenta.")
+                        Call MensajeAdvertencia(JsonLanguage.Item("ADVERTENCIA_LIMITE_PERSONAJES"))
+                        
                         Exit Sub
                     End If
                     UserMap = 37
@@ -558,13 +557,13 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                Case e_action_transfer_character
                     If Char = 0 Then Exit Sub
                     TransferCharname = Pjs(Char).nombre
-                    If MsgBox("¿Esta seguro que desea transferir el personaje " & TransferCharname & " a otra cuenta?", vbYesNo + vbQuestion, "Transfer Character") = vbYes Then
+                    If MsgBox(JsonLanguage.Item("MENSAJEBOX_TRANSFERIR_PERSONAJE") & TransferCharname & JsonLanguage.Item("MENSAJEBOX_A_OTRA_CUENTA"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJEBOX_TRANSFERIR_TITULO")) = vbYes Then
                         frmTransferChar.Show , frmConnect
                     End If
                 Case e_action_delete_character
                     If Char = 0 Then Exit Sub
                     DeleteUser = Pjs(Char).nombre
-                    If MsgBox("¿Esta seguro que desea borrar el personaje " & DeleteUser & " de la cuenta?", vbYesNo + vbQuestion, "Borrar personaje") = vbYes Then
+                    If MsgBox(JsonLanguage.Item("MENSAJEBOX_BORRAR_PERSONAJE") & DeleteUser & JsonLanguage.Item("MENSAJEBOX_DE_LA_CUENTA"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJEBOX_BORRAR_TITULO")) = vbYes Then
                         ModAuth.LoginOperation = e_operation.DeleteChar
                         Call connectToLoginServer
                         frmDeleteChar.Show , frmConnect
@@ -590,16 +589,16 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             LastClickAsistente = ClickEnAsistenteRandom
              If (x > 490 And x < 522) And (y > 297 And y < 357) Then
                 If ClickEnAsistenteRandom = 1 Then
-                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://steamcommunity.com/app/1956740/discussions/", False, False)
+                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_VISITAR_FORO"), False, False)
                 End If
                 If ClickEnAsistenteRandom = 2 Then
-                    Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!", False, False)
+                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_INVITAR_AMIGOS"), False, False)
                 End If
                 If ClickEnAsistenteRandom = 3 Then
-                    Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta", False, False)
+                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_AYUDA_JUEGO"), False, False)
                 End If
                 If ClickEnAsistenteRandom = 4 Then
-                    Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?", False, False)
+                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CONFIGURAR_JUEGO"), False, False)
                 End If
             End If
     End Select
@@ -867,7 +866,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 Case e_action_create_character
 
                     If CantidadDePersonajesEnCuenta >= 10 Then
-                        Call MensajeAdvertencia("Has alcanzado el limite de personajes creados por cuenta.")
+                        Call MensajeAdvertencia(JsonLanguage.Item("ADVERTENCIA_LIMITE_PERSONAJES"))
+                        
                         Exit Sub
                     End If
                     UserMap = 37
@@ -949,22 +949,23 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
              If (x > 490 And x < 522) And (y > 297 And y < 357) Then
              
                 If ClickEnAsistenteRandom = 1 Then
-                    Call TextoAlAsistente("No te olvides de visitar nuestro foro https://steamcommunity.com/app/1956740/discussions/", False, True)
+                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_VISITAR_FORO"), False, True)
 
                 End If
 
                 If ClickEnAsistenteRandom = 2 Then
-                    Call TextoAlAsistente("¡Invitá a tus amigos y disfrutá en grupo tu viaje por Argentum 20!", False, True)
+                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_INVITAR_AMIGOS"), False, True)
 
                 End If
 
                 If ClickEnAsistenteRandom = 3 Then
-                    Call TextoAlAsistente("Si necesitás ayuda dentro del juego podés tipear /GM y escribir tu consulta", False, True)
-                    
+                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_HELP_IN_GAME"), False, True)
+      
                 End If
 
                 If ClickEnAsistenteRandom = 4 Then
-                    Call TextoAlAsistente("¿Sabías que podés configurar el juego a tu gusto como la respiración, modalidades del Lanzar y teclas?", False, True)
+                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_GAME_SETTINGS"), False, True)
+
                 End If
 
             End If
