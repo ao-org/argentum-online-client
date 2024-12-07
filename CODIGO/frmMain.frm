@@ -54,7 +54,7 @@ Begin VB.Form frmMain
       Caption         =   "PRENDER ANTORCHA"
       Height          =   495
       Left            =   11160
-      TabIndex        =   43
+      TabIndex        =   42
       Top             =   1680
       Visible         =   0   'False
       Width           =   1215
@@ -76,7 +76,7 @@ Begin VB.Form frmMain
       Left            =   600
       MaxLength       =   160
       MultiLine       =   -1  'True
-      TabIndex        =   42
+      TabIndex        =   41
       TabStop         =   0   'False
       ToolTipText     =   "Chat"
       Top             =   1800
@@ -152,7 +152,7 @@ Begin VB.Form frmMain
       ScaleHeight     =   325
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   247
-      TabIndex        =   18
+      TabIndex        =   17
       Top             =   2400
       Width           =   3705
       Begin VB.PictureBox picHechiz 
@@ -180,7 +180,7 @@ Begin VB.Form frmMain
          ScaleHeight     =   227
          ScaleMode       =   3  'Pixel
          ScaleWidth      =   216
-         TabIndex        =   44
+         TabIndex        =   43
          Top             =   600
          Visible         =   0   'False
          Width           =   3240
@@ -206,7 +206,7 @@ Begin VB.Form frmMain
          ScaleHeight     =   256
          ScaleMode       =   3  'Pixel
          ScaleWidth      =   210
-         TabIndex        =   19
+         TabIndex        =   18
          Top             =   740
          Width           =   3150
       End
@@ -586,7 +586,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   225
          Left            =   795
-         TabIndex        =   35
+         TabIndex        =   34
          Top             =   2055
          Width           =   765
       End
@@ -606,7 +606,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   225
          Left            =   3390
-         TabIndex        =   34
+         TabIndex        =   33
          Top             =   2055
          Width           =   255
       End
@@ -626,7 +626,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   225
          Left            =   2445
-         TabIndex        =   33
+         TabIndex        =   32
          Top             =   2055
          Width           =   255
       End
@@ -646,7 +646,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   240
          Left            =   1635
-         TabIndex        =   32
+         TabIndex        =   31
          Top             =   1215
          Width           =   945
       End
@@ -666,7 +666,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   3075
-         TabIndex        =   31
+         TabIndex        =   30
          ToolTipText     =   "Aumento de daño mágico"
          Top             =   3150
          Width           =   570
@@ -687,7 +687,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   1935
-         TabIndex        =   30
+         TabIndex        =   29
          ToolTipText     =   "Resistencia mágica"
          Top             =   3150
          Width           =   330
@@ -709,7 +709,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   270
          Left            =   2385
-         TabIndex        =   29
+         TabIndex        =   28
          ToolTipText     =   "Oxígeno acumulado"
          Top             =   570
          Width           =   225
@@ -730,7 +730,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H0080FFFF&
          Height          =   270
          Left            =   480
-         TabIndex        =   28
+         TabIndex        =   27
          ToolTipText     =   "Monedas de oro"
          Top             =   585
          Width           =   690
@@ -751,7 +751,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   270
          Left            =   3585
-         TabIndex        =   27
+         TabIndex        =   26
          ToolTipText     =   "Fuerza"
          Top             =   570
          Width           =   210
@@ -772,7 +772,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   270
          Left            =   2985
-         TabIndex        =   26
+         TabIndex        =   25
          ToolTipText     =   "Agilidad"
          Top             =   570
          Width           =   210
@@ -793,7 +793,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   600
-         TabIndex        =   25
+         TabIndex        =   24
          ToolTipText     =   "Daño físico arma"
          Top             =   2700
          Width           =   480
@@ -814,7 +814,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   1860
-         TabIndex        =   24
+         TabIndex        =   23
          ToolTipText     =   "Defensa escudo"
          Top             =   2700
          Width           =   480
@@ -835,7 +835,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   3120
-         TabIndex        =   23
+         TabIndex        =   22
          ToolTipText     =   "Defensa casco"
          Top             =   2700
          Width           =   480
@@ -856,7 +856,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00E0E0E0&
          Height          =   240
          Left            =   600
-         TabIndex        =   22
+         TabIndex        =   21
          ToolTipText     =   "Defensa armadura"
          Top             =   3150
          Width           =   480
@@ -878,7 +878,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   240
          Left            =   1635
-         TabIndex        =   21
+         TabIndex        =   20
          Top             =   1635
          Width           =   945
       End
@@ -996,7 +996,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000018&
       Height          =   375
       Left            =   6840
-      TabIndex        =   41
+      TabIndex        =   40
       Top             =   75
       Visible         =   0   'False
       Width           =   1335
@@ -1017,7 +1017,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000018&
       Height          =   375
       Left            =   5400
-      TabIndex        =   40
+      TabIndex        =   39
       Top             =   75
       Visible         =   0   'False
       Width           =   1335
@@ -1038,7 +1038,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000018&
       Height          =   375
       Left            =   3960
-      TabIndex        =   39
+      TabIndex        =   38
       Top             =   75
       Visible         =   0   'False
       Width           =   1335
@@ -1059,7 +1059,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H80000018&
       Height          =   375
       Left            =   2640
-      TabIndex        =   38
+      TabIndex        =   37
       Top             =   75
       Visible         =   0   'False
       Width           =   1215
@@ -1068,7 +1068,7 @@ Begin VB.Form frmMain
       Caption         =   "Label3"
       Height          =   495
       Left            =   9360
-      TabIndex        =   37
+      TabIndex        =   36
       Top             =   6720
       Width           =   1215
    End
@@ -1079,7 +1079,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   240
       Left            =   11880
-      TabIndex        =   36
+      TabIndex        =   35
       Top             =   0
       Visible         =   0   'False
       Width           =   555
@@ -1100,7 +1100,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   13170
-      TabIndex        =   20
+      TabIndex        =   19
       Top             =   2010
       Width           =   495
    End
@@ -1120,31 +1120,10 @@ Begin VB.Form frmMain
       ForeColor       =   &H00E0E0E0&
       Height          =   495
       Left            =   11400
-      TabIndex        =   17
+      TabIndex        =   16
       Top             =   7170
       Visible         =   0   'False
       Width           =   3900
-   End
-   Begin VB.Label ms 
-      Alignment       =   2  'Center
-      AutoSize        =   -1  'True
-      BackStyle       =   0  'Transparent
-      Caption         =   "30 ms"
-      BeginProperty Font 
-         Name            =   "Calibri"
-         Size            =   9
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00E0E0E0&
-      Height          =   210
-      Left            =   8580
-      TabIndex        =   16
-      Top             =   210
-      Width           =   465
    End
    Begin VB.Label fps 
       Alignment       =   2  'Center
@@ -1162,10 +1141,10 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H00E0E0E0&
       Height          =   210
-      Left            =   8490
+      Left            =   8520
       TabIndex        =   15
       ToolTipText     =   "Numero de usuarios online"
-      Top             =   30
+      Top             =   120
       Width           =   645
    End
    Begin VB.Image EstadisticasBoton 
