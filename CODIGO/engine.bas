@@ -959,7 +959,7 @@ Public Sub render()
     
     Call ShowNextFrame
 
-    frmMain.ms.Caption = PingRender & "ms"
+    
     FrameTime = GetTickCount()
     FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
