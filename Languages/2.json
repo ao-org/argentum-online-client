@@ -256,5 +256,6 @@
     "ERROR_CARACTERES_INVALIDOS": "Only letters and spaces are allowed.",
     "ERROR_ESPACIOS_CONSECUTIVOS": "Consecutive spaces are not allowed.",
     "ERROR_ESPACIOS_INICIO_FIN": "Spaces at the beginning or end are not allowed.",
+	"MENSAJE_ESCRIBA_PREGUNTA": "Write a question.",
 
 }
