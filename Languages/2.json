@@ -258,7 +258,7 @@
     "ERROR_ESPACIOS_INICIO_FIN": "Spaces at the beginning or end are not allowed.",
 	"MENSAJE_ESCRIBA_PREGUNTA": "Write a question.",
 	"MENSAJE_CANTIDAD_INCORRECTA_UTILICE": "Incorrect amount. Use /OFERTAINICIAL CANTIDAD.",
-	"MENSAJE_FALTAN_PARÁMETROS_UTILICE": "Missing parameters. Use /OFERTAINICIAL CANTIDAD.",
+	"MENSAJE_FALTAN_PARÁMETROS_UTILICE": "Missing parameters.",
 	"MENSAJE_INGRESE_OFERTA_CORRECTA": "Enter a correct offer.",
 	"MENSAJE_TU_DESCRIPCIÓN_NO": "Your description cannot be so long (Max. 50 characters).",
 	"MENSAJE_INGRESE_CANTIDAD_QUE": "Enter the amount you wish to withdraw.",
