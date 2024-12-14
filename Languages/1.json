@@ -258,7 +258,7 @@
     "ERROR_ESPACIOS_INICIO_FIN": "No se permiten espacios al inicio o al final.",
     "MENSAJE_ESCRIBA_PREGUNTA": "Escriba una pregunta.",
     "MENSAJE_CANTIDAD_INCORRECTA_UTILICE": "Cantidad incorrecta. Utilice /OFERTAINICIAL CANTIDAD.",
-    "MENSAJE_FALTAN_PARÁMETROS_UTILICE": "Faltan parámetros. Utilice /OFERTAINICIAL CANTIDAD.",
+    "MENSAJE_FALTAN_PARÁMETROS_UTILICE": "Faltan parámetros",
     "MENSAJE_INGRESE_OFERTA_CORRECTA": "Ingrese una oferta correcta.",
     "MENSAJE_TU_DESCRIPCIÓN_NO": "Tu descripción no puede ser tan larga (Max. 50 caracteres).",
     "MENSAJE_INGRESE_CANTIDAD_QUE": "Ingrese la cantidad que desea retirar",
