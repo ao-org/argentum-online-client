@@ -2988,7 +2988,7 @@ Select Case Index
        ' Label6.Visible = True
         Fuerzalbl.visible = True
         AgilidadLbl.visible = True
-        oxigenolbl.visible = True
+        oxigenolbl.visible = False
         QuestBoton.visible = False
         ImgHogar.visible = False
         ImgEstadisticas.visible = False
