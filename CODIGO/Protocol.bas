@@ -5983,16 +5983,16 @@ Private Sub HandleGuildNews()
                 .beneficios = "Max miembros: 5"
 
             Case 2
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Max miembros: 7"
+                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Max miembros: 8"
 
             Case 3
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Max miembros: 7"
+                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Max miembros: 11"
 
             Case 4
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Max miembros: 12"
+                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Max miembros: 14"
 
             Case 5
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Ver vida y mana" & vbCrLf & " Max miembros: 15"
+                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Ver vida y mana" & vbCrLf & " Max miembros: 17"
                 
             Case 6
                 .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Ver vida y mana" & vbCrLf & "Verse invisible" & vbCrLf & " Max miembros: 20"
