@@ -1834,14 +1834,24 @@ Continue:
     For Hechizo = 1 To NumQuest
         DoEvents
         
-        QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
-        
-        QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
-        QuestList(Hechizo).NextQuest = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
-        QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
-        QuestList(Hechizo).RequiredLevel = Leer.GetValue("QUEST" & Hechizo, "RequiredLevel")
-        QuestList(Hechizo).Repetible = Val(Leer.GetValue("QUEST" & Hechizo, "Repetible"))
-        PosMap(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "PosMap")
+        Select Case language
+            Case e_language.English
+                QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "EN_NOMBRE")
+                QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "EN_DESC")
+                QuestList(Hechizo).NextQuest = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
+                QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "EN_DESCFINAL")
+                QuestList(Hechizo).RequiredLevel = Leer.GetValue("QUEST" & Hechizo, "RequiredLevel")
+                QuestList(Hechizo).Repetible = Val(Leer.GetValue("QUEST" & Hechizo, "Repetible"))
+                PosMap(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "PosMap")
+            Case e_language.Spanish
+                QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
+                QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
+                QuestList(Hechizo).NextQuest = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
+                QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
+                QuestList(Hechizo).RequiredLevel = Leer.GetValue("QUEST" & Hechizo, "RequiredLevel")
+                QuestList(Hechizo).Repetible = Val(Leer.GetValue("QUEST" & Hechizo, "Repetible"))
+                PosMap(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "PosMap")
+        End Select
     Next Hechizo
     
     For Hechizo = 1 To NumSug
