@@ -1842,7 +1842,7 @@ Continue:
             Case e_language.Spanish
                 QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
                 QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
-                QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL"))
+                QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
         End Select
         
             QuestList(Hechizo).NextQuest = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
