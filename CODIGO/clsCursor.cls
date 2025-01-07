@@ -47,65 +47,79 @@ Private Const NUM_CURSORS = 7
 Private hndlList(0 To NUM_CURSORS) As IPictureDisp
  
 Public Sub Parse_Form(ByRef aFrm As Form, Optional ByVal cType As CursorType = E_NORMAL)
-    
     On Error GoTo Parse_Form_Err
-    
 
+    ' Exit if CursoresGraficos is disabled
     If CursoresGraficos = 0 Then Exit Sub
 
-    
-     
-    Dim aControl  As Control
-
+    Dim aControl As Control
     Dim lngHandle As Long
- 
-    Select Case cType
 
-        Case E_NORMAL
-            lngHandle = vbDefault
+    ' Determine the cursor handle based on the type
+    lngHandle = GetCursorHandle(cType)
 
-        Case E_ATTACK
-            lngHandle = vbCrosshair
-
-        Case E_ARROW
-            lngHandle = vbCrosshair
-
-        Case E_CAST
-            lngHandle = vbCrosshair
-
-        Case E_WAIT
-            lngHandle = vbHourglass
-
-        Case E_SHOOT
-            lngHandle = vbCrosshair
-
-        Case E_SHIP
-            lngHandle = vbCrosshair
-
-        Case E_agArrar
-            lngHandle = vbCrosshair
-
-    End Select
- 
+    ' Loop through each control on the form
     For Each aControl In aFrm.Controls
-
-        Select Case TypeName(aControl)
-
-            Case "Timer", "Socket", "Shape", "Menu"
-
-            Case Else
-                aControl.MouseIcon = hndlList(cType)
-                aControl.MousePointer = vbCustom
-
-        End Select
-
+        ' Check if the control supports MouseIcon and MousePointer properties
+        If SupportsMouseProperties(aControl) Then
+            On Error Resume Next
+            aControl.MouseIcon = hndlList(cType)
+            aControl.MousePointer = vbCustom
+            On Error GoTo Parse_Form_Err
+        Else
+            ' Log unsupported controls
+            LogUnsupportedControl aControl
+        End If
     Next
- 
+
+    ' Set the form's mouse properties
     aFrm.MouseIcon = hndlList(cType)
     aFrm.MousePointer = vbCustom
- 
-    
+
     Exit Sub
+
+Parse_Form_Err:
+    ' Log the error with detailed information
+    Call RegistrarError(Err.Number, Err.Description, "clsCursor.Parse_Form", Erl)
+    Resume Next
+End Sub
+
+' Helper function to determine the cursor handle based on type
+Private Function GetCursorHandle(ByVal cType As CursorType) As Long
+    Select Case cType
+        Case E_NORMAL: GetCursorHandle = vbDefault
+        Case E_ATTACK, E_ARROW, E_CAST, E_SHOOT, E_SHIP, E_agArrar: GetCursorHandle = vbCrosshair
+        Case E_WAIT: GetCursorHandle = vbHourglass
+        Case Else: GetCursorHandle = vbDefault
+    End Select
+End Function
+
+' Helper function to check if a control supports Mouse properties
+Private Function SupportsMouseProperties(ByRef aControl As Control) As Boolean
+    On Error Resume Next
+    SupportsMouseProperties = _
+        Not IsMissing(aControl.MouseIcon) And _
+        Not IsMissing(aControl.MousePointer)
+    On Error GoTo 0
+End Function
+
+' Log details of unsupported controls
+Private Sub LogUnsupportedControl(ByRef aControl As Control)
+    Dim controlName As String
+    Dim controlType As String
+
+    On Error Resume Next
+    controlName = aControl.Name
+    controlType = TypeName(aControl)
+    On Error GoTo 0
+
+    ' Log the unsupported control details
+    Call RegistrarError(0, _
+                        "Mouse properties not supported by control: " & _
+                        "Name='" & controlName & "', Type='" & controlType & "'", _
+                        "clsCursor.Parse_Form - Unsupported Control", 0)
+End Sub
+
 
 Parse_Form_Err:
     Call RegistrarError(Err.number, Err.Description, "clsCursor.Parse_Form", Erl)
