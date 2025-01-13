@@ -32,7 +32,11 @@ Dim ServerSettings As clsIniManager
     
 Public Sub DoLogin(ByVal account As String, ByVal password As String, ByVal storeCredentials As Boolean)
     On Error GoTo DoLogin_Err
-    
+#If REMOTE_CLOSE = 1 Then
+    ModAuth.LoginOperation = e_operation.Authenticate
+    Call LoginOrConnect(E_MODO.IngresandoConCuenta)
+
+#Else
     If IntervaloPermiteConectar Then
         CuentaEmail = account
         CuentaPassword = password
@@ -52,7 +56,7 @@ Public Sub DoLogin(ByVal account As String, ByVal password As String, ByVal stor
             Call LoginOrConnect(E_MODO.IngresandoConCuenta)
         End If
     End If
-
+#End If
     Exit Sub
 
 DoLogin_Err:
@@ -335,7 +339,10 @@ Public Sub TransferChar(ByVal Name As String, ByVal DestinationAccunt As String)
 End Sub
 
 Public Sub OnClientDisconnect(ByVal Error As Long)
-    On Error GoTo OnClientDisconnect_Err
+    
+On Error GoTo OnClientDisconnect_Err
+
+#If REMOTE_CLOSE = 0 Then
     If (Error = 10061) Then
         If frmConnect.visible Then
             Call DisplayError("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.", "connection-failure")
@@ -371,6 +378,11 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
             End If
         End If
     End If
+#Else
+    Debug.Print "OnClientDisconnect " & Error
+    Call SaveStringInFile("OnClientDisconnect " & Error, "remote_debug.txt")
+    prgRun = False
+#End If
     Exit Sub
 OnClientDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModLogin.OnClientDisconnect", Erl)
