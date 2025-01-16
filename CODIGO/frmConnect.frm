@@ -783,7 +783,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     UserPassword = CuentaPassword
                     StopCreandoCuenta = True
 
-                    If Connected And  Then
+                    If Connected Then
                         frmMain.ShowFPS.enabled = True
                     End If
           
