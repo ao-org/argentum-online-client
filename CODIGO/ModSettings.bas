@@ -48,14 +48,14 @@ End Function
 Public Function GetSettingAsByte(ByVal Section As String, ByVal Name As String, ByVal DefaultValue As Byte) As Byte
 On Error GoTo GetSettingAsByteErr:
     GetSettingAsByte = DefaultValue
-    Dim value As String
-    value = GetSetting(Section, Name)
-    If value = "" Then Exit Function
-    GetSettingAsByte = CByte(value)
+    Dim Value As String
+    Value = GetSetting(Section, Name)
+    If Value = "" Then Exit Function
+    GetSettingAsByte = CByte(Value)
     Exit Function
 GetSettingAsByteErr:
     
-    Call LogError("Error in GetSettingAsByte Section: " & Section & " Name: " & Name & " Actual value: " & value)
+    Call LogError("Error in GetSettingAsByte Section: " & Section & " Name: " & Name & " Actual value: " & Value)
 
     GetSettingAsByte = DefaultValue
 End Function
@@ -74,26 +74,20 @@ Public Sub LoadHotkeys()
     End If
     
     For i = 0 To HotKeyCount - 1
-        HotkeyList(i).Index = Val(GetVar(FilePath, username, "BindIndex" & i))
-        HotkeyList(i).LastKnownSlot = Val(GetVar(FilePath, username, "LastSlot" & i))
-        HotkeyList(i).Type = Val(GetVar(FilePath, username, "Type" & i))
-        If BabelInitialized Then
-            Call BabelUI.UpdateHoykeySlot(i, HotkeyList(i))
-        End If
+        HotkeyList(i).Index = Val(GetVar(FilePath, UserName, "BindIndex" & i))
+        HotkeyList(i).LastKnownSlot = Val(GetVar(FilePath, UserName, "LastSlot" & i))
+        HotkeyList(i).Type = Val(GetVar(FilePath, UserName, "Type" & i))
         Call WriteSetHotkeySlot(i, HotkeyList(i).Index, HotkeyList(i).LastKnownSlot, HotkeyList(i).Type)
     Next i
     HideHotkeys = Val(GetVar(FilePath, UserName, "HideHotkeys"))
-    If BabelInitialized Then
-        Call BabelUI.SetHotkeyHideState(IIf(HideHotkeys, 1, 0))
-    End If
 End Sub
 
 Public Sub SaveHotkey(ByVal Index As Integer, ByVal LastKnownSlot As Integer, ByVal HotkeyType As e_HotkeyType, ByVal HotkeySlot As Integer)
     Dim FilePath As String
     FilePath = App.path & HotKeySettingsFile
-    Call General_Var_Write(FilePath, username, "BindIndex" & HotkeySlot, Index)
-    Call General_Var_Write(FilePath, username, "LastSlot" & HotkeySlot, LastKnownSlot)
-    Call General_Var_Write(FilePath, username, "Type" & HotkeySlot, HotkeyType)
+    Call General_Var_Write(FilePath, UserName, "BindIndex" & HotkeySlot, Index)
+    Call General_Var_Write(FilePath, UserName, "LastSlot" & HotkeySlot, LastKnownSlot)
+    Call General_Var_Write(FilePath, UserName, "Type" & HotkeySlot, HotkeyType)
 End Sub
 
 Public Sub SaveHideHotkeys()

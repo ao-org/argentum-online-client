@@ -65,7 +65,7 @@ On Error GoTo HandleIncomingData_Err
             dummy = Reader.ReadBool
             Call SaveStringInFile("Logged with character " & CharacterRemote, "remote_debug.txt")
             InitiateShutdownProcess = True
-            ShutdownProcessTimer.start
+            ShutdownProcessTimer.Start
         Case ServerPacketID.eLocaleMsg
             Dim chat      As String
             Dim FontIndex As Integer
@@ -515,7 +515,7 @@ End Function
 
 Private Sub HandleConnected()
 #If REMOTE_CLOSE = 0 Then
-    If Not BabelInitialized Then frmMain.ShowFPS.enabled = True
+    frmMain.ShowFPS.enabled = True
 #End If
     Call Login
 End Sub
@@ -759,9 +759,8 @@ Public Sub HandleDisconnect()
     
     'Hide main form
     Call resetearCartel
-    If Not UseBabelUI Then
-        frmConnect.visible = True
-    End If
+    frmConnect.visible = True
+
     
     isLogged = False
 
@@ -875,9 +874,6 @@ Public Sub HandleDisconnect()
         Call frmBancoCuenta.InvBankUsuCuenta.ClearSlot(i)
         Call frmComerciarUsu.InvUser.ClearSlot(i)
         Call frmCrafteo.InvCraftUser.ClearSlot(i)
-        If BabelInitialized Then
-            UserInventory.Slots(i) = EmptySlot
-        End If
     Next i
 
     For i = 1 To MAX_BANCOINVENTORY_SLOTS
@@ -980,10 +976,6 @@ Private Function ShouldUnloadForm(ByVal FormName As String) As Boolean
     If FormName = frmMain.Name Then Exit Function
     If FormName = frmConnect.Name Then Exit Function
     If FormName = frmMensaje.Name Then Exit Function
-    If BabelInitialized Then
-        If FormName = frmBabelUI.Name Then Exit Function
-        If FormName = "frmDebugUI" Then Exit Function
-    End If
     ShouldUnloadForm = True
 End Function
 ''
@@ -1041,32 +1033,18 @@ End Sub
 Private Sub HandleCommerceInit()
     
     On Error GoTo HandleCommerceInit_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     Dim i       As Long
 
     Dim NpcName As String
 
     NpcName = Reader.ReadString8()
-    If BabelInitialized Then
-        Call OpenMerchant
-        Exit Sub
-    End If
     'Fill our inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
-        If BabelInitialized Then
-            With UserInventory.Slots(i)
-                Call frmComerciar.InvComUsu.SetItem(i, .ObjIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
-            End With
-        Else
+      
             With frmMain.Inventario
                 Call frmComerciar.InvComUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
             End With
-        End If
+
     Next i
 
     'Set state and show form
@@ -1090,25 +1068,16 @@ Private Sub HandleBankInit()
     
     On Error GoTo HandleBankInit_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     Dim i As Long
 
     'Fill our inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
-        If BabelInitialized Then
-            With UserInventory.Slots(i)
-                Call frmBancoObj.InvBankUsu.SetItem(i, .ObjIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
-            End With
-            
-        Else
+
             With frmMain.Inventario
                 Call frmBancoObj.InvBankUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
             End With
-        End If
+
     Next i
     'Set state and show form
     Comerciando = True
@@ -1129,9 +1098,6 @@ Private Sub HandleGoliath()
     
     On Error GoTo HandleGoliathInit_Err
 
-    '***************************************************
-    '
-    '***************************************************
 
     Dim UserBoveOro As Long
 
@@ -1196,26 +1162,17 @@ Private Sub HandleUserCommerceInit()
     
     On Error GoTo HandleUserCommerceInit_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     Dim i As Long
     
     'Clears lists if necessary
     'Fill inventory list
     For i = 1 To MAX_INVENTORY_SLOTS
-        If BabelInitialized Then
-            With UserInventory.Slots(i)
-                Call frmComerciarUsu.InvUser.SetItem(i, .ObjIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
-            End With
-            
-        Else
+
             With frmMain.Inventario
                 Call frmComerciarUsu.InvUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
             End With
-        End If
+
     Next i
     frmComerciarUsu.lblMyGold.Caption = PonerPuntos(UserStats.GLD)
     
@@ -1539,19 +1496,10 @@ End Sub
 ' Handles the SafeModeOn message.
 
 Private Sub HandleSafeModeOn()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     On Error GoTo HandleSafeModeOn_Err
     SeguroGame = True
-    If BabelInitialized Then
-        Call SetSafeState(e_SafeType.eAttack, 1)
-    Else
-        Call frmMain.DibujarSeguro
-    End If
+    Call frmMain.DibujarSeguro
+
     
     Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_ACTIVADO"), 65, 190, 156, False, False, False)
     
@@ -1567,19 +1515,11 @@ End Sub
 ' Handles the SafeModeOff message.
 
 Private Sub HandleSafeModeOff()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     
     On Error GoTo HandleSafeModeOff_Err
     SeguroGame = False
-    If BabelInitialized Then
-        Call SetSafeState(e_SafeType.eAttack, 0)
-    Else
-        Call frmMain.DesDibujarSeguro
-    End If
+    Call frmMain.DesDibujarSeguro
     
     Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_DESACTIVADO"), 65, 190, 156, False, False, False)
     
@@ -1595,17 +1535,10 @@ End Sub
 ' Handles the ResuscitationSafeOff message.
 
 Private Sub HandlePartySafeOff()
-    '***************************************************
-    'Author: Rapsodius
-    'Creation date: 10/10/07
-    '***************************************************
+
     
     On Error GoTo HandlePartySafeOff_Err
-    If BabelInitialized Then
-        Call SetSafeState(e_SafeType.eGroup, 0)
-    Else
-        Call frmMain.ControlSeguroParty(False)
-    End If
+    Call frmMain.ControlSeguroParty(False)
     Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_PARTY_OFF"), 250, 250, 0, False, True, False)
     
     Exit Sub
@@ -1620,10 +1553,6 @@ Private Sub HandleClanSeguro()
     
     On Error GoTo HandleClanSeguro_Err
 
-    '***************************************************
-    'Author: Rapsodius
-    'Creation date: 10/10/07
-    '***************************************************
     Dim Seguro As Boolean
     
     'Get data and update form
@@ -1632,18 +1561,16 @@ Private Sub HandleClanSeguro()
     If SeguroClanX Then
     
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_CLAN_DESACTIVADO"), 65, 190, 156, False, False, False)
-        If Not BabelInitialized Then frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-off.bmp")
+        frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-off.bmp")
         SeguroClanX = False
         
     Else
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_CLAN_ACTIVADO."), 65, 190, 156, False, False, False)
-        If Not BabelInitialized Then frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
+        frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
         SeguroClanX = True
 
     End If
-    If BabelInitialized Then
-        Call SetSafeState(e_SafeType.eClan, IIf(SeguroClanX, 1, 0))
-    End If
+
     Exit Sub
 
 HandleClanSeguro_Err:
@@ -1668,10 +1595,6 @@ Private Sub HandleIntervals()
     gIntervals.UseItemKey = Reader.ReadInt32()
     gIntervals.UseItemClick = Reader.ReadInt32()
     gIntervals.DropItem = Reader.ReadInt32()
-    
-    If BabelInitialized Then
-        Call UpdateIntervals(gIntervals)
-    End If
     'Set the intervals of timers
     Call MainTimer.SetInterval(TimersIndex.Attack, gIntervals.Hit)
     Call MainTimer.SetInterval(TimersIndex.UseItemWithU, gIntervals.UseItemKey)
@@ -1714,19 +1637,8 @@ Private Sub HandleUpdateUserKey()
     Slot = Reader.ReadInt16
     Llave = Reader.ReadInt16
     
-    If BabelInitialized Then
-        Dim SlotInfo As t_InvItem
-        SlotInfo.Amount = 1
-        SlotInfo.GrhIndex = ObjData(Llave).GrhIndex
-        SlotInfo.Name = ObjData(Llave).Name
-        SlotInfo.Slot = Slot
-        SlotInfo.ObjIndex = Llave
-        SlotInfo.ObjType = eObjType.otLlaves
-        Call SetKeySlot(SlotInfo)
-    Else
-        Call FrmKeyInv.InvKeys.SetItem(Slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0)
-    End If
-    
+    Call FrmKeyInv.InvKeys.SetItem(Slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0)
+ 
     
     Exit Sub
 
@@ -1743,13 +1655,8 @@ Private Sub HandleUpdateDM()
     Dim Value As Integer
 
     Value = Reader.ReadInt16
-    
-    If BabelInitialized Then
-        Call UpdateMagicAttack(Value)
-    Else
-        frmMain.lbldm = "+" & Value & "%"
-    End If
-    
+    frmMain.lbldm = "+" & Value & "%"
+
     Exit Sub
 
 HandleUpdateDM_Err:
@@ -1765,12 +1672,8 @@ Private Sub HandleUpdateRM()
     Dim Value As Integer
 
     Value = Reader.ReadInt16
-    If BabelInitialized Then
-        Call UpdateMagicResistance(Value)
-    Else
-        frmMain.lblResis = "+" & Value
-    End If
-    
+    frmMain.lblResis = "+" & Value
+
     Exit Sub
 
 HandleUpdateRM_Err:
@@ -1781,18 +1684,9 @@ End Sub
 
 ' Handles the ResuscitationSafeOn message.
 Private Sub HandlePartySafeOn()
-
-    '***************************************************
-    'Author: Rapsodius
-    'Creation date: 10/10/07
-    '***************************************************
     On Error GoTo HandlePartySafeOn_Err
 
-    If BabelInitialized Then
-        Call SetSafeState(e_SafeType.eGroup, 1)
-    Else
-        Call frmMain.ControlSeguroParty(True)
-    End If
+    Call frmMain.ControlSeguroParty(True)
     Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_PARTY_ON"), 250, 250, 0, False, True, False)
     
     Exit Sub
@@ -1807,12 +1701,6 @@ End Sub
 ' Handles the CantUseWhileMeditating message.
 
 Private Sub HandleCantUseWhileMeditating()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-
     On Error GoTo HandleCantUseWhileMeditating_Err
 
     Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_USAR_MEDITANDO"), 255, 0, 0, False, False, False)
@@ -1832,19 +1720,9 @@ Private Sub HandleUpdateSta()
     
     On Error GoTo HandleUpdateSta_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-
     'Get data and update form
     UserStats.MinSTA = Reader.ReadInt16()
-    If BabelInitialized Then
-        Call BabelUI.UpdateStaminaValue(UserStats.MinSTA)
-    Else
-        Call frmMain.UpdateStamina
-    End If
+    Call frmMain.UpdateStamina
     
     Exit Sub
 
@@ -1861,11 +1739,6 @@ Private Sub HandleUpdateMana()
     
     On Error GoTo HandleUpdateMana_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
 
     Dim OldMana As Integer
     OldMana = UserStats.minman
@@ -1880,11 +1753,8 @@ Private Sub HandleUpdateMana()
         End With
     End If
     
-    If BabelInitialized Then
-        Call BabelUI.UpdateManaValue(UserStats.minman)
-    Else
-        Call frmMain.UpdateManaBar
-    End If
+    Call frmMain.UpdateManaBar
+
     
     Exit Sub
 HandleUpdateMana_Err:
@@ -1905,11 +1775,7 @@ On Error GoTo HandleUpdateHP_Err
     'Get data and update form
     UserStats.MinHp = NuevoValor
     UserStats.HpShield = Shield
-    If BabelInitialized Then
-        Call BabelUI.UpdateHpValue(UserStats.MinHp, UserStats.HpShield)
-    Else
-        Call frmMain.UpdateHpBar
-    End If
+    Call frmMain.UpdateHpBar
     'Is the user alive??
     If UserStats.MinHp = 0 Then
         Call svb_unlock_achivement("Memento Mori")
@@ -1918,7 +1784,7 @@ On Error GoTo HandleUpdateHP_Err
         If MostrarTutorial And tutorial_index <= 0 Then
             If tutorial(e_tutorialIndex.TUTORIAL_Muerto).Activo = 1 Then
                 tutorial_index = e_tutorialIndex.TUTORIAL_Muerto
-                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).Grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 50, 100)
+                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 50, 100)
             End If
         End If
         DrogaCounter = 0
@@ -1937,23 +1803,12 @@ End Sub
 Private Sub HandleUpdateGold()
     
     On Error GoTo HandleUpdateGold_Err
-
-    '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 08/14/07
-    'Last Modified By: Lucas Tavolaro Ortiz (Tavo)
-    '- 08/14/07: Added GldLbl color variation depending on User Gold and Level
-    '***************************************************
-
     'Get data and update form
     UserStats.GLD = Reader.ReadInt32()
     UserStats.OroPorNivel = Reader.ReadInt32()
-    
-    If BabelInitialized Then
-        Call BabelUI.UpdateGold(UserStats.GLD, UserStats.OroPorNivel)
-    Else
-        Call frmMain.UpdateGoldState
-    End If
+ 
+    Call frmMain.UpdateGoldState
+
     Exit Sub
 
 HandleUpdateGold_Err:
@@ -1968,11 +1823,7 @@ Private Sub HandleUpdateExp()
     On Error GoTo HandleUpdateExp_Err
     'Get data and update form
     UserStats.exp = Reader.ReadInt32()
-    If BabelInitialized Then
-        Call BabelUI.UpdateExp(UserStats.exp, UserStats.PasarNivel)
-    Else
-        Call frmMain.UpdateExpBar
-    End If
+    Call frmMain.UpdateExpBar
     Exit Sub
 HandleUpdateExp_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateExp", Erl)
@@ -2010,13 +1861,6 @@ End Sub
 Private Sub HandlePosUpdate()
     
     On Error GoTo HandlePosUpdate_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-
     'Remove char from old position
     If MapData(UserPos.x, UserPos.y).CharIndex = UserCharIndex Then
         MapData(UserPos.x, UserPos.y).CharIndex = 0
@@ -2135,11 +1979,6 @@ Private Sub HandleNPCHitUser()
     
     On Error GoTo HandleNPCHitUser_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     Dim Lugar As Byte, DañoStr As String
     
     Lugar = Reader.ReadInt8()
@@ -2185,11 +2024,6 @@ Private Sub HandleUserHittedByUser()
     
     On Error GoTo HandleUserHittedByUser_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     Dim attacker As String
     Dim intt     As Integer
     
@@ -2246,11 +2080,6 @@ Private Sub HandleUserHittedUser()
     
     On Error GoTo HandleUserHittedUser_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     Dim victim As String
     
     Dim intt   As Integer
@@ -2304,7 +2133,7 @@ End Sub
 
 Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
                                     ByVal CharIndex As Integer, _
-                                    ByVal color As Long, _
+                                    ByVal Color As Long, _
                                     ByVal EsSpell As Boolean, _
                                     ByVal x As Byte, _
                                     ByVal y As Byte, _
@@ -2326,7 +2155,7 @@ On Error GoTo errhandler
     'Optimizacion de protocolo por Ladder
     QueEs = ReadField(1, chat, Asc("*"))
     Dim TextColor As RGBA
-    TextColor = RGBA_From_Long(color)
+    TextColor = RGBA_From_Long(Color)
     Dim copiar As Boolean
 
     copiar = True
@@ -2381,7 +2210,7 @@ On Error GoTo errhandler
     End Select
    'Only add the chat if the character exists (a CharacterRemove may have been sent to the PC / NPC area before the buffer was flushed)
     If charlist(CharIndex).active = 1 Then
-        Call Char_Dialog_Set(CharIndex, chat, color, duracion, 30, 1, EsSpell, RequiredMinDisplayTime, MaxDisplayTime)
+        Call Char_Dialog_Set(CharIndex, chat, Color, duracion, 30, 1, EsSpell, RequiredMinDisplayTime, MaxDisplayTime)
     End If
     
     If charlist(CharIndex).EsNpc = False Then
@@ -2424,11 +2253,6 @@ End Sub
 ' Handles the ChatOverHead message.
 Private Sub HandleChatOverHead()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     On Error GoTo errhandler
 
     Dim chat       As String
@@ -2461,14 +2285,14 @@ Private Sub HandleTextOverChar()
 
     Dim CharIndex As Integer
 
-    Dim color     As Long
+    Dim Color     As Long
     
     chat = Reader.ReadString8()
     CharIndex = Reader.ReadInt16()
     
-    color = Reader.ReadInt32()
+    Color = Reader.ReadInt32()
     
-    Call SetCharacterDialogFx(CharIndex, chat, RGBA_From_vbColor(color))
+    Call SetCharacterDialogFx(CharIndex, chat, RGBA_From_vbColor(Color))
 
     Exit Sub
     
@@ -2486,15 +2310,15 @@ Private Sub HandleTextOverTile()
     Dim Text  As String
     Dim x As Integer
     Dim y As Integer
-    Dim color As Long
-    Dim Duration As Integer
+    Dim Color As Long
+    Dim duration As Integer
     Dim OffsetY As Integer
     Dim Animated As Boolean
     Text = Reader.ReadString8()
     x = Reader.ReadInt16()
     y = Reader.ReadInt16()
-    color = Reader.ReadInt32()
-    Duration = Reader.ReadInt16()
+    Color = Reader.ReadInt32()
+    duration = Reader.ReadInt16()
     OffsetY = Reader.ReadInt16()
     Animated = Reader.ReadBool()
     If InMapBounds(x, y) Then
@@ -2514,12 +2338,12 @@ Private Sub HandleTextOverTile()
                 End If
             End If
             With .DialogEffects(Index)
-                .color = RGBA_From_vbColor(color)
+                .Color = RGBA_From_vbColor(Color)
                 .Start = FrameTime
                 .Text = Text
                 .offset.x = 0
                 .offset.y = OffsetY
-                .Duration = Duration
+                .duration = duration
                 .Animated = Animated
             End With
         End With
@@ -2539,14 +2363,14 @@ Private Sub HandleTextCharDrop()
     
     Dim Text      As String
     Dim CharIndex As Integer
-    Dim color     As Long
-    Dim Duration As Integer
+    Dim Color     As Long
+    Dim duration As Integer
     Dim Animated As Boolean
     
     Text = Reader.ReadString8()
     CharIndex = Reader.ReadInt16()
-    color = Reader.ReadInt32()
-    Duration = Reader.ReadInt16()
+    Color = Reader.ReadInt32()
+    duration = Reader.ReadInt16()
     Animated = Reader.ReadBool()
     If CharIndex = 0 Then Exit Sub
     Dim x As Integer, y As Integer, OffsetX As Integer, OffsetY As Integer
@@ -2578,12 +2402,12 @@ Private Sub HandleTextCharDrop()
             
             With .DialogEffects(Index)
             
-                .color = RGBA_From_vbColor(color)
+                .Color = RGBA_From_vbColor(Color)
                 .Start = FrameTime
                 .Text = Text
                 .offset.x = OffsetX
                 .offset.y = OffsetY
-                .Duration = Duration
+                .duration = duration
                 .Animated = Animated
             End With
         End With
@@ -2596,12 +2420,12 @@ End Sub
 
 Private Sub HandleConsoleCharText()
     Dim Text      As String
-    Dim color     As Long
+    Dim Color     As Long
     Dim SourceName As String
     Dim SourceStatus As Integer
     Dim Privileges As Integer
     Text = Reader.ReadString8()
-    color = Reader.ReadInt32()
+    Color = Reader.ReadInt32()
     SourceName = Reader.ReadString8()
     SourceStatus = Reader.ReadInt16()
     Privileges = Reader.ReadInt16()
@@ -2609,7 +2433,7 @@ Private Sub HandleConsoleCharText()
         Privileges = Log(Privileges) / Log(2)
     End If
     Dim TextColor As RGBA
-    TextColor = RGBA_From_vbColor(color)
+    TextColor = RGBA_From_vbColor(Color)
     
     Call WriteConsoleUserChat(Text, SourceName, TextColor.r, TextColor.G, TextColor.b, SourceStatus, Privileges)
 End Sub
@@ -2617,12 +2441,6 @@ End Sub
 ' Handles the ConsoleMessage message.
 
 Private Sub HandleConsoleMessage()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     
     On Error GoTo errhandler
     
@@ -2636,7 +2454,7 @@ Private Sub HandleConsoleMessage()
     Dim NpcName   As String
     Dim objname   As String
     Dim Hechizo   As Integer
-    Dim UserName  As String
+    Dim userName  As String
     Dim Valor     As String
 
     chat = Reader.ReadString8()
@@ -2670,13 +2488,13 @@ Private Sub HandleConsoleMessage()
 
         Case "HecMSGU"
             Hechizo = ReadField(2, chat, Asc("*"))
-            UserName = ReadField(3, chat, Asc("*"))
-            chat = HechizoData(Hechizo).HechizeroMsg & " " & UserName & "."
+            userName = ReadField(3, chat, Asc("*"))
+            chat = HechizoData(Hechizo).HechizeroMsg & " " & userName & "."
                 
         Case "HecMSGA"
             Hechizo = ReadField(2, chat, Asc("*"))
-            UserName = ReadField(3, chat, Asc("*"))
-            chat = UserName & " " & HechizoData(Hechizo).TargetMsg
+            userName = ReadField(3, chat, Asc("*"))
+            chat = userName & " " & HechizoData(Hechizo).TargetMsg
                 
         Case "EXP"
             Valor = ReadField(2, chat, Asc("*"))
@@ -2777,7 +2595,7 @@ Private Sub HandleLocaleMsg()
 
     Dim Hechizo   As Byte
 
-    Dim UserName  As String
+    Dim userName  As String
 
     Dim Valor     As String
 
@@ -2863,7 +2681,7 @@ Private Sub HandleGuildChat()
 
     Dim tmp  As Integer
 
-    Dim cont As Integer
+    Dim Cont As Integer
     
     status = Reader.ReadInt8()
     chat = Reader.ReadString8()
@@ -2951,9 +2769,8 @@ Private Sub HandleMostrarCuenta()
 On Error GoTo errhandler
     
     AlphaNiebla = 30
-    If Not UseBabelUI Then
-                frmConnect.visible = True
-    End If
+    frmConnect.visible = True
+  
      
     g_game_state.State = e_state_account_screen
 
@@ -3532,7 +3349,7 @@ Private Sub HandleObjectCreate()
     
     Dim Amount   As Integer
 
-    Dim color    As RGBA
+    Dim Color    As RGBA
 
     Dim Rango    As Byte
 
@@ -3554,16 +3371,16 @@ Private Sub HandleObjectCreate()
     Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.GrhIndex)
     
     If ObjData(ObjIndex).CreaLuz <> "" Then
-        Call Long_2_RGBA(color, Val(ReadField(2, ObjData(ObjIndex).CreaLuz, Asc(":"))))
+        Call Long_2_RGBA(Color, Val(ReadField(2, ObjData(ObjIndex).CreaLuz, Asc(":"))))
         Rango = Val(ReadField(1, ObjData(ObjIndex).CreaLuz, Asc(":")))
-        MapData(x, y).luz.color = color
+        MapData(x, y).luz.Color = Color
         MapData(x, y).luz.Rango = Rango
         
         If Rango < 100 Then
             id = x & y
-            LucesCuadradas.Light_Create x, y, color, Rango, id
+            LucesCuadradas.Light_Create x, y, Color, Rango, id
         Else
-            LucesRedondas.Create_Light_To_Map x, y, color, Rango - 99
+            LucesRedondas.Create_Light_To_Map x, y, Color, Rango - 99
         End If
         
     End If
@@ -3636,7 +3453,7 @@ Private Sub HandleObjectDelete()
     If ObjData(MapData(x, y).OBJInfo.ObjIndex).CreaLuz <> "" Then
         id = LucesCuadradas.Light_Find(x & y)
         LucesCuadradas.Light_Remove id
-        MapData(x, y).luz.color = COLOR_EMPTY
+        MapData(x, y).luz.Color = COLOR_EMPTY
         MapData(x, y).luz.Rango = 0
        ' LucesCuadradas.Light_Render_All
 
@@ -3758,20 +3575,20 @@ Private Sub HandlePlayWaveStep()
     On Error GoTo HandlePlayWaveStep_Err
     
     Dim CharIndex As Integer
-    Dim Grh As Long
+    Dim grh As Long
     Dim Grh2 As Long
     Dim distance As Byte
     Dim balance As Integer
     Dim step As Boolean
     
 100 CharIndex = Reader.ReadInt16()
-102 Grh = Reader.ReadInt32()
+102 grh = Reader.ReadInt32()
 104 Grh2 = Reader.ReadInt32()
 106 distance = Reader.ReadInt8()
 108 balance = Reader.ReadInt16()
 110 step = Reader.ReadBool()
     
-112 Call DoPasosInvi(Grh, Grh2, distance, balance, step)
+112 Call DoPasosInvi(grh, Grh2, distance, balance, step)
 
     With charlist(CharIndex)
         ' Esta invisible, lo sacamos del mapa para que no tosquee
@@ -3792,12 +3609,6 @@ Private Sub HandlePosLLamadaDeClan()
     
     On Error GoTo HandlePosLLamadaDeClan_Err
 
-    '***************************************************
-    'Autor: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 08/14/07
-    'Last Modified by: Rapsodius
-    'Added support for 3D Sounds.
-    '***************************************************
         
     Dim map  As Integer
 
@@ -3811,11 +3622,7 @@ Private Sub HandlePosLLamadaDeClan()
 
     LLamadaDeclanX = srcX
     LLamadaDeclanY = srcY
-    If BabelInitialized Then
-        Call ShowGuildCall(map, srcX, srcY)
-    Else
-        Call frmMapaGrande.ShowClanCall(map, srcX, srcY)
-    End If
+    Call frmMapaGrande.ShowClanCall(map, srcX, srcY)
     
     Exit Sub
 
@@ -3960,16 +3767,6 @@ End Sub
 
 Private Sub HandleRequestTelemetry()
     On Error GoTo HandleUpdateGroupInfo_Err
-    Dim Buff(8) As Byte
-    Dim i As Integer
-    For i = 0 To 7
-        Buff(i) = Reader.ReadInt8
-    Next i
-    
-    Dim TelemetryBuff(256) As Byte
-    Dim TelemetrySize As Long
-    TelemetrySize = GetTelemetry(Buff(0), TelemetryBuff(0), 256)
-    Call WriteSendTelemetry(TelemetryBuff, TelemetrySize)
     Exit Sub
 HandleUpdateGroupInfo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)
@@ -3995,13 +3792,10 @@ End Sub
 Private Sub HandleStunStart()
 On Error GoTo HandleStunStart_Err
     If EstaSiguiendo Then Exit Sub
-    Dim Duration As Integer
-    Duration = Reader.ReadInt16()
-    StunEndTime = GetTickCount() + Duration
-    TotalStunTime = Duration
-    If BabelInitialized Then
-        Call ActivateStunTimer(Duration)
-    End If
+    Dim duration As Integer
+    duration = Reader.ReadInt16()
+    StunEndTime = GetTickCount() + duration
+    TotalStunTime = duration
     Exit Sub
 
 HandleStunStart_Err:
@@ -4042,12 +3836,7 @@ End Sub
 
 Private Sub HandleGuildList()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+   
     On Error GoTo errhandler
     
     'Clear guild's list
@@ -4066,21 +3855,12 @@ Private Sub HandleGuildList()
         ListaClanes = True
         
         Dim i As Long
-        If BabelInitialized Then
-            Call OpenGuildList(UBound(ClanesList) + 1)
-        End If
         For i = 0 To UBound(guilds())
             ClanesList(i).nombre = ReadField(1, guilds(i), Asc("-"))
             ClanesList(i).Alineacion = Val(ReadField(2, guilds(i), Asc("-")))
             ClanesList(i).indice = i
-            If BabelInitialized Then
-                Call SetGuildInfo(i, ClanesList(i))
-            End If
         Next i
         
-        If BabelInitialized Then
-            Exit Sub
-        End If
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
             Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
@@ -4250,7 +4030,7 @@ Private Sub HandleCharAtaca()
     danio = Reader.ReadInt32()
     AnimAttack = Reader.ReadInt16()
     
-    Dim Grh As Grh
+    Dim grh As grh
     With charlist(NpcIndex)
         If AnimAttack > 0 Then
             .Body = BodyData(AnimAttack)
@@ -4314,12 +4094,8 @@ Private Sub HandleRecievePosSeguimiento()
     PosX = Reader.ReadInt16()
     PosY = Reader.ReadInt16()
     
-    If BabelInitialized Then
-        Call UpdateRemoteMousePos(PosX, PosY)
-    Else
-        frmMain.shapexy.Left = PosX - 6
-        frmMain.shapexy.Top = PosY - 6
-    End If
+    frmMain.shapexy.Left = PosX - 6
+
     Exit Sub
     
 
@@ -4333,12 +4109,8 @@ Private Sub HandleCancelarSeguimiento()
     
     On Error GoTo CancelarSeguimiento_Err
     
-    If BabelInitialized Then
-        Call SetRemoteTrackingState(0)
-    Else
-        frmMain.shapexy.Left = 1200
-        frmMain.shapexy.Top = 1200
-    End If
+    frmMain.shapexy.Left = 1200
+    frmMain.shapexy.Top = 1200
     CharindexSeguido = 0
     OffsetLimitScreen = 32
     Exit Sub
@@ -4360,19 +4132,16 @@ Private Sub HandleGetInventarioHechizos()
     inventario_o_hechizos = Reader.ReadInt8()
     hechiSel = Reader.ReadInt8()
     scrollSel = Reader.ReadInt8()
-    If BabelInitialized Then
-        Call UpdateInvAndSpellTracking(inventario_o_hechizos, hechiSel, scrollSel)
-    Else
-        'Clickeó en inventario
-        If inventario_o_hechizos = 1 Then
-            Call frmMain.inventoryClick
-        'Clickeó en hechizos
-        ElseIf inventario_o_hechizos = 2 Then
-            Call frmMain.hechizosClick
-            hlst.Scroll = scrollSel
-            hlst.ListIndex = hechiSel
-        End If
+    'Clickeó en inventario
+    If inventario_o_hechizos = 1 Then
+        Call frmMain.inventoryClick
+    'Clickeó en hechizos
+    ElseIf inventario_o_hechizos = 2 Then
+        Call frmMain.hechizosClick
+        hlst.Scroll = scrollSel
+        hlst.ListIndex = hechiSel
     End If
+
     Exit Sub
     
 
@@ -4389,17 +4158,15 @@ Private Sub HandleNotificarClienteCasteo()
     Dim Value As Byte
     
     Value = Reader.ReadInt8()
-    If BabelInitialized Then
-        Call HandleRemoteUserClick
+
+    'Clickeó en inventario
+    If Value = 1 Then
+        frmMain.shapexy.BackColor = RGB(0, 170, 0)
+    'Clickeó en hechizos
     Else
-        'Clickeó en inventario
-        If Value = 1 Then
-            frmMain.shapexy.BackColor = RGB(0, 170, 0)
-        'Clickeó en hechizos
-        Else
-            frmMain.shapexy.BackColor = RGB(170, 0, 0)
-        End If
+        frmMain.shapexy.BackColor = RGB(170, 0, 0)
     End If
+
     Exit Sub
     
 
@@ -4419,9 +4186,6 @@ Private Sub HandleSendFollowingCharindex()
     UserCharIndex = CharIndex
     CharindexSeguido = CharIndex
     OffsetLimitScreen = 31
-    If BabelInitialized Then
-        Call SetRemoteTrackingState(1)
-    End If
     Exit Sub
     
 
@@ -4467,11 +4231,8 @@ On Error GoTo HandleUpdateUserStats_Err
     Else
         UserStats.estado = 0
     End If
-    If BabelInitialized Then
-        Call SetUserStats(UserStats)
-    Else
-        Call frmMain.UpdateStatsLayout
-    End If
+    Call frmMain.UpdateStatsLayout
+
     Exit Sub
 
 HandleUpdateUserStats_Err:
@@ -4652,11 +4413,7 @@ End Sub
 Private Sub HandleInventoryUnlockSlots()
 On Error GoTo HandleInventoryUnlockSlots_Err
     UserInvUnlocked = Reader.ReadInt8
-    If Not BabelInitialized Then
-        Call frmMain.UnlockInvslot(UserInvUnlocked)
-    Else
-        Call BabelUI.SetInventoryLevel(UserInvUnlocked)
-    End If
+    Call frmMain.UnlockInvslot(UserInvUnlocked)
     Exit Sub
 HandleInventoryUnlockSlots_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleInventoryUnlockSlots", Erl)
@@ -4666,12 +4423,6 @@ End Sub
 ' Handles the ChangeBankSlot message.
 
 Private Sub HandleChangeBankSlot()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     
     On Error GoTo errhandler
     
@@ -4730,35 +4481,20 @@ Private Sub HandleChangeSpellSlot()
     UserHechizos(Slot) = Reader.ReadInt16()
     Index = Reader.ReadInt16()
     IsBindable = Reader.ReadBool()
-    If BabelInitialized Then
-        Dim SpellInfo As t_SpellSlot
-        SpellInfo.Slot = Slot
-        SpellInfo.SpellIndex = Index
-        SpellInfo.IsBindable = IsBindable
-        If Index >= 0 Then
-            SpellInfo.icon = HechizoData(Index).IconoIndex
-            SpellInfo.Cooldown = HechizoData(Index).Cooldown
-            SpellInfo.SpellName = HechizoData(Index).nombre
+    If Index >= 0 Then
+        HechizoData(Index).IsBindable = IsBindable
+        If Slot <= hlst.ListCount Then
+            hlst.List(Slot - 1) = HechizoData(Index).nombre
         Else
-            SpellInfo.SpellName = "(Vacio)"
+            Call hlst.AddItem(HechizoData(Index).nombre)
+            hlst.Scroll = LastScroll
         End If
-        Call BabelUI.SetSpellSlot(SpellInfo)
     Else
-        If Index >= 0 Then
-            HechizoData(Index).IsBindable = IsBindable
-            If Slot <= hlst.ListCount Then
-                hlst.List(Slot - 1) = HechizoData(Index).nombre
-            Else
-                Call hlst.AddItem(HechizoData(Index).nombre)
-                hlst.Scroll = LastScroll
-            End If
+        If Slot <= hlst.ListCount Then
+            hlst.List(Slot - 1) = "(Vacio)"
         Else
-            If Slot <= hlst.ListCount Then
-                hlst.List(Slot - 1) = "(Vacio)"
-            Else
-                Call hlst.AddItem("(Vacio)")
-                hlst.Scroll = LastScroll
-            End If
+            Call hlst.AddItem("(Vacio)")
+            hlst.Scroll = LastScroll
         End If
     End If
     Exit Sub
@@ -4773,12 +4509,7 @@ Private Sub HandleAtributes()
     
     On Error GoTo HandleAtributes_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+   
     Dim i As Long
     
     For i = 1 To NUMATRIBUTES
@@ -4811,11 +4542,6 @@ End Sub
 
 Private Sub HandleBlacksmithWeapons()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     
     On Error GoTo errhandler
     
@@ -4861,11 +4587,6 @@ End Sub
 
 Private Sub HandleBlacksmithArmors()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     
     On Error GoTo errhandler
     
@@ -4951,11 +4672,6 @@ End Sub
 
 Private Sub HandleCarpenterObjects()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     
     On Error GoTo errhandler
     
@@ -4990,9 +4706,6 @@ End Sub
 
 Private Sub HandleSastreObjects()
 
-    '***************************************************
-    'Author: Ladder
-    '***************************************************
     
     On Error GoTo errhandler
     
@@ -5061,14 +4774,9 @@ errhandler:
 
 End Sub
 
-''
+
 Private Sub HandleAlquimiaObjects()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     
     On Error GoTo errhandler
     
@@ -5109,11 +4817,7 @@ End Sub
 ' Handles the RestOK message.
 
 Private Sub HandleRestOK()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleRestOK_Err
@@ -5133,11 +4837,8 @@ Private Sub HandleErrorMessage()
     GetRemoteError = True
     Dim str As String
     str = Reader.ReadString8()
-    If UseBabelUI Then
-        Call BabelUI.DisplayError(str, "")
-    Else
-        Call MsgBox(str)
-    End If
+    Call MsgBox(str)
+
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleErrorMessage", Erl)
@@ -5147,11 +4848,7 @@ End Sub
 ' Handles the Blind message.
 
 Private Sub HandleBlind()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+   
     'Remove packet ID
     
     On Error GoTo HandleBlind_Err
@@ -5207,12 +4904,12 @@ Private Sub HandleShowSignal()
     On Error GoTo errhandler
     
     Dim tmp As String
-    Dim Grh As Integer
+    Dim grh As Integer
 
     tmp = ObjData(Reader.ReadInt16()).Texto
-    Grh = Reader.ReadInt16()
+    grh = Reader.ReadInt16()
     
-    Call InitCartel(tmp, Grh)
+    Call InitCartel(tmp, grh)
     
     Exit Sub
 
@@ -5227,13 +4924,6 @@ End Sub
 ' Handles the ChangeNPCInventorySlot message.
 
 Private Sub HandleChangeNPCInventorySlot()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim Slot As Byte
@@ -5253,36 +4943,11 @@ Private Sub HandleChangeNPCInventorySlot()
         .Def = ObjData(.ObjIndex).MaxDef
         .PuedeUsar = Reader.ReadInt8()
         
-        If BabelInitialized Then
-            Dim SlotInfo As t_InvItem
-            SlotInfo.Amount = .Amount
-            SlotInfo.CanUse = .PuedeUsar
-            SlotInfo.Equiped = False
-            SlotInfo.GrhIndex = .GrhIndex
-            SlotInfo.MaxDef = .Def
-            SlotInfo.MinDef = .Def
-            SlotInfo.MaxHit = .MaxHit
-            SlotInfo.MinHit = .MinHit
-            SlotInfo.Name = .Name
-            SlotInfo.Slot = Slot
-            SlotInfo.ObjIndex = .ObjIndex
-            SlotInfo.ObjType = .ObjType
-            SlotInfo.Value = .Valor
-            SlotInfo.Cooldown = ObjData(.ObjIndex).Cooldown
-            SlotInfo.CDType = ObjData(.ObjIndex).CDType
-            SlotInfo.CDMask = GetCDMaskForItem(ObjData(.ObjIndex))
-            SlotInfo.desc = ObjData(.ObjIndex).Texto
-            SlotInfo.Amunition = ObjData(.ObjIndex).Amunition
-            SlotInfo.IsBindable = False
-            Call UpdateMerchantSlot(SlotInfo)
-        Else
-            Call frmComerciar.InvComNpc.SetItem(Slot, .ObjIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
-        End If
+        Call frmComerciar.InvComNpc.SetItem(Slot, .ObjIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
     End With
     
     Exit Sub
-    
-    Exit Sub
+
 
 errhandler:
 
@@ -5295,26 +4960,14 @@ End Sub
 ' Handles the UpdateHungerAndThirst message.
 
 Private Sub HandleUpdateHungerAndThirst()
-    
-    On Error GoTo HandleUpdateHungerAndThirst_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+On Error GoTo HandleUpdateHungerAndThirst_Err
+  
     UserStats.MaxAGU = Reader.ReadInt8()
     UserStats.MinAGU = Reader.ReadInt8()
     UserStats.MaxHAM = Reader.ReadInt8()
     UserStats.MinHAM = Reader.ReadInt8()
-    
-    If BabelInitialized Then
-        BabelUI.UpdateDrinkValue (UserStats.MinAGU)
-        BabelUI.UpdateFoodValue (UserStats.MinHAM)
-    Else
-        Call frmMain.UpdateFoodState
-    End If
+    Call frmMain.UpdateFoodState
+
 
     Exit Sub
 
@@ -5349,9 +5002,9 @@ Private Sub HandleLight()
     
     On Error GoTo HandleLight_Err
  
-    Dim color As String
+    Dim Color As String
     
-    color = Reader.ReadString8()
+    Color = Reader.ReadString8()
 
     'Call SetGlobalLight(Map_light_base)
     
@@ -5366,12 +5019,6 @@ End Sub
 Private Sub HandleFYA()
     
     On Error GoTo HandleFYA_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     
     UserAtributos(eAtributos.Fuerza) = Reader.ReadInt8()
     UserAtributos(eAtributos.Agilidad) = Reader.ReadInt8()
@@ -5396,12 +5043,8 @@ Private Sub HandleFYA()
     If DrogaCounter > 0 Then
         frmMain.Contadores.enabled = True
     End If
-    
-    If BabelInitialized Then
-        Call UpdateBuffState
-    Else
-        Call frmMain.UpdateBuff
-    End If
+    Call frmMain.UpdateBuff
+
     
     
     Exit Sub
@@ -5415,12 +5058,6 @@ End Sub
 Private Sub HandleUpdateNPCSimbolo()
     
     On Error GoTo HandleUpdateNPCSimbolo_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     
     Dim NpcIndex As Integer
 
@@ -5441,13 +5078,6 @@ HandleUpdateNPCSimbolo_Err:
 End Sub
 
 Private Sub HandleCerrarleCliente()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    'Remove packet ID
-    
     On Error GoTo HandleCerrarleCliente_Err
     
     EngineRun = False
@@ -5465,13 +5095,7 @@ End Sub
 Private Sub HandleContadores()
     
     On Error GoTo HandleContadores_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+   
     InviCounter = Reader.ReadInt16()
     DrogaCounter = Reader.ReadInt16()
     
@@ -5491,7 +5115,7 @@ Private Sub HandleShowPapiro()
     
     frmMensajePapiro.Show , GetGameplayForm()
     
-    'incomingdata papiromessage
+
     Exit Sub
 
 HandleShowPapiro_Err:
@@ -5504,9 +5128,6 @@ Private Sub HandleUpdateCooldownType()
     Dim CDType As Byte
     CDType = Reader.ReadInt8()
     CdTimes(CDType) = GetTickCount()
-    If BabelInitialized Then
-        Call ActivateInterval(CDType)
-    End If
     Exit Sub
 
 HandleUpdateCooldownType_Err:
@@ -5519,23 +5140,18 @@ Private Sub HandleFlashScreen()
     
     On Error GoTo HandleEfectToScreen_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    Dim color As Long, duracion As Long, ignorar As Boolean
+    Dim Color As Long, duracion As Long, ignorar As Boolean
     
-    color = Reader.ReadInt32()
+    Color = Reader.ReadInt32()
     duracion = Reader.ReadInt32()
     ignorar = Reader.ReadBool()
     
     Dim r, G, b As Byte
 
-    b = (color And 16711680) / 65536
-    G = (color And 65280) / 256
-    r = color And 255
-    color = D3DColorARGB(255, r, G, b)
+    b = (Color And 16711680) / 65536
+    G = (Color And 65280) / 256
+    r = Color And 255
+    Color = D3DColorARGB(255, r, G, b)
 
     If Not MapDat.niebla = 1 And Not ignorar Then
         'Debug.Print "trueno cancelado"
@@ -5544,7 +5160,7 @@ Private Sub HandleFlashScreen()
 
     End If
 
-    Call EfectoEnPantalla(color, duracion)
+    Call EfectoEnPantalla(Color, duracion)
     
     Exit Sub
 
@@ -5603,13 +5219,7 @@ End Sub
 Private Sub HandleLevelUp()
     
     On Error GoTo HandleLevelUp_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+ 
     SkillPoints = Reader.ReadInt16()
     Call svb_unlock_achivement("Newbie's fate")
     
@@ -5625,13 +5235,7 @@ End Sub
 ' Handles the AddForumMessage message.
 
 Private Sub HandleAddForumMessage()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+ 
     On Error GoTo errhandler
     
     Dim title   As String
@@ -5654,19 +5258,11 @@ End Sub
 ' Handles the ShowForumForm message.
 
 Private Sub HandleShowForumForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    'Remove packet ID
+
     
     On Error GoTo HandleShowForumForm_Err
     
-    ' If Not frmForo.Visible Then
-    '   frmForo.Show , frmMain
-    ' End If
-    
+
     Exit Sub
 
 HandleShowForumForm_Err:
@@ -5865,14 +5461,12 @@ Private Sub HandleSendSkills()
 
     If LlegaronSkills Then
         Alocados = SkillPoints
-        If BabelInitialized Then
-            Call OpenSkillDialog(SkillPoints, UserSkills(1), UBound(UserSkills))
-        Else
-            frmEstadisticas.Puntos.Caption = SkillPoints
-            frmEstadisticas.Iniciar_Labels
-            frmEstadisticas.Picture = LoadInterface("ventanaskills.bmp")
-            frmEstadisticas.Show , GetGameplayForm()
-        End If
+
+        frmEstadisticas.Puntos.Caption = SkillPoints
+        frmEstadisticas.Iniciar_Labels
+        frmEstadisticas.Picture = LoadInterface("ventanaskills.bmp")
+        frmEstadisticas.Show , GetGameplayForm()
+
         
         LlegaronSkills = False
     End If
@@ -6363,15 +5957,10 @@ Private Sub HandleGuildDetails()
         GuildDetails.Aligment = Reader.ReadString8()
         GuildDetails.Description = Reader.ReadString8()
         GuildDetails.level = Reader.ReadInt8()
-        If BabelInitialized Then
-            Call SetGuildBrief(GuildDetails)
-            Exit Sub
-        End If
         
         .nombre.Caption = GuildDetails.Name
         .fundador.Caption = GuildDetails.Founder
         .creacion.Caption = GuildDetails.CreationDate
-        '.lider.Caption = GuildDetails.Leader
         .lider.Caption = GuildDetails.Founder 'Provisoriamente hacemos que se muestre el fundador como lider
         .miembros.Caption = GuildDetails.MemberCount
         
@@ -6869,11 +6458,7 @@ Private Sub HandleUserOnline()
     rdata = Reader.ReadInt16()
     
     usersOnline = rdata
-    If BabelInitialized Then
-        Call UpdateOnlines(usersOnline)
-    Else
-        frmMain.onlines = "Online: " & usersOnline
-    End If
+    frmMain.onlines = "Online: " & usersOnline
     
     Exit Sub
 
@@ -6887,12 +6472,6 @@ End Sub
 Private Sub HandleParticleFXToFloor()
     
     On Error GoTo HandleParticleFXToFloor_Err
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     
     Dim x              As Byte
 
@@ -6955,7 +6534,7 @@ Private Sub HandleLightToFloor()
 
     Dim y           As Byte
 
-    Dim color       As Long
+    Dim Color       As Long
     
     Dim color_value As RGBA
 
@@ -6963,16 +6542,16 @@ Private Sub HandleLightToFloor()
      
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
-    color = Reader.ReadInt32()
+    Color = Reader.ReadInt32()
     Rango = Reader.ReadInt8()
     
-    Call Long_2_RGBA(color_value, color)
+    Call Long_2_RGBA(color_value, Color)
 
     Dim id  As Long
 
     Dim id2 As Long
 
-    If color = 0 Then
+    If Color = 0 Then
    
         If MapData(x, y).luz.Rango > 100 Then
             LucesRedondas.Delete_Light_To_Map x, y
@@ -6980,7 +6559,7 @@ Private Sub HandleLightToFloor()
         Else
             id = LucesCuadradas.Light_Find(x & y)
             LucesCuadradas.Light_Remove id
-            MapData(x, y).luz.color = COLOR_EMPTY
+            MapData(x, y).luz.Color = COLOR_EMPTY
             MapData(x, y).luz.Rango = 0
             Exit Sub
 
@@ -6988,7 +6567,7 @@ Private Sub HandleLightToFloor()
 
     End If
     
-    MapData(x, y).luz.color = color_value
+    MapData(x, y).luz.Color = color_value
     MapData(x, y).luz.Rango = Rango
     
     If Rango < 100 Then
@@ -7024,7 +6603,7 @@ Private Sub HandleParticleFX()
     Dim Time           As Long
 
     Dim Remove         As Boolean
-    Dim Grh            As Long
+    Dim grh            As Long
     
     Dim x As Byte, y As Byte
     
@@ -7032,7 +6611,7 @@ Private Sub HandleParticleFX()
     ParticulaIndex = Reader.ReadInt16()
     Time = Reader.ReadInt32()
     Remove = Reader.ReadBool()
-    Grh = Reader.ReadInt32()
+    grh = Reader.ReadInt32()
     
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
@@ -7054,8 +6633,8 @@ Private Sub HandleParticleFX()
     Else
         charlist(CharIndex).Particula = ParticulaIndex
         charlist(CharIndex).ParticulaTime = Time
-        If Grh > 0 Then
-            Call General_Char_Particle_Create(ParticulaIndex, CharIndex, Time, Grh)
+        If grh > 0 Then
+            Call General_Char_Particle_Create(ParticulaIndex, CharIndex, Time, grh)
         Else
             Call General_Char_Particle_Create(ParticulaIndex, CharIndex, Time)
         End If
@@ -7328,10 +6907,7 @@ Private Sub HandleBindKeys()
 
     ChatCombate = Reader.ReadInt8()
     ChatGlobal = Reader.ReadInt8()
-    
-    If BabelInitialized Then
-        Call UpdateCombatAndGlobalChatSettings(ChatCombate, ChatGlobal)
-    Else
+
         If ChatCombate = 1 Then
             frmMain.CombateIcon.Picture = LoadInterface("infoapretado.bmp")
         Else
@@ -7343,7 +6919,7 @@ Private Sub HandleBindKeys()
         Else
             frmMain.CombateIcon.Picture = LoadInterface("global.bmp")
         End If
-    End If
+
     
     Exit Sub
 
@@ -7904,12 +7480,9 @@ Private Sub HandleShowPregunta()
     Dim msg As String
 
     msg = Reader.ReadString8()
-    If BabelInitialized Then
-        ShowQuestion (msg)
-    Else
-        PreguntaScreen = msg
-        Pregunta = True
-    End If
+    PreguntaScreen = msg
+    Pregunta = True
+
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPregunta", Erl)
@@ -7965,17 +7538,7 @@ Private Sub HandleUbicacion()
     y = Reader.ReadInt8()
     map = Reader.ReadInt16()
     
-    If BabelInitialized Then
-        Dim Pos As t_Position
-        Pos.x = x
-        Pos.y = y
-        If UserMap <> map Then
-            Pos.x = 0
-        End If
-        Call ConvertToMinimapPosition(Pos.x, Pos.y, 2, 2)
-        Call BabelUI.UpdateGroupPos(Pos, miembro)
-    Else
-        If x = 0 Then
+     If x = 0 Then
             frmMain.personaje(miembro).visible = False
         Else
             If UserMap = map Then
@@ -7983,7 +7546,7 @@ Private Sub HandleUbicacion()
                 Call frmMain.SetMinimapPosition(miembro, x, y)
             End If
         End If
-    End If
+
     Exit Sub
 
 HandleUbicacion_Err:
@@ -8049,17 +7612,12 @@ Private Sub HandleSeguroResu()
     
     If SeguroResuX Then
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_RESURRECCION_ACTIVADO"), 65, 190, 156, False, False, False)
-        If Not BabelInitialized Then
-            frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
-        End If
+        frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
+
     Else
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_RESURRECCION_DESACTIVADO"), 65, 190, 156, False, False, False)
-        If Not BabelInitialized Then
-            frmMain.ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
-        End If
-    End If
-    If BabelInitialized Then
-        Call SetSafeState(e_SafeType.eResurrecion, IIf(SeguroResuX, 1, 0))
+        frmMain.ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
+
     End If
 End Sub
 
@@ -8131,16 +7689,9 @@ Private Sub HandleOpenCrafting()
     
     Dim i As Long
     For i = 1 To MAX_INVENTORY_SLOTS
-        If BabelInitialized Then
-            With UserInventory.Slots(i)
-                Call frmCrafteo.InvCraftUser.SetItem(i, .ObjIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
-            End With
-            
-        Else
-            With frmMain.Inventario
+          With frmMain.Inventario
                 Call frmCrafteo.InvCraftUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
             End With
-        End If
     Next i
     For i = 1 To MAX_SLOTS_CRAFTEO
         Call frmCrafteo.InvCraftItems.ClearSlot(i)
@@ -8276,9 +7827,6 @@ Public Sub HandlePrivilegios()
     On Error GoTo errhandler
     
     EsGM = Reader.ReadBool
-    If BabelInitialized Then
-        Call UpdateIsGameMaster(IIf(EsGM, 1, 0))
-    Else
         If EsGM Then
             frmMain.panelGM.visible = True
             frmMain.createObj.visible = True
@@ -8292,7 +7840,6 @@ Public Sub HandlePrivilegios()
             frmMain.btnSpawn.visible = False
             frmMain.onlines.visible = False
         End If
-    End If
     Exit Sub
 errhandler:
 
@@ -8311,17 +7858,6 @@ Public Sub HandleShopInit()
     credits_shopAO20 = Reader.ReadInt32
     frmShopAO20.lblCredits.Caption = credits_shopAO20
     
-    If BabelInitialized Then
-        Dim ObjList() As t_ShopItem
-        ReDim ObjList(1 To cant_obj_shop) As t_ShopItem
-        Dim str As String
-        For i = 1 To cant_obj_shop
-            ObjList(i).ObjIndex = Reader.ReadInt32
-            ObjList(i).Price = Reader.ReadInt32
-            str = Reader.ReadString8
-        Next i
-        Call OpenAo20Shop(credits_shopAO20, cant_obj_shop, ObjList(1))
-    Else
         ReDim ObjShop(1 To cant_obj_shop) As ObjDatas
         
         For i = 1 To cant_obj_shop
@@ -8332,7 +7868,7 @@ Public Sub HandleShopInit()
             Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " (Valor: " & ObjShop(i).Valor & ")", i - 1)
         Next i
         frmShopAO20.Show , GetGameplayForm()
-    End If
+ 
 End Sub
 
 Public Sub HandleUpdateShopClienteCredits()
@@ -8347,10 +7883,10 @@ Public Sub HandleSendSkillCdUpdate()
 100     Effect.TypeId = Reader.ReadInt16
 102     Effect.id = Reader.ReadInt32
 104     ElapsedTime = Reader.ReadInt32
-106     Effect.Duration = Reader.ReadInt32
+106     Effect.duration = Reader.ReadInt32
 108     Effect.EffectType = Reader.ReadInt8
-110     Effect.Grh = EffectResources(Effect.TypeId).GrhId
-112     Effect.startTime = GetTickCount() - (Effect.Duration - ElapsedTime)
+110     Effect.grh = EffectResources(Effect.TypeId).GrhId
+112     Effect.startTime = GetTickCount() - (Effect.duration - ElapsedTime)
 114     Effect.StackCount = Reader.ReadInt16()
 116     If Effect.EffectType = eBuff Then
 118         Call AddOrUpdateEffect(BuffList, Effect)
@@ -8359,9 +7895,6 @@ Public Sub HandleSendSkillCdUpdate()
 122         Call AddOrUpdateEffect(DeBuffList, Effect)
         End If
 124     If Effect.EffectType = eCD Then
-126         If Effect.id < 0 And BabelInitialized Then
-128             Call StartSpellCd(-Effect.id, Effect.Duration)
-            End If
 130         Call AddOrUpdateEffect(CDList, Effect)
         End If
         Exit Sub
@@ -8375,13 +7908,9 @@ On Error GoTo errhandler
     ToggleCount = Reader.ReadInt16
     Dim i As Integer
     Dim ToggleName As String
-    If BabelInitialized Then
-        Call BabelUI.ClearToggles
-    End If
     For i = 0 To ToggleCount - 1
         ToggleName = Reader.ReadString8
-        If BabelInitialized Then Call BabelUI.ActivateFeatureToggle(ToggleName)
-        
+              
         If ToggleName = "hotokey-enabled" Then
             Call SetMask(FeatureToggles, eEnableHotkeys)
         End If
@@ -8596,7 +8125,6 @@ On Error GoTo HandleReportLobbyList_Err
     OpenLobbyCount = Reader.ReadInt16
     ReDim LobbyList(OpenLobbyCount) As t_LobbyData
     Dim i As Integer
-    If BabelInitialized Then Call OpenLobbyList
     For i = 1 To OpenLobbyCount
         LobbyList(i).Index = i - 1
         LobbyList(i).id = Reader.ReadInt16
@@ -8611,13 +8139,12 @@ On Error GoTo HandleReportLobbyList_Err
         LobbyList(i).TeamType = Reader.ReadInt16
         LobbyList(i).InscriptionPrice = Reader.ReadInt32
         LobbyList(i).IsPrivate = Reader.ReadInt8
-        If BabelInitialized Then Call UpdateLobby(LobbyList(i))
+        
     Next i
     
-    If Not BabelInitialized Then
-        Call frmLobbyBattleground.SetLobbyList(LobbyList)
-        frmLobbyBattleground.Show
-    End If
+    Call frmLobbyBattleground.SetLobbyList(LobbyList)
+    frmLobbyBattleground.Show
+
     Exit Sub
 HandleReportLobbyList_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDebugResponse", Erl)

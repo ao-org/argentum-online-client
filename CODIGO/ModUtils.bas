@@ -410,10 +410,10 @@ Public CantidadDePersonajesEnCuenta As Byte
 Type UserCuentaPJS
 
     nombre As String
-    nivel As Byte
+    Nivel As Byte
     Mapa As Integer
-    posX As Integer
-    posY As Integer
+    PosX As Integer
+    PosY As Integer
     Body As Integer
     Head As Integer
     Criminal As Byte
@@ -519,10 +519,10 @@ Private Declare Function VarPtrArray Lib "msvbvm50.dll" Alias "VarPtr" (Ptr() As
  
 Public lRegion             As Long
 
-Public Render_Connect_Rect As RECT
-Public Render_Main_Rect    As RECT
-Public GameplayDrawAreaRect As RECT
-Public RenderCullingRect As RECT
+Public Render_Connect_Rect As Rect
+Public Render_Main_Rect    As Rect
+Public GameplayDrawAreaRect As Rect
+Public RenderCullingRect As Rect
 
 Public Const StartRenderX = 10
 Public Const StartRenderY = 152
@@ -668,7 +668,7 @@ End Function
 
 Public Sub LogError(desc As String)
 
-    On Error GoTo ErrHandler
+    On Error GoTo errhandler
 
     Dim nfile As Integer
 
@@ -679,7 +679,7 @@ Public Sub LogError(desc As String)
 
     Exit Sub
 
-ErrHandler:
+errhandler:
 
 End Sub
 
@@ -744,7 +744,7 @@ Sub General_Set_Connect()
     UserMap = randomMap()
     Call SwitchMap(UserMap)
 
-    If g_game_state.state() <> e_state_connect_screen Then
+    If g_game_state.State() <> e_state_connect_screen Then
         Call ShowLogin
     End If
             
@@ -1359,13 +1359,13 @@ IntervaloPermiteConectar_Err:
     
 End Function
 Sub initPacketControl()
-    Dim i As Long, j As Long
+    Dim i As Long, J As Long
     For i = LBound(packetControl) To UBound(packetControl)
         With packetControl(i)
             .last_count = 0
-           For j = 1 To 10
-                .iterations(j) = 0
-            Next j
+           For J = 1 To 10
+                .iterations(J) = 0
+            Next J
         End With
     Next i
 End Sub
@@ -1410,30 +1410,19 @@ Public Sub WriteConsoleUserChat(ByVal Text As String, ByVal userName As String, 
     Dim Pos As Integer
     Pos = InStr(userName, "<")
     If Pos = 0 Then Pos = LenB(userName) + 2
-    Dim name As String
-    name = Left$(userName, Pos - 2)
+    Dim Name As String
+    Name = Left$(userName, Pos - 2)
 
     Text = Trim$(Text)
     If LenB(userName) <> 0 And LenB(Text) > 0 Then
-        If BabelInitialized Then
-            Dim message As t_ChatMessage
-            message.Sender = Name
-            message.SenderColor.r = NameRed
-            message.SenderColor.G = NameGreen
-            message.SenderColor.b = NameBlue
-            message.Text = Text
-            message.TextColor.r = red
-            message.TextColor.G = green
-            message.TextColor.b = blue
-            Call SendChatMessage(message)
-        Else
+
             Call AddtoRichTextBox2(frmMain.RecTxt, "[" & Name & "] ", NameRed, NameGreen, NameBlue, True, False, True, rtfLeft)
             Call AddtoRichTextBox2(frmMain.RecTxt, Text, red, green, blue, False, False, False, rtfLeft)
-        End If
+
     End If
     Exit Sub
 End Sub
-Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText As String, ByVal red As Byte, ByVal green As Byte, ByVal blue As Byte)
+Public Sub WriteChatOverHeadInConsole(ByVal CharIndex As Integer, ByVal ChatText As String, ByVal red As Byte, ByVal green As Byte, ByVal blue As Byte)
     
     On Error GoTo WriteChatOverHeadInConsole_Err
     
@@ -1443,7 +1432,7 @@ Public Sub WriteChatOverHeadInConsole(ByVal charindex As Integer, ByVal ChatText
     If red = 20 And green = 226 And blue = 157 Then
         Exit Sub
     End If
-    With charlist(charindex)
+    With charlist(CharIndex)
         Call WriteConsoleUserChat(ChatText, .nombre, red, green, blue, .status, .priv)
     End With
     Exit Sub
@@ -1507,7 +1496,7 @@ Public Function General_Var_Get(ByVal File As String, ByVal Main As String, ByVa
     'Last Modify Date: 10/07/2002
     'Get a var to from a text file
     '*****************************************************************
-    Dim L        As Long
+    Dim l        As Long
 
     Dim Char     As String
 
@@ -1549,23 +1538,23 @@ Public Sub DibujarMiniMapa()
 108             PosY = ListNPCMapData(ResourceMap).NpcList(i).Position.y
             
             
-                Dim color As Long
+                Dim Color As Long
             
 110             Select Case ListNPCMapData(ResourceMap).NpcList(i).State
                     Case 1
-112                     color = RGB(0, 198, 254)
+112                     Color = RGB(0, 198, 254)
 114                 Case 2
-116                     color = RGB(255, 201, 14)
+116                     Color = RGB(255, 201, 14)
 118                     Case Else
-120                     color = RGB(255, 201, 14)
+120                     Color = RGB(255, 201, 14)
                 End Select
             
             
             
-122             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY, color)
-124             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 1, color)
-126             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 1, color)
-128             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY, color)
+122             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY, Color)
+124             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY + 1, Color)
+126             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY + 1, Color)
+128             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY, Color)
             
 130             Call SetPixel(frmMain.MiniMap.hdc, PosX, PosY - 1, &H808080)
 132             Call SetPixel(frmMain.MiniMap.hdc, PosX + 1, PosY - 1, &H808080)
@@ -1590,7 +1579,7 @@ End Sub
 Rem Encripta una cadena de caracteres.
 Rem S = Cadena a encriptar
 Rem P = Password
-Function EncryptStr(ByVal s As String, ByVal P As String) As String
+Function EncryptStr(ByVal s As String, ByVal p As String) As String
     
     On Error GoTo EncryptStr_Err
     
@@ -1601,15 +1590,15 @@ Function EncryptStr(ByVal s As String, ByVal P As String) As String
 
     r = ""
 
-    If Len(P) > 0 Then
+    If Len(p) > 0 Then
 
         For i = 1 To Len(s)
             c1 = Asc(mid(s, i, 1))
 
-            If i > Len(P) Then
-                C2 = Asc(mid(P, i Mod Len(P) + 1, 1))
+            If i > Len(p) Then
+                C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
             Else
-                C2 = Asc(mid(P, i, 1))
+                C2 = Asc(mid(p, i, 1))
 
             End If
 
@@ -1638,7 +1627,7 @@ End Function
 Rem Desencripta una cadena de caracteres.
 Rem S = Cadena a desencriptar
 Rem P = Password
-Function UnEncryptStr(ByVal s As String, ByVal P As String) As String
+Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
     
     On Error GoTo UnEncryptStr_Err
     
@@ -1649,15 +1638,15 @@ Function UnEncryptStr(ByVal s As String, ByVal P As String) As String
 
     r = ""
 
-    If Len(P) > 0 Then
+    If Len(p) > 0 Then
 
         For i = 1 To Len(s)
             c1 = Asc(mid(s, i, 1))
 
-            If i > Len(P) Then
-                C2 = Asc(mid(P, i Mod Len(P) + 1, 1))
+            If i > Len(p) Then
+                C2 = Asc(mid(p, i Mod Len(p) + 1, 1))
             Else
-                C2 = Asc(mid(P, i, 1))
+                C2 = Asc(mid(p, i, 1))
 
             End If
 
@@ -1859,24 +1848,24 @@ CargarLst_Err:
     
 End Sub
 
-Public Sub CrearFantasma(ByVal charindex As Integer)
+Public Sub CrearFantasma(ByVal CharIndex As Integer)
     
     On Error GoTo CrearFantasma_Err
     
 
-    If charlist(charindex).Body.Walk(charlist(charindex).Heading).GrhIndex = 0 Then Exit Sub
+    If charlist(CharIndex).Body.Walk(charlist(CharIndex).Heading).GrhIndex = 0 Then Exit Sub
 
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Body.GrhIndex = charlist(charindex).Body.Walk(charlist(charindex).Heading).GrhIndex
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Head.GrhIndex = charlist(charindex).Head.Head(charlist(charindex).Heading).GrhIndex
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Arma.GrhIndex = charlist(charindex).Arma.WeaponWalk(charlist(charindex).Heading).GrhIndex
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Casco.GrhIndex = charlist(charindex).Casco.Head(charlist(charindex).Heading).GrhIndex
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Escudo.GrhIndex = charlist(charindex).Escudo.ShieldWalk(charlist(charindex).Heading).GrhIndex
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Body_Aura = charlist(charindex).Body_Aura
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.AlphaB = 255
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Activo = True
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.OffX = charlist(charindex).Body.HeadOffset.x
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Offy = charlist(charindex).Body.HeadOffset.y
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Heading = charlist(charindex).Heading
+    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharFantasma.Body.GrhIndex = charlist(CharIndex).Body.Walk(charlist(CharIndex).Heading).GrhIndex
+    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharFantasma.Head.GrhIndex = charlist(CharIndex).Head.Head(charlist(CharIndex).Heading).GrhIndex
+    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharFantasma.Arma.GrhIndex = charlist(CharIndex).Arma.WeaponWalk(charlist(CharIndex).Heading).GrhIndex
+    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharFantasma.Casco.GrhIndex = charlist(CharIndex).Casco.Head(charlist(CharIndex).Heading).GrhIndex
+    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharFantasma.Escudo.GrhIndex = charlist(CharIndex).Escudo.ShieldWalk(charlist(CharIndex).Heading).GrhIndex
+    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharFantasma.Body_Aura = charlist(CharIndex).Body_Aura
+    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharFantasma.AlphaB = 255
+    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharFantasma.Activo = True
+    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharFantasma.OffX = charlist(CharIndex).Body.HeadOffset.x
+    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharFantasma.Offy = charlist(CharIndex).Body.HeadOffset.y
+    MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).CharFantasma.Heading = charlist(CharIndex).Heading
 
     
     Exit Sub
@@ -1975,14 +1964,7 @@ Public Sub TextoAlAsistente(ByVal Texto As String, ByVal IsLoading As Boolean, B
     
     TextEfectAsistente = 35
     TextAsistente = Texto
-    If BabelUI.BabelInitialized And Not ForceAssistant Then
-        If IsLoading Then
-            Call BabelUI.SetLoadingMessage(Texto, 1)
-        Else
-            Call BabelUI.SendErrorMessage(Texto, 1, 0)
-        End If
-    End If
-    
+      
     Exit Sub
 
 TextoAlAsistente_Err:
@@ -2000,7 +1982,7 @@ Public Function GetTimeFormated(Mins As Integer) As String
 
     Dim Minutitos As Byte
 
-    Dim A         As String
+    Dim a         As String
 
     Horita = Fix(Mins / 60)
     Minutitos = Mins - 60 * Horita
@@ -2067,7 +2049,7 @@ Public Sub PreloadGraphics()
     
     Dim i             As Integer
 
-    Dim j             As Integer
+    Dim J             As Integer
     
     Dim MinVal        As Integer
 
@@ -2102,14 +2084,14 @@ Public Sub PreloadGraphics()
         MaxVal = Val(General_Field_Read(2, strPreload, "-"))
         Priority = Val(General_Field_Read(3, strPreload, "-"))
         
-        For j = MinVal To MaxVal
+        For J = MinVal To MaxVal
 
             Static d3dTextures As D3D8Textures
 
-            Set d3dTextures.Texture = SurfaceDB.GetTexture(j, d3dTextures.texwidth, d3dTextures.texheight)
+            Set d3dTextures.Texture = SurfaceDB.GetTexture(J, d3dTextures.texwidth, d3dTextures.texheight)
             'Call SurfaceDB.GetTexture(j, 1024, 1024)
             DoEvents
-        Next j
+        Next J
  
     Next i
     
@@ -2137,13 +2119,13 @@ Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal Mapa As Integer) As Integer
     
 
     Dim i        As Integer
-    Dim j       As Byte
+    Dim J       As Byte
 
     Dim Encontre As Boolean
 
-    For j = 1 To TotalWorlds
-        For i = 1 To Mundo(j).Ancho * Mundo(j).Alto
-            If Mundo(j).MapIndice(i) = Mapa Then
+    For J = 1 To TotalWorlds
+        For i = 1 To Mundo(J).Ancho * Mundo(J).Alto
+            If Mundo(J).MapIndice(i) = Mapa Then
                 ObtenerIdMapaDeLlamadaDeClan = i
                 frmMapaGrande.llamadadeclan.Tag = 0
                 Exit Function
@@ -2151,7 +2133,7 @@ Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal Mapa As Integer) As Integer
             End If
     
         Next i
-    Next j
+    Next J
 
     ObtenerIdMapaDeLlamadaDeClan = 0
 

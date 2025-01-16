@@ -66,8 +66,8 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     Dim StartBufferedX      As Integer
     Dim StartBufferedY      As Integer
 
-    Dim ScreenX             As Integer      ' Keeps track of where to place tile on screen
-    Dim ScreenY             As Integer      ' Keeps track of where to place tile on screen
+    Dim screenX             As Integer      ' Keeps track of where to place tile on screen
+    Dim screenY             As Integer      ' Keeps track of where to place tile on screen
     
     Dim DeltaTime                   As Long
 
@@ -184,27 +184,27 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     ' Layer 2 & small objects loop
     Call DirectDevice.SetRenderState(D3DRS_ALPHATESTENABLE, True) ' Para no pisar los reflejos
     
-    ScreenY = StartBufferedY
+    screenY = StartBufferedY
 
     For y = MinBufferedY To MaxBufferedY
-        ScreenX = StartBufferedX
+        screenX = StartBufferedX
 
         For x = MinBufferedX To MaxBufferedX
 
             With MapData(x, y)
                 
                 ' Layer 2 *********************************
-                If .Graphic(2).grhIndex <> 0 Then
-                    Call Draw_Grh(.Graphic(2), ScreenX, ScreenY, 1, 1, .light_value, , x, y)
+                If .Graphic(2).GrhIndex <> 0 Then
+                    Call Draw_Grh(.Graphic(2), screenX, screenY, 1, 1, .light_value, , x, y)
                 End If
                 '******************************************
             
             End With
 
-            ScreenX = ScreenX + TilePixelWidth
+            screenX = screenX + TilePixelWidth
         Next x
 
-        ScreenY = ScreenY + TilePixelHeight
+        screenY = screenY + TilePixelHeight
     Next y
     
  
@@ -226,10 +226,10 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         Call Draw_Grh(grhSpellArea, MouseX - 48, MouseY - 48, 0, 1, temp_color, True, , , 70)
     End If
     
-     ScreenY = StartBufferedY
+     screenY = StartBufferedY
 
     For y = MinBufferedY To MaxBufferedY
-        ScreenX = StartBufferedX
+        screenX = StartBufferedX
 
         For x = MinBufferedX To MaxBufferedX
 
@@ -239,10 +239,10 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                     Call Draw_Grh(.Trap, screenX, screenY, 1, 1, temp_color, False)
                 End If
                 ' Objects *********************************
-                If .ObjGrh.grhIndex <> 0 Then
+                If .ObjGrh.GrhIndex <> 0 Then
                     Select Case ObjData(.OBJInfo.ObjIndex).ObjType
                         Case eObjType.otArboles, eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo, eObjType.otFragua, eObjType.OtDecoraciones, eObjType.otFishingPool
-                            Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value)
+                            Call Draw_Grh(.ObjGrh, screenX, screenY, 1, 1, .light_value)
 
                         Case Else
                             ' Objetos en el suelo (items, decorativos, etc)
@@ -251,17 +251,17 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                              
                                 object_angle = (object_angle + (timerElapsedTime * 0.002))
                                 
-                                .light_value(1).A = 85
-                                .light_value(3).A = 85
+                                .light_value(1).a = 85
+                                .light_value(3).a = 85
                                 
-                                Call Draw_Grh_ItemInWater(.ObjGrh, ScreenX, ScreenY, False, False, .light_value, False, , , (object_angle + x * 45 + y * 90))
+                                Call Draw_Grh_ItemInWater(.ObjGrh, screenX, screenY, False, False, .light_value, False, , , (object_angle + x * 45 + y * 90))
                                 
-                                .light_value(1).A = 255
-                                .light_value(3).A = 255
-                                .light_value(0).A = 255
-                                .light_value(2).A = 255
+                                .light_value(1).a = 255
+                                .light_value(3).a = 255
+                                .light_value(0).a = 255
+                                .light_value(2).a = 255
                             Else
-                                Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value)
+                                Call Draw_Grh(.ObjGrh, screenX, screenY, 1, 1, .light_value)
                             End If
                     End Select
                 End If
@@ -269,28 +269,28 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
             End With
 
-            ScreenX = ScreenX + TilePixelWidth
+            screenX = screenX + TilePixelWidth
         Next x
 
-        ScreenY = ScreenY + TilePixelHeight
+        screenY = screenY + TilePixelHeight
     Next y
     
     Call DirectDevice.SetRenderState(D3DRS_ALPHATESTENABLE, False)
     
     ' *********************************
     '  Layer 3 & chars
-    ScreenY = StartBufferedY
+    screenY = StartBufferedY
 
     For y = MinBufferedY To MaxBufferedY
-        ScreenX = StartBufferedX
+        screenX = StartBufferedX
 
         For x = MinBufferedX To MaxBufferedX
             
             With MapData(x, y)
                 ' Chars ***********************************
-                If .charindex = UserCharIndex Then 'evitamos reenderizar un clon del usuario
+                If .CharIndex = UserCharIndex Then 'evitamos reenderizar un clon del usuario
                     If x <> UserPos.x Or y <> UserPos.y Then
-                        .charindex = 0
+                        .CharIndex = 0
                     End If
                 End If
                 
@@ -307,17 +307,17 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                         
                         'Seteamos el color
                         If .CharFantasma.Heading = 1 Or .CharFantasma.Heading = 2 Then
-                            Call Draw_Grh(.CharFantasma.Escudo, ScreenX, ScreenY, 1, 1, TempColor(), False, x, y)
-                            Call Draw_Grh(.CharFantasma.Body, ScreenX, ScreenY, 1, 1, TempColor(), False, x, y)
-                            Call Draw_Grh(.CharFantasma.Head, ScreenX + .CharFantasma.OffX, ScreenY + .CharFantasma.Offy, 1, 1, TempColor(), False, x, y)
-                            Call Draw_Grh(.CharFantasma.Casco, ScreenX + .CharFantasma.OffX, ScreenY + .CharFantasma.Offy, 1, 1, TempColor(), False, x, y)
-                            Call Draw_Grh(.CharFantasma.Arma, ScreenX, ScreenY, 1, 1, TempColor(), False, x, y)
+                            Call Draw_Grh(.CharFantasma.Escudo, screenX, screenY, 1, 1, TempColor(), False, x, y)
+                            Call Draw_Grh(.CharFantasma.Body, screenX, screenY, 1, 1, TempColor(), False, x, y)
+                            Call Draw_Grh(.CharFantasma.Head, screenX + .CharFantasma.OffX, screenY + .CharFantasma.Offy, 1, 1, TempColor(), False, x, y)
+                            Call Draw_Grh(.CharFantasma.Casco, screenX + .CharFantasma.OffX, screenY + .CharFantasma.Offy, 1, 1, TempColor(), False, x, y)
+                            Call Draw_Grh(.CharFantasma.Arma, screenX, screenY, 1, 1, TempColor(), False, x, y)
                         Else
-                            Call Draw_Grh(.CharFantasma.Body, ScreenX, ScreenY, 1, 1, TempColor(), False, x, y)
-                            Call Draw_Grh(.CharFantasma.Head, ScreenX + .CharFantasma.OffX, ScreenY + .CharFantasma.Offy, 1, 1, TempColor(), False, x, y)
-                            Call Draw_Grh(.CharFantasma.Escudo, ScreenX, ScreenY, 1, 1, TempColor(), False, x, y)
-                            Call Draw_Grh(.CharFantasma.Casco, ScreenX + .CharFantasma.OffX, ScreenY + .CharFantasma.Offy, 1, 1, TempColor(), False, x, y)
-                            Call Draw_Grh(.CharFantasma.Arma, ScreenX, ScreenY, 1, 1, TempColor(), False, x, y)
+                            Call Draw_Grh(.CharFantasma.Body, screenX, screenY, 1, 1, TempColor(), False, x, y)
+                            Call Draw_Grh(.CharFantasma.Head, screenX + .CharFantasma.OffX, screenY + .CharFantasma.Offy, 1, 1, TempColor(), False, x, y)
+                            Call Draw_Grh(.CharFantasma.Escudo, screenX, screenY, 1, 1, TempColor(), False, x, y)
+                            Call Draw_Grh(.CharFantasma.Casco, screenX + .CharFantasma.OffX, screenY + .CharFantasma.Offy, 1, 1, TempColor(), False, x, y)
+                            Call Draw_Grh(.CharFantasma.Arma, screenX, screenY, 1, 1, TempColor(), False, x, y)
                         End If
 
                     Else
@@ -327,34 +327,34 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
                 End If
                 
-                If .charindex <> 0 Then
-                    If charlist(.charindex).active = 1 Then
-                        If mascota.visible And .charindex = UserCharIndex Then
+                If .CharIndex <> 0 Then
+                    If charlist(.CharIndex).active = 1 Then
+                        If mascota.visible And .CharIndex = UserCharIndex Then
                           '  Call Mascota_Render(.charindex, PixelOffsetX, PixelOffsetY)
                         End If
-                        Call Char_Render(.charindex, ScreenX, ScreenY, x, y)
+                        Call Char_Render(.CharIndex, screenX, screenY, x, y)
                     End If
                 End If
                 '******************************************
                 
             End With
             
-            ScreenX = ScreenX + TilePixelWidth
+            screenX = screenX + TilePixelWidth
         Next x
         ' Recorremos de nuevo esta fila para dibujar objetos grandes y capa 3 encima de chars
-        ScreenX = StartBufferedX
+        screenX = StartBufferedX
 
         For x = MinBufferedX To MaxBufferedX
 
             With MapData(x, y)
                 ' Objects *********************************
-                If .ObjGrh.grhIndex <> 0 Then
+                If .ObjGrh.GrhIndex <> 0 Then
                            
                     Select Case ObjData(.OBJInfo.ObjIndex).ObjType
                          
                         Case eObjType.otArboles
                           
-                            Call Draw_Sombra(.ObjGrh, ScreenX, ScreenY, 1, 1, False, x, y)
+                            Call Draw_Sombra(.ObjGrh, screenX, screenY, 1, 1, False, x, y)
 
                             ' Debajo del arbol
                             If Abs(UserPos.x - x) < 3 And (Abs(UserPos.y - y)) < 8 And (Abs(UserPos.y) < y) Then
@@ -366,11 +366,11 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                                 DeltaTime = FrameTime - .ArbolAlphaTimer
     
                                 Call Copy_RGBAList_WithAlpha(TempColor, .light_value, IIf(DeltaTime > ARBOL_ALPHA_TIME, ARBOL_MIN_ALPHA, 255 - DeltaTime / ARBOL_ALPHA_TIME * (255 - ARBOL_MIN_ALPHA)))
-                                Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, TempColor, False, x, y)
+                                Call Draw_Grh(.ObjGrh, screenX, screenY, 1, 1, TempColor, False, x, y)
     
                             Else    ' Lejos del arbol
                                 If .ArbolAlphaTimer = 0 Then
-                                    Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                                    Call Draw_Grh(.ObjGrh, screenX, screenY, 1, 1, .light_value, False, x, y)
     
                                 Else
                                     If .ArbolAlphaTimer > 0 Then
@@ -381,10 +381,10 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
                                     If DeltaTime > ARBOL_ALPHA_TIME Then
                                         .ArbolAlphaTimer = 0
-                                        Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                                        Call Draw_Grh(.ObjGrh, screenX, screenY, 1, 1, .light_value, False, x, y)
                                     Else
                                         Call Copy_RGBAList_WithAlpha(TempColor, .light_value, ARBOL_MIN_ALPHA + DeltaTime * (255 - ARBOL_MIN_ALPHA) / ARBOL_ALPHA_TIME)
-                                        Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, TempColor, False, x, y)
+                                        Call Draw_Grh(.ObjGrh, screenX, screenY, 1, 1, TempColor, False, x, y)
                                     End If
                                 End If
     
@@ -392,7 +392,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                         
                         Case eObjType.otPuertas, eObjType.otTeleport, eObjType.otCarteles, eObjType.OtPozos, eObjType.otYacimiento, eObjType.OtCorreo, eObjType.otYunque, eObjType.otFragua, eObjType.OtDecoraciones
                             ' Objetos grandes (menos árboles)
-                            Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                            Call Draw_Grh(.ObjGrh, screenX, screenY, 1, 1, .light_value, False, x, y)
                             
                         'Case Else
                         '    Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
@@ -402,7 +402,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 '******************************************
                 
                 'Layer 3 **********************************
-                If .Graphic(3).grhIndex <> 0 Then
+                If .Graphic(3).GrhIndex <> 0 Then
 
                     If (.Blocked And FLAG_ARBOL) <> 0 Then
                         
@@ -419,11 +419,11 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                             DeltaTime = FrameTime - .ArbolAlphaTimer
 
                             Call Copy_RGBAList_WithAlpha(TempColor, .light_value, IIf(DeltaTime > ARBOL_ALPHA_TIME, ARBOL_MIN_ALPHA, 255 - DeltaTime / ARBOL_ALPHA_TIME * (255 - ARBOL_MIN_ALPHA)))
-                            Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, TempColor, False, x, y)
+                            Call Draw_Grh(.Graphic(3), screenX, screenY, 1, 1, TempColor, False, x, y)
 
                         Else    ' Lejos del arbol
                             If .ArbolAlphaTimer = 0 Then
-                                Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                                Call Draw_Grh(.Graphic(3), screenX, screenY, 1, 1, .light_value, False, x, y)
 
                             Else
                                 If .ArbolAlphaTimer > 0 Then
@@ -434,21 +434,21 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
                                 If DeltaTime > ARBOL_ALPHA_TIME Then
                                     .ArbolAlphaTimer = 0
-                                    Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                                    Call Draw_Grh(.Graphic(3), screenX, screenY, 1, 1, .light_value, False, x, y)
                                 Else
                                     Call Copy_RGBAList_WithAlpha(TempColor, .light_value, ARBOL_MIN_ALPHA + DeltaTime * (255 - ARBOL_MIN_ALPHA) / ARBOL_ALPHA_TIME)
-                                    Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, TempColor, False, x, y)
+                                    Call Draw_Grh(.Graphic(3), screenX, screenY, 1, 1, TempColor, False, x, y)
                                 End If
                             End If
 
                         End If
 
                     Else
-                        If AgregarSombra(.Graphic(3).grhIndex) Then
-                            Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
+                        If AgregarSombra(.Graphic(3).GrhIndex) Then
+                            Call Draw_Sombra(.Graphic(3), screenX, screenY, 1, 1, False, x, y)
                         End If
 
-                        Call Draw_Grh(.Graphic(3), ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
+                        Call Draw_Grh(.Graphic(3), screenX, screenY, 1, 1, .light_value, False, x, y)
 
                     End If
 
@@ -456,9 +456,9 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 '******************************************
             End With
             
-            ScreenX = ScreenX + TilePixelWidth
+            screenX = screenX + TilePixelWidth
         Next x
-        ScreenY = ScreenY + TilePixelHeight
+        screenY = screenY + TilePixelHeight
     Next y
     
     If InfoItemsEnRender And tX And tY Then
@@ -480,25 +480,25 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
     ' *********************************
     ' Particles loop
-    ScreenY = StartBufferedY
+    screenY = StartBufferedY
 
     For y = MinBufferedY To MaxBufferedY
-        ScreenX = StartBufferedX
+        screenX = StartBufferedX
 
         For x = MinBufferedX To MaxBufferedX
             
             With MapData(x, y)
                 ' Particles *******************************
                 If .particle_group > 0 Then
-                    Call Particle_Group_Render(.particle_group, ScreenX + 16, ScreenY + 16)
+                    Call Particle_Group_Render(.particle_group, screenX + 16, screenY + 16)
                 End If
                 '******************************************
             End With
             
-            ScreenX = ScreenX + TilePixelWidth
+            screenX = screenX + TilePixelWidth
         Next x
 
-        ScreenY = ScreenY + TilePixelHeight
+        screenY = screenY + TilePixelHeight
     Next y
     
     'draw projectiles
@@ -544,34 +544,34 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             
         Next
 
-        ScreenY = StartBufferedY
+        screenY = StartBufferedY
 
         For y = MinBufferedY To MaxBufferedY
-            ScreenX = StartBufferedX
+            screenX = StartBufferedX
     
             For x = MinBufferedX To MaxBufferedX
             
                 With MapData(x, y)
                     ' Layer 4 - roofs *******************************
-                    If .Graphic(4).grhIndex Then
+                    If .Graphic(4).GrhIndex Then
 
                         Trigger = NearRoof(x, y)
 
                         If Trigger Then
                             Call Copy_RGBAList_WithAlpha(TempColor, .light_value, RoofsLight(Trigger))
-                            Call Draw_Grh(.Graphic(4), ScreenX, ScreenY, 1, 1, TempColor, , x, y)
+                            Call Draw_Grh(.Graphic(4), screenX, screenY, 1, 1, TempColor, , x, y)
                         Else
-                            Call Draw_Grh(.Graphic(4), ScreenX, ScreenY, 1, 1, .light_value, , x, y)
+                            Call Draw_Grh(.Graphic(4), screenX, screenY, 1, 1, .light_value, , x, y)
                         End If
     
                     End If
                     '******************************************
                 End With
 
-                ScreenX = ScreenX + TilePixelWidth
+                screenX = screenX + TilePixelWidth
             Next x
 
-            ScreenY = ScreenY + TilePixelHeight
+            screenY = screenY + TilePixelHeight
         Next y
         
     End If
@@ -595,17 +595,17 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
        
     If mascota.dialog <> "" And mascota.visible Then
-        Call Engine_Text_Render(mascota.dialog, mascota.posX + 14 - CInt(Engine_Text_Width(mascota.dialog, True) / 2) + 150, mascota.posY - Engine_Text_Height(mascota.dialog, True) - 25 + 150, mascota_text_color(), 1, True, , mascota.Color(0).A)
+        Call Engine_Text_Render(mascota.dialog, mascota.PosX + 14 - CInt(Engine_Text_Width(mascota.dialog, True) / 2) + 150, mascota.PosY - Engine_Text_Height(mascota.dialog, True) - 25 + 150, mascota_text_color(), 1, True, , mascota.Color(0).a)
     End If
         
     
     
     ' *********************************
     ' FXs and dialogs loop
-    ScreenY = StartBufferedY
+    screenY = StartBufferedY
 
     For y = MinBufferedY To MaxBufferedY
-        ScreenX = StartBufferedX
+        screenX = StartBufferedX
 
         For x = MinBufferedX To MaxBufferedX
             
@@ -613,11 +613,11 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
 
 
                 ' Dialogs *******************************
-                If MapData(x, y).charindex <> 0 Then
+                If MapData(x, y).CharIndex <> 0 Then
                 
-                    If charlist(.charindex).active = 1 Then
+                    If charlist(.CharIndex).active = 1 Then
                     
-                        Call Char_TextRender(.charindex, ScreenX, ScreenY, x, y)
+                        Call Char_TextRender(.CharIndex, screenX, screenY, x, y)
                     
                     End If
                     
@@ -637,9 +637,9 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                                     .Text = vbNullString
                                 Else
                                     If DialogTime > 900 Then
-                                        Call RGBAList(TempColor, .Color.r, .Color.G, .Color.B, .Color.A * (1300 - DialogTime) * 0.0025)
+                                        Call RGBAList(TempColor, .Color.r, .Color.G, .Color.b, .Color.a * (1300 - DialogTime) * 0.0025)
                                     Else
-                                        Call RGBAList(TempColor, .Color.r, .Color.G, .Color.B, .Color.A)
+                                        Call RGBAList(TempColor, .Color.r, .Color.G, .Color.b, .Color.a)
                                     End If
                                     If .Animated Then
                                         Engine_Text_Render_Efect 0, .Text, screenX + 16 - Int(Engine_Text_Width(.Text, False) * 0.5) + .offset.x, screenY - Engine_Text_Height(.Text, False) + .offset.y - DialogTime * 0.025, TempColor, 1, False
@@ -657,35 +657,35 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 If .FxCount > 0 Then
                     For i = 1 To .FxCount
 
-                        If .FxList(i).FxIndex > 0 And .FxList(i).Started <> 0 Then
+                        If .FxList(i).FxIndex > 0 And .FxList(i).started <> 0 Then
     
                             Call RGBAList(TempColor, 255, 255, 255, 220)
 
                             If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
                             
-                                Call Draw_GrhFX(.FxList(i), ScreenX + FxData(.FxList(i).FxIndex).OffsetX, ScreenY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, TempColor(), False)
+                                Call Draw_GrhFX(.FxList(i), screenX + FxData(.FxList(i).FxIndex).OffsetX, screenY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, TempColor(), False)
 
                             Else
-                                Call Draw_GrhFX(.FxList(i), ScreenX + FxData(.FxList(i).FxIndex).OffsetX, ScreenY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, TempColor(), True)
+                                Call Draw_GrhFX(.FxList(i), screenX + FxData(.FxList(i).FxIndex).OffsetX, screenY + FxData(.FxList(i).FxIndex).OffsetY + 20, 1, 1, TempColor(), True)
 
                             End If
 
                         End If
 
-                        If .FxList(i).Started = 0 Then .FxList(i).FxIndex = 0
+                        If .FxList(i).started = 0 Then .FxList(i).FxIndex = 0
 
                     Next i
 
-                    If .FxList(.FxCount).Started = 0 Then .FxCount = .FxCount - 1
+                    If .FxList(.FxCount).started = 0 Then .FxCount = .FxCount - 1
 
                 End If
                 '******************************************
                 End With
             
-            ScreenX = ScreenX + TilePixelWidth
+            screenX = screenX + TilePixelWidth
         Next x
 
-        ScreenY = ScreenY + TilePixelHeight
+        screenY = screenY + TilePixelHeight
     Next y
 
     If MeteoParticle >= LBound(particle_group_list) And MeteoParticle <= UBound(particle_group_list) Then
@@ -728,21 +728,21 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
     Call Effect_Render_All
     
-    If Not BabelInitialized And IsSet(FeatureToggles, eEnableHotkeys) And g_game_state.state = e_state_gameplay_screen Then
-        Dim color(3) As RGBA
-        Call RGBAList(color, 255, 255, 255, 200)
+    If IsSet(FeatureToggles, eEnableHotkeys) And g_game_state.State = e_state_gameplay_screen Then
+        Dim Color(3) As RGBA
+        Call RGBAList(Color, 255, 255, 255, 200)
         Dim ArrowPos As Vector2
         ArrowPos.x = hotkey_arrow_posx
         ArrowPos.y = frmMain.renderer.Height - hotkey_arrow_posy
         If HideHotkeys Then
-            Call DrawSingleGrh(HideArrowGrh, ArrowPos, 1, 270, color)
+            Call DrawSingleGrh(HideArrowGrh, ArrowPos, 1, 270, Color)
         Else
             For i = 0 To 9
                 Call DrawHotkey(i, i * 36 + hotkey_render_posX, frmMain.renderer.Height - hotkey_render_posY)
             Next
-            Call DrawSingleGrh(HideArrowGrh, ArrowPos, 1, 90, color)
+            Call DrawSingleGrh(HideArrowGrh, ArrowPos, 1, 90, Color)
             If gDragState.active Then
-                Call Draw_GrhColor(gDragState.Grh, gDragState.PosX - 16 - frmMain.renderer.Left, gDragState.PosY - frmMain.renderer.Top - 16, color)
+                Call Draw_GrhColor(gDragState.grh, gDragState.PosX - 16 - frmMain.renderer.Left, gDragState.PosY - frmMain.renderer.Top - 16, Color)
             End If
         End If
     End If
@@ -791,17 +791,17 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         Call RGBAList(ColorBarraPesca, 255, 255, 255)
         Dim grh As grh
         grh.GrhIndex = GRH_BARRA_PESCA
-        Call Draw_Grh(Grh, 239 + gameplay_render_offset.x, 550 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
+        Call Draw_Grh(grh, 239 + gameplay_render_offset.x, 550 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
         grh.GrhIndex = GRH_CURSOR_PESCA
-        Call Draw_Grh(Grh, 271 + PosicionBarra + gameplay_render_offset.x, 558 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
+        Call Draw_Grh(grh, 271 + PosicionBarra + gameplay_render_offset.x, 558 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
         Debug.Print PescandoEspecial
         For i = 1 To MAX_INTENTOS
             If intentosPesca(i) = 1 Then
                 grh.GrhIndex = GRH_CIRCULO_VERDE
-                Call Draw_Grh(Grh, 394 + (i * 10) + gameplay_render_offset.x, 573 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
+                Call Draw_Grh(grh, 394 + (i * 10) + gameplay_render_offset.x, 573 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
             ElseIf intentosPesca(i) = 2 Then
                 grh.GrhIndex = GRH_CIRCULO_ROJO
-                Call Draw_Grh(Grh, 394 + (i * 10) + gameplay_render_offset.x, 573 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
+                Call Draw_Grh(grh, 394 + (i * 10) + gameplay_render_offset.x, 573 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
             End If
         Next i
                 
@@ -870,7 +870,7 @@ UpdateProjectile_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.UpdateProjectile_Err", Erl)
 End Function
 
-Public Sub InitializeProjectile(ByRef Projectile As Projectile, ByVal startX As Byte, ByVal startY As Byte, ByVal endX As Byte, ByVal endY As Byte, ByVal projectileType As Integer)
+Public Sub InitializeProjectile(ByRef Projectile As Projectile, ByVal StartX As Byte, ByVal StartY As Byte, ByVal endX As Byte, ByVal endY As Byte, ByVal projectileType As Integer)
 On Error GoTo InitializeProjectile_Err
     With ProjectileData(projectileType)
         Dim Index As Integer
@@ -880,19 +880,19 @@ On Error GoTo InitializeProjectile_Err
         Else
             'increase projectile active/ inactive/ instance arrays size
         End If
-        AllProjectile(Index).CurrentPos.x = startX * TilePixelWidth
-        AllProjectile(Index).CurrentPos.y = startY * TilePixelHeight
+        AllProjectile(Index).CurrentPos.x = StartX * TilePixelWidth
+        AllProjectile(Index).CurrentPos.y = StartY * TilePixelHeight
         AllProjectile(Index).TargetPos.x = endX * TilePixelWidth
         AllProjectile(Index).TargetPos.y = endY * TilePixelHeight
         AllProjectile(Index).speed = .speed
         AllProjectile(Index).RotationSpeed = .RotationSpeed
         AllProjectile(Index).GrhIndex = .grh
-        If endX > startX And .RigthGrh > 0 Then
+        If endX > StartX And .RigthGrh > 0 Then
             AllProjectile(Index).GrhIndex = .RigthGrh
             AllProjectile(Index).RotationSpeed = .RotationSpeed * -1
         End If
 
-        AllProjectile(Index).Rotation = RadToDeg(GetAngle(startX, endY, endX, startY))
+        AllProjectile(Index).Rotation = RadToDeg(GetAngle(StartX, endY, endX, StartY))
         AllProjectile(Index).Rotation = FixAngle(AllProjectile(Index).Rotation + .OffsetRotation)
         ActiveProjectile.CurrentIndex = ActiveProjectile.CurrentIndex + 1
         ActiveProjectile.IndexInfo(ActiveProjectile.CurrentIndex) = Index
@@ -929,7 +929,7 @@ Private Sub RenderScreen_NombreMapa()
                 map_letter_a = 0
                  
                 If map_letter_grh_next > 0 Then
-                    map_letter_grh.grhIndex = map_letter_grh_next
+                    map_letter_grh.GrhIndex = map_letter_grh_next
                     map_letter_fadestatus = 1
                     map_letter_grh_next = 0
 
@@ -946,9 +946,9 @@ Private Sub RenderScreen_NombreMapa()
         Dim Color(3) As RGBA
         Call RGBAList(Color(), 179, 95, 0, map_letter_a)
         
-        Call Grh_Render(letter_grh, 250 + gameplay_render_offset.x, 300 + gameplay_render_offset.y, color())
+        Call Grh_Render(letter_grh, 250 + gameplay_render_offset.x, 300 + gameplay_render_offset.y, Color())
         
-        Call Engine_Text_RenderGrande(letter_text, 360 - Engine_Text_Width(letter_text, False, 4) / 2 + gameplay_render_offset.x, 1 + gameplay_render_offset.y, color(), 5, False, , CInt(map_letter_a))
+        Call Engine_Text_RenderGrande(letter_text, 360 - Engine_Text_Width(letter_text, False, 4) / 2 + gameplay_render_offset.x, 1 + gameplay_render_offset.y, Color(), 5, False, , CInt(map_letter_a))
 
     End If
 

@@ -147,7 +147,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteGuildLeave
                 
             Case "/BALANCE"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -161,7 +161,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteRequestAccountState
                 
             Case "/QUIETO"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -174,7 +174,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WritePetStand
 
             Case "/ACOMPAÑAR"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -187,7 +187,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WritePetFollow
                 
             Case "/LIBERAR"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -200,7 +200,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WritePetLeave
             
             Case "/LIBERARTODOS", "/LIBERARTODAS"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -213,7 +213,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WritePetLeaveAll
                                 
             Case "/ENTRENAR"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -227,7 +227,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteTrainList
                 
             Case "/DESCANSAR"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -241,7 +241,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteRest
                 
             Case "/MEDITAR"
-                If UserStats.MinMAN = UserStats.MaxMAN Then
+                If UserStats.minman = UserStats.maxman Then
                     With FontTypes(FontTypeNames.FONTTYPE_INFOBOLD)
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_MANA_COMPLETO"), .red, .green, .blue, .bold, .italic)
                     End With
@@ -249,7 +249,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Exit Sub
                 End If
                 
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -285,7 +285,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteEventoInfo
                 
             Case "/COMERCIAR"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -308,7 +308,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteCommerceStart
                 
             Case "/BOVEDA"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -426,7 +426,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_OFERTA_CORRECTA"))
                 End If
                         
             Case "/DESC"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -464,7 +464,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
 
             
             Case "/APOSTAR"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -491,7 +491,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                 End If
                 
             Case "/RETIRAR"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -519,7 +519,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORRECTA_UTILICE"))
                 End If
                 
              Case "/RETIRARFACCION"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -536,7 +536,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORRECTA_UTILICE"))
                 End If
     
             Case "/DEPOSITAR"
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -564,12 +564,9 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                 
             Case "/DENUNCIAR"
                 If notNullArguments Then
-                    If BabelInitialized Then
-                        Call ShowQuestion("¿Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia.")
-                    Else
-                        PreguntaScreen = "¿Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia."
-                        Pregunta = True
-                    End If
+                    PreguntaScreen = "¿Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia."
+                    Pregunta = True
+
                     TargetName = ArgumentosRaw
                     PreguntaLocal = True
                     PreguntaNUM = 2
@@ -2014,7 +2011,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
             Case "/CONSOLA"
             
                 'Ojo, no usar notNullArguments porque se usa el string Vacío para borrar cartel.
-                If UserStats.Estado = 1 Then 'Muerto
+                If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTÁS_MUERTO_NO"), .red, .green, .blue, .bold, .italic)
@@ -2064,11 +2061,11 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_DEBES_SER_NIVEL"), .red, .green, 
 
                     For i = 0 To UBound(Names)
                         frmRetos.Jugador(i + 1).Text = Names(i)
-                        frmRetos.Jugador(i + 1).Visible = True
+                        frmRetos.Jugador(i + 1).visible = True
                     Next
                     
                     If UBound(Names) Mod 2 = 1 Then
-                        frmRetos.Jugador(UBound(Names) + 2).Visible = True
+                        frmRetos.Jugador(UBound(Names) + 2).visible = True
                     End If
                 End If
                 
@@ -2109,7 +2106,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_COMANDO_INVALIDO"))
         
     ElseIf Left$(Comando, 1) = "-" Then
 
-        If UserStats.Estado = 1 Then 'Muerto
+        If UserStats.estado = 1 Then 'Muerto
 
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -2165,14 +2162,14 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_PARAMETROS_INCORRECTOS"))
             Exit Sub
         End If
         Dim varName As String
-            Dim value As Byte
+            Dim Value As Byte
             varName = arguments(0)
             If Not ValidNumber(arguments(1), eNumber_Types.ent_Byte) Then
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_PARAMETROS_INCORRECTOS"))
                 Exit Sub
             End If
-            value = arguments(1)
-            Call WriteFeatureEnable(varName, value)
+            Value = arguments(1)
+            Call WriteFeatureEnable(varName, Value)
     End If
 End Sub
 
@@ -2184,15 +2181,15 @@ Private Sub HandleReqDebugCmd(ByRef arguments() As String, ByVal argCount As Int
             Dim eType As String
             eType = Trim$(UCase$(arguments(0)))
             If eType = "CONNECTION" Then
-                Dim username As String
+                Dim userName As String
                 Dim i As Integer
                 For i = 1 To argCount - 1
-                    username = username & arguments(i)
+                    userName = userName & arguments(i)
                     If i < argCount - 1 Then
-                        username = username & " "
+                        userName = userName & " "
                     End If
                 Next i
-                arguments(0) = username
+                arguments(0) = userName
                 Call WriteRequestDebug(e_DebugCommands.eConnectionState, arguments, 1)
             ElseIf eType = "USERIDS" Then
                 Call WriteRequestDebug(e_DebugCommands.eUserIdsState, arguments(), 0)
@@ -2241,7 +2238,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
 End Sub
 
-Private Sub StartCustomMap(ByVal mapType As Byte, ByVal name As String, ByRef arguments() As String, ByVal argCount As Integer)
+Private Sub StartCustomMap(ByVal mapType As Byte, ByVal Name As String, ByRef arguments() As String, ByVal argCount As Integer)
     If argCount >= 3 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
             Dim LobbyInfo As t_NewScenearioSettings
@@ -2252,10 +2249,10 @@ Private Sub StartCustomMap(ByVal mapType As Byte, ByVal name As String, ByRef ar
             Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
-            Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
+            Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & Name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
         End If
     Else
-        Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
+        Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & Name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
     End If
 End Sub
 
@@ -2503,7 +2500,7 @@ End Sub
 ' @param    bold Sets the font bold style.
 ' @param    italic Sets the font italic style.
 
-Public Sub ShowConsoleMsg(ByVal Message As String, Optional ByVal red As Integer = 255, Optional ByVal green As Integer = 255, Optional ByVal blue As Integer = 255, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False)
+Public Sub ShowConsoleMsg(ByVal message As String, Optional ByVal red As Integer = 255, Optional ByVal green As Integer = 255, Optional ByVal blue As Integer = 255, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False)
     '***************************************************
     'Author: Nicolas Matias Gonzalez (NIGO)
     'Last Modification: 01/03/07
@@ -2512,7 +2509,7 @@ Public Sub ShowConsoleMsg(ByVal Message As String, Optional ByVal red As Integer
     
     On Error GoTo ShowConsoleMsg_Err
     
-    Call AddtoRichTextBox(frmMain.RecTxt, Message, red, green, blue, bold, italic)
+    Call AddtoRichTextBox(frmMain.RecTxt, message, red, green, blue, bold, italic)
 
     
     Exit Sub
