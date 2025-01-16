@@ -163,10 +163,10 @@ Private Function GetAction(ByRef DefaultBinds As clsIniManager, ByRef UserBinds 
     End If
 End Function
 
-Private Function GetBind(ByRef DefaultBinds As clsIniManager, ByRef UserBinds As clsIniManager, ByVal Key As String) As String
-    GetBind = UserBinds.GetValue("USER", Key)
+Private Function GetBind(ByRef DefaultBinds As clsIniManager, ByRef UserBinds As clsIniManager, ByVal key As String) As String
+    GetBind = UserBinds.GetValue("USER", key)
     If GetBind = vbNullString Then
-        GetBind = DefaultBinds.GetValue("DEFAULTS", Key)
+        GetBind = DefaultBinds.GetValue("DEFAULTS", key)
     End If
 End Function
 
@@ -177,7 +177,7 @@ Public Sub SaveBindedKeys()
 
     Dim lC As Integer, Arch As String
 
-    Arch = App.Path & "\..\Recursos\OUTPUT\" & "Teclas.ini"
+    Arch = App.path & "\..\Recursos\OUTPUT\" & "Teclas.ini"
 
     Call General_Var_Write(Arch, "INIT", "NUMBINDS", Int(NUMBINDS))
 
@@ -270,7 +270,6 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If frmMain.Inventario.IsItemOnCd(frmMain.Inventario.GetActiveWeaponSlot) Then Exit Function
             If MainTimer.Check(TimersIndex.CastAttack, False) Then
                 If MainTimer.Check(TimersIndex.Attack) Then
-                    If BabelInitialized Then Call BabelUI.ActivateInterval(e_CdTypes.e_Melee)
                     Call MainTimer.Restart(TimersIndex.AttackSpell)
                     Call MainTimer.Restart(TimersIndex.AttackUse)
                     Set cooldown_ataque = New clsCooldown
@@ -473,45 +472,15 @@ End Sub
 
 Public Sub TirarItem()
     On Error GoTo TirarItem_Err
-    If BabelInitialized Then
-        If UserInventory.SelectedSlot > 0 And UserInventory.SelectedSlot <= MAX_INVENTORY_SLOTS Then
-            With UserInventory.Slots(UserInventory.SelectedSlot)
-                If .Amount = 1 Then
-                    If ObjData(.ObjIndex).Destruye = 0 Then
-                        Call WriteDrop(UserInventory.SelectedSlot, 1)
-                    Else
-                        If BabelInitialized Then
-                            Call ShowQuestion("El item se destruira al tirarlo ¿Esta seguro?")
-                        Else
-                            PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
-                            Pregunta = True
-                        End If
-                        DestItemSlot = UserInventory.SelectedSlot
-                        DestItemCant = 1
-                        PreguntaLocal = True
-                        PreguntaNUM = 1
-                    End If
-                ElseIf .Amount > 1 Then
-                    frmCantidad.Picture = LoadInterface("cantidad.bmp")
-                    frmCantidad.Show , frmBabelUI
-                End If
-            End With
-        ElseIf UserInventory.SelectedSlot = FLAGORO Then
-            frmCantidad.Picture = LoadInterface("cantidad.bmp")
-                    frmCantidad.Show , frmBabelUI
-        End If
-    Else
+    
         If (frmMain.Inventario.SelectedItem > 0 And frmMain.Inventario.SelectedItem < MAX_INVENTORY_SLOTS + 1) Or (frmMain.Inventario.SelectedItem = FLAGORO) Then
             If frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem) = 1 Then
                 If ObjData(frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem)).Destruye = 0 Then
                     Call WriteDrop(frmMain.Inventario.SelectedItem, 1)
                 Else
-                    If BabelInitialized Then
-                        Call ShowQuestion("El item se destruira al tirarlo ¿Esta seguro?")
-                    Else
-                        PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
-                        Pregunta = True
-                    End If
+                    PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+                    Pregunta = True
+
                     DestItemSlot = frmMain.Inventario.SelectedItem
                     DestItemCant = 1
                     PreguntaLocal = True
@@ -524,7 +493,6 @@ Public Sub TirarItem()
                 End If
             End If
         End If
-    End If
     
     Exit Sub
 
@@ -549,7 +517,7 @@ AgarrarItem_Err:
     
 End Sub
 
-Public Function BuscarObjEnInv(OBJIndex) As Byte
+Public Function BuscarObjEnInv(ObjIndex) As Byte
     
     On Error GoTo BuscarObjEnInv_Err
     
@@ -560,7 +528,7 @@ Public Function BuscarObjEnInv(OBJIndex) As Byte
 
     For i = 1 To 42
 
-        If frmMain.Inventario.OBJIndex(i) = OBJIndex Then
+        If frmMain.Inventario.ObjIndex(i) = ObjIndex Then
             BuscarObjEnInv = i
             Exit Function
 
@@ -592,8 +560,8 @@ Private Function MouseActionToString(ByVal Action As e_MouseAction) As String
     End Select
 End Function
 
-Private Function ParseMouseAction(ByVal Str As String) As e_MouseAction
-    Select Case Str
+Private Function ParseMouseAction(ByVal str As String) As e_MouseAction
+    Select Case str
         Case "THROW_LOOK"
             ParseMouseAction = e_MouseAction.eThrowOrLook
         Case "INTERACT"
@@ -607,13 +575,13 @@ Private Function ParseMouseAction(ByVal Str As String) As e_MouseAction
     End Select
 End Function
 
-Private Function ParseOldMouseAction(ByVal Str As String) As e_MouseAction
-    If Str = vbNullString Then
+Private Function ParseOldMouseAction(ByVal str As String) As e_MouseAction
+    If str = vbNullString Then
         ParseOldMouseAction = e_MouseAction.eUnknown
     End If
 
     Dim Value As Integer
-    Value = Val(Str)
+    Value = Val(str)
 
     Select Case Value
         Case 0
