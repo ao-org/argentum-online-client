@@ -3193,6 +3193,7 @@ End Sub
 
 
 Sub LoadFonts()
+#If REMOTE_CLOSE = 0 Then
     If LoadFont("Cardo.ttf") Then
         frmMain.NombrePJ.font.name = "Cardo"
     End If
@@ -3222,11 +3223,10 @@ Sub LoadFonts()
 
         Call SelLineSpacing(frmMain.RecTxt, 5, 22)
     End If
-    '#If PYMMO = 1 Then
-        Dim arr() As Byte
-        
-        ReDim arr(1 To 16) As Byte
-        
+#End If
+#If PYMMO = 1 Then
+    Dim arr() As Byte
+    ReDim arr(1 To 16) As Byte
     arr(15) = 1
     arr(16) = 62
     arr(4) = 7
@@ -3243,8 +3243,8 @@ Sub LoadFonts()
     arr(6) = 22
     arr(1) = 11
     arr(2) = 64
-        MapInfoEspeciales = estaInmovilizado(arr)
-    '#End If
+    MapInfoEspeciales = estaInmovilizado(arr)
+#End If
     
     #If DEBUGGING = 1 Then
         Debug.Print MapInfoEspeciales

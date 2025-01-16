@@ -176,8 +176,12 @@ Private Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
 End Sub
 
 Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+#If REMOTE_CLOSE = 0 Then
+
     Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_SERVIDOR_OFFLINE"), False, SessionOpened)
-    
+#Else
+    Debug.Print "SERVIDOR OFFLINE"
+#End If
 End Sub
 
 Private Sub Form_Activate()
@@ -438,13 +442,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 If frmCrearPersonaje.CheckData() Then
                     UserPassword = CuentaPassword
                     StopCreandoCuenta = True
-
                     If Connected And Not BabelInitialized Then
                         frmMain.ShowFPS.Enabled = True
                     End If
-                    
-                    'Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
-                    'TODO: Mostrar ventana de creación de personaje
                     EstadoLogin = E_MODO.CrearNuevoPj
                     frmConnecting.Show
                     Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)

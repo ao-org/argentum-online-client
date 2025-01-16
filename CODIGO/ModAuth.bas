@@ -990,7 +990,9 @@ Public Sub connectToLoginServer()
     frmConnect.AuthSocket.RemotePort = PuertoDelServidorLogin
     Debug.Print "Servidor de Login " & IPdelServidorLogin; ":" & PuertoDelServidorLogin
     frmConnect.AuthSocket.Connect
+#If REMOTE_CLOSE = 0 Then
     Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CONECTANDO_SERVIDOR"), True, False)
+#End If
     SessionOpened = False
     Auth_state = e_state.Idle
 End Sub
@@ -1059,10 +1061,17 @@ Public Sub HandlePCList(ByVal bytesTotal As Long)
     Dim decrypted_list As String
      
     decrypted_list = AO20CryptoSysWrapper.Decrypt(ByteArrayToHex(public_key), cnvStringFromHexStr(cnvToHex(encrypted_list)))
+#If REMOTE_CLOSE = 0 Then
     Call FillAccountData(decrypted_list)
+#End If
     Call DebugPrint("Decrypted_list: " & decrypted_list, 255, 255, 255, False)
             
     Auth_state = e_state.AccountLogged
+    
+#If REMOTE_CLOSE = 1 Then
+    LoginCharacter (CharacterRemote)
+#End If
+
 End Sub
 
 Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
@@ -1083,6 +1092,7 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
+#If REMOTE_CLOSE = 0 Then
         Select Case MakeInt(data(3), data(2))
             Case 1
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_INVALIDO"), False, False)
@@ -1106,6 +1116,28 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
 
         End Select
     End If
+#Else
+        Select Case MakeInt(data(3), data(2))
+            Case 1
+                Call SaveStringInFile("MENSAJEBOX_USUARIO_INVALIDO", "remote_debug.txt")
+            Case 4
+                Call SaveStringInFile("MENSAJEBOX_USUARIO_CONECTADO", "remote_debug.txt")
+            Case 5
+                Call SaveStringInFile("MENSAJEBOX_CONTRASENA_INVALIDA", "remote_debug.txt")
+            Case 6
+                Call SaveStringInFile("MENSAJEBOX_USUARIO_BANEADO", "remote_debug.txt")
+            Case 7
+                Call SaveStringInFile("MENSAJEBOX_SERVIDOR_MAX_USUARIOS", "remote_debug.txt")
+            Case 9
+                Call SaveStringInFile("MENSAJEBOX_CUENTA_NO_ACTIVADA", "remote_debug.txt")
+            Case 66
+                Call SaveStringInFile("MENSAJEBOX_ACTIVO_PATRON", "remote_debug.txt")
+            Case Else
+                Call SaveStringInFile("MENSAJEBOX_ACTUALIZAR_JUEGO", "remote_debug.txt")
+        End Select
+        prgRun = False
+    End If
+#End If
 End Sub
 
 Public Sub GotoPasswordReset()

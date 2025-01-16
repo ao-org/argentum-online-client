@@ -1039,9 +1039,77 @@ FileExist_Err:
     
 End Function
 
+    
+Public Sub SaveStringInFile(ByVal Cadena As String, ByVal nombreArchivo As String)
+On Error GoTo ErrorHandler
+    Dim fileNumber As Integer
+    fileNumber = FreeFile
+    Open nombreArchivo For Append As fileNumber
+    Print #fileNumber, Now & " " & Cadena ' O usa vbNewLine en lugar de vbCrLf si lo prefieres
+    Close #fileNumber
+    Exit Sub
+ErrorHandler:
+End Sub
+
+Sub parse_cmd_line_args()
+
+#If REMOTE_CLOSE = 1 Then
+    Call Application.DeleteFile("remote_debug.txt")
+    IPdelServidorLogin = "127.0.0.1"
+    PuertoDelServidorLogin = 4000
+    IPdelServidor = IPdelServidorLogin
+    PuertoDelServidor = 6501
+    CuentaEmail = "some@yahoo.com.ar"
+    CuentaPassword = "secret"
+    CharacterRemote = "rolo"
+    Dim sArgs() As String
+    Dim iLoop As Integer
+    sArgs = Split(command$, " ")
+    For iLoop = 0 To UBound(sArgs)
+        Debug.Print sArgs(iLoop)
+        Dim value() As String
+        value = Split(sArgs(iLoop), "=")
+        
+        If value(0) = "account" Then
+              CuentaEmail = value(1)
+        ElseIf value(0) = "password" Then
+            CuentaPassword = value(1)
+        ElseIf value(0) = "serverip" Then
+            IPdelServidorLogin = value(1)
+            IPdelServidor = value(1)
+        ElseIf value(0) = "lport" Then
+            PuertoDelServidorLogin = value(1)
+        ElseIf value(0) = "gport" Then
+            PuertoDelServidor = value(1)
+        ElseIf value(0) = "pc" Then
+            CharacterRemote = value(1)
+        End If
+        
+    Next
+    Call SaveStringInFile("Using IPdelServidorLogin: " & IPdelServidorLogin, "remote_debug.txt")
+    Call SaveStringInFile("Using PuertoDelServidorLogin: " & PuertoDelServidorLogin, "remote_debug.txt")
+    Call SaveStringInFile("Using IPdelServidor: " & IPdelServidor, "remote_debug.txt")
+    Call SaveStringInFile("Using PuertoDelServidor: " & PuertoDelServidor, "remote_debug.txt")
+    Call SaveStringInFile("Using CuentaEmail: " & CuentaEmail, "remote_debug.txt")
+    Call SaveStringInFile("Using CuentaPassword: " & CuentaPassword, "remote_debug.txt")
+    Call SaveStringInFile("Using CharacterRemote: " & CharacterRemote, "remote_debug.txt")
+#End If
+
+End Sub
+
+
 Sub Main()
 
 On Error GoTo Main_Err
+
+    Call parse_cmd_line_args
+    
+#If REMOTE_CLOSE Then
+    Call DoLogin("", "", False)
+    Call bot_main_loop
+    End
+#End If
+
     Call Application.DeleteFile(ao20config.GetErrorLogFilename())
     Call LoadConfig
     Call SetLanguageApplication
@@ -1134,6 +1202,8 @@ On Error GoTo Main_Err
     Call Start
 
     Set AudioEngine = Nothing
+
+    
     Exit Sub
 
 Main_Err:

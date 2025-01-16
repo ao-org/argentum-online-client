@@ -53,11 +53,38 @@ On Error GoTo HandleIncomingData_Err
     Dim PacketId As Long
     PacketId = Reader.ReadInt16
     
-    #If DEBUGGING Then
-        
-    #End If
-   ' Debug.Print PacketId
+#If REMOTE_CLOSE = 1 Then
+  Select Case PacketId
+    
+        Case ServerPacketID.eConnected
+            Call HandleConnected
+            Call SaveStringInFile("Authenticated with server OK", "remote_debug.txt")
+        Case ServerPacketID.elogged
+            Debug.Print "Logged"
+            Dim dummy As Boolean
+            dummy = Reader.ReadBool
+            Call SaveStringInFile("Logged with character " & CharacterRemote, "remote_debug.txt")
+            InitiateShutdownProcess = True
+            ShutdownProcessTimer.start
+        Case ServerPacketID.eLocaleMsg
+            Dim chat      As String
+            Dim FontIndex As Integer
+            Dim str       As String
+            PacketId = Reader.ReadInt16()
+            chat = Reader.ReadString8()
+            FontIndex = Reader.ReadInt8()
+            Call SaveStringInFile(chat, "remote_debug.txt")
+        Case Else
+            'don't care, just consume
+            Do While (message.GetAvailable() > 0)
+                PacketId = Reader.ReadInt8
+            Loop
+    End Select
+#Else
+
+    
     Select Case PacketId
+    
         Case ServerPacketID.eConnected
             Call HandleConnected
         Case ServerPacketID.elogged
@@ -278,8 +305,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleShowUserRequest
         Case ServerPacketID.eChangeUserTradeSlot
             Call HandleChangeUserTradeSlot
-        'Case ServerPacketID.SendNight
-        '    Call HandleSendNight
         Case ServerPacketID.eUpdateTagAndStatus
             Call HandleUpdateTagAndStatus
         Case ServerPacketID.eFYA
@@ -467,6 +492,7 @@ On Error GoTo HandleIncomingData_Err
         Case Else
             Err.Raise &HDEADBEEF, "Invalid Message"
     End Select
+#End If
     
     If (message.GetAvailable() > 0) Then
         Err.Raise &HDEADBEEF, "HandleIncomingData", "El paquete '" & PacketId & "' se encuentra en mal estado con '" & message.GetAvailable() & "' bytes de mas"
@@ -487,13 +513,10 @@ HandleIncomingData_Err:
 
 End Function
 
-''
-' Handles the Connected message.
-
 Private Sub HandleConnected()
-
+#If REMOTE_CLOSE = 0 Then
     If Not BabelInitialized Then frmMain.ShowFPS.enabled = True
-    
+#End If
     Call Login
 End Sub
 

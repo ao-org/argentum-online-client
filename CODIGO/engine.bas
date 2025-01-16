@@ -1564,7 +1564,7 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
 
                 End If
 
-                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True) + .dialog_offset_counter_y -34, temp_array, 1, True, MapData(x, y).charindex
+                Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - Engine_Text_Height(.dialog, True) + .dialog_offset_counter_y - 34, temp_array, 1, True, MapData(x, y).CharIndex
             Else
                 Engine_Text_Render .dialog, PixelOffsetX + 14 - CInt(Engine_Text_Width(.dialog, True) / 2), PixelY + .Body.HeadOffset.y - 34 - Engine_Text_Height(.dialog, True), temp_array, 1, True, MapData(x, y).charindex
 
@@ -2339,6 +2339,45 @@ Public Function IsCharVisible(ByVal charindex As Integer) As Boolean
 
 
 End Function
+
+#If REMOTE_CLOSE = 1 Then
+Public Sub bot_main_loop()
+On Error GoTo Start_Err
+    Call LoadFonts
+    prgRun = True
+    InitiateShutdownProcess = False
+    Dim countdown As Integer
+    countdown = 60
+    Do While prgRun
+        DoEvents
+        Call modNetwork.Poll
+        DoEvents
+        If InitiateShutdownProcess Then
+            If countdown > 0 And ShutdownProcessTimer.ElapsedSeconds > 5 Then
+                ShutdownProcessTimer.start
+                Call WriteGlobalMessage("WARNING: The server is going to close in " & countdown & " seconds for scheduled maintainance. Please disconnect from the game!!!")
+                Debug.Print "WARNING: The server is going to close in " & countdown & " seconds for scheduled maintainance. Please disconnect from the game!!!"
+                Call SaveStringInFile("WARNING: The server is going to close in " & countdown & " seconds for scheduled maintainance. Please disconnect from the game!!!", "remote_debug.txt")
+                countdown = countdown - 5
+            ElseIf countdown = 0 Then
+                Call WriteFeatureEnable("SGRACEFULLY", 1)
+                Call SaveStringInFile("Sent request to shutdown to the server", "remote_debug.txt")
+                countdown = -1
+            ElseIf countdown < 0 Then
+
+            End If
+            
+        End If
+    Loop
+
+    Exit Sub
+
+Start_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.Start", Erl)
+    Resume Next
+    
+End Sub
+#End If
 
 Public Sub Start()
 On Error GoTo Start_Err
