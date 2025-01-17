@@ -891,21 +891,7 @@ Check8_MouseUp_Err:
     Resume Next
 End Sub
 
-Private Sub CheckUI_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    On Error GoTo CheckUI_MouseUp_Err
-    
-    CheckUI.Picture = LoadInterface("check-amarillo.bmp")
-    Call MsgBox(JsonLanguage.Item("MENSAJEBOX_UI_DESHABILITADA"), vbExclamation)
-    CheckUI.Picture = Nothing
 
-   
-    
-    Exit Sub
-
-CheckUI_MouseUp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.CheckUI_MouseUp", Erl)
-    Resume Next
-End Sub
 
 Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo chkInvertir_MouseUp_Err
