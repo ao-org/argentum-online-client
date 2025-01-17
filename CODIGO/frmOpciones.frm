@@ -1107,7 +1107,7 @@ Private Sub cmdWeb_Click()
     
     On Error GoTo cmdWeb_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://argentumonline.com.ar/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/", "", "", 0
 
     
     Exit Sub
