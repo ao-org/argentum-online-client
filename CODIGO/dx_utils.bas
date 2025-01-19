@@ -17,6 +17,11 @@ Attribute VB_Name = "dx_utils"
 '
 Option Explicit
 
+Public DirectX As DirectX8
+Public DirectD3D8 As D3DX8
+Public DirectD3D As Direct3D8
+Public DirectDevice As Direct3DDevice8
+
 Public game_resolution As D3DDISPLAYMODE
 
 Public Sub get_game_resolution(ByRef mode As D3DDISPLAYMODE)

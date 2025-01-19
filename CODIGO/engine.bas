@@ -308,6 +308,11 @@ On Error Resume Next
         Call MsgBox(JsonLanguage.Item("MENSAJEBOX_DIRECTX_NO_FUNCIONA"), vbCritical, App.title)
         End
     End If
+#If DIRECT_PLAY = 1 Then
+    Call init_direct_play(DirectX)
+#End If
+    
+        
     
 #If DEBUGGING = 1 Then
     Call list_modes(DirectD3D)

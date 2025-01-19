@@ -27,19 +27,26 @@ Attribute VB_Name = "Protocol_Writes"
 '
 
 Option Explicit
+
+
+#If DIRECT_PLAY = 0 Then
 Private Writer As Network.Writer
 
 Public Function writer_is_nothing() As Boolean
-writer_is_nothing = Writer Is Nothing
+    writer_is_nothing = Writer Is Nothing
 End Function
 Public Sub Initialize()
-100     Set Writer = New Network.Writer
+    Set Writer = New Network.Writer
 End Sub
 
 Public Sub Clear()
-100     Call Writer.Clear
+    Call Writer.Clear
 End Sub
+#Else
 
+Public Writer As New clsNetWriter
+
+#End If
 
 
 #If PYMMO = 1 Then

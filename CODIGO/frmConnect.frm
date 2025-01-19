@@ -140,7 +140,135 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private Char As Byte
+
+Private SelectedCharIndex As Byte
+
+#If DIRECT_PLAY = 1 Then
+'We need to implement the Event model for DirectPlay so we can receive callbacks
+Implements DirectPlay8Event
+Implements DirectPlay8LobbyEvent
+Public mfGotEvent As Boolean
+Public mfConnectComplete As Boolean
+
+'We will handle all of the msgs here, and report them all back to the callback sub
+'in case the caller cares what's going on
+Private Sub DirectPlay8Event_AddRemovePlayerGroup(ByVal lMsgID As Long, ByVal lPlayerID As Long, ByVal lGroupID As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+    
+End Sub
+
+Private Sub DirectPlay8Event_AppDesc(fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+  
+End Sub
+
+Private Sub DirectPlay8Event_AsyncOpComplete(dpnotify As DxVBLibA.DPNMSG_ASYNC_OP_COMPLETE, fRejectMsg As Boolean)
+    If dpnotify.AsyncOpHandle = mlEnumAsync Then mlEnumAsync = 0
+    'VB requires that we must implement *every* member of this interface
+  
+End Sub
+
+Private Sub DirectPlay8Event_ConnectComplete(dpnotify As DxVBLibA.DPNMSG_CONNECT_COMPLETE, fRejectMsg As Boolean)
+    mfGotEvent = True
+    Debug.Print " DirectPlay8Event_ConnectComplete"
+    If dpnotify.hResultCode = DPNERR_SESSIONFULL Then 'Already too many people joined up
+        MsgBox "The maximum number of people allowed in this session have already joined.  Please choose a different session or create your own.", vbOKOnly Or vbInformation, "Full"
+    Else
+        'We got our connect complete event
+        mfConnectComplete = True
+    End If
+End Sub
+
+Private Sub DirectPlay8Event_CreateGroup(ByVal lGroupID As Long, ByVal lOwnerID As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_CreatePlayer(ByVal lPlayerID As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_DestroyGroup(ByVal lGroupID As Long, ByVal lReason As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_DestroyPlayer(ByVal lPlayerID As Long, ByVal lReason As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_EnumHostsQuery(dpnotify As DxVBLibA.DPNMSG_ENUM_HOSTS_QUERY, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_EnumHostsResponse(dpnotify As DxVBLibA.DPNMSG_ENUM_HOSTS_RESPONSE, fRejectMsg As Boolean)
+    'Go ahead and add this to our list
+    AddHostsToListBox dpnotify
+    'VB requires that we must implement *every* member of this interface
+    If (Not moCallback Is Nothing) Then moCallback.EnumHostsResponse dpnotify, fRejectMsg
+End Sub
+
+Private Sub DirectPlay8Event_HostMigrate(ByVal lNewHostID As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_IndicateConnect(dpnotify As DxVBLibA.DPNMSG_INDICATE_CONNECT, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_IndicatedConnectAborted(fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_InfoNotify(ByVal lMsgID As Long, ByVal lNotifyID As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_Receive(dpnotify As DxVBLibA.DPNMSG_RECEIVE, fRejectMsg As Boolean)
+    Debug.Print "DirectPlay8Event_Receive"
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_SendComplete(dpnotify As DxVBLibA.DPNMSG_SEND_COMPLETE, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_TerminateSession(dpnotify As DxVBLibA.DPNMSG_TERMINATE_SESSION, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8LobbyEvent_Connect(dlNotify As DxVBLibA.DPL_MESSAGE_CONNECT, fRejectMsg As Boolean)
+   Exit Sub
+ErrOut:
+    Debug.Print "Error:" & CStr(Err.Number) & " - " & Err.Description
+End Sub
+
+Private Sub DirectPlay8LobbyEvent_ConnectionSettings(ConnectionSettings As DxVBLibA.DPL_MESSAGE_CONNECTION_SETTINGS)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8LobbyEvent_Disconnect(ByVal DisconnectID As Long, ByVal lReason As Long)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8LobbyEvent_Receive(dlNotify As DxVBLibA.DPL_MESSAGE_RECEIVE, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8LobbyEvent_SessionStatus(ByVal status As Long, ByVal lHandle As Long)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    'Clean up our lobbied app
+    If Not (moDPLA Is Nothing) Then
+        moDPLA.Close
+    End If
+    Set moDPLA = Nothing
+    'Clean up our address
+    Set moDPA = Nothing
+End Sub
+#End If
+
+
 
 
 Private Sub AuthSocket_Connect()
@@ -555,14 +683,14 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     frmConnect.txtNombre.SetFocus
                     Call ao20audio.PlayWav(SND_DICE)
                Case e_action_transfer_character
-                    If Char = 0 Then Exit Sub
-                    TransferCharname = Pjs(Char).nombre
+                    If SelectedCharIndex = 0 Then Exit Sub
+                    TransferCharname = Pjs(SelectedCharIndex).nombre
                     If MsgBox(JsonLanguage.Item("MENSAJEBOX_TRANSFERIR_PERSONAJE") & TransferCharname & JsonLanguage.Item("MENSAJEBOX_A_OTRA_CUENTA"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJEBOX_TRANSFERIR_TITULO")) = vbYes Then
                         frmTransferChar.Show , frmConnect
                     End If
                 Case e_action_delete_character
-                    If Char = 0 Then Exit Sub
-                    DeleteUser = Pjs(Char).nombre
+                    If SelectedCharIndex = 0 Then Exit Sub
+                    DeleteUser = Pjs(SelectedCharIndex).nombre
                     If MsgBox(JsonLanguage.Item("MENSAJEBOX_BORRAR_PERSONAJE") & DeleteUser & JsonLanguage.Item("MENSAJEBOX_DE_LA_CUENTA"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJEBOX_BORRAR_TITULO")) = vbYes Then
                         ModAuth.LoginOperation = e_operation.deletechar
                         Call connectToLoginServer
@@ -578,7 +706,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
                     End If
             End Select
-            Char = PJSeleccionado
+            SelectedCharIndex = PJSeleccionado
             If PJSeleccionado = 0 Then Exit Sub
             If PJSeleccionado > CantidadDePersonajesEnCuenta Then Exit Sub
         
