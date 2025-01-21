@@ -1431,7 +1431,7 @@ Public Sub Init()
         Check4.Picture = LoadInterface("check-amarillo.bmp")
     End If
     
-    CheckUI.Picture = Nothing
+    
 
     
     
