@@ -109,8 +109,14 @@ Private Sub LogUnsupportedControl(ByRef aControl As Control)
     Dim controlType As String
 
     On Error Resume Next
-    controlName = aControl.Name
-    controlType = TypeName(aControl)
+    ' Ensure the control is valid before accessing properties
+    If Not aControl Is Nothing Then
+        controlName = aControl.Name
+        controlType = TypeName(aControl)
+    Else
+        controlName = "(Unknown)"
+        controlType = "(Unknown)"
+    End If
     On Error GoTo 0
 
     ' Log the unsupported control details
@@ -118,13 +124,6 @@ Private Sub LogUnsupportedControl(ByRef aControl As Control)
                         "Mouse properties not supported by control: " & _
                         "Name='" & controlName & "', Type='" & controlType & "'", _
                         "clsCursor.Parse_Form - Unsupported Control", 0)
-End Sub
-
-
-Parse_Form_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsCursor.Parse_Form", Erl)
-    Resume Next
-    
 End Sub
  
 Public Function GetDefaultCursor(ByRef aFrm As Form) As CursorType
