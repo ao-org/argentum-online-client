@@ -1013,8 +1013,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     Call ao20audio.PlayWav(SND_DICE)
                 Case e_action_delete_character
 
-                    If Char = 0 Then Exit Sub
-                    DeleteUser = Pjs(Char).nombre
+                    If SelectedCharIndex = 0 Then Exit Sub
+                    DeleteUser = Pjs(SelectedCharIndex).nombre
 
                     Dim tmp As String
 
@@ -1060,7 +1060,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End Select
 
-            Char = PJSeleccionado
+            SelectedCharIndex = PJSeleccionado
  
             If PJSeleccionado = 0 Then Exit Sub
             If PJSeleccionado > CantidadDePersonajesEnCuenta Then Exit Sub
