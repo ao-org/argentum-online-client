@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.ocx"
+Object = "{48E59290-9880-11CF-9754-00AA00C00908}#1.0#0"; "MSINET.OCX"
 Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmConnect 
    Appearance      =   0  'Flat
@@ -140,7 +140,135 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
-Private Char As Byte
+
+Private SelectedCharIndex As Byte
+
+#If DIRECT_PLAY = 1 Then
+'We need to implement the Event model for DirectPlay so we can receive callbacks
+Implements DirectPlay8Event
+Implements DirectPlay8LobbyEvent
+Public mfGotEvent As Boolean
+Public mfConnectComplete As Boolean
+
+'We will handle all of the msgs here, and report them all back to the callback sub
+'in case the caller cares what's going on
+Private Sub DirectPlay8Event_AddRemovePlayerGroup(ByVal lMsgID As Long, ByVal lPlayerID As Long, ByVal lGroupID As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+    
+End Sub
+
+Private Sub DirectPlay8Event_AppDesc(fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+  
+End Sub
+
+Private Sub DirectPlay8Event_AsyncOpComplete(dpnotify As DxVBLibA.DPNMSG_ASYNC_OP_COMPLETE, fRejectMsg As Boolean)
+    If dpnotify.AsyncOpHandle = mlEnumAsync Then mlEnumAsync = 0
+    'VB requires that we must implement *every* member of this interface
+  
+End Sub
+
+Private Sub DirectPlay8Event_ConnectComplete(dpnotify As DxVBLibA.DPNMSG_CONNECT_COMPLETE, fRejectMsg As Boolean)
+    mfGotEvent = True
+    Debug.Print " DirectPlay8Event_ConnectComplete"
+    If dpnotify.hResultCode = DPNERR_SESSIONFULL Then 'Already too many people joined up
+        MsgBox "The maximum number of people allowed in this session have already joined.  Please choose a different session or create your own.", vbOKOnly Or vbInformation, "Full"
+    Else
+        'We got our connect complete event
+        mfConnectComplete = True
+    End If
+End Sub
+
+Private Sub DirectPlay8Event_CreateGroup(ByVal lGroupID As Long, ByVal lOwnerID As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_CreatePlayer(ByVal lPlayerID As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_DestroyGroup(ByVal lGroupID As Long, ByVal lReason As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_DestroyPlayer(ByVal lPlayerID As Long, ByVal lReason As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_EnumHostsQuery(dpnotify As DxVBLibA.DPNMSG_ENUM_HOSTS_QUERY, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_EnumHostsResponse(dpnotify As DxVBLibA.DPNMSG_ENUM_HOSTS_RESPONSE, fRejectMsg As Boolean)
+    'Go ahead and add this to our list
+    AddHostsToListBox dpnotify
+    'VB requires that we must implement *every* member of this interface
+    If (Not moCallback Is Nothing) Then moCallback.EnumHostsResponse dpnotify, fRejectMsg
+End Sub
+
+Private Sub DirectPlay8Event_HostMigrate(ByVal lNewHostID As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_IndicateConnect(dpnotify As DxVBLibA.DPNMSG_INDICATE_CONNECT, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_IndicatedConnectAborted(fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_InfoNotify(ByVal lMsgID As Long, ByVal lNotifyID As Long, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_Receive(dpnotify As DxVBLibA.DPNMSG_RECEIVE, fRejectMsg As Boolean)
+    Debug.Print "DirectPlay8Event_Receive"
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_SendComplete(dpnotify As DxVBLibA.DPNMSG_SEND_COMPLETE, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8Event_TerminateSession(dpnotify As DxVBLibA.DPNMSG_TERMINATE_SESSION, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8LobbyEvent_Connect(dlNotify As DxVBLibA.DPL_MESSAGE_CONNECT, fRejectMsg As Boolean)
+   Exit Sub
+ErrOut:
+    Debug.Print "Error:" & CStr(Err.Number) & " - " & Err.Description
+End Sub
+
+Private Sub DirectPlay8LobbyEvent_ConnectionSettings(ConnectionSettings As DxVBLibA.DPL_MESSAGE_CONNECTION_SETTINGS)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8LobbyEvent_Disconnect(ByVal DisconnectID As Long, ByVal lReason As Long)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8LobbyEvent_Receive(dlNotify As DxVBLibA.DPL_MESSAGE_RECEIVE, fRejectMsg As Boolean)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub DirectPlay8LobbyEvent_SessionStatus(ByVal status As Long, ByVal lHandle As Long)
+    'VB requires that we must implement *every* member of this interface
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    'Clean up our lobbied app
+    If Not (moDPLA Is Nothing) Then
+        moDPLA.Close
+    End If
+    Set moDPLA = Nothing
+    'Clean up our address
+    Set moDPA = Nothing
+End Sub
+#End If
+
+
 
 
 Private Sub AuthSocket_Connect()
@@ -157,7 +285,7 @@ Private Sub AuthSocket_Connect()
                 Auth_state = e_state.RequestForgotPassword
             Case e_operation.ResetPassword
                 Auth_state = e_state.RequestResetPassword
-            Case e_operation.DeleteChar
+            Case e_operation.deletechar
                 Auth_state = e_state.RequestDeleteChar
             Case e_operation.ConfirmDeleteChar
                 Auth_state = e_state.ConfirmDeleteChar
@@ -171,13 +299,17 @@ Private Sub AuthSocket_Connect()
     
 End Sub
 
-Private Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
-    ModAuth.AuthSocket_DataArrival bytesTotal
+Private Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
+    ModAuth.AuthSocket_DataArrival BytesTotal
 End Sub
 
-Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal Source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+#If REMOTE_CLOSE = 0 Then
+
     Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_SERVIDOR_OFFLINE"), False, SessionOpened)
-    
+#Else
+    Debug.Print "SERVIDOR OFFLINE"
+#End If
 End Sub
 
 Private Sub Form_Activate()
@@ -225,8 +357,8 @@ Private Sub Form_Load()
     
     EngineRun = False
         
-    Timer2.Enabled = True
-    Timer1.Enabled = True
+    Timer2.enabled = True
+    Timer1.enabled = True
     
     ' Seteamos el caption hay que poner 20 aniversario
     Me.Caption = "Argentum20"
@@ -235,8 +367,8 @@ Private Sub Form_Load()
     Call Form_RemoveTitleBar(Me)
     Debug.Assert D3DWindow.BackBufferWidth <> 0
     Debug.Assert D3DWindow.BackBufferHeight <> 0
-    Me.Width = D3DWindow.BackBufferWidth * Screen.TwipsPerPixelX
-    Me.Height = D3DWindow.BackBufferHeight * Screen.TwipsPerPixelY
+    Me.Width = D3DWindow.BackBufferWidth * screen.TwipsPerPixelX
+    Me.Height = D3DWindow.BackBufferHeight * screen.TwipsPerPixelY
     
     Exit Sub
 
@@ -248,13 +380,13 @@ End Sub
 
 Private Sub render_DblClick()
 On Error GoTo render_DblClick_Err
-    Select Case g_game_state.state()
+    Select Case g_game_state.State()
 
         Case e_state_account_screen
             
             If PJSeleccionado < 1 Then Exit Sub
 
-            Call ao20audio.playwav(SND_CLICK)
+            Call ao20audio.PlayWav(SND_CLICK)
 
             If IntervaloPermiteConectar Then
                 Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
@@ -280,7 +412,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo render_MouseUp_Err
     
-    Select Case g_game_state.state()
+    Select Case g_game_state.State()
 
         Case e_state_createchar_screen
             If x > 282 And x < 322 And y > 428 And y < 468 Then 'Boton heading
@@ -403,12 +535,12 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
             
             If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
-                Call ao20audio.playwav(SND_CLICK)
+                Call ao20audio.PlayWav(SND_CLICK)
                 AlphaNiebla = 25
                 EntradaY = 1
                 EntradaX = 1
-                frmConnect.txtNombre.Visible = False
-                g_game_state.state = e_state_account_screen
+                frmConnect.txtNombre.visible = False
+                g_game_state.State = e_state_account_screen
                 Call Graficos_Particulas.Engine_Select_Particle_Set(203)
                 ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
 
@@ -416,15 +548,15 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
             
             If x >= 532 And x < 532 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Crear
-                Call ao20audio.playwav(SND_CLICK)
+                Call ao20audio.PlayWav(SND_CLICK)
 
                 Dim k As Object
 
                 
-                UserName = frmConnect.txtNombre.Text
+                userName = frmConnect.txtNombre.Text
                 
                 Dim Error As String
-                If Not ValidarNombre(UserName, Error) Then
+                If Not ValidarNombre(userName, Error) Then
                     frmMensaje.msg.Caption = Error
                     frmMensaje.Show , Me
                     Exit Sub
@@ -438,13 +570,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 If frmCrearPersonaje.CheckData() Then
                     UserPassword = CuentaPassword
                     StopCreandoCuenta = True
-
-                    If Connected And Not BabelInitialized Then
-                        frmMain.ShowFPS.Enabled = True
+                    If Connected Then
+                        frmMain.ShowFPS.enabled = True
                     End If
-                    
-                    'Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
-                    'TODO: Mostrar ventana de creación de personaje
                     EstadoLogin = E_MODO.CrearNuevoPj
                     frmConnecting.Show
                     Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
@@ -549,22 +677,22 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     CPHeading = 3
                     CPEquipado = True
                     Call SwitchMap(UserMap)
-                    g_game_state.state = e_state_createchar_screen
+                    g_game_state.State = e_state_createchar_screen
                     Call IniciarCrearPj
-                    frmConnect.txtNombre.Visible = True
+                    frmConnect.txtNombre.visible = True
                     frmConnect.txtNombre.SetFocus
-                    Call ao20audio.playwav(SND_DICE)
+                    Call ao20audio.PlayWav(SND_DICE)
                Case e_action_transfer_character
-                    If Char = 0 Then Exit Sub
-                    TransferCharname = Pjs(Char).nombre
+                    If SelectedCharIndex = 0 Then Exit Sub
+                    TransferCharname = Pjs(SelectedCharIndex).nombre
                     If MsgBox(JsonLanguage.Item("MENSAJEBOX_TRANSFERIR_PERSONAJE") & TransferCharname & JsonLanguage.Item("MENSAJEBOX_A_OTRA_CUENTA"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJEBOX_TRANSFERIR_TITULO")) = vbYes Then
                         frmTransferChar.Show , frmConnect
                     End If
                 Case e_action_delete_character
-                    If Char = 0 Then Exit Sub
-                    DeleteUser = Pjs(Char).nombre
+                    If SelectedCharIndex = 0 Then Exit Sub
+                    DeleteUser = Pjs(SelectedCharIndex).nombre
                     If MsgBox(JsonLanguage.Item("MENSAJEBOX_BORRAR_PERSONAJE") & DeleteUser & JsonLanguage.Item("MENSAJEBOX_DE_LA_CUENTA"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJEBOX_BORRAR_TITULO")) = vbYes Then
-                        ModAuth.LoginOperation = e_operation.DeleteChar
+                        ModAuth.LoginOperation = e_operation.deletechar
                         Call connectToLoginServer
                         frmDeleteChar.Show , frmConnect
                     End If
@@ -574,11 +702,11 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 Case e_action_login_character
                     If PJSeleccionado < 1 Then Exit Sub
                     If IntervaloPermiteConectar Then
-                        Call ao20audio.playwav(SND_CLICK)
+                        Call ao20audio.PlayWav(SND_CLICK)
                         Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
                     End If
             End Select
-            Char = PJSeleccionado
+            SelectedCharIndex = PJSeleccionado
             If PJSeleccionado = 0 Then Exit Sub
             If PJSeleccionado > CantidadDePersonajesEnCuenta Then Exit Sub
         
@@ -616,7 +744,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     On Error GoTo render_MouseUp_Err
     
 
-    Select Case g_game_state.state()
+    Select Case g_game_state.State()
 
 
         Case e_state_createchar_screen
@@ -743,7 +871,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             
             If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
-                Call ao20audio.playwav(SND_CLICK)
+                Call ao20audio.PlayWav(SND_CLICK)
                 'UserMap = 323
                 AlphaNiebla = 25
                 EntradaY = 1
@@ -751,7 +879,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 
                 'Call SwitchMap(UserMap)
                 frmConnect.txtNombre.visible = False
-                g_game_state.state = e_state_account_screen
+                g_game_state.State = e_state_account_screen
                 
                 Call Graficos_Particulas.Engine_Select_Particle_Set(203)
                 ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
@@ -760,15 +888,15 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
             
             If x >= 532 And x < 532 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Crear
-                Call ao20audio.playwav(SND_CLICK)
+                Call ao20audio.PlayWav(SND_CLICK)
 
                 Dim k As Object
 
                 
-                username = frmConnect.txtNombre.Text
+                userName = frmConnect.txtNombre.Text
                 
                 Dim Error As String
-                If Not ValidarNombre(username, Error) Then
+                If Not ValidarNombre(userName, Error) Then
                     frmMensaje.msg.Caption = Error
                     frmMensaje.Show , Me
                     Exit Sub
@@ -783,11 +911,11 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     UserPassword = CuentaPassword
                     StopCreandoCuenta = True
 
-                    If Connected And Not BabelInitialized Then
+                    If Connected Then
                         frmMain.ShowFPS.enabled = True
                     End If
           
-                    Call Protocol_Writes.WriteLoginNewChar(UserName, UserStats.Raza, UserStats.Sexo, UserStats.Clase, MiCabeza, UserStats.Hogar)
+                    Call Protocol_Writes.WriteLoginNewChar(userName, UserStats.Raza, UserStats.Sexo, UserStats.Clase, MiCabeza, UserStats.Hogar)
                 End If
             End If
 
@@ -875,14 +1003,14 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     CPHeading = 3
                     CPEquipado = True
                     Call SwitchMap(UserMap)
-                    g_game_state.state = e_state_createchar_screen
+                    g_game_state.State = e_state_createchar_screen
  
 
                     Call IniciarCrearPj
                     frmConnect.txtNombre.visible = True
                     frmConnect.txtNombre.SetFocus
         
-                    Call ao20audio.playwav(SND_DICE)
+                    Call ao20audio.PlayWav(SND_DICE)
                 Case e_action_delete_character
 
                     If Char = 0 Then Exit Sub
@@ -911,7 +1039,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                         Pjs(i).Body = 0
                         Pjs(i).Head = 0
                         Pjs(i).Mapa = 0
-                        Pjs(i).nivel = 0
+                        Pjs(i).Nivel = 0
                         Pjs(i).nombre = ""
                         Pjs(i).Clase = 0
                         Pjs(i).Criminal = 0
@@ -925,7 +1053,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     If PJSeleccionado < 1 Then Exit Sub
 
                     If IntervaloPermiteConectar Then
-                        Call ao20audio.playwav(SND_CLICK)
+                        Call ao20audio.PlayWav(SND_CLICK)
                         Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
 
                     End If

@@ -17,7 +17,7 @@ Attribute VB_Name = "Mod_General"
 '
 Option Explicit
 
-Private Declare Function SetDllDirectory Lib "kernel32" Alias "SetDllDirectoryA" (ByVal Path As String) As Long
+Private Declare Function SetDllDirectory Lib "kernel32" Alias "SetDllDirectoryA" (ByVal path As String) As Long
 Private Declare Function svb_init_steam Lib "steam_vb.dll" (ByVal appid As Long) As Long
 Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 Private Declare Function svb_retlong Lib "steam_vb.dll" (ByVal Number As Long) As Long
@@ -47,7 +47,7 @@ Private Type tWorldPos
 
 End Type
 
-Private Type Grh
+Private Type grh
 
     GrhIndex As Long
     framecounter As Single
@@ -328,27 +328,6 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Opt
                      Optional ByVal bCrLf As Boolean = False)
     
     On Error GoTo AddtoRichTextBox_Err
-    
-    If BabelInitialized And frmMain.RecTxt = RichTextBox Then
-        Dim message As t_ChatMessage
-        message.Text = Text
-        message.TextColor.r = red
-        message.TextColor.G = green
-        message.TextColor.b = blue
-        message.BoldText = bold
-        message.ItalicText = italic
-        Call SendChatMessage(message)
-        Exit Sub
-    End If
-    '******************************************
-    'Adds text to a Richtext box at the bottom.
-    'Automatically scrolls to new text.
-    'Text box MUST be multiline and have a 3D
-    'apperance!
-    'Pablo (ToxicWaste) 01/26/2007 : Now the list refeshes properly.
-    'Juan Martín Sotuyo Dodero (Maraxus) 03/29/2007 : Replaced ToxicWaste's code for extra performance.
-    'Ladder 17/12/20 agrego que la barra no se nos baje si estamos haciedno scroll. Gracias barrin tkm
-    '******************************************r
     Dim bUrl As Boolean
     Dim sMax As Long
     Dim sPos As Long
@@ -697,7 +676,7 @@ Sub SetConnected()
          If MostrarTutorial And tutorial_index <= 0 Then
             If tutorial(e_tutorialIndex.TUTORIAL_NUEVO_USER).Activo = 1 Then
                 tutorial_index = e_tutorialIndex.TUTORIAL_NUEVO_USER
-                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).Grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 490, 50, 100)
+                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 490, 50, 100)
             End If
         End If
     End If
@@ -1039,9 +1018,77 @@ FileExist_Err:
     
 End Function
 
+    
+Public Sub SaveStringInFile(ByVal Cadena As String, ByVal nombreArchivo As String)
+On Error GoTo ErrorHandler
+    Dim fileNumber As Integer
+    fileNumber = FreeFile
+    Open nombreArchivo For Append As fileNumber
+    Print #fileNumber, Now & " " & Cadena ' O usa vbNewLine en lugar de vbCrLf si lo prefieres
+    Close #fileNumber
+    Exit Sub
+ErrorHandler:
+End Sub
+
+Sub parse_cmd_line_args()
+
+#If REMOTE_CLOSE = 1 Then
+    Call Application.DeleteFile("remote_debug.txt")
+    IPdelServidorLogin = "127.0.0.1"
+    PuertoDelServidorLogin = 4000
+    IPdelServidor = IPdelServidorLogin
+    PuertoDelServidor = 6501
+    CuentaEmail = "some@yahoo.com.ar"
+    CuentaPassword = "secret"
+    CharacterRemote = "rolo"
+    Dim sArgs() As String
+    Dim iLoop As Integer
+    sArgs = Split(command$, " ")
+    For iLoop = 0 To UBound(sArgs)
+        Debug.Print sArgs(iLoop)
+        Dim Value() As String
+        Value = Split(sArgs(iLoop), "=")
+        
+        If Value(0) = "account" Then
+              CuentaEmail = Value(1)
+        ElseIf Value(0) = "password" Then
+            CuentaPassword = Value(1)
+        ElseIf Value(0) = "serverip" Then
+            IPdelServidorLogin = Value(1)
+            IPdelServidor = Value(1)
+        ElseIf Value(0) = "lport" Then
+            PuertoDelServidorLogin = Value(1)
+        ElseIf Value(0) = "gport" Then
+            PuertoDelServidor = Value(1)
+        ElseIf Value(0) = "pc" Then
+            CharacterRemote = Value(1)
+        End If
+        
+    Next
+    Call SaveStringInFile("Using IPdelServidorLogin: " & IPdelServidorLogin, "remote_debug.txt")
+    Call SaveStringInFile("Using PuertoDelServidorLogin: " & PuertoDelServidorLogin, "remote_debug.txt")
+    Call SaveStringInFile("Using IPdelServidor: " & IPdelServidor, "remote_debug.txt")
+    Call SaveStringInFile("Using PuertoDelServidor: " & PuertoDelServidor, "remote_debug.txt")
+    Call SaveStringInFile("Using CuentaEmail: " & CuentaEmail, "remote_debug.txt")
+    Call SaveStringInFile("Using CuentaPassword: " & CuentaPassword, "remote_debug.txt")
+    Call SaveStringInFile("Using CharacterRemote: " & CharacterRemote, "remote_debug.txt")
+#End If
+
+End Sub
+
+
 Sub Main()
 
 On Error GoTo Main_Err
+
+    Call parse_cmd_line_args
+    
+#If REMOTE_CLOSE Then
+    Call DoLogin("", "", False)
+    Call bot_main_loop
+    End
+#End If
+
     Call Application.DeleteFile(ao20config.GetErrorLogFilename())
     Call LoadConfig
     Call SetLanguageApplication
@@ -1089,12 +1136,8 @@ On Error GoTo Main_Err
     CheckMD5 = GetMd5
     SessionOpened = False
     
-    If CheckAndSetBabelUIUsage Then
-        Call InitializeUI(D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, BytesPerPixel)
-    Else
-        Call Load(frmConnect)
-        Call Load(FrmLogear)
-    End If
+    Call Load(frmConnect)
+    Call Load(FrmLogear)
     
     Windows_Temp_Dir = General_Get_Temp_Dir
 
@@ -1134,6 +1177,8 @@ On Error GoTo Main_Err
     Call Start
 
     Set AudioEngine = Nothing
+
+    
     Exit Sub
 
 Main_Err:
@@ -1668,13 +1713,13 @@ General_Get_Elapsed_Time_Err:
 End Function
 
 
-Public Function max(ByVal A As Variant, ByVal b As Variant) As Variant
+Public Function max(ByVal a As Variant, ByVal b As Variant) As Variant
     
     On Error GoTo max_Err
     
 
-    If A > b Then
-        max = A
+    If a > b Then
+        max = a
     Else
         max = b
 
@@ -1689,13 +1734,13 @@ max_Err:
     
 End Function
 
-Public Function min(ByVal A As Double, ByVal b As Double) As Variant
+Public Function min(ByVal a As Double, ByVal b As Double) As Variant
     
     On Error GoTo min_Err
     
 
-    If A < b Then
-        min = A
+    If a < b Then
+        min = a
     Else
         min = b
 
@@ -1710,19 +1755,19 @@ min_Err:
     
 End Function
 
-Public Function Clamp(ByVal A As Variant, ByVal min As Variant, ByVal max As Variant) As Variant
+Public Function Clamp(ByVal a As Variant, ByVal min As Variant, ByVal max As Variant) As Variant
     
     On Error GoTo min_Err
     
 
-    If A < min Then
+    If a < min Then
         Clamp = min
     
-    ElseIf A > max Then
+    ElseIf a > max Then
         Clamp = max
 
     Else
-        Clamp = A
+        Clamp = a
     End If
 
     
@@ -1737,7 +1782,7 @@ End Function
 
 Public Function LoadInterface(FileName As String, Optional localize As Boolean = True) As IPicture
 
-On Error GoTo ErrHandler
+On Error GoTo errhandler
     
     If localize Then
         Select Case language
@@ -1758,14 +1803,14 @@ On Error GoTo ErrHandler
     End If
 Exit Function
 
-ErrHandler:
+errhandler:
     MsgBox "Error al cargar la interface: " & FileName
 
 End Function
 
 Public Function LoadMinimap(ByVal map As Integer) As IPicture
 
-On Error GoTo ErrHandler
+On Error GoTo errhandler
 
     #If Compresion = 1 Then
         Set LoadMinimap = General_Load_Minimap_From_Resource_Ex("mapa" & map & ".bmp", ResourcesPassword)
@@ -1775,17 +1820,17 @@ On Error GoTo ErrHandler
     
 Exit Function
 
-ErrHandler:
+errhandler:
     MsgBox "Error al cargar minimapa: Mapa" & map & ".bmp"
 
 End Function
 
-Public Function Tilde(ByRef data As String) As String
+Public Function Tilde(ByRef Data As String) As String
     
     On Error GoTo Tilde_Err
     
 
-    Tilde = UCase$(data)
+    Tilde = UCase$(Data)
  
     Tilde = Replace$(Tilde, "Á", "A")
     Tilde = Replace$(Tilde, "É", "E")
@@ -1884,24 +1929,24 @@ End Function
 
 Public Sub CheckResources()
 
-    Dim data(1 To 200) As Byte
+    Dim Data(1 To 200) As Byte
     
-    Dim Handle As Integer
-    Handle = FreeFile
+    Dim handle As Integer
+    handle = FreeFile
 
-    Open App.path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #Handle
+    Open App.path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #handle
     
-    Get #Handle, , data
+    Get #handle, , Data
     
-    Close #Handle
+    Close #handle
     
-    Dim length As Integer
-    length = data(UBound(data)) + data(UBound(data) - 1) * 256
+    Dim Length As Integer
+    Length = Data(UBound(Data)) + Data(UBound(Data) - 1) * 256
 
     Dim i As Integer
     
-    For i = 1 To length
-        ResourcesPassword = ResourcesPassword & Chr(data(i * 3 - 1) Xor 37)
+    For i = 1 To Length
+        ResourcesPassword = ResourcesPassword & Chr(Data(i * 3 - 1) Xor 37)
     Next
 
 End Sub
@@ -1913,12 +1958,12 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
         Exit Function
     End If
     
-    Dim temp As String
-    temp = UCase$(nombre)
+    Dim Temp As String
+    Temp = UCase$(nombre)
     
     Dim i As Long, Char As Integer, LastChar As Integer
-    For i = 1 To Len(temp)
-        Char = Asc(mid$(temp, i, 1))
+    For i = 1 To Len(Temp)
+        Char = Asc(mid$(Temp, i, 1))
         
         If (Char < 65 Or Char > 90) And Char <> 32 Then
             Error = JsonLanguage.Item("ERROR_CARACTERES_INVALIDOS")
@@ -1932,7 +1977,7 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
         LastChar = Char
     Next
 
-    If Asc(mid$(temp, 1, 1)) = 32 Or Asc(mid$(temp, Len(temp), 1)) = 32 Then
+    If Asc(mid$(Temp, 1, 1)) = 32 Or Asc(mid$(Temp, Len(Temp), 1)) = 32 Then
         Error = JsonLanguage.Item("ERROR_ESPACIOS_INICIO_FIN")
         Exit Function
     End If
@@ -2031,7 +2076,7 @@ End Sub
 Public Sub deleteCharIndexs()
     Dim i As Long
     For i = 1 To LastChar
-        If charlist(i).esNpc = False And i <> UserCharIndex Then
+        If charlist(i).EsNpc = False And i <> UserCharIndex Then
             Call EraseChar(i)
         End If
     Next i

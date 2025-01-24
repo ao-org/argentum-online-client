@@ -63,14 +63,14 @@ Public authenticated_decrypted_session_token As String
 Public delete_char_validate_code As String
 
 
-Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
+Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
     
     If Connected Then
         Exit Sub
     End If
     
     If Not SessionOpened Then
-        Call HandleOpenSession(bytesTotal)
+        Call HandleOpenSession(BytesTotal)
         If SessionOpened Then
             Select Case Auth_state
                 Case e_state.RequestAccountLogin
@@ -98,9 +98,9 @@ Public Sub AuthSocket_DataArrival(ByVal bytesTotal As Long)
     
     Select Case Auth_state
         Case e_state.RequestAccountLogin
-            Call HandleAccountLogin(bytesTotal)
+            Call HandleAccountLogin(BytesTotal)
         Case e_state.RequestCharList
-            Call HandlePCList(bytesTotal)
+            Call HandlePCList(BytesTotal)
         Case e_state.RequestSignUp
             Call HandleSignUpRequest(BytesTotal)
         Case e_state.RequestValidateAccount
@@ -141,8 +141,8 @@ Public Sub DebugPrint(ByVal str As String, Optional ByVal int1 As Integer = 0, O
 End Sub
 
 Public Sub SendAccountLoginRequest()
-    Dim username As String
-    Dim password As String
+    Dim userName As String
+    Dim Password As String
     Dim len_encrypted_username As Integer
     Dim len_encrypted_password As Integer
     
@@ -152,8 +152,8 @@ Public Sub SendAccountLoginRequest()
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("SendAccountLoginRequest", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    username = CuentaEmail
-    password = CuentaPassword
+    userName = CuentaEmail
+    Password = CuentaPassword
     
     Dim encrypted_username() As Byte
     Dim encrypted_username_b64 As String
@@ -162,8 +162,8 @@ Public Sub SendAccountLoginRequest()
     Dim encrypted_password_b64 As String
     
     
-    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
-    encrypted_password_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), password)
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), userName)
+    encrypted_password_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), Password)
     
     'Call DebugPrint("Username: " & encrypted_username_b64, 255, 255, 255)
     'Call DebugPrint("Password: " & encrypted_password_b64, 255, 255, 255)
@@ -208,7 +208,7 @@ Public Sub SendAccountLoginRequest()
 End Sub
 
 Public Sub SendRequestVerificationCode()
-    Dim username As String
+    Dim userName As String
     Dim len_encrypted_username As Integer
     
     Dim login_request() As Byte
@@ -217,12 +217,12 @@ Public Sub SendRequestVerificationCode()
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("SendRequestVerificationCode", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    username = CuentaEmail
+    userName = CuentaEmail
     
     Dim encrypted_username() As Byte
     Dim encrypted_username_b64 As String
     Debug.Assert Len(userName) > 0
-    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), userName)
     Call Str2ByteArr(encrypted_username_b64, encrypted_username)
     
     Dim len_username As Integer
@@ -284,7 +284,7 @@ Public Sub HandleRequestVerificationCode(ByVal BytesTotal As Long)
             Case 12
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_ACCOUNT_NO_EXISTE"), False, False)
             Case Else
-                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_NO_CONEXION") & " " & AO20CryptoSysWrapper.ByteArrayToHex(data), False, False)
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_NO_CONEXION") & " " & AO20CryptoSysWrapper.ByteArrayToHex(Data), False, False)
 
         End Select
     End If
@@ -294,7 +294,7 @@ Public Sub HandleRequestVerificationCode(ByVal BytesTotal As Long)
 End Sub
 
 Public Sub SendRequestForgotPassword()
-    Dim username As String
+    Dim userName As String
     Dim len_encrypted_username As Integer
     
     Dim login_request() As Byte
@@ -303,12 +303,12 @@ Public Sub SendRequestForgotPassword()
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("SendRequestForgotPassword", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    username = CuentaEmail
+    userName = CuentaEmail
     
     Dim encrypted_username() As Byte
     Dim encrypted_username_b64 As String
     
-    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), userName)
     
     Call Str2ByteArr(encrypted_username_b64, encrypted_username)
     
@@ -344,7 +344,7 @@ Public Sub SendRequestForgotPassword()
 End Sub
 
 Public Sub SendValidateAccount()
-    Dim username As String
+    Dim userName As String
     Dim validate_code As String
     Dim len_encrypted_username As Integer
     Dim len_encrypted_validate_code As Integer
@@ -365,7 +365,7 @@ Public Sub SendValidateAccount()
     Dim encrypted_validate_code_b64 As String
     
     
-    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), userName)
     encrypted_validate_code_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), validate_code)
         
     Call Str2ByteArr(encrypted_username_b64, encrypted_username)
@@ -408,8 +408,8 @@ Public Sub SendValidateAccount()
 End Sub
 
 Public Sub SendRequestResetPassword()
-    Dim username As String
-    Dim password As String
+    Dim userName As String
+    Dim Password As String
     Dim validate_code As String
     Dim len_encrypted_username As Integer
     Dim len_encrypted_password As Integer
@@ -424,7 +424,7 @@ Public Sub SendRequestResetPassword()
     userName = CuentaEmail
     Password = CuentaPassword
     validate_code = ValidationCode
-    Debug.Assert Len(validate_code) > 0 And Len(username) > 0 And Len(password) > 0
+    Debug.Assert Len(validate_code) > 0 And Len(userName) > 0 And Len(Password) > 0
     
     Dim encrypted_username() As Byte
     Dim encrypted_username_b64 As String
@@ -437,8 +437,8 @@ Public Sub SendRequestResetPassword()
     Dim encrypted_validate_code_b64 As String
     
     
-    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
-    encrypted_password_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), password)
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), userName)
+    encrypted_password_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), Password)
     encrypted_validate_code_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), validate_code)
         
     Call Str2ByteArr(encrypted_username_b64, encrypted_username)
@@ -516,27 +516,27 @@ Public Sub LogOutRequest()
     Auth_state = e_state.RequestLogout
     
 End Sub
-Public Sub HandleLogOutRequest(ByVal bytesTotal As Long)
+Public Sub HandleLogOutRequest(ByVal BytesTotal As Long)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleLogOutRequest", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     
-    Dim data() As Byte
+    Dim Data() As Byte
     
-    frmConnect.AuthSocket.PeekData data, vbByte, bytesTotal
+    frmConnect.AuthSocket.PeekData Data, vbByte, BytesTotal
     
-    frmConnect.AuthSocket.GetData data, vbByte, 2
+    frmConnect.AuthSocket.GetData Data, vbByte, 2
     
-    If data(0) = &H20 And data(1) = &H22 Then
+    If Data(0) = &H20 And Data(1) = &H22 Then
         Call DebugPrint("LOGOUT_OKAY", 0, 255, 0, True)
         
-        frmConnect.AuthSocket.GetData data, vbByte, 2
+        frmConnect.AuthSocket.GetData Data, vbByte, 2
         
         Auth_state = e_state.Idle
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
-        frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        frmConnect.AuthSocket.GetData Data, vbByte, 4
+        Select Case MakeInt(Data(3), Data(2))
             Case 41
                 Call DebugPrint("Not logged yet.", 255, 255, 0)
         End Select
@@ -544,7 +544,7 @@ Public Sub HandleLogOutRequest(ByVal bytesTotal As Long)
     Auth_state = e_state.Idle
 End Sub
 Public Sub SendRequestTransferCharacter()
-    Dim json As String
+    Dim JSON As String
     Dim len_encrypted_username As Integer
     Dim transfer_request() As Byte
     Dim packet_size As Integer
@@ -555,18 +555,18 @@ Public Sub SendRequestTransferCharacter()
     Dim old_owner_str As String
     old_owner_str = CuentaEmail
     
-    json = ""
-    json = "{ "
-    json = json & "  ""currentOwner"": """ & old_owner_str & """ , "
-    json = json & "  ""pc"": """ & TransferCharname & """ , "
-    json = json & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
-    json = json & "  ""newOwner"": """ & TransferCharNewOwner & """"
-    json = json & " }"
+    JSON = ""
+    JSON = "{ "
+    JSON = JSON & "  ""currentOwner"": """ & old_owner_str & """ , "
+    JSON = JSON & "  ""pc"": """ & TransferCharname & """ , "
+    JSON = JSON & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
+    JSON = JSON & "  ""newOwner"": """ & TransferCharNewOwner & """"
+    JSON = JSON & " }"
 
     Dim encrypted_json() As Byte
     Dim encrypted_json_b64 As String
     
-    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), json)
+    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), JSON)
         
     Call Str2ByteArr(encrypted_json_b64, encrypted_json)
         
@@ -594,7 +594,7 @@ Public Sub SendRequestTransferCharacter()
 End Sub
 Public Sub SendSignUpRequest()
 
-    Dim json As String
+    Dim JSON As String
     Dim len_encrypted_username As Integer
     Dim login_request() As Byte
     Dim packet_size As Integer
@@ -604,28 +604,28 @@ Public Sub SendSignUpRequest()
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     
     
-    json = ""
+    JSON = ""
     
-    json = "{ ""language"": ""english"", ""password"": """ & NewAccountData.Password & """, "
-    json = json & """passwordrecovery"": [{""secretanswer1"": ""Satanas"","
-    json = json & """secretanswer2"": ""Rojo"", "
-    json = json & """secretquestion1"": ""Cual es el nombre de mi primer mascota?"","
-    json = json & """secretquestion2"": ""Cual es mi color favorito?""}],"
+    JSON = "{ ""language"": ""english"", ""password"": """ & NewAccountData.Password & """, "
+    JSON = JSON & """passwordrecovery"": [{""secretanswer1"": ""Satanas"","
+    JSON = JSON & """secretanswer2"": ""Rojo"", "
+    JSON = JSON & """secretquestion1"": ""Cual es el nombre de mi primer mascota?"","
+    JSON = JSON & """secretquestion2"": ""Cual es mi color favorito?""}],"
     
-    json = json & """personal"":[{"
-    json = json & """dob"": ""23-12-1990"","
-    json = json & """email"": """ & NewAccountData.Email & ""","
-    json = json & """firstname"": """ & NewAccountData.Name & ""","
-    json = json & """lastname"": """ & NewAccountData.Surname & ""","
-    json = json & """mobile"": """ & NewAccountData.Surname & ""","
-    json = json & """pob"": """ & NewAccountData.Surname & """}],"
-    json = json & """username"": """ & NewAccountData.Email & """}"
+    JSON = JSON & """personal"":[{"
+    JSON = JSON & """dob"": ""23-12-1990"","
+    JSON = JSON & """email"": """ & NewAccountData.Email & ""","
+    JSON = JSON & """firstname"": """ & NewAccountData.Name & ""","
+    JSON = JSON & """lastname"": """ & NewAccountData.Surname & ""","
+    JSON = JSON & """mobile"": """ & NewAccountData.Surname & ""","
+    JSON = JSON & """pob"": """ & NewAccountData.Surname & """}],"
+    JSON = JSON & """username"": """ & NewAccountData.Email & """}"
     
     
     Dim encrypted_json() As Byte
     Dim encrypted_json_b64 As String
     
-    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), json)
+    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), JSON)
         
     Call Str2ByteArr(encrypted_json_b64, encrypted_json)
         
@@ -658,21 +658,21 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
     Call DebugPrint("HandleTransferCharRequest", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     
-    Dim data() As Byte
+    Dim Data() As Byte
     
-    frmConnect.AuthSocket.PeekData data, vbByte, BytesTotal
-    frmConnect.AuthSocket.GetData data, vbByte, 2
+    frmConnect.AuthSocket.PeekData Data, vbByte, BytesTotal
+    frmConnect.AuthSocket.GetData Data, vbByte, 2
 
-    If data(0) = &H20 And data(1) = &H26 Then
+    If Data(0) = &H20 And Data(1) = &H26 Then
         Call DebugPrint("TRANSFER_CHARACTER_OKAY", 0, 255, 0, True)
         Call DisplayError("Transferencia realizada.", "TRANSFER_CHARACTER_OKAY")
         Call EraseCharFromPjList(TransferCharname)
-        frmConnect.AuthSocket.GetData data, vbByte, 2
+        frmConnect.AuthSocket.GetData Data, vbByte, 2
         Auth_state = e_state.Idle
     Else
         Call DebugPrint("TRANSFER CHAR ERROR", 255, 0, 0, True)
-        frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        frmConnect.AuthSocket.GetData Data, vbByte, 4
+        Select Case MakeInt(Data(3), Data(2))
             Case 1
                 Call DisplayError("Invalid account", "invalid-account")
             Case 3
@@ -698,12 +698,9 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
 End Sub
 
 Public Sub showValidateAccountControls()
-    If BabelInitialized Then
-        Call BabelUI.SetActiveScreen("validate-account")
-    Else
-        Call frmNewAccount.showValidateAccountControls
-        frmNewAccount.txtValidateMail.Text = frmNewAccount.txtUsername
-    End If
+       Call frmNewAccount.showValidateAccountControls
+       frmNewAccount.txtValidateMail.Text = frmNewAccount.txtUsername
+
 End Sub
 
 Public Sub HandleSignUpRequest(ByVal BytesTotal As Long)
@@ -764,7 +761,7 @@ End Sub
 
 Public Sub SendDeleteCharRequest()
 
-    Dim json As String
+    Dim JSON As String
     Dim len_encrypted_username As Integer
     Dim delete_char_request() As Byte
     Dim packet_size As Integer
@@ -773,12 +770,12 @@ Public Sub SendDeleteCharRequest()
     Call DebugPrint("SendDeleteChar", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
         
-    json = "{""username"": """ & CuentaEmail & """, ""pc"":""" & DeleteUser & """}"
+    JSON = "{""username"": """ & CuentaEmail & """, ""pc"":""" & DeleteUser & """}"
     
     Dim encrypted_json() As Byte
     Dim encrypted_json_b64 As String
     
-    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), json)
+    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), JSON)
         
     Call Str2ByteArr(encrypted_json_b64, encrypted_json)
         
@@ -838,7 +835,7 @@ Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
 End Sub
 
 Public Sub SendConfirmDeleteChar()
-    Dim username As String
+    Dim userName As String
     Dim validate_code As String
     Dim len_encrypted_username As Integer
     Dim len_encrypted_validate_code As Integer
@@ -849,7 +846,7 @@ Public Sub SendConfirmDeleteChar()
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("SendConfirmDeleteChar", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    username = DeleteUser
+    userName = DeleteUser
     validate_code = delete_char_validate_code
     
     Dim encrypted_username() As Byte
@@ -859,7 +856,7 @@ Public Sub SendConfirmDeleteChar()
     Dim encrypted_validate_code_b64 As String
     
     
-    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), userName)
     encrypted_validate_code_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), validate_code)
         
     Call Str2ByteArr(encrypted_username_b64, encrypted_username)
@@ -929,18 +926,16 @@ Public Sub HandleConfirmDeleteChar(ByVal BytesTotal As Long)
                 Call DisplayError("Database error.", "database-error")
             Case 25
                 Call DisplayError("Invalid Code.", "invalid-code")
-                If Not BabelInitialized Then
-                    frmDeleteChar.Show , frmConnect
-                End If
+                frmDeleteChar.Show , frmConnect
             Case Else
-                Call DisplayError("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(data), "")
+                Call DisplayError("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data), "")
         End Select
     End If
         
 End Sub
 
 Public Sub PCListRequest()
-    Dim username As String
+    Dim userName As String
     Dim len_encrypted_username As Integer
     
     Dim packet_request() As Byte
@@ -950,13 +945,13 @@ Public Sub PCListRequest()
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("PCListRequest", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    username = CuentaEmail
+    userName = CuentaEmail
     
     Dim encrypted_username() As Byte
     Dim encrypted_username_b64 As String
     
     
-    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), username)
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), userName)
     
     Call Str2ByteArr(encrypted_username_b64, encrypted_username)
     
@@ -990,19 +985,21 @@ Public Sub connectToLoginServer()
     frmConnect.AuthSocket.RemotePort = PuertoDelServidorLogin
     Debug.Print "Servidor de Login " & IPdelServidorLogin; ":" & PuertoDelServidorLogin
     frmConnect.AuthSocket.Connect
+#If REMOTE_CLOSE = 0 Then
     Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CONECTANDO_SERVIDOR"), True, False)
+#End If
     SessionOpened = False
     Auth_state = e_state.Idle
 End Sub
 
-Public Sub HandleOpenSession(ByVal bytesTotal As Long)
+Public Sub HandleOpenSession(ByVal BytesTotal As Long)
 
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleOpenSession", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     
     Dim strData As String
-    frmConnect.AuthSocket.PeekData strData, vbString, bytesTotal
+    frmConnect.AuthSocket.PeekData strData, vbString, BytesTotal
     
     Call DebugPrint("Bytes total: " & strData, 255, 255, 255, False)
     
@@ -1015,7 +1012,7 @@ Public Sub HandleOpenSession(ByVal bytesTotal As Long)
     
     frmConnect.AuthSocket.GetData encrypted_token, 64
             
-    decrypted_session_token = AO20CryptoSysWrapper.DECRYPT(MapInfoEspeciales, cnvStringFromHexStr(cnvToHex(encrypted_token)))
+    decrypted_session_token = AO20CryptoSysWrapper.Decrypt(MapInfoEspeciales, cnvStringFromHexStr(cnvToHex(encrypted_token)))
     Call DebugPrint("Decripted_session_token: " & decrypted_session_token, 255, 255, 255, False)
         
     public_key = mid(decrypted_session_token, 1, 16)
@@ -1028,9 +1025,9 @@ Public Sub HandleOpenSession(ByVal bytesTotal As Long)
     encrypted_session_token = cnvStringFromHexStr(cnvToHex(encrypted_token))
 End Sub
 
-Public Sub HandlePCList(ByVal bytesTotal As Long)
+Public Sub HandlePCList(ByVal BytesTotal As Long)
 
-    If bytesTotal < 4 Then
+    If BytesTotal < 4 Then
         Call DebugPrint("Paquete incorrecto", 255, 255, 255, True)
         Exit Sub
     End If
@@ -1042,7 +1039,7 @@ Public Sub HandlePCList(ByVal bytesTotal As Long)
     Call DebugPrint("HandlePCList", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Dim strData As String
-    frmConnect.AuthSocket.PeekData strData, vbString, bytesTotal
+    frmConnect.AuthSocket.PeekData strData, vbString, BytesTotal
     Call DebugPrint("Bytes total: " & strData, 255, 255, 255, False)
     
     frmConnect.AuthSocket.GetData PacketId, vbByte, 2
@@ -1059,31 +1056,39 @@ Public Sub HandlePCList(ByVal bytesTotal As Long)
     Dim decrypted_list As String
      
     decrypted_list = AO20CryptoSysWrapper.Decrypt(ByteArrayToHex(public_key), cnvStringFromHexStr(cnvToHex(encrypted_list)))
+#If REMOTE_CLOSE = 0 Then
     Call FillAccountData(decrypted_list)
+#End If
     Call DebugPrint("Decrypted_list: " & decrypted_list, 255, 255, 255, False)
             
     Auth_state = e_state.AccountLogged
+    
+#If REMOTE_CLOSE = 1 Then
+    LoginCharacter (CharacterRemote)
+#End If
+
 End Sub
 
-Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
+Public Sub HandleAccountLogin(ByVal BytesTotal As Long)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleRequestAccountLogin", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    Dim data() As Byte
-    frmConnect.AuthSocket.PeekData data, vbByte, bytesTotal
-    frmConnect.AuthSocket.GetData data, vbByte, 2
-    If data(0) = &HAF And data(1) = &HA1 Then
+    Dim Data() As Byte
+    frmConnect.AuthSocket.PeekData Data, vbByte, BytesTotal
+    frmConnect.AuthSocket.GetData Data, vbByte, 2
+    If Data(0) = &HAF And Data(1) = &HA1 Then
         Call DebugPrint("LOGIN-OK", 0, 255, 0, True)
         'Save the token which was used to authenticate
         authenticated_decrypted_session_token = decrypted_session_token
-        Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(data), 255, 255, 255)
-        frmConnect.AuthSocket.GetData data, vbByte, 2
+        Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(Data), 255, 255, 255)
+        frmConnect.AuthSocket.GetData Data, vbByte, 2
         Auth_state = e_state.AccountLogged
         Call PCListRequest
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
-        frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        frmConnect.AuthSocket.GetData Data, vbByte, 4
+#If REMOTE_CLOSE = 0 Then
+        Select Case MakeInt(Data(3), Data(2))
             Case 1
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_INVALIDO"), False, False)
             Case 4
@@ -1106,14 +1111,32 @@ Public Sub HandleAccountLogin(ByVal bytesTotal As Long)
 
         End Select
     End If
+#Else
+        Select Case MakeInt(Data(3), Data(2))
+            Case 1
+                Call SaveStringInFile("MENSAJEBOX_USUARIO_INVALIDO", "remote_debug.txt")
+            Case 4
+                Call SaveStringInFile("MENSAJEBOX_USUARIO_CONECTADO", "remote_debug.txt")
+            Case 5
+                Call SaveStringInFile("MENSAJEBOX_CONTRASENA_INVALIDA", "remote_debug.txt")
+            Case 6
+                Call SaveStringInFile("MENSAJEBOX_USUARIO_BANEADO", "remote_debug.txt")
+            Case 7
+                Call SaveStringInFile("MENSAJEBOX_SERVIDOR_MAX_USUARIOS", "remote_debug.txt")
+            Case 9
+                Call SaveStringInFile("MENSAJEBOX_CUENTA_NO_ACTIVADA", "remote_debug.txt")
+            Case 66
+                Call SaveStringInFile("MENSAJEBOX_ACTIVO_PATRON", "remote_debug.txt")
+            Case Else
+                Call SaveStringInFile("MENSAJEBOX_ACTUALIZAR_JUEGO", "remote_debug.txt")
+        End Select
+        prgRun = False
+    End If
+#End If
 End Sub
 
 Public Sub GotoPasswordReset()
-    If BabelUI.BabelInitialized Then
-        Call BabelUI.SetActiveScreen("set-new-password")
-    Else
-        frmPasswordReset.toggleTextboxs
-    End If
+    frmPasswordReset.toggleTextboxs
 End Sub
 
 Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
@@ -1148,7 +1171,7 @@ Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
             Case 23
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CALMATE"), False, False)
             Case Else
-                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_ERROR_DESCONOCIDO") & AO20CryptoSysWrapper.ByteArrayToHex(data), False, False)
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_ERROR_DESCONOCIDO") & AO20CryptoSysWrapper.ByteArrayToHex(Data), False, False)
 
         End Select
         
@@ -1156,8 +1179,8 @@ Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
         
     End If
     
-    frmPasswordReset.lblSolicitandoCodigo.Visible = False
-    frmPasswordReset.cmdEnviar.Visible = True
+    frmPasswordReset.lblSolicitandoCodigo.visible = False
+    frmPasswordReset.cmdEnviar.visible = True
     
         
 End Sub
@@ -1225,9 +1248,6 @@ Public Sub AccountValidated()
     Auth_state = e_state.Idle
     Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CUENTA_VALIDADA"), False, False)
     frmNewAccount.visible = False
-    If BabelUI.BabelInitialized Then
-        Call BabelUI.SetActiveScreen("login")
-    End If
 End Sub
 
 Public Sub HandleValidateAccountRequest(ByVal BytesTotal As Long)
@@ -1252,12 +1272,12 @@ Public Sub HandleValidateAccountRequest(ByVal BytesTotal As Long)
         Select Case MakeInt(Data(3), Data(2))
             Case 1
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_INVALIDO"), False, False)
-                frmNewAccount.Visible = False
+                frmNewAccount.visible = False
             Case 10
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CODIGO_INVALIDO"), False, False)
             Case 11
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CUENTA_ACTIVADA"), False, False)
-                frmNewAccount.Visible = False
+                frmNewAccount.visible = False
             Case Else
                 Call TextoAlAsistente("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data), False, False)
         End Select
@@ -1271,20 +1291,18 @@ Function FileToString(strFileName As String) As String
   Close #1
 End Function
 Private Sub EraseCharFromPjList(ByVal nick As String)
-    Dim i As Long, j As Long
+    Dim i As Long, J As Long
     
     For i = 1 To CantidadDePersonajesEnCuenta
         If LCase(Pjs(i).nombre) = LCase(nick) Then
             'Desde esta posicion en adelante tengo que correrlos todos 1 pos para atras
-            For j = i To (CantidadDePersonajesEnCuenta - 1)
-                Pjs(j) = Pjs(j + 1)
-            Next j
+            For J = i To (CantidadDePersonajesEnCuenta - 1)
+                Pjs(J) = Pjs(J + 1)
+            Next J
             Exit For
         End If
     Next i
-    If UseBabelUI Then
-        Call RemoveCharacterFromList(i)
-    End If
+
     'Borro el último personaje
     Pjs(CantidadDePersonajesEnCuenta).nombre = ""
     Pjs(CantidadDePersonajesEnCuenta).Head = 0
@@ -1293,7 +1311,7 @@ Private Sub EraseCharFromPjList(ByVal nick As String)
     Pjs(CantidadDePersonajesEnCuenta).Mapa = 0
     Pjs(CantidadDePersonajesEnCuenta).PosX = 0
     Pjs(CantidadDePersonajesEnCuenta).PosY = 0
-    Pjs(CantidadDePersonajesEnCuenta).nivel = 0
+    Pjs(CantidadDePersonajesEnCuenta).Nivel = 0
     Pjs(CantidadDePersonajesEnCuenta).Criminal = 0
     Pjs(CantidadDePersonajesEnCuenta).Casco = 0
     Pjs(CantidadDePersonajesEnCuenta).Escudo = 0
@@ -1304,12 +1322,12 @@ Private Sub EraseCharFromPjList(ByVal nick As String)
     CantidadDePersonajesEnCuenta = CantidadDePersonajesEnCuenta - 1
     
 End Sub
-Private Sub FillAccountData(ByVal data As String)
+Private Sub FillAccountData(ByVal Data As String)
     On Error Resume Next
     Dim i As Long
     CantidadDePersonajesEnCuenta = 0
-    For i = 1 To Len(data)
-        If mid(data, i, 1) = "(" Then
+    For i = 1 To Len(Data)
+        If mid(Data, i, 1) = "(" Then
             CantidadDePersonajesEnCuenta = CantidadDePersonajesEnCuenta + 1
         End If
     Next i
@@ -1322,9 +1340,9 @@ Private Sub FillAccountData(ByVal data As String)
         Pjs(ii).Clase = 0
         Pjs(ii).Body = 0
         Pjs(ii).Mapa = 0
-        Pjs(ii).posX = 0
-        Pjs(ii).posY = 0
-        Pjs(ii).nivel = 0
+        Pjs(ii).PosX = 0
+        Pjs(ii).PosY = 0
+        Pjs(ii).Nivel = 0
         Pjs(ii).Criminal = 0
         Pjs(ii).Casco = 0
         Pjs(ii).Escudo = 0
@@ -1335,7 +1353,7 @@ Private Sub FillAccountData(ByVal data As String)
 
     For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
         Dim character As String
-        character = ReadField(ii, data, Asc(")"))
+        character = ReadField(ii, Data, Asc(")"))
         character = Replace(character, "(", "")
         character = Replace(character, "[", "")
         character = Replace(character, "]", "")
@@ -1343,20 +1361,20 @@ Private Sub FillAccountData(ByVal data As String)
         If mid(character, 1, 1) = "," Then
             character = mid(character, 2)
         End If
-        Dim name As String
+        Dim Name As String
         
-        name = ReadField(1, character, Asc(","))
-        If mid(name, 1, 1) = " " Then
-            name = Replace(name, " ", "", 1, 1)
+        Name = ReadField(1, character, Asc(","))
+        If mid(Name, 1, 1) = " " Then
+            Name = Replace(Name, " ", "", 1, 1)
         End If
-        Pjs(ii).nombre = name
+        Pjs(ii).nombre = Name
         Pjs(ii).Body = Val(ReadField(4, character, Asc(",")))
         Pjs(ii).Head = IIf(Pjs(ii).Body = 829 Or Pjs(ii).Body = 1269 Or Pjs(ii).Body = 1267 Or Pjs(ii).Body = 1265, 0, Val(ReadField(2, character, Asc(","))))
         Pjs(ii).Clase = Val(ReadField(3, character, Asc(",")))
         Pjs(ii).Mapa = Val(ReadField(5, character, Asc(",")))
-        Pjs(ii).posX = Val(ReadField(6, character, Asc(",")))
-        Pjs(ii).posY = Val(ReadField(7, character, Asc(",")))
-        Pjs(ii).nivel = Val(ReadField(8, character, Asc(",")))
+        Pjs(ii).PosX = Val(ReadField(6, character, Asc(",")))
+        Pjs(ii).PosY = Val(ReadField(7, character, Asc(",")))
+        Pjs(ii).Nivel = Val(ReadField(8, character, Asc(",")))
         Pjs(ii).Criminal = Val(ReadField(9, character, Asc(",")))
         Pjs(ii).Casco = Val(ReadField(10, character, Asc(",")))
         Pjs(ii).Escudo = Val(ReadField(11, character, Asc(",")))
@@ -1373,27 +1391,27 @@ Private Sub FillAccountData(ByVal data As String)
         Select Case Pjs(i).Criminal
 
             Case 0 'Criminal
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).B)
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
                 
 
             Case 1 'Ciudadano
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).B)
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
                 
 
             Case 2 'Caos
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).B)
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
                 
 
             Case 3 'Armada
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).B)
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
                 
             
             Case 4 'Concilio
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).B)
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
                 
                 
             Case 5 'Consejo
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).B)
+                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
                 
            
             Case Else
@@ -1410,8 +1428,8 @@ Private Sub FillAccountData(ByVal data As String)
         
         If Pjs(1).Mapa <> 0 Then
             Call SwitchMap(Pjs(1).Mapa)
-            RenderCuenta_PosX = Pjs(1).posX
-            RenderCuenta_PosY = Pjs(1).posY
+            RenderCuenta_PosX = Pjs(1).PosX
+            RenderCuenta_PosY = Pjs(1).PosY
         End If
     End If
     Call LoadCharacterSelectionScreen
@@ -1422,7 +1440,7 @@ Public Function estaInmovilizado(ByRef arr() As Byte) As String
     Dim a As String, b As String
     
 
-    a = hashHexFromFile(App.Path & "\Argentum.exe", 3)
+    a = hashHexFromFile(App.path & "\Argentum.exe", 3)
 
     Dim i As Long
     

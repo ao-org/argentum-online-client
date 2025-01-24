@@ -44,22 +44,22 @@ Public Sub Make_Transparent_Richtext(ByVal hwnd As Long)
     Exit Sub
 
 Make_Transparent_Richtext_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModClient.Make_Transparent_Richtext", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModClient.Make_Transparent_Richtext", Erl)
     Resume Next
     
 End Sub
 
 Public Sub NameMapa(ByVal map As Long)
 On Error GoTo NameMapa_Err
-    If Not BabelInitialized Then
+
         frmMain.NameMapa.Caption = MapDat.map_name
-    End If
+
     If QueRender = 0 Then
         Letter_Set 0, MapDat.map_name
     End If
     Exit Sub
 NameMapa_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModClient.NameMapa", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModClient.NameMapa", Erl)
     Resume Next
 End Sub
 
@@ -121,7 +121,7 @@ Public Sub PrintToConsole(Text As String, Optional ByVal red As Integer = -1, Op
     Exit Sub
 
 PrintToConsole_Err:
-    Call RegistrarError(Err.number, Err.Description, "ModClient.PrintToConsole", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModClient.PrintToConsole", Erl)
     Resume Next
     
 End Sub

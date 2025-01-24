@@ -43,38 +43,17 @@ Private Sub Class_Initialize()
 cur_state = e_state_connect_screen
 End Sub
 
-Public Property Get state() As e_game_state
-    state = cur_state
+Public Property Get State() As e_game_state
+    State = cur_state
 End Property
 
-Public Property Let state(ByVal new_state As e_game_state)
+Public Property Let State(ByVal new_state As e_game_state)
     Dim ScreenInfo As D3DDISPLAYMODE
-    If BabelInitialized Then
-        If new_state = e_game_state.e_state_gameplay_screen Then
-            gameplay_render_offset.x = StartRenderX
-            gameplay_render_offset.y = StartRenderY
-            
-            GameplayDrawAreaRect.Top = StartRenderY
-            GameplayDrawAreaRect.Left = StartRenderX
-            GameplayDrawAreaRect.Bottom = GameplayDrawAreaRect.Top + Render_Main_Rect.Bottom
-            GameplayDrawAreaRect.Right = GameplayDrawAreaRect.Left + Render_Main_Rect.Right
-            Call ReloadSettings
-        Else
-            gameplay_render_offset.x = 0
-            gameplay_render_offset.y = 0
-            GameplayDrawAreaRect.Top = 0
-            GameplayDrawAreaRect.Left = 0
-            Call get_game_resolution(ScreenInfo)
-            GameplayDrawAreaRect.Bottom = ScreenInfo.Height
-            GameplayDrawAreaRect.Right = ScreenInfo.Width
-        End If
-    Else
-        GameplayDrawAreaRect.Top = 0
-        GameplayDrawAreaRect.Left = 0
-        Call get_game_resolution(ScreenInfo)
-        GameplayDrawAreaRect.Bottom = ScreenInfo.Height
-        GameplayDrawAreaRect.Right = ScreenInfo.Width
-    End If
+    GameplayDrawAreaRect.Top = 0
+    GameplayDrawAreaRect.Left = 0
+    Call get_game_resolution(ScreenInfo)
+    GameplayDrawAreaRect.Bottom = ScreenInfo.Height
+    GameplayDrawAreaRect.Right = ScreenInfo.Width
     RenderCullingRect = GameplayDrawAreaRect
     cur_state = new_state
 End Property

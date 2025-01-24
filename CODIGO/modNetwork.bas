@@ -17,6 +17,7 @@ Attribute VB_Name = "modNetwork"
 '
 Option Explicit
 
+#If DIRECT_PLAY = 0 Then
 Private Client As Network.Client
 
 Private Type t_FailedIp
@@ -164,4 +165,83 @@ OnClientRecv_Err:
     Call RegistrarError(Err.Number, Err.Description, "modNetwork.OnClientRecv", Erl)
 End Sub
 
+#Else
 
+Public Sub DoSleep(Optional ByVal lMilliSec As Long = 0)
+    'The DoSleep function allows other threads to have a time slice
+    'and still keeps the main VB thread alive (since DPlay callbacks
+    'run on separate threads outside of VB).
+    Sleep lMilliSec
+    DoEvents
+End Sub
+
+Public Sub Poll()
+' Not needed when using DPLAY
+End Sub
+
+Public Sub Send(ByVal Buffer As clsNetWriter)
+    Writer.send
+End Sub
+
+
+Public Sub Connect(ByVal Address As String, ByVal Service As String)
+    Debug.Print "DPLAY > Connecting to World Server : " & Address; ":" & Service
+
+    If (Address = vbNullString Or Service = vbNullString) Then
+        Exit Sub
+    End If
+    
+    Dim HostAddr As DirectPlay8Address
+    Dim DeviceAddr As DirectPlay8Address
+    
+    Dim dpApp As DPN_APPLICATION_DESC
+    
+    Dim pInfo As DPN_PLAYER_INFO
+    pInfo.Name = "Pablo"
+    pInfo.lInfoFlags = DPNINFO_NAME
+    
+    modDplayClient.dpc.SetClientInfo pInfo, DPNOP_SYNC
+
+    
+    Err.Clear
+    Set HostAddr = DirectX.DirectPlayAddressCreate
+    HostAddr.SetSP DP8SP_TCPIP  ' Set the service provider to TCP/IP
+    HostAddr.AddComponentLong DPN_KEY_PORT, CLng(Service)
+    HostAddr.AddComponentString DPN_KEY_HOSTNAME, Address
+    Debug.Assert Err.Number = 0
+    Err.Clear
+    
+    Dim connect_handle As Long
+    connect_handle = dpc.Connect(dpApp, HostAddr, DeviceAddr, DPNCONNECT_OKTOQUERYFORADDRESSING, ByVal 0&, 0)
+    
+    If Err.Number <> 0 Then
+        Select Case Err.Number
+            Case DPNERR_NOCONNECTION:
+            Case DPNERR_INVALIDPASSWORD:
+            Case DPNERR_INVALIDFLAGS:
+            Case DPNERR_INVALIDINTERFACE:
+            Case DPNERR_INVALIDAPPLICATION:
+            Case DPNERR_NOTHOST:
+            Case DPNERR_SESSIONFULL:
+            Case DPNERR_HOSTREJECTEDCONNECTION:
+            Case DPNERR_INVALIDINSTANCE:
+            Case Else
+                Debug.Print "Connect error " & Err.Number
+        End Select
+    End If
+    
+    Do While Not frmConnect.mfGotEvent 'Let's wait for our connectcomplete event
+        DoSleep 5 'Give other threads cpu time
+    Loop
+    If frmConnect.mfConnectComplete Then
+        'We've joined our game
+        'mfComplete = True
+        'mfHost = False
+        'Clean up our address
+        Set HostAddr = Nothing
+        Set DeviceAddr = Nothing
+    End If
+
+End Sub
+
+#End If

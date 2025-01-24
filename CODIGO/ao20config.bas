@@ -48,8 +48,7 @@ Sub SaveConfig()
     Call SaveSetting("OPCIONES", "MoverVentana", MoverVentana)
     Call SaveSetting("OPCIONES", "PermitirMoverse", PermitirMoverse)
     Call SaveSetting("OPCIONES", "ScrollArrastrar", ScrollArrastrar)
-    Call SaveSetting("OPCIONES", "UseExperimentalUI", IIf(SaveUseBabelUI, 1, 0))
-    
+       
     Call SaveSetting("OPCIONES", "CopiarDialogoAConsola", CopiarDialogoAConsola)
     Call SaveSetting("OPCIONES", "FPSFLAG", FPSFLAG)
     Call SaveSetting("OPCIONES", "AlphaMacro", AlphaMacro)
@@ -109,9 +108,9 @@ Sub LoadConfig()
     ModoAceleracion = GetSetting("VIDEO", "Aceleracion")
     DisableDungeonLighting = Val(GetSetting("VIDEO", "DisableDungeonLighting"))
 
-    Dim value As String
-    value = GetSetting("VIDEO", "MostrarRespiracion")
-    MostrarRespiracion = IIf(LenB(value) > 0, Val(value), True)
+    Dim Value As String
+    Value = GetSetting("VIDEO", "MostrarRespiracion")
+    MostrarRespiracion = IIf(LenB(Value) > 0, Val(Value), True)
 
     FxNavega = GetSetting("OPCIONES", "FxNavega")
     MostrarIconosMeteorologicos = GetSetting("OPCIONES", "MostrarIconosMeteorologicos")
