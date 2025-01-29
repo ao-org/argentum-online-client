@@ -223,8 +223,7 @@ Private Sub DirectPlay8Event_InfoNotify(ByVal lMsgID As Long, ByVal lNotifyID As
 End Sub
 
 Private Sub DirectPlay8Event_Receive(dpnotify As DxVBLibA.DPNMSG_RECEIVE, fRejectMsg As Boolean)
-    Debug.Print "DirectPlay8Event_Receive"
-    'VB requires that we must implement *every* member of this interface
+    Call modNetwork.Receive(dpnotify, fRejectMsg)
 End Sub
 
 Private Sub DirectPlay8Event_SendComplete(dpnotify As DxVBLibA.DPNMSG_SEND_COMPLETE, fRejectMsg As Boolean)
@@ -257,15 +256,6 @@ Private Sub DirectPlay8LobbyEvent_SessionStatus(ByVal status As Long, ByVal lHan
     'VB requires that we must implement *every* member of this interface
 End Sub
 
-Private Sub Form_Unload(Cancel As Integer)
-    'Clean up our lobbied app
-    If Not (moDPLA Is Nothing) Then
-        moDPLA.Close
-    End If
-    Set moDPLA = Nothing
-    'Clean up our address
-    Set moDPA = Nothing
-End Sub
 #End If
 
 

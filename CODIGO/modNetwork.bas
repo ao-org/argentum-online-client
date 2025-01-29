@@ -166,6 +166,7 @@ OnClientRecv_Err:
 End Sub
 
 #Else
+'DirectPlay
 
 Public Sub DoSleep(Optional ByVal lMilliSec As Long = 0)
     'The DoSleep function allows other threads to have a time slice
@@ -183,7 +184,17 @@ Public Sub Send(ByVal Buffer As clsNetWriter)
     Writer.send
 End Sub
 
+Public Sub Disconnect()
+    
+End Sub
 
+Public Sub Receive(dpnotify As DxVBLibA.DPNMSG_RECEIVE, fRejectMsg As Boolean)
+On Error GoTo receive_error:
+    Call Protocol.HandleIncomingData(dpnotify)
+    Exit Sub
+receive_error:
+    Call RegistrarError(Err.Number, Err.Description, "modNetwork.Receive", Erl)
+End Sub
 Public Sub Connect(ByVal Address As String, ByVal Service As String)
     Debug.Print "DPLAY > Connecting to World Server : " & Address; ":" & Service
 
@@ -233,6 +244,7 @@ Public Sub Connect(ByVal Address As String, ByVal Service As String)
     Do While Not frmConnect.mfGotEvent 'Let's wait for our connectcomplete event
         DoSleep 5 'Give other threads cpu time
     Loop
+    Connected = True
     If frmConnect.mfConnectComplete Then
         'We've joined our game
         'mfComplete = True

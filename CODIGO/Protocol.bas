@@ -40,22 +40,29 @@ Private IterationsHID   As Integer
 
 Private Const MAX_ITERATIONS_HID = 200
 
+
+
+
+#If DIRECT_PLAY = 0 Then
 Private Reader As Network.Reader
-
-''
-' Handles incoming data.
-
 Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
+#Else
+Private Reader As New clsNetReader
+Public Function HandleIncomingData(dpnotify As DxVBLibA.DPNMSG_RECEIVE) As Boolean
+#End If
 On Error GoTo HandleIncomingData_Err
 
+#If DIRECT_PLAY = 0 Then
     Set Reader = message
+#Else
+    Reader.set_data dpnotify
+#End If
     
     Dim PacketId As Long
     PacketId = Reader.ReadInt16
     
 #If REMOTE_CLOSE = 1 Then
   Select Case PacketId
-    
         Case ServerPacketID.eConnected
             Call HandleConnected
             Call SaveStringInFile("Authenticated with server OK", "remote_debug.txt")
@@ -494,8 +501,8 @@ On Error GoTo HandleIncomingData_Err
     End Select
 #End If
     
-    If (message.GetAvailable() > 0) Then
-        Err.Raise &HDEADBEEF, "HandleIncomingData", "El paquete '" & PacketId & "' se encuentra en mal estado con '" & message.GetAvailable() & "' bytes de mas"
+    If (Reader.GetAvailable() > 0) Then
+        Err.Raise &HDEADBEEF, "HandleIncomingData", "El paquete '" & PacketId & "' se encuentra en mal estado con '" & Reader.GetAvailable() & "' bytes de mas"
     End If
 
     HandleIncomingData = True
@@ -506,8 +513,6 @@ HandleIncomingData_Err:
 
     If Err.Number <> 0 Then
         Call RegistrarError(Err.Number, Err.Description & ". PacketID: " & PacketId, "Protocol.HandleIncomingData", Erl)
-       ' Call modNetwork.Disconnect
-        
         HandleIncomingData = False
     End If
 
@@ -517,7 +522,10 @@ Private Sub HandleConnected()
 #If REMOTE_CLOSE = 0 Then
     frmMain.ShowFPS.enabled = True
 #End If
+#If DIRECT_PLAY = 0 Then
+    'We already sent the LoginExistingChar message with the double click event
     Call Login
+#End If
 End Sub
 
 Private Sub HandleLogged()
