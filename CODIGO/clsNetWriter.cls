@@ -46,13 +46,46 @@ Public Sub WriteInt8(ByVal v As Byte)
     AddDataToBuffer oMsg, v, SIZE_BYTE, lOffset
 End Sub
 Public Sub send()
-    dpc.send oMsg, 0, DPNSEND_NOLOOPBACK & DPNSEND_GUARANTEED
+On Error GoTo send_error:
+    ReDim Preserve oMsg(0 To loffset - 1)
+                
+    dpc.send oMsg, 0, DPNSEND_GUARANTEED Or DPNSEND_NOLOOPBACK Or DPNSEND_PRIORITY_HIGH
     Me.Clear
+    
+  
+    Exit Sub
+send_error:
+    Me.Clear
+    Select Case Err.Number
+        Case DPNERR_INVALIDFLAGS
+                'Call TraceError(Err.Number, "DPNERR_INVALIDFLAGS", "clsNetWriter.Send", Erl)
+                Debug.Print "DPNERR_INVALIDFLAGS"
+        Case DPNERR_TIMEDOUT
+                'Call TraceError(Err.Number, "DPNERR_TIMEDOUT", "clsNetWriter.Send", Erl)
+                Debug.Print "DPNERR_TIMEDOUT"
+        Case Else
+                'Call TraceError(Err.Number, "Unknown error in clsNetWriter.send", "clsNetWriter.Send", Erl)
+                Debug.Print "Unknown error in clsNetWriter.send"
+    End Select
+    
+End Sub
+Public Sub WriteInt32(ByVal v As Long)
+    AddDataToBuffer oMsg, v, SIZE_LONG, loffset
+End Sub
+Public Sub WriteReal32(ByVal v As Single)
+    AddDataToBuffer oMsg, v, SIZE_SINGLE, loffset
+End Sub
+Public Sub WriteBool(ByVal v As Boolean)
+    AddDataToBuffer oMsg, v, SIZE_BOOLEAN, loffset
 End Sub
 Public Sub WriteString8(ByVal v As String)
+    Debug.Assert Len(v) > 0
+        If Len(v) = 0 Then
+        ' this is a workaround because the game is trying to send empty strings and DP will crash if we call AddStringToBuffer with an empty str
+        v = "0"
+    End If
     AddStringToBuffer oMsg, v, lOffset
 End Sub
-
 Private Sub Class_Initialize()
  lOffset = NewBuffer(oMsg)
 End Sub

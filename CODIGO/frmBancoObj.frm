@@ -417,9 +417,11 @@ Private Sub Form_Unload(Cancel As Integer)
     
     On Error GoTo Form_Unload_Err
     
+#If DIRECT_PLAY = 0 Then
     If Not Protocol_Writes.writer_is_nothing Then
         Call WriteBankEnd
     End If
+#End If
 
     
     Exit Sub

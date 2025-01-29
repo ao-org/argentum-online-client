@@ -152,6 +152,7 @@ Class=cStringBuilder; CODIGO\VBJson\cStringBuilder.cls
 Class=clsInstrument; CODIGO\clsInstrument.cls
 Module=modDplayClient; CODIGO\modDplayClient.bas
 Class=clsNetWriter; CODIGO\clsNetWriter.cls
+Class=clsNetReader; CODIGO\clsNetReader.cls
 ResFile32="AO20.res"
 IconForm="frmMain"
 Startup="Sub Main"
