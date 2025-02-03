@@ -43,7 +43,7 @@ Public Sub set_data(data As DxVBLibA.DPNMSG_RECEIVE)
 End Sub
 
 Public Sub Clear()
-    loffset = NewBuffer(oMsg)
+    loffset = NewBuffer(rcv_data.ReceivedData)
 End Sub
 Public Function ReadInt16() As Integer
     Call GetDataFromBuffer(rcv_data.ReceivedData, ReadInt16, SIZE_INTEGER, loffset)
@@ -62,6 +62,17 @@ Public Function ReadInt8() As Byte
 End Function
 Public Function ReadString8() As String
     ReadString8 = GetStringFromBuffer(rcv_data.ReceivedData, loffset)
+End Function
+Public Function ReadSafeArrayInt8(value() As Byte)
+    Dim lower_b As Integer
+    Dim upper_b As Integer
+    lower_b = ReadInt32
+    upper_b = ReadInt32
+    Dim i As Integer
+    ReDim value(lower_b To upper_b)
+    For i = lower_b To upper_b
+        value(i) = ReadInt8
+    Next i
 End Function
 
 #End If

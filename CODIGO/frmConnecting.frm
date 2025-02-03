@@ -79,11 +79,13 @@ Private Sub loadButtons()
 End Sub
 
 Private Sub Timeout_Timer()
+#If DIRECT_PLAY = 0 Then
     Call UpdateConnectionText
     TimerProgress = TimerProgress + 1
     If TimerProgress Mod 20 = 19 Then
         Call RetryWithAnotherIp
     End If
+#End If
 End Sub
 
 Private Sub UpdateConnectionText()

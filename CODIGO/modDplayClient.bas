@@ -43,8 +43,28 @@ Public Sub shutdown_direct_play()
     If Not dpc Is Nothing Then dpc.Close
     Set dpc = Nothing
     'Get rid of our message pump
-    DPlayEventsForm.GoUnload
+    'DPlayEventsForm.Un
     
 End Sub
+
+
+Public Sub HandleDPlayError(ByVal ErrNumber As Long, ByVal ErrDescription As String, ByVal place As String, ByVal line As String)
+       Select Case err.Number
+            Case DPNERR_INVALIDPLAYER
+                    Call LogError("The player ID is not recognized as a valid player ID for this game session. " & place & " " & line)
+            Case DPNERR_INVALIDPARAM
+                    Call LogError("One or more of the parameters passed to the method are invalid." & place & " " & line)
+            Case DPNERR_NOTHOST:
+                    Call LogError("The client attempted to connect to a nonhost computer. Additionally, this error value may be returned by a nonhost that tried to set the application description. " & place & " " & line)
+            Case DPNERR_INVALIDFLAGS
+                    Call LogError("The flags passed to this method are invalid. " & place & " " & line)
+            Case DPNERR_TIMEDOUT
+                    Call LogError("The operation could not complete because it has timed out. " & place & " " & line)
+            Case Else
+                    Call LogError("Unknown error " & place & " " & line)
+        End Select
+        err.Clear
+End Sub
+
 
 #End If

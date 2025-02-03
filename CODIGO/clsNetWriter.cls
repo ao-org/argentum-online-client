@@ -47,27 +47,16 @@ Public Sub WriteInt8(ByVal v As Byte)
 End Sub
 Public Sub send()
 On Error GoTo send_error:
+    err.Clear
     ReDim Preserve oMsg(0 To loffset - 1)
-                
     dpc.send oMsg, 0, DPNSEND_GUARANTEED Or DPNSEND_NOLOOPBACK Or DPNSEND_PRIORITY_HIGH
     Me.Clear
-    
-  
     Exit Sub
 send_error:
     Me.Clear
-    Select Case Err.Number
-        Case DPNERR_INVALIDFLAGS
-                'Call TraceError(Err.Number, "DPNERR_INVALIDFLAGS", "clsNetWriter.Send", Erl)
-                Debug.Print "DPNERR_INVALIDFLAGS"
-        Case DPNERR_TIMEDOUT
-                'Call TraceError(Err.Number, "DPNERR_TIMEDOUT", "clsNetWriter.Send", Erl)
-                Debug.Print "DPNERR_TIMEDOUT"
-        Case Else
-                'Call TraceError(Err.Number, "Unknown error in clsNetWriter.send", "clsNetWriter.Send", Erl)
-                Debug.Print "Unknown error in clsNetWriter.send"
-    End Select
-    
+    If err.Number <> 0 Then
+        Call HandleDPlayError(err.Number, err.Description, "modnetwork.CreatePlayer", Erl)
+    End If
 End Sub
 Public Sub WriteInt32(ByVal v As Long)
     AddDataToBuffer oMsg, v, SIZE_LONG, loffset
@@ -85,6 +74,16 @@ Public Sub WriteString8(ByVal v As String)
         v = "0"
     End If
     AddStringToBuffer oMsg, v, lOffset
+End Sub
+
+Public Sub WriteSafeArrayInt8(value() As Byte)
+    Debug.Assert (UBound(Value) - LBound(Value)) + 1 > 0
+    WriteInt32 LBound(value)
+    WriteInt32 UBound(value)
+    Dim i As Integer
+    For i = LBound(value) To UBound(value)
+        WriteInt8 value(i)
+    Next i
 End Sub
 Private Sub Class_Initialize()
  lOffset = NewBuffer(oMsg)

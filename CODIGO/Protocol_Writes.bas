@@ -3746,27 +3746,8 @@ WriteSeguirMouse_Err:
         '</EhFooter>
 End Sub
 
-''
-' Writes the "ReviveChar" message to the outgoing data buffer.
-'
-' @param    username The user to eb revived.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSendPosSeguimiento(ByVal Cheat_X As Integer, ByVal Cheat_Y As Integer)
-        '<EhHeader>
-        On Error GoTo WriteSendPosSeguimiento_Err
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.eSendPosSeguimiento)
-102     Call Writer.WriteString16(Cheat_X)
-103     Call Writer.WriteString16(Cheat_Y)
-
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteSendPosSeguimiento_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSendPosSeguimiento", Erl)
-        '</EhFooter>
+'TODO: delete this
 End Sub
 
 

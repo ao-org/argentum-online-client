@@ -163,9 +163,7 @@ Private Sub DirectPlay8Event_AppDesc(fRejectMsg As Boolean)
 End Sub
 
 Private Sub DirectPlay8Event_AsyncOpComplete(dpnotify As DxVBLibA.DPNMSG_ASYNC_OP_COMPLETE, fRejectMsg As Boolean)
-    If dpnotify.AsyncOpHandle = mlEnumAsync Then mlEnumAsync = 0
     'VB requires that we must implement *every* member of this interface
-  
 End Sub
 
 Private Sub DirectPlay8Event_ConnectComplete(dpnotify As DxVBLibA.DPNMSG_CONNECT_COMPLETE, fRejectMsg As Boolean)
@@ -200,10 +198,7 @@ Private Sub DirectPlay8Event_EnumHostsQuery(dpnotify As DxVBLibA.DPNMSG_ENUM_HOS
 End Sub
 
 Private Sub DirectPlay8Event_EnumHostsResponse(dpnotify As DxVBLibA.DPNMSG_ENUM_HOSTS_RESPONSE, fRejectMsg As Boolean)
-    'Go ahead and add this to our list
-    AddHostsToListBox dpnotify
     'VB requires that we must implement *every* member of this interface
-    If (Not moCallback Is Nothing) Then moCallback.EnumHostsResponse dpnotify, fRejectMsg
 End Sub
 
 Private Sub DirectPlay8Event_HostMigrate(ByVal lNewHostID As Long, fRejectMsg As Boolean)
