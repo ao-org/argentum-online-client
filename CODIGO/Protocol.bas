@@ -519,6 +519,14 @@ HandleIncomingData_Err:
 End Function
 
 Private Sub HandleConnected()
+#If DEBUGGING = 1 Then
+    Dim i As Integer
+    Dim values() As Byte
+    Reader.ReadSafeArrayInt8 values
+    For i = LBound(values) To UBound(values)
+            Debug.Assert values(i) = i
+    Next i
+#End If
 #If REMOTE_CLOSE = 0 Then
     frmMain.ShowFPS.enabled = True
 #End If

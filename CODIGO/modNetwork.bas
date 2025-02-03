@@ -168,6 +168,7 @@ End Sub
 #Else
 'DirectPlay
 
+
 Public Sub DoSleep(Optional ByVal lMilliSec As Long = 0)
     'The DoSleep function allows other threads to have a time slice
     'and still keeps the main VB thread alive (since DPlay callbacks
@@ -185,6 +186,7 @@ Public Sub Send(ByVal Buffer As clsNetWriter)
 End Sub
 
 Public Sub Disconnect()
+     modDplayClient.dpc.Close 0
     
 End Sub
 
