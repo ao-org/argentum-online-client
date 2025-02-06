@@ -435,7 +435,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -975,6 +974,13 @@ Begin VB.Form frmMain
       Top             =   2280
       Width           =   11040
    End
+   Begin VB.Image hideShowXPBoton 
+      Height          =   315
+      Left            =   12180
+      Tag             =   "0"
+      Top             =   65
+      Width           =   315
+   End
    Begin VB.Image imgDeleteItem 
       Height          =   375
       Left            =   11400
@@ -1213,15 +1219,15 @@ Begin VB.Form frmMain
       Height          =   255
       Left            =   11580
       TabIndex        =   11
-      Top             =   1545
+      Top             =   1560
       Visible         =   0   'False
       Width           =   3540
    End
    Begin VB.Image OpcionesBoton 
       Height          =   315
-      Left            =   11431
+      Left            =   11400
       Tag             =   "0"
-      Top             =   65
+      Top             =   60
       Width           =   315
    End
    Begin VB.Image CombateIcon 
@@ -1478,7 +1484,7 @@ Public ShowPercentage As Boolean
 
 Public bmoving    As Boolean
 
-Public dX         As Integer
+Public dx         As Integer
 
 Public dy         As Integer
 
@@ -1965,6 +1971,48 @@ Private Sub Image1_Click()
 
 End Sub
 
+Private Sub hideShowXPBoton_Click()
+
+    On Error GoTo hideShowXPBoton_Click_Err
+    
+    hideShowXPBoton.Picture = LoadInterface("showhidexpdown.bmp")
+    hideShowXPBoton.Tag = "1"
+    If ExpBar.visible = True Then
+        lblPorcLvl.visible = False
+        exp.visible = False
+        ExpBar.visible = False
+    Else
+        lblPorcLvl.visible = False
+        exp.visible = True
+        ExpBar.visible = True
+    End If
+       
+       Exit Sub
+
+hideShowXPBoton_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.hideShowXPBoton_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub hideShowXPBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    
+    On Error GoTo hideShowXPBoton_MouseMove_Err
+    
+    If hideShowXPBoton.Tag = "0" Then
+        hideShowXPBoton.Picture = LoadInterface("showhidexpover.bmp")
+        hideShowXPBoton.Tag = "1"
+
+    End If
+    
+    Exit Sub
+
+hideShowXPBoton_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.hideShowXPBoton_MouseMove", Erl)
+    Resume Next
+    
+End Sub
+
 Private Sub ImgEstadisticas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     TempTick = GetTickCount And &H7FFFFFFF
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then Exit Sub
@@ -2112,6 +2160,10 @@ imgInventario_MouseMove_Err:
     
 End Sub
 
+Private Sub OpcionesBoton_Click()
+
+End Sub
+
 Private Sub picHechiz_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If y < 0 Then y = 0
     If y > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then y = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
@@ -2123,7 +2175,7 @@ Private Sub picHechiz_MouseDown(Button As Integer, Shift As Integer, x As Single
             gDragState.DragIndex = UserHechizos(gDragState.DragSlot)
             If HechizoData(gDragState.DragIndex).IsBindable Then
                 gDragState.DragType = e_HotkeyType.Spell
-                gDragState.grh = HechizoData(gDragState.DragIndex).IconoIndex
+                gDragState.Grh = HechizoData(gDragState.DragIndex).IconoIndex
                 gDragState.PosX = -500
                 gDragState.PosY = -500
                 gDragState.active = True
@@ -2767,12 +2819,12 @@ Private Sub Label1_Click()
 End Sub
 
 Private Sub lblPorcLvl_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-    If ShowPercentage Then
-        lblPorcLvl.visible = False
-        exp.visible = True
+    If ExpBar.visible = True Then
+        If ShowPercentage Then
+            lblPorcLvl.visible = False
+            exp.visible = True
+        End If
     End If
-
 End Sub
 
 Private Sub LlamaDeclan_Timer()
@@ -4274,6 +4326,12 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         Image4(1).Tag = "0"
 
     End If
+    
+    If hideShowXPBoton.Tag = "1" Then
+        hideShowXPBoton.Picture = Nothing
+        hideShowXPBoton.Tag = "0"
+
+    End If
 
     If OpcionesBoton.Tag = "1" Then
         OpcionesBoton.Picture = Nothing
@@ -4297,13 +4355,14 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         cmdLlavero.Picture = Nothing
         cmdLlavero.Tag = "0"
     End If
-
-    If ShowPercentage Then
-        lblPorcLvl.visible = True
-        exp.visible = False
-    Else
-        lblPorcLvl.visible = False
-        exp.visible = True
+    If ExpBar.visible = True Then
+        If ShowPercentage Then
+            lblPorcLvl.visible = True
+            exp.visible = False
+        Else
+            lblPorcLvl.visible = False
+            exp.visible = True
+        End If
     End If
     
     If Retar.Tag = "1" Then

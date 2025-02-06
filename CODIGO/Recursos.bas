@@ -133,7 +133,7 @@ Private Type tDatosLuces
 
     x As Integer
     y As Integer
-    Color As RGBA
+    color As RGBA
     Rango As Byte
 
 End Type
@@ -238,7 +238,7 @@ Public Type t_Projectile
     speed As Single
     OffsetRotation As Integer
     RotationSpeed As Single
-    grh As Long
+    Grh As Long
     RigthGrh As Long
 End Type
 
@@ -750,7 +750,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
     Dim NPCs()       As tDatosNPC
 
     Dim i            As Long
-    Dim j            As Long
+    Dim J            As Long
     
     Dim x            As Long
     Dim y            As Long
@@ -1015,7 +1015,7 @@ Public Sub CargarMapa(ByVal map As Integer)
     Dim LBoundRoof As Integer, UBoundRoof As Integer
 
     Dim i            As Long
-    Dim j            As Long
+    Dim J            As Long
 
     Dim x            As Long
     Dim y            As Long
@@ -1065,7 +1065,7 @@ Public Sub CargarMapa(ByVal map As Integer)
     
     If UserPos.x = 0 Then UserPos.x = 10
     If UserPos.y = 0 Then UserPos.y = 10
-    MapData(UserPos.x, UserPos.y).charindex = 0
+    MapData(UserPos.x, UserPos.y).CharIndex = 0
     
     For i = 1 To LastChar
         'If charlist(i).active = 1 Then
@@ -1247,14 +1247,14 @@ Public Sub CargarMapa(ByVal map As Integer)
             Get #fh, , Luces
 
             For i = 1 To .NumeroLuces
-                MapData(Luces(i).x, Luces(i).y).luz.Color = Luces(i).Color
+                MapData(Luces(i).x, Luces(i).y).luz.color = Luces(i).color
                 MapData(Luces(i).x, Luces(i).y).luz.Rango = Luces(i).Rango
 
                 If MapData(Luces(i).x, Luces(i).y).luz.Rango <> 0 Then
                     If MapData(Luces(i).x, Luces(i).y).luz.Rango < 100 Then
-                        LucesCuadradas.Light_Create Luces(i).x, Luces(i).y, Luces(i).Color, Luces(i).Rango, Luces(i).x & Luces(i).y
+                        LucesCuadradas.Light_Create Luces(i).x, Luces(i).y, Luces(i).color, Luces(i).Rango, Luces(i).x & Luces(i).y
                     Else
-                        LucesRedondas.Create_Light_To_Map Luces(i).x, Luces(i).y, Luces(i).Color, Luces(i).Rango - 99
+                        LucesRedondas.Create_Light_To_Map Luces(i).x, Luces(i).y, Luces(i).color, Luces(i).Rango - 99
                     End If
 
                 End If
@@ -1337,7 +1337,7 @@ Public Sub CargarParticulas()
     'Loads the Particles.ini file to the ComboBox
     'Edited by Juan Martín Sotuyo Dodero to add speed and life
     '*************************************
-    Dim loopc      As Long
+    Dim loopC      As Long
     Dim i          As Long
     Dim GrhListing As String
     Dim TempSet    As String
@@ -1363,59 +1363,59 @@ Public Sub CargarParticulas()
     ReDim StreamData(1 To ParticulasTotales) As Stream
     
     'fill StreamData array with info from Particles.ini
-    For loopc = 1 To ParticulasTotales
-        StreamData(loopc).name = General_Var_Get(StreamFile, Val(loopc), "Name")
-        StreamData(loopc).NumOfParticles = General_Var_Get(StreamFile, Val(loopc), "NumOfParticles")
-        StreamData(loopc).x1 = General_Var_Get(StreamFile, Val(loopc), "X1")
-        StreamData(loopc).y1 = General_Var_Get(StreamFile, Val(loopc), "Y1")
-        StreamData(loopc).x2 = General_Var_Get(StreamFile, Val(loopc), "X2")
-        StreamData(loopc).y2 = General_Var_Get(StreamFile, Val(loopc), "Y2")
-        StreamData(loopc).Angle = General_Var_Get(StreamFile, Val(loopc), "Angle")
-        StreamData(loopc).vecx1 = General_Var_Get(StreamFile, Val(loopc), "VecX1")
-        StreamData(loopc).vecx2 = General_Var_Get(StreamFile, Val(loopc), "VecX2")
-        StreamData(loopc).vecy1 = General_Var_Get(StreamFile, Val(loopc), "VecY1")
-        StreamData(loopc).vecy2 = General_Var_Get(StreamFile, Val(loopc), "VecY2")
-        StreamData(loopc).life1 = General_Var_Get(StreamFile, Val(loopc), "Life1")
-        StreamData(loopc).life2 = General_Var_Get(StreamFile, Val(loopc), "Life2")
-        StreamData(loopc).friction = General_Var_Get(StreamFile, Val(loopc), "Friction")
-        StreamData(loopc).spin = General_Var_Get(StreamFile, Val(loopc), "Spin")
-        StreamData(loopc).spin_speedL = General_Var_Get(StreamFile, Val(loopc), "Spin_SpeedL")
-        StreamData(loopc).spin_speedH = General_Var_Get(StreamFile, Val(loopc), "Spin_SpeedH")
-        StreamData(loopc).AlphaBlend = General_Var_Get(StreamFile, Val(loopc), "AlphaBlend")
-        StreamData(loopc).gravity = General_Var_Get(StreamFile, Val(loopc), "Gravity")
-        StreamData(loopc).grav_strength = General_Var_Get(StreamFile, Val(loopc), "Grav_Strength")
-        StreamData(loopc).bounce_strength = General_Var_Get(StreamFile, Val(loopc), "Bounce_Strength")
-        StreamData(loopc).XMove = General_Var_Get(StreamFile, Val(loopc), "XMove")
-        StreamData(loopc).YMove = General_Var_Get(StreamFile, Val(loopc), "YMove")
-        StreamData(loopc).move_x1 = General_Var_Get(StreamFile, Val(loopc), "move_x1")
-        StreamData(loopc).move_x2 = General_Var_Get(StreamFile, Val(loopc), "move_x2")
-        StreamData(loopc).move_y1 = General_Var_Get(StreamFile, Val(loopc), "move_y1")
-        StreamData(loopc).move_y2 = General_Var_Get(StreamFile, Val(loopc), "move_y2")
-        StreamData(loopc).life_counter = General_Var_Get(StreamFile, Val(loopc), "life_counter")
-        StreamData(loopc).speed = Val(General_Var_Get(StreamFile, Val(loopc), "Speed"))
-        temp = General_Var_Get(StreamFile, Val(loopc), "resize")
-        StreamData(loopc).grh_resize = IIf((temp = -1), True, False)
-        StreamData(loopc).grh_resizex = General_Var_Get(StreamFile, Val(loopc), "rx")
-        StreamData(loopc).grh_resizey = General_Var_Get(StreamFile, Val(loopc), "ry")
+    For loopC = 1 To ParticulasTotales
+        StreamData(loopC).Name = General_Var_Get(StreamFile, Val(loopC), "Name")
+        StreamData(loopC).NumOfParticles = General_Var_Get(StreamFile, Val(loopC), "NumOfParticles")
+        StreamData(loopC).x1 = General_Var_Get(StreamFile, Val(loopC), "X1")
+        StreamData(loopC).y1 = General_Var_Get(StreamFile, Val(loopC), "Y1")
+        StreamData(loopC).x2 = General_Var_Get(StreamFile, Val(loopC), "X2")
+        StreamData(loopC).y2 = General_Var_Get(StreamFile, Val(loopC), "Y2")
+        StreamData(loopC).angle = General_Var_Get(StreamFile, Val(loopC), "Angle")
+        StreamData(loopC).vecx1 = General_Var_Get(StreamFile, Val(loopC), "VecX1")
+        StreamData(loopC).vecx2 = General_Var_Get(StreamFile, Val(loopC), "VecX2")
+        StreamData(loopC).vecy1 = General_Var_Get(StreamFile, Val(loopC), "VecY1")
+        StreamData(loopC).vecy2 = General_Var_Get(StreamFile, Val(loopC), "VecY2")
+        StreamData(loopC).life1 = General_Var_Get(StreamFile, Val(loopC), "Life1")
+        StreamData(loopC).life2 = General_Var_Get(StreamFile, Val(loopC), "Life2")
+        StreamData(loopC).friction = General_Var_Get(StreamFile, Val(loopC), "Friction")
+        StreamData(loopC).spin = General_Var_Get(StreamFile, Val(loopC), "Spin")
+        StreamData(loopC).spin_speedL = General_Var_Get(StreamFile, Val(loopC), "Spin_SpeedL")
+        StreamData(loopC).spin_speedH = General_Var_Get(StreamFile, Val(loopC), "Spin_SpeedH")
+        StreamData(loopC).AlphaBlend = General_Var_Get(StreamFile, Val(loopC), "AlphaBlend")
+        StreamData(loopC).gravity = General_Var_Get(StreamFile, Val(loopC), "Gravity")
+        StreamData(loopC).grav_strength = General_Var_Get(StreamFile, Val(loopC), "Grav_Strength")
+        StreamData(loopC).bounce_strength = General_Var_Get(StreamFile, Val(loopC), "Bounce_Strength")
+        StreamData(loopC).XMove = General_Var_Get(StreamFile, Val(loopC), "XMove")
+        StreamData(loopC).YMove = General_Var_Get(StreamFile, Val(loopC), "YMove")
+        StreamData(loopC).move_x1 = General_Var_Get(StreamFile, Val(loopC), "move_x1")
+        StreamData(loopC).move_x2 = General_Var_Get(StreamFile, Val(loopC), "move_x2")
+        StreamData(loopC).move_y1 = General_Var_Get(StreamFile, Val(loopC), "move_y1")
+        StreamData(loopC).move_y2 = General_Var_Get(StreamFile, Val(loopC), "move_y2")
+        StreamData(loopC).life_counter = General_Var_Get(StreamFile, Val(loopC), "life_counter")
+        StreamData(loopC).speed = Val(General_Var_Get(StreamFile, Val(loopC), "Speed"))
+        temp = General_Var_Get(StreamFile, Val(loopC), "resize")
+        StreamData(loopC).grh_resize = IIf((temp = -1), True, False)
+        StreamData(loopC).grh_resizex = General_Var_Get(StreamFile, Val(loopC), "rx")
+        StreamData(loopC).grh_resizey = General_Var_Get(StreamFile, Val(loopC), "ry")
         
-        StreamData(loopc).NumGrhs = General_Var_Get(StreamFile, Val(loopc), "NumGrhs")
-        ReDim StreamData(loopc).grh_list(1 To StreamData(loopc).NumGrhs)
-        GrhListing = General_Var_Get(StreamFile, Val(loopc), "Grh_List")
+        StreamData(loopC).NumGrhs = General_Var_Get(StreamFile, Val(loopC), "NumGrhs")
+        ReDim StreamData(loopC).grh_list(1 To StreamData(loopC).NumGrhs)
+        GrhListing = General_Var_Get(StreamFile, Val(loopC), "Grh_List")
         
-        For i = 1 To StreamData(loopc).NumGrhs
-            StreamData(loopc).grh_list(i) = General_Field_Read(str(i), GrhListing, ",")
+        For i = 1 To StreamData(loopC).NumGrhs
+            StreamData(loopC).grh_list(i) = General_Field_Read(str(i), GrhListing, ",")
         Next i
 
-        StreamData(loopc).grh_list(i - 1) = StreamData(loopc).grh_list(i - 1)
+        StreamData(loopC).grh_list(i - 1) = StreamData(loopC).grh_list(i - 1)
         
         For ColorSet = 1 To 4
-            TempSet = General_Var_Get(StreamFile, Val(loopc), "ColorSet" & ColorSet)
-            StreamData(loopc).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).G = General_Field_Read(2, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).B = General_Field_Read(3, TempSet, ",")
+            TempSet = General_Var_Get(StreamFile, Val(loopC), "ColorSet" & ColorSet)
+            StreamData(loopC).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
+            StreamData(loopC).colortint(ColorSet - 1).G = General_Field_Read(2, TempSet, ",")
+            StreamData(loopC).colortint(ColorSet - 1).b = General_Field_Read(3, TempSet, ",")
         Next ColorSet
         
-    Next loopc
+    Next loopC
         
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "particles.ini"
@@ -1441,7 +1441,7 @@ Public Sub CargarParticulasBinary()
     'Loads the Particles.ini file to the ComboBox
     'Edited by Juan Martín Sotuyo Dodero to add speed and life
     '*************************************
-    Dim loopc      As Long
+    Dim loopC      As Long
     Dim i          As Long
     Dim GrhListing As String
     Dim TempSet    As String
@@ -1477,9 +1477,9 @@ Public Sub CargarParticulasBinary()
     ReDim StreamData(1 To ParticulasTotales) As Stream
 
     'fill StreamData array with info from Particles.ini
-    For loopc = 1 To ParticulasTotales
-        Get #n, , StreamData(loopc)
-    Next loopc
+    For loopC = 1 To ParticulasTotales
+        Get #n, , StreamData(loopC)
+    Next loopC
     
     Close #n
 
@@ -1489,31 +1489,31 @@ Public Sub CargarParticulasBinary()
     'resize StreamData array
     
     'fill StreamData array with info from Particles.ini
-    For loopc = 1 To ParticulasTotales
+    For loopC = 1 To ParticulasTotales
 
-        temp = General_Var_Get(StreamFile, Val(loopc), "resize")
-        StreamData(loopc).grh_resize = IIf((temp = -1), True, False)
-        StreamData(loopc).grh_resizex = General_Var_Get(StreamFile, Val(loopc), "rx")
-        StreamData(loopc).grh_resizey = General_Var_Get(StreamFile, Val(loopc), "ry")
+        temp = General_Var_Get(StreamFile, Val(loopC), "resize")
+        StreamData(loopC).grh_resize = IIf((temp = -1), True, False)
+        StreamData(loopC).grh_resizex = General_Var_Get(StreamFile, Val(loopC), "rx")
+        StreamData(loopC).grh_resizey = General_Var_Get(StreamFile, Val(loopC), "ry")
         
-        StreamData(loopc).NumGrhs = General_Var_Get(StreamFile, Val(loopc), "NumGrhs")
-        ReDim StreamData(loopc).grh_list(1 To StreamData(loopc).NumGrhs)
-        GrhListing = General_Var_Get(StreamFile, Val(loopc), "Grh_List")
+        StreamData(loopC).NumGrhs = General_Var_Get(StreamFile, Val(loopC), "NumGrhs")
+        ReDim StreamData(loopC).grh_list(1 To StreamData(loopC).NumGrhs)
+        GrhListing = General_Var_Get(StreamFile, Val(loopC), "Grh_List")
         
-        For i = 1 To StreamData(loopc).NumGrhs
-            StreamData(loopc).grh_list(i) = General_Field_Read(str(i), GrhListing, ",")
+        For i = 1 To StreamData(loopC).NumGrhs
+            StreamData(loopC).grh_list(i) = General_Field_Read(str(i), GrhListing, ",")
         Next i
 
-        StreamData(loopc).grh_list(i - 1) = StreamData(loopc).grh_list(i - 1)
+        StreamData(loopC).grh_list(i - 1) = StreamData(loopC).grh_list(i - 1)
         
         For ColorSet = 1 To 4
-            TempSet = General_Var_Get(StreamFile, Val(loopc), "ColorSet" & ColorSet)
-            StreamData(loopc).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).G = General_Field_Read(2, TempSet, ",")
-            StreamData(loopc).colortint(ColorSet - 1).B = General_Field_Read(3, TempSet, ",")
+            TempSet = General_Var_Get(StreamFile, Val(loopC), "ColorSet" & ColorSet)
+            StreamData(loopC).colortint(ColorSet - 1).r = General_Field_Read(1, TempSet, ",")
+            StreamData(loopC).colortint(ColorSet - 1).G = General_Field_Read(2, TempSet, ",")
+            StreamData(loopC).colortint(ColorSet - 1).b = General_Field_Read(3, TempSet, ",")
         Next ColorSet
         
-    Next loopc
+    Next loopC
         
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "particles.ini"
@@ -1548,7 +1548,7 @@ Public Sub LoadProjectiles()
     ReDim ProjectileData(1 To ProjectN) As t_Projectile
     Dim Prj As Integer
     For Prj = 1 To ProjectN
-        ProjectileData(Prj).grh = Val(IniReader.GetValue("PROJECTILE" & Prj, "GRH"))
+        ProjectileData(Prj).Grh = Val(IniReader.GetValue("PROJECTILE" & Prj, "GRH"))
         ProjectileData(Prj).RigthGrh = Val(IniReader.GetValue("PROJECTILE" & Prj, "GRHRigth"))
         ProjectileData(Prj).speed = Val(IniReader.GetValue("PROJECTILE" & Prj, "SPEED")) / 1000
         ProjectileData(Prj).OffsetRotation = Val(IniReader.GetValue("PROJECTILE" & Prj, "OFFSETROTATION"))
@@ -1680,11 +1680,11 @@ Public Sub CargarIndicesOBJ()
         
         Select Case language
             Case e_language.English
-                ObjData(Obj).name = IIf(Leer.GetValue("OBJ" & Obj, "en_Name") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Name"), Leer.GetValue("OBJ" & Obj, "Name"))
+                ObjData(Obj).Name = IIf(Leer.GetValue("OBJ" & Obj, "en_Name") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Name"), Leer.GetValue("OBJ" & Obj, "Name"))
                 ObjData(Obj).info = IIf(Leer.GetValue("OBJ" & Obj, "en_Info") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Info"), Leer.GetValue("OBJ" & Obj, "Info"))
                 ObjData(Obj).Texto = IIf(Leer.GetValue("OBJ" & Obj, "en_Texto") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Texto"), Leer.GetValue("OBJ" & Obj, "Texto"))
             Case e_language.Spanish
-                ObjData(Obj).name = Leer.GetValue("OBJ" & Obj, "Name")
+                ObjData(Obj).Name = Leer.GetValue("OBJ" & Obj, "Name")
                 ObjData(Obj).info = Leer.GetValue("OBJ" & Obj, "Info")
                 ObjData(Obj).Texto = Leer.GetValue("OBJ" & Obj, "Texto")
         End Select
@@ -1695,7 +1695,7 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).MaxHit = Val(Leer.GetValue("OBJ" & Obj, "MaxHit"))
         ObjData(Obj).ObjType = Val(Leer.GetValue("OBJ" & Obj, "ObjType"))
         ObjData(Obj).Cooldown = Val(Leer.GetValue("OBJ" & Obj, "CD"))
-        ObjData(Obj).cdType = Val(Leer.GetValue("OBJ" & Obj, "CDType"))
+        ObjData(Obj).CDType = Val(Leer.GetValue("OBJ" & Obj, "CDType"))
         ObjData(Obj).CreaGRH = Leer.GetValue("OBJ" & Obj, "CreaGRH")
         ObjData(Obj).CreaLuz = Leer.GetValue("OBJ" & Obj, "CreaLuz")
         ObjData(Obj).CreaParticulaPiso = Val(Leer.GetValue("OBJ" & Obj, "CreaParticulaPiso"))
@@ -1744,9 +1744,9 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).Llave = Val(Leer.GetValue("OBJ" & Obj, "Llave"))
             
         If Val(Leer.GetValue("OBJ" & Obj, "NFT")) = 1 Then
-            ObjShop(i).name = Leer.GetValue("OBJ" & Obj, "Name")
+            ObjShop(i).Name = Leer.GetValue("OBJ" & Obj, "Name")
             ObjShop(i).Valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
-            ObjShop(i).objNum = Obj
+            ObjShop(i).ObjNum = Obj
             ReDim Preserve ObjShop(1 To (UBound(ObjShop) + 1)) As ObjDatas
         End If
         
@@ -1754,7 +1754,7 @@ Public Sub CargarIndicesOBJ()
     
     Dim aux   As String
 
-    Dim loopc As Byte
+    Dim loopC As Byte
     
     For Npc = 1 To NumNpcs
         DoEvents
@@ -1766,15 +1766,15 @@ Public Sub CargarIndicesOBJ()
         
         Select Case language
             Case e_language.English
-                NpcData(Npc).name = IIf(Leer.GetValue("npc" & Npc, "en_Name") <> vbNullString, Leer.GetValue("npc" & Npc, "en_Name"), Leer.GetValue("npc" & Npc, "Name"))
+                NpcData(Npc).Name = IIf(Leer.GetValue("npc" & Npc, "en_Name") <> vbNullString, Leer.GetValue("npc" & Npc, "en_Name"), Leer.GetValue("npc" & Npc, "Name"))
                 NpcData(Npc).desc = IIf(Leer.GetValue("npc" & Npc, "en_desc") <> vbNullString, Leer.GetValue("npc" & Npc, "en_desc"), Leer.GetValue("npc" & Npc, "desc"))
             Case e_language.Spanish
-                NpcData(Npc).name = Leer.GetValue("npc" & Npc, "Name")
+                NpcData(Npc).Name = Leer.GetValue("npc" & Npc, "Name")
                 NpcData(Npc).desc = Leer.GetValue("npc" & Npc, "desc")
         End Select
         
 
-        If NpcData(Npc).name = "" Then
+        If NpcData(Npc).Name = "" Then
             NpcData(Npc).Name = "Vacío"
 
         End If
@@ -1797,11 +1797,11 @@ Public Sub CargarIndicesOBJ()
             NpcData(Npc).NumQuiza = Val(aux)
             ReDim NpcData(Npc).QuizaDropea(1 To NpcData(Npc).NumQuiza) As Integer
 
-            For loopc = 1 To NpcData(Npc).NumQuiza
+            For loopC = 1 To NpcData(Npc).NumQuiza
                
-                NpcData(Npc).QuizaDropea(loopc) = Val(Leer.GetValue("npc" & Npc, "QuizaDropea" & loopc))
+                NpcData(Npc).QuizaDropea(loopC) = Val(Leer.GetValue("npc" & Npc, "QuizaDropea" & loopC))
                 ' Debug.Print NpcData(Npc).QuizaDropea(loopc)
-            Next loopc
+            Next loopC
 
         End If
 Continue:
@@ -1827,7 +1827,7 @@ Continue:
     
     For Hechizo = 1 To 750
         DoEvents
-        NameMaps(Hechizo).name = Leer.GetValue("NameMapa", "Mapa" & Hechizo)
+        NameMaps(Hechizo).Name = Leer.GetValue("NameMapa", "Mapa" & Hechizo)
         NameMaps(Hechizo).desc = Leer.GetValue("NameMapa", "Mapa" & Hechizo & "Desc")
     Next Hechizo
     
@@ -1908,7 +1908,7 @@ Public Sub Cargarmapsworlddata()
     Dim MapFile As String
 
     Dim i       As Integer
-    Dim j       As Byte
+    Dim J       As Byte
 
     #If Compresion = 1 Then
 
@@ -1931,17 +1931,17 @@ Public Sub Cargarmapsworlddata()
        
     ReDim Mundo(1 To TotalWorlds) As WorldMap
    
-    For j = 1 To TotalWorlds
-        Mundo(j).Alto = Val(Leer.GetValue("WORLDMAP" & j, "Alto"))
-        Mundo(j).Ancho = Val(Leer.GetValue("WORLDMAP" & j, "Ancho"))
+    For J = 1 To TotalWorlds
+        Mundo(J).Alto = Val(Leer.GetValue("WORLDMAP" & J, "Alto"))
+        Mundo(J).Ancho = Val(Leer.GetValue("WORLDMAP" & J, "Ancho"))
 
-        ReDim Mundo(j).MapIndice(1 To Mundo(j).Alto * Mundo(j).Ancho) As Integer
+        ReDim Mundo(J).MapIndice(1 To Mundo(J).Alto * Mundo(J).Ancho) As Integer
          
-         For i = 1 To Mundo(j).Alto * Mundo(j).Ancho
-             Mundo(j).MapIndice(i) = Val(Leer.GetValue("WORLDMAP" & j, i))
+         For i = 1 To Mundo(J).Alto * Mundo(J).Ancho
+             Mundo(J).MapIndice(i) = Val(Leer.GetValue("WORLDMAP" & J, i))
          Next i
          
-     Next j
+     Next J
     
     
 
@@ -2180,7 +2180,7 @@ Sub CargarCuerpos()
 
     Dim i            As Long
     
-    Dim j            As Byte
+    Dim J            As Byte
     
     Dim k            As Integer
     
@@ -2267,10 +2267,10 @@ Sub CargarCuerpos()
             x = MoldesBodies(Std).x
             y = MoldesBodies(Std).y
             
-            For j = 1 To 4
+            For J = 1 To 4
                 AnimStart = LastGrh
             
-                For k = 1 To MoldesBodies(Std).DirCount(j)
+                For k = 1 To MoldesBodies(Std).DirCount(J)
                     With GrhData(LastGrh)
                         .FileNum = FileNum
                         .NumFrames = 1
@@ -2293,15 +2293,15 @@ Sub CargarCuerpos()
                 x = MoldesBodies(Std).x
                 y = y + MoldesBodies(Std).Height
                 
-                Heading = BodiesHeading(j)
+                Heading = BodiesHeading(J)
                 
                 With GrhData(LastGrh)
-                    .NumFrames = MoldesBodies(Std).DirCount(j)
+                    .NumFrames = MoldesBodies(Std).DirCount(J)
                     .speed = .NumFrames * AnimSpeed
                     
-                    ReDim .Frames(1 To MoldesBodies(Std).DirCount(j))
+                    ReDim .Frames(1 To MoldesBodies(Std).DirCount(J))
                     
-                    For k = 1 To MoldesBodies(Std).DirCount(j)
+                    For k = 1 To MoldesBodies(Std).DirCount(J)
                         .Frames(k) = AnimStart + k - 1
                     Next
                     
@@ -2391,7 +2391,7 @@ CargarFxs_Err:
 End Sub
 
 Public Sub CalculateCliptime(ByRef clip As tAnimationClip)
-    clip.ClipTime = GrhData(FxData(clip.fX).Animacion).speed
+    clip.ClipTime = GrhData(FxData(clip.Fx).Animacion).speed
 End Sub
 
 Public Sub CalculateClipsTime(ByRef animData As tComposedAnimation)
@@ -2401,17 +2401,17 @@ Public Sub CalculateClipsTime(ByRef animData As tComposedAnimation)
     Next i
 End Sub
 
-Public Sub AddComposedMetitation(ByVal index As Long, ByVal startFx As Long, ByVal loopFx As Long)
-    ReDim ComposedFxData(index).Clips(3)
-    ComposedFxData(index).Clips(1).fX = startFx
-    ComposedFxData(index).Clips(1).LoopCount = 0
-    ComposedFxData(index).Clips(2).fX = loopFx
-    ComposedFxData(index).Clips(2).LoopCount = -1
-    ComposedFxData(index).Clips(3).fX = startFx
-    ComposedFxData(index).Clips(3).LoopCount = 0
-    ComposedFxData(index).Clips(3).Playback = Backward
-    Call CalculateClipsTime(ComposedFxData(index))
-    ComposedFxData(index).Clips(3).ClipTime = ComposedFxData(index).Clips(3).ClipTime / 2
+Public Sub AddComposedMetitation(ByVal Index As Long, ByVal StartFx As Long, ByVal loopFx As Long)
+    ReDim ComposedFxData(Index).Clips(3)
+    ComposedFxData(Index).Clips(1).Fx = StartFx
+    ComposedFxData(Index).Clips(1).LoopCount = 0
+    ComposedFxData(Index).Clips(2).Fx = loopFx
+    ComposedFxData(Index).Clips(2).LoopCount = -1
+    ComposedFxData(Index).Clips(3).Fx = StartFx
+    ComposedFxData(Index).Clips(3).LoopCount = 0
+    ComposedFxData(Index).Clips(3).Playback = Backward
+    Call CalculateClipsTime(ComposedFxData(Index))
+    ComposedFxData(Index).Clips(3).ClipTime = ComposedFxData(Index).Clips(3).ClipTime / 2
     FxToAnimationMap(StartFx) = Index
 End Sub
 
@@ -2426,7 +2426,7 @@ Public Sub LoadComposedFx()
     FxToAnimationMap(115) = 1
     
     ReDim ComposedFxData(2).Clips(1)
-    ComposedFxData(2).Clips(1).fX = 116
+    ComposedFxData(2).Clips(1).Fx = 116
     ComposedFxData(2).Clips(1).LoopCount = -1
     Call CalculateCliptime(ComposedFxData(2).Clips(1))
     FxToAnimationMap(116) = 2
@@ -2477,7 +2477,7 @@ Public Function LoadGrhData() As Boolean
 
     On Error GoTo ErrorHandler
 
-    Dim grh         As Long
+    Dim Grh         As Long
     Dim Frame       As Long
     Dim grhCount    As Long
     Dim Handle      As Integer
@@ -2516,17 +2516,17 @@ Public Function LoadGrhData() As Boolean
 
     While Not EOF(Handle) And Fin = False
 
-        Get #Handle, , grh
+        Get #Handle, , Grh
 
-        With GrhData(grh)
+        With GrhData(Grh)
         
-            GrhData(grh).active = True
+            GrhData(Grh).active = True
             'Get number of frames
             Get #Handle, , .NumFrames
 
             If .NumFrames <= 0 Then GoTo ErrorHandler
             
-            ReDim .Frames(1 To GrhData(grh).NumFrames)
+            ReDim .Frames(1 To GrhData(Grh).NumFrames)
             
             If .NumFrames > 1 Then
 
@@ -2541,7 +2541,7 @@ Public Function LoadGrhData() As Boolean
 
                 Next Frame
                 
-                Get #Handle, , GrhData(grh).speed
+                Get #Handle, , GrhData(Grh).speed
                 
                 If .speed <= 0 Then GoTo ErrorHandler
                 
@@ -2567,19 +2567,19 @@ Public Function LoadGrhData() As Boolean
 
                 If .FileNum <= 0 Then GoTo ErrorHandler
                                 
-                Get #Handle, , GrhData(grh).sX
+                Get #Handle, , GrhData(Grh).sX
 
                 If .sX < 0 Then GoTo ErrorHandler
                 
-                Get #Handle, , GrhData(grh).sY
+                Get #Handle, , GrhData(Grh).sY
 
                 If .sY < 0 Then GoTo ErrorHandler
                 
-                Get #Handle, , GrhData(grh).pixelWidth
+                Get #Handle, , GrhData(Grh).pixelWidth
 
                 If .pixelWidth <= 0 Then GoTo ErrorHandler
                 
-                Get #Handle, , GrhData(grh).pixelHeight
+                Get #Handle, , GrhData(Grh).pixelHeight
 
                 If .pixelHeight <= 0 Then GoTo ErrorHandler
                 
@@ -2587,13 +2587,13 @@ Public Function LoadGrhData() As Boolean
                 .TileWidth = .pixelWidth / TilePixelHeight
                 .TileHeight = .pixelHeight / TilePixelWidth
 
-                .Frames(1) = grh
+                .Frames(1) = Grh
 
             End If
 
         End With
 
-        If grh = MaxGrh Then Fin = True
+        If Grh = MaxGrh Then Fin = True
     Wend
 
     Close #Handle
@@ -2608,7 +2608,7 @@ Public Function LoadGrhData() As Boolean
 
 ErrorHandler:
     LoadGrhData = False
-    MsgBox "Error " & Err.Description & " durante la carga de Grh.dat! La carga se ha detenido en GRH: " & grh
+    MsgBox "Error " & Err.Description & " durante la carga de Grh.dat! La carga se ha detenido en GRH: " & Grh
     
 End Function
 
@@ -2616,7 +2616,7 @@ Public Sub LoadGrhIni()
     On Error GoTo hErr
 
     Dim FileHandle     As Integer
-    Dim grh            As Long
+    Dim Grh            As Long
     Dim Frame          As Long
     Dim SeparadorClave As String
     Dim SeparadorGrh   As String
@@ -2688,12 +2688,12 @@ Public Sub LoadGrhIni()
             Fields = Split(CurrentLine, SeparadorClave)
                 
             ' Leemos el numero de Grh (el numero a la derecha de la palabra "Grh")
-            grh = Right(Fields(0), Len(Fields(0)) - 3)
+            Grh = Right(Fields(0), Len(Fields(0)) - 3)
             
             ' Leemos los campos de datos del Grh
             Fields = Split(Fields(1), SeparadorGrh)
                 
-            With GrhData(grh)
+            With GrhData(Grh)
                     
                 ' Primer lugar: cantidad de frames.
                 .NumFrames = Val(Fields(0))
@@ -2722,7 +2722,7 @@ Public Sub LoadGrhIni()
                 ElseIf .NumFrames = 1 Then
                     
                     ' Si es un solo frame lo asignamos a si mismo
-                    .Frames(1) = grh
+                    .Frames(1) = Grh
                         
                     ' Segundo lugar: NumeroDelGrafico.bmp, pero sin el ".bmp"
                     .FileNum = Val(Fields(1))
@@ -2765,7 +2765,7 @@ hErr:
         If Err.Number = 53 Then
             Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ARCHIVO_GRAFICOS_NO_EXISTE"), vbOKOnly + vbExclamation, JsonLanguage.Item("MENSAJEBOX_ARGENTUM_TITULO"))
         
-        ElseIf grh > 0 Then
+        ElseIf Grh > 0 Then
             Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_GRAFIOS_GRH") & Grh & ".", vbOKOnly + vbExclamation, JsonLanguage.Item("MENSAJEBOX_ARGENTUM_TITULO"))
         
         Else
@@ -2794,7 +2794,7 @@ Sub CargarAnimArmas()
 
     Dim i            As Long
     
-    Dim j            As Byte
+    Dim J            As Byte
     
     Dim k            As Integer
     
@@ -2818,7 +2818,7 @@ Sub CargarAnimArmas()
     
     Set Loader = New clsIniManager
 
-    Dim loopc As Long
+    Dim loopC As Long
 
     Dim Arch  As String
     
@@ -2842,16 +2842,16 @@ Sub CargarAnimArmas()
     
     ReDim WeaponAnimData(1 To NumWeaponAnims) As WeaponAnimData
 
-    For loopc = 1 To NumWeaponAnims
-        ArmaKey = "ARMA" & loopc
+    For loopC = 1 To NumWeaponAnims
+        ArmaKey = "ARMA" & loopC
         Std = Val(Loader.GetValue(ArmaKey, "Std"))
         
         If Std = 0 Then
             
-            InitGrh WeaponAnimData(loopc).WeaponWalk(1), Val(Loader.GetValue(ArmaKey, "Dir1")), 0
-            InitGrh WeaponAnimData(loopc).WeaponWalk(2), Val(Loader.GetValue(ArmaKey, "Dir2")), 0
-            InitGrh WeaponAnimData(loopc).WeaponWalk(3), Val(Loader.GetValue(ArmaKey, "Dir3")), 0
-            InitGrh WeaponAnimData(loopc).WeaponWalk(4), Val(Loader.GetValue(ArmaKey, "Dir4")), 0
+            InitGrh WeaponAnimData(loopC).WeaponWalk(1), Val(Loader.GetValue(ArmaKey, "Dir1")), 0
+            InitGrh WeaponAnimData(loopC).WeaponWalk(2), Val(Loader.GetValue(ArmaKey, "Dir2")), 0
+            InitGrh WeaponAnimData(loopC).WeaponWalk(3), Val(Loader.GetValue(ArmaKey, "Dir3")), 0
+            InitGrh WeaponAnimData(loopC).WeaponWalk(4), Val(Loader.GetValue(ArmaKey, "Dir4")), 0
             
         Else
         
@@ -2869,10 +2869,10 @@ Sub CargarAnimArmas()
             x = MoldesBodies(Std).x
             y = MoldesBodies(Std).y
             
-            For j = 1 To 4
+            For J = 1 To 4
                 AnimStart = LastGrh
             
-                For k = 1 To MoldesBodies(Std).DirCount(j)
+                For k = 1 To MoldesBodies(Std).DirCount(J)
                     With GrhData(LastGrh)
                         .FileNum = FileNum
                         .NumFrames = 1
@@ -2895,15 +2895,15 @@ Sub CargarAnimArmas()
                 x = MoldesBodies(Std).x
                 y = y + MoldesBodies(Std).Height
                 
-                Heading = BodiesHeading(j)
+                Heading = BodiesHeading(J)
                 
                 With GrhData(LastGrh)
-                    .NumFrames = MoldesBodies(Std).DirCount(j)
+                    .NumFrames = MoldesBodies(Std).DirCount(J)
                     .speed = .NumFrames / 0.018
                     
-                    ReDim .Frames(1 To MoldesBodies(Std).DirCount(j))
+                    ReDim .Frames(1 To MoldesBodies(Std).DirCount(J))
                     
-                    For k = 1 To MoldesBodies(Std).DirCount(j)
+                    For k = 1 To MoldesBodies(Std).DirCount(J)
                         .Frames(k) = AnimStart + k - 1
                     Next
                     
@@ -2913,7 +2913,7 @@ Sub CargarAnimArmas()
                     .TileHeight = GrhData(.Frames(1)).TileHeight
                 End With
                 
-                InitGrh WeaponAnimData(loopc).WeaponWalk(Heading), LastGrh, 0
+                InitGrh WeaponAnimData(loopC).WeaponWalk(Heading), LastGrh, 0
                 
                 
                 LastGrh = LastGrh + 1
@@ -2921,7 +2921,7 @@ Sub CargarAnimArmas()
         
         
         End If
-    Next loopc
+    Next loopC
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "armas.dat"
@@ -2970,20 +2970,20 @@ Sub CargarColores()
     For i = 0 To 47 '49 y 50 reservados para ciudadano y criminal
         ColoresPJ(i).r = CByte(GetVar(archivoC, CStr(i), "R"))
         ColoresPJ(i).G = CByte(GetVar(archivoC, CStr(i), "G"))
-        ColoresPJ(i).B = CByte(GetVar(archivoC, CStr(i), "B"))
+        ColoresPJ(i).b = CByte(GetVar(archivoC, CStr(i), "B"))
     Next i
     
     ColoresPJ(50).r = CByte(GetVar(archivoC, "CR", "R"))
     ColoresPJ(50).G = CByte(GetVar(archivoC, "CR", "G"))
-    ColoresPJ(50).B = CByte(GetVar(archivoC, "CR", "B"))
+    ColoresPJ(50).b = CByte(GetVar(archivoC, "CR", "B"))
     
     ColoresPJ(49).r = CByte(GetVar(archivoC, "CI", "R"))
     ColoresPJ(49).G = CByte(GetVar(archivoC, "CI", "G"))
-    ColoresPJ(49).B = CByte(GetVar(archivoC, "CI", "B"))
+    ColoresPJ(49).b = CByte(GetVar(archivoC, "CI", "B"))
     
     ColoresPJ(48).r = CByte(GetVar(archivoC, "NE", "R"))
     ColoresPJ(48).G = CByte(GetVar(archivoC, "NE", "G"))
-    ColoresPJ(48).B = CByte(GetVar(archivoC, "NE", "B"))
+    ColoresPJ(48).b = CByte(GetVar(archivoC, "NE", "B"))
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "colores.dat"
@@ -3050,7 +3050,7 @@ Sub CargarAnimEscudos()
 
     Dim i            As Long
     
-    Dim j            As Byte
+    Dim J            As Byte
     
     Dim k            As Integer
     
@@ -3074,7 +3074,7 @@ Sub CargarAnimEscudos()
     
     Set Loader = New clsIniManager
 
-    Dim loopc As Long
+    Dim loopC As Long
 
     Dim Arch  As String
     
@@ -3098,16 +3098,16 @@ Sub CargarAnimEscudos()
     
     ReDim ShieldAnimData(1 To NumEscudosAnims) As ShieldAnimData
     
-    For loopc = 1 To NumEscudosAnims
+    For loopC = 1 To NumEscudosAnims
     
-        EscudoKey = "ESC" & loopc
+        EscudoKey = "ESC" & loopC
         Std = Val(Loader.GetValue(EscudoKey, "Std"))
         
         If Std = 0 Then
-            InitGrh ShieldAnimData(loopc).ShieldWalk(1), Val(Loader.GetValue(EscudoKey, "Dir1")), 0
-            InitGrh ShieldAnimData(loopc).ShieldWalk(2), Val(Loader.GetValue(EscudoKey, "Dir2")), 0
-            InitGrh ShieldAnimData(loopc).ShieldWalk(3), Val(Loader.GetValue(EscudoKey, "Dir3")), 0
-            InitGrh ShieldAnimData(loopc).ShieldWalk(4), Val(Loader.GetValue(EscudoKey, "Dir4")), 0
+            InitGrh ShieldAnimData(loopC).ShieldWalk(1), Val(Loader.GetValue(EscudoKey, "Dir1")), 0
+            InitGrh ShieldAnimData(loopC).ShieldWalk(2), Val(Loader.GetValue(EscudoKey, "Dir2")), 0
+            InitGrh ShieldAnimData(loopC).ShieldWalk(3), Val(Loader.GetValue(EscudoKey, "Dir3")), 0
+            InitGrh ShieldAnimData(loopC).ShieldWalk(4), Val(Loader.GetValue(EscudoKey, "Dir4")), 0
         Else
         
         
@@ -3124,10 +3124,10 @@ Sub CargarAnimEscudos()
             x = MoldesBodies(Std).x
             y = MoldesBodies(Std).y
             
-            For j = 1 To 4
+            For J = 1 To 4
                 AnimStart = LastGrh
             
-                For k = 1 To MoldesBodies(Std).DirCount(j)
+                For k = 1 To MoldesBodies(Std).DirCount(J)
                     With GrhData(LastGrh)
                         .FileNum = FileNum
                         .NumFrames = 1
@@ -3150,15 +3150,15 @@ Sub CargarAnimEscudos()
                 x = MoldesBodies(Std).x
                 y = y + MoldesBodies(Std).Height
                 
-                Heading = BodiesHeading(j)
+                Heading = BodiesHeading(J)
                 
                 With GrhData(LastGrh)
-                    .NumFrames = MoldesBodies(Std).DirCount(j)
+                    .NumFrames = MoldesBodies(Std).DirCount(J)
                     .speed = .NumFrames / 0.018
                     
-                    ReDim .Frames(1 To MoldesBodies(Std).DirCount(j))
+                    ReDim .Frames(1 To MoldesBodies(Std).DirCount(J))
                     
-                    For k = 1 To MoldesBodies(Std).DirCount(j)
+                    For k = 1 To MoldesBodies(Std).DirCount(J)
                         .Frames(k) = AnimStart + k - 1
                     Next
                     
@@ -3168,7 +3168,7 @@ Sub CargarAnimEscudos()
                     .TileHeight = GrhData(.Frames(1)).TileHeight
                 End With
                 
-                InitGrh ShieldAnimData(loopc).ShieldWalk(Heading), LastGrh, 0
+                InitGrh ShieldAnimData(loopC).ShieldWalk(Heading), LastGrh, 0
                 
                 
                 LastGrh = LastGrh + 1
@@ -3176,7 +3176,7 @@ Sub CargarAnimEscudos()
         
         
         End If
-    Next loopc
+    Next loopC
     
     #If Compresion = 1 Then
         Delete_File Windows_Temp_Dir & "escudos.dat"
@@ -3195,7 +3195,7 @@ End Sub
 Sub LoadFonts()
 #If REMOTE_CLOSE = 0 Then
     If LoadFont("Cardo.ttf") Then
-        frmMain.NombrePJ.font.name = "Cardo"
+        frmMain.NombrePJ.font.Name = "Cardo"
     End If
 
     If LoadFont("Alegreya Sans AO.ttf") Then
@@ -3203,10 +3203,10 @@ Sub LoadFonts()
         Dim Middle As Integer
     
         For Each CurControl In frmMain.Controls
-            If CurControl.name <> "NombrePJ" Then
+            If CurControl.Name <> "NombrePJ" Then
                 Select Case TypeName(CurControl)
                     Case "Label"
-                        CurControl.font.name = "Alegreya Sans AO"
+                        CurControl.font.Name = "Alegreya Sans AO"
 
                         ' Centrar texto verticalmente
                         If Not CurControl.AutoSize Then
@@ -3216,7 +3216,7 @@ Sub LoadFonts()
                         End If
                         
                     Case "RichTextBox", "ListBox"
-                        CurControl.font.name = "Alegreya Sans AO"
+                        CurControl.font.Name = "Alegreya Sans AO"
                 End Select
             End If
         Next
@@ -3253,9 +3253,9 @@ Sub LoadFonts()
     #End If
 End Sub
 
-Function LoadFont(name As String) As Boolean
+Function LoadFont(Name As String) As Boolean
     Static YaMostreError As Boolean
-    LoadFont = AddFontResourceEx(App.path & "\..\Recursos\OUTPUT\" & name, FR_PRIVATE, 0&) <> 0
+    LoadFont = AddFontResourceEx(App.path & "\..\Recursos\OUTPUT\" & Name, FR_PRIVATE, 0&) <> 0
 
     If Not YaMostreError And Not LoadFont Then
         Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_FUENTES"), vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ERROR_CARGA"))
@@ -3298,7 +3298,7 @@ Public Sub CargarNPCsMapData()
                 y = TempInt
                 
                 Get #fh, , TempInt
-                ListNPCMapData(map).NpcList(i).state = TempInt
+                ListNPCMapData(map).NpcList(i).State = TempInt
                 Call ConvertToMinimapPosition(x, y, 2, 0)
                 ListNPCMapData(map).NpcList(i).Position.x = x
                 ListNPCMapData(map).NpcList(i).Position.y = y
