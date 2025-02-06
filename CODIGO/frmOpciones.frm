@@ -328,12 +328,6 @@ Begin VB.Form frmOpciones
          Top             =   3960
          Width           =   2175
       End
-      Begin VB.Image CheckUI 
-         Height          =   255
-         Left            =   270
-         Top             =   3495
-         Width           =   255
-      End
       Begin VB.Image num_comp_inv 
          Height          =   255
          Left            =   270
