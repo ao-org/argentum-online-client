@@ -975,6 +975,18 @@ Begin VB.Form frmMain
       Top             =   2280
       Width           =   11040
    End
+   Begin VB.Image imgMAO 
+      Height          =   315
+      Left            =   13500
+      Top             =   45
+      Width           =   975
+   End
+   Begin VB.Image imgManual 
+      Height          =   315
+      Left            =   12450
+      Top             =   45
+      Width           =   975
+   End
    Begin VB.Image imgDeleteItem 
       Height          =   375
       Left            =   11400
@@ -1219,10 +1231,10 @@ Begin VB.Form frmMain
    End
    Begin VB.Image OpcionesBoton 
       Height          =   315
-      Left            =   11431
+      Left            =   11400
       Tag             =   "0"
-      Top             =   65
-      Width           =   315
+      Top             =   45
+      Width           =   975
    End
    Begin VB.Image CombateIcon 
       Height          =   144
@@ -1510,6 +1522,9 @@ Private Const EM_GETLINE = &HC4
 
 Private Const EM_LINELENGTH = &HC1
 Private cBotonEliminarItem As clsGraphicalButton
+Private cBotonAjustes As clsGraphicalButton
+Private cBotonManual As clsGraphicalButton
+Private cBotonMAO As clsGraphicalButton
 
 Private Sub btnInvisible_Click()
     
@@ -1531,10 +1546,25 @@ End Sub
 Private Sub loadButtons()
 
     Set cBotonEliminarItem = New clsGraphicalButton
+    Set cBotonAjustes = New clsGraphicalButton
+    Set cBotonManual = New clsGraphicalButton
+    Set cBotonMAO = New clsGraphicalButton
                                                 
     Call cBotonEliminarItem.Initialize(imgDeleteItem, "boton-borrar-item-default.bmp", _
                                                 "boton-borrar-item-over.bmp", _
                                                 "boton-borrar-item-off.bmp", Me)
+                                                
+    Call cBotonAjustes.Initialize(OpcionesBoton, "boton-ajustes-default.bmp", _
+                                                "boton-ajustes-over.bmp", _
+                                                "boton-ajustes-off.bmp", Me)
+                                                
+    Call cBotonManual.Initialize(imgManual, "boton-manual-default.bmp", _
+                                                "boton-manual-over.bmp", _
+                                                "boton-manual-off.bmp", Me)
+                                                
+    Call cBotonMAO.Initialize(imgMAO, "boton-mao-default.bmp", _
+                                                "boton-mao-over.bmp", _
+                                                "boton-mao-off.bmp", Me)
 End Sub
 
 Private Sub btnSpawn_Click()
@@ -2110,6 +2140,33 @@ imgInventario_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.imgInventario_MouseMove", Erl)
     Resume Next
     
+End Sub
+
+Private Sub imgManual_Click()
+    On Error GoTo imgManual_Click_Err
+    
+    ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/wiki", "", "", 0
+
+    
+    Exit Sub
+
+imgManual_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgManual_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub imgMAO_Click()
+    On Error GoTo imgMAO_Click_Err
+    
+    ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/mercadoao", "", "", 0
+
+    
+    Exit Sub
+
+imgMAO_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.imgMAO_Click", Erl)
+    Resume Next
+
 End Sub
 
 Private Sub picHechiz_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -2812,7 +2869,6 @@ Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, x As Si
     
     On Error GoTo OpcionesBoton_MouseDown_Err
     
-    OpcionesBoton.Picture = LoadInterface("opcionesoverdown.bmp")
     OpcionesBoton.Tag = "1"
 
     
@@ -3477,7 +3533,6 @@ Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, x As Si
     
 
     If OpcionesBoton.Tag = "0" Then
-        OpcionesBoton.Picture = LoadInterface("opcionesover.bmp")
         OpcionesBoton.Tag = "1"
 
     End If
