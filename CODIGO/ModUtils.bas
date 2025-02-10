@@ -1950,6 +1950,9 @@ Public Sub Client_UnInitialize_DirectX_Objects()
     
     On Error GoTo Client_UnInitialize_DirectX_Objects_Err
     Set ao20audio.AudioEngine = Nothing
+#If DIRECT_PLAY = 1 Then
+    Call modDplayClient.shutdown_direct_play
+#End If
     Exit Sub
 
 Client_UnInitialize_DirectX_Objects_Err:
