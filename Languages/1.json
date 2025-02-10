@@ -190,7 +190,6 @@
     "MENSAJEBOX_DIRECTX_NO_FUNCIONA": "DirectX no está funcionando.",
     "MENSAJEBOX_ERROR_INICIO_DISPOSITIVO_DX": "Error al iniciar el dispositivo DX.",
     "MENSAJEBOX_ERROR_CREACION_ENGINE_AUDIO": "Error al crear el motor de audio.",
-    "MENSAJEBOX_UI_DESHABILITADA": "UI momentáneamente deshabilitada.",
     "MENSAJEBOX_SELECCION_RAZA": "Seleccione la raza del personaje.",
     "MENSAJEBOX_SELECCION_CABEZA": "Seleccione una cabeza para el personaje.",
     "MENSAJEBOX_SELECCION_SEXO": "Seleccione el sexo del personaje.",
