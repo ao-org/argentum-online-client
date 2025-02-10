@@ -995,7 +995,6 @@ Public Sub render()
     
     MouseTimeAcumulated = MouseTimeAcumulated + timerElapsedTime
     If MouseLastUpdate + TIME_MS_MOUSE <= MouseTimeAcumulated Then
-        Call efectoSangre
         MouseLastUpdate = MouseTimeAcumulated
     End If
     

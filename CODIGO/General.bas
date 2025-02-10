@@ -500,26 +500,10 @@ Function CheckUserDataLoged() As Boolean
 
     End If
     
-    ' If Len(UserCuenta) > 30 Then
-    '   Call TextoAlAsistente("El nombre debe tener menos de 30 letras.")
-    '  frmMensaje.Show vbModal
-    '  Exit Function
-    '  End If
-    
-    '  For loopc = 1 To Len(UserCuenta)
-    '   CharAscii = Asc(mid$(UserCuenta, loopc, 1))
-    ' If Not LegalCharacter(CharAscii) Then
-    ' Call TextoAlAsistente("Nombre inválido. El caractér " & Chr$(CharAscii) & " no está permitido.")
-    '    Exit Function
-    '  End If
-    ' Next loopc
-    
+       
     If CuentaPassword = "" Then
         Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_INGRESE_CONTRASENA"), False, False)
-        'frmMensaje.msg.Caption = "Ingrese un password."
-        ' frmMensaje.Show vbModal
         Exit Function
-
     End If
     
     CheckUserDataLoged = True

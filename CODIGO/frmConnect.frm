@@ -174,6 +174,7 @@ Private Sub DirectPlay8Event_ConnectComplete(dpnotify As DxVBLibA.DPNMSG_CONNECT
     Else
         'We got our connect complete event
         mfConnectComplete = True
+        modNetwork.OnClientConnect dpnotify, fRejectMsg
     End If
 End Sub
 

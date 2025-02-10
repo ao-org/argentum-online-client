@@ -181,6 +181,18 @@ Public Sub Poll()
 ' Not needed when using DPLAY
 End Sub
 
+Public Sub OnClientConnect(dpnotify As DxVBLibA.DPNMSG_CONNECT_COMPLETE, fRejectMsg As Boolean)
+On Error GoTo OnClientConnect_Err:
+    Connected = True
+    
+    Unload frmConnecting
+    Call Login
+    
+    Exit Sub
+OnClientConnect_Err:
+    Call RegistrarError(Err.Number, Err.Description, "modNetwork.OnClientConnect", Erl)
+End Sub
+
 Public Sub Send(ByVal Buffer As clsNetWriter)
     Writer.send
 End Sub
