@@ -1810,16 +1810,29 @@ Continue:
     
     For Hechizo = 1 To NumHechizos
         DoEvents
-        HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
-        HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "desc")
-        HechizoData(Hechizo).PalabrasMagicas = Leer.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
-        HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
-        HechizoData(Hechizo).TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "TargetMsg")
-        HechizoData(Hechizo).PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "PropioMsg")
-        HechizoData(Hechizo).ManaRequerido = Val(Leer.GetValue("Hechizo" & Hechizo, "ManaRequerido"))
+        
+        Select Case language
+            Case e_language.English
+                HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "en_name")
+                HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "en_Desc")
+                HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "en_HechizeroMsg")
+                HechizoData(Hechizo).TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "en_TargetMsg")
+                HechizoData(Hechizo).PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "en_PropioMsg")
+
+            Case e_language.Spanish
+                HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
+                HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "desc")
+                HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
+                HechizoData(Hechizo).TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "TargetMsg")
+                HechizoData(Hechizo).PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "PropioMsg")
+                
+        End Select
+        
         HechizoData(Hechizo).MinSkill = Val(Leer.GetValue("Hechizo" & Hechizo, "MinSkill"))
         HechizoData(Hechizo).StaRequerido = Val(Leer.GetValue("Hechizo" & Hechizo, "StaRequerido"))
         HechizoData(Hechizo).IconoIndex = Val(Leer.GetValue("Hechizo" & Hechizo, "IconoIndex"))
+        HechizoData(Hechizo).ManaRequerido = Val(Leer.GetValue("Hechizo" & Hechizo, "ManaRequerido"))
+        HechizoData(Hechizo).PalabrasMagicas = Leer.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
         'HechizoData(Hechizo).IconoIndex = 35696
     Next Hechizo
     
