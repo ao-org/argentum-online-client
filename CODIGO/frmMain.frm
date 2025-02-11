@@ -3630,7 +3630,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
         Select Case ObjData(Inventario.ObjIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.ObjIndex(Slot)).MinHit & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
                 ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.ObjIndex(Slot)).MinDef & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxDef
@@ -3984,7 +3984,7 @@ renderer_DblClick_Err:
 End Sub
 
 Private Sub renderer_Click()
-    On Error GoTo renderer_Click_Err
+On Error GoTo renderer_Click_Err
     Call Form_Click
     If SendTxt.visible Then SendTxt.SetFocus
     If SendTxtCmsg.visible Then SendTxtCmsg.SetFocus
@@ -4181,7 +4181,10 @@ CmdLanzar_MouseMove_Err:
 End Sub
 
 Public Sub Form_Click()
-    
+#If DEBUGGING = 1 Then
+    'change the style and let he window to be moved
+    Form_RemoveTitleBar Me
+#End If
     Call OnClick(MouseBoton, MouseShift)
     
 End Sub
@@ -4214,27 +4217,19 @@ Form_DblClick_Err:
 End Sub
 
 Private Sub Form_Load()
-    
-    On Error GoTo Form_Load_Err
-
+On Error GoTo Form_Load_Err
     Debug.Assert Not FormParser Is Nothing
-    
     Call FormParser.Parse_Form(frmMain)
-    
+    Form_RemoveTitleBar Me
     MenuNivel = 1
-    Me.Caption = "Argentum20" 'hay que poner 20 aniversario
-    
+    Me.Caption = App.title
     Set hlst = New clsGraphicalList
     Call hlst.Initialize(Me.picHechiz, RGB(200, 190, 190))
-
     loadButtons
-    
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)

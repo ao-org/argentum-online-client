@@ -184,6 +184,7 @@ End Sub
 
 Private Sub DirectPlay8Event_CreatePlayer(ByVal lPlayerID As Long, fRejectMsg As Boolean)
     'VB requires that we must implement *every* member of this interface
+    Debug.Print "DirectPlay8Event_CreatePlayer " & lPlayerID
 End Sub
 
 Private Sub DirectPlay8Event_DestroyGroup(ByVal lGroupID As Long, ByVal lReason As Long, fRejectMsg As Boolean)
@@ -192,6 +193,7 @@ End Sub
 
 Private Sub DirectPlay8Event_DestroyPlayer(ByVal lPlayerID As Long, ByVal lReason As Long, fRejectMsg As Boolean)
     'VB requires that we must implement *every* member of this interface
+    Debug.Print "DirectPlay8Event_DestroyPlayer " & lPlayerID
 End Sub
 
 Private Sub DirectPlay8Event_EnumHostsQuery(dpnotify As DxVBLibA.DPNMSG_ENUM_HOSTS_QUERY, fRejectMsg As Boolean)
@@ -216,6 +218,7 @@ End Sub
 
 Private Sub DirectPlay8Event_InfoNotify(ByVal lMsgID As Long, ByVal lNotifyID As Long, fRejectMsg As Boolean)
     'VB requires that we must implement *every* member of this interface
+    Debug.Print "DirectPlay8Event_InfoNotify"
 End Sub
 
 Private Sub DirectPlay8Event_Receive(dpnotify As DxVBLibA.DPNMSG_RECEIVE, fRejectMsg As Boolean)
@@ -228,6 +231,7 @@ End Sub
 
 Private Sub DirectPlay8Event_TerminateSession(dpnotify As DxVBLibA.DPNMSG_TERMINATE_SESSION, fRejectMsg As Boolean)
     'VB requires that we must implement *every* member of this interface
+    Debug.Print "DirectPlay8Event_TerminateSession"
 End Sub
 
 Private Sub DirectPlay8LobbyEvent_Connect(dlNotify As DxVBLibA.DPL_MESSAGE_CONNECT, fRejectMsg As Boolean)
@@ -347,10 +351,12 @@ Private Sub Form_Load()
     Timer1.enabled = True
     
     ' Seteamos el caption hay que poner 20 aniversario
-    Me.Caption = "Argentum20"
+    Me.Caption = App.title
     
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
+#If DEBUGGING = 0 Then
     Call Form_RemoveTitleBar(Me)
+#End If
     Debug.Assert D3DWindow.BackBufferWidth <> 0
     Debug.Assert D3DWindow.BackBufferHeight <> 0
     Me.Width = D3DWindow.BackBufferWidth * screen.TwipsPerPixelX
@@ -366,6 +372,8 @@ End Sub
 
 Private Sub render_DblClick()
 On Error GoTo render_DblClick_Err
+    Form_RemoveTitleBar Me
+
     Select Case g_game_state.State()
 
         Case e_state_account_screen

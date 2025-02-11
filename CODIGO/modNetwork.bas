@@ -183,33 +183,54 @@ End Sub
 
 Public Sub OnClientConnect(dpnotify As DxVBLibA.DPNMSG_CONNECT_COMPLETE, fRejectMsg As Boolean)
 On Error GoTo OnClientConnect_Err:
+    Err.Clear
     Connected = True
-    
     Unload frmConnecting
     Call Login
-    
     Exit Sub
 OnClientConnect_Err:
-    Call RegistrarError(Err.Number, Err.Description, "modNetwork.OnClientConnect", Erl)
+   If Err.Number <> 0 Then
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.Receive", Erl)
+    End If
 End Sub
 
 Public Sub Send(ByVal Buffer As clsNetWriter)
+On Error GoTo send_Err:
+    Err.Clear
     Writer.send
+    Exit Sub
+send_Err:
+   If Err.Number <> 0 Then
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.Receive", Erl)
+    End If
 End Sub
 
 Public Sub Disconnect()
-     modDplayClient.dpc.Close 0
+    If Connected Then
+        Debug.Print "Disconnecting DirecPlay..."
+        Connected = False
+        DoEvents
+        modDplayClient.dpc.Close 0
+        Set dpc = Nothing
+        Debug.Print "Disconnected DirectPlay"
+    End If
     
 End Sub
 
 Public Sub Receive(dpnotify As DxVBLibA.DPNMSG_RECEIVE, fRejectMsg As Boolean)
 On Error GoTo receive_error:
+    Err.Clear
     Call Protocol.HandleIncomingData(dpnotify)
     Exit Sub
 receive_error:
-    Call RegistrarError(Err.Number, Err.Description, "modNetwork.Receive", Erl)
+   If Err.Number <> 0 Then
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.Receive", Erl)
+    End If
 End Sub
 Public Sub Connect(ByVal Address As String, ByVal Service As String)
+On Error GoTo connect_error:
+    Err.Clear
+    
     Debug.Print "DPLAY > Connecting to World Server : " & Address; ":" & Service
 
     If (Address = vbNullString Or Service = vbNullString) Then
@@ -261,13 +282,14 @@ Public Sub Connect(ByVal Address As String, ByVal Service As String)
     Connected = True
     If frmConnect.mfConnectComplete Then
         'We've joined our game
-        'mfComplete = True
-        'mfHost = False
-        'Clean up our address
         Set HostAddr = Nothing
         Set DeviceAddr = Nothing
     End If
-
+    Exit Sub
+connect_error:
+   If Err.Number <> 0 Then
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.Receive", Erl)
+    End If
 End Sub
 
 #End If

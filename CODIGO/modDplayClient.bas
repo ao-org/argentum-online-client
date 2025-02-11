@@ -21,8 +21,6 @@ Option Explicit
 Public Const AppGuid = "{5726CF1F-702B-4008-98BC-BF9C95F9E288}"
 
 Public dpc As DirectPlay8Client
-Public DPlayEventsForm As frmConnect
-
 
 Public Sub init_direct_play(ByRef dx As DirectX8)
     Err.Clear
@@ -32,11 +30,9 @@ Public Sub init_direct_play(ByRef dx As DirectX8)
     Debug.Assert Err.Number = 0
     dpc.RegisterMessageHandler frmConnect
     Set Protocol_Writes.Writer = New clsNetWriter
-    
 End Sub
 
 Public Sub shutdown_direct_play()
-
     'Stop our message handler
     If Not dpc Is Nothing Then dpc.UnRegisterMessageHandler
     'Close down our session
@@ -44,7 +40,6 @@ Public Sub shutdown_direct_play()
     Set dpc = Nothing
     'Get rid of our message pump
     'DPlayEventsForm.Un
-    
 End Sub
 
 
