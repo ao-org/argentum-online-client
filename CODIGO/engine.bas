@@ -1966,11 +1966,12 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             End If
             
-            
-            If (verVidaClan And Not .Invisible) Or dibujaMiembroClan Or charlist(UserCharIndex).priv = 5 Then
-                OffsetYname = 8
-                OffsetYClan = 8
-                Call DibujarVidaChar(CharIndex, PixelOffsetX, PixelOffsetY, OffsetYname, OffsetYClan)
+            If UserCharIndex > 0 Then
+                If (verVidaClan And Not .Invisible) Or dibujaMiembroClan Or charlist(UserCharIndex).priv = 5 Then
+                    OffsetYname = 8
+                    OffsetYClan = 8
+                    Call DibujarVidaChar(CharIndex, PixelOffsetX, PixelOffsetY, OffsetYname, OffsetYClan)
+                End If
             End If
             
             ' Si tiene cabeza, componemos la textura
@@ -2177,15 +2178,18 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call Draw_Grh(flag, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY - 45 + .Body.BodyOffset.y, 1, 0, Color, True, 0, 0, 0)
                 End If
                 
-                If (.clan_index = charlist(UserCharIndex).clan_index And CharIndex <> UserCharIndex And .EsNpc = False And .Team <= 0) Or (CharIndex = UserCharIndex And .Invisible) Then
-                    'Seteo color de nombre del clan solo si es de mi clan
-                    Call SetRGBA(NameColorClan(0), 255, 255, 0, 255)
-                    Call SetRGBA(NameColorClan(1), 255, 255, 0, 255)
-                    Call SetRGBA(NameColorClan(2), 255, 255, 0, 255)
-                    Call SetRGBA(NameColorClan(3), 255, 255, 0, 255)
-                    Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColorClan, 1, False, 0, IIf(.Invisible, 160, 255)
-                Else
-                    Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
+                If (UserCharIndex > LBound(charlist) And UserCharIndex < UBound(charlist)) Then
+                    
+                    If (.clan_index = charlist(UserCharIndex).clan_index And CharIndex <> UserCharIndex And .EsNpc = False And .Team <= 0) Or (CharIndex = UserCharIndex And .Invisible) Then
+                        'Seteo color de nombre del clan solo si es de mi clan
+                        Call SetRGBA(NameColorClan(0), 255, 255, 0, 255)
+                        Call SetRGBA(NameColorClan(1), 255, 255, 0, 255)
+                        Call SetRGBA(NameColorClan(2), 255, 255, 0, 255)
+                        Call SetRGBA(NameColorClan(3), 255, 255, 0, 255)
+                        Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColorClan, 1, False, 0, IIf(.Invisible, 160, 255)
+                    Else
+                        Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
+                    End If
                 End If
             ElseIf Nombres And .Team > 0 Then
                 line = "<Equipo " & .Team & ">"
