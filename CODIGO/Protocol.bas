@@ -2570,9 +2570,7 @@ Private Sub HandleConsoleMessage()
             
             Case "ID"
     
-                Dim id    As Integer
-                Dim extra As String
-    
+   
                 id = ReadField(2, chat, Asc("*"))
                 extra = ReadField(3, chat, Asc("*"))
                     
