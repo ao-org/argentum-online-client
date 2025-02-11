@@ -2480,7 +2480,6 @@ Private Sub HandleConsoleMessage()
 
     QueEs = ReadField(1, chat, Asc("*"))
 
-    If language = Spanish Then
     
         Select Case QueEs
     
@@ -2491,18 +2490,34 @@ Private Sub HandleConsoleMessage()
             Case "O" 'OBJETO
                 objname = ObjData(ReadField(2, chat, Asc("*"))).Name
                 chat = objname & ReadField(3, chat, Asc("*"))
+            
     
             Case "HECINF"
+            If language = Spanish Then
                 Hechizo = ReadField(2, chat, Asc("*"))
                 chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
-    
+            Else
+                Hechizo = ReadField(2, chat, Asc("*"))
+                chat = "------------< Spell information >------------" & vbCrLf & "Name: " & HechizoData(Hechizo).nombre & vbCrLf & "Description: " & HechizoData(Hechizo).desc & vbCrLf & "Required skill: " & HechizoData(Hechizo).MinSkill & " of magic." & vbCrLf & "Mana needed: " & HechizoData(Hechizo).ManaRequerido & " points." & vbCrLf & "Stamina needed: " & HechizoData(Hechizo).StaRequerido & " points."
+            End If
+            
             Case "ProMSG"
+            If language = Spanish Then
                 Hechizo = ReadField(2, chat, Asc("*"))
                 chat = HechizoData(Hechizo).PropioMsg
+            Else
+                Hechizo = ReadField(2, chat, Asc("*"))
+                chat = HechizoData(Hechizo).en_PropioMsg
+            End If
     
             Case "HecMSG"
+            If language = Spanish Then
                 Hechizo = ReadField(2, chat, Asc("*"))
                 chat = HechizoData(Hechizo).HechizeroMsg & " la criatura."
+            Else
+                Hechizo = ReadField(2, chat, Asc("*"))
+                chat = HechizoData(Hechizo).HechizeroMsg & " the creature."
+            End If
     
             Case "HecMSGU"
                 Hechizo = ReadField(2, chat, Asc("*"))
@@ -2527,58 +2542,10 @@ Private Sub HandleConsoleMessage()
                 extra = ReadField(3, chat, Asc("*"))
                     
                 chat = Locale_Parse_ServerMessage(id, extra)
-               
-        End Select
-    
-    Else
 
-        Select Case QueEs
-    
-            Case "NPCNAME"
-                NpcName = NpcData(ReadField(2, chat, Asc("*"))).Name
-                chat = NpcName & ReadField(3, chat, Asc("*"))
-    
-            Case "O" 'OBJETO
-                objname = ObjData(ReadField(2, chat, Asc("*"))).Name
-                chat = objname & ReadField(3, chat, Asc("*"))
-    
-            Case "HECINF"
-                Hechizo = ReadField(2, chat, Asc("*"))
-                chat = "------------< Spell information >------------" & vbCrLf & "Name: " & HechizoData(Hechizo).nombre & vbCrLf & "Description: " & HechizoData(Hechizo).desc & vbCrLf & "Required skill: " & HechizoData(Hechizo).MinSkill & " of magic." & vbCrLf & "Mana needed: " & HechizoData(Hechizo).ManaRequerido & " points." & vbCrLf & "Stamina needed: " & HechizoData(Hechizo).StaRequerido & " points."
-    
-            Case "ProMSG"
-                Hechizo = ReadField(2, chat, Asc("*"))
-                chat = HechizoData(Hechizo).PropioMsg
-    
-            Case "HecMSG"
-                Hechizo = ReadField(2, chat, Asc("*"))
-                chat = HechizoData(Hechizo).HechizeroMsg & " the creature."
-    
-            Case "HecMSGU"
-                Hechizo = ReadField(2, chat, Asc("*"))
-                userName = ReadField(3, chat, Asc("*"))
-                chat = HechizoData(Hechizo).HechizeroMsg & " " & userName & "."
-                    
-            Case "HecMSGA"
-                Hechizo = ReadField(2, chat, Asc("*"))
-                userName = ReadField(3, chat, Asc("*"))
-                chat = userName & " " & HechizoData(Hechizo).TargetMsg
-                    
-            Case "EXP"
-                Valor = ReadField(2, chat, Asc("*"))
-                'chat = "Has ganado " & valor & " puntos de experiencia."
-            
-            Case "ID"
-    
-   
-                id = ReadField(2, chat, Asc("*"))
-                extra = ReadField(3, chat, Asc("*"))
-                    
-                chat = Locale_Parse_ServerMessage(id, extra)
                
         End Select
-        
-    End If
+
     If InStr(1, chat, "~") Then
         str = ReadField(2, chat, 126)
 
