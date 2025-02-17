@@ -1246,25 +1246,24 @@ General_Char_Particle_Create_Err:
     
 End Function
 
-Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As Integer, ByVal y As Integer, _
-                                        Optional ByVal particle_life As Long = 0, Optional ByVal noBorrar As Boolean) As Long
+Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As Integer, ByVal y As Integer, Optional ByVal particle_life As Long = 0, Optional ByVal noBorrar As Boolean) As Long
     On Error GoTo General_Particle_Create_Err
 
 10      ' Check if StreamData array is initialized
         If Not IsArray(StreamData) Or UBound(StreamData) < 1 Then
-            Call RegistrarError(0, "StreamData array is not initialized or empty.", "Graficos_Particulas.General_Particle_Create", Erl)
+            Call RegistrarError(9, "StreamData array is not initialized or empty.", "Graficos_Particulas.General_Particle_Create", Erl)
             Exit Function
         End If
 
 20      ' Ensure ParticulaInd is within valid bounds
         If ParticulaInd <= 0 Or ParticulaInd > UBound(StreamData) Then
-            Call RegistrarError(0, "ParticulaInd out of range: " & ParticulaInd, "Graficos_Particulas.General_Particle_Create", Erl)
+            Call RegistrarError(9, "ParticulaInd out of range: " & ParticulaInd, "Graficos_Particulas.General_Particle_Create", Erl)
             Exit Function
         End If
 
 30      ' Ensure colortint array exists and has enough elements
         If Not IsArray(StreamData(ParticulaInd).colortint) Or UBound(StreamData(ParticulaInd).colortint) < 3 Then
-            Call RegistrarError(0, "StreamData(" & ParticulaInd & ").colortint array out of bounds", "Graficos_Particulas.General_Particle_Create", Erl)
+            Call RegistrarError(9, "StreamData(" & ParticulaInd & ").colortint array out of bounds", "Graficos_Particulas.General_Particle_Create", Erl)
             Exit Function
         End If
 
@@ -1276,54 +1275,19 @@ Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As I
 70      Call SetRGBA(rgb_list(2), StreamData(ParticulaInd).colortint(2).B, StreamData(ParticulaInd).colortint(2).G, StreamData(ParticulaInd).colortint(2).R)
 80      Call SetRGBA(rgb_list(3), StreamData(ParticulaInd).colortint(3).B, StreamData(ParticulaInd).colortint(3).G, StreamData(ParticulaInd).colortint(3).R)
 
-90      ' Extract and assign properties to named variables for clarity
-        Dim particleCount As Long: particleCount = StreamData(ParticulaInd).NumOfParticles
-        Dim alphaBlend As Boolean: alphaBlend = StreamData(ParticulaInd).AlphaBlend
-        Dim aliveCounter As Long: aliveCounter = IIf(particle_life = 0, StreamData(ParticulaInd).life_counter, particle_life)
-        Dim frameSpeed As Single: frameSpeed = StreamData(ParticulaInd).speed
-        Dim id As Long: id = ParticulaInd
-        Dim x1 As Integer: x1 = StreamData(ParticulaInd).x1
-        Dim y1 As Integer: y1 = StreamData(ParticulaInd).y1
-        Dim angle As Integer: angle = StreamData(ParticulaInd).Angle
-        Dim vecx1 As Integer: vecx1 = StreamData(ParticulaInd).vecx1
-        Dim vecx2 As Integer: vecx2 = StreamData(ParticulaInd).vecx2
-        Dim vecy1 As Integer: vecy1 = StreamData(ParticulaInd).vecy1
-        Dim vecy2 As Integer: vecy2 = StreamData(ParticulaInd).vecy2
-        Dim life1 As Integer: life1 = StreamData(ParticulaInd).life1
-        Dim life2 As Integer: life2 = StreamData(ParticulaInd).life2
-        Dim friction As Integer: friction = StreamData(ParticulaInd).friction
-        Dim spinSpeedL As Single: spinSpeedL = StreamData(ParticulaInd).spin_speedL
-        Dim gravity As Boolean: gravity = StreamData(ParticulaInd).gravity
-        Dim gravStrength As Long: gravStrength = StreamData(ParticulaInd).grav_strength
-        Dim bounceStrength As Long: bounceStrength = StreamData(ParticulaInd).bounce_strength
-        Dim x2 As Integer: x2 = StreamData(ParticulaInd).x2
-        Dim y2 As Integer: y2 = StreamData(ParticulaInd).y2
-        Dim xMove As Boolean: xMove = StreamData(ParticulaInd).XMove
-        Dim moveX1 As Integer: moveX1 = StreamData(ParticulaInd).move_x1
-        Dim moveX2 As Integer: moveX2 = StreamData(ParticulaInd).move_x2
-        Dim moveY1 As Integer: moveY1 = StreamData(ParticulaInd).move_y1
-        Dim moveY2 As Integer: moveY2 = StreamData(ParticulaInd).move_y2
-        Dim yMove As Boolean: yMove = StreamData(ParticulaInd).YMove
-        Dim spinSpeedH As Single: spinSpeedH = StreamData(ParticulaInd).spin_speedH
-        Dim spin As Boolean: spin = StreamData(ParticulaInd).spin
-        Dim grhResize As Boolean: grhResize = StreamData(ParticulaInd).grh_resize
-        Dim grhResizeX As Integer: grhResizeX = StreamData(ParticulaInd).grh_resizex
-        Dim grhResizeY As Integer: grhResizeY = StreamData(ParticulaInd).grh_resizey
-
-100     ' Call the particle creation function using fewer line continuations
-        General_Particle_Create = Graficos_Particulas.Particle_Group_Create( _
-            x, y, StreamData(ParticulaInd).grh_list, rgb_list(), _
-            particleCount, id, alphaBlend, aliveCounter, frameSpeed, , _
-            x1, y1, angle, vecx1, vecx2, vecy1, vecy2, life1, life2, _
-            friction, spinSpeedL, gravity, gravStrength, bounceStrength, _
-            x2, y2, xMove, moveX1, moveX2, moveY1, moveY2, yMove, _
-            spinSpeedH, spin, grhResize, grhResizeX, grhResizeY, noBorrar _
-        )
+90      ' Call the particle creation function
+        General_Particle_Create = Graficos_Particulas.Particle_Group_Create(x, y, StreamData(ParticulaInd).grh_list, rgb_list(), StreamData(ParticulaInd).NumOfParticles, ParticulaInd, _
+           StreamData(ParticulaInd).AlphaBlend, IIf(particle_life = 0, StreamData(ParticulaInd).life_counter, particle_life), StreamData(ParticulaInd).speed, , StreamData(ParticulaInd).x1, StreamData(ParticulaInd).y1, StreamData(ParticulaInd).Angle, _
+           StreamData(ParticulaInd).vecx1, StreamData(ParticulaInd).vecx2, StreamData(ParticulaInd).vecy1, StreamData(ParticulaInd).vecy2, _
+           StreamData(ParticulaInd).life1, StreamData(ParticulaInd).life2, StreamData(ParticulaInd).friction, StreamData(ParticulaInd).spin_speedL, _
+           StreamData(ParticulaInd).gravity, StreamData(ParticulaInd).grav_strength, StreamData(ParticulaInd).bounce_strength, StreamData(ParticulaInd).x2, _
+           StreamData(ParticulaInd).y2, StreamData(ParticulaInd).XMove, StreamData(ParticulaInd).move_x1, StreamData(ParticulaInd).move_x2, StreamData(ParticulaInd).move_y1, _
+           StreamData(ParticulaInd).move_y2, StreamData(ParticulaInd).YMove, StreamData(ParticulaInd).spin_speedH, StreamData(ParticulaInd).spin, StreamData(ParticulaInd).grh_resize, StreamData(ParticulaInd).grh_resizex, StreamData(ParticulaInd).grh_resizey, noBorrar)
 
     Exit Function
 
 General_Particle_Create_Err:
-110     Call RegistrarError(Err.Number, Err.Description & " | ParticulaInd: " & ParticulaInd, "Graficos_Particulas.General_Particle_Create", Erl)
+100     Call RegistrarError(Err.Number, Err.Description & " | ParticulaInd: " & ParticulaInd, "Graficos_Particulas.General_Particle_Create", Erl)
         Resume Next
 
 End Function
