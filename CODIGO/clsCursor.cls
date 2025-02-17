@@ -56,31 +56,37 @@ Public Sub Parse_Form(ByRef aFrm As Form, Optional ByVal cType As CursorType = E
 30     Dim lngHandle As Long
 
 40     ' Determine the cursor handle based on the type
-        Select Case cType
-50         Case E_NORMAL: lngHandle = vbDefault
-60         Case E_ATTACK, E_ARROW, E_CAST, E_SHOOT, E_SHIP, E_agArrar: lngHandle = vbCrosshair
-70         Case E_WAIT: lngHandle = vbHourglass
-80         Case Else: lngHandle = vbDefault
-        End Select
+        lngHandle = vbDefault ' Default value to prevent uninitialized variable
 
-90     ' Loop through each control on the form
+50     Select Case cType
+60         Case E_NORMAL
+70             lngHandle = vbDefault
+80         Case E_ATTACK, E_ARROW, E_CAST, E_SHOOT, E_SHIP, E_agArrar
+90             lngHandle = vbCrosshair
+100         Case E_WAIT
+110             lngHandle = vbHourglass
+120         Case Else
+130             lngHandle = vbDefault
+140     End Select
+
+150     ' Loop through each control on the form
         For Each aControl In aFrm.Controls
-100         On Error Resume Next ' Minimal error handling inside loop
-110         aControl.MouseIcon = hndlList(cType)
-120         aControl.MousePointer = vbCustom
-130         On Error GoTo Parse_Form_Err
+160         On Error Resume Next ' Minimal error handling inside loop
+170         aControl.MouseIcon = hndlList(cType)
+180         aControl.MousePointer = vbCustom
+190         On Error GoTo Parse_Form_Err
         Next
 
-140     ' Set the form's mouse properties
-150     aFrm.MouseIcon = hndlList(cType)
-160     aFrm.MousePointer = vbCustom
+200     ' Set the form's mouse properties
+210     aFrm.MouseIcon = hndlList(cType)
+220     aFrm.MousePointer = vbCustom
 
-170     Exit Sub
+230     Exit Sub
 
 Parse_Form_Err:
-180     ' Log the error with the exact line number where it occurred
-190     Call RegistrarError(Err.Number, Err.Description & " | Line: " & Erl, "clsCursor.Parse_Form", Erl)
-200     Resume Next
+240     ' Log the error with the exact line number where it occurred
+250     Call RegistrarError(Err.Number, Err.Description & " | Line: " & Erl, "clsCursor.Parse_Form", Erl)
+260     Resume Next
 End Sub
  
 Public Sub Init()
