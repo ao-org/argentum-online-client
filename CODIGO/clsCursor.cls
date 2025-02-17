@@ -49,126 +49,39 @@ Private hndlList(0 To NUM_CURSORS) As IPictureDisp
 Public Sub Parse_Form(ByRef aFrm As Form, Optional ByVal cType As CursorType = E_NORMAL)
     On Error GoTo Parse_Form_Err
 
-    ' Exit if CursoresGraficos is disabled
-    If CursoresGraficos = 0 Then Exit Sub
+10     ' Exit if CursoresGraficos is disabled
+        If CursoresGraficos = 0 Then Exit Sub
 
-    Dim aControl As Control
-    Dim lngHandle As Long
+20     Dim aControl As Control
+30     Dim lngHandle As Long
 
-    ' Determine the cursor handle based on the type
-    lngHandle = GetCursorHandle(cType)
+40     ' Determine the cursor handle based on the type
+        Select Case cType
+50         Case E_NORMAL: lngHandle = vbDefault
+60         Case E_ATTACK, E_ARROW, E_CAST, E_SHOOT, E_SHIP, E_agArrar: lngHandle = vbCrosshair
+70         Case E_WAIT: lngHandle = vbHourglass
+80         Case Else: lngHandle = vbDefault
+        End Select
 
-    ' Loop through each control on the form
-    For Each aControl In aFrm.Controls
-        ' Check if the control supports MouseIcon and MousePointer properties
-        If SupportsMouseProperties(aControl) Then
-            On Error Resume Next
-            aControl.MouseIcon = hndlList(cType)
-            aControl.MousePointer = vbCustom
-            On Error GoTo Parse_Form_Err
-        Else
-            ' Log unsupported controls
-            LogUnsupportedControl aControl
-        End If
-    Next
+90     ' Loop through each control on the form
+        For Each aControl In aFrm.Controls
+100         On Error Resume Next ' Minimal error handling inside loop
+110         aControl.MouseIcon = hndlList(cType)
+120         aControl.MousePointer = vbCustom
+130         On Error GoTo Parse_Form_Err
+        Next
 
-    ' Set the form's mouse properties
-    aFrm.MouseIcon = hndlList(cType)
-    aFrm.MousePointer = vbCustom
+140     ' Set the form's mouse properties
+150     aFrm.MouseIcon = hndlList(cType)
+160     aFrm.MousePointer = vbCustom
 
-    Exit Sub
+170     Exit Sub
 
 Parse_Form_Err:
-    ' Log the error with detailed information
-    Call RegistrarError(Err.Number, Err.Description, "clsCursor.Parse_Form", Erl)
-    Resume Next
+180     ' Log the error with the exact line number where it occurred
+190     Call RegistrarError(Err.Number, Err.Description & " | Line: " & Erl, "clsCursor.Parse_Form", Erl)
+200     Resume Next
 End Sub
-
-' Helper function to determine the cursor handle based on type
-Private Function GetCursorHandle(ByVal cType As CursorType) As Long
-    Select Case cType
-        Case E_NORMAL: GetCursorHandle = vbDefault
-        Case E_ATTACK, E_ARROW, E_CAST, E_SHOOT, E_SHIP, E_agArrar: GetCursorHandle = vbCrosshair
-        Case E_WAIT: GetCursorHandle = vbHourglass
-        Case Else: GetCursorHandle = vbDefault
-    End Select
-End Function
-
-' Helper function to check if a control supports Mouse properties
-Private Function SupportsMouseProperties(ByRef aControl As Control) As Boolean
-    On Error Resume Next
-    SupportsMouseProperties = _
-        Not IsMissing(aControl.MouseIcon) And _
-        Not IsMissing(aControl.MousePointer)
-    On Error GoTo 0
-End Function
-
-' Log details of unsupported controls
-Private Sub LogUnsupportedControl(ByRef aControl As Control)
-    Dim controlName As String
-    Dim controlType As String
-
-    On Error Resume Next
-    ' Ensure the control is valid before accessing properties
-    If Not aControl Is Nothing Then
-        controlName = aControl.Name
-        controlType = TypeName(aControl)
-    Else
-        controlName = "(Unknown)"
-        controlType = "(Unknown)"
-    End If
-    On Error GoTo 0
-
-    ' Log the unsupported control details
-    Call RegistrarError(0, _
-                        "Mouse properties not supported by control: " & _
-                        "Name='" & controlName & "', Type='" & controlType & "'", _
-                        "clsCursor.Parse_Form - Unsupported Control", 0)
-End Sub
- 
-Public Function GetDefaultCursor(ByRef aFrm As Form) As CursorType
-    
-    On Error GoTo GetDefaultCursor_Err
-    
- 
-    Dim lngHandle As Long
- 
-    Select Case aFrm.MouseIcon.handle
-
-        Case hndlList(E_NORMAL).handle
-            GetDefaultCursor = E_NORMAL
-
-        Case hndlList(E_ATTACK).handle
-            GetDefaultCursor = E_ATTACK
-
-        Case hndlList(E_ARROW).handle
-            GetDefaultCursor = E_ARROW
-
-        Case hndlList(E_CAST).handle
-            GetDefaultCursor = E_CAST
-
-        Case hndlList(E_WAIT).handle
-            GetDefaultCursor = E_WAIT
-
-        Case hndlList(E_SHOOT).handle
-            GetDefaultCursor = E_SHOOT
-
-        Case hndlList(E_SHIP).handle
-            GetDefaultCursor = E_SHIP
-
-        Case hndlList(E_agArrar).handle
-            GetDefaultCursor = E_agArrar
-
-    End Select
- 
-    
-    Exit Function
-
-GetDefaultCursor_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsCursor.GetDefaultCursor", Erl)
-    Resume Next
-    
-End Function
  
 Public Sub Init()
     
