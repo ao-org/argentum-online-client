@@ -49,40 +49,50 @@ Private hndlList(0 To NUM_CURSORS) As IPictureDisp
 Public Sub Parse_Form(ByRef aFrm As Form, Optional ByVal cType As CursorType = E_NORMAL)
     On Error GoTo Parse_Form_Err
 
-10     ' Exit if CursoresGraficos is disabled
+        ' Exit if CursoresGraficos is disabled
         If CursoresGraficos = 0 Then Exit Sub
 
-20     Dim aControl As Control
-30     Dim lngHandle As Long
+20      Dim aControl As Control
+30      Dim lngHandle As Long
 
-40     ' Determine the cursor handle based on the type
-        Select Case cType
-50         Case E_NORMAL: lngHandle = vbDefault
-60         Case E_ATTACK, E_ARROW, E_CAST, E_SHOOT, E_SHIP, E_agArrar: lngHandle = vbCrosshair
-70         Case E_WAIT: lngHandle = vbHourglass
-80         Case Else: lngHandle = vbDefault
-        End Select
+        ' Determine the cursor handle based on the type
+40      lngHandle = GetCursorHandle(cType)
 
-90     ' Loop through each control on the form
+140     ' Loop through each control on the form
         For Each aControl In aFrm.Controls
-100         On Error Resume Next ' Minimal error handling inside loop
-110         aControl.MouseIcon = hndlList(cType)
-120         aControl.MousePointer = vbCustom
-130         On Error GoTo Parse_Form_Err
+150         On Error Resume Next ' Minimal error handling inside loop
+160         aControl.MouseIcon = hndlList(cType)
+170         aControl.MousePointer = vbCustom
+180         On Error GoTo Parse_Form_Err
         Next
 
-140     ' Set the form's mouse properties
-150     aFrm.MouseIcon = hndlList(cType)
-160     aFrm.MousePointer = vbCustom
+190     ' Set the form's mouse properties
+200     aFrm.MouseIcon = hndlList(cType)
+210     aFrm.MousePointer = vbCustom
 
-170     Exit Sub
+220     Exit Sub
 
 Parse_Form_Err:
-180     ' Log the error with the exact line number where it occurred
-190     Call RegistrarError(Err.Number, Err.Description & " | Line: " & Erl, "clsCursor.Parse_Form", Erl)
-200     Resume Next
+        ' Log the error with the exact line number where it occurred
+240     Call RegistrarError(Err.Number, Err.Description & " | Line: " & Erl, "clsCursor.Parse_Form", Erl)
+250     Resume Next
 End Sub
- 
+
+' Helper function to determine the cursor handle based on type
+Private Function GetCursorHandle(ByVal cType As CursorType) As Long
+    Select Case cType
+        Case E_WAIT
+            GetCursorHandle = vbHourglass
+        Case E_NORMAL
+            GetCursorHandle = vbDefault
+        Case E_ATTACK, E_ARROW, E_CAST, E_SHOOT, E_SHIP, E_agArrar
+            GetCursorHandle = vbCrosshair
+        Case Else
+            ' Default fallback to prevent uninitialized return values
+            GetCursorHandle = vbDefault
+    End Select
+End Function
+
 Public Sub Init()
     
     On Error GoTo Init_Err
