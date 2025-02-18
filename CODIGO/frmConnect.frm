@@ -302,21 +302,6 @@ Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByV
 #End If
 End Sub
 
-Private Sub Form_Activate()
-    
-    On Error GoTo Form_Activate_Err
-    
-    Call Graficos_Particulas.Engine_Select_Particle_Set(203)
-    ParticleLluviaDorada = General_Particle_Create(208, -1, -1)
-
-    
-    Exit Sub
-
-Form_Activate_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmConnect.Form_Activate", Erl)
-    Resume Next
-    
-End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     
@@ -354,7 +339,7 @@ Private Sub Form_Load()
     Me.Caption = App.title
     
     ' Removemos la barra de titulo pero conservando el caption para la barra de tareas
-#If DEBUGGING = 0 Then
+#If Developer = 0 Then
     Call Form_RemoveTitleBar(Me)
 #End If
     Debug.Assert D3DWindow.BackBufferWidth <> 0
