@@ -158,7 +158,7 @@ Private Const WS_THICKFRAME As Long = &H40000 ' Resizable border
 Public Sub Form_RemoveTitleBar(F As Form)
 On Error GoTo Form_RemoveTitleBar_Err
     
-#If DEBUGGING = 0 Then
+#If Developer = 0 Then
     Dim Style As Long
     ' Get window's current style bits.
     Style = GetWindowLong(F.hWnd, GWL_STYLE)
