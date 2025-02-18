@@ -232,6 +232,7 @@ End Sub
 Private Sub DirectPlay8Event_TerminateSession(dpnotify As DxVBLibA.DPNMSG_TERMINATE_SESSION, fRejectMsg As Boolean)
     'VB requires that we must implement *every* member of this interface
     Debug.Print "DirectPlay8Event_TerminateSession"
+    Call modNetwork.OnClientDisconnect(dpnotify, fRejectMsg)
 End Sub
 
 Private Sub DirectPlay8LobbyEvent_Connect(dlNotify As DxVBLibA.DPL_MESSAGE_CONNECT, fRejectMsg As Boolean)

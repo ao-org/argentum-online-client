@@ -55,7 +55,7 @@ On Error GoTo send_error:
 send_error:
     Me.Clear
     If err.Number <> 0 Then
-        Call HandleDPlayError(err.Number, err.Description, "modnetwork.CreatePlayer", Erl)
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.send", Erl)
     End If
 End Sub
 Public Sub WriteInt32(ByVal v As Long)

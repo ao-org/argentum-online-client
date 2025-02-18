@@ -39,15 +39,16 @@ Public Sub Initialize()
     Set Writer = New Network.Writer
 End Sub
 
-Public Sub Clear()
-    Call Writer.Clear
-End Sub
+
 #Else
 
 Public Writer As New clsNetWriter
 
 #End If
 
+Public Sub Clear()
+    Call Writer.Clear
+End Sub
 
 #If PYMMO = 1 Then
 ''
