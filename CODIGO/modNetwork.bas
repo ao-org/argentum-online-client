@@ -181,6 +181,24 @@ Public Sub Poll()
 ' Not needed when using DPLAY
 End Sub
 
+Public Sub OnClientDisconnect(dpnotify As DxVBLibA.DPNMSG_TERMINATE_SESSION, fRejectMsg As Boolean)
+On Error GoTo OnClientDisconnect_Err:
+    Err.Clear
+    Connected = False
+    
+    Call Protocol_Writes.Clear
+    Call ModLogin.OnClientDisconnect(0)
+    Call LogOut
+    
+    Exit Sub
+OnClientDisconnect_Err:
+   If Err.Number <> 0 Then
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.OnClientDisconnect", Erl)
+    End If
+End Sub
+    
+    
+    
 Public Sub OnClientConnect(dpnotify As DxVBLibA.DPNMSG_CONNECT_COMPLETE, fRejectMsg As Boolean)
 On Error GoTo OnClientConnect_Err:
     Err.Clear
