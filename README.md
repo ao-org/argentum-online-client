@@ -62,8 +62,10 @@ CryptoSys is used in Argentum Online to cipher sensitive data.
 
 Please note this is not free software and you will have to buy your own license to use CryptoSys
 
-## Star History
+# Repo Activity
+![Alt](https://repobeats.axiom.co/api/embed/f8eabd20675f8abb15a92825f8c7a22a593309a7.svg "Repobeats analytics image")
 
+## Star History
 <a href="https://star-history.com/#ao-org/argentum-online-client&Date">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=ao-org/argentum-online-client&type=Date&theme=dark" />
