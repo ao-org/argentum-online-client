@@ -35,6 +35,7 @@ Option Explicit
 Private oMsg() As Byte
 Private lOffset As Long
 
+
 Public Sub Clear()
     lOffset = NewBuffer(oMsg)
 End Sub
@@ -49,7 +50,10 @@ Public Sub send()
 On Error GoTo send_error:
     err.Clear
     ReDim Preserve oMsg(0 To loffset - 1)
-    dpc.send oMsg, 0, DPNSEND_GUARANTEED Or DPNSEND_NOLOOPBACK Or DPNSEND_PRIORITY_HIGH
+#If Developer = 1 Then
+    Call SaveStringInFile("Sending:" & ByteArrayToDecimalString(oMsg), "send_debug.txt")
+#End If
+    dpc.send oMsg, 0, DPNSEND_GUARANTEED Or DPNSEND_NOLOOPBACK Or DPNSEND_PRIORITY_HIGH Or DPNSEND_NOCOMPLETE Or DPNSEND_SYNC
     Me.Clear
     Exit Sub
 send_error:

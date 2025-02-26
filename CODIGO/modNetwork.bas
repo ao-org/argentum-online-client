@@ -186,9 +186,10 @@ On Error GoTo OnClientDisconnect_Err:
     Err.Clear
     Connected = False
     
-    Call Protocol_Writes.Clear
+    
     Call ModLogin.OnClientDisconnect(0)
     Call LogOut
+    Call Protocol_Writes.Clear
     
     Exit Sub
 OnClientDisconnect_Err:
@@ -224,6 +225,9 @@ send_Err:
 End Sub
 
 Public Sub Disconnect()
+    Call Protocol_Writes.Clear
+    Set Protocol_Writes.Writer = Nothing
+    Set Protocol_Writes.Writer = New clsNetWriter
     If Connected Then
         Debug.Print "Disconnecting DirecPlay..."
         Connected = False
@@ -278,24 +282,14 @@ On Error GoTo connect_error:
     Dim connect_handle As Long
     connect_handle = dpc.Connect(dpApp, HostAddr, DeviceAddr, DPNCONNECT_OKTOQUERYFORADDRESSING, ByVal 0&, 0)
     
+    
     If Err.Number <> 0 Then
-        Select Case Err.Number
-            Case DPNERR_NOCONNECTION:
-            Case DPNERR_INVALIDPASSWORD:
-            Case DPNERR_INVALIDFLAGS:
-            Case DPNERR_INVALIDINTERFACE:
-            Case DPNERR_INVALIDAPPLICATION:
-            Case DPNERR_NOTHOST:
-            Case DPNERR_SESSIONFULL:
-            Case DPNERR_HOSTREJECTEDCONNECTION:
-            Case DPNERR_INVALIDINSTANCE:
-            Case Else
-                Debug.Print "Connect error " & Err.Number
-        End Select
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.Connect", Erl)
     End If
     
     Do While Not frmConnect.mfGotEvent 'Let's wait for our connectcomplete event
         DoSleep 5 'Give other threads cpu time
+        Debug.Print "Trying to connect DPLAY server..."
     Loop
     Connected = True
     If frmConnect.mfConnectComplete Then

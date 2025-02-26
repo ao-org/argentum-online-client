@@ -55,6 +55,23 @@ Public Sub HandleDPlayError(ByVal ErrNumber As Long, ByVal ErrDescription As Str
                     Call LogError("DPNERR_INVALIDFLAGS: The flags passed to this method are invalid. " & place & " " & line)
             Case DPNERR_TIMEDOUT
                     Call LogError("DPNERR_TIMEDOUT: The operation could not complete because it has timed out. " & place & " " & line)
+            Case DPNERR_NOCONNECTION:
+                    Call LogError("DPNERR_NOCONNECTION " & place & " " & line)
+            Case DPNERR_INVALIDPASSWORD
+                    Call LogError("DPNERR_INVALIDPASSWORD " & place & " " & line)
+            Case DPNERR_INVALIDINTERFACE
+                    Call LogError("DPNERR_INVALIDINTERFACE " & place & " " & line)
+            Case DPNERR_INVALIDAPPLICATION
+                    Call LogError("DPNERR_INVALIDAPPLICATION " & place & " " & line)
+            Case DPNERR_NOTHOST
+                    Call LogError("DPNERR_NOTHOST " & place & " " & line)
+            Case DPNERR_SESSIONFULL
+                    Call LogError("DPNERR_SESSIONFULL " & place & " " & line)
+            Case DPNERR_HOSTREJECTEDCONNECTION
+                    Call LogError("DPNERR_HOSTREJECTEDCONNECTION " & place & " " & line)
+            Case DPNERR_INVALIDINSTANCE
+                    Call LogError("DPNERR_INVALIDINSTANCE " & place & " " & line)
+                   
             Case Else
                     Call LogError("Unknown error " & Err.Number & " " & place & " " & line)
         End Select
