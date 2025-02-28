@@ -571,7 +571,8 @@ On Error GoTo HandleLogged_Err
     frmMain.oxigenolbl.visible = True
     frmMain.imgDeleteItem.visible = True
     frmMain.oxigenolbl.visible = False
-
+    Call NameMapa(ResourceMap)
+    
      lFrameTimer = 0
      FramesPerSecCounter = 0
     
