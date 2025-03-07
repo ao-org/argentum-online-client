@@ -504,9 +504,9 @@ Public Sub InitFontTypes()
     End With
     
     With FontTypes(FontTypeNames.FONTTYPE_GLOBAL)
-        .red = 0
-        .green = 176
-        .blue = 176
+        .red = 255
+        .green = 102
+        .blue = 204
         .bold = 0
         .italic = True
 
