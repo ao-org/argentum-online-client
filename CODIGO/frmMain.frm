@@ -1899,7 +1899,12 @@ Private Sub Contadores_Timer()
     On Error GoTo Contadores_Timer_Err
     
 
-    If UserStats.estado = 1 Then Exit Sub
+    'Si el usuario está muerto, desactiva los contadores
+    If UserStats.estado = 1 Then
+        Contadores.enabled = False
+        Exit Sub
+    End If
+    
     If InviCounter > 0 Then
         InviCounter = InviCounter - 1
 
