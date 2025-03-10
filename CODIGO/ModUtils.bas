@@ -130,7 +130,7 @@ Public Type tQuest
     NextQuest As String
     DescFinal As String
     RequiredLevel As Byte
-    
+    RequiredClass As Integer
     RequiredQuest As Byte
     
     RequiredOBJs As Byte

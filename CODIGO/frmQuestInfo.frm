@@ -589,13 +589,25 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
         objetolbl.Caption = ""
         
         lblRepetible.Visible = QuestList(QuestIndex).Repetible = 1
-        If QuestList(QuestIndex).RequiredQuest <> 0 Then
-            FrmQuestInfo.Text1.Text = ""
-            Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf & "Quest: " & QuestList(QuestList(QuestIndex).RequiredQuest).nombre, 128, 128, 128)
-        Else
-            FrmQuestInfo.Text1.Text = ""
-            Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel, 128, 128, 128)
+        
+        If QuestList(QuestIndex).RequiredClass <> 0 And QuestList(QuestIndex).RequiredClass <= 12 Then 'Si tiene clase requerida, lo muestra en requisitos, lo limito a 12 que son el num de clases para evitar conflictos en caso de que por error pongan un número mayor
+            If QuestList(QuestIndex).RequiredQuest <> 0 Then
+                FrmQuestInfo.Text1.Text = ""
+                Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Clase: " & ListaClases(QuestList(QuestIndex).RequiredClass) & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf & "Quest: " & QuestList(QuestList(QuestIndex).RequiredQuest).nombre, 128, 128, 128)
+            Else
+                FrmQuestInfo.Text1.Text = ""
+                Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Clase: " & ListaClases(QuestList(QuestIndex).RequiredClass) & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel, 128, 128, 128)
+            End If
+        Else 'Si NO tiene clase requerida, NO lo muestra en requisitos
+            If QuestList(QuestIndex).RequiredQuest <> 0 Then
+                FrmQuestInfo.Text1.Text = ""
+                Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf & "Quest: " & QuestList(QuestList(QuestIndex).RequiredQuest).nombre, 128, 128, 128)
+            Else
+                FrmQuestInfo.Text1.Text = ""
+                Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel, 128, 128, 128)
+            End If
         End If
+        
         If QuestList(QuestIndex).RequiredSkill.SkillType > 0 Then
             Call AddtoRichTextBox(Text1, SkillsNames(QuestList(QuestIndex).RequiredSkill.SkillType) & ": " & QuestList(QuestIndex).RequiredSkill.RequiredValue & vbCrLf, 128, 128, 128)
         End If
