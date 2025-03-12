@@ -53,7 +53,7 @@ On Error GoTo send_error:
 #If Developer = 1 Then
     Call SaveStringInFile("Sending:" & ByteArrayToDecimalString(oMsg), "send_debug.txt")
 #End If
-    dpc.send oMsg, 0, DPNSEND_GUARANTEED Or DPNSEND_NOLOOPBACK Or DPNSEND_PRIORITY_HIGH Or DPNSEND_NOCOMPLETE Or DPNSEND_SYNC
+    dpc.send oMsg, 0, DPNSEND_GUARANTEED Or DPNSEND_NOLOOPBACK Or DPNSEND_PRIORITY_HIGH
     Me.Clear
     Exit Sub
 send_error:
