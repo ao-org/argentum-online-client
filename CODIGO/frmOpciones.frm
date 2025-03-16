@@ -1619,7 +1619,7 @@ Private Sub scrVolume_Change()
 On Error GoTo scrVolume_Change_Err
     VolFX = scrVolume.Value
     Call ao20audio.SetFxVolume(scrVolume.Value)
-    Call ao20audio.PlayWav(SND_RESUCITAR, False, scrVolume.Value)
+    Call ao20audio.PlayWav(SND_OPTIONS, False, scrVolume.Value)
     Exit Sub
 scrVolume_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolume_Change", Erl)

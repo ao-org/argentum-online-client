@@ -35,6 +35,7 @@ Public Const SND_RESUCITAR     As Integer = 104
 Public Const SND_CURAR         As Integer = 101
 Public Const SND_DOPA          As Integer = 77
 Public Const SND_MEDITATE      As Integer = 158
+Public Const SND_OPTIONS      As Integer = 16
 
 Public AudioEngine As clsAudioEngine
 Public MusicEnabled As Byte
