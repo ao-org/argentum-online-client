@@ -17,25 +17,12 @@ Attribute VB_Name = "Mod_TCP"
 '
 Option Explicit
 
-Public Warping        As Boolean
 
 Public LlegaronSkills As Boolean
 Public LlegaronStats  As Boolean
 Public LlegaronAtrib  As Boolean
 
-Public Function PuedoQuitarFoco() As Boolean
-    
-    On Error GoTo PuedoQuitarFoco_Err
-    
-    PuedoQuitarFoco = True
-    
-    Exit Function
 
-PuedoQuitarFoco_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_TCP.PuedoQuitarFoco", Erl)
-    Resume Next
-    
-End Function
 #If PYMMO = 1 Then
 Sub LoginOrConnect(ByVal Modo As E_MODO)
     EstadoLogin = Modo

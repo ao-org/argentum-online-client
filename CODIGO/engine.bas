@@ -3614,17 +3614,6 @@ Public Sub RenderUICrearPJ()
      
      
      
-    
-   ' Engine_Draw_Box 345, 502, 12, 12, D3DColorARGB(120, 100, 0, 0)
-    
-    'RenderText "Equipado", 360, 502, DefaultColor, 4, False
-    
-    
-
-    
-    
-
-     
     ' CPHeading = 3
 
     If CPHead <> 0 And CPArma <> 0 Then

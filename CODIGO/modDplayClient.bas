@@ -43,6 +43,8 @@ Public Sub shutdown_direct_play()
 End Sub
 
 
+
+
 Public Sub HandleDPlayError(ByVal ErrNumber As Long, ByVal ErrDescription As String, ByVal place As String, ByVal line As String)
        Select Case err.Number
             Case DPNERR_INVALIDPLAYER

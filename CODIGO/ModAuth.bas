@@ -149,9 +149,9 @@ Public Sub SendAccountLoginRequest()
     Dim login_request() As Byte
     Dim packet_size As Integer
     Dim offset_login_request As Long
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    Call DebugPrint("SendAccountLoginRequest", 255, 255, 255, True)
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    
+    frmDebug.add_text_tracebox "SendAccountLoginRequest"
+
     userName = CuentaEmail
     Password = CuentaPassword
     
@@ -165,8 +165,6 @@ Public Sub SendAccountLoginRequest()
     encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), userName)
     encrypted_password_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), Password)
     
-    'Call DebugPrint("Username: " & encrypted_username_b64, 255, 255, 255)
-    'Call DebugPrint("Password: " & encrypted_password_b64, 255, 255, 255)
     
     Call Str2ByteArr(encrypted_username_b64, encrypted_username)
     Call Str2ByteArr(encrypted_password_b64, encrypted_password)
@@ -214,9 +212,9 @@ Public Sub SendRequestVerificationCode()
     Dim login_request() As Byte
     Dim packet_size As Integer
     Dim offset_login_request As Long
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    
     Call DebugPrint("SendRequestVerificationCode", 255, 255, 255, True)
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    
     userName = CuentaEmail
     
     Dim encrypted_username() As Byte
@@ -942,9 +940,9 @@ Public Sub PCListRequest()
     Dim charList_request() As Byte
     Dim offset_login_request As Long
     Dim packet_size As Integer
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    Call DebugPrint("PCListRequest", 255, 255, 255, True)
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+
+    frmDebug.add_text_tracebox "PCListRequest"
+
     userName = CuentaEmail
     
     Dim encrypted_username() As Byte
@@ -994,18 +992,11 @@ End Sub
 
 Public Sub HandleOpenSession(ByVal BytesTotal As Long)
 
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    Call DebugPrint("HandleOpenSession", 255, 255, 255, True)
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    frmDebug.add_text_tracebox "HandleOpenSession"
     
     Dim strData As String
     frmConnect.AuthSocket.PeekData strData, vbString, BytesTotal
-    
-    Call DebugPrint("Bytes total: " & strData, 255, 255, 255, False)
-    
     frmConnect.AuthSocket.GetData strData, vbString, 2
-    Call DebugPrint("Id: " & strData, 255, 255, 255, False)
-    
     frmConnect.AuthSocket.GetData strData, vbString, 2
     
     Dim encrypted_token() As Byte
@@ -1013,11 +1004,11 @@ Public Sub HandleOpenSession(ByVal BytesTotal As Long)
     frmConnect.AuthSocket.GetData encrypted_token, 64
             
     decrypted_session_token = AO20CryptoSysWrapper.Decrypt(MapInfoEspeciales, cnvStringFromHexStr(cnvToHex(encrypted_token)))
-    Call DebugPrint("Decripted_session_token: " & decrypted_session_token, 255, 255, 255, False)
-        
+    frmDebug.add_text_tracebox "Decrypted_session_token: " & decrypted_session_token
+            
     public_key = mid(decrypted_session_token, 1, 16)
     
-    Call DebugPrint("Public key:" & CStr(public_key), 255, 255, 255, False)
+    frmDebug.add_text_tracebox "Public key:" & CStr(public_key)
     
     Str2ByteArr decrypted_session_token, public_key, 16
     
@@ -1028,16 +1019,16 @@ End Sub
 Public Sub HandlePCList(ByVal BytesTotal As Long)
 
     If BytesTotal < 4 Then
-        Call DebugPrint("Paquete incorrecto", 255, 255, 255, True)
+        frmDebug.add_text_tracebox "HandlePCList: Paquete incorrecto"
         Exit Sub
     End If
     
     Dim packet_size_byte() As Byte
     Dim PacketId() As Byte
     
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    Call DebugPrint("HandlePCList", 255, 255, 255, True)
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    
+    frmDebug.add_text_tracebox "HandlePCList"
+    
     Dim strData As String
     frmConnect.AuthSocket.PeekData strData, vbString, BytesTotal
     Call DebugPrint("Bytes total: " & strData, 255, 255, 255, False)
@@ -1070,14 +1061,14 @@ Public Sub HandlePCList(ByVal BytesTotal As Long)
 End Sub
 
 Public Sub HandleAccountLogin(ByVal BytesTotal As Long)
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    Call DebugPrint("HandleRequestAccountLogin", 255, 255, 255, True)
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+
+    frmDebug.add_text_tracebox "HandleRequestAccountLogin"
+
     Dim Data() As Byte
     frmConnect.AuthSocket.PeekData Data, vbByte, BytesTotal
     frmConnect.AuthSocket.GetData Data, vbByte, 2
     If Data(0) = &HAF And Data(1) = &HA1 Then
-        Call DebugPrint("LOGIN-OK", 0, 255, 0, True)
+        frmDebug.add_text_tracebox "LOGIN-OK"
         'Save the token which was used to authenticate
         authenticated_decrypted_session_token = decrypted_session_token
         Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(Data), 255, 255, 255)
@@ -1085,7 +1076,8 @@ Public Sub HandleAccountLogin(ByVal BytesTotal As Long)
         Auth_state = e_state.AccountLogged
         Call PCListRequest
     Else
-       Call DebugPrint("ERROR", 255, 0, 0, True)
+       
+        frmDebug.add_text_tracebox "LOGIN-ERROR"
         frmConnect.AuthSocket.GetData Data, vbByte, 4
 #If REMOTE_CLOSE = 0 Then
         Select Case MakeInt(Data(3), Data(2))
