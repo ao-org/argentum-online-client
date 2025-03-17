@@ -205,7 +205,6 @@ On Error GoTo OnClientConnect_Err:
     Err.Clear
     Connected = True
     Unload frmConnecting
-    Call Login
     Exit Sub
 OnClientConnect_Err:
    If Err.Number <> 0 Then
