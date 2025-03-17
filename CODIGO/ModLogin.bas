@@ -92,8 +92,8 @@ Public Sub SetActiveServer(ByVal IP As String, ByVal port As String, Optional Ig
             #End If
         #End If
     End If
-    Debug.Print "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
-    Debug.Print "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
+    frmDebug.add_text_tracebox "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
+    frmDebug.add_text_tracebox "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
 End Sub
 
 Public Sub SetActiveEnvironment(ByVal environment As String)

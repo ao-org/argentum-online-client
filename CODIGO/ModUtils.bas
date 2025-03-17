@@ -672,8 +672,9 @@ SetTopMostWindow_Err:
 End Function
 
 Public Sub LogError(desc As String)
+ On Error GoTo errhandler
+    frmDebug.add_text_tracebox "ERROR: " & desc
 
-    On Error GoTo errhandler
 
     Dim nfile As Integer
 
@@ -1970,6 +1971,7 @@ End Sub
 Public Sub TextoAlAsistente(ByVal Texto As String, ByVal IsLoading As Boolean, ByVal ForceAssistant As Boolean)
     
     On Error GoTo TextoAlAsistente_Err
+    frmDebug.add_text_tracebox Texto
     
     TextEfectAsistente = 35
     TextAsistente = Texto

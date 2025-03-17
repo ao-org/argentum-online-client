@@ -228,12 +228,12 @@ Public Sub Disconnect()
     Set Protocol_Writes.Writer = Nothing
     Set Protocol_Writes.Writer = New clsNetWriter
     If Connected Then
-        Debug.Print "Disconnecting DirecPlay..."
+        frmDebug.add_text_tracebox "Disconnecting DirecPlay..."
         Connected = False
         DoEvents
         modDplayClient.dpc.Close 0
         Set dpc = Nothing
-        Debug.Print "Disconnected DirectPlay"
+        frmDebug.add_text_tracebox "Disconnected DirectPlay"
     End If
     
 End Sub
@@ -252,7 +252,8 @@ Public Sub Connect(ByVal Address As String, ByVal Service As String)
 On Error GoTo connect_error:
     Err.Clear
     
-    Debug.Print "DPLAY > Connecting to World Server : " & Address; ":" & Service
+    frmDebug.add_text_tracebox "DPLAY > Connecting to World Server : " & Address & ":" & Service
+    
 
     If (Address = vbNullString Or Service = vbNullString) Then
         Exit Sub
@@ -286,9 +287,12 @@ On Error GoTo connect_error:
         Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.Connect", Erl)
     End If
     
+    Dim i As Integer
+    i = 1
     Do While Not frmConnect.mfGotEvent 'Let's wait for our connectcomplete event
-        DoSleep 5 'Give other threads cpu time
-        Debug.Print "Trying to connect DPLAY server..."
+        DoSleep 1000 'Give other threads cpu time
+        frmDebug.add_text_tracebox "Trying to connect DPLAY server " & i & "..."
+        i = i + 1
     Loop
     Connected = True
     If frmConnect.mfConnectComplete Then

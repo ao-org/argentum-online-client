@@ -168,7 +168,7 @@ End Sub
 
 Private Sub DirectPlay8Event_ConnectComplete(dpnotify As DxVBLibA.DPNMSG_CONNECT_COMPLETE, fRejectMsg As Boolean)
     mfGotEvent = True
-    Debug.Print " DirectPlay8Event_ConnectComplete"
+    frmDebug.add_text_tracebox "DirectPlay8Event_ConnectComplete"
     If dpnotify.hResultCode = DPNERR_SESSIONFULL Then 'Already too many people joined up
         MsgBox "The maximum number of people allowed in this session have already joined.  Please choose a different session or create your own.", vbOKOnly Or vbInformation, "Full"
     Else
@@ -312,7 +312,8 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     If KeyCode = vbKeyEscape Then
         prgRun = False
         End
-
+    ElseIf KeyCode = vbKeyF9 Then
+        frmDebug.Show
     End If
 
     
