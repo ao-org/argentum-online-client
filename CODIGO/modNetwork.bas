@@ -268,7 +268,7 @@ On Error GoTo connect_error:
     pInfo.Name = "Pablo"
     pInfo.lInfoFlags = DPNINFO_NAME
     
-    modDplayClient.dpc.SetClientInfo pInfo, DPNOP_SYNC
+    modDplayClient.dpc.SetClientInfo pInfo
 
     
     Err.Clear

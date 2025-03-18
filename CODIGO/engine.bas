@@ -2421,7 +2421,9 @@ On Error GoTo Start_Err
             End Select
 
         Else
+        #If DIRECT_PLAY = 0 Then
             Sleep 60&
+        #End If
             Call frmMain.Inventario.ReDraw
         End If
 
