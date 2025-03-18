@@ -7381,6 +7381,7 @@ Public Sub HandleNpcQuestListSend()
                               
             QuestList(QuestIndex).RequiredLevel = Reader.ReadInt8
             QuestList(QuestIndex).RequiredQuest = Reader.ReadInt16
+            QuestList(QuestIndex).RequiredClass = Reader.ReadInt8
             
             tmpByte = Reader.ReadInt8
     
