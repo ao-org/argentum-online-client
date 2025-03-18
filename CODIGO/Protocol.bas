@@ -7190,11 +7190,10 @@ Private Sub HandleQuestDetails()
 
                     cantok = cantidadnpc - matados
                        
-                    If cantok = 0 Then
-                        subelemento.SubItems(1) = "OK"
-                    Else
+                    If cantok > 0 Then
                         subelemento.SubItems(1) = matados & "/" & cantidadnpc
-
+                    Else
+                        subelemento.SubItems(1) = "OK"
                     End If
                         
                     ' subelemento.SubItems(1) = cantidadnpc - matados
