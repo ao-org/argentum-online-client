@@ -5908,7 +5908,7 @@ Private Sub HandleGuildLeaderInfo()
         Dim Nivel  As Byte
          
         Nivel = Reader.ReadInt8()
-        .Nivel = "Nivel: " & Nivel
+        .Nivel = Nivel
         
         expacu = Reader.ReadInt16()
         ExpNe = Reader.ReadInt16()
@@ -5926,31 +5926,31 @@ Private Sub HandleGuildLeaderInfo()
         
         
         Dim Padding As String
-        Padding = Space$(19)
+        Padding = Space$(27)
 
         Select Case Nivel
 
-               Case 1
+            Case 1
                 .beneficios = Padding & "Max miembros: 5"
                 .maxMiembros = 5
             Case 2
-                .beneficios = Padding & "Pedir ayuda (G) / Max miembros: 7"
-                .maxMiembros = 7
+                .beneficios = Padding & "Max miembros: 8 / Pedir ayuda (G)"
+                .maxMiembros = 8
 
             Case 3
-                .beneficios = Padding & "Pedir ayuda (G) / Seguro de clan." & vbCrLf & "Max miembros: 7"
-                .maxMiembros = 7
+                .beneficios = Padding & "Max miembros: 11 / Pedir ayuda (G) / Seguro de clan"
+                .maxMiembros = 11
 
             Case 4
-                .beneficios = Padding & "Pedir ayuda (G) / Seguro de clan. " & vbCrLf & "Max miembros: 12"
-                .maxMiembros = 12
+                .beneficios = Padding & "Max miembros: 14 / Pedir ayuda (G) / Seguro de clan"
+                .maxMiembros = 14
 
             Case 5
-                .beneficios = Padding & "Pedir ayuda (G) / Seguro de clan /  Ver vida y mana." & vbCrLf & "Max miembros: 15"
-                .maxMiembros = 15
+                .beneficios = Padding & "Max miembros: 17 / Pedir ayuda (G) / Seguro de clan / Ver vida y mana"
+                .maxMiembros = 17
                 
             Case 6
-                .beneficios = Padding & "Pedir ayuda (G) / Seguro de clan / Ver vida y mana / Verse invisible." & vbCrLf & "Max miembros: 20"
+                .beneficios = Padding & "Max miembros: 20 / Pedir ayuda (G) / Seguro de clan / Ver vida y mana / Verse invisible"
                 .maxMiembros = 20
         End Select
         
