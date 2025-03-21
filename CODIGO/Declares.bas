@@ -22,6 +22,7 @@ Public SeguroParty As Boolean
 Public SeguroClanX As Boolean
 Public SeguroResuX As Boolean
 Public QuePestañaInferior As Byte
+Public ExpNGoldBtnState As Byte ' 0 = Inactivo, 1 = Grabando, 2 = Pausado | acolote1998
 Public newUser As Boolean
 Public Enum tMacro
     dobleclick = 1
