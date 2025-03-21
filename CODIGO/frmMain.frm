@@ -975,6 +975,20 @@ Begin VB.Form frmMain
       Top             =   2280
       Width           =   11040
    End
+   Begin VB.Image btnStopRecordExp 
+      Height          =   315
+      Left            =   2145
+      Tag             =   "0"
+      Top             =   75
+      Width           =   285
+   End
+   Begin VB.Image btn_PlayRecordExp 
+      Height          =   315
+      Left            =   1800
+      Tag             =   "5"
+      Top             =   75
+      Width           =   285
+   End
    Begin VB.Image imgMAO 
       Height          =   315
       Left            =   13500
