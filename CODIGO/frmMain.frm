@@ -1583,11 +1583,7 @@ Private Sub btn_PlayRecordExp_Click()
     
     Select Case ExpNGoldBtnState
         Case 0 ' Iniciar seguimiento
-        If (language = e_language.Spanish) Then
-            Call ShowConsoleMsg("Comienzas un seguimiento de tu oro y experiencia", 144, 238, 144)
-        ElseIf (language = e_language.English) Then
-            Call ShowConsoleMsg("You begin tracking your gold and experience", 144, 238, 144)
-        End If
+        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_STARTING"), 144, 238, 144)
             Call resetExpAndGoldTracker
             experienciaInicial = UserStats.exp
             oroInicial = UserStats.GLD
@@ -1599,22 +1595,24 @@ Private Sub btn_PlayRecordExp_Click()
             updatingDateAndTime = updatingDateAndTime + DateDiff("n", startingDateAndTime, Now)
             oroUpdated = oroUpdated + (UserStats.GLD - oroInicial)
             experienciaUpdated = experienciaUpdated + (UserStats.exp - experienciaInicial)
-        If (language = e_language.Spanish) Then
-            Call ShowConsoleMsg("Has pausado tu seguimiento de oro y experiencia", 144, 238, 144)
-            Call ShowConsoleMsg("Tiempo transcurrido: " & CStr(updatingDateAndTime) & " minutos", 255, 255, 0)
-        ElseIf (language = e_language.English) Then
-            Call ShowConsoleMsg("You have paused your gold and experience tracking", 144, 238, 144)
-            Call ShowConsoleMsg("Elapsed time: " & CStr(updatingDateAndTime) & " minutes", 255, 255, 0)
-        End If
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_PAUSING"), 144, 238, 144)
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_TIEMPO_TRANSCURRIDO") & CStr(updatingDateAndTime) & " " & JsonLanguage.Item("MENSAJE_GOLD_EXP_TIEMPO_MINUTOS"), 255, 255, 0)
+        'If (language = e_language.Spanish) Then
+        '    Call ShowConsoleMsg("Has pausado tu seguimiento de oro y experiencia", 144, 238, 144)
+        '    Call ShowConsoleMsg("Tiempo transcurrido: " & CStr(updatingDateAndTime) & " minutos", 255, 255, 0)
+        'ElseIf (language = e_language.English) Then
+        '    Call ShowConsoleMsg("You have paused your gold and experience tracking", 144, 238, 144)
+        '    Call ShowConsoleMsg("Elapsed time: " & CStr(updatingDateAndTime) & " minutes", 255, 255, 0)
+        'End If
             ExpNGoldBtnState = 2 ' Cambia a estado pausado
         
         Case 2 ' Reanudar seguimiento
-        If (language = e_language.Spanish) Then
-            Call ShowConsoleMsg("Continuas con tu entrenamiento", 144, 238, 144)
-        ElseIf (language = e_language.English) Then
-            Call ShowConsoleMsg("You continue with your training", 144, 238, 144)
-        End If
-        
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_CONTINUAS_ENTRENAMIENTO"), 144, 238, 144)
+        'If (language = e_language.Spanish) Then
+        '    Call ShowConsoleMsg("Continuas con tu entrenamiento", 144, 238, 144)
+        'ElseIf (language = e_language.English) Then
+        '    Call ShowConsoleMsg("You continue with your training", 144, 238, 144)
+        'End If
             startingDateAndTime = Now
             oroInicial = UserStats.GLD
             experienciaInicial = UserStats.exp
@@ -1656,23 +1654,30 @@ Private Sub btnStopRecordExp_Click()
         experienciaUpdated = experienciaUpdated + (UserStats.exp - experienciaInicial)
         
         If (oroUpdated > 0 And experienciaUpdated > 0) Then
-            If (language = e_language.Spanish) Then
-                Call ShowConsoleMsg("Comienzas a calcular con los valores obtenidos", 144, 238, 144)
-                Call ShowConsoleMsg("Tiempo entrenado: " & CStr(updatingDateAndTime) & " minutos" & " | Oro total acumulado: " & CStr(oroUpdated) & " | Experiencia total acumulada: " & CStr(experienciaUpdated), 255, 255, 0, True)
-                Call ShowConsoleMsg("Oro por minuto: " & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "minutes")) & " | Experiencia por minuto: " & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "minutes")), 200, 200, 0, True)
-                Call ShowConsoleMsg("Oro por hora: " & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "hours")) & " | Experiencia por hora: " & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "hours")), 200, 200, 0, True)
-            ElseIf (language = e_language.English) Then
-                Call ShowConsoleMsg("You begin calculating with the obtained values", 144, 238, 144)
-                Call ShowConsoleMsg("Training time: " & CStr(updatingDateAndTime) & " minutes" & " | Total gold accumulated: " & CStr(oroUpdated) & " | Total experience accumulated: " & CStr(experienciaUpdated), 255, 255, 0, True)
-                Call ShowConsoleMsg("Gold per minute: " & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "minutes")) & " | Experience per minute: " & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "minutes")), 200, 200, 0, True)
-                Call ShowConsoleMsg("Gold per hour: " & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "hours")) & " | Experience per hour: " & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "hours")), 200, 200, 0, True)
-            End If
+                           
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_CALCULATING"), 144, 238, 144)
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_TIEMPO_ENTRENADO") & CStr(updatingDateAndTime) & " " & JsonLanguage.Item("MENSAJE_GOLD_EXP_TIEMPO_MINUTOS") & " | " & JsonLanguage.Item("MENSAJE_GOLD_EXP_ORO_ACUMULADO") & CStr(oroUpdated) & " | " & JsonLanguage.Item("MENSAJE_GOLD_EXP_EXPERIENCIA_ACUMULADA") & CStr(experienciaUpdated), 255, 255, 0, True)
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_ORO_MINUTO") & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "minutes")) & " | " & JsonLanguage.Item("MENSAJE_GOLD_EXP_EXPERIENCIA_MINUTO") & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "minutes")), 200, 200, 0, True)
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_ORO_HORA") & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "hours")) & " | " & JsonLanguage.Item("MENSAJE_GOLD_EXP_EXPERIENCIA_HORA") & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "hours")), 200, 200, 0, True)
+               
+            'If (language = e_language.Spanish) Then
+                'Call ShowConsoleMsg("Comienzas a calcular con los valores obtenidos", 144, 238, 144)
+                'Call ShowConsoleMsg("Tiempo entrenado: " & CStr(updatingDateAndTime) & " minutos" & " | Oro total acumulado: " & CStr(oroUpdated) & " | Experiencia total acumulada: " & CStr(experienciaUpdated), 255, 255, 0, True)
+                'Call ShowConsoleMsg("Oro por minuto: " & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "minutes")) & " | Experiencia por minuto: " & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "minutes")), 200, 200, 0, True)
+             '   Call ShowConsoleMsg("Oro por hora: " & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "hours")) & " | Experiencia por hora: " & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "hours")), 200, 200, 0, True)
+            'ElseIf (language = e_language.English) Then
+                'Call ShowConsoleMsg("You begin calculating with the obtained values", 144, 238, 144)
+                'Call ShowConsoleMsg("Training time: " & CStr(updatingDateAndTime) & " minutes" & " | Total gold accumulated: " & CStr(oroUpdated) & " | Total experience accumulated: " & CStr(experienciaUpdated), 255, 255, 0, True)
+                'Call ShowConsoleMsg("Gold per minute: " & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "minutes")) & " | Experience per minute: " & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "minutes")), 200, 200, 0, True)
+             '   Call ShowConsoleMsg("Gold per hour: " & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "hours")) & " | Experience per hour: " & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "hours")), 200, 200, 0, True)
+            'End If
         Else
-            If (language = e_language.Spanish) Then
-                Call ShowConsoleMsg("Has sufrido un golpe fuerte durante tu entrenamiento. No has logrado calcular tu oro y experiencia", 255, 100, 100, True)
-            ElseIf (language = e_language.English) Then
-                Call ShowConsoleMsg("You suffered a heavy blow during your training. You were unable to calculate your gold and experience", 255, 100, 100, True)
-            End If
+                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_EXPERIENCIA_NO_FUNCIONO"), 255, 100, 100, True)
+            'If (language = e_language.Spanish) Then
+            '    Call ShowConsoleMsg("Has sufrido un golpe fuerte durante tu entrenamiento. No has logrado calcular tu oro y experiencia", 255, 100, 100, True)
+            'ElseIf (language = e_language.English) Then
+            '    Call ShowConsoleMsg("You suffered a heavy blow during your training. You were unable to calculate your gold and experience", 255, 100, 100, True)
+            'End If
         End If
         Call resetExpAndGoldTracker
         ExpNGoldBtnState = 0 ' Volver al estado inactivo
