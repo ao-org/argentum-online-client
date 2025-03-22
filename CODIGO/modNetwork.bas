@@ -183,6 +183,7 @@ End Sub
 
 Public Sub OnClientDisconnect(dpnotify As DxVBLibA.DPNMSG_TERMINATE_SESSION, fRejectMsg As Boolean)
 On Error GoTo OnClientDisconnect_Err:
+    frmDebug.add_text_tracebox "DPLAY: OnClientDisconnect"
     Err.Clear
     Connected = False
     
@@ -202,7 +203,14 @@ End Sub
     
 Public Sub OnClientConnect(dpnotify As DxVBLibA.DPNMSG_CONNECT_COMPLETE, fRejectMsg As Boolean)
 On Error GoTo OnClientConnect_Err:
+    frmDebug.add_text_tracebox "DPLAY: OnClientConnect"
     Err.Clear
+    
+    If EstadoLogin = E_MODO.CrearNuevoPj Then
+        Call LoginOrConnect(E_MODO.CrearNuevoPj)
+    End If
+
+    
     Connected = True
     Unload frmConnecting
     Exit Sub
@@ -262,14 +270,7 @@ On Error GoTo connect_error:
     Dim HostAddr As DirectPlay8Address
     Dim DeviceAddr As DirectPlay8Address
     
-    Dim dpApp As DPN_APPLICATION_DESC
     
-    Dim pInfo As DPN_PLAYER_INFO
-    pInfo.Name = "Pablo"
-    pInfo.lInfoFlags = DPNINFO_NAME
-    
-    modDplayClient.dpc.SetClientInfo pInfo
-
     
     Err.Clear
     Set HostAddr = DirectX.DirectPlayAddressCreate

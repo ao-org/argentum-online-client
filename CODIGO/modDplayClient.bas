@@ -21,15 +21,50 @@ Option Explicit
 Public Const AppGuid = "{5726CF1F-702B-4008-98BC-BF9C95F9E288}"
 
 Public dpc As DirectPlay8Client
+Public dpApp As DPN_APPLICATION_DESC
 
 Public Sub init_direct_play(ByRef dx As DirectX8)
     Err.Clear
+    CheckAndEnableDirectPlay
+    
     Debug.Assert dpc Is Nothing
     Debug.Assert Not dx Is Nothing
+    
     Set dpc = dx.DirectPlayClientCreate
     Debug.Assert Err.Number = 0
+    frmDebug.add_text_tracebox ("dX.DirectPlayClientCreate OK!")
+    
     dpc.RegisterMessageHandler frmConnect
     Set Protocol_Writes.Writer = New clsNetWriter
+    
+    Dim pInfo As DPN_PLAYER_INFO
+    pInfo.Name = "Pablo"
+    pInfo.lInfoFlags = DPNINFO_NAME
+    dpc.SetClientInfo pInfo
+    
+    Dim scaps As DPN_SP_CAPS
+    scaps = dpc.GetSPCaps(DP8SP_TCPIP)
+    
+    
+     With scaps
+        .lBuffersPerThread = 16
+        frmDebug.add_text_tracebox ("DPLAY_SP_CAPS:lBuffersPerThread :" & .lBuffersPerThread)
+        frmDebug.txtBuffersPerThread.Text = .lBuffersPerThread
+        
+        frmDebug.add_text_tracebox ("DPLAY_SP_CAPS:lDefaultEnumRetryInterval :" & .lDefaultEnumRetryInterval)
+        frmDebug.txtDefaultEnumRetryInterval.Text = .lDefaultEnumRetryInterval
+        
+        frmDebug.add_text_tracebox ("DPLAY_SP_CAPS:lDefaultEnumTimeout :" & .lDefaultEnumTimeout)
+        frmDebug.txtDefaultEnumTimeout.Text = .lDefaultEnumTimeout
+        
+        frmDebug.add_text_tracebox ("DPLAY_SP_CAPS:lSystemBufferSize :" & .lSystemBufferSize)
+        frmDebug.txtSystemBufferSize.Text = .lSystemBufferSize
+        
+        frmDebug.add_text_tracebox ("DPLAY_SP_CAPS:lNumThreads :" & .lNumThreads)
+        frmDebug.txtNumThreads.Text = .lNumThreads
+      
+    End With
+    dpc.SetSPCaps DP8SP_TCPIP, scaps
 End Sub
 
 Public Sub shutdown_direct_play()
@@ -43,6 +78,46 @@ Public Sub shutdown_direct_play()
 End Sub
 
 
+Private Sub CheckAndEnableDirectPlay()
+    If Not IsDirectPlayEnabled() Then
+        Dim response As VbMsgBoxResult
+        response = MsgBox("DirectPlay is not enabled. Would you like to enable it now?", vbYesNo + vbQuestion, "Enable DirectPlay")
+        If response = vbYes Then
+            EnableDirectPlay
+        Else
+            MsgBox "DirectPlay-dependent features may not function correctly.", vbExclamation, "DirectPlay Not Enabled"
+        End If
+    Else
+        frmDebug.add_text_tracebox "DirectPlay Status: DirectPlay is already enabled."
+    End If
+End Sub
+
+Private Function IsDirectPlayEnabled() As Boolean
+    On Error Resume Next
+    Dim objWMIService As Object
+    Dim colFeatures As Object
+    Dim objFeature As Variant
+    Dim featureName As String
+    featureName = "DirectPlay"
+    Set objWMIService = GetObject("winmgmts:\\.\root\cimv2")
+    Set colFeatures = objWMIService.ExecQuery("Select * from Win32_OptionalFeature where Name = '" & featureName & "'")
+    For Each objFeature In colFeatures
+        If objFeature.Name = featureName And objFeature.InstallState = 1 Then
+            IsDirectPlayEnabled = True
+            Exit Function
+        End If
+    Next
+    IsDirectPlayEnabled = False
+End Function
+
+Private Sub EnableDirectPlay()
+    On Error Resume Next
+    Dim shell As Object
+    Set shell = CreateObject("WScript.Shell")
+    shell.Run "dism /online /enable-feature /featurename:DirectPlay /all", 0, True
+    MsgBox "DirectPlay has been enabled. Please restart the application.", vbInformation, "DirectPlay Enabled"
+    frmDebug.add_text_tracebox "DirectPlay has been enabled. Please restart the application."
+End Sub
 
 
 Public Sub HandleDPlayError(ByVal ErrNumber As Long, ByVal ErrDescription As String, ByVal place As String, ByVal line As String)
