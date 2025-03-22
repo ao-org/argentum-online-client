@@ -2155,6 +2155,8 @@ Private Sub imgManual_Click()
     Else
         If MsgBox(JsonLanguage.Item("MENSAJE_PAGINA_WEB_YESNO"), vbYesNo, JsonLanguage.Item("MENSAJE_PAGINA_WEB")) = vbYes Then
             ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/wiki", "", "", 0
+        End If
+    End If
     Exit Sub
 
 imgManual_Click_Err:
@@ -2170,7 +2172,8 @@ Private Sub imgMAO_Click()
     Else
         If MsgBox(JsonLanguage.Item("MENSAJE_PAGINA_WEB_YESNO"), vbYesNo, JsonLanguage.Item("MENSAJE_PAGINA_WEB")) = vbYes Then
             ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/mercadoao", "", "", 0
-    
+        End If
+    End If
     Exit Sub
 
 imgMAO_Click_Err:
