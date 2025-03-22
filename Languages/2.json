@@ -290,4 +290,20 @@
 	"MENSAJE_PARAMETROS_INCORRECTOS": "Incorrect parameters.",
 	"MENSAJE_INVALID_EVENT_TYPE": "Invalid event type.",
     "MENSAJE_PARAMETRO_INVALIDO_UTILICE": "Invalid parameter. Use /CONFIGLOBBY SETPRICE/SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK/FORCERESET/SETTEAMSIZE/ADDPLAYER"
+	"MENSAJE_GOLD_EXP_STARTING": "You begin tracking your gold and experience",
+	"MENSAJE_GOLD_EXP_PAUSING": "You have paused your gold and experience tracking",
+	"MENSAJE_GOLD_EXP_TIEMPO_TRANSCURRIDO": "Elapsed time: ",
+	"MENSAJE_GOLD_EXP_TIEMPO_MINUTOS": "minutes",
+	"MENSAJE_GOLD_EXP_CONTINUAS_ENTRENAMIENTO": "You continue with your training",
+	"MENSAJE_GOLD_EXP_CALCULATING": "You begin calculating with the obtained values",
+	"MENSAJE_GOLD_EXP_TIEMPO_ENTRENADO": "Training time: ",
+	"MENSAJE_GOLD_EXP_ORO_ACUMULADO": "Total gold accumulated: ",
+	"MENSAJE_GOLD_EXP_EXPERIENCIA_ACUMULADA": "Total experience accumulated: ",
+	"MENSAJE_GOLD_EXP_ORO_MINUTO": "Gold per minute: ",
+	"MENSAJE_GOLD_EXP_EXPERIENCIA_MINUTO": "Experience per minute: ",
+	"MENSAJE_GOLD_EXP_ORO_HORA": "Gold per hour: ",
+	"MENSAJE_GOLD_EXP_EXPERIENCIA_HORA": "Experience per hour: ",
+	"MENSAJE_GOLD_EXP_EXPERIENCIA_NO_FUNCIONO": "You suffered a heavy blow during your training. You were unable to calculate your gold and experience"
+	"MENSAJE_PAGINA_WEB":"Open the browser"
+	"MENSAJE_PAGINA_WEB_YESNO":"Do you want to open the browser now?"
 }
