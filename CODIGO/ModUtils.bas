@@ -132,6 +132,7 @@ Public Type tQuest
     RequiredLevel As Byte
     RequiredClass As Integer
     RequiredQuest As Byte
+    LimitLevel As Byte
     
     RequiredOBJs As Byte
     RequiredOBJ() As Obj
