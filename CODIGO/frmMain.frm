@@ -2316,9 +2316,13 @@ End Sub
 Private Sub imgManual_Click()
     On Error GoTo imgManual_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/wiki", "", "", 0
-
-    
+    If MapDat.Seguro = 1 Then
+        ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/wiki", "", "", 0
+    Else
+        If MsgBox(JsonLanguage.Item("MENSAJE_PAGINA_WEB_YESNO"), vbYesNo, JsonLanguage.Item("MENSAJE_PAGINA_WEB")) = vbYes Then
+            ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/wiki", "", "", 0
+        End If
+    End If
     Exit Sub
 
 imgManual_Click_Err:
@@ -2329,9 +2333,13 @@ End Sub
 Private Sub imgMAO_Click()
     On Error GoTo imgMAO_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/mercadoao", "", "", 0
-
-    
+    If MapDat.Seguro = 1 Then
+        ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/mercadoao", "", "", 0
+    Else
+        If MsgBox(JsonLanguage.Item("MENSAJE_PAGINA_WEB_YESNO"), vbYesNo, JsonLanguage.Item("MENSAJE_PAGINA_WEB")) = vbYes Then
+            ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/mercadoao", "", "", 0
+        End If
+    End If
     Exit Sub
 
 imgMAO_Click_Err:
