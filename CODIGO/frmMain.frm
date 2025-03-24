@@ -975,6 +975,20 @@ Begin VB.Form frmMain
       Top             =   2280
       Width           =   11040
    End
+   Begin VB.Image btnStopRecordExp 
+      Height          =   315
+      Left            =   2145
+      Tag             =   "0"
+      Top             =   75
+      Width           =   285
+   End
+   Begin VB.Image btn_PlayRecordExp 
+      Height          =   315
+      Left            =   1800
+      Tag             =   "5"
+      Top             =   75
+      Width           =   285
+   End
    Begin VB.Image imgMAO 
       Height          =   315
       Left            =   13500
@@ -1526,6 +1540,141 @@ Private cBotonAjustes As clsGraphicalButton
 Private cBotonManual As clsGraphicalButton
 Private cBotonMAO As clsGraphicalButton
 
+'Variables para el experience and gold tracker
+Private startingDateAndTime As Date
+Private updatingDateAndTime As Long
+Private finalPlayedTime As Long
+Private experienciaInicial As Long
+Private oroInicial As Long
+Private oroUpdated As Long
+Private experienciaUpdated As Long
+Private levelInicial As Long
+
+Private Function resetExpAndGoldTracker()
+
+        ExpNGoldBtnState = 0
+        oroUpdated = 0
+        experienciaUpdated = 0
+        oroInicial = 0
+        experienciaInicial = 0
+        updatingDateAndTime = 0
+        handleGoldNExpTrackerPictureLogic
+
+End Function
+
+Private Function handleGoldNExpTrackerPictureLogic()
+    ' Actualiza el botón de iniciar/pausar
+    If ExpNGoldBtnState = 0 Then
+        btn_PlayRecordExp.Picture = LoadInterface("playdefault.bmp", False)
+        btnStopRecordExp.Picture = LoadInterface("stopoff.bmp", False)
+    ElseIf ExpNGoldBtnState = 1 Then
+        btn_PlayRecordExp.Picture = LoadInterface("pausedefault.bmp", False)
+        btnStopRecordExp.Picture = LoadInterface("stopdefault.bmp", False)
+    ElseIf ExpNGoldBtnState = 2 Then
+        btn_PlayRecordExp.Picture = LoadInterface("playdefault.bmp", False)
+        btnStopRecordExp.Picture = LoadInterface("stopoff.bmp", False)
+    End If
+    
+End Function
+
+Private Sub btn_PlayRecordExp_Click()
+
+    On Error GoTo btn_PlayRecordExp_Click_Err
+    
+    Select Case ExpNGoldBtnState
+        Case 0 ' Iniciar seguimiento
+        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_STARTING"), 144, 238, 144)
+            Call resetExpAndGoldTracker
+            experienciaInicial = UserStats.exp
+            oroInicial = UserStats.GLD
+            startingDateAndTime = Now
+            levelInicial = UserStats.Lvl
+            ExpNGoldBtnState = 1 ' Cambia a estado grabando
+        
+        Case 1 ' Pausar seguimiento
+            updatingDateAndTime = updatingDateAndTime + DateDiff("n", startingDateAndTime, Now)
+            oroUpdated = oroUpdated + (UserStats.GLD - oroInicial)
+            experienciaUpdated = experienciaUpdated + (UserStats.exp - experienciaInicial)
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_PAUSING"), 144, 238, 144)
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_TIEMPO_TRANSCURRIDO") & CStr(updatingDateAndTime) & " " & JsonLanguage.Item("MENSAJE_GOLD_EXP_TIEMPO_MINUTOS"), 255, 255, 0)
+            ExpNGoldBtnState = 2 ' Cambia a estado pausado
+        
+        Case 2 ' Reanudar seguimiento
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_CONTINUAS_ENTRENAMIENTO"), 144, 238, 144)
+            startingDateAndTime = Now
+            oroInicial = UserStats.GLD
+            experienciaInicial = UserStats.exp
+            ExpNGoldBtnState = 1 ' Vuelve a estado grabando
+    End Select
+    
+    Call handleGoldNExpTrackerPictureLogic
+    Exit Sub
+
+btn_PlayRecordExp_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btn_PlayRecordExp_Click", Erl)
+    Resume Next
+
+End Sub
+Private Sub btn_PlayRecordExp_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error GoTo btn_PlayRecordExp_MouseMove_Err
+    If ExpNGoldBtnState = 0 Then
+        btn_PlayRecordExp.Picture = LoadInterface("playdefaultover.bmp", False)
+    ElseIf ExpNGoldBtnState = 1 Then
+        btn_PlayRecordExp.Picture = LoadInterface("pausedefaultover.bmp", False)
+    ElseIf ExpNGoldBtnState = 2 Then
+        btn_PlayRecordExp.Picture = LoadInterface("playdefaultover.bmp", False)
+    End If
+    
+Exit Sub
+
+btn_PlayRecordExp_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btn_PlayRecordExp_MouseMove", Erl)
+    Resume Next
+
+End Sub
+Private Sub btnStopRecordExp_Click()
+    
+    On Error GoTo btnStopRecordExp_Click_Err
+    
+    If ExpNGoldBtnState = 1 Then ' Solo detener si está grabando
+        updatingDateAndTime = updatingDateAndTime + DateDiff("n", startingDateAndTime, Now)
+        oroUpdated = oroUpdated + (UserStats.GLD - oroInicial)
+        experienciaUpdated = experienciaUpdated + (UserStats.exp - experienciaInicial)
+        
+        If (oroUpdated > 0 And experienciaUpdated > 0) Then
+                           
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_CALCULATING"), 144, 238, 144)
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_TIEMPO_ENTRENADO") & CStr(updatingDateAndTime) & " " & JsonLanguage.Item("MENSAJE_GOLD_EXP_TIEMPO_MINUTOS") & " | " & JsonLanguage.Item("MENSAJE_GOLD_EXP_ORO_ACUMULADO") & CStr(oroUpdated) & " | " & JsonLanguage.Item("MENSAJE_GOLD_EXP_EXPERIENCIA_ACUMULADA") & CStr(experienciaUpdated), 255, 255, 0, True)
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_ORO_MINUTO") & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "minutes")) & " | " & JsonLanguage.Item("MENSAJE_GOLD_EXP_EXPERIENCIA_MINUTO") & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "minutes")), 200, 200, 0, True)
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_ORO_HORA") & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "hours")) & " | " & JsonLanguage.Item("MENSAJE_GOLD_EXP_EXPERIENCIA_HORA") & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "hours")), 200, 200, 0, True)
+               
+        Else
+                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_EXPERIENCIA_NO_FUNCIONO"), 255, 100, 100, True)
+
+        End If
+        Call resetExpAndGoldTracker
+        ExpNGoldBtnState = 0 ' Volver al estado inactivo
+    End If
+    
+    Exit Sub
+
+btnStopRecordExp_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnStopRecordExp_Click", Erl)
+    Resume Next
+End Sub
+Private Function calculateValueByTime(ByVal minutes As Long, ByVal value As Long, ByVal whichUnit As String) As Long
+    If minutes = 0 Then 'previene crash al dividir por 0
+        calculateValueByTime = 0
+    ElseIf whichUnit = "minutes" Then
+        calculateValueByTime = value / minutes
+    ElseIf whichUnit = "hours" Then
+        calculateValueByTime = (value / minutes) * 60
+End If
+
+End Function
+
+
+
 Private Sub btnInvisible_Click()
     
     On Error GoTo btnInvisible_Click_Err
@@ -1565,6 +1714,10 @@ Private Sub loadButtons()
     Call cBotonMAO.Initialize(imgMAO, "boton-mao-default.bmp", _
                                                 "boton-mao-over.bmp", _
                                                 "boton-mao-off.bmp", Me)
+                                                
+    'Loading exp and gold tracker buttons
+    handleGoldNExpTrackerPictureLogic
+     
 End Sub
 
 Private Sub btnSpawn_Click()
@@ -1581,6 +1734,19 @@ btnSpawn_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.btnSpawn_Click", Erl)
     Resume Next
     
+End Sub
+
+
+Private Sub btnStopRecordExp_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error GoTo btnStopRecordExp_MouseMove_Err
+    If ExpNGoldBtnState = 1 Then
+        btnStopRecordExp.Picture = LoadInterface("stopdefaultover.bmp", False)
+    End If
+    Exit Sub
+
+btnStopRecordExp_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnStopRecordExp_MouseMove", Erl)
+    Resume Next
 End Sub
 
 Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -4374,6 +4540,10 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         Retar.Tag = "0"
     End If
     
+'Metodo para actualizar la imagen del tracker de oro y experiencia
+    Call handleGoldNExpTrackerPictureLogic
+
+
     MenuUser.LostFocus
     MenuGM.LostFocus
     MenuNPC.LostFocus
