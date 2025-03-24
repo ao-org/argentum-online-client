@@ -1742,6 +1742,7 @@ Private Sub btnStopRecordExp_MouseMove(Button As Integer, Shift As Integer, x As
     If ExpNGoldBtnState = 1 Then
         btnStopRecordExp.Picture = LoadInterface("stopdefaultover.bmp", False)
     End If
+    Exit Sub
 
 btnStopRecordExp_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.btnStopRecordExp_MouseMove", Erl)
