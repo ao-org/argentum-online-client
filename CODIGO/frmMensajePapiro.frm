@@ -260,7 +260,7 @@ Private Const WS_EX_LAYERED = &H80000
 Private Const LWA_COLORKEY = &H1&
 
 Private Sub BasicInfoLink_Click()
-    Call OpenLink("https://www.ao20.com.ar/wiki")
+    Call OpenLink("https://www.argentumonline.com.ar/wiki")
 End Sub
 
 Private Sub CafecitoLink_Click(Index As Integer)
@@ -283,11 +283,11 @@ Private Sub Form_LostFocus()
 End Sub
 
 Private Sub GameRulesLink_Click(Index As Integer)
-    Call OpenLink("https://www.ao20.com.ar/reglamento")
+    Call OpenLink("https://www.argentumonline.com.ar/reglamento")
 End Sub
 
 Private Sub HelpGuideLink_Click()
-    Call OpenLink("https://www.ao20.com.ar/wiki/guia-leveleo/leveleo-1-12")
+    Call OpenLink("https://www.argentumonline.com.ar/wiki/guia-general/skills-clases")
 End Sub
 
 Private Sub Image1_Click()
@@ -311,9 +311,9 @@ Private Sub PatreonLink_Click(Index As Integer)
 End Sub
 
 Private Sub Stream1_Click()
-    Call OpenLink(" https://www.twitch.tv/argentumonlineoficial")
+    Call OpenLink("https://www.twitch.tv/argentumonlineoficial")
 End Sub
 
 Private Sub Stream2_Click()
-    Call OpenLink("https://www.twitch.tv/soygabrielplus")
+    Call OpenLink("https://www.twitch.tv/Plus_1986")
 End Sub
