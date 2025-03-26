@@ -1715,8 +1715,8 @@ Private Sub loadButtons()
                                                 "boton-mao-over.bmp", _
                                                 "boton-mao-off.bmp", Me)
                                                 
-    'Loading exp and gold tracker buttons
-    handleGoldNExpTrackerPictureLogic
+    ' Loading exp and gold tracker buttons
+    ' handleGoldNExpTrackerPictureLogic
      
 End Sub
 
@@ -4540,8 +4540,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         Retar.Tag = "0"
     End If
     
-'Metodo para actualizar la imagen del tracker de oro y experiencia
-    Call handleGoldNExpTrackerPictureLogic
+   'Metodo para actualizar la imagen del tracker de oro y experiencia
+   ' Call handleGoldNExpTrackerPictureLogic
 
 
     MenuUser.LostFocus
