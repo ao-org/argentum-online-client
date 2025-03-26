@@ -1,6 +1,6 @@
 Type=Exe
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
-Reference=*\G{E1211242-8E94-11D1-8808-00C04FC2C603}#1.0#0#dx8vb.dll#DirectX 8 for Visual Basic Type Library
+Reference=*\G{E1211242-8E94-11D1-8808-00C04FC2C603}#1.0#0#..\argentum20-server\DX8VB.DLL#DirectX 8 for Visual Basic Type Library
 Reference=*\G{56A868B0-0AD4-11CE-B03A-0020AF0BA770}#1.0#0#..\..\..\..\Windows\System32\quartz.dll#ActiveMovie control type library
 Reference=*\G{88D89F7C-BB59-4F13-9850-93CBD874039D}#1.5#0#..\argentum20-server\Aurora.Network.dll#Aurora.Network - Aurora Engine - Network
 Reference=*\G{420B2830-E718-11CF-893D-00A0C9054228}#1.0#0#..\..\..\..\Windows\SysWOW64\scrrun.dll#Microsoft Scripting Runtime
@@ -153,8 +153,8 @@ Class=clsInstrument; CODIGO\clsInstrument.cls
 Module=modDplayClient; CODIGO\modDplayClient.bas
 Class=clsNetWriter; CODIGO\clsNetWriter.cls
 Class=clsNetReader; CODIGO\clsNetReader.cls
-ResFile32="AO20.res"
 Form=CODIGO\frmDebug.frm
+ResFile32="AO20.res"
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""

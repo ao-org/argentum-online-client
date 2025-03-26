@@ -582,8 +582,6 @@ On Error GoTo HandleLogged_Err
     SeguroParty = True
     SeguroClanX = True
     SeguroResuX = True
-    ExpNGoldBtnState = 0
-    
     Call ResetAllCd
     
     Call SetConnected

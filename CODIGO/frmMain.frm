@@ -435,7 +435,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -975,20 +974,6 @@ Begin VB.Form frmMain
       Top             =   2280
       Width           =   11040
    End
-   Begin VB.Image btnStopRecordExp 
-      Height          =   315
-      Left            =   2145
-      Tag             =   "0"
-      Top             =   75
-      Width           =   285
-   End
-   Begin VB.Image btn_PlayRecordExp 
-      Height          =   315
-      Left            =   1800
-      Tag             =   "5"
-      Top             =   75
-      Width           =   285
-   End
    Begin VB.Image imgMAO 
       Height          =   315
       Left            =   13500
@@ -1489,7 +1474,7 @@ Private MenuNivel As Byte
 Private Type POINTAPI
 
     x As Long
-    y As Long
+    Y As Long
 
 End Type
 
@@ -1528,7 +1513,7 @@ Const SWP_NOACTIVATE = &H10
 
 Const SWP_SHOWWINDOW = &H40
 
-Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
+Private Declare Sub SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal Y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long)
 
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
 
@@ -1539,141 +1524,6 @@ Private cBotonEliminarItem As clsGraphicalButton
 Private cBotonAjustes As clsGraphicalButton
 Private cBotonManual As clsGraphicalButton
 Private cBotonMAO As clsGraphicalButton
-
-'Variables para el experience and gold tracker
-Private startingDateAndTime As Date
-Private updatingDateAndTime As Long
-Private finalPlayedTime As Long
-Private experienciaInicial As Long
-Private oroInicial As Long
-Private oroUpdated As Long
-Private experienciaUpdated As Long
-Private levelInicial As Long
-
-Private Function resetExpAndGoldTracker()
-
-        ExpNGoldBtnState = 0
-        oroUpdated = 0
-        experienciaUpdated = 0
-        oroInicial = 0
-        experienciaInicial = 0
-        updatingDateAndTime = 0
-        handleGoldNExpTrackerPictureLogic
-
-End Function
-
-Private Function handleGoldNExpTrackerPictureLogic()
-    ' Actualiza el botón de iniciar/pausar
-    If ExpNGoldBtnState = 0 Then
-        btn_PlayRecordExp.Picture = LoadInterface("playdefault.bmp", False)
-        btnStopRecordExp.Picture = LoadInterface("stopoff.bmp", False)
-    ElseIf ExpNGoldBtnState = 1 Then
-        btn_PlayRecordExp.Picture = LoadInterface("pausedefault.bmp", False)
-        btnStopRecordExp.Picture = LoadInterface("stopdefault.bmp", False)
-    ElseIf ExpNGoldBtnState = 2 Then
-        btn_PlayRecordExp.Picture = LoadInterface("playdefault.bmp", False)
-        btnStopRecordExp.Picture = LoadInterface("stopoff.bmp", False)
-    End If
-    
-End Function
-
-Private Sub btn_PlayRecordExp_Click()
-
-    On Error GoTo btn_PlayRecordExp_Click_Err
-    
-    Select Case ExpNGoldBtnState
-        Case 0 ' Iniciar seguimiento
-        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_STARTING"), 144, 238, 144)
-            Call resetExpAndGoldTracker
-            experienciaInicial = UserStats.exp
-            oroInicial = UserStats.GLD
-            startingDateAndTime = Now
-            levelInicial = UserStats.Lvl
-            ExpNGoldBtnState = 1 ' Cambia a estado grabando
-        
-        Case 1 ' Pausar seguimiento
-            updatingDateAndTime = updatingDateAndTime + DateDiff("n", startingDateAndTime, Now)
-            oroUpdated = oroUpdated + (UserStats.GLD - oroInicial)
-            experienciaUpdated = experienciaUpdated + (UserStats.exp - experienciaInicial)
-            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_PAUSING"), 144, 238, 144)
-            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_TIEMPO_TRANSCURRIDO") & CStr(updatingDateAndTime) & " " & JsonLanguage.Item("MENSAJE_GOLD_EXP_TIEMPO_MINUTOS"), 255, 255, 0)
-            ExpNGoldBtnState = 2 ' Cambia a estado pausado
-        
-        Case 2 ' Reanudar seguimiento
-            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_CONTINUAS_ENTRENAMIENTO"), 144, 238, 144)
-            startingDateAndTime = Now
-            oroInicial = UserStats.GLD
-            experienciaInicial = UserStats.exp
-            ExpNGoldBtnState = 1 ' Vuelve a estado grabando
-    End Select
-    
-    Call handleGoldNExpTrackerPictureLogic
-    Exit Sub
-
-btn_PlayRecordExp_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.btn_PlayRecordExp_Click", Erl)
-    Resume Next
-
-End Sub
-Private Sub btn_PlayRecordExp_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    On Error GoTo btn_PlayRecordExp_MouseMove_Err
-    If ExpNGoldBtnState = 0 Then
-        btn_PlayRecordExp.Picture = LoadInterface("playdefaultover.bmp", False)
-    ElseIf ExpNGoldBtnState = 1 Then
-        btn_PlayRecordExp.Picture = LoadInterface("pausedefaultover.bmp", False)
-    ElseIf ExpNGoldBtnState = 2 Then
-        btn_PlayRecordExp.Picture = LoadInterface("playdefaultover.bmp", False)
-    End If
-    
-Exit Sub
-
-btn_PlayRecordExp_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.btn_PlayRecordExp_MouseMove", Erl)
-    Resume Next
-
-End Sub
-Private Sub btnStopRecordExp_Click()
-    
-    On Error GoTo btnStopRecordExp_Click_Err
-    
-    If ExpNGoldBtnState = 1 Then ' Solo detener si está grabando
-        updatingDateAndTime = updatingDateAndTime + DateDiff("n", startingDateAndTime, Now)
-        oroUpdated = oroUpdated + (UserStats.GLD - oroInicial)
-        experienciaUpdated = experienciaUpdated + (UserStats.exp - experienciaInicial)
-        
-        If (oroUpdated > 0 And experienciaUpdated > 0) Then
-                           
-            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_CALCULATING"), 144, 238, 144)
-            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_TIEMPO_ENTRENADO") & CStr(updatingDateAndTime) & " " & JsonLanguage.Item("MENSAJE_GOLD_EXP_TIEMPO_MINUTOS") & " | " & JsonLanguage.Item("MENSAJE_GOLD_EXP_ORO_ACUMULADO") & CStr(oroUpdated) & " | " & JsonLanguage.Item("MENSAJE_GOLD_EXP_EXPERIENCIA_ACUMULADA") & CStr(experienciaUpdated), 255, 255, 0, True)
-            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_ORO_MINUTO") & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "minutes")) & " | " & JsonLanguage.Item("MENSAJE_GOLD_EXP_EXPERIENCIA_MINUTO") & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "minutes")), 200, 200, 0, True)
-            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_ORO_HORA") & CStr(calculateValueByTime(updatingDateAndTime, oroUpdated, "hours")) & " | " & JsonLanguage.Item("MENSAJE_GOLD_EXP_EXPERIENCIA_HORA") & CStr(calculateValueByTime(updatingDateAndTime, experienciaUpdated, "hours")), 200, 200, 0, True)
-               
-        Else
-                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_GOLD_EXP_EXPERIENCIA_NO_FUNCIONO"), 255, 100, 100, True)
-
-        End If
-        Call resetExpAndGoldTracker
-        ExpNGoldBtnState = 0 ' Volver al estado inactivo
-    End If
-    
-    Exit Sub
-
-btnStopRecordExp_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnStopRecordExp_Click", Erl)
-    Resume Next
-End Sub
-Private Function calculateValueByTime(ByVal minutes As Long, ByVal value As Long, ByVal whichUnit As String) As Long
-    If minutes = 0 Then 'previene crash al dividir por 0
-        calculateValueByTime = 0
-    ElseIf whichUnit = "minutes" Then
-        calculateValueByTime = value / minutes
-    ElseIf whichUnit = "hours" Then
-        calculateValueByTime = (value / minutes) * 60
-End If
-
-End Function
-
-
 
 Private Sub btnInvisible_Click()
     
@@ -1714,10 +1564,7 @@ Private Sub loadButtons()
     Call cBotonMAO.Initialize(imgMAO, "boton-mao-default.bmp", _
                                                 "boton-mao-over.bmp", _
                                                 "boton-mao-off.bmp", Me)
-                                                
-    ' Loading exp and gold tracker buttons
-    ' handleGoldNExpTrackerPictureLogic
-     
+
 End Sub
 
 Private Sub btnSpawn_Click()
@@ -1737,19 +1584,7 @@ btnSpawn_Click_Err:
 End Sub
 
 
-Private Sub btnStopRecordExp_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    On Error GoTo btnStopRecordExp_MouseMove_Err
-    If ExpNGoldBtnState = 1 Then
-        btnStopRecordExp.Picture = LoadInterface("stopdefaultover.bmp", False)
-    End If
-    Exit Sub
-
-btnStopRecordExp_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnStopRecordExp_MouseMove", Erl)
-    Resume Next
-End Sub
-
-Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub clanimg_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo clanimg_MouseMove_Err
     
@@ -1769,7 +1604,7 @@ clanimg_MouseMove_Err:
     
 End Sub
 
-Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo clanimg_MouseUp_Err
     
@@ -1787,7 +1622,7 @@ clanimg_MouseUp_Err:
     
 End Sub
 
-Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo cmdlanzar_MouseDown_Err
     
@@ -1810,7 +1645,7 @@ cmdlanzar_MouseDown_Err:
     
 End Sub
 
-Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo cmdlanzar_MouseUp_Err
     
@@ -1868,7 +1703,7 @@ CerrarLlavero_Err:
     
 End Sub
 
-Private Sub cmdLlavero_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdLlavero_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo cmdLlavero_MouseDown_Err
     
@@ -1883,7 +1718,7 @@ cmdLlavero_MouseDown_Err:
     
 End Sub
 
-Private Sub cmdLlavero_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdLlavero_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo cmdLlavero_MouseMove_Err
     
@@ -1995,7 +1830,7 @@ DesDibujarSeguro_Err:
     
 End Sub
 
-Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub cmdMoverHechi_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo cmdMoverHechi_MouseMove_Err
     
@@ -2166,14 +2001,14 @@ Private Sub Image1_Click()
 
 End Sub
 
-Private Sub ImgEstadisticas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgEstadisticas_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     TempTick = GetTickCount And &H7FFFFFFF
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then Exit Sub
     iClickTick = TempTick
     ImgEstadisticas.Picture = LoadInterface("boton-estadisticas-big-off.bmp")
     ImgEstadisticas.Tag = "1"
 End Sub
-Private Sub ImgEstadisticas_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgEstadisticas_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     If pausa Then Exit Sub
     
@@ -2184,13 +2019,13 @@ Private Sub ImgEstadisticas_MouseUp(Button As Integer, Shift As Integer, x As Si
     
 End Sub
 
-Private Sub ImgEstadisticas_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgEstadisticas_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     If ImgEstadisticas.Tag = "0" Then
         ImgEstadisticas.Picture = LoadInterface("boton-estadisticas-big-over.bmp")
         ImgEstadisticas.Tag = "1"
     End If
 End Sub
-Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo EstadisticasBoton_MouseDown_Err
     
@@ -2207,7 +2042,7 @@ EstadisticasBoton_MouseDown_Err:
     
 End Sub
 
-Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo EstadisticasBoton_MouseMove_Err
     
@@ -2226,7 +2061,7 @@ EstadisticasBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub EstadisticasBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
 On Error GoTo EstadisticasBoton_MouseUp_Err
     Call ModGameplayUI.RequestSkills
     Exit Sub
@@ -2261,7 +2096,7 @@ exp_Click_Err:
     
 End Sub
 
-Private Sub exp_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub exp_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
 
     If Not ShowPercentage Then
         lblPorcLvl.visible = True
@@ -2284,7 +2119,7 @@ Form_Activate_Err:
 End Sub
 
 
-Private Sub imgHechizos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgHechizos_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     On Error GoTo imgHechizos_MouseMove_Err
     
     imgHechizos.Picture = LoadInterface("boton-hechizos-default.bmp")
@@ -2298,7 +2133,7 @@ imgHechizos_MouseMove_Err:
     Resume Next
 End Sub
 
-Private Sub imgInventario_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgInventario_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     On Error GoTo imgInventario_MouseMove_Err
 
     imgInventario.Picture = LoadInterface("boton-inventory-over.bmp")
@@ -2348,11 +2183,11 @@ imgMAO_Click_Err:
 
 End Sub
 
-Private Sub picHechiz_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If y < 0 Then y = 0
-    If y > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then y = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
+Private Sub picHechiz_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
+    If Y < 0 Then Y = 0
+    If Y > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then Y = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
     If x < picHechiz.ScaleWidth - 10 Then
-        hlst.ListIndex = Int(y / hlst.Pixel_Alto) + hlst.Scroll
+        hlst.ListIndex = Int(Y / hlst.Pixel_Alto) + hlst.Scroll
         hlst.DownBarrita = 0
         If Button = vbRightButton Then
             gDragState.DragSlot = hlst.ListIndex + 1
@@ -2372,26 +2207,26 @@ Private Sub picHechiz_MouseDown(Button As Integer, Shift As Integer, x As Single
             Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
         End If
     Else
-        hlst.DownBarrita = y - hlst.Scroll * (picHechiz.ScaleHeight - hlst.BarraHeight) / (hlst.ListCount - hlst.VisibleCount)
+        hlst.DownBarrita = Y - hlst.Scroll * (picHechiz.ScaleHeight - hlst.BarraHeight) / (hlst.ListCount - hlst.VisibleCount)
     End If
 End Sub
 
-Private Sub picHechiz_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picHechiz_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     If Button = 1 Then
         Dim yy As Integer
-        yy = y
+        yy = Y
         If yy < 0 Then yy = 0
         If yy > Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1 Then yy = Int(picHechiz.ScaleHeight / hlst.Pixel_Alto) * hlst.Pixel_Alto - 1
         If hlst.DownBarrita > 0 Then
-            hlst.Scroll = (y - hlst.DownBarrita) * (hlst.ListCount - hlst.VisibleCount) / (picHechiz.ScaleHeight - hlst.BarraHeight)
+            hlst.Scroll = (Y - hlst.DownBarrita) * (hlst.ListCount - hlst.VisibleCount) / (picHechiz.ScaleHeight - hlst.BarraHeight)
         Else
             hlst.ListIndex = Int(yy / hlst.Pixel_Alto) + hlst.Scroll
             If Seguido = 1 Then
                 Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
             End If
             If ScrollArrastrar = 0 Then
-                If (y < yy) Then hlst.Scroll = hlst.Scroll - 1
-                If (y > yy) Then hlst.Scroll = hlst.Scroll + 1
+                If (Y < yy) Then hlst.Scroll = hlst.Scroll - 1
+                If (Y > yy) Then hlst.Scroll = hlst.Scroll + 1
             End If
         End If
     ElseIf Button = 0 Then
@@ -2400,18 +2235,18 @@ Private Sub picHechiz_MouseMove(Button As Integer, Shift As Integer, x As Single
     
     If gDragState.active Then
         gDragState.PosX = x + picHechiz.Left + picHechiz.Container.Left
-        gDragState.PosY = y + picHechiz.Top + picHechiz.Container.Top
+        gDragState.PosY = Y + picHechiz.Top + picHechiz.Container.Top
     End If
 End Sub
 
-Private Sub picHechiz_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picHechiz_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     hlst.DownBarrita = 0
     If Button = vbRightButton And gDragState.active Then
         Call frmMain.OnDragEnd
     End If
 End Sub
 
-Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     If Not picInv.visible Then Exit Sub
     
     If dobleclick.Interval = 0 Then dobleclick.Interval = 1000
@@ -2437,7 +2272,7 @@ Form_KeyUp_Err:
     Resume Next
 End Sub
 
-Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo Form_MouseDown_Err
     
@@ -2469,12 +2304,12 @@ Form_MouseDown_Err:
     
 End Sub
 
-Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo Form_MouseUp_Err
     
     clicX = x
-    clicY = y
+    clicY = Y
     If gDragState.active And Button = vbRightButton Then
         Call OnDragEnd
         gDragState.active = False
@@ -2569,7 +2404,7 @@ GlobalIcon_Click_Err:
     
 End Sub
 
-Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image2_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo Image2_MouseDown_Err
     
@@ -2613,7 +2448,7 @@ Private Sub Hpshp_Click()
     HpBar_Click
 End Sub
 
-Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image3_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     '    Image3.Picture = LoadInterface("elegirchatapretado.bmp")
     
     On Error GoTo Image3_MouseDown_Err
@@ -2629,7 +2464,7 @@ Image3_MouseDown_Err:
     
 End Sub
 
-Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image3_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo Image3_MouseMove_Err
     
@@ -2679,7 +2514,7 @@ Image4_Click_Err:
     
 End Sub
 
-Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image4_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo Image4_MouseDown_Err
     
@@ -2703,7 +2538,7 @@ Image4_MouseDown_Err:
     
 End Sub
 
-Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image4_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo Image4_MouseMove_Err
     
@@ -2769,7 +2604,7 @@ Image5_Click_Err:
     
 End Sub
 
-Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Image5_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo Image5_MouseMove_Err
     
@@ -2847,7 +2682,7 @@ hechizosClick_Err:
     Resume Next
 End Sub
 
-Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo imgHechizos_MouseDown_Err
        
@@ -2863,7 +2698,7 @@ imgHechizos_MouseDown_Err:
     
 End Sub
 
-Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgHechizos_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo imgHechizos_MouseMove_Err
     
@@ -2888,12 +2723,12 @@ Private Sub ImgHogar_Click()
     Call ParseUserCommand("/HOGAR")
 End Sub
 
-Private Sub ImgHogar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgHogar_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     ImgHogar.Picture = LoadInterface("boton-home-off.bmp")
     ImgHogar.Tag = "1"
 End Sub
 
-Private Sub ImgHogar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgHogar_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     If ImgHogar.Tag = "0" Then
         ImgHogar.Picture = LoadInterface("boton-home-over.bmp")
         ImgHogar.Tag = "1"
@@ -2928,7 +2763,7 @@ inventoryClick_Err:
     Resume Next
 End Sub
 
-Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
 
     On Error GoTo imgInventario_MouseDown_Err
@@ -2946,7 +2781,7 @@ imgInventario_MouseDown_Err:
     
 End Sub
 
-Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub imgInventario_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo imgInventario_MouseMove_Err
 
@@ -3002,7 +2837,7 @@ Private Sub Label1_Click()
     frmBancoCuenta.Show , frmMain
 End Sub
 
-Private Sub lblPorcLvl_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub lblPorcLvl_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
 
     If ShowPercentage Then
         lblPorcLvl.visible = False
@@ -3044,7 +2879,7 @@ End Sub
 
 
 
-Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo OpcionesBoton_MouseDown_Err
     
@@ -3077,7 +2912,7 @@ panelGM_Click_Err:
     
 End Sub
 
-Private Sub panelInf_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub panelInf_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     If Image5.Tag = "1" Then
         Image5.Picture = Nothing
         Image5.Tag = "0"
@@ -3245,7 +3080,7 @@ Select Case Index
 End Select
 End Sub
 
-Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal Y As Integer)
     
     On Error GoTo Inventario_ItemDropped_Err
     
@@ -3281,7 +3116,7 @@ picInv_Paint_Err:
     Resume Next
     
 End Sub
-Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub QuestBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo QuestBoton_MouseMove_Err
     
@@ -3301,7 +3136,7 @@ QuestBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub QuestBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo QuestBoton_MouseUp_Err
     
@@ -3525,7 +3360,7 @@ mapMundo_Click_Err:
     
 End Sub
 
-Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo mapMundo_MouseMove_Err
     
@@ -3545,15 +3380,15 @@ mapMundo_MouseMove_Err:
     
 End Sub
 
-Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub MiniMap_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo MiniMap_MouseDown_Err
     
-    Call GetMinimapPosition(x, y)
+    Call GetMinimapPosition(x, Y)
     
 
     If Button = vbRightButton Then
-        Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(x) & " " & CByte(y))
+        Call ParseUserCommand("/TELEP YO " & UserMap & " " & CByte(x) & " " & CByte(Y))
         Exit Sub
 
     End If
@@ -3573,7 +3408,7 @@ MiniMap_MouseDown_Err:
     
 End Sub
 
-Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo MiniMap_MouseMove_Err
     
@@ -3671,7 +3506,7 @@ mnuUsar_Click_Err:
     
 End Sub
 
-Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo NameMapa_MouseMove_Err
     
@@ -3706,7 +3541,7 @@ onlines_Click_Err:
     
 End Sub
 
-Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo OpcionesBoton_MouseMove_Err
     
@@ -3725,7 +3560,7 @@ OpcionesBoton_MouseMove_Err:
     
 End Sub
 
-Private Sub OpcionesBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub OpcionesBoton_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo OpcionesBoton_MouseUp_Err
     
@@ -3740,7 +3575,7 @@ OpcionesBoton_MouseUp_Err:
     
 End Sub
 
-Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Panel_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo Panel_MouseMove_Err
     
@@ -3786,7 +3621,7 @@ Panel_MouseMove_Err:
     
 End Sub
 
-Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo picInv_MouseMove_Err
     
@@ -3795,7 +3630,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 
     UsaMacro = False
     
-    Slot = Inventario.GetSlot(x, y)
+    Slot = Inventario.GetSlot(x, Y)
     
     If Slot <= 0 Then
         ObjLbl.visible = False
@@ -3806,22 +3641,22 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     
         ObjLbl.visible = True
         
-        Select Case ObjData(Inventario.ObjIndex(Slot)).ObjType
+        Select Case ObjData(Inventario.OBJIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
                 ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.ObjIndex(Slot)).MinDef & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxDef
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
 
             Case eObjType.otCASCO
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.ObjIndex(Slot)).MinDef & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxDef
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
 
             Case eObjType.otESCUDO
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.ObjIndex(Slot)).MinDef & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxDef
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
 
             Case Else
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & ObjData(Inventario.ObjIndex(Slot)).Texto
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & ObjData(Inventario.OBJIndex(Slot)).Texto
 
         End Select
         
@@ -3881,7 +3716,7 @@ CompletarEnvioMensajes_Err:
     
 End Sub
 
-Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo RecTxt_MouseUp_Err
     
@@ -3952,7 +3787,7 @@ refuerzolanzar_Click_Err:
     
 End Sub
 
-Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub refuerzolanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo refuerzolanzar_MouseMove_Err
     
@@ -3974,17 +3809,17 @@ refuerzolanzar_MouseMove_Err:
     
 End Sub
 
-Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo renderer_MouseUp_Err
 
     clicX = x
-    clicY = y
+    clicY = Y
     If Button = vbLeftButton Then
-        If HandleMouseInput(x, y) Then
-        ElseIf HandleHotkeyArrowInput(x, y) Then
+        If HandleMouseInput(x, Y) Then
+        ElseIf HandleHotkeyArrowInput(x, Y) Then
         ElseIf Pregunta Then
-            If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
+            If x >= 419 And x <= 433 And Y >= 243 And Y <= 260 Then
                 If PreguntaLocal Then
     
                     Select Case PreguntaNUM
@@ -4009,7 +3844,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
                 
                 Exit Sub
     
-            ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then
+            ElseIf x >= 443 And x <= 458 And Y >= 243 And Y <= 260 Then
                 If PreguntaLocal Then
     
                     Select Case PreguntaNUM
@@ -4077,10 +3912,10 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
             
                 Frm.Left = Me.Left + (renderer.Left + x + 1) * screen.TwipsPerPixelX
                     
-                If (renderer.Top + y) * screen.TwipsPerPixelY + Frm.Height > Me.Height Then
-                    Frm.Top = Me.Top + (renderer.Top + y) * screen.TwipsPerPixelY - Frm.Height
+                If (renderer.Top + Y) * screen.TwipsPerPixelY + Frm.Height > Me.Height Then
+                    Frm.Top = Me.Top + (renderer.Top + Y) * screen.TwipsPerPixelY - Frm.Height
                 Else
-                    Frm.Top = Me.Top + (renderer.Top + y) * screen.TwipsPerPixelY
+                    Frm.Top = Me.Top + (renderer.Top + Y) * screen.TwipsPerPixelY
                 End If
                 
                 Set Frm = Nothing
@@ -4098,13 +3933,13 @@ renderer_MouseUp_Err:
     
 End Sub
 
-Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo renderer_MouseMove_Err
 
     DisableURLDetect
     
-    Call Form_MouseMove(Button, Shift, renderer.Left + x, renderer.Top + y)
+    Call Form_MouseMove(Button, Shift, renderer.Left + x, renderer.Top + Y)
     Exit Sub
 
 renderer_MouseMove_Err:
@@ -4113,7 +3948,7 @@ renderer_MouseMove_Err:
     
 End Sub
 
-Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo renderer_MouseDown_Err
     
@@ -4179,19 +4014,19 @@ Private Sub Retar_Click()
     Call ParseUserCommand("/RETAR")
 End Sub
 
-Private Sub Retar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Retar_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     Retar.Picture = LoadInterface("boton-retos-off.bmp")
     Retar.Tag = "1"
 End Sub
 
-Private Sub Retar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Retar_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     If Retar.Tag = "0" Then
         Retar.Picture = LoadInterface("boton-retos-over.bmp")
         Retar.Tag = "1"
     End If
 End Sub
 
-Private Sub Retar_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Retar_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     Retar.Picture = Nothing
     Retar.Tag = "0"
 End Sub
@@ -4229,17 +4064,17 @@ Private Sub computeLastElapsedTimeChat(ByVal tiempoTranscurridoCartel As Double)
     LastElapsedTimeChat(6) = tiempoTranscurridoCartel
         
     'HarThaoS: Calculo el mínimo y máximo de mis carteleos
-    Dim min As Double, max As Double
+    Dim Min As Double, max As Double
     
-    min = LastElapsedTimeChat(6)
+    Min = LastElapsedTimeChat(6)
     max = LastElapsedTimeChat(6)
     
     For i = 1 To 6
         If LastElapsedTimeChat(i) > max Then max = LastElapsedTimeChat(i)
-        If LastElapsedTimeChat(i) < min Then min = LastElapsedTimeChat(i)
+        If LastElapsedTimeChat(i) < Min Then Min = LastElapsedTimeChat(i)
     Next i
     
-    If (max - min) > 0 And (max - min) < 12 Then
+    If (max - Min) > 0 And (max - Min) < 12 Then
          Call WriteLogMacroClickHechizo(tMacro.borrarCartel)
     End If
     
@@ -4337,7 +4172,7 @@ cmdLanzar_Click_Err:
     Resume Next
 End Sub
 
-Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub CmdLanzar_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo CmdLanzar_MouseMove_Err
     
@@ -4411,12 +4246,12 @@ Form_Load_Err:
     Resume Next
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo Form_MouseMove_Err
     If gDragState.active Then
         gDragState.PosX = x
-        gDragState.PosY = y
+        gDragState.PosY = Y
     End If
     ' Disable links checking (not over consola)
     StopCheckingLinks
@@ -4425,7 +4260,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         If MoverVentana = 1 Then
             If Not UserMoving Then
                 ' Mover form sólo en la parte superior
-                If y < 30 Then MoverForm
+                If Y < 30 Then MoverForm
 
                 'Call Auto_Drag(Me.hwnd)
             End If
@@ -4435,7 +4270,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     End If
 
     MouseX = x - renderer.Left
-    MouseY = y - renderer.Top
+    MouseY = Y - renderer.Top
     ObjLbl.visible = False
     
     If EstadisticasBoton.Tag = "1" Then
@@ -4540,9 +4375,6 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         Retar.Tag = "0"
     End If
     
-   'Metodo para actualizar la imagen del tracker de oro y experiencia
-   ' Call handleGoldNExpTrackerPictureLogic
-
 
     MenuUser.LostFocus
     MenuGM.LostFocus
@@ -4574,7 +4406,7 @@ Private Function countRepts(ByVal packet As Long)
     
 End Function
 
-Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub RecTxt_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     On Error GoTo RecTxt_MouseMove_Err
     
@@ -4778,9 +4610,9 @@ Public Sub ShowStats()
     panelinferior_Click 0
 End Sub
 
-Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVal y As Integer)
+Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVal Y As Integer)
     personaje(Jugador).Left = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - personaje(Jugador).Width \ 2 - 1
-    personaje(Jugador).Top = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
+    personaje(Jugador).Top = (Y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
 End Sub
 
 
@@ -4968,9 +4800,9 @@ Public Sub OnDragEnd()
     gDragState.active = False
 End Sub
 
-Public Function HandleHotkeyArrowInput(ByVal x As Integer, ByVal y As Integer) As Boolean
+Public Function HandleHotkeyArrowInput(ByVal x As Integer, ByVal Y As Integer) As Boolean
     If x > hotkey_arrow_posx And x < hotkey_arrow_posx + 10 And _
-       y > renderer.Height - hotkey_arrow_posy And y < renderer.Height Then
+       Y > renderer.Height - hotkey_arrow_posy And Y < renderer.Height Then
         HandleHotkeyArrowInput = True
         HideHotkeys = Not HideHotkeys
         Call SaveHideHotkeys

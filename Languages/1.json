@@ -290,19 +290,4 @@
     "MENSAJE_PARAMETROS_INCORRECTOS": "Parametros incorrectos.",
     "MENSAJE_INVALID_EVENT_TYPE": "Invalid event type.",
     "MENSAJE_PARAMETRO_INVALIDO_UTILICE": "Parametro invalido. Utilice /CONFIGLOBBY SETPRICE/SPAWN/MAXLVL/MINLVL/CLASS/SUMPLAYER/SUMALL/RETURNPLAYER/RETALL/OPEN/START/END/LIST/KICK/FORCERESET/SETTEAMSIZE/ADDPLAYER"
-	"MENSAJE_GOLD_EXP_PAUSING": "Has pausado tu seguimiento de oro y experiencia",
-	"MENSAJE_GOLD_EXP_TIEMPO_TRANSCURRIDO": "Tiempo transcurrido: ",
-	"MENSAJE_GOLD_EXP_TIEMPO_MINUTOS": "minutos",
-	"MENSAJE_GOLD_EXP_CONTINUAS_ENTRENAMIENTO": "Continuas con tu entrenamiento",
-	"MENSAJE_GOLD_EXP_CALCULATING": "Comienzas a calcular con los valores obtenidos",
-	"MENSAJE_GOLD_EXP_TIEMPO_ENTRENADO": "Tiempo entrenado: ",
-	"MENSAJE_GOLD_EXP_ORO_ACUMULADO": "Oro total acumulado: ",
-	"MENSAJE_GOLD_EXP_EXPERIENCIA_ACUMULADA": "Experiencia total acumulada: ",
-	"MENSAJE_GOLD_EXP_ORO_MINUTO": "Oro por minuto: ",
-	"MENSAJE_GOLD_EXP_EXPERIENCIA_MINUTO": "Experiencia por minuto: ",
-	"MENSAJE_GOLD_EXP_ORO_HORA": "Oro por hora: ",
-	"MENSAJE_GOLD_EXP_EXPERIENCIA_HORA": "Experiencia por hora: ",
-	"MENSAJE_GOLD_EXP_EXPERIENCIA_NO_FUNCIONO": "Has sufrido un golpe fuerte durante tu entrenamiento. No has logrado calcular tu oro y experiencia"
-	"MENSAJE_PAGINA_WEB":"Deceas abrir el navegador ahora."
-	"MENSAJE_PAGINA_WEB_YESNO":"Abrir el navegador"
 }
