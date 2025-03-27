@@ -130,7 +130,7 @@ On Error GoTo LoadTexture_ErrHandler
 
     #If Compresion = 1 Then
         If Not Extract_File_To_Memory(Graphics, App.path & "\..\Recursos\OUTPUT\", LTrim(FileName) & ".png", bytArr, ResourcesPassword) Then
-            Debug.Print "¡No se puede cargar el grafico numero " & FileName & "!"
+            frmDebug.add_text_tracebox "¡No se puede cargar el grafico numero " & FileName & "!"
             Exit Function
         End If
 
@@ -146,7 +146,7 @@ On Error GoTo LoadTexture_ErrHandler
         PathToFile = App.path & "\..\Recursos\Graficos\" & LTrim(FileName) & ".png"
 
         If Not FileExist(PathToFile, vbArchive) Then
-            Debug.Print "¡No se puede cargar el grafico numero " & PathToFile & "!"
+            frmDebug.add_text_tracebox "¡No se puede cargar el grafico numero " & PathToFile & "!"
             Exit Function
         End If
 
@@ -188,13 +188,13 @@ On Error GoTo ErrHandler
     Select Case loadResult
         Case D3DERR_INVALIDCALL
             Debug.Assert False
-            Debug.Print "LoadTexture failed with D3DERR_INVALIDCALL"
+            frmDebug.add_text_tracebox "LoadTexture failed with D3DERR_INVALIDCALL"
         Case D3DERR_NOTAVAILABLE
             Debug.Assert False
-            Debug.Print "LoadTexture failed with D3DERR_NOTAVAILABLE"
+            frmDebug.add_text_tracebox "LoadTexture failed with D3DERR_NOTAVAILABLE"
         Case D3DXERR_INVALIDDATA
             Debug.Assert False
-            Debug.Print "LoadTexture failed with D3DXERR_INVALIDDATA"
+            frmDebug.add_text_tracebox "LoadTexture failed with D3DXERR_INVALIDDATA"
         Case D3DERR_OUTOFVIDEOMEMORY
         Case E_OUTOFMEMORY
             Call ReleaseMemory
@@ -236,7 +236,7 @@ On Error GoTo ErrHandler
     Exit Function
 
 ErrHandler:
-    Debug.Print "ERROR EN GRHLOAD>" & FileNum & ".png"
+    frmDebug.add_text_tracebox "ERROR EN GRHLOAD>" & FileNum & ".png"
 
 End Function
 
@@ -248,7 +248,7 @@ On Error GoTo ErrHandler
     Set CreateTexture = Texture
     Exit Function
 ErrHandler:
-    Debug.Print "Failed to generate texture, " & Err.Description
+    frmDebug.add_text_tracebox "Failed to generate texture, " & Err.Description
 End Function
 
 Public Sub SetTextureData(ByRef Texture As Direct3DTexture8, ByRef Bytes() As Byte, ByVal size As Long, _

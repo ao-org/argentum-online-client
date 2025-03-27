@@ -1362,7 +1362,7 @@ Private Sub Command5_Click()
 End Sub
 
 Private Sub txtEquipo_Change()
-Debug.Print txtEquipo
+frmDebug.add_text_tracebox txtEquipo
     Call ParseUserCommand("/configlobby setteamsize " & txtEquipo)
 End Sub
 

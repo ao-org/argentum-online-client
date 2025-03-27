@@ -286,7 +286,7 @@ Public Sub new_engine_init(ByRef renderer As clsRenderer)
 On Error GoTo NewEngineInitErr:
     Set renderer = New clsRenderer
     Call renderer.Init(frmMain.renderer.hwnd)
-    Debug.Print "Renderer OK"
+    frmDebug.add_text_tracebox "Renderer OK"
     Exit Sub
     
 NewEngineInitErr:
@@ -294,7 +294,7 @@ NewEngineInitErr:
             JsonLanguage.Item("MENSAJE_SUGERENCIA_DRIVERS"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
 
     
-    Debug.Print "Error Number Returned: " & Err.Number
+    frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
 
     End
   
@@ -368,7 +368,7 @@ errhandler:
 Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_MOTOR_GRAFICO") & vbNewLine & _
             JsonLanguage.Item("MENSAJE_SUGERENCIA_DRIVERS"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
     
-    Debug.Print "Error Number Returned: " & Err.Number
+    frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
 
     End
 
@@ -382,7 +382,7 @@ On Error GoTo Engine_Reset_Err
     Set SpriteBatch = New clsBatch
     Call SpriteBatch.Initialize(2000)
 Engine_Reset_Err:
-    Debug.Print "Failed to reset error " + Err.Description
+    frmDebug.add_text_tracebox "Failed to reset error " + Err.Description
 End Sub
 
 Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
@@ -403,7 +403,7 @@ Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
             FramesPerSecCounter = 0
         ElseIf DirectDevice.TestCooperativeLevel = D3DERR_DEVICELOST Then
             'Call EngineReset https://learn.microsoft.com/en-us/windows/win32/direct3d9/lost-devices
-            Debug.Print "Dx device lost, need to implement reset"
+            frmDebug.add_text_tracebox "Dx device lost, need to implement reset"
         End If
     End If
     If SeRompe Then
@@ -719,8 +719,8 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
             .Ty1 = (.sY + 0.25) / TextureHeight
             .Ty2 = (.sY + .pixelHeight) / TextureHeight
         End If
-        'Debug.Print ease
-        'Debug.Print .Ty1
+        'frmdebug.add_text_tracebox ease
+        'frmdebug.add_text_tracebox .Ty1
         Call SpriteBatch.DrawBreathing(x, y, .pixelWidth, .pixelHeight, ease, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2)
 
     End With
@@ -2241,7 +2241,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY - 28 + .Body.BodyOffset.y, .BarTime / .MaxBarTime * 26, 4, RGBA_From_Comp(3, 214, 166, 120) ', RGBA_From_Comp(0, 0, 0, 255)
 
             .BarTime = .BarTime + (timerElapsedTime / 1000)
-            'Debug.Print .BarTime
+            'frmdebug.add_text_tracebox .BarTime
             If .BarTime >= .MaxBarTime Then
                 charlist(CharIndex).BarTime = 0
                 charlist(CharIndex).BarAccion = 99
@@ -2349,7 +2349,7 @@ On Error GoTo Start_Err
             If countdown > 0 And ShutdownProcessTimer.ElapsedSeconds > 5 Then
                 ShutdownProcessTimer.Start
                 Call WriteGlobalMessage("WARNING: The server is going to close in " & countdown & " seconds for scheduled maintainance. Please disconnect from the game!!!")
-                Debug.Print "WARNING: The server is going to close in " & countdown & " seconds for scheduled maintainance. Please disconnect from the game!!!"
+                frmDebug.add_text_tracebox "WARNING: The server is going to close in " & countdown & " seconds for scheduled maintainance. Please disconnect from the game!!!"
                 Call SaveStringInFile("WARNING: The server is going to close in " & countdown & " seconds for scheduled maintainance. Please disconnect from the game!!!", "remote_debug.txt")
                 countdown = countdown - 5
             ElseIf countdown = 0 Then
@@ -3268,7 +3268,7 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
     giro = Val(ReadField(3, aura_index, Asc(":")))
     lado = Val(ReadField(4, aura_index, Asc(":")))
 
-    'Debug.Print charlist(userindex).AuraAngle
+    'frmdebug.add_text_tracebox charlist(userindex).AuraAngle
     If giro > 0 And userIndex > 0 Then
         'If lado = 0 Then
         charlist(userIndex).AuraAngle = charlist(userIndex).AuraAngle + (timerTicksPerFrame * giro)
@@ -4056,7 +4056,7 @@ Public Function Effect_Begin(ByVal Fx_Index As Integer, ByVal Bind_Speed As Sing
  
     Effect_Begin = GetFreeIndex()
  
-    ' Debug.Print "fx =" & fX
+    ' frmdebug.add_text_tracebox "fx =" & fX
     'Si hay efecto
     If (Effect_Begin <> 0) Then
     
@@ -4109,7 +4109,7 @@ Public Function Effect_BeginXY(ByVal Fx_Index As Integer, ByVal Bind_Speed As Si
     On Error GoTo Effect_BeginXY_Err
     
  
-    ' Debug.Print "fx =" & fX
+    ' frmdebug.add_text_tracebox "fx =" & fX
     Effect_BeginXY = GetFreeIndex()
  
     'Si hay efecto

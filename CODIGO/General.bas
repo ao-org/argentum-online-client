@@ -88,7 +88,7 @@ Public Declare Function QueryPerformanceFrequency Lib "kernel32" (lpFrequency As
 Private lFrameTimer              As Long
 
 'Scroll de richtbox
-Private Type SCROLLINFO
+Public Type SCROLLINFO
     cbSize As Long
     fMask As Long
     nMin As Long
@@ -99,17 +99,18 @@ Private Type SCROLLINFO
 End Type
 
 
-Private Const EM_GETTHUMB = &HBE
-Private Const SB_THUMBPOSITION = &H4
-Private Const WM_VSCROLL = &H115
-Private Const SB_VERT As Integer = &H1
-Private Const SIF_RANGE As Integer = &H1
-Private Const SIF_PAGE As Integer = &H2
-Private Const SIF_POS As Integer = &H4
+Public Const EM_GETTHUMB = &HBE
+Public Const SB_THUMBPOSITION = &H4
+Public Const WM_VSCROLL = &H115
+Public Const SB_VERT As Integer = &H1
+Public Const SIF_RANGE As Integer = &H1
+Public Const SIF_PAGE As Integer = &H2
+Public Const SIF_POS As Integer = &H4
 
-Private Const SIF_DISABLENOSCROLL = &H8
-Private Const SIF_TRACKPOS = &H10
-Private Const SIF_ALL = (SIF_RANGE Or SIF_PAGE Or SIF_POS Or SIF_TRACKPOS)
+Public Const SIF_DISABLENOSCROLL = &H8
+Public Const SIF_TRACKPOS = &H10
+Public Const SIF_ALL = (SIF_RANGE Or SIF_PAGE Or SIF_POS Or SIF_TRACKPOS)
+
 Private tSI As SCROLLINFO
 
 Public Declare Function GetScrollInfo Lib "user32" (ByVal hwnd As Long, ByVal n As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
@@ -402,7 +403,7 @@ Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, O
     Dim ret As Long
     ret = SendMessage(rtbTarget.hwnd, EM_SETPARAFORMAT, 0&, Para)
     
-    If ret = 0 Then Debug.Print "Error al setear el espaciado entre líneas del RichTextBox."
+    If ret = 0 Then frmDebug.add_text_tracebox "Error al setear el espaciado entre líneas del RichTextBox."
 End Sub
 
 Public Sub RefreshAllChars()
@@ -1029,7 +1030,7 @@ Sub parse_cmd_line_args()
     Dim iLoop As Integer
     sArgs = Split(command$, " ")
     For iLoop = 0 To UBound(sArgs)
-        Debug.Print sArgs(iLoop)
+        frmDebug.add_text_tracebox sArgs(iLoop)
         Dim Value() As String
         Value = Split(sArgs(iLoop), "=")
         
@@ -1100,7 +1101,7 @@ On Error GoTo Main_Err
         SetDllDirectory App.path
         Dim steam_init_result As Long
         steam_init_result = svb_init_steam(1956740)
-        Debug.Print "Init Steam " & steam_init_result
+        frmDebug.add_text_tracebox "Init Steam " & steam_init_result
         If Not RunningInVB Then
             If FindPreviousInstance Then
                 Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_EJECUCION"), vbApplicationModal + vbInformation + vbOKOnly, "Error")
@@ -1988,7 +1989,7 @@ Public Function IntentarObtenerPezEspecial()
     
     Dim acierto As Byte
     
-    Debug.Print "Aciertos: " & ContadorIntentosPescaEspecial_Acertados & "Posicion barra : " & PosicionBarra
+    frmDebug.add_text_tracebox "Aciertos: " & ContadorIntentosPescaEspecial_Acertados & "Posicion barra : " & PosicionBarra
         'El + y -10 es por inputLag (Margen de error)
     If PuedeIntentar Then
         If PosicionBarra >= (90 - 15) And PosicionBarra <= (111 + 15) Then

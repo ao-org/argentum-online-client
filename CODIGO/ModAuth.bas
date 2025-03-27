@@ -136,7 +136,7 @@ Public Sub OpenSessionRequest()
 End Sub
 Public Sub DebugPrint(ByVal str As String, Optional ByVal int1 As Integer = 0, Optional ByVal int2 As Integer = 0, Optional ByVal int3 As Integer = 0, Optional ByVal asd As Boolean = False)
 
-    Debug.Print (str)
+    frmDebug.add_text_tracebox (str)
     
 End Sub
 
@@ -981,7 +981,7 @@ Public Sub connectToLoginServer()
     frmConnect.AuthSocket.Close
     frmConnect.AuthSocket.RemoteHost = IPdelServidorLogin
     frmConnect.AuthSocket.RemotePort = PuertoDelServidorLogin
-    Debug.Print "Servidor de Login " & IPdelServidorLogin; ":" & PuertoDelServidorLogin
+    frmDebug.add_text_tracebox "Servidor de Login " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
     frmConnect.AuthSocket.Connect
 #If REMOTE_CLOSE = 0 Then
     Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CONECTANDO_SERVIDOR"), True, False)
@@ -1454,7 +1454,7 @@ Public Function estaInmovilizado(ByRef arr() As Byte) As String
     
         
     #If DEBUGGING = 1 Then
-        Debug.Print "Esta inmovilizado: " & b
+        frmDebug.add_text_tracebox "Esta inmovilizado: " & b
     #End If
     estaInmovilizado = cnvHexStrFromString(b)
     

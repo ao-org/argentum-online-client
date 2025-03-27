@@ -131,8 +131,8 @@ Public Sub SetActiveEnvironment(ByVal environment As String)
     PuertoDelServidor = ServerSettings.GetValue(environment, "PortPort" & serverOpt)
     IPdelServidorLogin = ServerSettings.GetValue(environment, "LoginIp" & loginOpt)
     PuertoDelServidorLogin = ServerSettings.GetValue(environment, "LoginPort" & loginOpt)
-    Debug.Print "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
-    Debug.Print "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
+    frmDebug.add_text_tracebox "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
+    frmDebug.add_text_tracebox "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
 End Sub
 
 Public Sub CreateAccount(ByVal Name As String, ByVal Surname As String, ByVal Email As String, ByVal Password As String)
@@ -188,7 +188,7 @@ Public Sub GoToLogIn()
 End Sub
 
 Public Sub LogOut()
-    Debug.Print "Vuelvo al login, debería borrar el token"
+    frmDebug.add_text_tracebox "Vuelvo al login, debería borrar el token"
     Auth_state = e_state.Idle
     Call ComprobarEstado
     UserSaliendo = True
@@ -353,7 +353,7 @@ On Error GoTo OnClientDisconnect_Err
         End If
     End If
 #Else
-    Debug.Print "OnClientDisconnect " & Error
+    frmDebug.add_text_tracebox "OnClientDisconnect " & Error
     Call SaveStringInFile("OnClientDisconnect " & Error, "remote_debug.txt")
     prgRun = False
 #End If
