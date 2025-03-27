@@ -184,7 +184,7 @@ End Sub
 
 Private Sub DirectPlay8Event_CreatePlayer(ByVal lPlayerID As Long, fRejectMsg As Boolean)
     'VB requires that we must implement *every* member of this interface
-    Debug.Print "DirectPlay8Event_CreatePlayer " & lPlayerID
+    frmDebug.add_text_tracebox "DirectPlay8Event_CreatePlayer " & lPlayerID
 End Sub
 
 Private Sub DirectPlay8Event_DestroyGroup(ByVal lGroupID As Long, ByVal lReason As Long, fRejectMsg As Boolean)
@@ -193,7 +193,7 @@ End Sub
 
 Private Sub DirectPlay8Event_DestroyPlayer(ByVal lPlayerID As Long, ByVal lReason As Long, fRejectMsg As Boolean)
     'VB requires that we must implement *every* member of this interface
-    Debug.Print "DirectPlay8Event_DestroyPlayer " & lPlayerID
+    frmDebug.add_text_tracebox "DirectPlay8Event_DestroyPlayer " & lPlayerID
 End Sub
 
 Private Sub DirectPlay8Event_EnumHostsQuery(dpnotify As DxVBLibA.DPNMSG_ENUM_HOSTS_QUERY, fRejectMsg As Boolean)
@@ -218,7 +218,7 @@ End Sub
 
 Private Sub DirectPlay8Event_InfoNotify(ByVal lMsgID As Long, ByVal lNotifyID As Long, fRejectMsg As Boolean)
     'VB requires that we must implement *every* member of this interface
-    Debug.Print "DirectPlay8Event_InfoNotify"
+    frmDebug.add_text_tracebox "DirectPlay8Event_InfoNotify"
 End Sub
 
 Private Sub DirectPlay8Event_Receive(dpnotify As DxVBLibA.DPNMSG_RECEIVE, fRejectMsg As Boolean)
@@ -231,14 +231,14 @@ End Sub
 
 Private Sub DirectPlay8Event_TerminateSession(dpnotify As DxVBLibA.DPNMSG_TERMINATE_SESSION, fRejectMsg As Boolean)
     'VB requires that we must implement *every* member of this interface
-    Debug.Print "DirectPlay8Event_TerminateSession"
+    frmDebug.add_text_tracebox "DirectPlay8Event_TerminateSession"
     Call modNetwork.OnClientDisconnect(dpnotify, fRejectMsg)
 End Sub
 
 Private Sub DirectPlay8LobbyEvent_Connect(dlNotify As DxVBLibA.DPL_MESSAGE_CONNECT, fRejectMsg As Boolean)
    Exit Sub
 ErrOut:
-    Debug.Print "Error:" & CStr(Err.Number) & " - " & Err.Description
+    frmDebug.add_text_tracebox "Error:" & CStr(Err.Number) & " - " & Err.Description
 End Sub
 
 Private Sub DirectPlay8LobbyEvent_ConnectionSettings(ConnectionSettings As DxVBLibA.DPL_MESSAGE_CONNECTION_SETTINGS)
@@ -299,7 +299,7 @@ Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByV
 
     Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_SERVIDOR_OFFLINE"), False, SessionOpened)
 #Else
-    Debug.Print "SERVIDOR OFFLINE"
+    frmDebug.add_text_tracebox "SERVIDOR OFFLINE"
 #End If
 End Sub
 

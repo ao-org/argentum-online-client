@@ -67,7 +67,7 @@ On Error GoTo HandleIncomingData_Err
             Call HandleConnected
             Call SaveStringInFile("Authenticated with server OK", "remote_debug.txt")
         Case ServerPacketID.elogged
-            Debug.Print "Logged"
+            frmDebug.add_text_tracebox "Logged"
             Dim dummy As Boolean
             dummy = Reader.ReadBool
             Call SaveStringInFile("Logged with character " & CharacterRemote, "remote_debug.txt")
@@ -2893,7 +2893,7 @@ Private Sub HandleUserCharIndexInServer()
     '***************************************************
     
     UserCharIndex = Reader.ReadInt16()
-    'Debug.Print "UserCharIndex " & UserCharIndex
+    'frmdebug.add_text_tracebox "UserCharIndex " & UserCharIndex
     UserPos = charlist(UserCharIndex).Pos
     
     'Are we under a roof?
@@ -5189,7 +5189,7 @@ Private Sub HandleFlashScreen()
     Color = D3DColorARGB(255, r, G, b)
 
     If Not MapDat.niebla = 1 And Not ignorar Then
-        'Debug.Print "trueno cancelado"
+        'frmdebug.add_text_tracebox "trueno cancelado"
        
         Exit Sub
 
@@ -5606,7 +5606,7 @@ Private Sub HandleGuildNews()
 
         End If
 
-        'Debug.Print guildList(i)
+        'frmdebug.add_text_tracebox guildList(i)
     Next i
     
     ClanNivel = Reader.ReadInt8()
@@ -6787,7 +6787,7 @@ Private Sub HandleParticleFXWithDestinoXY()
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     
-    ' Debug.Print "RECIBI FX= " & fX
+    ' frmdebug.add_text_tracebox "RECIBI FX= " & fX
 
     Engine_spell_Particle_Set (ParticulaViaje)
 

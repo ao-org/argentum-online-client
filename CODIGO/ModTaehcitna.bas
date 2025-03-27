@@ -68,12 +68,12 @@ Public Sub CountPacketIterations(ByRef packetControl As t_packetControl, ByVal e
     Dim percentageDiff As Double, average As Double
     percentageDiff = getPercentageDiff(packetControl)
     average = getAverage(packetControl)
-   ' Debug.Print "Delta: " & delta & " Average: " & average
+   ' frmdebug.add_text_tracebox "Delta: " & delta & " Average: " & average
     If percentageDiff < 5 Then
-        'Debug.Print "DIFF: " & getPercentageDiff(packetControl)
+        'frmdebug.add_text_tracebox "DIFF: " & getPercentageDiff(packetControl)
         'Call AddtoRichTextBox(frmMain.RecTxt, "DIFF: " & getPercentageDiff(packetControl), 255, 200, 0, True)
         Call WriteRepeatMacro
-        'Debug.Print "DIFF: " & getPercentageDiff(packetControl)
+        'frmdebug.add_text_tracebox "DIFF: " & getPercentageDiff(packetControl)
     End If
     
     If average > 20 And average < expectedAverage Then
