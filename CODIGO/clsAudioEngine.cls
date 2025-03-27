@@ -55,6 +55,71 @@ End Type
 
 Private mMidiTrack(1 To 3) As MidiTrack
 
+
+' Declare the mciSendString API function from winmm.dll.
+Private Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" ( _
+    ByVal lpstrCommand As String, _
+    ByVal lpstrReturnString As String, _
+    ByVal uReturnLength As Long, _
+    ByVal hwndCallback As Long) As Long
+
+Public Function StopMP3() As Long
+    StopMP3 = -1
+    ' Stop playback of the MP3 file.
+    mciSendString "stop mp3", vbNullString, 0, 0
+    ' Close the MP3 file to release resources.
+    mciSendString "close mp3", vbNullString, 0, 0
+    StopMP3 = 1
+End Function
+
+Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
+    Dim command As String
+    Dim ret As Long
+    
+    If filename = "" Then
+        PlayMP3 = -1   ' Error: file not found.
+        Exit Function
+    End If
+
+    ' Stop and close any currently playing MP3.
+    mciSendString "stop mp3", vbNullString, 0, 0
+    mciSendString "close mp3", vbNullString, 0, 0
+
+
+    Dim PathToFile As String
+    #If Compresion = 1 Then
+        If Extract_File(mp3, GetCompressedResourcesPath(), filename, Windows_Temp_Dir, ResourcesPassword, False) Then
+            ' Open the MP3 file with an alias "mp3".
+            PathToFile = Windows_Temp_Dir & filename
+        End If
+    #Else
+        PathToFile = ao20audio.GetMp3FilesPath() & filename
+    #End If
+    Debug.Assert FileExist(PathToFile, vbArchive)
+    command = "open """ & PathToFile & """ type mpegvideo alias mp3"
+    ret = mciSendString(command, vbNullString, 0, 0)
+    If ret <> 0 Then
+        PlayMP3 = ret
+        Exit Function
+    End If
+
+    ' If a volume value is provided, set the volume.
+    ' Note: The acceptable volume range and behavior may depend on the MCI implementation.
+    If volume <> 0 Then
+        command = "setaudio mp3 volume to " & volume
+        ret = mciSendString(command, vbNullString, 0, 0)
+    End If
+
+    ' Play the MP3 file; append the "repeat" flag if looping is desired.
+    command = "play mp3"
+    If looping Then
+        command = command & " repeat"
+    End If
+    ret = mciSendString(command, vbNullString, 0, 0)
+    
+    PlayMP3 = ret
+End Function
+
 Public Function GetMidiTrackName(ByVal track_id As Integer) As String
     Debug.Assert track_id < UBound(mMidiTrack)
     If track_id < UBound(mMidiTrack) Then
@@ -492,6 +557,7 @@ End Sub
 Private Sub Class_Terminate()
 On Error Resume Next
     Err.Clear
+    StopMP3
     StopAllPlayback
     Dim i As Integer
     For i = 1 To UBound(mMidiTrack)
