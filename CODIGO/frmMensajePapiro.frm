@@ -28,10 +28,10 @@ Begin VB.Form frmMensajePapiro
       EndProperty
       ForeColor       =   &H00C00000&
       Height          =   255
-      Left            =   6720
+      Left            =   5175
       TabIndex        =   9
-      Top             =   3960
-      Width           =   1575
+      Top             =   6000
+      Width           =   1095
    End
    Begin VB.Label Stream1 
       Alignment       =   2  'Center
@@ -47,11 +47,11 @@ Begin VB.Form frmMensajePapiro
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00C00000&
-      Height          =   255
-      Left            =   6360
+      Height          =   735
+      Left            =   3285
       TabIndex        =   8
-      Top             =   3600
-      Width           =   2295
+      Top             =   6000
+      Width           =   1695
    End
    Begin VB.Label CafecitoLink 
       Alignment       =   2  'Center
@@ -67,12 +67,12 @@ Begin VB.Form frmMensajePapiro
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00C00000&
-      Height          =   495
+      Height          =   435
       Index           =   2
-      Left            =   4560
+      Left            =   5310
       TabIndex        =   7
-      Top             =   6225
-      Width           =   1095
+      Top             =   5150
+      Width           =   1785
    End
    Begin VB.Label PatreonLink 
       Alignment       =   2  'Center
@@ -88,16 +88,15 @@ Begin VB.Form frmMensajePapiro
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00C00000&
-      Height          =   495
+      Height          =   255
       Index           =   1
-      Left            =   3285
+      Left            =   3000
       TabIndex        =   6
-      Top             =   6225
-      Width           =   1020
+      Top             =   5150
+      Width           =   1860
    End
    Begin VB.Label GameRulesLink 
       BackStyle       =   0  'Transparent
-      Caption         =   "Ir al reglamento"
       BeginProperty Font 
          Name            =   "Palatino Linotype"
          Size            =   9
@@ -108,16 +107,15 @@ Begin VB.Form frmMensajePapiro
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FF0000&
-      Height          =   255
+      Height          =   150
       Index           =   0
-      Left            =   3285
+      Left            =   2950
       TabIndex        =   5
-      Top             =   5625
-      Width           =   1455
+      Top             =   4480
+      Width           =   4000
    End
    Begin VB.Label HelpGuideLink 
       BackStyle       =   0  'Transparent
-      Caption         =   "Ir a Guía"
       BeginProperty Font 
          Name            =   "Palatino Linotype"
          Size            =   9
@@ -128,15 +126,14 @@ Begin VB.Form frmMensajePapiro
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00C00000&
-      Height          =   255
-      Left            =   3285
+      Height          =   150
+      Left            =   2950
       TabIndex        =   4
-      Top             =   5025
-      Width           =   1335
+      Top             =   4110
+      Width           =   4000
    End
    Begin VB.Label BasicInfoLink 
       BackStyle       =   0  'Transparent
-      Caption         =   "Ir al manual"
       BeginProperty Font 
          Name            =   "Palatino Linotype"
          Size            =   9
@@ -147,15 +144,14 @@ Begin VB.Form frmMensajePapiro
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00C00000&
-      Height          =   255
-      Left            =   3285
+      Height          =   150
+      Left            =   2950
       TabIndex        =   3
-      Top             =   4420
-      Width           =   5535
+      Top             =   3730
+      Width           =   4000
    End
    Begin VB.Label eventNews 
       BackStyle       =   0  'Transparent
-      Caption         =   "Ver próximos eventos"
       BeginProperty Font 
          Name            =   "Palatino Linotype"
          Size            =   9
@@ -166,15 +162,14 @@ Begin VB.Form frmMensajePapiro
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00C00000&
-      Height          =   255
-      Left            =   3285
+      Height          =   150
+      Left            =   2950
       TabIndex        =   2
-      Top             =   3825
-      Width           =   1815
+      Top             =   3360
+      Width           =   4000
    End
    Begin VB.Label newsLink 
       BackStyle       =   0  'Transparent
-      Caption         =   "Ir a novedades"
       BeginProperty Font 
          Name            =   "Palatino Linotype"
          Size            =   9
@@ -185,11 +180,11 @@ Begin VB.Form frmMensajePapiro
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00C00000&
-      Height          =   255
-      Left            =   3285
+      Height          =   150
+      Left            =   2950
       TabIndex        =   1
-      Top             =   3225
-      Width           =   1215
+      Top             =   2940
+      Width           =   4000
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
@@ -294,7 +289,6 @@ Private Sub Image1_Click()
     Unload Me
 End Sub
 
-
 Private Sub newsLink_Click()
     Call OpenLink("https://steamcommunity.com/app/1956740/allnews/")
 End Sub
@@ -309,11 +303,47 @@ End Sub
 Private Sub PatreonLink_Click(Index As Integer)
     Call OpenLink("https://www.patreon.com/nolandstudios")
 End Sub
-
 Private Sub Stream1_Click()
     Call OpenLink("https://www.twitch.tv/argentumonlineoficial")
 End Sub
 
 Private Sub Stream2_Click()
     Call OpenLink("https://www.twitch.tv/Plus_1986")
+End Sub
+Private Sub Stream2_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Stream2.MousePointer = 99 ' Cursor personalizado
+    Stream2.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+End Sub
+
+Private Sub Stream1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    Stream1.MousePointer = 99 ' Cursor personalizado
+    Stream1.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+End Sub
+Private Sub PatreonLink_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+    PatreonLink(Index).MousePointer = 99 ' Cursor personalizado
+    PatreonLink(Index).MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+End Sub
+Private Sub newsLink_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    newsLink.MousePointer = 99 ' Cursor personalizado
+    newsLink.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+End Sub
+Private Sub HelpGuideLink_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    HelpGuideLink.MousePointer = 99 ' Cursor personalizado
+    HelpGuideLink.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+End Sub
+Private Sub GameRulesLink_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+    GameRulesLink(Index).MousePointer = 99 ' Cursor personalizado
+    GameRulesLink(Index).MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+End Sub
+Private Sub eventNews_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    eventNews.MousePointer = 99 ' Cursor personalizado
+    eventNews.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+End Sub
+Private Sub BasicInfoLink_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    BasicInfoLink.MousePointer = 99 ' Cursor personalizado
+    BasicInfoLink.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+End Sub
+Private Sub CafecitoLink_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+    CafecitoLink(Index).MousePointer = 99 ' Cursor personalizado
+    CafecitoLink(Index).MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
 End Sub
