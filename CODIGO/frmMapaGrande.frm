@@ -816,6 +816,7 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     Label4.Caption = ""
     Label5.Caption = ""
     Label9.Caption = ""
+    Me.PlayerView.Cls 'Limpia el PictureBox que muestra al npc
     listdrop.ListItems.Clear
     
     ListView1.SetFocus
