@@ -253,6 +253,7 @@ Private Declare Function SetLayeredWindowAttributes Lib "user32" ( _
 Private Const GWL_EXSTYLE = -20
 Private Const WS_EX_LAYERED = &H80000
 Private Const LWA_COLORKEY = &H1&
+Dim isMouseOver As Boolean ' Variable bandera
 
 Private Sub BasicInfoLink_Click()
     Call OpenLink("https://www.argentumonline.com.ar/wiki")
@@ -277,6 +278,7 @@ Private Sub Form_LostFocus()
     Unload Me
 End Sub
 
+
 Private Sub GameRulesLink_Click(Index As Integer)
     Call OpenLink("https://www.argentumonline.com.ar/reglamento")
 End Sub
@@ -287,6 +289,12 @@ End Sub
 
 Private Sub Image1_Click()
     Unload Me
+End Sub
+
+Private Sub Label1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    If isMouseOver = False Then
+        isMouseOver = True
+    End If
 End Sub
 
 Private Sub newsLink_Click()
@@ -311,39 +319,66 @@ Private Sub Stream2_Click()
     Call OpenLink("https://www.twitch.tv/Plus_1986")
 End Sub
 Private Sub Stream2_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    Stream2.MousePointer = 99 ' Cursor personalizado
-    Stream2.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+    If isMouseOver = True Then
+        Stream2.MousePointer = 99 ' Cursor personalizado
+        Stream2.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+        isMouseOver = False
+    End If
 End Sub
 
 Private Sub Stream1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    Stream1.MousePointer = 99 ' Cursor personalizado
-    Stream1.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+    If isMouseOver = True Then
+        Stream1.MousePointer = 99 ' Cursor personalizado
+        Stream1.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+        isMouseOver = False
+    End If
 End Sub
 Private Sub PatreonLink_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
-    PatreonLink(Index).MousePointer = 99 ' Cursor personalizado
-    PatreonLink(Index).MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+    If isMouseOver = True Then
+        PatreonLink(Index).MousePointer = 99 ' Cursor personalizado
+        PatreonLink(Index).MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+        isMouseOver = False
+    End If
 End Sub
 Private Sub newsLink_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    newsLink.MousePointer = 99 ' Cursor personalizado
-    newsLink.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+    If isMouseOver = True Then
+        newsLink.MousePointer = 99 ' Cursor personalizado
+        newsLink.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+    isMouseOver = False
+    End If
 End Sub
 Private Sub HelpGuideLink_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    HelpGuideLink.MousePointer = 99 ' Cursor personalizado
-    HelpGuideLink.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+    If isMouseOver = True Then
+        HelpGuideLink.MousePointer = 99 ' Cursor personalizado
+        HelpGuideLink.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+        isMouseOver = False
+    End If
 End Sub
 Private Sub GameRulesLink_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
-    GameRulesLink(Index).MousePointer = 99 ' Cursor personalizado
-    GameRulesLink(Index).MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+    If isMouseOver = True Then
+        GameRulesLink(Index).MousePointer = 99 ' Cursor personalizado
+        GameRulesLink(Index).MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+        isMouseOver = False
+    End If
 End Sub
 Private Sub eventNews_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    eventNews.MousePointer = 99 ' Cursor personalizado
-    eventNews.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+    If isMouseOver = True Then
+        eventNews.MousePointer = 99 ' Cursor personalizado
+        eventNews.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+        isMouseOver = False
+    End If
 End Sub
 Private Sub BasicInfoLink_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    BasicInfoLink.MousePointer = 99 ' Cursor personalizado
-    BasicInfoLink.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+    If isMouseOver = True Then
+        BasicInfoLink.MousePointer = 99 ' Cursor personalizado
+        BasicInfoLink.MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+        isMouseOver = False
+    End If
 End Sub
 Private Sub CafecitoLink_MouseMove(Index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
-    CafecitoLink(Index).MousePointer = 99 ' Cursor personalizado
-    CafecitoLink(Index).MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+    If isMouseOver = True Then
+        CafecitoLink(Index).MousePointer = 99 ' Cursor personalizado
+        CafecitoLink(Index).MouseIcon = LoadResPicture("104", vbResCursor) 'Carga el cursor de la mano
+        isMouseOver = False
+    End If
 End Sub
