@@ -1295,7 +1295,7 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H000040C0&
       Height          =   450
-      Left            =   12480
+      Left            =   1350
       TabIndex        =   5
       ToolTipText     =   "Numero de usuarios online"
       Top             =   0
