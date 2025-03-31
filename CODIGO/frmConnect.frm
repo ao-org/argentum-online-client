@@ -357,6 +357,11 @@ Form_Load_Err:
     
 End Sub
 
+Private Sub Form_Unload(Cancel As Integer)
+Call ao20audio.StopMP3
+    
+End Sub
+
 Private Sub render_DblClick()
 On Error GoTo render_DblClick_Err
     Form_RemoveTitleBar Me
