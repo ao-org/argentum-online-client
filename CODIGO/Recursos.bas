@@ -758,7 +758,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
     #If Compresion = 1 Then
 
         If Not Extract_File(Maps, App.path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
-            frmDebug.add_text_tracebox "Error al cargar datos del mapa " & map
+            Debug.Print "Error al cargar datos del mapa " & map
             Exit Sub
         End If
 
@@ -1675,7 +1675,7 @@ Public Sub CargarIndicesOBJ()
         DoEvents
         ObjData(Obj).GrhIndex = Val(Leer.GetValue("OBJ" & Obj, "grhindex"))
         If Obj = 403 Then
-            frmDebug.add_text_tracebox "asd"
+            Debug.Print "asd"
         End If
         
         Select Case language
@@ -1800,7 +1800,7 @@ Public Sub CargarIndicesOBJ()
             For loopc = 1 To NpcData(Npc).NumQuiza
                
                 NpcData(Npc).QuizaDropea(loopc) = Val(Leer.GetValue("npc" & Npc, "QuizaDropea" & loopc))
-                ' frmdebug.add_text_tracebox NpcData(Npc).QuizaDropea(loopc)
+                ' Debug.Print NpcData(Npc).QuizaDropea(loopc)
             Next loopc
 
         End If
@@ -3260,7 +3260,7 @@ Sub LoadFonts()
 #End If
     
     #If DEBUGGING = 1 Then
-        frmDebug.add_text_tracebox MapInfoEspeciales
+        Debug.Print MapInfoEspeciales
     #Else
     
     #End If

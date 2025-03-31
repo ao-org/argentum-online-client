@@ -51,7 +51,7 @@ Public Sub AddFailedIp(ByVal IP As String, ByVal Port As String)
 End Sub
 
 Public Sub Connect(ByVal Address As String, ByVal Service As String)
-    frmDebug.add_text_tracebox "Connecting to World Server : " & Address & ":" & Service
+    Debug.Print "Connecting to World Server : " & Address; ":" & Service
 
     If (Address = vbNullString Or Service = vbNullString) Then
         Exit Sub
@@ -105,7 +105,7 @@ End Sub
 #If PYMMO = 1 Then
 Private Sub OnClientConnect()
 On Error GoTo OnClientConnect_Err:
-frmDebug.add_text_tracebox ("Entró OnClientConnect")
+Debug.Print ("Entró OnClientConnect")
 
 If EstadoLogin = E_MODO.CrearNuevoPj Then
     Call LoginOrConnect(E_MODO.CrearNuevoPj)
@@ -122,7 +122,7 @@ End Sub
     
 Private Sub OnClientConnect()
 On Error GoTo OnClientConnect_Err:
-frmDebug.add_text_tracebox ("Entró OnClientConnect")
+Debug.Print ("Entró OnClientConnect")
 
     Connected = True
     Unload frmConnecting

@@ -70,7 +70,7 @@ Public Sub list_modes(ByRef d3d As Direct3D8)
     Dim i As Long
     For i = 0 To d3d.GetAdapterModeCount(0) - 1 'primary adapter
         Call d3d.EnumAdapterModes(0, i, tmpDispMode)
-        frmDebug.add_text_tracebox tmpDispMode.Width & "x" & tmpDispMode.Height & " fmt:" & tmpDispMode.format
+        Debug.Print tmpDispMode.Width & "x" & tmpDispMode.Height & " fmt:" & tmpDispMode.format
         
     Next i
 End Sub
@@ -80,21 +80,21 @@ On Error Resume Next
     Set mDirectX = New DirectX8
     If Err.Number <> 0 Then
                 Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX8"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+                Debug.Print "Error Number Returned: " & Err.Number
                 Exit Function
     End If
     
     Set mDirectD3D = DirectX.Direct3DCreate()
     If Err.Number <> 0 Then
                 Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTD3D"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+                Debug.Print "Error Number Returned: " & Err.Number
                 Exit Function
     End If
     
     Set mDirectD3D8 = New D3DX8
     If Err.Number <> 0 Then
                 Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTD3D8"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+                Debug.Print "Error Number Returned: " & Err.Number
                 Exit Function
     End If
     init_dx8_and_d3d = Err.Number
@@ -103,12 +103,12 @@ End Function
 Public Function init(ByVal window As Long) As Long
     init = init_dx8_and_d3d()
     If init <> 0 Then
-        frmDebug.add_text_tracebox "init_dx8_and_d3d() failed with code " & Init
+        Debug.Print "init_dx8_and_d3d() failed with code " & init
         Exit Function
     End If
     init = init_dx_device(window, mDirectD3D, mDisplayMode)
     If init <> 0 Then
-        frmDebug.add_text_tracebox "init_dx_device() failed with code " & Init
+        Debug.Print "init_dx_device() failed with code " & init
         Exit Function
     End If
     
@@ -126,26 +126,26 @@ On Error Resume Next
     Err.Clear
     d3d_obj.GetDeviceCaps D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, Caps
     If Err.Number = D3DERR_NOTAVAILABLE Then
-        frmDebug.add_text_tracebox "HAL Is Not available, using; software; vertex; processing"
+        Debug.Print "HAL Is Not available, using; software; vertex; processing"
         DevType = D3DDEVTYPE_REF
         DevBehaviorFlags = D3DCREATE_SOFTWARE_VERTEXPROCESSING
     Else
         DevType = D3DDEVTYPE_HAL
-        frmDebug.add_text_tracebox "VertexProcessingCaps = " & Caps.VertexProcessingCaps
+        Debug.Print "VertexProcessingCaps = " & Caps.VertexProcessingCaps
         If Caps.VertexProcessingCaps = 0 Then
-            frmDebug.add_text_tracebox "HAL Is available, " & "Using; software; vertex; processing"
+            Debug.Print "HAL Is available, " & "Using; software; vertex; processing"
             DevBehaviorFlags = D3DCREATE_SOFTWARE_VERTEXPROCESSING
         ElseIf Caps.VertexProcessingCaps = &H4B Then
-            frmDebug.add_text_tracebox "HAL Is available, " & "Using; hardware; vertex; processing; "
+            Debug.Print "HAL Is available, " & "Using; hardware; vertex; processing; "
             DevBehaviorFlags = D3DCREATE_HARDWARE_VERTEXPROCESSING
         Else
-            frmDebug.add_text_tracebox "HAL Is available, " & "Using; mixed; vertex; processing; "
+            Debug.Print "HAL Is available, " & "Using; mixed; vertex; processing; "
             DevBehaviorFlags = D3DCREATE_MIXED_VERTEXPROCESSING
         End If
     End If
     d3d_obj.GetAdapterDisplayMode D3DADAPTER_DEFAULT, d3dDispMode
     
-    frmDebug.add_text_tracebox "Using; Windowed; mode"
+    Debug.Print "Using; Windowed; mode"
     Debug.Assert disp_mode.Width > 0
     Debug.Assert disp_mode.Height > 0
     mD3DPP.Windowed = 1
@@ -161,13 +161,13 @@ On Error Resume Next
     Err.Clear
  
     Set mDirectDevice = d3d_obj.CreateDevice(D3DADAPTER_DEFAULT, DevType, window_handle, DevBehaviorFlags, mD3DPP)
-    frmDebug.add_text_tracebox "Create Direct3D device: " & Err
+    Debug.Print "Create; Direct3D; device: ", Err
     If (Err.Number <> 0) Then
         'if we failed to create the device with D3DFMT_A8R8G8B8 we try to do it with current display fmt
         D3DWindow.BackBufferFormat = d3dDispMode.format
         Err.Clear
         Set mDirectDevice = d3d_obj.CreateDevice(D3DADAPTER_DEFAULT, DevType, window_handle, DevBehaviorFlags, mD3DPP)
-        frmDebug.add_text_tracebox "Create Direct3D device: " & Err
+        Debug.Print "Create; Direct3D; device: ", Err
     End If
     init_dx_device = Err.Number
 End Function

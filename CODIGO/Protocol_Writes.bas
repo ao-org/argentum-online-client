@@ -809,7 +809,7 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
 102     Call Writer.WriteInt8(x)
 104     Call Writer.WriteInt8(y)
         packetCounters.TS_LeftClick = packetCounters.TS_LeftClick + 1
-        'frmdebug.add_text_tracebox packetCounters.TS_LeftClick
+        'Debug.Print packetCounters.TS_LeftClick
         Call Writer.WriteInt32(packetCounters.TS_LeftClick)
     
 106     Call modNetwork.Send(Writer)

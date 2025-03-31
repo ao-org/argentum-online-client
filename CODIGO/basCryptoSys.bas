@@ -846,11 +846,11 @@ Public Declare Function PRF_Bytes Lib "diCryptoSys.dll" (ByRef lpOutput As Byte,
 ' @example
 ' {@code
 ' Dim ab() As Byte
-' frmdebug.add_text_tracebox cnvBytesLen(ab) ' Expecting 0
+' Debug.Print cnvBytesLen(ab) ' Expecting 0
 ' ReDim ab(10)    ' NB actually 11 elements (0..10)
-' frmdebug.add_text_tracebox cnvBytesLen(ab) ' 11
+' Debug.Print cnvBytesLen(ab) ' 11
 ' ab = vbNullString   ' Set to empty array
-' frmdebug.add_text_tracebox cnvBytesLen(ab) ' 0
+' Debug.Print cnvBytesLen(ab) ' 0
 ' }
 '**/
 Public Function cnvBytesLen(ab() As Byte) As Long
@@ -1078,7 +1078,7 @@ End Function
 ' @return Hexadecimal-encoded string.
 ' @example
 ' {@code
-' frmdebug.add_text_tracebox cnvHexFromBytesMid(cnvBytesFromHexStr("00112233445566"), 3, 2) ' 3344
+' Debug.Print cnvHexFromBytesMid(cnvBytesFromHexStr("00112233445566"), 3, 2) ' 3344
 ' }
 '**/
 Public Function cnvHexFromBytesMid(abData() As Byte, nOffset As Long, nBytes As Long) As String
@@ -1257,7 +1257,7 @@ Public Function padHexString(ByVal strInputHex As String, nBlockLen As Long) As 
     strInputHex = strInputHex & ""
     
     nOutChars = PAD_HexBlock("", 0, strInputHex, nBlockLen, 0)
-    'frmdebug.add_text_tracebox "Required length is " & nOutChars & " characters"
+    'Debug.Print "Required length is " & nOutChars & " characters"
     ' Check for error
     If (nOutChars <= 0) Then Exit Function
     
@@ -1266,7 +1266,7 @@ Public Function padHexString(ByVal strInputHex As String, nBlockLen As Long) As 
     
     nOutChars = PAD_HexBlock(strOutputHex, Len(strOutputHex), strInputHex, nBlockLen, 0)
     If (nOutChars <= 0) Then Exit Function
-    'frmdebug.add_text_tracebox "Padded data='" & strOutputHex & "'"
+    'Debug.Print "Padded data='" & strOutputHex & "'"
     
     padHexString = strOutputHex
     
@@ -1294,7 +1294,7 @@ Public Function unpadHexString(strInputHex As String, nBlockLen As Long) As Stri
     ' so make sure output is as long as the input
     strOutputHex = String(Len(strInputHex), " ")
     nOutChars = PAD_UnpadHex(strOutputHex, Len(strOutputHex), strInputHex, nBlockLen, 0)
-    'frmdebug.add_text_tracebox "Unpadded length is " & nOutChars & " characters"
+    'Debug.Print "Unpadded length is " & nOutChars & " characters"
     
     ' Check for error
     If (nOutChars < 0) Then
@@ -1305,7 +1305,7 @@ Public Function unpadHexString(strInputHex As String, nBlockLen As Long) As Stri
     
     ' Re-dimension the output to the correct length
     strOutputHex = Left$(strOutputHex, nOutChars)
-    'frmdebug.add_text_tracebox "Unpadded data='" & strOutputHex & "'"
+    'Debug.Print "Unpadded data='" & strOutputHex & "'"
     
     unpadHexString = strOutputHex
     
@@ -2024,7 +2024,7 @@ End Function
 ' @example
 ' {@code
 ' ' Test vector 3
-' frmdebug.add_text_tracebox cipherStreamHex("00000000000000000000", "ef012345", "", API_SC_ARCFOUR)
+' Debug.Print cipherStreamHex("00000000000000000000", "ef012345", "", API_SC_ARCFOUR)
 ' ' OK=D6A141A7EC3C38DFBD61
 ' }
 '**/
@@ -2256,8 +2256,8 @@ End Function
 ' ' NIST SHAVS CAVS 11.0 "SHA-1 ShortMsg" information
 ' lpData = cnvBytesFromHexStr("5180")  ' 9-bit bitstring = 0101 0001 1
 ' strDigest = hashHexFromBits(lpData, 9, API_HASH_SHA1)
-' frmdebug.add_text_tracebox "MD = " & strDigest
-' frmdebug.add_text_tracebox "OK = 0f582fa68b71ecdf1dcfc4946019cf5a18225bd2"
+' Debug.Print "MD = " & strDigest
+' Debug.Print "OK = 0f582fa68b71ecdf1dcfc4946019cf5a18225bd2"
 ' }
 '**/
 Public Function hashHexFromBits(lpData() As Byte, nDataBitLen As Long, nOptions As Long) As String
@@ -2427,7 +2427,7 @@ End Function
 ' @return Length of the hash function output in bytes; else a negative error code.
 ' @example
 ' {@code
-' frmdebug.add_text_tracebox hashLength(API_HASH_SHA512)
+' Debug.Print hashLength(API_HASH_SHA512)
 ' 64
 ' }
 '**/
@@ -2898,7 +2898,7 @@ End Function
 ' @return Key in hex format.
 ' @example
 ' {@code
-' frmdebug.add_text_tracebox pbeScryptHex(64, "password", "4E61436C", 1024, 8, 16)
+' Debug.Print pbeScryptHex(64, "password", "4E61436C", 1024, 8, 16)
 ' ' FDBABE1C9D3472007856E7190D01E9FE7C6AD7CBC8237830E77376634B3731622EAF30D92E22A3886FF109279D9830DAC727AFB94A83EE6D8360CBDFA2CC0640
 ' }
 '**/

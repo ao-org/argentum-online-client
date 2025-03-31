@@ -83,7 +83,7 @@ On Error GoTo RegistrarError_Err
         
 130     Close #File
     
-132     frmDebug.add_text_tracebox "Error: " & Numero & vbNewLine & _
+132     Debug.Print "Error: " & Numero & vbNewLine & _
                     "Descripcion: " & Descripcion & vbNewLine & _
                     "Componente: " & Componente & vbNewLine & _
                     "Linea: " & Linea & vbNewLine & _

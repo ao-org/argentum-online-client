@@ -682,7 +682,7 @@ Public Sub LogError(desc As String)
     nfile = FreeFile ' obtenemos un canal
     Open App.path & "\Logs\errores.log" For Append Shared As #nfile
     Print #nfile, Date & "-" & Time & ":" & desc
-    frmDebug.add_text_tracebox Date & "-" & Time & ":" & desc
+    Debug.Print Date & "-" & Time & ":" & desc
     Close #nfile
 
     Exit Sub

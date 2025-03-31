@@ -794,7 +794,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         Call Draw_Grh(grh, 239 + gameplay_render_offset.x, 550 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
         grh.GrhIndex = GRH_CURSOR_PESCA
         Call Draw_Grh(grh, 271 + PosicionBarra + gameplay_render_offset.x, 558 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
-        frmDebug.add_text_tracebox PescandoEspecial
+        Debug.Print PescandoEspecial
         For i = 1 To MAX_INTENTOS
             If intentosPesca(i) = 1 Then
                 grh.GrhIndex = GRH_CIRCULO_VERDE

@@ -50,16 +50,16 @@ On Error GoTo AudioEngineInitErr:
     If AudioEnabled Then
         Set AudioEngine = New clsAudioEngine
         Call AudioEngine.Init(dx8, hwnd)
-        frmDebug.add_text_tracebox "Audio Engine OK"
+        Debug.Print "Audio Engine OK"
         Exit Sub
     Else
-        frmDebug.add_text_tracebox "Warning Audio Disabled"
+        Debug.Print "Warning Audio Disabled"
     End If
     
     Exit Sub
 AudioEngineInitErr:
     Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_CREACION_ENGINE_AUDIO"), vbCritical, "Argentum20")
-    frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+    Debug.Print "Error Number Returned: " & Err.Number
     End
 End Sub
 Public Sub SetMusicVolume(ByVal NewVolume As Long)

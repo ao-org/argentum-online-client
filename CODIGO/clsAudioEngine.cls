@@ -70,7 +70,7 @@ On Error Resume Next
     Set mDirectSoundEnum = mDirectX.GetDSEnum
     If Err.Number <> 0 Then
                 Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_ENUM"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+                Debug.Print "Error Number Returned: " & Err.Number
                 InitSoundEngine = Err.Number
                 Exit Function
     End If
@@ -78,7 +78,7 @@ On Error Resume Next
     Set mDirectSound = DirectX.DirectSoundCreate(mDirectSoundEnum.GetGuid(1))
     If Err.Number <> 0 Then
                 Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_CREAR"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+                Debug.Print "Error Number Returned: " & Err.Number
                 InitSoundEngine = Err.Number
                 Exit Function
     End If
@@ -94,14 +94,14 @@ On Error Resume Next
             Set .directMusicLoader = dx8.DirectMusicLoaderCreate
             If Err.Number <> 0 Then
                 Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_MUSIC"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+                Debug.Print "Error Number Returned: " & Err.Number
                 InitMusicEngine = Err.Number
                 Exit Function
             End If
             Set .directMusicPerformance = dx8.DirectMusicPerformanceCreate
             If Err.Number <> 0 Then
                 Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_MUSIC_PERFORMANCE"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+                Debug.Print "Error Number Returned: " & Err.Number
                 InitMusicEngine = Err.Number
                 Exit Function
             Else
@@ -121,12 +121,12 @@ Public Function Init(ByRef dx8 As DirectX8, ByVal hwnd As Long) As Long
     Set mDirectX = dx8
     Init = InitSoundEngine(hwnd)
     If Init <> 0 Then
-        frmDebug.add_text_tracebox "InitSoundEngine() failed with code " & Init
+        Debug.Print "InitSoundEngine() failed with code " & Init
         Exit Function
     End If
     Init = InitMusicEngine(dx8, hwnd)
     If Init <> 0 Then
-        frmDebug.add_text_tracebox "InitSoundEngine() failed with code " & Init
+        Debug.Print "InitSoundEngine() failed with code " & Init
         Exit Function
     End If
     Init = 0
@@ -156,7 +156,7 @@ On Error GoTo Error_Handl
     LoadMidi = True
     Exit Function
 Error_Handl:
-    frmDebug.add_text_tracebox "error al cargar musica"
+    Debug.Print "error al cargar musica"
 End Function
 
 Private Function CreateWavBufferFromFile(ByVal file_name As Integer, ByRef new_buffer As DirectSoundSecondaryBuffer8, Optional ByVal Extraido As Boolean = False) As Boolean
@@ -260,7 +260,7 @@ Private Function GetFreeWavTrack() As Integer
                     Exit Function
                 Else
                     Dim sf As CONST_DSBSTATUSFLAGS: sf = .Buffer.GetStatus
-                    'frmdebug.add_text_tracebox "buffer status " & sf
+                    'Debug.Print "buffer status " & sf
                     If (DSBSTATUS_PLAYING And sf) = 0 And (DSBSTATUS_LOOPING And sf) = 0 Then
                         GetFreeWavTrack = i
                         Exit Function
@@ -304,7 +304,7 @@ On Error GoTo PlayAmbient_Error_Handl
     
     Dim tid As Integer
     tid = UBound(mAudioTracks)
-    frmDebug.add_text_tracebox "PlayAmbient, track " & tid & " id: " & id
+    Debug.Print "PlayAmbient, track " & tid & " id: " & id
     With mAudioTracks(tid)
             .Name = id
             Set .Buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(id))
@@ -335,7 +335,7 @@ On Error GoTo PlayWav_Error_Handl
     
     Dim tid As Integer
     tid = GetFreeWavTrack()
-    frmDebug.add_text_tracebox "PlayWav, track " & tid & " id: " & sound_id
+    Debug.Print "PlayWav, track " & tid & " id: " & sound_id
     If (tid > -1) Then
         With mAudioTracks(tid)
             .Name = sound_id
@@ -345,7 +345,7 @@ On Error GoTo PlayWav_Error_Handl
         End With
         PlayWav = 0
     Else
-        frmDebug.add_text_tracebox "PlayWav failed because track id is -1"
+        Debug.Print "PlayWav failed because track id is -1"
     End If
     Exit Function
 

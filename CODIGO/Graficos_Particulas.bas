@@ -608,7 +608,7 @@ Public Sub Char_Particle_Group_Make(ByVal particle_group_index As Long, ByVal ch
         particle_group_list(particle_group_index).alive_counter = -1
         particle_group_list(particle_group_index).never_die = True
     Else
-        '  frmdebug.add_text_tracebox alive_counter
+        '  Debug.Print alive_counter
         particle_group_list(particle_group_index).alive_counter = alive_counter
         particle_group_list(particle_group_index).never_die = False
 
