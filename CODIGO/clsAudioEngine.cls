@@ -335,7 +335,6 @@ On Error GoTo PlayWav_Error_Handl
     
     Dim tid As Integer
     tid = GetFreeWavTrack()
-    frmDebug.add_text_tracebox "PlayWav, track " & tid & " id: " & sound_id
     If (tid > -1) Then
         With mAudioTracks(tid)
             .Name = sound_id
@@ -344,8 +343,6 @@ On Error GoTo PlayWav_Error_Handl
             Call StartPlaying(.Buffer, IIf(looping, DSBPLAY_LOOPING, DSBPLAY_DEFAULT), volume, pan)
         End With
         PlayWav = 0
-    Else
-        frmDebug.add_text_tracebox "PlayWav failed because track id is -1"
     End If
     Exit Function
 
