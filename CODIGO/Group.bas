@@ -102,6 +102,7 @@ Public Sub RenderGroup()
     For i = 0 To GroupSize - 1
         With GroupMembers(i)
             If .CharIndex <> UserCharIndex Then
+                Call Draw_GrhIndex(GroupBackgroundGrh, .RenderArea.Left - CurrentPivot + gameplay_render_offset.x, .RenderArea.Top + gameplay_render_offset.y)
                 Call Draw_Grh(.Head.Head(E_Heading.south), .RenderArea.Left - HeadOffsetX - CurrentPivot + gameplay_render_offset.x, .RenderArea.Top + 28 + gameplay_render_offset.y, 1, 0, COLOR_WHITE, False, 0, 0)
                 Dim HpPlusShield As Long
                 HpPlusShield = .MaxHp + .Shield
