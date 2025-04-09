@@ -129,8 +129,8 @@ End Function
 
 Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
     PlayMP3 = -1
-    If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
-        PlayMP3 = ao20audio.AudioEngine.PlayMP3(filename, looping, Min(CurFxVolume, volume))
+    If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
+        PlayMP3 = ao20audio.AudioEngine.PlayMP3(FileName, looping, min(CurMusicVolume, volume))
     End If
 End Function
 
