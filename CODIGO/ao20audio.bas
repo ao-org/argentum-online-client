@@ -122,7 +122,7 @@ End Function
 
 Public Function StopMP3() As Long
     StopMP3 = -1
-    If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
+    If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
         StopMP3 = ao20audio.AudioEngine.StopMP3
     End If
 End Function
