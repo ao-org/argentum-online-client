@@ -151,24 +151,24 @@ Begin VB.Form frmMapaGrande
          BackColor       =   &H00FF0000&
          BorderColor     =   &H00C00000&
          FillColor       =   &H0000FFFF&
-         Height          =   480
+         Height          =   405
          Left            =   600
          Top             =   600
          Visible         =   0   'False
-         Width           =   480
+         Width           =   405
       End
       Begin VB.Shape llamadadeclan 
          BackColor       =   &H00FF0000&
          BackStyle       =   1  'Opaque
          BorderColor     =   &H00FF0000&
-         BorderWidth     =   3
-         Height          =   180
+         BorderWidth     =   2
+         Height          =   75
          Left            =   240
-         Shape           =   3  'Circle
+         Shape           =   1  'Square
          Tag             =   "0"
          Top             =   120
          Visible         =   0   'False
-         Width           =   180
+         Width           =   75
       End
       Begin VB.Shape Shape1 
          BackColor       =   &H000000FF&
@@ -957,14 +957,14 @@ Public Sub ShowClanCall(ByVal Map As Integer, ByVal PosX As Integer, ByVal PosY 
 
     Dim x As Long
     Dim y As Long
-    x = (idmap - 1) Mod 14
-    y = Int((idmap - 1) / 14)
+    x = (idmap - 1) Mod 19
+    Y = Int((idmap - 1) / 19)
     
-    llamadadeclan.Top = y * 32 + (PosX / 4.5)
-    llamadadeclan.Left = x * 32 + (PosY / 4.5)
+    llamadadeclan.Top = Y * 27 + (PosY / 4.5)
+    llamadadeclan.Left = x * 27 + (PosX / 4.5)
     llamadadeclan.visible = True
     frmMain.LlamaDeclan.enabled = True
     Shape2.visible = True
-    Shape2.Top = y * 32
-    Shape2.Left = x * 32
+    Shape2.Top = Y * 27
+    Shape2.Left = x * 27
 End Sub
