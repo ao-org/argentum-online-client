@@ -130,7 +130,7 @@ On Error GoTo LoadTexture_ErrHandler
 
     #If Compresion = 1 Then
         If Not Extract_File_To_Memory(Graphics, App.path & "\..\Recursos\OUTPUT\", LTrim(FileName) & ".png", bytArr, ResourcesPassword) Then
-            frmDebug.add_text_tracebox "¡No se puede cargar el grafico numero " & filename & "!"
+            frmDebug.add_text_tracebox "¡No se puede cargar el grafico numero " & FileName & "!"
             Exit Function
         End If
 
@@ -208,7 +208,7 @@ On Error GoTo ErrHandler
     Else
         Debug.Assert Not Texture Is Nothing
         If Texture Is Nothing Then
-            Call MsgBox("Missing texture file " & FileNum, vbOKOnly, "Argentum 20 - Noland Studios")
+            frmDebug.add_text_tracebox "Missing texture file " & FileNum
         End If
         Call Texture.GetLevelDesc(0, surfaceDesc)
     
