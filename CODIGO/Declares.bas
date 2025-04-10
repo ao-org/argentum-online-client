@@ -282,7 +282,6 @@ Public MostrarRespiracion          As Boolean
 Public PermitirMoverse             As Byte
 Public MoverVentana                As Byte
 Public CursoresGraficos            As Boolean
-Public UtilizarPreCarga            As Byte
 Public SensibilidadMouse           As Byte
 Public SensibilidadMouseOriginal   As Byte
 Public CopiarDialogoAConsola       As Byte

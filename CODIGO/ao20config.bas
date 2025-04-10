@@ -103,7 +103,6 @@ Sub LoadConfig()
     'Video
     PantallaCompleta = GetSetting("VIDEO", "PantallaCompleta")
     CursoresGraficos = IIf(RunningInVB, 0, GetSetting("VIDEO", "CursoresGraficos"))
-    UtilizarPreCarga = GetSetting("VIDEO", "UtilizarPreCarga")
     InfoItemsEnRender = Val(GetSetting("VIDEO", "InfoItemsEnRender"))
     ModoAceleracion = GetSetting("VIDEO", "Aceleracion")
     DisableDungeonLighting = Val(GetSetting("VIDEO", "DisableDungeonLighting"))
