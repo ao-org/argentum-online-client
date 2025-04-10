@@ -1487,9 +1487,9 @@ Public Sub Init()
 
     End If
     
-    scrVolume.Value = VolFX
-    HScroll1.Value = VolAmbient
-    scrMidi.Value = VolMusic
+    scrVolume.value = max(scrVolume.min, min(scrVolume.max, VolFX))
+    HScroll1.value = max(HScroll1.min, min(HScroll1.max, VolAmbient))
+    scrMidi.value = max(scrMidi.min, min(scrMidi.max, VolMusic))
     
     Alpha.Value = AlphaMacro
     
