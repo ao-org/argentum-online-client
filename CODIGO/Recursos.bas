@@ -277,12 +277,7 @@ Private BodiesHeading(1 To 4) As E_Heading
 Public Sub CargarRecursos()
     
     On Error GoTo CargarRecursos_Err
-    
-    
-    If UtilizarPreCarga = 1 Then
-        Call PreloadGraphics
-    End If
-    
+
     Call CargarNPCsMapData
     Call CargarParticulasBinary
     Call CargarIndicesOBJ
