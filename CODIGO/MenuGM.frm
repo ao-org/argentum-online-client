@@ -506,7 +506,7 @@ Private Sub OpcionImg_Click(Index As Integer)
     Select Case Index
 
         Case 0
-            Call ParseUserCommand("/SUM")
+            Call ParseUserCommand("/SUM " & TargetName)
 
         Case 1
             Call ParseUserCommand("/CONSULTA " & TargetName)
