@@ -4295,7 +4295,9 @@ Private Sub HandleWorkRequestTarget()
         UsingSkill = UsingSkillREcibido
         Exit Sub
     End If
-
+    
+    If PescandoEspecial = True Then Exit Sub
+    
     If UsingSkillREcibido = UsingSkill Then Exit Sub
     UsingSkill = UsingSkillREcibido
     
