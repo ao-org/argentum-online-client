@@ -971,8 +971,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
         If Right$(userName, 1) = " " Then
             userName = RTrim$(userName)
-
-            'MsgBox "Nombre invalido, se han removido los espacios al final del nombre"
         End If
             
         UserStats.Raza = lstRaza.ListIndex + 1

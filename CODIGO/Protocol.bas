@@ -453,7 +453,7 @@ On Error GoTo HandleIncomingData_Err
         Case ServerPacketID.eCraftingResult
             Call HandleCraftingResult
         Case ServerPacketID.eForceUpdate
-            Call HandleForceUpdate
+            'TODO: remove packet from protocol
         Case ServerPacketID.eAnswerReset
             Call HandleAnswerReset
         Case ServerPacketID.eObjQuestListSend
@@ -1493,7 +1493,7 @@ Private Sub HandleCharSwing()
     With charlist(CharIndex)
 
         If ShowText And NotificoTexto Then
-            Call SetCharacterDialogFx(CharIndex, IIf(CharIndex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
+            Call SetCharacterDialogFx(charindex, IIf(charindex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
         End If
         
         If EstaPCarea(CharIndex) Then
@@ -7790,24 +7790,6 @@ Private Sub HandleCraftingResult()
     Else
         Call frmCrafteo.SetResult(0, 0, 0)
     End If
-End Sub
-
-Private Sub HandleForceUpdate()
-    On Error GoTo HandleCerrarleCliente_Err
-    
-    Call MsgBox(JsonLanguage.Item("MENSAJEBOX_NUEVA_VERSION"), vbOKOnly, "Argentum 20 - Noland Studios")
-    
-    Shell App.path & "\..\..\Launcher\LauncherAO20.exe"
-    
-    EngineRun = False
-
-    Call CloseClient
-    
-    Exit Sub
-
-HandleCerrarleCliente_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCerrarleCliente", Erl)
-    
 End Sub
 
 Public Sub HandleAnswerReset()
