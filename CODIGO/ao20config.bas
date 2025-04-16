@@ -48,8 +48,7 @@ Sub SaveConfig()
     Call SaveSetting("OPCIONES", "MoverVentana", MoverVentana)
     Call SaveSetting("OPCIONES", "PermitirMoverse", PermitirMoverse)
     Call SaveSetting("OPCIONES", "ScrollArrastrar", ScrollArrastrar)
-    Call SaveSetting("OPCIONES", "UseExperimentalUI", IIf(SaveUseBabelUI, 1, 0))
-    
+       
     Call SaveSetting("OPCIONES", "CopiarDialogoAConsola", CopiarDialogoAConsola)
     Call SaveSetting("OPCIONES", "FPSFLAG", FPSFLAG)
     Call SaveSetting("OPCIONES", "AlphaMacro", AlphaMacro)
@@ -83,7 +82,7 @@ Sub LoadConfig()
     If InitializeSettings() Then
         Call LoadBindedKeys
     Else
-        Call MsgBox("¡No se puede cargar el archivo de opciones! La reinstalacion del juego podria solucionar el problema.", vbCritical, "Error al cargar")
+        Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_CARGAR_OPCIONES"), vbCritical, JsonLanguage.Item("TITULO_ERROR_CARGAR"))
         End
     End If
 
@@ -104,14 +103,13 @@ Sub LoadConfig()
     'Video
     PantallaCompleta = GetSetting("VIDEO", "PantallaCompleta")
     CursoresGraficos = IIf(RunningInVB, 0, GetSetting("VIDEO", "CursoresGraficos"))
-    UtilizarPreCarga = GetSetting("VIDEO", "UtilizarPreCarga")
     InfoItemsEnRender = Val(GetSetting("VIDEO", "InfoItemsEnRender"))
     ModoAceleracion = GetSetting("VIDEO", "Aceleracion")
     DisableDungeonLighting = Val(GetSetting("VIDEO", "DisableDungeonLighting"))
 
-    Dim value As String
-    value = GetSetting("VIDEO", "MostrarRespiracion")
-    MostrarRespiracion = IIf(LenB(value) > 0, Val(value), True)
+    Dim Value As String
+    Value = GetSetting("VIDEO", "MostrarRespiracion")
+    MostrarRespiracion = IIf(LenB(Value) > 0, Val(Value), True)
 
     FxNavega = GetSetting("OPCIONES", "FxNavega")
     MostrarIconosMeteorologicos = GetSetting("OPCIONES", "MostrarIconosMeteorologicos")
@@ -140,7 +138,8 @@ Sub LoadConfig()
     Exit Sub
     
 ErrorHandler:
-    Call MsgBox("Ha ocurrido un error al cargar la configuración del juego.", vbCritical, "Configuración del Juego")
+    Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_CARGAR_CONFIG"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_CONFIGURACION"))
+
     End
 End Sub
 

@@ -27,20 +27,28 @@ Attribute VB_Name = "Protocol_Writes"
 '
 
 Option Explicit
+
+
+#If DIRECT_PLAY = 0 Then
 Private Writer As Network.Writer
 
 Public Function writer_is_nothing() As Boolean
-writer_is_nothing = Writer Is Nothing
+    writer_is_nothing = Writer Is Nothing
 End Function
 Public Sub Initialize()
-100     Set Writer = New Network.Writer
+    Set Writer = New Network.Writer
 End Sub
+
+
+#Else
+
+Public Writer As New clsNetWriter
+
+#End If
 
 Public Sub Clear()
-100     Call Writer.Clear
+    Call Writer.Clear
 End Sub
-
-
 
 #If PYMMO = 1 Then
 ''
@@ -801,7 +809,7 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
 102     Call Writer.WriteInt8(x)
 104     Call Writer.WriteInt8(y)
         packetCounters.TS_LeftClick = packetCounters.TS_LeftClick + 1
-        'Debug.Print packetCounters.TS_LeftClick
+        'frmdebug.add_text_tracebox packetCounters.TS_LeftClick
         Call Writer.WriteInt32(packetCounters.TS_LeftClick)
     
 106     Call modNetwork.Send(Writer)
@@ -3739,27 +3747,8 @@ WriteSeguirMouse_Err:
         '</EhFooter>
 End Sub
 
-''
-' Writes the "ReviveChar" message to the outgoing data buffer.
-'
-' @param    username The user to eb revived.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteSendPosSeguimiento(ByVal Cheat_X As Integer, ByVal Cheat_Y As Integer)
-        '<EhHeader>
-        On Error GoTo WriteSendPosSeguimiento_Err
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.eSendPosSeguimiento)
-102     Call Writer.WriteString16(Cheat_X)
-103     Call Writer.WriteString16(Cheat_Y)
-
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
-
-WriteSendPosSeguimiento_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSendPosSeguimiento", Erl)
-        '</EhFooter>
+'TODO: delete this
 End Sub
 
 

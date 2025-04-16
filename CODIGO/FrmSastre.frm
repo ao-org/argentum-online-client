@@ -279,7 +279,7 @@ Private Sub Command3_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 3
             UserMacro.Index = SastreRopas(lstArmas.ListIndex + 1).Index
-            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR."), 2, 51, 223, 1, 1
             UserMacro.Activado = True
             frmMain.MacroLadder.Interval = gIntervals.BuildWork
             frmMain.MacroLadder.Enabled = True
@@ -297,7 +297,7 @@ Private Sub Command3_Click()
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 3
             UserMacro.Index = SastreGorros(lstArmas.ListIndex + 1).Index
-            AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+            AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR"), 2, 51, 223, 1, 1
             UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
             frmMain.MacroLadder.Interval = gIntervals.BuildWork

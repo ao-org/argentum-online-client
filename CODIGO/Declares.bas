@@ -282,7 +282,6 @@ Public MostrarRespiracion          As Boolean
 Public PermitirMoverse             As Byte
 Public MoverVentana                As Byte
 Public CursoresGraficos            As Boolean
-Public UtilizarPreCarga            As Byte
 Public SensibilidadMouse           As Byte
 Public SensibilidadMouseOriginal   As Byte
 Public CopiarDialogoAConsola       As Byte
@@ -367,6 +366,7 @@ Public TransferCharname As String
 Public TransferCharNewOwner As String
 Public CuentaPassword As String
 Public CuentaEmail    As String
+Public CharacterRemote    As String
 Public NamePj(1 To 8) As String
 Public ValidationCode As String
 
@@ -692,54 +692,7 @@ End Enum
 
 Public Const FundirMetal                           As Integer = 88
 
-'
-' Mensajes
-'
-' MENSAJE_*  --> Mensajes de texto que se muestran en el cuadro de texto
-'
 
-Public Const MENSAJE_CRIATURA_FALLA_GOLPE          As String = "La criatura fallo el golpe."
-Public Const MENSAJE_CRIATURA_MATADO               As String = "La criatura te ha matado."
-Public Const MENSAJE_RECHAZO_ATAQUE_ESCUDO         As String = "Has rechazado el ataque con el escudo."
-Public Const MENSAJE_USUARIO_RECHAZO_ATAQUE_ESCUDO As String = "El usuario rechazo el ataque con su escudo."
-Public Const MENSAJE_FALLADO_GOLPE                 As String = "Has fallado el golpe."
-Public Const MENSAJE_SEGURO_ACTIVADO               As String = "Seguro de ataque activado."
-Public Const MENSAJE_SEGURO_DESACTIVADO            As String = "Seguro de ataque desactivado."
-Public Const MENSAJE_USAR_MEDITANDO                As String = "¡Estás meditando! Debes dejar de meditar para usar objetos."
-Public Const MENSAJE_SEGURO_PARTY_ON               As String = "Ahora nadie te podra invitar a un grupo."
-Public Const MENSAJE_SEGURO_PARTY_OFF              As String = "Ahora podras recibir solicitudes a grupos."
-Public Const MENSAJE_GOLPE_CABEZA                  As String = "La criatura te ha pegado en la cabeza por "
-Public Const MENSAJE_GOLPE_BRAZO_IZQ               As String = "La criatura te ha pegado el brazo izquierdo por "
-Public Const MENSAJE_GOLPE_BRAZO_DER               As String = "La criatura te ha pegado el brazo derecho por "
-Public Const MENSAJE_GOLPE_PIERNA_IZQ              As String = "La criatura te ha pegado la pierna izquierda por "
-Public Const MENSAJE_GOLPE_PIERNA_DER              As String = "La criatura te ha pegado la pierna derecha por "
-Public Const MENSAJE_GOLPE_TORSO                   As String = "La criatura te ha pegado en el torso por "
-' MENSAJE_[12]: Aparecen antes y despues del valor de los mensajes anteriores (MENSAJE_GOLPE_*)
-Public Const MENSAJE_1                             As String = "¡¡"
-Public Const MENSAJE_2                             As String = "."
-Public Const MENSAJE_GOLPE_CRIATURA_1              As String = "Le has pegado a la criatura por "
-Public Const MENSAJE_ATAQUE_FALLO                  As String = " te ataco y fallo."
-Public Const MENSAJE_RECIVE_IMPACTO_CABEZA         As String = " te ha pegado en la cabeza por "
-Public Const MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ      As String = " te ha pegado el brazo izquierdo por "
-Public Const MENSAJE_RECIVE_IMPACTO_BRAZO_DER      As String = " te ha pegado el brazo derecho por "
-Public Const MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ     As String = " te ha pegado la pierna izquierda por "
-Public Const MENSAJE_RECIVE_IMPACTO_PIERNA_DER     As String = " te ha pegado la pierna derecha por "
-Public Const MENSAJE_RECIVE_IMPACTO_TORSO          As String = " te ha pegado en el torso por "
-Public Const MENSAJE_PRODUCE_IMPACTO_1             As String = "Le has pegado a "
-Public Const MENSAJE_PRODUCE_IMPACTO_CABEZA        As String = " en la cabeza por "
-Public Const MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ     As String = " en el brazo izquierdo por "
-Public Const MENSAJE_PRODUCE_IMPACTO_BRAZO_DER     As String = " en el brazo derecho por "
-Public Const MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ    As String = " en la pierna izquierda por "
-Public Const MENSAJE_PRODUCE_IMPACTO_PIERNA_DER    As String = " en la pierna derecha por "
-Public Const MENSAJE_PRODUCE_IMPACTO_TORSO         As String = " en el torso por "
-Public Const MENSAJE_TRABAJO_MAGIA                 As String = "Haz click sobre el objetivo..."
-Public Const MENSAJE_TRABAJO_PESCA                 As String = "Haz click sobre el sitio donde quieres pescar..."
-Public Const MENSAJE_TRABAJO_ROBAR                 As String = "Haz click sobre la victima..."
-Public Const MENSAJE_TRABAJO_TALAR                 As String = "Haz click sobre el árbol..."
-Public Const MENSAJE_TRABAJO_MINERIA               As String = "Haz click sobre el yacimiento..."
-Public Const MENSAJE_TRABAJO_FUNDIRMETAL           As String = "Haz click sobre la fragua..."
-Public Const MENSAJE_TRABAJO_PROYECTILES           As String = "Haz click sobre la victima..."
-Public Const MENSAJE_NENE                          As String = "Cantidad de NPCs: "
 
 'Inventario
 Type Slot
@@ -1019,6 +972,11 @@ Public IPdelServidor     As String
 Public PuertoDelServidor As String
 Public IPdelServidorLogin     As String
 Public PuertoDelServidorLogin As String
+
+#If REMOTE_CLOSE = 1 Then
+Public InitiateShutdownProcess As Boolean
+Public ShutdownProcessTimer As New clsInstrument
+#End If
 '
 '********** FUNCIONES API ***********
 '

@@ -277,12 +277,7 @@ Private BodiesHeading(1 To 4) As E_Heading
 Public Sub CargarRecursos()
     
     On Error GoTo CargarRecursos_Err
-    
-    
-    If UtilizarPreCarga = 1 Then
-        Call PreloadGraphics
-    End If
-    
+
     Call CargarNPCsMapData
     Call CargarParticulasBinary
     Call CargarIndicesOBJ
@@ -504,9 +499,9 @@ Public Sub InitFontTypes()
     End With
     
     With FontTypes(FontTypeNames.FONTTYPE_GLOBAL)
-        .red = 0
-        .green = 176
-        .blue = 176
+        .red = 255
+        .green = 102
+        .blue = 204
         .bold = 0
         .italic = True
 
@@ -758,7 +753,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
     #If Compresion = 1 Then
 
         If Not Extract_File(Maps, App.path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Debug.Print "Error al cargar datos del mapa " & map
+            frmDebug.add_text_tracebox "Error al cargar datos del mapa " & map
             Exit Sub
         End If
 
@@ -1180,7 +1175,7 @@ Public Sub CargarMapa(ByVal map As Integer)
             
                 InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).GrhIndex
 
-                If EsArbol(L3(i).GrhIndex) Then
+                If TileEngine.TileEngineHelper.IsIndexTree(L3(i).GrhIndex) Then
                     MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_ARBOL
                 End If
             Next i
@@ -1675,7 +1670,7 @@ Public Sub CargarIndicesOBJ()
         DoEvents
         ObjData(Obj).GrhIndex = Val(Leer.GetValue("OBJ" & Obj, "grhindex"))
         If Obj = 403 Then
-            Debug.Print "asd"
+            frmDebug.add_text_tracebox "asd"
         End If
         
         Select Case language
@@ -1800,7 +1795,7 @@ Public Sub CargarIndicesOBJ()
             For loopc = 1 To NpcData(Npc).NumQuiza
                
                 NpcData(Npc).QuizaDropea(loopc) = Val(Leer.GetValue("npc" & Npc, "QuizaDropea" & loopc))
-                ' Debug.Print NpcData(Npc).QuizaDropea(loopc)
+                ' frmdebug.add_text_tracebox NpcData(Npc).QuizaDropea(loopc)
             Next loopc
 
         End If
@@ -1810,16 +1805,29 @@ Continue:
     
     For Hechizo = 1 To NumHechizos
         DoEvents
-        HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
-        HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "desc")
-        HechizoData(Hechizo).PalabrasMagicas = Leer.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
-        HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
-        HechizoData(Hechizo).TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "TargetMsg")
-        HechizoData(Hechizo).PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "PropioMsg")
-        HechizoData(Hechizo).ManaRequerido = Val(Leer.GetValue("Hechizo" & Hechizo, "ManaRequerido"))
+        
+        Select Case language
+            Case e_language.English
+                HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "en_name")
+                HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "en_Desc")
+                HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "en_HechizeroMsg")
+                HechizoData(Hechizo).TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "en_TargetMsg")
+                HechizoData(Hechizo).PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "en_PropioMsg")
+
+            Case e_language.Spanish
+                HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
+                HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "desc")
+                HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
+                HechizoData(Hechizo).TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "TargetMsg")
+                HechizoData(Hechizo).PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "PropioMsg")
+                
+        End Select
+        
         HechizoData(Hechizo).MinSkill = Val(Leer.GetValue("Hechizo" & Hechizo, "MinSkill"))
         HechizoData(Hechizo).StaRequerido = Val(Leer.GetValue("Hechizo" & Hechizo, "StaRequerido"))
         HechizoData(Hechizo).IconoIndex = Val(Leer.GetValue("Hechizo" & Hechizo, "IconoIndex"))
+        HechizoData(Hechizo).ManaRequerido = Val(Leer.GetValue("Hechizo" & Hechizo, "ManaRequerido"))
+        HechizoData(Hechizo).PalabrasMagicas = Leer.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
         'HechizoData(Hechizo).IconoIndex = 35696
     Next Hechizo
     
@@ -1834,14 +1842,22 @@ Continue:
     For Hechizo = 1 To NumQuest
         DoEvents
         
-        QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
+        Select Case language
+            Case e_language.English
+                QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "EN_NOMBRE")
+                QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "EN_DESC")
+                QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "EN_DESCFINAL")
+            Case e_language.Spanish
+                QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
+                QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
+                QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
+        End Select
         
-        QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
-        QuestList(Hechizo).NextQuest = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
-        QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
-        QuestList(Hechizo).RequiredLevel = Leer.GetValue("QUEST" & Hechizo, "RequiredLevel")
-        QuestList(Hechizo).Repetible = Val(Leer.GetValue("QUEST" & Hechizo, "Repetible"))
-        PosMap(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "PosMap")
+            QuestList(Hechizo).NextQuest = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
+            QuestList(Hechizo).RequiredLevel = Leer.GetValue("QUEST" & Hechizo, "RequiredLevel")
+            QuestList(Hechizo).Repetible = Val(Leer.GetValue("QUEST" & Hechizo, "Repetible"))
+            PosMap(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "PosMap")
+            
     Next Hechizo
     
     For Hechizo = 1 To NumSug
@@ -1849,9 +1865,15 @@ Continue:
         Sugerencia(Hechizo) = Leer.GetValue("SUGERENCIAS", "SUGERENCIA" & Hechizo)
     Next Hechizo
     
-    For i = 1 To NumLocaleMsg
+For i = 1 To NumLocaleMsg
+
         DoEvents
-        Locale_SMG(i) = Leer.GetValue("msg", "Msg" & i)
+        If language = Spanish Then
+             Locale_SMG(i) = Leer.GetValue("SP_msg", "Msg" & i)
+        Else
+            Locale_SMG(i) = Leer.GetValue("EN_msg", "Msg" & i)
+        End If
+
     Next i
     
     Dim SearchVar As String
@@ -2749,13 +2771,13 @@ hErr:
     If Err.Number <> 0 Then
         
         If Err.Number = 53 Then
-            Call MsgBox("El archivo Graficos.ini no existe. Por favor, reinstale el juego.", , "Argentum 20")
+            Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ARCHIVO_GRAFICOS_NO_EXISTE"), vbOKOnly + vbExclamation, JsonLanguage.Item("MENSAJEBOX_ARGENTUM_TITULO"))
         
         ElseIf grh > 0 Then
-            Call MsgBox("Hay un error en Graficos.ini con el Grh" & grh & ".", , "Argentum 20")
+            Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_GRAFIOS_GRH") & Grh & ".", vbOKOnly + vbExclamation, JsonLanguage.Item("MENSAJEBOX_ARGENTUM_TITULO"))
         
         Else
-            Call MsgBox("Hay un error en Graficos.ini. Por favor, reinstale el juego.", , "Argentum 20")
+            Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_GRAFICOS"), vbOKOnly + vbExclamation, JsonLanguage.Item("MENSAJEBOX_ARGENTUM_TITULO"))
         End If
         
         Call CloseClient
@@ -2946,7 +2968,7 @@ Sub CargarColores()
     
     If Not FileExist(archivoC, vbArchive) Then
         'TODO : Si hay que reinstalar, porque no cierra???
-        Call MsgBox("ERROR: no se ha podido cargar los colores. Falta el archivo colores.dat, reinstale el juego", vbCritical + vbOKOnly)
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_COLORES"), vbCritical + vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ERROR_TITULO"))
         Exit Sub
 
     End If
@@ -3179,6 +3201,7 @@ End Sub
 
 
 Sub LoadFonts()
+#If REMOTE_CLOSE = 0 Then
     If LoadFont("Cardo.ttf") Then
         frmMain.NombrePJ.font.name = "Cardo"
     End If
@@ -3208,11 +3231,10 @@ Sub LoadFonts()
 
         Call SelLineSpacing(frmMain.RecTxt, 5, 22)
     End If
-    '#If PYMMO = 1 Then
-        Dim arr() As Byte
-        
-        ReDim arr(1 To 16) As Byte
-        
+#End If
+#If PYMMO = 1 Then
+    Dim arr() As Byte
+    ReDim arr(1 To 16) As Byte
     arr(15) = 1
     arr(16) = 62
     arr(4) = 7
@@ -3229,11 +3251,11 @@ Sub LoadFonts()
     arr(6) = 22
     arr(1) = 11
     arr(2) = 64
-        MapInfoEspeciales = estaInmovilizado(arr)
-    '#End If
+    MapInfoEspeciales = estaInmovilizado(arr)
+#End If
     
     #If DEBUGGING = 1 Then
-        Debug.Print MapInfoEspeciales
+        frmDebug.add_text_tracebox MapInfoEspeciales
     #Else
     
     #End If
@@ -3244,7 +3266,7 @@ Function LoadFont(name As String) As Boolean
     LoadFont = AddFontResourceEx(App.path & "\..\Recursos\OUTPUT\" & name, FR_PRIVATE, 0&) <> 0
 
     If Not YaMostreError And Not LoadFont Then
-        Call MsgBox("No se pudieron cargar algunas fuentes, reinstale el juego para repararlas.", vbOKOnly, "Error al cargar - Argentum20")
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_FUENTES"), vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ERROR_CARGA"))
         YaMostreError = True
     End If
 End Function

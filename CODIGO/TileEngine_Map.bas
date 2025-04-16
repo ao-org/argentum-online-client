@@ -17,11 +17,13 @@ Attribute VB_Name = "TileEngine_Map"
 '
 Option Explicit
 
-Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0)
+
+Sub SwitchMap(ByVal map As Integer, Optional ByVal NewResourceMap As Integer = 0)
+
     
     On Error GoTo SwitchMap_Err
     If NewResourceMap < 1 Then
-        NewResourceMap = Map
+        NewResourceMap = map
     End If
     ResourceMap = NewResourceMap
     
@@ -32,16 +34,8 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
     Call Recursos.CargarMapa(ResourceMap)
 
     map_light = global_light
-    If BabelInitialized Then
-        If ListNPCMapData(ResourceMap).NpcCount > 0 Then
-            Call UpdateMapInfo(map, ResourceMap, MapDat.map_name, ListNPCMapData(ResourceMap).NpcCount, ListNPCMapData(ResourceMap).NpcList(1), MapDat.Seguro)
-        Else
-            Dim EmptyNpc As t_QuestNPCMapData
-            Call UpdateMapInfo(map, ResourceMap, MapDat.map_name, ListNPCMapData(ResourceMap).NpcCount, EmptyNpc, MapDat.Seguro)
-        End If
-    Else
-        Call DibujarMiniMapa
-    End If
+    Call DibujarMiniMapa
+
     
     If isLogged Then Call NameMapa(ResourceMap)
     
@@ -63,7 +57,7 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
 '                    NextMusic = MapDat.music_numberHi
                 End If
                
-                Call ao20audio.playmidi(MapDat.music_numberHi, 0, 0)
+                Call ao20audio.PlayMidi(MapDat.music_numberHi, 0, 0)
                 
             End If
 
@@ -107,7 +101,7 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
             If tutorial(e_tutorialIndex.TUTORIAL_ZONA_INSEGURA).Activo = 1 Then
                 tutorial_index = e_tutorialIndex.TUTORIAL_ZONA_INSEGURA
                 'TUTORIAL MAPA INSEGURO
-                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).Grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 64, 64)
+                Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 64, 64)
             End If
         End If
         frmMain.Coord.ForeColor = RGB(170, 0, 0)
@@ -117,7 +111,7 @@ Sub SwitchMap(ByVal Map As Integer, Optional ByVal NewResourceMap As Integer = 0
     Exit Sub
 
 SwitchMap_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.SwitchMap", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.SwitchMap", Erl)
     Resume Next
     
 End Sub
@@ -143,7 +137,7 @@ Function HayAgua(ByVal x As Integer, ByVal y As Integer) As Boolean
     Exit Function
 
 HayAgua_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.HayAgua", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.HayAgua", Erl)
     Resume Next
     
 End Function
@@ -161,37 +155,12 @@ Function HayLava(ByVal x As Integer, ByVal y As Integer) As Boolean
     Exit Function
 
 HayLava_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.HayLava", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.HayLava", Erl)
     Resume Next
     
 End Function
 
-Function EsArbol(ByVal GrhIndex As Long) As Boolean
-    
-    On Error GoTo EsArbol_Err
-    
-    EsArbol = GrhIndex = 643 Or GrhIndex = 644 Or GrhIndex = 647 Or GrhIndex = 735 Or GrhIndex = 1121 Or GrhIndex = 2931 Or _
-              GrhIndex = 11903 Or GrhIndex = 11904 Or GrhIndex = 11905 Or GrhIndex = 14775 Or GrhIndex = 11906 Or _
-              GrhIndex = 70885 Or GrhIndex = 70884 Or GrhIndex = 71042 Or GrhIndex = 71041 Or _
-              GrhIndex = 15698 Or GrhIndex = 14504 Or GrhIndex = 14505 Or GrhIndex = 15697 Or GrhIndex = 15510 Or _
-              (GrhIndex >= 12581 And GrhIndex <= 12586) Or (GrhIndex >= 12164 And GrhIndex <= 12179) Or _
-              (GrhIndex >= 32142 And GrhIndex <= 32152) Or GrhIndex = 32154 Or (GrhIndex >= 55626 And GrhIndex <= 55640) Or GrhIndex = 55642 Or _
-              (GrhIndex >= 50985 And GrhIndex <= 50991) Or (GrhIndex >= 2547 And GrhIndex <= 2549) Or (GrhIndex >= 6597 And GrhIndex <= 6598) Or (GrhIndex >= 15108 And GrhIndex <= 15110) Or _
-              GrhIndex = 12160 Or GrhIndex = 7220 Or GrhIndex = 462 Or GrhIndex = 463 Or _
-              GrhIndex >= 1877 And GrhIndex <= 1881 Or GrhIndex = 1890 Or GrhIndex = 1892 Or GrhIndex = 433 Or GrhIndex = 460 Or GrhIndex = 461 Or _
-              GrhIndex = 9513 Or GrhIndex = 9514 Or GrhIndex = 9515 Or GrhIndex = 9518 Or GrhIndex = 9519 Or GrhIndex = 9520 Or GrhIndex = 9529 Or _
-              GrhIndex = 14687 Or GrhIndex = 47726 Or GrhIndex = 12333 Or GrhIndex = 12330 Or GrhIndex = 20369 Or GrhIndex = 21120 Or GrhIndex = 21227 Or _
-              GrhIndex = 21352 Or GrhIndex = 12332 Or GrhIndex = 21226
-      
-              GrhIndex = 21352 Or GrhIndex = 12332 Or GrhIndex = 21226 Or GrhIndex = 8258 Or GrhIndex = 32118 Or GrhIndex = 32119 Or GrhIndex = 32129 Or GrhIndex = 32132 Or _
-              GrhIndex = 32133 Or GrhIndex = 32135
-    Exit Function
 
-EsArbol_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.EsArbol", Erl)
-    Resume Next
-    
-End Function
 
 Function AgregarSombra(ByVal GrhIndex As Long) As Boolean
     
@@ -203,7 +172,7 @@ Function AgregarSombra(ByVal GrhIndex As Long) As Boolean
     Exit Function
 
 AgregarSombra_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.AgregarSombra", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.AgregarSombra", Erl)
     Resume Next
     
 End Function
@@ -212,11 +181,11 @@ Public Function EsObjetoFijo(ByVal x As Integer, ByVal y As Integer) As Boolean
     
     On Error GoTo EsObjetoFijo_Err
     
-    Dim OBJIndex As Integer
-    OBJIndex = MapData(x, y).OBJInfo.OBJIndex
+    Dim ObjIndex As Integer
+    ObjIndex = MapData(x, y).OBJInfo.ObjIndex
     
     Dim ObjType As eObjType
-    ObjType = ObjData(OBJIndex).ObjType
+    ObjType = ObjData(ObjIndex).ObjType
     
     EsObjetoFijo = ObjType = eObjType.otForos Or ObjType = eObjType.otCarteles Or ObjType = eObjType.otArboles Or ObjType = eObjType.otYacimiento Or ObjType = eObjType.OtDecoraciones
 
@@ -224,7 +193,7 @@ Public Function EsObjetoFijo(ByVal x As Integer, ByVal y As Integer) As Boolean
     Exit Function
 
 EsObjetoFijo_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.EsObjetoFijo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.EsObjetoFijo", Erl)
     Resume Next
     
 End Function
@@ -245,7 +214,7 @@ Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String)
     Exit Function
 
 Letter_Set_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.Letter_Set", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.Letter_Set", Erl)
     Resume Next
     
 End Function
@@ -257,13 +226,13 @@ Public Sub SetGlobalLight(ByVal base_light As Long)
     On Error GoTo SetGlobalLight_Err
     
     Call Long_2_RGBA(global_light, base_light)
-    global_light.A = 255
+    global_light.a = 255
     light_transition = 1#
     
     Exit Sub
 
 SetGlobalLight_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.SetGlobalLight", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.SetGlobalLight", Erl)
     Resume Next
     
 End Sub
@@ -275,7 +244,7 @@ Public Function Map_FX_Group_Next_Open(ByVal x As Byte, ByVal y As Byte) As Inte
     '*****************************************************************
     On Error GoTo ErrorHandler:
 
-    Dim loopc As Long
+    Dim loopC As Long
     
     If MapData(x, y).FxCount = 0 Then
         MapData(x, y).FxCount = 1
@@ -285,11 +254,11 @@ Public Function Map_FX_Group_Next_Open(ByVal x As Byte, ByVal y As Byte) As Inte
 
     End If
     
-    loopc = 1
+    loopC = 1
 
-    Do Until MapData(x, y).FxList(loopc).FxIndex = 0
+    Do Until MapData(x, y).FxList(loopC).FxIndex = 0
 
-        If loopc = MapData(x, y).FxCount Then
+        If loopC = MapData(x, y).FxCount Then
             Map_FX_Group_Next_Open = MapData(x, y).FxCount + 1
             MapData(x, y).FxCount = Map_FX_Group_Next_Open
             ReDim Preserve MapData(x, y).FxList(1 To Map_FX_Group_Next_Open)
@@ -297,10 +266,10 @@ Public Function Map_FX_Group_Next_Open(ByVal x As Byte, ByVal y As Byte) As Inte
 
         End If
 
-        loopc = loopc + 1
+        loopC = loopC + 1
     Loop
 
-    Map_FX_Group_Next_Open = loopc
+    Map_FX_Group_Next_Open = loopC
     Exit Function
 
 ErrorHandler:
@@ -310,7 +279,7 @@ ErrorHandler:
 
 End Function
 
-Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal Angle As Single)
+Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
     
     On Error GoTo Draw_Sombra_Err
 
@@ -320,15 +289,15 @@ Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
     CurrentFrame = 1
 
     If animate Then
-        If grh.Started > 0 Then
+        If grh.started > 0 Then
             Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.Started) / grh.speed)
+            ElapsedFrames = Fix(0.5 * (FrameTime - grh.started) / grh.speed)
 
             If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
                 CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
 
             Else
-                grh.Started = 0
+                grh.started = 0
             End If
 
         End If
@@ -352,7 +321,7 @@ Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
     Exit Sub
 
 Draw_Sombra_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.Draw_Sombra", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.Draw_Sombra", Erl)
     Resume Next
     
 End Sub
@@ -459,7 +428,7 @@ Sub Engine_Weather_UpdateFog()
     Exit Sub
 
 Engine_Weather_UpdateFog_Err:
-    Call RegistrarError(Err.number, Err.Description, "TileEngine_Map.Engine_Weather_UpdateFog", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.Engine_Weather_UpdateFog", Erl)
     Resume Next
     
 End Sub

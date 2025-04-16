@@ -25,14 +25,14 @@ Begin VB.Form frmMapaGrande
       BorderStyle     =   0  'None
       ClipControls    =   0   'False
       ForeColor       =   &H80000008&
-      Height          =   1335
+      Height          =   2940
       Left            =   8520
-      ScaleHeight     =   89
+      ScaleHeight     =   196
       ScaleMode       =   0  'User
-      ScaleWidth      =   177
+      ScaleWidth      =   180
       TabIndex        =   10
-      Top             =   8760
-      Width           =   2655
+      Top             =   5355
+      Width           =   2700
    End
    Begin VB.PictureBox Picture1 
       Appearance      =   0  'Flat
@@ -45,7 +45,7 @@ Begin VB.Form frmMapaGrande
       ScaleMode       =   0  'User
       ScaleWidth      =   32
       TabIndex        =   9
-      Top             =   7530
+      Top             =   9750
       Width           =   480
    End
    Begin MSComctlLib.ListView ListView1 
@@ -95,9 +95,9 @@ Begin VB.Form frmMapaGrande
    End
    Begin MSComctlLib.ListView listdrop 
       Height          =   780
-      Left            =   9405
+      Left            =   9360
       TabIndex        =   8
-      Top             =   7380
+      Top             =   9600
       Width           =   1800
       _ExtentX        =   3175
       _ExtentY        =   1376
@@ -151,24 +151,24 @@ Begin VB.Form frmMapaGrande
          BackColor       =   &H00FF0000&
          BorderColor     =   &H00C00000&
          FillColor       =   &H0000FFFF&
-         Height          =   480
+         Height          =   405
          Left            =   600
          Top             =   600
          Visible         =   0   'False
-         Width           =   480
+         Width           =   405
       End
       Begin VB.Shape llamadadeclan 
          BackColor       =   &H00FF0000&
          BackStyle       =   1  'Opaque
          BorderColor     =   &H00FF0000&
-         BorderWidth     =   3
-         Height          =   180
+         BorderWidth     =   2
+         Height          =   75
          Left            =   240
-         Shape           =   3  'Circle
+         Shape           =   1  'Square
          Tag             =   "0"
          Top             =   120
          Visible         =   0   'False
-         Width           =   180
+         Width           =   75
       End
       Begin VB.Shape Shape1 
          BackColor       =   &H000000FF&
@@ -219,6 +219,7 @@ Begin VB.Form frmMapaGrande
       End
    End
    Begin VB.Label Label9 
+      Alignment       =   2  'Center
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
       BeginProperty Font 
@@ -232,10 +233,11 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   8760
+      Left            =   8580
       TabIndex        =   15
-      Top             =   6480
-      Width           =   2250
+      Top             =   8775
+      Visible         =   0   'False
+      Width           =   2595
    End
    Begin VB.Label Label8 
       Alignment       =   2  'Center
@@ -253,7 +255,8 @@ Begin VB.Form frmMapaGrande
       Height          =   255
       Left            =   8550
       TabIndex        =   14
-      Top             =   10080
+      Top             =   7350
+      Visible         =   0   'False
       Width           =   2655
    End
    Begin VB.Label Label7 
@@ -315,6 +318,7 @@ Begin VB.Form frmMapaGrande
       Width           =   465
    End
    Begin VB.Label Label3 
+      Alignment       =   2  'Center
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
       BeginProperty Font 
@@ -328,12 +332,13 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   8760
+      Left            =   8550
       TabIndex        =   7
-      Top             =   5685
-      Width           =   2250
+      Top             =   8745
+      Width           =   1500
    End
    Begin VB.Label Label4 
+      Alignment       =   2  'Center
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
       BeginProperty Font 
@@ -347,13 +352,14 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   8760
+      Left            =   9780
       TabIndex        =   6
-      Top             =   5955
+      Top             =   8745
       UseMnemonic     =   0   'False
-      Width           =   2250
+      Width           =   1500
    End
    Begin VB.Label Label5 
+      Alignment       =   2  'Center
       BackColor       =   &H00000000&
       BackStyle       =   0  'Transparent
       BeginProperty Font 
@@ -367,12 +373,13 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   255
-      Left            =   8760
+      Left            =   9780
       TabIndex        =   5
-      Top             =   6210
-      Width           =   2250
+      Top             =   8355
+      Width           =   1500
    End
    Begin VB.Label Label2 
+      Alignment       =   2  'Center
       BackColor       =   &H0000FFFF&
       BackStyle       =   0  'Transparent
       BeginProperty Font 
@@ -386,10 +393,10 @@ Begin VB.Form frmMapaGrande
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   225
-      Left            =   8760
+      Left            =   8550
       TabIndex        =   4
-      Top             =   5430
-      Width           =   2250
+      Top             =   8355
+      Width           =   1500
    End
    Begin VB.Label lblMapInfo 
       Alignment       =   2  'Center
@@ -707,11 +714,11 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
 
     Dim i As Byte
 
-    Label2.Caption = "Vida: " & NpcData(ListView1.SelectedItem.SubItems(2)).Hp & " puntos"
-    Label3.Caption = "Experiencia: " & NpcData(ListView1.SelectedItem.SubItems(2)).exp & " puntos"
-    Label4.Caption = "Oro: " & NpcData(ListView1.SelectedItem.SubItems(2)).oro & " monedas"
-    Label5.Caption = "Ataque: " & NpcData(ListView1.SelectedItem.SubItems(2)).MinHit & "/" & NpcData(ListView1.SelectedItem.SubItems(2)).MaxHit
-    Label9.Caption = "Exp. de clan: " & NpcData(ListView1.SelectedItem.SubItems(2)).ExpClan & " puntos"
+    Label2.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).Hp
+    Label3.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).exp
+    Label4.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).oro
+    Label5.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).MinHit & "/" & NpcData(ListView1.SelectedItem.SubItems(2)).MaxHit
+    Label9.Caption = "EXPERIENCIA DE CLAN: " & NpcData(ListView1.SelectedItem.SubItems(2)).ExpClan & " puntos"
     listdrop.ListItems.Clear
     
     ListView1.ToolTipText = NpcData(ListView1.SelectedItem.SubItems(2)).Name
@@ -734,7 +741,6 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
                 Set subelemento = listdrop.ListItems.Add(, , ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).Name)
 
                 subelemento.SubItems(1) = ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).GrhIndex
-
             Next i
 
             Call listdrop_Click
@@ -779,7 +785,7 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     'lblAllies.left = X * 14 / 32
     
     If x >= llamadadeclan.Left And x <= llamadadeclan.Left + llamadadeclan.Width And y >= llamadadeclan.Top And y <= llamadadeclan.Top + llamadadeclan.Height Then
-        AddtoRichTextBox frmMain.RecTxt, "Ubicación de tu compañero de clan que solicita ayuda: (" & LLamadaDeclanMapa & "-" & LLamadaDeclanX & "-" & LLamadaDeclanY & ").", 2, 51, 223, 1, 1
+        AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_UBICACION_DE_COMPAÑERO") & LLamadaDeclanMapa & "-" & LLamadaDeclanX & "-" & LLamadaDeclanY & ").", 2, 51, 223, 1, 1
 
     End If
 
@@ -810,6 +816,7 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     Label4.Caption = ""
     Label5.Caption = ""
     Label9.Caption = ""
+    Me.PlayerView.Cls 'Limpia el PictureBox que muestra al npc
     listdrop.ListItems.Clear
     
     ListView1.SetFocus
@@ -950,14 +957,14 @@ Public Sub ShowClanCall(ByVal Map As Integer, ByVal PosX As Integer, ByVal PosY 
 
     Dim x As Long
     Dim y As Long
-    x = (idmap - 1) Mod 14
-    y = Int((idmap - 1) / 14)
+    x = (idmap - 1) Mod 19
+    Y = Int((idmap - 1) / 19)
     
-    llamadadeclan.Top = y * 32 + (PosX / 4.5)
-    llamadadeclan.Left = x * 32 + (PosY / 4.5)
+    llamadadeclan.Top = Y * 27 + (PosY / 4.5)
+    llamadadeclan.Left = x * 27 + (PosX / 4.5)
     llamadadeclan.visible = True
     frmMain.LlamaDeclan.enabled = True
     Shape2.visible = True
-    Shape2.Top = y * 32
-    Shape2.Left = x * 32
+    Shape2.Top = Y * 27
+    Shape2.Left = x * 27
 End Sub

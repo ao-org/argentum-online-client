@@ -45,7 +45,7 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .CreandoCant = 0
         .Moving = False
         .Muerto = False
-       ' Debug.Print "ResetCharInfo " & .nombre
+       ' frmdebug.add_text_tracebox "ResetCharInfo " & .nombre
         .nombre = vbNullString
         .Pie = False
         .simbolo = 0
@@ -148,7 +148,7 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
     On Error GoTo MakeChar_Err
 
     'Apuntamos al ultimo Char
-    ' Debug.Print charindex
+    ' frmdebug.add_text_tracebox charindex
     If charindex > LastChar Then LastChar = charindex
     
     With charlist(charindex)

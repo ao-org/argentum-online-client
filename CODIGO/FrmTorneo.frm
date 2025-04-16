@@ -1271,25 +1271,26 @@ End Sub
 Private Sub cmdCrearElAbordaje_Click()
     ' Comprobar que txtAbordaje sea un número par
     If Not IsNumeric(txtAbordaje.Text) Or Val(txtAbordaje.Text) Mod 2 <> 0 Then
-        MsgBox "Por favor, ingrese un número par en cantidad de participantes.", vbExclamation, "Error"
+        MsgBox JsonLanguage.Item("MENSAJE_NUMERO_PAR_PARTICIPANTES"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
         Exit Sub
     End If
 
     ' Comprobar que txtAbordajelvlMin esté entre 1 y 47
     If Not IsNumeric(txtAbordajelvlMin.Text) Or Val(txtAbordajelvlMin.Text) < 1 Or Val(txtAbordajelvlMin.Text) > 47 Then
-        MsgBox "Por favor, ingrese un número entre 1 y 47 en el campo de Nivel Mínimo de Abordaje.", vbExclamation, "Error"
+        MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_ABORDAJE"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
+
         Exit Sub
     End If
 
     ' Comprobar que txtlvlAbordajeMax esté entre 1 y 47
     If Not IsNumeric(txtlvlAbordajeMax.Text) Or Val(txtlvlAbordajeMax.Text) < 1 Or Val(txtlvlAbordajeMax.Text) > 47 Then
-        MsgBox "Por favor, ingrese un número entre 1 y 47 en el campo de Nivel Máximo de Abordaje.", vbExclamation, "Error"
+        MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO_ABORDAJE"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
         Exit Sub
     End If
 
     ' Comprobar que txtAbordajelvlMin sea menor que txtlvlAbordajeMax
     If Val(txtAbordajelvlMin.Text) >= Val(txtlvlAbordajeMax.Text) Then
-        MsgBox "El Nivel Mínimo de Abordaje debe ser menor que el Nivel Máximo de Abordaje.", vbExclamation, "Error"
+        MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_MAYOR_MAXIMO"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
         Exit Sub
     End If
 
@@ -1306,11 +1307,11 @@ Private Sub cmdCrearEldeath_Click()
             Call ParseUserCommand("/crearevento deathmatch " & txtPlayerDeath.Text & " " & txtMinlvldeath.Text & " " & txtMaxlvldeath.Text)
         Else
             ' Mostrar un mensaje de error si txtMaxlvldeath no cumple con las condiciones
-            MsgBox "El nivel máximo debe estar entre 1 y 47 y ser mayor o igual al nivel mínimo.", vbExclamation, "Error"
+            MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
         End If
     Else
         ' Mostrar un mensaje de error si txtMinlvldeath no cumple con las condiciones
-        MsgBox "El nivel mínimo debe estar entre 1 y 47.", vbExclamation, "Error"
+        MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
     End If
 End Sub
 
@@ -1361,7 +1362,7 @@ Private Sub Command5_Click()
 End Sub
 
 Private Sub txtEquipo_Change()
-Debug.Print txtEquipo
+frmDebug.add_text_tracebox txtEquipo
     Call ParseUserCommand("/configlobby setteamsize " & txtEquipo)
 End Sub
 
@@ -1373,7 +1374,7 @@ Private Sub txtValorGarrote_Change()
     Dim valor As Integer
 
     If Not IsNumeric(txtValorGarrote.Text) Then
-        MsgBox "Por favor, introduce un valor numérico válido.", vbExclamation, "Error"
+        MsgBox JsonLanguage.Item("MENSAJE_VALOR_NUMERO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
         txtValorGarrote.Text = ""
         Exit Sub
     End If
@@ -1381,7 +1382,7 @@ Private Sub txtValorGarrote_Change()
     valor = CInt(txtValorGarrote.Text)
 
     If valor > 100000 Then
-        MsgBox "El valor no puede ser mayor que 100K.", vbExclamation, "Error"
+        MsgBox JsonLanguage.Item("MENSAJE_VALOR_MAXIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
         txtValorGarrote.Text = ""
         Exit Sub
     End If

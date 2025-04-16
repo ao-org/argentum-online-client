@@ -124,5 +124,18 @@ Public Function ByteArrayToHex(ByRef ByteArray() As Byte) As String
     ByteArrayToHex = Left$(strRet, Len(strRet) - 1)
 End Function
 
+Public Function ByteArrayToDecimalString(ByRef oMsg() As Byte) As String
+    Dim i As Long
+    Dim result As String
+    
+      
+    ' Loop through the byte array and build the string
+    For i = LBound(oMsg) To UBound(oMsg)
+        result = result & oMsg(i) & " "
+    Next i
+    
+    ' Trim trailing space and return result
+    ByteArrayToDecimalString = Trim(result)
+End Function
 
 

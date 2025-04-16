@@ -17,6 +17,11 @@ Attribute VB_Name = "dx_utils"
 '
 Option Explicit
 
+Public DirectX As DirectX8
+Public DirectD3D8 As D3DX8
+Public DirectD3D As Direct3D8
+Public DirectDevice As Direct3DDevice8
+
 Public game_resolution As D3DDISPLAYMODE
 
 Public Sub get_game_resolution(ByRef mode As D3DDISPLAYMODE)
@@ -32,8 +37,6 @@ Public Sub list_modes(ByRef d3d As Direct3D8)
     Dim i As Long
     For i = 0 To d3d.GetAdapterModeCount(0) - 1 'primary adapter
         Call d3d.EnumAdapterModes(0, i, tmpDispMode)
-        Debug.Print tmpDispMode.Width & "x" & tmpDispMode.Height & " fmt:" & tmpDispMode.format
-        
     Next i
 End Sub
 
@@ -43,22 +46,22 @@ On Error Resume Next
     Err.Clear
     Set DirectX = New DirectX8
     If Err.Number <> 0 Then
-                Call MsgBox("Fatal error creating DirectX8 objetct", vbCritical, App.title)
-                Debug.Print "Error Number Returned: " & Err.Number
+                Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_DIRECTX"), vbCritical, App.title)
+                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
                 Exit Function
     End If
     
     Set DirectD3D = DirectX.Direct3DCreate()
     If Err.Number <> 0 Then
-                Call MsgBox("Fatal error creating DirectD3D objetct", vbCritical, App.title)
-                Debug.Print "Error Number Returned: " & Err.Number
+                Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_DIRECTD3D"), vbCritical, App.title)
+                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
                 Exit Function
     End If
     
     Set DirectD3D8 = New D3DX8
     If Err.Number <> 0 Then
-                Call MsgBox("Fatal error creating DirectD3D8 objetct", vbCritical, App.title)
-                Debug.Print "Error Number Returned: " & Err.Number
+                Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_DIRECTD3D8"), vbCritical, App.title)
+                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
                 Exit Function
     End If
     init_dx_objects = Err.Number
@@ -74,20 +77,20 @@ On Error Resume Next
     Err.Clear
     DirectD3D.GetDeviceCaps D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, Caps
     If Err.Number = D3DERR_NOTAVAILABLE Then
-        Debug.Print "HAL Is Not available, using; software; vertex; processing"
+        frmDebug.add_text_tracebox "HAL Is Not available, using; software; vertex; processing"
         DevType = D3DDEVTYPE_REF
         DevBehaviorFlags = D3DCREATE_SOFTWARE_VERTEXPROCESSING
     Else
         DevType = D3DDEVTYPE_HAL
-        Debug.Print "VertexProcessingCaps = " & Caps.VertexProcessingCaps
+        frmDebug.add_text_tracebox "VertexProcessingCaps = " & Caps.VertexProcessingCaps
         If Caps.VertexProcessingCaps = 0 Then
-            Debug.Print "HAL Is available, " & "Using; software; vertex; processing"
+            frmDebug.add_text_tracebox "HAL Is available, " & "Using; software; vertex; processing"
             DevBehaviorFlags = D3DCREATE_SOFTWARE_VERTEXPROCESSING
         ElseIf Caps.VertexProcessingCaps = &H4B Then
-            Debug.Print "HAL Is available, " & "Using; hardware; vertex; processing; "
+            frmDebug.add_text_tracebox "HAL Is available, " & "Using; hardware; vertex; processing; "
             DevBehaviorFlags = D3DCREATE_HARDWARE_VERTEXPROCESSING
         Else
-            Debug.Print "HAL Is available, " & "Using; mixed; vertex; processing; "
+            frmDebug.add_text_tracebox "HAL Is available, " & "Using; mixed; vertex; processing; "
             DevBehaviorFlags = D3DCREATE_MIXED_VERTEXPROCESSING
         End If
     End If
@@ -96,7 +99,7 @@ On Error Resume Next
     'Moving forward we want the backbuffer size and fmt to be configurable
     Call get_game_resolution(game_resolution)
 
-    Debug.Print "Using; Windowed; mode"
+    frmDebug.add_text_tracebox "Using; Windowed; mode"
     D3DWindow.Windowed = 1
     D3DWindow.BackBufferWidth = game_resolution.Width
     D3DWindow.BackBufferHeight = game_resolution.Height
@@ -108,13 +111,13 @@ On Error Resume Next
     D3DWindow.AutoDepthStencilFormat = D3DFMT_D16
     Err.Clear
     Set DirectDevice = DirectD3D.CreateDevice(D3DADAPTER_DEFAULT, DevType, frmMain.renderer.hwnd, DevBehaviorFlags, D3DWindow)
-    Debug.Print "Create; Direct3D; device: ", Err
+    frmDebug.add_text_tracebox "Create; Direct3D; device: " & Err
     If (Err.Number <> 0) Then
         'if we failed to create the device with D3DFMT_A8R8G8B8 we try to do it with current display fmt
         D3DWindow.BackBufferFormat = d3dDispMode.format
         Err.Clear
         Set DirectDevice = DirectD3D.CreateDevice(D3DADAPTER_DEFAULT, DevType, frmMain.renderer.hwnd, DevBehaviorFlags, D3DWindow)
-        Debug.Print "Create; Direct3D; device: ", Err
+        frmDebug.add_text_tracebox "Create; Direct3D; device: " & Err
     End If
     init_dx_device = Err.Number
     

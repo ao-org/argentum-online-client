@@ -328,12 +328,6 @@ Begin VB.Form frmOpciones
          Top             =   3960
          Width           =   2175
       End
-      Begin VB.Image CheckUI 
-         Height          =   255
-         Left            =   270
-         Top             =   3495
-         Width           =   255
-      End
       Begin VB.Image num_comp_inv 
          Height          =   255
          Left            =   270
@@ -672,27 +666,27 @@ Private Sub BtnSolapa_MouseDown(Index As Integer, Button As Integer, Shift As In
     
         Case 0
             Name = "jugabilidad"
-            PanelJugabilidad.Visible = True
-            PanelVideo.Visible = False
-            PanelAudio.Visible = False
+            PanelJugabilidad.visible = True
+            PanelVideo.visible = False
+            PanelAudio.visible = False
             Call SetSolapa(0, 2)
             Call SetSolapa(1, 0)
             Call SetSolapa(2, 0)
             
         Case 1
             Name = "video"
-            PanelJugabilidad.Visible = False
-            PanelVideo.Visible = True
-            PanelAudio.Visible = False
+            PanelJugabilidad.visible = False
+            PanelVideo.visible = True
+            PanelAudio.visible = False
             Call SetSolapa(0, 0)
             Call SetSolapa(1, 2)
             Call SetSolapa(2, 0)
             
         Case 2
             Name = "audio"
-            PanelJugabilidad.Visible = False
-            PanelVideo.Visible = False
-            PanelAudio.Visible = True
+            PanelJugabilidad.visible = False
+            PanelVideo.visible = False
+            PanelAudio.visible = True
             Call SetSolapa(0, 0)
             Call SetSolapa(1, 0)
             Call SetSolapa(2, 2)
@@ -725,7 +719,7 @@ Private Sub SetSolapa(Index As Integer, ByVal Tag As String)
         Case "2": estado = "default"
     End Select
     
-    BtnSolapa(Index).Picture = LoadInterface("boton-" & name & "-" & estado & ".bmp")
+    BtnSolapa(Index).Picture = LoadInterface("boton-" & Name & "-" & estado & ".bmp")
     BtnSolapa(Index).Tag = Tag
 
 End Sub
@@ -862,7 +856,7 @@ Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         Call SaveSetting("VIDEO", "CursoresGraficos", 0)
     End If
     
-    MsgBox "Para que los cambios en esta opci n sean reflejados, deber  reiniciar el cliente.", vbQuestion, "Argentum20 - Advertencia" 'hay que poner 20 aniversario
+    MsgBox JsonLanguage.Item("MENSAJEBOX_REINICIAR_CLIENTE"), vbQuestion, JsonLanguage.Item("MENSAJEBOX_ADVERTENCIA") 'hay que poner 20 aniversario
 
     Exit Sub
 
@@ -891,26 +885,7 @@ Check8_MouseUp_Err:
     Resume Next
 End Sub
 
-Private Sub CheckUI_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    On Error GoTo CheckUI_MouseUp_Err
-    
 
-    SaveUseBabelUI = Not SaveUseBabelUI
-
-    If Not SaveUseBabelUI Then
-        CheckUI.Picture = Nothing
-    Else
-        CheckUI.Picture = LoadInterface("check-amarillo.bmp")
-        Call MsgBox("Deber s reiniciar el cliente para que esta configuraci n tome efecto.", vbExclamation)
-    End If
-
-    
-    Exit Sub
-
-CheckUI_MouseUp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.CheckUI_MouseUp", Erl)
-    Resume Next
-End Sub
 
 Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo chkInvertir_MouseUp_Err
@@ -949,19 +924,19 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
     On Error GoTo chkO_MouseUp_Err
     
 
-    Call ao20audio.playwav(SND_CLICK)
+    Call ao20audio.PlayWav(SND_CLICK)
 
     Select Case Index
 
         Case 0
 
             If ao20audio.MusicEnabled Then
-                ao20audio.stopallplayback
+                ao20audio.StopAllPlayback
                 ao20audio.MusicEnabled = False
-                scrMidi.Enabled = False
+                scrMidi.enabled = False
             Else
                 ao20audio.MusicEnabled = True
-                scrMidi.Enabled = True
+                scrMidi.enabled = True
             End If
 
             If Not ao20audio.MusicEnabled Then
@@ -975,14 +950,14 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
 
             If ao20audio.FxEnabled Then
                 ao20audio.FxEnabled = 0
-                chko(2).Enabled = False
-                scrVolume.Enabled = False
+                chko(2).enabled = False
+                scrVolume.enabled = False
             
-                Call ao20audio.stopallplayback
+                Call ao20audio.StopAllPlayback
             Else
                 ao20audio.FxEnabled = 1
-                chko(2).Enabled = True
-                scrVolume.Enabled = True
+                chko(2).enabled = True
+                scrVolume.enabled = True
 
             End If
         
@@ -1012,11 +987,11 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
         Case 3
 
             If ao20audio.AmbientEnabled = 1 Then
-                HScroll1.Enabled = False
+                HScroll1.enabled = False
                 ao20audio.AmbientEnabled = 0
                 Call ao20audio.StopAmbientAudio
             Else
-                HScroll1.Enabled = True
+                HScroll1.enabled = True
                 ao20audio.AmbientEnabled = 1
                 Call ao20audio.PlayAmbientAudio(UserMap)
             End If
@@ -1085,8 +1060,8 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
     
     
     Exit Sub
@@ -1102,9 +1077,9 @@ Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     On Error GoTo cmdCerrar_MouseMove_Err
     
 
-    If cmdCerrar.Tag = "0" Then
+    If cmdcerrar.Tag = "0" Then
         'cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
-        cmdCerrar.Tag = "1"
+        cmdcerrar.Tag = "1"
 
     End If
 
@@ -1128,7 +1103,7 @@ Private Sub cmdWeb_Click()
     
     On Error GoTo cmdWeb_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://argentumonline.com.ar/", "", "", 0
+    ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/", "", "", 0
 
     
     Exit Sub
@@ -1143,7 +1118,7 @@ Private Sub Command5_Click()
     
     On Error GoTo Command5_Click_Err
     
-    MsgBox ("Proximamente")
+    MsgBox JsonLanguage.Item("MENSAJEBOX_PROXIMAMENTE")
 
     
     Exit Sub
@@ -1306,7 +1281,7 @@ Private Sub Command2_Click()
     
     Bajar = True
     Subir = False
-    Timer1.Enabled = True
+    Timer1.enabled = True
 
     
     Exit Sub
@@ -1323,7 +1298,7 @@ Private Sub Command3_Click()
     
     Subir = True
     Bajar = False
-    Timer1.Enabled = True
+    Timer1.enabled = True
 
     
     Exit Sub
@@ -1351,8 +1326,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     facebook.Tag = "0"
     Command1 = Nothing
     Command1.Tag = "0"
-    cmdCerrar = Nothing
-    cmdCerrar.Tag = "0"
+    cmdcerrar = Nothing
+    cmdcerrar.Tag = "0"
     cmdChangePassword = Nothing
     cmdChangePassword.Tag = "0"
 
@@ -1381,14 +1356,8 @@ Private Sub cmdcerrar_Click()
     On Error GoTo cmdcerrar_Click_Err
     
     Call SaveConfig
-    Me.Visible = False
-    
-    If BabelInitialized Then
-        frmBabelUI.SetFocus
-        Call ReloadSettings
-    Else
-        frmMain.SetFocus
-    End If
+    Me.visible = False
+    frmMain.SetFocus
 
     
     Exit Sub
@@ -1456,12 +1425,8 @@ Public Sub Init()
         Check4.Picture = LoadInterface("check-amarillo.bmp")
     End If
     
-    If Not UseBabelUI Then
-        CheckUI.Picture = Nothing
-    Else
-        CheckUI.Picture = LoadInterface("check-amarillo.bmp")
-    End If
     
+
     
     
     If ScrollArrastrar = 0 Then
@@ -1522,9 +1487,9 @@ Public Sub Init()
 
     End If
     
-    scrVolume.Value = VolFX
-    HScroll1.Value = VolAmbient
-    scrMidi.Value = VolMusic
+    scrVolume.value = max(scrVolume.min, min(scrVolume.max, VolFX))
+    HScroll1.value = max(HScroll1.min, min(HScroll1.max, VolAmbient))
+    scrMidi.value = max(scrMidi.min, min(scrMidi.max, VolMusic))
     
     Alpha.Value = AlphaMacro
     
@@ -1654,7 +1619,7 @@ Private Sub scrVolume_Change()
 On Error GoTo scrVolume_Change_Err
     VolFX = scrVolume.Value
     Call ao20audio.SetFxVolume(scrVolume.Value)
-    Call ao20audio.playwav(SND_RESUCITAR, False, scrVolume.Value)
+    Call ao20audio.PlayWav(SND_RESUCITAR, False, scrVolume.Value)
     Exit Sub
 scrVolume_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolume_Change", Erl)

@@ -591,21 +591,21 @@ Function CheckData() As Boolean
 
     If UserStats.Raza = 0 Then
         frmMensaje.Show , frmConnect
-        frmMensaje.msg.Caption = "Seleccione la raza del personaje."
+        frmMensaje.msg.Caption = JsonLanguage.Item("MENSAJEBOX_SELECCION_RAZA")
         Exit Function
 
     End If
 
     If MiCabeza = 0 Then
         frmMensaje.Show , frmConnect
-        frmMensaje.msg.Caption = "Seleccione una cabeza para el personaje."
+        frmMensaje.msg.Caption = JsonLanguage.Item("MENSAJEBOX_SELECCION_CABEZA")
         Exit Function
 
     End If
 
     If UserStats.Sexo = 0 Then
         frmMensaje.Show , frmConnect
-        frmMensaje.msg.Caption = "Seleccione el sexo del personaje."
+        frmMensaje.msg.Caption = JsonLanguage.Item("MENSAJEBOX_SELECCION_SEXO")
         Exit Function
 
     End If
@@ -614,7 +614,7 @@ Function CheckData() As Boolean
     
     If UserStats.Hogar = 0 Then
         frmMensaje.Show , frmConnect
-        frmMensaje.msg.Caption = "Seleccione el hogar del personaje."
+        frmMensaje.msg.Caption = JsonLanguage.Item("MENSAJEBOX_SELECCION_HOGAR")
         Exit Function
 
     End If
@@ -622,7 +622,7 @@ Function CheckData() As Boolean
 
     If UserStats.Clase = 0 Then
         frmMensaje.Show , frmConnect
-        frmMensaje.msg.Caption = "Seleccione la clase del personaje."
+        frmMensaje.msg.Caption = JsonLanguage.Item("MENSAJEBOX_SELECCION_CLASE")
         Exit Function
 
     End If
@@ -633,7 +633,7 @@ Function CheckData() As Boolean
     Exit Function
 
 CheckData_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.CheckData", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.CheckData", Erl)
     Resume Next
     
 End Function
@@ -651,13 +651,13 @@ Function RandomNumber(ByVal LowerBound As Variant, ByVal UpperBound As Variant) 
     Exit Function
 
 RandomNumber_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.RandomNumber", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.RandomNumber", Erl)
     Resume Next
     
 End Function
 
 Private Sub Form_Activate()
-    g_game_state.state = e_state_createchar_screen
+    g_game_state.State = e_state_createchar_screen
 End Sub
 
 Private Sub Form_Load()
@@ -679,7 +679,7 @@ Private Sub Form_Load()
     Exit Sub
 
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.Form_Load", Erl)
     Resume Next
     
 End Sub
@@ -792,7 +792,7 @@ Private Sub lstProfesion_Click()
     Exit Sub
 
 lstProfesion_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.lstProfesion_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.lstProfesion_Click", Erl)
     Resume Next
     
 End Sub
@@ -822,7 +822,7 @@ Private Sub lstRaza_Click()
     Exit Sub
 
 lstRaza_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.lstRaza_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.lstRaza_Click", Erl)
     Resume Next
     
 End Sub
@@ -948,7 +948,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     End If
 
     If x > 148 And x < 246 And y > 630 And y < 670 Then 'Boton > Volver
-        Call ao20audio.playwav(SND_CLICK)
+        Call ao20audio.PlayWav(SND_CLICK)
 
         UserMap = 307
         AlphaNiebla = 25
@@ -956,23 +956,21 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         EntradaX = 1
     
         Call SwitchMap(UserMap)
-        If Not UseBabelUI Then
-            frmConnect.visible = True
-        End If
-        g_game_state.state = e_state_account_screen
+        frmConnect.visible = True
+        g_game_state.State = e_state_account_screen
         Unload Me
 
     End If
 
     If x > 731 And x < 829 And y > 630 And y < 670 Then 'Boton > Crear
-        Call ao20audio.playwav(SND_CLICK)
+        Call ao20audio.PlayWav(SND_CLICK)
 
         Dim k As Object
 
         If StopCreandoCuenta = True Then Exit Sub
             
-        If Right$(UserName, 1) = " " Then
-            UserName = RTrim$(UserName)
+        If Right$(userName, 1) = " " Then
+            userName = RTrim$(userName)
 
             'MsgBox "Nombre invalido, se han removido los espacios al final del nombre"
         End If
@@ -1002,8 +1000,8 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             StopCreandoCuenta = True
                 
-            If Connected And Not BabelInitialized Then
-                frmMain.ShowFPS.Enabled = True
+            If Connected Then
+                frmMain.ShowFPS.enabled = True
             End If
             frmConnecting.Show
             Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
@@ -1016,7 +1014,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     Exit Sub
 
 render_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.render_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.render_MouseUp", Erl)
     Resume Next
     
 End Sub
@@ -1034,7 +1032,7 @@ Private Sub Cabeza_Click()
     Exit Sub
 
 Cabeza_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.Cabeza_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.Cabeza_Click", Erl)
     Resume Next
     
 End Sub
@@ -1050,7 +1048,7 @@ Private Sub lstGenero_Click()
     Exit Sub
 
 lstGenero_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCrearPersonaje.lstGenero_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.lstGenero_Click", Erl)
     Resume Next
     
 End Sub

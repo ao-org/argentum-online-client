@@ -137,9 +137,9 @@ Private Sub Command1_Click()
 
     If Text1 = "" Then
         If t = PAZ Or t = ALIANZA Then
-            MsgBox "Debes redactar un mensaje solicitando la paz o alianza al líder de " & Nombre
+            MsgBox JsonLanguage.Item("MENSAJEBOX_SOLICITAR_PAZ") & nombre
         Else
-            MsgBox "Debes indicar el motivo por el cual rechazas la membresía de " & Nombre
+            MsgBox JsonLanguage.Item("MENSAJEBOX_RECHAZAR_MEMBRESIA") & nombre
 
         End If
 

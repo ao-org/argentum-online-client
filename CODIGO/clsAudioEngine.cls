@@ -55,6 +55,71 @@ End Type
 
 Private mMidiTrack(1 To 3) As MidiTrack
 
+
+' Declare the mciSendString API function from winmm.dll.
+Private Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" ( _
+    ByVal lpstrCommand As String, _
+    ByVal lpstrReturnString As String, _
+    ByVal uReturnLength As Long, _
+    ByVal hwndCallback As Long) As Long
+
+Public Function StopMP3() As Long
+    StopMP3 = -1
+    ' Stop playback of the MP3 file.
+    mciSendString "stop mp3", vbNullString, 0, 0
+    ' Close the MP3 file to release resources.
+    mciSendString "close mp3", vbNullString, 0, 0
+    StopMP3 = 1
+End Function
+
+Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
+    Dim command As String
+    Dim ret As Long
+    
+    If filename = "" Then
+        PlayMP3 = -1   ' Error: file not found.
+        Exit Function
+    End If
+
+    ' Stop and close any currently playing MP3.
+    mciSendString "stop mp3", vbNullString, 0, 0
+    mciSendString "close mp3", vbNullString, 0, 0
+
+
+    Dim PathToFile As String
+    #If Compresion = 1 Then
+        If Extract_File(mp3, GetCompressedResourcesPath(), filename, Windows_Temp_Dir, ResourcesPassword, False) Then
+            ' Open the MP3 file with an alias "mp3".
+            PathToFile = Windows_Temp_Dir & filename
+        End If
+    #Else
+        PathToFile = ao20audio.GetMp3FilesPath() & filename
+    #End If
+    Debug.Assert FileExist(PathToFile, vbArchive)
+    command = "open """ & PathToFile & """ type mpegvideo alias mp3"
+    ret = mciSendString(command, vbNullString, 0, 0)
+    If ret <> 0 Then
+        PlayMP3 = ret
+        Exit Function
+    End If
+
+    ' If a volume value is provided, set the volume.
+    ' Note: The acceptable volume range and behavior may depend on the MCI implementation.
+    If volume <> 0 Then
+        command = "setaudio mp3 volume to " & volume
+        ret = mciSendString(command, vbNullString, 0, 0)
+    End If
+
+    ' Play the MP3 file; append the "repeat" flag if looping is desired.
+    command = "play mp3"
+    If looping Then
+        command = command & " repeat"
+    End If
+    ret = mciSendString(command, vbNullString, 0, 0)
+    
+    PlayMP3 = ret
+End Function
+
 Public Function GetMidiTrackName(ByVal track_id As Integer) As String
     Debug.Assert track_id < UBound(mMidiTrack)
     If track_id < UBound(mMidiTrack) Then
@@ -69,16 +134,16 @@ On Error Resume Next
     Err.Number = 0
     Set mDirectSoundEnum = mDirectX.GetDSEnum
     If Err.Number <> 0 Then
-                Call MsgBox("Fatal error DirectX.GetDSEnum", vbCritical, App.title)
-                Debug.Print "Error Number Returned: " & Err.Number
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_ENUM"), vbCritical, App.title)
+                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
                 InitSoundEngine = Err.Number
                 Exit Function
     End If
     
     Set mDirectSound = DirectX.DirectSoundCreate(mDirectSoundEnum.GetGuid(1))
     If Err.Number <> 0 Then
-                Call MsgBox("Fatal error DirectX.DirectSoundCreate", vbCritical, App.title)
-                Debug.Print "Error Number Returned: " & Err.Number
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_CREAR"), vbCritical, App.title)
+                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
                 InitSoundEngine = Err.Number
                 Exit Function
     End If
@@ -93,15 +158,15 @@ On Error Resume Next
     With mMidiTrack(1)
             Set .directMusicLoader = dx8.DirectMusicLoaderCreate
             If Err.Number <> 0 Then
-                Call MsgBox("Fatal error DirectX.DirectMusicLoaderCreate", vbCritical, App.title)
-                Debug.Print "Error Number Returned: " & Err.Number
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_MUSIC"), vbCritical, App.title)
+                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
                 InitMusicEngine = Err.Number
                 Exit Function
             End If
             Set .directMusicPerformance = dx8.DirectMusicPerformanceCreate
             If Err.Number <> 0 Then
-                Call MsgBox("Fatal error  dx8.DirectMusicPerformanceCreate", vbCritical, App.title)
-                Debug.Print "Error Number Returned: " & Err.Number
+                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_MUSIC_PERFORMANCE"), vbCritical, App.title)
+                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
                 InitMusicEngine = Err.Number
                 Exit Function
             Else
@@ -121,12 +186,12 @@ Public Function Init(ByRef dx8 As DirectX8, ByVal hwnd As Long) As Long
     Set mDirectX = dx8
     Init = InitSoundEngine(hwnd)
     If Init <> 0 Then
-        Debug.Print "InitSoundEngine() failed with code " & Init
+        frmDebug.add_text_tracebox "InitSoundEngine() failed with code " & Init
         Exit Function
     End If
     Init = InitMusicEngine(dx8, hwnd)
     If Init <> 0 Then
-        Debug.Print "InitSoundEngine() failed with code " & Init
+        frmDebug.add_text_tracebox "InitSoundEngine() failed with code " & Init
         Exit Function
     End If
     Init = 0
@@ -156,7 +221,7 @@ On Error GoTo Error_Handl
     LoadMidi = True
     Exit Function
 Error_Handl:
-    Debug.Print "error al cargar musica"
+    frmDebug.add_text_tracebox "error al cargar musica"
 End Function
 
 Private Function CreateWavBufferFromFile(ByVal file_name As Integer, ByRef new_buffer As DirectSoundSecondaryBuffer8, Optional ByVal Extraido As Boolean = False) As Boolean
@@ -260,7 +325,7 @@ Private Function GetFreeWavTrack() As Integer
                     Exit Function
                 Else
                     Dim sf As CONST_DSBSTATUSFLAGS: sf = .Buffer.GetStatus
-                    'Debug.Print "buffer status " & sf
+                    'frmdebug.add_text_tracebox "buffer status " & sf
                     If (DSBSTATUS_PLAYING And sf) = 0 And (DSBSTATUS_LOOPING And sf) = 0 Then
                         GetFreeWavTrack = i
                         Exit Function
@@ -304,7 +369,7 @@ On Error GoTo PlayAmbient_Error_Handl
     
     Dim tid As Integer
     tid = UBound(mAudioTracks)
-    Debug.Print "PlayAmbient, track " & tid & " id: " & id
+    frmDebug.add_text_tracebox "PlayAmbient, track " & tid & " id: " & id
     With mAudioTracks(tid)
             .Name = id
             Set .Buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(id))
@@ -335,7 +400,6 @@ On Error GoTo PlayWav_Error_Handl
     
     Dim tid As Integer
     tid = GetFreeWavTrack()
-    Debug.Print "PlayWav, track " & tid & " id: " & sound_id
     If (tid > -1) Then
         With mAudioTracks(tid)
             .Name = sound_id
@@ -344,8 +408,6 @@ On Error GoTo PlayWav_Error_Handl
             Call StartPlaying(.Buffer, IIf(looping, DSBPLAY_LOOPING, DSBPLAY_DEFAULT), volume, pan)
         End With
         PlayWav = 0
-    Else
-        Debug.Print "PlayWav failed because track id is -1"
     End If
     Exit Function
 
@@ -492,6 +554,7 @@ End Sub
 Private Sub Class_Terminate()
 On Error Resume Next
     Err.Clear
+    StopMP3
     StopAllPlayback
     Dim i As Integer
     For i = 1 To UBound(mMidiTrack)

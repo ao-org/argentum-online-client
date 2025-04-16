@@ -27,14 +27,11 @@ Attribute VB_Name = "ModGameplayUI"
 '
 
 Public Sub SetupGameplayUI()
-    If BabelInitialized Then
-        Call BabelUI.SetActiveScreen("gameplay")
-        Call BabelUI.SetUserName(username)
-    Else
+   
         frmMain.shapexy.Left = 1200
         frmMain.shapexy.Top = 1200
         frmMain.shapexy.BackColor = RGB(170, 0, 0)
-        frmMain.NombrePJ.Caption = username
+        frmMain.NombrePJ.Caption = userName
         ' Detect links in console
         Call EnableURLDetect(frmMain.RecTxt.hwnd, frmMain.hwnd)
         Call Make_Transparent_Richtext(frmMain.RecTxt.hwnd)
@@ -55,7 +52,7 @@ Public Sub SetupGameplayUI()
         frmMain.Height = D3DWindow.BackBufferHeight * screen.TwipsPerPixelY
         frmMain.visible = True
         ActiveInventoryTab = eInventory
-    End If
+
     Call LoadHotkeys
 End Sub
 
@@ -108,7 +105,6 @@ On Error GoTo OnClick_Err
                             If Not SendSkill Then
                                 Exit Sub
                             End If
-                            If BabelInitialized Then Call BabelUI.ActivateInterval(e_CdTypes.e_magic)
                             Call MainTimer.Restart(TimersIndex.CastAttack)
                             Call MainTimer.Restart(TimersIndex.CastSpell)
                         Else
@@ -119,7 +115,7 @@ On Error GoTo OnClick_Err
                                         Exit Sub
                                     End If
                                     Call MainTimer.Restart(TimersIndex.CastAttack)
-                                    If BabelInitialized Then Call BabelUI.ActivateInterval(e_CdTypes.e_magic)
+
                                 ElseIf ModoHechizos = SinBloqueo Then
                                     SendSkill = IIf((MouseX >= frmMain.renderer.ScaleLeft And MouseX <= 736 + frmMain.renderer.ScaleLeft And MouseY >= frmMain.renderer.ScaleTop And MouseY <= frmMain.renderer.ScaleTop + 608), True, False)
                                     
@@ -156,7 +152,6 @@ On Error GoTo OnClick_Err
                                     SendSkill = True
                                     Call MainTimer.Restart(TimersIndex.Attack) ' Prevengo flecha-golpe
                                     Call MainTimer.Restart(TimersIndex.CastSpell) ' flecha-hechizo
-                                    If BabelInitialized Then Call BabelUI.ActivateInterval(e_CdTypes.e_Ranged)
                                 End If
                             End If
                         End If
@@ -236,7 +231,7 @@ On Error GoTo OnClick_Err
         End If
         If CharIndex <> 0 Then
             If charlist(CharIndex).nombre <> charlist(UserCharIndex).nombre Then
-                If charlist(CharIndex).esNpc = False Then
+                If charlist(CharIndex).EsNpc = False Then
                     frmMain.SendTxt.Text = "\" & charlist(CharIndex).nombre & " "
                     If frmMain.SendTxtCmsg.visible = False Then
                         frmMain.SendTxt.visible = True
@@ -277,11 +272,11 @@ Public Sub HandleQuestionResponse(ByVal Result As Boolean)
     PreguntaLocal = False
 End Sub
 
-Public Sub HandleGameplayAreaMouseUp(ByVal button As Integer, ByVal x As Integer, ByVal y As Integer, ByVal FormTop As Long, _
+Public Sub HandleGameplayAreaMouseUp(ByVal Button As Integer, ByVal x As Integer, ByVal y As Integer, ByVal FormTop As Long, _
                                      ByVal FormLeft As Long, ByVal FormHeight As Long, ByRef GameplayArea As RECT)
     clicX = x
     clicY = y
-    If button = vbLeftButton Then
+    If Button = vbLeftButton Then
         If HandleMouseInput(x, y) Then
         ElseIf Pregunta Then
             If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
@@ -293,7 +288,7 @@ Public Sub HandleGameplayAreaMouseUp(ByVal button As Integer, ByVal x As Integer
             End If
         End If
     
-    ElseIf button = vbRightButton Then
+    ElseIf Button = vbRightButton Then
         Dim CharIndex As Integer
         CharIndex = MapData(tX, tY).CharIndex
         If CharIndex = 0 Then
@@ -306,7 +301,7 @@ Public Sub HandleGameplayAreaMouseUp(ByVal button As Integer, ByVal x As Integer
             TargetY = tY
             If charlist(CharIndex).EsMascota Then
                 Set Frm = MenuNPC
-            ElseIf Not charlist(CharIndex).esNpc Then
+            ElseIf Not charlist(CharIndex).EsNpc Then
                 TargetName = charlist(CharIndex).nombre
                 If charlist(UserCharIndex).priv > 0 And Shift = 0 Then
                     Set Frm = MenuGM
@@ -402,31 +397,7 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         .PuedeUsar = CanUse
         .IsBindable = IsBindable > 0
     End With
-    If BabelInitialized Then
-        Dim SlotInfo As t_InvItem
-        SlotInfo.Amount = Amount
-        SlotInfo.CanUse = CanUse
-        SlotInfo.Equiped = Equipped
-        SlotInfo.GrhIndex = GrhIndex
-        SlotInfo.MaxDef = ObjData(OBJIndex).MaxDef
-        SlotInfo.MinDef = ObjData(OBJIndex).MinDef
-        SlotInfo.MaxHit = MaxHit
-        SlotInfo.MinHit = MinHit
-        SlotInfo.Name = Name
-        SlotInfo.Slot = Slot
-        SlotInfo.ObjIndex = ObjIndex
-        SlotInfo.ObjType = ObjType
-        SlotInfo.Value = Value
-        SlotInfo.Cooldown = ObjData(OBJIndex).Cooldown
-        SlotInfo.CDType = ObjData(OBJIndex).CDType
-        SlotInfo.CDMask = GetCDMaskForItem(ObjData(OBJIndex))
-        SlotInfo.Desc = ObjData(ObjIndex).Texto
-        SlotInfo.Amunition = ObjData(ObjIndex).Amunition
-        SlotInfo.IsBindable = IsBindable
-        Call SetInvSlot(SlotInfo)
-    Else
-        Call frmMain.Inventario.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, Def, Value, Name, CanUse)
-    End If
+    Call frmMain.Inventario.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, Def, Value, Name, CanUse)
 End Sub
 
 Public Sub SelectItemSlot(ByVal Slot As Integer)
@@ -434,35 +405,20 @@ Public Sub SelectItemSlot(ByVal Slot As Integer)
 End Sub
 
 Public Function GetSelectedItemSlot() As Integer
-    If BabelInitialized Then
-        GetSelectedItemSlot = UserInventory.SelectedSlot
-    Else
-        GetSelectedItemSlot = frmMain.Inventario.SelectedItem
-    End If
+    GetSelectedItemSlot = frmMain.Inventario.SelectedItem
 End Function
 
 Public Function IsItemSelected() As Boolean
-    If BabelInitialized Then
-        If UserInventory.SelectedSlot <= 0 Or UserInventory.SelectedSlot > UBound(UserInventory.Slots) Then Exit Function
-        IsItemSelected = (UserInventory.Slots(UserInventory.SelectedSlot).GrhIndex > 0)
-    Else
-        IsItemSelected = frmMain.Inventario.IsItemSelected
-    End If
+    IsItemSelected = frmMain.Inventario.IsItemSelected
+
 End Function
 
 Public Sub UseItemKey()
     If Not MainTimer.Check(TimersIndex.AttackUse, False) Then Exit Sub
         Call CountPacketIterations(packetControl(ClientPacketID.eUseItemU), 100)
-        If BabelInitialized Then
-            If UserInventory.SelectedSlot > 0 And UserInventory.SelectedSlot <= UBound(UserInventory.Slots) Then
-                Call WriteUseItemU(UserInventory.SelectedSlot)
-            End If
-        Else
-            If frmMain.Inventario.IsItemSelected Then
+        If frmMain.Inventario.IsItemSelected Then
                 Call WriteUseItemU(frmMain.Inventario.SelectedItem)
             End If
-        End If
-        
 End Sub
 
 Public Sub UserItemClick()
@@ -472,12 +428,8 @@ Public Sub UserItemClick()
     If frmMain.macrotrabajo.enabled Then frmMain.DesactivarMacroTrabajo
     If Not IsItemSelected Then Exit Sub
 
-    ' Hacemos acción del doble clic correspondiente
-    If BabelInitialized Then
-        Call UserOrEquipItem(UserInventory.SelectedSlot, UserInventory.Slots(UserInventory.SelectedSlot).Equipped, UserInventory.Slots(UserInventory.SelectedSlot).ObjIndex)
-    Else
-        Call UserOrEquipItem(frmMain.Inventario.SelectedItem, frmMain.Inventario.Equipped(frmMain.Inventario.SelectedItem), frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem))
-    End If
+    Call UserOrEquipItem(frmMain.Inventario.SelectedItem, frmMain.Inventario.Equipped(frmMain.Inventario.SelectedItem), frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem))
+
 End Sub
 
 Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByVal ObjIndex As Integer)
@@ -536,75 +488,59 @@ Public Sub HandleKeyUp(KeyCode As Integer, Shift As Integer)
                 Call ParseUserCommand("/IRA " & TargetName)
             End If
         End If
-    ElseIf Not BabelInitialized Then
+    Else
         Call FocusInput
     End If
 End Sub
 
 Public Sub HandleEsc()
-    If BabelInitialized Then
-        frmCerrar.Show , frmBabelUI
-    Else
+
         frmCerrar.Show , frmMain
-    End If
+
 End Sub
 Public Function IsDialogOpen() As Boolean
     IsDialogOpen = pausa Or frmComerciar.visible Or frmComerciarUsu.visible Or frmBancoObj.visible Or frmGoliath.visible Or IsGameDialogOpen
 End Function
 
 Public Function IsInputFocus() As Boolean
-    If BabelInitialized Then
-        IsInputFocus = BabelUI.InputFocus
-        Exit Function
-    Else
-        IsInputFocus = frmMain.SendTxt.visible Or frmMain.SendTxtCmsg.visible
-    End If
+    IsInputFocus = frmMain.SendTxt.visible Or frmMain.SendTxtCmsg.visible
+
 End Function
 
 Public Sub OpenAndFocusClanChat()
-    If BabelInitialized Then
-        Call OpenChat(e_ChatMode.ClanChat)
-    Else
-        If Not frmMain.SendTxt.visible Then
+       If Not frmMain.SendTxt.visible Then
             frmMain.SendTxtCmsg.visible = True
             frmMain.SendTxtCmsg.SetFocus
         End If
-    End If
+
     Call DialogosClanes.toggle_dialogs_visibility(True)
 End Sub
 
 Public Sub OpenChatInput()
-    If BabelInitialized Then
-        Call OpenChat(e_ChatMode.NormalChat)
-    Else
         If Not frmCantidad.visible Then
             Call frmMain.CompletarEnvioMensajes
             StartOpenChatTime = GetTickCount
             frmMain.SendTxt.visible = True
             frmMain.SendTxt.SetFocus
         End If
-    End If
+
 End Sub
 
 Public Sub FocusInput()
-    If BabelInitialized Then
-        Call OpenChat(e_ChatMode.NormalChat)
-    Else
+
         If frmMain.SendTxt.visible Then
             frmMain.SendTxt.SetFocus
         End If
         If frmMain.SendTxtCmsg.visible Then
             frmMain.SendTxtCmsg.SetFocus
         End If
-    End If
+
 End Sub
 
 Public Function GetGameplayForm() As Form
-    If BabelInitialized Then
-        Set GetGameplayForm = frmBabelUI
-    Else
+
         Set GetGameplayForm = frmMain
-    End If
+
 End Function
 
 Public Sub UseSpell(ByVal SpellSlot As Byte, ByVal SpellName As String)
@@ -621,7 +557,7 @@ If pausa Then Exit Sub
     If SpellName <> "(Vacío)" Then
         If UserStats.estado = 1 Then
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                Call ShowConsoleMsg("¡¡Estás muerto!!", .red, .green, .blue, .bold, .italic)
+               Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
             End With
         Else
             If ModoHechizos = BloqueoLanzar Then
@@ -637,19 +573,13 @@ If pausa Then Exit Sub
 End Sub
 
 Public Sub UpdateMapPos()
-    If BabelInitialized Then
-        Dim Pos As t_Position
-        Pos.x = UserPos.x
-        Pos.y = UserPos.y
-        Call ConvertToMinimapPosition(Pos.x, Pos.y, 2, 2)
-        Call BabelUI.UpdateUserPos(UserPos.x, UserPos.y, Pos)
-    Else
+
         Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
         frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
         If frmMapaGrande.visible Then
             Call frmMapaGrande.ActualizarPosicionMapa
         End If
-    End If
+
 End Sub
 
 Public Sub RequestSkills()
@@ -658,7 +588,7 @@ Public Sub RequestSkills()
         If tutorial(4).Activo = 1 Then
             tutorial_index = e_tutorialIndex.TUTORIAL_SkillPoints
             'TUTORIAL MAPA INSEGURO
-            Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).Grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 64, 64)
+            Call mostrarCartel(tutorial(tutorial_index).titulo, tutorial(tutorial_index).textos(1), tutorial(tutorial_index).grh, -1, &H164B8A, , , False, 100, 479, 100, 535, 640, 530, 64, 64)
             Exit Sub
         End If
     End If
@@ -674,12 +604,8 @@ Public Function IsUsableItem(ByRef ItemData As ObjDatas) As Boolean
 End Function
 
 Public Sub EquipSelectedItem()
-    If BabelInitialized Then
-        If UserInventory.SelectedSlot < 1 Or UserInventory.SelectedSlot > UBound(UserInventory.Slots) Then Exit Sub
-        Call WriteEquipItem(UserInventory.SelectedSlot)
-    Else
         If frmMain.Inventario.IsItemSelected Then Call WriteEquipItem(frmMain.Inventario.SelectedItem)
-    End If
+
 End Sub
 
 Public Sub OpenCreateObjectMenu()
@@ -709,11 +635,7 @@ Public Sub SelectInvenrotyTab()
     iClickTick = TempTick
     LastMacroButton = tMacroButton.Inventario
     If Seguido = 1 Then
-        If BabelInitialized Then
-            Call WriteNotifyInventarioHechizos(1, SelectedSpellSlot, FirstSpellInListToRender)
-        Else
             Call WriteNotifyInventarioHechizos(1, hlst.ListIndex, hlst.Scroll)
-        End If
     End If
 End Sub
 
@@ -726,11 +648,7 @@ Public Sub SelectSpellTab()
     iClickTick = TempTick
     LastMacroButton = tMacroButton.Hechizos
     If Seguido = 1 Then
-        If BabelInitialized Then
-            Call WriteNotifyInventarioHechizos(2, SelectedSpellSlot, FirstSpellInListToRender)
-        Else
             Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
-        End If
     End If
 End Sub
 

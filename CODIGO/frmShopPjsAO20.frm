@@ -49,7 +49,7 @@ Begin VB.Form frmShopPjsAO20
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "Costo por publicar: 100.000 monedas de oro"
+      Caption         =   "Costo por publicar: 20.000 monedas de oro"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   9.75
@@ -161,8 +161,8 @@ Private Sub Label2_Click()
 End Sub
 
 Private Sub lblPublicar_Click()
-    If Val(txtValor.Text) <= 0 Then
-        Call MsgBox("El valor ingresado del personaje es inválido.")
+    If Val(txtValor.Text <= 0) Then
+        Call MsgBox(JsonLanguage.Item("MENSAJE_VALOR_PERSONAJE_INVALIDO"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
         Exit Sub
     End If
     
@@ -180,7 +180,7 @@ Private Sub lblPublicar_Click()
             Exit Sub
     End Select
 
-    If MsgBox("Estás publicando a " & UserName & " a un valor de " & txtValor.Text & ", se descontarán " & costMessage & ".", vbYesNo + vbQuestion, "Publicar personaje") = vbYes Then
+    If MsgBox(JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE") & userName & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_VALOR") & txtValor.Text & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_COSTO"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJE_TITULO_PUBLICAR_PERSONAJE")) = vbYes Then
         Call writePublicarPersonajeMAO(Val(txtValor.Text), paymentMethod)
         Call cerrarFormulario
     End If

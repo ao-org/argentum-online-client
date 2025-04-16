@@ -41,8 +41,8 @@ On Error GoTo InitializeAC_Err
     If InitResult <> eOk Then
         Call DisplayError("El juego se inicio sin activar el anti cheat, debe activarlo para poder conectarse a los servidores.", "")
     End If
-    Exit Sub
 #End If
+Exit Sub
 InitializeAC_Err:
     Call RegistrarError(Err.Number, Err.Description, "AOAC.InitializeAC", Erl)
 End Sub

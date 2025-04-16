@@ -207,20 +207,21 @@ Private Sub cmdFundar_Click()
             Dim Alineacion As Byte
             
             If txtClanName.Text = "" Then
-                MensajeAdvertencia "¡Ingrese un nombre!"
+                MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_INGRESAR_NOMBRE")
+                
                 Exit Sub
 
             End If
 
             If Len(txtClanName.Text) <= 30 Then
                 If Not AsciiValidos(txtClanName) Then
-                    MensajeAdvertencia "Nombre invalido."
+                    MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_NOMBRE_INVALIDO")
                     Exit Sub
 
                 End If
 
             Else
-                MensajeAdvertencia "Nombre demasiado extenso."
+                MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_NOMBRE_DEMASIADO_EXTENSO")
                 Exit Sub
 
             End If
@@ -235,14 +236,14 @@ Private Sub cmdFundar_Click()
             '    End If
             
             If Combo1.Text = "" Then
-                MensajeAdvertencia "Debes definir el alineamiento del clan."
+                MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_DEFINIR_ALINEAMIENTO_CLAN")
                 Exit Sub
 
             End If
     
             If CreandoClan Then
                 If Combo1.ListIndex < 0 Then
-                    MensajeAdvertencia "Debes definir el alineamiento del clan."
+                    MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_DEFINIR_ALINEAMIENTO_CLAN")
                     Exit Sub
                 End If
 

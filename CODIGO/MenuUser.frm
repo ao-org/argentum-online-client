@@ -6,13 +6,13 @@ Begin VB.Form MenuUser
    ClientHeight    =   1800
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   1956
+   ClientWidth     =   1950
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   150
+   ScaleHeight     =   120
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   163
+   ScaleWidth      =   130
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.Image OpcionImg 
@@ -28,7 +28,7 @@ Begin VB.Form MenuUser
       Caption         =   "DENUNCIAR"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -56,7 +56,7 @@ Begin VB.Form MenuUser
       Caption         =   "RETAR"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -84,7 +84,7 @@ Begin VB.Form MenuUser
       Caption         =   "PRIVADO"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -112,7 +112,7 @@ Begin VB.Form MenuUser
       Caption         =   "INVITAR GRUPO"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -140,7 +140,7 @@ Begin VB.Form MenuUser
       Caption         =   "COMERCIAR"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -198,21 +198,17 @@ Private Sub OpcionImg_Click(Index As Integer)
             
         Case 2
             TargetName = Replace(TargetName, " ", "+")
-            If BabelInitialized Then
-                Call SetWhisperTarget(TargetName)
+            sndPrivateTo = TargetName
+            frmMain.SendTxt.Text = ("\" & sndPrivateTo & " ")
+
+            stxtbuffer = frmMain.SendTxt.Text
+            frmMain.SendTxt.SelStart = Len(frmMain.SendTxt.Text)
+            
+            If frmMain.SendTxtCmsg.visible = False Then
+                frmMain.SendTxt.visible = True
+                frmMain.SendTxt.SetFocus
             Else
-                sndPrivateTo = TargetName
-                frmMain.SendTxt.Text = ("\" & sndPrivateTo & " ")
-    
-                stxtbuffer = frmMain.SendTxt.Text
-                frmMain.SendTxt.SelStart = Len(frmMain.SendTxt.Text)
-                
-                If frmMain.SendTxtCmsg.visible = False Then
-                    frmMain.SendTxt.visible = True
-                    frmMain.SendTxt.SetFocus
-                Else
-                   frmMain.SendTxtCmsg.SetFocus
-                End If
+               frmMain.SendTxtCmsg.SetFocus
             End If
         Case 3
             frmRetos.Show

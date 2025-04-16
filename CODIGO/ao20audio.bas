@@ -50,16 +50,16 @@ On Error GoTo AudioEngineInitErr:
     If AudioEnabled Then
         Set AudioEngine = New clsAudioEngine
         Call AudioEngine.Init(dx8, hwnd)
-        Debug.Print "Audio Engine OK"
+        frmDebug.add_text_tracebox "Audio Engine OK"
         Exit Sub
     Else
-        Debug.Print "Warning Audio Disabled"
+        frmDebug.add_text_tracebox "Warning Audio Disabled"
     End If
     
     Exit Sub
 AudioEngineInitErr:
-    Call MsgBox("Error creating audio engine", vbCritical, "Argentum20")
-    Debug.Print "Error Number Returned: " & Err.Number
+    Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_CREACION_ENGINE_AUDIO"), vbCritical, "Argentum20")
+    frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
     End
 End Sub
 Public Sub SetMusicVolume(ByVal NewVolume As Long)
@@ -117,6 +117,20 @@ Public Function PlayWav(ByVal id As Integer, Optional ByVal looping As Boolean =
     PlayWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
         PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, min(CurFxVolume, volume), pan, label)
+    End If
+End Function
+
+Public Function StopMP3() As Long
+    StopMP3 = -1
+    If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
+        StopMP3 = ao20audio.AudioEngine.StopMP3
+    End If
+End Function
+
+Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
+    PlayMP3 = -1
+    If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
+        PlayMP3 = ao20audio.AudioEngine.PlayMP3(FileName, looping, min(CurMusicVolume, volume))
     End If
 End Function
 

@@ -30,16 +30,20 @@ Option Explicit
 
 Dim ServerSettings As clsIniManager
     
-Public Sub DoLogin(ByVal account As String, ByVal password As String, ByVal storeCredentials As Boolean)
+Public Sub DoLogin(ByVal Account As String, ByVal Password As String, ByVal storeCredentials As Boolean)
     On Error GoTo DoLogin_Err
-    
+#If REMOTE_CLOSE = 1 Then
+    ModAuth.LoginOperation = e_operation.Authenticate
+    Call LoginOrConnect(E_MODO.IngresandoConCuenta)
+
+#Else
     If IntervaloPermiteConectar Then
-        CuentaEmail = account
-        CuentaPassword = password
+        CuentaEmail = Account
+        CuentaPassword = Password
 
         If storeCredentials Then
             CuentaRecordada.nombre = CuentaEmail
-            CuentaRecordada.password = CuentaPassword
+            CuentaRecordada.Password = CuentaPassword
             
             Call GuardarCuenta(CuentaEmail, CuentaPassword)
         Else
@@ -52,7 +56,7 @@ Public Sub DoLogin(ByVal account As String, ByVal password As String, ByVal stor
             Call LoginOrConnect(E_MODO.IngresandoConCuenta)
         End If
     End If
-
+#End If
     Exit Sub
 
 DoLogin_Err:
@@ -61,8 +65,8 @@ DoLogin_Err:
 End Sub
 
 Public Sub SetActiveServer(ByVal IP As String, ByVal port As String, Optional IgnoreHardcode As Boolean = False)
-    ServerIndex = ip & ":" & port
-    IPdelServidor = ip
+    ServerIndex = IP & ":" & port
+    IPdelServidor = IP
     PuertoDelServidor = port
     
     #If PYMMO = 0 Or DEBUGGING = 1 Then
@@ -88,8 +92,8 @@ Public Sub SetActiveServer(ByVal IP As String, ByVal port As String, Optional Ig
             #End If
         #End If
     End If
-    Debug.Print "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
-    Debug.Print "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
+    frmDebug.add_text_tracebox "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
+    frmDebug.add_text_tracebox "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
 End Sub
 
 Public Sub SetActiveEnvironment(ByVal environment As String)
@@ -111,7 +115,7 @@ Public Sub SetActiveEnvironment(ByVal environment As String)
         
     End If
 #If Developer = 0 And DEBUGGING = 0 Then
-    Environment = "Production"
+    environment = "Production"
 #End If
     Dim loginServers As Integer
     loginServers = Val(ServerSettings.GetValue(environment, "LoginCount"))
@@ -127,8 +131,8 @@ Public Sub SetActiveEnvironment(ByVal environment As String)
     PuertoDelServidor = ServerSettings.GetValue(environment, "PortPort" & serverOpt)
     IPdelServidorLogin = ServerSettings.GetValue(environment, "LoginIp" & loginOpt)
     PuertoDelServidorLogin = ServerSettings.GetValue(environment, "LoginPort" & loginOpt)
-    Debug.Print "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
-    Debug.Print "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
+    frmDebug.add_text_tracebox "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
+    frmDebug.add_text_tracebox "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
 End Sub
 
 Public Sub CreateAccount(ByVal Name As String, ByVal Surname As String, ByVal Email As String, ByVal Password As String)
@@ -148,21 +152,11 @@ End Sub
 
 Public Sub LoadCharacterSelectionScreen()
     AlphaNiebla = 30
-    If BabelUI.BabelInitialized Then
-        Call SendLoginCharacters(Pjs, CantidadDePersonajesEnCuenta)
-        If g_game_state.state <> e_state_createchar_screen Then
-            Call BabelUI.SetActiveScreen("character-selection")
-            g_game_state.state = e_state_account_screen
-        Else
-            Call BabelUI.SetActiveScreen("create-character")
-        End If
-    Else
-        frmConnect.visible = True
-        g_game_state.state = e_state_account_screen
-    End If
-    
+    frmConnect.visible = True
+    g_game_state.State = e_state_account_screen
+   
     SugerenciaAMostrar = RandomNumber(1, NumSug)
-    Call ao20audio.playwav(192)
+    Call ao20audio.PlayWav(192)
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
@@ -190,14 +184,11 @@ Public Sub LoadCharacterSelectionScreen()
 End Sub
 
 Public Sub GoToLogIn()
-    g_game_state.state = e_state_connect_screen
-    If BabelUI.BabelInitialized Then
-        Call BabelUI.SetActiveScreen("login")
-    End If
+    g_game_state.State = e_state_connect_screen
 End Sub
 
 Public Sub LogOut()
-    Debug.Print "Vuelvo al login, debería borrar el token"
+    frmDebug.add_text_tracebox "Vuelvo al login, debería borrar el token"
     Auth_state = e_state.Idle
     Call ComprobarEstado
     UserSaliendo = True
@@ -208,7 +199,7 @@ Public Sub LogOut()
         Pjs(i).Body = 0
         Pjs(i).Head = 0
         Pjs(i).Mapa = 0
-        Pjs(i).nivel = 0
+        Pjs(i).Nivel = 0
         Pjs(i).nombre = ""
         Pjs(i).Clase = 0
         Pjs(i).Criminal = 0
@@ -217,28 +208,28 @@ Public Sub LogOut()
     General_Set_Connect
 End Sub
 
-Public Sub ResendValidationCode(ByVal email As String)
-    CuentaEmail = email
+Public Sub ResendValidationCode(ByVal Email As String)
+    CuentaEmail = Email
     ModAuth.LoginOperation = e_operation.RequestVerificationCode
     Call connectToLoginServer
 End Sub
 
-Public Sub ValidateCode(ByVal email As String, ByVal code As String)
-    CuentaEmail = email
-    validationCode = code
+Public Sub ValidateCode(ByVal Email As String, ByVal code As String)
+    CuentaEmail = Email
+    ValidationCode = code
     ModAuth.LoginOperation = e_operation.ValidateAccount
     Call connectToLoginServer
 End Sub
 
-Public Sub RequestPasswordReset(ByVal email As String)
-    CuentaEmail = email
+Public Sub RequestPasswordReset(ByVal Email As String)
+    CuentaEmail = Email
     ModAuth.LoginOperation = e_operation.ForgotPassword
     Call connectToLoginServer
 End Sub
 
-Public Sub RequestNewPassword(ByVal email As String, ByVal newPassword As String, ByVal code As String)
-    CuentaEmail = email
-    validationCode = code
+Public Sub RequestNewPassword(ByVal Email As String, ByVal newPassword As String, ByVal code As String)
+    CuentaEmail = Email
+    ValidationCode = code
     CuentaPassword = newPassword
     ModAuth.LoginOperation = e_operation.ResetPassword
     Auth_state = e_state.RequestResetPassword
@@ -247,8 +238,8 @@ End Sub
 
 Public Sub LoginCharacter(ByVal Name As String)
 On Error GoTo LogearPersonaje_Err
-    username = Name
-    If Connected And Not BabelInitialized Then
+    userName = Name
+    If Connected Then
         frmMain.ShowFPS.enabled = True
     End If
 #If PYMMO = 0 Then
@@ -266,12 +257,6 @@ LogearPersonaje_Err:
 End Sub
 
 Public Sub ShowLogin()
-    If UseBabelUI Then
-        If Not frmBabelUI.visible Then
-            frmBabelUI.Show
-        End If
-        BabelUI.SetActiveScreen ("login")
-    Else
         frmConnect.Show
         Dim patchNotes As String
         patchNotes = GetPatchNotes()
@@ -281,19 +266,14 @@ Public Sub ShowLogin()
         Else
             FrmLogear.Show , frmConnect
         End If
-    End If
 End Sub
 
 Public Sub ShowScharSelection()
-    If UseBabelUI Then
-        BabelUI.SetActiveScreen ("charcter-selection")
-    Else
         Call connectToLoginServer
-    End If
 End Sub
 
-Public Sub CreateCharacter(ByVal name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As Integer, ByVal Head As Integer, ByVal HomeCity As Integer)
-    userName = name
+Public Sub CreateCharacter(ByVal Name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As Integer, ByVal Head As Integer, ByVal HomeCity As Integer)
+    userName = Name
     UserStats.Raza = Race
     UserStats.Sexo = Gender
     UserStats.Clase = Class
@@ -303,7 +283,7 @@ Public Sub CreateCharacter(ByVal name As String, ByVal Race As Integer, ByVal Ge
     Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
     Call LoginOrConnect(E_MODO.CrearNuevoPj)
 #Else
-    Call Protocol_Writes.WriteLoginNewChar(UserName, UserStats.Raza, UserStats.Sexo, UserStats.Clase, MiCabeza, UserStats.Hogar)
+    Call Protocol_Writes.WriteLoginNewChar(userName, UserStats.Raza, UserStats.Sexo, UserStats.Clase, MiCabeza, UserStats.Hogar)
 #End If
     
 End Sub
@@ -318,24 +298,25 @@ Public Sub RequestDeleteCharacter()
 End Sub
 
 Public Sub DeleteCharRequestCode()
-    If UseBabelUI Then
-        Call RequestDeleteCode
-    Else
+
         MsgBox ("Se ha enviado un código de verificación al mail proporcionado.")
-    End If
+
 End Sub
 
 Public Sub TransferChar(ByVal Name As String, ByVal DestinationAccunt As String)
     TransferCharNewOwner = DestinationAccunt
-    TransferCharname = name
+    TransferCharname = Name
     Debug.Assert Len(TransferCharNewOwner) > 0
     Debug.Assert Len(Name) > 0
-    ModAuth.LoginOperation = e_operation.TransferCharacter
+    ModAuth.LoginOperation = e_operation.transfercharacter
     Call connectToLoginServer
 End Sub
 
 Public Sub OnClientDisconnect(ByVal Error As Long)
-    On Error GoTo OnClientDisconnect_Err
+    
+On Error GoTo OnClientDisconnect_Err
+
+#If REMOTE_CLOSE = 0 Then
     If (Error = 10061) Then
         If frmConnect.visible Then
             Call DisplayError("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.", "connection-failure")
@@ -371,6 +352,11 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
             End If
         End If
     End If
+#Else
+    frmDebug.add_text_tracebox "OnClientDisconnect " & Error
+    Call SaveStringInFile("OnClientDisconnect " & Error, "remote_debug.txt")
+    prgRun = False
+#End If
     Exit Sub
 OnClientDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModLogin.OnClientDisconnect", Erl)

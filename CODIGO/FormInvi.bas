@@ -150,28 +150,36 @@ Private Const LWA_ALPHA = &H2
 Const WM_SYSCOMMAND As Long = &H112&
 
 Const MOUSE_MOVE    As Long = &HF012&
- 
- 
-' Sacado de https://www.vbforums.com/showthread.php?379880-RESOLVED-Remove-Title-Bar-Off-Of-Form-Using-API-s
-' Borro algunas partes innecesarias (WyroX)
+
+Private Const WS_BORDER As Long = &H800000   ' Adds a thin border
+Private Const WS_SYSMENU As Long = &H80000   ' Adds system menu (close, minimize, maximize)
+Private Const WS_THICKFRAME As Long = &H40000 ' Resizable border
+
 Public Sub Form_RemoveTitleBar(F As Form)
+On Error GoTo Form_RemoveTitleBar_Err
     
-    On Error GoTo Form_RemoveTitleBar_Err
-    
-
+#If Developer = 0 Then
     Dim Style As Long
-
     ' Get window's current style bits.
     Style = GetWindowLong(F.hWnd, GWL_STYLE)
     ' Set the style bit for the title off.
     Style = Style And Not WS_CAPTION
-
     ' Send the new style to the window.
     SetWindowLong F.hWnd, GWL_STYLE, Style
-
     ' Repaint the window.
-    'SetWindowPos f.hwnd, 0, 0, 0, 0, 0, SWP_FRAMECHANGED Or SWP_NOMOVE Or SWP_NOZORDER Or SWP_NOSIZE
-    
+    SetWindowPos f.hWnd, 0, 0, 0, 0, 0, SWP_FRAMECHANGED Or SWP_NOMOVE Or SWP_NOZORDER Or SWP_NOSIZE
+#Else
+    'Debugging we enable title bar and allow the window to be moved
+    Dim Style As Long
+    ' Get the current window style
+    Style = GetWindowLong(f.hWnd, GWL_STYLE)
+    ' Add the title bar back
+     Style = Style Or WS_CAPTION Or WS_THICKFRAME Or WS_BORDER
+    ' Apply the new style
+    SetWindowLong f.hWnd, GWL_STYLE, Style
+    ' Refresh the window to apply changes
+    SetWindowPos f.hWnd, 0, 0, 0, 0, 0, SWP_FRAMECHANGED Or SWP_NOMOVE Or SWP_NOSIZE Or SWP_NOZORDER
+#End If
     Exit Sub
 
 Form_RemoveTitleBar_Err:

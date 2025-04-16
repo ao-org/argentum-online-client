@@ -428,19 +428,19 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     
 
     If lstQuests.ListCount = 0 Then
-        MsgBox "No tienes ninguna mision!", vbOKOnly + vbExclamation
+        MsgBox JsonLanguage.Item("MENSAJE_NO_TIENES_MISION"), vbOKOnly + vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ADVERTENCIA")
         Exit Sub
 
     End If
 
     'Chequeamos si tiene algun item seleccionado.
     If lstQuests.ListIndex < 0 Then
-        MsgBox "Primero debes seleccionar una mision!", vbOKOnly + vbExclamation
+        MsgBox JsonLanguage.Item("MENSAJE_SELECCIONAR_MISION"), vbOKOnly + vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ADVERTENCIA")
         Exit Sub
 
     End If
             
-    Select Case MsgBox("Estas seguro que deseas abandonar la mision?", vbYesNo + vbExclamation)
+    Select Case MsgBox(JsonLanguage.Item("MENSAJE_ABANDONAR_MISION"), vbYesNo + vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ADVERTENCIA"))
 
         Case vbYes  'Boton Si.
             'Enviamos el paquete para abandonar la quest
@@ -528,7 +528,7 @@ Public Sub ListView2_Click()
 
     If ListView2.SelectedItem.SubItems(2) <> "" Then
  
-        'Call Grh_Render_To_Hdc(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(11, 11, 11))
+        Call Grh_Render_To_Hdc(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(11, 11, 11))
         picture1.Visible = True
         
         objetolbl.Caption = ObjData(ListView2.SelectedItem.SubItems(2)).Name & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"

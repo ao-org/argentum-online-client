@@ -197,17 +197,18 @@ Private Sub cmdEnviar_Click()
         Case e_operation.ResetPassword
             
             If Me.txtPassword.Text = "" Or Me.txtPasswordConfirm.Text = "" Or Me.txtCodigo.Text = "" Then
-                Call TextoAlAsistente("Falta completar campos.", False, True)
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CAMPOS_INCOMPLETOS"), False, True)
                 Exit Sub
             End If
             
             If Not isValidEmail(Me.txtEmail.Text) Then
-                Call TextoAlAsistente("El email ingresado es inválido.", False, True)
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO"), False, True)
                 Exit Sub
             End If
             
             If Me.txtPassword.Text <> Me.txtPasswordConfirm.Text Then
-                Call TextoAlAsistente("Las contraseñas ingresadas no coinciden.", False, False)
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CONTRASENAS_NO_COINCIDEN"), False, False)
+
                 Exit Sub
             End If
             
@@ -216,7 +217,8 @@ Private Sub cmdEnviar_Click()
         
 
             If Not isValidEmail(Me.txtEmail.Text) Then
-                Call TextoAlAsistente("El email ingresado es inválido.", False, False)
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO"), False, False)
+
                 Exit Sub
             End If
     

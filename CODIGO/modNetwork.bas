@@ -17,6 +17,7 @@ Attribute VB_Name = "modNetwork"
 '
 Option Explicit
 
+#If DIRECT_PLAY = 0 Then
 Private Client As Network.Client
 
 Private Type t_FailedIp
@@ -50,7 +51,7 @@ Public Sub AddFailedIp(ByVal IP As String, ByVal Port As String)
 End Sub
 
 Public Sub Connect(ByVal Address As String, ByVal Service As String)
-    Debug.Print "Connecting to World Server : " & Address; ":" & Service
+    frmDebug.add_text_tracebox "Connecting to World Server : " & Address & ":" & Service
 
     If (Address = vbNullString Or Service = vbNullString) Then
         Exit Sub
@@ -104,7 +105,7 @@ End Sub
 #If PYMMO = 1 Then
 Private Sub OnClientConnect()
 On Error GoTo OnClientConnect_Err:
-Debug.Print ("Entró OnClientConnect")
+frmDebug.add_text_tracebox ("Entró OnClientConnect")
 
 If EstadoLogin = E_MODO.CrearNuevoPj Then
     Call LoginOrConnect(E_MODO.CrearNuevoPj)
@@ -121,7 +122,7 @@ End Sub
     
 Private Sub OnClientConnect()
 On Error GoTo OnClientConnect_Err:
-Debug.Print ("Entró OnClientConnect")
+frmDebug.add_text_tracebox ("Entró OnClientConnect")
 
     Connected = True
     Unload frmConnecting
@@ -164,4 +165,147 @@ OnClientRecv_Err:
     Call RegistrarError(Err.Number, Err.Description, "modNetwork.OnClientRecv", Erl)
 End Sub
 
+#Else
+'DirectPlay
 
+
+Public Sub DoSleep(Optional ByVal lMilliSec As Long = 0)
+    'The DoSleep function allows other threads to have a time slice
+    'and still keeps the main VB thread alive (since DPlay callbacks
+    'run on separate threads outside of VB).
+    Sleep lMilliSec
+    DoEvents
+End Sub
+
+Public Sub Poll()
+' Not needed when using DPLAY
+End Sub
+
+Public Sub OnClientDisconnect(dpnotify As DxVBLibA.DPNMSG_TERMINATE_SESSION, fRejectMsg As Boolean)
+On Error GoTo OnClientDisconnect_Err:
+    frmDebug.add_text_tracebox "DPLAY: OnClientDisconnect"
+    Err.Clear
+    Connected = False
+    
+    
+    Call ModLogin.OnClientDisconnect(0)
+    Call LogOut
+    Call Protocol_Writes.Clear
+    
+    Exit Sub
+OnClientDisconnect_Err:
+   If Err.Number <> 0 Then
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.OnClientDisconnect", Erl)
+    End If
+End Sub
+    
+    
+    
+Public Sub OnClientConnect(dpnotify As DxVBLibA.DPNMSG_CONNECT_COMPLETE, fRejectMsg As Boolean)
+On Error GoTo OnClientConnect_Err:
+    frmDebug.add_text_tracebox "DPLAY: OnClientConnect"
+    Err.Clear
+    
+    If EstadoLogin = E_MODO.CrearNuevoPj Then
+        Call LoginOrConnect(E_MODO.CrearNuevoPj)
+    End If
+
+    
+    Connected = True
+    Unload frmConnecting
+    Exit Sub
+OnClientConnect_Err:
+   If Err.Number <> 0 Then
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.Receive", Erl)
+    End If
+End Sub
+
+Public Sub Send(ByVal Buffer As clsNetWriter)
+On Error GoTo send_Err:
+    Err.Clear
+    Writer.send
+    Exit Sub
+send_Err:
+   If Err.Number <> 0 Then
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.Receive", Erl)
+    End If
+End Sub
+
+Public Sub Disconnect()
+    Call Protocol_Writes.Clear
+    Set Protocol_Writes.Writer = Nothing
+    Set Protocol_Writes.Writer = New clsNetWriter
+    If Connected Then
+        frmDebug.add_text_tracebox "Disconnecting DirecPlay..."
+        Connected = False
+        DoEvents
+        modDplayClient.dpc.Close 0
+        Set dpc = Nothing
+        frmDebug.add_text_tracebox "Disconnected DirectPlay"
+    End If
+    
+End Sub
+
+Public Sub Receive(dpnotify As DxVBLibA.DPNMSG_RECEIVE, fRejectMsg As Boolean)
+On Error GoTo receive_error:
+    Err.Clear
+    Call Protocol.HandleIncomingData(dpnotify)
+    Exit Sub
+receive_error:
+   If Err.Number <> 0 Then
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.Receive", Erl)
+    End If
+End Sub
+Public Sub Connect(ByVal Address As String, ByVal Service As String)
+On Error GoTo connect_error:
+    Err.Clear
+    
+    frmDebug.add_text_tracebox "DPLAY > Connecting to World Server : " & Address & ":" & Service
+    
+
+    If (Address = vbNullString Or Service = vbNullString) Then
+        Exit Sub
+    End If
+    
+    Dim HostAddr As DirectPlay8Address
+    Dim DeviceAddr As DirectPlay8Address
+    
+    
+    
+    Err.Clear
+    Set HostAddr = DirectX.DirectPlayAddressCreate
+    HostAddr.SetSP DP8SP_TCPIP  ' Set the service provider to TCP/IP
+    HostAddr.AddComponentLong DPN_KEY_PORT, CLng(Service)
+    HostAddr.AddComponentString DPN_KEY_HOSTNAME, Address
+    Debug.Assert Err.Number = 0
+    Err.Clear
+    
+    Dim connect_handle As Long
+    connect_handle = dpc.Connect(dpApp, HostAddr, DeviceAddr, DPNCONNECT_OKTOQUERYFORADDRESSING, ByVal 0&, 0)
+    
+    
+    If Err.Number <> 0 Then
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.Connect", Erl)
+    End If
+    
+    Dim i As Integer
+    i = 1
+    Do While Not frmConnect.mfGotEvent 'Let's wait for our connectcomplete event
+        DoSleep 1000 'Give other threads cpu time
+        frmDebug.add_text_tracebox "Trying to connect DPLAY server " & i & "..."
+        i = i + 1
+    Loop
+    Connected = True
+    If frmConnect.mfConnectComplete Then
+        'We've joined our game
+        Set HostAddr = Nothing
+        Set DeviceAddr = Nothing
+    End If
+    Exit Sub
+connect_error:
+   If Err.Number <> 0 Then
+        Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.Receive", Erl)
+    End If
+End Sub
+
+#End If

@@ -52,25 +52,7 @@ Private Declare Sub GlobalMemoryStatus Lib "kernel32" (lpBuffer As MEMORYSTATUS)
 ' FIN - CARGA DE TEXTURAS
 '*******************************************************
 
-'*******************************************************
-' MOTOR GRAFICO
-'*******************************************************
-' No matter what you do with DirectX8, you will need to start with
-' the DirectX8 object. You will need to create a new instance of
-' the object, using the New keyword, rather than just getting a
-' pointer to it, since there's nowhere to get a pointer from yet (duh!).
-Public DirectX As New DirectX8
 
-' The D3DX8 object contains lots of helper functions, mostly math
-' to make Direct3D alot easier to use. Notice we create a new
-' instance of the object using the New keyword.
-Public DirectD3D8 As D3DX8
-Public DirectD3D As Direct3D8
-
-' The Direct3DDevice8 represents our rendering device, which could
-' be a hardware or a software device. The great thing is we still
-' use the same object no matter what it is
-Public DirectDevice As Direct3DDevice8
 
     
 ' The D3DPRESENT_PARAMETERS type holds a description of the way

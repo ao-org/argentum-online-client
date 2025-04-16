@@ -2,13 +2,13 @@ VERSION 5.00
 Begin VB.Form frmGuildLeader 
    BorderStyle     =   0  'None
    Caption         =   "Administración del Clan"
-   ClientHeight    =   8376
+   ClientHeight    =   8370
    ClientLeft      =   0
    ClientTop       =   -180
    ClientWidth     =   8280
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -18,9 +18,9 @@ Begin VB.Form frmGuildLeader
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   698
+   ScaleHeight     =   558
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   690
+   ScaleWidth      =   552
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox txtguildnews 
@@ -39,7 +39,7 @@ Begin VB.Form frmGuildLeader
       Appearance      =   0  'Flat
       BackColor       =   &H00070707&
       ForeColor       =   &H00FFFFFF&
-      Height          =   1044
+      Height          =   1005
       ItemData        =   "frmGuildLeader.frx":0000
       Left            =   4185
       List            =   "frmGuildLeader.frx":0002
@@ -51,7 +51,7 @@ Begin VB.Form frmGuildLeader
       Appearance      =   0  'Flat
       BackColor       =   &H00070707&
       ForeColor       =   &H00FFFFFF&
-      Height          =   1248
+      Height          =   1200
       ItemData        =   "frmGuildLeader.frx":0004
       Left            =   4200
       List            =   "frmGuildLeader.frx":0006
@@ -63,7 +63,7 @@ Begin VB.Form frmGuildLeader
       Appearance      =   0  'Flat
       BackColor       =   &H00070707&
       ForeColor       =   &H00FFFFFF&
-      Height          =   1248
+      Height          =   1200
       ItemData        =   "frmGuildLeader.frx":0008
       Left            =   315
       List            =   "frmGuildLeader.frx":000A
@@ -97,7 +97,7 @@ Begin VB.Form frmGuildLeader
       Caption         =   "400 / 500"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -129,7 +129,7 @@ Begin VB.Form frmGuildLeader
       Height          =   240
       Left            =   3525
       TabIndex        =   8
-      Top             =   2295
+      Top             =   2310
       Width           =   210
    End
    Begin VB.Image cmdCerrar 
@@ -156,7 +156,7 @@ Begin VB.Form frmGuildLeader
       Caption         =   "0%"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -187,7 +187,7 @@ Begin VB.Form frmGuildLeader
       Height          =   240
       Left            =   2100
       TabIndex        =   4
-      Top             =   2280
+      Top             =   2310
       Width           =   195
    End
    Begin VB.Label beneficios 
@@ -203,10 +203,10 @@ Begin VB.Form frmGuildLeader
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H000CB1FE&
-      Height          =   735
+      Height          =   840
       Left            =   390
       TabIndex        =   3
-      Top             =   2550
+      Top             =   2565
       Width           =   3615
    End
    Begin VB.Image EXPBAR 
@@ -348,12 +348,12 @@ End Sub
 Private Sub cmdEditarDescripcion_Click()
     Dim fdesc As String
 
-    fdesc = InputBox("Ingrese la descripción:", "Modificar descripción")
+    fdesc = InputBox(JsonLanguage.Item("MENSAJEBOX_MODIFICAR_DESCRIPCION"), "Modify Description")
 
     fdesc = Replace(fdesc, vbCrLf, "º", , , vbBinaryCompare)
     
     If Not ValidDescriptionCharacters(fdesc) Then
-        MsgBox "La descripcion contiene caracteres invalidos"
+        MsgBox JsonLanguage.Item("MENSAJEBOX_DESCRIPCION_INVALIDA")
         Exit Sub
     Else
         Call WriteClanCodexUpdate(fdesc)

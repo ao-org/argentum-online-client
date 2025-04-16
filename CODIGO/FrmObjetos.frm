@@ -280,7 +280,7 @@ Private Sub Buscar_ListView(ListView As ListView, Cadena As String)
     Else
         
         'No se encontró
-        MsgBox (" Elemento no encontrado "), vbInformation
+        MsgBox JsonLanguage.Item("MENSAJE_ELEMENTO_NO_ENCONTRADO"), vbInformation, JsonLanguage.Item("MENSAJE_TITULO_INFORMACION")
 
     End If
   

@@ -3,10 +3,10 @@ Begin VB.Form frmMensaje
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   ClientHeight    =   3204
-   ClientLeft      =   12
-   ClientTop       =   12
-   ClientWidth     =   4368
+   ClientHeight    =   3195
+   ClientLeft      =   15
+   ClientTop       =   15
+   ClientWidth     =   4365
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    DrawMode        =   1  'Blackness
@@ -16,9 +16,9 @@ Begin VB.Form frmMensaje
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   267
+   ScaleHeight     =   213
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   364
+   ScaleWidth      =   291
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.Image cmdCerrar 
@@ -41,7 +41,7 @@ Begin VB.Form frmMensaje
       Caption         =   "Mensaje"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -362,7 +362,8 @@ Private Sub mnuPrivado_click()
         If frmMain.SendTxt.Visible Then frmMain.SendTxt.SetFocus
         If frmMain.SendTxtCmsg.Visible Then frmMain.SendTxtCmsg.SetFocus
     Else
-        Call MensajeAdvertencia("Debes escribir un usuario válido")
+        Call MensajeAdvertencia(JsonLanguage.Item("ADVERTENCIA_USUARIO_INVALIDO"))
+        
 
     End If
 

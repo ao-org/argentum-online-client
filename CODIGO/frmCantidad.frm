@@ -152,7 +152,7 @@ Private Sub Form_Load()
     
     Me.Picture = LoadInterface("cantidad.bmp")
     
-    Call LoadButtons
+    Call loadButtons
     
     Exit Sub
 
@@ -162,7 +162,7 @@ Form_Load_Err:
     
 End Sub
 
-Private Sub LoadButtons()
+Private Sub loadButtons()
 
     Set cBotonTirarTodo = New clsGraphicalButton
     Set cBotonTirar = New clsGraphicalButton
@@ -209,15 +209,15 @@ Form_KeyPress_Err:
     
 End Sub
 
-Private Sub cmdCerrar_Click()
+Private Sub cmdcerrar_Click()
     
-    On Error GoTo cmdCerrar_Click_Err
+    On Error GoTo cmdcerrar_Click_Err
     
     Unload Me
     
     Exit Sub
 
-cmdCerrar_Click_Err:
+cmdcerrar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.cmdCerrar_Click", Erl)
     Resume Next
     
@@ -257,7 +257,7 @@ cmdMenos_Click_Err:
 End Sub
 
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     MoverForm Me.hwnd
 End Sub
 
@@ -277,7 +277,7 @@ Private Sub Text1_KeyPress(KeyAscii As Integer)
     Exit Sub
 
 Text1_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.Text1_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCantidad.Text1_KeyPress", Erl)
     Resume Next
     
 End Sub
@@ -316,28 +316,22 @@ Private Sub cmdTirar_click()
     On Error GoTo tirar_click_Err
     
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
-    Call ao20audio.playwav(SND_CLICK)
+    Call ao20audio.PlayWav(SND_CLICK)
     If LenB(frmCantidad.Text1.Text) > 0 Then
         If Not IsNumeric(frmCantidad.Text1.Text) Then Exit Sub  'Should never happen
-        If BabelInitialized Then
-            If UserInventory.SelectedSlot <> FLAGORO Then
-                Call ThrowItem(UserInventory.SelectedSlot, UserInventory.Slots(UserInventory.SelectedSlot).ObjIndex, frmCantidad.Text1.Text)
-            Else
-                Call ThrowItem(UserInventory.SelectedSlot, 0, frmCantidad.Text1.Text)
-            End If
-        Else
+      
             If UserInventory.SelectedSlot <> FLAGORO Then
                 Call ThrowItem(frmMain.Inventario.SelectedItem, frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem), frmCantidad.Text1.Text)
             Else
                 Call ThrowItem(frmMain.Inventario.SelectedItem, 0, frmCantidad.Text1.Text)
             End If
-        End If
+
         frmCantidad.Text1.Text = ""
     End If
     Unload Me
     Exit Sub
 tirar_click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirar_click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCantidad.tirar_click", Erl)
     Resume Next
 End Sub
 
@@ -346,12 +340,10 @@ Private Sub ThrowItem(ByVal SlotIndex As Integer, ByVal ObjIndex As Integer, ByV
         If ObjData(ObjIndex).Destruye = 0 Then
             Call WriteDrop(SlotIndex, Amount)
         Else
-            If BabelInitialized Then
-                Call ShowQuestion("El item se destruira al tirarlo ¿Esta seguro?")
-            Else
+
                 PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
                 Pregunta = True
-            End If
+
             DestItemSlot = SlotIndex
             DestItemCant = Amount
             PreguntaLocal = True
@@ -369,23 +361,16 @@ Private Sub cmdTirarTodo_click()
 
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
 
-    Call ao20audio.playwav(SND_CLICK)
+    Call ao20audio.PlayWav(SND_CLICK)
     Dim SelectedSlot As Integer
     Dim ObjIndex As Integer
     Dim Amount As Integer
-    If BabelInitialized Then
-        SelectedSlot = UserInventory.SelectedSlot
-        If SelectedSlot <> FLAGORO Then
-            ObjIndex = UserInventory.Slots(SelectedSlot).ObjIndex
-            Amount = UserInventory.Slots(SelectedSlot).Amount
-        End If
-    Else
-        SelectedSlot = frmMain.Inventario.SelectedItem
-        If SelectedSlot <> FLAGORO Then
-            ObjIndex = frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem)
-            Amount = frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem)
-        End If
+    SelectedSlot = frmMain.Inventario.SelectedItem
+    If SelectedSlot <> FLAGORO Then
+        ObjIndex = frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem)
+        Amount = frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem)
     End If
+
     If SelectedSlot = 0 Then Exit Sub
     
     
@@ -393,12 +378,10 @@ Private Sub cmdTirarTodo_click()
         If ObjData(ObjIndex).Destruye = 0 Then
             Call WriteDrop(SelectedSlot, Amount)
         Else
-            If BabelInitialized Then
-                Call ShowQuestion("El item se destruira al tirarlo ¿Esta seguro?")
-            Else
-                PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
-                Pregunta = True
-            End If
+
+            PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+            Pregunta = True
+
             DestItemSlot = SelectedSlot
             DestItemCant = Amount
             
@@ -424,7 +407,7 @@ Private Sub cmdTirarTodo_click()
     Exit Sub
 
 tirartodo_click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCantidad.tirartodo_click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCantidad.tirartodo_click", Erl)
     Resume Next
     
 End Sub

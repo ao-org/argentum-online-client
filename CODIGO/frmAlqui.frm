@@ -241,7 +241,7 @@ Private Sub Command3_Click()
     
     
     If lstArmas.ListIndex < 0 Then
-        MsgBox "Debes seleccionar un objeto de la lista"
+        MsgBox JsonLanguage.Item("MENSAJE_SELECCIONAR_OBJETO"), vbExclamation + vbOKOnly
         Exit Sub
 
     End If
@@ -250,7 +250,7 @@ Private Sub Command3_Click()
         UserMacro.cantidad = cantidad
         UserMacro.TIPO = 1
         UserMacro.Index = ObjAlquimista(lstArmas.ListIndex + 1)
-        AddtoRichTextBox frmMain.RecTxt, "Comienzas a trabajar.", 2, 51, 223, 1, 1
+        AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR"), 2, 51, 223, 1, 1
         UserMacro.Intervalo = IntervaloTrabajo
         UserMacro.Activado = True
         frmMain.MacroLadder.Interval = gIntervals.BuildWork
