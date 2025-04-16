@@ -149,39 +149,65 @@ Attribute VB_Exposed = False
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 
+Private Enum e_mao_payment_type
+    GOLD
+    PATRON_POINTS
+End Enum
+
+
 Private Sub Form_Load()
-    lblCostGold.Caption = "Costo por publicar: 50.000 monedas de oro o 500 Creditos Patreon."
+    lblCostGold.Caption = "Costo por publicar: 50.000 monedas de oro o 500 Créditos Patreon."
+
+    cmbPaymentMethod.Clear
     cmbPaymentMethod.AddItem "Oro"
-    cmbPaymentMethod.AddItem "Creditos Patreon"
-    cmbPaymentMethod.ListIndex = 0  ' Set default to Gold
+    cmbPaymentMethod.ItemData(cmbPaymentMethod.NewIndex) = GOLD
+
+    cmbPaymentMethod.AddItem "Créditos Patreon"
+    cmbPaymentMethod.ItemData(cmbPaymentMethod.NewIndex) = PATRON_POINTS
+
+    cmbPaymentMethod.ListIndex = 0  ' Default to Gold
 End Sub
+
 
 Private Sub Label2_Click()
     Call cerrarFormulario
 End Sub
 
 Private Sub lblPublicar_Click()
-    If Val(txtValor.Text <= 0) Then
-        Call MsgBox(JsonLanguage.Item("MENSAJE_VALOR_PERSONAJE_INVALIDO"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
+    Dim valor As Long
+    valor = Val(txtValor.Text)
+    
+    If valor <= 0 Then
+        MsgBox JsonLanguage.Item("MENSAJE_VALOR_PERSONAJE_INVALIDO"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
         Exit Sub
     End If
-    
-    Dim paymentMethod As String
+
+    If cmbPaymentMethod.ListIndex < 0 Then
+        MsgBox "Por favor, seleccione un método de pago.", vbExclamation, "Método de pago"
+        Exit Sub
+    End If
+
+    Dim paymentMethod As e_mao_payment_type
     Dim costMessage As String
-    paymentMethod = cmbPaymentMethod.Text
+    paymentMethod = cmbPaymentMethod.ItemData(cmbPaymentMethod.ListIndex)
 
     Select Case paymentMethod
-        Case "Oro"
+        Case GOLD
             costMessage = "50.000 monedas de oro"
-        Case "Creditos Patreon"
+        Case PATRON_POINTS
             costMessage = "500 Créditos Patreon"
         Case Else
-            Call MsgBox("Por favor, seleccione un método de pago.")
+            MsgBox "Método de pago no válido.", vbCritical, "Error"
             Exit Sub
     End Select
 
-    If MsgBox(JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE") & userName & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_VALOR") & txtValor.Text & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_COSTO"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJE_TITULO_PUBLICAR_PERSONAJE")) = vbYes Then
-        Call writePublicarPersonajeMAO(Val(txtValor.Text), paymentMethod)
+    Dim mensajeConfirmacion As String
+    mensajeConfirmacion = JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE") & userName & _
+                          JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_VALOR") & valor & _
+                          JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_COSTO") & " " & costMessage
+
+    If MsgBox(mensajeConfirmacion, vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJE_TITULO_PUBLICAR_PERSONAJE")) = vbYes Then
+        Call writePublicarPersonajeMAO(valor, paymentMethod)
         Call cerrarFormulario
     End If
 End Sub
