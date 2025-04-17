@@ -230,11 +230,6 @@ Private Sub cmdFundar_Click()
     
             fdesc = Replace(txtDesc, vbCrLf, "º", , , vbBinaryCompare)
     
-            '    If Not AsciiValidos(fdesc) Then
-            '        MsgBox "La descripcion contiene caracteres invalidos"
-            '        Exit Sub
-            '    End If
-            
             If Combo1.Text = "" Then
                 MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_DEFINIR_ALINEAMIENTO_CLAN")
                 Exit Sub
