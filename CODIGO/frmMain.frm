@@ -2743,7 +2743,7 @@ Public Sub inventoryClick()
     On Error GoTo inventoryClick_Err
     If picInv.visible Then Exit Sub
 
-    Call SelectInvenrotyTab
+    Call SelectInventoryTab
     
     panel.Picture = LoadInterface("centroinventario.bmp")
     picInv.visible = True

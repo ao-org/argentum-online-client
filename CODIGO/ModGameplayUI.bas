@@ -626,7 +626,7 @@ createObj_Click_Err:
     Resume Next
 End Sub
 
-Public Sub SelectInvenrotyTab()
+Public Sub SelectInventoryTab()
     ActiveInventoryTab = eInventory
     TempTick = GetTickCount And &H7FFFFFFF
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Inventario Then
