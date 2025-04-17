@@ -50,6 +50,18 @@ Public LastOpenChatCounter As Long
 Public LastElapsedTimeChat(1 To 6) As Double
 Public StartOpenChatTime As Double
 
+Public UltimaCoordMacro As tPos
+Public UltimaPosClick As tPos
+Public iClickTick As Long
+Public IntervaloEntreClicks As Long ' Este valor lo configurás vos (por ejemplo 300)
+Public DeteccionesMacroRepetidas As Byte
+Private Const LIMITE_DETECCIONES As Byte = 3
+
+Public Type tPos
+    x As Integer
+    y As Integer
+End Type
+
 Public TieneAntorcha As Boolean
 Public Enum TipoAntorcha
     AntorchaBasica = 0

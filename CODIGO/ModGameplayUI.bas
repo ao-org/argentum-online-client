@@ -543,11 +543,34 @@ Public Function GetGameplayForm() As Form
 
 End Function
 
+Public Sub SelectInventoryTab()
+    ActiveInventoryTab = eInventory
+    Call DetectarMacroRepetitivo(tMacroButton.Inventario)
+    
+    If Seguido = 1 Then
+        Call WriteNotifyInventarioHechizos(1, hlst.ListIndex, hlst.Scroll)
+    End If
+End Sub
+
+Public Sub SelectSpellTab()
+    ActiveInventoryTab = eSpellList
+    Call DetectarMacroRepetitivo(tMacroButton.Hechizos)
+
+    If Seguido = 1 Then
+        Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
+    End If
+End Sub
+
 Public Sub UseSpell(ByVal SpellSlot As Byte, ByVal SpellName As String)
-If pausa Then Exit Sub
+    If pausa Then Exit Sub
+
+    If Not ComprobarPosibleMacro(MouseX, MouseY) Then
+        Call DetectarMacroRepetitivo(tMacroButton.Lanzar)
+    End If
 
     TempTick = GetTickCount And &H7FFFFFFF
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And _
+    If TempTick - iClickTick < IntervaloEntreClicks And _
+       Not iClickTick = 0 And _
        LastMacroButton <> tMacroButton.Lanzar Then
         Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
     End If
@@ -571,6 +594,35 @@ If pausa Then Exit Sub
         End If
     End If
 End Sub
+
+Private Sub DetectarMacroRepetitivo(ByVal botonActual As tMacroButton)
+    Dim nuevoTick As Long
+    nuevoTick = GetTickCount And &H7FFFFFFF
+
+    If nuevoTick - iClickTick < IntervaloEntreClicks And _
+       Not iClickTick = 0 And _
+       botonActual = LastMacroButton And _
+       MouseX = UltimaCoordMacro.x And _
+       MouseY = UltimaCoordMacro.y Then
+
+        DeteccionesMacroRepetidas = DeteccionesMacroRepetidas + 1
+        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
+
+        If DeteccionesMacroRepetidas >= LIMITE_DETECCIONES Then
+            Call WriteCerraCliente(userName) ' Cerramos el cliente
+        End If
+    Else
+        DeteccionesMacroRepetidas = 0 ' Reiniciamos si no se repite
+    End If
+
+    iClickTick = nuevoTick
+    LastMacroButton = botonActual
+    UltimaCoordMacro.x = MouseX
+    UltimaCoordMacro.y = MouseY
+End Sub
+
+
+
 
 Public Sub UpdateMapPos()
 
@@ -626,31 +678,7 @@ createObj_Click_Err:
     Resume Next
 End Sub
 
-Public Sub SelectInvenrotyTab()
-    ActiveInventoryTab = eInventory
-    TempTick = GetTickCount And &H7FFFFFFF
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Inventario Then
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-    End If
-    iClickTick = TempTick
-    LastMacroButton = tMacroButton.Inventario
-    If Seguido = 1 Then
-            Call WriteNotifyInventarioHechizos(1, hlst.ListIndex, hlst.Scroll)
-    End If
-End Sub
 
-Public Sub SelectSpellTab()
-    ActiveInventoryTab = eSpellList
-    TempTick = GetTickCount And &H7FFFFFFF
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Hechizos Then
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
-    End If
-    iClickTick = TempTick
-    LastMacroButton = tMacroButton.Hechizos
-    If Seguido = 1 Then
-            Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
-    End If
-End Sub
 
 Public Sub GetMinimapPosition(ByRef x As Single, ByRef y As Single)
     x = x * (100 - 2 * HalfWindowTileWidth - 4) / 100 + HalfWindowTileWidth + 2
