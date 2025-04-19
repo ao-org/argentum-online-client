@@ -1118,7 +1118,13 @@ On Error GoTo Main_Err
     Call SetNpcsRenderText
     Call cargarTutoriales
     Call InitializeEffectArrays
-    CheckMD5 = GetMd5
+    
+    #If DEBUGGING = 0 Then
+        CheckMD5 = GetMd5
+    #Else
+        CheckMD5 = "NotNeededinDebug"
+    #End If
+    
     SessionOpened = False
     
     Call Load(frmConnect)
