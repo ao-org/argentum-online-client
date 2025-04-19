@@ -212,7 +212,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Call WritePetLeaveAll
                                 
-            Case "/ENTRENAR"
+            Case "/ENTRENAR", "/TRAIN"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -273,15 +273,15 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/PROMEDIO"
                 Call WritePromedio
             
-            Case "/AYUDA"
+            Case /AYUDA, "HELP"
                 Call WriteHelp
             
-            Case "/EVENTOFACCIONARIO"
+            Case "/EVENTOFACCIONARIO", "/FACCIONARY EVENT"
                 Call WriteEventoFaccionario
-            Case "/SUBASTA"
+            Case /SUBASTA, "AUCTION"
                 Call WriteSubastaInfo
                 
-            Case "/EVENTO"
+            Case "/EVENTO", "/EVENT"
                 Call WriteEventoInfo
                 
             Case "/COMERCIAR"
@@ -321,13 +321,13 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Call WriteBankStart
                 
-            Case "/ENLISTAR"
+            Case "/ENLISTAR", "/ENLIST"
                 Call WriteEnlist
                     
             Case "/INFORMACION"
                 Call WriteInformation
                 
-            Case "/RECOMPENSA"
+            Case /RECOMPENSA, "REWARD"
                 Call WriteReward
                 
             Case "/MOTD"
@@ -381,7 +381,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_PREGUNTA"))
             Case "/GM"
                 FrmGmAyuda.Show vbModeless, GetGameplayForm()
                  
-            Case "/OFERTAINICIAL"
+            Case /OFERTAINICIAL, "INITIALBID"
                 If notNullArguments Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Long) Then
                         If ArgumentosRaw > 0 Then
@@ -1075,7 +1075,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
 
                 End If
                 
-            Case "/REVIVIR"
+            Case /REVIVIR, "REVIVE"
 
                 If notNullArguments Then
                     Call WriteReviveChar(ArgumentosRaw)
@@ -1103,10 +1103,10 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
             Case "/ONLINEMAP"
                 Call WriteOnlineMap
                 
-            Case "/PERDON"
+            Case /PERDON, "SORRY"
                 Call WriteForgive
             
-            Case "/DONAR"
+            Case /DONAR, "DONATE"
                 If notNullArguments Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Long) Then
                         Call WriteDonateGold(ArgumentosRaw)
@@ -1122,7 +1122,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
 
                 End If
                 
-            Case "/ECHAR"
+            Case "/ECHAR", "/THROW"
 
                 If notNullArguments Then
                     Call WriteKick(ArgumentosRaw)
@@ -1132,7 +1132,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
 
                 End If
                 
-            Case "/EJECUTAR"
+            Case "/EJECUTAR", "/EXECUTE"
 
                 If notNullArguments Then
                     Call WriteExecute(ArgumentosRaw)
@@ -1465,7 +1465,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
             Case "/PISO"
                 Call WriteItemsInTheFloor
                 
-            Case "/ESTUPIDO"
+            Case "/ESTUPIDO", "/IDIOT"
 
                 If notNullArguments Then
                     Call WriteMakeDumb(ArgumentosRaw)
@@ -1967,7 +1967,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_OPCIONES"))
             Case "/DIA"
                 Call WriteDay
                 
-            Case "/ECHARTODOSPJS"
+            Case "/ECHARTODOSPJS", "/EARTHODOSPJS"
                 Call WriteKickAllChars
 
             Case "/RELOADNPCS"
