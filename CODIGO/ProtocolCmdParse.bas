@@ -382,7 +382,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/GM"
                 FrmGmAyuda.Show vbModeless, GetGameplayForm()
                  
-            Case "/OFERTAINICIAL", "/INITIALBID"
+            Case "/OFERTAINICIAL", "/INITIALOFFER"
                 If notNullArguments Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Long) Then
                         If ArgumentosRaw > 0 Then
@@ -460,7 +460,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                
-            Case "/PENAS", "/SORROWS"
+            Case "/PENAS", "/SENTENCE"
                 Call WritePunishments(ArgumentosRaw)
 
             
@@ -1977,7 +1977,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/RELOADSINI"
                 Call WriteReloadServerIni
             
-            Case "/HOGAR"
+            Case "/HOGAR", "/HOME"
                 Call WriteHome
             
             Case "/RELOADHECHIZOS"
