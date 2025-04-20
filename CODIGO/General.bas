@@ -1787,9 +1787,8 @@ On Error GoTo errhandler
         #End If
     End If
 Exit Function
-
 errhandler:
-    MsgBox "Error al cargar la interface: " & FileName
+    frmDebug.add_text_tracebox "Error loading interface bitmap: " & FileName
 
 End Function
 
@@ -1806,7 +1805,7 @@ On Error GoTo errhandler
 Exit Function
 
 errhandler:
-    MsgBox "Error al cargar minimapa: Mapa" & map & ".bmp"
+    frmDebug.add_text_tracebox "Error loading minimap: " & map & ".bmp"
 
 End Function
 
