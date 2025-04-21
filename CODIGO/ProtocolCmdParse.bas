@@ -400,7 +400,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
             
@@ -441,7 +441,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If Len(ArgumentosRaw) > 50 Then
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFOIAO)
-                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_TU_DESCRIPCIÓN_NO"), .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_TU_DESCRIPCION_NO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -456,7 +456,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteGuildVote(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                
@@ -1607,17 +1607,17 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                                 If ValidNumber(cantidad, ent_Integer) Then
                                     Call WriteGiveItem(tmpArr(0), tmpArr(2), cantidad, tmpArr(1))
                                 Else
-                                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INVÁLIDA_UTILICE"))
+                                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INVALIDA_UTILICE"))
                                 End If
                             Else
-                                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NÚMERO_OBJETO_INVÁLIDO"))
+                                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NUMERO_OBJETO_INVALIDO"))
                             End If
                             
                         End If
     
                     Else
                         'Avisar que falta el parametro
-                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
     
                     End If
                 End If
@@ -1631,7 +1631,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteChaosLegionKick(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
     
@@ -2015,7 +2015,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTÁS_MUERTO_NO"), .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO_NO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
