@@ -2250,10 +2250,10 @@ Private Sub StartCustomMap(ByVal mapType As Byte, ByVal Name As String, ByRef ar
             Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
-            Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & Name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
+            Call ShowConsoleMsg(Replace$(JsonLanguage.Item("MENSAJE_CREAREVENTO_USO"), "¬1", Name)) ' MENSAJE_CREAREVENTO_USO=Valor incorrecto. Utilice /CREAREVENTO ¬1 PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.
         End If
     Else
-        Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & Name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
+        Call ShowConsoleMsg(Replace$(JsonLanguage.Item("MENSAJE_CREAREVENTO_USO"), "¬1", Name)) ' MENSAJE_CREAREVENTO_USO=Valor incorrecto. Utilice /CREAREVENTO ¬1 PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.
     End If
 End Sub
 
