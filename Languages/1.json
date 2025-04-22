@@ -279,7 +279,7 @@
     "MENSAJE_NOT_SUPPORTED": "Not supported.",
     "MENSAJE_INGRESE_NOMBRE_DEL": "Ingrese el nombre del usuario. Utilice /DAR NOMBRE@MOTIVO@OBJETO[@CANTIDAD=1].",
     "MENSAJE_INGRESE_MOTIVO_DAR": "Ingrese el motivo para dar. Utilice /DAR NOMBRE@MOTIVO@OBJETO[@CANTIDAD=1].",
-    "MENSAJE_CANTIDAD_INVÁLIDA_UTILICE": "Cantidad inválida. Utilice /DAR NOMBRE@MOTIVO@OBJETO[@CANTIDAD=1].",
+    "MENSAJE_CANTIDAD_INVALIDA_UTILICE": "Cantidad inválida. Utilice /DAR NOMBRE@MOTIVO@OBJETO[@CANTIDAD=1].",
     "MENSAJE_NUMERO_OBJETO_INVALIDO": "Número de objeto inválido. Utilice /DAR NOMBRE@MOTIVO@OBJETO[@CANTIDAD=1].",
     "MENSAJE_WAV_INCORRECTO_UTILICE": "Wav incorrecto. Utilice /forcew/acc NPCav WAV.",
     "MENSAJE_NPC_INCORRECTO_UTILICE": "Npc incorrecto. Utilice .",
