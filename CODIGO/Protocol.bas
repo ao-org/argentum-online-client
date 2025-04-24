@@ -4327,6 +4327,8 @@ Private Sub HandleWorkRequestTarget()
         Case MarcaDeGM
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_PERSONAJE_A_MARCAR"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
+        Case Domar
+            Call FormParser.Parse_Form(Frm, E_SHOOT)
     End Select
     Exit Sub
 HandleWorkRequestTarget_Err:
