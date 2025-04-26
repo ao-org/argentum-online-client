@@ -497,15 +497,30 @@ On Error GoTo HandleIncomingData_Err
             Call HandleAccountCharacterList
         #End If
         Case Else
-            Err.Raise &HDEADBEEF, "Invalid Message"
+            ' Invalid Message
     End Select
 #End If
     
-    If (Reader.GetAvailable() > 0) Then
-        Err.Raise &HDEADBEEF, "HandleIncomingData", "El paquete '" & PacketId & "' se encuentra en mal estado con '" & Reader.GetAvailable() & "' bytes de mas"
-    End If
-
-    HandleIncomingData = True
+    
+   ' —————————————————————————————
+   ' Detect both (a) extra bytes from known packets
+   '         and (b) any packet where we had NO handler
+   ' In either case, Reader.GetAvailable() > 0
+   If (Reader.GetAvailable() > 0) Then
+        Call RegistrarError( _
+            &HDEADBEEF, _
+            "Server message ID: " & PacketId & _
+            " unhandled or too many bytes; " & _
+            Reader.GetAvailable() & " extra bytes found", _
+            "Protocol.HandleIncomingData", Erl _
+        )
+        Do While (Reader.GetAvailable() > 0)
+            Dim dummy As Byte
+            dummy = Reader.ReadInt8
+        Loop
+   End If
+    
+   HandleIncomingData = True
     
 HandleIncomingData_Err:
     
