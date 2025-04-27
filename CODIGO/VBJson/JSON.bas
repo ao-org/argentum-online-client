@@ -565,9 +565,9 @@ ErrorHandler:
 
 End Function
 
-'********************************************************************************************************
+
 '                   FUNCIONES MISCELANEAS DE LA ANTERIOR VERSION DEL MODULO
-'********************************************************************************************************
+
 
 Private Function Encode(ByVal str As String) As String
 

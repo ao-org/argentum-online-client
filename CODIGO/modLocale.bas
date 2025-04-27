@@ -59,11 +59,6 @@ End Function
 
 Public Function General_Get_Line_Count(ByVal FileName As String) As Long
 
-    '**************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 6/11/2005
-    '
-    '**************************************************************
     On Error GoTo ErrorHandler
 
     Dim N As Integer, tmpStr As String
@@ -91,13 +86,7 @@ End Function
 Public Function Integer_To_String(ByVal Var As Integer) As String
     
     On Error GoTo Integer_To_String_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 3/12/2005
-    '
-    '**************************************************************
     Dim temp As String
         
     'Convertimos a hexa
@@ -126,11 +115,6 @@ End Function
 
 Public Function String_To_Integer(ByRef str As String, ByVal Start As Integer) As Integer
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 3/12/2005
-    '
-    '**************************************************************
     On Error GoTo Error_Handler
     
     Dim temp_str As String
@@ -157,12 +141,9 @@ Error_Handler:
 End Function
 
 Public Function Byte_To_String(ByVal Var As Byte) As String
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 3/12/2005
+
     'Convierte un byte a string
-    '**************************************************************
-    
+
     On Error GoTo Byte_To_String_Err
     
     Byte_To_String = Chr$(Val("&H" & hex$(Var)))
@@ -181,11 +162,6 @@ End Function
 
 Public Function String_To_Byte(ByRef str As String, ByVal Start As Integer) As Byte
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 3/12/2005
-    '
-    '**************************************************************
     On Error GoTo Error_Handler
     
     If Len(str) < Start Then Exit Function
@@ -201,13 +177,7 @@ End Function
 Public Function Long_To_String(ByVal Var As Long) As String
     
     On Error GoTo Long_To_String_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 3/12/2005
-    '
-    '**************************************************************
     'No aceptamos valores que usen los 4 últimos its
     If Var > &HFFFFFFF Then GoTo ErrorHandler
     
@@ -250,11 +220,6 @@ Long_To_String_Err:
 End Function
 
 Public Function String_To_Long(ByRef str As String, ByVal Start As Integer) As Long
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 3/12/2005
-    '
-    '**************************************************************
     
     On Error GoTo ErrorHandler
         

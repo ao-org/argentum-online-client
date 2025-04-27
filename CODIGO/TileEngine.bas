@@ -588,9 +588,7 @@ Public Sub Init_TileEngine()
     
     HalfConnectTileHeight = (frmConnect.render.ScaleHeight / 32) \ 2
     HalfConnectTileWidth = (frmConnect.render.ScaleWidth / 32) \ 2
-    'ReyarB ver si es mejor hacerlo en otro lado, Graficos muy grandes aparecen de la nada.
-        'TileBufferSizeX = 11
-        'TileBufferSizeY = 11
+
     TileBufferSizeX = 14
     TileBufferSizeY = 18
     
@@ -847,11 +845,9 @@ End Function
 Sub MoveScreen(ByVal nHeading As E_Heading)
     
     On Error GoTo MoveScreen_Err
-    
 
-    '******************************************
     'Starts the screen moving in a direction
-    '******************************************
+
     Dim x  As Integer
 
     Dim y  As Integer
@@ -1024,11 +1020,9 @@ End Function
 Function NextOpenChar() As Integer
     
     On Error GoTo NextOpenChar_Err
-    
 
-    '*****************************************************************
     'Finds next open char slot in CharList
-    '*****************************************************************
+
     Dim loopc As Long
 
     Dim Dale  As Boolean
@@ -1059,11 +1053,9 @@ End Function
 Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Heading) As Boolean
     
     On Error GoTo LegalPos_Err
-    
 
-    '*****************************************************************
     'Checks to see if a tile position is legal
-    '*****************************************************************
+
     'Limites del mapa
     If x < MinXBorder Or x > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
         Exit Function
@@ -1152,11 +1144,9 @@ End Function
 Function InMapBounds(ByVal x As Integer, ByVal y As Integer) As Boolean
     
     On Error GoTo InMapBounds_Err
-    
 
-    '*****************************************************************
     'Checks to see if a tile position is in the maps bounds
-    '*****************************************************************
+
     If x < XMinMapSize Or x > XMaxMapSize Or y < YMinMapSize Or y > YMaxMapSize Then
         Exit Function
 
@@ -1176,11 +1166,9 @@ End Function
 Function GetBitmapDimensions(ByVal BmpFile As String, ByRef bmWidth As Long, ByRef bmHeight As Long)
     
     On Error GoTo GetBitmapDimensions_Err
-    
 
-    '*****************************************************************
     'Gets the dimensions of a bmp
-    '*****************************************************************
+
     Dim BMHeader    As BITMAPFILEHEADER
 
     Dim BINFOHeader As BITMAPINFOHEADER
@@ -1298,13 +1286,9 @@ End Function
 Public Function GetElapsedTime() As Single
     
     On Error GoTo GetElapsedTime_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
     'Gets the time that past since the last call
-    '**************************************************************
+
     Dim Start_Time    As Currency
 
     Static end_time   As Currency
@@ -1338,13 +1322,9 @@ End Function
 Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal src_x As Integer, ByVal src_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer)
     
     On Error GoTo Grh_Create_Mask_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 8/30/2004
     'Creates a Mask hDC, and sets the source hDC to work for trans bliting.
-    '**************************************************************
+
     Dim x          As Integer
 
     Dim y          As Integer
@@ -1391,11 +1371,8 @@ Grh_Create_Mask_Err:
 End Sub
 
 Public Function Convert_Tile_To_View_X(ByVal x As Integer) As Integer
-    '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
-    'Last Modify Date: 10/07/2002
+
     'Convert tile position into position in view area
-    '**************************************************************
     'If engine_windowed Then
     
     On Error GoTo Convert_Tile_To_View_X_Err
@@ -1415,11 +1392,8 @@ Convert_Tile_To_View_X_Err:
 End Function
 
 Public Function Convert_Tile_To_View_Y(ByVal y As Integer) As Integer
-    '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
-    'Last Modify Date: 10/07/2002
+
     'Convert tile position into position in view area
-    '**************************************************************
     ' If engine_windowed Then
     
     On Error GoTo Convert_Tile_To_View_Y_Err

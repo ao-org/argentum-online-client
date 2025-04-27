@@ -72,15 +72,10 @@ Private Declare Function ChangeDisplaySettings Lib "user32" Alias "ChangeDisplay
 Public Sub SetResolution()
     
     On Error GoTo SetResolution_Err
-    
 
-    '***************************************************
-    'Autor: Unknown
-    'Last Modification: 03/29/08
     'Changes the display resolution if needed.
-    'Last Modified By: Juan Martín Sotuyo Dodero (Maraxus)
-    ' 03/29/2008: Maraxus - Retrieves current settings storing display depth and frequency for proper restoration.
-    '***************************************************
+    'Retrieves current settings storing display depth and frequency for proper restoration.
+    
     Dim lRes              As Long
     Dim MidevM            As typDevMODE
     Dim CambiarResolucion As Boolean
@@ -132,15 +127,10 @@ End Sub
 Public Sub ResetResolution()
     
     On Error GoTo ResetResolution_Err
-    
 
-    '***************************************************
-    'Autor: Unknown
-    'Last Modification: 03/29/08
     'Changes the display resolution if needed.
-    'Last Modified By: Juan Martín Sotuyo Dodero (Maraxus)
-    ' 03/29/2008: Maraxus - Properly restores display depth and frequency.
-    '***************************************************
+    'Properly restores display depth and frequency.
+    
 
     Dim lRes    As Long
     

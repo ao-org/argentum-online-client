@@ -131,22 +131,9 @@ Dim HEIGHT_MAIN_INVENTORY As Integer
 
 Private Sub Class_Initialize()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
-    '
-    '***************************************************
 End Sub
-
 Private Sub Class_Terminate()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
-    '
-    '***************************************************
 End Sub
-
 #If ConMenuesConextuales = 1 Then   'Argument list varies!!!
     Public Sub Initialize(ByRef DirectDraw As DirectDraw7, ByRef InvPic As PictureBox, ByRef PopUpMenu As Menu, Optional ByVal Width As Integer = 0, Optional ByVal Height As Integer = 0, Optional ByVal OffsetX As Integer = 0, Optional ByVal OffsetY As Integer = 0, Optional ByVal SpaceX As Integer = 0, Optional ByVal SpaceY As Integer = 0, Optional thisInventory As Boolean = False, Optional MIDSPACE As Byte = 0)
 
@@ -157,9 +144,9 @@ End Sub
                         Optional ByVal Width As Integer = 0, Optional ByVal Height As Integer = 0, Optional ByVal OffsetX As Integer = 0, Optional ByVal OffsetY As Integer = 0, _
                         Optional ByVal SpaceX As Integer = 0, Optional ByVal SpaceY As Integer = 0, Optional thisInventory As Boolean = False, Optional MIDSPACE As Byte = 0)
 #End If
-    '***************************************************
+
     'Sets the reference to the picture box on which to render the inventory
-    '***************************************************
+
     Set InventoryWindow = InvPic
     
     isInventory = thisInventory
@@ -200,13 +187,9 @@ End Sub
 Public Sub SelectGold()
     
     On Error GoTo SelectGold_Err
-    
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
     'Sets the gold as the currently selected item
-    '***************************************************
+
     Dim prevSelectedItem As Long
     
     'Store preivously selected item
@@ -225,11 +208,8 @@ SelectGold_Err:
 End Sub
 
 Public Property Get SelectedItem() As Long
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
+
     'Retrieves the selected item index
-    '***************************************************
     
     On Error GoTo SelectedItem_Err
     
@@ -260,11 +240,8 @@ IsItemSelected_Err:
 End Property
 
 Public Property Get MaxHit(ByVal Slot As Byte) As Integer
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
+
     'Retrieves the max hit of the selected item
-    '***************************************************
     
     On Error GoTo MaxHit_Err
     
@@ -280,11 +257,8 @@ MaxHit_Err:
 End Property
 
 Public Property Get MinHit(ByVal Slot As Byte) As Integer
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
+
     'Retrieves the min hit of the selected item
-    '***************************************************
     
     On Error GoTo MinHit_Err
     
@@ -300,11 +274,8 @@ MinHit_Err:
 End Property
 
 Public Property Get Def(ByVal Slot As Byte) As Integer
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
+
     'Retrieves the defense of the selected item
-    '***************************************************
     
     On Error GoTo Def_Err
     
@@ -320,11 +291,8 @@ Def_Err:
 End Property
 
 Public Property Get GrhIndex(ByVal Slot As Byte) As Long
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
+
     'Retrieves the grh index of the selected item
-    '***************************************************
     
     On Error GoTo GrhIndex_Err
     
@@ -340,11 +308,8 @@ GrhIndex_Err:
 End Property
 
 Public Property Get Valor(ByVal Slot As Byte) As Single
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
+
     'Retrieves the value of the selected item
-    '***************************************************
     
     On Error GoTo Valor_Err
     
@@ -362,13 +327,9 @@ End Property
 Public Property Get Amount(ByVal Slot As Byte) As Long
     
     On Error GoTo Amount_Err
-    
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
     'Retrieves the selected item's amount
-    '***************************************************
+
     If Slot = FLAGORO Then
         Amount = UserStats.GLD
     ElseIf Slot >= LBound(UserInventory) And Slot <= UBound(UserInventory) Then
@@ -386,11 +347,8 @@ Amount_Err:
 End Property
 
 Public Property Get OBJIndex(ByVal Slot As Byte) As Integer
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
+
     'Retrieves the selected item's object index
-    '***************************************************
     
     On Error GoTo OBJIndex_Err
     
@@ -406,11 +364,8 @@ OBJIndex_Err:
 End Property
 
 Public Property Get ObjType(ByVal Slot As Byte) As Integer
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
+
     'Retrieves the selected item's object type
-    '***************************************************
     
     On Error GoTo ObjType_Err
     
@@ -426,11 +381,8 @@ ObjType_Err:
 End Property
 
 Public Property Get ItemName(ByVal Slot As Byte) As String
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
+
     'Retrieves the selected item's name
-    '***************************************************
     
     On Error GoTo ItemName_Err
     
@@ -446,12 +398,9 @@ ItemName_Err:
 End Property
 
 Public Property Get Equipped(ByVal Slot As Byte) As Boolean
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
+
     'Retrieves True if the item at the given pos is eqiupped
-    '***************************************************
-    
+
     On Error GoTo Equipped_Err
     
     Equipped = UserInventory(Slot).Equipped
@@ -466,11 +415,8 @@ Equipped_Err:
 End Property
 
 Public Property Get PuedeUsar(ByVal Slot As Byte) As Byte
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
+    
     'Retrieves True if the item at the given pos is eqiupped
-    '***************************************************
     
     On Error GoTo PuedeUsar_Err
     
@@ -562,11 +508,8 @@ ReDraw_Err:
 End Sub
 
 Public Sub SetItem(ByVal Slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount As Integer, ByVal eEquipped As Byte, ByVal eGrhIndex As Long, ByVal eObjType As Integer, ByVal eMaxHit As Integer, ByVal eMinHit As Integer, ByVal eDef As Integer, ByVal eValor As Single, ByVal eName As String, ByVal PuedeUsar As Byte)
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 12/04/06
+
     'Sets all data for a given inventory slot
-    '***************************************************
     
     On Error GoTo SetItem_Err
     
@@ -621,11 +564,11 @@ Public Sub ClearSlot(ByVal Slot As Byte)
 End Sub
 
 Public Sub SeleccionarItem(ByVal SelectedItem As Byte)
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 27/07/04
+    
+    
+    
     'Retrieves the selected item index
-    '***************************************************
+    
     
     On Error GoTo SeleccionarItem_Err
     

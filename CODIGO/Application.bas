@@ -31,11 +31,8 @@ End Type
 ' @return   True if any of the app's windows are the foreground window, false otherwise.
 
 Public Function IsAppActive() As Boolean
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (maraxus)
-    'Last Modify Date: 03/03/2007
+
     'Checks if this is the active application or not
-    '***************************************************
     
     On Error GoTo IsAppActive_Err
     

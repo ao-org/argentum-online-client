@@ -1860,7 +1860,7 @@ Private Sub BorrarPersonaje_Click()
     If MsgBox(JsonLanguage.Item("MENSAJEBOX_BORRAR_PERSONAJE") & " " & cboListaUsus.Text, vbYesNo + vbQuestion) = vbYes Then
 
 
-        Call ParseUserCommand("/KILLCHAR " & cboListaUsus.Text) ' ver ReyarB
+        Call ParseUserCommand("/KILLCHAR " & cboListaUsus.Text)
     End If
 
     
@@ -1906,7 +1906,7 @@ Private Sub Cabeza_Click()
     
     tmp = InputBox("Ingrese el valor de cabeza que desea editar.", "Edicion de Usuarios")
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " Head " & tmp) 'ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " Head " & tmp)
     
     Exit Sub
 
@@ -1987,7 +1987,7 @@ Private Sub ciudadanos_Click()
     
     tmp = InputBox("Ingrese el valor de ciudadanos que desea editar.", "Edicion de Usuarios")
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CIU " & tmp) ' ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CIU " & tmp)
     
     Exit Sub
 
@@ -2003,7 +2003,7 @@ Private Sub Clase_Click()
     
     tmp = InputBox("Ingrese el valor de clase Libres que desea editar.", "Edicion de Usuarios")
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CLASE " & tmp) 'ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CLASE " & tmp)
     
     Exit Sub
 
@@ -2179,7 +2179,7 @@ Private Sub cmdAccion_Click(Index As Integer)
 
         Case 33
 
-            Call ParseUserCommand("/PAUSAR") ' ver ReyarB
+            Call ParseUserCommand("/PAUSAR")
 
         Case 34 '/LIMPIARMUNDO 0.12.1
             Call WriteCleanWorld
@@ -2232,7 +2232,7 @@ End Sub
 
 Private Sub cmdBanPJ_Click()
     tmpUser = cboListaUsus.Text
-    Call ParseUserCommand("/BAN") ' ver ReyarB
+    Call ParseUserCommand("/BAN")
     tmp = InputBox("Escriba el motivo del BAN.", "Baneo de " & tmpUser)
 
     If tmp = "" Then
@@ -2602,7 +2602,7 @@ Private Sub cmdRestringirMapa_Click()
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "Newbie")
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "NoPKS")
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "NoCIUD")
-    ' Wyrox Harthaos me falta Criminales , no se como restringir a todos de una
+    ' me falta Criminales , no se como restringir a todos de una
     ' luego de restringir
     ' faltaria mandar a cada uno a su hogar
     ' tambien los loguean mandarlos a su hogar.
@@ -3117,8 +3117,7 @@ Private Sub MnuEnviar_Click(Index As Integer)
     nick = Replace(cboListaUsus.Text, " ", "+")
 
     Select Case Index
-            'ReyarB modifico cordenadas
-
+            
          Case 0 'Ulla
             Coordenadas = "1 55 45"
             Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
@@ -3429,14 +3428,14 @@ Private Sub mnuReload_Click(Index As Integer)
 
         Case 3 'Reload mapas
 
-            Call ParseUserCommand("/RELOAD MAP") 'Ver ReyarB
+            Call ParseUserCommand("/RELOAD MAP")
             
         Case 4 'Reload hechizos
             Call WriteReloadSpells
 
         Case 5 'Reload motd
 
-            Call ParseUserCommand("/RELOADMOTD") ' ver ReyarB
+            Call ParseUserCommand("/RELOADMOTD")
         Case 6 'Reload npcs
             Call WriteReloadNPCs
 
@@ -3448,7 +3447,7 @@ Private Sub mnuReload_Click(Index As Integer)
 
     Case 8 'Reload otros
 
-        Call ParseUserCommand("/RELOADOPCIONES") 'ver ReyarB
+        Call ParseUserCommand("/RELOADOPCIONES")
 End Select
 
     
@@ -3509,7 +3508,7 @@ Private Sub oro_Click()
     
     tmp = InputBox("Ingrese el valor de oro que desea editar.", "Edicion de Usuarios")
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " ORO " & tmp) ' ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " ORO " & tmp)
     
     Exit Sub
 
@@ -3555,7 +3554,7 @@ Private Sub Raza_Click()
     
     tmp = InputBox("Ingrese el valor de raza que desea editar.", "Edicion de Usuarios")
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " RAZA " & tmp) 'Ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " RAZA " & tmp)
     
     Exit Sub
 
@@ -3567,7 +3566,7 @@ End Sub
 
 Private Sub ResetPozos_Click()
 
-    Call ParseUserCommand("/RESETPOZOS") 'ver ReyarB
+    Call ParseUserCommand("/RESETPOZOS")
     
 End Sub
 
@@ -3588,7 +3587,7 @@ Private Sub SkillLibres_Click()
     
     tmp = InputBox("Ingrese el valor de skills Libres que desea editar.", "Edicion de Usuarios")
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " SKILLSLIBRES " & tmp) ' ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " SKILLSLIBRES " & tmp)
     
     Exit Sub
 
@@ -3630,7 +3629,7 @@ End Sub
 
 Private Sub SubastaEstado_Click()
 
-    Call ParseUserCommand("/SUBASTAACTIVADA") ' ver ReyarB
+    Call ParseUserCommand("/SUBASTAACTIVADA")
 End Sub
 
 Private Sub Temporal_Click()
@@ -3794,7 +3793,7 @@ Private Sub Vida_Click()
     
     tmp = InputBox("Ingrese el valor de vida que desea editar.", "Edicion de Usuarios")
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " HP " & tmp) 'ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " HP " & tmp)
     
     Exit Sub
 
@@ -3987,10 +3986,6 @@ Public Sub CadenaChat(ByVal chat As String)
                     If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
                 End If
             End If
-
-
-        
-        '*************************************************************************************************
 
         ' Divide la cadena en partes utilizando "AntiCheat> El usuario" como separador
         partes = Split(Cadena, "AntiCheat--> El usuario")

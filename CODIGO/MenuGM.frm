@@ -568,7 +568,7 @@ Private Sub OpcionImg_Click(Index As Integer)
             End If
         Case 15
         
-            Call ParseUserCommand("/BAN") ' ver ReyarB
+            Call ParseUserCommand("/BAN")
             tmp = InputBox("Escriba el motivo del BAN.", "Baneo de " & TargetName)
 
             If tmp = "" Then

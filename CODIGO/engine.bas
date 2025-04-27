@@ -182,13 +182,9 @@ End Sub
 Public Function GetElapsedTime() As Single
     
     On Error GoTo GetElapsedTime_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
     'Gets the time that past since the last call
-    '**************************************************************
+
     Dim Start_Time    As Currency
     Static end_time   As Currency
     Static timer_freq As Currency
@@ -944,10 +940,7 @@ End Sub
 Public Sub render()
     
     On Error GoTo render_Err
-    
-    '*****************************************************
-    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-    '*****************************************************
+
     Rem On Error GoTo ErrorHandler:
     Dim temp_array(3) As RGBA
 
@@ -1179,14 +1172,9 @@ End Sub
 Private Sub Device_Box_Textured_Render_Advance(ByVal GrhIndex As Long, ByVal dest_x As Integer, ByVal dest_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer, ByRef rgb_list() As RGBA, ByVal src_x As Integer, ByVal src_y As Integer, ByVal dest_width As Integer, Optional ByVal dest_height As Integer, Optional ByVal alpha_blend As Boolean, Optional ByVal angle As Single)
     
     On Error GoTo Device_Box_Textured_Render_Advance_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 5/15/2003
     'Copies the Textures allowing resizing
-    'Modified by Juan Martín Sotuyo Dodero
-    '**************************************************************
+
     Static src_rect            As RECT
 
     Static dest_rect           As RECT
@@ -1430,13 +1418,9 @@ End Sub
 Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, ByVal dest_x As Integer, ByVal dest_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer, ByRef Color() As RGBA, ByVal src_x As Integer, ByVal src_y As Integer, Optional ByVal alpha_blend As Boolean, Optional ByVal angle As Single)
     
     On Error GoTo Device_Box_Textured_Render_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 2/12/2004
     'Just copies the Textures
-    '**************************************************************
+
     Static src_rect            As RECT
 
     Static dest_rect           As RECT
@@ -1606,13 +1590,9 @@ End Sub
 Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
     
     On Error GoTo Char_Render_Err
-    
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 12/03/04
     'Draw char's to screen without offcentering them
-    '***************************************************
+    
     Dim Pos                 As Integer
 
     Dim line                As String
@@ -2448,17 +2428,11 @@ Start_Err:
 End Sub
 
 Public Sub SetMapFx(ByVal x As Byte, ByVal y As Byte, ByVal Fx As Integer, ByVal Loops As Integer)
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 12/03/04
+
     'Sets an FX to the character.
-    '***************************************************
     
     On Error GoTo SetMapFx_Err
     
-
-    
-
     Dim indice As Byte
 
     With MapData(x, y)
@@ -3038,13 +3012,9 @@ End Sub
 Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_y As Integer, ByVal Height As Integer, ByVal Width As Integer, ByRef rgb_list() As RGBA, Optional ByVal h_center As Boolean, Optional ByVal v_center As Boolean, Optional ByVal alpha_blend As Boolean = False)
     
     On Error GoTo Grh_Render_Advance_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-    'Last Modify Date: 11/19/2003
     'Similar to Grh_Render, but let´s you resize the Grh
-    '**************************************************************
+
     Dim tile_width  As Integer
 
     Dim tile_height As Integer
@@ -3099,14 +3069,9 @@ End Sub
 Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_y As Integer, ByRef rgb_list() As RGBA, Optional ByVal h_centered As Boolean = True, Optional ByVal v_centered As Boolean = True, Optional ByVal alpha_blend As Boolean = False)
     
     On Error GoTo Grh_Render_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 2/28/2003
-    'Modified by Juan Martín Sotuyo Dodero
     'Added centering
-    '**************************************************************
+
     Dim tile_width  As Integer
 
     Dim tile_height As Integer
@@ -3161,13 +3126,7 @@ End Sub
 Private Function Grh_Check(ByVal grh_index As Long) As Boolean
     
     On Error GoTo Grh_Check_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
-    'Last Modify Date: 1/04/2003
-    '
-    '**************************************************************
     'check grh_index
     If grh_index > 0 And grh_index <= MaxGrh Then
         Grh_Check = GrhData(grh_index).NumFrames
@@ -3184,9 +3143,8 @@ Grh_Check_Err:
 End Function
 
 Function Engine_PixelPosX(ByVal x As Integer) As Integer
-    '*****************************************************************
+
     'Converts a tile position to a screen position
-    '*****************************************************************
     
     On Error GoTo Engine_PixelPosX_Err
     
@@ -3202,10 +3160,9 @@ Engine_PixelPosX_Err:
 End Function
 
 Function Engine_PixelPosY(ByVal y As Integer) As Integer
-    '*****************************************************************
+
     'Converts a tile position to a screen position
-    '*****************************************************************
-    
+
     On Error GoTo Engine_PixelPosY_Err
     
     Engine_PixelPosY = (y - 1) * 32
@@ -3222,11 +3179,9 @@ End Function
 Function Engine_ElapsedTime() As Long
     
     On Error GoTo Engine_ElapsedTime_Err
-    
 
-    '**************************************************************
     'Gets the time that past since the last call
-    '**************************************************************
+
     Dim Start_Time As Long
 
     Start_Time = FrameTime
@@ -3852,21 +3807,16 @@ EfectoEnPantalla_Err:
 End Sub
 
 Public Sub SetBarFx(ByVal CharIndex As Integer, ByVal BarTime As Integer)
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 12/03/04
+
     'Sets an FX to the character.
-    '***************************************************
     
     On Error GoTo SetBarFx_Err
     
-
     With charlist(CharIndex)
         .BarTime = BarTime
 
     End With
 
-    
     Exit Sub
 
 SetBarFx_Err:
@@ -3876,11 +3826,7 @@ SetBarFx_Err:
 End Sub
 
 Public Function Engine_Get_2_Points_Angle(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long) As Double
-    '**************************************************************
-    'Author: Unknown
-    'Last Modify Date: 18/10/2012
-    '**************************************************************
-    
+
     On Error GoTo Engine_Get_2_Points_Angle_Err
     
 
@@ -3896,11 +3842,7 @@ Engine_Get_2_Points_Angle_Err:
 End Function
 
 Public Function Engine_Get_X_Y_Angle(ByVal x As Double, ByVal y As Double) As Double
-    '**************************************************************
-    'Author: Unknown
-    'Last Modify Date: 18/10/2012
-    '**************************************************************
-    
+
     On Error GoTo Engine_Get_X_Y_Angle_Err
     
 
@@ -3943,12 +3885,9 @@ Engine_Get_X_Y_Angle_Err:
 End Function
 
 Public Function Engine_Convert_Radians_To_Degrees(ByVal s_radians As Double) As Integer
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 8/25/2004
+
     'Converts a radian to degrees
-    '**************************************************************
-    
+
     On Error GoTo Engine_Convert_Radians_To_Degrees_Err
     
 
@@ -4332,10 +4271,9 @@ End Sub
  
 Public Function Engine_GetAngle(ByVal CenterX As Integer, ByVal CenterY As Integer, ByVal TargetX As Integer, ByVal TargetY As Integer) As Single
 
-    '************************************************************
     'Gets the angle between two points in a 2d plane
     'More info: [url=http://www.vbgore.com/GameClient.TileEn]http://www.vbgore.com/GameClient.TileEn[/url] ... e_GetAngle" class="postlink" rel="nofollow" onClick="window.open(this.href);return false;
-    '************************************************************
+
     Dim SideA As Single
 
     Dim SideC As Single

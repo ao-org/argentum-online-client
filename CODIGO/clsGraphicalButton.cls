@@ -67,24 +67,20 @@ End Sub
 
 
 Private Sub ButtonHolder_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-'***************************************************
-'Author: ZaMa
-'Last Modify Date: 29/12/09
+
 'Implements the mouse down event of the image button.
 'Toggle to Click image button.
-'***************************************************
+
 
     ButtonHolder.Picture = ClickButtonImage
     Call ao20audio.playwav(SND_CLICK)
 End Sub
 
 Private Sub ButtonHolder_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-'***************************************************
-'Author: ZaMa
-'Last Modify Date: 22/12/09
+
 'Implements the mouse move event of the image button.
 'Toggle to pressed image button.
-'***************************************************
+
 
     If Not OverButton Then
 
@@ -100,11 +96,9 @@ Private Sub ButtonHolder_MouseMove(Button As Integer, Shift As Integer, X As Sin
 End Sub
 
 Public Sub ToggleToNormal()
-'***************************************************
-'Author: ZaMa
-'Last Modify Date: 22/12/09
+
 'Toggle to normal image button.
-'***************************************************
+
     If Not OverButton Then Exit Sub
 
     ButtonHolder.Picture = NormalButtonImage
@@ -112,12 +106,10 @@ Public Sub ToggleToNormal()
 End Sub
 
 Private Sub ButtonHolder_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-'***************************************************
-'Author: ZaMa
-'Last Modify Date: 29/12/09
+
 'Implements the mouse up event of the image button.
 'Toggle to RollOver image button.
-'***************************************************
+
     ButtonHolder.Picture = RollOverButtonImage
 End Sub
 

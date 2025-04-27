@@ -199,10 +199,7 @@ EsObjetoFijo_Err:
 End Function
 
 Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String) As Boolean
-    '*****************************************************************
-    'Author: Augusto Jos  Rando
-    '*****************************************************************
-    
+
     On Error GoTo Letter_Set_Err
     
     letter_text = text_string
@@ -239,9 +236,6 @@ End Sub
 
 Public Function Map_FX_Group_Next_Open(ByVal x As Byte, ByVal y As Byte) As Integer
 
-    '*****************************************************************
-    'Author: Augusto Jos  Rando
-    '*****************************************************************
     On Error GoTo ErrorHandler:
 
     Dim loopC As Long
@@ -329,11 +323,9 @@ End Sub
 Sub Engine_Weather_UpdateFog()
     
     On Error GoTo Engine_Weather_UpdateFog_Err
-    
 
-    '*****************************************************************
     'Update the fog effects
-    '*****************************************************************
+
     Dim TempGrh     As grh
 
     Dim i           As Long

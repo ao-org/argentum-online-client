@@ -89,10 +89,9 @@ End Sub
 
 
 Public Sub EraseChar(ByVal charindex As Integer, Optional ByVal notCancelMe As Boolean = False)
-    '*****************************************************************
+
     'Erases a character from CharList and map
-    '*****************************************************************
-    
+
     On Error GoTo EraseChar_Err
     
     
@@ -230,10 +229,9 @@ MakeChar_Err:
 End Sub
 
 Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Heading)
-    '*****************************************************************
+
     'Starts the movement of a character in nHeading direction
-    '*****************************************************************
-    
+
     On Error GoTo Char_Move_by_Head_Err
        
 
@@ -514,13 +512,7 @@ End Function
 Public Function Char_Check(ByVal char_index As Integer) As Boolean
     
     On Error GoTo Char_Check_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
-    'Last Modify Date: 1/04/2003
-    '
-    '**************************************************************
     'check char_index
     If char_index > 0 And char_index <= LastChar Then
         Char_Check = (charlist(char_index).Heading > 0)
@@ -538,9 +530,6 @@ End Function
 
 Public Function Char_FX_Group_Next_Open(ByVal char_index As Integer) As Integer
 
-    '*****************************************************************
-    'Author: Augusto José Rando
-    '*****************************************************************
     On Error GoTo ErrorHandler:
 
     Dim loopc As Long
@@ -686,11 +675,8 @@ Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal fX As Integer, ByVal
 
     If fX = 0 Then Exit Sub
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 12/03/04
     'Sets an FX to the character.
-    '***************************************************
+    
     Dim indice As Byte
 
     With charlist(charindex)

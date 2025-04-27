@@ -101,12 +101,9 @@ Private usedFont                 As StdFont
 ' Initializes the instance of the class.
 
 Private Sub Class_Initialize()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 07/28/07
+
     'Initializes the dialog instance
-    '***************************************************
-    
+
     On Error GoTo Class_Initialize_Err
     
     dialogCount = 0
@@ -125,25 +122,17 @@ End Sub
 
 Private Sub Class_Terminate()
 
-    '***************************************************
-    
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 07/28/07
     'Clean up
-    '***************************************************
+    
 End Sub
 
 Private Function BinarySearch(ByVal charindex As Integer) As Integer
     
     On Error GoTo BinarySearch_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 07/28/07
     'Returns the index of the dialog in the list, or the negation
     'of the position were it should be if not found (for binary insertion)
-    '**************************************************************
+
     Dim min As Long
 
     Dim max As Long
@@ -196,14 +185,10 @@ End Function
 Public Sub CreateDialog(ByRef chat As String, ByVal charindex As Integer, ByVal Color As Long)
     
     On Error GoTo CreateDialog_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modification: 08/29/07 by Rapsodius
     'Changed life time of the dialogs to a variable amount,
     'depending on the number of chars
-    '**************************************************************
+
     Dim Slot As Integer
 
     Dim i    As Long
@@ -256,13 +241,9 @@ End Sub
 Private Function FormatChat(ByRef chat As String) As String()
     
     On Error GoTo FormatChat_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 07/28/07
     'Formats a dialog into different text lines.
-    '**************************************************************
+
     Dim word        As String
 
     Dim curPos      As Long
@@ -354,13 +335,9 @@ End Function
 Public Sub UpdateDialogPos(ByVal x As Integer, ByVal y As Integer, ByVal charindex As Integer)
     
     On Error GoTo UpdateDialogPos_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 07/28/07
     'Updates a dialog's position.
-    '**************************************************************
+
     Dim Slot As Integer
     
     Slot = BinarySearch(charindex)
@@ -394,12 +371,8 @@ Public Sub render()
     
     On Error GoTo render_Err
     
-
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modification: 08/29/07 by Rapsodius
     'Changed the way it gets rid of older dialogs.
-    '**************************************************************
+
     Dim i              As Long
 
     Dim j              As Long
@@ -454,13 +427,9 @@ End Sub
 Public Sub RemoveDialog(ByVal charindex As Integer)
     
     On Error GoTo RemoveDialog_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 07/28/07
     'Removes the dialog from the requested char.
-    '**************************************************************
+
     Dim Slot As Integer
 
     Dim i    As Long
@@ -488,11 +457,8 @@ End Sub
 ' Removes all dialogs from all characters.
 
 Public Sub RemoveAllDialogs()
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 07/28/07
+
     'Removes all dialogs from all chars.
-    '**************************************************************
     
     On Error GoTo RemoveAllDialogs_Err
     
@@ -513,12 +479,9 @@ End Sub
 ' @return   The font being used to render dialogs.
 
 Public Property Get font() As StdFont
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 07/28/07
+
     'Retrieves the font being used to render dialogs.
-    '**************************************************************
-    
+
     On Error GoTo font_Err
     
     font = usedFont
@@ -538,11 +501,8 @@ End Property
 ' @param    nValue  The new font to be used to render dialogs.
 
 Public Property Let font(ByRef nValue As StdFont)
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 07/28/07
+
     'Sets the font being used to render dialogs.
-    '**************************************************************
     
     On Error GoTo font_Err
     

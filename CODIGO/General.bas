@@ -245,19 +245,15 @@ End Function
 Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, Optional ByVal bCrLf As Boolean = True, Optional ByVal Alignment As Byte = rtfLeft)
     
     On Error GoTo AddtoRichTextBox2_Err
-    
-    
-    '****************************************************
+
     'Adds text to a Richtext box at the bottom.
     'Automatically scrolls to new text.
     'Text box MUST be multiline and have a 3D apperance!
-    '****************************************************
-    'Pablo (ToxicWaste) 01/26/2007 : Now the list refeshes properly.
-    'Juan Martin Sotuyo Dodero (Maraxus) 03/29/2007 : Replaced ToxicWaste's code for extra performance.
-    'Jopi 17/08/2019 : Consola transparente.
-    'Jopi 17/08/2019 : Ahora podes especificar el alineamiento del texto.
-    'Ladder 17/12/20 : agrego que la barra no se nos baje si estamos haciedno scroll. Gracias barrin tkm
-    '****************************************************
+    'Now the list refeshes properly.
+    'Replaced ToxicWaste's code for extra performance.
+    'Consola transparente.
+    'Ahora podes especificar el alineamiento del texto.
+    'agrego que la barra no se nos baje si estamos haciedno scroll.
     
         Dim bUrl As Boolean
         Dim sMax As Long
@@ -380,7 +376,7 @@ AddtoRichTextBox_Err:
     
 End Sub
 
-' WyroX: Copiado desde https://www.vbforums.com/showthread.php?727119-RESOLVED-VB2010-richtextbox-paragraph-space-width-seleted-and-RichTextBoxStreamType
+'Copiado desde https://www.vbforums.com/showthread.php?727119-RESOLVED-VB2010-richtextbox-paragraph-space-width-seleted-and-RichTextBoxStreamType
 Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, Optional ByVal LineSpacing As Long = 20)
     ' SpacingRule
     ' Type of line spacing. To use this member, set the PFM_SPACEAFTER flag in the dwMask member. This member can be one of the following values.
@@ -588,11 +584,9 @@ End Sub
 Function LegalCharacter(ByVal KeyAscii As Integer) As Boolean
     
     On Error GoTo LegalCharacter_Err
-    
 
-    '*****************************************************************
     'Only allow characters that are Win 95 filename compatible
-    '*****************************************************************
+
     'if backspace allow
     If KeyAscii = 8 Then
         LegalCharacter = True
@@ -630,9 +624,8 @@ LegalCharacter_Err:
 End Function
 
 Sub SetConnected()
-    '*****************************************************************
+
     'Sets the client to "Connect" mode
-    '*****************************************************************
     'Set Connected
     
     On Error GoTo SetConnected_Err
@@ -912,13 +905,9 @@ End Sub
 Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
     
     On Error GoTo ReadField_Err
-    
 
-    '*****************************************************************
     'Gets a field from a delimited string
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 11/15/2004
-    '*****************************************************************
+
     Dim i          As Long
 
     Dim LastPos    As Long
@@ -953,13 +942,9 @@ End Function
 Function FieldCount(ByRef Text As String, ByVal SepASCII As Byte) As Long
     
     On Error GoTo FieldCount_Err
-    
 
-    '*****************************************************************
     'Gets the number of fields in a delimited string
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 07/29/2007
-    '*****************************************************************
+
     Dim count     As Long
 
     Dim curPos    As Long
@@ -1230,9 +1215,8 @@ Public Function randomMap() As Integer
 End Function
 
 Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
-    '*****************************************************************
+
     'Writes a var to a text file
-    '*****************************************************************
     
     On Error GoTo WriteVar_Err
     
@@ -1250,11 +1234,9 @@ End Sub
 Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
     
     On Error GoTo GetVar_Err
-    
 
-    '*****************************************************************
     'Gets a Var from a text file
-    '*****************************************************************
+
     Dim sSpaces As String ' This will hold the input that the program will retrieve
     
     sSpaces = Space$(100) ' This tells the computer how long the longest string can be. If you want, you can change the number 100 to any number you wish
@@ -1276,11 +1258,8 @@ End Function
 Function GetVarOrDefault(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal DefaultValue As String) As String
     
     On Error GoTo GetVarOrDefault_Err
-    
 
-    '*****************************************************************
     'Gets a Var from a text file and if empty returns default value
-    '*****************************************************************
 
     GetVarOrDefault = GetVar(File, Main, Var)
     If GetVarOrDefault = vbNullString Then
@@ -1391,11 +1370,8 @@ LeerLineaComandos_Err:
 End Sub
 
 Private Sub InicializarNombres()
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 11/27/2005
+
     'Inicializa los nombres de razas, ciudades, clases, skills, atributos, etc.
-    '**************************************************************
     
     On Error GoTo InicializarNombres_Err
     
@@ -1496,11 +1472,8 @@ End Sub
 ' Removes all text from the console and dialogs
 
 Public Sub CleanDialogs()
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 11/27/2005
+
     'Removes all text from the console and dialogs
-    '**************************************************************
     'Clean console and dialogs
     'frmMain.RecTxt.Text = vbNullString
     
@@ -1522,11 +1495,8 @@ CleanDialogs_Err:
 End Sub
 
 Public Sub CloseClient()
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 8/14/2007
+
     'Frees all used resources, cleans up and leaves
-    '**************************************************************
     ' Allow new instances of the client to be opened
     
     On Error GoTo CloseClient_Err
@@ -1577,13 +1547,9 @@ End Sub
 Public Function General_Field_Read(ByVal field_pos As Long, ByVal Text As String, ByVal delimiter As String) As String
     
     On Error GoTo General_Field_Read_Err
-    
 
-    '*****************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 11/15/2004
     'Gets a field from a delimited string
-    '*****************************************************************
+
     Dim i          As Long
 
     Dim LastPos    As Long
@@ -1617,14 +1583,10 @@ End Function
 Public Function General_Field_Count(ByVal Text As String, ByVal delimiter As Byte) As Long
     
     On Error GoTo General_Field_Count_Err
-    
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
     'Count the number of fields in a delimited string
-    '*****************************************************************
     'If string is empty there aren't any fields
+    
     If Len(Text) = 0 Then
         Exit Function
 
@@ -1660,13 +1622,9 @@ End Function
 Public Function General_Get_Elapsed_Time() As Single
     
     On Error GoTo General_Get_Elapsed_Time_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
     'Gets the time that past since the last call
-    '**************************************************************
+
     Dim Start_Time    As Currency
 
     Static end_time   As Currency
@@ -2040,9 +1998,8 @@ End Function
 
 Public Sub SetNpcsRenderText()
 
-    '************************************************************************************.
     ' Carga el JSON con las traducciones en un objeto para su uso a lo largo del proyecto
-    '************************************************************************************
+
     Dim render_text As String
     render_text = GetSetting("OPCIONES", "NpcsEnRender")
     

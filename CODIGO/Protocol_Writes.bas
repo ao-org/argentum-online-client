@@ -1016,7 +1016,6 @@ WriteCraftBlacksmith_Err:
         '</EhFooter>
 End Sub
 
-' HarThaoS: Arreglo las cagadas de Ladder. A tu casa, a mimir.
 Public Sub WriteCraftCarpenter(ByVal Item As Integer, ByVal cantidad As Long)
         '<EhHeader>
         On Error GoTo WriteCraftCarpenter_Err
@@ -3752,7 +3751,6 @@ Public Sub WriteSendPosSeguimiento(ByVal Cheat_X As Integer, ByVal Cheat_Y As In
 End Sub
 
 
-'HarThaoS: Perdón caótico
 Public Sub WritePerdonFaccion(ByVal username As String)
         '<EhHeader>
         On Error GoTo WritePerdonFaccion_Err

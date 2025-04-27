@@ -614,11 +614,7 @@ End Sub
 ' Handles the RemoveDialogs message.
 
 Private Sub HandleRemoveDialogs()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleRemoveDialogs_Err
@@ -640,12 +636,6 @@ Private Sub HandleRemoveCharDialog()
     
     On Error GoTo HandleRemoveCharDialog_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-
     Call Dialogos.RemoveDialog(Reader.ReadInt16())
     
     Exit Sub
@@ -660,11 +650,7 @@ End Sub
 ' Handles the NavigateToggle message.
 
 Private Sub HandleNavigateToggle()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleNavigateToggle_Err
@@ -769,11 +755,6 @@ Public Sub HandleDisconnect()
     
     On Error GoTo HandleDisconnect_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     Dim i As Long
     
     If (Not Reader Is Nothing) Then
@@ -1014,11 +995,6 @@ End Function
 ' Handles the CommerceEnd message.
 
 Private Sub HandleCommerceEnd()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
 
     On Error GoTo HandleCommerceEnd_Err
 
@@ -1040,11 +1016,6 @@ End Sub
 ' Handles the BankEnd message.
 
 Private Sub HandleBankEnd()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
 
     On Error GoTo HandleBankEnd_Err
 
@@ -1151,9 +1122,9 @@ Private Sub HandleShowFrmLogear()
     
     On Error GoTo HandleShowFrmLogear_Err
 
-    '***************************************************
+    
     '
-    '***************************************************
+    
     FrmLogear.Show , frmConnect
     
     Exit Sub
@@ -1168,9 +1139,9 @@ Private Sub HandleShowFrmMapa()
     
     On Error GoTo HandleShowFrmMapa_Err
 
-    '***************************************************
+    
     '
-    '***************************************************
+    
     ExpMult = Reader.ReadInt16()
     OroMult = Reader.ReadInt16()
     
@@ -1232,12 +1203,7 @@ End Sub
 ' Handles the UserCommerceEnd message.
 
 Private Sub HandleUserCommerceEnd()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+
     On Error GoTo HandleUserCommerceEnd_Err
     
     'Destroy the form and reset the state
@@ -1256,12 +1222,7 @@ End Sub
 ' Handles the ShowBlacksmithForm message.
 
 Private Sub HandleShowBlacksmithForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+
     On Error GoTo HandleShowBlacksmithForm_Err
     
     If frmMain.macrotrabajo.enabled And (MacroBltIndex > 0) Then
@@ -1303,18 +1264,8 @@ End Sub
 
 Private Sub HandleShowCarpenterForm()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     On Error GoTo HandleShowCarpenterForm_Err
-        
-   ' If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
-    
-        'Call WriteCraftCarpenter(MacroBltIndex)
-        
-   ' Else
+
          
         COLOR_AZUL = RGB(0, 0, 0)
     
@@ -1335,12 +1286,7 @@ HandleShowCarpenterForm_Err:
 End Sub
 
 Private Sub HandleShowAlquimiaForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+  
     On Error GoTo HandleShowAlquimiaForm_Err
     
     If frmMain.macrotrabajo.enabled And (MacroBltIndex > 0) Then
@@ -1371,12 +1317,7 @@ HandleShowAlquimiaForm_Err:
 End Sub
 
 Private Sub HandleShowSastreForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+  
     On Error GoTo HandleShowSastreForm_Err
         
     If frmMain.macrotrabajo.enabled And (MacroBltIndex > 0) Then
@@ -1420,11 +1361,6 @@ End Sub
 ' Handles the NPCKillUser message.
 
 Private Sub HandleNPCKillUser()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
 
     On Error GoTo HandleNPCKillUser_Err
         
@@ -1443,11 +1379,6 @@ End Sub
 
 Private Sub HandleBlockedWithShieldUser()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     On Error GoTo HandleBlockedWithShieldUser_Err
         
     Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_RECHAZO_ATAQUE_ESCUDO"), 255, 0, 0, True, False, False)
@@ -1465,11 +1396,6 @@ End Sub
 
 Private Sub HandleBlockedWithShieldOther()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     On Error GoTo HandleBlockedWithShieldOther_Err
         
     Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_USUARIO_RECHAZO_ATAQUE_ESCUDO"), 255, 0, 0, True, False, False)
@@ -1508,7 +1434,7 @@ Private Sub HandleCharSwing()
     With charlist(CharIndex)
 
         If ShowText And NotificoTexto Then
-            Call SetCharacterDialogFx(charindex, IIf(charindex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
+            Call SetCharacterDialogFx(CharIndex, IIf(CharIndex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
         End If
         
         If EstaPCarea(CharIndex) Then
@@ -2617,12 +2543,6 @@ End Sub
 
 Private Sub HandleLocaleMsg()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim chat      As String
@@ -2709,12 +2629,6 @@ End Sub
 
 Private Sub HandleGuildChat()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 04/07/08 (NicoNZ)
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim chat As String
@@ -2878,12 +2792,6 @@ Private Sub HandleUserIndexInServer()
     
     On Error GoTo HandleUserIndexInServer_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     userIndex = Reader.ReadInt16()
     
     Exit Sub
@@ -2901,12 +2809,6 @@ Private Sub HandleUserCharIndexInServer()
     
     On Error GoTo HandleUserCharIndexInServer_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     UserCharIndex = Reader.ReadInt16()
     'frmdebug.add_text_tracebox "UserCharIndex " & UserCharIndex
     UserPos = charlist(UserCharIndex).Pos
@@ -2937,12 +2839,6 @@ End Sub
 
 Private Sub HandleCharacterCreate()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim CharIndex     As Integer
@@ -3143,12 +3039,6 @@ Private Sub HandleCharacterMove()
     
     On Error GoTo HandleCharacterMove_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim CharIndex As Integer
     Dim x         As Byte
     Dim y         As Byte
@@ -3385,12 +3275,6 @@ Private Sub HandleObjectCreate()
     
     On Error GoTo HandleObjectCreate_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim x        As Byte
 
     Dim y        As Byte
@@ -3453,10 +3337,10 @@ Private Sub HandleFxPiso()
     
     On Error GoTo HandleFxPiso_Err
 
-    '***************************************************
+    
     'Ladder
     '30/5/10
-    '***************************************************
+    
     
     Dim x  As Byte
 
@@ -3485,12 +3369,6 @@ Private Sub HandleObjectDelete()
     
     On Error GoTo HandleObjectDelete_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim x  As Byte
 
     Dim y  As Byte
@@ -3532,12 +3410,6 @@ Private Sub HandleBlockPosition()
     
     On Error GoTo HandleBlockPosition_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim x As Byte, y As Byte, b As Byte
     
     x = Reader.ReadInt8()
@@ -3562,12 +3434,6 @@ Private Sub HandlePlayMIDI()
     
     On Error GoTo HandlePlayMIDI_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Call Reader.ReadInt8   ' File
     Call Reader.ReadInt16  ' Loop
     
@@ -3741,7 +3607,7 @@ Private Sub HandleArmaMov()
     
     On Error GoTo HandleArmaMov_Err
 
-    '***************************************************
+    
 
     Dim CharIndex As Integer
     Dim isRanged As Byte
@@ -3765,7 +3631,7 @@ End Sub
 Private Sub HandleCreateProjectile()
     On Error GoTo HandleCreateProjectile_Err
 
-    '***************************************************
+    
     Dim x, y, endX, endY, projectileType As Byte
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
@@ -3856,7 +3722,7 @@ Private Sub HandleEscudoMov()
     
     On Error GoTo HandleEscudoMov_Err
 
-    '***************************************************
+    
 
     Dim CharIndex As Integer
 
@@ -3939,12 +3805,6 @@ Private Sub HandleAreaChanged()
     
     On Error GoTo HandleAreaChanged_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim x As Byte
 
     Dim y As Byte
@@ -3966,11 +3826,7 @@ End Sub
 ' Handles the PauseToggle message.
 
 Private Sub HandlePauseToggle()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandlePauseToggle_Err
@@ -4022,12 +3878,6 @@ Private Sub HandleCreateFX()
     
     On Error GoTo HandleCreateFX_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim CharIndex As Integer
 
     Dim Fx        As Integer
@@ -4355,12 +4205,6 @@ End Sub
 
 Private Sub HandleChangeInventorySlot()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim Slot        As Byte
@@ -4517,12 +4361,6 @@ End Sub
 
 Private Sub HandleChangeSpellSlot()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim Slot     As Byte
@@ -4924,11 +4762,7 @@ End Sub
 ' Handles the Dumb message.
 
 Private Sub HandleDumb()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleDumb_Err
@@ -4949,12 +4783,6 @@ End Sub
 
 Private Sub HandleShowSignal()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim tmp As String
@@ -5032,7 +4860,7 @@ HandleUpdateHungerAndThirst_Err:
 End Sub
 
 Private Sub HandleHora()
-    '***************************************************
+    
     
     On Error GoTo HandleHora_Err
 
@@ -5332,12 +5160,6 @@ Private Sub HandleSetInvisible()
     
     On Error GoTo HandleSetInvisible_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim CharIndex As Integer
     Dim x As Byte, y As Byte
     CharIndex = Reader.ReadInt16()
@@ -5451,11 +5273,7 @@ End Sub
 ' Handles the BlindNoMore message.
 
 Private Sub HandleBlindNoMore()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleBlindNoMore_Err
@@ -5476,11 +5294,7 @@ End Sub
 ' Handles the DumbNoMore message.
 
 Private Sub HandleDumbNoMore()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleDumbNoMore_Err
@@ -5502,12 +5316,6 @@ Private Sub HandleSendSkills()
     
     On Error GoTo HandleSendSkills_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim i As Long
     
     For i = 1 To NUMSKILLS
@@ -5540,12 +5348,6 @@ End Sub
 
 Private Sub HandleTrainerCreatureList()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim creatures() As String
@@ -5574,12 +5376,6 @@ End Sub
 
 Private Sub HandleGuildNews()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     ' Dim guildList() As String
@@ -5690,12 +5486,6 @@ End Sub
 
 Private Sub HandleOfferDetails()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Call frmUserRequest.recievePeticion(Reader.ReadString8())
@@ -5714,12 +5504,6 @@ End Sub
 
 Private Sub HandleAlianceProposalsList()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim guildList() As String
@@ -5749,12 +5533,6 @@ End Sub
 
 Private Sub HandlePeaceProposalsList()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim guildList() As String
@@ -5784,12 +5562,6 @@ End Sub
 
 Private Sub HandleCharacterInfo()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     With frmCharInfo
@@ -5860,12 +5632,6 @@ End Sub
 
 Private Sub HandleGuildLeaderInfo()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim str As String
@@ -5991,12 +5757,6 @@ End Sub
 
 Private Sub HandleGuildDetails()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     With frmGuildBrief
@@ -6042,11 +5802,7 @@ End Sub
 ' Handles the ShowGuildFundationForm message.
 
 Private Sub HandleShowGuildFundationForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleShowGuildFundationForm_Err
@@ -6066,11 +5822,7 @@ End Sub
 ' Handles the ParalizeOK message.
 
 Private Sub HandleParalizeOK()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleParalizeOK_Err
@@ -6086,11 +5838,7 @@ HandleParalizeOK_Err:
 End Sub
 
 Private Sub HandleInmovilizadoOK()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     On Error GoTo HandleInmovilizadoOK_Err
     If EstaSiguiendo Then Exit Sub
@@ -6109,12 +5857,6 @@ End Sub
 
 Private Sub HandleShowUserRequest()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Call frmUserRequest.recievePeticion(Reader.ReadString8())
@@ -6134,12 +5876,6 @@ End Sub
 
 Private Sub HandleChangeUserTradeSlot()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim miOferta As Boolean
@@ -6216,12 +5952,6 @@ End Sub
 
 Private Sub HandleSpawnList()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     frmSpawnList.ListaCompleta = Reader.ReadBool
@@ -6244,12 +5974,6 @@ End Sub
 
 Private Sub HandleShowSOSForm()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim sosList()      As String
@@ -6289,12 +6013,6 @@ End Sub
 
 Private Sub HandleShowMOTDEditionForm()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     frmCambiaMotd.txtMotd.Text = Reader.ReadString8()
@@ -6313,11 +6031,7 @@ End Sub
 ' Handles the ShowGMPanelForm message.
 
 Private Sub HandleShowGMPanelForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleShowGMPanelForm_Err
@@ -6337,7 +6051,7 @@ Private Sub HandleShowGMPanelForm()
     
     MiCargo = charlist(UserCharIndex).priv
     
-    Select Case MiCargo ' ReyarB ajustar privilejios
+    Select Case MiCargo ' Ajustar privilejios
     
         Case 1
         frmPanelgm.mnuChar.visible = False
@@ -6396,11 +6110,7 @@ HandleShowGMPanelForm_Err:
 End Sub
 
 Private Sub HandleShowFundarClanForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleShowFundarClanForm_Err
@@ -6421,12 +6131,6 @@ End Sub
 
 Private Sub HandleUserNameList()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim userList() As String
@@ -6460,12 +6164,6 @@ End Sub
 
 Private Sub HandleUpdateTagAndStatus()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim CharIndex   As Integer
@@ -6580,12 +6278,6 @@ Private Sub HandleLightToFloor()
     
     On Error GoTo HandleLightToFloor_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim x           As Byte
 
     Dim y           As Byte
@@ -6646,12 +6338,6 @@ Private Sub HandleParticleFX()
     
     On Error GoTo HandleParticleFX_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim CharIndex      As Integer
 
     Dim ParticulaIndex As Integer
@@ -6709,12 +6395,6 @@ Private Sub HandleParticleFXWithDestino()
     
     On Error GoTo HandleParticleFXWithDestino_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim Emisor         As Integer
 
     Dim receptor       As Integer
@@ -6773,12 +6453,6 @@ Private Sub HandleParticleFXWithDestinoXY()
     
     On Error GoTo HandleParticleFXWithDestinoXY_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim Emisor         As Integer
 
     Dim ParticulaViaje As Integer
@@ -6829,12 +6503,6 @@ Private Sub HandleAuraToChar()
     
         On Error GoTo HandleAuraToChar_Err
 
-        '***************************************************
-        'Author: Juan Martín Sotuyo Dodero (Maraxus)
-        'Last Modification: 05/17/0
-        '
-        '***************************************************
-    
         Dim CharIndex      As Integer
 
         Dim ParticulaIndex As String
@@ -6878,12 +6546,6 @@ Private Sub HandleSpeedToChar()
     
     On Error GoTo HandleSpeedToChar_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/0
-    '
-    '***************************************************
-    
     Dim CharIndex As Integer
 
     Dim Speeding  As Single
@@ -6901,11 +6563,7 @@ HandleSpeedToChar_Err:
     
 End Sub
 Private Sub HandleNieveToggle()
-    '**
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '**
+
     'Remove packet ID
 
     On Error GoTo HandleNieveToggle_Err
@@ -6934,11 +6592,7 @@ HandleNieveToggle_Err:
 End Sub
 
 Private Sub HandleNieblaToggle()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleNieblaToggle_Err
@@ -7526,12 +7180,6 @@ End Sub
 
 Private Sub HandleShowPregunta()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim msg As String
@@ -7961,10 +7609,7 @@ End Sub
 
 Public Sub HandleObjQuestListSend()
 
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     'Recibe y maneja el paquete QuestListSend del servidor.
-    'Last modified: 29/08/2021 by HarThaoS
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
     On Error GoTo errhandler
 

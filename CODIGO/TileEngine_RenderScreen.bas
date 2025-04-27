@@ -33,18 +33,9 @@ Public Const hotkey_arrow_posy = 10
 Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal HalfTileWidth As Integer, ByVal HalfTileHeight As Integer)
     
     On Error GoTo RenderScreen_Err
-    
 
-    '**************************************************************
-    ' Author: Aaron Perkins
-    ' Last Modify Date: 23/11/2020
-    ' Modified by: Juan Martín Sotuyo Dodero (Maraxus)
-    ' Last modified by: Alexis Caraballo (WyroX)
     ' Renders everything to the viewport
-    '**************************************************************
-    
-    
-    
+
     Dim y                   As Integer      ' Keeps track of where on map we are
     Dim x                   As Integer      ' Keeps track of where on map we are
 
@@ -161,7 +152,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
     Call SpriteBatch.BeginPrecalculated(StartX, StartY)
 
-    ' *********************************
     ' Layer 1 loop
     
     For y = MinY To MaxY
@@ -180,7 +170,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     
     Call SpriteBatch.EndPrecalculated
 
-    ' *********************************
     ' Layer 2 & small objects loop
     Call DirectDevice.SetRenderState(D3DRS_ALPHATESTENABLE, True) ' Para no pisar los reflejos
     
@@ -197,7 +186,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                 If .Graphic(2).GrhIndex <> 0 Then
                     Call Draw_Grh(.Graphic(2), screenX, screenY, 1, 1, .light_value, , x, y)
                 End If
-                '******************************************
             
             End With
 
@@ -265,7 +253,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                             End If
                     End Select
                 End If
-                '******************************************
 
             End With
 
@@ -276,8 +263,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     Next y
     
     Call DirectDevice.SetRenderState(D3DRS_ALPHATESTENABLE, False)
-    
-    ' *********************************
+
     '  Layer 3 & chars
     screenY = StartBufferedY
 
@@ -335,7 +321,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                         Call Char_Render(.CharIndex, screenX, screenY, x, y)
                     End If
                 End If
-                '******************************************
+
                 
             End With
             
@@ -399,7 +385,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                     
                     End Select
                 End If
-                '******************************************
+
                 
                 'Layer 3 **********************************
                 If .Graphic(3).GrhIndex <> 0 Then
@@ -453,7 +439,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
                     End If
 
                 End If
-                '******************************************
+
             End With
             
             screenX = screenX + TilePixelWidth
@@ -478,7 +464,6 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
         End With
     End If
 
-    ' *********************************
     ' Particles loop
     screenY = StartBufferedY
 
@@ -516,8 +501,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
             Index = Index + 1
         End If
     Loop
-    
-    ' *********************************
+
     ' Layer 4 loop
     If HayLayer4 Then
 
@@ -597,10 +581,7 @@ Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal Pix
     If mascota.dialog <> "" And mascota.visible Then
         Call Engine_Text_Render(mascota.dialog, mascota.PosX + 14 - CInt(Engine_Text_Width(mascota.dialog, True) / 2) + 150, mascota.PosY - Engine_Text_Height(mascota.dialog, True) - 25 + 150, mascota_text_color(), 1, True, , mascota.Color(0).a)
     End If
-        
-    
-    
-    ' *********************************
+
     ' FXs and dialogs loop
     screenY = StartBufferedY
 

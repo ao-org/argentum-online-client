@@ -44,13 +44,9 @@ Private mutexHID As Long
 Private Function CreateNamedMutex(ByRef mutexName As String) As Boolean
     
     On Error GoTo CreateNamedMutex_Err
-    
 
-    '***************************************************
-    'Author: Fredy Horacio Treboux (liquid)
-    'Last Modification: 01/04/07
-    'Last Modified by: Juan Martín Sotuyo Dodero (Maraxus) - Changed Security Atributes to make it work in all OS
-    '***************************************************
+    'Changed Security Atributes to make it work in all OS
+    
     Dim sa As SECURITY_ATTRIBUTES
     
     With sa
@@ -79,13 +75,7 @@ End Function
 Public Function FindPreviousInstance() As Boolean
     
     On Error GoTo FindPreviousInstance_Err
-    
 
-    '***************************************************
-    'Author: Fredy Horacio Treboux (liquid)
-    'Last Modification: 01/04/07
-    '
-    '***************************************************
     'We try to create a mutex, the name could be anything, but must contain no backslashes.
     If CreateNamedMutex("EnVezDeChitearAyudanos!HablanosAlDiscord") Then
         'There's no other instance running
@@ -109,12 +99,7 @@ End Function
 ' Closes the client, allowing other instances to be open.
 
 Public Sub ReleaseInstance()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 01/04/07
-    '
-    '***************************************************
-    
+
     On Error GoTo ReleaseInstance_Err
     
     Call ReleaseMutex(mutexHID)

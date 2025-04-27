@@ -315,13 +315,8 @@ End Sub
 Public Sub InitFontTypes()
     
     On Error GoTo InitFonts_Err
-    
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+    
     With FontTypes(FontTypeNames.FONTTYPE_TALK)
         .red = 255
         .green = 255
@@ -721,10 +716,8 @@ Sub CargarDatosMapa(ByVal map As Integer)
         frmMapaGrande.Label1.Caption = "Sin información relevante."
     End If
 
-    '**************************************************************
     'Formato de mapas optimizado para reducir el espacio que ocupan.
     'Diseñado y creado por Juan Martín Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
-    '**************************************************************
 
     Dim fh           As Integer
     Dim MH           As tMapHeader
@@ -983,12 +976,10 @@ End Sub
 Public Sub CargarMapa(ByVal map As Integer)
     
     On Error GoTo CargarMapa_Err
-    
 
-    '**************************************************************
     'Formato de mapas optimizado para reducir el espacio que ocupan.
     'Diseñado y creado por Juan Martín Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
-    '**************************************************************
+
     Dim fh           As Integer
 
     Dim MH           As tMapHeader
@@ -1126,7 +1117,6 @@ Public Sub CargarMapa(ByVal map As Integer)
                     ' Precalculate position
                     .Graphic(1).x = x * TilePixelWidth
                     .Graphic(1).y = y * TilePixelHeight
-                    ' *********************
                 
                     InitGrh .Graphic(1), .Graphic(1).GrhIndex
                     
@@ -1324,14 +1314,10 @@ End Sub
 Public Sub CargarParticulas()
     
     On Error GoTo CargarParticulas_Err
-    
 
-    '*************************************
-    'Coded by OneZero (onezero_ss@hotmail.com)
-    'Last Modified: 6/4/03
     'Loads the Particles.ini file to the ComboBox
     'Edited by Juan Martín Sotuyo Dodero to add speed and life
-    '*************************************
+
     Dim loopc      As Long
     Dim i          As Long
     Dim GrhListing As String
@@ -1428,14 +1414,10 @@ End Sub
 Public Sub CargarParticulasBinary()
     
     On Error GoTo CargarParticulasBinary_Err
-    
 
-    '*************************************
-    'Coded by OneZero (onezero_ss@hotmail.com)
-    'Last Modified: 6/4/03
     'Loads the Particles.ini file to the ComboBox
     'Edited by Juan Martín Sotuyo Dodero to add speed and life
-    '*************************************
+
     Dim loopc      As Long
     Dim i          As Long
     Dim GrhListing As String
