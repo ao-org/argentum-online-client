@@ -101,8 +101,6 @@ Private usedFont                 As StdFont
 ' Initializes the instance of the class.
 
 Private Sub Class_Initialize()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
 
     'Initializes the dialog instance
 
