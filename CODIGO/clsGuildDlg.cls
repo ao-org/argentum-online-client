@@ -55,13 +55,9 @@ Private Const DIALOG_HEIGHT As Integer = 14
 Public Sub RemoveDialogs()
     
     On Error GoTo RemoveDialogs_Err
-    
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 04/02/07
     'Removes all dialogs
-    '***************************************************
+    
     Dim i As Long
     
     For i = 1 To p_CANTIDADDIALOGOS
@@ -84,11 +80,8 @@ End Sub
 ' @return   The number of dialogs to be displayed on screen.
 
 Public Property Get CantidadDialogos() As Byte
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 04/01/07
+
     'Retrieves the number of dialogs to be displayed on screen
-    '***************************************************
     
     On Error GoTo CantidadDialogos_Err
     
@@ -232,11 +225,8 @@ Public Sub PushBackText(ByVal s As String, ByVal status As Byte)
     
     On Error GoTo PushBackText_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 04/07/08
     'Splits dialogs into lines fitting properly the render area and inserts them
-    '***************************************************
+    
     Dim outputText() As String
     Dim i As Long
     Dim separatorPos As Long
@@ -291,11 +281,8 @@ End Sub
 ' @return   The font being used to render dialogs.
 
 Public Property Get font() As StdFont
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 04/27/06
+
     'Retrieves the font being used to render dialogs.
-    '**************************************************************
     
     On Error GoTo font_Err
     
@@ -316,12 +303,9 @@ End Property
 ' @param    nValue  The new font to be used to render dialogs.
 
 Public Property Let font(ByRef nValue As StdFont)
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 04/27/06
+
     'Sets the font being used to render dialogs.
-    '**************************************************************
-    
+
     On Error GoTo font_Err
     
     Set usedFont = nValue

@@ -29,9 +29,8 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-'*******************************************************
 ' LUCES
-'*******************************************************
+
 Private Type Light
 
     active As Boolean 'Do we ignore this light?
@@ -47,20 +46,14 @@ End Type
 Private light_list()  As Light
 Private light_count   As Long
 Private light_last    As Long
-'*******************************************************
+
 ' FIN - LUCES
-'*******************************************************
+
 
 Public Function Light_Remove(ByVal light_index As Long) As Boolean
     
     On Error GoTo Light_Remove_Err
-    
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 1/04/2003
-    '
-    '*****************************************************************
     'Make sure it's a legal index
     If Light_Check(light_index) Then
         Light_Destroy light_index
@@ -80,13 +73,7 @@ End Function
 Friend Function Light_Color_Value_Get(ByVal light_index As Long, ByRef color_value As RGBA) As Boolean
     
     On Error GoTo Light_Color_Value_Get_Err
-    
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 2/28/2003
-    '
-    '*****************************************************************
     'Make sure it's a legal index
     If Light_Check(light_index) Then
         color_value = light_list(light_index).Color
@@ -106,14 +93,9 @@ End Function
 Friend Function Light_Create(ByVal map_x As Integer, ByVal map_y As Integer, ByRef color_value As RGBA, Optional ByVal range As Byte = 1, Optional ByVal id As Long) As Long
     
     On Error GoTo Light_Create_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
     'Returns the light_index if successful, else 0
-    'Edited by Juan Martín Sotuyo Dodero
-    '**************************************************************
+
     If InMapBounds(map_x, map_y) Then
 
         'Make sure there is no light in the given map pos
@@ -140,11 +122,8 @@ End Function
 
 Public Function Map_Light_Get(ByVal map_x As Integer, ByVal map_y As Integer) As Long
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 2/20/2003
     'Checks to see if a tile position has a light_index and return it
-    '*****************************************************************
+
     On Error GoTo ErrorHandler:
 
     Dim loopc As Long
@@ -177,14 +156,10 @@ End Function
 Public Function Light_Move(ByVal light_index As Long, ByVal map_x As Integer, ByVal map_y As Integer) As Boolean
     
     On Error GoTo Light_Move_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
     'Returns true if successful, else false
-    '**************************************************************
     'Make sure it's a legal CharIndex
+    
     If Light_Check(light_index) Then
 
         'Make sure it's a legal move
@@ -213,13 +188,9 @@ End Function
 Public Function Light_Move_By_Head(ByVal light_index As Long, ByVal Heading As Byte) As Boolean
     
     On Error GoTo Light_Move_By_Head_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 15/05/2002
     'Returns true if successful, else false
-    '**************************************************************
+
     Dim map_x As Integer
 
     Dim map_y As Integer
@@ -291,13 +262,7 @@ End Function
 Private Sub Light_Make(ByVal light_index As Long, ByVal map_x As Integer, ByVal map_y As Integer, rgb_value As RGBA, ByVal range As Long, Optional ByVal id As Long)
     
     On Error GoTo Light_Make_Err
-    
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '
-    '*****************************************************************
     'Update array size
     If light_index > light_last Then
         light_last = light_index
@@ -328,13 +293,7 @@ End Sub
 Private Function Light_Check(ByVal light_index As Long) As Boolean
     
     On Error GoTo Light_Check_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 1/04/2003
-    '
-    '**************************************************************
     'check light_index
     If light_index > 0 And light_index <= light_last Then
         If light_list(light_index).active Then
@@ -356,13 +315,7 @@ End Function
 Public Sub Light_Render_All(ByVal MinX As Long, ByVal MinY As Long, ByVal MaxX As Long, ByVal MaxY As Long)
     
     On Error GoTo Light_Render_All_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '
-    '**************************************************************
     Dim loop_counter As Long
             
     For loop_counter = 1 To light_count
@@ -519,11 +472,6 @@ End Sub
 
 Private Function Light_Next_Open() As Long
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '
-    '*****************************************************************
     On Error GoTo ErrorHandler:
 
     Dim loopc As Long
@@ -556,11 +504,8 @@ End Function
 
 Public Function Light_Find(ByVal id As Long) As Long
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 1/04/2003
     'Find the index related to the handle
-    '*****************************************************************
+
     On Error GoTo ErrorHandler:
 
     Dim loopc As Long
@@ -588,13 +533,7 @@ End Function
 Public Function Light_Remove_All() As Boolean
     
     On Error GoTo Light_Remove_All_Err
-    
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 1/04/2003
-    '
-    '*****************************************************************
     Dim Index As Long
     
     For Index = 1 To light_last
@@ -621,13 +560,7 @@ End Function
 Private Sub Light_Destroy(ByVal light_index As Long)
     
     On Error GoTo Light_Destroy_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '
-    '**************************************************************
     Dim temp As Light
     
     Light_Erase light_index
@@ -666,13 +599,9 @@ End Sub
 Private Sub Light_Erase(ByVal light_index As Long)
     
     On Error GoTo Light_Erase_Err
-    
 
-    '***************************************'
-    'Author: Juan Martín Sotuyo Dodero
-    'Last modified: 3/31/2003
     'Correctly erases a light
-    '***************************************'
+
     Dim min_x As Integer
 
     Dim min_y As Integer

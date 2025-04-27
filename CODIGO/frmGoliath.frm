@@ -204,9 +204,6 @@ Attribute VB_Exposed = False
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 '
-'*****************************************************************
-'frmGoliath - ImperiumAO - v1.3.0
-'*****************************************************************
 'Respective portions copyrighted by contributors listed below.
 '
 'This library is free software; you can redistribute it and/or
@@ -222,12 +219,10 @@ Attribute VB_Exposed = False
 'You should have received a copy of the GNU Lesser General Public
 'License along with this library; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-'*****************************************************************
 
-'*****************************************************************
 'Augusto José Rando (barrin@imperiumao.com.ar)
 '   - First Relase
-'*****************************************************************
+
 
 Option Explicit
 

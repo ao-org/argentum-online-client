@@ -1723,11 +1723,7 @@ End Function
 Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal color As Long, ByVal format As Long, Optional ByVal Shadow As Boolean = False)
     
     On Error GoTo Text_Render_Err
-    
 
-    '*****************************************************
-    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-    '*****************************************************
     Dim TextRect   As RECT
 
     Dim ShadowRect As RECT
@@ -1840,11 +1836,7 @@ End Function
 Public Function Font_Check(ByVal font_index As Long) As Boolean
     
     On Error GoTo Font_Check_Err
-    
 
-    '*****************************************************
-    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-    '*****************************************************
     If font_index > 0 And font_index <= font_last Then
         Font_Check = True
 

@@ -62,13 +62,9 @@ End Enum
 Public Sub ParseUserCommand(ByVal RawCommand As String)
     
     On Error GoTo ParseUserCommand_Err
-    
 
-    '***************************************************
-    'Author: Alejandro Santos (AlejoLp)
-    'Last Modification: 12/20/06
     'Interpreta, valida y ejecuta el comando ingresado
-    '***************************************************
+    
     Dim TmpArgos()         As String
     
     Dim Comando            As String
@@ -2502,12 +2498,7 @@ End Sub
 ' @param    italic Sets the font italic style.
 
 Public Sub ShowConsoleMsg(ByVal message As String, Optional ByVal red As Integer = 255, Optional ByVal green As Integer = 255, Optional ByVal blue As Integer = 255, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False)
-    '***************************************************
-    'Author: Nicolas Matias Gonzalez (NIGO)
-    'Last Modification: 01/03/07
-    '
-    '***************************************************
-    
+
     On Error GoTo ShowConsoleMsg_Err
     
     Call AddtoRichTextBox(frmMain.RecTxt, message, red, green, blue, bold, italic)
@@ -2530,13 +2521,7 @@ End Sub
 Public Function ValidNumber(ByVal Numero As String, ByVal TIPO As eNumber_Types) As Boolean
     
     On Error GoTo ValidNumber_Err
-    
 
-    '***************************************************
-    'Author: Nicolas Matias Gonzalez (NIGO)
-    'Last Modification: 01/06/07
-    '
-    '***************************************************
     Dim Minimo As Long
 
     Dim Maximo As Long
@@ -2582,13 +2567,7 @@ End Function
 Private Function validipv4str(ByVal IP As String) As Boolean
     
     On Error GoTo validipv4str_Err
-    
 
-    '***************************************************
-    'Author: Nicolas Matias Gonzalez (NIGO)
-    'Last Modification: 01/06/07
-    '
-    '***************************************************
     Dim tmpArr() As String
     
     tmpArr = Split(IP, ".")
@@ -2616,16 +2595,11 @@ End Function
 Private Function str2ipv4l(ByVal IP As String) As Byte()
     
     On Error GoTo str2ipv4l_Err
-    
 
-    '***************************************************
-    'Author: Nicolas Matias Gonzalez (NIGO)
-    'Last Modification: 07/26/07
-    'Last Modified By: Rapsodius
     'Specify Return Type as Array of Bytes
     'Otherwise, the default is a Variant or Array of Variants, that slows down
     'the function
-    '***************************************************
+    
     Dim tmpArr() As String
 
     Dim bArr(3)  As Byte
@@ -2657,17 +2631,12 @@ End Function
 Private Function AEMAILSplit(ByRef Text As String) As String()
     
     On Error GoTo AEMAILSplit_Err
-    
 
-    '***************************************************
-    'Author: Lucas Tavolaro Ortuz (Tavo)
     'Useful for AEMAIL BUG FIX
-    'Last Modification: 07/26/07
-    'Last Modified By: Rapsodius
     'Specify Return Type as Array of Strings
     'Otherwise, the default is a Variant or Array of Variants, that slows down
     'the function
-    '***************************************************
+    
     Dim tmpArr(0 To 1) As String
 
     Dim Pos            As Byte

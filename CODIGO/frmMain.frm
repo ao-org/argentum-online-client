@@ -435,6 +435,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -4063,7 +4064,7 @@ Private Sub computeLastElapsedTimeChat(ByVal tiempoTranscurridoCartel As Double)
     
     LastElapsedTimeChat(6) = tiempoTranscurridoCartel
         
-    'HarThaoS: Calculo el mínimo y máximo de mis carteleos
+    'Calculo el mínimo y máximo de mis carteleos
     Dim Min As Double, max As Double
     
     Min = LastElapsedTimeChat(6)
@@ -4206,13 +4207,9 @@ End Sub
 Private Sub Form_DblClick()
     
     On Error GoTo Form_DblClick_Err
-    
 
-    '**************************************************************
-    'Author: Unknown
-    'Last Modify Date: 12/27/2007
-    '12/28/2007: ByVal - Chequea que la ventana de comercio y boveda no este abierta al hacer doble clic a un comerciante, sobrecarga la lista de items.
-    '**************************************************************
+    'Chequea que la ventana de comercio y boveda no este abierta al hacer doble clic a un comerciante, sobrecarga la lista de items.
+
     If Not frmComerciar.visible And Not frmBancoObj.visible Then
         If MouseBoton = vbLeftButton Then
 
@@ -4445,13 +4442,9 @@ End Sub
 Private Sub SendTxt_Change()
     
     On Error GoTo SendTxt_Change_Err
-    
 
-    '**************************************************************
-    'Author: Unknown
-    'Last Modify Date: 3/06/2006
-    '3/06/2006: Maraxus - impedí se inserten caractéres no imprimibles
-    '**************************************************************
+    'impedí se inserten caractéres no imprimibles
+
     If Len(SendTxt.Text) > 160 Then
         stxtbuffer = "Soy un cheater, avisenle a un gm"
     Else

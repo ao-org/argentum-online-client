@@ -15,12 +15,12 @@ Attribute VB_Name = "modCompression"
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 '
-'*****************************************************************
+
 'modCompression.bas - v1.0.0
 '
 'All methods to handle resource files
 '
-'*****************************************************************
+
 'Respective portions copyrighted by contributors listed below.
 '
 'This library is free software; you can redistribute it and/or
@@ -36,9 +36,7 @@ Attribute VB_Name = "modCompression"
 'You should have received a copy of the GNU Lesser General Public
 'License along with this library; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-'*****************************************************************
 
-'*****************************************************************
 'Contributors History
 '   When releasing modifications to this source file please add your
 '   date of release, name, email, and any info to the top of this list.
@@ -48,14 +46,14 @@ Attribute VB_Name = "modCompression"
 '       Sub Release Contributors:
 '           XX/XX/2003 - Sub Contributor Name Here (SC Email Here)
 '               - SC Description Here
-'*****************************************************************
+
 '
 ' Alexis Caraballo (alexiscaraballo96@gmail.com) - 24/03/2021
 '   - Password system
 '
 ' Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com) - 10/13/2004
 '   - First Release
-'*****************************************************************
+
 Option Explicit
 Private Declare Function GetDiskFreeSpace Lib "kernel32" Alias "GetDiskFreeSpaceExA" (ByVal lpRootPathName As String, FreeBytesToCaller As Currency, BytesTotal As Currency, FreeBytesTotal As Currency) As Long
 
@@ -129,11 +127,9 @@ Public Sub Decompress_Data_B(ByRef Data() As Byte, ByVal OrigSize As Long)
 End Sub
 
 Public Function Extract_All_Files(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal Passwd As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
+
 'Extracts all files from a resource file
-'*****************************************************************
+
     Dim loopc As Long
     Dim SourceFilePath As String
     Dim OutputFilePath As String
@@ -302,11 +298,9 @@ ErrHandler:
 End Function
 
 Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As String, ByVal Passwd As String) As Boolean
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
+
 'Comrpesses all files to a resource file
-'*****************************************************************
+
     Dim loopc As Long
     Dim LoopC2 As Long
     Dim LoopC3 As Long
@@ -335,9 +329,9 @@ Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As 
     Dim ind_done As Boolean
     Dim dat_done As Boolean
     
-    '************************************************************************************************
+
     'This is similar to Extract, but has some small differences to make sure what is being updated
-    '************************************************************************************************
+
 'Set up the error handler
 On Local Error GoTo ErrHandler
 
@@ -593,11 +587,9 @@ End Function
 
 
 Public Function Extract_File(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByVal OutputFilePath As String, ByVal Passwd As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 10/13/2004
+
 'Extracts all files from a resource file
-'*****************************************************************
+
     Dim loopc As Long
     Dim SourceFilePath As String
     Dim SourceData() As Byte
@@ -723,11 +715,9 @@ ErrHandler:
 End Function
 
 Public Sub Delete_File(ByVal file_path As String)
-'*****************************************************************
-'Author: Juan Martín Dotuyo Dodero
-'Last Modify Date: 3/03/2005
+
 'Deletes a resource files
-'*****************************************************************
+
     Dim Handle As Integer
     Dim Data() As Byte
     
@@ -755,11 +745,9 @@ Error_Handler:
 End Sub
 
 Private Function File_Find(ByVal resource_file_path As String, ByVal file_name As String, ByVal Passwd As String) As INFOHEADER
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 5/04/2005
+
 'Looks for a compressed file in a resource file. Uses binary search ;)
-'**************************************************************
+
 On Error GoTo ErrHandler
     Dim max As Integer  'Max index
     Dim min As Integer  'Min index
@@ -833,11 +821,7 @@ End Function
 
 
 Public Function General_Drive_Get_Free_Bytes(ByVal DriveName As String) As Currency
-'**************************************************************
-'Author: Juan Martín Sotuyo Dodero
-'Last Modify Date: 6/07/2004
-'
-'**************************************************************
+
     Dim retval As Long
     Dim FB As Currency
     Dim BT As Currency
@@ -850,11 +834,7 @@ End Function
 
 
 Public Sub General_Quick_Sort(ByRef SortArray As Variant, ByVal First As Long, ByVal Last As Long)
-'**************************************************************
-'Author: juan Martín Sotuyo Dodero
-'Last Modify Date: 3/03/2005
-'Good old QuickSort algorithm :)
-'**************************************************************
+
     Dim Low As Long, High As Long
     Dim temp As Variant
     Dim List_Separator As Variant
@@ -881,7 +861,7 @@ Public Sub General_Quick_Sort(ByRef SortArray As Variant, ByVal First As Long, B
     If Low < Last Then General_Quick_Sort SortArray, Low, Last
 End Sub
 
-' WyroX: Encriptado casero. Funciona para encriptar y desencriptar (maravillas del Xor)
+' Encriptado casero. Funciona para encriptar y desencriptar
 Private Sub DoCrypt_Data(Data() As Byte, ByVal Password As String)
     
     Dim i As Long, c As Integer
@@ -903,13 +883,9 @@ End Sub
 Public Function Extract_File_To_Memory(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByRef bytArr() As Byte, ByVal Passwd As String) As Boolean
     
     On Error GoTo Extract_File_To_Memory_Err
-    
 
-    '*****************************************************************
-    'Author: Juan Martín Dotuyo Dodero
-    'Last Modify Date: 10/13/2004
     'Extracts all files from a resource file
-    '*****************************************************************
+
     Dim loopc          As Long
 
     Dim SourceFilePath As String
@@ -1019,12 +995,9 @@ End Function
 
 
 Public Function GAeneral_Load_Picture_From_Resource(ByVal picture_file_name As String, ByVal Passwd As String) As IPicture
-    '**************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 6/11/2005
+
     'Loads a picture from a resource file and returns it
-    '**************************************************************
-    
+
     On Error GoTo GAeneral_Load_Picture_From_Resource_Err
     
 
@@ -1057,12 +1030,9 @@ GAeneral_Load_Picture_From_Resource_Err:
 End Function
 
 Public Function General_Load_Picture_From_Resource_Ex(ByVal picture_file_name As String, ByVal Passwd As String) As IPicture
-    '**************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 2/2/2006
-    'Loads a picture from a resource file loaded in memory and returns it
-    '**************************************************************
 
+    'Loads a picture from a resource file loaded in memory and returns it
+    
     On Error GoTo ErrorHandler
 
     Dim bytArr() As Byte
@@ -1097,11 +1067,8 @@ ErrorHandler:
 End Function
 
 Public Function General_Load_Picture_From_BArray(ByRef bytArr() As Byte) As IPicture
-    '**************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 2/2/2006
+
     'Loads a picture from a byte array
-    '**************************************************************
 
     On Error GoTo ErrorHandler
 

@@ -1139,12 +1139,9 @@ CreateSurfacefromMask_GetPixel_Err:
 End Sub
 
 Public Sub General_Var_Write(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
+
     'Writes a var to a text file
-    '*****************************************************************
-    
+
     On Error GoTo General_Var_Write_Err
     
     writeprivateprofilestring Main, Var, Value, File
@@ -1210,12 +1207,10 @@ Public Sub GuardarCuenta(ByVal Name As String, ByVal Password As String)
 
 End Sub
 
-'*****************************************************************
 'modTimer - ImperiumAO - v1.3.0
 '
 'Windows API timer functions and handles.
-'
-'*****************************************************************
+
 'Respective portions copyrighted by contributors listed below.
 '
 'This library is free software; you can redistribute it and/or
@@ -1231,12 +1226,10 @@ End Sub
 'You should have received a copy of the GNU Lesser General Public
 'License along with this library; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-'*****************************************************************
 
-'*****************************************************************
 'Augusto José Rando (barrin@imperiumao.com.ar)
 '   - First Relase
-'*****************************************************************
+
 
 Public Function IntervaloPermiteClick(Optional ByVal Actualizar As Boolean = True) As Boolean
     
@@ -1497,13 +1490,9 @@ End Function
 Public Function General_Var_Get(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
     
     On Error GoTo General_Var_Get_Err
-    
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
     'Get a var to from a text file
-    '*****************************************************************
+
     Dim l        As Long
 
     Dim Char     As String
@@ -1681,13 +1670,7 @@ UnEncryptStr_Err:
 End Function
 
 Public Function Input_Key_Get(ByVal key_code As Byte) As Boolean
-    '**************************************************************
-    'Author: Aaron Perkins - Juan Martín Sotuyo Dodero
-    'Modified by Augusto José Rando
-    'Now we use DirectInput Keyboard
-    'Last Modify Date: 10/07/2002
-    '
-    '**************************************************************
+
     'Input_Key_Get = (key_state.Key(key_code) > 0)
     
     On Error GoTo Input_Key_Get_Err
@@ -1720,13 +1703,9 @@ End Function
 Public Function General_Get_Temp_Dir() As String
     
     On Error GoTo General_Get_Temp_Dir_Err
-    
 
-    '**************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 6/11/2005
     'Gets windows temporary directory
-    '**************************************************************
+
     Dim s As String
 
     Dim c As Long
@@ -1755,12 +1734,7 @@ General_Get_Temp_Dir_Err:
 End Function
 
 Public Function General_Get_Mouse_Speed() As Long
-    '**************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 6/11/2005
-    '
-    '**************************************************************
-    
+
     On Error GoTo General_Get_Mouse_Speed_Err
     
  
@@ -1776,12 +1750,7 @@ General_Get_Mouse_Speed_Err:
 End Function
  
 Public Sub General_Set_Mouse_Speed(ByVal lngSpeed As Long)
-    '**************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 6/11/2005
-    '
-    '**************************************************************
-    
+
     On Error GoTo General_Set_Mouse_Speed_Err
     
  
@@ -1797,12 +1766,7 @@ General_Set_Mouse_Speed_Err:
 End Sub
 
 Public Sub ResetearUserMacro()
-    '**************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 6/11/2005
-    '
-    '**************************************************************
-    
+
     On Error GoTo ResetearUserMacro_Err
     
     Call WriteFlagTrabajar

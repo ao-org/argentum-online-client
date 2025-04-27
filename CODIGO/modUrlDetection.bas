@@ -77,13 +77,9 @@ Private hWndParent As Long
 Public Function WndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
     
     On Error GoTo WndProc_Err
-    
 
-    '***************************************************
-    'Author: ZaMa
-    'Last Modification: 18/11/2010
     'Get "Click" event on link and open browser.
-    '***************************************************
+    
     Dim uHead As NMHDR
     Dim eLink As ENLINK
     Dim eText As TEXTRANGE
@@ -127,12 +123,9 @@ End Function
 
 
 Public Sub EnableURLDetect(ByVal hWndRichTextbox As Long, ByVal hWndOwner As Long)
-    '***************************************************
-    'Author: ZaMa
-    'Last Modification: 18/11/2010
+
     'Enables url detection in richtexbox.
-    '***************************************************
-    
+
     On Error GoTo EnableURLDetect_Err
     
     SendMessage hWndRichTextbox, EM_SETEVENTMASK, 0, ByVal ENM_LINK Or SendMessage(hWndRichTextbox, EM_GETEVENTMASK, 0, 0)
@@ -151,11 +144,8 @@ EnableURLDetect_Err:
 End Sub
 
 Public Sub DisableURLDetect()
-    '***************************************************
-    'Author: ZaMa
-    'Last Modification: 18/11/2010
+
     'Disables url detection in richtexbox.
-    '***************************************************
     
     On Error GoTo DisableURLDetect_Err
     
@@ -174,13 +164,9 @@ End Sub
 Public Sub StartCheckingLinks()
     
     On Error GoTo StartCheckingLinks_Err
-    
 
-    '***************************************************
-    'Author: ZaMa
-    'Last Modification: 18/11/2010
     'Starts checking links (in console range)
-    '***************************************************
+    
     If lOldProc = 0 Then lOldProc = SetWindowLong(hWndParent, GWL_WNDPROC, AddressOf WndProc)
 
     
@@ -195,13 +181,9 @@ End Sub
 Public Sub StopCheckingLinks()
     
     On Error GoTo StopCheckingLinks_Err
-    
 
-    '***************************************************
-    'Author: ZaMa
-    'Last Modification: 18/11/2010
     'Stops checking links (out of console range)
-    '***************************************************
+    
     If lOldProc Then
         SetWindowLong hWndParent, GWL_WNDPROC, lOldProc
         lOldProc = 0

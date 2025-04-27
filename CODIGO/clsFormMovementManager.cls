@@ -50,22 +50,18 @@ Public LastButtonPressed As clsGraphicalButton
 Private LimitY As Integer
 
 Public Sub Initialize(ByRef tForm As Form, Optional ByVal VerticalLimit As Integer = 0)
-'***************************************************
-'Author: ZaMa
-'Last Modify Date: 29/12/09
+
 'Sets the reference to the form
-'***************************************************
+
     Set Formulario = tForm
     Set LastButtonPressed = New clsGraphicalButton
     LimitY = VerticalLimit
 End Sub
 
 Private Sub Formulario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-'***************************************************
-'Author: ZaMa
-'Last Modify Date: 29/12/09
+
 'Implements the mouse down event of the form.
-'***************************************************
+
     If LimitY > 0 Then
         If y > LimitY Then Exit Sub
     End If
@@ -75,11 +71,9 @@ Private Sub Formulario_MouseDown(Button As Integer, Shift As Integer, x As Singl
 End Sub
 
 Private Sub Formulario_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-'***************************************************
-'Author: ZaMa
-'Last Modify Date: 01/07/10
+
 'Implements the mouse move event of the form.
-'***************************************************
+
     If LimitY > 0 Then
         If y > LimitY Then Exit Sub
     End If
