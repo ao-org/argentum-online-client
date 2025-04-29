@@ -136,7 +136,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/ONLINE"
                 Call WriteOnline
                 
-            Case "/SALIR", "/GOOUT"
+            Case "/SALIR", "/EXIT"
                 Call WriteQuit
                 
             Case "/SALIRCLAN", "/EXITRCLAN"
@@ -2044,12 +2044,12 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteGlobalOnOff
                 End If
                 
-            Case "/CONSULTA"
+            Case "/CONSULTA", "/CONSULTATION"
                 If EsGM Then
                     Call WriteConsulta(ArgumentosRaw)
                 End If
 
-            Case "/RETAR", "/RETO"
+            Case "/RETAR", "/RETO", "/CHALLENGE"
                 frmRetos.Show , GetGameplayForm()
 
                 If notNullArguments Then
