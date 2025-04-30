@@ -435,7 +435,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3230,7 +3229,6 @@ Private Sub MacroLadder_Timer()
                 UserMacro.cantidad = UserMacro.cantidad - 1
 
             Case 6
-                ' Jopi: Esto se hace desde el servidor
                 'Call WriteWorkLeftClick(TargetXMacro, TargetYMacro, UsingSkill)
 
         End Select
@@ -3251,10 +3249,6 @@ MacroLadder_Timer_Err:
 End Sub
 
 Private Sub macrotrabajo_Timer()
-    'If Inventario.SelectedItem = 0 Then
-    '   DesactivarMacroTrabajo
-    '   Exit Sub
-    'End If
     
     On Error GoTo macrotrabajo_Timer_Err
     
@@ -3645,7 +3639,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, Y
         Select Case ObjData(Inventario.OBJIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.ObjIndex(Slot)).MinHit & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
                 ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef

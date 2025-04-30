@@ -1892,9 +1892,7 @@ End Sub
 Public Sub Cargarmapsworlddata()
     
     On Error GoTo Cargarmapsworlddata_Err
-    
 
-    'Ladder
     Dim MapFile As String
 
     Dim i       As Integer

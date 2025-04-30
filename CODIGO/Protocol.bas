@@ -712,7 +712,7 @@ HandleVelocidadToggle_Err:
 End Sub
 
 Private Sub HandleMacroTrabajoToggle()
-    'Activa o Desactiva el macro de trabajo  06/07/2014 Ladder
+    'Activa o Desactiva el macro de trabajo
     
     On Error GoTo HandleMacroTrabajoToggle_Err
 
@@ -2110,7 +2110,6 @@ On Error GoTo errhandler
         End With
     End If
     
-    'Optimizacion de protocolo por Ladder
     QueEs = ReadField(1, chat, Asc("*"))
     Dim TextColor As RGBA
     TextColor = RGBA_From_Long(Color)
@@ -3337,11 +3336,6 @@ Private Sub HandleFxPiso()
     
     On Error GoTo HandleFxPiso_Err
 
-    
-    'Ladder
-    '30/5/10
-    
-    
     Dim x  As Byte
 
     Dim y  As Byte
@@ -4779,7 +4773,6 @@ End Sub
 
 ''
 ' Handles the ShowSignal message.
-'Optimizacion de protocolo por Ladder
 
 Private Sub HandleShowSignal()
 

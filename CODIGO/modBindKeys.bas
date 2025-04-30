@@ -523,7 +523,6 @@ Public Function BuscarObjEnInv(ObjIndex) As Byte
     
 
     'Devuelve el slot del inventario donde se encuentra el obj
-    'Creaado por Ladder 25/09/2014
     Dim i As Byte
 
     For i = 1 To 42

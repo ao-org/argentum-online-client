@@ -984,7 +984,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         UserAtributos(4) = Val(lbConstitucion.Caption) + Val(modConstitucion.Caption)
         UserAtributos(4) = Val(lbCarisma.Caption) + Val(modCarisma.Caption)
             
-        'Ladder Atributos Negativos
+        'Atributos Negativos
         If UserAtributos(1) < 1 Then UserAtributos(1) = 1
         If UserAtributos(2) < 1 Then UserAtributos(2) = 1
         If UserAtributos(3) < 1 Then UserAtributos(3) = 1

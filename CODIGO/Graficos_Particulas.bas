@@ -740,8 +740,6 @@ Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal scree
   
         'If it's dead destroy it
     Else
-      
-        'Revisar si se saca esto. Ladder
 
         particle_group_list(particle_group_index).destruir = True
             
@@ -881,7 +879,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
     'Draw it
     If screen_x = -1000 Then Exit Sub
     
-    'Particulas Grises si esta muerto Ladder
+    'Particulas Grises si esta muerto
     If UserStats.Estado = 1 Then
         Call RGBAList(rgb_list, 100, 100, 100, 100)
 
@@ -1299,8 +1297,7 @@ Public Function Char_Particle_Group_Remove(ByVal char_index As Integer, ByVal st
         particle_group_list(char_part_index).alive_counter = 0
         particle_group_list(char_part_index).never_die = False
         particle_group_list(char_part_index).destruir = True
-     
-        'Ladder
+
     End If
 
     
