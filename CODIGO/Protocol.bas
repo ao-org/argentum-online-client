@@ -7179,19 +7179,22 @@ errhandler:
 End Sub
 
 Private Sub HandleShowPregunta()
-
     On Error GoTo errhandler
-    
-    Dim msg As String
 
-    msg = Reader.ReadString8()
-    PreguntaScreen = msg
+    Dim MsgID As Integer
+    Dim param As String
+    MsgID = Reader.ReadInt16()
+    param = Reader.ReadString8()
+    PreguntaScreen = Locale_Parse_ServerMessage(MsgID, Param)
     Pregunta = True
 
     Exit Sub
+
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPregunta", Erl)
 End Sub
+
+
 
 Private Sub HandleDatosGrupo()
     
