@@ -432,8 +432,6 @@ Public Enum ClientPacketID
     eChatColor               '/CHATCOLOR
     eIgnored                 '/IGNORADO
     eCheckSlot               '/SLOT
-    
-    'Nuevas Ladder
     eSetSpeed                '/SPEED
     eGlobalMessage           '/CONSOLA
     eGlobalOnOff

@@ -315,8 +315,6 @@ Public g_game_state As New clsGameState
 Public ParticleLluviaDorada   As Long
 'Compresion
 Public Windows_Temp_Dir       As String
-
-'Declaraciones Ladder
 Public spell_particle         As Long
 Public Select_part            As Long
 Public EfectoEnproceso        As Boolean
@@ -834,8 +832,6 @@ Public UserSaliendo                             As Boolean
 Public StunEndTime                              As Long
 Public TotalStunTime                            As Long
 Public Comerciando                              As Boolean
-
-'Declaraciones LADDER!
 Public SendingType                              As Byte
 Public sndPrivateTo                             As String
 Public Const NUMSKILLS                          As Byte = 24

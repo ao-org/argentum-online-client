@@ -607,7 +607,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
                 Dim ModX As Integer, ModY As Integer
 
-                'Ladder: Cambie valores de posicion porque se ajusto interface (Los valores de los comentarios son los reales)
+                'Cambie valores de posicion porque se ajusto interface (Los valores de los comentarios son los reales)
                 
                 ' Division entera
                 DivX = Int((x - 207) / 131) ' 217 = primer pj x, 131 = offset x entre cada pj
