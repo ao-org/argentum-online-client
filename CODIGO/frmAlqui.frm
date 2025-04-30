@@ -326,6 +326,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
     
+    Call MoverForm(Me.hWnd)
+    
     Command4.Picture = Nothing
     Command4.Tag = "0"
     Command3.Picture = Nothing
