@@ -551,13 +551,37 @@ Private Sub OpcionImg_Click(Index As Integer)
             End If
             
         Case 13
-            tmp = InputBox("Escriba el motivo de la advertencia.", "Advertir a " & TargetName)
-'
-            If tmp = "" Then
-                InputBox ("No tiene advertencia a " & TargetName)
-            Else
-                Call ParseUserCommand("/ADVERTENCIA " & TargetName & "@" & tmp)
-            End If
+            Dim mensajes(1 To 15) As String
+            mensajes(1) = "¬1, ¿qué hora ves en pantalla ahora mismo?"
+            mensajes(2) = "¬1, respondeme: ¿llueve donde estás?"
+            mensajes(3) = "¬1, ¿estás parado en una zona segura?"
+            mensajes(4) = "¬1, decime si hay árboles o arena donde estás."
+            mensajes(5) = "¬1, ¿es de día o noche en tu juego?"
+            mensajes(6) = "¬1, ¿el cielo está claro o está oscuro?"
+            mensajes(7) = "¬1, ¿el mapa donde estás es un desierto o un bosque?"
+            mensajes(8) = "¬1, contestame con la hora del servidor por favor."
+            mensajes(9) = "¬1, ¿tu personaje está en zona segura ahora?"
+            mensajes(10) = "¬1, ¿ves caer lluvia o está seco el mapa?"
+            mensajes(11) = "¬1, ¿qué tipo de entorno ves? ¿bosque o desierto?"
+            mensajes(12) = "¬1, indicá si el momento del día es claro u oscuro."
+            mensajes(13) = "¬1, ¿podés decirme si es de noche ahora?"
+            mensajes(14) = "¬1, respondé si ves zona segura en pantalla."
+            mensajes(15) = "¬1, si estás ahí, ¿qué hora te muestra el juego?"
+            
+            
+            Dim MensajeSeleccionado As String
+            Dim idx As Integer
+            
+            Randomize
+            idx = Int((15 * Rnd) + 1)
+            MensajeSeleccionado = Replace(mensajes(idx), "¬1", TargetName)
+            
+            Call ParseUserCommand("/MENSAJEINFORMACION " & TargetName & "@" & MensajeSeleccionado)
+            ' agregar que el mensaje lo pueda leer yo tambien
+            Call AddtoRichTextBox(frmMain.RecTxt, "MENSAJE A " & TargetName & ": " & MensajeSeleccionado, 0, 255, 255, True)
+
+
+            
         Case 14
             tmp = InputBox("Escriba el motivo de Carcel .", "Carcel a " & TargetName)
             tmptime = InputBox("Escriba el tiempo de Carcel .", "Tiempo de Carcel a " & TargetName)
