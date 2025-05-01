@@ -2698,12 +2698,18 @@ errhandler:
 End Sub
 
 Private Sub HandleShowMessageBox()
-On Error GoTo errhandler
+    On Error GoTo errhandler
     
     Dim mensaje As String
+    Dim MessageID As Integer
+    Dim extra As String
 
-    mensaje = Reader.ReadString8()
-
+    ' Obtener el ID del mensaje desde el servidor
+    MessageID = Reader.ReadInt16()
+    extra = Reader.ReadString8()
+    ' Obtener el mensaje a partir del archivo de localización usando el ID
+    mensaje = Locale_Parse_ServerMessage(MessageID, extra)
+    
     Select Case g_game_state.State()
         Case e_state_gameplay_screen
             frmMensaje.msg.Caption = mensaje
@@ -2725,9 +2731,8 @@ On Error GoTo errhandler
 errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowMessageBox", Erl)
-    
-
 End Sub
+
 
 Private Sub HandleMostrarCuenta()
 On Error GoTo errhandler
