@@ -63,7 +63,7 @@ Begin VB.Form MenuGM
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "ADVERTENCIA"
+      Caption         =   "VIGILANTE"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -552,23 +552,22 @@ Private Sub OpcionImg_Click(Index As Integer)
             
         Case 13
             Dim mensajes(1 To 15) As String
-            mensajes(1) = "¬1, ¿qué hora ves en pantalla ahora mismo?"
-            mensajes(2) = "¬1, respondeme: ¿llueve donde estás?"
-            mensajes(3) = "¬1, ¿estás parado en una zona segura?"
-            mensajes(4) = "¬1, decime si hay árboles o arena donde estás."
-            mensajes(5) = "¬1, ¿es de día o noche en tu juego?"
-            mensajes(6) = "¬1, ¿el cielo está claro o está oscuro?"
-            mensajes(7) = "¬1, ¿el mapa donde estás es un desierto o un bosque?"
-            mensajes(8) = "¬1, contestame con la hora del servidor por favor."
-            mensajes(9) = "¬1, ¿tu personaje está en zona segura ahora?"
-            mensajes(10) = "¬1, ¿ves caer lluvia o está seco el mapa?"
-            mensajes(11) = "¬1, ¿qué tipo de entorno ves? ¿bosque o desierto?"
-            mensajes(12) = "¬1, indicá si el momento del día es claro u oscuro."
-            mensajes(13) = "¬1, ¿podés decirme si es de noche ahora?"
-            mensajes(14) = "¬1, respondé si ves zona segura en pantalla."
-            mensajes(15) = "¬1, si estás ahí, ¿qué hora te muestra el juego?"
-            
-            
+                mensajes(1) = JsonLanguage.Item("MENSAJE_HORA_ACTUAL")
+                mensajes(2) = JsonLanguage.Item("MENSAJE_LLUVIA")
+                mensajes(3) = JsonLanguage.Item("MENSAJE_ZONA_SEGURA")
+                mensajes(4) = JsonLanguage.Item("MENSAJE_ARBOLES_O_ARENA")
+                mensajes(5) = JsonLanguage.Item("MENSAJE_DIA_O_NOCHE")
+                mensajes(6) = JsonLanguage.Item("MENSAJE_CIELO_CLARO_O_OSCURO")
+                mensajes(7) = JsonLanguage.Item("MENSAJE_ENTORNO_DESIERTO_O_BOSQUE")
+                mensajes(8) = JsonLanguage.Item("MENSAJE_HORA_SERVIDOR")
+                mensajes(9) = JsonLanguage.Item("MENSAJE_ZONA_SEGURA_PERSONAJE")
+                mensajes(10) = JsonLanguage.Item("MENSAJE_LLUVIA_O_SECO")
+                mensajes(11) = JsonLanguage.Item("MENSAJE_ENTORNO_BOSQUE_O_DESIERTO")
+                mensajes(12) = JsonLanguage.Item("MENSAJE_MOMENTO_DEL_DIA")
+                mensajes(13) = JsonLanguage.Item("MENSAJE_NOCHE_ACTUAL")
+                mensajes(14) = JsonLanguage.Item("MENSAJE_ZONA_SEGURA_EN_PANTALLA")
+                mensajes(15) = JsonLanguage.Item("MENSAJE_HORA_DEL_JUEGO")
+
             Dim MensajeSeleccionado As String
             Dim idx As Integer
             
