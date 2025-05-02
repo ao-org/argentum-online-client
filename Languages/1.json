@@ -294,7 +294,24 @@
     "MENSAJE_PAGINA_WEB_YESNO":"Abrir el navegador",
     "MENSAJE_LANZAMIENTO_RAPIDO": "No puedes lanzar hechizos tan rápido.",
     "MENSAJE_ATAQUE_RAPIDO_GOLPE": "No puedes lanzar tan rápido después de un golpe.",
-    "MENSAJE_CREAREVENTO_USO": "Valor incorrecto. Utilice /CREAREVENTO ¬1 PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO."
+    "MENSAJE_CREAREVENTO_USO": "Valor incorrecto. Utilice /CREAREVENTO ¬1 PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.",
+	"MENSAJE_FALLAS": "Fallo",
+	"MENSAJE_FALL0": "Fallo",
+	"MENSAJE_HORA_ACTUAL": "¬1, ¿qué hora ves en pantalla ahora mismo?",
+	"MENSAJE_LLUVIA": "¬1, respondeme: ¿llueve donde estás?",
+	"MENSAJE_ZONA_SEGURA": "¬1, ¿estás parado en una zona segura?",
+	"MENSAJE_ARBOLES_O_ARENA": "¬1, decime si hay árboles o arena donde estás.",
+	"MENSAJE_DIA_O_NOCHE": "¬1, ¿es de día o noche en tu juego?",
+	"MENSAJE_CIELO_CLARO_O_OSCURO": "¬1, ¿el cielo está claro o está oscuro?",
+	"MENSAJE_ENTORNO_DESIERTO_O_BOSQUE": "¬1, ¿el mapa donde estás es un desierto o un bosque?",
+	"MENSAJE_HORA_SERVIDOR": "¬1, contestame con la hora del servidor por favor.",
+	"MENSAJE_ZONA_SEGURA_PERSONAJE": "¬1, ¿tu personaje está en zona segura ahora?",
+	"MENSAJE_LLUVIA_O_SECO": "¬1, ¿ves caer lluvia o está seco el mapa?",
+	"MENSAJE_ENTORNO_BOSQUE_O_DESIERTO": "¬1, ¿qué tipo de entorno ves? ¿bosque o desierto?",
+	"MENSAJE_MOMENTO_DEL_DIA": "¬1, indicá si el momento del día es claro u oscuro.",
+	"MENSAJE_NOCHE_ACTUAL": "¬1, ¿podés decirme si es de noche ahora?",
+	"MENSAJE_ZONA_SEGURA_EN_PANTALLA": "¬1, respondé si ves zona segura en pantalla.",
+	"MENSAJE_HORA_DEL_JUEGO": "¬1, si estás ahí, ¿qué hora te muestra el juego?"
 }
 
 

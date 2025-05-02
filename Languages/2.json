@@ -294,5 +294,24 @@
     "MENSAJE_PAGINA_WEB_YESNO":"Do you want to open the browser now?",
     "MENSAJE_LANZAMIENTO_RAPIDO": "You can't cast spells that fast.",
     "MENSAJE_ATAQUE_RAPIDO_GOLPE": "You can't attack that quickly after a hit.",
-    "MENSAJE_CREAREVENTO_USO": "Invalid value. Use /CREAREVENT  1 PARTICIPANTS MIN_LEVEL MAX_LEVEL."
+    "MENSAJE_CREAREVENTO_USO": "Invalid value. Use /CREAREVENT  1 PARTICIPANTS MIN_LEVEL MAX_LEVEL.",
+	"MENSAJE_FALLAS": "Failed ",
+	"MENSAJE_FALLO": "Failed",
+	"MENSAJE_HORA_ACTUAL": "¬1, what time do you see on the screen right now?",
+	"MENSAJE_LLUVIA": "¬1, answer me: is it raining where you are?",
+	"MENSAJE_ZONA_SEGURA": "¬1, are you standing in a safe zone?",
+	"MENSAJE_ARBOLES_O_ARENA": "¬1, tell me if there are trees or sand where you are.",
+	"MENSAJE_DIA_O_NOCHE": "¬1, is it day or night in your game?",
+	"MENSAJE_CIELO_CLARO_O_OSCURO": "¬1, is the sky clear or dark?",
+	"MENSAJE_ENTORNO_DESIERTO_O_BOSQUE": "¬1, is the map where you are a desert or a forest?",
+	"MENSAJE_HORA_SERVIDOR": "¬1, please tell me the server time.",
+	"MENSAJE_ZONA_SEGURA_PERSONAJE": "¬1, is your character in a safe zone now?",
+	"MENSAJE_LLUVIA_O_SECO": "¬1, do you see rain or is the map dry?",
+	"MENSAJE_ENTORNO_BOSQUE_O_DESIERTO": "¬1, what type of environment do you see? Forest or desert?",
+	"MENSAJE_MOMENTO_DEL_DIA": "¬1, indicate if the time of day is light or dark.",
+	"MENSAJE_NOCHE_ACTUAL": "¬1, can you tell me if it's night right now?",
+	"MENSAJE_ZONA_SEGURA_EN_PANTALLA": "¬1, answer if you see a safe zone on the screen.",
+	"MENSAJE_HORA_DEL_JUEGO": "¬1, if you're there, what time does the game show you?"
+
 }
+

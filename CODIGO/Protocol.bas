@@ -1434,7 +1434,7 @@ Private Sub HandleCharSwing()
     With charlist(CharIndex)
 
         If ShowText And NotificoTexto Then
-            Call SetCharacterDialogFx(CharIndex, IIf(CharIndex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
+            Call SetCharacterDialogFx(CharIndex, IIf(CharIndex = UserCharIndex, (JsonLanguage.Item("MENSAJE_FALLAS")), (JsonLanguage.Item("MENSAJE_FALLO"))), RGBA_From_Comp(255, 0, 0))
         End If
         
         If EstaPCarea(CharIndex) Then
