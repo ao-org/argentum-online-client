@@ -664,7 +664,9 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     End If
 
                 Else
+
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_PARAMETROS_MAPA"))
+
 
                 End If
 
@@ -697,7 +699,9 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     End If
 
                 Else
+
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_TELEP_FALTANTE"))
+
 
                 End If
 
@@ -724,8 +728,10 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     End If
 
                 Else
+
                     'Avisar que falta el parámetro
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_SILENCIAR_INCOMPLETO"))
+
 
                 End If
 
@@ -734,7 +740,9 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If notNullArguments Then
                     Call WriteCuentaRegresiva(ArgumentosRaw)
                 Else
+
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_CUENTAREGRESIVA"))
+r
 
                 End If
 
@@ -809,22 +817,27 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
 
-                'Case "/LUZMAPA"
-                '    If EsGM Then
-                '        If notNullArguments Then
-                '            If CantidadArgumentos = 3 Then
-                '                If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And _
-                '                    ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) And _
-                '                    ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Integer) Then
-                'Call SetGlobalLight(D3DColorXRGB(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2)))
-                'Call MapUpdateGlobalLight
-                '                    Exit Sub
-                '                End If
-                '            End If
-                '        End If
-                'Avisar que falta el parametro
-                'Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
-                '    End If
+                
+            'Case "/LUZMAPA"
+            '    If EsGM Then
+            '        If notNullArguments Then
+            '            If CantidadArgumentos = 3 Then
+            '                If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And _
+            '                    ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) And _
+            '                    ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Integer) Then
+                                
+                                'Call SetGlobalLight(D3DColorXRGB(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2)))
+                                'Call MapUpdateGlobalLight
+            '                    Exit Sub
+
+            '                End If
+            '            End If
+            '        End If
+
+                    'Avisar que falta el parametro
+                    'Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
+            '    End If
+
             Case "/INVISIBLE"
                 Call WriteInvisible
 
@@ -1208,8 +1221,10 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     End If
 
                 Else
+
                     'Avisar que falta el parámetro
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_BANCUENTA_INCOMPLETO"))
+
 
                 End If
 
@@ -1218,8 +1233,10 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If notNullArguments Then
                     Call WriteUnBanCuenta(ArgumentosRaw)
                 Else
+
                     'Avisar que falta el parámetro
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_UNBANCUENTA"))
+
 
                 End If
 
@@ -1616,6 +1633,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         If UBound(tmpArr) < 2 Then
                             'Faltan los parametros con el formato propio
                             Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
+
                         Else
 
                             If Len(tmpArr(0)) = 0 Then
