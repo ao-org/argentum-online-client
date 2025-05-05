@@ -323,8 +323,9 @@
 "MENSAJE_LUZ_FALTANTE": "Missing parameters. Use /LUZ AMOUNT to create a light.",
 "MENSAJE_LUZ_NUM_INCORRECTO": "Invalid parameter. It must be a number indicating the light amount.",
 "MENSAJE_FALTAN_SILENCIAR": "Incorrect format. Use /SILENCIAR NICKNAME@REASON.",
-"MENSAJE_FALTAN_SILENCIAR_INCOMPLETO": "Missing parameters. Use /SILENCIAR NICKNAME@REASON.","MENSAJE_TELEP_INVALIDO": "Valor incorrecto. Usá /telep NICKNAME MAPA X Y.",
-"MENSAJE_TELEP_FALTANTE": "Faltan parámetros. Usá /telep NICKNAME MAPA X Y."
+"MENSAJE_FALTAN_SILENCIAR_INCOMPLETO": "Missing parameters. Use /SILENCIAR NICKNAME@REASON.",
+"MENSAJE_TELEP_INVALIDO": "Valor incorrecto. Usá /telep NICKNAME MAPA X Y.",
+"MENSAJE_TELEP_FALTANTE": "Faltan parámetros. Usá /telep NICKNAME MAPA X Y.",
 "MENSAJE_FALTAN_DONDE": "Missing parameters. Use /donde NICKNAME.",
 "MENSAJE_PARAMETROS_MAPA": "Missing parameters. Use /nene MAP.",
 "MENSAJE_FALTAN_CUENTAREGRESIVA": "Missing parameters. Use /COUNTDOWN TIME (in seconds)."
