@@ -742,7 +742,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Else
 
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_CUENTAREGRESIVA"))
-r
 
                 End If
 
