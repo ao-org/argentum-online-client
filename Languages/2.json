@@ -311,7 +311,8 @@
 	"MENSAJE_MOMENTO_DEL_DIA": "¬1, indicate if the time of day is light or dark.",
 	"MENSAJE_NOCHE_ACTUAL": "¬1, can you tell me if it's night right now?",
 	"MENSAJE_ZONA_SEGURA_EN_PANTALLA": "¬1, answer if you see a safe zone on the screen.",
-	"MENSAJE_HORA_DEL_JUEGO": "¬1, if you're there, what time does the game show you?"
-
+	"MENSAJE_HORA_DEL_JUEGO": "¬1, if you're there, what time does the game show you?",
+	"MENSAJE_FALTAN_BAN": "Incorrect format. Please use /ban NICKNAME@REASON."
+	"MENSAJE_FALTAN_ICORRECTO": "Missing parameters. Use /ban NICKNAME@REASON."
 }
 

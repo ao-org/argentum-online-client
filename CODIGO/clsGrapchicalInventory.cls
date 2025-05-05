@@ -129,11 +129,6 @@ Dim HALF_BORDER_Y         As Integer
 
 Dim HEIGHT_MAIN_INVENTORY As Integer
 
-Private Sub Class_Initialize()
-
-End Sub
-Private Sub Class_Terminate()
-End Sub
 #If ConMenuesConextuales = 1 Then   'Argument list varies!!!
     Public Sub Initialize(ByRef DirectDraw As DirectDraw7, ByRef InvPic As PictureBox, ByRef PopUpMenu As Menu, Optional ByVal Width As Integer = 0, Optional ByVal Height As Integer = 0, Optional ByVal OffsetX As Integer = 0, Optional ByVal OffsetY As Integer = 0, Optional ByVal SpaceX As Integer = 0, Optional ByVal SpaceY As Integer = 0, Optional thisInventory As Boolean = False, Optional MIDSPACE As Byte = 0)
 
@@ -346,13 +341,13 @@ Amount_Err:
     
 End Property
 
-Public Property Get OBJIndex(ByVal Slot As Byte) As Integer
+Public Property Get ObjIndex(ByVal Slot As Byte) As Integer
 
     'Retrieves the selected item's object index
     
     On Error GoTo OBJIndex_Err
     
-    OBJIndex = UserInventory(Slot).OBJIndex
+    ObjIndex = UserInventory(Slot).ObjIndex
 
     
     Exit Property
@@ -524,7 +519,7 @@ Public Sub SetItem(ByVal Slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount
         .MaxHit = eMaxHit
         .MinHit = eMinHit
         .Name = eName
-        .OBJIndex = eOBJIndex
+        .ObjIndex = eOBJIndex
         .ObjType = eObjType
         .Valor = eValor
         .PuedeUsar = PuedeUsar
@@ -553,7 +548,7 @@ Public Sub ClearSlot(ByVal Slot As Byte)
         .MaxHit = 0
         .MinHit = 0
         .Name = vbNullString
-        .OBJIndex = 0
+        .ObjIndex = 0
         .ObjType = 0
         .Valor = 0
         .PuedeUsar = 0
@@ -669,7 +664,7 @@ Public Sub DrawInventory()
     
     Dim tmpString As String
 
-    Dim Color(3)  As RGBA
+    Dim color(3)  As RGBA
     
     InvNeedsRedraw = False
 
@@ -702,9 +697,9 @@ Public Sub DrawInventory()
             
         If UserInventory(i).GrhIndex Then
             If UserInventory(i).PuedeUsar > 0 Then
-                Call RGBAList(Color, 255, 100, 100)
+                Call RGBAList(color, 255, 100, 100)
                 
-                Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, Color)
+                Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, color)
 
             Else
                 Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, COLOR_WHITE())
@@ -713,7 +708,7 @@ Public Sub DrawInventory()
             
             If ShowQuantities Then
                 If UserInventory(i).Amount > 1 Then
-                    Call RGBAList(Color, 239, 228, 176)
+                    Call RGBAList(color, 239, 228, 176)
         
                     If InvSelectedItem <> i And UserInventory(i).Amount > 1000 And NumerosCompletosInventario = 0 Then
                         tmpString = Round(UserInventory(i).Amount * 0.001, 1) & "K"
@@ -721,13 +716,13 @@ Public Sub DrawInventory()
                         tmpString = UserInventory(i).Amount
                     End If
     
-                    Engine_Text_Render tmpString, x + HALF_ITEM_SIZE - Engine_Text_Width(tmpString, True) * 0.5, y + LETRA_GRANDE_Y, Color, 1
+                    Engine_Text_Render tmpString, x + HALF_ITEM_SIZE - Engine_Text_Width(tmpString, True) * 0.5, y + LETRA_GRANDE_Y, color, 1
                 End If
 
                 If UserInventory(i).Equipped Then
-                    Call RGBAList(Color, 255, 0, 0)
+                    Call RGBAList(color, 255, 0, 0)
                     tmpString = EQUIPPED_CHARACTER
-                    Engine_Text_Render tmpString, x + EQUIPPED_X, y + EQUIPPED_Y, Color, 1
+                    Engine_Text_Render tmpString, x + EQUIPPED_X, y + EQUIPPED_Y, color, 1
                 End If
                 Dim cdTime As Single: cdTime = GetLongerCdPercent(i)
                 If cdTime > 0 And cdTime < 1 Then
@@ -751,11 +746,11 @@ Public Sub DrawDraggedItem()
     On Error GoTo DrawDraggedItem_Err
     
 
-    Dim Color(3) As RGBA
+    Dim color(3) As RGBA
 
     If Dragging > 0 Then
-        Call RGBAList(Color, 255, 255, 255, 200)
-        Call Draw_GrhColor(UserInventory(Dragging).GrhIndex, XDrag - HALF_ITEM_SIZE, YDrag - HALF_ITEM_SIZE, Color)
+        Call RGBAList(color, 255, 255, 255, 200)
+        Call Draw_GrhColor(UserInventory(Dragging).GrhIndex, XDrag - HALF_ITEM_SIZE, YDrag - HALF_ITEM_SIZE, color)
     End If
 
     
@@ -943,7 +938,7 @@ MostrarCantidades_Err:
 End Property
 
 Public Sub UpdateSelectedItemLastUse()
-    CdTimes(ObjData(UserInventory(SelectedItem()).ObjIndex).cdType) = GetTickCount()
+    CdTimes(ObjData(UserInventory(SelectedItem()).ObjIndex).CDType) = GetTickCount()
 End Sub
 
 Public Function IsItemOnCd(ByVal Slot As Integer) As Boolean
@@ -952,8 +947,8 @@ Public Function IsItemOnCd(ByVal Slot As Integer) As Boolean
         Exit Function
     End If
     Dim ElapsedTime As Long
-    ElapsedTime = GetTickCount() - CdTimes(ObjData(UserInventory(Slot).ObjIndex).cdType)
-    IsItemOnCd = ElapsedTime < ObjData(UserInventory(Slot).OBJIndex).Cooldown
+    ElapsedTime = GetTickCount() - CdTimes(ObjData(UserInventory(Slot).ObjIndex).CDType)
+    IsItemOnCd = ElapsedTime < ObjData(UserInventory(Slot).ObjIndex).Cooldown
 End Function
 
 Public Function GetActiveWeaponSlot() As Integer
@@ -980,31 +975,31 @@ Public Function GetLongerCdPercent(ByVal Slot As Integer) As Single
     If Not CanUse(Slot) Then
         Exit Function
     End If
-    Dim pendingTime, tempPending As Long
-    Dim currTime As Long
+    Dim PendingTime, tempPending As Long
+    Dim CurrTime As Long
     GetLongerCdPercent = 0
     'test stun
-    currTime = GetTickCount()
-    pendingTime = StunEndTime - currTime
-    If pendingTime > 0 Then
-        GetLongerCdPercent = 1 - pendingTime / TotalStunTime
+    CurrTime = GetTickCount()
+    PendingTime = StunEndTime - CurrTime
+    If PendingTime > 0 Then
+        GetLongerCdPercent = 1 - PendingTime / TotalStunTime
     End If
     ' test item cd
-    Dim itemCd As Long: itemCd = ObjData(UserInventory(Slot).OBJIndex).Cooldown
+    Dim itemCd As Long: itemCd = ObjData(UserInventory(Slot).ObjIndex).Cooldown
     If itemCd > 0 Then
-        tempPending = currTime - CdTimes(ObjData(UserInventory(Slot).ObjIndex).cdType)
-        If tempPending > pendingTime And tempPending < itemCd Then
+        tempPending = CurrTime - CdTimes(ObjData(UserInventory(Slot).ObjIndex).CDType)
+        If tempPending > PendingTime And tempPending < itemCd Then
             GetLongerCdPercent = tempPending / itemCd
-            pendingTime = tempPending
+            PendingTime = tempPending
         End If
     End If
     'test global wp cd
     If UserInventory(Slot).ObjType = 2 Then
         If cooldown_ataque.totalTime > 0 Then
-            tempPending = currTime - cooldown_ataque.initialTime
-            If tempPending > pendingTime And tempPending < cooldown_ataque.totalTime Then
-                pendingTime = tempPending
-                GetLongerCdPercent = pendingTime / cooldown_ataque.totalTime
+            tempPending = CurrTime - cooldown_ataque.initialTime
+            If tempPending > PendingTime And tempPending < cooldown_ataque.totalTime Then
+                PendingTime = tempPending
+                GetLongerCdPercent = PendingTime / cooldown_ataque.totalTime
             End If
         End If
     End If
