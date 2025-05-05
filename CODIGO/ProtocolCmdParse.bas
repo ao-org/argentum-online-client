@@ -1296,7 +1296,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                 
-            Case "/CT" ' 1 50 50 @motivo asd asd asd
+            Case "/CT", "/CREARTELEP" ' 1 50 50 @motivo asd asd asd
                 Dim tempStr() As String
                 
                 If InStr(1, ArgumentosRaw, "@") Then
@@ -1314,11 +1314,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
     
                     Else
                         'Avisar que falta el parametro
-                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CT_FALTANTE"))
     
                     End If
                 Else
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CT_INVALIDO"))
                 End If
                 
             Case "/DT"
