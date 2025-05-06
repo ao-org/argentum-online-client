@@ -43,7 +43,7 @@
     "MENSAJE_NENE": "Cantidad de NPCs: ",
     "MENSAJE_TRABAJO_INICIA": "Has comenzado a trabajar...",
     "MENSAJE_DEBES_ESCRIBIR_TU_MENSAJE": "Debes escribir tu mensaje.",
-    "MENSAJE_DEBES_ELEGIR_EL_MOTIVO_DE_TU_CONSULTA": "Debes elegir el motivo de tu consulta.",
+    "MENSAJE_DEBES_ELEGIR_EL_MOTIVO_DE_TU_CONSULTA": "Debes TEST elegir el motivo de tu consulta.",
     "MENSAJE_EXPLIQUE_CORRECTAMENTE_EL_MOTIVO_DE_SU_CONSULTA": "¡Por favor explique correctamente el motivo de su consulta!",
     "MENSAJE_DEJE_EL_NOMBRE_DEL_PERSONAJE_Y_ADMINISTRADOR": "Deje el nombre del personaje del que está pidiendo descargo por una medida, junto con el administrador relacionado.",
     "MENSAJE_SE_PRIORIZARA_CONSULTA_A_ADMINISTRADORES": "Se dará prioridad a su consulta enviando un mensaje a los administradores conectados. Por favor, utilice esta opción responsablemente.",
