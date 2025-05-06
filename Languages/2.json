@@ -330,6 +330,5 @@
 "MENSAJE_FALTAN_CUENTAREGRESIVA": "Missing parameters. Use /CUENTAREGRESIVA or /CR TIME (in seconds).",
 "MENSAJE_CT_INVALIDO": "Invalid value. Use /CT or /CREARTELEP MAP X Y RADIUS (1 to 3) and @REASON.",
 "MENSAJE_CT_FALTANTE": "Some parameters are missing. Use /CT or /CREARTELEP MAP X Y RADIUS (1 to 3) and @REASON."
-
 }
 
