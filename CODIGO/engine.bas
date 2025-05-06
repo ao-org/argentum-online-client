@@ -105,7 +105,7 @@ Public dialogs(MAX_DIALOGS - 1)   As dialog
 Public dialogCount                As Byte
 
 
-
+Public StarGrh             As grh
 Public WeatherFogX1        As Single
 Public WeatherFogY1        As Single
 Public WeatherFogX2        As Single
@@ -150,6 +150,7 @@ Private TileBufferPixelOffsetY As Integer
 Private TimeLast As Long
 
 Private Const GrhFogata        As Long = 1521
+Private Const GrhStar          As Long = 32472
 Private Const GrhCharactersScreenUI As Long = 3839
 
 ' Colores estaticos
@@ -163,6 +164,10 @@ Public r As Byte
 Public G As Byte
 Public b As Byte
 Public textcolorAsistente(3)    As RGBA
+
+Public Sub InitEngineSprites()
+    Call InitGrh(StarGrh, GrhStar, 1)
+End Sub
 
 Public Sub InitializeTeamColors()
     Call SetRGBA(TeamColors(1), 153, 217, 234)
@@ -247,8 +252,7 @@ Private Sub Engine_InitExtras()
     'Call Font_Create("Tahoma", 8, True, 0)
     'Call Font_Create("Verdana", 8, False, 0)
     'Call Font_Create("Verdana", 11, True, False)
-        
-    ' Inicializar textura compuesta
+    
     Call InitComposedTexture
     
     Exit Sub
@@ -2190,25 +2194,18 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
         End If
         If Nombres And Len(.nombre) > 0 And MostrarNombre And .tipoUsuario > 0 Then
-            Dim StarGrh As grh
-            Call InitGrh(StarGrh, 32472)
-            
             Select Case .tipoUsuario
-                Case eTipoUsuario.cafecito
-                    'cafecito
-                    Call RGBAList(Color, 185, 122, 87, IIf(.Invisible, 160, 255))
                 Case eTipoUsuario.aventurero
-                    ' Aventurero
-                    Call RGBAList(Color, 240, 212, 175, IIf(.Invisible, 120, 255))
+                    Call RGBAList(color, 0, 255, 0, IIf(.Invisible, 120, 255))
                 Case eTipoUsuario.heroe
-                    'Héroe
-                    Call RGBAList(Color, 240, 135, 101, IIf(.Invisible, 160, 255))
+                    Call RGBAList(color, 255, 0, 0, IIf(.Invisible, 160, 255))
                 Case eTipoUsuario.Legend
-                    'Leyenda
-                    Call RGBAList(Color, 222, 177, 45, IIf(.Invisible, 120, 255))
+                    Call RGBAList(color, 255, 255, 0, IIf(.Invisible, 120, 255))
             End Select
-            
-            Call Draw_Grh(StarGrh, PixelOffsetX + 1 + .Body.BodyOffset.x + (Engine_Text_Width(.nombre, True) / 2) + 8, PixelOffsetY + 20 + .Body.BodyOffset.y, 1, 0, Color, False, 0, 0, 0)
+
+            Dim txt_width As Long
+            txt_width = Engine_Text_Width(.nombre, True)
+            Call Draw_Grh(StarGrh, PixelOffsetX + 1 + .Body.BodyOffset.x + (txt_width / 2) + 8, PixelOffsetY + 20 + .Body.BodyOffset.y, 1, 1, color, False, 0, 0, 0)
         End If
         
         'Barra de tiempo
