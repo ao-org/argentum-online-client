@@ -154,7 +154,7 @@
     "MENSAJE_VALOR_PERSONAJE_INVALIDO": "The entered character value is invalid.",
     "MENSAJE_PUBLICAR_PERSONAJE": "You are listing ",
     "MENSAJE_PUBLICAR_PERSONAJE_VALOR": " at a value of ",
-    "MENSAJE_PUBLICAR_PERSONAJE_COSTO": ", 20,000 gold coins will be deducted. If you want to cancel it, you must do so from the website.",
+    "MENSAJE_PUBLICAR_PERSONAJE_COSTO": ", 35,000 gold coins will be deducted. If you want to cancel it, you must do so from the website.",
     "MENSAJE_TITULO_PUBLICAR_PERSONAJE": "Publish Character",
     "MENSAJE_ERROR_DIRECTX": "Fatal error creating DirectX8 object.",
     "MENSAJE_ERROR_DIRECTD3D": "Fatal error creating DirectD3D object.",

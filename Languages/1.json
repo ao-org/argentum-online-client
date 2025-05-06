@@ -154,7 +154,7 @@
     "MENSAJE_VALOR_PERSONAJE_INVALIDO": "El valor ingresado del personaje es inválido.",
     "MENSAJE_PUBLICAR_PERSONAJE": "Estás publicando a ",
     "MENSAJE_PUBLICAR_PERSONAJE_VALOR": " a un valor de ",
-    "MENSAJE_PUBLICAR_PERSONAJE_COSTO": ", se descontarán las 20.000 monedas de oro. En caso de querer cancelar la misma deberás hacerlo desde la página web.",
+    "MENSAJE_PUBLICAR_PERSONAJE_COSTO": ", se descontarán las 35.000 monedas de oro. En caso de querer cancelar la misma deberás hacerlo desde la página web.",
     "MENSAJE_TITULO_PUBLICAR_PERSONAJE": "Publicar personaje",
     "MENSAJE_ERROR_DIRECTX": "Error fatal al crear el objeto DirectX8.",
     "MENSAJE_ERROR_DIRECTD3D": "Error fatal al crear el objeto DirectD3D.",
