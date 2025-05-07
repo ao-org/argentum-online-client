@@ -285,7 +285,6 @@ Public Sub CargarRecursos()
     Call InitFontTypes
     Call CargarZonas
 
-    'Call LoadGrhData
     Call LoadGrhIni
     Call CargarMoldes
     Call CargarCabezas
@@ -298,6 +297,7 @@ Public Sub CargarRecursos()
     Call CargarAnimEscudos
     Call CargarColores
     Call CargarCrafteo
+    Call InitEngineSprites
     
     
     

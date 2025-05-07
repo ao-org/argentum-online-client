@@ -207,7 +207,6 @@ End Type
 
 Public Enum eTipoUsuario
     User = 0
-    cafecito
     aventurero
     heroe
     Legend
