@@ -4685,7 +4685,7 @@ Public Sub UpdateStatsLayout()
     End If
     
     
-    frmMain.lblLvl.Caption = ListaClases(UserStats.Clase) & " - Nivel " & UserStats.Lvl
+    frmMain.lblLvl.Caption = ListaClases(UserStats.Clase) & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & UserStats.Lvl
     Call frmMain.UpdateGoldState
     
 End Sub
