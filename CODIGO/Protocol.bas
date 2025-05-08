@@ -5447,22 +5447,22 @@ Private Sub HandleGuildNews()
         Select Case ClanNivel
 
             Case 1
-                .beneficios = "Max miembros: 5"
+                .beneficios = JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS")
 
             Case 2
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Max miembros: 8"
+                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_8")
 
             Case 3
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Max miembros: 11"
+                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_11")
 
             Case 4
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Max miembros: 14"
+                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_14")
 
             Case 5
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Ver vida y mana" & vbCrLf & " Max miembros: 17"
+                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA") & vbCrLf & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_17")
                 
             Case 6
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Ver vida y mana" & vbCrLf & "Verse invisible" & vbCrLf & " Max miembros: 20"
+                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA") & vbCrLf & JsonLanguage.Item("MENSAJE_VERSE_INVISIBLE") & vbCrLf & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_20")
         
         End Select
     
@@ -5578,21 +5578,21 @@ Private Sub HandleCharacterInfo()
         End If
     
         If Reader.ReadInt8() = 1 Then
-            .Genero.Caption = "Genero: Hombre"
+            .Genero.Caption = JsonLanguage.Item("MENSAJE_GENERO_HOMBRE")
         Else
-            .Genero.Caption = "Genero: Mujer"
+            .Genero.Caption = JsonLanguage.Item("MENSAJE_GENERO_MUJER")
         End If
             
-        .nombre.Caption = "Nombre: " & Reader.ReadString8()
-        .Raza.Caption = "Raza: " & ListaRazas(Reader.ReadInt8())
-        .Clase.Caption = "Clase: " & ListaClases(Reader.ReadInt8())
-
-        .Nivel.Caption = "Nivel: " & Reader.ReadInt8()
-        .oro.Caption = "Oro: " & Reader.ReadInt32()
-        .Banco.Caption = "Banco: " & Reader.ReadInt32()
-    
+        .nombre.Caption = JsonLanguage.Item("MENSAJE_NOMBRE") & ": " & Reader.ReadString8()
+        .Raza.Caption = JsonLanguage.Item("MENSAJE_RAZA") & ": " & ListaRazas(Reader.ReadInt8())
+        .Clase.Caption = JsonLanguage.Item("MENSAJE_CLASE") & ": " & ListaClases(Reader.ReadInt8())
+        
+        .Nivel.Caption = JsonLanguage.Item("MENSAJE_NIVEL") & ": " & Reader.ReadInt8()
+        .oro.Caption = JsonLanguage.Item("MENSAJE_ORO") & ": " & Reader.ReadInt32()
+        .Banco.Caption = JsonLanguage.Item("MENSAJE_BANCO") & ": " & Reader.ReadInt32()
+        
         .txtPeticiones.Text = Reader.ReadString8()
-        .guildactual.Caption = "Clan: " & Reader.ReadString8()
+        .guildactual.Caption = JsonLanguage.Item("MENSAJE_CLAN") & ": " & Reader.ReadString8()
         .txtMiembro.Text = Reader.ReadString8()
             
         Dim armada As Boolean
@@ -5603,14 +5603,15 @@ Private Sub HandleCharacterInfo()
         caos = Reader.ReadBool()
             
         If armada Then
-            .ejercito.Caption = "Ejército: Armada Real"
+            .ejercito.Caption = JsonLanguage.Item("MENSAJE_EJERCITO_ARMADA_REAL")
         ElseIf caos Then
-            .ejercito.Caption = "Ejército: Legión Oscura"
+            .ejercito.Caption = JsonLanguage.Item("MENSAJE_EJERCITO_LEGION_OSCURA")
     
         End If
             
-        .ciudadanos.Caption = "Ciudadanos asesinados: " & CStr(Reader.ReadInt32())
-        .Criminales.Caption = "Criminales asesinados: " & CStr(Reader.ReadInt32())
+        .ciudadanos.Caption = JsonLanguage.Item("MENSAJE_CIUDADANOS_ASESINADOS") & ": " & CStr(Reader.ReadInt32())
+        .Criminales.Caption = JsonLanguage.Item("MENSAJE_CRIMINALES_ASESINADOS") & ": " & CStr(Reader.ReadInt32())
+
     
         Call .Show(vbModeless, GetGameplayForm())
     
@@ -5714,28 +5715,30 @@ Private Sub HandleGuildLeaderInfo()
         Select Case Nivel
 
             Case 1
-                .beneficios = Padding & "Max miembros: 5"
+                .beneficios = Padding & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS")
                 .maxMiembros = 5
+        
             Case 2
-                .beneficios = Padding & "Max miembros: 8 / Pedir ayuda (G)"
+                .beneficios = Padding & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_8") & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA")
                 .maxMiembros = 8
-
+        
             Case 3
-                .beneficios = Padding & "Max miembros: 11 / Pedir ayuda (G) / Seguro de clan"
+                .beneficios = Padding & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_11") & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN")
                 .maxMiembros = 11
-
+        
             Case 4
-                .beneficios = Padding & "Max miembros: 14 / Pedir ayuda (G) / Seguro de clan"
+                .beneficios = Padding & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_14") & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN")
                 .maxMiembros = 14
-
+        
             Case 5
-                .beneficios = Padding & "Max miembros: 17 / Pedir ayuda (G) / Seguro de clan / Ver vida y mana"
+                .beneficios = Padding & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_17") & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & " / " & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA")
                 .maxMiembros = 17
-                
+        
             Case 6
-                .beneficios = Padding & "Max miembros: 20 / Pedir ayuda (G) / Seguro de clan / Ver vida y mana / Verse invisible"
+                .beneficios = Padding & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_20") & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & " / " & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA") & " / " & JsonLanguage.Item("MENSAJE_VERSE_INVISIBLE")
                 .maxMiembros = 20
         End Select
+
         
         .Show , GetGameplayForm()
 
