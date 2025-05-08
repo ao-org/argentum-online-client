@@ -385,8 +385,28 @@
 	"MENSAJE_ATRIBUTO_INTELIGENCIA": "Inteligencia",
 	"MENSAJE_ATRIBUTO_CONSTITUCION": "Constitución",
 	"MENSAJE_ATRIBUTO_CARISMA": "Carisma",
-	"MENSAJE_NIVEL_CLASE": "Nivel "
-
-
+	"MENSAJE_NIVEL_CLASE": "Nivel ",
+	"MENSAJE_BENEFICIOS_MAX_MIEMBROS": "Max miembros: 5",
+	"MENSAJE_PEDIR_AYUDA": "Pedir ayuda (G)",
+	"MENSAJE_SEGURO_CLAN": "Seguro de clan",
+	"MENSAJE_MAX_MIEMBROS_8": "Max miembros: 8",
+	"MENSAJE_MAX_MIEMBROS_11": "Max miembros: 11",
+	"MENSAJE_MAX_MIEMBROS_14": "Max miembros: 14",
+	"MENSAJE_MAX_MIEMBROS_17": "Max miembros: 17",
+	"MENSAJE_MAX_MIEMBROS_20": "Max miembros: 20",
+	"MENSAJE_VER_VIDA_MANA": "Ver vida y mana",
+	"MENSAJE_VERSE_INVISIBLE": "Verse invisible",
+	"MENSAJE_GENERO_HOMBRE": "Genero: Hombre",
+	"MENSAJE_GENERO_MUJER": "Genero: Mujer",
+	"MENSAJE_NOMBRE": "Nombre",
+	"MENSAJE_RAZA": "Raza",
+	"MENSAJE_CLASE": "Clase",
+	"MENSAJE_NIVEL": "Nivel",
+	"MENSAJE_ORO": "Oro",
+	"MENSAJE_BANCO": "Banco",
+	"MENSAJE_CLAN": "Clan",
+	"MENSAJE_EJERCITO_ARMADA_REAL": "Ejército: Armada Real",
+	"MENSAJE_EJERCITO_LEGION_OSCURA": "Ejército: Legión Oscura",
+	"MENSAJE_CIUDADANOS_ASESINADOS": "Ciudadanos asesinados",
+	"MENSAJE_CRIMINALES_ASESINADOS": "Criminales asesinados"
 }
-
