@@ -354,7 +354,7 @@ Private Sub mnuPrivado_click()
     
     On Error GoTo mnuPrivado_click_Err
     
-    sndPrivateTo = InputBox("Escriba el usuario con el que desea iniciar una conversación privada", "")
+    sndPrivateTo = InputBox(JsonLanguage.Item("MENSAJE_CONVERSACION_PRIVADA"), "") ' Escriba el usuario con el que desea iniciar una conversación privada
 
     If sndPrivateTo <> "" Then
         SendingType = 3

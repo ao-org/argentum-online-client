@@ -6726,11 +6726,11 @@ Private Sub HandleQuestDetails()
            
             If QuestRequerida <> 0 Then
                 FrmQuestInfo.Text1.Text = ""
-               Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest, 128, 128, 128)
+               Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_REQUISITOS") & vbCrLf & JsonLanguage.Item("MENSAJE_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest, 128, 128, 128)
             Else
                 
                 FrmQuestInfo.Text1.Text = ""
-                Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf, 128, 128, 128)
+                Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_REQUISITOS") & vbCrLf & JsonLanguage.Item("MENSAJE_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf, 128, 128, 128)
             End If
            
             tmpByte = Reader.ReadInt8
@@ -6787,7 +6787,7 @@ Private Sub HandleQuestDetails()
 
             End If
     
-            tmpStr = tmpStr & vbCrLf & "RECOMPENSAS" & vbCrLf
+            tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_RECOMPENSAS") & vbCrLf
             'tmpStr = tmpStr & "*) Oro: " & .ReadInt32 & " monedas de oro." & vbCrLf
             'tmpStr = tmpStr & "*) Experiencia: " & .ReadInt32 & " puntos de experiencia." & vbCrLf
            
@@ -6837,14 +6837,14 @@ Private Sub HandleQuestDetails()
             LevelRequerido = Reader.ReadInt8
             QuestRequerida = Reader.ReadInt16
            
-            FrmQuests.detalle.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
+            FrmQuests.detalle.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_REQUISITOS") & vbCrLf & JsonLanguage.Item("MENSAJE_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf
 
             If QuestRequerida <> 0 Then
                 FrmQuests.detalle.Text = FrmQuests.detalle.Text & vbCrLf & "Quest: " & QuestList(QuestRequerida).nombre
             End If
 
            
-            tmpStr = tmpStr & vbCrLf & "OBJETIVOS" & vbCrLf
+            tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_OBJETIVOS") & vbCrLf
            
             tmpByte = Reader.ReadInt8
 
@@ -6903,7 +6903,7 @@ Private Sub HandleQuestDetails()
                 FrmQuests.detalle.Text = FrmQuests.detalle.Text & SkillsNames(RequiredSkill) & ": " & RequiredValue
             End If
             
-            tmpStr = tmpStr & vbCrLf & "RECOMPENSAS" & vbCrLf
+            tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_RECOMPENSAS") & vbCrLf
             Dim tmplong As Long
             tmplong = Reader.ReadInt32
            
@@ -7135,28 +7135,28 @@ Public Sub HandleNpcQuestListSend()
             Select Case estado
                 
                 Case 0
-                    subelemento.SubItems(1) = "Disponible"
+                    subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_DISPONIBLE")
                     subelemento.ForeColor = vbWhite
                     subelemento.ListSubItems(1).ForeColor = vbWhite
 
                 Case 1
-                    subelemento.SubItems(1) = "En Curso"
+                    subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_EN_CURSO")
                     subelemento.ForeColor = RGB(255, 175, 10)
                     subelemento.ListSubItems(1).ForeColor = RGB(255, 175, 10)
 
                 Case 2
                     If Repetible Then
-                        subelemento.SubItems(1) = "Repetible"
+                        subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_REPETIBLE")
                         subelemento.ForeColor = RGB(180, 180, 180)
                         subelemento.ListSubItems(1).ForeColor = RGB(180, 180, 180)
                     Else
-                        subelemento.SubItems(1) = "Finalizada"
+                        subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_FINALIZADA")
                         subelemento.ForeColor = RGB(15, 140, 50)
                         subelemento.ListSubItems(1).ForeColor = RGB(15, 140, 50)
                     End If
 
                 Case 3
-                    subelemento.SubItems(1) = "No disponible"
+                    subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_NO_DISPONIBLE")
                     subelemento.ForeColor = RGB(255, 10, 10)
                     subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
             End Select
@@ -7507,7 +7507,7 @@ Public Sub HandlePelearConPezEspecial()
     ContadorIntentosPescaEspecial_Fallados = 0
     ContadorIntentosPescaEspecial_Acertados = 0
     startTimePezEspecial = GetTickCount()
-    Call Char_Dialog_Set(UserCharIndex, "Oh! Creo que tengo un super pez en mi linea, intentare obtenerlo con la letra P", &H1FFFF, 200, 130)
+    Call Char_Dialog_Set(UserCharIndex, JsonLanguage.Item("MENSAJE_SUPER_PEZ"), &H1FFFF, 200, 130)
     Exit Sub
 errhandler:
 
@@ -7556,7 +7556,7 @@ Public Sub HandleShopInit()
             ObjShop(i).Valor = Reader.ReadInt32
             ObjShop(i).Name = Reader.ReadString8
              
-            Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " (Valor: " & ObjShop(i).Valor & ")", i - 1)
+            Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & ")", i - 1)
         Next i
         frmShopAO20.Show , GetGameplayForm()
  
@@ -7723,28 +7723,28 @@ Public Sub HandleObjQuestListSend()
     Select Case estado
 
         Case 0
-            subelemento.SubItems(1) = "Disponible"
+            subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_DISPONIBLE")
             subelemento.ForeColor = vbWhite
             subelemento.ListSubItems(1).ForeColor = vbWhite
 
         Case 1
-            subelemento.SubItems(1) = "En Curso"
+            subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_EN_CURSO")
             subelemento.ForeColor = RGB(255, 175, 10)
             subelemento.ListSubItems(1).ForeColor = RGB(255, 175, 10)
 
         Case 2
             If Repetible Then
-                subelemento.SubItems(1) = "Repetible"
+                subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_REPETIBLE")
                 subelemento.ForeColor = RGB(180, 180, 180)
                 subelemento.ListSubItems(1).ForeColor = RGB(180, 180, 180)
             Else
-                subelemento.SubItems(1) = "Finalizada"
+                subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_FINALIZADA")
                 subelemento.ForeColor = RGB(15, 140, 50)
                 subelemento.ListSubItems(1).ForeColor = RGB(15, 140, 50)
             End If
 
         Case 3
-            subelemento.SubItems(1) = "No disponible"
+            subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_NO_DISPONIBLE")
             subelemento.ForeColor = RGB(255, 10, 10)
             subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
     End Select
