@@ -1199,6 +1199,23 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private Sub Form_Load()
+    FrmTorneo.Caption = JsonLanguage.Item("MENSAJE_ORGANIZACION_EVENTO")
+    FraTorneosY.Caption = JsonLanguage.Item("MENSAJE_TORNEOS_EVENTOS")
+    lblSeleccionarEl.Caption = JsonLanguage.Item("MENSAJE_SELECCIONAR_EVENTO") ' Seleccionar el evento a realizar
+    OptCapturaDe.Caption = JsonLanguage.Item("MENSAJE_CAPTURA_BANDERA") ' Captura de bandera
+    OptMatarCon.Caption = JsonLanguage.Item("MENSAJE_DIA_DEL_GARROTE") ' Día del Garrote
+    OptElDe.Caption = JsonLanguage.Item("MENSAJE_DEATHMATCH") ' DeathMach
+    OptTorneo.Caption = JsonLanguage.Item("MENSAJE_TORNEO") ' Torneo
+    OptBufones.Caption = JsonLanguage.Item("MENSAJE_BUFONES") ' Bufones
+    OptBusquedaDe.Caption = JsonLanguage.Item("MENSAJE_BUSQUEDA_TESORO") ' Búsqueda de tesoro
+    OptAbordaje.Caption = JsonLanguage.Item("MENSAJE_ABORDAJE") ' Abordaje
+    cmdConfigurarE.Caption = JsonLanguage.Item("MENSAJE_CONFIGURAR_INICIAR") ' Configurar e Iniciar
+    cmdCancelarTodos.Caption = JsonLanguage.Item("MENSAJE_CANCELAR_LOBBY") ' Cancelar todos los eventos con Lobby
+
+End Sub
+
+
 Private Sub cmdAnunciarAbordaje_Click()
 Call ParseUserCommand("/configlobby open ")
 End Sub
