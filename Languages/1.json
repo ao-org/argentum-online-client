@@ -411,7 +411,7 @@
 	"MENSAJE_CRIMINALES_ASESINADOS": "Criminales asesinados",
 	"MENSAJE_ORGANIZACION_EVENTO": "Organización de evento",
 	"MENSAJE_TORNEOS_EVENTOS": "Torneos y Eventos",
-	"MENSAJE_SOLICITUD_INGRESO": "La solicitud de ingreso le llegará directamente al líder del clan al cual hagas la petición, este tiene la facultad de aceptar y rechazar las solicitudes. Es aconsejable que acompañes tu solicitud con una breve nota en la que expliques cuáles son las razones por las que quieres pertenecer al clan."}
+	"MENSAJE_SOLICITUD_INGRESO": "La solicitud de ingreso le llegará directamente al líder del clan al cual hagas la petición, este tiene la facultad de aceptar y rechazar las solicitudes. Es aconsejable que acompañes tu solicitud con una breve nota en la que expliques cuáles son las razones por las que quieres pertenecer al clan.",
 	"MENSAJE_SELECCIONAR_EVENTO": "Seleccionar el evento a realizar",
 	"MENSAJE_CAPTURA_BANDERA": "Captura de bandera",
 	"MENSAJE_DIA_DEL_GARROTE": "Día del Garrote",
@@ -459,5 +459,4 @@
 	"MENSAJE_BENEFICIOS": "No atacarse / Chat de clan / Pedir ayuda (K) / Verse Invisible / Marca de clan / Verse vida / Max miembros: 25",
 	"MENSAJE_SERVIDOR": "Servidor:",
 	"MENSAJE_PUERTO": "Puerto",
-
 }
