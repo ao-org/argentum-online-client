@@ -339,6 +339,9 @@ Private Sub Form_Load()
     Call loadButtons
     Call SetActiveServer(txtIp.Text, txtPort.Text)
 
+    lblIp.Caption = JsonLanguage.Item("MENSAJE_SERVIDOR") ' Servidor:
+    lblPort.Caption = JsonLanguage.Item("MENSAJE_PUERTO") ' Puerto
+
     Exit Sub
 
 Form_Load_Err:
