@@ -69,14 +69,13 @@ DirLanguage_Err:
 End Function
 
 Public Sub SetLanguageApplication()
-    On Error GoTo ErrorHandler
-
+On Error GoTo ErrorHandler
+    
     Dim Localization As String
     Dim LangFilePath As String
     Dim LangFileContent As String
-
     ' Retrieve localization setting
-    Localization = GetSetting("OPCIONES", "Localization")
+    Localization = GetSetting("OPCIONES", "Language")
 
     ' If no localization is set, determine the default language based on system locale
     If Len(Localization) = 0 Then
@@ -90,7 +89,7 @@ Public Sub SetLanguageApplication()
                 language = e_language.English
         End Select
         ' Save the determined language as the default localization setting
-        SaveSetting "OPCIONES", "Localization", language
+        SaveSetting "OPCIONES", "Language", language
     Else
         ' Use the stored localization setting
         language = Localization
