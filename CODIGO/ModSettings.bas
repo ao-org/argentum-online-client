@@ -39,9 +39,6 @@ End Function
 Public Function GetSetting(ByVal Section As String, ByVal Name As String) As String
     Dim currentValue As String
     currentValue = GetVar(App.path & CustomSettingsFile, Section, Name)
-    If currentValue = "" Then
-        currentValue = GetVar(App.path & DefaultSettingsFile, Section, Name)
-    End If
     GetSetting = currentValue
 End Function
 
