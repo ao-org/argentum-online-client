@@ -1,5 +1,11 @@
-{
-    "MENSAJE_CRIATURA_MATADO": "The creature has killed you!!!",
+{	"MENSAJE_COMERCIAR": "Trade",
+	"MENSAJE_INVITAR_GRUPO": "Invite to group",
+	"MENSAJE_PRIVADO": "Private",
+	"MENSAJE_RETAR": "Challenge",
+	"MENSAJE_DENUNCIAR": "Report",
+	"MENSAJE_SERVIDOR": "Server:",
+	"MENSAJE_PUERTO": "Port",
+	"MENSAJE_CRIATURA_MATADO": "The creature has killed you!!!",
     "LOGIN_SCREEN_WELCOME_MESSAGE": "Welcome to Argentum Online, enjoy your adventure!",
     "MENSAJE_CRIATURA_FALLA_GOLPE": "The creature missed the hit.",
     "MENSAJE_RECHAZO_ATAQUE_ESCUDO": "You blocked the attack with your shield.",
@@ -424,17 +430,9 @@
 	"MENSAJE_CANCELAR_LOBBY": "Cancel all events with Lobby",
 	"MENSAJE_INFORMACION_PERSONAJE": "Character Information",
 	"MENSAJE_GENERAL": "General",
-	"MENSAJE_NOMBRE": "Name:",
-	"MENSAJE_RAZA": "Race:",
-	"MENSAJE_CLASE": "Class:",
 	"MENSAJE_GENERO": "Gender:",
-	"MENSAJE_NIVEL": "Level:",
-	"MENSAJE_ORO": "Gold:",
-	"MENSAJE_BANCO": "Bank:",
 	"MENSAJE_CLAN_ACTUAL": "Current Clan:",
 	"MENSAJE_FACCION": "Faction:",
-	"MENSAJE_CIUDADANOS_ASESINADOS": "Citizens killed:",
-	"MENSAJE_CRIMINALES_ASESINADOS": "Criminals killed:",
 	"MENSAJE_REPUTACION": "Reputation:",
 	"MENSAJE_STATUS": "Status:",
 	"MENSAJE_CLANES": "Clans",
@@ -456,8 +454,4 @@
 	"MENSAJE_TAMAÑO_EQUIPOS": "Team Size:",
 	"MENSAJE_DIVISIBLE": "The player limit must be divisible by the team size",
 	"MENSAJE_CREAR": "Create",
-	"MENSAJE_BENEFICIOS": "No attacking / Clan chat / Ask for help (K) / See oneself invisible / Clan mark / See health / Max members: 25",
-	"MENSAJE_SERVIDOR": "Server:",
-	"MENSAJE_PUERTO": "Port"
-
-}
+	"MENSAJE_BENEFICIOS": "No attacking / Clan chat / Ask for help (K) / See oneself invisible / Clan mark / See health / Max members: 25"}
