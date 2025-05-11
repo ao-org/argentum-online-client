@@ -751,7 +751,7 @@ Private Sub cbLenguaje_Click()
         End Select
         
         If MsgBox(message, vbYesNo, title) = vbYes Then
-            Call SaveSetting("OPCIONES", "Localization", cbLenguaje.ListIndex + 1)
+            Call SaveSetting("OPCIONES", "Language", cbLenguaje.ListIndex + 1)
         End If
     End If
     
