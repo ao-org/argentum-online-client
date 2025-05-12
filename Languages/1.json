@@ -510,7 +510,28 @@
 	"MENSAJE_552": " (Usable)",
 	"MENSAJE_554": "Costo: ",
 	"MENSAJE_555": "monedas de oro",
-	"MENSAJE_556": "<Creador del Mundo>"
-
+	"MENSAJE_556": "<Creador del Mundo>",
+	"MENSAJE_557": "Creacion de Personaje",
+	"MENSAJE_558": "Nombre ",
+	"MENSAJE_559": "Clase ",
+	"MENSAJE_560": "Raza ",
+	"MENSAJE_561": "Genero ",
+	"MENSAJE_562": "Hogar ",
+	"MENSAJE_563": "Atributos ",
+	"MENSAJE_564": "Fuerza ",
+	"MENSAJE_565": "Agilidad ",
+	"MENSAJE_566": "Inteligencia ",
+	"MENSAJE_567": "Constitución ",
+	"MENSAJE_568": "Carisma ",
+	"MENSAJE_569": "Clase: ",
+	"MENSAJE_571": "Aquí aparecerán las llaves que consigas",
+	"MENSAJE_572": "Archivo: ",
+	"MENSAJE_573": "Sin información relevante.",
+	"MENSAJE_574": "Error al cargar datos del mapa ",
+	"MENSAJE_575": "mapa",
+	"MENSAJE_576": "Hombre",
+	"MENSAJE_577": "Mujer",
+	"MENSAJE_578": "Español",
+	"MENSAJE_579": "Inglés"
 
 }

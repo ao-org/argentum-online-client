@@ -1383,6 +1383,12 @@ Private Sub InicializarNombres()
     ListaRazas(eRaza.Enano) = JsonLanguage.Item("MENSAJE_RAZA_ENANO")
     ListaRazas(eRaza.Orco) = JsonLanguage.Item("MENSAJE_RAZA_ORCO")
 
+    ListaRazasEs.Add JsonLanguage.Item("MENSAJE_RAZA_HUMANO"), "Humano"
+    ListaRazasEs.Add JsonLanguage.Item("MENSAJE_RAZA_ELFO"), "Elfo"
+    ListaRazasEs.Add JsonLanguage.Item("MENSAJE_RAZA_ELFO_OSCURO"), "ElfoOscuro"
+    ListaRazasEs.Add JsonLanguage.Item("MENSAJE_RAZA_GNOMO"), "Gnomo"
+    ListaRazasEs.Add JsonLanguage.Item("MENSAJE_RAZA_ENANO"), "Enano"
+    ListaRazasEs.Add JsonLanguage.Item("MENSAJE_RAZA_ORCO"), "Orco"
         
     ListaCiudades(eCiudad.cUllathorpe) = "Ullathorpe"
     ListaCiudades(eCiudad.cNix) = "Nix"

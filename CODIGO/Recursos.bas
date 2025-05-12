@@ -713,7 +713,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
     If Len(NameMaps(map).desc) <> 0 Then
         frmMapaGrande.Label1.Caption = NameMaps(map).desc
     Else
-        frmMapaGrande.Label1.Caption = "Sin información relevante."
+        frmMapaGrande.Label1.Caption = JsonLanguage.Item("MENSAJE_573")
     End If
 
     'Formato de mapas optimizado para reducir el espacio que ocupan.
@@ -746,7 +746,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
     #If Compresion = 1 Then
 
         If Not Extract_File(Maps, App.path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
-            frmDebug.add_text_tracebox "Error al cargar datos del mapa " & map
+            frmDebug.add_text_tracebox JsonLanguage.Item("MENSAJE_574") & map
             Exit Sub
         End If
 
@@ -1866,11 +1866,23 @@ For i = 1 To NumLocaleMsg
         With ModRaza(i)
             SearchVar = Replace(ListaRazas(i), " ", vbNullString)
             
-            .Fuerza = Val(Leer.GetValue("MODRAZA", SearchVar + "Fuerza"))
-            .Agilidad = Val(Leer.GetValue("MODRAZA", SearchVar + "Agilidad"))
-            .Inteligencia = Val(Leer.GetValue("MODRAZA", SearchVar + "Inteligencia"))
-            .Constitucion = Val(Leer.GetValue("MODRAZA", SearchVar + "Constitucion"))
-            .Carisma = Val(Leer.GetValue("MODRAZA", SearchVar + "Carisma"))
+            If language = Spanish Then
+                .Fuerza = Val(Leer.GetValue("MODRAZA", SearchVar + "Fuerza"))
+                .Agilidad = Val(Leer.GetValue("MODRAZA", SearchVar + "Agilidad"))
+                .Inteligencia = Val(Leer.GetValue("MODRAZA", SearchVar + "Inteligencia"))
+                .Constitucion = Val(Leer.GetValue("MODRAZA", SearchVar + "Constitucion"))
+                .Carisma = Val(Leer.GetValue("MODRAZA", SearchVar + "Carisma"))
+     
+            Else
+             Dim Race As String
+                Race = ListaRazasEs.Item(SearchVar)
+                .Fuerza = Val(Leer.GetValue("MODRAZA", Race + "Fuerza"))
+                .Agilidad = Val(Leer.GetValue("MODRAZA", Race + "Agilidad"))
+                .Inteligencia = Val(Leer.GetValue("MODRAZA", Race + "Inteligencia"))
+                .Constitucion = Val(Leer.GetValue("MODRAZA", Race + "Constitucion"))
+                .Carisma = Val(Leer.GetValue("MODRAZA", Race + "Carisma"))
+            End If
+            
 
         End With
 

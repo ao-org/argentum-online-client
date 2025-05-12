@@ -510,5 +510,28 @@
 	"MENSAJE_552": " (Usable)",
 	"MENSAJE_554": "Cost: ",
 	"MENSAJE_555": "gold coins",
-	"MENSAJE_556": "<World Creator>"
+	"MENSAJE_556": "<World Creator>",
+	"MENSAJE_557": "Character Creation",
+	"MENSAJE_558": "Name ",
+	"MENSAJE_559": "Class ",
+	"MENSAJE_560": "Race ",
+	"MENSAJE_561": "Gender ",
+	"MENSAJE_562": "Home ",
+	"MENSAJE_563": "Attributes ",
+	"MENSAJE_564": "Strength ",
+	"MENSAJE_565": "Agility ",
+	"MENSAJE_566": "Intelligence ",
+	"MENSAJE_567": "Constitution ",
+	"MENSAJE_568": "Charisma ",
+	"MENSAJE_569": "Class: ",
+	"MENSAJE_571": "Here will appear the keys you get",
+	"MENSAJE_572": "File: ",
+	"MENSAJE_573": "No relevant information.",
+	"MENSAJE_574": "Error loading map data ",
+	"MENSAJE_575": "map",
+	"MENSAJE_576": "Male",
+	"MENSAJE_577": "Female"
+	"MENSAJE_578": "Spanish",
+	"MENSAJE_579": "English"
+
 }

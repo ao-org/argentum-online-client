@@ -171,7 +171,7 @@ Begin VB.Form frmOpciones
          Height          =   315
          ItemData        =   "frmOpciones.frx":015A
          Left            =   3960
-         List            =   "frmOpciones.frx":0161
+         List            =   "frmOpciones.frx":015C
          Style           =   2  'Dropdown List
          TabIndex        =   20
          Top             =   2880
@@ -321,9 +321,9 @@ Begin VB.Form frmOpciones
       Width           =   7560
       Begin VB.ComboBox cboLuces 
          Height          =   315
-         ItemData        =   "frmOpciones.frx":0171
+         ItemData        =   "frmOpciones.frx":015E
          Left            =   240
-         List            =   "frmOpciones.frx":017E
+         List            =   "frmOpciones.frx":016B
          TabIndex        =   21
          Top             =   3960
          Width           =   2175
@@ -1175,7 +1175,8 @@ Private Sub Form_Load()
     Call cbRenderNpcs.AddItem(JsonLanguage.Item("MENSAJE_504")) ' Renderizado
     Call cbTutorial.AddItem(JsonLanguage.Item("MENSAJE_505")) ' Desactivado
     Call cbTutorial.AddItem(JsonLanguage.Item("MENSAJE_506")) ' Activado
-
+    Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_578"))  ' Español
+    Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_579"))  ' Inglés
    
     selected_light = GetSetting("VIDEO", "LuzGlobal")
     
