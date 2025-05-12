@@ -1172,7 +1172,40 @@ Private Sub Form_Load()
     
     Call CargaConfigEnForm
     Call FormParser.Parse_Form(Me)
-
+    lblSalirDel(0).Caption = JsonLanguage.Item("MENSAJE_507") ' Seguro de grupo
+    lblSalirDel(1).Caption = JsonLanguage.Item("MENSAJE_508") ' Robar
+    lblSalirDel(2).Caption = JsonLanguage.Item("MENSAJE_509") ' Actualizar Posición
+    lblSalirDel(3).Caption = JsonLanguage.Item("MENSAJE_510") ' Ocultarse
+    lblSalirDel(4).Caption = JsonLanguage.Item("MENSAJE_511") ' Mostrar/ocultar nombres
+    lblSalirDel(5).Caption = JsonLanguage.Item("MENSAJE_512") ' Atacar
+    lblSalirDel(6).Caption = JsonLanguage.Item("MENSAJE_513") ' Tomar objeto
+    lblSalirDel(7).Caption = JsonLanguage.Item("MENSAJE_514") ' Usar objeto
+    lblSalirDel(8).Caption = JsonLanguage.Item("MENSAJE_515") ' Mostrar/ocultar macros
+    lblSalirDel(9).Caption = JsonLanguage.Item("MENSAJE_516") ' Moverse hacia abajo
+    lblSalirDel(10).Caption = JsonLanguage.Item("MENSAJE_517") ' Moverse hacia Izquierda
+    lblSalirDel(11).Caption = JsonLanguage.Item("MENSAJE_518") ' Moverse hacia Derecha
+    lblSalirDel(12).Caption = JsonLanguage.Item("MENSAJE_519") ' Modo rol
+    lblSalirDel(13).Caption = JsonLanguage.Item("MENSAJE_520") ' Moverse hacia arriba
+    lblSalirDel(14).Caption = JsonLanguage.Item("MENSAJE_521") ' Estadisticas del juego
+    lblSalirDel(15).Caption = JsonLanguage.Item("MENSAJE_522") ' Equipar objeto
+    lblSalirDel(16).Caption = JsonLanguage.Item("MENSAJE_523") ' Tomar screenshot
+    lblSalirDel(17).Caption = JsonLanguage.Item("MENSAJE_524") ' Tirar objeto
+    lblSalirDel(18).Caption = JsonLanguage.Item("MENSAJE_525") ' Seguro
+    lblSalirDel(19).Caption = JsonLanguage.Item("MENSAJE_526") ' Salir del juego
+    lblSalirDel(20).Caption = JsonLanguage.Item("MENSAJE_527") ' Meditar
+    lblSalirDel(21).Caption = JsonLanguage.Item("MENSAJE_528") ' Domar
+    lblSalirDel(22).Caption = JsonLanguage.Item("MENSAJE_529") ' Enviar texto
+    lblSalirDel(31).Caption = JsonLanguage.Item("MENSAJE_530") ' Acción Click 3
+    lblSalirDel(32).Caption = JsonLanguage.Item("MENSAJE_531") ' Configuración rapida:
+    lblSalirDel(33).Caption = JsonLanguage.Item("MENSAJE_532") ' Acción Click 1
+    lblSalirDel(34).Caption = JsonLanguage.Item("MENSAJE_533") ' Acción Click 2
+    lblSalirDel(35).Caption = JsonLanguage.Item("MENSAJE_534") ' (Clan) Llamada de Clan
+    lblSalirDel(36).Caption = JsonLanguage.Item("MENSAJE_535") ' (Clan) Marca de Clan
+    cmdAccion(0).Caption = JsonLanguage.Item("MENSAJE_536") ' Guardar
+    lblHotKeys(22).Caption = JsonLanguage.Item("MENSAJE_537") ' HotKeys
+    Option1.Caption = JsonLanguage.Item("MENSAJE_538") ' Clásica
+    Option2.Caption = JsonLanguage.Item("MENSAJE_539") ' Moderna
+    frmCustomKeys.Caption = JsonLanguage.Item("MENSAJE_541") ' Configuración de controles
     
     Exit Sub
 

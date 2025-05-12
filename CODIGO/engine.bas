@@ -976,7 +976,7 @@ Public Sub render()
                 Call RGBAList(temp_array, 230, 0, 0)
             End If
             PosY = PosY + 15
-            Call Engine_Text_Render("Potenciado: " & CLng(DrogaCounter) & "s", PosX, PosY, temp_array, 1, True, 0, 160)
+            Call Engine_Text_Render(JsonLanguage.Item("MENSAJE_542") & CLng(DrogaCounter) & "s", PosX, PosY, temp_array, 1, True, 0, 160)
         End If
 
     End If
@@ -2143,13 +2143,13 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If .priv = 2 Or .priv = 3 Or .priv = 4 Then
                     line = "<Game Master>"
                 ElseIf .priv = 5 Then
-                    line = "<Administrador>"
+                    line = JsonLanguage.Item("MENSAJE_543")
                 Else
                     line = .clan
                 End If
                 
                 If .Team > 0 Then
-                    line = "<Equipo " & .Team & ">"
+                    line = JsonLanguage.Item("MENSAJE_544") & .Team & ">"
                 End If
                 
                 If .banderaIndex > 0 And .Team > 0 Then
@@ -2176,7 +2176,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     End If
                 End If
             ElseIf Nombres And .Team > 0 Then
-                line = "<Equipo " & .Team & ">"
+                line = JsonLanguage.Item("MENSAJE_544") & .Team & ">"
                 Call RGBAList(NameColor, TeamColors(.Team).r, TeamColors(.Team).G, TeamColors(.Team).b, TeamColors(.Team).a)
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
             End If
@@ -2588,30 +2588,30 @@ Public Sub DrawInterfaceComerciar()
         ' Muestro info del item
         Dim str As String
 
-        str = " (No usa: "
+        str = JsonLanguage.Item("MENSAJE_545")
         
         Select Case CurrentInventory.PuedeUsar(CurrentInventory.SelectedItem)
 
             Case 1
-                str = str & "Genero)"
+                str = str & JsonLanguage.Item("MENSAJE_546")
 
             Case 2
-                str = str & "Clase)"
+                str = str & JsonLanguage.Item("MENSAJE_547")
 
             Case 3
-                str = str & "Facción)"
+                str = str & JsonLanguage.Item("MENSAJE_548")
 
             Case 4
-                str = str & "Skill)"
+                str = str & JsonLanguage.Item("MENSAJE_549")
 
             Case 5
-                str = str & "Raza)"
+                str = str & JsonLanguage.Item("MENSAJE_550")
 
             Case 6
-                str = str & "Nivel)"
+                str = str & JsonLanguage.Item("MENSAJE_551")
 
             Case 0
-                str = " (Usable)"
+                str = JsonLanguage.Item("MENSAJE_552")
 
         End Select
                            
@@ -2682,30 +2682,30 @@ Public Sub DrawInterfaceBovedaCuenta()
         ' Muestro info del item
         Dim str As String
 
-        str = " (No usa: "
+        str = JsonLanguage.Item("MENSAJE_545")
         
         Select Case CurrentInventory.PuedeUsar(CurrentInventory.SelectedItem)
 
             Case 1
-                str = str & "Genero)"
+                str = str & JsonLanguage.Item("MENSAJE_546")
 
             Case 2
-                str = str & "Clase)"
+                str = str & JsonLanguage.Item("MENSAJE_547")
 
             Case 3
-                str = str & "Facción)"
+                str = str & JsonLanguage.Item("MENSAJE_548")
 
             Case 4
-                str = str & "Skill)"
+                str = str & JsonLanguage.Item("MENSAJE_549")
 
             Case 5
-                str = str & "Raza)"
+                str = str & JsonLanguage.Item("MENSAJE_550")
 
             Case 6
-                str = str & "Nivel)"
+                str = str & JsonLanguage.Item("MENSAJE_551")
 
             Case 0
-                str = " (Usable)"
+                str = JsonLanguage.Item("MENSAJE_552")
 
         End Select
         
@@ -2775,30 +2775,30 @@ Public Sub DrawInterfaceBoveda()
         ' Muestro info del item
         Dim str As String
 
-        str = " (No usa: "
+        str = JsonLanguage.Item("MENSAJE_545")
         
         Select Case CurrentInventory.PuedeUsar(CurrentInventory.SelectedItem)
 
             Case 1
-                str = str & "Genero)"
+                str = str & JsonLanguage.Item("MENSAJE_546")
 
             Case 2
-                str = str & "Clase)"
+                str = str & JsonLanguage.Item("MENSAJE_547")
 
             Case 3
-                str = str & "Facción)"
+                str = str & JsonLanguage.Item("MENSAJE_548")
 
             Case 4
-                str = str & "Skill)"
+                str = str & JsonLanguage.Item("MENSAJE_549")
 
             Case 5
-                str = str & "Raza)"
+                str = str & JsonLanguage.Item("MENSAJE_550")
 
             Case 6
-                str = str & "Nivel)"
+                str = str & JsonLanguage.Item("MENSAJE_551")
 
             Case 0
-                str = " (Usable)"
+                str = JsonLanguage.Item("MENSAJE_552")
 
         End Select
         
@@ -2981,11 +2981,11 @@ Public Sub DrawInterfaceCrafting()
     ' Dibujamos el resultado o, si no hay ninguno, el tipo de crafteo
     If frmCrafteo.ResultGrhIndex Then
         Call Draw_GrhIndex(frmCrafteo.ResultGrhIndex, 100, 15)
-        Call Engine_Text_Render("Probabilidad de éxito: " & frmCrafteo.PorcentajeAcierto & "%", 25, 60, COLOR_WHITE)
+        Call Engine_Text_Render(JsonLanguage.Item("MENSAJE_553") & frmCrafteo.PorcentajeAcierto & "%", 25, 60, COLOR_WHITE)
 
         Dim Color(3) As RGBA
         Call RGBAList(Color, 255, 255, 0)
-        Call Engine_Text_Render("Costo: " & PonerPuntos(frmCrafteo.PrecioCrafteo) & " monedas de oro", 25, 140, Color)
+        Call Engine_Text_Render(JsonLanguage.Item("MENSAJE_554") & PonerPuntos(frmCrafteo.PrecioCrafteo) & JsonLanguage.Item("MENSAJE_555"), 25, 140, color)
     Else
         Call Draw_GrhIndex(frmCrafteo.TipoGrhIndex, 100, 15)
     End If
@@ -3314,7 +3314,7 @@ Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal P
         Draw_Grh CascoAnimData(13).Head(3), 490, 326, 1, 0, COLOR_WHITE
         Draw_Grh WeaponAnimData(6).WeaponWalk(3), 490, 333, 1, 0, COLOR_WHITE
         Engine_Text_Render "Gulfas Morgolock", 454, 367, ColorGM, 1
-        Engine_Text_Render "<Creador del Mundo>", 443, 382, ColorGM, 1
+        Engine_Text_Render JsonLanguage.Item("MENSAJE_556"), 443, 382, ColorGM, 1
 
         RenderText "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 40, 20, COLOR_WHITE, 4, False
     End If
