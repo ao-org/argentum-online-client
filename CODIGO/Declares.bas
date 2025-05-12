@@ -859,6 +859,7 @@ Public SkillsDesc(1 To NUMSKILLS)        As String
 Public UserAtributos(1 To NUMATRIBUTOS)  As Byte
 Public AtributosNames(1 To NUMATRIBUTOS) As String
 Public ListaRazas(1 To NUMRAZAS)         As String
+Public ListaRazasEs                      As New Dictionary
 Public ListaClases(1 To NUMCLASES)       As String
 Public SkillPoints                       As Integer
 Public Alocados                          As Integer

@@ -5067,9 +5067,9 @@ Private Sub HandleMiniStats()
         .PuntosPesca = Reader.ReadInt32()
 
         If .Genero = 1 Then
-            .Genero = "Hombre"
+            .Genero = JsonLanguage.Item("MENSAJE_576")
         Else
-            .Genero = "Mujer"
+            .Genero = JsonLanguage.Item("MENSAJE_577")
 
         End If
 

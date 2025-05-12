@@ -3451,16 +3451,16 @@ Public Sub RenderUICrearPJ()
     
     Draw_Grh TempGrh, 475, 545, 1, 1, COLOR_WHITE, False
 
-    Engine_Text_Render "Creacion de Personaje", 280, 125, ColorGray, 5, False
+    Engine_Text_Render JsonLanguage.Item("MENSAJE_557"), 280, 125, ColorGray, 5, False
 
     Dim OffsetX As Integer
     Dim OffsetY As Integer
 
-    RenderText "Nombre ", 460, 205, COLOR_WHITE, 6, False
+    RenderText JsonLanguage.Item("MENSAJE_558"), 460, 205, COLOR_WHITE, 6, False
 
     OffsetX = 240
     OffsetY = 15
-    RenderText "Clase ", 345 + OffsetX, 240 + OffsetY, COLOR_WHITE, 6, False
+    RenderText JsonLanguage.Item("MENSAJE_559"), 345 + OffsetX, 240 + OffsetY, COLOR_WHITE, 6, False
 
     Engine_Draw_Box 317 + OffsetX, 260 + OffsetY, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
     Engine_Text_Render "<", 300 + OffsetX, 260 + OffsetY, COLOR_WHITE, 1, False
@@ -3469,7 +3469,7 @@ Public Sub RenderUICrearPJ()
 
     Engine_Text_Render frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), 365 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), True, 1) / 2, 262 + OffsetY, ColorGray, 1, True
 
-    RenderText "Raza ", 347 + OffsetX, 290 + OffsetY, COLOR_WHITE, 6, False
+    RenderText JsonLanguage.Item("MENSAJE_560"), 347 + OffsetX, 290 + OffsetY, COLOR_WHITE, 6, False
     Engine_Draw_Box 317 + OffsetX, 305 + OffsetY, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
 
     'Engine_Text_Render "Humano", 470 - Engine_Text_Height("Humano", False), 304, DefaultColor, 1, False
@@ -3483,7 +3483,7 @@ Public Sub RenderUICrearPJ()
     OffsetX = 5
     OffsetY = 5
 
-    RenderText "Genero ", 340 + OffsetX, 255, COLOR_WHITE, 6, False
+    RenderText JsonLanguage.Item("MENSAJE_561"), 340 + OffsetX, 255, COLOR_WHITE, 6, False
     
     
     Engine_Draw_Box 317 + OffsetX, 275, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
@@ -3498,7 +3498,7 @@ Public Sub RenderUICrearPJ()
     
 
     OffsetY = 30
-    RenderText "Hogar ", 340 + OffsetX, 305, ColorGray, 6, False
+    RenderText JsonLanguage.Item("MENSAJE_562"), 340 + OffsetX, 305, ColorGray, 6, False
     Engine_Draw_Box 317 + OffsetX, 320, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
     
     Engine_Text_Render frmCrearPersonaje.lstHogar.List(frmCrearPersonaje.lstHogar.ListIndex), 360 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstHogar.List(frmCrearPersonaje.lstHogar.ListIndex), True, 1) / 2, 322, ColorGray, 1, True
@@ -3516,31 +3516,31 @@ Public Sub RenderUICrearPJ()
      OffX = 340
     
     'Atributos
-    RenderText "Atributos ", 235 + OffX, 385 + Offy, COLOR_WHITE, 6, True
+    RenderText JsonLanguage.Item("MENSAJE_563"), 235 + OffX, 385 + Offy, COLOR_WHITE, 6, True
     
     Dim atributeValue As Long
     
     atributeValue = Val(frmCrearPersonaje.lbFuerza.Caption) + Val(frmCrearPersonaje.modfuerza.Caption)
-    RenderText "Fuerza ", 185 + OffX, 410 + Offy, COLOR_WHITE, 1, True
+    RenderText JsonLanguage.Item("MENSAJE_564"), 185 + OffX, 410 + Offy, COLOR_WHITE, 1, True
     Call renderAttributesColors(atributeValue, 305 + OffX, 413 + Offy) 'Atributo Fuerza
     
     atributeValue = Val(frmCrearPersonaje.lbAgilidad.Caption) + Val(frmCrearPersonaje.modAgilidad.Caption)
-    Engine_Text_Render "Agilidad ", 185 + OffX, 440 + Offy, COLOR_WHITE, 1, True
+    Engine_Text_Render JsonLanguage.Item("MENSAJE_565"), 185 + OffX, 440 + Offy, COLOR_WHITE, 1, True
     Call renderAttributesColors(atributeValue, 305 + OffX, 443 + Offy) ' Atributo Agilidad
     
     
     atributeValue = Val(frmCrearPersonaje.lbInteligencia.Caption) + Val(frmCrearPersonaje.modInteligencia.Caption)
-    Engine_Text_Render "Inteligencia ", 185 + OffX, 470 + Offy, COLOR_WHITE, 1, True
+    Engine_Text_Render JsonLanguage.Item("MENSAJE_566"), 185 + OffX, 470 + Offy, COLOR_WHITE, 1, True
     Call renderAttributesColors(atributeValue, 305 + OffX, 473 + Offy) ' Atributo Inteligencia
     
     
     atributeValue = Val(frmCrearPersonaje.lbConstitucion.Caption) + Val(frmCrearPersonaje.modConstitucion.Caption)
-    Engine_Text_Render "Constitución ", 185 + OffX, 500 + Offy, COLOR_WHITE, , True
+    Engine_Text_Render JsonLanguage.Item("MENSAJE_567"), 185 + OffX, 500 + Offy, COLOR_WHITE, , True
     Call renderAttributesColors(atributeValue, 305 + OffX, 503 + Offy) ' Atributo Constitución
     
     
     atributeValue = Val(frmCrearPersonaje.lbCarisma.Caption) + Val(frmCrearPersonaje.modCarisma.Caption)
-    Engine_Text_Render "Carisma ", 185 + OffX, 530 + Offy, COLOR_WHITE, , True
+    Engine_Text_Render JsonLanguage.Item("MENSAJE_568"), 185 + OffX, 530 + Offy, COLOR_WHITE, , True
     Call renderAttributesColors(atributeValue, 305 + OffX, 533 + Offy) ' Atributo Carisma
       
     
@@ -3770,8 +3770,8 @@ On Error GoTo RenderAccountCharacters_Err
                 Else
                     Offy = 0
                 End If
-                Engine_Text_Render "Clase: " & ListaClases(Pjs(i).Clase), 511 - Engine_Text_Width("Clase:" & ListaClases(Pjs(i).Clase), True) / 2, Offy + 570 - Engine_Text_Height("Clase:" & ListaClases(Pjs(i).Clase), True), COLOR_WHITE, 1, True
-                Engine_Text_Render "Nivel: " & Pjs(i).Nivel, 511 - Engine_Text_Width("Nivel:" & Pjs(i).Nivel, True) / 2, Offy + 585 - Engine_Text_Height("Nivel:" & Pjs(i).Nivel, True), COLOR_WHITE, 1, True
+                Engine_Text_Render JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs(i).Clase), 511 - Engine_Text_Width(JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs(i).Clase), True) / 2, Offy + 570 - Engine_Text_Height(JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs(i).Clase), True), COLOR_WHITE, 1, True
+                Engine_Text_Render JsonLanguage.Item("MENSAJE_570") & Pjs(i).nivel, 511 - Engine_Text_Width(JsonLanguage.Item("MENSAJE_570") & Pjs(i).nivel, True) / 2, Offy + 585 - Engine_Text_Height(JsonLanguage.Item("MENSAJE_570") & Pjs(i).nivel, True), COLOR_WHITE, 1, True
                 Engine_Text_Render CStr(Pjs(i).NameMapa), 511 - Engine_Text_Width(CStr(Pjs(i).NameMapa), True) / 2, Offy + 615 - Engine_Text_Height(CStr(Pjs(i).NameMapa), True), COLOR_WHITE, 1, True
             End If
         End If
