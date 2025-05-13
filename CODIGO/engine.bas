@@ -105,7 +105,7 @@ Public dialogs(MAX_DIALOGS - 1)   As dialog
 Public dialogCount                As Byte
 
 
-
+Public StarGrh             As grh
 Public WeatherFogX1        As Single
 Public WeatherFogY1        As Single
 Public WeatherFogX2        As Single
@@ -150,6 +150,7 @@ Private TileBufferPixelOffsetY As Integer
 Private TimeLast As Long
 
 Private Const GrhFogata        As Long = 1521
+Private Const GrhStar          As Long = 32472
 Private Const GrhCharactersScreenUI As Long = 3839
 
 ' Colores estaticos
@@ -163,6 +164,10 @@ Public r As Byte
 Public G As Byte
 Public b As Byte
 Public textcolorAsistente(3)    As RGBA
+
+Public Sub InitEngineSprites()
+    Call InitGrh(StarGrh, GrhStar, 1)
+End Sub
 
 Public Sub InitializeTeamColors()
     Call SetRGBA(TeamColors(1), 153, 217, 234)
@@ -182,13 +187,9 @@ End Sub
 Public Function GetElapsedTime() As Single
     
     On Error GoTo GetElapsedTime_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
     'Gets the time that past since the last call
-    '**************************************************************
+
     Dim Start_Time    As Currency
     Static end_time   As Currency
     Static timer_freq As Currency
@@ -251,8 +252,7 @@ Private Sub Engine_InitExtras()
     'Call Font_Create("Tahoma", 8, True, 0)
     'Call Font_Create("Verdana", 8, False, 0)
     'Call Font_Create("Verdana", 11, True, False)
-        
-    ' Inicializar textura compuesta
+    
     Call InitComposedTexture
     
     Exit Sub
@@ -944,10 +944,7 @@ End Sub
 Public Sub render()
     
     On Error GoTo render_Err
-    
-    '*****************************************************
-    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-    '*****************************************************
+
     Rem On Error GoTo ErrorHandler:
     Dim temp_array(3) As RGBA
 
@@ -979,7 +976,7 @@ Public Sub render()
                 Call RGBAList(temp_array, 230, 0, 0)
             End If
             PosY = PosY + 15
-            Call Engine_Text_Render("Potenciado: " & CLng(DrogaCounter) & "s", PosX, PosY, temp_array, 1, True, 0, 160)
+            Call Engine_Text_Render(JsonLanguage.Item("MENSAJE_542") & CLng(DrogaCounter) & "s", PosX, PosY, temp_array, 1, True, 0, 160)
         End If
 
     End If
@@ -1179,14 +1176,9 @@ End Sub
 Private Sub Device_Box_Textured_Render_Advance(ByVal GrhIndex As Long, ByVal dest_x As Integer, ByVal dest_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer, ByRef rgb_list() As RGBA, ByVal src_x As Integer, ByVal src_y As Integer, ByVal dest_width As Integer, Optional ByVal dest_height As Integer, Optional ByVal alpha_blend As Boolean, Optional ByVal angle As Single)
     
     On Error GoTo Device_Box_Textured_Render_Advance_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 5/15/2003
     'Copies the Textures allowing resizing
-    'Modified by Juan Martín Sotuyo Dodero
-    '**************************************************************
+
     Static src_rect            As RECT
 
     Static dest_rect           As RECT
@@ -1430,13 +1422,9 @@ End Sub
 Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, ByVal dest_x As Integer, ByVal dest_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer, ByRef Color() As RGBA, ByVal src_x As Integer, ByVal src_y As Integer, Optional ByVal alpha_blend As Boolean, Optional ByVal angle As Single)
     
     On Error GoTo Device_Box_Textured_Render_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 2/12/2004
     'Just copies the Textures
-    '**************************************************************
+
     Static src_rect            As RECT
 
     Static dest_rect           As RECT
@@ -1606,13 +1594,9 @@ End Sub
 Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
     
     On Error GoTo Char_Render_Err
-    
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 12/03/04
     'Draw char's to screen without offcentering them
-    '***************************************************
+    
     Dim Pos                 As Integer
 
     Dim line                As String
@@ -2159,13 +2143,13 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If .priv = 2 Or .priv = 3 Or .priv = 4 Then
                     line = "<Game Master>"
                 ElseIf .priv = 5 Then
-                    line = "<Administrador>"
+                    line = JsonLanguage.Item("MENSAJE_543")
                 Else
                     line = .clan
                 End If
                 
                 If .Team > 0 Then
-                    line = "<Equipo " & .Team & ">"
+                    line = JsonLanguage.Item("MENSAJE_544") & .Team & ">"
                 End If
                 
                 If .banderaIndex > 0 And .Team > 0 Then
@@ -2192,7 +2176,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     End If
                 End If
             ElseIf Nombres And .Team > 0 Then
-                line = "<Equipo " & .Team & ">"
+                line = JsonLanguage.Item("MENSAJE_544") & .Team & ">"
                 Call RGBAList(NameColor, TeamColors(.Team).r, TeamColors(.Team).G, TeamColors(.Team).b, TeamColors(.Team).a)
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
             End If
@@ -2210,25 +2194,18 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
         End If
         If Nombres And Len(.nombre) > 0 And MostrarNombre And .tipoUsuario > 0 Then
-            Dim StarGrh As grh
-            Call InitGrh(StarGrh, 32472)
-            
             Select Case .tipoUsuario
-                Case eTipoUsuario.cafecito
-                    'cafecito
-                    Call RGBAList(Color, 185, 122, 87, IIf(.Invisible, 160, 255))
                 Case eTipoUsuario.aventurero
-                    ' Aventurero
-                    Call RGBAList(Color, 240, 212, 175, IIf(.Invisible, 120, 255))
+                    Call RGBAList(color, 0, 255, 0, IIf(.Invisible, 120, 255))
                 Case eTipoUsuario.heroe
-                    'Héroe
-                    Call RGBAList(Color, 240, 135, 101, IIf(.Invisible, 160, 255))
+                    Call RGBAList(color, 255, 0, 0, IIf(.Invisible, 160, 255))
                 Case eTipoUsuario.Legend
-                    'Leyenda
-                    Call RGBAList(Color, 222, 177, 45, IIf(.Invisible, 120, 255))
+                    Call RGBAList(color, 255, 255, 0, IIf(.Invisible, 120, 255))
             End Select
-            
-            Call Draw_Grh(StarGrh, PixelOffsetX + 1 + .Body.BodyOffset.x + (Engine_Text_Width(.nombre, True) / 2) + 8, PixelOffsetY + 20 + .Body.BodyOffset.y, 1, 0, Color, False, 0, 0, 0)
+
+            Dim txt_width As Long
+            txt_width = Engine_Text_Width(.nombre, True)
+            Call Draw_Grh(StarGrh, PixelOffsetX + 1 + .Body.BodyOffset.x + (txt_width / 2) + 8, PixelOffsetY + 20 + .Body.BodyOffset.y, 1, 1, color, False, 0, 0, 0)
         End If
         
         'Barra de tiempo
@@ -2448,17 +2425,11 @@ Start_Err:
 End Sub
 
 Public Sub SetMapFx(ByVal x As Byte, ByVal y As Byte, ByVal Fx As Integer, ByVal Loops As Integer)
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 12/03/04
+
     'Sets an FX to the character.
-    '***************************************************
     
     On Error GoTo SetMapFx_Err
     
-
-    
-
     Dim indice As Byte
 
     With MapData(x, y)
@@ -2617,30 +2588,30 @@ Public Sub DrawInterfaceComerciar()
         ' Muestro info del item
         Dim str As String
 
-        str = " (No usa: "
+        str = JsonLanguage.Item("MENSAJE_545")
         
         Select Case CurrentInventory.PuedeUsar(CurrentInventory.SelectedItem)
 
             Case 1
-                str = str & "Genero)"
+                str = str & JsonLanguage.Item("MENSAJE_546")
 
             Case 2
-                str = str & "Clase)"
+                str = str & JsonLanguage.Item("MENSAJE_547")
 
             Case 3
-                str = str & "Facción)"
+                str = str & JsonLanguage.Item("MENSAJE_548")
 
             Case 4
-                str = str & "Skill)"
+                str = str & JsonLanguage.Item("MENSAJE_549")
 
             Case 5
-                str = str & "Raza)"
+                str = str & JsonLanguage.Item("MENSAJE_550")
 
             Case 6
-                str = str & "Nivel)"
+                str = str & JsonLanguage.Item("MENSAJE_551")
 
             Case 0
-                str = " (Usable)"
+                str = JsonLanguage.Item("MENSAJE_552")
 
         End Select
                            
@@ -2711,30 +2682,30 @@ Public Sub DrawInterfaceBovedaCuenta()
         ' Muestro info del item
         Dim str As String
 
-        str = " (No usa: "
+        str = JsonLanguage.Item("MENSAJE_545")
         
         Select Case CurrentInventory.PuedeUsar(CurrentInventory.SelectedItem)
 
             Case 1
-                str = str & "Genero)"
+                str = str & JsonLanguage.Item("MENSAJE_546")
 
             Case 2
-                str = str & "Clase)"
+                str = str & JsonLanguage.Item("MENSAJE_547")
 
             Case 3
-                str = str & "Facción)"
+                str = str & JsonLanguage.Item("MENSAJE_548")
 
             Case 4
-                str = str & "Skill)"
+                str = str & JsonLanguage.Item("MENSAJE_549")
 
             Case 5
-                str = str & "Raza)"
+                str = str & JsonLanguage.Item("MENSAJE_550")
 
             Case 6
-                str = str & "Nivel)"
+                str = str & JsonLanguage.Item("MENSAJE_551")
 
             Case 0
-                str = " (Usable)"
+                str = JsonLanguage.Item("MENSAJE_552")
 
         End Select
         
@@ -2804,30 +2775,30 @@ Public Sub DrawInterfaceBoveda()
         ' Muestro info del item
         Dim str As String
 
-        str = " (No usa: "
+        str = JsonLanguage.Item("MENSAJE_545")
         
         Select Case CurrentInventory.PuedeUsar(CurrentInventory.SelectedItem)
 
             Case 1
-                str = str & "Genero)"
+                str = str & JsonLanguage.Item("MENSAJE_546")
 
             Case 2
-                str = str & "Clase)"
+                str = str & JsonLanguage.Item("MENSAJE_547")
 
             Case 3
-                str = str & "Facción)"
+                str = str & JsonLanguage.Item("MENSAJE_548")
 
             Case 4
-                str = str & "Skill)"
+                str = str & JsonLanguage.Item("MENSAJE_549")
 
             Case 5
-                str = str & "Raza)"
+                str = str & JsonLanguage.Item("MENSAJE_550")
 
             Case 6
-                str = str & "Nivel)"
+                str = str & JsonLanguage.Item("MENSAJE_551")
 
             Case 0
-                str = " (Usable)"
+                str = JsonLanguage.Item("MENSAJE_552")
 
         End Select
         
@@ -3010,11 +2981,11 @@ Public Sub DrawInterfaceCrafting()
     ' Dibujamos el resultado o, si no hay ninguno, el tipo de crafteo
     If frmCrafteo.ResultGrhIndex Then
         Call Draw_GrhIndex(frmCrafteo.ResultGrhIndex, 100, 15)
-        Call Engine_Text_Render("Probabilidad de éxito: " & frmCrafteo.PorcentajeAcierto & "%", 25, 60, COLOR_WHITE)
+        Call Engine_Text_Render(JsonLanguage.Item("MENSAJE_553") & frmCrafteo.PorcentajeAcierto & "%", 25, 60, COLOR_WHITE)
 
         Dim Color(3) As RGBA
         Call RGBAList(Color, 255, 255, 0)
-        Call Engine_Text_Render("Costo: " & PonerPuntos(frmCrafteo.PrecioCrafteo) & " monedas de oro", 25, 140, Color)
+        Call Engine_Text_Render(JsonLanguage.Item("MENSAJE_554") & PonerPuntos(frmCrafteo.PrecioCrafteo) & JsonLanguage.Item("MENSAJE_555"), 25, 140, color)
     Else
         Call Draw_GrhIndex(frmCrafteo.TipoGrhIndex, 100, 15)
     End If
@@ -3038,13 +3009,9 @@ End Sub
 Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_y As Integer, ByVal Height As Integer, ByVal Width As Integer, ByRef rgb_list() As RGBA, Optional ByVal h_center As Boolean, Optional ByVal v_center As Boolean, Optional ByVal alpha_blend As Boolean = False)
     
     On Error GoTo Grh_Render_Advance_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-    'Last Modify Date: 11/19/2003
     'Similar to Grh_Render, but let´s you resize the Grh
-    '**************************************************************
+
     Dim tile_width  As Integer
 
     Dim tile_height As Integer
@@ -3099,14 +3066,9 @@ End Sub
 Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_y As Integer, ByRef rgb_list() As RGBA, Optional ByVal h_centered As Boolean = True, Optional ByVal v_centered As Boolean = True, Optional ByVal alpha_blend As Boolean = False)
     
     On Error GoTo Grh_Render_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 2/28/2003
-    'Modified by Juan Martín Sotuyo Dodero
     'Added centering
-    '**************************************************************
+
     Dim tile_width  As Integer
 
     Dim tile_height As Integer
@@ -3161,13 +3123,7 @@ End Sub
 Private Function Grh_Check(ByVal grh_index As Long) As Boolean
     
     On Error GoTo Grh_Check_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins - Modified by Juan Martín Sotuyo Dodero
-    'Last Modify Date: 1/04/2003
-    '
-    '**************************************************************
     'check grh_index
     If grh_index > 0 And grh_index <= MaxGrh Then
         Grh_Check = GrhData(grh_index).NumFrames
@@ -3184,9 +3140,8 @@ Grh_Check_Err:
 End Function
 
 Function Engine_PixelPosX(ByVal x As Integer) As Integer
-    '*****************************************************************
+
     'Converts a tile position to a screen position
-    '*****************************************************************
     
     On Error GoTo Engine_PixelPosX_Err
     
@@ -3202,10 +3157,9 @@ Engine_PixelPosX_Err:
 End Function
 
 Function Engine_PixelPosY(ByVal y As Integer) As Integer
-    '*****************************************************************
+
     'Converts a tile position to a screen position
-    '*****************************************************************
-    
+
     On Error GoTo Engine_PixelPosY_Err
     
     Engine_PixelPosY = (y - 1) * 32
@@ -3222,11 +3176,9 @@ End Function
 Function Engine_ElapsedTime() As Long
     
     On Error GoTo Engine_ElapsedTime_Err
-    
 
-    '**************************************************************
     'Gets the time that past since the last call
-    '**************************************************************
+
     Dim Start_Time As Long
 
     Start_Time = FrameTime
@@ -3362,7 +3314,7 @@ Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal P
         Draw_Grh CascoAnimData(13).Head(3), 490, 326, 1, 0, COLOR_WHITE
         Draw_Grh WeaponAnimData(6).WeaponWalk(3), 490, 333, 1, 0, COLOR_WHITE
         Engine_Text_Render "Gulfas Morgolock", 454, 367, ColorGM, 1
-        Engine_Text_Render "<Creador del Mundo>", 443, 382, ColorGM, 1
+        Engine_Text_Render JsonLanguage.Item("MENSAJE_556"), 443, 382, ColorGM, 1
 
         RenderText "v" & App.Major & "." & App.Minor & " Build: " & App.Revision, 40, 20, COLOR_WHITE, 4, False
     End If
@@ -3499,16 +3451,16 @@ Public Sub RenderUICrearPJ()
     
     Draw_Grh TempGrh, 475, 545, 1, 1, COLOR_WHITE, False
 
-    Engine_Text_Render "Creacion de Personaje", 280, 125, ColorGray, 5, False
+    Engine_Text_Render JsonLanguage.Item("MENSAJE_557"), 280, 125, ColorGray, 5, False
 
     Dim OffsetX As Integer
     Dim OffsetY As Integer
 
-    RenderText "Nombre ", 460, 205, COLOR_WHITE, 6, False
+    RenderText JsonLanguage.Item("MENSAJE_558"), 460, 205, COLOR_WHITE, 6, False
 
     OffsetX = 240
     OffsetY = 15
-    RenderText "Clase ", 345 + OffsetX, 240 + OffsetY, COLOR_WHITE, 6, False
+    RenderText JsonLanguage.Item("MENSAJE_559"), 345 + OffsetX, 240 + OffsetY, COLOR_WHITE, 6, False
 
     Engine_Draw_Box 317 + OffsetX, 260 + OffsetY, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
     Engine_Text_Render "<", 300 + OffsetX, 260 + OffsetY, COLOR_WHITE, 1, False
@@ -3517,7 +3469,7 @@ Public Sub RenderUICrearPJ()
 
     Engine_Text_Render frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), 365 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstProfesion.List(frmCrearPersonaje.lstProfesion.ListIndex), True, 1) / 2, 262 + OffsetY, ColorGray, 1, True
 
-    RenderText "Raza ", 347 + OffsetX, 290 + OffsetY, COLOR_WHITE, 6, False
+    RenderText JsonLanguage.Item("MENSAJE_560"), 347 + OffsetX, 290 + OffsetY, COLOR_WHITE, 6, False
     Engine_Draw_Box 317 + OffsetX, 305 + OffsetY, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
 
     'Engine_Text_Render "Humano", 470 - Engine_Text_Height("Humano", False), 304, DefaultColor, 1, False
@@ -3531,7 +3483,7 @@ Public Sub RenderUICrearPJ()
     OffsetX = 5
     OffsetY = 5
 
-    RenderText "Genero ", 340 + OffsetX, 255, COLOR_WHITE, 6, False
+    RenderText JsonLanguage.Item("MENSAJE_561"), 340 + OffsetX, 255, COLOR_WHITE, 6, False
     
     
     Engine_Draw_Box 317 + OffsetX, 275, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
@@ -3546,7 +3498,7 @@ Public Sub RenderUICrearPJ()
     
 
     OffsetY = 30
-    RenderText "Hogar ", 340 + OffsetX, 305, ColorGray, 6, False
+    RenderText JsonLanguage.Item("MENSAJE_562"), 340 + OffsetX, 305, ColorGray, 6, False
     Engine_Draw_Box 317 + OffsetX, 320, 95, 21, RGBA_From_Comp(1, 1, 1, 100)
     
     Engine_Text_Render frmCrearPersonaje.lstHogar.List(frmCrearPersonaje.lstHogar.ListIndex), 360 + OffsetX - Engine_Text_Width(frmCrearPersonaje.lstHogar.List(frmCrearPersonaje.lstHogar.ListIndex), True, 1) / 2, 322, ColorGray, 1, True
@@ -3564,31 +3516,31 @@ Public Sub RenderUICrearPJ()
      OffX = 340
     
     'Atributos
-    RenderText "Atributos ", 235 + OffX, 385 + Offy, COLOR_WHITE, 6, True
+    RenderText JsonLanguage.Item("MENSAJE_563"), 235 + OffX, 385 + Offy, COLOR_WHITE, 6, True
     
     Dim atributeValue As Long
     
     atributeValue = Val(frmCrearPersonaje.lbFuerza.Caption) + Val(frmCrearPersonaje.modfuerza.Caption)
-    RenderText "Fuerza ", 185 + OffX, 410 + Offy, COLOR_WHITE, 1, True
+    RenderText JsonLanguage.Item("MENSAJE_564"), 185 + OffX, 410 + Offy, COLOR_WHITE, 1, True
     Call renderAttributesColors(atributeValue, 305 + OffX, 413 + Offy) 'Atributo Fuerza
     
     atributeValue = Val(frmCrearPersonaje.lbAgilidad.Caption) + Val(frmCrearPersonaje.modAgilidad.Caption)
-    Engine_Text_Render "Agilidad ", 185 + OffX, 440 + Offy, COLOR_WHITE, 1, True
+    Engine_Text_Render JsonLanguage.Item("MENSAJE_565"), 185 + OffX, 440 + Offy, COLOR_WHITE, 1, True
     Call renderAttributesColors(atributeValue, 305 + OffX, 443 + Offy) ' Atributo Agilidad
     
     
     atributeValue = Val(frmCrearPersonaje.lbInteligencia.Caption) + Val(frmCrearPersonaje.modInteligencia.Caption)
-    Engine_Text_Render "Inteligencia ", 185 + OffX, 470 + Offy, COLOR_WHITE, 1, True
+    Engine_Text_Render JsonLanguage.Item("MENSAJE_566"), 185 + OffX, 470 + Offy, COLOR_WHITE, 1, True
     Call renderAttributesColors(atributeValue, 305 + OffX, 473 + Offy) ' Atributo Inteligencia
     
     
     atributeValue = Val(frmCrearPersonaje.lbConstitucion.Caption) + Val(frmCrearPersonaje.modConstitucion.Caption)
-    Engine_Text_Render "Constitución ", 185 + OffX, 500 + Offy, COLOR_WHITE, , True
+    Engine_Text_Render JsonLanguage.Item("MENSAJE_567"), 185 + OffX, 500 + Offy, COLOR_WHITE, , True
     Call renderAttributesColors(atributeValue, 305 + OffX, 503 + Offy) ' Atributo Constitución
     
     
     atributeValue = Val(frmCrearPersonaje.lbCarisma.Caption) + Val(frmCrearPersonaje.modCarisma.Caption)
-    Engine_Text_Render "Carisma ", 185 + OffX, 530 + Offy, COLOR_WHITE, , True
+    Engine_Text_Render JsonLanguage.Item("MENSAJE_568"), 185 + OffX, 530 + Offy, COLOR_WHITE, , True
     Call renderAttributesColors(atributeValue, 305 + OffX, 533 + Offy) ' Atributo Carisma
       
     
@@ -3818,8 +3770,8 @@ On Error GoTo RenderAccountCharacters_Err
                 Else
                     Offy = 0
                 End If
-                Engine_Text_Render "Clase: " & ListaClases(Pjs(i).Clase), 511 - Engine_Text_Width("Clase:" & ListaClases(Pjs(i).Clase), True) / 2, Offy + 570 - Engine_Text_Height("Clase:" & ListaClases(Pjs(i).Clase), True), COLOR_WHITE, 1, True
-                Engine_Text_Render "Nivel: " & Pjs(i).Nivel, 511 - Engine_Text_Width("Nivel:" & Pjs(i).Nivel, True) / 2, Offy + 585 - Engine_Text_Height("Nivel:" & Pjs(i).Nivel, True), COLOR_WHITE, 1, True
+                Engine_Text_Render JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs(i).Clase), 511 - Engine_Text_Width(JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs(i).Clase), True) / 2, Offy + 570 - Engine_Text_Height(JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs(i).Clase), True), COLOR_WHITE, 1, True
+                Engine_Text_Render JsonLanguage.Item("MENSAJE_570") & Pjs(i).nivel, 511 - Engine_Text_Width(JsonLanguage.Item("MENSAJE_570") & Pjs(i).nivel, True) / 2, Offy + 585 - Engine_Text_Height(JsonLanguage.Item("MENSAJE_570") & Pjs(i).nivel, True), COLOR_WHITE, 1, True
                 Engine_Text_Render CStr(Pjs(i).NameMapa), 511 - Engine_Text_Width(CStr(Pjs(i).NameMapa), True) / 2, Offy + 615 - Engine_Text_Height(CStr(Pjs(i).NameMapa), True), COLOR_WHITE, 1, True
             End If
         End If
@@ -3852,21 +3804,16 @@ EfectoEnPantalla_Err:
 End Sub
 
 Public Sub SetBarFx(ByVal CharIndex As Integer, ByVal BarTime As Integer)
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 12/03/04
+
     'Sets an FX to the character.
-    '***************************************************
     
     On Error GoTo SetBarFx_Err
     
-
     With charlist(CharIndex)
         .BarTime = BarTime
 
     End With
 
-    
     Exit Sub
 
 SetBarFx_Err:
@@ -3876,11 +3823,7 @@ SetBarFx_Err:
 End Sub
 
 Public Function Engine_Get_2_Points_Angle(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long) As Double
-    '**************************************************************
-    'Author: Unknown
-    'Last Modify Date: 18/10/2012
-    '**************************************************************
-    
+
     On Error GoTo Engine_Get_2_Points_Angle_Err
     
 
@@ -3896,11 +3839,7 @@ Engine_Get_2_Points_Angle_Err:
 End Function
 
 Public Function Engine_Get_X_Y_Angle(ByVal x As Double, ByVal y As Double) As Double
-    '**************************************************************
-    'Author: Unknown
-    'Last Modify Date: 18/10/2012
-    '**************************************************************
-    
+
     On Error GoTo Engine_Get_X_Y_Angle_Err
     
 
@@ -3943,12 +3882,9 @@ Engine_Get_X_Y_Angle_Err:
 End Function
 
 Public Function Engine_Convert_Radians_To_Degrees(ByVal s_radians As Double) As Integer
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 8/25/2004
+
     'Converts a radian to degrees
-    '**************************************************************
-    
+
     On Error GoTo Engine_Convert_Radians_To_Degrees_Err
     
 
@@ -4332,10 +4268,9 @@ End Sub
  
 Public Function Engine_GetAngle(ByVal CenterX As Integer, ByVal CenterY As Integer, ByVal TargetX As Integer, ByVal TargetY As Integer) As Single
 
-    '************************************************************
     'Gets the angle between two points in a 2d plane
     'More info: [url=http://www.vbgore.com/GameClient.TileEn]http://www.vbgore.com/GameClient.TileEn[/url] ... e_GetAngle" class="postlink" rel="nofollow" onClick="window.open(this.href);return false;
-    '************************************************************
+
     Dim SideA As Single
 
     Dim SideC As Single

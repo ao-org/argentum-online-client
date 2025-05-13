@@ -63,7 +63,7 @@ Begin VB.Form MenuGM
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
-      Caption         =   "ADVERTENCIA"
+      Caption         =   "VIGILANTE"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -551,13 +551,36 @@ Private Sub OpcionImg_Click(Index As Integer)
             End If
             
         Case 13
-            tmp = InputBox("Escriba el motivo de la advertencia.", "Advertir a " & TargetName)
-'
-            If tmp = "" Then
-                InputBox ("No tiene advertencia a " & TargetName)
-            Else
-                Call ParseUserCommand("/ADVERTENCIA " & TargetName & "@" & tmp)
-            End If
+            Dim mensajes(1 To 15) As String
+                mensajes(1) = JsonLanguage.Item("MENSAJE_HORA_ACTUAL")
+                mensajes(2) = JsonLanguage.Item("MENSAJE_LLUVIA")
+                mensajes(3) = JsonLanguage.Item("MENSAJE_ZONA_SEGURA")
+                mensajes(4) = JsonLanguage.Item("MENSAJE_ARBOLES_O_ARENA")
+                mensajes(5) = JsonLanguage.Item("MENSAJE_DIA_O_NOCHE")
+                mensajes(6) = JsonLanguage.Item("MENSAJE_CIELO_CLARO_O_OSCURO")
+                mensajes(7) = JsonLanguage.Item("MENSAJE_ENTORNO_DESIERTO_O_BOSQUE")
+                mensajes(8) = JsonLanguage.Item("MENSAJE_HORA_SERVIDOR")
+                mensajes(9) = JsonLanguage.Item("MENSAJE_ZONA_SEGURA_PERSONAJE")
+                mensajes(10) = JsonLanguage.Item("MENSAJE_LLUVIA_O_SECO")
+                mensajes(11) = JsonLanguage.Item("MENSAJE_ENTORNO_BOSQUE_O_DESIERTO")
+                mensajes(12) = JsonLanguage.Item("MENSAJE_MOMENTO_DEL_DIA")
+                mensajes(13) = JsonLanguage.Item("MENSAJE_NOCHE_ACTUAL")
+                mensajes(14) = JsonLanguage.Item("MENSAJE_ZONA_SEGURA_EN_PANTALLA")
+                mensajes(15) = JsonLanguage.Item("MENSAJE_HORA_DEL_JUEGO")
+
+            Dim MensajeSeleccionado As String
+            Dim idx As Integer
+            
+            Randomize
+            idx = Int((15 * Rnd) + 1)
+            MensajeSeleccionado = Replace(mensajes(idx), "¬1", TargetName)
+            
+            Call ParseUserCommand("/MENSAJEINFORMACION " & TargetName & "@" & MensajeSeleccionado)
+            ' agregar que el mensaje lo pueda leer yo tambien
+            Call AddtoRichTextBox(frmMain.RecTxt, "MENSAJE A " & TargetName & ": " & MensajeSeleccionado, 0, 255, 255, True)
+
+
+            
         Case 14
             tmp = InputBox("Escriba el motivo de Carcel .", "Carcel a " & TargetName)
             tmptime = InputBox("Escriba el tiempo de Carcel .", "Tiempo de Carcel a " & TargetName)
@@ -568,7 +591,7 @@ Private Sub OpcionImg_Click(Index As Integer)
             End If
         Case 15
         
-            Call ParseUserCommand("/BAN") ' ver ReyarB
+            Call ParseUserCommand("/BAN")
             tmp = InputBox("Escriba el motivo del BAN.", "Baneo de " & TargetName)
 
             If tmp = "" Then

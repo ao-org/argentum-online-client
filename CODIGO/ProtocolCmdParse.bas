@@ -62,13 +62,9 @@ End Enum
 Public Sub ParseUserCommand(ByVal RawCommand As String)
     
     On Error GoTo ParseUserCommand_Err
-    
 
-    '***************************************************
-    'Author: Alejandro Santos (AlejoLp)
-    'Last Modification: 12/20/06
     'Interpreta, valida y ejecuta el comando ingresado
-    '***************************************************
+    
     Dim TmpArgos()         As String
     
     Dim Comando            As String
@@ -140,10 +136,10 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/ONLINE"
                 Call WriteOnline
                 
-            Case "/SALIR"
+            Case "/SALIR", "/EXIT"
                 Call WriteQuit
                 
-            Case "/SALIRCLAN"
+            Case "/SALIRCLAN", "/EXITRCLAN"
                 Call WriteGuildLeave
                 
             Case "/BALANCE"
@@ -160,7 +156,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Call WriteRequestAccountState
                 
-            Case "/QUIETO"
+            Case "/QUIETO", "/STILL"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -173,7 +169,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Call WritePetStand
 
-            Case "/ACOMPAÑAR"
+            Case "/ACOMPAÑAR", "/ACCOMPANY"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -186,7 +182,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Call WritePetFollow
                 
-            Case "/LIBERAR"
+            Case "/LIBERAR", "/RELEASE"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -199,7 +195,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Call WritePetLeave
             
-            Case "/LIBERARTODOS", "/LIBERARTODAS"
+            Case "/LIBERARTODOS", "/LIBERARTODAS", "/LIBERARTALL"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -212,7 +208,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Call WritePetLeaveAll
                                 
-            Case "/ENTRENAR"
+            Case "/ENTRENAR", "/TRAIN"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -226,7 +222,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Call WriteTrainList
                 
-            Case "/DESCANSAR"
+            Case "/DESCANSAR", "/REST"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -240,7 +236,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Call WriteRest
                 
-            Case "/MEDITAR"
+            Case "/MEDITAR", "/MEDITATE"
                 If UserStats.minman = UserStats.maxman Then
                     With FontTypes(FontTypeNames.FONTTYPE_INFOBOLD)
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_MANA_COMPLETO"), .red, .green, .blue, .bold, .italic)
@@ -261,30 +257,31 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Call WriteMeditate
         
-            Case "/RESUCITAR"
+            Case "/RESUCITAR", "/RESURRECT"
                 Call WriteResucitate
                 
-            Case "/CURAR"
+            Case "/CURAR", "/CURE"
                 Call WriteHeal
                               
             Case "/EST"
                 Call WriteRequestStats
                 
-            Case "/PROMEDIO"
+            Case "/PROMEDIO", "/AVERAGE"
                 Call WritePromedio
             
-            Case "/AYUDA"
+            Case "/AYUDA", "/HELP"
                 Call WriteHelp
             
-            Case "/EVENTOFACCIONARIO"
+            Case "/EVENTOFACCIONARIO", "/FACCIONARYEVENT"
                 Call WriteEventoFaccionario
-            Case "/SUBASTA"
+                
+            Case "/SUBASTA", "/AUCTION"
                 Call WriteSubastaInfo
                 
-            Case "/EVENTO"
+            Case "/EVENTO", "/EVENT"
                 Call WriteEventoInfo
                 
-            Case "/COMERCIAR"
+            Case "/COMERCIAR", "/TRADE"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -307,7 +304,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Call WriteCommerceStart
                 
-            Case "/BOVEDA"
+            Case "/BOVEDA", "/VAULT"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -321,13 +318,13 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 Call WriteBankStart
                 
-            Case "/ENLISTAR"
+            Case "/ENLISTAR", "/ENLIST"
                 Call WriteEnlist
                     
-            Case "/INFORMACION"
+            Case "/INFORMACION", "/INFORMATION"
                 Call WriteInformation
                 
-            Case "/RECOMPENSA"
+            Case "/RECOMPENSA", "/REWARD"
                 Call WriteReward
                 
             Case "/MOTD"
@@ -347,7 +344,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                 
-            Case "/GRUPO"
+            Case "/GRUPO", "/CLUSTER"
                 'Ojo, no usar notNullArguments porque se usa el string Vacío para borrar cartel.
                 If CantidadArgumentos > 0 Then
                     Call WriteGrupoMsg(ArgumentosRaw)
@@ -374,54 +371,54 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteRoleMasterRequest(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_PREGUNTA"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_PREGUNTA"))
 
                 End If
                 
             Case "/GM"
                 FrmGmAyuda.Show vbModeless, GetGameplayForm()
                  
-            Case "/OFERTAINICIAL"
+            Case "/OFERTAINICIAL", "/INITIALOFFER"
                 If notNullArguments Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Long) Then
                         If ArgumentosRaw > 0 Then
                             Call WriteOfertaInicial(ArgumentosRaw)
                         Else
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORRECTA_UTILICE"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORRECTA_UTILICE"))
 
                         End If
 
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORRECTA_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORRECTA_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
             
-            Case "/OFERTAR"
+            Case "/OFERTAR", "/OFFER"
                 If notNullArguments Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Long) Then
                         If ArgumentosRaw > 0 Then
                             Call WriteOferta(ArgumentosRaw)
                         Else
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_OFERTA_CORRECTA"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_OFERTA_CORRECTA"))
 
                         End If
 
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_OFERTA_CORRECTA"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_OFERTA_CORRECTA"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_OFERTA_CORRECTA"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_OFERTA_CORRECTA"))
 
                 End If
                         
@@ -440,7 +437,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_OFERTA_CORRECTA"))
                 If Len(ArgumentosRaw) > 50 Then
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFOIAO)
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_TU_DESCRIPCIÓN_NO"), .red, .green, .blue, .bold, .italic)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_TU_DESCRIPCION_NO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -450,20 +447,20 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_TU_DESCRIPCIÓN_NO"), .red, .gree
                 
                 Call WriteChangeDescription(ArgumentosRaw)
             
-            Case "/VOTO"
+            Case "/VOTO", "/VOTE"
                 If notNullArguments Then
                     Call WriteGuildVote(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                
-            Case "/PENAS"
+            Case "/PENAS", "/SENTENCE"
                 Call WritePunishments(ArgumentosRaw)
 
             
-            Case "/APOSTAR"
+            Case "/APOSTAR", "/BET"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -480,17 +477,17 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteGamble(ArgumentosRaw)
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORRECTA_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORRECTA_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
-            Case "/RETIRAR"
+            Case "/RETIRAR", "/WITHDRAW"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -504,7 +501,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
 
                 If CantidadArgumentos = 0 Then
                     ' Version sin argumentos: LeaveFaction
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_CANTIDAD_QUE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_CANTIDAD_QUE"))
                 Else
 
                     ' Version con argumentos: BankExtractGold
@@ -512,13 +509,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_CANTIDAD_QUE"))
                         Call WriteBankExtractGold(ArgumentosRaw)
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORRECTA_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORRECTA_UTILICE"))
 
                     End If
 
                 End If
                 
-             Case "/RETIRARFACCION"
+             Case "/RETIRARFACCION", "/REMOVEFACTION"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -535,7 +532,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORRECTA_UTILICE"))
                     Call WriteLeaveFaction
                 End If
     
-            Case "/DEPOSITAR"
+            Case "/DEPOSITAR", "/DEPOSIT"
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -552,17 +549,17 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORRECTA_UTILICE"))
                         Call WriteBankDepositGold(ArgumentosRaw)
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORECTA_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORECTA_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
-            Case "/DENUNCIAR"
+            Case "/DENUNCIAR", "/REPORT"
                 If notNullArguments Then
                     PreguntaScreen = "¿Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia."
                     Pregunta = True
@@ -571,18 +568,18 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     PreguntaLocal = True
                     PreguntaNUM = 2
                 Else
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_DENUNCIAR_NICK"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_DENUNCIAR_NICK"))
                 End If
 
-            Case "/FINALIZAREVENTO"
+            Case "/FINALIZAREVENTO", "/ENDEVENT"
                 Call WriteFinEvento
 
-            Case "/PROPONER"
+            Case "/PROPONER", "/PROPOSE"
                 If notNullArguments Then
                     Call WriteCasamiento(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
 
@@ -613,7 +610,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteGoNearby(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -622,23 +619,23 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteComment(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_COMENTARIO"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_COMENTARIO"))
 
                 End If
             
-            Case "/HORA"
+            Case "/HORA", "/HOUR"
                 If notNullArguments And EsGM Then
                     Call WriteSetTime(GetTimeFromString(ArgumentosRaw))
                 Else
                     Call WriteServerTime
                 End If
             
-            Case "/DONDE"
+            Case "/DONDE", "/WHERE"
                 If notNullArguments Then
                     Call WriteWhere(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -648,13 +645,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteCreaturesInMap(ArgumentosRaw)
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_MAPA_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_MAPA_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -668,7 +665,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                             Call WriteWarpChar(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3))
                         Else
                             'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
 
                         End If
 
@@ -679,7 +676,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
                             Call WriteWarpChar(ArgumentosAll(0), ArgumentosAll(1), 50, 50)
                         Else
                             'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
 
                         End If
 
@@ -688,22 +685,22 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
                 Else
                     
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
             
-            Case "/CREAREVENTO"
+            Case "/CREAREVENTO", "/CREATEVENT"
                 Call CreateEventCmd(ArgumentosAll, CantidadArgumentos)
             
             Case "/CONFIGLOBBY"
                 Call ConfigLobby(ArgumentosAll, CantidadArgumentos)
             
-            Case "/CANCELAREVENTO"
+            Case "/CANCELAREVENTO", "/CANCELEVENT"
                 Call WriteCancelarEvento
                 
             
-            Case "/SILENCIAR"
+            Case "/SILENCIAR", "/MUTE"
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@", 2)
 
@@ -711,13 +708,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteSilence(tmpArr(0), tmpArr(1))
                     Else
                         'Faltan los parametros con el formato propio
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -726,7 +723,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteCuentaRegresiva(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
             
@@ -735,7 +732,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WritePossUser(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -792,7 +789,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
             '        End If
 
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    'Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
             '    End If
         
             Case "/INVISIBLE"
@@ -802,16 +799,16 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                 Call WriteSOSShowList
                 Call WriteGMPanel
             
-            Case "/GENIO"
+            Case "/GENIO", "/GENIUS"
                 Call WriteGenio
                 
-            Case "/TRABAJANDO"
+            Case "/TRABAJANDO", "/WORKING"
                 Call WriteWorking
                 
-            Case "/OCULTANDO"
+            Case "/OCULTANDO", "/HIDING"
                 Call WriteHiding
                 
-            Case "/CARCEL"
+            Case "/CARCEL", "/JAIL"
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@")
 
@@ -820,23 +817,23 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                             Call WriteJail(tmpArr(0), tmpArr(1), tmpArr(2))
                         Else
                             'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_TIEMPO_INCORRECTO_UTILICE"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_TIEMPO_INCORRECTO_UTILICE"))
 
                         End If
 
                     Else
                         'Faltan los parametros con el formato propio
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
-            Case "/CREAREVENTO"
+            Case "/CREAREVENTO", "/CREATEVENT"
 
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@")
@@ -846,26 +843,26 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                             Call WriteCrearEvento(tmpArr(0), tmpArr(1), tmpArr(2))
                         Else
                             'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_TIEMPO_INCORRECTO_UTILICE"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_TIEMPO_INCORRECTO_UTILICE"))
 
                         End If
 
                     Else
                         'Faltan los parametros con el formato propio
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
             Case "/RMATA"
                 Call WriteKillNPC
                 
-            Case "/ADVERTENCIA"
+            Case "/ADVERTENCIA", "/WARNING"
 
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@", 2)
@@ -874,17 +871,17 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteWarnUser(tmpArr(0), tmpArr(1))
                     Else
                         'Faltan los parametros con el formato propio
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
-            Case "/MENSAJEINFORMACION"
+            Case "/MENSAJEINFORMACION", "/MESSAGEINFORMATION"
 
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@", 2)
@@ -893,13 +890,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteMensajeUser(tmpArr(0), tmpArr(1))
                     Else
                         'Faltan los parametros con el formato propio
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1005,13 +1002,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
 
                     Else
                         'Avisar que no exite el comando
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_COMANDO_INCORRECTO"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_COMANDO_INCORRECTO"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS"))
 
                 End If
                 
@@ -1021,7 +1018,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS"))
                     Call WriteRequestCharInfo(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1031,7 +1028,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteRequestCharStats(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1041,7 +1038,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteRequestCharGold(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1051,7 +1048,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteRequestCharInventory(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1061,7 +1058,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteRequestCharBank(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1071,30 +1068,30 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteRequestCharSkills(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
-            Case "/REVIVIR"
+            Case "/REVIVIR", "/REVIVE"
 
                 If notNullArguments Then
                     Call WriteReviveChar(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
             Case "/SM"
                 Call WriteSeguirMouse(ArgumentosRaw)
                 
-            Case "/PERDONFACCION"
+            Case "/PERDONFACCION", "/FORGIVENESS"
 
                 If notNullArguments Then
                     Call WritePerdonFaccion(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                 End If
                 
             Case "/ONLINEGM"
@@ -1103,42 +1100,42 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
             Case "/ONLINEMAP"
                 Call WriteOnlineMap
                 
-            Case "/PERDON"
+            Case "/PERDON", "/SORRY"
                 Call WriteForgive
             
-            Case "/DONAR"
+            Case "/DONAR", "/DONATE"
                 If notNullArguments Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Long) Then
                         Call WriteDonateGold(ArgumentosRaw)
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORECTA_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INCORECTA_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
-            Case "/ECHAR"
+            Case "/ECHAR", "/THROW"
 
                 If notNullArguments Then
                     Call WriteKick(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
-            Case "/EJECUTAR"
+            Case "/EJECUTAR", "/EXECUTE"
 
                 If notNullArguments Then
                     Call WriteExecute(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1151,13 +1148,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteBanChar(tmpArr(0), tmpArr(1))
                     Else
                         'Faltan los parametros con el formato propio
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_BAN"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_ICORRECTO"))
 
                 End If
                 
@@ -1170,13 +1167,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteBanCuenta(tmpArr(0), tmpArr(1))
                     Else
                         'Faltan los parametros con el formato propio
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1187,7 +1184,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
     
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1197,11 +1194,11 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteUnbanChar(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
-            Case "/SEGUIR"
+            Case "/SEGUIR", "/FOLLOW"
                 Call WriteNPCFollow
                 
             Case "/SUM"
@@ -1212,7 +1209,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
 
                     'Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                     ' End If
                 End If
                 
@@ -1249,7 +1246,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
             Case "/RESETINV"
                 Call WriteResetNPCInventory
                 
-            Case "/LIMPIAR"
+            Case "/LIMPIAR", "/CLEAN"
                 Call WriteCleanWorld
                 
             Case "/RMSG"
@@ -1268,7 +1265,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteNickToIP(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1279,13 +1276,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteIPToNick(str2ipv4l(ArgumentosRaw))
                     Else
                         'No es una IP
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_IP_INCORRECTA_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_IP_INCORRECTA_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1295,7 +1292,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteGuildOnlineMembers(ArgumentosRaw)
                 Else
                     'Avisar sintaxis incorrecta
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_ONCLAN_NOMBRE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_ONCLAN_NOMBRE"))
 
                 End If
                 
@@ -1311,29 +1308,29 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_ONCLAN_NOMBRE"))
                             Call WriteTeleportCreate(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3), tempStr(1))
                         Else
                             'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     
                         End If
     
                     Else
                         'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
     
                     End If
                 Else
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                 End If
                 
             Case "/DT"
                 Call WriteTeleportDestroy
                 
-            Case "/LLUVIA"
+            Case "/LLUVIA", "/RAIN"
                 Call WriteRainToggle
             
-            Case "/NIEVE"
+            Case "/NIEVE", "/SNOW"
                 Call WriteNieveToggle
             
-            Case "/NIEBLA"
+            Case "/NIEBLA", "/FOG"
                 Call WriteNieblaToggle
                 
             Case "/SETDESC"
@@ -1350,7 +1347,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                             Call WriteForceMIDIToMap(ArgumentosAll(0), 0)
                         Else
                             'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_MIDI_INCORRECTO_UTILICE"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_MIDI_INCORRECTO_UTILICE"))
 
                         End If
 
@@ -1360,7 +1357,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_MIDI_INCORRECTO_UTILICE"))
                             Call WriteForceMIDIToMap(ArgumentosAll(0), ArgumentosAll(1))
                         Else
                             'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
 
                         End If
 
@@ -1368,7 +1365,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEMIDIMAP_MIDI"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEMIDIMAP_MIDI"))
 
                 End If
                 
@@ -1383,7 +1380,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEMIDIMAP_MIDI"))
                             Call WriteForceWAVEToMap(ArgumentosAll(0), 0, 0, 0)
                         Else
                             'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEWAVMAP_WAV"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEWAVMAP_WAV"))
 
                         End If
 
@@ -1393,19 +1390,19 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEWAVMAP_WAV"))
                             Call WriteForceWAVEToMap(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3))
                         Else
                             'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEWAVMAP_WAV"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEWAVMAP_WAV"))
 
                         End If
 
                     Else
                         'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEWAVMAP_WAV"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEWAVMAP_WAV"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEWAVMAP_WAV"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEWAVMAP_WAV"))
 
                 End If
                 
@@ -1448,7 +1445,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_UTILICE_FORCEWAVMAP_WAV"))
                     Call WriteAcceptRoyalCouncilMember(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1458,30 +1455,30 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteAcceptChaosCouncilMember(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
-            Case "/PISO"
+            Case "/PISO", "/FLOOR"
                 Call WriteItemsInTheFloor
                 
-            Case "/ESTUPIDO"
+            Case "/ESTUPIDO", "/IDIOT"
 
                 If notNullArguments Then
                     Call WriteMakeDumb(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
-            Case "/NOESTUPIDO"
+            Case "/NOESTUPIDO", "/NOTSTUDIED"
 
                 If notNullArguments Then
                     Call WriteMakeDumbNoMore(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
 
@@ -1491,7 +1488,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteCouncilKick(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1502,7 +1499,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteSetTrigger(ArgumentosRaw)
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NUMERO_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NUMERO_INCORRECTO_UTILICE"))
 
                     End If
 
@@ -1513,10 +1510,10 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NUMERO_INCORRECTO_UTILICE"))
                 End If
                 
             Case "/BANIPLIST"
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NOT_SUPPORTED"))
+                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NOT_SUPPORTED"))
                 
             Case "/BANIPRELOAD"
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NOT_SUPPORTED"))
+                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NOT_SUPPORTED"))
                 
             Case "/MIEMBROSCLAN"
 
@@ -1524,7 +1521,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NOT_SUPPORTED"))
                     Call WriteGuildMemberList(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1534,16 +1531,16 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteGuildBan(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
             Case "/BANIP"
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NOT_SUPPORTED"))
+                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NOT_SUPPORTED"))
                 
             Case "/UNBANIP"
 
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NOT_SUPPORTED"))
+                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NOT_SUPPORTED"))
                 
             Case "/CI"
 
@@ -1558,7 +1555,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NOT_SUPPORTED"))
                                 If ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
                                     Call WriteCreateItem(ArgumentosAll(0), ArgumentosAll(1))
                                 Else
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
+                                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
 
                                 End If
 
@@ -1566,19 +1563,19 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
 
                         Else
                             'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
 
                         End If
 
                     Else
                         'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                     End If
 
                 End If
                 
-            Case "/DAR"
+            Case "/DAR", "/GIVE"
 
                 If EsGM Then
                     If notNullArguments Then
@@ -1586,14 +1583,14 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
     
                         If UBound(tmpArr) < 2 Then
                             'Faltan los parametros con el formato propio
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
     
                         Else
                             If Len(tmpArr(0)) = 0 Then
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_NOMBRE_DEL"))
+                                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_NOMBRE_DEL"))
                             
                             ElseIf Len(tmpArr(1)) = 0 Then
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_MOTIVO_DAR"))
+                                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_MOTIVO_DAR"))
                             
                             ElseIf ValidNumber(tmpArr(2), ent_Integer) Then
                                 Dim cantidad As String
@@ -1606,17 +1603,17 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INGRESE_MOTIVO_DAR"))
                                 If ValidNumber(cantidad, ent_Integer) Then
                                     Call WriteGiveItem(tmpArr(0), tmpArr(2), cantidad, tmpArr(1))
                                 Else
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INVÁLIDA_UTILICE"))
+                                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_CANTIDAD_INVALIDA_UTILICE"))
                                 End If
                             Else
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NÚMERO_OBJETO_INVÁLIDO"))
+                                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NUMERO_OBJETO_INVALIDO"))
                             End If
                             
                         End If
     
                     Else
                         'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
     
                     End If
                 End If
@@ -1630,7 +1627,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteChaosLegionKick(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
     
@@ -1640,7 +1637,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteRoyalArmyKick(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
     
@@ -1651,13 +1648,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteForceMIDIAll(ArgumentosAll(0))
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_MIDI_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_MIDI_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
     
@@ -1668,13 +1665,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteForceWAVEAll(ArgumentosAll(0))
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_WAV_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_WAV_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1687,13 +1684,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteRemovePunishment(tmpArr(0), tmpArr(1), tmpArr(2))
                     Else
                         'Faltan los parametros con el formato propio
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1712,7 +1709,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteLastIP(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
     
@@ -1736,13 +1733,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteCreateNPC(ArgumentosAll(0))
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NPC_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NPC_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1753,13 +1750,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteCreateNPCWithRespawn(ArgumentosAll(0))
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NPC_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NPC_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
         
@@ -1770,13 +1767,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteImperialArmour(ArgumentosAll(0), ArgumentosAll(1))
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1787,23 +1784,23 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteChaosArmour(ArgumentosAll(0), ArgumentosAll(1))
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
             Case "/NAVE"
                 Call WriteNavigateToggle
         
-            Case "/HABILITAR"
+            Case "/HABILITAR", "/ENABLE"
                 Call WriteServerOpenToUsersToggle
             
-            Case "/PARTICIPAR"  '
+            Case "/PARTICIPAR", "/PARTICIPATE" '
                 If CantidadArgumentos < 1 Then
                     Call WriteParticipar(-1, "")
                 ElseIf CantidadArgumentos < 2 Then
@@ -1817,7 +1814,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteTurnCriminal(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1827,17 +1824,17 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteResetFactions(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
-            Case "/RAJARCLAN"
+            Case "/RAJARCLAN", "/SLIT"
 
                 If notNullArguments Then
                     Call WriteRemoveCharFromGuild(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
 
@@ -1850,13 +1847,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                         Call WriteAlterName(tmpArr(0), tmpArr(1))
                     Else
                         'Faltan los parametros con el formato propio
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1870,19 +1867,19 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                             Call WriteCheckSlot(tmpArr(0), tmpArr(1))
                         Else
                             'Faltan o sobran los parametros con el formato propio
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
 
                         End If
 
                     Else
                         'Faltan o sobran los parametros con el formato propio
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
 
                     End If
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
 
@@ -1895,7 +1892,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     Call WriteShowGuildMessages(ArgumentosRaw)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
                 
@@ -1932,7 +1929,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
 
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_OPCIONES"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_OPCIONES"))
 
                 End If
             Case "/MAPSETTING"
@@ -1948,7 +1945,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_OPCIONES"))
             Case "/GRABAR"
                 Call WriteSaveChars
                 
-            Case "/BORRAR"
+            Case "/BORRAR", "/DELETE"
 
                 If notNullArguments Then
 
@@ -1967,7 +1964,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_OPCIONES"))
             Case "/DIA"
                 Call WriteDay
                 
-            Case "/ECHARTODOSPJS"
+            Case "/ECHARTODOSPJS", "/EARTHODOSPJS"
                 Call WriteKickAllChars
 
             Case "/RELOADNPCS"
@@ -1976,7 +1973,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_OPCIONES"))
             Case "/RELOADSINI"
                 Call WriteReloadServerIni
             
-            Case "/HOGAR"
+            Case "/HOGAR", "/HOME"
                 Call WriteHome
             
             Case "/RELOADHECHIZOS"
@@ -1993,7 +1990,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_OPCIONES"))
                         Call WriteChatColor(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2))
                     Else
                         'No es numerico
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
 
                     End If
 
@@ -2001,11 +1998,11 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
                     Call WriteChatColor(0, 255, 0)
                 Else
                     'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
 
                 End If
             
-            Case "/IGNORADO"
+            Case "/IGNORADO", "/IGNORED"
                 Call WriteIgnored
                             
             Case "/CONSOLA"
@@ -2014,7 +2011,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                 If UserStats.estado = 1 Then 'Muerto
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTÁS_MUERTO_NO"), .red, .green, .blue, .bold, .italic)
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO_NO"), .red, .green, .blue, .bold, .italic)
 
                     End With
 
@@ -2023,7 +2020,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTÁS_MUERTO_NO"), .red, .green,
                     If UserStats.Lvl < 5 Then
 
                         With FontTypes(FontTypeNames.FONTTYPE_GLOBAL)
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_DEBES_SER_NIVEL"), .red, .green, .blue, .bold, .italic)
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_DEBES_SER_NIVEL"), .red, .green, .blue, .bold, .italic)
 
                         End With
 
@@ -2047,12 +2044,12 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_DEBES_SER_NIVEL"), .red, .green, 
                     Call WriteGlobalOnOff
                 End If
                 
-            Case "/CONSULTA"
+            Case "/CONSULTA", "/CONSULTATION"
                 If EsGM Then
                     Call WriteConsulta(ArgumentosRaw)
                 End If
 
-            Case "/RETAR", "/RETO"
+            Case "/RETAR", "/RETO", "/CHALLENGE"
                 frmRetos.Show , GetGameplayForm()
 
                 If notNullArguments Then
@@ -2069,17 +2066,17 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_DEBES_SER_NIVEL"), .red, .green, 
                     End If
                 End If
                 
-            Case "/ACEPTAR"
+            Case "/ACEPTAR", "/ACCEPT"
                 If notNullArguments Then
                     Call WriteAcceptDuel(ArgumentosRaw)
                 Else
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                 End If
                 
-            Case "/CANCELAR"
+            Case "/CANCELAR", "/CANCEL"
                 Call WriteCancelDuel
                 
-            Case "/ABANDONAR"
+            Case "/ABANDONAR", "/ABANDON"
                 Call WriteQuitDuel
                 
             Case "/CE"
@@ -2092,7 +2089,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
                     If notNullArguments Then
                         Call WriteResetChar(ArgumentosRaw)
                     Else
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                     End If
                 End If
             Case "/REQDEBUG"
@@ -2100,7 +2097,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
             Case "/FEATURETOGGLE"
                 Call HandleFeatureToggle(ArgumentosAll, CantidadArgumentos)
             Case Else
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_COMANDO_INVALIDO"))
+                Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_COMANDO_INVALIDO"))
 
         End Select
         
@@ -2162,14 +2159,14 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_PARAMETROS_INCORRECTOS"))
             Exit Sub
         End If
         Dim varName As String
-            Dim Value As Byte
+            Dim value As Byte
             varName = arguments(0)
             If Not ValidNumber(arguments(1), eNumber_Types.ent_Byte) Then
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_PARAMETROS_INCORRECTOS"))
                 Exit Sub
             End If
-            Value = arguments(1)
-            Call WriteFeatureEnable(varName, Value)
+            value = arguments(1)
+            Call WriteFeatureEnable(varName, value)
     End If
 End Sub
 
@@ -2249,10 +2246,10 @@ Private Sub StartCustomMap(ByVal mapType As Byte, ByVal Name As String, ByRef ar
             Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
-            Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & Name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
+            Call ShowConsoleMsg(Replace$(JsonLanguage.Item("MENSAJE_CREAREVENTO_USO"), "¬1", Name)) ' MENSAJE_CREAREVENTO_USO=Valor incorrecto. Utilice /CREAREVENTO ¬1 PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.
         End If
     Else
-        Call ShowConsoleMsg("Valor incorrecto. Utilice /CREAREVENTO " & Name & " PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.")
+        Call ShowConsoleMsg(Replace$(JsonLanguage.Item("MENSAJE_CREAREVENTO_USO"), "¬1", Name)) ' MENSAJE_CREAREVENTO_USO=Valor incorrecto. Utilice /CREAREVENTO ¬1 PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.
     End If
 End Sub
 
@@ -2276,7 +2273,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INVALID_EVENT_TYPE"))
         
     Else
         'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
     End If
 End Sub
 
@@ -2487,7 +2484,7 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_PARAMETRO_INVALIDO_UTILICE"))
         End If
     Else
         'Avisar que falta el parametro
-Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARÁMETROS_UTILICE"))
+Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
     End If
 End Sub
 ''
@@ -2501,12 +2498,7 @@ End Sub
 ' @param    italic Sets the font italic style.
 
 Public Sub ShowConsoleMsg(ByVal message As String, Optional ByVal red As Integer = 255, Optional ByVal green As Integer = 255, Optional ByVal blue As Integer = 255, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False)
-    '***************************************************
-    'Author: Nicolas Matias Gonzalez (NIGO)
-    'Last Modification: 01/03/07
-    '
-    '***************************************************
-    
+
     On Error GoTo ShowConsoleMsg_Err
     
     Call AddtoRichTextBox(frmMain.RecTxt, message, red, green, blue, bold, italic)
@@ -2529,13 +2521,7 @@ End Sub
 Public Function ValidNumber(ByVal Numero As String, ByVal TIPO As eNumber_Types) As Boolean
     
     On Error GoTo ValidNumber_Err
-    
 
-    '***************************************************
-    'Author: Nicolas Matias Gonzalez (NIGO)
-    'Last Modification: 01/06/07
-    '
-    '***************************************************
     Dim Minimo As Long
 
     Dim Maximo As Long
@@ -2581,13 +2567,7 @@ End Function
 Private Function validipv4str(ByVal IP As String) As Boolean
     
     On Error GoTo validipv4str_Err
-    
 
-    '***************************************************
-    'Author: Nicolas Matias Gonzalez (NIGO)
-    'Last Modification: 01/06/07
-    '
-    '***************************************************
     Dim tmpArr() As String
     
     tmpArr = Split(IP, ".")
@@ -2615,16 +2595,11 @@ End Function
 Private Function str2ipv4l(ByVal IP As String) As Byte()
     
     On Error GoTo str2ipv4l_Err
-    
 
-    '***************************************************
-    'Author: Nicolas Matias Gonzalez (NIGO)
-    'Last Modification: 07/26/07
-    'Last Modified By: Rapsodius
     'Specify Return Type as Array of Bytes
     'Otherwise, the default is a Variant or Array of Variants, that slows down
     'the function
-    '***************************************************
+    
     Dim tmpArr() As String
 
     Dim bArr(3)  As Byte
@@ -2656,17 +2631,12 @@ End Function
 Private Function AEMAILSplit(ByRef Text As String) As String()
     
     On Error GoTo AEMAILSplit_Err
-    
 
-    '***************************************************
-    'Author: Lucas Tavolaro Ortuz (Tavo)
     'Useful for AEMAIL BUG FIX
-    'Last Modification: 07/26/07
-    'Last Modified By: Rapsodius
     'Specify Return Type as Array of Strings
     'Otherwise, the default is a Variant or Array of Variants, that slows down
     'the function
-    '***************************************************
+    
     Dim tmpArr(0 To 1) As String
 
     Dim Pos            As Byte

@@ -54,8 +54,8 @@ Public Function Decrypt(ByVal hex_key As String, ByVal encrypted_text_b64 As Str
    
 End Function
 
-'HarThaoS: Convierto el str en arr() bytes
-Public Function Str2ByteArr(ByVal str As String, ByRef arr() As Byte, Optional ByVal length As Long = 0)
+
+Public Function Str2ByteArr(ByVal str As String, ByRef arr() As Byte, Optional ByVal Length As Long = 0) 'Convierto el str en arr() bytes
     Dim i As Long
     Dim asd As String
     If length = 0 Then

@@ -33,9 +33,6 @@ End Type
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal length As Long)
 
 Sub Long_2_RGBA(Dest As RGBA, ByVal Src As Long)
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
     
     On Error GoTo Long_2_RGBA_Err
     
@@ -50,10 +47,7 @@ Long_2_RGBA_Err:
 End Sub
 
 Function RGBA_2_Long(Color As RGBA) As Long
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
-    
+  
     On Error GoTo RGBA_2_Long_Err
     
     Call CopyMemory(RGBA_2_Long, Color, 4)
@@ -67,9 +61,9 @@ RGBA_2_Long_Err:
 End Function
 
 Function RGBA_From_Long(ByVal Color As Long) As RGBA
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo RGBA_From_Long_Err
     
@@ -84,9 +78,9 @@ RGBA_From_Long_Err:
 End Function
 
 Function RGBA_From_Comp(ByVal r As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255) As RGBA
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo RGBA_From_Comp_Err
     
@@ -104,9 +98,9 @@ RGBA_From_Comp_Err:
 End Function
 
 Function RGBA_From_vbColor(ByVal Color As Long) As RGBA
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo RGBA_From_Long_Err
 
@@ -126,9 +120,9 @@ RGBA_From_Long_Err:
 End Function
 
 Sub SetRGBA(Color As RGBA, ByVal r As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo SetRGBA_Err
     
@@ -146,9 +140,9 @@ SetRGBA_Err:
 End Sub
 
 Sub Long_2_RGBAList(Dest() As RGBA, ByVal Src As Long)
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo Long_2_RGBAList_Err
     
@@ -167,9 +161,9 @@ Long_2_RGBAList_Err:
 End Sub
 
 Sub RGBAList(Dest() As RGBA, ByVal r As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo RGBAList_Err
     
@@ -189,9 +183,9 @@ End Sub
 
 
 Sub RGBA_ToList(Dest() As RGBA, Color As RGBA)
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo RGBAList_Err
     
@@ -210,9 +204,9 @@ RGBAList_Err:
 End Sub
 
 Sub Copy_RGBAList(Dest() As RGBA, Src() As RGBA)
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo Copy_RGBAList_Err
     
@@ -231,9 +225,9 @@ Copy_RGBAList_Err:
 End Sub
 
 Sub LerpRGBA(Dest As RGBA, A As RGBA, B As RGBA, ByVal Factor As Single)
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo LerpRGBA_Err
     
@@ -253,9 +247,6 @@ LerpRGBA_Err:
 End Sub
 
 Sub LerpRGB(Dest As RGBA, A As RGBA, B As RGBA, ByVal Factor As Single)
-    '***************************************************
-    'Author: Martín Trionfetti (HarThaoS)
-    '***************************************************
     
     On Error GoTo LerpRGB_Err
     
@@ -274,9 +265,9 @@ LerpRGB_Err:
 End Sub
 
 Sub ModulateRGBA(Dest As RGBA, A As RGBA, B As RGBA)
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo ModulateRGBA_Err
     
@@ -294,9 +285,9 @@ ModulateRGBA_Err:
 End Sub
 
 Sub AddRGBA(Dest As RGBA, A As RGBA, B As RGBA)
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo AddRGBA_Err
     
@@ -314,9 +305,9 @@ AddRGBA_Err:
 End Sub
 
 Function vbColor_2_Long(Color As Long) As Long
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo vbColor_2_Long_Err
     
@@ -339,9 +330,9 @@ vbColor_2_Long_Err:
 End Function
 
 Sub Copy_RGBAList_WithAlpha(Dest() As RGBA, Src() As RGBA, ByVal Alpha As Byte)
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo Copy_RGBAList_WithAlpha_Err
     
@@ -361,9 +352,9 @@ Copy_RGBAList_WithAlpha_Err:
 End Sub
 
 Function RGBA_ToString(Color As RGBA) As String
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
+    
+    
+    
     
     On Error GoTo RGBA_ToString_Err
     

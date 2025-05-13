@@ -46,7 +46,7 @@ Private m_groupSep                   As String
 
 Private m_parserrors                 As String
 
-Private m_str()                      As Integer
+Private m_str()                      As Long
 Private m_length                     As Long
 
 Public Function GetParserErrors() As String
@@ -144,7 +144,8 @@ Private Function parseObject(ByRef str As String, ByRef Index As Long) As Dictio
 
         If Err.Number <> 0 Then
             m_parserrors = m_parserrors & Err.Description & ": " & sKey & vbCrLf
-            Exit Do
+            Debug.Print m_parserrors
+
         End If
 
     Loop
@@ -565,9 +566,9 @@ ErrorHandler:
 
 End Function
 
-'********************************************************************************************************
+
 '                   FUNCIONES MISCELANEAS DE LA ANTERIOR VERSION DEL MODULO
-'********************************************************************************************************
+
 
 Private Function Encode(ByVal str As String) As String
 

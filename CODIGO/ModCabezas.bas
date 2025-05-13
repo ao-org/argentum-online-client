@@ -75,11 +75,11 @@ Sub DameOpciones()
 
     Select Case frmCrearPersonaje.lstGenero.List(frmCrearPersonaje.lstGenero.ListIndex)
 
-        Case "Hombre"
+        Case "Hombre", "Male"
 
             Select Case frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex)
 
-                Case "Humano"
+                Case "Humano", "Human"
                     MiCabeza = RandomNumber(1, 41)
                     Call DibujarCPJ(MiCabeza)
 
@@ -91,7 +91,7 @@ Sub DameOpciones()
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
 
-                Case "Elfo"
+                Case "Elfo", "Elf"
                     MiCabeza = RandomNumber(101, 132)
                     Call DibujarCPJ(MiCabeza)
 
@@ -103,7 +103,7 @@ Sub DameOpciones()
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
     
-                Case "Elfo Oscuro"
+                Case "Elfo Oscuro", "Dark Elf"
                     MiCabeza = RandomNumber(200, 229)
                     Call DibujarCPJ(MiCabeza)
 
@@ -115,7 +115,7 @@ Sub DameOpciones()
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
     
-                Case "Enano"
+                Case "Enano", "Dwarf"
                     MiCabeza = RandomNumber(300, 345)
                     Call DibujarCPJ(MiCabeza)
 
@@ -123,7 +123,7 @@ Sub DameOpciones()
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
     
-                Case "Gnomo"
+                Case "Gnomo", "Gnome"
                     MiCabeza = RandomNumber(400, 429)
                     Call DibujarCPJ(MiCabeza)
 
@@ -131,7 +131,7 @@ Sub DameOpciones()
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
 
-                Case "Orco"
+                Case "Orco", "Orc"
                     MiCabeza = RandomNumber(500, 529)
                     Call DibujarCPJ(MiCabeza)
 
@@ -146,11 +146,11 @@ Sub DameOpciones()
     
             End Select
     
-        Case "Mujer"
+        Case "Mujer", "Female"
 
             Select Case frmCrearPersonaje.lstRaza.List(frmCrearPersonaje.lstRaza.ListIndex)
 
-                Case "Humano"
+                Case "Humano", "Human"
                     MiCabeza = RandomNumber(50, 80)
                     Call DibujarCPJ(MiCabeza)
 
@@ -168,7 +168,7 @@ Sub DameOpciones()
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
 
-                Case "Elfo"
+                Case "Elfo", "Elf"
                     MiCabeza = RandomNumber(150, 179)
                     Call DibujarCPJ(MiCabeza)
 
@@ -180,7 +180,7 @@ Sub DameOpciones()
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
 
-                Case "Elfo Oscuro"
+                Case "Elfo Oscuro", "Dark Elf"
                     MiCabeza = RandomNumber(250, 279)
                     Call DibujarCPJ(MiCabeza)
 
@@ -188,7 +188,7 @@ Sub DameOpciones()
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
                 
-                Case "Enano"
+                Case "Enano", "Dwarf"
                     MiCabeza = RandomNumber(350, 379)
                     Call DibujarCPJ(MiCabeza)
 
@@ -196,7 +196,7 @@ Sub DameOpciones()
                         frmCrearPersonaje.Cabeza.AddItem i
                     Next i
 
-                Case "Gnomo"
+                Case "Gnomo", "Gnome"
                     MiCabeza = RandomNumber(450, 479)
                     Call DibujarCPJ(MiCabeza)
 
@@ -205,7 +205,7 @@ Sub DameOpciones()
 
                     Next i
 
-                Case "Orco"
+                Case "Orco", "Orc"
                     MiCabeza = RandomNumber(550, 579)
                     Call DibujarCPJ(MiCabeza)
 

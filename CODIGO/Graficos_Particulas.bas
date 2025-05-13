@@ -59,9 +59,9 @@ Public Type Particle
 
 End Type
 
-'*******************************************************
+
 ' PARTICULAS
-'*******************************************************
+
 Public Type Stream
 
     Name As String
@@ -180,9 +180,9 @@ Public particle_group_last As Long
 'Loaded Particle groups list
 Public StreamData()           As Stream
 Public ParticulasTotales      As Integer
-'*******************************************************
+
 ' FIN - PARTICULAS
-'*******************************************************
+
 
 Public Function Particle_Group_Create(ByVal map_x As Integer, ByVal map_y As Integer, ByRef grh_index_list() As Long, ByRef rgb_list() As RGBA, _
    Optional ByVal particle_count As Long = 20, Optional ByVal stream_type As Long = 1, _
@@ -201,16 +201,8 @@ Public Function Particle_Group_Create(ByVal map_x As Integer, ByVal map_y As Int
    Optional grh_resizex As Integer, Optional grh_resizey As Integer, Optional ByVal noBorrar As Boolean)
     
     On Error GoTo Particle_Group_Create_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Modified by: Ryan Cain (Onezero)
-    'Last Modify Date: 5/14/2003
     'Returns the particle_group_index if successful, else 0
-    'Modified by Juan Martín Sotuyo Dodero
-    'Modified by Augusto José Rando
-    '**************************************************************
     If (map_x <> -1) And (map_y <> -1) Then
         If Map_Particle_Group_Get(map_x, map_y) = 0 Then
             Particle_Group_Create = Particle_Group_Next_Open
@@ -237,11 +229,7 @@ Particle_Group_Create_Err:
 End Function
 
 Public Function Particle_Group_Remove(ByVal particle_group_index As Long) As Boolean
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 1/04/2003
-    '
-    '*****************************************************************
+
     'Make sure it's a legal index
     
     On Error GoTo Particle_Group_Remove_Err
@@ -270,13 +258,7 @@ End Function
 Public Function Particle_Group_Remove_All() As Boolean
     
     On Error GoTo Particle_Group_Remove_All_Err
-    
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 1/04/2003
-    '
-    '*****************************************************************
     Dim Index As Long
     
     For Index = 1 To particle_group_last
@@ -304,11 +286,8 @@ End Function
 
 Public Function Particle_Group_Find(ByVal id As Long) As Long
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 1/04/2003
     'Find the index related to the handle
-    '*****************************************************************
+
     On Error GoTo ErrorHandler:
 
     Dim loopc As Long
@@ -346,13 +325,7 @@ End Function
 Public Sub Particle_Group_Destroy(ByVal particle_group_index As Long)
     
     On Error GoTo Particle_Group_Destroy_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '
-    '**************************************************************
     Dim temp  As particle_group
 
     Dim i     As Integer
@@ -446,15 +419,9 @@ Public Sub Particle_Group_Make(ByVal particle_group_index As Long, ByVal map_x A
    Optional grh_resizex As Integer, Optional grh_resizey As Integer)
     
     On Error GoTo Particle_Group_Make_Err
-    
-                                
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Modified by: Ryan Cain (Onezero)
-    'Last Modify Date: 5/15/2003
     'Makes a new particle effect
     'Modified by Juan Martín Sotuyo Dodero
-    '*****************************************************************
+
     'Update array size
     If particle_group_index > particle_group_last Then
         particle_group_last = particle_group_index
@@ -573,15 +540,8 @@ Public Sub Char_Particle_Group_Make(ByVal particle_group_index As Long, ByVal ch
    Optional grh_resizex As Integer, Optional grh_resizey As Integer)
     
     On Error GoTo Char_Particle_Group_Make_Err
-    
-                                
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Modified by: Ryan Cain (Onezero)
-    'Last Modify Date: 5/15/2003
     'Makes a new particle effect
-    'Modified by Juan Martín Sotuyo Dodero
-    '*****************************************************************
+
     'Update array size
     If particle_group_index > particle_group_last Then
         particle_group_last = particle_group_index
@@ -707,16 +667,8 @@ End Sub
 Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal screen_x As Integer, ByVal screen_y As Integer)
     
     On Error GoTo Particle_Group_Render_Err
-    
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Modified by: Ryan Cain (Onezero)
-    'Modified by: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 5/15/2003
     'Renders a particle stream at a paticular screen point
-    '*****************************************************************
-    
 
     Dim loopc            As Long
 
@@ -788,8 +740,6 @@ Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal scree
   
         'If it's dead destroy it
     Else
-      
-        'Revisar si se saca esto. Ladder
 
         particle_group_list(particle_group_index).destruir = True
             
@@ -860,13 +810,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
    Optional ByVal move_y1 As Integer, Optional ByVal move_y2 As Integer, Optional ByVal YMove As Boolean, _
    Optional ByVal spin_speedH As Single, Optional ByVal spin As Boolean, Optional grh_resize As Boolean, _
    Optional grh_resizex As Integer, Optional grh_resizey As Integer, Optional particle_group_index As Long, Optional destruir As Boolean)
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Modified by: Ryan Cain (Onezero)
-    'Modified by: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 5/15/2003
-    '**************************************************************
-    
+
     On Error GoTo Particle_Render_Err
     
 
@@ -935,7 +879,7 @@ Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As In
     'Draw it
     If screen_x = -1000 Then Exit Sub
     
-    'Particulas Grises si esta muerto Ladder
+    'Particulas Grises si esta muerto
     If UserStats.Estado = 1 Then
         Call RGBAList(rgb_list, 100, 100, 100, 100)
 
@@ -979,13 +923,9 @@ End Sub
 Public Function Particle_Type_Get(ByVal particle_Index As Long) As Long
     
     On Error GoTo Particle_Type_Get_Err
-    
 
-    '*****************************************************************
-    'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
-    'Last Modify Date: 8/27/2003
     'Returns the stream type of a particle stream
-    '*****************************************************************
+
     If Particle_Group_Check(particle_Index) Then
         Particle_Type_Get = particle_group_list(particle_Index).stream_type
 
@@ -1001,11 +941,7 @@ Particle_Type_Get_Err:
 End Function
 
 Public Function Engine_MeteoParticle_Get() As Long
-    '*****************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 6/11/2002
-    '*****************************************************************
-    
+
     On Error GoTo Engine_MeteoParticle_Get_Err
     
     Engine_MeteoParticle_Get = MeteoParticle
@@ -1022,13 +958,9 @@ End Function
 Public Function Map_Particle_Group_Get(ByVal map_x As Integer, ByVal map_y As Integer) As Long
     
     On Error GoTo Map_Particle_Group_Get_Err
-    
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 2/20/2003
     'Checks to see if a tile position has a particle_group_index and return it
-    '*****************************************************************
+
     If InMapBounds(map_x, map_y) Then
         Map_Particle_Group_Get = MapData(map_x, map_y).particle_group
     Else
@@ -1046,11 +978,7 @@ Map_Particle_Group_Get_Err:
 End Function
 
 Public Sub Engine_MeteoParticle_Set(ByVal meteo_part As Long, Optional ByVal already_started As Boolean = True)
-    '*****************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 6/11/2002
-    '*****************************************************************
-    
+
     On Error GoTo Engine_MeteoParticle_Set_Err
     
     
@@ -1086,11 +1014,7 @@ Engine_MeteoParticle_Set_Err:
 End Sub
 
 Public Sub Engine_spell_Particle_Set(ByVal spell_part As Long)
-    '*****************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 6/11/2002
-    '*****************************************************************
-    
+
     On Error GoTo Engine_spell_Particle_Set_Err
     
     
@@ -1113,11 +1037,7 @@ Engine_spell_Particle_Set_Err:
 End Sub
 
 Public Sub Engine_Select_Particle_Set(ByVal Select_particle As Long)
-    '*****************************************************************
-    'Author: Augusto José Rando
-    'Last Modify Date: 6/11/2002
-    '*****************************************************************
-    
+
     On Error GoTo Engine_Select_Particle_Set_Err
     
     
@@ -1142,13 +1062,7 @@ End Sub
 Public Function Particle_Group_Check(ByVal particle_group_index As Long) As Boolean
     
     On Error GoTo Particle_Group_Check_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 1/04/2003
-    '
-    '**************************************************************
     'check index
     If particle_group_index > 0 And particle_group_index <= particle_group_last Then
         If particle_group_list(particle_group_index).active Then
@@ -1169,11 +1083,6 @@ End Function
 
 Public Function Particle_Group_Next_Open() As Long
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '
-    '*****************************************************************
     On Error GoTo ErrorHandler:
 
     Dim loopc As Long
@@ -1343,10 +1252,7 @@ Public Function Char_Particle_Group_Create(ByVal char_index As Integer, ByRef gr
    Optional ByVal move_y1 As Integer, Optional ByVal move_y2 As Integer, Optional ByVal YMove As Boolean, _
    Optional ByVal spin_speedH As Single, Optional ByVal spin As Boolean, Optional grh_resize As Boolean, _
    Optional grh_resizex As Integer, Optional grh_resizey As Integer)
-    '**************************************************************
-    'Author: Augusto José Rando
-    '**************************************************************
-    
+
     On Error GoTo Char_Particle_Group_Create_Err
     
 
@@ -1374,10 +1280,7 @@ End Function
 
 
 Public Function Char_Particle_Group_Remove(ByVal char_index As Integer, ByVal stream_type As Long)
-    '**************************************************************
-    'Author: Augusto José Rando
-    '**************************************************************
-    
+
     On Error GoTo Char_Particle_Group_Remove_Err
     
 
@@ -1394,8 +1297,7 @@ Public Function Char_Particle_Group_Remove(ByVal char_index As Integer, ByVal st
         particle_group_list(char_part_index).alive_counter = 0
         particle_group_list(char_part_index).never_die = False
         particle_group_list(char_part_index).destruir = True
-     
-        'Ladder
+
     End If
 
     
@@ -1410,11 +1312,7 @@ End Function
 Public Function Char_Particle_Group_Remove_All(ByVal char_index As Integer)
     
     On Error GoTo Char_Particle_Group_Remove_All_Err
-    
 
-    '**************************************************************
-    'Author: Augusto José Rando
-    '**************************************************************
     Dim i As Integer
     
     If Char_Check(char_index) Then
@@ -1437,10 +1335,6 @@ End Function
 
 Private Function Char_Particle_Group_Find(ByVal char_index As Integer, ByVal stream_type As Long) As Integer
 
-    '*****************************************************************
-    'Author: Augusto José Rando
-    'Modified: returns slot or -1
-    '*****************************************************************
     On Error GoTo ErrorHandler:
 
     Dim i As Integer
@@ -1465,9 +1359,6 @@ End Function
 
 Public Function Char_Particle_Group_Next_Open(ByVal char_index As Integer) As Integer
 
-    '*****************************************************************
-    'Author: Augusto José Rando
-    '*****************************************************************
     On Error GoTo ErrorHandler:
 
     Dim loopc As Long

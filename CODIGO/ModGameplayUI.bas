@@ -124,7 +124,7 @@ On Error GoTo OnClick_Err
                                     End If
                                     
                                     With FontTypes(FontTypeNames.FONTTYPE_TALK)
-                                        Call ShowConsoleMsg("No puedes lanzar hechizos tan rápido.", .red, .green, .blue, .bold, .italic)
+                                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_LANZAMIENTO_RAPIDO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_LANZAMIENTO_RAPIDO=No puedes lanzar hechizos tan rápido.
                                     End With
                                 Else
                                     Exit Sub
@@ -136,7 +136,7 @@ On Error GoTo OnClick_Err
                                     Exit Sub
                                 End If
                                 With FontTypes(FontTypeNames.FONTTYPE_TALK)
-                                    Call ShowConsoleMsg("No puedes lanzar tan rápido después de un golpe.", .red, .green, .blue, .bold, .italic)
+                                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ATAQUE_RAPIDO_GOLPE"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ATAQUE_RAPIDO_GOLPE=No puedes lanzar tan rápido después de un golpe.
                                 End With
                             Else
                                 Exit Sub
@@ -626,7 +626,7 @@ createObj_Click_Err:
     Resume Next
 End Sub
 
-Public Sub SelectInvenrotyTab()
+Public Sub SelectInventoryTab()
     ActiveInventoryTab = eInventory
     TempTick = GetTickCount And &H7FFFFFFF
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Inventario Then
@@ -661,7 +661,7 @@ Public Sub RequestMeditate()
     If UserStats.minman = UserStats.maxman Then Exit Sub
     If UserStats.estado = 1 Then
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
-            Call ShowConsoleMsg("¡Estás muerto!", .red, .green, .blue, .bold, .italic)
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=¡Estás muerto!
         End With
         Exit Sub
     End If

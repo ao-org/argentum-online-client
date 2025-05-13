@@ -453,7 +453,7 @@ On Error GoTo HandleIncomingData_Err
         Case ServerPacketID.eCraftingResult
             Call HandleCraftingResult
         Case ServerPacketID.eForceUpdate
-            Call HandleForceUpdate
+            'TODO: remove packet from protocol
         Case ServerPacketID.eAnswerReset
             Call HandleAnswerReset
         Case ServerPacketID.eObjQuestListSend
@@ -497,15 +497,30 @@ On Error GoTo HandleIncomingData_Err
             Call HandleAccountCharacterList
         #End If
         Case Else
-            Err.Raise &HDEADBEEF, "Invalid Message"
+            ' Invalid Message
     End Select
 #End If
     
-    If (Reader.GetAvailable() > 0) Then
-        Err.Raise &HDEADBEEF, "HandleIncomingData", "El paquete '" & PacketId & "' se encuentra en mal estado con '" & Reader.GetAvailable() & "' bytes de mas"
-    End If
-
-    HandleIncomingData = True
+    
+   ' —————————————————————————————
+   ' Detect both (a) extra bytes from known packets
+   '         and (b) any packet where we had NO handler
+   ' In either case, Reader.GetAvailable() > 0
+   If (Reader.GetAvailable() > 0) Then
+        Call RegistrarError( _
+            &HDEADBEEF, _
+            "Server message ID: " & PacketId & _
+            " unhandled or too many bytes; " & _
+            Reader.GetAvailable() & " extra bytes found", _
+            "Protocol.HandleIncomingData", Erl _
+        )
+        Do While (Reader.GetAvailable() > 0)
+            Dim dummy As Byte
+            dummy = Reader.ReadInt8
+        Loop
+   End If
+    
+   HandleIncomingData = True
     
 HandleIncomingData_Err:
     
@@ -599,11 +614,7 @@ End Sub
 ' Handles the RemoveDialogs message.
 
 Private Sub HandleRemoveDialogs()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleRemoveDialogs_Err
@@ -625,12 +636,6 @@ Private Sub HandleRemoveCharDialog()
     
     On Error GoTo HandleRemoveCharDialog_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-
     Call Dialogos.RemoveDialog(Reader.ReadInt16())
     
     Exit Sub
@@ -645,11 +650,7 @@ End Sub
 ' Handles the NavigateToggle message.
 
 Private Sub HandleNavigateToggle()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleNavigateToggle_Err
@@ -711,7 +712,7 @@ HandleVelocidadToggle_Err:
 End Sub
 
 Private Sub HandleMacroTrabajoToggle()
-    'Activa o Desactiva el macro de trabajo  06/07/2014 Ladder
+    'Activa o Desactiva el macro de trabajo
     
     On Error GoTo HandleMacroTrabajoToggle_Err
 
@@ -754,11 +755,6 @@ Public Sub HandleDisconnect()
     
     On Error GoTo HandleDisconnect_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     Dim i As Long
     
     If (Not Reader Is Nothing) Then
@@ -999,11 +995,6 @@ End Function
 ' Handles the CommerceEnd message.
 
 Private Sub HandleCommerceEnd()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
 
     On Error GoTo HandleCommerceEnd_Err
 
@@ -1025,11 +1016,6 @@ End Sub
 ' Handles the BankEnd message.
 
 Private Sub HandleBankEnd()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
 
     On Error GoTo HandleBankEnd_Err
 
@@ -1136,9 +1122,9 @@ Private Sub HandleShowFrmLogear()
     
     On Error GoTo HandleShowFrmLogear_Err
 
-    '***************************************************
+    
     '
-    '***************************************************
+    
     FrmLogear.Show , frmConnect
     
     Exit Sub
@@ -1153,9 +1139,9 @@ Private Sub HandleShowFrmMapa()
     
     On Error GoTo HandleShowFrmMapa_Err
 
-    '***************************************************
+    
     '
-    '***************************************************
+    
     ExpMult = Reader.ReadInt16()
     OroMult = Reader.ReadInt16()
     
@@ -1217,12 +1203,7 @@ End Sub
 ' Handles the UserCommerceEnd message.
 
 Private Sub HandleUserCommerceEnd()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+
     On Error GoTo HandleUserCommerceEnd_Err
     
     'Destroy the form and reset the state
@@ -1241,12 +1222,7 @@ End Sub
 ' Handles the ShowBlacksmithForm message.
 
 Private Sub HandleShowBlacksmithForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+
     On Error GoTo HandleShowBlacksmithForm_Err
     
     If frmMain.macrotrabajo.enabled And (MacroBltIndex > 0) Then
@@ -1288,18 +1264,8 @@ End Sub
 
 Private Sub HandleShowCarpenterForm()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     On Error GoTo HandleShowCarpenterForm_Err
-        
-   ' If frmMain.macrotrabajo.Enabled And (MacroBltIndex > 0) Then
-    
-        'Call WriteCraftCarpenter(MacroBltIndex)
-        
-   ' Else
+
          
         COLOR_AZUL = RGB(0, 0, 0)
     
@@ -1320,12 +1286,7 @@ HandleShowCarpenterForm_Err:
 End Sub
 
 Private Sub HandleShowAlquimiaForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+  
     On Error GoTo HandleShowAlquimiaForm_Err
     
     If frmMain.macrotrabajo.enabled And (MacroBltIndex > 0) Then
@@ -1356,12 +1317,7 @@ HandleShowAlquimiaForm_Err:
 End Sub
 
 Private Sub HandleShowSastreForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
+  
     On Error GoTo HandleShowSastreForm_Err
         
     If frmMain.macrotrabajo.enabled And (MacroBltIndex > 0) Then
@@ -1405,11 +1361,6 @@ End Sub
 ' Handles the NPCKillUser message.
 
 Private Sub HandleNPCKillUser()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
 
     On Error GoTo HandleNPCKillUser_Err
         
@@ -1428,11 +1379,6 @@ End Sub
 
 Private Sub HandleBlockedWithShieldUser()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     On Error GoTo HandleBlockedWithShieldUser_Err
         
     Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_RECHAZO_ATAQUE_ESCUDO"), 255, 0, 0, True, False, False)
@@ -1450,11 +1396,6 @@ End Sub
 
 Private Sub HandleBlockedWithShieldOther()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
     On Error GoTo HandleBlockedWithShieldOther_Err
         
     Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_USUARIO_RECHAZO_ATAQUE_ESCUDO"), 255, 0, 0, True, False, False)
@@ -1493,7 +1434,7 @@ Private Sub HandleCharSwing()
     With charlist(CharIndex)
 
         If ShowText And NotificoTexto Then
-            Call SetCharacterDialogFx(CharIndex, IIf(CharIndex = UserCharIndex, "Fallas", "Falló"), RGBA_From_Comp(255, 0, 0))
+            Call SetCharacterDialogFx(CharIndex, IIf(CharIndex = UserCharIndex, (JsonLanguage.Item("MENSAJE_FALLAS")), (JsonLanguage.Item("MENSAJE_FALLO"))), RGBA_From_Comp(255, 0, 0))
         End If
         
         If EstaPCarea(CharIndex) Then
@@ -2169,7 +2110,6 @@ On Error GoTo errhandler
         End With
     End If
     
-    'Optimizacion de protocolo por Ladder
     QueEs = ReadField(1, chat, Asc("*"))
     Dim TextColor As RGBA
     TextColor = RGBA_From_Long(Color)
@@ -2602,12 +2542,6 @@ End Sub
 
 Private Sub HandleLocaleMsg()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim chat      As String
@@ -2694,12 +2628,6 @@ End Sub
 
 Private Sub HandleGuildChat()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 04/07/08 (NicoNZ)
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim chat As String
@@ -2769,12 +2697,18 @@ errhandler:
 End Sub
 
 Private Sub HandleShowMessageBox()
-On Error GoTo errhandler
+    On Error GoTo errhandler
     
     Dim mensaje As String
+    Dim MessageID As Integer
+    Dim extra As String
 
-    mensaje = Reader.ReadString8()
-
+    ' Obtener el ID del mensaje desde el servidor
+    MessageID = Reader.ReadInt16()
+    extra = Reader.ReadString8()
+    ' Obtener el mensaje a partir del archivo de localización usando el ID
+    mensaje = Locale_Parse_ServerMessage(MessageID, extra)
+    
     Select Case g_game_state.State()
         Case e_state_gameplay_screen
             frmMensaje.msg.Caption = mensaje
@@ -2796,9 +2730,8 @@ On Error GoTo errhandler
 errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowMessageBox", Erl)
-    
-
 End Sub
+
 
 Private Sub HandleMostrarCuenta()
 On Error GoTo errhandler
@@ -2863,12 +2796,6 @@ Private Sub HandleUserIndexInServer()
     
     On Error GoTo HandleUserIndexInServer_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     userIndex = Reader.ReadInt16()
     
     Exit Sub
@@ -2886,12 +2813,6 @@ Private Sub HandleUserCharIndexInServer()
     
     On Error GoTo HandleUserCharIndexInServer_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     UserCharIndex = Reader.ReadInt16()
     'frmdebug.add_text_tracebox "UserCharIndex " & UserCharIndex
     UserPos = charlist(UserCharIndex).Pos
@@ -2922,12 +2843,6 @@ End Sub
 
 Private Sub HandleCharacterCreate()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim CharIndex     As Integer
@@ -3128,12 +3043,6 @@ Private Sub HandleCharacterMove()
     
     On Error GoTo HandleCharacterMove_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim CharIndex As Integer
     Dim x         As Byte
     Dim y         As Byte
@@ -3370,12 +3279,6 @@ Private Sub HandleObjectCreate()
     
     On Error GoTo HandleObjectCreate_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim x        As Byte
 
     Dim y        As Byte
@@ -3438,11 +3341,6 @@ Private Sub HandleFxPiso()
     
     On Error GoTo HandleFxPiso_Err
 
-    '***************************************************
-    'Ladder
-    '30/5/10
-    '***************************************************
-    
     Dim x  As Byte
 
     Dim y  As Byte
@@ -3470,12 +3368,6 @@ Private Sub HandleObjectDelete()
     
     On Error GoTo HandleObjectDelete_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim x  As Byte
 
     Dim y  As Byte
@@ -3517,12 +3409,6 @@ Private Sub HandleBlockPosition()
     
     On Error GoTo HandleBlockPosition_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim x As Byte, y As Byte, b As Byte
     
     x = Reader.ReadInt8()
@@ -3547,12 +3433,6 @@ Private Sub HandlePlayMIDI()
     
     On Error GoTo HandlePlayMIDI_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Call Reader.ReadInt8   ' File
     Call Reader.ReadInt16  ' Loop
     
@@ -3726,7 +3606,7 @@ Private Sub HandleArmaMov()
     
     On Error GoTo HandleArmaMov_Err
 
-    '***************************************************
+    
 
     Dim CharIndex As Integer
     Dim isRanged As Byte
@@ -3750,7 +3630,7 @@ End Sub
 Private Sub HandleCreateProjectile()
     On Error GoTo HandleCreateProjectile_Err
 
-    '***************************************************
+    
     Dim x, y, endX, endY, projectileType As Byte
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
@@ -3841,7 +3721,7 @@ Private Sub HandleEscudoMov()
     
     On Error GoTo HandleEscudoMov_Err
 
-    '***************************************************
+    
 
     Dim CharIndex As Integer
 
@@ -3924,12 +3804,6 @@ Private Sub HandleAreaChanged()
     
     On Error GoTo HandleAreaChanged_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim x As Byte
 
     Dim y As Byte
@@ -3951,11 +3825,7 @@ End Sub
 ' Handles the PauseToggle message.
 
 Private Sub HandlePauseToggle()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandlePauseToggle_Err
@@ -4007,12 +3877,6 @@ Private Sub HandleCreateFX()
     
     On Error GoTo HandleCreateFX_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim CharIndex As Integer
 
     Dim Fx        As Integer
@@ -4327,6 +4191,8 @@ Private Sub HandleWorkRequestTarget()
         Case MarcaDeGM
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_PERSONAJE_A_MARCAR"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
+        Case Domar
+            Call FormParser.Parse_Form(Frm, E_SHOOT)
     End Select
     Exit Sub
 HandleWorkRequestTarget_Err:
@@ -4338,12 +4204,6 @@ End Sub
 
 Private Sub HandleChangeInventorySlot()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim Slot        As Byte
@@ -4500,12 +4360,6 @@ End Sub
 
 Private Sub HandleChangeSpellSlot()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim Slot     As Byte
@@ -4907,11 +4761,7 @@ End Sub
 ' Handles the Dumb message.
 
 Private Sub HandleDumb()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleDumb_Err
@@ -4928,16 +4778,9 @@ End Sub
 
 ''
 ' Handles the ShowSignal message.
-'Optimizacion de protocolo por Ladder
 
 Private Sub HandleShowSignal()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim tmp As String
@@ -5015,7 +4858,7 @@ HandleUpdateHungerAndThirst_Err:
 End Sub
 
 Private Sub HandleHora()
-    '***************************************************
+    
     
     On Error GoTo HandleHora_Err
 
@@ -5224,9 +5067,9 @@ Private Sub HandleMiniStats()
         .PuntosPesca = Reader.ReadInt32()
 
         If .Genero = 1 Then
-            .Genero = "Hombre"
+            .Genero = JsonLanguage.Item("MENSAJE_576")
         Else
-            .Genero = "Mujer"
+            .Genero = JsonLanguage.Item("MENSAJE_577")
 
         End If
 
@@ -5315,12 +5158,6 @@ Private Sub HandleSetInvisible()
     
     On Error GoTo HandleSetInvisible_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim CharIndex As Integer
     Dim x As Byte, y As Byte
     CharIndex = Reader.ReadInt16()
@@ -5434,11 +5271,7 @@ End Sub
 ' Handles the BlindNoMore message.
 
 Private Sub HandleBlindNoMore()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleBlindNoMore_Err
@@ -5459,11 +5292,7 @@ End Sub
 ' Handles the DumbNoMore message.
 
 Private Sub HandleDumbNoMore()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleDumbNoMore_Err
@@ -5485,12 +5314,6 @@ Private Sub HandleSendSkills()
     
     On Error GoTo HandleSendSkills_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim i As Long
     
     For i = 1 To NUMSKILLS
@@ -5523,12 +5346,6 @@ End Sub
 
 Private Sub HandleTrainerCreatureList()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim creatures() As String
@@ -5557,12 +5374,6 @@ End Sub
 
 Private Sub HandleGuildNews()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     ' Dim guildList() As String
@@ -5636,22 +5447,22 @@ Private Sub HandleGuildNews()
         Select Case ClanNivel
 
             Case 1
-                .beneficios = "Max miembros: 5"
+                .beneficios = JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS")
 
             Case 2
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Max miembros: 8"
+                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_8")
 
             Case 3
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Max miembros: 11"
+                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_11")
 
             Case 4
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Max miembros: 14"
+                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_14")
 
             Case 5
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Ver vida y mana" & vbCrLf & " Max miembros: 17"
+                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA") & vbCrLf & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_17")
                 
             Case 6
-                .beneficios = "Pedir ayuda (G)" & vbCrLf & "Seguro de clan" & vbCrLf & "Ver vida y mana" & vbCrLf & "Verse invisible" & vbCrLf & " Max miembros: 20"
+                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA") & vbCrLf & JsonLanguage.Item("MENSAJE_VERSE_INVISIBLE") & vbCrLf & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_20")
         
         End Select
     
@@ -5673,12 +5484,6 @@ End Sub
 
 Private Sub HandleOfferDetails()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Call frmUserRequest.recievePeticion(Reader.ReadString8())
@@ -5697,12 +5502,6 @@ End Sub
 
 Private Sub HandleAlianceProposalsList()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim guildList() As String
@@ -5732,12 +5531,6 @@ End Sub
 
 Private Sub HandlePeaceProposalsList()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim guildList() As String
@@ -5767,12 +5560,6 @@ End Sub
 
 Private Sub HandleCharacterInfo()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     With frmCharInfo
@@ -5791,21 +5578,21 @@ Private Sub HandleCharacterInfo()
         End If
     
         If Reader.ReadInt8() = 1 Then
-            .Genero.Caption = "Genero: Hombre"
+            .Genero.Caption = JsonLanguage.Item("MENSAJE_GENERO_HOMBRE")
         Else
-            .Genero.Caption = "Genero: Mujer"
+            .Genero.Caption = JsonLanguage.Item("MENSAJE_GENERO_MUJER")
         End If
             
-        .nombre.Caption = "Nombre: " & Reader.ReadString8()
-        .Raza.Caption = "Raza: " & ListaRazas(Reader.ReadInt8())
-        .Clase.Caption = "Clase: " & ListaClases(Reader.ReadInt8())
-
-        .Nivel.Caption = "Nivel: " & Reader.ReadInt8()
-        .oro.Caption = "Oro: " & Reader.ReadInt32()
-        .Banco.Caption = "Banco: " & Reader.ReadInt32()
-    
+        .nombre.Caption = JsonLanguage.Item("MENSAJE_NOMBRE") & ": " & Reader.ReadString8()
+        .Raza.Caption = JsonLanguage.Item("MENSAJE_RAZA") & ": " & ListaRazas(Reader.ReadInt8())
+        .Clase.Caption = JsonLanguage.Item("MENSAJE_CLASE") & ": " & ListaClases(Reader.ReadInt8())
+        
+        .Nivel.Caption = JsonLanguage.Item("MENSAJE_NIVEL") & ": " & Reader.ReadInt8()
+        .oro.Caption = JsonLanguage.Item("MENSAJE_ORO") & ": " & Reader.ReadInt32()
+        .Banco.Caption = JsonLanguage.Item("MENSAJE_BANCO") & ": " & Reader.ReadInt32()
+        
         .txtPeticiones.Text = Reader.ReadString8()
-        .guildactual.Caption = "Clan: " & Reader.ReadString8()
+        .guildactual.Caption = JsonLanguage.Item("MENSAJE_CLAN") & ": " & Reader.ReadString8()
         .txtMiembro.Text = Reader.ReadString8()
             
         Dim armada As Boolean
@@ -5816,14 +5603,15 @@ Private Sub HandleCharacterInfo()
         caos = Reader.ReadBool()
             
         If armada Then
-            .ejercito.Caption = "Ejército: Armada Real"
+            .ejercito.Caption = JsonLanguage.Item("MENSAJE_EJERCITO_ARMADA_REAL")
         ElseIf caos Then
-            .ejercito.Caption = "Ejército: Legión Oscura"
+            .ejercito.Caption = JsonLanguage.Item("MENSAJE_EJERCITO_LEGION_OSCURA")
     
         End If
             
-        .ciudadanos.Caption = "Ciudadanos asesinados: " & CStr(Reader.ReadInt32())
-        .Criminales.Caption = "Criminales asesinados: " & CStr(Reader.ReadInt32())
+        .ciudadanos.Caption = JsonLanguage.Item("MENSAJE_CIUDADANOS_ASESINADOS") & ": " & CStr(Reader.ReadInt32())
+        .Criminales.Caption = JsonLanguage.Item("MENSAJE_CRIMINALES_ASESINADOS") & ": " & CStr(Reader.ReadInt32())
+
     
         Call .Show(vbModeless, GetGameplayForm())
     
@@ -5843,12 +5631,6 @@ End Sub
 
 Private Sub HandleGuildLeaderInfo()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim str As String
@@ -5933,28 +5715,30 @@ Private Sub HandleGuildLeaderInfo()
         Select Case Nivel
 
             Case 1
-                .beneficios = Padding & "Max miembros: 5"
+                .beneficios = Padding & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS")
                 .maxMiembros = 5
+        
             Case 2
-                .beneficios = Padding & "Max miembros: 8 / Pedir ayuda (G)"
+                .beneficios = Padding & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_8") & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA")
                 .maxMiembros = 8
-
+        
             Case 3
-                .beneficios = Padding & "Max miembros: 11 / Pedir ayuda (G) / Seguro de clan"
+                .beneficios = Padding & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_11") & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN")
                 .maxMiembros = 11
-
+        
             Case 4
-                .beneficios = Padding & "Max miembros: 14 / Pedir ayuda (G) / Seguro de clan"
+                .beneficios = Padding & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_14") & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN")
                 .maxMiembros = 14
-
+        
             Case 5
-                .beneficios = Padding & "Max miembros: 17 / Pedir ayuda (G) / Seguro de clan / Ver vida y mana"
+                .beneficios = Padding & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_17") & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & " / " & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA")
                 .maxMiembros = 17
-                
+        
             Case 6
-                .beneficios = Padding & "Max miembros: 20 / Pedir ayuda (G) / Seguro de clan / Ver vida y mana / Verse invisible"
+                .beneficios = Padding & JsonLanguage.Item("MENSAJE_MAX_MIEMBROS_20") & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & " / " & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA") & " / " & JsonLanguage.Item("MENSAJE_VERSE_INVISIBLE")
                 .maxMiembros = 20
         End Select
+
         
         .Show , GetGameplayForm()
 
@@ -5974,12 +5758,6 @@ End Sub
 
 Private Sub HandleGuildDetails()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     With frmGuildBrief
@@ -6025,11 +5803,7 @@ End Sub
 ' Handles the ShowGuildFundationForm message.
 
 Private Sub HandleShowGuildFundationForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleShowGuildFundationForm_Err
@@ -6049,11 +5823,7 @@ End Sub
 ' Handles the ParalizeOK message.
 
 Private Sub HandleParalizeOK()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleParalizeOK_Err
@@ -6069,11 +5839,7 @@ HandleParalizeOK_Err:
 End Sub
 
 Private Sub HandleInmovilizadoOK()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     On Error GoTo HandleInmovilizadoOK_Err
     If EstaSiguiendo Then Exit Sub
@@ -6092,12 +5858,6 @@ End Sub
 
 Private Sub HandleShowUserRequest()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Call frmUserRequest.recievePeticion(Reader.ReadString8())
@@ -6117,12 +5877,6 @@ End Sub
 
 Private Sub HandleChangeUserTradeSlot()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim miOferta As Boolean
@@ -6199,12 +5953,6 @@ End Sub
 
 Private Sub HandleSpawnList()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     frmSpawnList.ListaCompleta = Reader.ReadBool
@@ -6227,12 +5975,6 @@ End Sub
 
 Private Sub HandleShowSOSForm()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim sosList()      As String
@@ -6272,12 +6014,6 @@ End Sub
 
 Private Sub HandleShowMOTDEditionForm()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     frmCambiaMotd.txtMotd.Text = Reader.ReadString8()
@@ -6296,11 +6032,7 @@ End Sub
 ' Handles the ShowGMPanelForm message.
 
 Private Sub HandleShowGMPanelForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleShowGMPanelForm_Err
@@ -6320,7 +6052,7 @@ Private Sub HandleShowGMPanelForm()
     
     MiCargo = charlist(UserCharIndex).priv
     
-    Select Case MiCargo ' ReyarB ajustar privilejios
+    Select Case MiCargo ' Ajustar privilejios
     
         Case 1
         frmPanelgm.mnuChar.visible = False
@@ -6379,11 +6111,7 @@ HandleShowGMPanelForm_Err:
 End Sub
 
 Private Sub HandleShowFundarClanForm()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleShowFundarClanForm_Err
@@ -6404,12 +6132,6 @@ End Sub
 
 Private Sub HandleUserNameList()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim userList() As String
@@ -6443,12 +6165,6 @@ End Sub
 
 Private Sub HandleUpdateTagAndStatus()
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
     
     Dim CharIndex   As Integer
@@ -6563,12 +6279,6 @@ Private Sub HandleLightToFloor()
     
     On Error GoTo HandleLightToFloor_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim x           As Byte
 
     Dim y           As Byte
@@ -6629,12 +6339,6 @@ Private Sub HandleParticleFX()
     
     On Error GoTo HandleParticleFX_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim CharIndex      As Integer
 
     Dim ParticulaIndex As Integer
@@ -6692,12 +6396,6 @@ Private Sub HandleParticleFXWithDestino()
     
     On Error GoTo HandleParticleFXWithDestino_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim Emisor         As Integer
 
     Dim receptor       As Integer
@@ -6756,12 +6454,6 @@ Private Sub HandleParticleFXWithDestinoXY()
     
     On Error GoTo HandleParticleFXWithDestinoXY_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     Dim Emisor         As Integer
 
     Dim ParticulaViaje As Integer
@@ -6812,12 +6504,6 @@ Private Sub HandleAuraToChar()
     
         On Error GoTo HandleAuraToChar_Err
 
-        '***************************************************
-        'Author: Juan Martín Sotuyo Dodero (Maraxus)
-        'Last Modification: 05/17/0
-        '
-        '***************************************************
-    
         Dim CharIndex      As Integer
 
         Dim ParticulaIndex As String
@@ -6861,12 +6547,6 @@ Private Sub HandleSpeedToChar()
     
     On Error GoTo HandleSpeedToChar_Err
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/0
-    '
-    '***************************************************
-    
     Dim CharIndex As Integer
 
     Dim Speeding  As Single
@@ -6884,11 +6564,7 @@ HandleSpeedToChar_Err:
     
 End Sub
 Private Sub HandleNieveToggle()
-    '**
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '**
+
     'Remove packet ID
 
     On Error GoTo HandleNieveToggle_Err
@@ -6917,11 +6593,7 @@ HandleNieveToggle_Err:
 End Sub
 
 Private Sub HandleNieblaToggle()
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+
     'Remove packet ID
     
     On Error GoTo HandleNieblaToggle_Err
@@ -7054,11 +6726,11 @@ Private Sub HandleQuestDetails()
            
             If QuestRequerida <> 0 Then
                 FrmQuestInfo.Text1.Text = ""
-               Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest, 128, 128, 128)
+               Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_REQUISITOS") & vbCrLf & JsonLanguage.Item("MENSAJE_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest, 128, 128, 128)
             Else
                 
                 FrmQuestInfo.Text1.Text = ""
-                Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf, 128, 128, 128)
+                Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_REQUISITOS") & vbCrLf & JsonLanguage.Item("MENSAJE_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf, 128, 128, 128)
             End If
            
             tmpByte = Reader.ReadInt8
@@ -7115,7 +6787,7 @@ Private Sub HandleQuestDetails()
 
             End If
     
-            tmpStr = tmpStr & vbCrLf & "RECOMPENSAS" & vbCrLf
+            tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_RECOMPENSAS") & vbCrLf
             'tmpStr = tmpStr & "*) Oro: " & .ReadInt32 & " monedas de oro." & vbCrLf
             'tmpStr = tmpStr & "*) Experiencia: " & .ReadInt32 & " puntos de experiencia." & vbCrLf
            
@@ -7165,14 +6837,14 @@ Private Sub HandleQuestDetails()
             LevelRequerido = Reader.ReadInt8
             QuestRequerida = Reader.ReadInt16
            
-            FrmQuests.detalle.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & "Requisitos" & vbCrLf & "Nivel requerido: " & LevelRequerido & vbCrLf
+            FrmQuests.detalle.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_REQUISITOS") & vbCrLf & JsonLanguage.Item("MENSAJE_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf
 
             If QuestRequerida <> 0 Then
                 FrmQuests.detalle.Text = FrmQuests.detalle.Text & vbCrLf & "Quest: " & QuestList(QuestRequerida).nombre
             End If
 
            
-            tmpStr = tmpStr & vbCrLf & "OBJETIVOS" & vbCrLf
+            tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_OBJETIVOS") & vbCrLf
            
             tmpByte = Reader.ReadInt8
 
@@ -7231,7 +6903,7 @@ Private Sub HandleQuestDetails()
                 FrmQuests.detalle.Text = FrmQuests.detalle.Text & SkillsNames(RequiredSkill) & ": " & RequiredValue
             End If
             
-            tmpStr = tmpStr & vbCrLf & "RECOMPENSAS" & vbCrLf
+            tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_RECOMPENSAS") & vbCrLf
             Dim tmplong As Long
             tmplong = Reader.ReadInt32
            
@@ -7463,28 +7135,28 @@ Public Sub HandleNpcQuestListSend()
             Select Case estado
                 
                 Case 0
-                    subelemento.SubItems(1) = "Disponible"
+                    subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_DISPONIBLE")
                     subelemento.ForeColor = vbWhite
                     subelemento.ListSubItems(1).ForeColor = vbWhite
 
                 Case 1
-                    subelemento.SubItems(1) = "En Curso"
+                    subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_EN_CURSO")
                     subelemento.ForeColor = RGB(255, 175, 10)
                     subelemento.ListSubItems(1).ForeColor = RGB(255, 175, 10)
 
                 Case 2
                     If Repetible Then
-                        subelemento.SubItems(1) = "Repetible"
+                        subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_REPETIBLE")
                         subelemento.ForeColor = RGB(180, 180, 180)
                         subelemento.ListSubItems(1).ForeColor = RGB(180, 180, 180)
                     Else
-                        subelemento.SubItems(1) = "Finalizada"
+                        subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_FINALIZADA")
                         subelemento.ForeColor = RGB(15, 140, 50)
                         subelemento.ListSubItems(1).ForeColor = RGB(15, 140, 50)
                     End If
 
                 Case 3
-                    subelemento.SubItems(1) = "No disponible"
+                    subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_NO_DISPONIBLE")
                     subelemento.ForeColor = RGB(255, 10, 10)
                     subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
             End Select
@@ -7508,25 +7180,22 @@ errhandler:
 End Sub
 
 Private Sub HandleShowPregunta()
-
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
-    
     On Error GoTo errhandler
-    
-    Dim msg As String
 
-    msg = Reader.ReadString8()
-    PreguntaScreen = msg
+    Dim MsgID As Integer
+    Dim param As String
+    MsgID = Reader.ReadInt16()
+    param = Reader.ReadString8()
+    PreguntaScreen = Locale_Parse_ServerMessage(MsgID, Param)
     Pregunta = True
 
     Exit Sub
+
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPregunta", Erl)
 End Sub
+
+
 
 Private Sub HandleDatosGrupo()
     
@@ -7794,24 +7463,6 @@ Private Sub HandleCraftingResult()
     End If
 End Sub
 
-Private Sub HandleForceUpdate()
-    On Error GoTo HandleCerrarleCliente_Err
-    
-    Call MsgBox(JsonLanguage.Item("MENSAJEBOX_NUEVA_VERSION"), vbOKOnly, "Argentum 20 - Noland Studios")
-    
-    Shell App.path & "\..\..\Launcher\LauncherAO20.exe"
-    
-    EngineRun = False
-
-    Call CloseClient
-    
-    Exit Sub
-
-HandleCerrarleCliente_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCerrarleCliente", Erl)
-    
-End Sub
-
 Public Sub HandleAnswerReset()
     On Error GoTo errhandler
 
@@ -7856,7 +7507,7 @@ Public Sub HandlePelearConPezEspecial()
     ContadorIntentosPescaEspecial_Fallados = 0
     ContadorIntentosPescaEspecial_Acertados = 0
     startTimePezEspecial = GetTickCount()
-    Call Char_Dialog_Set(UserCharIndex, "Oh! Creo que tengo un super pez en mi linea, intentare obtenerlo con la letra P", &H1FFFF, 200, 130)
+    Call Char_Dialog_Set(UserCharIndex, JsonLanguage.Item("MENSAJE_SUPER_PEZ"), &H1FFFF, 200, 130)
     Exit Sub
 errhandler:
 
@@ -7905,7 +7556,7 @@ Public Sub HandleShopInit()
             ObjShop(i).Valor = Reader.ReadInt32
             ObjShop(i).Name = Reader.ReadString8
              
-            Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " (Valor: " & ObjShop(i).Valor & ")", i - 1)
+            Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & ")", i - 1)
         Next i
         frmShopAO20.Show , GetGameplayForm()
  
@@ -7962,10 +7613,7 @@ End Sub
 
 Public Sub HandleObjQuestListSend()
 
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     'Recibe y maneja el paquete QuestListSend del servidor.
-    'Last modified: 29/08/2021 by HarThaoS
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
     On Error GoTo errhandler
 
@@ -8075,28 +7723,28 @@ Public Sub HandleObjQuestListSend()
     Select Case estado
 
         Case 0
-            subelemento.SubItems(1) = "Disponible"
+            subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_DISPONIBLE")
             subelemento.ForeColor = vbWhite
             subelemento.ListSubItems(1).ForeColor = vbWhite
 
         Case 1
-            subelemento.SubItems(1) = "En Curso"
+            subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_EN_CURSO")
             subelemento.ForeColor = RGB(255, 175, 10)
             subelemento.ListSubItems(1).ForeColor = RGB(255, 175, 10)
 
         Case 2
             If Repetible Then
-                subelemento.SubItems(1) = "Repetible"
+                subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_REPETIBLE")
                 subelemento.ForeColor = RGB(180, 180, 180)
                 subelemento.ListSubItems(1).ForeColor = RGB(180, 180, 180)
             Else
-                subelemento.SubItems(1) = "Finalizada"
+                subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_FINALIZADA")
                 subelemento.ForeColor = RGB(15, 140, 50)
                 subelemento.ListSubItems(1).ForeColor = RGB(15, 140, 50)
             End If
 
         Case 3
-            subelemento.SubItems(1) = "No disponible"
+            subelemento.SubItems(1) = JsonLanguage.Item("MENSAJE_NO_DISPONIBLE")
             subelemento.ForeColor = RGB(255, 10, 10)
             subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
     End Select

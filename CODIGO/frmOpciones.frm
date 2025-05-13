@@ -146,7 +146,7 @@ Begin VB.Form frmOpciones
          Height          =   315
          ItemData        =   "frmOpciones.frx":0152
          Left            =   4800
-         List            =   "frmOpciones.frx":015C
+         List            =   "frmOpciones.frx":0154
          Style           =   2  'Dropdown List
          TabIndex        =   23
          Top             =   4290
@@ -156,9 +156,9 @@ Begin VB.Form frmOpciones
          BackColor       =   &H80000007&
          ForeColor       =   &H8000000B&
          Height          =   315
-         ItemData        =   "frmOpciones.frx":0176
+         ItemData        =   "frmOpciones.frx":0156
          Left            =   1440
-         List            =   "frmOpciones.frx":0180
+         List            =   "frmOpciones.frx":0158
          Style           =   2  'Dropdown List
          TabIndex        =   22
          Top             =   4290
@@ -169,9 +169,9 @@ Begin VB.Form frmOpciones
          BackColor       =   &H80000007&
          ForeColor       =   &H80000005&
          Height          =   315
-         ItemData        =   "frmOpciones.frx":0198
+         ItemData        =   "frmOpciones.frx":015A
          Left            =   3960
-         List            =   "frmOpciones.frx":01A2
+         List            =   "frmOpciones.frx":015C
          Style           =   2  'Dropdown List
          TabIndex        =   20
          Top             =   2880
@@ -321,9 +321,9 @@ Begin VB.Form frmOpciones
       Width           =   7560
       Begin VB.ComboBox cboLuces 
          Height          =   315
-         ItemData        =   "frmOpciones.frx":01B8
+         ItemData        =   "frmOpciones.frx":015E
          Left            =   240
-         List            =   "frmOpciones.frx":01C5
+         List            =   "frmOpciones.frx":016B
          TabIndex        =   21
          Top             =   3960
          Width           =   2175
@@ -751,7 +751,7 @@ Private Sub cbLenguaje_Click()
         End Select
         
         If MsgBox(message, vbYesNo, title) = vbYes Then
-            Call SaveSetting("OPCIONES", "Localization", cbLenguaje.ListIndex + 1)
+            Call SaveSetting("OPCIONES", "Language", cbLenguaje.ListIndex + 1)
         End If
     End If
     
@@ -1171,7 +1171,13 @@ Private Sub Form_Load()
     PanelVideo.Picture = LoadInterface("configuracion-video.bmp")
     PanelAudio.Picture = LoadInterface("configuracion-audio.bmp")
     
-    
+    Call cbRenderNpcs.AddItem(JsonLanguage.Item("MENSAJE_503")) ' Texto
+    Call cbRenderNpcs.AddItem(JsonLanguage.Item("MENSAJE_504")) ' Renderizado
+    Call cbTutorial.AddItem(JsonLanguage.Item("MENSAJE_505")) ' Desactivado
+    Call cbTutorial.AddItem(JsonLanguage.Item("MENSAJE_506")) ' Activado
+    Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_578"))  ' Español
+    Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_579"))  ' Inglés
+   
     selected_light = GetSetting("VIDEO", "LuzGlobal")
     
     If LenB(selected_light) = 0 Then selected_light = 0
@@ -1494,9 +1500,9 @@ Public Sub Init()
     Alpha.Value = AlphaMacro
     
     Call cbBloqueoHechizos.Clear
-    Call cbBloqueoHechizos.AddItem("Bloqueo en soltar")
-    Call cbBloqueoHechizos.AddItem("Bloqueo al lanzar")
-    Call cbBloqueoHechizos.AddItem("Sin bloqueo")
+    Call cbBloqueoHechizos.AddItem(JsonLanguage.Item("MENSAJE_500")) ' Bloqueo en soltar
+    Call cbBloqueoHechizos.AddItem(JsonLanguage.Item("MENSAJE_501")) ' Bloqueo al lanzar
+    Call cbBloqueoHechizos.AddItem(JsonLanguage.Item("MENSAJE_502")) ' Sin bloqueo
     cbBloqueoHechizos.ListIndex = ModoHechizos
     scrSens.Value = SensibilidadMouse
     

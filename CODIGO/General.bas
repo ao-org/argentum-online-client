@@ -245,19 +245,15 @@ End Function
 Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, Optional ByVal bCrLf As Boolean = True, Optional ByVal Alignment As Byte = rtfLeft)
     
     On Error GoTo AddtoRichTextBox2_Err
-    
-    
-    '****************************************************
+
     'Adds text to a Richtext box at the bottom.
     'Automatically scrolls to new text.
     'Text box MUST be multiline and have a 3D apperance!
-    '****************************************************
-    'Pablo (ToxicWaste) 01/26/2007 : Now the list refeshes properly.
-    'Juan Martin Sotuyo Dodero (Maraxus) 03/29/2007 : Replaced ToxicWaste's code for extra performance.
-    'Jopi 17/08/2019 : Consola transparente.
-    'Jopi 17/08/2019 : Ahora podes especificar el alineamiento del texto.
-    'Ladder 17/12/20 : agrego que la barra no se nos baje si estamos haciedno scroll. Gracias barrin tkm
-    '****************************************************
+    'Now the list refeshes properly.
+    'Replaced ToxicWaste's code for extra performance.
+    'Consola transparente.
+    'Ahora podes especificar el alineamiento del texto.
+    'agrego que la barra no se nos baje si estamos haciedno scroll.
     
         Dim bUrl As Boolean
         Dim sMax As Long
@@ -380,7 +376,7 @@ AddtoRichTextBox_Err:
     
 End Sub
 
-' WyroX: Copiado desde https://www.vbforums.com/showthread.php?727119-RESOLVED-VB2010-richtextbox-paragraph-space-width-seleted-and-RichTextBoxStreamType
+'Copiado desde https://www.vbforums.com/showthread.php?727119-RESOLVED-VB2010-richtextbox-paragraph-space-width-seleted-and-RichTextBoxStreamType
 Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, Optional ByVal LineSpacing As Long = 20)
     ' SpacingRule
     ' Type of line spacing. To use this member, set the PFM_SPACEAFTER flag in the dwMask member. This member can be one of the following values.
@@ -588,11 +584,9 @@ End Sub
 Function LegalCharacter(ByVal KeyAscii As Integer) As Boolean
     
     On Error GoTo LegalCharacter_Err
-    
 
-    '*****************************************************************
     'Only allow characters that are Win 95 filename compatible
-    '*****************************************************************
+
     'if backspace allow
     If KeyAscii = 8 Then
         LegalCharacter = True
@@ -630,9 +624,8 @@ LegalCharacter_Err:
 End Function
 
 Sub SetConnected()
-    '*****************************************************************
+
     'Sets the client to "Connect" mode
-    '*****************************************************************
     'Set Connected
     
     On Error GoTo SetConnected_Err
@@ -912,13 +905,9 @@ End Sub
 Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
     
     On Error GoTo ReadField_Err
-    
 
-    '*****************************************************************
     'Gets a field from a delimited string
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 11/15/2004
-    '*****************************************************************
+
     Dim i          As Long
 
     Dim LastPos    As Long
@@ -953,13 +942,9 @@ End Function
 Function FieldCount(ByRef Text As String, ByVal SepASCII As Byte) As Long
     
     On Error GoTo FieldCount_Err
-    
 
-    '*****************************************************************
     'Gets the number of fields in a delimited string
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 07/29/2007
-    '*****************************************************************
+
     Dim count     As Long
 
     Dim curPos    As Long
@@ -1236,9 +1221,8 @@ Public Function randomMap() As Integer
 End Function
 
 Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
-    '*****************************************************************
+
     'Writes a var to a text file
-    '*****************************************************************
     
     On Error GoTo WriteVar_Err
     
@@ -1256,11 +1240,9 @@ End Sub
 Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
     
     On Error GoTo GetVar_Err
-    
 
-    '*****************************************************************
     'Gets a Var from a text file
-    '*****************************************************************
+
     Dim sSpaces As String ' This will hold the input that the program will retrieve
     
     sSpaces = Space$(100) ' This tells the computer how long the longest string can be. If you want, you can change the number 100 to any number you wish
@@ -1282,11 +1264,8 @@ End Function
 Function GetVarOrDefault(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal DefaultValue As String) As String
     
     On Error GoTo GetVarOrDefault_Err
-    
 
-    '*****************************************************************
     'Gets a Var from a text file and if empty returns default value
-    '*****************************************************************
 
     GetVarOrDefault = GetVar(File, Main, Var)
     If GetVarOrDefault = vbNullString Then
@@ -1397,21 +1376,25 @@ LeerLineaComandos_Err:
 End Sub
 
 Private Sub InicializarNombres()
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 11/27/2005
+
     'Inicializa los nombres de razas, ciudades, clases, skills, atributos, etc.
-    '**************************************************************
     
     On Error GoTo InicializarNombres_Err
     
 
-    ListaRazas(eRaza.Humano) = "Humano"
-    ListaRazas(eRaza.Elfo) = "Elfo"
-    ListaRazas(eRaza.ElfoOscuro) = "Elfo Oscuro"
-    ListaRazas(eRaza.Gnomo) = "Gnomo"
-    ListaRazas(eRaza.Enano) = "Enano"
-    ListaRazas(eRaza.Orco) = "Orco"
+    ListaRazas(eRaza.Humano) = JsonLanguage.Item("MENSAJE_RAZA_HUMANO")
+    ListaRazas(eRaza.Elfo) = JsonLanguage.Item("MENSAJE_RAZA_ELFO")
+    ListaRazas(eRaza.ElfoOscuro) = JsonLanguage.Item("MENSAJE_RAZA_ELFO_OSCURO")
+    ListaRazas(eRaza.Gnomo) = JsonLanguage.Item("MENSAJE_RAZA_GNOMO")
+    ListaRazas(eRaza.Enano) = JsonLanguage.Item("MENSAJE_RAZA_ENANO")
+    ListaRazas(eRaza.Orco) = JsonLanguage.Item("MENSAJE_RAZA_ORCO")
+
+    ListaRazasEs.Add JsonLanguage.Item("MENSAJE_RAZA_HUMANO"), "Humano"
+    ListaRazasEs.Add JsonLanguage.Item("MENSAJE_RAZA_ELFO"), "Elfo"
+    ListaRazasEs.Add JsonLanguage.Item("MENSAJE_RAZA_ELFO_OSCURO"), "ElfoOscuro"
+    ListaRazasEs.Add JsonLanguage.Item("MENSAJE_RAZA_GNOMO"), "Gnomo"
+    ListaRazasEs.Add JsonLanguage.Item("MENSAJE_RAZA_ENANO"), "Enano"
+    ListaRazasEs.Add JsonLanguage.Item("MENSAJE_RAZA_ORCO"), "Orco"
         
     ListaCiudades(eCiudad.cUllathorpe) = "Ullathorpe"
     ListaCiudades(eCiudad.cNix) = "Nix"
@@ -1420,74 +1403,78 @@ Private Sub InicializarNombres()
     ListaCiudades(eCiudad.cArghal) = "Arghal"
     ListaCiudades(eCiudad.cForgat) = "Forgat"
 
-    ListaClases(eClass.Mage) = "Mago"
-    ListaClases(eClass.Cleric) = "Clérigo"
-    ListaClases(eClass.Warrior) = "Guerrero"
-    ListaClases(eClass.Assasin) = "Asesino"
-    ListaClases(eClass.Bard) = "Bardo"
-    ListaClases(eClass.Druid) = "Druida"
-    ListaClases(eClass.paladin) = "Paladín"
-    ListaClases(eClass.Hunter) = "Cazador"
-    ListaClases(eClass.Trabajador) = "Trabajador"
-    ListaClases(eClass.Pirat) = "Pirata"
-    ListaClases(eClass.Thief) = "Ladrón"
-    ListaClases(eClass.Bandit) = "Bandido"
+    ListaClases(eClass.Mage) = JsonLanguage.Item("MENSAJE_CLASE_MAGO")
+    ListaClases(eClass.Cleric) = JsonLanguage.Item("MENSAJE_CLASE_CLERIGO")
+    ListaClases(eClass.Warrior) = JsonLanguage.Item("MENSAJE_CLASE_GUERRERO")
+    ListaClases(eClass.Assasin) = JsonLanguage.Item("MENSAJE_CLASE_ASESINO")
+    ListaClases(eClass.Bard) = JsonLanguage.Item("MENSAJE_CLASE_BARDO")
+    ListaClases(eClass.Druid) = JsonLanguage.Item("MENSAJE_CLASE_DRUIDA")
+    ListaClases(eClass.paladin) = JsonLanguage.Item("MENSAJE_CLASE_PALADIN")
+    ListaClases(eClass.Hunter) = JsonLanguage.Item("MENSAJE_CLASE_CAZADOR")
+    ListaClases(eClass.Trabajador) = JsonLanguage.Item("MENSAJE_CLASE_TRABAJADOR")
+    ListaClases(eClass.Pirat) = JsonLanguage.Item("MENSAJE_CLASE_PIRATA")
+    ListaClases(eClass.Thief) = JsonLanguage.Item("MENSAJE_CLASE_LADRON")
+    ListaClases(eClass.Bandit) = JsonLanguage.Item("MENSAJE_CLASE_BANDIDO")
 
-    SkillsNames(eSkill.magia) = "Magia"
-    SkillsNames(eSkill.Robar) = "Robar"
-    SkillsNames(eSkill.Tacticas) = "Destreza en combate"
-    SkillsNames(eSkill.Armas) = "Combate con armas"
-    SkillsNames(eSkill.Meditar) = "Meditar"
-    SkillsNames(eSkill.Apuñalar) = "Apuñalar"
-    SkillsNames(eSkill.Ocultarse) = "Ocultarse"
-    SkillsNames(eSkill.Supervivencia) = "Supervivencia"
-    SkillsNames(eSkill.Comerciar) = "Comercio"
-    SkillsNames(eSkill.Defensa) = "Defensa con escudo"
-    SkillsNames(eSkill.Liderazgo) = "Liderazgo"
-    SkillsNames(eSkill.Proyectiles) = "Armas a distancia"
-    SkillsNames(eSkill.Wrestling) = "Combate sin armas"
-    SkillsNames(eSkill.Navegacion) = "Navegación"
-    SkillsNames(eSkill.equitacion) = "Equitación"
-    SkillsNames(eSkill.Resistencia) = "Resistencia mágica"
-    SkillsNames(eSkill.Talar) = "Tala"
-    SkillsNames(eSkill.Pescar) = "Pesca"
-    SkillsNames(eSkill.Mineria) = "Minería"
-    SkillsNames(eSkill.Herreria) = "Herrería"
-    SkillsNames(eSkill.Carpinteria) = "Carpintería"
-    SkillsNames(eSkill.Alquimia) = "Alquimia"
-    SkillsNames(eSkill.Sastreria) = "Sastrería"
-    SkillsNames(eSkill.Domar) = "Domar"
 
-    SkillsDesc(eSkill.magia) = "Los hechizos requieren un cierto número de puntos mágicos para ser usados. Sube lanzando cualquier hechizo."
-    SkillsDesc(eSkill.Robar) = "Aumenta las posibilidades de conseguir objetos u oro mientras robas. Se sube robando. Solo el ladrón puede robar objetos, las otras clases solo pueden robar oro."
-    SkillsDesc(eSkill.Tacticas) = "Aumenta la posibilidad de esquivar ataques. Cuantos más puntos tengas, mejor será tu evasión. Sube mientras peleas cuerpo a cuerpo."
-    SkillsDesc(eSkill.Armas) = "Aumenta las posibilidades de golpear al enemigo con un arma.Subes peleando cuerpo a cuerpo usando cualquier arma."
-    SkillsDesc(eSkill.Meditar) = "Aumenta la cantidad de mana que recuperamos al meditar. Se sube meditando. Al aumentar los puntos de esta habilidad, aumenta la mana que se recupera."
-    SkillsDesc(eSkill.Apuñalar) = "Aumenta la probabilidad de apuñalar. Se sube luchando cuerpo a cuerpo con dagas. Mientras mas skill tengas, mas posibilidad de apuñalar."
-    SkillsDesc(eSkill.Ocultarse) = "Esta habilidad es responsable de aumentar las posibilidades de esconderse. Se sube tratando de esconderse. Mientras mas skills, mas tiempo oculto. "
-    SkillsDesc(eSkill.Supervivencia) = "La supervivencia nos permitirá tomar agua de ríos, comer de los árboles y ver la vida de los NPCs Hostiles. También aumenta la velocidad que recuperamos energía o sanamos. Con 30 puntos podemos beber de los rios, con 40 puntos podemos comer de los arboles, con 50 puntos vemos el estado de los demas personajes y el tiempo exacto que le queda de paralizis a una criatura, con 75 puntos vemos la vida exacta de los npcs. Se sube combatiendo con las criaturas o prendiendo fogatas."
-    SkillsDesc(eSkill.Comerciar) = "Cuanto más puntos en comerciar tengas más baratas te saldrán las cosas en las tiendas. Sube tanto al comprar como al vender items a NPCs."
-    SkillsDesc(eSkill.Defensa) = "Aumenta las chances de defenderte con un escudo, mientras más puntos tengas, hay más probabilidad de rechazar el golpe del adversario."
-    SkillsDesc(eSkill.Liderazgo) = "Es la habilidad necesaria para crear un clan. Se sube manualmente."
-    SkillsDesc(eSkill.Proyectiles) = "Aumenta las probabilidades de pegarle al enemigo con un arco."
-    SkillsDesc(eSkill.Wrestling) = "Aumenta las probabilidades de impactar al enemigo en la lucha sin armas, estupidizar o paralizar."
-    SkillsDesc(eSkill.Navegacion) = "Necesaria para poder utilizar traje de baño, barcas, galeras o galeones."
-    SkillsDesc(eSkill.equitacion) = " Necesaria para equipar una montura."
-    SkillsDesc(eSkill.Resistencia) = "Sirve para que los hechizos no te peguen tan fuerte, mientras más puntos tengas, menos es el daño mágico que recibes. Se sube cuando un NPC o una persona te ataca con hechizos."
-    SkillsDesc(eSkill.Talar) = "Aumenta la velocidad a la que recoletas madera de los árboles."
-    SkillsDesc(eSkill.Pescar) = "Aumenta la velocidad a la que capturas peces."
-    SkillsDesc(eSkill.Mineria) = "Aumenta la velocidad a la que extraes minerales de los yacimientos."
-    SkillsDesc(eSkill.Herreria) = "Te permite construir mejores objetos de herrería."
-    SkillsDesc(eSkill.Carpinteria) = "Te permite construir mejores objetos de carpintería."
-    SkillsDesc(eSkill.Alquimia) = "Te permite crear pociones más poderosas."
-    SkillsDesc(eSkill.Sastreria) = "Te permite confeccionar mejores vestimentas."
-    SkillsDesc(eSkill.Domar) = "Aumenta tu habilidad para domar animales."
+    SkillsNames(eSkill.magia) = JsonLanguage.Item("MENSAJE_SKILL_MAGIA")
+    SkillsNames(eSkill.Robar) = JsonLanguage.Item("MENSAJE_SKILL_ROBAR")
+    SkillsNames(eSkill.Tacticas) = JsonLanguage.Item("MENSAJE_SKILL_TACTICAS")
+    SkillsNames(eSkill.Armas) = JsonLanguage.Item("MENSAJE_SKILL_ARMAS")
+    SkillsNames(eSkill.Meditar) = JsonLanguage.Item("MENSAJE_SKILL_MEDITAR")
+    SkillsNames(eSkill.Apuñalar) = JsonLanguage.Item("MENSAJE_SKILL_APUÑALAR")
+    SkillsNames(eSkill.Ocultarse) = JsonLanguage.Item("MENSAJE_SKILL_OCULTARSE")
+    SkillsNames(eSkill.Supervivencia) = JsonLanguage.Item("MENSAJE_SKILL_SUPERVIVENCIA")
+    SkillsNames(eSkill.Comerciar) = JsonLanguage.Item("MENSAJE_SKILL_COMERCIAR")
+    SkillsNames(eSkill.Defensa) = JsonLanguage.Item("MENSAJE_SKILL_DEFENSA")
+    SkillsNames(eSkill.Liderazgo) = JsonLanguage.Item("MENSAJE_SKILL_LIDERAZGO")
+    SkillsNames(eSkill.Proyectiles) = JsonLanguage.Item("MENSAJE_SKILL_PROYECTILES")
+    SkillsNames(eSkill.Wrestling) = JsonLanguage.Item("MENSAJE_SKILL_WRESTLING")
+    SkillsNames(eSkill.Navegacion) = JsonLanguage.Item("MENSAJE_SKILL_NAVEGACION")
+    SkillsNames(eSkill.equitacion) = JsonLanguage.Item("MENSAJE_SKILL_EQUITACION")
+    SkillsNames(eSkill.Resistencia) = JsonLanguage.Item("MENSAJE_SKILL_RESISTENCIA")
+    SkillsNames(eSkill.Talar) = JsonLanguage.Item("MENSAJE_SKILL_TALAR")
+    SkillsNames(eSkill.Pescar) = JsonLanguage.Item("MENSAJE_SKILL_PESCAR")
+    SkillsNames(eSkill.Mineria) = JsonLanguage.Item("MENSAJE_SKILL_MINERIA")
+    SkillsNames(eSkill.Herreria) = JsonLanguage.Item("MENSAJE_SKILL_HERRERIA")
+    SkillsNames(eSkill.Carpinteria) = JsonLanguage.Item("MENSAJE_SKILL_CARPINTERIA")
+    SkillsNames(eSkill.Alquimia) = JsonLanguage.Item("MENSAJE_SKILL_ALQUIMIA")
+    SkillsNames(eSkill.Sastreria) = JsonLanguage.Item("MENSAJE_SKILL_SASTRERIA")
+    SkillsNames(eSkill.Domar) = JsonLanguage.Item("MENSAJE_SKILL_DOMAR")
+
+
+    SkillsDesc(eSkill.magia) = JsonLanguage.Item("MENSAJE_SKILL_DESC_MAGIA")
+    SkillsDesc(eSkill.Robar) = JsonLanguage.Item("MENSAJE_SKILL_DESC_ROBAR")
+    SkillsDesc(eSkill.Tacticas) = JsonLanguage.Item("MENSAJE_SKILL_DESC_TACTICAS")
+    SkillsDesc(eSkill.Armas) = JsonLanguage.Item("MENSAJE_SKILL_DESC_ARMAS")
+    SkillsDesc(eSkill.Meditar) = JsonLanguage.Item("MENSAJE_SKILL_DESC_MEDITAR")
+    SkillsDesc(eSkill.Apuñalar) = JsonLanguage.Item("MENSAJE_SKILL_DESC_APUÑALAR")
+    SkillsDesc(eSkill.Ocultarse) = JsonLanguage.Item("MENSAJE_SKILL_DESC_OCULTARSE")
+    SkillsDesc(eSkill.Supervivencia) = JsonLanguage.Item("MENSAJE_SKILL_DESC_SUPERVIVENCIA")
+    SkillsDesc(eSkill.Comerciar) = JsonLanguage.Item("MENSAJE_SKILL_DESC_COMERCIAR")
+    SkillsDesc(eSkill.Defensa) = JsonLanguage.Item("MENSAJE_SKILL_DESC_DEFENSA")
+    SkillsDesc(eSkill.Liderazgo) = JsonLanguage.Item("MENSAJE_SKILL_DESC_LIDERAZGO")
+    SkillsDesc(eSkill.Proyectiles) = JsonLanguage.Item("MENSAJE_SKILL_DESC_PROYECTILES")
+    SkillsDesc(eSkill.Wrestling) = JsonLanguage.Item("MENSAJE_SKILL_DESC_WRESTLING")
+    SkillsDesc(eSkill.Navegacion) = JsonLanguage.Item("MENSAJE_SKILL_DESC_NAVEGACION")
+    SkillsDesc(eSkill.equitacion) = JsonLanguage.Item("MENSAJE_SKILL_DESC_EQUITACION")
+    SkillsDesc(eSkill.Resistencia) = JsonLanguage.Item("MENSAJE_SKILL_DESC_RESISTENCIA")
+    SkillsDesc(eSkill.Talar) = JsonLanguage.Item("MENSAJE_SKILL_DESC_TALAR")
+    SkillsDesc(eSkill.Pescar) = JsonLanguage.Item("MENSAJE_SKILL_DESC_PESCAR")
+    SkillsDesc(eSkill.Mineria) = JsonLanguage.Item("MENSAJE_SKILL_DESC_MINERIA")
+    SkillsDesc(eSkill.Herreria) = JsonLanguage.Item("MENSAJE_SKILL_DESC_HERRERIA")
+    SkillsDesc(eSkill.Carpinteria) = JsonLanguage.Item("MENSAJE_SKILL_DESC_CARPINTERIA")
+    SkillsDesc(eSkill.Alquimia) = JsonLanguage.Item("MENSAJE_SKILL_DESC_ALQUIMIA")
+    SkillsDesc(eSkill.Sastreria) = JsonLanguage.Item("MENSAJE_SKILL_DESC_SASTRERIA")
+    SkillsDesc(eSkill.Domar) = JsonLanguage.Item("MENSAJE_SKILL_DESC_DOMAR")
+
     
-    AtributosNames(eAtributos.Fuerza) = "Fuerza"
-    AtributosNames(eAtributos.Agilidad) = "Agilidad"
-    AtributosNames(eAtributos.Inteligencia) = "Inteligencia"
-    AtributosNames(eAtributos.Constitucion) = "Constitucion"
-    AtributosNames(eAtributos.Carisma) = "Carisma"
+    AtributosNames(eAtributos.Fuerza) = JsonLanguage.Item("MENSAJE_ATRIBUTO_FUERZA")
+    AtributosNames(eAtributos.Agilidad) = JsonLanguage.Item("MENSAJE_ATRIBUTO_AGILIDAD")
+    AtributosNames(eAtributos.Inteligencia) = JsonLanguage.Item("MENSAJE_ATRIBUTO_INTELIGENCIA")
+    AtributosNames(eAtributos.Constitucion) = JsonLanguage.Item("MENSAJE_ATRIBUTO_CONSTITUCION")
+    AtributosNames(eAtributos.Carisma) = JsonLanguage.Item("MENSAJE_ATRIBUTO_CARISMA")
+
 
     
     Exit Sub
@@ -1502,11 +1489,8 @@ End Sub
 ' Removes all text from the console and dialogs
 
 Public Sub CleanDialogs()
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 11/27/2005
+
     'Removes all text from the console and dialogs
-    '**************************************************************
     'Clean console and dialogs
     'frmMain.RecTxt.Text = vbNullString
     
@@ -1528,11 +1512,8 @@ CleanDialogs_Err:
 End Sub
 
 Public Sub CloseClient()
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modify Date: 8/14/2007
+
     'Frees all used resources, cleans up and leaves
-    '**************************************************************
     ' Allow new instances of the client to be opened
     
     On Error GoTo CloseClient_Err
@@ -1583,13 +1564,9 @@ End Sub
 Public Function General_Field_Read(ByVal field_pos As Long, ByVal Text As String, ByVal delimiter As String) As String
     
     On Error GoTo General_Field_Read_Err
-    
 
-    '*****************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 11/15/2004
     'Gets a field from a delimited string
-    '*****************************************************************
+
     Dim i          As Long
 
     Dim LastPos    As Long
@@ -1623,14 +1600,10 @@ End Function
 Public Function General_Field_Count(ByVal Text As String, ByVal delimiter As Byte) As Long
     
     On Error GoTo General_Field_Count_Err
-    
 
-    '*****************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
     'Count the number of fields in a delimited string
-    '*****************************************************************
     'If string is empty there aren't any fields
+    
     If Len(Text) = 0 Then
         Exit Function
 
@@ -1666,13 +1639,9 @@ End Function
 Public Function General_Get_Elapsed_Time() As Single
     
     On Error GoTo General_Get_Elapsed_Time_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
     'Gets the time that past since the last call
-    '**************************************************************
+
     Dim Start_Time    As Currency
 
     Static end_time   As Currency
@@ -1793,9 +1762,8 @@ On Error GoTo errhandler
         #End If
     End If
 Exit Function
-
 errhandler:
-    MsgBox "Error al cargar la interface: " & FileName
+    frmDebug.add_text_tracebox "Error loading interface bitmap: " & FileName
 
 End Function
 
@@ -1812,7 +1780,7 @@ On Error GoTo errhandler
 Exit Function
 
 errhandler:
-    MsgBox "Error al cargar minimapa: Mapa" & map & ".bmp"
+    frmDebug.add_text_tracebox "Error loading minimap: " & map & ".bmp"
 
 End Function
 
@@ -2047,9 +2015,8 @@ End Function
 
 Public Sub SetNpcsRenderText()
 
-    '************************************************************************************.
     ' Carga el JSON con las traducciones en un objeto para su uso a lo largo del proyecto
-    '************************************************************************************
+
     Dim render_text As String
     render_text = GetSetting("OPCIONES", "NpcsEnRender")
     

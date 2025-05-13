@@ -8,7 +8,7 @@ Begin VB.Form FrmKeyInv
    ClientWidth     =   3600
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -16,9 +16,9 @@ Begin VB.Form FrmKeyInv
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   235
+   ScaleHeight     =   188
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   300
+   ScaleWidth      =   240
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.PictureBox interface 
@@ -29,7 +29,7 @@ Begin VB.Form FrmKeyInv
       ClipControls    =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -40,9 +40,9 @@ Begin VB.Form FrmKeyInv
       Height          =   1050
       Left            =   495
       MousePointer    =   99  'Custom
-      ScaleHeight     =   88
+      ScaleHeight     =   70
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   219
+      ScaleWidth      =   175
       TabIndex        =   0
       TabStop         =   0   'False
       Top             =   1245
@@ -53,7 +53,7 @@ Begin VB.Form FrmKeyInv
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -157,7 +157,7 @@ Private Sub Form_Activate()
     On Error GoTo Form_Activate_Err
     
     If InvKeys.OBJIndex(1) = 0 Then
-        NombreLlave.Caption = "Aquí aparecerán las llaves que consigas"
+        NombreLlave.Caption = JsonLanguage.Item("MENSAJE_571")
     End If
     
     Exit Sub

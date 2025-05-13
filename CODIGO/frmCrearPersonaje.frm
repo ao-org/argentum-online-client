@@ -81,7 +81,7 @@ Begin VB.Form frmCrearPersonaje
       Height          =   300
       ItemData        =   "frmCrearPersonaje.frx":0014
       Left            =   13680
-      List            =   "frmCrearPersonaje.frx":001E
+      List            =   "frmCrearPersonaje.frx":0016
       Style           =   2  'Dropdown List
       TabIndex        =   2
       Top             =   5040
@@ -101,9 +101,9 @@ Begin VB.Form frmCrearPersonaje
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   300
-      ItemData        =   "frmCrearPersonaje.frx":0031
+      ItemData        =   "frmCrearPersonaje.frx":0018
       Left            =   13680
-      List            =   "frmCrearPersonaje.frx":0033
+      List            =   "frmCrearPersonaje.frx":001A
       Style           =   2  'Dropdown List
       TabIndex        =   0
       Top             =   3840
@@ -675,6 +675,8 @@ Private Sub Form_Load()
     Call SetRGBA(COLOR_GREEN(2), 0, 255, 0)
     Call SetRGBA(COLOR_GREEN(3), 0, 255, 0)
     
+    lstGenero.AddItem JsonLanguage.Item("MENSAJE_576") ' Hombre
+    lstGenero.AddItem JsonLanguage.Item("MENSAJE_577") ' Mujer
 
     Exit Sub
 
@@ -693,7 +695,7 @@ Private Sub lstProfesion_Click()
     'Dim i As Byte
     Select Case (lstProfesion.List(lstProfesion.ListIndex))
 
-        Case Is = "Mago"
+        Case Is = "Mago", "Mage"
             RazaRecomendada = "Gnomo / Elfo / Humano / Elfo Drow"
             CPBody = 1
             CPBodyE = 52
@@ -703,7 +705,7 @@ Private Sub lstProfesion_Click()
             CPAura = "35532:&HDD7C40:0:248"
 
             'CPHead=
-        Case Is = "Paladin"
+        Case Is = "Paladin", "Paladin"
             RazaRecomendada = "Humano / Elfo Drow / Elfo"
             CPBody = 1
             CPBodyE = 52
@@ -712,7 +714,7 @@ Private Sub lstProfesion_Click()
             CPEscudo = 72
             CPAura = "35448:&HFFF306:0:248"
 
-        Case Is = "Cazador"
+        Case Is = "Cazador", "Hunter"
             RazaRecomendada = "Enano / Humano"
             CPBody = 1
             CPBodyE = 52
@@ -721,7 +723,7 @@ Private Sub lstProfesion_Click()
             CPEscudo = 51
             CPAura = "20200:&H904D17:0:248"
 
-        Case Is = "Guerrero"
+        Case Is = "Guerrero", "Warrior"
             RazaRecomendada = "Enano / Humano"
             CPBody = 1
             CPBodyE = 52
@@ -730,7 +732,7 @@ Private Sub lstProfesion_Click()
             CPEscudo = 73
             CPAura = "35498:&H8700CE:0:248"
 
-        Case Is = "Bardo"
+        Case Is = "Bardo", "Bard"
             RazaRecomendada = "Elfo / Humano"
             CPBody = 1
             CPBodyE = 52
@@ -739,7 +741,7 @@ Private Sub lstProfesion_Click()
             CPEscudo = 48
             CPAura = "35445:&H800080:0:248"
 
-        Case Is = "Clerigo"
+        Case Is = "Clerigo", "Cleric"
             RazaRecomendada = "Humano / Elfo Drow / Elfo"
             CPBody = 1
             CPBodyE = 52
@@ -748,7 +750,7 @@ Private Sub lstProfesion_Click()
             CPEscudo = 60
             CPAura = "35443:&H83CEDD:0:248"
 
-        Case Is = "Asesino"
+        Case Is = "Asesino", "Assassin"
             RazaRecomendada = "Humano / ElfoDrow"
             CPBody = 1
             CPBodyE = 52
@@ -757,7 +759,7 @@ Private Sub lstProfesion_Click()
             CPEscudo = 58
             CPAura = "35432:&HFB0813:0:248"
 
-        Case Is = "Druida"
+        Case Is = "Druida", "Druid"
             RazaRecomendada = "Humano / Elfo"
             CPBody = 1
             CPBodyE = 52
@@ -766,7 +768,7 @@ Private Sub lstProfesion_Click()
             CPEscudo = 40
             CPAura = "35466:&HF622D:0:248"
 
-        Case Is = "Trabajador"
+        Case Is = "Trabajador", "Worker"
             RazaRecomendada = "Enano / Humano"
             CPBody = 1
             CPBodyE = 52
@@ -775,7 +777,7 @@ Private Sub lstProfesion_Click()
             CPEscudo = 0
             CPAura = ""
 
-        Case "Bandido", "Ladrón", "Pirata"
+        Case "Bandido", "Ladrón", "Pirata", "Bandit", "Thief", "Pirate"
             RazaRecomendada = "Enano / Humano"
             CPBody = 1
             CPBodyE = 52
@@ -971,8 +973,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
             
         If Right$(userName, 1) = " " Then
             userName = RTrim$(userName)
-
-            'MsgBox "Nombre invalido, se han removido los espacios al final del nombre"
         End If
             
         UserStats.Raza = lstRaza.ListIndex + 1
@@ -986,7 +986,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         UserAtributos(4) = Val(lbConstitucion.Caption) + Val(modConstitucion.Caption)
         UserAtributos(4) = Val(lbCarisma.Caption) + Val(modCarisma.Caption)
             
-        'Ladder Atributos Negativos
+        'Atributos Negativos
         If UserAtributos(1) < 1 Then UserAtributos(1) = 1
         If UserAtributos(2) < 1 Then UserAtributos(2) = 1
         If UserAtributos(3) < 1 Then UserAtributos(3) = 1

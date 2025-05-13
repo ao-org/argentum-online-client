@@ -102,13 +102,9 @@ Dim Timer(1 To CANTIDADTIMERS) As Timer
 Public Sub SetInterval(ByVal TimerIndex As TimersIndex, ByVal Interval As Long)
     
     On Error GoTo SetInterval_Err
-    
 
-    '*************************************************
-    'Author: Nacho (Integer)
-    'Last modified:
     'Desc: Sets a new interval for a timer.
-    '*************************************************
+
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
     
     Timer(TimerIndex).Interval = Interval
@@ -131,13 +127,9 @@ End Sub
 Public Sub Start(ByVal TimerIndex As TimersIndex)
     
     On Error GoTo Start_Err
-    
 
-    '*************************************************
-    'Author: Nacho (Integer)
-    'Last modified:
     'Desc: Starts running the Timer.
-    '*************************************************
+
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
     
     Timer(TimerIndex).Run = True 'We allow the Timer to run.
@@ -160,13 +152,9 @@ End Sub
 Public Sub Continue(ByVal TimerIndex As TimersIndex)
     
     On Error GoTo Continue_Err
-    
 
-    '*************************************************
-    'Author: Nacho (Integer)
-    'Last modified:
     'Desc: Continue our timer from where we had stopped it.
-    '*************************************************
+
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
     
     Timer(TimerIndex).Run = True 'We allow the Timer to run.
@@ -192,13 +180,9 @@ End Sub
 Public Sub Pause(ByVal TimerIndex As TimersIndex)
     
     On Error GoTo Pause_Err
-    
 
-    '*************************************************
-    'Author: Nacho (Integer)
-    'Last modified:
     'Desc: Pauses the timer.
-    '*************************************************
+
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
     
     Timer(TimerIndex).Run = False 'Don´t allow the timer to run.
@@ -225,15 +209,11 @@ End Sub
 Public Function Check(ByVal TimerIndex As TimersIndex, Optional Restart As Boolean = True) As Boolean
     
     On Error GoTo Check_Err
-    
 
-    '*************************************************
-    'Author: Nacho Agustin (Integer)
-    'Last modified: 08/26/06
-    'Modification: NIGO: Added Restart as boolean
+    'Added Restart as boolean
     'Desc: Checks if the Timer has alredy "ticked"
     'Returns: True if it has ticked, False if not.
-    '*************************************************
+
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Function
     
     If Not Timer(TimerIndex).Run Then Exit Function 'If we weren´t allowed to run, exit function
@@ -267,13 +247,9 @@ End Function
 Public Sub Restart(ByVal TimerIndex As TimersIndex)
     
     On Error GoTo Restart_Err
-    
 
-    '*************************************************
-    'Author: Nacho Agustin (Integer)
-    'Last modified:
     'Desc: Restarts timer
-    '*************************************************
+
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
     
     Timer(TimerIndex).StartTick = FrameTime

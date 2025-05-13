@@ -87,11 +87,7 @@ Private MainNodes  As Long
 
 Private Sub Class_Initialize()
 
-    '**************************************************************
-    'Author: Juan Martin Sotuyo Dodero
-    'Last Modify Date: 5/01/2006
-    '
-    '**************************************************************
+
 End Sub
 
 ''
@@ -101,13 +97,7 @@ End Sub
 Private Sub Class_Terminate()
     
     On Error GoTo Class_Terminate_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martin Sotuyo Dodero
-    'Last Modify Date: 5/01/2006
-    '
-    '**************************************************************
     Dim i As Long
     
     'Clean up
@@ -141,13 +131,9 @@ End Sub
 Public Sub Initialize(ByVal File As String)
     
     On Error GoTo Initialize_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martin Sotuyo Dodero
-    'Last Modify Date: 27/07/2006
     'Opens the requested file and loads it's data into memory
-    '**************************************************************
+
     Dim handle As Integer
 
     Dim Text   As String
@@ -250,14 +236,10 @@ Private Sub SortChildNodes(ByRef Node As MainNode, _
                            ByVal Last As Integer)
     
     On Error GoTo SortChildNodes_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martin Sotuyo Dodero
-    'Last Modify Date: 5/01/2006
     'Sorts the list of values in a given MainNode using quicksort,
     'this allows the use of Binary Search for faster searches
-    '**************************************************************
+
     Dim Min  As Integer      'First item in the list
 
     Dim max  As Integer      'Last item in the list
@@ -315,14 +297,10 @@ End Sub
 Private Sub SortMainNodes(ByVal First As Integer, ByVal Last As Integer)
     
     On Error GoTo SortMainNodes_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martin Sotuyo Dodero
-    'Last Modify Date: 5/01/2006
     'Sorts the MainNodes list using quicksort,
     'this allows the use of Binary Search for faster searches
-    '**************************************************************
+
     Dim Min  As Integer      'First item in the list
 
     Dim max  As Integer      'Last item in the list
@@ -378,13 +356,9 @@ End Sub
 Public Function GetValue(ByVal Main As String, ByVal Key As String)
     
     On Error GoTo GetValue_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martin Sotuyo Dodero
-    'Last Modify Date: 5/01/2006
     'Returns a value if the key and main node exist, or a nullstring otherwise
-    '**************************************************************
+
     Dim i As Long
     Dim j As Long
     Dim retval As String
@@ -423,13 +397,9 @@ End Function
 Public Sub ChangeValue(ByVal Main As String, ByVal Key As String, ByVal Value As String)
     
     On Error GoTo ChangeValue_Err
-    
 
-    '**************************************************************
-    'Author: ZaMa
-    'Last Modify Date: 27/05/2009
     'If the key and main node exist, changes the value
-    '**************************************************************
+
     Dim i As Long
 
     Dim j As Long
@@ -469,14 +439,10 @@ End Sub
 Private Function FindKey(ByRef Node As MainNode, ByVal Key As String) As Long
     
     On Error GoTo FindKey_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martin Sotuyo Dodero
-    'Last Modify Date: 5/01/2006
     'Returns the index of the value which key matches the requested one,
     'or the negation of the position were it should be if not found
-    '**************************************************************
+
     Dim Min As Long
 
     Dim max As Long
@@ -524,14 +490,10 @@ End Function
 Private Function FindMain(ByVal Name As String) As Long
     
     On Error GoTo FindMain_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martin Sotuyo Dodero
-    'Last Modify Date: 5/01/2006
     'Returns the index of the MainNode which name matches the requested one,
     'or the negation of the position were it should be if not found
-    '**************************************************************
+
     Dim Min As Long
 
     Dim max As Long
@@ -577,11 +539,8 @@ End Function
 ' @returns  True if the key exists, false otherwise.
 
 Public Function KeyExists(ByVal Name As String) As Boolean
-    '**************************************************************
-    'Author: Juan Martin Sotuyo Dodero
-    'Last Modify Date: 04/01/2008
+
     'Returns true of the key exists, false otherwise.
-    '**************************************************************
     
     On Error GoTo KeyExists_Err
     
@@ -599,13 +558,7 @@ End Function
 Private Function AddNode(ByRef Name As String) As Long
     
     On Error GoTo AddNode_Err
-    
 
-    '**************************************************************
-    'Author: Torres Patricio (Pato)
-    'Last Modify Date: 10/10/2010
-    '
-    '**************************************************************
     Dim i       As Long
 
     Dim MainPos As Long
@@ -649,13 +602,7 @@ Private Function AddKey(ByRef Main As String, _
                         Optional ByRef Value As String = vbNullString) As Long
     
     On Error GoTo AddKey_Err
-    
 
-    '**************************************************************
-    'Author: Torres Patricio (Pato)
-    'Last Modify Date: 10/10/2010
-    '
-    '**************************************************************
     Dim MainPos As Long
 
     Dim KeyPos  As Long
@@ -705,13 +652,7 @@ End Function
 Public Sub DumpFile(ByRef File As String)
     
     On Error GoTo DumpFile_Err
-    
 
-    '**************************************************************
-    'Author: Torres Patricio (Pato)
-    'Last Modify Date: 10/10/2010
-    '
-    '**************************************************************
     Dim hFile As Integer
 
     Dim i     As Long

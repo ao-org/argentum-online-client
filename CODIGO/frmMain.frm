@@ -2743,7 +2743,7 @@ Public Sub inventoryClick()
     On Error GoTo inventoryClick_Err
     If picInv.visible Then Exit Sub
 
-    Call SelectInvenrotyTab
+    Call SelectInventoryTab
     
     panel.Picture = LoadInterface("centroinventario.bmp")
     picInv.visible = True
@@ -3229,7 +3229,6 @@ Private Sub MacroLadder_Timer()
                 UserMacro.cantidad = UserMacro.cantidad - 1
 
             Case 6
-                ' Jopi: Esto se hace desde el servidor
                 'Call WriteWorkLeftClick(TargetXMacro, TargetYMacro, UsingSkill)
 
         End Select
@@ -3250,10 +3249,6 @@ MacroLadder_Timer_Err:
 End Sub
 
 Private Sub macrotrabajo_Timer()
-    'If Inventario.SelectedItem = 0 Then
-    '   DesactivarMacroTrabajo
-    '   Exit Sub
-    'End If
     
     On Error GoTo macrotrabajo_Timer_Err
     
@@ -3644,7 +3639,7 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, Y
         Select Case ObjData(Inventario.OBJIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.OBJIndex(Slot)).MinHit & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxHit
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Daño: " & ObjData(Inventario.ObjIndex(Slot)).MinHit & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxHit
 
             Case eObjType.otArmadura
                 ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & "Defensa: " & ObjData(Inventario.OBJIndex(Slot)).MinDef & "/" & ObjData(Inventario.OBJIndex(Slot)).MaxDef
@@ -4063,7 +4058,7 @@ Private Sub computeLastElapsedTimeChat(ByVal tiempoTranscurridoCartel As Double)
     
     LastElapsedTimeChat(6) = tiempoTranscurridoCartel
         
-    'HarThaoS: Calculo el mínimo y máximo de mis carteleos
+    'Calculo el mínimo y máximo de mis carteleos
     Dim Min As Double, max As Double
     
     Min = LastElapsedTimeChat(6)
@@ -4206,13 +4201,9 @@ End Sub
 Private Sub Form_DblClick()
     
     On Error GoTo Form_DblClick_Err
-    
 
-    '**************************************************************
-    'Author: Unknown
-    'Last Modify Date: 12/27/2007
-    '12/28/2007: ByVal - Chequea que la ventana de comercio y boveda no este abierta al hacer doble clic a un comerciante, sobrecarga la lista de items.
-    '**************************************************************
+    'Chequea que la ventana de comercio y boveda no este abierta al hacer doble clic a un comerciante, sobrecarga la lista de items.
+
     If Not frmComerciar.visible And Not frmBancoObj.visible Then
         If MouseBoton = vbLeftButton Then
 
@@ -4445,13 +4436,9 @@ End Sub
 Private Sub SendTxt_Change()
     
     On Error GoTo SendTxt_Change_Err
-    
 
-    '**************************************************************
-    'Author: Unknown
-    'Last Modify Date: 3/06/2006
-    '3/06/2006: Maraxus - impedí se inserten caractéres no imprimibles
-    '**************************************************************
+    'impedí se inserten caractéres no imprimibles
+
     If Len(SendTxt.Text) > 160 Then
         stxtbuffer = "Soy un cheater, avisenle a un gm"
     Else
@@ -4698,7 +4685,7 @@ Public Sub UpdateStatsLayout()
     End If
     
     
-    frmMain.lblLvl.Caption = ListaClases(UserStats.Clase) & " - Nivel " & UserStats.Lvl
+    frmMain.lblLvl.Caption = ListaClases(UserStats.Clase) & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & UserStats.Lvl
     Call frmMain.UpdateGoldState
     
 End Sub

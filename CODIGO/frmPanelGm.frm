@@ -1860,7 +1860,7 @@ Private Sub BorrarPersonaje_Click()
     If MsgBox(JsonLanguage.Item("MENSAJEBOX_BORRAR_PERSONAJE") & " " & cboListaUsus.Text, vbYesNo + vbQuestion) = vbYes Then
 
 
-        Call ParseUserCommand("/KILLCHAR " & cboListaUsus.Text) ' ver ReyarB
+        Call ParseUserCommand("/KILLCHAR " & cboListaUsus.Text)
     End If
 
     
@@ -1877,7 +1877,7 @@ Private Sub BusqedaTesoro_Click()
     On Error GoTo BusqedaTesoro_Click_Err
     
 
-    tmp = InputBox("Ingrese tipo de evento:" & vbCrLf & "0: Busqueda de tesoro en continente" & vbCrLf & "1: Busqueda de tesoro en dungeon" & vbCrLf & "2: Aparicion de criatura", "Iniciar evento")
+    tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_TIPO_EVENTO") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_TESORO_CONTINENTE") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_TESORO_DUNGEON") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_APARICION_CRIATURA"), JsonLanguage.Item("MENSAJE_INICIAR_EVENTO"))
 
     If tmp >= 3 Or tmp = "" Then
         Exit Sub
@@ -1904,9 +1904,9 @@ Private Sub Cabeza_Click()
     
     On Error GoTo Cabeza_Click_Err
     
-    tmp = InputBox("Ingrese el valor de cabeza que desea editar.", "Edicion de Usuarios")
+    tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_VALOR_CABEZA"), JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " Head " & tmp) 'ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " Head " & tmp)
     
     Exit Sub
 
@@ -1935,7 +1935,7 @@ Private Sub CerrarProceso_Click()
     
     On Error GoTo CerrarProceso_Click_Err
     
-    tmp = InputBox("Ingrese el nombre del proceso", "Cerrar Proceso")
+    tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_NOMBRE_PROCESO"), JsonLanguage.Item("MENSAJE_CERRAR_PROCESO"))
 
     If tmp <> "" Then
 
@@ -1985,9 +1985,9 @@ Private Sub ciudadanos_Click()
     
     On Error GoTo ciudadanos_Click_Err
     
-    tmp = InputBox("Ingrese el valor de ciudadanos que desea editar.", "Edicion de Usuarios")
+    tmp = InputBox("Ingrese el valor de ciudadanos que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CIU " & tmp) ' ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CIU " & tmp)
     
     Exit Sub
 
@@ -2001,9 +2001,9 @@ Private Sub Clase_Click()
     
     On Error GoTo Clase_Click_Err
     
-    tmp = InputBox("Ingrese el valor de clase Libres que desea editar.", "Edicion de Usuarios")
+    tmp = InputBox("Ingrese el valor de clase Libres que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CLASE " & tmp) 'ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CLASE " & tmp)
     
     Exit Sub
 
@@ -2179,7 +2179,7 @@ Private Sub cmdAccion_Click(Index As Integer)
 
         Case 33
 
-            Call ParseUserCommand("/PAUSAR") ' ver ReyarB
+            Call ParseUserCommand("/PAUSAR")
 
         Case 34 '/LIMPIARMUNDO 0.12.1
             Call WriteCleanWorld
@@ -2232,7 +2232,7 @@ End Sub
 
 Private Sub cmdBanPJ_Click()
     tmpUser = cboListaUsus.Text
-    Call ParseUserCommand("/BAN") ' ver ReyarB
+    Call ParseUserCommand("/BAN")
     tmp = InputBox("Escriba el motivo del BAN.", "Baneo de " & tmpUser)
 
     If tmp = "" Then
@@ -2410,7 +2410,7 @@ Private Sub cmdEscudo_Click(Index As Integer)
 End Sub
 
 Private Sub cmdEventos_Click()
-    tmp = InputBox("Ingrese tipo de evento:" & vbCrLf & "0: Busqueda de tesoro en continente" & vbCrLf & "1: Busqueda de tesoro en dungeon" & vbCrLf & "2: Aparicion de criatura", "Iniciar evento")
+    tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_TIPO_EVENTO") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_TESORO_CONTINENTE") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_TESORO_DUNGEON") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_APARICION_CRIATURA"), JsonLanguage.Item("MENSAJE_INICIAR_EVENTO"))
     
     If IsNumeric(tmp) Then
 
@@ -2528,7 +2528,7 @@ End Sub
 
 Private Sub cmdMapaSeguro_Click()
 
-    tmp = InputBox("Edicion de Mapa:" & vbCrLf & "0 : Informacion del Mapa" & vbCrLf & "1 : Pasar Mapa a Seguro" & vbCrLf & "2 : Pasar Mapa a InSeguro", "Modificar")
+    tmp = InputBox(JsonLanguage.Item("MENSAJE_EDICION_MAPA") & vbCrLf & JsonLanguage.Item("MENSAJE_MAPA_INFORMACION") & vbCrLf & JsonLanguage.Item("MENSAJE_MAPA_SEGURO") & vbCrLf & JsonLanguage.Item("MENSAJE_MAPA_INSEGURO"), JsonLanguage.Item("MENSAJE_MODIFICAR"))
     
     Select Case tmp
 
@@ -2602,7 +2602,7 @@ Private Sub cmdRestringirMapa_Click()
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "Newbie")
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "NoPKS")
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "NoCIUD")
-    ' Wyrox Harthaos me falta Criminales , no se como restringir a todos de una
+    ' me falta Criminales , no se como restringir a todos de una
     ' luego de restringir
     ' faltaria mandar a cada uno a su hogar
     ' tambien los loguean mandarlos a su hogar.
@@ -2698,7 +2698,7 @@ Private Sub CrearTeleport_Click()
     
     On Error GoTo CrearTeleport_Click_Err
     
-    tmp = InputBox("Ingrese las cordenadas, por ejemplo para ulla: 1 50 50", "Ingrese Posiciones")
+    tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_COORDENADAS"), JsonLanguage.Item("MENSAJE_INGRESAR_POSICIONES"))
     Call ParseUserCommand("/CT " & tmp)
 
     
@@ -2735,7 +2735,7 @@ Private Sub Criminales_Click()
     
     On Error GoTo Criminales_Click_Err
     
-    tmp = InputBox("Ingrese el valor de criminales que desea editar.", "Edicion de Usuarios")
+    tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_VALOR_CRIMINALES"), JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
 
     Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CRI " & tmp)
     
@@ -2751,7 +2751,7 @@ Private Sub Cuerpo_Click()
     
     On Error GoTo Cuerpo_Click_Err
     
-    tmp = InputBox("Ingrese el valor de cuerpo que desea editar.", "Edicion de Usuarios")
+    tmp = InputBox("Ingrese el valor de cuerpo que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
 
     Call ParseUserCommand("/MOD " & cboListaUsus.Text & " BODY " & tmp)
     
@@ -2815,7 +2815,7 @@ Private Sub Energia_Click()
     
     On Error GoTo Energia_Click_Err
     
-    tmp = InputBox("Ingrese el valor de energia que desea editar.", "Edicion de Usuarios")
+    tmp = InputBox("Ingrese el valor de energia que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
 
     Call ParseUserCommand("/MOD " & cboListaUsus.Text & " EN " & tmp)
     
@@ -3026,7 +3026,7 @@ Private Sub Mana_Click()
     
     On Error GoTo Mana_Click_Err
     
-    tmp = InputBox("Ingrese el valor de mana que desea editar.", "Edicion de Usuarios")
+    tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_VALOR_MANA"), JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
 
     Call ParseUserCommand("/MOD " & cboListaUsus.Text & " MP " & tmp)
     
@@ -3046,19 +3046,19 @@ Private Sub MensajeriaMenu_Click(Index As Integer)
     Select Case Index
 
         Case 0 'Mensaje por consola a usuarios 0.12.1
-            tmp = InputBox("Ingrese el texto:", "Mensaje por consola a usuarios")
+            tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_TEXTO"), JsonLanguage.Item("MENSAJE_CONSOLA_USUARIOS"))
             If LenB(tmp) Then Call WriteServerMessage(tmp)
 
         Case 1 'Mensaje por ventana a usuarios 0.12.1
-            tmp = InputBox("Ingrese el texto:", "Mensaje del sistema a usuarios")
+            tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_TEXTO"), JsonLanguage.Item("MENSAJE_SISTEMA_USUARIOS"))
             If LenB(tmp) Then Call WriteSystemMessage(tmp)
 
         Case 2 'Mensaje por consola a GMS 0.12.1
-            tmp = InputBox("Escriba el mensaje.", "Mensaje por consola de GM")
+            tmp = InputBox(JsonLanguage.Item("MENSAJE_ESCRIBIR_MENSAJE"), JsonLanguage.Item("MENSAJE_CONSOLA_GM"))
             If LenB(tmp) Then Call WriteGMMessage(tmp)
 
         Case 3 'Hablar como NPC 0.12.1
-            tmp = InputBox("Escriba un Mensaje.", "Hablar por NPC")
+            tmp = InputBox(JsonLanguage.Item("MENSAJE_ESCRIBIR_UN_MENSAJE"), JsonLanguage.Item("MENSAJE_HABLAR_POR_NPC"))
             If LenB(tmp) Then Call WriteTalkAsNPC(tmp)
 
     End Select
@@ -3117,8 +3117,7 @@ Private Sub MnuEnviar_Click(Index As Integer)
     nick = Replace(cboListaUsus.Text, " ", "+")
 
     Select Case Index
-            'ReyarB modifico cordenadas
-
+            
          Case 0 'Ulla
             Coordenadas = "1 55 45"
             Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
@@ -3138,7 +3137,7 @@ Private Sub MnuEnviar_Click(Index As Integer)
         Case 4 'Otro
 
             If LenB(nick) <> 0 Then
-                Coordenadas = InputBox("Indique la posición (MAPA X Y).", "Transportar a " & nick)
+                Coordenadas = InputBox(JsonLanguage.Item("MENSAJE_INDICAR_POSICION"), JsonLanguage.Item("MENSAJE_TRANSPORTAR_A") & nick)
 
                 If LenB(Coordenadas) <> 0 Then Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
 
@@ -3429,14 +3428,14 @@ Private Sub mnuReload_Click(Index As Integer)
 
         Case 3 'Reload mapas
 
-            Call ParseUserCommand("/RELOAD MAP") 'Ver ReyarB
+            Call ParseUserCommand("/RELOAD MAP")
             
         Case 4 'Reload hechizos
             Call WriteReloadSpells
 
         Case 5 'Reload motd
 
-            Call ParseUserCommand("/RELOADMOTD") ' ver ReyarB
+            Call ParseUserCommand("/RELOADMOTD")
         Case 6 'Reload npcs
             Call WriteReloadNPCs
 
@@ -3448,7 +3447,7 @@ Private Sub mnuReload_Click(Index As Integer)
 
     Case 8 'Reload otros
 
-        Call ParseUserCommand("/RELOADOPCIONES") 'ver ReyarB
+        Call ParseUserCommand("/RELOADOPCIONES")
 End Select
 
     
@@ -3507,9 +3506,9 @@ Private Sub oro_Click()
     
     On Error GoTo oro_Click_Err
     
-    tmp = InputBox("Ingrese el valor de oro que desea editar.", "Edicion de Usuarios")
+    tmp = InputBox("Ingrese el valor de oro que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " ORO " & tmp) ' ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " ORO " & tmp)
     
     Exit Sub
 
@@ -3553,9 +3552,9 @@ Private Sub Raza_Click()
     
     On Error GoTo Raza_Click_Err
     
-    tmp = InputBox("Ingrese el valor de raza que desea editar.", "Edicion de Usuarios")
+    tmp = InputBox("Ingrese el valor de raza que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " RAZA " & tmp) 'Ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " RAZA " & tmp)
     
     Exit Sub
 
@@ -3567,7 +3566,7 @@ End Sub
 
 Private Sub ResetPozos_Click()
 
-    Call ParseUserCommand("/RESETPOZOS") 'ver ReyarB
+    Call ParseUserCommand("/RESETPOZOS")
     
 End Sub
 
@@ -3586,9 +3585,9 @@ Private Sub SkillLibres_Click()
     
     On Error GoTo SkillLibres_Click_Err
     
-    tmp = InputBox("Ingrese el valor de skills Libres que desea editar.", "Edicion de Usuarios")
+    tmp = InputBox("Ingrese el valor de skills Libres que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " SKILLSLIBRES " & tmp) ' ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " SKILLSLIBRES " & tmp)
     
     Exit Sub
 
@@ -3630,7 +3629,7 @@ End Sub
 
 Private Sub SubastaEstado_Click()
 
-    Call ParseUserCommand("/SUBASTAACTIVADA") ' ver ReyarB
+    Call ParseUserCommand("/SUBASTAACTIVADA")
 End Sub
 
 Private Sub Temporal_Click()
@@ -3792,9 +3791,9 @@ Private Sub Vida_Click()
     
     On Error GoTo Vida_Click_Err
     
-    tmp = InputBox("Ingrese el valor de vida que desea editar.", "Edicion de Usuarios")
+    tmp = InputBox("Ingrese el valor de vida que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
 
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " HP " & tmp) 'ver ReyarB
+    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " HP " & tmp)
     
     Exit Sub
 
@@ -3987,10 +3986,6 @@ Public Sub CadenaChat(ByVal chat As String)
                     If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
                 End If
             End If
-
-
-        
-        '*************************************************************************************************
 
         ' Divide la cadena en partes utilizando "AntiCheat> El usuario" como separador
         partes = Split(Cadena, "AntiCheat--> El usuario")

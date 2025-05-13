@@ -285,7 +285,6 @@ Public Sub CargarRecursos()
     Call InitFontTypes
     Call CargarZonas
 
-    'Call LoadGrhData
     Call LoadGrhIni
     Call CargarMoldes
     Call CargarCabezas
@@ -298,6 +297,7 @@ Public Sub CargarRecursos()
     Call CargarAnimEscudos
     Call CargarColores
     Call CargarCrafteo
+    Call InitEngineSprites
     
     
     
@@ -315,13 +315,8 @@ End Sub
 Public Sub InitFontTypes()
     
     On Error GoTo InitFonts_Err
-    
 
-    '***************************************************
-    'Author: Juan Martín Sotuyo Dodero (Maraxus)
-    'Last Modification: 05/17/06
-    '
-    '***************************************************
+    
     With FontTypes(FontTypeNames.FONTTYPE_TALK)
         .red = 255
         .green = 255
@@ -718,13 +713,11 @@ Sub CargarDatosMapa(ByVal map As Integer)
     If Len(NameMaps(map).desc) <> 0 Then
         frmMapaGrande.Label1.Caption = NameMaps(map).desc
     Else
-        frmMapaGrande.Label1.Caption = "Sin información relevante."
+        frmMapaGrande.Label1.Caption = JsonLanguage.Item("MENSAJE_573")
     End If
 
-    '**************************************************************
     'Formato de mapas optimizado para reducir el espacio que ocupan.
     'Diseñado y creado por Juan Martín Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
-    '**************************************************************
 
     Dim fh           As Integer
     Dim MH           As tMapHeader
@@ -753,7 +746,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
     #If Compresion = 1 Then
 
         If Not Extract_File(Maps, App.path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
-            frmDebug.add_text_tracebox "Error al cargar datos del mapa " & map
+            frmDebug.add_text_tracebox JsonLanguage.Item("MENSAJE_574") & map
             Exit Sub
         End If
 
@@ -983,12 +976,10 @@ End Sub
 Public Sub CargarMapa(ByVal map As Integer)
     
     On Error GoTo CargarMapa_Err
-    
 
-    '**************************************************************
     'Formato de mapas optimizado para reducir el espacio que ocupan.
     'Diseñado y creado por Juan Martín Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
-    '**************************************************************
+
     Dim fh           As Integer
 
     Dim MH           As tMapHeader
@@ -1126,7 +1117,6 @@ Public Sub CargarMapa(ByVal map As Integer)
                     ' Precalculate position
                     .Graphic(1).x = x * TilePixelWidth
                     .Graphic(1).y = y * TilePixelHeight
-                    ' *********************
                 
                     InitGrh .Graphic(1), .Graphic(1).GrhIndex
                     
@@ -1324,14 +1314,10 @@ End Sub
 Public Sub CargarParticulas()
     
     On Error GoTo CargarParticulas_Err
-    
 
-    '*************************************
-    'Coded by OneZero (onezero_ss@hotmail.com)
-    'Last Modified: 6/4/03
     'Loads the Particles.ini file to the ComboBox
     'Edited by Juan Martín Sotuyo Dodero to add speed and life
-    '*************************************
+
     Dim loopc      As Long
     Dim i          As Long
     Dim GrhListing As String
@@ -1428,14 +1414,10 @@ End Sub
 Public Sub CargarParticulasBinary()
     
     On Error GoTo CargarParticulasBinary_Err
-    
 
-    '*************************************
-    'Coded by OneZero (onezero_ss@hotmail.com)
-    'Last Modified: 6/4/03
     'Loads the Particles.ini file to the ComboBox
     'Edited by Juan Martín Sotuyo Dodero to add speed and life
-    '*************************************
+
     Dim loopc      As Long
     Dim i          As Long
     Dim GrhListing As String
@@ -1884,11 +1866,23 @@ For i = 1 To NumLocaleMsg
         With ModRaza(i)
             SearchVar = Replace(ListaRazas(i), " ", vbNullString)
             
-            .Fuerza = Val(Leer.GetValue("MODRAZA", SearchVar + "Fuerza"))
-            .Agilidad = Val(Leer.GetValue("MODRAZA", SearchVar + "Agilidad"))
-            .Inteligencia = Val(Leer.GetValue("MODRAZA", SearchVar + "Inteligencia"))
-            .Constitucion = Val(Leer.GetValue("MODRAZA", SearchVar + "Constitucion"))
-            .Carisma = Val(Leer.GetValue("MODRAZA", SearchVar + "Carisma"))
+            If language = Spanish Then
+                .Fuerza = Val(Leer.GetValue("MODRAZA", SearchVar + "Fuerza"))
+                .Agilidad = Val(Leer.GetValue("MODRAZA", SearchVar + "Agilidad"))
+                .Inteligencia = Val(Leer.GetValue("MODRAZA", SearchVar + "Inteligencia"))
+                .Constitucion = Val(Leer.GetValue("MODRAZA", SearchVar + "Constitucion"))
+                .Carisma = Val(Leer.GetValue("MODRAZA", SearchVar + "Carisma"))
+     
+            Else
+             Dim Race As String
+                Race = ListaRazasEs.Item(SearchVar)
+                .Fuerza = Val(Leer.GetValue("MODRAZA", Race + "Fuerza"))
+                .Agilidad = Val(Leer.GetValue("MODRAZA", Race + "Agilidad"))
+                .Inteligencia = Val(Leer.GetValue("MODRAZA", Race + "Inteligencia"))
+                .Constitucion = Val(Leer.GetValue("MODRAZA", Race + "Constitucion"))
+                .Carisma = Val(Leer.GetValue("MODRAZA", Race + "Carisma"))
+            End If
+            
 
         End With
 
@@ -1910,9 +1904,7 @@ End Sub
 Public Sub Cargarmapsworlddata()
     
     On Error GoTo Cargarmapsworlddata_Err
-    
 
-    'Ladder
     Dim MapFile As String
 
     Dim i       As Integer

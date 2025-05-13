@@ -315,8 +315,6 @@ Public g_game_state As New clsGameState
 Public ParticleLluviaDorada   As Long
 'Compresion
 Public Windows_Temp_Dir       As String
-
-'Declaraciones Ladder
 Public spell_particle         As Long
 Public Select_part            As Long
 Public EfectoEnproceso        As Boolean
@@ -834,8 +832,6 @@ Public UserSaliendo                             As Boolean
 Public StunEndTime                              As Long
 Public TotalStunTime                            As Long
 Public Comerciando                              As Boolean
-
-'Declaraciones LADDER!
 Public SendingType                              As Byte
 Public sndPrivateTo                             As String
 Public Const NUMSKILLS                          As Byte = 24
@@ -863,6 +859,7 @@ Public SkillsDesc(1 To NUMSKILLS)        As String
 Public UserAtributos(1 To NUMATRIBUTOS)  As Byte
 Public AtributosNames(1 To NUMATRIBUTOS) As String
 Public ListaRazas(1 To NUMRAZAS)         As String
+Public ListaRazasEs                      As New Dictionary
 Public ListaClases(1 To NUMCLASES)       As String
 Public SkillPoints                       As Integer
 Public Alocados                          As Integer

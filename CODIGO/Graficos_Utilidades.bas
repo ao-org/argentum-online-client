@@ -31,10 +31,7 @@ Public ProjectionComposedTexture As D3DMATRIX
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal length As Long)
 
 Function MakeVector(ByVal x As Single, ByVal y As Single, ByVal z As Single) As D3DVECTOR
-    '*****************************************************
-    '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
-    '*****************************************************
-    
+
     On Error GoTo MakeVector_Err
     
     MakeVector.x = x
@@ -73,11 +70,7 @@ End Function
 
 
 Private Function Geometry_Create_Vertex(ByVal x As Single, ByVal y As Single, ByVal z As Single, Color As RGBA, tu As Single, ByVal tv As Single) As TYPE_VERTEX
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Last Modify Date: 10/07/2002
-    '**************************************************************
-    
+
     On Error GoTo Geometry_Create_Vertex_Err
     
     Geometry_Create_Vertex.x = x
@@ -99,12 +92,7 @@ End Function
 Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef Dest As RECT, ByRef Src As RECT, ByRef rgb_list() As RGBA, Optional ByVal Textures_Width As Long, Optional ByVal Textures_Height As Long, Optional ByVal Angle As Single)
     
     On Error GoTo Geometry_Create_Box_Err
-    
 
-    '**************************************************************
-    'Author: Aaron Perkins
-    'Modified by Juan Martín Sotuyo Dodero
-    'Last Modify Date: 11/17/2002
     '
     ' * v1      * v3
     ' |\        |
@@ -113,7 +101,7 @@ Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef Dest As RECT,
     ' |      \  |
     ' |        \|
     ' * v0      * v2
-    '**************************************************************
+
     Dim x_center    As Single
     Dim y_center    As Single
 
@@ -222,14 +210,10 @@ End Sub
 Public Function BinarySearch(ByVal charindex As Integer) As Integer
     
     On Error GoTo BinarySearch_Err
-    
 
-    '**************************************************************
-    'Author: Juan Martín Sotuyo Dodero
-    'Last Modify Date: 07/28/07
     'Returns the index of the dialog in the list, or the negation
     'of the position were it should be if not found (for binary insertion)
-    '**************************************************************
+
     Dim min As Long
 
     Dim max As Long
@@ -387,9 +371,6 @@ PresentComposedTexture_Err:
 End Sub
 
 Public Function EaseBreathing(ByVal t As Single) As Single
-    '***************************************************
-    'Author: Alexis Caraballo (WyroX)
-    '***************************************************
     
     On Error GoTo EaseBreathing_Err
     

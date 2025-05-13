@@ -17,9 +17,9 @@ Attribute VB_Name = "modDX8Requires"
 '
 Option Explicit
 
-'*******************************************************
+
 ' CARGA DE TEXTURAS
-'*******************************************************
+
 Public SurfaceDB As clsTexManager
 
 Public Type D3D8Textures
@@ -48,12 +48,9 @@ Private Type MEMORYSTATUS
 End Type
 
 Private Declare Sub GlobalMemoryStatus Lib "kernel32" (lpBuffer As MEMORYSTATUS)
-'*******************************************************
 ' FIN - CARGA DE TEXTURAS
-'*******************************************************
 
-
-
+' FIN - CARGA DE TEXTURAS
     
 ' The D3DPRESENT_PARAMETERS type holds a description of the way
 ' in which DirectX will display it's rendering.
@@ -81,9 +78,9 @@ End Type
 
 Public Const PI As Single = 3.14159265358979
 
-'*******************************************************
+
 ' FIN - MOTOR GRAFICO
-'*******************************************************
+
 
 
 Public Function General_Bytes_To_Megabytes(Bytes As Double) As Double
