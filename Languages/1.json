@@ -532,6 +532,8 @@
 	"MENSAJE_576": "Hombre",
 	"MENSAJE_577": "Mujer",
 	"MENSAJE_578": "Español",
-	"MENSAJE_579": "Inglés"
-
+	"MENSAJE_579": "Inglés",
+    "MENSAJE_COSTO_PUBLICAR": "Cost to publish: 50,000 gold coins, 500 Patreon Credits.",
+    "MENSAJE_METODO_ORO": "Gold",
+    "MENSAJE_METODO_PATREON": "Patreon Credits"
 }

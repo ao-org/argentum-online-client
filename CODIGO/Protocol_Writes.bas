@@ -6572,19 +6572,22 @@ WriteRomperCania_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteRomperCania", Erl)
 End Sub
 
+Public Sub WritePublicarPersonajeMAO(ByVal characterPrice As Long, ByVal paymentMethod As e_mao_payment_type)
+    On Error GoTo WritePublicarPersonajeMAO_Err
 
-Public Sub writePublicarPersonajeMAO(ByVal valor As Long)
-     On Error GoTo writePublicarPersonajeMAO_Err
-        
-100     Call Writer.WriteInt16(ClientPacketID.ePublicarPersonajeMAO)
-        Call Writer.WriteInt32(valor)
-102     Call modNetwork.Send(Writer)
-        
-        Exit Sub
+    ' Escribir el paquete para publicar personaje en MAO
+    Call Writer.WriteInt16(ClientPacketID.ePublicarPersonajeMAO)   ' ID del paquete
+    Call Writer.WriteInt32(characterPrice)                         ' Precio ingresado por el usuario
+    Call Writer.WriteInt8(paymentMethod)                           ' Método de pago seleccionado
 
-writePublicarPersonajeMAO_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.writePublicarPersonajeMAO", Erl)
+    ' Enviar el paquete al servidor
+    Call modNetwork.Send(Writer)
+
+    Exit Sub
+
+WritePublicarPersonajeMAO_Err:
+    If Not Writer Is Nothing Then Call Writer.Clear
+    Call RegistrarError(Err.Number, Err.Description, "Protocol_Writes.WritePublicarPersonajeMAO", Erl)
 End Sub
 
 Public Sub WriteRequestDebug(ByVal debugType As Byte, ByRef arguments() As String, ByVal argCount As Integer)
