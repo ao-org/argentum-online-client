@@ -149,66 +149,71 @@ Attribute VB_Exposed = False
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 
-Private Enum e_mao_payment_type
-    GOLD
-    PATRON_POINTS
-End Enum
-
-
 Private Sub Form_Load()
-    lblCostGold.Caption = "Costo por publicar: 50.000 monedas de oro o 500 Créditos Patreon."
+    ' Mostrar mensaje de costo en la etiqueta
+    lblCostGold.Caption = JsonLanguage.Item("MENSAJE_COSTO_PUBLICAR")
 
-    cmbPaymentMethod.Clear
-    cmbPaymentMethod.AddItem "Oro"
+    ' Cargar opciones del combo de método de pago
+    Call cmbPaymentMethod.Clear
+
+    ' Agregar opción: Oro
+    Call cmbPaymentMethod.AddItem(JsonLanguage.Item("MENSAJE_METODO_ORO"))
     cmbPaymentMethod.ItemData(cmbPaymentMethod.NewIndex) = GOLD
 
-    cmbPaymentMethod.AddItem "Créditos Patreon"
+    ' Agregar opción: Créditos Patreon
+    Call cmbPaymentMethod.AddItem(JsonLanguage.Item("MENSAJE_METODO_PATREON"))
     cmbPaymentMethod.ItemData(cmbPaymentMethod.NewIndex) = PATRON_POINTS
 
-    cmbPaymentMethod.ListIndex = 0  ' Default to Gold
+    ' Seleccionar "Oro" por defecto
+    cmbPaymentMethod.ListIndex = 0
 End Sub
-
 
 Private Sub Label2_Click()
-    Call cerrarFormulario
+    ' Cierra el formulario actual
+    Call CerrarFormulario
 End Sub
 
-Private Sub lblPublicar_Click()
-    Dim valor As Long
-    valor = Val(txtValor.Text)
-    
-    If valor <= 0 Then
-        MsgBox JsonLanguage.Item("MENSAJE_VALOR_PERSONAJE_INVALIDO"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
+Private Sub LblPublicar_Click()
+    Dim characterPrice As Long
+    characterPrice = Val(txtValor.Text)   ' Convertir el texto del valor a número
+
+    ' Validar que el valor sea mayor a 0
+    If characterPrice <= 0 Then
+        Call MsgBox(JsonLanguage.Item("MENSAJE_VALOR_PERSONAJE_INVALIDO"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
         Exit Sub
     End If
 
+    ' Verificar si se ha seleccionado un método de pago
     If cmbPaymentMethod.ListIndex < 0 Then
-        MsgBox "Por favor, seleccione un método de pago.", vbExclamation, "Método de pago"
+        Call MsgBox(JsonLanguage.Item("MENSAJE_SELECCIONAR_METODO"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_METODO"))
         Exit Sub
     End If
 
-    Dim paymentMethod As e_mao_payment_type
-    Dim costMessage As String
+    Dim paymentMethod     As e_mao_payment_type
+    Dim paymentMethodText As String
     paymentMethod = cmbPaymentMethod.ItemData(cmbPaymentMethod.ListIndex)
 
+    ' Determinar el costo en función del método de pago
     Select Case paymentMethod
         Case GOLD
-            costMessage = "50.000 monedas de oro"
+            paymentMethodText = JsonLanguage.Item("MENSAJE_COSTO_GOLD")       ' Ejemplo: "50.000 monedas de oro"
         Case PATRON_POINTS
-            costMessage = "500 Créditos Patreon"
+            paymentMethodText = JsonLanguage.Item("MENSAJE_COSTO_PATREON")    ' Ejemplo: "500 Créditos Patreon"
         Case Else
-            MsgBox "Método de pago no válido.", vbCritical, "Error"
+            Call MsgBox(JsonLanguage.Item("MENSAJE_METODO_INVALIDO"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
             Exit Sub
     End Select
 
-    Dim mensajeConfirmacion As String
-    mensajeConfirmacion = JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE") & userName & _
-                          JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_VALOR") & valor & _
-                          JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_COSTO") & " " & costMessage
+    ' Construir el mensaje de confirmación
+    Dim confirmationMessage As String
+    confirmationMessage = JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE") & userName & _
+                          JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_VALOR") & characterPrice & _
+                          JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_COSTO") & " " & paymentMethodText
 
-    If MsgBox(mensajeConfirmacion, vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJE_TITULO_PUBLICAR_PERSONAJE")) = vbYes Then
-        Call writePublicarPersonajeMAO(valor, paymentMethod)
-        Call cerrarFormulario
+    ' Mostrar mensaje de confirmación al usuario
+    If Call MsgBox(confirmationMessage, vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJE_TITULO_PUBLICAR_PERSONAJE")) = vbYes Then
+        Call WritePublicarPersonajeMAO(characterPrice, paymentMethod)   ' Ejecutar publicación del personaje
+        Call CerrarFormulario                                           ' Cerrar la ventana
     End If
 End Sub
 
