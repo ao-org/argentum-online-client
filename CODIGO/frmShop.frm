@@ -147,6 +147,8 @@ Attribute VB_Exposed = False
 '
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
+    Label1.Caption = JsonLanguage.Item("MENSAJE_TRANSACCION_RELOGUEO")
+
 End Sub
 
 Private Sub Image2_Click()
@@ -214,7 +216,7 @@ Private Sub txtFindObj_Change()
     
     For i = 1 To UBound(ObjShop)
         If InStr(1, ObjShop(i).Name, txtFindObj.Text, 1) > 0 Then
-            Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " (Valor: " & ObjShop(i).Valor & ")")
+            Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )")
         End If
 
     Next i
