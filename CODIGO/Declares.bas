@@ -17,6 +17,11 @@ Attribute VB_Name = "Mod_Declaraciones"
 '
 Option Explicit
 
+Public Enum e_mao_payment_type
+    GOLD
+    PATRON_POINTS
+End Enum
+
 Public SeguroGame As Boolean
 Public SeguroParty As Boolean
 Public SeguroClanX As Boolean
