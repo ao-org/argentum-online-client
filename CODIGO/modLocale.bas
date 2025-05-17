@@ -39,11 +39,21 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
     Dim i As Long
     
     strLocale = Locale_SMG(bytHeader)
-
+    
+    If bytHeader = 1788 Then
+        Dim npcName As String
+        npcName = NpcData(strExtra).Name ' Obtener el nombre del NPC
+            If Len(npcName) > 0 Then
+                strExtra = npcName
+            End If
+    End If
+    
     If LenB(strExtra) = 0 Then
         Locale_Parse_ServerMessage = strLocale
         Exit Function
     End If
+    
+
     
     Fields = Split(strExtra, "¬")
 
