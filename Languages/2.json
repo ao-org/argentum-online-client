@@ -1,4 +1,7 @@
-{	"MENSAJE_COMERCIAR": "Trade",
+{	
+	"MENSAJE_TRANSACCION_RELOGUEO": "Once the transaction is completed, relog your character for security",
+	"MENSAJE_VALOR":" Value: ",
+	"MENSAJE_COMERCIAR": "Trade",
 	"MENSAJE_INVITAR_GRUPO": "Invite to group",
 	"MENSAJE_PRIVADO": "Private",
 	"MENSAJE_RETAR": "Challenge",
@@ -530,7 +533,7 @@
 	"MENSAJE_574": "Error loading map data ",
 	"MENSAJE_575": "map",
 	"MENSAJE_576": "Male",
-	"MENSAJE_577": "Female"
+	"MENSAJE_577": "Female",
 	"MENSAJE_578": "Spanish",
 	"MENSAJE_579": "English"
 
