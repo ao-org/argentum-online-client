@@ -1,4 +1,7 @@
-{	"MENSAJE_COMERCIAR": "Comerciar",
+{	
+	"MENSAJE_TRANSACCION_RELOGUEO": "Una vez realizada la transacción, reloguee su personaje por seguridad",
+	"MENSAJE_VALOR":" Valor: ",
+	"MENSAJE_COMERCIAR": "Comerciar",
 	"MENSAJE_INVITAR_GRUPO": "Invitar al grupo",
 	"MENSAJE_PRIVADO": "Privado",
 	"MENSAJE_RETAR": "Retar",
