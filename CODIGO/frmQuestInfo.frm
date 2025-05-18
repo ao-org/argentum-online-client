@@ -25,7 +25,6 @@ Begin VB.Form FrmQuestInfo
       _ExtentY        =   5106
       _Version        =   393217
       BorderStyle     =   0
-      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
@@ -354,6 +353,8 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     
     Me.Picture = LoadInterface("ventananuevamision.bmp")
+    titulo.Caption = JsonLanguage.Item("MENSAJE_TITULO_MISION")
+    lblRepetible.Caption = JsonLanguage.Item("MENSAJE_MISION_REPETIBLE")
 
     Text1.BackColor = RGB(11, 11, 11)
     PlayerView.BackColor = RGB(11, 11, 11)
