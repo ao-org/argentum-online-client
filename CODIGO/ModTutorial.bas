@@ -492,7 +492,7 @@ Public Sub checkTutorial()
         
         If Not mascota.visible Then
             Call RGBAList(mascota_text_color, 211, 153, 94, 255)
-            mascota.dialog = "Bienvenido, soy tu guia de entrenamiento en las tierras de Argentum 20, estaré siguiendo todos tus movimientos para que te conviertas en un enorme guerrero."
+            mascota.dialog = JsonLanguage.Item("MENSAJE_GUIA_ENTRENAMIENTO")
             Call InitGrh(mascota.fx, 4841, FrameTime, 0)
             mascota.fx.speed = mascota.fx.speed / 2
             Call RGBAList(mascota.color, 255, 255, 255, 0)

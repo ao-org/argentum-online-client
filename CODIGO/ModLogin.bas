@@ -319,15 +319,15 @@ On Error GoTo OnClientDisconnect_Err
 #If REMOTE_CLOSE = 0 Then
     If (Error = 10061) Then
         If frmConnect.visible Then
-            Call DisplayError("¡No me pude conectar! Te recomiendo verificar el estado de los servidores en ao20.com.ar y asegurarse de estar conectado a internet.", "connection-failure")
+            Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_CONEXION"), "connection-failure")
         Else
-            Call DisplayError("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", "connection-failure")
+            Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_CONEXION_SERVIDOR"), "connection-failure")
         End If
     Else
         frmConnect.MousePointer = 1
         frmMain.ShowFPS.enabled = False
         If (Error <> 0 And Error <> 2) Then
-            Call DisplayError("Ha ocurrido un error al conectar con el servidor. Le recomendamos verificar el estado de los servidores en ao20.com.ar, y asegurarse de estar conectado directamente a internet", "connection-failure")
+            Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_CONEXION_SERVIDOR"), "connection-failure")
             
             If frmConnect.visible Then
                 Connected = False
@@ -348,7 +348,7 @@ On Error GoTo OnClientDisconnect_Err
                 End If
             End If
             If Not GetRemoteError And Error > 0 Then
-                Call DisplayError("El servidor cerro la conexion.", "connection-closed")
+                Call DisplayError(JsonLanguage.Item("MENSAJE_CONEXION_CERRADA"), "connection-closed")
             End If
         End If
     End If
