@@ -663,7 +663,7 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
 
     If Data(0) = &H20 And Data(1) = &H26 Then
         Call DebugPrint("TRANSFER_CHARACTER_OKAY", 0, 255, 0, True)
-        Call DisplayError("Transferencia realizada.", "TRANSFER_CHARACTER_OKAY")
+        Call DisplayError(JsonLanguage.Item("MENSAJE_TRANSFERENCIA_REALIZADA"), "TRANSFER_CHARACTER_OKAY")
         Call EraseCharFromPjList(TransferCharname)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
         Auth_state = e_state.Idle
@@ -671,24 +671,26 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
         Call DebugPrint("TRANSFER CHAR ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 4
         Select Case MakeInt(Data(3), Data(2))
-            Case 1
-                Call DisplayError("Invalid account", "invalid-account")
-            Case 3
-                Call DisplayError("Database error.", "database-error.")
-            Case 12
-                Call DisplayError("Email is not valid.", "invalid-email")
-            Case 51
-                Call DisplayError("You are not the owner of the character.", "not-char-owner")
-            Case 52
-                Call DisplayError("Invalid request", "invalid-request")
-            Case 54
-                Call DisplayError("Newowner does not exist", "newowner-not-exist")
-            Case 55
-                Call DisplayError("Not a patron, sorry", "not-patreon")
-            Case 57
-                Call DisplayError("You do not have enough credits", "not-enough-credits")
-            Case Else
-                Call DisplayError("Unknown error.", "unknown-error")
+
+        Case 1
+            Call DisplayError(JsonLanguage.Item("MENSAJE_CUENTA_INVALIDA"), "invalid-account")
+        Case 3
+            Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_BASE_DATOS"), "database-error")
+        Case 12
+            Call DisplayError(JsonLanguage.Item("MENSAJE_EMAIL_NO_VALIDO"), "invalid-email")
+        Case 51
+            Call DisplayError(JsonLanguage.Item("MENSAJE_NO_DUENO_PERSONAJE"), "not-char-owner")
+        Case 52
+            Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "invalid-request")
+        Case 54
+            Call DisplayError(JsonLanguage.Item("MENSAJE_NUEVO_DUENO_NO_EXISTE"), "newowner-not-exist")
+        Case 55
+            Call DisplayError(JsonLanguage.Item("MENSAJE_NO_ES_PATREON"), "not-patreon")
+        Case 57
+            Call DisplayError(JsonLanguage.Item("MENSAJE_CREDITOS_INSUFICIENTES"), "not-enough-credits")
+        Case Else
+            Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO"), "unknown-error")
+
         End Select
     End If
     Auth_state = e_state.Idle
@@ -816,18 +818,19 @@ Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
         Call DebugPrint("DELETE_PC_REQUEST_ERROR", 255, 0, 0, True)
         frmDeleteChar.Hide
         frmConnect.AuthSocket.GetData Data, vbByte, 4
-        Select Case MakeInt(Data(3), Data(2))
-            Case 1
-                Call DisplayError("Invalid account.", "invalid-account")
-            Case 3
-                Call DisplayError("Database error.", "database-error")
-            Case 51
-                Call DisplayError("You are not the character owner.", "invalid-character-owner")
-            Case 65
-                Call DisplayError("Cannot delete character listed in MAO.", "locked-in-mao")
-            Case Else
-                Call DisplayError("Unknown error", "unknown-error")
-        End Select
+    Select Case MakeInt(data(3), data(2))
+        Case 1
+            Call DisplayError(JsonLanguage.Item("MENSAJE_CUENTA_INVALIDA"), "invalid-account")
+        Case 3
+            Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_BASE_DATOS"), "database-error")
+        Case 51
+            Call DisplayError(JsonLanguage.Item("MENSAJE_NO_DUENO_PERSONAJE"), "invalid-character-owner")
+        Case 65
+            Call DisplayError(JsonLanguage.Item("MENSAJE_PERSONAJE_BLOQUEADO_MAO"), "locked-in-mao")
+        Case Else
+            Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO"), "unknown-error")
+    End Select
+
     End If
     Auth_state = e_state.Idle
 End Sub
@@ -912,22 +915,23 @@ Public Sub HandleConfirmDeleteChar(ByVal BytesTotal As Long)
         Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(Data), 255, 255, 255)
         frmConnect.AuthSocket.GetData Data, vbByte, 2
         Auth_state = e_state.Idle
-        Call DisplayError("Personaje borrado correctamente.", "delete-char-success")
+        Call DisplayError(JsonLanguage.Item("MENSAJE_PERSONAJE_BORRADO"), "delete-char-success")
         Call EraseCharFromPjList(DeleteUser)
     Else
        Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData Data, vbByte, 4
-        Select Case MakeInt(Data(3), Data(2))
-            Case 1
-                Call DisplayError("Invalid character name.", "invalid-character-name")
-            Case 3
-                Call DisplayError("Database error.", "database-error")
-            Case 25
-                Call DisplayError("Invalid Code.", "invalid-code")
-                frmDeleteChar.Show , frmConnect
-            Case Else
-                Call DisplayError("Unknown error: " & AO20CryptoSysWrapper.ByteArrayToHex(Data), "")
-        End Select
+    Select Case MakeInt(data(3), data(2))
+        Case 1
+            Call DisplayError(JsonLanguage.Item("MENSAJE_NOMBRE_PERSONAJE_INVALIDO"), "invalid-character-name")
+        Case 3
+            Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_BASE_DATOS"), "database-error")
+        Case 25
+            Call DisplayError(JsonLanguage.Item("MENSAJE_CODIGO_INVALIDO"), "invalid-code")
+            frmDeleteChar.Show , frmConnect
+        Case Else
+            Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO") & ": " & AO20CryptoSysWrapper.ByteArrayToHex(data), "")
+    End Select
+
     End If
         
 End Sub
