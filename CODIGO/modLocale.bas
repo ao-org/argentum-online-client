@@ -40,13 +40,8 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
     
     strLocale = Locale_SMG(bytHeader)
     
-    If bytHeader = 1788 Then
-        Dim npcName As String
-        npcName = NpcData(strExtra).Name ' Obtener el nombre del NPC
-            If Len(npcName) > 0 Then
-                strExtra = npcName
-            End If
-    End If
+    ' Manejo del caso especial del NPC
+    Call HandleNpcName(bytHeader, strExtra)
     
     If LenB(strExtra) = 0 Then
         Locale_Parse_ServerMessage = strLocale
@@ -66,6 +61,27 @@ ErrorHandler:
     Locale_Parse_ServerMessage = strLocale
 
 End Function
+
+' Manejar el nombre del NPC para los casos especiales
+Private Sub HandleNpcName(ByVal bytHeader As Integer, ByRef strExtra As String)
+    Dim npcName As String
+    Dim specialNpcHeaders As Variant
+    Dim i As Long
+
+    ' Definir los IDs que requieren el nombre del NPC
+    specialNpcHeaders = Array(1788) ' Agrega aquí otros IDs si es necesario
+
+    ' Verificar si el ID está en la lista de IDs especiales
+    For i = LBound(specialNpcHeaders) To UBound(specialNpcHeaders)
+        If bytHeader = specialNpcHeaders(i) Then
+            npcName = NpcData(strExtra).Name ' Obtener el nombre del NPC
+            If Len(npcName) > 0 Then
+                strExtra = npcName
+            End If
+            Exit For
+        End If
+    Next
+End Sub
 
 Public Function General_Get_Line_Count(ByVal FileName As String) As Long
 
