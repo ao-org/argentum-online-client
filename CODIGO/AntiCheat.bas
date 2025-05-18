@@ -39,7 +39,7 @@ On Error GoTo InitializeAC_Err
     Callbacks.LogMessage = FARPROC(AddressOf LogMessageCB)
     InitResult = InitializeAC(Callbacks)
     If InitResult <> eOk Then
-        Call DisplayError("El juego se inicio sin activar el anti cheat, debe activarlo para poder conectarse a los servidores.", "")
+        Call DisplayError(JsonLanguage.Item("MENSAJE_ANTICHEAT_NO_ACTIVADO"), "")
     End If
 #End If
 Exit Sub
