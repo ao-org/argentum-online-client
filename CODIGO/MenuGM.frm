@@ -493,7 +493,24 @@ Option Explicit
 Private Over As Integer
 
 Private Sub Form_Load()
-    Call Aplicar_Transparencia(Me.hwnd, 180)
+    Call Aplicar_Transparencia(Me.hWnd, 180)
+    OpcionLbl(0).Caption = JsonLanguage.Item("FORM_OPCION_9")
+    OpcionLbl(1).Caption = JsonLanguage.Item("FORM_OPCION_10")
+    OpcionLbl(2).Caption = JsonLanguage.Item("FORM_OPCION_11")
+    OpcionLbl(3).Caption = JsonLanguage.Item("FORM_OPCION_12")
+    OpcionLbl(4).Caption = JsonLanguage.Item("FORM_OPCION_13")
+    OpcionLbl(5).Caption = JsonLanguage.Item("FORM_OPCION_14")
+    OpcionLbl(6).Caption = JsonLanguage.Item("FORM_OPCION_15")
+    OpcionLbl(7).Caption = JsonLanguage.Item("FORM_OPCION_16")
+    OpcionLbl(8).Caption = JsonLanguage.Item("FORM_OPCION_17")
+    OpcionLbl(9).Caption = JsonLanguage.Item("FORM_OPCION_18")
+    OpcionLbl(10).Caption = JsonLanguage.Item("FORM_OPCION_19")
+    OpcionLbl(11).Caption = JsonLanguage.Item("FORM_OPCION_20")
+    OpcionLbl(12).Caption = JsonLanguage.Item("FORM_OPCION_21")
+    OpcionLbl(13).Caption = JsonLanguage.Item("FORM_OPCION_22")
+    OpcionLbl(14).Caption = JsonLanguage.Item("FORM_OPCION_23")
+    OpcionLbl(15).Caption = JsonLanguage.Item("FORM_OPCION_24")
+
     
     Over = -1
 End Sub

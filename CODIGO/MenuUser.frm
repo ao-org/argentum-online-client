@@ -183,7 +183,12 @@ Private Over As Integer
 
 Private Sub Form_Load()
     Call Aplicar_Transparencia(Me.hWnd, 180)
-    
+    OpcionLbl(0).Caption = JsonLanguage.Item("FORM_OPCION_0")
+    OpcionLbl(1).Caption = JsonLanguage.Item("FORM_OPCION_1")
+    OpcionLbl(2).Caption = JsonLanguage.Item("FORM_OPCION_2")
+    OpcionLbl(3).Caption = JsonLanguage.Item("FORM_OPCION_3")
+    OpcionLbl(4).Caption = JsonLanguage.Item("FORM_OPCION_4")
+
     Over = -1
 End Sub
 

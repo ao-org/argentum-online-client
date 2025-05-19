@@ -194,12 +194,14 @@ Public Type ObjDatas
 
     GrhIndex As Long ' Indice del grafico que representa el obj
     Name As String
+    en_name As String
     MinDef As Integer
     MaxDef As Integer
     MinHit As Integer
     MaxHit As Integer
     ObjType As Byte
     Texto As String
+    en_texto As String
     info As String
     CreaGRH As String
     CreaLuz As String
