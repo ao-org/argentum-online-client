@@ -3,16 +3,16 @@ Begin VB.Form MenuNPC
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   1488
+   ClientHeight    =   1485
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   1956
+   ClientWidth     =   1950
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   124
+   ScaleHeight     =   99
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   163
+   ScaleWidth      =   130
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.Label OpcionLbl 
@@ -21,7 +21,7 @@ Begin VB.Form MenuNPC
       Caption         =   "LIBERAR TODOS"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -56,7 +56,7 @@ Begin VB.Form MenuNPC
       Caption         =   "LIBERAR"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -84,7 +84,7 @@ Begin VB.Form MenuNPC
       Caption         =   "ACOMPAÑAR"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -112,7 +112,7 @@ Begin VB.Form MenuNPC
       Caption         =   "QUIETO"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -155,7 +155,10 @@ Private Over As Integer
 
 Private Sub Form_Load()
     Call Aplicar_Transparencia(Me.hWnd, 180)
-    
+    OpcionLbl(0).Caption = JsonLanguage.Item("FORM_OPCION_5")
+    OpcionLbl(1).Caption = JsonLanguage.Item("FORM_OPCION_6")
+    OpcionLbl(2).Caption = JsonLanguage.Item("FORM_OPCION_7")
+    OpcionLbl(3).Caption = JsonLanguage.Item("FORM_OPCION_8")
     Over = -1
 End Sub
 
