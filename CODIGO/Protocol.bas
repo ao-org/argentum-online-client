@@ -2623,61 +2623,42 @@ errhandler:
 
 End Sub
 
-''
-' Handles the GuildChat message.
-
 Private Sub HandleGuildChat()
 
     On Error GoTo errhandler
-    
+
     Dim chat As String
-
     Dim status As Byte
-    
-    Dim str  As String
+    Dim localeId As Integer
+    Dim r As Byte, G As Byte, b As Byte
+    Dim str As String
+    Dim tmp As Integer, cont As Integer
 
-    Dim r    As Byte
-
-    Dim G    As Byte
-
-    Dim b    As Byte
-
-    Dim tmp  As Integer
-
-    Dim Cont As Integer
-    
     status = Reader.ReadInt8()
+
+    ' Nuevo formato con ID explícito
+    localeId = Reader.ReadInt16()
     chat = Reader.ReadString8()
-    
+
+    ' Si llega un ID válido, resolver el mensaje localizado
+    If localeId > 0 Then
+        chat = Locale_Parse_ServerMessage(localeId, chat)
+    End If
+
+    ' Mostrar mensaje según contexto
     If Not DialogosClanes.Activo Then
         If InStr(1, chat, "~") Then
             str = ReadField(2, chat, 126)
-    
-            If Val(str) > 255 Then
-                r = 255
-            Else
-                r = Val(str)
-    
-            End If
-                
+            r = IIf(Val(str) > 255, 255, Val(str))
+
             str = ReadField(3, chat, 126)
-    
-            If Val(str) > 255 Then
-                G = 255
-            Else
-                G = Val(str)
-    
-            End If
-                
+            G = IIf(Val(str) > 255, 255, Val(str))
+
             str = ReadField(4, chat, 126)
-    
-            If Val(str) > 255 Then
-                b = 255
-            Else
-                b = Val(str)
-            End If
-                
-            Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, G, b, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
+            b = IIf(Val(str) > 255, 255, Val(str))
+
+            Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, G, b, _
+                                  Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
         Else
             With FontTypes(FontTypeNames.FONTTYPE_GUILDMSG)
                 Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
