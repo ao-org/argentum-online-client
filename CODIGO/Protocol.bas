@@ -4382,9 +4382,9 @@ Private Sub HandleChangeSpellSlot()
         End If
     Else
         If Slot <= hlst.ListCount Then
-            hlst.List(Slot - 1) = "(Vacio)"
+            hlst.List(Slot - 1) = JsonLanguage.Item("EMPTY_LABEL")
         Else
-            Call hlst.AddItem("(Vacio)")
+            Call hlst.AddItem(JsonLanguage.Item("EMPTY_LABEL"))
             hlst.Scroll = LastScroll
         End If
     End If
