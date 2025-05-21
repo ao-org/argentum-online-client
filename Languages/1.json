@@ -583,5 +583,7 @@
     "FORM_OPCION_23": "CARCEL",
     "FORM_OPCION_24": "BAN",
     "DAMAGE": "Daño: ",
-    "DEFENSE": "Defensa: "
+    "DEFENSE": "Defensa: ",
+	"EMPTY_LABEL": "(Vacío)"
+
 }
