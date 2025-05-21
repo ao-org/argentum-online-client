@@ -48,7 +48,7 @@ Begin VB.Form frmGuildAdm
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       ForeColor       =   &H00FFFFFF&
-      Height          =   2370
+      Height          =   2565
       ItemData        =   "frmGuildAdm.frx":0000
       Left            =   495
       List            =   "frmGuildAdm.frx":0002
@@ -86,14 +86,14 @@ Begin VB.Form frmGuildAdm
    End
    Begin VB.Image Image3 
       Height          =   420
-      Left            =   4645
+      Left            =   4650
       Tag             =   "0"
       Top             =   4230
       Width           =   390
    End
    Begin VB.Image cmdFundarClan 
       Height          =   420
-      Left            =   480
+      Left            =   2160
       Tag             =   "0"
       Top             =   5040
       Width           =   1950

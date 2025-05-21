@@ -2623,79 +2623,60 @@ errhandler:
 
 End Sub
 
-''
-' Handles the GuildChat message.
-
 Private Sub HandleGuildChat()
-
     On Error GoTo errhandler
-    
-    Dim chat As String
 
+    Dim finalChat As String
     Dim status As Byte
-    
-    Dim str  As String
-
-    Dim r    As Byte
-
-    Dim G    As Byte
-
-    Dim b    As Byte
-
-    Dim tmp  As Integer
-
-    Dim Cont As Integer
+    Dim r As Byte, G As Byte, b As Byte
+    Dim colorRed As String, colorGreen As String, colorBlue As String
+    Dim boldFlag As Boolean, italicFlag As Boolean
+    Dim prefix As String
+    Dim messageText  As String
     
     status = Reader.ReadInt8()
-    chat = Reader.ReadString8()
-    
+    finalChat = Reader.ReadString8()
+
+    ' Check for localized message format: Msg####¬Nombre
+    If Left$(finalChat, 3) = "Msg" Then
+        prefix = ReadField(1, finalChat, 172)
+        finalChat = Locale_Parse_ServerMessage(Val(mid$(prefix, 4)), mid$(finalChat, Len(prefix) + 2))
+    End If
+
+    ' If guild chat dialog is inactive, display in main chat window
     If Not DialogosClanes.Activo Then
-        If InStr(1, chat, "~") Then
-            str = ReadField(2, chat, 126)
-    
-            If Val(str) > 255 Then
-                r = 255
-            Else
-                r = Val(str)
-    
-            End If
-                
-            str = ReadField(3, chat, 126)
-    
-            If Val(str) > 255 Then
-                G = 255
-            Else
-                G = Val(str)
-    
-            End If
-                
-            str = ReadField(4, chat, 126)
-    
-            If Val(str) > 255 Then
-                b = 255
-            Else
-                b = Val(str)
-            End If
-                
-            Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), r, G, b, Val(ReadField(5, chat, 126)) <> 0, Val(ReadField(6, chat, 126)) <> 0)
+        If InStr(1, finalChat, "~") > 0 Then
+            ' Color-formatted chat: split fields and apply custom RGB
+            colorRed = ReadField(2, finalChat, 126)
+            colorGreen = ReadField(3, finalChat, 126)
+            colorBlue = ReadField(4, finalChat, 126)
+
+            r = IIf(Val(colorRed) > 255, 255, Val(colorRed))
+            g = IIf(Val(colorGreen) > 255, 255, Val(colorGreen))
+            b = IIf(Val(colorBlue) > 255, 255, Val(colorBlue))
+                        
+            boldFlag = (Val(ReadField(5, finalChat, 126)) <> 0)
+            italicFlag = (Val(ReadField(6, finalChat, 126)) <> 0)
+            
+            messageText = Left$(finalChat, InStr(1, finalChat, "~") - 1)
+
+            Call AddtoRichTextBox(frmMain.RecTxt, messageText, r, g, b, boldFlag, italicFlag)
         Else
+            ' Use default font style for guild messages
             With FontTypes(FontTypeNames.FONTTYPE_GUILDMSG)
-                Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
+                Call AddtoRichTextBox(frmMain.RecTxt, finalChat, .red, .green, .blue, .bold, .italic)
             End With
         End If
     Else
-        Call DialogosClanes.PushBackText(ReadField(1, chat, 126), status)
+        ' Chat is redirected to the guild dialog
+        Call DialogosClanes.PushBackText(ReadField(1, finalChat, 126), status)
     End If
-    
+
     Exit Sub
 
 errhandler:
-
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildChat", Erl)
-    
-
 End Sub
-
 Private Sub HandleShowMessageBox()
     On Error GoTo errhandler
     
