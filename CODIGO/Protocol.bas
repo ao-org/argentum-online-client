@@ -452,8 +452,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleCraftingCatalyst
         Case ServerPacketID.eCraftingResult
             Call HandleCraftingResult
-        Case ServerPacketID.eForceUpdate
-            'TODO: remove packet from protocol
         Case ServerPacketID.eAnswerReset
             Call HandleAnswerReset
         Case ServerPacketID.eObjQuestListSend
@@ -480,8 +478,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUpdateTrapState
         Case ServerPacketID.eUpdateGroupInfo
             Call HandleUpdateGroupInfo
-        Case ServerPacketID.eRequestTelemetry
-            Call HandleRequestTelemetry
         Case ServerPacketID.eUpdateCharValue
             Call HandleUpdateCharValue
         Case ServerPacketID.eSendClientToggles
@@ -3656,13 +3652,6 @@ Private Sub HandleUpdateGroupInfo()
         Group.GroupMembers(i).MaxHp = Reader.ReadInt16
     Next i
     Call UpdateRenderArea
-    Exit Sub
-HandleUpdateGroupInfo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)
-End Sub
-
-Private Sub HandleRequestTelemetry()
-    On Error GoTo HandleUpdateGroupInfo_Err
     Exit Sub
 HandleUpdateGroupInfo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)
