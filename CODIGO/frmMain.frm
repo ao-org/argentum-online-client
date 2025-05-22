@@ -3699,6 +3699,8 @@ Public Sub CompletarEnvioMensajes()
             SendTxt.Text = ";"
         Case 8
             SendTxt.Text = "/RMSG "
+        Case 9
+            SendTxt.Text = "/FMSG "
     End Select
 
     stxtbuffer = SendTxt.Text

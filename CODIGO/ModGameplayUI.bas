@@ -353,6 +353,10 @@ Public Sub HandleChatMsg(ByVal InputText As String)
             If Right$(InputText, Len(InputText) - 1) <> "" Then Call ParseUserCommand("/RMSG " & Right$(InputText, Len(InputText) - 1))
             SendingType = 8
             sndPrivateTo = ""
+            'Faccion
+        ElseIf Left$(InputText, 1) = "/FMSG" Then
+            If Right$(InputText, Len(InputText) - 1) <> "" Then Call ParseUserCommand("/FMSG " & Right$(InputText, Len(InputText) - 1))
+            SendingType = 9
             'Privado
         ElseIf Left$(InputText, 1) = "\" Then
             Dim mensaje As String
