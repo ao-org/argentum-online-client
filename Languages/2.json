@@ -584,5 +584,9 @@
     "FORM_OPCION_24": "BAN",
     "DAMAGE": "Damage: ",
     "DEFENSE": "Defense: ",
-	"EMPTY_LABEL": "(Empty)"
+	"EMPTY_LABEL": "(Empty)",
+	"MENSAJE_ARMADA": "[Royal Guard]",
+    "MENSAJE_LEGION": "[Dark Legion]",
+    "MENSAJE_CONSEJO": "[Royal Counselor]",
+	"MENSAJE_CONCILIO": "[Chaos Council]"
 }

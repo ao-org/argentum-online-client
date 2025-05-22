@@ -584,6 +584,10 @@
     "FORM_OPCION_24": "BAN",
     "DAMAGE": "Daño: ",
     "DEFENSE": "Defensa: ",
-	"EMPTY_LABEL": "(Vacío)"
+	"EMPTY_LABEL": "(Vacío)",
+	"MENSAJE_ARMADA": "[Armada Real]",
+    "MENSAJE_LEGION": "[Legión Oscura]",
+    "MENSAJE_CONSEJO": "[Consejero Real]",
+	"MENSAJE_CONCILIO": "[Concilio del Caos]"
 
 }
