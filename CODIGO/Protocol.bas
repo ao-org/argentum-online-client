@@ -2546,14 +2546,16 @@ Private Sub HandleConsoleFactionMessage()
     
     Dim chat As String
     Dim FontIndex As Integer
+    Dim factionLabel As String
     chat = Reader.ReadString8()
     FontIndex = Reader.ReadInt8()
+    factionLabel = Reader.ReadString8()
     
     'Si tiene el chat global desactivado, no se le muestran los mensajes faccionarios tampoco
     If ChatGlobal = 0 Then Exit Sub
     
     With FontTypes(FontIndex)
-        Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item(factionLabel) & chat, .red, .green, .blue, .bold, .italic)
     End With
     Exit Sub
     
