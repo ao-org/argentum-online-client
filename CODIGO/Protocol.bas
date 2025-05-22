@@ -831,7 +831,7 @@ Public Sub HandleDisconnect()
     frmMain.oxigenolbl.visible = False
     frmMain.panelinferior(0).Picture = Nothing
     frmMain.panelinferior(1).Picture = Nothing
-    frmMain.mapMundo.visible = False
+    frmMain.buttonskins.visible = False
     frmMain.Image5.visible = False
     frmMain.clanimg.visible = False
     frmMain.cmdLlavero.visible = False
