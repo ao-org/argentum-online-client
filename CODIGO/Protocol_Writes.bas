@@ -6646,22 +6646,6 @@ WriteFeatureEnable_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFeatureEnable", Erl)
 End Sub
 
-Public Sub WriteSendTelemetry(ByRef TelemetryData() As Byte, ByVal DataSize As Long)
-    On Error GoTo WriteFeatureEnable_Err
-        
-100     Call Writer.WriteInt16(ClientPacketID.eSendTelemetry)
-        Call Writer.WriteInt32(DataSize)
-        Dim i As Long
-        For i = 0 To DataSize - 1
-            Writer.WriteInt8 (TelemetryData(i))
-        Next i
-        Call modNetwork.Send(Writer)
-        Exit Sub
-
-WriteFeatureEnable_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFeatureEnable", Erl)
-End Sub
 
 Public Sub WriteSetHotkeySlot(ByVal SlotIndex As Byte, ByVal Index As Integer, ByVal LastKnownSlot As Integer, ByVal HotkeyType As e_HotkeyType)
 On Error GoTo WriteSetHotkeySlot_Err

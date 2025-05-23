@@ -528,7 +528,6 @@ Public Enum ClientPacketID
     eLobbyCommand
     eFeatureToggle
     eActionOnGroupFrame
-    eSendTelemetry
     eSetHotkeySlot
     eUseHKeySlot
     eAntiCheatMessage
