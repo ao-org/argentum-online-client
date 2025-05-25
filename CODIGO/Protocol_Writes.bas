@@ -2609,6 +2609,24 @@ WriteGamble_Err:
         '</EhFooter>
 End Sub
 
+''
+' Writes the "Arena" message to the outgoing data buffer.
+'
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+Public Sub WriteArena()
+
+        On Error GoTo WriteArena_Err
+
+     Call Writer.WriteInt16(ClientPacketID.eArena)
+
+     Call modNetwork.send(Writer)
+
+        Exit Sub
+
+WriteArena_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteArena", Erl)
+End Sub
 
 ''
 ' Writes the "LeaveFaction" message to the outgoing data buffer.
