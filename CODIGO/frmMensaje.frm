@@ -77,6 +77,9 @@ Begin VB.Form frmMensaje
       Begin VB.Menu mnuGMs 
          Caption         =   "Grupo"
       End
+      Begin VB.Menu mnuFaction 
+         Caption         =   "Facción"
+      End
    End
 End
 Attribute VB_Name = "frmMensaje"
@@ -272,6 +275,7 @@ Public Sub PopupMenuMensaje()
             mnuClan.Checked = False
             mnuGMs.Checked = False
             mnuGlobal.Checked = False
+            mnuFaction.Checked = False
 
         Case 2
             mnuNormal.Checked = False
@@ -280,6 +284,7 @@ Public Sub PopupMenuMensaje()
             mnuClan.Checked = False
             mnuGMs.Checked = False
             mnuGlobal.Checked = False
+            mnuFaction.Checked = False
 
         Case 3
             mnuNormal.Checked = False
@@ -288,6 +293,7 @@ Public Sub PopupMenuMensaje()
             mnuClan.Checked = False
             mnuGMs.Checked = False
             mnuGlobal.Checked = False
+            mnuFaction.Checked = False
 
         Case 4
             mnuNormal.Checked = False
@@ -296,6 +302,7 @@ Public Sub PopupMenuMensaje()
             mnuClan.Checked = True
             mnuGMs.Checked = False
             mnuGlobal.Checked = False
+            mnuFaction.Checked = False
 
         Case 5
             mnuNormal.Checked = False
@@ -304,6 +311,7 @@ Public Sub PopupMenuMensaje()
             mnuClan.Checked = False
             mnuGMs.Checked = True
             mnuGlobal.Checked = False
+            mnuFaction.Checked = False
 
         Case 6
             mnuNormal.Checked = False
@@ -312,6 +320,7 @@ Public Sub PopupMenuMensaje()
             mnuClan.Checked = False
             mnuGMs.Checked = False
             mnuGlobal.Checked = False
+            mnuFaction.Checked = False
 
         Case 7
             mnuNormal.Checked = False
@@ -320,6 +329,17 @@ Public Sub PopupMenuMensaje()
             mnuClan.Checked = False
             mnuGMs.Checked = False
             mnuGlobal.Checked = True
+            mnuFaction.Checked = False
+            
+        Case 9
+            mnuNormal.Checked = False
+            mnuGritar.Checked = False
+            mnuPrivado.Checked = False
+            mnuClan.Checked = False
+            mnuGMs.Checked = False
+            mnuGlobal.Checked = False
+            mnuFaction.Checked = True
+            
     End Select
 
     PopUpMenu mnuMensaje
@@ -441,6 +461,23 @@ Private Sub mnuGlobal_Click()
 
 mnuGlobal_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuGlobal_Click", Erl)
+    Resume Next
+    
+End Sub
+
+Private Sub mnuFaction_Click()
+    
+    On Error GoTo mnuFaction_Click_Err
+    
+    SendingType = 9
+
+    If frmMain.SendTxt.visible Then frmMain.SendTxt.SetFocus
+    If frmMain.SendTxtCmsg.visible Then frmMain.SendTxtCmsg.SetFocus
+    
+    Exit Sub
+
+mnuFaction_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMensaje.mnuFaction_Click", Erl)
     Resume Next
     
 End Sub
