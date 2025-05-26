@@ -280,7 +280,7 @@ Public Enum ClientPacketID
     eGuildVote               '/VOTO
     epunishments             '/PENAS
     eGamble                  '/APOSTAR
-    eArena                   '/ARENA
+    eEntrar                  '/ENTRAR
     eLeaveFaction            '/RETIRAR ( with no arguments )
     eBankExtractGold         '/RETIRAR ( with arguments )
     eBankDepositGold         '/DEPOSITAR
