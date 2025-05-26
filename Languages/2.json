@@ -616,5 +616,14 @@
 	"MENSAJE_MAPA_SEGURO": "This is a safe map.",
 	"MENSAJE_MODIFICAR": "Modify information.",
 	"MENSAJE_SISTEMA_USUARIOS": "User management system.",
-	"MENSAJE_TRANSPORTAR_A": "Teleport the user to the specified position."
+	"MENSAJE_TRANSPORTAR_A": "Teleport the user to the specified position.",
+	"Msg2040": "The creature",
+	"Msg2042": "<Dead>",
+	"Msg2043": "<Almost dead>",
+	"Msg2044": "<Badly wounded>",
+	"Msg2045": "<Wounded>",
+	"Msg2046": "<Slightly wounded>",
+	"Msg2047": "<Unharmed>",
+	"Msg2100": "¬1"
+
 }

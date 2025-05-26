@@ -616,5 +616,13 @@
 	"MENSAJE_MAPA_SEGURO": "Este es un mapa seguro.",
 	"MENSAJE_MODIFICAR": "Modificar información.",
 	"MENSAJE_SISTEMA_USUARIOS": "Sistema de gestión de usuarios.",
-	"MENSAJE_TRANSPORTAR_A": "Transportar al usuario a la posición indicada."
+	"MENSAJE_TRANSPORTAR_A": "Transportar al usuario a la posición indicada.",
+	"Msg2040": "La criatura",
+	"Msg2042": "<Muerto>",
+	"Msg2043": "<Casi muerto>",
+	"Msg2044": "<Malherido>",
+	"Msg2045": "<Herido>",
+	"Msg2046": "<Levemente herido>",
+	"Msg2047": "<Intacto>",
+	"Msg2100": "¬1"
 }
