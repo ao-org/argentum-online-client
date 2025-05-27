@@ -494,7 +494,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     End With
                     Exit Sub
                 End If
-                Call MapPriceEntrance
+                Call WriteMapPriceEntrance
             Case "/RETIRAR", "/WITHDRAW"
                 If UserStats.estado = 1 Then 'Muerto
 
