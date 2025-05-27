@@ -4439,7 +4439,22 @@ WriteChaosLegionMessage_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChaosLegionMessage", Erl)
         '</EhFooter>
 End Sub
+Public Sub WriteFactionMessage(ByVal Message As String)
 
+        On Error GoTo WriteFactionMessage_Err
+
+        Call Writer.WriteInt16(ClientPacketID.eFactionMessage)
+        Call Writer.WriteString8(Message)
+    
+        Call modNetwork.send(Writer)
+
+        Exit Sub
+
+WriteFactionMessage_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFactionMessage", Erl)
+
+End Sub
 ''
 ' Writes the "TalkAsNPC" message to the outgoing data buffer.
 '

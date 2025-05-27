@@ -1433,6 +1433,15 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
                 End If
+                
+            Case "/FMSG" 'Mensaje faccionario
+            
+                If notNullArguments Then
+                    Call WriteFactionMessage(ArgumentosRaw)
+                Else
+                    'Avisar que falta el parametro
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
+                End If
            
             Case "/TALKAS"
 
