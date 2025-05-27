@@ -2609,6 +2609,24 @@ WriteGamble_Err:
         '</EhFooter>
 End Sub
 
+''
+' Writes the "MapPriceEntrance" message to the outgoing data buffer.
+'
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+Public Sub WriteMapPriceEntrance()
+
+        On Error GoTo WriteMapPriceEntrance_Err
+
+     Call Writer.WriteInt16(ClientPacketID.eMapPriceEntrance)
+
+     Call modNetwork.send(Writer)
+
+        Exit Sub
+
+WriteMapPriceEntrance_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMapPriceEntrance", Erl)
+End Sub
 
 ''
 ' Writes the "LeaveFaction" message to the outgoing data buffer.

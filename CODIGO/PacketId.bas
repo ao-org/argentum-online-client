@@ -282,6 +282,7 @@ Public Enum ClientPacketID
     eGuildVote               '/VOTO
     epunishments             '/PENAS
     eGamble                  '/APOSTAR
+    eMapPriceEntrance        '/ARENA
     eLeaveFaction            '/RETIRAR ( with no arguments )
     eBankExtractGold         '/RETIRAR ( with arguments )
     eBankDepositGold         '/DEPOSITAR
