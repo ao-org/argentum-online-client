@@ -2610,22 +2610,22 @@ WriteGamble_Err:
 End Sub
 
 ''
-' Writes the "Entrar" message to the outgoing data buffer.
+' Writes the "MapPriceEntrance" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteEntrar()
+Public Sub WriteMapPriceEntrance()
 
-        On Error GoTo WriteEntrar_Err
+        On Error GoTo WriteMapPriceEntrance_Err
 
-     Call Writer.WriteInt16(ClientPacketID.eEntrar)
+     Call Writer.WriteInt16(ClientPacketID.eMapPriceEntrance)
 
      Call modNetwork.send(Writer)
 
         Exit Sub
 
-WriteEntrar_Err:
+WriteMapPriceEntrance_Err:
         Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEntrar", Erl)
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMapPriceEntrance", Erl)
 End Sub
 
 ''

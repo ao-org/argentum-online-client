@@ -487,14 +487,14 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                 
-            Case "/ENTRAR", "/ENTER"
+            Case "/ARENA"
                 If UserStats.estado = 1 Then 'Muerto
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
                     End With
                     Exit Sub
                 End If
-                Call WriteEntrar
+                Call MapPriceEntrance
             Case "/RETIRAR", "/WITHDRAW"
                 If UserStats.estado = 1 Then 'Muerto
 
