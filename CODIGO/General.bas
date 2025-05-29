@@ -1740,13 +1740,20 @@ On Error GoTo errhandler
     
     If localize Then
         Select Case language
-            Case e_language.English
-                FileName = "en_" & FileName
             Case e_language.Spanish
                 FileName = "es_" & FileName
+            Case e_language.English
+                filename = "en_" & filename
+            Case e_language.Portuguese
+                filename = "pt_" & filename '"pt_" & filename  falta pedir a Ale
+            Case e_language.French
+                filename = "fr_" & filename '"fr_" & filename falta pedir a Ale
+            Case e_language.Italian
+                filename = "it_" & filename '"it_" & filename falta pedir a Ale
             Case Else
                 FileName = "en_" & FileName
         End Select
+
     End If
     If FileName <> "" Then
         #If Compresion = 1 Then

@@ -19,7 +19,6 @@ Begin VB.Form frmDebug
       _ExtentX        =   17171
       _ExtentY        =   15266
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   3
       TextRTF         =   $"frmDebug.frx":0000
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 

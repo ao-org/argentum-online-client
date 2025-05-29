@@ -39,7 +39,7 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
     Dim i As Long
     
     strLocale = Locale_SMG(bytHeader)
-    
+    'strLocale = "mensaje"
     ' Manejo del caso especial del NPC
     Call HandleNpcName(bytHeader, strExtra)
     

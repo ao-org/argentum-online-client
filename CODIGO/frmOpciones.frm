@@ -523,7 +523,7 @@ Private Subir       As Boolean
 
 Public bmoving      As Boolean
 
-Public dX           As Integer
+Public dx           As Integer
 
 Public dy           As Integer
 
@@ -534,15 +534,15 @@ Const MOUSE_MOVE    As Long = &HF012&
 
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 
 ' funci n Api para aplicar la transparencia a la ventana
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 
 ' Funciones api para los estilos de la ventana
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
 
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 'constantes
 Private Const GWL_EXSTYLE = (-20)
@@ -551,7 +551,7 @@ Private Const LWA_ALPHA = &H2
 
 Private Const WS_EX_LAYERED = &H80000
 
-Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Private Declare Function SetWindowPos Lib "user32" (ByVal hWnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
 
 Private Const HWND_TOPMOST = -1
 
@@ -566,13 +566,13 @@ Private Sub loadButtons()
     Set cBotonCerrar = New clsGraphicalButton
 
     
-    Call cBotonCerrar.Initialize(cmdcerrar, "boton-cerrar-default.bmp", _
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
                                                 "boton-cerrar-over.bmp", _
                                                 "boton-cerrar-off.bmp", Me)
 
 End Sub
 
-Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
     
     On Error GoTo Is_Transparent_Err
     
@@ -581,7 +581,7 @@ Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
   
     Dim msg As Long
   
-    msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+    msg = GetWindowLong(hWnd, GWL_EXSTYLE)
          
     If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
         Is_Transparent = True
@@ -605,7 +605,7 @@ Is_Transparent_Err:
 End Function
   
 'Funci n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
-Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As Long
     
     On Error GoTo Aplicar_Transparencia_Err
     
@@ -617,13 +617,13 @@ Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As L
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
     Else
-        msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+        msg = GetWindowLong(hWnd, GWL_EXSTYLE)
         msg = msg Or WS_EX_LAYERED
      
-        SetWindowLong hwnd, GWL_EXSTYLE, msg
+        SetWindowLong hWnd, GWL_EXSTYLE, msg
      
         'Establece la transparencia
-        SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
+        SetLayeredWindowAttributes hWnd, 0, Valor, LWA_ALPHA
   
         Aplicar_Transparencia = 0
   
@@ -647,7 +647,7 @@ Private Sub Alpha_Change()
     
     On Error GoTo Alpha_Change_Err
     
-    AlphaMacro = Alpha.Value
+    AlphaMacro = Alpha.value
 
     
     Exit Sub
@@ -739,16 +739,32 @@ Private Sub cbLenguaje_Click()
        
         Select Case cbLenguaje.ListIndex
         
-            Case 0
-                message = "Para que los cambios surjan efecto deber  volver a abrir el cliente."
-                title = "Cambiar Idioma"
-            
-            Case 1
-                message = "You must restart the game to apply the changes."
-                title = "Change language"
-            
+            Case 0 ' Español (Latinoamérica)
+                message = JsonLanguage.Item("MENSAJE_604")
+                title = JsonLanguage.Item("MENSAJE_605")
+        
+            Case 1 ' Inglés
+                message = JsonLanguage.Item("MENSAJE_606")
+                title = JsonLanguage.Item("MENSAJE_607")
+        
+            Case 2 ' Portugués
+                message = JsonLanguage.Item("MENSAJE_608")
+                title = JsonLanguage.Item("MENSAJE_609")
+
+            Case 3 ' Francés
+                message = JsonLanguage.Item("MENSAJE_610")
+                title = JsonLanguage.Item("MENSAJE_611")
+
+            Case 4 ' Italiano
+                message = JsonLanguage.Item("MENSAJE_612")
+                title = JsonLanguage.Item("MENSAJE_613")
+'
+'            Case 5 ' Español (España)
+'                message = JsonLanguage.Item("MENSAJE_614")
+'                title = JsonLanguage.Item("MENSAJE_615")
         
         End Select
+
         
         If MsgBox(message, vbYesNo, title) = vbYes Then
             Call SaveSetting("OPCIONES", "Language", cbLenguaje.ListIndex + 1)
@@ -1060,8 +1076,8 @@ Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
-    cmdcerrar = Nothing
-    cmdcerrar.Tag = "0"
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
     
     
     Exit Sub
@@ -1077,9 +1093,9 @@ Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single
     On Error GoTo cmdCerrar_MouseMove_Err
     
 
-    If cmdcerrar.Tag = "0" Then
+    If cmdCerrar.Tag = "0" Then
         'cmdCerrar.Picture = LoadInterface("config_cerrar.bmp")
-        cmdcerrar.Tag = "1"
+        cmdCerrar.Tag = "1"
 
     End If
 
@@ -1103,7 +1119,7 @@ Private Sub cmdWeb_Click()
     
     On Error GoTo cmdWeb_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://www.argentumonline.com.ar/", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://www.argentumonline.com.ar/", "", "", 0
 
     
     Exit Sub
@@ -1133,7 +1149,7 @@ Private Sub discord_Click()
     
     On Error GoTo discord_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://discord.gg/hvaA8eMm43", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://discord.gg/hvaA8eMm43", "", "", 0
 
     
     Exit Sub
@@ -1148,7 +1164,7 @@ Private Sub facebook_Click()
     
     On Error GoTo facebook_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://facebook.com/argentumonlineoficial", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://facebook.com/argentumonlineoficial", "", "", 0
 
     
     Exit Sub
@@ -1163,7 +1179,7 @@ Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
     
-    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Call Aplicar_Transparencia(Me.hWnd, 240)
 '    Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("configuracion-vacio.bmp")
     
@@ -1177,7 +1193,11 @@ Private Sub Form_Load()
     Call cbTutorial.AddItem(JsonLanguage.Item("MENSAJE_506")) ' Activado
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_578"))  ' Español
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_579"))  ' Inglés
-   
+    Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_600"))  ' Portugues
+    Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_601"))  ' Frances
+    Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_602"))  ' Italiano
+'    Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_603"))  ' España
+    
     selected_light = GetSetting("VIDEO", "LuzGlobal")
     
     If LenB(selected_light) = 0 Then selected_light = 0
@@ -1319,7 +1339,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     
     On Error GoTo Form_MouseMove_Err
 
-    MoverForm Me.hwnd
+    MoverForm Me.hWnd
     cmdayuda = Nothing
     cmdayuda.Tag = "0"
     discord = Nothing
@@ -1332,8 +1352,8 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     facebook.Tag = "0"
     Command1 = Nothing
     Command1.Tag = "0"
-    cmdcerrar = Nothing
-    cmdcerrar.Tag = "0"
+    cmdCerrar = Nothing
+    cmdCerrar.Tag = "0"
     cmdChangePassword = Nothing
     cmdChangePassword.Tag = "0"
 
@@ -1497,14 +1517,14 @@ Public Sub Init()
     HScroll1.value = max(HScroll1.min, min(HScroll1.max, VolAmbient))
     scrMidi.value = max(scrMidi.min, min(scrMidi.max, VolMusic))
     
-    Alpha.Value = AlphaMacro
+    Alpha.value = AlphaMacro
     
     Call cbBloqueoHechizos.Clear
     Call cbBloqueoHechizos.AddItem(JsonLanguage.Item("MENSAJE_500")) ' Bloqueo en soltar
     Call cbBloqueoHechizos.AddItem(JsonLanguage.Item("MENSAJE_501")) ' Bloqueo al lanzar
     Call cbBloqueoHechizos.AddItem(JsonLanguage.Item("MENSAJE_502")) ' Sin bloqueo
     cbBloqueoHechizos.ListIndex = ModoHechizos
-    scrSens.Value = SensibilidadMouse
+    scrSens.value = SensibilidadMouse
     
     Me.Show vbModeless, GetGameplayForm()
 
@@ -1532,7 +1552,7 @@ End Sub
 Private Sub HScroll1_Change()
     
     On Error GoTo HScroll1_Change_Err
-    VolAmbient = HScroll1.Value
+    VolAmbient = HScroll1.value
     Call ao20audio.SetAmbientVolume(VolAmbient)
     Call ao20audio.PlayAmbientAudio(CurMap)
     Exit Sub
@@ -1549,7 +1569,7 @@ Private Sub instagram_Click()
     
     On Error GoTo instagram_Click_Err
     
-    ShellExecute Me.hwnd, "open", "https://instagram.com/argentumonlineoficial", "", "", 0
+    ShellExecute Me.hWnd, "open", "https://instagram.com/argentumonlineoficial", "", "", 0
 
     
     Exit Sub
@@ -1592,8 +1612,8 @@ End Sub
 Private Sub scrMidi_Change()
     
     On Error GoTo scrMidi_Change_Err
-    VolMusic = scrMidi.Value
-    Call ao20audio.SetMusicVolume(scrMidi.Value)
+    VolMusic = scrMidi.value
+    Call ao20audio.SetMusicVolume(scrMidi.value)
        
     Exit Sub
 
@@ -1607,10 +1627,10 @@ Private Sub scrSens_Change()
     
     On Error GoTo scrSens_Change_Err
     
-    MouseS = scrSens.Value
+    MouseS = scrSens.value
     SensibilidadMouse = MouseS
     Call General_Set_Mouse_Speed(MouseS)
-    txtMSens.Caption = scrSens.Value
+    txtMSens.Caption = scrSens.value
 
     
     Exit Sub
@@ -1623,9 +1643,9 @@ End Sub
 
 Private Sub scrVolume_Change()
 On Error GoTo scrVolume_Change_Err
-    VolFX = scrVolume.Value
-    Call ao20audio.SetFxVolume(scrVolume.Value)
-    Call ao20audio.PlayWav(SND_RESUCITAR, False, scrVolume.Value)
+    VolFX = scrVolume.value
+    Call ao20audio.SetFxVolume(scrVolume.value)
+    Call ao20audio.PlayWav(SND_RESUCITAR, False, scrVolume.value)
     Exit Sub
 scrVolume_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolume_Change", Erl)
