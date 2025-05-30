@@ -6723,13 +6723,13 @@ WriteAntiCheatMessage_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAntiCheatMessage", Erl)
 End Sub
 
-Public Sub WriteKickUninvitedHouseGuests(ByVal MapNumber As Integer)
-    On Error GoTo WriteKickUninvitedHouseGuests_Err
-        Call Writer.WriteInt16(ClientPacketID.eKickUninvitedHouseGuests)
+Public Sub WriteOfflineMassTpFromMapToUlla(ByVal MapNumber As Integer)
+    On Error GoTo WriteOfflineMassTpFromMapToUlla_Err
+        Call Writer.WriteInt16(ClientPacketID.eOfflineMassTpFromMapToUlla)
         Call Writer.WriteInt16(MapNumber)
         Call modNetwork.Send(Writer)
         Exit Sub
-WriteKickUninvitedHouseGuests_Err:
+WriteOfflineMassTpFromMapToUlla_Err:
         Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteKickUninvitedHouseGuests", Erl)
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMassTpFromMapToUlla", Erl)
 End Sub

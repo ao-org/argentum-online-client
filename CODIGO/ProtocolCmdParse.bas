@@ -2114,10 +2114,10 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/FEATURETOGGLE"
                 Call HandleFeatureToggle(ArgumentosAll, CantidadArgumentos)
 
-            Case "/KICKUNINVITEDHOUSEGUESTS"
+            Case "/OFFLINEMASSKICK"
                 If EsGM Then
                     If notNullArguments Then
-                        Call WriteKickUninvitedHouseGuests(ArgumentosRaw)
+                        Call WriteOfflineMassTpFromMapToUlla(ArgumentosRaw)
                     Else
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                     End If
