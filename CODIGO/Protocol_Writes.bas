@@ -6723,3 +6723,13 @@ WriteAntiCheatMessage_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAntiCheatMessage", Erl)
 End Sub
 
+Public Sub WriteOfflineMassTpFromMapToUlla(ByVal MapNumber As Integer)
+    On Error GoTo WriteOfflineMassTpFromMapToUlla_Err
+        Call Writer.WriteInt16(ClientPacketID.eOfflineMassTpFromMapToUlla)
+        Call Writer.WriteInt16(MapNumber)
+        Call modNetwork.Send(Writer)
+        Exit Sub
+WriteOfflineMassTpFromMapToUlla_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMassTpFromMapToUlla", Erl)
+End Sub
