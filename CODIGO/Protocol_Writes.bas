@@ -6723,3 +6723,12 @@ WriteAntiCheatMessage_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAntiCheatMessage", Erl)
 End Sub
 
+Public Sub WriteKickUninvitedHouseGuests()
+    On Error GoTo WriteKickUninvitedHouseGuests_Err
+        Call Writer.WriteInt16(ClientPacketID.eKickUninvitedHouseGuests)
+        Call modNetwork.Send(Writer)
+        Exit Sub
+WriteKickUninvitedHouseGuests_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteKickUninvitedHouseGuests", Erl)
+End Sub
