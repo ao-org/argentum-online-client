@@ -1745,11 +1745,11 @@ On Error GoTo errhandler
             Case e_language.English
                 filename = "en_" & filename
             Case e_language.Portuguese
-                filename = "pt_" & filename '"pt_" & filename  falta pedir a Ale
+                filename = "es_" & filename '"pt_" & filename  falta pedir a Ale
             Case e_language.French
-                filename = "fr_" & filename '"fr_" & filename falta pedir a Ale
+                filename = "es_" & filename '"fr_" & filename falta pedir a Ale
             Case e_language.Italian
-                filename = "it_" & filename '"it_" & filename falta pedir a Ale
+                filename = "es_" & filename '"it_" & filename falta pedir a Ale
             Case Else
                 FileName = "en_" & FileName
         End Select
