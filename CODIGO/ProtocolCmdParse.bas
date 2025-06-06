@@ -134,7 +134,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteSafeToggle
 
             Case "/ONLINE"
-                Call WriteOnline
+                If EsGM Then
+                    Call WriteOnline
+                Else
+                    Call ShowConsoleMsg("https://steamcharts.com/app/1956740")
+                End If
                 
             Case "/SALIR", "/EXIT"
                 Call WriteQuit
