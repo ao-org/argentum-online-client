@@ -741,6 +741,9 @@ Sub DoPasosFx(ByVal charindex As Integer)
    
     With charlist(CharIndex)
 
+        ' Mascots don't make noise
+        If .EsMascota Then Exit Sub
+
         If EstaPCarea(CharIndex) And Not .Muerto And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
             .Pie = Not .Pie
             
