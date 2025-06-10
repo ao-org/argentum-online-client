@@ -170,6 +170,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleLocaleChatOverHead
         Case ServerPacketID.eConsoleMsg
             Call HandleConsoleMessage
+        Case ServerPacketID.eConsoleFactionMessage
+            Call HandleConsoleFactionMessage
         Case ServerPacketID.eGuildChat
             Call HandleGuildChat
         Case ServerPacketID.eShowMessageBox
@@ -452,8 +454,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleCraftingCatalyst
         Case ServerPacketID.eCraftingResult
             Call HandleCraftingResult
-        Case ServerPacketID.eForceUpdate
-            'TODO: remove packet from protocol
         Case ServerPacketID.eAnswerReset
             Call HandleAnswerReset
         Case ServerPacketID.eObjQuestListSend
@@ -480,8 +480,6 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUpdateTrapState
         Case ServerPacketID.eUpdateGroupInfo
             Call HandleUpdateGroupInfo
-        Case ServerPacketID.eRequestTelemetry
-            Call HandleRequestTelemetry
         Case ServerPacketID.eUpdateCharValue
             Call HandleUpdateCharValue
         Case ServerPacketID.eSendClientToggles
@@ -2539,7 +2537,27 @@ errhandler:
     
 
 End Sub
-
+Private Sub HandleConsoleFactionMessage()
+    On Error GoTo errhandler
+    
+    Dim chat As String
+    Dim FontIndex As Integer
+    Dim factionLabel As String
+    chat = Reader.ReadString8()
+    FontIndex = Reader.ReadInt8()
+    factionLabel = Reader.ReadString8()
+    
+    'Si tiene el chat global desactivado, no se le muestran los mensajes faccionarios tampoco
+    If ChatGlobal = 0 Then Exit Sub
+    
+    With FontTypes(FontIndex)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item(factionLabel) & chat, .red, .green, .blue, .bold, .italic)
+    End With
+    Exit Sub
+    
+errhandler:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleConsoleFactionMessage", Erl)
+End Sub
 Private Sub HandleLocaleMsg()
 
     On Error GoTo errhandler
@@ -3656,13 +3674,6 @@ Private Sub HandleUpdateGroupInfo()
         Group.GroupMembers(i).MaxHp = Reader.ReadInt16
     Next i
     Call UpdateRenderArea
-    Exit Sub
-HandleUpdateGroupInfo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)
-End Sub
-
-Private Sub HandleRequestTelemetry()
-    On Error GoTo HandleUpdateGroupInfo_Err
     Exit Sub
 HandleUpdateGroupInfo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)

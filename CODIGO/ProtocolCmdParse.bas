@@ -134,7 +134,11 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteSafeToggle
 
             Case "/ONLINE"
-                Call WriteOnline
+                If EsGM Then
+                    Call WriteOnline
+                Else
+                    Call ShowConsoleMsg("https://steamcharts.com/app/1956740")
+                End If
                 
             Case "/SALIR", "/EXIT"
                 Call WriteQuit
@@ -487,6 +491,14 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 End If
                 
+            Case "/ARENA"
+                If UserStats.estado = 1 Then 'Muerto
+                    With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                       Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
+                    End With
+                    Exit Sub
+                End If
+                Call WriteMapPriceEntrance
             Case "/RETIRAR", "/WITHDRAW"
                 If UserStats.estado = 1 Then 'Muerto
 
@@ -1424,6 +1436,15 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
 
+                End If
+                
+            Case "/FMSG" 'Mensaje faccionario
+            
+                If notNullArguments Then
+                    Call WriteFactionMessage(ArgumentosRaw)
+                Else
+                    'Avisar que falta el parametro
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
                 End If
            
             Case "/TALKAS"

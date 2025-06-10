@@ -38,6 +38,7 @@ Public Enum ServerPacketID
     eChatOverHead            ' ||
     eLocaleChatOverHead
     eConsoleMsg              ' || - Beware!! its the same as above, but it was properly splitted
+    eConsoleFactionMessage
     eGuildChat               ' |+   40
     eShowMessageBox          ' !!
     eMostrarCuenta
@@ -172,7 +173,6 @@ Public Enum ServerPacketID
     eCraftingItem
     eCraftingCatalyst
     eCraftingResult
-    eForceUpdate
     eGuardNotice
     eAnswerReset
     eObjQuestListSend
@@ -199,7 +199,6 @@ Public Enum ServerPacketID
     eCreateProjectile
     eUpdateTrap
     eUpdateGroupInfo
-    eRequestTelemetry
     eUpdateCharValue 'updates some char index value based on enum
     eSendClientToggles 'Get active feature Toggles from server
     eAntiCheatMessage
@@ -277,11 +276,13 @@ Public Enum ClientPacketID
     eGuildMessage            '/CMSG
     eGuildOnline             '/ONLINECLAN
     eCouncilMessage          '/BMSG
+    eFactionMessage          '/FMSG
     eRoleMasterRequest       '/ROL
     eChangeDescription       '/DESC
     eGuildVote               '/VOTO
     epunishments             '/PENAS
     eGamble                  '/APOSTAR
+    eMapPriceEntrance        '/ARENA
     eLeaveFaction            '/RETIRAR ( with no arguments )
     eBankExtractGold         '/RETIRAR ( with arguments )
     eBankDepositGold         '/DEPOSITAR
@@ -530,7 +531,6 @@ Public Enum ClientPacketID
     eLobbyCommand
     eFeatureToggle
     eActionOnGroupFrame
-    eSendTelemetry
     eSetHotkeySlot
     eUseHKeySlot
     eAntiCheatMessage

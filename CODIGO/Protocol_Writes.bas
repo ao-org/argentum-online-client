@@ -2609,6 +2609,24 @@ WriteGamble_Err:
         '</EhFooter>
 End Sub
 
+''
+' Writes the "MapPriceEntrance" message to the outgoing data buffer.
+'
+' @remarks  The data is not actually sent until the buffer is properly flushed.
+Public Sub WriteMapPriceEntrance()
+
+        On Error GoTo WriteMapPriceEntrance_Err
+
+     Call Writer.WriteInt16(ClientPacketID.eMapPriceEntrance)
+
+     Call modNetwork.send(Writer)
+
+        Exit Sub
+
+WriteMapPriceEntrance_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMapPriceEntrance", Erl)
+End Sub
 
 ''
 ' Writes the "LeaveFaction" message to the outgoing data buffer.
@@ -4421,7 +4439,22 @@ WriteChaosLegionMessage_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChaosLegionMessage", Erl)
         '</EhFooter>
 End Sub
+Public Sub WriteFactionMessage(ByVal Message As String)
 
+        On Error GoTo WriteFactionMessage_Err
+
+        Call Writer.WriteInt16(ClientPacketID.eFactionMessage)
+        Call Writer.WriteString8(Message)
+    
+        Call modNetwork.send(Writer)
+
+        Exit Sub
+
+WriteFactionMessage_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFactionMessage", Erl)
+
+End Sub
 ''
 ' Writes the "TalkAsNPC" message to the outgoing data buffer.
 '
@@ -6646,22 +6679,6 @@ WriteFeatureEnable_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFeatureEnable", Erl)
 End Sub
 
-Public Sub WriteSendTelemetry(ByRef TelemetryData() As Byte, ByVal DataSize As Long)
-    On Error GoTo WriteFeatureEnable_Err
-        
-100     Call Writer.WriteInt16(ClientPacketID.eSendTelemetry)
-        Call Writer.WriteInt32(DataSize)
-        Dim i As Long
-        For i = 0 To DataSize - 1
-            Writer.WriteInt8 (TelemetryData(i))
-        Next i
-        Call modNetwork.Send(Writer)
-        Exit Sub
-
-WriteFeatureEnable_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteFeatureEnable", Erl)
-End Sub
 
 Public Sub WriteSetHotkeySlot(ByVal SlotIndex As Byte, ByVal Index As Integer, ByVal LastKnownSlot As Integer, ByVal HotkeyType As e_HotkeyType)
 On Error GoTo WriteSetHotkeySlot_Err
