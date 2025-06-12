@@ -3455,14 +3455,14 @@ End Sub
 ' @param    reason The reason for which to send him to jail.
 ' @param    time The time (in minutes) the user will have to spend there.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteJail(ByVal UserName As String, ByVal reason As String, ByVal Time As Byte)
+Public Sub WriteJail(ByVal userName As String, ByVal reason As String, ByVal Time As Integer)
         '<EhHeader>
         On Error GoTo WriteJail_Err
         '</EhHeader>
 100     Call Writer.WriteInt16(ClientPacketID.eJail)
 102     Call Writer.WriteString8(UserName)
 104     Call Writer.WriteString8(reason)
-106     Call Writer.WriteInt8(Time)
+106     Call Writer.WriteInt16(Time)
     
 108     Call modNetwork.Send(Writer)
         '<EhFooter>
