@@ -435,6 +435,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -508,11 +509,11 @@ Begin VB.Form frmMain
          Visible         =   0   'False
          Width           =   1020
       End
-      Begin VB.Image mapMundo 
+      Begin VB.Image buttonskins 
          Height          =   495
          Left            =   135
          Tag             =   "0"
-         ToolTipText     =   "Mapa del mundo"
+         ToolTipText     =   "Skins"
          Top             =   555
          Visible         =   0   'False
          Width           =   540
@@ -2925,9 +2926,9 @@ Private Sub panelInf_MouseMove(Button As Integer, Shift As Integer, x As Single,
 
     End If
 
-    If mapMundo.Tag = "1" Then
-        mapMundo.Picture = Nothing
-        mapMundo.Tag = "0"
+    If buttonskins.Tag = "1" Then
+        buttonskins.Picture = Nothing
+        buttonskins.Tag = "0"
 
     End If
 
@@ -2993,7 +2994,7 @@ Select Case Index
         imgBugReport.visible = True
         panelinferior(0).Picture = Nothing
         panelinferior(1).Picture = Nothing
-        mapMundo.visible = True
+        buttonskins.visible = True
         Image5.visible = True
         clanimg.visible = True
         Retar.visible = True
@@ -3066,7 +3067,7 @@ Select Case Index
         imgBugReport.visible = False
         panelinferior(0).Picture = Nothing
         panelinferior(1).Picture = Nothing
-        mapMundo.visible = False
+        buttonskins.visible = False
         Image5.visible = False
         clanimg.visible = False
         Retar.visible = False
@@ -3336,41 +3337,36 @@ manabar_Click_Err:
     Resume Next
 End Sub
 
-Private Sub mapMundo_Click()
+Private Sub buttonSkins_Click()
     
-    On Error GoTo mapMundo_Click_Err
-    
-    ExpMult = 1
-    OroMult = 1
-    Call frmMapaGrande.CalcularPosicionMAPA
-    frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
-    frmMapaGrande.Show , frmMain
-
+    On Error GoTo buttonSkins_Click_Err
+    frmMapaGrande.Picture = LoadInterface("ventanaprincipal_info.bmp")
+    frmSkins.Show , frmMain
     
     Exit Sub
 
-mapMundo_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.mapMundo_Click", Erl)
+buttonSkins_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.buttonSkins_Click", Erl)
     Resume Next
     
 End Sub
 
-Private Sub mapMundo_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
+Private Sub buttonSkins_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     
-    On Error GoTo mapMundo_MouseMove_Err
+    On Error GoTo buttonSkins_MouseMove_Err
     
 
-    If mapMundo.Tag = "0" Then
-        mapMundo.Picture = LoadInterface("boton-mapa-over.bmp")
-        mapMundo.Tag = "1"
+    If buttonskins.Tag = "0" Then
+        buttonskins.Picture = LoadInterface("boton-skins-default.bmp")
+        buttonskins.Tag = "1"
 
     End If
 
     
     Exit Sub
 
-mapMundo_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.mapMundo_MouseMove", Erl)
+buttonSkins_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.buttonSkins_MouseMove", Erl)
     Resume Next
     
 End Sub
@@ -3408,9 +3404,9 @@ Private Sub MiniMap_MouseMove(Button As Integer, Shift As Integer, x As Single, 
     On Error GoTo MiniMap_MouseMove_Err
     
 
-    If mapMundo.Tag = "1" Then
-        mapMundo.Picture = Nothing
-        mapMundo.Tag = "0"
+    If buttonskins.Tag = "1" Then
+        buttonskins.Picture = Nothing
+        buttonskins.Tag = "0"
 
     End If
 
@@ -3506,9 +3502,9 @@ Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single,
     On Error GoTo NameMapa_MouseMove_Err
     
 
-    If mapMundo.Tag = "1" Then
-        mapMundo.Picture = Nothing
-        mapMundo.Tag = "0"
+    If buttonskins.Tag = "1" Then
+        buttonskins.Picture = Nothing
+        buttonskins.Tag = "0"
 
     End If
 
@@ -4320,9 +4316,9 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, Y A
 
     End If
 
-    If mapMundo.Tag = "1" Then
-        mapMundo.Picture = Nothing
-        mapMundo.Tag = "0"
+    If buttonskins.Tag = "1" Then
+        buttonskins.Picture = Nothing
+        buttonskins.Tag = "0"
 
     End If
 
