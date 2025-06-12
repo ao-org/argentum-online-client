@@ -1655,33 +1655,21 @@ Public Sub CargarIndicesOBJ()
             frmDebug.add_text_tracebox "asd"
         End If
         
+        Dim langPrefix As String
         Select Case language
-            Case e_language.Spanish
-                ObjData(Obj).Name = Leer.GetValue("OBJ" & Obj, "Name")
-                ObjData(Obj).info = Leer.GetValue("OBJ" & Obj, "Info")
-                ObjData(Obj).Texto = Leer.GetValue("OBJ" & Obj, "Texto")
-                
-            Case e_language.English
-                ObjData(Obj).Name = IIf(Leer.GetValue("OBJ" & Obj, "en_Name") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Name"), Leer.GetValue("OBJ" & Obj, "Name"))
-                ObjData(Obj).info = IIf(Leer.GetValue("OBJ" & Obj, "en_Info") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Info"), Leer.GetValue("OBJ" & Obj, "Info"))
-                ObjData(Obj).Texto = IIf(Leer.GetValue("OBJ" & Obj, "en_Texto") <> vbNullString, Leer.GetValue("OBJ" & Obj, "en_Texto"), Leer.GetValue("OBJ" & Obj, "Texto"))
-        
-            Case e_language.Portuguese
-                ObjData(Obj).Name = IIf(Leer.GetValue("OBJ" & Obj, "pt_name") <> vbNullString, Leer.GetValue("OBJ" & Obj, "pt_name"), Leer.GetValue("OBJ" & Obj, "Name"))
-                ObjData(Obj).info = IIf(Leer.GetValue("OBJ" & Obj, "pt_info") <> vbNullString, Leer.GetValue("OBJ" & Obj, "pt_info"), Leer.GetValue("OBJ" & Obj, "Info"))
-                ObjData(Obj).Texto = IIf(Leer.GetValue("OBJ" & Obj, "pt_texto") <> vbNullString, Leer.GetValue("OBJ" & Obj, "pt_texto"), Leer.GetValue("OBJ" & Obj, "Texto"))
-        
-            Case e_language.French
-                ObjData(Obj).Name = IIf(Leer.GetValue("OBJ" & Obj, "fr_name") <> vbNullString, Leer.GetValue("OBJ" & Obj, "fr_name"), Leer.GetValue("OBJ" & Obj, "Name"))
-                ObjData(Obj).info = IIf(Leer.GetValue("OBJ" & Obj, "fr_info") <> vbNullString, Leer.GetValue("OBJ" & Obj, "fr_info"), Leer.GetValue("OBJ" & Obj, "Info"))
-                ObjData(Obj).Texto = IIf(Leer.GetValue("OBJ" & Obj, "fr_texto") <> vbNullString, Leer.GetValue("OBJ" & Obj, "fr_texto"), Leer.GetValue("OBJ" & Obj, "Texto"))
-        
-            Case e_language.Italian
-                ObjData(Obj).Name = IIf(Leer.GetValue("OBJ" & Obj, "it_name") <> vbNullString, Leer.GetValue("OBJ" & Obj, "it_name"), Leer.GetValue("OBJ" & Obj, "Name"))
-                ObjData(Obj).info = IIf(Leer.GetValue("OBJ" & Obj, "it_info") <> vbNullString, Leer.GetValue("OBJ" & Obj, "it_info"), Leer.GetValue("OBJ" & Obj, "Info"))
-                ObjData(Obj).Texto = IIf(Leer.GetValue("OBJ" & Obj, "it_texto") <> vbNullString, Leer.GetValue("OBJ" & Obj, "it_texto"), Leer.GetValue("OBJ" & Obj, "Texto"))
-                       
+            Case e_language.Spanish:     langPrefix = ""
+            Case e_language.English:     langPrefix = "en"
+            Case e_language.Portuguese:  langPrefix = "pt"
+            Case e_language.French:      langPrefix = "fr"
+            Case e_language.Italian:     langPrefix = "it"
         End Select
+        
+        With ObjData(Obj)
+            .Name = GetLocalizedValue(Leer, "OBJ" & Obj, "Name", langPrefix)
+            .info = GetLocalizedValue(Leer, "OBJ" & Obj, "Info", langPrefix)
+            .Texto = GetLocalizedValue(Leer, "OBJ" & Obj, "Texto", langPrefix)
+        End With
+
 
         
         ObjData(Obj).MinDef = Val(Leer.GetValue("OBJ" & Obj, "MinDef"))
@@ -1760,30 +1748,17 @@ Public Sub CargarIndicesOBJ()
         End If
         
         Select Case language
-            Case e_language.Spanish
-                NpcData(Npc).Name = Leer.GetValue("npc" & Npc, "Name")
-                NpcData(Npc).desc = Leer.GetValue("npc" & Npc, "desc")
-            
-            Case e_language.English
-                NpcData(Npc).Name = IIf(Leer.GetValue("npc" & Npc, "en_Name") <> vbNullString, Leer.GetValue("npc" & Npc, "en_Name"), Leer.GetValue("npc" & Npc, "Name"))
-                NpcData(Npc).desc = IIf(Leer.GetValue("npc" & Npc, "en_desc") <> vbNullString, Leer.GetValue("npc" & Npc, "en_desc"), Leer.GetValue("npc" & Npc, "desc"))
-        
-            Case e_language.Portuguese
-                NpcData(Npc).Name = IIf(Leer.GetValue("npc" & Npc, "pt_name") <> vbNullString, Leer.GetValue("npc" & Npc, "pt_name"), Leer.GetValue("npc" & Npc, "Name"))
-                NpcData(Npc).desc = IIf(Leer.GetValue("npc" & Npc, "pt_desc") <> vbNullString, Leer.GetValue("npc" & Npc, "pt_desc"), Leer.GetValue("npc" & Npc, "desc"))
-
-            Case e_language.French
-                NpcData(Npc).Name = IIf(Leer.GetValue("npc" & Npc, "fr_name") <> vbNullString, Leer.GetValue("npc" & Npc, "fr_name"), Leer.GetValue("npc" & Npc, "Name"))
-                NpcData(Npc).desc = IIf(Leer.GetValue("npc" & Npc, "fr_desc") <> vbNullString, Leer.GetValue("npc" & Npc, "fr_desc"), Leer.GetValue("npc" & Npc, "desc"))
-
-            Case e_language.Italian
-                NpcData(Npc).Name = IIf(Leer.GetValue("npc" & Npc, "it_name") <> vbNullString, Leer.GetValue("npc" & Npc, "it_name"), Leer.GetValue("npc" & Npc, "Name"))
-                NpcData(Npc).desc = IIf(Leer.GetValue("npc" & Npc, "it_desc") <> vbNullString, Leer.GetValue("npc" & Npc, "it_desc"), Leer.GetValue("npc" & Npc, "desc"))
-        
-
+            Case e_language.Spanish:     langPrefix = ""
+            Case e_language.English:     langPrefix = "en"
+            Case e_language.Portuguese:  langPrefix = "pt"
+            Case e_language.French:      langPrefix = "fr"
+            Case e_language.Italian:     langPrefix = "it"
         End Select
-
         
+        With NpcData(Npc)
+            .Name = GetLocalizedValue(Leer, "npc" & Npc, "Name", langPrefix)
+            .desc = GetLocalizedValue(Leer, "npc" & Npc, "desc", langPrefix)
+        End With
 
         If NpcData(Npc).Name = "" Then
             NpcData(Npc).Name = "Vacío"
@@ -1819,54 +1794,34 @@ Continue:
 
     Next Npc
     
+    Select Case language
+        Case e_language.Spanish:     langPrefix = ""
+        Case e_language.English:     langPrefix = "en"
+        Case e_language.Portuguese:  langPrefix = "pt"
+        Case e_language.French:      langPrefix = "fr"
+        Case e_language.Italian:     langPrefix = "it"
+    End Select
+    
     For Hechizo = 1 To NumHechizos
         DoEvents
+        Dim section As String
+        section = "Hechizo" & Hechizo
         
-        Select Case language
-            Case e_language.Spanish
-                HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "Nombre")
-                HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "desc")
-                HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "HechizeroMsg")
-                HechizoData(Hechizo).TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "TargetMsg")
-                HechizoData(Hechizo).PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "PropioMsg")
-            Case e_language.English
-                HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "en_name")
-                HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "en_desc")
-                HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "en_HechizeroMsg")
-                HechizoData(Hechizo).TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "en_TargetMsg")
-                HechizoData(Hechizo).PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "en_PropioMsg")
-        
-            Case e_language.Portuguese
-                HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "pt_Nombre")
-                HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "pt_desc")
-                HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "pt_HechizeroMsg")
-                HechizoData(Hechizo).TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "pt_TargetMsg")
-                HechizoData(Hechizo).PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "pt_PropioMsg")
-        
-            Case e_language.French
-                HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "pt_Nombre")
-                HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "fr_desc")
-                HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "fr_HechizeroMsg")
-                HechizoData(Hechizo).TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "fr_TargetMsg")
-                HechizoData(Hechizo).PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "fr_PropioMsg")
-        
-            Case e_language.Italian
-                HechizoData(Hechizo).nombre = Leer.GetValue("Hechizo" & Hechizo, "pt_Nombre")
-                HechizoData(Hechizo).desc = Leer.GetValue("Hechizo" & Hechizo, "it_desc")
-                HechizoData(Hechizo).HechizeroMsg = Leer.GetValue("Hechizo" & Hechizo, "it_HechizeroMsg")
-                HechizoData(Hechizo).TargetMsg = Leer.GetValue("Hechizo" & Hechizo, "it_TargetMsg")
-                HechizoData(Hechizo).PropioMsg = Leer.GetValue("Hechizo" & Hechizo, "it_PropioMsg")
-        
-        
-        End Select
-
-        
-        HechizoData(Hechizo).MinSkill = Val(Leer.GetValue("Hechizo" & Hechizo, "MinSkill"))
-        HechizoData(Hechizo).StaRequerido = Val(Leer.GetValue("Hechizo" & Hechizo, "StaRequerido"))
-        HechizoData(Hechizo).IconoIndex = Val(Leer.GetValue("Hechizo" & Hechizo, "IconoIndex"))
-        HechizoData(Hechizo).ManaRequerido = Val(Leer.GetValue("Hechizo" & Hechizo, "ManaRequerido"))
-        HechizoData(Hechizo).PalabrasMagicas = Leer.GetValue("Hechizo" & Hechizo, "PalabrasMagicas")
-        'HechizoData(Hechizo).IconoIndex = 35696
+        With HechizoData(Hechizo)
+            ' Localized
+            .nombre = GetLocalizedValue(Leer, section, "Nombre", langPrefix)
+            .desc = GetLocalizedValue(Leer, section, "desc", langPrefix)
+            .HechizeroMsg = GetLocalizedValue(Leer, section, "HechizeroMsg", langPrefix)
+            .TargetMsg = GetLocalizedValue(Leer, section, "TargetMsg", langPrefix)
+            .PropioMsg = GetLocalizedValue(Leer, section, "PropioMsg", langPrefix)
+            
+            ' Fixed data
+            .MinSkill = Val(Leer.GetValue(section, "MinSkill"))
+            .StaRequerido = Val(Leer.GetValue(section, "StaRequerido"))
+            .IconoIndex = Val(Leer.GetValue(section, "IconoIndex"))
+            .ManaRequerido = Val(Leer.GetValue(section, "ManaRequerido"))
+            .PalabrasMagicas = Leer.GetValue(section, "PalabrasMagicas")
+        End With
     Next Hechizo
     
     Hechizo = 1
@@ -3393,3 +3348,18 @@ Public Sub CargarNPCsMapData()
     Loop
     Close fh
 End Sub
+' Módulo: modMultilenguaje.bas
+
+Public Function GetLocalizedValue(ByRef Leer As Object, ByVal section As String, ByVal keyBase As String, ByVal langPrefix As String) As String
+    Dim localizedKey As String
+    localizedKey = LCase(langPrefix) & "_" & keyBase
+
+    Dim value As String
+    value = Leer.GetValue(section, localizedKey)
+    If value = vbNullString Then
+        value = Leer.GetValue(section, keyBase)
+    End If
+
+    GetLocalizedValue = value
+End Function
+
