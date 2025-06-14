@@ -624,6 +624,22 @@
 	"Msg2045": "<Wounded>",
 	"Msg2046": "<Slightly wounded>",
 	"Msg2047": "<Unharmed>",
-	"Msg2100": "¬1"
+	"Msg2100": "¬1",
+	"MENSAJE_600": "Portugues",
+	"MENSAJE_601": "Frances",
+	"MENSAJE_602": "Italiano",
+	"MENSAJE_603": "Español España",
+	"MENSAJE_604": "Para que los cambios surjan efecto deberá volver a abrir el cliente.",
+	"MENSAJE_605": "Cambiar idioma",
+	"MENSAJE_606": "You must restart the game to apply the changes.",
+	"MENSAJE_607": "Change language",
+	"MENSAJE_608": "Você deve reiniciar o cliente para que as alterações tenham efeito.",
+	"MENSAJE_609": "Alterar idioma",
+	"MENSAJE_610": "Vous devez redémarrer le client pour que les changements prennent effet.",
+	"MENSAJE_611": "Changer de langue",
+	"MENSAJE_612": "Devi riavviare il client per applicare le modifiche.",
+	"MENSAJE_613": "Cambia lingua",
+	"MENSAJE_614": "Para que los cambios tengan efecto deberás volver a abrir el cliente.",
+	"MENSAJE_615": "Cambiar idioma"
 
 }
