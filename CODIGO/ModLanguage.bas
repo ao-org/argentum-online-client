@@ -19,8 +19,8 @@ Option Explicit
 
 Const LOCALE_USER_DEFAULT = &H400
 
-Private Declare Function GetUserDefaultLCID Lib "kernel32" () As Long
-Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+Private Declare Function GetUserDefaultLCID Lib "Kernel32" () As Long
+Private Declare Function GetLocaleInfo Lib "Kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 
 Private Const LOCALE_SCOUNTRY = &H6
 Private Const LOCALE_SLANGUAGE = &H2
@@ -29,7 +29,7 @@ Private Const MAX_BUF As Long = 260
 
 Public Enum e_language
     Spanish = 1          ' Español (LATAM)
-    English = 2
+    English = 2          'Ingles
     Portuguese = 3
     French = 4
     Italian = 5
