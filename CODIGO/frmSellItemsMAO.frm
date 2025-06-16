@@ -9,36 +9,11 @@ Begin VB.Form frmSellItemsMAO
    ScaleHeight     =   6075
    ScaleWidth      =   7200
    StartUpPosition =   3  'Windows Default
-   Begin VB.CommandButton Command1 
-      Caption         =   "load inv"
-      Height          =   855
-      Left            =   4440
-      TabIndex        =   1
-      Top             =   1320
-      Width           =   2295
-   End
-   Begin VB.PictureBox picInv 
-      Appearance      =   0  'Flat
-      BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H80000008&
-      Height          =   3675
-      Left            =   480
-      ScaleHeight     =   245
-      ScaleMode       =   0  'User
-      ScaleWidth      =   210
-      TabIndex        =   0
-      Top             =   600
-      Width           =   3150
+   Begin VB.Image imgPublishItemMao 
+      Height          =   615
+      Left            =   1320
+      Top             =   5160
+      Width           =   2055
    End
 End
 Attribute VB_Name = "frmSellItemsMAO"
@@ -73,15 +48,6 @@ Attribute VB_Exposed = False
 '
 '
 
-Option Explicit
-
-Dim Item            As Boolean
-
-Private Sub Command1_Click()
+Private Sub imgPublishItemMao_Click()
 Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
 End Sub
-
-Private Sub Form_Load()
-
-End Sub
-
