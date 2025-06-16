@@ -84,6 +84,3 @@ Private Sub Command1_Click()
     Call frmSellItemsMAO.InvUser.ReDraw
 End Sub
 
-Private Sub Form_Load()
-
-End Sub
