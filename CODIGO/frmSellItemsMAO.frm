@@ -81,6 +81,8 @@ Public WithEvents InvUser As clsGrapchicalInventory
 Attribute InvUser.VB_VarHelpID = -1
 
 Private Sub Command1_Click()
+    frmSellItemsMAO.Show , GetGameplayForm()
+    frmSellItemsMAO.Refresh
     Call frmSellItemsMAO.InvUser.ReDraw
 End Sub
 
