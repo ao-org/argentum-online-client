@@ -1906,8 +1906,6 @@ End Sub
 
 Private Sub Command2_Click()
     frmSellItemsMAO.Show , GetGameplayForm()
-    frmSellItemsMAO.Refresh
-    Call frmSellItemsMAO.InvUser.ReDraw
 End Sub
 
 Private Sub Contadores_Timer()

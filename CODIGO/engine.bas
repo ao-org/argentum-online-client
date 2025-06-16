@@ -3919,7 +3919,6 @@ Public Sub InitializeInventory()
     Set frmComerciarUsu.InvUser = New clsGrapchicalInventory
     Set frmComerciarUsu.InvUserSell = New clsGrapchicalInventory
     Set frmComerciarUsu.InvOtherSell = New clsGrapchicalInventory
-    Set frmSellItemsMAO.InvUser = New clsGrapchicalInventory
     
     Set frmBancoCuenta.InvBankUsuCuenta = New clsGrapchicalInventory
     Set frmBancoCuenta.InvBovedaCuenta = New clsGrapchicalInventory
@@ -3930,7 +3929,6 @@ Public Sub InitializeInventory()
     Call frmComerciar.InvComUsu.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmComerciar.InvComNpc.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, , 1, 0, 3, 3)
     Call frmComerciarUsu.InvUser.Initialize(frmComerciarUsu.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True)
-    Call frmSellItemsMAO.InvUser.Initialize(frmSellItemsMAO.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True)
     Call frmComerciarUsu.InvUserSell.Initialize(frmComerciarUsu.picInvUserSell, 6, , , 0, 0, 3, 3, True)
     Call frmComerciarUsu.InvOtherSell.Initialize(frmComerciarUsu.picInvOtherSell, 6, , , 0, 0, 3, 3, True)
    
