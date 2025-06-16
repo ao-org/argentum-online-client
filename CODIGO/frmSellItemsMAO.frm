@@ -1,14 +1,45 @@
 VERSION 5.00
 Begin VB.Form frmSellItemsMAO 
    Caption         =   "Form1"
-   ClientHeight    =   3015
+   ClientHeight    =   6075
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   4560
+   ClientWidth     =   7200
    LinkTopic       =   "Form1"
-   ScaleHeight     =   3015
-   ScaleWidth      =   4560
+   ScaleHeight     =   6075
+   ScaleWidth      =   7200
    StartUpPosition =   3  'Windows Default
+   Begin VB.CommandButton Command1 
+      Caption         =   "load inv"
+      Height          =   855
+      Left            =   4440
+      TabIndex        =   1
+      Top             =   1320
+      Width           =   2295
+   End
+   Begin VB.PictureBox picInv 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000008&
+      Height          =   3675
+      Left            =   480
+      ScaleHeight     =   245
+      ScaleMode       =   0  'User
+      ScaleWidth      =   210
+      TabIndex        =   0
+      Top             =   600
+      Width           =   3150
+   End
 End
 Attribute VB_Name = "frmSellItemsMAO"
 Attribute VB_GlobalNameSpace = False
@@ -48,6 +79,10 @@ Dim Item            As Boolean
 
 Public WithEvents InvUser As clsGrapchicalInventory
 Attribute InvUser.VB_VarHelpID = -1
+
+Private Sub Command1_Click()
+    Call frmSellItemsMAO.InvUser.ReDraw
+End Sub
 
 Private Sub Form_Load()
 
