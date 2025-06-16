@@ -62,8 +62,8 @@ Private Sub imgPublishItemMao_Click()
         Exit Sub
     End If
     
-    If MsgBox(JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE") & userName & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_VALOR") & txtValor.Text & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_COSTO"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJE_TITULO_PUBLICAR_PERSONAJE")) = vbYes Then
-        Call writePublishItemMAO(Val(txtValor.Text),frmMain.Inventario.SelectedItem)
+    If (frmMain.Inventario.SelectedItem > 0 And frmMain.Inventario.SelectedItem < MAX_INVENTORY_SLOTS + 1) Then
+        Call writePublishItemMAO(Val(txtPriceItemInMao.Text), frmMain.Inventario.SelectedItem)
         Call closeForm
         Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
     End If
