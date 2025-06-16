@@ -1537,6 +1537,7 @@ Public Sub CloseClient()
     Set frmMain.Inventario = Nothing
     Set frmComerciar.InvComNpc = Nothing
     Set frmComerciar.InvComUsu = Nothing
+    Set frmSellItemsMAO.InvUser = Nothing
     Set frmBancoObj.InvBankUsu = Nothing
     Set frmBancoObj.InvBoveda = Nothing
     Set frmComerciarUsu.InvUser = Nothing

@@ -319,8 +319,12 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Exit Sub
 
                 End If
-
-                Call WriteBankStart
+                
+                If Not Comerciando Then
+                    Call WriteBankStart
+                Else
+                    Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_YA_COMERCIANDO"), 255, 0, 32, False, False, False)
+                End If
                 
             Case "/ENLISTAR", "/ENLIST"
                 Call WriteEnlist

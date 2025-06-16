@@ -319,7 +319,11 @@ Private Sub cmdTirar_click()
     Call ao20audio.PlayWav(SND_CLICK)
     If LenB(frmCantidad.Text1.Text) > 0 Then
         If Not IsNumeric(frmCantidad.Text1.Text) Then Exit Sub  'Should never happen
-      
+            
+            If Comerciando Then
+                Exit Sub
+            End If
+            
             If UserInventory.SelectedSlot <> FLAGORO Then
                 Call ThrowItem(frmMain.Inventario.SelectedItem, frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem), frmCantidad.Text1.Text)
             Else
@@ -373,6 +377,9 @@ Private Sub cmdTirarTodo_click()
 
     If SelectedSlot = 0 Then Exit Sub
     
+    If Comerciando Then
+        Exit Sub
+    End If
     
     If SelectedSlot <> FLAGORO Then
         If ObjData(ObjIndex).Destruye = 0 Then
