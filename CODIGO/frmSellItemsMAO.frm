@@ -16,6 +16,31 @@ Begin VB.Form frmSellItemsMAO
       Top             =   840
       Width           =   3615
    End
+   Begin VB.Label Label2 
+      Caption         =   "publish"
+      Height          =   255
+      Left            =   3240
+      TabIndex        =   2
+      Top             =   1800
+      Width           =   615
+   End
+   Begin VB.Label Label1 
+      Caption         =   "Precio de publiacion del item: 1000 ORO"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   17.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   120
+      TabIndex        =   1
+      Top             =   120
+      Width           =   6735
+   End
    Begin VB.Image imgPublishItemMao 
       Height          =   615
       Left            =   2520
