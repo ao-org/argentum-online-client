@@ -974,6 +974,14 @@ Begin VB.Form frmMain
       TabIndex        =   4
       Top             =   2280
       Width           =   11040
+      Begin VB.CommandButton Command2 
+         Caption         =   "ITEMS"
+         Height          =   255
+         Left            =   9840
+         TabIndex        =   44
+         Top             =   0
+         Width           =   855
+      End
    End
    Begin VB.Image imgMAO 
       Height          =   315
@@ -1895,6 +1903,10 @@ Private Sub Command1_Click()
     TieneAntorcha = Not TieneAntorcha
 End Sub
 
+
+Private Sub Command2_Click()
+frmSellItemsMAO.Show
+End Sub
 
 Private Sub Contadores_Timer()
     
