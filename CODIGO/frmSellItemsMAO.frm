@@ -84,3 +84,21 @@ Private Sub Command1_Click()
     Call frmSellItemsMAO.InvUser.DrawInventory
 End Sub
 
+Private Sub Form_Load()
+
+Dim i As Long
+    'Clears lists if necessary
+    'Fill inventory list
+    For i = 1 To MAX_INVENTORY_SLOTS
+
+            With frmMain.Inventario
+                Call frmSellItemsMAO.InvUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+            End With
+
+    Next i
+
+End Sub
+
+Private Sub picInv_Paint()
+    Call frmSellItemsMAO.InvUser.ReDraw
+End Sub
