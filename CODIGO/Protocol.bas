@@ -884,6 +884,7 @@ Public Sub HandleDisconnect()
         Call frmComerciar.InvComUsu.ClearSlot(i)
         Call frmBancoCuenta.InvBankUsuCuenta.ClearSlot(i)
         Call frmComerciarUsu.InvUser.ClearSlot(i)
+        Call frmSellItemsMAO.InvUser.ClearSlot(i)
         Call frmCrafteo.InvCraftUser.ClearSlot(i)
     Next i
 
