@@ -77,13 +77,8 @@ Option Explicit
 
 Dim Item            As Boolean
 
-Attribute InvUser.VB_VarHelpID = -1
-
 Private Sub Command1_Click()
 Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
-    frmSellItemsMAO.Show , GetGameplayForm()
-    frmSellItemsMAO.Refresh
-    Call frmSellItemsMAO.InvUser.ReDraw
 End Sub
 
 Private Sub Form_Load()
