@@ -1540,7 +1540,7 @@ Public Sub CloseClient()
     Set frmBancoObj.InvBankUsu = Nothing
     Set frmBancoObj.InvBoveda = Nothing
     Set frmComerciarUsu.InvUser = Nothing
-    Set frmSellItemsMAO.InvUser.InvUser = Nothing
+    Set frmSellItemsMAO.InvUser = Nothing
     
     
     Set frmBancoCuenta.InvBankUsuCuenta = Nothing
