@@ -3919,6 +3919,7 @@ Public Sub InitializeInventory()
     Set frmComerciarUsu.InvUser = New clsGrapchicalInventory
     Set frmComerciarUsu.InvUserSell = New clsGrapchicalInventory
     Set frmComerciarUsu.InvOtherSell = New clsGrapchicalInventory
+    Set frmSellItemsMAO.InvUser = New clsGrapchicalInventory
     
     Set frmBancoCuenta.InvBankUsuCuenta = New clsGrapchicalInventory
     Set frmBancoCuenta.InvBovedaCuenta = New clsGrapchicalInventory
