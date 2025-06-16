@@ -11,21 +11,38 @@ Begin VB.Form frmSellItemsMAO
    StartUpPosition =   3  'Windows Default
    Begin VB.TextBox txtPriceItemInMao 
       Height          =   495
-      Left            =   1800
+      Left            =   2760
       TabIndex        =   0
       Top             =   840
       Width           =   3615
    End
+   Begin VB.Label Label3 
+      Caption         =   "Precio en ARS"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   13.5
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   495
+      Left            =   840
+      TabIndex        =   3
+      Top             =   840
+      Width           =   1935
+   End
    Begin VB.Label Label2 
       Caption         =   "publish"
       Height          =   255
-      Left            =   3240
+      Left            =   4200
       TabIndex        =   2
       Top             =   1800
       Width           =   615
    End
    Begin VB.Label Label1 
-      Caption         =   "Precio de publiacion del item: 1000 ORO"
+      Caption         =   "Costo de publiacion del item: 1000 ORO"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   17.25
@@ -43,7 +60,7 @@ Begin VB.Form frmSellItemsMAO
    End
    Begin VB.Image imgPublishItemMao 
       Height          =   615
-      Left            =   2520
+      Left            =   3480
       Top             =   1560
       Width           =   2055
    End
