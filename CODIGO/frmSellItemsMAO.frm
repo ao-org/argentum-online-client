@@ -81,6 +81,6 @@ Public WithEvents InvUser As clsGrapchicalInventory
 Attribute InvUser.VB_VarHelpID = -1
 
 Private Sub Command1_Click()
-    Call frmSellItemsMAO.InvUser.ReDraw
+    Call frmSellItemsMAO.InvUser.DrawInventory
 End Sub
 
