@@ -63,7 +63,7 @@ Private Sub imgPublishItemMao_Click()
     End If
     
     If MsgBox(JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE") & userName & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_VALOR") & txtValor.Text & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_COSTO"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJE_TITULO_PUBLICAR_PERSONAJE")) = vbYes Then
-        Call writePublicarPersonajeMAO(Val(txtValor.Text))
+        Call writePublishItemMAO(Val(txtValor.Text),frmMain.Inventario.SelectedItem)
         Call closeForm
         Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
     End If
