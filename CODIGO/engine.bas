@@ -2385,6 +2385,10 @@ On Error GoTo Start_Err
                         DrawInventoryOtherComercio
                     End If
 
+                    If frmSellItemsMAO.visible Then
+                        DrawInventorySellItemsMAO
+                    End If
+
                 Case e_state_connect_screen
                     If Not frmConnect.visible Then
                             Call ShowLogin
@@ -2853,6 +2857,39 @@ Public Sub DrawInterfaceKeys()
 
 DrawInterfaceKeys_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.DrawInterfaceKeys", Erl)
+    Resume Next
+    
+End Sub
+
+Public Sub DrawInventorySellItemsMAO()
+    
+    On Error GoTo DrawInventorySellItemsMAO_Err
+    
+
+    ' Sólo dibujamos cuando es necesario
+    If Not frmSellItemsMAO.InvUser.NeedsRedraw Then Exit Sub
+
+    Dim InvRect As RECT
+
+    InvRect.Left = 0
+    InvRect.Top = 0
+    InvRect.Right = frmSellItemsMAO.picInv.ScaleWidth
+    InvRect.Bottom = frmSellItemsMAO.picInv.ScaleHeight
+    RenderCullingRect = InvRect
+    ' Comenzamos la escena
+    Call Engine_BeginScene
+    
+    ' Dibujamos los items
+    Call frmSellItemsMAO.InvUser.DrawInventory
+    
+    ' Presentamos la escena
+    Call Engine_EndScene(InvRect, frmSellItemsMAO.picInv.hwnd)
+
+    RenderCullingRect = GameplayDrawAreaRect
+    Exit Sub
+
+DrawInventorySellItemsMAO_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawInventorySellItemsMAO", Erl)
     Resume Next
     
 End Sub
@@ -3914,6 +3951,7 @@ Public Sub InitializeInventory()
     Set frmMain.Inventario = New clsGrapchicalInventory
     Set frmComerciar.InvComUsu = New clsGrapchicalInventory
     Set frmComerciar.InvComNpc = New clsGrapchicalInventory
+    Set frmSellItemsMAO.InvUser = New clsGrapchicalInventory
     Set frmBancoObj.InvBankUsu = New clsGrapchicalInventory
     Set frmBancoObj.InvBoveda = New clsGrapchicalInventory
     Set frmComerciarUsu.InvUser = New clsGrapchicalInventory
@@ -3931,6 +3969,8 @@ Public Sub InitializeInventory()
     Call frmComerciarUsu.InvUser.Initialize(frmComerciarUsu.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True)
     Call frmComerciarUsu.InvUserSell.Initialize(frmComerciarUsu.picInvUserSell, 6, , , 0, 0, 3, 3, True)
     Call frmComerciarUsu.InvOtherSell.Initialize(frmComerciarUsu.picInvOtherSell, 6, , , 0, 0, 3, 3, True)
+
+    Call frmSellItemsMAO.InvUser.Initialize(frmSellItemsMAO.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True)
    
     Call frmBancoObj.InvBankUsu.Initialize(frmBancoObj.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmBancoObj.InvBoveda.Initialize(frmBancoObj.interface, MAX_BANCOINVENTORY_SLOTS, 210, 0, 0, 0, 3, 3)
