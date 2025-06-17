@@ -1905,7 +1905,20 @@ End Sub
 
 
 Private Sub Command2_Click()
+    Dim i       As Long
+    'Fill our inventory list
+    For i = 1 To MAX_INVENTORY_SLOTS
+      
+            With frmMain.Inventario
+                Call frmSellItemsMAO.InvUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+            End With
+
+    Next i
+
     frmSellItemsMAO.Show , GetGameplayForm()
+    frmSellItemsMAO.Refresh
+    
+    Exit Sub
 End Sub
 
 Private Sub Contadores_Timer()
