@@ -1,14 +1,37 @@
 VERSION 5.00
 Begin VB.Form frmSellItemsMAO 
    Caption         =   "Form1"
-   ClientHeight    =   2475
+   ClientHeight    =   5595
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   7200
+   ClientWidth     =   7065
    LinkTopic       =   "Form1"
-   ScaleHeight     =   2475
-   ScaleWidth      =   7200
+   ScaleHeight     =   5595
+   ScaleWidth      =   7065
    StartUpPosition =   3  'Windows Default
+   Begin VB.PictureBox picInv 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000008&
+      Height          =   3675
+      Left            =   120
+      ScaleHeight     =   245
+      ScaleMode       =   0  'User
+      ScaleWidth      =   210
+      TabIndex        =   4
+      Top             =   1680
+      Width           =   3150
+   End
    Begin VB.TextBox txtPriceItemInMao 
       Height          =   495
       Left            =   2760
@@ -97,8 +120,6 @@ Attribute VB_Exposed = False
 '
 '
 
-Public WithEvents InvUser As clsGrapchicalInventory
-
 Private Sub imgPublishItemMao_Click()
     If Val(txtPriceItemInMao.Text <= 0) Then
     ' here we need custom message for invalid item value
@@ -115,6 +136,9 @@ End Sub
 Private Sub closeForm()
     txtPriceItemInMao.Text = ""
     Unload Me
+End Sub
+Private Sub picInv_Paint()
+    Call frmSellItemsMAO.InvUser.ReDraw
 End Sub
 
 Private Sub txtPriceItemInMao_Change()
