@@ -120,6 +120,10 @@ Attribute VB_Exposed = False
 '
 '
 
+Public WithEvents InvUser As clsGrapchicalInventory
+Attribute InvUser.VB_VarHelpID = -1
+
+
 Private Sub imgPublishItemMao_Click()
     If Val(txtPriceItemInMao.Text <= 0) Then
     ' here we need custom message for invalid item value
