@@ -273,10 +273,24 @@ Private Sub picInv_Paint()
 End Sub
 
 Private Sub txtPriceItemInMao_Change()
-    textval = txtPriceItemInMao.Text
-    If IsNumeric(textval) Then
-      numval = textval
+
+    Dim inputValue As Double
+    Dim clampedValue As Long
+
+    If Not IsNumeric(txtPriceItemInMao.Text) Then
+        clampedValue = 1
+        txtPriceItemInMao.Text = "1"
     Else
-      txtPriceItemInMao.Text = CStr(numval)
+        inputValue = Val(txtPriceItemInMao.Text)
+
+        If inputValue > 2147483647# Then
+            clampedValue = 2147483647
+            txtPriceItemInMao.Text = "2147483647"
+        ElseIf inputValue < 1 Then
+            clampedValue = 1
+            txtPriceItemInMao.Text = "1"
+        Else
+            clampedValue = CLng(inputValue)
+        End If
     End If
 End Sub
