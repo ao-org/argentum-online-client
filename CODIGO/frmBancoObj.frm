@@ -312,6 +312,7 @@ Private Sub Form_Load()
     
     If frmSellItemsMAO.visible Then
         Unload frmSellItemsMAO
+        Comerciando = False
     End If
     
     Me.Picture = LoadInterface("banco.bmp")
