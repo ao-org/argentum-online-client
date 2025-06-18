@@ -234,7 +234,7 @@ Private Sub imgPublishItemMao_Click()
     End If
     
     If (frmSellItemsMAO.InvUser.SelectedItem > 0 And frmSellItemsMAO.InvUser.SelectedItem < MAX_INVENTORY_SLOTS + 1) Then
-        Call writePublishItemMAO(Val(txtPriceItemInMao.Text), frmSellItemsMAO.InvUser.SelectedItem)
+        Call writePublishItemMAO(Val(txtPriceItemInMao.Text), frmSellItemsMAO.InvUser.SelectedItem, quantity)
         Call closeForm
         Call WriteDeleteItem(frmSellItemsMAO.InvUser.SelectedItem)
         Call frmSellItemsMAO.InvUser.ReDraw
