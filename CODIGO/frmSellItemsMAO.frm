@@ -268,7 +268,10 @@ Private Sub imgPublishItemMao_Click()
     Dim inputValue As Double
     inputValue = Val(txtPriceItemInMao.Text)
     
-    If inputValue < 1 Or inputValue > 2147483647# Then
+    If Not frmSellItemsMAO.InvUser.IsItemSelected Then
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENE_ITEM_SELECCIONADO"), 255, 255, 255, False, False, False)
+        Exit Sub
+    ElseIf inputValue < 1 Or inputValue > 2147483647# Then
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_VALOR_INTRODUCIDO_INVALIDO"), 255, 0, 32, False, False, False)
         Exit Sub
     End If
