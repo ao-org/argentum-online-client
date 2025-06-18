@@ -9,6 +9,28 @@ Begin VB.Form frmSellItemsMAO
    ScaleHeight     =   5595
    ScaleWidth      =   7065
    StartUpPosition =   3  'Windows Default
+   Begin VB.TextBox cantidad 
+      Alignment       =   2  'Center
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   210
+      Left            =   4200
+      TabIndex        =   5
+      Text            =   "1"
+      Top             =   4560
+      Width           =   810
+   End
    Begin VB.PictureBox picInv 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
@@ -38,6 +60,20 @@ Begin VB.Form frmSellItemsMAO
       TabIndex        =   0
       Top             =   840
       Width           =   3615
+   End
+   Begin VB.Image cmdMas 
+      Height          =   315
+      Left            =   5160
+      Tag             =   "1"
+      Top             =   4560
+      Width           =   315
+   End
+   Begin VB.Image cmdMenos 
+      Height          =   315
+      Left            =   3720
+      Tag             =   "1"
+      Top             =   4560
+      Width           =   315
    End
    Begin VB.Label Label3 
       Caption         =   "Precio en ARS"
@@ -76,7 +112,7 @@ Begin VB.Form frmSellItemsMAO
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   120
+      Left            =   360
       TabIndex        =   1
       Top             =   120
       Width           =   6735
@@ -119,10 +155,61 @@ Attribute VB_Exposed = False
 '
 '
 '
+Private quantity As Integer
 
 Public WithEvents InvUser As clsGrapchicalInventory
 Attribute InvUser.VB_VarHelpID = -1
 
+Private Sub loadButtons()
+       
+    'Set cBotonCerrar = New clsGraphicalButton
+    Set cBotonMas = New clsGraphicalButton
+    Set cBotonMenos = New clsGraphicalButton
+                                                
+    'Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
+                                                "boton-cerrar-over.bmp", _
+                                                "boton-cerrar-off.bmp", Me)
+                                                
+    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", _
+                                                "boton-sm-mas-over.bmp", _
+                                                "boton-sm-mas-off.bmp", Me)
+                                                
+    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
+                                                "boton-sm-menos-over.bmp", _
+                                                "boton-sm-menos-off.bmp", Me)
+End Sub
+
+Private Sub cmdMas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If (Val(cantidad.Text) < 10001) Then
+        cantidad.Text = str((Val(cantidad.Text) + 1))
+        quantity = quantity + 1
+    End If
+End Sub
+
+Private Sub cmdMenos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If (Val(cantidad.Text) > 0) Then
+        cantidad.Text = str((Val(cantidad.Text) - 1))
+        quantity = quantity - 1
+    End If
+End Sub
+
+Private Sub Form_Load()
+    
+    On Error GoTo Form_Load_Err
+    
+    Call FormParser.Parse_Form(Me)
+    cantidad.BackColor = RGB(18, 19, 13)
+
+'we need a new picture for this
+    'Me.Picture = LoadInterface("comerciar.bmp")
+    Call loadButtons
+    Exit Sub
+
+Form_Load_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Form_Load", Erl)
+    Resume Next
+    
+End Sub
 
 Private Sub imgPublishItemMao_Click()
     If Val(txtPriceItemInMao.Text <= 0) Then
