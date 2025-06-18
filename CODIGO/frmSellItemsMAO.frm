@@ -5,10 +5,10 @@ Begin VB.Form frmSellItemsMAO
    ClientHeight    =   6300
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   3585
+   ClientWidth     =   3435
    LinkTopic       =   "Form1"
    ScaleHeight     =   6300
-   ScaleWidth      =   3585
+   ScaleWidth      =   3435
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.TextBox cantidad 
@@ -28,7 +28,7 @@ Begin VB.Form frmSellItemsMAO
       ForeColor       =   &H00FFFFFF&
       Height          =   210
       Left            =   620
-      TabIndex        =   4
+      TabIndex        =   2
       Text            =   "1"
       Top             =   5835
       Width           =   810
@@ -52,7 +52,7 @@ Begin VB.Form frmSellItemsMAO
       ScaleHeight     =   245
       ScaleMode       =   0  'User
       ScaleWidth      =   210
-      TabIndex        =   3
+      TabIndex        =   1
       Top             =   1680
       Width           =   3150
    End
@@ -63,7 +63,7 @@ Begin VB.Form frmSellItemsMAO
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   13.5
+         Size            =   12
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -71,16 +71,16 @@ Begin VB.Form frmSellItemsMAO
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H80000005&
-      Height          =   375
+      Height          =   325
       Left            =   120
       TabIndex        =   0
       Text            =   "0"
-      Top             =   1080
+      Top             =   1120
       Width           =   3150
    End
    Begin VB.Image cmdCerrar 
       Height          =   375
-      Left            =   6600
+      Left            =   2950
       Top             =   0
       Width           =   495
    End
@@ -97,31 +97,6 @@ Begin VB.Form frmSellItemsMAO
       Tag             =   "1"
       Top             =   5760
       Width           =   315
-   End
-   Begin VB.Label Label3 
-      Caption         =   "Precio en ARS"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   13.5
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   720
-      TabIndex        =   2
-      Top             =   120
-      Width           =   1935
-   End
-   Begin VB.Label Label2 
-      Caption         =   "publish"
-      Height          =   255
-      Left            =   2400
-      TabIndex        =   1
-      Top             =   5760
-      Width           =   615
    End
    Begin VB.Image imgPublishItemMao 
       Height          =   615
@@ -239,7 +214,7 @@ Private Sub Form_Load()
     cantidad.BackColor = RGB(18, 19, 13)
 
 'we need a new picture for this
-    'Me.Picture = LoadInterface("comerciar.bmp")
+    Me.Picture = LoadInterface("sell_items_mao_interface.bmp")
     Call loadButtons
     Exit Sub
 
