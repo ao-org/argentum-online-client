@@ -61,6 +61,12 @@ Begin VB.Form frmSellItemsMAO
       Top             =   840
       Width           =   3615
    End
+   Begin VB.Image cmdCerrar 
+      Height          =   375
+      Left            =   6600
+      Top             =   0
+      Width           =   495
+   End
    Begin VB.Image cmdMas 
       Height          =   315
       Left            =   5160
@@ -112,10 +118,10 @@ Begin VB.Form frmSellItemsMAO
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   360
+      Left            =   240
       TabIndex        =   1
-      Top             =   120
-      Width           =   6735
+      Top             =   360
+      Width           =   6615
    End
    Begin VB.Image imgPublishItemMao 
       Height          =   615
@@ -162,11 +168,11 @@ Attribute InvUser.VB_VarHelpID = -1
 
 Private Sub loadButtons()
        
-    'Set cBotonCerrar = New clsGraphicalButton
+    Set cBotonCerrar = New clsGraphicalButton
     Set cBotonMas = New clsGraphicalButton
     Set cBotonMenos = New clsGraphicalButton
                                                 
-    'Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
                                                 "boton-cerrar-over.bmp", _
                                                 "boton-cerrar-off.bmp", Me)
                                                 
@@ -205,6 +211,10 @@ cantidad_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciar.cantidad_Change", Erl)
     Resume Next
     
+End Sub
+
+Private Sub cmdCerrar_Click()
+    Unload Me
 End Sub
 
 Private Sub cmdMas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -257,6 +267,7 @@ Private Sub closeForm()
     txtPriceItemInMao.Text = ""
     Unload Me
 End Sub
+
 Private Sub picInv_Paint()
     Call frmSellItemsMAO.InvUser.ReDraw
 End Sub
