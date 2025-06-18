@@ -294,6 +294,7 @@ Private Sub Form_Load()
     
     If frmSellItemsMAO.visible Then
         Unload frmSellItemsMAO
+        Comerciando = False
     End If
     
     Call loadButtons
