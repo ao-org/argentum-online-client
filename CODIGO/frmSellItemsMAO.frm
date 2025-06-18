@@ -179,6 +179,34 @@ Private Sub loadButtons()
                                                 "boton-sm-menos-off.bmp", Me)
 End Sub
 
+Private Sub cantidad_Change()
+    
+    On Error GoTo cantidad_Change_Err
+    
+
+    If Val(cantidad.Text) < 1 Then
+        cantidad.Text = 1
+        quantity = 1
+    ElseIf Val(cantidad.Text) > 10000 Then
+        cantidad.Text = 10000
+        quantity = 10000
+    Else
+        quantity = Val(cantidad.Text)
+    End If
+    
+    cantidad.SelStart = Len(cantidad.Text)
+    
+    InvUser.ReDraw
+
+    
+    Exit Sub
+
+cantidad_Change_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.cantidad_Change", Erl)
+    Resume Next
+    
+End Sub
+
 Private Sub cmdMas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     If (Val(cantidad.Text) < 10001) Then
         cantidad.Text = str((Val(cantidad.Text) + 1))
@@ -187,7 +215,7 @@ Private Sub cmdMas_MouseDown(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 Private Sub cmdMenos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If (Val(cantidad.Text) > 0) Then
+    If (Val(cantidad.Text) > 1) Then
         cantidad.Text = str((Val(cantidad.Text) - 1))
         quantity = quantity - 1
     End If
