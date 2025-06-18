@@ -4631,8 +4631,12 @@ Private Sub imgDeleteItem_Click()
     If Not frmMain.Inventario.IsItemSelected Then
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENE_ITEM_SELECCIONADO"), 255, 255, 255, False, False, False)
     Else
-        If MsgBox(JsonLanguage.Item("MENSAJEBOX_ELIMINAR_ITEM"), vbYesNo, JsonLanguage.Item("MENSAJEBOX_TITULO_ELIMINAR_ITEM")) = vbYes Then
-            Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
+        If Not Comerciando Then
+            If MsgBox(JsonLanguage.Item("MENSAJEBOX_ELIMINAR_ITEM"), vbYesNo, JsonLanguage.Item("MENSAJEBOX_TITULO_ELIMINAR_ITEM")) = vbYes Then
+                Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
+            End If
+        Else
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_PODES_DESTRUIR_OBJETOS_MIENTRAS_COMERCIAS"), 255, 0, 32, False, False, False)
         End If
     End If
 End Sub
