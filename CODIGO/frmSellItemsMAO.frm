@@ -1,13 +1,15 @@
 VERSION 5.00
 Begin VB.Form frmSellItemsMAO 
+   BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   5595
-   ClientLeft      =   120
-   ClientTop       =   465
-   ClientWidth     =   7065
+   ClientHeight    =   6300
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   3585
    LinkTopic       =   "Form1"
-   ScaleHeight     =   5595
-   ScaleWidth      =   7065
+   ScaleHeight     =   6300
+   ScaleWidth      =   3585
+   ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.TextBox cantidad 
       Alignment       =   2  'Center
@@ -25,10 +27,10 @@ Begin VB.Form frmSellItemsMAO
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   210
-      Left            =   4200
-      TabIndex        =   5
+      Left            =   620
+      TabIndex        =   4
       Text            =   "1"
-      Top             =   4560
+      Top             =   5835
       Width           =   810
    End
    Begin VB.PictureBox picInv 
@@ -50,7 +52,7 @@ Begin VB.Form frmSellItemsMAO
       ScaleHeight     =   245
       ScaleMode       =   0  'User
       ScaleWidth      =   210
-      TabIndex        =   4
+      TabIndex        =   3
       Top             =   1680
       Width           =   3150
    End
@@ -70,11 +72,11 @@ Begin VB.Form frmSellItemsMAO
       EndProperty
       ForeColor       =   &H80000005&
       Height          =   375
-      Left            =   2760
+      Left            =   120
       TabIndex        =   0
       Text            =   "0"
-      Top             =   840
-      Width           =   2775
+      Top             =   1080
+      Width           =   3150
    End
    Begin VB.Image cmdCerrar 
       Height          =   375
@@ -84,16 +86,16 @@ Begin VB.Form frmSellItemsMAO
    End
    Begin VB.Image cmdMas 
       Height          =   315
-      Left            =   5160
+      Left            =   1650
       Tag             =   "1"
-      Top             =   4560
+      Top             =   5760
       Width           =   315
    End
    Begin VB.Image cmdMenos 
       Height          =   315
-      Left            =   3720
+      Left            =   120
       Tag             =   "1"
-      Top             =   4560
+      Top             =   5760
       Width           =   315
    End
    Begin VB.Label Label3 
@@ -108,41 +110,24 @@ Begin VB.Form frmSellItemsMAO
          Strikethrough   =   0   'False
       EndProperty
       Height          =   495
-      Left            =   840
-      TabIndex        =   3
-      Top             =   840
+      Left            =   720
+      TabIndex        =   2
+      Top             =   120
       Width           =   1935
    End
    Begin VB.Label Label2 
       Caption         =   "publish"
       Height          =   255
-      Left            =   4200
-      TabIndex        =   2
-      Top             =   1800
-      Width           =   615
-   End
-   Begin VB.Label Label1 
-      Caption         =   "Costo de publiacion del item: 1000 ORO"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   17.25
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   495
-      Left            =   240
+      Left            =   2400
       TabIndex        =   1
-      Top             =   360
-      Width           =   6615
+      Top             =   5760
+      Width           =   615
    End
    Begin VB.Image imgPublishItemMao 
       Height          =   615
-      Left            =   3480
-      Top             =   1560
-      Width           =   2055
+      Left            =   2040
+      Top             =   5520
+      Width           =   1215
    End
 End
 Attribute VB_Name = "frmSellItemsMAO"
