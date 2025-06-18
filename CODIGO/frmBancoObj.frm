@@ -309,7 +309,11 @@ End Sub
 Private Sub Form_Load()
     
     On Error GoTo Form_Load_Err
-
+    
+    If frmSellItemsMAO.visible Then
+        Unload frmSellItemsMAO
+    End If
+    
     Me.Picture = LoadInterface("banco.bmp")
     
     Call FormParser.Parse_Form(Me)

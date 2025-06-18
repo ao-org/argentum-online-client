@@ -188,6 +188,25 @@ cantidad_Change_Err:
     
 End Sub
 
+Private Sub cantidad_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Form_KeyPress", Erl)
+    Resume Next
+    
+End Sub
+
 Private Sub cmdCerrar_Click()
     Unload Me
     Comerciando = False
@@ -205,6 +224,25 @@ Private Sub cmdMenos_MouseDown(Button As Integer, Shift As Integer, x As Single,
         cantidad.Text = str((Val(cantidad.Text) - 1))
         quantity = quantity - 1
     End If
+End Sub
+
+Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
 
 Private Sub Form_Load()
@@ -272,4 +310,23 @@ Private Sub txtPriceItemInMao_Change()
         End If
     End If
     InvUser.ReDraw
+End Sub
+
+Private Sub txtPriceItemInMao_KeyPress(KeyAscii As Integer)
+    
+    On Error GoTo Form_KeyPress_Err
+    
+
+    If (KeyAscii = 27) Then
+        Unload Me
+
+    End If
+
+    
+    Exit Sub
+
+Form_KeyPress_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.Form_KeyPress", Erl)
+    Resume Next
+    
 End Sub
