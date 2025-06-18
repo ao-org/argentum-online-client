@@ -10,7 +10,7 @@ Begin VB.Form frmSellItemsMAO
    ScaleHeight     =   6300
    ScaleWidth      =   3435
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   3  'Windows Default
+   StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox cantidad 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
