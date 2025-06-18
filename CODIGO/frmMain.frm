@@ -3983,6 +3983,7 @@ Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single,
     MouseShift = Shift
 
     If frmSellItemsMAO.visible Then Unload frmSellItemsMAO
+    Comerciando = False
     If frmComerciar.visible Then Unload frmComerciar
     If frmBancoObj.visible Then Unload frmBancoObj
     If frmEstadisticas.visible Then Unload frmEstadisticas
