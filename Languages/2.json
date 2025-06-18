@@ -625,6 +625,7 @@
 	"Msg2046": "<Slightly wounded>",
 	"Msg2047": "<Unharmed>",
 	"Msg2100": "¬1",
-    "MENSAJE_NO_PODES_DESTRUIR_OBJETOS_MIENTRAS_COMERCIAS":"You cannot destroy items while trading"
+    "MENSAJE_NO_PODES_DESTRUIR_OBJETOS_MIENTRAS_COMERCIAS":"You cannot destroy items while trading",
+    "MENSAJE_VALOR_INTRODUCIDO_INVALIDO":"The entered value is not valid."
 
 }

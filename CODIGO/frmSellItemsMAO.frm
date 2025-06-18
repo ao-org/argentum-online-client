@@ -227,9 +227,11 @@ Form_Load_Err:
 End Sub
 
 Private Sub imgPublishItemMao_Click()
-    If Val(txtPriceItemInMao.Text <= 0) Then
-    ' here we need custom message for invalid item value
-        ' Call MsgBox(JsonLanguage.Item("MENSAJE_VALOR_PERSONAJE_INVALIDO"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
+    Dim inputValue As Double
+    inputValue = Val(txtPriceItemInMao.Text)
+    
+    If inputValue < 1 Or inputValue > 2147483647# Then
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_VALOR_INTRODUCIDO_INVALIDO"), 255, 0, 32, False, False, False)
         Exit Sub
     End If
     

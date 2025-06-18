@@ -625,5 +625,6 @@
 	"Msg2046": "<Levemente herido>",
 	"Msg2047": "<Intacto>",
 	"Msg2100": "¬1",
-    "MENSAJE_NO_PODES_DESTRUIR_OBJETOS_MIENTRAS_COMERCIAS":"No podes destruir objetos mientras comercias"
+    "MENSAJE_NO_PODES_DESTRUIR_OBJETOS_MIENTRAS_COMERCIAS":"No podes destruir objetos mientras comercias.",
+    "MENSAJE_VALOR_INTRODUCIDO_INVALIDO":"El valor introducido es inválido."
 }
