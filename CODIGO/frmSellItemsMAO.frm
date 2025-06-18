@@ -55,11 +55,26 @@ Begin VB.Form frmSellItemsMAO
       Width           =   3150
    End
    Begin VB.TextBox txtPriceItemInMao 
-      Height          =   495
+      Alignment       =   2  'Center
+      Appearance      =   0  'Flat
+      BackColor       =   &H80000001&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   13.5
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000005&
+      Height          =   375
       Left            =   2760
       TabIndex        =   0
+      Text            =   "0"
       Top             =   840
-      Width           =   3615
+      Width           =   2775
    End
    Begin VB.Image cmdCerrar 
       Height          =   375
