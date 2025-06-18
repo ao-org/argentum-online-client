@@ -2273,6 +2273,10 @@ Private Sub picHechiz_MouseUp(Button As Integer, Shift As Integer, x As Single, 
     End If
 End Sub
 
+Private Sub picInv_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If frmSellItemsMAO.visible Then Unload frmSellItemsMAO
+End Sub
+
 Private Sub picInv_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     If Not picInv.visible Then Exit Sub
     
