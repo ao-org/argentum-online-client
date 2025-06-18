@@ -1915,6 +1915,7 @@ Private Sub Command2_Click()
 
     Next i
 
+    Comerciando = True
     frmSellItemsMAO.Show , GetGameplayForm()
     frmSellItemsMAO.Refresh
     

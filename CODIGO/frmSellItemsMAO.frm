@@ -190,6 +190,7 @@ End Sub
 
 Private Sub cmdCerrar_Click()
     Unload Me
+    Comerciando = False
 End Sub
 
 Private Sub cmdMas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -213,9 +214,10 @@ Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     cantidad.BackColor = RGB(18, 19, 13)
 
-'we need a new picture for this
     Me.Picture = LoadInterface("sell_items_mao_interface.bmp")
+    
     Call loadButtons
+    
     Exit Sub
 
 Form_Load_Err:
@@ -241,6 +243,7 @@ End Sub
 Private Sub closeForm()
     txtPriceItemInMao.Text = ""
     Unload Me
+    Comerciando = False
 End Sub
 
 Private Sub picInv_Paint()
@@ -268,4 +271,5 @@ Private Sub txtPriceItemInMao_Change()
             clampedValue = CLng(inputValue)
         End If
     End If
+    InvUser.ReDraw
 End Sub
