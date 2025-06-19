@@ -11,7 +11,7 @@ Begin VB.Form frmSellItemsMAO
    ScaleWidth      =   3435
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.TextBox cantidad 
+   Begin VB.TextBox txtQuantity 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
@@ -27,7 +27,7 @@ Begin VB.Form frmSellItemsMAO
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   210
-      Left            =   620
+      Left            =   600
       TabIndex        =   2
       Text            =   "1"
       Top             =   5835
@@ -84,14 +84,14 @@ Begin VB.Form frmSellItemsMAO
       Top             =   0
       Width           =   495
    End
-   Begin VB.Image cmdMas 
+   Begin VB.Image cmdMore 
       Height          =   315
       Left            =   1650
       Tag             =   "1"
       Top             =   5760
       Width           =   315
    End
-   Begin VB.Image cmdMenos 
+   Begin VB.Image cmdLess 
       Height          =   315
       Left            =   120
       Tag             =   "1"
@@ -136,7 +136,6 @@ Attribute VB_Exposed = False
 '
 '
 '
-Private quantity As Integer
 
 Public WithEvents InvUser As clsGrapchicalInventory
 Attribute InvUser.VB_VarHelpID = -1
@@ -151,44 +150,40 @@ Private Sub loadButtons()
                                                 "boton-cerrar-over.bmp", _
                                                 "boton-cerrar-off.bmp", Me)
                                                 
-    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", _
+    Call cBotonMas.Initialize(cmdMore, "boton-sm-mas-default.bmp", _
                                                 "boton-sm-mas-over.bmp", _
                                                 "boton-sm-mas-off.bmp", Me)
                                                 
-    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
+    Call cBotonMenos.Initialize(cmdLess, "boton-sm-menos-default.bmp", _
                                                 "boton-sm-menos-over.bmp", _
                                                 "boton-sm-menos-off.bmp", Me)
 End Sub
 
-Private Sub cantidad_Change()
+Private Sub txtQuantity_Change()
     
-    On Error GoTo cantidad_Change_Err
+    On Error GoTo txtQuantity_Change_Err
     
 
-    If Val(cantidad.Text) < 1 Then
-        cantidad.Text = 1
-        quantity = 1
-    ElseIf Val(cantidad.Text) > 10000 Then
-        cantidad.Text = 10000
-        quantity = 10000
-    Else
-        quantity = Val(cantidad.Text)
+    If Val(txtQuantity.Text) < 1 Then
+        txtQuantity.Text = 1
+    ElseIf Val(txtQuantity.Text) > 10000 Then
+        txtQuantity.Text = 10000
     End If
     
-    cantidad.SelStart = Len(cantidad.Text)
+    txtQuantity.SelStart = Len(txtQuantity.Text)
     
     InvUser.ReDraw
 
     
     Exit Sub
 
-cantidad_Change_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.cantidad_Change", Erl)
+txtQuantity_Change_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmComerciar.txtQuantity_Change", Erl)
     Resume Next
     
 End Sub
 
-Private Sub cantidad_KeyPress(KeyAscii As Integer)
+Private Sub txtQuantity_KeyPress(KeyAscii As Integer)
     
     On Error GoTo Form_KeyPress_Err
     
@@ -212,17 +207,15 @@ Private Sub cmdCerrar_Click()
     Comerciando = False
 End Sub
 
-Private Sub cmdMas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If (Val(cantidad.Text) < 10001) Then
-        cantidad.Text = str((Val(cantidad.Text) + 1))
-        quantity = quantity + 1
+Private Sub cmdMore_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If (Val(txtQuantity.Text) < 10001) Then
+        txtQuantity.Text = str((Val(txtQuantity.Text) + 1))
     End If
 End Sub
 
-Private Sub cmdMenos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If (Val(cantidad.Text) > 1) Then
-        cantidad.Text = str((Val(cantidad.Text) - 1))
-        quantity = quantity - 1
+Private Sub cmdLess_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If (Val(txtQuantity.Text) > 1) Then
+        txtQuantity.Text = str((Val(txtQuantity.Text) - 1))
     End If
 End Sub
 
@@ -250,7 +243,8 @@ Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
-    cantidad.BackColor = RGB(18, 19, 13)
+    
+    txtQuantity.BackColor = RGB(18, 19, 13)
 
     Me.Picture = LoadInterface("sell_items_mao_interface.bmp")
     
@@ -265,19 +259,22 @@ Form_Load_Err:
 End Sub
 
 Private Sub imgPublishItemMao_Click()
-    Dim inputValue As Double
-    inputValue = Val(txtPriceItemInMao.Text)
+    Dim arsInputvalue As Double
+    arsInputvalue = Val(txtPriceItemInMao.Text)
+    
+    Dim itemQuantity As Integer
+    itemQuantity = Val(txtQuantity.Text)
     
     If Not frmSellItemsMAO.InvUser.IsItemSelected Then
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENE_ITEM_SELECCIONADO"), 255, 255, 255, False, False, False)
         Exit Sub
-    ElseIf inputValue < 1 Or inputValue > 2147483647# Then
+    ElseIf arsInputvalue < 1 Or arsInputvalue > 2147483647# Then
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_VALOR_INTRODUCIDO_INVALIDO"), 255, 0, 32, False, False, False)
         Exit Sub
     End If
     
     If (frmSellItemsMAO.InvUser.SelectedItem > 0 And frmSellItemsMAO.InvUser.SelectedItem < MAX_INVENTORY_SLOTS + 1) Then
-        Call writePublishItemMAO(inputValue, frmSellItemsMAO.InvUser.SelectedItem, quantity)
+        Call writePublishItemMAO(arsInputvalue, frmSellItemsMAO.InvUser.SelectedItem, itemQuantity)
         Call closeForm
     End If
 End Sub
@@ -293,23 +290,23 @@ End Sub
 
 Private Sub txtPriceItemInMao_Change()
 
-    Dim inputValue As Double
+    Dim arsInputvalue As Double
     Dim clampedValue As Long
 
     If Not IsNumeric(txtPriceItemInMao.Text) Then
         clampedValue = 1
         txtPriceItemInMao.Text = "1"
     Else
-        inputValue = Val(txtPriceItemInMao.Text)
+        arsInputvalue = Val(txtPriceItemInMao.Text)
 
-        If inputValue > 2147483647# Then
+        If arsInputvalue > 2147483647# Then
             clampedValue = 2147483647
             txtPriceItemInMao.Text = "2147483647"
-        ElseIf inputValue < 1 Then
+        ElseIf arsInputvalue < 1 Then
             clampedValue = 1
             txtPriceItemInMao.Text = "1"
         Else
-            clampedValue = CLng(inputValue)
+            clampedValue = CLng(arsInputvalue)
         End If
     End If
     InvUser.ReDraw
