@@ -112,6 +112,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleBankEnd
         Case ServerPacketID.eCommerceInit
             Call HandleCommerceInit
+        Case ServerPacketID.eSellItemsMaoInit
+            Call HandleSellItemsMaoInit
         Case ServerPacketID.eBankInit
             Call HandleBankInit
         Case ServerPacketID.eUserCommerceInit
@@ -1058,6 +1060,35 @@ Private Sub HandleCommerceInit()
 
 HandleCommerceInit_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCommerceInit", Erl)
+    
+    
+End Sub
+
+''
+' Handles the Sell Items Mao Init message.
+
+Private Sub HandleSellItemsMaoInit()
+    
+    On Error GoTo HandleSellItemsMaoInit_Err
+
+    Dim i       As Long
+    'Fill our inventory list
+    For i = 1 To MAX_INVENTORY_SLOTS
+      
+            With frmMain.Inventario
+                Call frmSellItemsMAO.InvUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+            End With
+
+    Next i
+
+    Comerciando = True
+    frmSellItemsMAO.Show , GetGameplayForm()
+    frmSellItemsMAO.Refresh
+    
+    Exit Sub
+
+HandleSellItemsMaoInit_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSellItemsMaoInit", Erl)
     
     
 End Sub
