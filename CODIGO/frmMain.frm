@@ -974,14 +974,6 @@ Begin VB.Form frmMain
       TabIndex        =   4
       Top             =   2280
       Width           =   11040
-      Begin VB.CommandButton Command2 
-         Caption         =   "ITEMS"
-         Height          =   255
-         Left            =   9840
-         TabIndex        =   44
-         Top             =   0
-         Width           =   855
-      End
    End
    Begin VB.Image imgMAO 
       Height          =   315
@@ -1901,25 +1893,6 @@ End Sub
 
 Private Sub Command1_Click()
     TieneAntorcha = Not TieneAntorcha
-End Sub
-
-
-Private Sub Command2_Click()
-    Dim i       As Long
-    'Fill our inventory list
-    For i = 1 To MAX_INVENTORY_SLOTS
-      
-            With frmMain.Inventario
-                Call frmSellItemsMAO.InvUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
-            End With
-
-    Next i
-
-    Comerciando = True
-    frmSellItemsMAO.Show , GetGameplayForm()
-    frmSellItemsMAO.Refresh
-    
-    Exit Sub
 End Sub
 
 Private Sub Contadores_Timer()
