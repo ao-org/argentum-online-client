@@ -2,13 +2,13 @@ VERSION 5.00
 Begin VB.Form frmSellItemsMAO 
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   6300
+   ClientHeight    =   6630
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   3435
+   ClientWidth     =   7200
    LinkTopic       =   "Form1"
-   ScaleHeight     =   6300
-   ScaleWidth      =   3435
+   ScaleHeight     =   6630
+   ScaleWidth      =   7200
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox txtQuantity 
@@ -27,11 +27,11 @@ Begin VB.Form frmSellItemsMAO
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   210
-      Left            =   600
+      Left            =   5030
       TabIndex        =   2
       Text            =   "1"
-      Top             =   5835
-      Width           =   810
+      Top             =   2100
+      Width           =   940
    End
    Begin VB.PictureBox picInv 
       Appearance      =   0  'Flat
@@ -48,12 +48,12 @@ Begin VB.Form frmSellItemsMAO
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   3675
-      Left            =   120
+      Left            =   620
       ScaleHeight     =   245
       ScaleMode       =   0  'User
       ScaleWidth      =   210
       TabIndex        =   1
-      Top             =   1680
+      Top             =   1630
       Width           =   3150
    End
    Begin VB.TextBox txtPriceItemInMao 
@@ -71,38 +71,45 @@ Begin VB.Form frmSellItemsMAO
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H80000005&
-      Height          =   325
-      Left            =   120
+      Height          =   300
+      Left            =   4560
       TabIndex        =   0
       Text            =   "0"
-      Top             =   1120
-      Width           =   3150
+      Top             =   2890
+      Width           =   1935
+   End
+   Begin VB.Image cmdCancel 
+      Appearance      =   0  'Flat
+      Height          =   435
+      Left            =   2640
+      Top             =   5880
+      Width           =   1935
    End
    Begin VB.Image cmdCerrar 
       Height          =   375
-      Left            =   2950
+      Left            =   6795
       Top             =   0
-      Width           =   495
+      Width           =   375
    End
    Begin VB.Image cmdMore 
       Height          =   315
-      Left            =   1650
+      Left            =   6140
       Tag             =   "1"
-      Top             =   5760
+      Top             =   2040
       Width           =   315
    End
    Begin VB.Image cmdLess 
       Height          =   315
-      Left            =   120
+      Left            =   4540
       Tag             =   "1"
-      Top             =   5760
+      Top             =   2040
       Width           =   315
    End
    Begin VB.Image imgPublishItemMao 
-      Height          =   615
-      Left            =   2040
-      Top             =   5520
-      Width           =   1215
+      Height          =   375
+      Left            =   4560
+      Top             =   3480
+      Width           =   1935
    End
 End
 Attribute VB_Name = "frmSellItemsMAO"
@@ -157,6 +164,11 @@ Private Sub loadButtons()
     Call cBotonMenos.Initialize(cmdLess, "boton-sm-menos-default.bmp", _
                                                 "boton-sm-menos-over.bmp", _
                                                 "boton-sm-menos-off.bmp", Me)
+End Sub
+
+Private Sub cmdCancel_Click()
+    Unload Me
+    Comerciando = False
 End Sub
 
 Private Sub txtQuantity_Change()
