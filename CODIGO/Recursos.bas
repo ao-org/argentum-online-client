@@ -1611,15 +1611,23 @@ Public Sub CargarIndicesOBJ()
 
     Dim i       As Integer
     
+    Select Case language
+        Case e_language.Spanish:     langPrefix = "es"
+        Case e_language.English:     langPrefix = "en"
+        Case e_language.Portuguese:  langPrefix = "pt"
+        Case e_language.French:      langPrefix = "fr"
+        Case e_language.Italian:     langPrefix = "it"
+    End Select
+
     #If Compresion = 1 Then
-        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "localindex.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de localindex.dat!"
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", langPrefix & "_localindex.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
+            Err.Description = "¡No se puede cargar el archivo de _localindex.dat!"
             MsgBox Err.Description
 
         End If
-        ObjFile = Windows_Temp_Dir & "localindex.dat"
+        ObjFile = Windows_Temp_Dir & langPrefix & "_localindex.dat"
     #Else
-        ObjFile = App.path & "\..\Recursos\init\localindex.dat"
+        ObjFile = App.path & "\..\Recursos\init\" & langPrefix & "_localindex.dat"
     #End If
     
             
@@ -1654,15 +1662,7 @@ Public Sub CargarIndicesOBJ()
         If Obj = 403 Then
             frmDebug.add_text_tracebox "asd"
         End If
-        
-        Dim langPrefix As String
-        Select Case language
-            Case e_language.Spanish:     langPrefix = ""
-            Case e_language.English:     langPrefix = "en"
-            Case e_language.Portuguese:  langPrefix = "pt"
-            Case e_language.French:      langPrefix = "fr"
-            Case e_language.Italian:     langPrefix = "it"
-        End Select
+
         
         With ObjData(Obj)
             .Name = GetLocalizedValue(Leer, "OBJ" & Obj, "Name", langPrefix)
@@ -1748,7 +1748,7 @@ Public Sub CargarIndicesOBJ()
         End If
         
         Select Case language
-            Case e_language.Spanish:     langPrefix = ""
+            Case e_language.Spanish:     langPrefix = "es"
             Case e_language.English:     langPrefix = "en"
             Case e_language.Portuguese:  langPrefix = "pt"
             Case e_language.French:      langPrefix = "fr"
@@ -1795,7 +1795,7 @@ Continue:
     Next Npc
     
     Select Case language
-        Case e_language.Spanish:     langPrefix = ""
+        Case e_language.Spanish:     langPrefix = "es"
         Case e_language.English:     langPrefix = "en"
         Case e_language.Portuguese:  langPrefix = "pt"
         Case e_language.French:      langPrefix = "fr"
@@ -1835,35 +1835,9 @@ Continue:
     For Hechizo = 1 To NumQuest
         DoEvents
         
-            Select Case language
-                 Case e_language.Spanish
-                    QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
-                    QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
-                    QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
-                    
-                Case e_language.English
-                    QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "EN_NOMBRE")
-                    QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "EN_DESC")
-                    QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "EN_DESCFINAL")
-            
-                Case e_language.Portuguese
-                    QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "PT_NOMBRE")
-                    QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "PT_DESC")
-                    QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "PT_DESCFINAL")
-            
-                Case e_language.French
-                    QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "FR_NOMBRE")
-                    QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "FR_DESC")
-                    QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "FR_DESCFINAL")
-            
-                Case e_language.Italian
-                    QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "IT_NOMBRE")
-                    QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "IT_DESC")
-                    QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "IT_DESCFINAL")
-            
-            End Select
-
-        
+            QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
+            QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
+            QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
             QuestList(Hechizo).NextQuest = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
             QuestList(Hechizo).RequiredLevel = Leer.GetValue("QUEST" & Hechizo, "RequiredLevel")
             QuestList(Hechizo).Repetible = Val(Leer.GetValue("QUEST" & Hechizo, "Repetible"))
@@ -1929,7 +1903,7 @@ Continue:
     Next i
     
     #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & "localindex.dat"
+        Delete_File Windows_Temp_Dir & langPrefix & "_localindex.dat"
     #End If
 
     

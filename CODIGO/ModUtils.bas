@@ -194,7 +194,6 @@ Public Type ObjDatas
 
     GrhIndex As Long ' Indice del grafico que representa el obj
     Name As String
-    en_name As String
     MinDef As Integer
     MaxDef As Integer
     MinHit As Integer
@@ -274,44 +273,12 @@ Public Type NpcDatas
 End Type
 
 Public Type HechizoDatas
-       
-    ' Idiomas
     nombre As String
-    en_name As String
-    pt_Name As String
-    fr_Name As String
-    it_Name As String
-    
     desc As String
-    en_Desc As String
-    pt_Desc As String
-    fr_Desc As String
-    it_Desc As String
-    
     PalabrasMagicas As String
-    en_PalabrasMagicas As String
-    pt_PalabrasMagicas As String
-    fr_PalabrasMagicas As String
-    it_PalabrasMagicas As String
-    
     HechizeroMsg As String
-    en_HechizeroMsg As String
-    pt_HechizeroMsg As String
-    fr_HechizeroMsg As String
-    it_HechizeroMsg As String
-
     TargetMsg As String
-    en_TargetMsg As String
-    pt_TargetMsg As String
-    fr_TargetMsg As String
-    it_TargetMsg As String
-    
     PropioMsg As String
-    en_PropioMsg As String
-    pt_PropioMsg As String
-    fr_PropioMsg As String
-    it_PropioMsg As String
-
     ManaRequerido As Integer
     MinSkill As Byte
     StaRequerido As Integer
