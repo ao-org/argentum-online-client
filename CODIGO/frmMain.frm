@@ -2001,14 +2001,14 @@ Private Sub Image1_Click()
 
 End Sub
 
-Private Sub ImgEstadisticas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgEstadisticas_MouseDown(Button As Integer, Shift As Integer, x As Single, Y As Single)
     TempTick = GetTickCount And &H7FFFFFFF
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then Exit Sub
     iClickTick = TempTick
     ImgEstadisticas.Picture = LoadInterface("boton-estadisticas-big-off.bmp")
     ImgEstadisticas.Tag = "1"
 End Sub
-Private Sub ImgEstadisticas_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub ImgEstadisticas_MouseUp(Button As Integer, Shift As Integer, x As Single, Y As Single)
     
     If pausa Then Exit Sub
     
