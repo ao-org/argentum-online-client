@@ -2432,31 +2432,51 @@ Private Sub HandleConsoleMessage()
             
     
             Case "HECINF"
-            If language = Spanish Then
                 Hechizo = ReadField(2, chat, Asc("*"))
-                chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
-            Else
-                Hechizo = ReadField(2, chat, Asc("*"))
-                chat = "------------< Spell information >------------" & vbCrLf & "Name: " & HechizoData(Hechizo).nombre & vbCrLf & "Description: " & HechizoData(Hechizo).desc & vbCrLf & "Required skill: " & HechizoData(Hechizo).MinSkill & " of magic." & vbCrLf & "Mana needed: " & HechizoData(Hechizo).ManaRequerido & " points." & vbCrLf & "Stamina needed: " & HechizoData(Hechizo).StaRequerido & " points."
-            End If
+                        chat = "------------< Información del hechizo >------------" & vbCrLf & _
+                               "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & _
+                               "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & _
+                               "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & _
+                               "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & _
+                               "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
             
             Case "ProMSG"
-            If language = Spanish Then
                 Hechizo = ReadField(2, chat, Asc("*"))
-                chat = HechizoData(Hechizo).PropioMsg
-            Else
-                Hechizo = ReadField(2, chat, Asc("*"))
-                chat = HechizoData(Hechizo).en_PropioMsg
-            End If
+
+'                Select Case language
+'                    Case Spanish
+                        chat = HechizoData(Hechizo).PropioMsg
+'                    Case English
+'                        chat = HechizoData(Hechizo).en_PropioMsg
+'                    Case Portuguese
+'                        chat = HechizoData(Hechizo).pt_PropioMsg
+'                    Case French
+'                        chat = HechizoData(Hechizo).fr_PropioMsg
+'                    Case Italian
+'                        chat = HechizoData(Hechizo).it_PropioMsg
+'                    Case Else
+'                        chat = HechizoData(Hechizo).PropioMsg ' fallback al español
+'                End Select
+
     
             Case "HecMSG"
-            If language = Spanish Then
                 Hechizo = ReadField(2, chat, Asc("*"))
-                chat = HechizoData(Hechizo).HechizeroMsg & " la criatura."
-            Else
-                Hechizo = ReadField(2, chat, Asc("*"))
-                chat = HechizoData(Hechizo).HechizeroMsg & " the creature."
-            End If
+                
+'                Select Case language
+'                    Case Spanish
+                        chat = HechizoData(Hechizo).HechizeroMsg & " la criatura."
+'                    Case English
+'                        chat = HechizoData(Hechizo).en_HechizeroMsg & " the creature."
+'                    Case Portuguese
+'                        chat = HechizoData(Hechizo).pt_HechizeroMsg & " a criatura."
+'                    Case French
+'                        chat = HechizoData(Hechizo).fr_HechizeroMsg & " la créature."
+'                    Case Italian
+'                        chat = HechizoData(Hechizo).it_HechizeroMsg & " la creatura."
+'                    Case Else
+'                        chat = HechizoData(Hechizo).HechizeroMsg & " la criatura." ' fallback
+'                End Select
+
     
             Case "HecMSGU"
                 Hechizo = ReadField(2, chat, Asc("*"))
