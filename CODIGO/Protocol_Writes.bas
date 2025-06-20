@@ -6620,6 +6620,22 @@ writePublicarPersonajeMAO_Err:
         Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.writePublicarPersonajeMAO", Erl)
 End Sub
 
+Public Sub writePublishItemMAO(ByVal value As Long, ByVal Slot As Byte, ByVal quantity as Integer)
+     On Error GoTo writePublishItemMAO_Err
+        
+100     Call Writer.WriteInt16(ClientPacketID.ePublishItemMAO)
+        Call Writer.WriteInt8(Slot)
+        Call Writer.WriteInt32(value)
+        Call Writer.WriteInt32(quantity)
+102     Call modNetwork.send(Writer)
+        
+        Exit Sub
+
+writePublishItemMAO_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.writePublishItemMAO", Erl)
+End Sub
+
 Public Sub WriteRequestDebug(ByVal debugType As Byte, ByRef arguments() As String, ByVal argCount As Integer)
     On Error GoTo WriteRequestDebug_Err
         

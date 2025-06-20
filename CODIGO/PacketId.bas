@@ -11,6 +11,7 @@ Public Enum ServerPacketID
     eCommerceEnd             ' FINCOMOK
     eBankEnd                 ' FINBANOK
     eCommerceInit            ' INITCOM
+    eSellItemsMaoInit        ' INIT SELL ITEMS MAO
     eBankInit                ' INITBANCO
     eUserCommerceInit        ' INITCOMUSU   10
     eUserCommerceEnd         ' FINCOMUSUOK
@@ -526,6 +527,7 @@ Public Enum ClientPacketID
     eSendPosSeguimiento
     eNotifyInventarioHechizos
     ePublicarPersonajeMAO
+    ePublishItemMAO
     eEventoFaccionario
     eRequestDebug '/RequestDebug consulta info debug al server, para gms
     eLobbyCommand

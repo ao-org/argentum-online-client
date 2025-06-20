@@ -156,6 +156,7 @@ Class=clsNetReader; CODIGO\clsNetReader.cls
 Form=CODIGO\frmDebug.frm
 Form=CODIGO\frmSkins.frm
 ResFile32="AO20.res"
+Form=CODIGO\frmSellItemsMAO.frm
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""

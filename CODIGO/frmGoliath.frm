@@ -292,7 +292,12 @@ Private Sub Form_Load()
 
     Me.Picture = LoadInterface("ventanabanco.bmp")
     
-    Call LoadButtons
+    If frmSellItemsMAO.visible Then
+        Unload frmSellItemsMAO
+        Comerciando = False
+    End If
+    
+    Call loadButtons
     Exit Sub
 
 Form_Load_Err:
