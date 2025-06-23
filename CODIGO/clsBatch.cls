@@ -188,6 +188,10 @@ SetTexture_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsBatch.SetTexture", Erl)
     Resume Next
 End Sub
+
+
+
+
  
 Friend Sub Draw(ByVal x As Long, _
                 ByVal y As Long, _

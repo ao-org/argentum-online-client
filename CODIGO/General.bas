@@ -1079,7 +1079,9 @@ On Error GoTo Main_Err
     Call engine_init 'initializes DX
     Debug.Assert Not DirectX Is Nothing
     Call ao20audio.CreateAudioEngine(frmConnect.hwnd, DirectX, ao20audio.AudioEngine)
+    Call init_dx_ui(DirectDevice)
 #End If
+
     Call InitCommonControls
 
     #If DEBUGGING = 0 Or ENABLE_ANTICHEAT = 1 Then
