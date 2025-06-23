@@ -1626,7 +1626,7 @@ Public Sub CargarIndicesOBJ()
             
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", prefix_filename, Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de _localindex.dat!"
+            Err.Description = "¡No se puede cargar el archivo de " & prefix_filename
             MsgBox Err.Description
         End If
         ObjFile = Windows_Temp_Dir & prefix_filename
