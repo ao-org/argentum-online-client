@@ -1617,17 +1617,21 @@ Public Sub CargarIndicesOBJ()
         Case e_language.Portuguese:  langPrefix = "pt"
         Case e_language.French:      langPrefix = "fr"
         Case e_language.Italian:     langPrefix = "it"
+        Case Else
+        langPrefix = "en"
     End Select
-
+    
+        Dim prefix_filename As String
+            prefix_filename = langPrefix & "_localindex.dat"
+            
     #If Compresion = 1 Then
-        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", langPrefix & "_localindex.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", prefix_filename, Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de _localindex.dat!"
             MsgBox Err.Description
-
         End If
-        ObjFile = Windows_Temp_Dir & langPrefix & "_localindex.dat"
+        ObjFile = Windows_Temp_Dir & prefix_filename
     #Else
-        ObjFile = App.path & "\..\Recursos\init\" & langPrefix & "_localindex.dat"
+        ObjFile = App.path & "\..\Recursos\init\" & prefix_filename
     #End If
     
             
@@ -1903,7 +1907,7 @@ Continue:
     Next i
     
     #If Compresion = 1 Then
-        Delete_File Windows_Temp_Dir & langPrefix & "_localindex.dat"
+        Delete_File Windows_Temp_Dir & prefix_filename
     #End If
 
     

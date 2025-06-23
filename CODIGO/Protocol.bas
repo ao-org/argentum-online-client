@@ -2442,42 +2442,12 @@ Private Sub HandleConsoleMessage()
             
             Case "ProMSG"
                 Hechizo = ReadField(2, chat, Asc("*"))
-
-'                Select Case language
-'                    Case Spanish
-                        chat = HechizoData(Hechizo).PropioMsg
-'                    Case English
-'                        chat = HechizoData(Hechizo).en_PropioMsg
-'                    Case Portuguese
-'                        chat = HechizoData(Hechizo).pt_PropioMsg
-'                    Case French
-'                        chat = HechizoData(Hechizo).fr_PropioMsg
-'                    Case Italian
-'                        chat = HechizoData(Hechizo).it_PropioMsg
-'                    Case Else
-'                        chat = HechizoData(Hechizo).PropioMsg ' fallback al español
-'                End Select
-
+                chat = HechizoData(Hechizo).PropioMsg
     
             Case "HecMSG"
                 Hechizo = ReadField(2, chat, Asc("*"))
-                
-'                Select Case language
-'                    Case Spanish
-                        chat = HechizoData(Hechizo).HechizeroMsg & " la criatura."
-'                    Case English
-'                        chat = HechizoData(Hechizo).en_HechizeroMsg & " the creature."
-'                    Case Portuguese
-'                        chat = HechizoData(Hechizo).pt_HechizeroMsg & " a criatura."
-'                    Case French
-'                        chat = HechizoData(Hechizo).fr_HechizeroMsg & " la créature."
-'                    Case Italian
-'                        chat = HechizoData(Hechizo).it_HechizeroMsg & " la creatura."
-'                    Case Else
-'                        chat = HechizoData(Hechizo).HechizeroMsg & " la criatura." ' fallback
-'                End Select
+                chat = HechizoData(Hechizo).HechizeroMsg & " la criatura."
 
-    
             Case "HecMSGU"
                 Hechizo = ReadField(2, chat, Asc("*"))
                 userName = ReadField(3, chat, Asc("*"))
