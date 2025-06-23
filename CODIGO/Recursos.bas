@@ -1611,15 +1611,8 @@ Public Sub CargarIndicesOBJ()
 
     Dim i       As Integer
     
-    Select Case language
-        Case e_language.Spanish:     langPrefix = "es"
-        Case e_language.English:     langPrefix = "en"
-        Case e_language.Portuguese:  langPrefix = "pt"
-        Case e_language.French:      langPrefix = "fr"
-        Case e_language.Italian:     langPrefix = "it"
-        Case Else
-        langPrefix = "en"
-    End Select
+        langPrefix = GetLanguagePrefix(language)
+
     
         Dim prefix_filename As String
             prefix_filename = langPrefix & "_localindex.dat"
@@ -1751,13 +1744,8 @@ Public Sub CargarIndicesOBJ()
             GoTo Continue
         End If
         
-        Select Case language
-            Case e_language.Spanish:     langPrefix = "es"
-            Case e_language.English:     langPrefix = "en"
-            Case e_language.Portuguese:  langPrefix = "pt"
-            Case e_language.French:      langPrefix = "fr"
-            Case e_language.Italian:     langPrefix = "it"
-        End Select
+        langPrefix = GetLanguagePrefix(language)
+
         
         With NpcData(Npc)
             .Name = GetLocalizedValue(Leer, "npc" & Npc, "Name", langPrefix)
@@ -1798,13 +1786,8 @@ Continue:
 
     Next Npc
     
-    Select Case language
-        Case e_language.Spanish:     langPrefix = "es"
-        Case e_language.English:     langPrefix = "en"
-        Case e_language.Portuguese:  langPrefix = "pt"
-        Case e_language.French:      langPrefix = "fr"
-        Case e_language.Italian:     langPrefix = "it"
-    End Select
+        langPrefix = GetLanguagePrefix(language)
+
     
     For Hechizo = 1 To NumHechizos
         DoEvents
@@ -1856,23 +1839,7 @@ Continue:
     
         For i = 1 To NumLocaleMsg
             DoEvents
-        
-            Select Case language
-                Case Spanish
-                    Locale_SMG(i) = Leer.GetValue("SP_msg", "Msg" & i)
-                Case English
-                    Locale_SMG(i) = Leer.GetValue("EN_msg", "Msg" & i)
-                Case Portuguese
-                    Locale_SMG(i) = Leer.GetValue("PT_msg", "Msg" & i)
-                Case French
-                    Locale_SMG(i) = Leer.GetValue("FR_msg", "Msg" & i)
-                Case Italian
-                    Locale_SMG(i) = Leer.GetValue("IT_msg", "Msg" & i)
-                Case Else
-                    ' Default fallback to English
-                    Locale_SMG(i) = Leer.GetValue("EN_msg", "Msg" & i)
-            End Select
-        
+            Locale_SMG(i) = Leer.GetValue(UCase(GetLanguagePrefix(language)) & "_msg", "Msg" & i)
         Next i
 
     
@@ -3339,5 +3306,22 @@ Public Function GetLocalizedValue(ByRef Leer As Object, ByVal section As String,
     End If
 
     GetLocalizedValue = value
+End Function
+
+Public Function GetLanguagePrefix(ByVal language As e_language) As String
+    Select Case language
+        Case e_language.Spanish
+            GetLanguagePrefix = "es"
+        Case e_language.English
+            GetLanguagePrefix = "en"
+        Case e_language.Portuguese
+            GetLanguagePrefix = "pt"
+        Case e_language.French
+            GetLanguagePrefix = "fr"
+        Case e_language.Italian
+            GetLanguagePrefix = "it"
+        Case Else
+            GetLanguagePrefix = "en"
+    End Select
 End Function
 

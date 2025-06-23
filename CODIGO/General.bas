@@ -1738,23 +1738,11 @@ Public Function LoadInterface(FileName As String, Optional localize As Boolean =
 
 On Error GoTo errhandler
     
-    If localize Then
-        Select Case language
-            Case e_language.Spanish
-                FileName = "es_" & FileName
-            Case e_language.English
-                filename = "en_" & filename
-            Case e_language.Portuguese
-                filename = "es_" & filename '"pt_" & filename  falta pedir a Ale
-            Case e_language.French
-                filename = "es_" & filename '"fr_" & filename falta pedir a Ale
-            Case e_language.Italian
-                filename = "es_" & filename '"it_" & filename falta pedir a Ale
-            Case Else
-                FileName = "en_" & FileName
-        End Select
 
+    If localize Then
+        filename = GetLocalizedFilename(language, filename)
     End If
+    
     If FileName <> "" Then
         #If Compresion = 1 Then
             Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
@@ -2040,3 +2028,21 @@ Public Sub deleteCharIndexs()
         End If
     Next i
 End Sub
+
+Public Function GetLocalizedFilename(ByVal language As e_language, ByVal filename As String) As String
+    Select Case language
+        Case e_language.Spanish
+            GetLocalizedFilename = "es_" & filename
+        Case e_language.English
+            GetLocalizedFilename = "en_" & filename
+        Case e_language.Portuguese
+            GetLocalizedFilename = "es_" & filename ' "pt_" & filename  falta pedir a Ale
+        Case e_language.French
+            GetLocalizedFilename = "es_" & filename ' "fr_" & filename falta pedir a Ale
+        Case e_language.Italian
+            GetLocalizedFilename = "es_" & filename ' "it_" & filename falta pedir a Ale
+        Case Else
+            GetLocalizedFilename = "en_" & filename
+    End Select
+End Function
+
