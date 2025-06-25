@@ -84,6 +84,10 @@ Public Enum e_KeyAction
     eHKey9 = 32
     eHKey10 = 33
     eSendText = 34
+    eOpenMap = 35
+    eSegResu = 36
+    eQuestList = 37
+    eGroupList = 38
     
     [eMaxBinds]
 End Enum
@@ -433,6 +437,18 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             Call DoHotKey(8)
         Case BindKeys(e_KeyAction.eHKey10).KeyCode
             Call DoHotKey(9)
+        Case BindKeys(35).KeyCode
+            Call frmMapaGrande.CalcularPosicionMAPA
+            frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
+            frmMapaGrande.Show , frmMain
+        Case BindKeys(36).KeyCode
+            Call WriteSeguroResu
+        Case BindKeys(37).KeyCode
+            Call WriteQuestListRequest
+        Case BindKeys(38).KeyCode
+            If FrmGrupo.visible = False Then
+                Call WriteRequestGrupo
+            End If
         Case Else
             Accionar = False
             Exit Function
