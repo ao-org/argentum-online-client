@@ -437,15 +437,15 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             Call DoHotKey(8)
         Case BindKeys(e_KeyAction.eHKey10).KeyCode
             Call DoHotKey(9)
-        Case BindKeys(35).KeyCode
+        Case BindKeys(eOpenMap).KeyCode
             Call frmMapaGrande.CalcularPosicionMAPA
             frmMapaGrande.Picture = LoadInterface("ventanamapa.bmp")
             frmMapaGrande.Show , frmMain
-        Case BindKeys(36).KeyCode
+        Case BindKeys(eSegResu).KeyCode
             Call WriteSeguroResu
-        Case BindKeys(37).KeyCode
+        Case BindKeys(eQuestList).KeyCode
             Call WriteQuestListRequest
-        Case BindKeys(38).KeyCode
+        Case BindKeys(eGroupList).KeyCode
             If FrmGrupo.visible = False Then
                 Call WriteRequestGrupo
             End If
