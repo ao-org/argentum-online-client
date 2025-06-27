@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form frmCustomKeys 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Configuración de controles"
-   ClientHeight    =   7260
+   ClientHeight    =   8265
    ClientLeft      =   45
    ClientTop       =   315
    ClientWidth     =   6075
@@ -18,11 +18,55 @@ Begin VB.Form frmCustomKeys
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   484
+   ScaleHeight     =   551
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   405
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   37
+      Left            =   2175
+      Locked          =   -1  'True
+      TabIndex        =   91
+      Top             =   6840
+      Width           =   1770
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   36
+      Left            =   195
+      Locked          =   -1  'True
+      TabIndex        =   87
+      Top             =   6840
+      Width           =   1770
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   35
+      Left            =   2175
+      Locked          =   -1  'True
+      TabIndex        =   86
+      Top             =   6240
+      Width           =   1770
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   34
+      Left            =   195
+      Locked          =   -1  'True
+      TabIndex        =   85
+      Top             =   6240
+      Width           =   1770
+   End
    Begin VB.TextBox txConfig 
       BackColor       =   &H00FFFFFF&
       ForeColor       =   &H00000000&
@@ -42,7 +86,7 @@ Begin VB.Form frmCustomKeys
       Left            =   5040
       Locked          =   -1  'True
       TabIndex        =   72
-      Top             =   6720
+      Top             =   7875
       Width           =   930
    End
    Begin VB.TextBox txConfig 
@@ -53,7 +97,7 @@ Begin VB.Form frmCustomKeys
       Left            =   3840
       Locked          =   -1  'True
       TabIndex        =   71
-      Top             =   6720
+      Top             =   7875
       Width           =   930
    End
    Begin VB.TextBox txConfig 
@@ -64,7 +108,7 @@ Begin VB.Form frmCustomKeys
       Left            =   2640
       Locked          =   -1  'True
       TabIndex        =   70
-      Top             =   6720
+      Top             =   7875
       Width           =   930
    End
    Begin VB.TextBox txConfig 
@@ -75,7 +119,7 @@ Begin VB.Form frmCustomKeys
       Left            =   1440
       Locked          =   -1  'True
       TabIndex        =   69
-      Top             =   6720
+      Top             =   7875
       Width           =   930
    End
    Begin VB.TextBox txConfig 
@@ -86,7 +130,7 @@ Begin VB.Form frmCustomKeys
       Left            =   240
       Locked          =   -1  'True
       TabIndex        =   68
-      Top             =   6720
+      Top             =   7875
       Width           =   930
    End
    Begin VB.TextBox txConfig 
@@ -97,7 +141,7 @@ Begin VB.Form frmCustomKeys
       Left            =   5040
       Locked          =   -1  'True
       TabIndex        =   67
-      Top             =   6240
+      Top             =   7470
       Width           =   930
    End
    Begin VB.TextBox txConfig 
@@ -108,7 +152,7 @@ Begin VB.Form frmCustomKeys
       Left            =   3840
       Locked          =   -1  'True
       TabIndex        =   66
-      Top             =   6240
+      Top             =   7470
       Width           =   930
    End
    Begin VB.TextBox txConfig 
@@ -119,7 +163,7 @@ Begin VB.Form frmCustomKeys
       Left            =   2640
       Locked          =   -1  'True
       TabIndex        =   65
-      Top             =   6240
+      Top             =   7470
       Width           =   930
    End
    Begin VB.TextBox txConfig 
@@ -130,7 +174,7 @@ Begin VB.Form frmCustomKeys
       Left            =   1440
       Locked          =   -1  'True
       TabIndex        =   64
-      Top             =   6240
+      Top             =   7470
       Width           =   930
    End
    Begin VB.TextBox txConfig 
@@ -141,7 +185,7 @@ Begin VB.Form frmCustomKeys
       Left            =   240
       Locked          =   -1  'True
       TabIndex        =   63
-      Top             =   6240
+      Top             =   7470
       Width           =   930
    End
    Begin VB.TextBox txConfig 
@@ -547,6 +591,54 @@ Begin VB.Form frmCustomKeys
    Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
+      Caption         =   "Menu de grupo"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   26
+      Left            =   2175
+      TabIndex        =   92
+      Top             =   6600
+      Width           =   1080
+   End
+   Begin VB.Label lblSalirDel 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Menu de quest"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   25
+      Left            =   195
+      TabIndex        =   90
+      Top             =   6600
+      Width           =   1065
+   End
+   Begin VB.Label lblSalirDel 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Seguro de resurrección"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   24
+      Left            =   2175
+      TabIndex        =   89
+      Top             =   6000
+      Width           =   1665
+   End
+   Begin VB.Label lblSalirDel 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Abrir mapa"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   23
+      Left            =   195
+      TabIndex        =   88
+      Top             =   6000
+      Width           =   780
+   End
+   Begin VB.Label lblSalirDel 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
       Caption         =   "Enviar texto"
       ForeColor       =   &H00000000&
       Height          =   195
@@ -565,7 +657,7 @@ Begin VB.Form frmCustomKeys
       Index           =   8
       Left            =   4800
       TabIndex        =   82
-      Top             =   6720
+      Top             =   7950
       Width           =   210
    End
    Begin VB.Label lbl 
@@ -577,7 +669,7 @@ Begin VB.Form frmCustomKeys
       Index           =   7
       Left            =   3720
       TabIndex        =   81
-      Top             =   6720
+      Top             =   7950
       Width           =   90
    End
    Begin VB.Label lbl 
@@ -589,7 +681,7 @@ Begin VB.Form frmCustomKeys
       Index           =   6
       Left            =   2520
       TabIndex        =   80
-      Top             =   6720
+      Top             =   7950
       Width           =   90
    End
    Begin VB.Label lbl 
@@ -601,7 +693,7 @@ Begin VB.Form frmCustomKeys
       Index           =   5
       Left            =   1320
       TabIndex        =   79
-      Top             =   6720
+      Top             =   7950
       Width           =   90
    End
    Begin VB.Label lbl 
@@ -613,7 +705,7 @@ Begin VB.Form frmCustomKeys
       Index           =   4
       Left            =   120
       TabIndex        =   78
-      Top             =   6720
+      Top             =   7950
       Width           =   90
    End
    Begin VB.Label lbl 
@@ -625,7 +717,7 @@ Begin VB.Form frmCustomKeys
       Index           =   3
       Left            =   4920
       TabIndex        =   77
-      Top             =   6360
+      Top             =   7590
       Width           =   90
    End
    Begin VB.Label lbl 
@@ -637,7 +729,7 @@ Begin VB.Form frmCustomKeys
       Index           =   2
       Left            =   3720
       TabIndex        =   76
-      Top             =   6360
+      Top             =   7590
       Width           =   90
    End
    Begin VB.Label lbl 
@@ -649,7 +741,7 @@ Begin VB.Form frmCustomKeys
       Index           =   0
       Left            =   2520
       TabIndex        =   75
-      Top             =   6360
+      Top             =   7590
       Width           =   90
    End
    Begin VB.Label lbl 
@@ -661,7 +753,7 @@ Begin VB.Form frmCustomKeys
       Index           =   1
       Left            =   1320
       TabIndex        =   74
-      Top             =   6360
+      Top             =   7590
       Width           =   90
    End
    Begin VB.Label lblHotKeys 
@@ -673,7 +765,7 @@ Begin VB.Form frmCustomKeys
       Index           =   0
       Left            =   120
       TabIndex        =   73
-      Top             =   6360
+      Top             =   7590
       Width           =   90
    End
    Begin VB.Label lblHotKeys 
@@ -685,7 +777,7 @@ Begin VB.Form frmCustomKeys
       Index           =   22
       Left            =   240
       TabIndex        =   62
-      Top             =   6000
+      Top             =   7230
       Width           =   675
    End
    Begin VB.Label lblSalirDel 
