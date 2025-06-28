@@ -1895,7 +1895,6 @@ Private Sub Command1_Click()
     TieneAntorcha = Not TieneAntorcha
 End Sub
 
-
 Private Sub Contadores_Timer()
     
     On Error GoTo Contadores_Timer_Err
@@ -2244,6 +2243,13 @@ Private Sub picHechiz_MouseUp(Button As Integer, Shift As Integer, x As Single, 
     hlst.DownBarrita = 0
     If Button = vbRightButton And gDragState.active Then
         Call frmMain.OnDragEnd
+    End If
+End Sub
+
+Private Sub picInv_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If frmSellItemsMAO.visible Then
+        Unload frmSellItemsMAO
+        Comerciando = False
     End If
 End Sub
 
@@ -3949,6 +3955,8 @@ Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single,
     MouseBoton = Button
     MouseShift = Shift
 
+    If frmSellItemsMAO.visible Then Unload frmSellItemsMAO
+    Comerciando = False
     If frmComerciar.visible Then Unload frmComerciar
     If frmBancoObj.visible Then Unload frmBancoObj
     If frmEstadisticas.visible Then Unload frmEstadisticas
@@ -4605,8 +4613,12 @@ Private Sub imgDeleteItem_Click()
     If Not frmMain.Inventario.IsItemSelected Then
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENE_ITEM_SELECCIONADO"), 255, 255, 255, False, False, False)
     Else
-        If MsgBox(JsonLanguage.Item("MENSAJEBOX_ELIMINAR_ITEM"), vbYesNo, JsonLanguage.Item("MENSAJEBOX_TITULO_ELIMINAR_ITEM")) = vbYes Then
-            Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
+        If Not Comerciando Then
+            If MsgBox(JsonLanguage.Item("MENSAJEBOX_ELIMINAR_ITEM"), vbYesNo, JsonLanguage.Item("MENSAJEBOX_TITULO_ELIMINAR_ITEM")) = vbYes Then
+                Call WriteDeleteItem(frmMain.Inventario.SelectedItem)
+            End If
+        Else
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_PODES_DESTRUIR_OBJETOS_MIENTRAS_COMERCIAS"), 255, 0, 32, False, False, False)
         End If
     End If
 End Sub
