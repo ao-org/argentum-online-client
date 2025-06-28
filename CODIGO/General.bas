@@ -1738,16 +1738,11 @@ Public Function LoadInterface(FileName As String, Optional localize As Boolean =
 
 On Error GoTo errhandler
     
+
     If localize Then
-        Select Case language
-            Case e_language.English
-                FileName = "en_" & FileName
-            Case e_language.Spanish
-                FileName = "es_" & FileName
-            Case Else
-                FileName = "en_" & FileName
-        End Select
+        filename = GetLocalizedFilename(language, filename)
     End If
+    
     If FileName <> "" Then
         #If Compresion = 1 Then
             Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
@@ -2033,3 +2028,34 @@ Public Sub deleteCharIndexs()
         End If
     Next i
 End Sub
+
+Public Function GetLocalizedFilename(ByVal language As e_language, ByVal filename As String) As String
+    Dim basePath As String
+    Dim localizedName As String
+
+    basePath = App.path & "\..\Recursos\Init\"
+    
+    Select Case language
+        Case e_language.Spanish
+            localizedName = "es_" & filename
+        Case e_language.English
+            localizedName = "en_" & filename
+        Case e_language.Portuguese
+            localizedName = "pt_" & filename
+        Case e_language.French
+            localizedName = "fr_" & filename
+        Case e_language.Italian
+            localizedName = "it_" & filename
+        Case Else
+            localizedName = "en_" & filename
+    End Select
+
+    ' Verificar si el archivo localizado existe, si no, usar en_
+    If Not FileExist(basePath & localizedName, vbNormal) Then
+        localizedName = "en_" & filename
+    End If
+
+    GetLocalizedFilename = localizedName
+End Function
+
+

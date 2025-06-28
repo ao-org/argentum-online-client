@@ -28,8 +28,12 @@ Private Const LOCALE_SENGLANGUAGE = &H1001
 Private Const MAX_BUF As Long = 260
 
 Public Enum e_language
-    Spanish = 1
-    English = 2
+    Spanish = 1          ' Español (LATAM)
+    English = 2          'Ingles
+    Portuguese = 3
+    French = 4
+    Italian = 5
+'    Spanish_Spain = 6   ' Español (España)
 End Enum
 
 Public language As e_language
@@ -80,10 +84,22 @@ On Error GoTo ErrorHandler
     ' If no localization is set, determine the default language based on system locale
     If Len(Localization) = 0 Then
         Select Case GetLocaleEngLanguage
-            Case "English"
-                language = e_language.English
             Case "Spanish"
                 language = e_language.Spanish
+                
+            Case "English"
+                language = e_language.English
+
+            Case "Portuguese"
+                language = e_language.Portuguese
+                
+            Case "French"
+                language = e_language.French
+                
+            Case "Italian"
+                language = e_language.Italian
+'            Case "Spanish_Spain"
+'                language = e_language.Spanish_Spain
             Case Else
                 ' Default to English if system locale is unsupported
                 language = e_language.English

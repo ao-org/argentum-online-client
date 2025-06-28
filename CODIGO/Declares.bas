@@ -16,7 +16,7 @@ Attribute VB_Name = "Mod_Declaraciones"
 '
 '
 Option Explicit
-
+Public langPrefix As String
 Public SeguroGame As Boolean
 Public SeguroParty As Boolean
 Public SeguroClanX As Boolean
