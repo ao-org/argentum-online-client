@@ -45,7 +45,6 @@ End Type
 Private Const D3DFVF_UI_VERTEX = (D3DFVF_XYZRHW Or D3DFVF_DIFFUSE)
 
 
-
 ' Initialize with device and max quads capacity
 Public Sub Init(ByVal dev As Direct3DDevice8, ByVal maxQuads As Long)
     Set m_Device = dev
@@ -83,30 +82,6 @@ Public Sub AddQuad(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As
     Next i
     vertexCount = vertexCount + 4
 End Sub
-
-'' Add a quad as four vertices (triangle strip order)
-'Public Sub AddQuad(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByRef colors() As Long)
-'    ' colors array must have at least 4 elements for each vertex
-'    If vertexCount + 4 > vertexCapacity Then Exit Sub
-'    Dim idx As Long: idx = vertexCount
-'    ' Top-left
-'    vertices(idx).x = x:           vertices(idx).y = y
-'    vertices(idx).z = 0:           vertices(idx).rhw = 1
-'    vertices(idx).Color = colors(0)
-'    ' Top-right
-'    vertices(idx + 1).x = x + w:   vertices(idx + 1).y = y
-'    vertices(idx + 1).z = 0:       vertices(idx + 1).rhw = 1
-'    vertices(idx + 1).Color = colors(1)
-'    ' Bottom-left
-'    vertices(idx + 2).x = x:       vertices(idx + 2).y = y + h
-'    vertices(idx + 2).z = 0:       vertices(idx + 2).rhw = 1
-'    vertices(idx + 2).Color = colors(2)
-'    ' Bottom-right
-'    vertices(idx + 3).x = x + w:   vertices(idx + 3).y = y + h
-'    vertices(idx + 3).z = 0:       vertices(idx + 3).rhw = 1
-'    vertices(idx + 3).Color = colors(3)
-'    vertexCount = vertexCount + 4
-'End Sub
 
 
 Private Sub SaveRenderState(ByVal dev As Direct3DDevice8)
@@ -160,8 +135,8 @@ Public Sub Draw(ByVal dev As Direct3DDevice8)
 End Sub
 
 ' IUIRenderer interface
-Public Sub AddComponentQuad(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clr As Long)
-    AddQuad x, y, w, h, clr
+Public Sub AddComponentQuad(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByRef colors() As Long)
+    Me.AddQuad x, y, w, h, colors
 End Sub
 Public Sub RenderAll(ByVal dev As Direct3DDevice8)
     Draw dev
