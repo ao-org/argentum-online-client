@@ -2030,11 +2030,9 @@ Public Sub deleteCharIndexs()
 End Sub
 
 Public Function GetLocalizedFilename(ByVal language As e_language, ByVal filename As String) As String
-    Dim basePath As String
-    Dim localizedName As String
 
-    basePath = App.path & "\..\Recursos\Init\"
-    
+    Dim localizedName As String
+   
     Select Case language
         Case e_language.Spanish
             localizedName = "es_" & filename
@@ -2051,7 +2049,7 @@ Public Function GetLocalizedFilename(ByVal language As e_language, ByVal filenam
     End Select
 
     ' Verificar si el archivo localizado existe, si no, usar en_
-    If Not FileExist(basePath & localizedName, vbNormal) Then
+    If Not FileExist(localizedName, vbNormal) Then
         localizedName = "en_" & filename
     End If
 
