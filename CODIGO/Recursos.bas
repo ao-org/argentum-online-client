@@ -3311,7 +3311,7 @@ End Function
 Public Function GetLanguagePrefix(ByVal language As e_language) As String
     Select Case language
         Case e_language.Spanish
-            GetLanguagePrefix = "es"
+            GetLanguagePrefix = "sp"
         Case e_language.English
             GetLanguagePrefix = "en"
         Case e_language.Portuguese
