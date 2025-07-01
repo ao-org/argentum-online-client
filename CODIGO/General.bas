@@ -2049,7 +2049,7 @@ Public Function GetLocalizedFilename(ByVal language As e_language, ByVal filenam
     End Select
 
     ' Verificar si el archivo localizado existe, si no, usar en_
-    If Not FileExist(localizedName, vbNormal) Then
+    If FileExist(localizedName, vbNormal) Then
         localizedName = "en_" & filename
     End If
 
