@@ -78,13 +78,6 @@ Begin VB.Form frmGoliath
          Visible         =   0   'False
          Width           =   1815
       End
-      Begin VB.Image cmdAceptar 
-         Height          =   420
-         Left            =   375
-         Tag             =   "0"
-         Top             =   2520
-         Width           =   1980
-      End
       Begin VB.Label lblDatos 
          Alignment       =   2  'Center
          BackStyle       =   0  'Transparent
@@ -99,11 +92,24 @@ Begin VB.Form frmGoliath
          EndProperty
          ForeColor       =   &H00FFFFFF&
          Height          =   255
-         Left            =   240
+         Left            =   120
          TabIndex        =   4
-         Top             =   3015
+         Top             =   3000
          Visible         =   0   'False
          Width           =   2415
+      End
+      Begin VB.Image cmdDepositAll 
+         Height          =   420
+         Left            =   375
+         Top             =   1960
+         Width           =   1980
+      End
+      Begin VB.Image cmdAceptar 
+         Height          =   420
+         Left            =   375
+         Tag             =   "0"
+         Top             =   2520
+         Width           =   1980
       End
       Begin VB.Image cmdMenos 
          Height          =   315
@@ -243,6 +249,7 @@ Private cBotonAceptar As clsGraphicalButton
 Private cBotonCerrar As clsGraphicalButton
 Private cBotonMas As clsGraphicalButton
 Private cBotonMenos As clsGraphicalButton
+Private cBotonDepositAll As clsGraphicalButton
 
 Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
     
@@ -311,6 +318,7 @@ Private Sub LoadButtons()
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonMas = New clsGraphicalButton
     Set cBotonMenos = New clsGraphicalButton
+    Set cBotonDepositAll = New clsGraphicalButton
 
     Call cBotonBoveda.Initialize(cmdBoveda, "boton-ver-boveda-default.bmp", _
                                                 "boton-ver-boveda-over.bmp", _
@@ -343,6 +351,10 @@ Private Sub LoadButtons()
     Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
                                                 "boton-sm-menos-over.bmp", _
                                                 "boton-sm-menos-off.bmp", Me)
+                                                
+    Call cBotonDepositAll.Initialize(cmdDepositAll, "boton-depositartodo-default.bmp", _
+                                                "boton-depositartodo-over.bmp", _
+                                                "boton-depositartodo-off.bmp", Me)
 End Sub
 
 
@@ -375,27 +387,47 @@ Form_MouseDown_Err:
     Resume Next
     
 End Sub
+Private Sub cmdDepositAll_Click()
+
+    If UserStats.GLD <= 0 Then
+        lblDatos.Caption = JsonLanguage.Item("MENSAJE_DEPOSITAR_NO_TIENES_ORO")
+        Exit Sub
+    End If
+    
+    Call WriteBankDepositGold(UserStats.GLD)
+
+End Sub
 
 Private Sub cmdDepositar_Click()
+    txtDatos.Text = ""
     lblDatos.Caption = ""
+    lblDatos.visible = True
     Image3.Picture = LoadInterface("ventanabanco-depositar.bmp")
     frameRetirar.Visible = True
     txtname.Visible = False
+    cmdDepositAll.visible = True
     TipoOperacion = 1
 End Sub
 
 Private Sub cmdRetirar_Click()
+    txtDatos.Text = ""
     lblDatos.Caption = ""
+    lblDatos.visible = True
     Image3.Picture = LoadInterface("ventanabanco-retirar.bmp")
     frameRetirar.Visible = True
     txtname.Visible = False
+    cmdDepositAll.visible = False
     TipoOperacion = 2
 End Sub
 
 Private Sub cmdTransferir_Click()
+    txtDatos.Text = ""
+    lblDatos.Caption = ""
+    lblDatos.visible = True
     Image3.Picture = LoadInterface("ventanabanco-transferir.bmp")
     frameRetirar.Visible = True
     txtname.Visible = True
+    cmdDepositAll.visible = False
     TipoOperacion = 3
 End Sub
 Private Sub cmdBoveda_Click()
@@ -414,10 +446,10 @@ Private Sub cmdAceptar_Click()
     
         Case 1 'Depositar
             'Negativos y ceros
-            If Val(txtDatos.Text) < 1 Then lblDatos.Caption = "Cantidad inválida."
+            If Val(txtDatos.Text) < 1 Then lblDatos.Caption = JsonLanguage.Item("MENSAJE_DEPOSITAR_CANTIDAD_INVALIDA")
             
             If UserStats.GLD <= 0 Then
-                lblDatos.Caption = "No tienes oro para depositar."
+                lblDatos.Caption = JsonLanguage.Item("MENSAJE_DEPOSITAR_NO_TIENES_ORO")
                 Exit Sub
             End If
     
@@ -425,10 +457,10 @@ Private Sub cmdAceptar_Click()
 
         Case 2 'Retirar
             'Negativos y ceros
-            If Val(txtDatos.Text) < 1 Then lblDatos.Caption = "Cantidad inválida."
+            If Val(txtDatos.Text) < 1 Then lblDatos.Caption = JsonLanguage.Item("MENSAJE_DEPOSITAR_CANTIDAD_INVALIDA")
             
             If OroDep <= 0 Then
-                lblDatos.Caption = "No tienes oro en la cuenta."
+                lblDatos.Caption = JsonLanguage.Item("MENSAJE_RETIRAR_NO_TIENES_ORO")
                 Exit Sub
             End If
     
@@ -437,13 +469,13 @@ Private Sub cmdAceptar_Click()
         Case 3 'Transferir
             'Negativos y ceros
             If Val(txtDatos.Text) < 1 Then
-                lblDatos.Caption = "Cantidad inválida, reintente."
+                lblDatos.Caption = JsonLanguage.Item("MENSAJE_DEPOSITAR_CANTIDAD_INVALIDA")
 
                 Exit Sub
             End If
             
             If OroDep <= 0 Then
-                lblDatos.Caption = "No tienes oro en la cuenta."
+                lblDatos.Caption = JsonLanguage.Item("MENSAJE_RETIRAR_NO_TIENES_ORO")
                 Exit Sub
             End If
 
@@ -451,7 +483,7 @@ Private Sub cmdAceptar_Click()
                 Call WriteTransFerGold(min(Val(txtDatos.Text), OroDep), txtname.Text)
                 Unload Me
             Else
-                lblDatos.Caption = "¡Nombre de destino inválido!"
+                lblDatos.Caption = JsonLanguage.Item("MENSAJE_TRANSFERIR_NOMBRE_INVALIDO")
                 txtDatos.Text = ""
             End If
     End Select
