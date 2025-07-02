@@ -640,6 +640,10 @@
   "MENSAJE_612": "Devi riavviare il client per applicare le modifiche.",
   "MENSAJE_613": "Cambia lingua",
   "MENSAJE_614": "Para que los cambios tengan efecto deberás volver a abrir el cliente.",
-  "MENSAJE_615": "Cambiar idioma"
+  "MENSAJE_615": "Cambiar idioma",
+  "MENSAJE_DEPOSITAR_CANTIDAD_INVALIDA": "Quantidade inválida.",
+  "MENSAJE_DEPOSITAR_NO_TIENES_ORO": "Você não tem ouro para depositar.",
+  "MENSAJE_RETIRAR_NO_TIENES_ORO": "Você não tem ouro na conta.",
+  "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Nome de destino inválido!"
 
 }
