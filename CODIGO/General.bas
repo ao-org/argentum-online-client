@@ -1733,24 +1733,46 @@ min_Err:
     
 End Function
 
-
-Public Function LoadInterface(FileName As String, Optional localize As Boolean = True) As IPicture
-
-On Error GoTo errhandler
-    
-
+Public Function LoadInterface(filename As String, _
+                              Optional localize As Boolean = True) As IPicture
+    On Error Resume Next
+    Dim localizedName As String
     If localize Then
-        filename = GetLocalizedFilename(language, filename)
+        localizedName = GetLocalizedFilename(language, filename)
+
     End If
-    
+
     If FileName <> "" Then
         #If Compresion = 1 Then
-            Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
+            Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(localizedName), ResourcesPassword)
+            If LoadInterface Is Nothing Then
+                localizedName = "en_" & filename
+                Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(localizedName), ResourcesPassword)
+                If LoadInterface Is Nothing Then
+                    frmDebug.add_text_tracebox "Error loading interface bitmap: " & localizedName
+                    Debug.Assert False
+
+                End If
+
+            End If
+
         #Else
-            Set LoadInterface = LoadPicture(App.path & "/../Recursos/interface/" & LCase$(FileName))
+            Set LoadInterface = LoadPicture(App.path & "/../Recursos/interface/" & LCase$(localizedName))
+            If LoadInterface Is Nothing Then
+                localizedName = "en_" & filename
+                Set LoadInterface = LoadPicture(App.path & "/../Recursos/interface/" & LCase$(localizedName))
+                If LoadInterface Is Nothing Then
+                    frmDebug.add_text_tracebox "Error loading interface bitmap: " & localizedName
+                    Debug.Assert False
+
+                End If
+
+            End If
         #End If
+
     End If
-Exit Function
+
+    Exit Function
 errhandler:
     frmDebug.add_text_tracebox "Error loading interface bitmap: " & FileName
 
@@ -2047,11 +2069,6 @@ Public Function GetLocalizedFilename(ByVal language As e_language, ByVal filenam
         Case Else
             localizedName = "en_" & filename
     End Select
-
-    ' Verificar si el archivo localizado existe, si no, usar en_
-    If Not FileExist(App.path & "\..\Recursos\Interface\" & localizedName, vbNormal) Then
-        localizedName = "en_" & filename
-    End If
 
     GetLocalizedFilename = localizedName
 End Function
