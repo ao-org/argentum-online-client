@@ -129,15 +129,13 @@ Public Type tQuest
     desc As String
     NextQuest As String
     DescFinal As String
-    RequiredLevel As Byte
+    RequiredLevel As Integer
     RequiredClass As Integer
-    RequiredQuest As Byte
+    RequiredQuest As Integer
     LimitLevel As Byte
     
-    RequiredOBJs As Byte
     RequiredOBJ() As Obj
     
-    RequiredNPCs As Byte
     RequiredNPC() As tQuestNpc
     RequiredSpellList() As Integer
     RequiredSkill As t_QuestSkill
@@ -145,9 +143,8 @@ Public Type tQuest
     RewardGLD As Long
     RewardEXP As Long
     
-    RewardOBJs As Byte
     RewardOBJ() As Obj
-    RewardSkillCount As Byte
+    RewardSkillCount As Integer
     RewardSkill() As Integer
     Repetible As Byte
 
