@@ -224,7 +224,8 @@ Error_Handl:
     frmDebug.add_text_tracebox "error al cargar musica"
 End Function
 
-Private Function CreateWavBufferFromFile(ByVal file_name As Integer, ByRef new_buffer As DirectSoundSecondaryBuffer8, Optional ByVal Extraido As Boolean = False) As Boolean
+Private Function CreateWavBufferFromFile(ByVal file_name As Integer, ByRef new_buffer As DirectSoundSecondaryBuffer8, Optional ByVal Extraido As Boolean = False, Optional ByVal currentLanguage As e_language = e_language.Spanish) As Boolean
+
 On Error GoTo CreateWavBufferFromFile_Err
     CreateWavBufferFromFile = False
     Debug.Assert Not mDirectSound Is Nothing
