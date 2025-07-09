@@ -573,7 +573,7 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
     
     If Len(ListViewQuest.SelectedItem.SubItems(2)) <> 0 Then
         
-        Dim QuestIndex As Byte
+        Dim QuestIndex As Integer
 
         QuestIndex = ListViewQuest.SelectedItem.SubItems(2)
         
