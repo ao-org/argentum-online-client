@@ -464,6 +464,23 @@ WriteSeguroResu_Err:
         '</EhFooter>
 End Sub
 
+Public Sub WriteLegionarySecure()
+        '<EhHeader>
+        On Error GoTo WriteLegionarySecure_Err
+        '</EhHeader>
+        Call Writer.WriteInt16(ClientPacketID.eLegionarySecure)
+    
+        Call modNetwork.send(Writer)
+        '<EhFooter>
+        Exit Sub
+
+WriteLegionarySecure_Err:
+        Call Writer.Clear
+        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLegionarySecure", Erl)
+        '</EhFooter>
+End Sub
+
+
 ''
 ' Writes the "RequestGuildLeaderInfo" message to the outgoing data buffer.
 '

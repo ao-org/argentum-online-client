@@ -21,6 +21,7 @@ Public SeguroGame As Boolean
 Public SeguroParty As Boolean
 Public SeguroClanX As Boolean
 Public SeguroResuX As Boolean
+Public LegionarySecureX As Boolean
 Public QuePestañaInferior As Byte
 Public newUser As Boolean
 Public Enum tMacro
