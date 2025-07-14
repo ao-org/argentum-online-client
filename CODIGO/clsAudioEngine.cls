@@ -257,7 +257,7 @@ On Error GoTo CreateWavBufferFromFile_Err
             CreateWavBufferFromFile = True
         ElseIf Extract_File(wav, GetCompressedResourcesPath(), unprefixed_filename, Windows_Temp_Dir, ResourcesPassword, False) Then
             Set new_buffer = mDirectSound.CreateSoundBufferFromFile(Windows_Temp_Dir & unprefixed_filename, dsbd)
-            Debug.Print "Usando WAV: " & PathToFile
+            
 
             Delete_File Windows_Temp_Dir & unprefixed_filename
             CreateWavBufferFromFile = True
@@ -266,13 +266,13 @@ On Error GoTo CreateWavBufferFromFile_Err
         ' Ya extraído: verificar prefijo primero
         If FileExist(Windows_Temp_Dir & prefixed_filename, vbArchive) Then
             Set new_buffer = mDirectSound.CreateSoundBufferFromFile(Windows_Temp_Dir & prefixed_filename, dsbd)
-            Debug.Print "Usando WAV: " & PathToFile
+            
 
             Delete_File Windows_Temp_Dir & prefixed_filename
             CreateWavBufferFromFile = True
         ElseIf FileExist(Windows_Temp_Dir & unprefixed_filename, vbArchive) Then
             Set new_buffer = mDirectSound.CreateSoundBufferFromFile(Windows_Temp_Dir & unprefixed_filename, dsbd)
-            Debug.Print "Usando WAV: " & PathToFile
+            
 
             Delete_File Windows_Temp_Dir & unprefixed_filename
             CreateWavBufferFromFile = True
@@ -283,14 +283,14 @@ On Error GoTo CreateWavBufferFromFile_Err
     PathToFile = ao20audio.GetWavFilesPath() & prefixed_filename
     If FileExist(PathToFile, vbArchive) Then
         Set new_buffer = mDirectSound.CreateSoundBufferFromFile(PathToFile, dsbd)
-        Debug.Print "Usando WAV: " & PathToFile
+        
 
         CreateWavBufferFromFile = True
     Else
         PathToFile = ao20audio.GetWavFilesPath() & unprefixed_filename
         If FileExist(PathToFile, vbArchive) Then
             Set new_buffer = mDirectSound.CreateSoundBufferFromFile(PathToFile, dsbd)
-            Debug.Print "Usando WAV: " & PathToFile
+            
 
             CreateWavBufferFromFile = True
         End If
