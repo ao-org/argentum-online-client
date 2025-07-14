@@ -502,6 +502,15 @@ Begin VB.Form frmMain
          Visible         =   0   'False
          Width           =   408
       End
+      Begin VB.Image ImgLegionarySecure 
+         Appearance      =   0  'Flat
+         Height          =   408
+         Left            =   2208
+         ToolTipText     =   "Seguro de legión"
+         Top             =   3060
+         Visible         =   0   'False
+         Width           =   408
+      End
       Begin VB.Image imgBugReport 
          Height          =   495
          Left            =   2880
@@ -1418,16 +1427,7 @@ Begin VB.Form frmMain
          Caption         =   "Comerciar"
          Visible         =   0   'False
       End
-   End
-   Begin VB.Image ImgLegionarySecure 
-      Appearance      =   0  'Flat
-      Height          =   408
-      Left            =   2208
-      ToolTipText     =   "Seguro de legión"
-      Top             =   3060
-      Visible         =   0   'False
-      Width           =   408
-   End
+   End   
 End
 Attribute VB_Name = "frmMain"
 Attribute VB_GlobalNameSpace = False
