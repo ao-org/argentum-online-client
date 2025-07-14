@@ -502,6 +502,15 @@ Begin VB.Form frmMain
          Visible         =   0   'False
          Width           =   408
       End
+      Begin VB.Image ImgLegionarySecure 
+         Appearance      =   0  'Flat
+         Height          =   408
+         Left            =   2208
+         ToolTipText     =   "Seguro de legión"
+         Top             =   3060
+         Visible         =   0   'False
+         Width           =   408
+      End
       Begin VB.Image imgBugReport 
          Height          =   495
          Left            =   2880
@@ -1418,7 +1427,7 @@ Begin VB.Form frmMain
          Caption         =   "Comerciar"
          Visible         =   0   'False
       End
-   End
+   End   
 End
 Attribute VB_Name = "frmMain"
 Attribute VB_GlobalNameSpace = False
@@ -2147,6 +2156,9 @@ imgInventario_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.imgInventario_MouseMove", Erl)
     Resume Next
     
+End Sub
+Private Sub ImgLegionarySecure_Click()
+   Call WriteLegionarySecure
 End Sub
 
 Private Sub imgManual_Click()
@@ -3027,12 +3039,17 @@ Select Case Index
         Else
             ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
         End If
-        
+
+        If LegionarySecureX Then
+            ImgLegionarySecure = LoadInterface("boton-demonio-on.bmp")
+        Else
+            ImgLegionarySecure = LoadInterface("boton-demonio-off.bmp")
+        End If
         ImgSeg.visible = True
         ImgSegParty.visible = True
         ImgSegClan.visible = True
         ImgSegResu.visible = True
-        
+        ImgLegionarySecure.visible = True
         
         panelInf.Picture = LoadInterface("ventanaprincipal_info.bmp")
     Case 0
@@ -3078,6 +3095,7 @@ Select Case Index
         ImgSegParty.visible = False
         ImgSegClan.visible = False
         ImgSegResu.visible = False
+        ImgLegionarySecure.visible = False
 End Select
 End Sub
 

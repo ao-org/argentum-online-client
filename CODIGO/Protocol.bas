@@ -438,6 +438,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUpdateDM
         Case ServerPacketID.eSeguroResu
             Call HandleSeguroResu
+        Case ServerPacketID.eLegionarySecure
+            Call HandleLegionarySecure
         Case ServerPacketID.eStopped
             Call HandleStopped
         Case ServerPacketID.eInvasionInfo
@@ -592,9 +594,11 @@ On Error GoTo HandleLogged_Err
     frmMain.ImgSegParty = LoadInterface("boton-seguro-party-on.bmp")
     frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
     frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
+    frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-on.bmp")
     SeguroParty = True
     SeguroClanX = True
     SeguroResuX = True
+    LegionarySecureX = True
     Call ResetAllCd
     
     Call SetConnected
@@ -838,6 +842,7 @@ Public Sub HandleDisconnect()
     frmMain.ImgSegParty.visible = False
     frmMain.ImgSegClan.visible = False
     frmMain.ImgSegResu.visible = False
+    frmMain.ImgLegionarySecure.visible = False
     initPacketControl
   
     Call ao20audio.StopAllPlayback
@@ -7309,6 +7314,22 @@ Private Sub HandleSeguroResu()
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_RESURRECCION_DESACTIVADO"), 65, 190, 156, False, False, False)
         frmMain.ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
 
+    End If
+End Sub
+Private Sub HandleLegionarySecure()
+    
+    'Get data and update form
+   LegionarySecureX = Reader.ReadBool()
+    
+    If LegionarySecureX Then
+         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_2077"), 65, 190, 156, False, False, False)
+        frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-on.bmp")
+        'SeguroFaccX = True
+
+    Else
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_2076"), 65, 190, 156, False, False, False)
+        frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-off.bmp")
+      
     End If
 End Sub
 
