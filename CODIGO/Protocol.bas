@@ -3439,11 +3439,26 @@ On Error GoTo HandlePlayWave_Err
     Dim srcX As Byte
     Dim srcY As Byte
     Dim cancelLastWave As Byte
-    
+    Dim Localize As Byte
+    Dim filename As String
+    Dim prefixed_filename As String
+    Dim unprefixed_filename As String
+        
     wave = Reader.ReadInt16()
     srcX = Reader.ReadInt8()
     srcY = Reader.ReadInt8()
     cancelLastWave = Reader.ReadInt8()
+    Localize = Reader.ReadInt8()
+    
+    If Localize = 1 Then
+        Dim langPrefix As String
+        langPrefix = GetLanguagePrefix(currentLanguage)
+        filename = langPrefix & "_" & CStr(wave) & ".wav"
+    Else
+        
+        filename = CStr(wave) & ".wav"
+        
+    End If
     
     If wave = 400 And MapDat.niebla = 0 Then Exit Sub
     If wave = 401 And MapDat.niebla = 0 Then Exit Sub
@@ -3451,19 +3466,20 @@ On Error GoTo HandlePlayWave_Err
     If wave = 403 And MapDat.niebla = 0 Then Exit Sub
     If wave = 404 And MapDat.niebla = 0 Then Exit Sub
     
+    
     If cancelLastWave Then
-        Call ao20audio.StopWav(CStr(wave))
+        Call ao20audio.StopWav(filename)
         If cancelLastWave = 2 Then Exit Sub
     End If
     
     If srcX = 0 Or srcY = 0 Then
-        Call ao20audio.PlayWav(CStr(wave), False, 0, 0)
+        Call ao20audio.PlayWav(filename, False, 0, 0)
     Else
         If EstaEnArea(srcX, srcY) Then
             Dim p As Position
             p.x = srcX
             p.y = srcY
-            Call ao20audio.PlayWav(CStr(wave), False, ao20audio.ComputeCharFxVolume(p), ao20audio.ComputeCharFxPan(p))
+            Call ao20audio.PlayWav(filename, False, ao20audio.ComputeCharFxVolume(p), ao20audio.ComputeCharFxPan(p))
         End If
     End If
     Exit Sub
