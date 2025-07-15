@@ -3439,42 +3439,73 @@ HandlePlayMIDI_Err:
 End Sub
 
 Private Sub HandlePlayWave()
-On Error GoTo HandlePlayWave_Err
-    Dim wave As Integer
-    Dim srcX As Byte
-    Dim srcY As Byte
-    Dim cancelLastWave As Byte
-    
+    On Error GoTo HandlePlayWave_Err
+
+    '=== Read packet data ===
+    Dim wave As Integer           ' ID of the WAV to play
+    Dim srcX As Byte              ' Source X coordinate for 3D positioning
+    Dim srcY As Byte              ' Source Y coordinate for 3D positioning
+    Dim cancelLastWave As Byte    ' 0 = no cancel, 1 = stop previous, 2 = stop & do not play new
+    Dim Localize As Byte          ' 1 = prefix filename for localization, 0 = use default
+    Dim filename As String
+
     wave = Reader.ReadInt16()
     srcX = Reader.ReadInt8()
     srcY = Reader.ReadInt8()
     cancelLastWave = Reader.ReadInt8()
-    
-    If wave = 400 And MapDat.niebla = 0 Then Exit Sub
-    If wave = 401 And MapDat.niebla = 0 Then Exit Sub
-    If wave = 402 And MapDat.niebla = 0 Then Exit Sub
-    If wave = 403 And MapDat.niebla = 0 Then Exit Sub
-    If wave = 404 And MapDat.niebla = 0 Then Exit Sub
-    
-    If cancelLastWave Then
-        Call ao20audio.StopWav(CStr(wave))
-        If cancelLastWave = 2 Then Exit Sub
-    End If
-    
-    If srcX = 0 Or srcY = 0 Then
-        Call ao20audio.PlayWav(CStr(wave), False, 0, 0)
+    Localize = Reader.ReadInt8()
+
+    '=== Determine filename, applying localization if requested ===
+    ' If Localize=1, prepend the user’s language code (e.g. "pt") so that
+    ' pt_123.wav will be used instead of 123.wav when playing the clip.
+    If Localize = 1 Then
+        Dim langPrefix As String
+        langPrefix = GetLanguagePrefix(language)
+        filename = langPrefix & "_" & CStr(wave)
     Else
+        filename = CStr(wave)
+    End If
+
+    '=== Handle special “fog of war” waves: IDs 400–404 only play if MapDat.niebla <> 0 ===
+    Select Case wave
+        Case 400 To 404
+            If MapDat.niebla = 0 Then
+                Exit Sub   ' Skip playing these if fog is disabled
+            End If
+    End Select
+
+    '=== Cancel previous wave if requested ===
+    If cancelLastWave <> 0 Then
+        ao20audio.StopWav filename
+        If cancelLastWave = 2 Then
+            Exit Sub   ' Don’t play the new wave if flag=2
+        End If
+    End If
+
+    '=== Play the wave, either with spatial positioning or at default volume ===
+    If srcX = 0 Or srcY = 0 Then
+        ' No position provided: play at default volume & center pan
+        ao20audio.PlayWav filename, False, 0, 0
+    Else
+        ' Only play if the source position is within audible area
         If EstaEnArea(srcX, srcY) Then
             Dim p As Position
             p.x = srcX
             p.y = srcY
-            Call ao20audio.PlayWav(CStr(wave), False, ao20audio.ComputeCharFxVolume(p), ao20audio.ComputeCharFxPan(p))
+            ' Compute volume & pan based on distance and orientation
+            ao20audio.PlayWav filename, False, _
+                             ao20audio.ComputeCharFxVolume(p), _
+                             ao20audio.ComputeCharFxPan(p)
         End If
     End If
+
     Exit Sub
+
 HandlePlayWave_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePlayWave", Erl)
+    ' Log any runtime error for diagnostics
+    RegistrarError Err.Number, Err.Description, "Protocol.HandlePlayWave", Erl
 End Sub
+
 
 ''
 ' Handles the PlayWave message.
