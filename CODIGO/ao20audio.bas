@@ -113,7 +113,7 @@ Public Function PlayAmbientWav(ByVal id As Integer, Optional ByVal looping As Bo
     End If
 End Function
 
-Public Function PlayWav(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
+Public Function PlayWav(ByVal id As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
     PlayWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
         PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, min(CurFxVolume, volume), pan, label)
@@ -134,7 +134,7 @@ Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Bool
     End If
 End Function
 
-Public Function StopWav(ByVal id As Integer, Optional ByVal label As String = "") As Long
+Public Function StopWav(ByVal id As String, Optional ByVal label As String = "") As Long
    StopWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
         StopWav = ao20audio.AudioEngine.StopWav(id, label)
