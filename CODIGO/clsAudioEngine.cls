@@ -224,10 +224,12 @@ Error_Handl:
     frmDebug.add_text_tracebox "error al cargar musica"
 End Function
 
-Private Function CreateWavBufferFromFile(ByVal file_name As Integer, ByRef new_buffer As DirectSoundSecondaryBuffer8, Optional ByVal Extraido As Boolean = False) As Boolean
+Private Function CreateWavBufferFromFile(ByVal file_name As Integer, ByRef new_buffer As DirectSoundSecondaryBuffer8, Optional ByVal Extraido As Boolean = False, Optional ByVal currentLanguage As e_language = e_language.Spanish) As Boolean
+
 On Error GoTo CreateWavBufferFromFile_Err
     CreateWavBufferFromFile = False
     Debug.Assert Not mDirectSound Is Nothing
+    
     Dim dsbd As DSBUFFERDESC
     dsbd.lFlags = DSBCAPS_CTRLFREQUENCY Or DSBCAPS_CTRLPAN Or DSBCAPS_CTRLVOLUME
     dsbd.fxFormat.nFormatTag = WAVE_FORMAT_PCM
@@ -236,38 +238,59 @@ On Error GoTo CreateWavBufferFromFile_Err
     dsbd.fxFormat.nBitsPerSample = 16
     dsbd.fxFormat.nBlockAlign = dsbd.fxFormat.nBitsPerSample / 8 * dsbd.fxFormat.nChannels
     dsbd.fxFormat.lAvgBytesPerSec = dsbd.fxFormat.lSamplesPerSec * dsbd.fxFormat.nBlockAlign
-    Dim filename_with_extension As String: filename_with_extension = file_name & ".wav"
-    #If Compresion Then
-        If Extraido = False Then
-            If Extract_File(wav, GetCompressedResourcesPath(), file_name & ".wav", Windows_Temp_Dir, ResourcesPassword, False) Then
-                Set new_buffer = mDirectSound.CreateSoundBufferFromFile(Windows_Temp_Dir & file_name & ".wav", dsbd)
-                Delete_File Windows_Temp_Dir & filename_with_extension
-                CreateWavBufferFromFile = True
-            End If
-        Else
-            Set new_buffer = mDirectSound.CreateSoundBufferFromFile(Windows_Temp_Dir & file_name & ".wav", dsbd)
-            Delete_File Windows_Temp_Dir & filename_with_extension
-            CreateWavBufferFromFile = True
 
+    Dim langPrefix As String
+    langPrefix = GetLanguagePrefix(currentLanguage)
+
+    Dim prefixed_filename As String
+    Dim unprefixed_filename As String
+    prefixed_filename = langPrefix & "_" & file_name & ".wav"
+    unprefixed_filename = file_name & ".wav"
+
+#If Compresion Then
+    If Extraido = False Then
+        If Extract_File(wav, GetCompressedResourcesPath(), prefixed_filename, Windows_Temp_Dir, ResourcesPassword, False) Then
+            Set new_buffer = mDirectSound.CreateSoundBufferFromFile(Windows_Temp_Dir & prefixed_filename, dsbd)
+            Delete_File Windows_Temp_Dir & prefixed_filename
+            CreateWavBufferFromFile = True
+        ElseIf Extract_File(wav, GetCompressedResourcesPath(), unprefixed_filename, Windows_Temp_Dir, ResourcesPassword, False) Then
+            Set new_buffer = mDirectSound.CreateSoundBufferFromFile(Windows_Temp_Dir & unprefixed_filename, dsbd)
+            Delete_File Windows_Temp_Dir & unprefixed_filename
+            CreateWavBufferFromFile = True
         End If
-    #Else
-        Dim PathToFile As String
-        PathToFile = ao20audio.GetWavFilesPath() & filename_with_extension
+    Else
+        ' Ya extraído: verificar prefijo primero
+        If FileExist(Windows_Temp_Dir & prefixed_filename, vbArchive) Then
+            Set new_buffer = mDirectSound.CreateSoundBufferFromFile(Windows_Temp_Dir & prefixed_filename, dsbd)
+            Delete_File Windows_Temp_Dir & prefixed_filename
+            CreateWavBufferFromFile = True
+        ElseIf FileExist(Windows_Temp_Dir & unprefixed_filename, vbArchive) Then
+            Set new_buffer = mDirectSound.CreateSoundBufferFromFile(Windows_Temp_Dir & unprefixed_filename, dsbd)
+            Delete_File Windows_Temp_Dir & unprefixed_filename
+            CreateWavBufferFromFile = True
+        End If
+    End If
+#Else
+    Dim PathToFile As String
+    PathToFile = ao20audio.GetWavFilesPath() & prefixed_filename
+    If FileExist(PathToFile, vbArchive) Then
+        Set new_buffer = mDirectSound.CreateSoundBufferFromFile(PathToFile, dsbd)
+        CreateWavBufferFromFile = True
+    Else
+        PathToFile = ao20audio.GetWavFilesPath() & unprefixed_filename
         If FileExist(PathToFile, vbArchive) Then
             Set new_buffer = mDirectSound.CreateSoundBufferFromFile(PathToFile, dsbd)
             CreateWavBufferFromFile = True
         End If
+    End If
+#End If
 
-    #End If
-   
     Exit Function
 
 CreateWavBufferFromFile_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsAudioEngine.CreateWavBufferFromFile " & file_name, Erl)
     Resume Next
-    
 End Function
-
 
 Private Function StartPlaying(ByRef Buffer As DirectSoundSecondaryBuffer8, ByVal flags As CONST_DSBPLAYFLAGS, ByVal volume As Long, ByVal pan As Long) As Long
 
@@ -390,7 +413,7 @@ On Error GoTo PlayWav_Error_Handl
 
     If mBuffer(sound_id) Is Nothing Then
         Dim i As Integer
-        Call CreateWavBufferFromFile(sound_id, mBuffer(sound_id))
+        Call CreateWavBufferFromFile(sound_id, mBuffer(sound_id), False, language)
         Debug.Assert Not mBuffer(sound_id) Is Nothing
         If mBuffer(sound_id) Is Nothing Then
             PlayWav = -1
