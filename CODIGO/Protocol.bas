@@ -3458,7 +3458,7 @@ Private Sub HandlePlayWave()
     '=== Determine filename, applying localization if requested ===
     ' If Localize=1, prepend the user’s language code (e.g. "pt") so that
     ' pt_123.wav will be used instead of 123.wav when playing the clip.
-    If Localize = 1 Then
+    If Localize = 1 And language <> Spanish Then
         Dim langPrefix As String
         langPrefix = GetLanguagePrefix(language)
         filename = langPrefix & "_" & CStr(wave)
@@ -3476,7 +3476,7 @@ Private Sub HandlePlayWave()
 
     '=== Cancel previous wave if requested ===
     If cancelLastWave <> 0 Then
-        ao20audio.StopWav filename
+        ao20audio.StopWav CStr(wave)
         If cancelLastWave = 2 Then
             Exit Sub   ' Don’t play the new wave if flag=2
         End If
