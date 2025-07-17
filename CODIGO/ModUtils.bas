@@ -129,15 +129,13 @@ Public Type tQuest
     desc As String
     NextQuest As String
     DescFinal As String
-    RequiredLevel As Byte
+    RequiredLevel As Integer
     RequiredClass As Integer
-    RequiredQuest As Byte
+    RequiredQuest As Integer
     LimitLevel As Byte
     
-    RequiredOBJs As Byte
     RequiredOBJ() As Obj
     
-    RequiredNPCs As Byte
     RequiredNPC() As tQuestNpc
     RequiredSpellList() As Integer
     RequiredSkill As t_QuestSkill
@@ -145,9 +143,8 @@ Public Type tQuest
     RewardGLD As Long
     RewardEXP As Long
     
-    RewardOBJs As Byte
     RewardOBJ() As Obj
-    RewardSkillCount As Byte
+    RewardSkillCount As Integer
     RewardSkill() As Integer
     Repetible As Byte
 
@@ -194,7 +191,6 @@ Public Type ObjDatas
 
     GrhIndex As Long ' Indice del grafico que representa el obj
     Name As String
-    en_name As String
     MinDef As Integer
     MaxDef As Integer
     MinHit As Integer
@@ -274,18 +270,12 @@ Public Type NpcDatas
 End Type
 
 Public Type HechizoDatas
-
-    nombre As String ' Indice del grafico que representa el obj
-    en_name As String
+    nombre As String
     desc As String
-    en_Desc As String
     PalabrasMagicas As String
     HechizeroMsg As String
-    en_HechizeroMsg As String
     TargetMsg As String
-    en_TargetMsg As String
     PropioMsg As String
-    en_PropioMsg As String
     ManaRequerido As Integer
     MinSkill As Byte
     StaRequerido As Integer
@@ -293,6 +283,7 @@ Public Type HechizoDatas
     Cooldown As Long
     IsBindable As Boolean
 End Type
+
 
 Public Type NameMapas
 

@@ -440,6 +440,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleUpdateDM
         Case ServerPacketID.eSeguroResu
             Call HandleSeguroResu
+        Case ServerPacketID.eLegionarySecure
+            Call HandleLegionarySecure
         Case ServerPacketID.eStopped
             Call HandleStopped
         Case ServerPacketID.eInvasionInfo
@@ -594,9 +596,11 @@ On Error GoTo HandleLogged_Err
     frmMain.ImgSegParty = LoadInterface("boton-seguro-party-on.bmp")
     frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
     frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
+    frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-on.bmp")
     SeguroParty = True
     SeguroClanX = True
     SeguroResuX = True
+    LegionarySecureX = True
     Call ResetAllCd
     
     Call SetConnected
@@ -840,6 +844,7 @@ Public Sub HandleDisconnect()
     frmMain.ImgSegParty.visible = False
     frmMain.ImgSegClan.visible = False
     frmMain.ImgSegResu.visible = False
+    frmMain.ImgLegionarySecure.visible = False
     initPacketControl
   
     Call ao20audio.StopAllPlayback
@@ -2463,32 +2468,22 @@ Private Sub HandleConsoleMessage()
             
     
             Case "HECINF"
-            If language = Spanish Then
                 Hechizo = ReadField(2, chat, Asc("*"))
-                chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
-            Else
-                Hechizo = ReadField(2, chat, Asc("*"))
-                chat = "------------< Spell information >------------" & vbCrLf & "Name: " & HechizoData(Hechizo).nombre & vbCrLf & "Description: " & HechizoData(Hechizo).desc & vbCrLf & "Required skill: " & HechizoData(Hechizo).MinSkill & " of magic." & vbCrLf & "Mana needed: " & HechizoData(Hechizo).ManaRequerido & " points." & vbCrLf & "Stamina needed: " & HechizoData(Hechizo).StaRequerido & " points."
-            End If
+                        chat = "------------< Información del hechizo >------------" & vbCrLf & _
+                               "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & _
+                               "Descripción: " & HechizoData(Hechizo).desc & vbCrLf & _
+                               "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & _
+                               "Mana necesario: " & HechizoData(Hechizo).ManaRequerido & " puntos." & vbCrLf & _
+                               "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
             
             Case "ProMSG"
-            If language = Spanish Then
                 Hechizo = ReadField(2, chat, Asc("*"))
                 chat = HechizoData(Hechizo).PropioMsg
-            Else
-                Hechizo = ReadField(2, chat, Asc("*"))
-                chat = HechizoData(Hechizo).en_PropioMsg
-            End If
     
             Case "HecMSG"
-            If language = Spanish Then
                 Hechizo = ReadField(2, chat, Asc("*"))
                 chat = HechizoData(Hechizo).HechizeroMsg & " la criatura."
-            Else
-                Hechizo = ReadField(2, chat, Asc("*"))
-                chat = HechizoData(Hechizo).HechizeroMsg & " the creature."
-            End If
-    
+
             Case "HecMSGU"
                 Hechizo = ReadField(2, chat, Asc("*"))
                 userName = ReadField(3, chat, Asc("*"))
@@ -3475,42 +3470,73 @@ HandlePlayMIDI_Err:
 End Sub
 
 Private Sub HandlePlayWave()
-On Error GoTo HandlePlayWave_Err
-    Dim wave As Integer
-    Dim srcX As Byte
-    Dim srcY As Byte
-    Dim cancelLastWave As Byte
-    
+    On Error GoTo HandlePlayWave_Err
+
+    '=== Read packet data ===
+    Dim wave As Integer           ' ID of the WAV to play
+    Dim srcX As Byte              ' Source X coordinate for 3D positioning
+    Dim srcY As Byte              ' Source Y coordinate for 3D positioning
+    Dim cancelLastWave As Byte    ' 0 = no cancel, 1 = stop previous, 2 = stop & do not play new
+    Dim Localize As Byte          ' 1 = prefix filename for localization, 0 = use default
+    Dim filename As String
+
     wave = Reader.ReadInt16()
     srcX = Reader.ReadInt8()
     srcY = Reader.ReadInt8()
     cancelLastWave = Reader.ReadInt8()
-    
-    If wave = 400 And MapDat.niebla = 0 Then Exit Sub
-    If wave = 401 And MapDat.niebla = 0 Then Exit Sub
-    If wave = 402 And MapDat.niebla = 0 Then Exit Sub
-    If wave = 403 And MapDat.niebla = 0 Then Exit Sub
-    If wave = 404 And MapDat.niebla = 0 Then Exit Sub
-    
-    If cancelLastWave Then
-        Call ao20audio.StopWav(CStr(wave))
-        If cancelLastWave = 2 Then Exit Sub
-    End If
-    
-    If srcX = 0 Or srcY = 0 Then
-        Call ao20audio.PlayWav(CStr(wave), False, 0, 0)
+    Localize = Reader.ReadInt8()
+
+    '=== Determine filename, applying localization if requested ===
+    ' If Localize=1, prepend the user’s language code (e.g. "pt") so that
+    ' pt_123.wav will be used instead of 123.wav when playing the clip.
+    If Localize = 1 And language <> Spanish Then
+        Dim langPrefix As String
+        langPrefix = GetLanguagePrefix(language)
+        filename = langPrefix & "_" & CStr(wave)
     Else
+        filename = CStr(wave)
+    End If
+
+    '=== Handle special “fog of war” waves: IDs 400–404 only play if MapDat.niebla <> 0 ===
+    Select Case wave
+        Case 400 To 404
+            If MapDat.niebla = 0 Then
+                Exit Sub   ' Skip playing these if fog is disabled
+            End If
+    End Select
+
+    '=== Cancel previous wave if requested ===
+    If cancelLastWave <> 0 Then
+        ao20audio.StopWav CStr(wave)
+        If cancelLastWave = 2 Then
+            Exit Sub   ' Don’t play the new wave if flag=2
+        End If
+    End If
+
+    '=== Play the wave, either with spatial positioning or at default volume ===
+    If srcX = 0 Or srcY = 0 Then
+        ' No position provided: play at default volume & center pan
+        ao20audio.PlayWav filename, False, 0, 0
+    Else
+        ' Only play if the source position is within audible area
         If EstaEnArea(srcX, srcY) Then
             Dim p As Position
             p.x = srcX
             p.y = srcY
-            Call ao20audio.PlayWav(CStr(wave), False, ao20audio.ComputeCharFxVolume(p), ao20audio.ComputeCharFxPan(p))
+            ' Compute volume & pan based on distance and orientation
+            ao20audio.PlayWav filename, False, _
+                             ao20audio.ComputeCharFxVolume(p), _
+                             ao20audio.ComputeCharFxPan(p)
         End If
     End If
+
     Exit Sub
+
 HandlePlayWave_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePlayWave", Erl)
+    ' Log any runtime error for diagnostics
+    RegistrarError Err.Number, Err.Description, "Protocol.HandlePlayWave", Erl
 End Sub
+
 
 ''
 ' Handles the PlayWave message.
@@ -7350,6 +7376,22 @@ Private Sub HandleSeguroResu()
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_RESURRECCION_DESACTIVADO"), 65, 190, 156, False, False, False)
         frmMain.ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
 
+    End If
+End Sub
+Private Sub HandleLegionarySecure()
+    
+    'Get data and update form
+   LegionarySecureX = Reader.ReadBool()
+    
+    If LegionarySecureX Then
+         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_2077"), 65, 190, 156, False, False, False)
+        frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-on.bmp")
+        'SeguroFaccX = True
+
+    Else
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_2076"), 65, 190, 156, False, False, False)
+        frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-off.bmp")
+      
     End If
 End Sub
 

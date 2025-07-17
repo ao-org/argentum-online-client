@@ -269,7 +269,7 @@ Public Type Char
     BarTime As Single
     MaxBarTime As Integer
     BarAccion As Byte
-    Particula As Byte
+    Particula As Integer
     
     ParticulaTime As Long
     

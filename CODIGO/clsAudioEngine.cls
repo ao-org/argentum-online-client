@@ -224,7 +224,7 @@ Error_Handl:
     frmDebug.add_text_tracebox "error al cargar musica"
 End Function
 
-Private Function CreateWavBufferFromFile(ByVal file_name As Integer, ByRef new_buffer As DirectSoundSecondaryBuffer8, Optional ByVal Extraido As Boolean = False) As Boolean
+Private Function CreateWavBufferFromFile(ByVal file_name As String, ByRef new_buffer As DirectSoundSecondaryBuffer8, Optional ByVal Extraido As Boolean = False) As Boolean
 On Error GoTo CreateWavBufferFromFile_Err
     CreateWavBufferFromFile = False
     Debug.Assert Not mDirectSound Is Nothing
@@ -382,15 +382,19 @@ PlayAmbient_Error_Handl:
 
 End Function
 
-Public Function PlayWav(ByVal sound_id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
+Public Function PlayWav(ByVal prefix_sound_id As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
 On Error GoTo PlayWav_Error_Handl
+
+    Dim sound_id As Integer
+    sound_id = RemoveFirstThreeIfUnderscore(prefix_sound_id)
+
     Debug.Assert sound_id > 0
     PlayWav = -1
     If (sound_id <= 0) Then Exit Function
 
     If mBuffer(sound_id) Is Nothing Then
         Dim i As Integer
-        Call CreateWavBufferFromFile(sound_id, mBuffer(sound_id))
+        Call CreateWavBufferFromFile(prefix_sound_id, mBuffer(sound_id))
         Debug.Assert Not mBuffer(sound_id) Is Nothing
         If mBuffer(sound_id) Is Nothing Then
             PlayWav = -1
@@ -414,7 +418,21 @@ On Error GoTo PlayWav_Error_Handl
 PlayWav_Error_Handl:
 
 End Function
-
+Public Function RemoveFirstThreeIfUnderscore(ByVal s As String) As String
+    ' Check for underscore anywhere in the string
+    If InStr(s, "_") > 0 Then
+        ' If the string is longer than 3 characters, strip off the first 3
+        If Len(s) > 3 Then
+            RemoveFirstThreeIfUnderscore = mid$(s, 4)
+        Else
+            ' If it's 3 characters or less, return an empty string
+            RemoveFirstThreeIfUnderscore = ""
+        End If
+    Else
+        ' No underscore: return the original string
+        RemoveFirstThreeIfUnderscore = s
+    End If
+End Function
 Public Sub ApplyMusicVolume(ByVal volume As Long)
     Dim i As Integer
     For i = 1 To UBound(mMidiTrack)

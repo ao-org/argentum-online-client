@@ -387,10 +387,7 @@ End Sub
 
 Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
 
-    Static SeRompe As Boolean
-
     On Error GoTo Engine_BeginScene_Err
-
 
     If DirectDevice.TestCooperativeLevel <> D3D_OK Then
         If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
@@ -406,19 +403,12 @@ Public Sub Engine_BeginScene(Optional ByVal Color As Long = 0)
             frmDebug.add_text_tracebox "Dx device lost, need to implement reset"
         End If
     End If
-    If SeRompe Then
-        Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, Color, 1, 0)
-    Else
-        Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, Color, 1, 0)
-    End If
-
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET Or D3DCLEAR_ZBUFFER, color, 1, 0)
     Call DirectDevice.BeginScene
     Call SpriteBatch.Begin
     Exit Sub
 
 Engine_BeginScene_Err:
-
-    SeRompe = True
 
     Call RegistrarError(Err.Number, Err.Description, "engine.Engine_BeginScene", Erl)
 
@@ -2390,10 +2380,34 @@ On Error GoTo Start_Err
                     End If
 
                 Case e_state_connect_screen
+#If DXUI Then
+                    If Not frmConnect.visible Then
+                            Call ShowLogin
+                            FrmLogear.Hide
+                    End If
+                    Debug.Assert Not g_connectScreen Is Nothing
+                    g_connectScreen.render DirectDevice
+                   
+                    ' Update mouse coords and button state
+                    UpdateMouse frmConnect.render.hWnd
+                    g_MouseButtons = GetAsyncKeyState(VK_LBUTTON) And &H8000 ' left button state
+
+                    ' Pass movement and clicks to UI
+                    g_connectScreen.HandleInput g_MouseX, g_MouseY, g_MouseButtons
+                    If g_connectScreen.WasConnectClicked Then
+                        Debug.Print "g_connectScreen.WasConnectClicked"
+                        'Call SetActiveServer(txtIp.text, txtPort.text)
+                        'Call DoLogin(NameTxt.text, PasswordTxt.text, chkRecordar.Tag = "1")
+                    End If
+                    
+                    
+                    
+#Else
                     If Not frmConnect.visible Then
                             Call ShowLogin
                     End If
                     RenderConnect 57, 45, 0, 0
+#End If
                 Case e_state_account_screen
                     rendercuenta 42, 43, 0, 0
 
@@ -3295,8 +3309,9 @@ Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal P
     
     On Error GoTo RenderConnect_Err
     
-
+#If DXUI = 0 Then
     Call Engine_BeginScene
+#End If
 
      Select Case UserMap
         Case 1 ' ulla 45-43
@@ -3391,8 +3406,9 @@ Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal P
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
 
-    ' Draw_Grh TempGrh, 480, 100, 1, 1, cc(), False
+#If DXUI = 0 Then
     Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hwnd)
+#End If
     
     FrameTime = GetTickCount()
     'FramesPerSecCounter = FramesPerSecCounter + 1
@@ -4583,7 +4599,7 @@ Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width A
     
     If Not OverlapRect(RenderCullingRect, x, y, Width, Height) Then Exit Sub
     Call RGBAList(temp_rgb, Color.r, Color.G, Color.b, Color.a)
-
+    
     Call SpriteBatch.SetTexture(Nothing)
     Call SpriteBatch.SetAlpha(False)
     Call SpriteBatch.Draw(x, y, Width, Height, temp_rgb())

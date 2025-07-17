@@ -739,16 +739,32 @@ Private Sub cbLenguaje_Click()
        
         Select Case cbLenguaje.ListIndex
         
-            Case 0
-                message = "Para que los cambios surjan efecto deber  volver a abrir el cliente."
-                title = "Cambiar Idioma"
-            
-            Case 1
-                message = "You must restart the game to apply the changes."
-                title = "Change language"
-            
+            Case 0 ' Español (Latinoamérica)
+                message = JsonLanguage.Item("MENSAJE_604")
+                title = JsonLanguage.Item("MENSAJE_605")
+        
+            Case 1 ' Inglés
+                message = JsonLanguage.Item("MENSAJE_606")
+                title = JsonLanguage.Item("MENSAJE_607")
+        
+            Case 2 ' Portugués
+                message = JsonLanguage.Item("MENSAJE_608")
+                title = JsonLanguage.Item("MENSAJE_609")
+
+            Case 3 ' Francés
+                message = JsonLanguage.Item("MENSAJE_610")
+                title = JsonLanguage.Item("MENSAJE_611")
+
+            Case 4 ' Italiano
+                message = JsonLanguage.Item("MENSAJE_612")
+                title = JsonLanguage.Item("MENSAJE_613")
+'
+'            Case 5 ' Español (España)
+'                message = JsonLanguage.Item("MENSAJE_614")
+'                title = JsonLanguage.Item("MENSAJE_615")
         
         End Select
+
         
         If MsgBox(message, vbYesNo, title) = vbYes Then
             Call SaveSetting("OPCIONES", "Language", cbLenguaje.ListIndex + 1)
@@ -1177,7 +1193,11 @@ Private Sub Form_Load()
     Call cbTutorial.AddItem(JsonLanguage.Item("MENSAJE_506")) ' Activado
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_578"))  ' Español
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_579"))  ' Inglés
-   
+    Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_600"))  ' Portugues
+    Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_601"))  ' Frances
+    Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_602"))  ' Italiano
+'    Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_603"))  ' España
+    
     selected_light = GetSetting("VIDEO", "LuzGlobal")
     
     If LenB(selected_light) = 0 Then selected_light = 0

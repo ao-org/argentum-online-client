@@ -1079,7 +1079,9 @@ On Error GoTo Main_Err
     Call engine_init 'initializes DX
     Debug.Assert Not DirectX Is Nothing
     Call ao20audio.CreateAudioEngine(frmConnect.hwnd, DirectX, ao20audio.AudioEngine)
+    Call init_dx_ui(DirectDevice)
 #End If
+
     Call InitCommonControls
 
     #If DEBUGGING = 0 Or ENABLE_ANTICHEAT = 1 Then
@@ -1734,29 +1736,46 @@ min_Err:
     
 End Function
 
-
-Public Function LoadInterface(FileName As String, Optional localize As Boolean = True) As IPicture
-
-On Error GoTo errhandler
-    
+Public Function LoadInterface(filename As String, _
+                              Optional localize As Boolean = True) As IPicture
+    On Error Resume Next
+    Dim localizedName As String
     If localize Then
-        Select Case language
-            Case e_language.English
-                FileName = "en_" & FileName
-            Case e_language.Spanish
-                FileName = "es_" & FileName
-            Case Else
-                FileName = "en_" & FileName
-        End Select
+        localizedName = GetLocalizedFilename(language, filename)
+
     End If
+
     If FileName <> "" Then
         #If Compresion = 1 Then
-            Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(FileName), ResourcesPassword)
+            Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(localizedName), ResourcesPassword)
+            If LoadInterface Is Nothing Then
+                localizedName = "en_" & filename
+                Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(localizedName), ResourcesPassword)
+                If LoadInterface Is Nothing Then
+                    frmDebug.add_text_tracebox "Error loading interface bitmap: " & localizedName
+                    Debug.Assert False
+
+                End If
+
+            End If
+
         #Else
-            Set LoadInterface = LoadPicture(App.path & "/../Recursos/interface/" & LCase$(FileName))
+            Set LoadInterface = LoadPicture(App.path & "/../Recursos/interface/" & LCase$(localizedName))
+            If LoadInterface Is Nothing Then
+                localizedName = "en_" & filename
+                Set LoadInterface = LoadPicture(App.path & "/../Recursos/interface/" & LCase$(localizedName))
+                If LoadInterface Is Nothing Then
+                    frmDebug.add_text_tracebox "Error loading interface bitmap: " & localizedName
+                    Debug.Assert False
+
+                End If
+
+            End If
         #End If
+
     End If
-Exit Function
+
+    Exit Function
 errhandler:
     frmDebug.add_text_tracebox "Error loading interface bitmap: " & FileName
 
@@ -2034,3 +2053,27 @@ Public Sub deleteCharIndexs()
         End If
     Next i
 End Sub
+
+Public Function GetLocalizedFilename(ByVal language As e_language, ByVal filename As String) As String
+
+    Dim localizedName As String
+   
+    Select Case language
+        Case e_language.Spanish
+            localizedName = "es_" & filename
+        Case e_language.English
+            localizedName = "en_" & filename
+        Case e_language.Portuguese
+            localizedName = "pt_" & filename
+        Case e_language.French
+            localizedName = "fr_" & filename
+        Case e_language.Italian
+            localizedName = "it_" & filename
+        Case Else
+            localizedName = "en_" & filename
+    End Select
+
+    GetLocalizedFilename = localizedName
+End Function
+
+

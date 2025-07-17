@@ -16,11 +16,12 @@ Attribute VB_Name = "Mod_Declaraciones"
 '
 '
 Option Explicit
-
+Public langPrefix As String
 Public SeguroGame As Boolean
 Public SeguroParty As Boolean
 Public SeguroClanX As Boolean
 Public SeguroResuX As Boolean
+Public LegionarySecureX As Boolean
 Public QuePestañaInferior As Byte
 Public newUser As Boolean
 Public Enum tMacro
