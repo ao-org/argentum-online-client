@@ -163,6 +163,7 @@ Module=dx_ui; CODIGO\dx_ui.bas
 Class=clsUIConnectScreen; CODIGO\clsUIConnectScreen.cls
 Class=clsUIRenderer; CODIGO\clsUIRenderer.cls
 ResFile32="AO20.res"
+Form=CODIGO\frmSellItemsMAO.frm
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
