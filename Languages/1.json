@@ -644,7 +644,7 @@
     "MENSAJE_DEPOSITAR_CANTIDAD_INVALIDA": "Cantidad inválida.",
     "MENSAJE_DEPOSITAR_NO_TIENES_ORO": "No tienes oro para depositar.",
     "MENSAJE_RETIRAR_NO_TIENES_ORO": "No tienes oro en la cuenta.",
-    "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "¡Nombre de destino inválido!"
+    "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "¡Nombre de destino inválido!",
     "MENSAJE_NO_PODES_DESTRUIR_OBJETOS_MIENTRAS_COMERCIAS":"No podes destruir objetos mientras comercias.",
     "MENSAJE_VALOR_INTRODUCIDO_INVALIDO":"El valor introducido es inválido."
 }
