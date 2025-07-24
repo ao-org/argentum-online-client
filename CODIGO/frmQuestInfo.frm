@@ -594,26 +594,26 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
         
         With QuestList(QuestIndex)
             Dim requisitos As String
-            requisitos = .desc & vbCrLf & vbCrLf & "Requisitos: " & vbCrLf
+            requisitos = .desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf
         
             ' Si tiene clase requerida
             If .RequiredClass <> 0 And RequiredClass <= 12 Then
-                requisitos = requisitos & "Clase: " & ListaClases(.RequiredClass) & vbCrLf
+                requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(.RequiredClass) & vbCrLf
             End If
         
             ' Si tiene nivel requerido
             If .RequiredLevel <> 0 Then
-                requisitos = requisitos & "Nivel requerido: " & .RequiredLevel & vbCrLf
+                requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & .RequiredLevel & vbCrLf
             End If
             
             ' Si hay límite de nivel
             If .LimitLevel <> 0 Then
-                requisitos = requisitos & "Nivel máximo: " & .LimitLevel & vbCrLf
+                requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_MAXIMO") & .LimitLevel & vbCrLf
             End If
         
             ' Si tiene quest previa requerida
             If .RequiredQuest <> 0 Then
-                requisitos = requisitos & "Quest: " & QuestList(.RequiredQuest).nombre
+                requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(.RequiredQuest).nombre
             End If
             
             ' Si tiene habilidad requerida

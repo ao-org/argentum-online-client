@@ -644,6 +644,11 @@
   "MENSAJE_DEPOSITAR_CANTIDAD_INVALIDA": "Quantità non valida.",
   "MENSAJE_DEPOSITAR_NO_TIENES_ORO": "Non hai oro da depositare.",
   "MENSAJE_RETIRAR_NO_TIENES_ORO": "Non hai oro nel conto.",
-  "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Nome di destinazione non valido!"
+  "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Nome di destinazione non valido!",
+  "MENSAJE_QUEST_REQUISITOS": "Requisiti",
+  "MENSAJE_QUEST_NIVEL_REQUERIDO": "Livello richiesto: ",
+  "MENSAJE_QUEST_NIVEL_MAXIMO": "Livello massimo: ",
+  "MENSAJE_QUEST_REQUERIDA": "Missione: ",
+  "MENSAJE_QUEST_CLASE": "Classe: "
 
 }

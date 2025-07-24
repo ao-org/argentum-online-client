@@ -6744,11 +6744,11 @@ Private Sub HandleQuestDetails()
            
             If QuestRequerida <> 0 Then
                 FrmQuestInfo.Text1.Text = ""
-               Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_REQUISITOS") & vbCrLf & JsonLanguage.Item("MENSAJE_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf & "Quest:" & QuestList(QuestRequerida).RequiredQuest, 128, 128, 128)
+               Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(QuestRequerida).RequiredQuest, 128, 128, 128)
             Else
                 
                 FrmQuestInfo.Text1.Text = ""
-                Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_REQUISITOS") & vbCrLf & JsonLanguage.Item("MENSAJE_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf, 128, 128, 128)
+                Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf, 128, 128, 128)
             End If
            
             tmpByte = Reader.ReadInt8
@@ -6855,10 +6855,10 @@ Private Sub HandleQuestDetails()
             LevelRequerido = Reader.ReadInt8
             QuestRequerida = Reader.ReadInt16
            
-            FrmQuests.detalle.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_REQUISITOS") & vbCrLf & JsonLanguage.Item("MENSAJE_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf
+            FrmQuests.detalle.text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf
 
             If QuestRequerida <> 0 Then
-                FrmQuests.detalle.Text = FrmQuests.detalle.Text & vbCrLf & "Quest: " & QuestList(QuestRequerida).nombre
+                FrmQuests.detalle.text = FrmQuests.detalle.text & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(QuestRequerida).nombre
             End If
 
            
