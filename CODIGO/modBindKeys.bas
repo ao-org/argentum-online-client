@@ -452,9 +452,9 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
                 Call WriteRequestGrupo
             End If
         Case BindKeys(eToggleSound).KeyCode
-            Call frmOpciones.toggleSoundEffects
+            Call frmOpciones.ToggleSoundEffects
         Case BindKeys(eToggleMusic).KeyCode
-            Call frmOpciones.toggleMusic
+            Call frmOpciones.ToggleMusic
         Case Else
             Accionar = False
             Exit Function

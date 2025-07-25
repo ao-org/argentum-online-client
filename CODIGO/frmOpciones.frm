@@ -944,11 +944,11 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
 
         Case 0
 
-            Call toggleMusic
+            Call ToggleMusic
 
         Case 1
         
-            Call toggleSoundEffects
+            Call ToggleSoundEffects
             
         Case 2
 
@@ -1607,7 +1607,7 @@ scrVolume_Change_Err:
     Resume Next
 End Sub
 
-Public Sub toggleSoundEffects()
+Public Sub ToggleSoundEffects()
 
 On Error GoTo toggleSoundEffects_Err
 
@@ -1631,11 +1631,11 @@ On Error GoTo toggleSoundEffects_Err
     Exit Sub
     
 toggleSoundEffects_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.toggleSoundEffects", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleSoundEffects", Erl)
     Resume Next
 End Sub
 
-Public Sub toggleMusic()
+Public Sub ToggleMusic()
 
 On Error GoTo toggleMusic_Err
 
@@ -1657,7 +1657,7 @@ On Error GoTo toggleMusic_Err
     Exit Sub
     
 toggleMusic_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.toggleMusic", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleMusic", Erl)
     Resume Next
 End Sub
 
