@@ -644,6 +644,7 @@
   "MENSAJE_DEPOSITAR_CANTIDAD_INVALIDA": "Quantità non valida.",
   "MENSAJE_DEPOSITAR_NO_TIENES_ORO": "Non hai oro da depositare.",
   "MENSAJE_RETIRAR_NO_TIENES_ORO": "Non hai oro nel conto.",
-  "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Nome di destinazione non valido!"
-
+  "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Nome di destinazione non valido!",
+  "MENSAJE_SEGURO_LEGION_ACTIVADO" : "Hai attivato l'assicurazione della Fazione Legionaria.",
+  "MENSAJE_SEGURO_LEGION_DESACTIVADO" : "Hai disattivato l'assicurazione della Fazione Legionaria, ora puoi attaccare una Legione." 
 }

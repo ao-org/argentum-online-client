@@ -646,4 +646,7 @@
   "MENSAJE_RETIRAR_NO_TIENES_ORO": "Você não tem ouro na conta.",
   "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Nome de destino inválido!"
 
+  "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Nome de destino invï¿½lido!",
+  "MENSAJE_SEGURO_LEGION_ACTIVADO" : "VocÃª ativou o seguro da FacÃ§Ã£o LegionÃ¡ria.",
+  "MENSAJE_SEGURO_LEGION_DESACTIVADO" : "VocÃª desativou o seguro da FacÃ§Ã£o LegionÃ¡ria, agora vocÃª pode atacar uma LegiÃ£o." 
 }

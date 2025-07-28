@@ -644,6 +644,7 @@
   "MENSAJE_DEPOSITAR_CANTIDAD_INVALIDA": "Quantité invalide.",
   "MENSAJE_DEPOSITAR_NO_TIENES_ORO": "Vous n'avez pas d'or à déposer.",
   "MENSAJE_RETIRAR_NO_TIENES_ORO": "Vous n'avez pas d'or sur le compte.",
-  "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Nom de destination invalide!"
-
+  "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Nom de destination invalide!",
+  "MENSAJE_SEGURO_LEGION_ACTIVADO" : "Vous avez activÃ© l'assurance de la faction lÃ©gionnaire.",
+  "MENSAJE_SEGURO_LEGION_DESACTIVADO" : "Vous avez dÃ©sactivÃ© l'assurance de la faction lÃ©gionnaire, vous pouvez dÃ©sormais attaquer une LÃ©gion." 
 }

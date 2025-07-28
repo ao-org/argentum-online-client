@@ -644,6 +644,7 @@
 	"MENSAJE_DEPOSITAR_CANTIDAD_INVALIDA": "Cantidad inválida.",
 	"MENSAJE_DEPOSITAR_NO_TIENES_ORO": "No tienes oro para depositar.",
 	"MENSAJE_RETIRAR_NO_TIENES_ORO": "No tienes oro en la cuenta.",
-	"MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "¡Nombre de destino inválido!"
-
+	"MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "ï¿½Nombre de destino invï¿½lido!",
+    "MENSAJE_SEGURO_LEGION_ACTIVADO" : "Has activado el seguro de FacciÃ³n Legionaria.",
+    "MENSAJE_SEGURO_LEGION_DESACTIVADO" : "Has desactivado el seguro de FacciÃ³n Legionaria, ahora puedes atacar a un LegiÃ³n." 
 }
