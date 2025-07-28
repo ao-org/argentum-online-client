@@ -7353,12 +7353,12 @@ Private Sub HandleLegionarySecure()
    LegionarySecureX = Reader.ReadBool()
     
     If LegionarySecureX Then
-         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_2077"), 65, 190, 156, False, False, False)
+         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_LEGION_ACTIVADO"), 65, 190, 156, False, False, False)
         frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-on.bmp")
         'SeguroFaccX = True
 
     Else
-        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_2076"), 65, 190, 156, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_LEGION_DESACTIVADO"), 65, 190, 156, False, False, False)
         frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-off.bmp")
       
     End If
