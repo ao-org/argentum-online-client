@@ -148,7 +148,8 @@ Function HayLava(ByVal x As Integer, ByVal y As Integer) As Boolean
     
 
     With MapData(x, y).Graphic(1)
-        HayLava = .GrhIndex >= 57400 And .GrhIndex <= 57415
+        HayLava = (.GrhIndex >= 57400 And .GrhIndex <= 57415) Or _
+          (.GrhIndex >= 16101 And .GrhIndex <= 16116)
     End With
 
     
