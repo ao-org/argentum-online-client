@@ -137,7 +137,7 @@ On Error GoTo LoadTexture_ErrHandler
         Set Dest = mD3D.CreateTextureFromFileInMemoryEx( _
             device, bytArr(0), UBound(bytArr) + 1, _
             D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, _
-            D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, _
+            D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, _
             D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, _
             ByVal 0, ByVal 0 _
         )
@@ -153,7 +153,7 @@ On Error GoTo LoadTexture_ErrHandler
         Set Dest = mD3D.CreateTextureFromFileEx( _
             device, PathToFile, _
             0, 0, 1, 0, _
-            D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, _
+            D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, _
             D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, _
             ByVal 0, ByVal 0 _
         )
