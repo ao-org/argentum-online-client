@@ -88,6 +88,8 @@ Public Enum e_KeyAction
     eSegResu = 36
     eQuestList = 37
     eGroupList = 38
+    eToggleSound = 39
+    eToggleMusic = 40
     
     [eMaxBinds]
 End Enum
@@ -449,6 +451,10 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If FrmGrupo.visible = False Then
                 Call WriteRequestGrupo
             End If
+        Case BindKeys(eToggleSound).KeyCode
+            Call frmOpciones.ToggleSoundEffects
+        Case BindKeys(eToggleMusic).KeyCode
+            Call frmOpciones.ToggleMusic
         Case Else
             Accionar = False
             Exit Function

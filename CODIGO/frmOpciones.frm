@@ -802,8 +802,6 @@ Private Sub cbRenderNpcs_Click()
         Call SaveSetting("OPCIONES", "NpcsEnRender", cbRenderNpcs.ListIndex)
     End If
 End Sub
-
-
 Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     
     On Error GoTo Check4_MouseUp_Err
@@ -946,44 +944,12 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
 
         Case 0
 
-            If ao20audio.MusicEnabled Then
-                ao20audio.StopAllPlayback
-                ao20audio.MusicEnabled = False
-                scrMidi.enabled = False
-            Else
-                ao20audio.MusicEnabled = True
-                scrMidi.enabled = True
-            End If
-
-            If Not ao20audio.MusicEnabled Then
-                chko(0).Picture = Nothing
-            Else
-                chko(0).Picture = LoadInterface("check-amarillo.bmp")
-
-            End If
+            Call ToggleMusic
 
         Case 1
-
-            If ao20audio.FxEnabled Then
-                ao20audio.FxEnabled = 0
-                chko(2).enabled = False
-                scrVolume.enabled = False
-            
-                Call ao20audio.StopAllPlayback
-            Else
-                ao20audio.FxEnabled = 1
-                chko(2).enabled = True
-                scrVolume.enabled = True
-
-            End If
         
-            If ao20audio.FxEnabled = 0 Then
-                chko(1).Picture = Nothing
-            Else
-                chko(1).Picture = LoadInterface("check-amarillo.bmp")
-
-            End If
-
+            Call ToggleSoundEffects
+            
         Case 2
 
             If FxNavega = 1 Then
@@ -1563,8 +1529,6 @@ HScroll1_Change_Err:
     
 End Sub
 
-
-
 Private Sub instagram_Click()
     
     On Error GoTo instagram_Click_Err
@@ -1578,15 +1542,6 @@ instagram_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.instagram_Click", Erl)
     Resume Next
     
-End Sub
-
-
-Private Sub Label3_Click()
-
-End Sub
-
-Private Sub lblIdioma_Click()
-
 End Sub
 
 Private Sub num_comp_inv_Click()
@@ -1651,3 +1606,58 @@ scrVolume_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolume_Change", Erl)
     Resume Next
 End Sub
+
+Public Sub ToggleSoundEffects()
+
+On Error GoTo toggleSoundEffects_Err
+
+    If ao20audio.FxEnabled Then
+        ao20audio.FxEnabled = 0
+        chko(2).enabled = False
+        scrVolume.enabled = False
+        Call ao20audio.StopAllPlayback
+    Else
+        ao20audio.FxEnabled = 1
+        chko(2).enabled = True
+        scrVolume.enabled = True
+    End If
+    
+    If ao20audio.FxEnabled = 0 Then
+        chko(1).Picture = Nothing
+    Else
+        chko(1).Picture = LoadInterface("check-amarillo.bmp")
+    
+    End If
+    Exit Sub
+    
+toggleSoundEffects_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleSoundEffects", Erl)
+    Resume Next
+End Sub
+
+Public Sub ToggleMusic()
+
+On Error GoTo toggleMusic_Err
+
+    If ao20audio.MusicEnabled Then
+        ao20audio.StopAllPlayback
+        ao20audio.MusicEnabled = False
+        scrMidi.enabled = False
+    Else
+        ao20audio.MusicEnabled = True
+        scrMidi.enabled = True
+    End If
+    
+    If Not ao20audio.MusicEnabled Then
+        chko(0).Picture = Nothing
+    Else
+        chko(0).Picture = LoadInterface("check-amarillo.bmp")
+    
+    End If
+    Exit Sub
+    
+toggleMusic_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleMusic", Erl)
+    Resume Next
+End Sub
+

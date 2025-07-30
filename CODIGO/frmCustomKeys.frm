@@ -27,6 +27,28 @@ Begin VB.Form frmCustomKeys
       BackColor       =   &H00FFFFFF&
       ForeColor       =   &H00000000&
       Height          =   300
+      Index           =   39
+      Left            =   4155
+      Locked          =   -1  'True
+      TabIndex        =   95
+      Top             =   6840
+      Width           =   1770
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
+      Index           =   38
+      Left            =   4155
+      Locked          =   -1  'True
+      TabIndex        =   93
+      Top             =   6240
+      Width           =   1770
+   End
+   Begin VB.TextBox txConfig 
+      BackColor       =   &H00FFFFFF&
+      ForeColor       =   &H00000000&
+      Height          =   300
       Index           =   37
       Left            =   2175
       Locked          =   -1  'True
@@ -235,7 +257,7 @@ Begin VB.Form frmCustomKeys
       Height          =   255
       Left            =   4110
       TabIndex        =   52
-      Top             =   5280
+      Top             =   5040
       Width           =   1215
    End
    Begin VB.OptionButton Option1 
@@ -243,7 +265,7 @@ Begin VB.Form frmCustomKeys
       Height          =   255
       Left            =   4110
       TabIndex        =   51
-      Top             =   4920
+      Top             =   4680
       Width           =   1215
    End
    Begin VB.ComboBox AccionList3 
@@ -253,7 +275,7 @@ Begin VB.Form frmCustomKeys
       List            =   "frmCustomKeys.frx":0010
       Style           =   2  'Dropdown List
       TabIndex        =   48
-      Top             =   4080
+      Top             =   3840
       Width           =   1935
    End
    Begin VB.ComboBox AccionList1 
@@ -263,7 +285,7 @@ Begin VB.Form frmCustomKeys
       List            =   "frmCustomKeys.frx":006E
       Style           =   2  'Dropdown List
       TabIndex        =   45
-      Top             =   2880
+      Top             =   2640
       Width           =   1935
    End
    Begin VB.ComboBox AccionList2 
@@ -273,7 +295,7 @@ Begin VB.Form frmCustomKeys
       List            =   "frmCustomKeys.frx":00CC
       Style           =   2  'Dropdown List
       TabIndex        =   44
-      Top             =   3480
+      Top             =   3240
       Width           =   1935
    End
    Begin VB.CommandButton cmdAccion 
@@ -282,7 +304,7 @@ Begin VB.Form frmCustomKeys
       Index           =   0
       Left            =   4080
       TabIndex        =   43
-      Top             =   5640
+      Top             =   5400
       Width           =   1695
    End
    Begin VB.TextBox txConfig 
@@ -591,6 +613,30 @@ Begin VB.Form frmCustomKeys
    Begin VB.Label lblSalirDel 
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
+      Caption         =   "Activar/Desactivar musica"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   28
+      Left            =   4155
+      TabIndex        =   96
+      Top             =   6600
+      Width           =   1860
+   End
+   Begin VB.Label lblSalirDel 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Activar/Desactivar sonido"
+      ForeColor       =   &H00000000&
+      Height          =   195
+      Index           =   27
+      Left            =   4155
+      TabIndex        =   94
+      Top             =   6000
+      Width           =   1845
+   End
+   Begin VB.Label lblSalirDel 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
       Caption         =   "Menu de grupo"
       ForeColor       =   &H00000000&
       Height          =   195
@@ -858,7 +904,7 @@ Begin VB.Form frmCustomKeys
       Index           =   32
       Left            =   4110
       TabIndex        =   50
-      Top             =   4560
+      Top             =   4320
       Width           =   1785
    End
    Begin VB.Label lblSalirDel 
@@ -878,7 +924,7 @@ Begin VB.Form frmCustomKeys
       Index           =   31
       Left            =   4080
       TabIndex        =   49
-      Top             =   3840
+      Top             =   3600
       Width           =   1140
    End
    Begin VB.Label lblSalirDel 
@@ -898,7 +944,7 @@ Begin VB.Form frmCustomKeys
       Index           =   33
       Left            =   4080
       TabIndex        =   47
-      Top             =   2640
+      Top             =   2400
       Width           =   1140
    End
    Begin VB.Label lblSalirDel 
@@ -918,7 +964,7 @@ Begin VB.Form frmCustomKeys
       Index           =   34
       Left            =   4080
       TabIndex        =   46
-      Top             =   3240
+      Top             =   3000
       Width           =   1140
    End
    Begin VB.Label lblSalirDel 
