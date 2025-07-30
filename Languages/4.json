@@ -644,6 +644,11 @@
   "MENSAJE_DEPOSITAR_CANTIDAD_INVALIDA": "Quantité invalide.",
   "MENSAJE_DEPOSITAR_NO_TIENES_ORO": "Vous n'avez pas d'or à déposer.",
   "MENSAJE_RETIRAR_NO_TIENES_ORO": "Vous n'avez pas d'or sur le compte.",
-  "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Nom de destination invalide!"
+  "MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Nom de destination invalide!",
+  "MENSAJE_QUEST_REQUISITOS": "Exigences",
+  "MENSAJE_QUEST_NIVEL_REQUERIDO": "Niveau requis: ",
+  "MENSAJE_QUEST_NIVEL_MAXIMO": "Niveau maximum: ",
+  "MENSAJE_QUEST_REQUERIDA": "Mission: ",
+  "MENSAJE_QUEST_CLASE": "Classe: "
 
 }

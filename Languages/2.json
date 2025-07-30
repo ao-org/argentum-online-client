@@ -644,6 +644,11 @@
 	"MENSAJE_DEPOSITAR_CANTIDAD_INVALIDA": "Invalid quantity.",
 	"MENSAJE_DEPOSITAR_NO_TIENES_ORO": "You have no gold coins to deposit.",
 	"MENSAJE_RETIRAR_NO_TIENES_ORO": "You have no gold coins in the account.",
-	"MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Invalid destination name!"
+	"MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "Invalid destination name!",
+	"MENSAJE_QUEST_REQUISITOS": "Requirements",
+	"MENSAJE_QUEST_NIVEL_REQUERIDO": "Required level: ",
+	"MENSAJE_QUEST_NIVEL_MAXIMO": "Maximum level: ",
+	"MENSAJE_QUEST_REQUERIDA": "Quest: ",
+	"MENSAJE_QUEST_CLASE": "Class: "
 
 }

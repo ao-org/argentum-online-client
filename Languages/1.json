@@ -644,6 +644,11 @@
 	"MENSAJE_DEPOSITAR_CANTIDAD_INVALIDA": "Cantidad inválida.",
 	"MENSAJE_DEPOSITAR_NO_TIENES_ORO": "No tienes oro para depositar.",
 	"MENSAJE_RETIRAR_NO_TIENES_ORO": "No tienes oro en la cuenta.",
-	"MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "¡Nombre de destino inválido!"
+	"MENSAJE_TRANSFERIR_NOMBRE_INVALIDO": "¡Nombre de destino inválido!",
+	"MENSAJE_QUEST_REQUISITOS": "Requisitos",
+	"MENSAJE_QUEST_NIVEL_REQUERIDO": "Nivel requerido: ",
+	"MENSAJE_QUEST_NIVEL_MAXIMO": "Nivel máximo: ",
+	"MENSAJE_QUEST_REQUERIDA": "Quest: ",
+	"MENSAJE_QUEST_CLASE": "Clase: "
 
 }
