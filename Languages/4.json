@@ -649,6 +649,8 @@
   "MENSAJE_QUEST_NIVEL_REQUERIDO": "Niveau requis: ",
   "MENSAJE_QUEST_NIVEL_MAXIMO": "Niveau maximum: ",
   "MENSAJE_QUEST_REQUERIDA": "Mission: ",
-  "MENSAJE_QUEST_CLASE": "Classe: "
+  "MENSAJE_QUEST_CLASE": "Classe: ",
+  "MENSAJE_SEG_LEGION_ACTIVADO":"Vous avez activé l'assurance de la faction légionnaire.",
+  "MENSAJE_SEG_LEGION_DESACTIVADO":"Vous avez désactivé l'assurance de la faction légionnaire, vous pouvez désormais attaquer une Légion."
 
 }

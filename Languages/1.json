@@ -649,6 +649,8 @@
 	"MENSAJE_QUEST_NIVEL_REQUERIDO": "Nivel requerido: ",
 	"MENSAJE_QUEST_NIVEL_MAXIMO": "Nivel máximo: ",
 	"MENSAJE_QUEST_REQUERIDA": "Quest: ",
-	"MENSAJE_QUEST_CLASE": "Clase: "
+	"MENSAJE_QUEST_CLASE": "Clase: ",
+	"MENSAJE_SEG_LEGION_ACTIVADO":"Has activado el seguro de Facción Legionaria.",
+	"MENSAJE_SEG_LEGION_DESACTIVADO":"Has desactivado el seguro de Facción Legionaria, ahora puedes atacar a un Legión."
 
 }

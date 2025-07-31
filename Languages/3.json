@@ -649,6 +649,8 @@
   "MENSAJE_QUEST_NIVEL_REQUERIDO": "Nível requerido: ",
   "MENSAJE_QUEST_NIVEL_MAXIMO": "Nível máximo: ",
   "MENSAJE_QUEST_REQUERIDA": "Missão: ",
-  "MENSAJE_QUEST_CLASE": "Aula: "
-
+  "MENSAJE_QUEST_CLASE": "Aula: ",
+  "MENSAJE_SEG_LEGION_ACTIVADO":"Você ativou o seguro da Facção Legionária.",
+  "MENSAJE_SEG_LEGION_DESACTIVADO":"Você desativou o seguro da Facção Legionária e agora pode atacar uma Legião."
+	
 }
