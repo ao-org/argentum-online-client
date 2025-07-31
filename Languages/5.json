@@ -649,6 +649,8 @@
   "MENSAJE_QUEST_NIVEL_REQUERIDO": "Livello richiesto: ",
   "MENSAJE_QUEST_NIVEL_MAXIMO": "Livello massimo: ",
   "MENSAJE_QUEST_REQUERIDA": "Missione: ",
-  "MENSAJE_QUEST_CLASE": "Classe: "
+  "MENSAJE_QUEST_CLASE": "Classe: ",
+  "MENSAJE_SEG_LEGION_ACTIVADO":"Hai attivato l'assicurazione della Fazione Legionaria.",
+  "MENSAJE_SEG_LEGION_DESACTIVADO":"Hai disattivato l'assicurazione della fazione dei Legionari, ora puoi attaccare una Legione."
 
 }

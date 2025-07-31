@@ -649,6 +649,8 @@
 	"MENSAJE_QUEST_NIVEL_REQUERIDO": "Required level: ",
 	"MENSAJE_QUEST_NIVEL_MAXIMO": "Maximum level: ",
 	"MENSAJE_QUEST_REQUERIDA": "Quest: ",
-	"MENSAJE_QUEST_CLASE": "Class: "
+	"MENSAJE_QUEST_CLASE": "Class: ",
+	"MENSAJE_SEG_LEGION_ACTIVADO":"You have activated the Legionary Faction insurance.",
+	"MENSAJE_SEG_LEGION_DESACTIVADO":"You have disabled the Legionary Faction insurance, you can now attack a Legion."
 
 }
