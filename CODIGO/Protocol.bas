@@ -2128,6 +2128,20 @@ On Error GoTo errhandler
     Text = ReadField(2, chat, Asc("*"))
     
     Select Case QueEs
+    
+        Case "LOCMSG"
+            ' text = "2082*NombreDelNpc¬OtroValor"
+            Dim msgId As Integer
+            Dim extraStr As String
+    
+            msgId = val(ReadField(1, text, Asc("*")))             ' 2082
+            extraStr = ReadField(2, text, Asc("*"))               ' "Nombre¬OtroValor"
+    
+            chat = Locale_Parse_ServerMessage(msgId, extraStr)
+            copiar = False
+            duracion = 20
+
+
         Case "NPCDESC"
             chat = NpcData(Text).desc
             copiar = False
