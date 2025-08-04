@@ -1739,6 +1739,7 @@ Public Function LoadInterface(filename As String, _
                               Optional localize As Boolean = True) As IPicture
     On Error Resume Next
     Dim localizedName As String
+    localizedName = filename
     If localize Then
         localizedName = GetLocalizedFilename(language, filename)
 
