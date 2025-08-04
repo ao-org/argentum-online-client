@@ -238,7 +238,7 @@ On Error GoTo ErrHandler
         Case D3DERR_OUTOFVIDEOMEMORY
         Case E_OUTOFMEMORY
             frmDebug.add_text_tracebox "LoadTexture failed with D3DERR_OUTOFVIDEOMEMORY"
-            Call ReleaseUnusedTextures(10)
+            Call ReleaseUnusedTextures(250)
             'Try to load the texture again, if it fails we've run out of options.
             loadResult = LoadTexture(str(FileNum), Texture)
     End Select
@@ -271,7 +271,7 @@ End Function
 Private Function RemoveLRU() As Boolean
     On Error GoTo RemoveLRU_Err
 
-    Const AGE_THRESHOLD_MS As Long = 60000   ' 60 seconds
+    Const AGE_THRESHOLD_MS As Long = 30000  ' 30 seconds
     Dim nowTick      As Long
     Dim oldestTick   As Long
     Dim bucketIdx    As Long
@@ -312,7 +312,7 @@ Private Function RemoveLRU() As Boolean
     ' Evict that entry
     With TexList(bucketIdx).SurfaceEntry(entryIdx)
         ' Debug log if you like:
-        frmDebug.add_text_tracebox "Evicting texture FileID=" & .filename & " last used " & format(((nowTick - .UltimoAcceso) / 1000), "0.0") & "s ago"
+        Debug.Print "Evicting texture FileID=" & .filename & " last used " & format(((nowTick - .UltimoAcceso) / 1000), "0.0") & "s ago " & "Memoria size KB =" & .size / 1024
         Set .Texture = Nothing
         .filename = 0
     End With
@@ -321,6 +321,7 @@ Private Function RemoveLRU() As Boolean
     With TexList(bucketIdx)
         Dim k As Long
         For k = entryIdx To .surfaceCount - 1
+            Debug.Assert Not .SurfaceEntry(k + 1).Texture Is Nothing
             .SurfaceEntry(k) = .SurfaceEntry(k + 1)
         Next k
         .surfaceCount = .surfaceCount - 1
