@@ -345,7 +345,7 @@ On Error Resume Next
     
     ' Carga de texturas
     Set SurfaceDB = New clsTexManager
-    Call SurfaceDB.Init(DirectD3D8, DirectDevice, General_Get_Free_Ram_Bytes)
+    Call SurfaceDB.Init(DirectD3D8, DirectDevice)
     
     'Sprite batching.
     Set SpriteBatch = New clsBatch

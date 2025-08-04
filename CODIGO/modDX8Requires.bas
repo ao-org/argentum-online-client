@@ -123,21 +123,6 @@ General_Get_Free_Ram_Err:
     
 End Function
 
-Public Function General_Get_Free_Ram_Bytes() As Long
-    
-    On Error GoTo General_Get_Free_Ram_Bytes_Err
-    
-    GlobalMemoryStatus pUdtMemStatus
-    General_Get_Free_Ram_Bytes = pUdtMemStatus.dwAvailPhys
-
-    
-    Exit Function
-
-General_Get_Free_Ram_Bytes_Err:
-    Call RegistrarError(Err.Number, Err.Description, "modDX8Requires.General_Get_Free_Ram_Bytes", Erl)
-    Resume Next
-    
-End Function
 
 Public Function ARGB(ByVal r As Long, ByVal G As Long, ByVal B As Long, ByVal A As Long) As Long
     
