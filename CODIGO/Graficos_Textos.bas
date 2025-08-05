@@ -998,6 +998,76 @@ Engine_Text_Render_Err:
     
 End Sub
 
+Public Sub simple_text_render(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional CharIndex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+    
+    On Error GoTo Engine_Text_Render_Err
+    
+
+    
+
+    Dim a, b, c, d, e, f As Integer
+
+    Dim graf          As grh
+
+    Dim temp_array(3) As RGBA
+
+    If CharIndex = 0 Then
+        a = 255
+    Else
+        a = Clamp(charlist(CharIndex).AlphaText, 0, 255)
+    End If
+
+    If Alpha <> 255 Then
+        a = Alpha
+    End If
+    
+    Call RGBAList(temp_array, text_color(0).r, text_color(0).G, text_color(0).b, a)
+
+    Dim i              As Long
+
+   
+    Dim Sombra(3) As RGBA 'Sombra
+    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).b / 6, 0.8 * a)
+
+    If (Len(Texto) = 0) Then Exit Sub
+
+    d = 0
+
+
+
+    f = 0
+
+    For a = 1 To Len(Texto)
+        b = Asc(mid(Texto, a, 1))
+        graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+
+        If graf.GrhIndex > 12 Then
+
+            'mega sombra O-matica
+            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+            Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
+            Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
+        
+            ' graf.grhindex = Fuentes(font_index).Caracteres(b)
+            If font_index = 4 Then
+                d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth - 1
+            Else
+                d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
+
+            End If
+
+        End If
+
+    Next a
+
+    Exit Sub
+
+Engine_Text_Render_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
+    Resume Next
+    
+End Sub
+
 Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, ByVal status As Byte, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
     
     On Error GoTo Engine_Text_Render_Err

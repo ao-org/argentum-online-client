@@ -52,6 +52,18 @@ Private mD3D                         As D3DX8
 Private device                       As Direct3DDevice8
 Private mMaxEntries                  As Integer
 
+
+Private mTotalTextureCount   As Long    ' # of textures currently cached
+Private mTotalAllocatedBytes As Long    ' sum of .size for all cached textures
+
+Public Function GetAllocatedBytes() As Long
+    GetAllocatedBytes = mTotalAllocatedBytes
+End Function
+
+Public Function GetAllocatedTextureCount() As Long
+    GetAllocatedTextureCount = mTotalTextureCount
+End Function
+
 Private Sub Class_Terminate()
     On Error GoTo Class_Terminate_Err
     Dim i As Long
@@ -132,6 +144,17 @@ Public Function GetTexture( _
             .texture_width = surfaceDesc.Width
             .texture_height = surfaceDesc.Height
             .size = surfaceDesc.size
+            
+            ' —— DEBUG: update and log our texture-usage counters ——
+            mTotalTextureCount = mTotalTextureCount + 1
+            mTotalAllocatedBytes = mTotalAllocatedBytes + .size
+            
+             Debug.Print "+++ Loaded texture ID=" & filename & _
+                " size=" & .size & " bytes; " & _
+                "Total textures=" & mTotalTextureCount & _
+                ", total memory=" & _
+                format$(mTotalAllocatedBytes / 1048576#, "0.00") & " MB"
+                
         End With
     End With
 
@@ -308,15 +331,38 @@ Private Function RemoveLRU() As Boolean
         RemoveLRU = False
         Exit Function
     End If
+  
+    
+    ' —— DEBUG: capture size of the evicted texture ——
+    Dim evictSize As Long
+    Dim evictID   As Long
 
-    ' Evict that entry
     With TexList(bucketIdx).SurfaceEntry(entryIdx)
-        ' Debug log if you like:
-        Debug.Print "Evicting texture FileID=" & .filename & " last used " & format(((nowTick - .UltimoAcceso) / 1000), "0.0") & "s ago " & "Memoria size KB =" & .size / 1024
-        Set .Texture = Nothing
-        .filename = 0
+        evictSize = .size
+        evictID = .filename
     End With
 
+    ' actually evict
+    With TexList(bucketIdx).SurfaceEntry(entryIdx)
+        Set .Texture = Nothing
+        .filename = 0
+        .texture_height = 0
+        .texture_width = 0
+        .UltimoAcceso = 0
+    End With
+
+    ' —— DEBUG: update and log our texture-usage counters ——
+    mTotalTextureCount = mTotalTextureCount - 1
+    mTotalAllocatedBytes = mTotalAllocatedBytes - evictSize
+    Debug.Assert mTotalAllocatedBytes > -1
+    Debug.Assert mTotalTextureCount > -1
+
+    Debug.Print "--- Evicted texture ID=" & evictID & _
+               " size=" & evictSize & " bytes; " & _
+                "Total textures=" & mTotalTextureCount & _
+                ", total memory=" & _
+                format$(mTotalAllocatedBytes / 1048576#, "0.00") & " MB"
+    
     ' Shift entries down and shrink array
     With TexList(bucketIdx)
         Dim k As Long
