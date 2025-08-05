@@ -976,6 +976,27 @@ Public Sub render()
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
     
+#If DEBUGGING = 1 Then
+    If Not SurfaceDB Is Nothing Then
+        
+        Dim ColorGM(3) As RGBA
+        ColorGM(0) = RGBA_From_Comp(248, 107, 3)
+        ColorGM(1) = ColorGM(0)
+        ColorGM(2) = ColorGM(0)
+        ColorGM(3) = ColorGM(0)
+        
+        Dim str As String
+        str = "Total textures=" & SurfaceDB.GetAllocatedTextureCount() & _
+                ", total memory=" & _
+                format$(SurfaceDB.GetAllocatedBytes() / 1048576#, "0.00") & " MB"
+                
+                simple_text_render str, 10, 10, ColorGM, 1, True
+        
+    End If
+        
+#End If
+
+    
     Call Engine_EndScene(Render_Main_Rect)
     
     'TIME_MS_MOUSE
@@ -986,7 +1007,8 @@ Public Sub render()
     End If
     
     Engine_ActFPS
-
+    
+    
     Exit Sub
 
 render_Err:
