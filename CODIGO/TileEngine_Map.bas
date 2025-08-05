@@ -23,7 +23,10 @@ Sub SwitchMap(ByVal map As Integer, Optional ByVal NewResourceMap As Integer = 0
     
     On Error GoTo SwitchMap_Err
     
-    SurfaceDB.ReleaseUnusedTextures 250
+    If Not SurfaceDB Is Nothing Then
+    
+     SurfaceDB.ReleaseUnusedTextures NumTexRelease
+    End If
     
     If NewResourceMap < 1 Then
         NewResourceMap = map
