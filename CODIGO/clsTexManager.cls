@@ -271,7 +271,7 @@ End Function
 Private Function RemoveLRU() As Boolean
     On Error GoTo RemoveLRU_Err
 
-    Const AGE_THRESHOLD_MS As Long = 30000  ' 30 seconds
+    Const AGE_THRESHOLD_MS As Long = 60000  ' 60 seconds
     Dim nowTick      As Long
     Dim oldestTick   As Long
     Dim bucketIdx    As Long

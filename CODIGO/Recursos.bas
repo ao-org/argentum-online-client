@@ -1825,10 +1825,10 @@ Continue:
             QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
             QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
             QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
-            QuestList(Hechizo).NextQuest = Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST")
-            QuestList(Hechizo).RequiredLevel = Leer.GetValue("QUEST" & Hechizo, "RequiredLevel")
+            QuestList(Hechizo).NextQuest = val(Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST"))
+            QuestList(Hechizo).RequiredLevel = val(Leer.GetValue("QUEST" & Hechizo, "RequiredLevel"))
             QuestList(Hechizo).Repetible = Val(Leer.GetValue("QUEST" & Hechizo, "Repetible"))
-            PosMap(Hechizo) = Leer.GetValue("QUEST" & Hechizo, "PosMap")
+            PosMap(Hechizo) = val(Leer.GetValue("QUEST" & Hechizo, "PosMap"))
             
     Next Hechizo
     

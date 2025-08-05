@@ -106,7 +106,8 @@ Sub LoadConfig()
     InfoItemsEnRender = Val(GetSetting("VIDEO", "InfoItemsEnRender"))
     ModoAceleracion = GetSetting("VIDEO", "Aceleracion")
     DisableDungeonLighting = Val(GetSetting("VIDEO", "DisableDungeonLighting"))
-
+    NumTexRelease = max(25, min(GetSetting("VIDEO", "NumTexRelease"), 250))
+    
     Dim Value As String
     Value = GetSetting("VIDEO", "MostrarRespiracion")
     MostrarRespiracion = IIf(LenB(Value) > 0, Val(Value), True)
