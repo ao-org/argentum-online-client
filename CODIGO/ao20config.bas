@@ -106,7 +106,50 @@ Sub LoadConfig()
     InfoItemsEnRender = Val(GetSetting("VIDEO", "InfoItemsEnRender"))
     ModoAceleracion = GetSetting("VIDEO", "Aceleracion")
     DisableDungeonLighting = Val(GetSetting("VIDEO", "DisableDungeonLighting"))
+    '------------------------------------------------------------------------------
+    ' Configuration: VIDEO.NumTexRelease
+    '
+    ' When the user transitions from one map to the next, the texture manager will
+    ' eagerly free up a batch of textures to keep memory under control.
+    '
+    ' Effective value (clamped 25…250):
+    '   NumTexRelease = max(25, min(GetSetting("VIDEO", "NumTexRelease"), 250))
+    '
+    '   • Reads the INI setting [VIDEO] NumTexRelease
+    '   • Ensures at least 25 textures are freed per transition
+    '   • Caps the release at 250 textures to avoid excessive unloading
+    '
+    ' Tuning:
+    '   – Higher values free more textures (reducing VRAM use more aggressively)
+    '     but may incur extra reload costs.
+    '   – Lower values free fewer textures (less reload overhead)
+    '     but risk higher memory usage.
+    '------------------------------------------------------------------------------
     NumTexRelease = max(25, min(GetSetting("VIDEO", "NumTexRelease"), 250))
+
+
+    '------------------------------------------------------------------------------
+    ' Configuration: VIDEO.TexHighWaterMark
+    '
+    ' Before performing bulk-free on map transition, the manager checks that the
+    ' current total texture usage (in MB) is at or above this threshold. If usage
+    ' is below, no eager release occurs.
+    '
+    ' Effective value (clamped 200…600 MB):
+    '   TexHighWaterMark = max(200, min(GetSetting("VIDEO", "TexHighWaterMark"), 600))
+    '
+    '   • Reads the INI setting [VIDEO] TexHighWaterMark (in megabytes)
+    '   • Ensures the high-water mark is at least 200 MB
+    '   • Caps the high-water mark at 600 MB to avoid overly late eviction
+    '
+    ' Tuning:
+    '   – A lower threshold triggers eviction more often, keeping VRAM tighter
+    '     at the cost of potential stutter.
+    '   – A higher threshold delays eviction, reducing stutter but increasing
+    '     peak memory usage.
+    '------------------------------------------------------------------------------
+    TexHighWaterMark = max(200, min(GetSetting("VIDEO", "TexHighWaterMark"), 600))
+
     
     Dim Value As String
     Value = GetSetting("VIDEO", "MostrarRespiracion")
