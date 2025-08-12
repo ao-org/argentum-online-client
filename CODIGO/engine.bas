@@ -571,43 +571,41 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
 
     If animate Then
         If grh.started > 0 Then
-            Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.started) / grh.speed)
+            Dim num As Long, elapsed As Long
+            num = GrhData(Grh.GrhIndex).NumFrames
+            If num > 1 Then
+                ' Unificado: SIN 0.5
+                elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
-            If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-                CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-            Else
-                grh.started = 0
+                If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                    CurrentFrame = (elapsed Mod num) + 1
+                Else
+                    Grh.started = 0
+                End If
             End If
-
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
-    'Center Grh over X,Y pos
+    ' Centrado opcional (usar SIEMPRE CurrentGrhIndex)
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * TilePixelWidth \ 2) + TilePixelWidth \ 2
         End If
-
-        If GrhData(grh.GrhIndex).TileHeight <> 1 Then
+        If GrhData(CurrentGrhIndex).TileHeight <> 1 Then
             y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
         End If
     End If
     
     With GrhData(CurrentGrhIndex)
         If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
+
         If .Tx2 = 0 And .FileNum > 0 Then
             Dim Texture As Direct3DTexture8
-
             Dim TextureWidth As Long, TextureHeight As Long
             Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
-        
             .Tx1 = .sX / TextureWidth
             .Tx2 = (.sX + .pixelWidth) / TextureWidth
             .Ty1 = .sY / TextureHeight
@@ -615,7 +613,6 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
         End If
         
         Call Batch_Textured_Box_Pre(x, y, .pixelWidth, .pixelHeight, .Tx1, .Ty1, .Tx2, .Ty2, .FileNum, rgb_list, Alpha, angle)
-    
     End With
     
     Exit Sub
@@ -623,8 +620,8 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
 Draw_Grh_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh", Erl)
     Resume Next
-    
 End Sub
+
 
 Public Sub DrawSingleGrh(ByVal GrhIndex As Long, screenPos As Vector2, Alpha As Single, angle As Single, ByRef rgb_list() As RGBA)
 On Error GoTo DrawSingleGrh_Err
@@ -663,44 +660,42 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
 
     If animate Then
         If grh.started > 0 Then
-            Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.started) / grh.speed)
+            Dim num As Long, elapsed As Long
+            num = GrhData(Grh.GrhIndex).NumFrames
+            If num > 1 Then
+                ' Unificado: SIN 0.5
+                elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
-            If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-                CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-            Else
-                grh.started = 0
+                If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                    CurrentFrame = (elapsed Mod num) + 1
+                Else
+                    Grh.started = 0
+                End If
             End If
-
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
-    'Center Grh over X,Y pos
+    ' Centrado opcional (usar SIEMPRE CurrentGrhIndex)
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
-            x = x + Int(TilePixelWidth - GrhData(CurrentGrhIndex).pixelWidth) \ 2
+            x = x + (TilePixelWidth - GrhData(CurrentGrhIndex).pixelWidth) \ 2
         End If
-
-        If GrhData(grh.GrhIndex).TileHeight <> 1 Then
+        If GrhData(CurrentGrhIndex).TileHeight <> 1 Then
             y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
         End If
     End If
 
     With GrhData(CurrentGrhIndex)
         If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
+        
         Dim Texture As Direct3DTexture8
-
         Dim TextureWidth As Long, TextureHeight As Long
         Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
 
         Call SpriteBatch.SetTexture(Texture)
-
         Call SpriteBatch.SetAlpha(Alpha)
         
         If .Tx2 = 0 And .FileNum > 0 Then
@@ -709,10 +704,8 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
             .Ty1 = (.sY + 0.25) / TextureHeight
             .Ty2 = (.sY + .pixelHeight) / TextureHeight
         End If
-        'frmdebug.add_text_tracebox ease
-        'frmdebug.add_text_tracebox .Ty1
-        Call SpriteBatch.DrawBreathing(x, y, .pixelWidth, .pixelHeight, ease, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2)
 
+        Call SpriteBatch.DrawBreathing(x, y, .pixelWidth, .pixelHeight, ease, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2)
     End With
     
     Exit Sub
@@ -720,7 +713,6 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
 Draw_Grh_Breathing_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh_Breathing", Erl)
     Resume Next
-    
 End Sub
 
 Sub Draw_Animation(ByRef animationState As tAnimationPlaybackState, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByRef rgb_list() As RGBA)
@@ -771,13 +763,10 @@ Draw_Animation_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Animation", Erl)
 End Sub
 
-Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single, Optional ByVal CharIndex As Integer)
+Public Sub Draw_GrhFX(ByRef Grh As Grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single, Optional ByVal CharIndex As Integer)
     
     On Error GoTo Draw_GrhFX_Err
     
-
-    
-
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
     Dim CurrentFrame As Integer
@@ -785,65 +774,61 @@ Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal c
 
     If animate Then
         If grh.started > 0 Then
-            Dim ElapsedFrames As Long
-            ElapsedFrames = Fix((FrameTime - grh.started) / grh.speed)
-            
-            If grh.AnimacionContador > 0 Then
-                grh.AnimacionContador = grh.AnimacionContador - ElapsedFrames
+            Dim num As Long, elapsed As Long
+            num = GrhData(Grh.GrhIndex).NumFrames
+            If num > 1 Then
+                ' Unificado: SIN 0.5
+                elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
+                
+                ' Tu contador de animación (con clamp a >= 0)
+                If Grh.AnimacionContador > 0 Then
+                    Grh.AnimacionContador = Grh.AnimacionContador - elapsed
+                    If Grh.AnimacionContador < 0 Then Grh.AnimacionContador = 0
+                End If
+
+                If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                    CurrentFrame = (elapsed Mod num) + 1
+                Else
+                    Grh.started = 0
+                End If
             End If
-
-            If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-                CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-            Else
-                grh.started = 0
-            End If
-
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
+    ' Fade in/out por ventanas de AnimacionContador (con clamps de Alpha)
     If grh.AnimacionContador < grh.CantAnim * 0.1 Then
-            
         grh.Alpha = grh.Alpha - 1
-
+        If Grh.Alpha < 0 Then Grh.Alpha = 0
         Call RGBAList(rgb_list, 255, 255, 255, grh.Alpha)
-
     End If
     
     If grh.AnimacionContador > grh.CantAnim * 0.6 Then
-        If grh.Alpha < 220 Then
-            grh.Alpha = grh.Alpha + 1
-        End If
-        
+        If Grh.Alpha < 220 Then Grh.Alpha = Grh.Alpha + 1
+        If Grh.Alpha > 255 Then Grh.Alpha = 255
         Call RGBAList(rgb_list, 255, 255, 255, grh.Alpha)
-
     End If
 
-    'Center Grh over X,Y pos
+    ' Centrado opcional (usar SIEMPRE CurrentGrhIndex)
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
         End If
-
-        If GrhData(grh.GrhIndex).TileHeight <> 1 Then
+        If GrhData(CurrentGrhIndex).TileHeight <> 1 Then
             y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
         End If
     End If
 
     With GrhData(CurrentGrhIndex)
         If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
+        
         Dim Texture As Direct3DTexture8
-
         Dim TextureWidth As Long, TextureHeight As Long
         Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
 
         Call SpriteBatch.SetTexture(Texture)
-
         Call SpriteBatch.SetAlpha(Alpha)
         
         If .Tx2 = 0 And .FileNum > 0 Then
@@ -854,24 +839,18 @@ Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal c
         End If
 
         Call SpriteBatch.Draw(x, y, .pixelWidth, .pixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, angle)
-
     End With
 
-    
     Exit Sub
 
 Draw_GrhFX_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Draw_GrhFX", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
     
     On Error GoTo Draw_GrhSinLuz_Err
-    
-
-    
 
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
@@ -880,55 +859,55 @@ Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Inte
 
     If animate Then
         If grh.started > 0 Then
-            Dim ElapsedFrames As Long
-            ElapsedFrames = Fix((FrameTime - grh.started) / grh.speed)
+            Dim num As Long, elapsed As Long
+            num = GrhData(Grh.GrhIndex).NumFrames
+            If num > 1 Then
+                ' Unificado: SIN 0.5
+                elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
-            If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-                CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-            Else
-                grh.started = 0
+                If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                    CurrentFrame = (elapsed Mod num) + 1
+                Else
+                    Grh.started = 0
+                End If
             End If
-
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
-    'Center Grh over X,Y pos
+    ' Centrado opcional (usar SIEMPRE CurrentGrhIndex)
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
-
         End If
-
-        If GrhData(grh.GrhIndex).TileHeight <> 1 Then
+        If GrhData(CurrentGrhIndex).TileHeight <> 1 Then
             y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
-
         End If
-
     End If
-    If Not OverlapRect(RenderCullingRect, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight) Then Exit Sub
-    Static light_value(3) As RGBA
 
+    If Not OverlapRect(RenderCullingRect, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight) Then Exit Sub
+
+    Static light_value(3) As RGBA
     light_value(0) = global_light
     light_value(1) = light_value(0)
     light_value(2) = light_value(0)
     light_value(3) = light_value(0)
 
-    'Device_Box_Textured_Render CurrentGrhIndex, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, light_value, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, Alpha, angle
-    Call Batch_Textured_Box(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, light_value, Alpha, angle)
+    Call Batch_Textured_Box( _
+        x, y, _
+        GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, _
+        GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, _
+        GrhData(CurrentGrhIndex).FileNum, _
+        light_value, Alpha, angle _
+    )
 
-    
     Exit Sub
 
 Draw_GrhSinLuz_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Draw_GrhSinLuz", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub render()
@@ -1645,6 +1624,28 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     With charlist(CharIndex)
 
         If .Heading = 0 Then Exit Sub
+        
+        ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
+        If Not .Moving And .Idle Then
+            If .Body.AnimateOnIdle = 0 Then
+                ' Quieto SIN animación: congelar la serie de walk en frame estático
+                .Body.Walk(.Heading).Loops = 0
+                .Body.Walk(.Heading).started = 0
+                If Not .MovArmaEscudo Then
+                    .Arma.WeaponWalk(.Heading).started = 0
+                    .Escudo.ShieldWalk(.Heading).started = 0
+                End If
+            Else
+                ' Quieto CON animación: disparar (o preservar) idle una sola vez
+                If .Body.Walk(.Heading).started = 0 Or .Body.Walk(.Heading).Loops <> INFINITE_LOOPS Then
+                    SetCharIdle charlist(CharIndex), True
+                End If
+            End If
+        End If
+        ' --- FIN GUARD ---
+
+
+
         Dim dibujaMiembroClan As Boolean
         dibujaMiembroClan = False
         
@@ -1685,14 +1686,18 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             If .scrollDirectionX = 0 And .scrollDirectionY = 0 Then
                 .Moving = False
+                .Idle = True                 ' marcar intención de idle
+                ' NO llames SetCharIdle aquí: hacelo en el tick/update, no en el render
             End If
+
+            
         ElseIf .TranslationActive Then
             Dim ElapsedTime As Long
             Dim TranslationPercent As Double
             ElapsedTime = FrameTime - .TranslationStartTime
             TranslationPercent = min(CDbl(ElapsedTime) / .TranslationTime, 1)
-            .MoveOffsetX = Interpolate(32 * .scrollDirectionX * -1, 0, TranslationPercent)
-            .MoveOffsetY = Interpolate(32 * .scrollDirectionY * -1, 0, TranslationPercent)
+               .MoveOffsetX = Interpolate(TilePixelWidth * .scrollDirectionX * -1, 0, TranslationPercent)
+               .MoveOffsetY = Interpolate(TilePixelHeight * .scrollDirectionY * -1, 0, TranslationPercent)
             If TranslationPercent >= 1 Then
                 .TranslationActive = False
             End If
@@ -1757,7 +1762,8 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             ElseIf (.MoveOffsetX > 0) Then
                 prevTerrainHeight = TileEngine.GetTerrainHeight(x + 1, y)
             End If
-            terrainHeight = IntLerp(terrainHeight, prevTerrainHeight, Abs(.MoveOffsetX / 32))
+            terrainHeight = IntLerp(terrainHeight, prevTerrainHeight, Abs(.MoveOffsetX / TilePixelWidth))
+
             
             If .HasCart Then
                 If .Cart.Walk(.Heading).started = 0 Then
@@ -2284,6 +2290,48 @@ Char_Render_Err:
     Resume Next
     
 End Sub
+Public Sub SetCharIdle(ByRef C As Char, Optional ByVal force As Boolean = True)
+    ' Pone anim de quieto. Si AnimateOnIdle=0, NO anima (frame fijo).
+    With C
+        If .Muerto Then
+            .Body = BodyData(CASPER_BODY_IDLE)
+        Else
+            If .Body.IdleBody > 0 Then
+                .Body = BodyData(.Body.IdleBody)
+            End If
+        End If
+
+        If .Body.AnimateOnIdle = 0 Then
+            ' Parado sin animación
+            .Body.Walk(.Heading).Loops = 0
+            .Body.Walk(.Heading).started = 0
+        Else
+            ' Idle animado
+            .Body.Walk(.Heading).Loops = INFINITE_LOOPS
+            If force Then
+                .Body.Walk(.Heading).started = FrameTime
+            Else
+                If .Body.Walk(.Heading).started > 0 Then
+                    Dim keepStarted As Long
+                    keepStarted = SyncGrhPhase(.Body.Walk(.Heading), .Body.Walk(.Heading).GrhIndex)
+                    .Body.Walk(.Heading).started = keepStarted
+                Else
+                    .Body.Walk(.Heading).started = FrameTime
+                End If
+            End If
+        End If
+
+        If Not .MovArmaEscudo Then
+            .Arma.WeaponWalk(.Heading).started = 0
+            .Escudo.ShieldWalk(.Heading).started = 0
+        End If
+
+        .Moving = False
+        .Idle = True
+    End With
+End Sub
+
+
 Public Sub DibujarVidaChar(ByVal CharIndex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByRef OffsetYname As Byte, ByRef OffsetYClan As Byte)
     With charlist(CharIndex)
         Engine_Draw_Box PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 33 + .Body.BodyOffset.y, 33, 5, RGBA_From_Comp(10, 10, 10)
@@ -3046,114 +3094,114 @@ Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal
     
     On Error GoTo Grh_Render_Advance_Err
 
-    'Similar to Grh_Render, but let´s you resize the Grh
-
-    Dim tile_width  As Integer
-
-    Dim tile_height As Integer
-
-    Dim grh_index   As Long
-    
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
     Dim CurrentFrame As Integer
     CurrentFrame = 1
 
     If grh.started > 0 Then
-        Dim ElapsedFrames As Long
-        ElapsedFrames = Fix((FrameTime - grh.started) / grh.speed)
+        Dim num As Long, elapsed As Long
+        num = GrhData(Grh.GrhIndex).NumFrames
+        If num > 1 Then
+            ' Unificado: SIN 0.5
+            elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
-        If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-            CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-        Else
-            grh.started = 0
+            If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                CurrentFrame = (elapsed Mod num) + 1
+            Else
+                Grh.started = 0
+            End If
         End If
-
     End If
 
-    'Figure out what frame to draw (always 1 if not animated)
+    Dim grh_index As Long
     grh_index = GrhData(grh.GrhIndex).Frames(CurrentFrame)
     
-    'Center Grh over X, Y pos
-    If GrhData(grh_index).TileWidth <> 1 Then
-        screen_x = screen_x - Int(GrhData(grh_index).TileWidth * (32 \ 2)) + 32 \ 2
-
+    ' Centrado opcional (usar SIEMPRE el frame actual)
+    If h_center Then
+        If GrhData(grh_index).TileWidth <> 1 Then
+            screen_x = screen_x - Int(GrhData(grh_index).TileWidth * (TilePixelWidth \ 2)) + (TilePixelWidth \ 2)
+        End If
     End If
-    
-    If GrhData(grh_index).TileHeight <> 1 Then
-        screen_y = screen_y - Int(GrhData(grh_index).TileHeight * 32) + 32
-
+    If v_center Then
+        If GrhData(grh_index).TileHeight <> 1 Then
+            screen_y = screen_y - Int(GrhData(grh_index).TileHeight * TilePixelHeight) + TilePixelHeight
+        End If
     End If
+
     If Not OverlapRect(RenderCullingRect, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
-    'Draw it to device
-    'Device_Box_Textured_Render_Advance grh_index, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list, GrhData(grh_index).sX, GrhData(grh_index).sY, Width, Height, alpha_blend, grh.angle
-    Call Batch_Textured_Box_Advance(screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, Width, Height, rgb_list, alpha_blend, grh.angle)
 
-    
+    ' Dibujar con escala Width/Height y el ángulo del Grh
+    Call Batch_Textured_Box_Advance( _
+        screen_x, screen_y, _
+        GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, _
+        GrhData(grh_index).sX, GrhData(grh_index).sY, _
+        GrhData(grh_index).FileNum, _
+        Width, Height, _
+        rgb_list, alpha_blend, Grh.angle _
+    )
+
     Exit Sub
 
 Grh_Render_Advance_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Grh_Render_Advance", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_y As Integer, ByRef rgb_list() As RGBA, Optional ByVal h_centered As Boolean = True, Optional ByVal v_centered As Boolean = True, Optional ByVal alpha_blend As Boolean = False)
     
     On Error GoTo Grh_Render_Err
 
-    'Added centering
-
-    Dim tile_width  As Integer
-
-    Dim tile_height As Integer
-
-    Dim grh_index   As Long
-    
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
     Dim CurrentFrame As Integer
     CurrentFrame = 1
 
     If grh.started > 0 Then
-        Dim ElapsedFrames As Long
-        ElapsedFrames = Fix((FrameTime - grh.started) / grh.speed)
+        Dim num As Long, elapsed As Long
+        num = GrhData(Grh.GrhIndex).NumFrames
+        If num > 1 Then
+            ' Unificado: SIN 0.5
+            elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
-        If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-            CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-        Else
-            grh.started = 0
+            If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                CurrentFrame = (elapsed Mod num) + 1
+            Else
+                Grh.started = 0
+            End If
         End If
-
     End If
 
-    'Figure out what frame to draw (always 1 if not animated)
+    Dim grh_index As Long
     grh_index = GrhData(grh.GrhIndex).Frames(CurrentFrame)
     
-    'Center Grh over X, Y pos
-    If GrhData(grh_index).TileWidth <> 1 Then
-        screen_x = screen_x - Int(GrhData(grh_index).TileWidth * (32 \ 2)) + 32 \ 2
-
+    ' Centrado opcional (usar SIEMPRE el frame actual)
+    If h_centered Then
+        If GrhData(grh_index).TileWidth <> 1 Then
+            screen_x = screen_x - Int(GrhData(grh_index).TileWidth * (TilePixelWidth \ 2)) + (TilePixelWidth \ 2)
+        End If
     End If
-    
-    If GrhData(grh_index).TileHeight <> 1 Then
-        screen_y = screen_y - Int(GrhData(grh_index).TileHeight * 32) + 32
-
+    If v_centered Then
+        If GrhData(grh_index).TileHeight <> 1 Then
+            screen_y = screen_y - Int(GrhData(grh_index).TileHeight * TilePixelHeight) + TilePixelHeight
+        End If
     End If
+
     If Not OverlapRect(RenderCullingRect, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
-    'Draw it to device
-    'Device_Box_Textured_Render grh_index, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list(), GrhData(grh_index).sX, GrhData(grh_index).sY, alpha_blend, grh.angle
-    Call Batch_Textured_Box(screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, rgb_list, alpha_blend, grh.angle)
 
-    
+    Call Batch_Textured_Box( _
+        screen_x, screen_y, _
+        GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, _
+        GrhData(grh_index).sX, GrhData(grh_index).sY, _
+        GrhData(grh_index).FileNum, _
+        rgb_list, alpha_blend, Grh.angle _
+    )
+
     Exit Sub
 
 Grh_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Grh_Render", Erl)
     Resume Next
-    
 End Sub
 
 Private Function Grh_Check(ByVal grh_index As Long) As Boolean
@@ -4427,31 +4475,30 @@ Public Sub Draw_Grh_ItemInWater(ByRef grh As grh, ByVal x As Integer, ByVal y As
 
     If animate Then
         If grh.started > 0 Then
-            Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.started) / grh.speed)
+            Dim num As Long, elapsed As Long
+            num = GrhData(Grh.GrhIndex).NumFrames
+            If num > 1 Then
+                ' Unificado: SIN 0.5
+                elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
-            If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-                CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-            Else
-                grh.started = 0
+                If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                    CurrentFrame = (elapsed Mod num) + 1
+                Else
+                    Grh.started = 0
+                End If
             End If
-
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
-    'Center Grh over X,Y pos
+    ' Centrado opcional con el frame actual
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * TilePixelWidth \ 2) + TilePixelWidth \ 2
         End If
-
-        If GrhData(grh.GrhIndex).TileHeight <> 1 Then
+        If GrhData(CurrentGrhIndex).TileHeight <> 1 Then
             y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
         End If
     End If
@@ -4460,40 +4507,36 @@ Public Sub Draw_Grh_ItemInWater(ByRef grh As grh, ByVal x As Integer, ByVal y As
         If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
         If .FileNum > 0 Then
             Dim Texture As Direct3DTexture8
-
             Dim TextureWidth As Long, TextureHeight As Long
             Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
             
-        
+            ' UVs normalizados
             .Tx1 = .sX / TextureWidth
             .Tx2 = (.sX + .pixelWidth) / TextureWidth
             .Ty1 = .sY / TextureHeight
             .Ty2 = (.sY + .pixelHeight) / TextureHeight
             
+            ' Blending aditivo opcional
             If Alpha Then
                 DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_ONE
                 DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_ONE
             End If
             
             Call SpriteBatch.SetTexture(Texture)
-            Call SpriteBatch.DrawItemInWater(x, y, .pixelWidth, .pixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, angle Mod 360) ' Angle
+            Call SpriteBatch.DrawItemInWater(x, y, .pixelWidth, .pixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, angle Mod 360)
             
             If Alpha Then
                 DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
                 DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
             End If
         End If
-        
-        'Call Batch_Textured_Box_Pre(x, y, .pixelWidth, .pixelHeight, .Tx1, .Ty1, .Tx2, .Ty2, .FileNum, rgb_list, Alpha, Angle)
-    
     End With
     
     Exit Sub
 
 Draw_Grh_Err:
-    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh_ItemInWater", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, ByVal EsAgua As Boolean, ByVal EsLava As Boolean, ByVal MapX As Integer, ByVal MapY As Integer, ByVal MinX As Integer, ByVal MaxX As Integer, ByVal MinY As Integer, ByVal MaxY As Integer)
@@ -4501,36 +4544,34 @@ Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, By
     On Error GoTo Draw_Grh_Precalculated_Err
 
     If Not OverlapRect(RenderCullingRect, grh.x - MinX * TilePixelWidth, grh.y - TilePixelHeight * MinY + gameplay_render_offset.y, TilePixelWidth, TilePixelHeight) Then Exit Sub
-
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
     Dim CurrentFrame As Integer
     CurrentFrame = 1
 
     If grh.started > 0 Then
-        Dim ElapsedFrames As Long
-        ElapsedFrames = Fix((FrameTime - grh.started) / grh.speed)
+        Dim num As Long, elapsed As Long
+        num = GrhData(Grh.GrhIndex).NumFrames
+        If num > 1 Then
+            ' Unificado: SIN 0.5
+            elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
-        If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-            CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-        Else
-            grh.started = 0
+            If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                CurrentFrame = (elapsed Mod num) + 1
+            Else
+                Grh.started = 0
+            End If
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
     Dim Texture As Direct3DTexture8
-
     Dim TextureWidth As Long, TextureHeight As Long
     Set Texture = SurfaceDB.GetTexture(GrhData(CurrentGrhIndex).FileNum, TextureWidth, TextureHeight)
     
     With GrhData(CurrentGrhIndex)
-
         Call SpriteBatch.SetTexture(Texture)
         
         If .Tx2 = 0 And .FileNum > 0 Then
@@ -4547,7 +4588,6 @@ Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, By
             If MapX < MaxX Then Right = (MapData(MapX + 1, MapY).Blocked And FLAG_AGUA) * INV_FLAG_AGUA
             If MapY < MaxY Then Bottom = (MapData(MapX, MapY + 1).Blocked And FLAG_AGUA) * INV_FLAG_AGUA
             If MapX > MinX Then Left = (MapData(MapX - 1, MapY).Blocked And FLAG_AGUA) * INV_FLAG_AGUA
-        
             Call SpriteBatch.DrawWater(grh.x, grh.y, TilePixelWidth, TilePixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, MapX, MapY, Top, Right, Bottom, Left)
         
         ElseIf EsLava Then
@@ -4555,24 +4595,18 @@ Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, By
             If MapX < MaxX Then Right = (MapData(MapX + 1, MapY).Blocked And FLAG_LAVA) * INV_FLAG_LAVA
             If MapY < MaxY Then Bottom = (MapData(MapX, MapY + 1).Blocked And FLAG_LAVA) * INV_FLAG_LAVA
             If MapX > MinX Then Left = (MapData(MapX - 1, MapY).Blocked And FLAG_LAVA) * INV_FLAG_LAVA
-        
             Call SpriteBatch.DrawLava(grh.x, grh.y, TilePixelWidth, TilePixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, MapX, MapY, Top, Right, Bottom, Left)
         
         Else
-             Call SpriteBatch.Draw(grh.x, grh.y, TilePixelWidth, TilePixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2)
-             
-             
+            Call SpriteBatch.Draw(Grh.x, Grh.y, TilePixelWidth, TilePixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2)
         End If
-    
     End With
 
-    
     Exit Sub
 
 Draw_Grh_Precalculated_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh_Precalculated", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, Color As RGBA)
@@ -4689,3 +4723,48 @@ Public Function GetTickCount() As Long
     GetTickCount = (timeGetTime And &H7FFFFFFF)
     
 End Function
+
+Public Function CurrentGrhFrame(ByRef Grh As Grh) As Integer
+    Dim num As Long, elapsed As Long
+    If Grh.GrhIndex = 0 Or Grh.GrhIndex > MaxGrh Then CurrentGrhFrame = 1: Exit Function
+    num = GrhData(Grh.GrhIndex).NumFrames
+    If num <= 1 Or Grh.started <= 0 Then CurrentGrhFrame = 1: Exit Function
+
+    ' Unificado (SIN el 0.5)
+    elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
+    CurrentGrhFrame = (elapsed Mod num) + 1
+End Function
+
+Private Function SyncGrhPhase(ByRef Grh As Grh, ByVal newGrhIndex As Long) As Long
+    Dim oldNum As Long, newNum As Long
+    Dim elapsed As Long, phase As Long
+    
+    If Grh.started <= 0 Then
+        SyncGrhPhase = FrameTime
+        Exit Function
+    End If
+    
+    oldNum = GrhData(Grh.GrhIndex).NumFrames
+    newNum = GrhData(newGrhIndex).NumFrames
+    If oldNum <= 0 Or newNum <= 0 Then
+        SyncGrhPhase = FrameTime
+        Exit Function
+    End If
+    
+    elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
+    phase = elapsed Mod oldNum
+    SyncGrhPhase = FrameTime - (phase * Grh.speed)
+End Function
+
+Public Sub InitGrhPreserve(ByRef Grh As Grh, ByVal GrhIndex As Long, _
+                           Optional ByVal Loops As Integer = INFINITE_LOOPS)
+    Dim keepStarted As Long
+    If Grh.GrhIndex <> 0 And Grh.started > 0 Then
+        keepStarted = SyncGrhPhase(Grh, GrhIndex)
+    Else
+        keepStarted = -1 ' deja que InitGrh use FrameTime
+    End If
+    Call InitGrh(Grh, GrhIndex, keepStarted, Loops)
+End Sub
+
+

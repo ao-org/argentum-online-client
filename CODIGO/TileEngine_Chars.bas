@@ -230,11 +230,8 @@ End Sub
 
 Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Heading)
 
-    'Starts the movement of a character in nHeading direction
-
     On Error GoTo Char_Move_by_Head_Err
        
-
     Dim addx As Integer
     Dim addy As Integer
     Dim x    As Integer
@@ -246,21 +243,12 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         x = .Pos.x
         y = .Pos.y
         
-        'Figure out which way to move
+        ' Dirección a mover
         Select Case nHeading
-
-            Case E_Heading.NORTH
-                addy = -1
-        
-            Case E_Heading.EAST
-                addx = 1
-        
-            Case E_Heading.south
-                addy = 1
-            
-            Case E_Heading.WEST
-                addx = -1
-
+            Case E_Heading.NORTH: addy = -1
+            Case E_Heading.EAST:  addx = 1
+            Case E_Heading.south: addy = 1
+            Case E_Heading.WEST:  addx = -1
         End Select
         
         nX = x + addx
@@ -274,22 +262,47 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
             MapData(x, y).charindex = 0
         End If
         
-        .MoveOffsetX = -1 * (32 * addx)
-        .MoveOffsetY = -1 * (32 * addy)
+        ' ---- Usar tamaño de tile configurable (antes 32 fijo)
+        .MoveOffsetX = -1 * (TilePixelWidth * addx)
+        .MoveOffsetY = -1 * (TilePixelHeight * addy)
         
-        
+        ' Forzar heading en escalera
+        Dim newHeading As E_Heading
         If MapData(nX, nY).ObjGrh.GrhIndex = 26940 Or MapData(nX, nY).Trigger = ESCALERA Then
-            .Heading = E_Heading.NORTH
+            newHeading = E_Heading.NORTH
         Else
-            .Heading = nHeading
+            newHeading = nHeading
         End If
         
+        ' Guardamos el heading anterior para conservar fase si cambia
+        Dim oldHeading As E_Heading
+        oldHeading = .Heading
         .scrollDirectionX = addx
         .scrollDirectionY = addy
         
         .Idle = False
-        If Not .Moving Then
 
+        ' --- Si cambia de dirección mientras ya está moviéndose, preservamos fase
+        If .Moving And (newHeading <> oldHeading) Then
+            ' BODY
+            If .Body.Walk(oldHeading).started > 0 Then
+                Dim keepStarted As Long
+                keepStarted = SyncGrhPhase(.Body.Walk(oldHeading), .Body.Walk(newHeading).GrhIndex)
+                .Body.Walk(newHeading).started = keepStarted
+            ElseIf .Body.Walk(newHeading).started = 0 Then
+                .Body.Walk(newHeading).started = FrameTime
+            End If
+            ' WEAPON + SHIELD en fase con el cuerpo
+            If .Arma.WeaponWalk(newHeading).started = 0 Then .Arma.WeaponWalk(newHeading).started = .Body.Walk(newHeading).started
+            If .Escudo.ShieldWalk(newHeading).started = 0 Then .Escudo.ShieldWalk(newHeading).started = .Body.Walk(newHeading).started
+            .Arma.WeaponWalk(newHeading).Loops = INFINITE_LOOPS
+            .Escudo.ShieldWalk(newHeading).Loops = INFINITE_LOOPS
+        End If
+
+        ' Actualizamos el heading al final para usar el nuevo set arriba
+        .Heading = newHeading
+        
+        If Not .Moving Then
             If .Muerto Then
                 .Body = BodyData(CASPER_BODY)
             Else
@@ -299,12 +312,11 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
                 End If
             End If
 
-            'Start animations
+            ' Start animations (solo al empezar a moverse)
             If .Body.Walk(.Heading).Started = 0 Then
                 .Body.Walk(.Heading).Started = FrameTime
                 .Arma.WeaponWalk(.Heading).Started = FrameTime
                 .Escudo.ShieldWalk(.Heading).Started = FrameTime
-
                 .Arma.WeaponWalk(.Heading).Loops = INFINITE_LOOPS
                 .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
             End If
@@ -317,19 +329,15 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
     
     If UserStats.Estado <> 1 Then Call DoPasosFx(CharIndex)
     
-    'areas viejos
     If (nY < MinLimiteY) Or (nY > MaxLimiteY) Or (nX < MinLimiteX) Or (nX > MaxLimiteX) Then
         Call EraseChar(charindex)
-
     End If
-    
     
     Exit Sub
 
 Char_Move_by_Head_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.Char_Move_by_Head", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub TranslateCharacterToPos(ByVal charindex As Integer, ByVal NewX As Integer, ByVal NewY As Integer, ByVal TranslationTime As Long)
@@ -804,5 +812,17 @@ Get_PixelY_Of_XY_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.Get_PixelY_Of_XY", Erl)
     Resume Next
     
+End Function
+
+
+
+Public Function SyncGrhPhase(ByRef Grh As Grh, ByVal newGrhIndex As Long) As Long
+    Dim oldNum As Long, elapsed As Long, phase As Long
+    If Grh.started <= 0 Then SyncGrhPhase = FrameTime: Exit Function
+    oldNum = GrhData(Grh.GrhIndex).NumFrames
+    If oldNum <= 0 Then SyncGrhPhase = FrameTime: Exit Function
+    elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
+    phase = elapsed Mod oldNum
+    SyncGrhPhase = FrameTime - (phase * Grh.speed)
 End Function
 
