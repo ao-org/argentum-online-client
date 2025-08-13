@@ -1797,9 +1797,11 @@ Public Sub CargarLst()
         
     #If PYMMO = 0 Or DEBUGGING = 1 Then
         Dim server() As String
-        server = Split(ServerIndex, ":")
-        FrmLogear.txtIp.Text = server(0)
-        FrmLogear.txtPort.Text = server(1)
+        If Len(ServerIndex) > 0 Then
+            server = Split(ServerIndex, ":")
+            FrmLogear.txtIp.text = server(0)
+            FrmLogear.txtPort.text = server(1)
+        End If
     #Else
         FrmLogear.txtIp.Text = "45.235.98.188"
         FrmLogear.txtPort.Text = "6501"
