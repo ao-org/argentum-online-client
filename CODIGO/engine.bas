@@ -1589,44 +1589,34 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     'Draw char's to screen without offcentering them
     
     Dim Pos                 As Integer
-
     Dim line                As String
-
     Dim Color(3)            As RGBA
-    
     Dim NameColor(3)        As RGBA
     Dim NameColorClan(3)    As RGBA
-
     Dim colorCorazon(3)     As RGBA
-
     Dim i                   As Long
-
     Dim OffsetYname         As Byte
-
     Dim OffsetYClan         As Byte
-    
     Dim TextureX            As Integer
-
     Dim TextureY            As Integer
-    
     Dim OffArma             As Single
-
     Dim OffAuras            As Integer
-
     Dim OffHead             As Single
-    
     Dim MostrarNombre       As Boolean
-    
-    Dim TempGrh As grh
-    
-    Dim terrainHeight As Integer
-    
+    Dim TempGrh             As Grh
+    Dim terrainHeight       As Integer
+
     With charlist(CharIndex)
 
         If .Heading = 0 Then Exit Sub
         
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
-        If Not .Moving And .Idle Then
+        If Not .Moving _
+           And Not .TranslationActive _
+           And .Idle _
+           And .scrollDirectionX = 0 And .scrollDirectionY = 0 _
+           And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
+
             If .Body.AnimateOnIdle = 0 Then
                 ' Quieto SIN animación: congelar la serie de walk en frame estático
                 .Body.Walk(.Heading).Loops = 0
@@ -1644,23 +1634,15 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         End If
         ' --- FIN GUARD ---
 
-
-
         Dim dibujaMiembroClan As Boolean
         dibujaMiembroClan = False
         
         Dim verVidaClan As Boolean
-        
         verVidaClan = False
         If .clan_index > 0 Then
             If .clan_index = charlist(UserCharIndex).clan_index And CharIndex <> UserCharIndex And .Muerto = 0 Then
-                If .clan_nivel >= 6 Then
-                    dibujaMiembroClan = True
-                End If
-                
-                If .clan_nivel >= 5 Then
-                    verVidaClan = True
-                End If
+                If .clan_nivel >= 6 Then dibujaMiembroClan = True
+                If .clan_nivel >= 5 Then verVidaClan = True
             End If
         End If
         
@@ -1686,21 +1668,22 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             If .scrollDirectionX = 0 And .scrollDirectionY = 0 Then
                 .Moving = False
-                .Idle = True                 ' marcar intención de idle
-                ' NO llames SetCharIdle aquí: hacelo en el tick/update, no en el render
+                .Idle = True                 ' marcar intención de idle (el guard de arriba decide animación/estático)
             End If
 
-            
         ElseIf .TranslationActive Then
             Dim ElapsedTime As Long
             Dim TranslationPercent As Double
             ElapsedTime = FrameTime - .TranslationStartTime
             TranslationPercent = min(CDbl(ElapsedTime) / .TranslationTime, 1)
-               .MoveOffsetX = Interpolate(TilePixelWidth * .scrollDirectionX * -1, 0, TranslationPercent)
-               .MoveOffsetY = Interpolate(TilePixelHeight * .scrollDirectionY * -1, 0, TranslationPercent)
+            .MoveOffsetX = Interpolate(TilePixelWidth * .scrollDirectionX * -1, 0, TranslationPercent)
+            .MoveOffsetY = Interpolate(TilePixelHeight * .scrollDirectionY * -1, 0, TranslationPercent)
             If TranslationPercent >= 1 Then
                 .TranslationActive = False
+                .Moving = False
+                .Idle = True
             End If
+
         ElseIf .AnimatingBody Then
             If .Body.Walk(.Heading).started = 0 Then
                 .AnimatingBody = 0
@@ -1719,8 +1702,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         ElseIf Not .Idle Then
             If .Muerto Then
                 If CharIndex <> UserCharIndex Then
-                    ' Si no somos nosotros, esperamos un intervalo
-                    ' antes de poner la animación idle para evitar saltos
+                    ' Si no somos nosotros, esperamos un intervalo antes de poner la animación idle para evitar saltos
                     If FrameTime - .LastStep > TIME_CASPER_IDLE Then
                         .Body = BodyData(CASPER_BODY_IDLE)
                         .Body.Walk(.Heading).started = FrameTime
@@ -1746,13 +1728,36 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     If .Body.IdleBody > 0 Then
                         .Body = BodyData(.Body.IdleBody)
                         .Body.Walk(.Heading).started = FrameTime
-                        
                     End If
                 End If
             End If
             .Idle = True
         End If
-        
+
+        ' --- AUTOSTART WALK ANIMATION SI ESTÁ MOVIÉNDOSE ---
+        If (.Moving Or .TranslationActive) Then
+            ' Cuerpo: si no estaba animando, arrancar y loop infinito
+            If .Body.Walk(.Heading).started = 0 Then
+                .Body.Walk(.Heading).started = FrameTime
+                .Body.Walk(.Heading).Loops = INFINITE_LOOPS
+            End If
+
+            ' Arma/Escudo: en fase con el cuerpo si no venían animando
+            If .Arma.WeaponWalk(.Heading).GrhIndex <> 0 Then
+                If .Arma.WeaponWalk(.Heading).started = 0 Then
+                    .Arma.WeaponWalk(.Heading).started = .Body.Walk(.Heading).started
+                End If
+                .Arma.WeaponWalk(.Heading).Loops = INFINITE_LOOPS
+            End If
+
+            If .Escudo.ShieldWalk(.Heading).GrhIndex <> 0 Then
+                If .Escudo.ShieldWalk(.Heading).started = 0 Then
+                    .Escudo.ShieldWalk(.Heading).started = .Body.Walk(.Heading).started
+                End If
+                .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
+            End If
+        End If
+        ' --- FIN AUTOSTART ---
         
         terrainHeight = TileEngine.GetTerrainHeight(x, y)
         If (.Moving) Then
@@ -1764,7 +1769,6 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             terrainHeight = IntLerp(terrainHeight, prevTerrainHeight, Abs(.MoveOffsetX / TilePixelWidth))
 
-            
             If .HasCart Then
                 If .Cart.Walk(.Heading).started = 0 Then
                     .Cart.Walk(.Heading).Loops = -1
@@ -1801,31 +1805,13 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call RGBAList(Color, 255, 255, 255, 100)
                     
                     If .priv = 0 Then
-                        
                         Select Case .status
-                            ' Criminal
-                            Case 0
-                                Call SetRGBA(NameColor(0), ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
-                            
-                            ' Ciudadano
-                            Case 1
-                                Call SetRGBA(NameColor(0), ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
-                            
-                            ' Caos
-                            Case 2
-                                Call SetRGBA(NameColor(0), ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
-    
-                            ' Armada
-                            Case 3
-                                Call SetRGBA(NameColor(0), ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
-                                
-                            ' Concilio
-                            Case 4
-                                Call SetRGBA(NameColor(0), ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
-                            ' Consejo
-                            Case 5
-                                Call SetRGBA(NameColor(0), ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
-    
+                            Case 0: Call SetRGBA(NameColor(0), ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)  ' Criminal
+                            Case 1: Call SetRGBA(NameColor(0), ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)  ' Ciudadano
+                            Case 2: Call SetRGBA(NameColor(0), ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)  ' Caos
+                            Case 3: Call SetRGBA(NameColor(0), ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)  ' Armada
+                            Case 4: Call SetRGBA(NameColor(0), ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)  ' Concilio
+                            Case 5: Call SetRGBA(NameColor(0), ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)  ' Consejo
                         End Select
                     Else
                         Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
@@ -1838,7 +1824,6 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     MostrarNombre = True
                         
                 Else
-                    'refactorizar bien esto, es un asco sino
                     If .Navegando Then
                         MostrarNombre = True
                         Call RGBAList(Color, 125, 125, 125, 125)
@@ -1849,37 +1834,18 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     
                     If dibujaMiembroClan Then
                         MostrarNombre = True
-                         If .priv = 0 Then
-                        
-                        Select Case .status
-                            ' Criminal
-                            Case 0
-                                Call SetRGBA(NameColor(0), ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
-                            
-                            ' Ciudadano
-                            Case 1
-                                Call SetRGBA(NameColor(0), ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
-                            
-                            ' Caos
-                            Case 2
-                                Call SetRGBA(NameColor(0), ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
-    
-                            ' Armada
-                            Case 3
-                                Call SetRGBA(NameColor(0), ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
-                                
-                            ' Concilio
-                            Case 4
-                                Call SetRGBA(NameColor(0), ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
-                            ' Consejo
-                            Case 5
-                                Call SetRGBA(NameColor(0), ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
-    
-                        End Select
-                    Else
-                        Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
-                    End If
-                    
+                        If .priv = 0 Then
+                            Select Case .status
+                                Case 0: Call SetRGBA(NameColor(0), ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
+                                Case 1: Call SetRGBA(NameColor(0), ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
+                                Case 2: Call SetRGBA(NameColor(0), ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
+                                Case 3: Call SetRGBA(NameColor(0), ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
+                                Case 4: Call SetRGBA(NameColor(0), ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
+                                Case 5: Call SetRGBA(NameColor(0), ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
+                            End Select
+                        Else
+                            Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
+                        End If
                         Call LerpRGBA(NameColor(0), NameColor(0), RGBA_From_Comp(0, 0, 0), 0.5)
                         Call RGBA_ToList(NameColor, NameColor(0))
                         Call RGBA_ToList(colorCorazon, NameColor(0))
@@ -1904,7 +1870,6 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                             Dim TempColor(3) As RGBA
                             Call RGBAList(TempColor, 255, 255, 255, 200)
                             Call Draw_Grh(TempGrh, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 10 + .Body.BodyOffset.y, 1, 0, TempColor, False, 0, 0, 0)
-
                             Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY + 37 + .Body.BodyOffset.y, .UserMinHp / .UserMaxHp * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
                         End If
                     End If
@@ -1916,45 +1881,19 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Else
                     MostrarNombre = True
                     
-                     If .priv = 0 Then
-                        
+                    If .priv = 0 Then
                         Select Case .status
-                            ' Criminal
-                            Case 0
-                                Call RGBAList(NameColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
-                            ' Ciudadano
-                            Case 1
-                                Call RGBAList(NameColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
-                            
-                            ' Caos
-                            Case 2
-                                Call RGBAList(NameColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
-    
-                            ' Armada
-                            Case 3
-                                Call RGBAList(NameColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
-                                
-                            ' Concilio
-                            Case 4
-                                Call RGBAList(NameColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
-                            ' Consejo
-                            Case 5
-                                Call RGBAList(NameColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
-    
+                            Case 0: Call RGBAList(NameColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b): Call RGBAList(colorCorazon, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
+                            Case 1: Call RGBAList(NameColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b): Call RGBAList(colorCorazon, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
+                            Case 2: Call RGBAList(NameColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b): Call RGBAList(colorCorazon, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
+                            Case 3: Call RGBAList(NameColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b): Call RGBAList(colorCorazon, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
+                            Case 4: Call RGBAList(NameColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b): Call RGBAList(colorCorazon, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
+                            Case 5: Call RGBAList(NameColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b): Call RGBAList(colorCorazon, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
                         End Select
                     Else
                         Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                         Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                     End If
-                    
-                    
-                    
                                         
                     If .group_index > 0 Then
                         If charlist(CharIndex).group_index = charlist(UserCharIndex).group_index Then
@@ -1995,7 +1934,6 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Select Case .Heading
 
                     Case E_Heading.EAST
-    
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
@@ -2072,19 +2010,16 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             'Draw name over head
             Nombres = Not MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).zone.OcultarNombre
      
-                
             If UserCharIndex > 0 Then
-             With charlist(UserCharIndex)
-                 Dim new_music As Integer
-                 new_music = MapData(.Pos.x, .Pos.y).zone.Musica
-                 
-                 If new_music > 0 Then
-                     Call ao20audio.PlayMidi(new_music, True)
-                 Else
-                     
-                     Call ao20audio.PlayMidi(MapDat.music_numberLow, True)
-                 End If
-             End With
+                With charlist(UserCharIndex)
+                    Dim new_music As Integer
+                    new_music = MapData(.Pos.x, .Pos.y).zone.Musica
+                    If new_music > 0 Then
+                        Call ao20audio.PlayMidi(new_music, True)
+                    Else
+                        Call ao20audio.PlayMidi(MapDat.music_numberLow, True)
+                    End If
+                End With
             End If
     
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
@@ -2098,42 +2033,17 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Factor = MapData(x, y).light_value(0).r / 255
                 
                 If .Navegando Then
-                   
-                     If .priv = 0 Then
-                        
+                    If .priv = 0 Then
                         Select Case .status
-                            ' Criminal
-                            Case 0
-                                Call RGBAList(NameColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
-                            ' Ciudadano
-                            Case 1
-                                Call RGBAList(NameColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
-                            
-                            ' Caos
-                            Case 2
-                                Call RGBAList(NameColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
-    
-                            ' Armada
-                            Case 3
-                                Call RGBAList(NameColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
-                                
-                            ' Concilio
-                            Case 4
-                                Call RGBAList(NameColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
-                            ' Consejo
-                            Case 5
-                                Call RGBAList(NameColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
-    
+                            Case 0: Call RGBAList(NameColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
+                            Case 1: Call RGBAList(NameColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
+                            Case 2: Call RGBAList(NameColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
+                            Case 3: Call RGBAList(NameColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
+                            Case 4: Call RGBAList(NameColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
+                            Case 5: Call RGBAList(NameColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
                         End Select
                     Else
                         Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
-                        Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                     End If
                 Else
                     NameColor(0).r = NameColor(0).r * Factor
@@ -2148,7 +2058,6 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     NameColor(3).r = NameColor(3).r * Factor
                     NameColor(3).G = NameColor(3).G * Factor
                     NameColor(3).b = NameColor(3).b * Factor
-                
                 End If
                 
                 If .Team > 0 Then
@@ -2157,7 +2066,6 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 'Clan
-                
                 If .priv = 2 Or .priv = 3 Or .priv = 4 Then
                     line = "<Game Master>"
                 ElseIf .priv = 5 Then
@@ -2181,7 +2089,6 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
                 
                 If (UserCharIndex > LBound(charlist) And UserCharIndex < UBound(charlist)) Then
-                    
                     If (.clan_index = charlist(UserCharIndex).clan_index And CharIndex <> UserCharIndex And .EsNpc = False And .Team <= 0) Or (CharIndex = UserCharIndex And .Invisible) Then
                         'Seteo color de nombre del clan solo si es de mi clan
                         Call SetRGBA(NameColorClan(0), 255, 255, 0, 255)
@@ -2201,16 +2108,13 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         End If
 
         If .particle_count > 0 Then
-
             For i = 1 To .particle_count
-
                 If .particle_group(i) > 0 Then
                     Particle_Group_Render .particle_group(i), PixelOffsetX + .Body.BodyOffset.x + (TilePixelWidth / 2), PixelOffsetY + .Body.BodyOffset.y
                 End If
-
             Next i
-
         End If
+
         If Nombres And Len(.nombre) > 0 And MostrarNombre And .tipoUsuario > 0 Then
             Select Case .tipoUsuario
                 Case eTipoUsuario.aventurero
@@ -2232,17 +2136,14 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Call RGBAList(Color, 255, 255, 255, 200)
 
             Call Draw_Grh(TempGrh, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY - 55 + .Body.BodyOffset.y, 1, 0, Color, False, 0, 0, 0)
-            
-            Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY - 28 + .Body.BodyOffset.y, .BarTime / .MaxBarTime * 26, 4, RGBA_From_Comp(3, 214, 166, 120) ', RGBA_From_Comp(0, 0, 0, 255)
+            Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY - 28 + .Body.BodyOffset.y, .BarTime / .MaxBarTime * 26, 4, RGBA_From_Comp(3, 214, 166, 120)
 
             .BarTime = .BarTime + (timerElapsedTime / 1000)
-            'frmdebug.add_text_tracebox .BarTime
             If .BarTime >= .MaxBarTime Then
                 charlist(CharIndex).BarTime = 0
                 charlist(CharIndex).BarAccion = 99
                 charlist(CharIndex).MaxBarTime = 0
             End If
-
         End If
                    
         ' Meditación
@@ -2252,44 +2153,35 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         End If
 
         If .FxCount > 0 Then
-
             For i = 1 To .FxCount
-
                 If .FxList(i).FxIndex > 0 And .FxList(i).started <> 0 Then
                     Call RGBAList(Color, 255, 255, 255, 220)
-
                     If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
                         Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX + .Body.BodyOffset.x, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20 + .Body.BodyOffset.y, 1, 1, Color, False, , , , CharIndex)
                     Else
                         Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX + .Body.BodyOffset.x, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20 + .Body.BodyOffset.y, 1, 1, Color, True, , , , CharIndex)
                     End If
-
                 End If
 
                 If .FxList(i).started = 0 Then
                     .FxList(i).FxIndex = 0
-
                 End If
-
             Next i
 
             If .FxList(.FxCount).started = 0 Then
                 .FxCount = .FxCount - 1
-
             End If
-
         End If
 
     End With
 
-    
     Exit Sub
 
 Char_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Char_Render", Erl)
     Resume Next
-    
 End Sub
+
 Public Sub SetCharIdle(ByRef C As Char, Optional ByVal force As Boolean = True)
     ' Pone anim de quieto. Si AnimateOnIdle=0, NO anima (frame fijo).
     With C
