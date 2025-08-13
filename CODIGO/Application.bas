@@ -74,7 +74,7 @@ On Error GoTo RegistrarError_Err
 124             Print #File, "Linea: " & Linea
             End If
 
-126         Print #File, "Fecha y Hora: " & Date$ & "-" & Time$
+126         Print #File, "Fecha y Hora: " & DateTime.Now
         
 128         Print #File, vbNullString
         
