@@ -1633,7 +1633,7 @@ Private Sub HandleUpdateRM()
     Dim Value As Integer
 
     Value = Reader.ReadInt16
-    frmMain.lblResis = "+" & Value
+    frmMain.lblResis = "+" & value & "%"
 
     Exit Sub
 
