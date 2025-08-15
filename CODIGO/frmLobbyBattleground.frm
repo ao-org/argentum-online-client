@@ -89,7 +89,7 @@ On Error GoTo ErrHandler:
     Dim Password As String
     If MouseIndex > 0 And MouseIndex <= UBound(LobbyList) Then
         If LobbyList(MouseIndex).IsPrivate Then
-            Password = InputBox(JsonLanguage.Item("MENSAJE_EVENTO_CONTRASEÑA")) ' Este evento tiene contraseña, por favor ingresala:
+            Password = InputBox("Este evento tiene contraseña, porfavor ingresala") ' Este evento tiene contraseña, por favor ingresala:
             If Len(Password) = 0 Then Exit Sub
         End If
         Call WriteParticipar(LobbyList(MouseIndex).id, Password)
@@ -197,9 +197,9 @@ On Error GoTo ErrHandler:
             .CurrentX = OffX
             .CurrentY = Offy
             Select Case LobbyList(i + Scroll).TeamType
-                Case 1
+                Case e_TeamTypes.eRandom
                     pEvents.Print "Aleatorio"
-                Case 2
+                Case e_TeamTypes.ePremade
                     pEvents.Print "Grupos"
             End Select
             
