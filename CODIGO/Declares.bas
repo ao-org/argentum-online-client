@@ -24,9 +24,7 @@ Public SeguroResuX As Boolean
 Public LegionarySecureX As Boolean
 Public QuePestañaInferior As Byte
 Public newUser As Boolean
-Public lastActiveXPos As Byte
-Public lastActiveYPos As Byte
-Public lastActiveMapNumber As Integer
+Public lastActivePos As Position
 Public Enum tMacro
     dobleclick = 1
     Coordenadas = 2
