@@ -983,6 +983,10 @@ Begin VB.Form frmMain
       TabIndex        =   4
       Top             =   2280
       Width           =   11040
+      Begin VB.Timer tmrIsAfk 
+         Left            =   9000
+         Top             =   120
+      End
    End
    Begin VB.Image imgMAO 
       Height          =   315
@@ -4569,6 +4573,10 @@ imgSpellInfo_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.imgSpellInfo_Click", Erl)
     Resume Next
     
+End Sub
+
+Private Sub tmrIsAfk_Timer()
+
 End Sub
 
 Private Sub UpdateDaytime_Timer()
