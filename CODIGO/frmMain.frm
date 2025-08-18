@@ -984,7 +984,8 @@ Begin VB.Form frmMain
       Top             =   2280
       Width           =   11040
       Begin VB.Timer tmrIsAfk 
-         Interval        =   1000
+         Enabled         =   0   'False
+         Interval        =   60000
          Left            =   9000
          Top             =   120
       End
@@ -4577,11 +4578,13 @@ imgSpellInfo_Click_Err:
 End Sub
 
 Private Sub tmrIsAfk_Timer()
-    If charlist(UserCharIndex).Pos = lastActivePos Then
-        frmAfk.Show
-    Else
-        lastActivePos = charlist(UserCharIndex).Pos
-    End If
+    With charlist(UserCharIndex)
+        If (.LastActivePos.x <> .Pos.x) Or (.LastActivePos.y <> .Pos.y) Or MapDat.Seguro <> 0 Or UserMacro.Activado Then
+            .LastActivePos = .Pos
+            Exit Sub
+        End If
+    Call WriteQuit
+    End With
 End Sub
 
 Private Sub UpdateDaytime_Timer()

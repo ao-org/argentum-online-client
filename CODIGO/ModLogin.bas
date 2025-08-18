@@ -241,6 +241,7 @@ On Error GoTo LogearPersonaje_Err
     userName = Name
     If Connected Then
         frmMain.ShowFPS.enabled = True
+        frmMain.tmrIsAfk.enabled = True
     End If
 #If PYMMO = 0 Then
     Call Protocol_Writes.WriteLoginExistingChar
