@@ -248,6 +248,7 @@ Public Type ObjDatas
     ObjNum As Long
     Cooldown As Long
     CDType As Integer
+    Blodium As Integer
 End Type
 
 Public Type NpcDatas

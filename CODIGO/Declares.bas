@@ -487,6 +487,7 @@ Type tHerreria
     LPlata As Integer
     LOro As Integer
     Coal As Integer
+    Blodium As Integer
     Index As Integer
 End Type
 
@@ -510,6 +511,7 @@ Public DefensasHerrero(0 To 100)  As tHerreria
 Public ArmadurasHerrero(0 To 100) As tHerreria
 Public CascosHerrero(0 To 100)    As tHerreria
 Public EscudosHerrero(0 To 100)   As tHerreria
+Public RunasElementalesHerrero(0 To 100) As tHerreria
 Public ObjCarpintero(0 To 100)    As Integer
 Public ObjAlquimista(0 To 100)    As Integer
 Public ObjSastre(0 To 100)        As tSasteria

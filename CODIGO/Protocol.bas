@@ -254,6 +254,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleBlacksmithWeapons
         Case ServerPacketID.eBlacksmithArmors
             Call HandleBlacksmithArmors
+        Case ServerPacketID.eBlacksmithExtraObjects
+            Call HandleBlacksmithExtraObjects
         Case ServerPacketID.eCarpenterObjects
             Call HandleCarpenterObjects
         Case ServerPacketID.eRestOK
@@ -4480,12 +4482,6 @@ Private Sub HandleBlacksmithWeapons()
     
     For i = 1 To count
         ArmasHerrero(i).Index = Reader.ReadInt16()
-        ' tmp = ObjData(ArmasHerrero(i).Index).name        'Get the object's name
-        ArmasHerrero(i).LHierro = Reader.ReadInt16()  'The iron needed
-        ArmasHerrero(i).LPlata = Reader.ReadInt16()    'The silver needed
-        ArmasHerrero(i).LOro = Reader.ReadInt16()    'The gold needed
-        ArmasHerrero(i).Coal = Reader.ReadInt16()   'The coal needed
-        ' Call frmHerrero.lstArmas.AddItem(tmp)
     Next i
     
     For i = i To UBound(ArmasHerrero())
@@ -4524,12 +4520,6 @@ Private Sub HandleBlacksmithArmors()
     'Call frmHerrero.lstArmaduras.Clear
     
     For i = 1 To count
-        tmp = Reader.ReadString8()         'Get the object's name
-        DefensasHerrero(i).LHierro = Reader.ReadInt16()   'The iron needed
-        DefensasHerrero(i).LPlata = Reader.ReadInt16()   'The silver needed
-        DefensasHerrero(i).LOro = Reader.ReadInt16()   'The gold needed
-        DefensasHerrero(i).Coal = Reader.ReadInt16()   'The coal needed
-        ' Call frmHerrero.lstArmaduras.AddItem(tmp)
         DefensasHerrero(i).Index = Reader.ReadInt16()
     Next i
         
@@ -4549,11 +4539,7 @@ Private Sub HandleBlacksmithArmors()
         tmpObj = ObjData(DefensasHerrero(i).Index)
         
         If tmpObj.ObjType = 3 Then
-           
             ArmadurasHerrero(a).Index = DefensasHerrero(i).Index
-            ArmadurasHerrero(a).LHierro = DefensasHerrero(i).LHierro
-            ArmadurasHerrero(a).LPlata = DefensasHerrero(i).LPlata
-            ArmadurasHerrero(a).LOro = DefensasHerrero(i).LOro
             a = a + 1
 
         End If
@@ -4561,18 +4547,12 @@ Private Sub HandleBlacksmithArmors()
         ' Escudos (16), Objetos Magicos (21) y Anillos (35) van en la misma lista
         If tmpObj.ObjType = 16 Or tmpObj.ObjType = 35 Or tmpObj.ObjType = 21 Or tmpObj.ObjType = 100 Or tmpObj.ObjType = 30 Then
             EscudosHerrero(e).Index = DefensasHerrero(i).Index
-            EscudosHerrero(e).LHierro = DefensasHerrero(i).LHierro
-            EscudosHerrero(e).LPlata = DefensasHerrero(i).LPlata
-            EscudosHerrero(e).LOro = DefensasHerrero(i).LOro
             e = e + 1
 
         End If
 
         If tmpObj.ObjType = 17 Then
             CascosHerrero(c).Index = DefensasHerrero(i).Index
-            CascosHerrero(c).LHierro = DefensasHerrero(i).LHierro
-            CascosHerrero(c).LPlata = DefensasHerrero(i).LPlata
-            CascosHerrero(c).LOro = DefensasHerrero(i).LOro
             c = c + 1
 
         End If
@@ -4586,6 +4566,35 @@ Private Sub HandleBlacksmithArmors()
 errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithArmors", Erl)
+    
+
+End Sub
+
+
+Private Sub HandleBlacksmithExtraObjects()
+
+    
+    On Error GoTo ErrHandler
+    
+    Dim count As Integer
+
+    Dim i     As Long
+
+    Dim tmp   As String
+    
+    count = Reader.ReadInt16()
+    
+    Call frmHerrero.lstArmas.Clear
+    
+    For i = 1 To count
+        RunasElementalesHerrero(i).Index = Reader.ReadInt16()
+    Next i
+    
+    Exit Sub
+
+ErrHandler:
+
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithExtraObjects", Erl)
     
 
 End Sub
