@@ -701,9 +701,10 @@ Private Sub HandleVelocidadToggle()
 
     If UserCharIndex = 0 Then Exit Sub
     
-    charlist(UserCharIndex).Speeding = Reader.ReadReal32()
-    
-    Call MainTimer.SetInterval(TimersIndex.Walk, gIntervals.Walk / charlist(UserCharIndex).Speeding)
+        charlist(UserCharIndex).Speeding = Reader.ReadReal32()
+        Call ApplySpeedingToChar(UserCharIndex)
+        Call MainTimer.SetInterval(TimersIndex.Walk, gIntervals.Walk / charlist(UserCharIndex).Speeding)
+
     
     Exit Sub
 
@@ -3163,68 +3164,64 @@ HandleForceCharMoveSiguiendo_Err:
     
 End Sub
 
-''
 ' Handles the CharacterChange message.
-
 Private Sub HandleCharacterChange()
     
     On Error GoTo HandleCharacterChange_Err
     
     Dim CharIndex As Integer
-
     Dim TempInt   As Integer
-
     Dim headIndex As Integer
 
     CharIndex = Reader.ReadInt16()
 
     With charlist(CharIndex)
-        TempInt = Reader.ReadInt16()
 
+        ' ===== Preservar estado previo para fase =====
+        Dim wasMoving         As Boolean: wasMoving = .Moving
+        Dim oldHeading        As E_Heading: oldHeading = .Heading
+        Dim prevWalk          As Grh: prevWalk = .Body.Walk(oldHeading)
+        Dim prevWeaponWalk    As Grh: prevWeaponWalk = .Arma.WeaponWalk(oldHeading)
+        Dim prevShieldWalk    As Grh: prevShieldWalk = .Escudo.ShieldWalk(oldHeading)
+        Dim hadMovArmaEscudo  As Boolean: hadMovArmaEscudo = .MovArmaEscudo
+        ' ============================================
+
+        ' Body
+        TempInt = Reader.ReadInt16()
         If TempInt < LBound(BodyData()) Or TempInt > UBound(BodyData()) Then
             .Body = BodyData(0)
+            .iBody = 0
         Else
             .Body = BodyData(TempInt)
             .iBody = TempInt
-
         End If
         
+        ' Head
         headIndex = Reader.ReadInt16()
-
         If headIndex < LBound(HeadData()) Or headIndex > UBound(HeadData()) Then
             .Head = HeadData(0)
             .IHead = 0
-            
         Else
             .Head = HeadData(headIndex)
             .IHead = headIndex
-
         End If
 
         .Muerto = (.iBody = CASPER_BODY_IDLE)
         
+        ' Heading nuevo
         .Heading = Reader.ReadInt8()
         
+        ' Arma / Escudo / Casco
         TempInt = Reader.ReadInt16()
-
-        If TempInt <> 0 And TempInt <= UBound(WeaponAnimData) Then
-            .Arma = WeaponAnimData(TempInt)
-        End If
+        If TempInt <> 0 And TempInt <= UBound(WeaponAnimData) Then .Arma = WeaponAnimData(TempInt)
 
         TempInt = Reader.ReadInt16()
-
-        If TempInt <> 0 And TempInt <= UBound(ShieldAnimData) Then
-            .Escudo = ShieldAnimData(TempInt)
-        End If
+        If TempInt <> 0 And TempInt <= UBound(ShieldAnimData) Then .Escudo = ShieldAnimData(TempInt)
         
         TempInt = Reader.ReadInt16()
-
-        If TempInt <> 0 And TempInt <= UBound(CascoAnimData) Then
-            .Casco = CascoAnimData(TempInt)
-        End If
+        If TempInt <> 0 And TempInt <= UBound(CascoAnimData) Then .Casco = CascoAnimData(TempInt)
         
         TempInt = Reader.ReadInt16()
-        
         If TempInt <= 2 Or TempInt > UBound(BodyData()) Then
             .HasCart = False
         Else
@@ -3232,45 +3229,90 @@ Private Sub HandleCharacterChange()
             .HasCart = True
         End If
                 
-        If .Body.HeadOffset.y = -26 Then
-            .EsEnano = True
-        Else
-            .EsEnano = False
-
-        End If
+        .EsEnano = (.Body.HeadOffset.y = -26)
         
+        ' FX
         Dim Fx As Integer: Fx = Reader.ReadInt16
         Call StartFx(.ActiveAnimation, Fx)
+        .Meditating = (Fx <> 0)
+        Reader.ReadInt16 ' Ignore loops
         
-        .Meditating = Fx <> 0
-        
-        Reader.ReadInt16 'Ignore loops
-        
+        ' Flags
         Dim flags As Byte
-        
         flags = Reader.ReadInt8()
-        
-        .Idle = flags And &O1
-        .Navegando = flags And &O2
-        
+        .Idle = (flags And &O1)
+        .Navegando = (flags And &O2)
+
+        ' ==================== ANIMACIÓN / FASE ====================
         If .Idle Then
+            ' --- IDLE ---
             If .Navegando = False Or UserNadandoTrajeCaucho = True Then
                 If .Body.AnimateOnIdle = 0 Then
+                    ' Idle sin anim: parar
                     .Body.Walk(.Heading).started = 0
-                ElseIf .Body.Walk(.Heading).started = 0 Then
-                    .Body.Walk(.Heading).started = FrameTime
+                Else
+                    ' Idle con anim: si cambia a IdleBody, preservá fase si venía animando
+                    If .Body.IdleBody > 0 Then
+                        Dim keepStartIdle As Long
+                        Dim newGi As Long
+                        newGi = BodyData(.Body.IdleBody).Walk(.Heading).GrhIndex
+                        If prevWalk.started > 0 And wasMoving Then
+                            keepStartIdle = SyncGrhPhase(prevWalk, newGi)
+                        Else
+                            keepStartIdle = FrameTime
+                        End If
+                        .Body = BodyData(.Body.IdleBody)
+                        .Body.Walk(.Heading).started = keepStartIdle
+                    ElseIf .Body.Walk(.Heading).started = 0 Then
+                        .Body.Walk(.Heading).started = FrameTime
+                    End If
                 End If
+
+                ' Arma/Escudo en idle: respetá tu regla
                 If Not .MovArmaEscudo Then
                     .Arma.WeaponWalk(.Heading).started = 0
                     .Escudo.ShieldWalk(.Heading).started = 0
                 End If
-                If .Body.IdleBody > 0 Then
-                    .Body = BodyData(.Body.IdleBody)
-                    .Body.Walk(.Heading).started = FrameTime
-                    
+            End If
+
+        Else
+            ' --- NO IDLE (camina / se mueve) ---
+            Dim keepStart As Long
+            Dim targetGi As Long
+            targetGi = .Body.Walk(.Heading).GrhIndex
+
+            If wasMoving And prevWalk.started > 0 Then
+                keepStart = SyncGrhPhase(prevWalk, targetGi)
+            ElseIf .Body.Walk(.Heading).started > 0 Then
+                keepStart = .Body.Walk(.Heading).started
+            Else
+                keepStart = FrameTime
+            End If
+
+            .Body.Walk(.Heading).started = keepStart
+
+            ' Arma/Escudo: mantener en fase con el cuerpo
+            If .MovArmaEscudo Then
+                Dim keepW As Long, keepS As Long
+                If hadMovArmaEscudo And prevWeaponWalk.started > 0 Then
+                    keepW = SyncGrhPhase(prevWeaponWalk, .Arma.WeaponWalk(.Heading).GrhIndex)
+                Else
+                    keepW = keepStart
                 End If
+                If hadMovArmaEscudo And prevShieldWalk.started > 0 Then
+                    keepS = SyncGrhPhase(prevShieldWalk, .Escudo.ShieldWalk(.Heading).GrhIndex)
+                Else
+                    keepS = keepStart
+                End If
+
+                If .Arma.WeaponWalk(.Heading).started = 0 Then .Arma.WeaponWalk(.Heading).started = keepW
+                If .Escudo.ShieldWalk(.Heading).started = 0 Then .Escudo.ShieldWalk(.Heading).started = keepS
+            Else
+                .Arma.WeaponWalk(.Heading).started = 0
+                .Escudo.ShieldWalk(.Heading).started = 0
             End If
         End If
+        ' ===========================================================
 
     End With
     
@@ -6580,21 +6622,23 @@ Private Sub HandleSpeedToChar()
     On Error GoTo HandleSpeedToChar_Err
 
     Dim CharIndex As Integer
-
     Dim Speeding  As Single
      
     CharIndex = Reader.ReadInt16()
     Speeding = Reader.ReadReal32()
-   
+
+    ' (Opcional defensivo)
+    If CharIndex < LBound(charlist) Or CharIndex > UBound(charlist) Then Exit Sub
+
     charlist(CharIndex).Speeding = Speeding
+    Call ApplySpeedingToChar(CharIndex)   ' <- actualiza .speed de las anims
     
     Exit Sub
 
 HandleSpeedToChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSpeedToChar", Erl)
-    
-    
 End Sub
+
 Private Sub HandleNieveToggle()
 
     'Remove packet ID
@@ -7407,32 +7451,47 @@ Private Sub HandleCommerceRecieveChatMessage()
 End Sub
 
 Private Sub HandleDoAnimation()
-    
-    On Error GoTo HandleCharacterChange_Err
-    
+
+    On Error GoTo HandleDoAnimation_Err
+
     Dim CharIndex As Integer
-
-    Dim TempInt   As Integer
-
-    Dim headIndex As Integer
-
+    Dim oldWalk   As Grh
+    Dim keepStart As Long
     CharIndex = Reader.ReadInt16()
-    
+
     With charlist(CharIndex)
+        ' Guardar el walk anterior ANTES de cambiar el Body
+        oldWalk = .Body.Walk(.Heading)
+
         .AnimatingBody = Reader.ReadInt16()
+
+        ' Calcular el "started" preservando fase si ya estaba animando
+        If oldWalk.started > 0 And .Moving Then
+            keepStart = SyncGrhPhase(oldWalk, BodyData(.AnimatingBody).Walk(.Heading).GrhIndex)
+        Else
+            keepStart = FrameTime
+        End If
+
+        ' Aplicar el cambio de Body y setear started preservado
         .Body = BodyData(.AnimatingBody)
-        'Start animation
-        .Body.Walk(.Heading).started = FrameTime
-        .Body.Walk(.Heading).Loops = 0
+
+        If .Body.Walk(.Heading).started = 0 Or keepStart <> 0 Then
+            .Body.Walk(.Heading).started = keepStart
+        End If
+
+        ' Mantener arma/escudo en fase con el cuerpo (solo si están “apagados”)
+        If .Arma.WeaponWalk(.Heading).started = 0 Then
+            .Arma.WeaponWalk(.Heading).started = .Body.Walk(.Heading).started
+        End If
+        If .Escudo.ShieldWalk(.Heading).started = 0 Then
+            .Escudo.ShieldWalk(.Heading).started = .Body.Walk(.Heading).started
+        End If
+
         .Idle = False
     End With
-    
     Exit Sub
-
-HandleCharacterChange_Err:
+HandleDoAnimation_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDoAnimation", Erl)
-    
-    
 End Sub
 
 Private Sub HandleOpenCrafting()
