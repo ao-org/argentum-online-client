@@ -382,13 +382,9 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
     On Error GoTo Char_Move_by_Pos_Err
 
     Dim x        As Integer
-
     Dim y        As Integer
-
     Dim addx     As Integer
-
     Dim addy     As Integer
-
     Dim nHeading As E_Heading
     
     With charlist(charindex)
@@ -404,22 +400,18 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         
         If Sgn(addx) = 1 Then
             nHeading = E_Heading.EAST
-
         End If
         
         If Sgn(addx) = -1 Then
             nHeading = E_Heading.WEST
-
         End If
         
         If Sgn(addy) = -1 Then
             nHeading = E_Heading.NORTH
-
         End If
         
         If Sgn(addy) = 1 Then
             nHeading = E_Heading.south
-
         End If
         
         MapData(nX, nY).charindex = charindex
@@ -432,6 +424,10 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         .MoveOffsetX = -1 * (TilePixelWidth * addx)
         .MoveOffsetY = -1 * (TilePixelHeight * addy)
 
+        ' === Guardar heading anterior ANTES de cambiarlo ===
+        Dim oldHeading As E_Heading
+        oldHeading = .Heading
+
         If IsLadderAt(nX, nY) Then
             .Heading = E_Heading.NORTH
         Else
@@ -443,8 +439,9 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
 
         .LastStep = FrameTime
         .Idle = False
+
         If Not .Moving Then
-        
+            ' --- Empezó a moverse recién ahora ---
             If .Muerto Then
                 .Body = BodyData(CASPER_BODY)
             Else
@@ -454,18 +451,28 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
                 End If
             End If
             
-            'Start animations
+            ' Start animations (solo si no estaban corriendo)
             If .Body.Walk(.Heading).Started = 0 Then
                 .Body.Walk(.Heading).Started = FrameTime
                 .Arma.WeaponWalk(.Heading).Started = FrameTime
                 .Escudo.ShieldWalk(.Heading).Started = FrameTime
-
                 .Arma.WeaponWalk(.Heading).Loops = INFINITE_LOOPS
                 .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
             End If
-            
+
             .MovArmaEscudo = False
             .Moving = True
+
+        ElseIf .Heading <> oldHeading Then
+            ' --- Ya venía moviéndose y cambió de dirección: preservar fase ---
+            Dim keepStart As Long
+            keepStart = SyncGrhPhase(.Body.Walk(oldHeading), .Body.Walk(.Heading).GrhIndex)
+            If keepStart > 0 Then
+                .Body.Walk(.Heading).started = keepStart
+                ' Si necesitás acompasar arma/escudo, descomentá:
+                'If .Arma.WeaponWalk(.Heading).started = 0 Then .Arma.WeaponWalk(.Heading).started = keepStart
+                'If .Escudo.ShieldWalk(.Heading).started = 0 Then .Escudo.ShieldWalk(.Heading).started = keepStart
+            End If
         End If
 
     End With
@@ -474,13 +481,81 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         Call EraseChar(charindex)
     End If
 
-    
     Exit Sub
 
 Char_Move_by_Pos_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.Char_Move_by_Pos", Erl)
     Resume Next
     
+End Sub
+
+Public Sub ApplySpeedingToChar(ByVal CharIndex As Integer)
+    On Error Resume Next
+
+    Dim rate As Single
+    Dim h    As Long
+    Dim gi   As Long
+    Dim n    As Integer
+    Dim total As Long
+    Dim base  As Long
+    Dim spd   As Long
+
+    With charlist(CharIndex)
+        rate = .Speeding
+        If rate <= 0! Then rate = 1!
+
+        ' ---- Cuerpo ----
+        For h = LBound(.Body.Walk) To UBound(.Body.Walk)
+            gi = .Body.Walk(h).GrhIndex
+            If gi > 0 Then
+                n = GrhData(gi).NumFrames
+                total = GrhData(gi).speed
+                If n > 0 Then
+                    base = total \ n    ' ms por frame base (sin acelerar)
+                Else
+                    base = total
+                End If
+                If base <= 0 Then base = 1
+
+                spd = CLng(base / rate) ' a mayor rate => frames más rápidos
+                If spd < 40 Then spd = 40   ' clamps opcionales
+                If spd > 220 Then spd = 220
+                .Body.Walk(h).speed = spd
+            End If
+        Next h
+
+        ' ---- Arma ----
+        For h = LBound(.Arma.WeaponWalk) To UBound(.Arma.WeaponWalk)
+            gi = .Arma.WeaponWalk(h).GrhIndex
+            If gi > 0 Then
+                n = GrhData(gi).NumFrames
+                total = GrhData(gi).speed
+                If n > 0 Then base = total \ n Else base = total
+                If base <= 0 Then base = 1
+
+                spd = CLng(base / rate)
+                If spd < 40 Then spd = 40
+                If spd > 220 Then spd = 220
+                .Arma.WeaponWalk(h).speed = spd
+            End If
+        Next h
+
+        ' ---- Escudo ----
+        For h = LBound(.Escudo.ShieldWalk) To UBound(.Escudo.ShieldWalk)
+            gi = .Escudo.ShieldWalk(h).GrhIndex
+            If gi > 0 Then
+                n = GrhData(gi).NumFrames
+                total = GrhData(gi).speed
+                If n > 0 Then base = total \ n Else base = total
+                If base <= 0 Then base = 1
+
+                spd = CLng(base / rate)
+                If spd < 40 Then spd = 40
+                If spd > 220 Then spd = 220
+                .Escudo.ShieldWalk(h).speed = spd
+            End If
+        Next h
+    End With
 End Sub
 
 Public Function EstaPCarea(ByVal CharIndex As Integer) As Boolean
