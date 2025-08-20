@@ -7477,6 +7477,14 @@ Private Sub HandleDoAnimation()
 
         If .Body.Walk(.Heading).started = 0 Or keepStart <> 0 Then
             .Body.Walk(.Heading).started = keepStart
+                        ' Hacer que la animación de casteo sea de UNA SOLA pasada.
+            ' Si queda en INFINITE_LOOPS nunca vuelve al idle.
+            .Body.Walk(.Heading).Loops = 0
+
+            ' (opcional) evitar que arma/escudo queden loopeando durante el cast
+            If .Arma.WeaponWalk(.Heading).GrhIndex <> 0 Then .Arma.WeaponWalk(.Heading).Loops = 0
+            If .Escudo.ShieldWalk(.Heading).GrhIndex <> 0 Then .Escudo.ShieldWalk(.Heading).Loops = 0
+
         End If
 
         ' Mantener arma/escudo en fase con el cuerpo (solo si están “apagados”)
