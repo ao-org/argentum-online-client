@@ -1687,6 +1687,10 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         ElseIf .AnimatingBody Then
             If .Body.Walk(.Heading).started = 0 Then
                 .AnimatingBody = 0
+
+                ' Volver a estado Idle inmediatamente
+                .Idle = True
+
                 If .iBody Then
                     .Body = BodyData(.iBody)
                     .Body.Walk(.Heading).started = FrameTime
@@ -1695,10 +1699,10 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
                 .Body.Walk(.Heading).Loops = -1
                 If .Idle Or .Navegando Then
-                    'Start animation
                     .Body.Walk(.Heading).started = FrameTime
                 End If
             End If
+
         ElseIf Not .Idle Then
             If .Muerto Then
                 If CharIndex <> UserCharIndex Then
