@@ -1723,6 +1723,7 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).Valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
         ObjData(Obj).Agarrable = Val(Leer.GetValue("OBJ" & Obj, "Agarrable"))
         ObjData(Obj).Llave = Val(Leer.GetValue("OBJ" & Obj, "Llave"))
+        ObjData(Obj).ElementalTags = val(Leer.GetValue("OBJ" & Obj, "ElementalTags"))
             
         If Val(Leer.GetValue("OBJ" & Obj, "NFT")) = 1 Then
             ObjShop(i).name = Leer.GetValue("OBJ" & Obj, "Name")

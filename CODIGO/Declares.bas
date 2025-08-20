@@ -114,6 +114,14 @@ Public Enum TipoPaso
     CONST_AGUA = 7
 End Enum
 
+Public Enum e_ElementalTags
+    Normal = 0
+    Fire = 1
+    Water = 2
+    Earth = 4
+    Wind = 8
+End Enum
+
 Public Type tPaso
     CantPasos As Byte
     wav() As Integer
@@ -710,6 +718,7 @@ Type Slot
     MaxHit As Integer
     MinHit As Integer
     PuedeUsar As Byte
+    ElementalTags As Long
     IsBindable As Boolean
 End Type
 
@@ -739,6 +748,7 @@ Type NpCinV
     Def As Integer
     MaxHit As Integer
     MinHit As Integer
+    ElementalTags As Long
     c1 As String
     C2 As String
     c3 As String

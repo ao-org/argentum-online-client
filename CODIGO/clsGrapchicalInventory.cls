@@ -409,6 +409,19 @@ Equipped_Err:
     
 End Property
 
+Public Property Get ElementalTags(ByVal Slot As Byte) As Long
+    On Error GoTo ElementalTags_Err
+    
+    ElementalTags = UserInventory(Slot).ElementalTags
+
+    Exit Property
+
+ElementalTags_Err:
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.ElementalTags", Erl)
+    Resume Next
+
+End Property
+
 Public Property Get PuedeUsar(ByVal Slot As Byte) As Byte
     
     'Retrieves True if the item at the given pos is eqiupped
@@ -502,7 +515,7 @@ ReDraw_Err:
     
 End Sub
 
-Public Sub SetItem(ByVal Slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount As Integer, ByVal eEquipped As Byte, ByVal eGrhIndex As Long, ByVal eObjType As Integer, ByVal eMaxHit As Integer, ByVal eMinHit As Integer, ByVal eDef As Integer, ByVal eValor As Single, ByVal eName As String, ByVal PuedeUsar As Byte)
+Public Sub SetItem(ByVal Slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount As Integer, ByVal eEquipped As Byte, ByVal eGrhIndex As Long, ByVal eObjType As Integer, ByVal eMaxHit As Integer, ByVal eMinHit As Integer, ByVal eDef As Integer, ByVal eValor As Single, ByVal eName As String, ByVal ElementalTags As Long, ByVal PuedeUsar As Byte)
 
     'Sets all data for a given inventory slot
     
@@ -523,7 +536,7 @@ Public Sub SetItem(ByVal Slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount
         .ObjType = eObjType
         .Valor = eValor
         .PuedeUsar = PuedeUsar
-
+        .ElementalTags = ElementalTags
     End With
 
     InvNeedsRedraw = True
@@ -552,6 +565,7 @@ Public Sub ClearSlot(ByVal Slot As Byte)
         .ObjType = 0
         .Valor = 0
         .PuedeUsar = 0
+        .ElementalTags = 0
 
     End With
 

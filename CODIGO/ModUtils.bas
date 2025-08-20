@@ -249,6 +249,7 @@ Public Type ObjDatas
     Cooldown As Long
     CDType As Integer
     Blodium As Integer
+    ElementalTags As Long
 End Type
 
 Public Type NpcDatas
@@ -2060,4 +2061,28 @@ Public Function IsArrayInitialized(ByRef arr() As t_ActiveEffect) As Boolean
   On Error Resume Next
   rv = UBound(arr)
   IsArrayInitialized = (Err.Number = 0) And rv >= 0
+End Function
+
+Public Function ElementalTagsToTxtParser(ByVal ElementalTags As Long) As String
+
+    If ElementalTags = e_ElementalTags.Normal Then
+        ElementalTagsToTxtParser = "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_NORMAL") & "]"
+    End If
+    
+    If ElementalTags And e_ElementalTags.Fire Then
+        ElementalTagsToTxtParser = "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_FUEGO") & "]"
+    End If
+    
+    If ElementalTags And e_ElementalTags.Water Then
+        ElementalTagsToTxtParser = "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_AGUA") & "]"
+    End If
+    
+    If ElementalTags And e_ElementalTags.Earth Then
+        ElementalTagsToTxtParser = "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_TIERRA") & "]"
+    End If
+    
+    If ElementalTags And e_ElementalTags.Wind Then
+        ElementalTagsToTxtParser = "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_AIRE") & "]"
+    End If
+    
 End Function

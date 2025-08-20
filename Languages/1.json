@@ -651,6 +651,11 @@
 	"MENSAJE_QUEST_REQUERIDA": "Quest: ",
 	"MENSAJE_QUEST_CLASE": "Clase: ",
 	"MENSAJE_SEGURO_LEGION_ACTIVADO":"Has activado el seguro de Facción Legionaria.",
-	"MENSAJE_SEGURO_LEGION_DESACTIVADO":"Has desactivado el seguro de Facción Legionaria, ahora puedes atacar a un Legión."
+	"MENSAJE_SEGURO_LEGION_DESACTIVADO":"Has desactivado el seguro de Facción Legionaria, ahora puedes atacar a un Legión.",
+    "MENSAJE_ELEMENTO_NORMAL": "Normal",
+    "MENSAJE_ELEMENTO_FUEGO" : "Fuego",
+    "MENSAJE_ELEMENTO_AGUA" : "Agua",
+    "MENSAJE_ELEMENTO_TIERRA" : "Tierra",
+    "MENSAJE_ELEMENTO_AIRE" : "Aire"
 
 }

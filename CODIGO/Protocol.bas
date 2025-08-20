@@ -1050,7 +1050,7 @@ Private Sub HandleCommerceInit()
     For i = 1 To MAX_INVENTORY_SLOTS
       
             With frmMain.Inventario
-                Call frmComerciar.InvComUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+                Call frmComerciar.InvComUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .valor(i), .ItemName(i), .ElementalTags(i), .PuedeUsar(i))
             End With
 
     Next i
@@ -1083,7 +1083,7 @@ Private Sub HandleBankInit()
     For i = 1 To MAX_INVENTORY_SLOTS
 
             With frmMain.Inventario
-                Call frmBancoObj.InvBankUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+                Call frmBancoObj.InvBankUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .valor(i), .ItemName(i), .ElementalTags(i), .PuedeUsar(i))
             End With
 
     Next i
@@ -1178,7 +1178,7 @@ Private Sub HandleUserCommerceInit()
     For i = 1 To MAX_INVENTORY_SLOTS
 
             With frmMain.Inventario
-                Call frmComerciarUsu.InvUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+                Call frmComerciarUsu.InvUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .valor(i), .ItemName(i), .ElementalTags(i), .PuedeUsar(i))
             End With
 
     Next i
@@ -1187,8 +1187,8 @@ Private Sub HandleUserCommerceInit()
     Dim J As Byte
 
     For J = 1 To 6
-        Call frmComerciarUsu.InvOtherSell.SetItem(J, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-        Call frmComerciarUsu.InvUserSell.SetItem(J, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Call frmComerciarUsu.InvOtherSell.SetItem(j, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0, 0)
+        Call frmComerciarUsu.InvUserSell.SetItem(j, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0, 0)
     Next J
     
     'Set state and show form
@@ -1600,7 +1600,7 @@ Private Sub HandleUpdateUserKey()
     Slot = Reader.ReadInt16
     Llave = Reader.ReadInt16
     
-    Call FrmKeyInv.InvKeys.SetItem(Slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0)
+    Call FrmKeyInv.InvKeys.SetItem(Slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0, 0)
  
     
     Exit Sub
@@ -4321,19 +4321,19 @@ Private Sub HandleChangeInventorySlot()
 
     End If
     
-    Call ModGameplayUI.SetInvItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo, IsBindable)
+    Call ModGameplayUI.SetInvItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo, ElementalTags, IsBindable)
     
     If frmComerciar.visible Then
-        Call frmComerciar.InvComUsu.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+        Call frmComerciar.InvComUsu.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, ElementalTags, podrausarlo)
 
     ElseIf frmBancoObj.visible Then
-        Call frmBancoObj.InvBankUsu.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+        Call frmBancoObj.InvBankUsu.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, ElementalTags, podrausarlo)
         
     ElseIf frmBancoCuenta.visible Then
-        Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+        Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, ElementalTags, podrausarlo)
     
     ElseIf frmCrafteo.visible Then
-        Call frmCrafteo.InvCraftUser.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+        Call frmCrafteo.InvCraftUser.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, ElementalTags, podrausarlo)
     End If
 
     Exit Sub
@@ -4381,7 +4381,7 @@ Private Sub HandleChangeBankSlot()
             .Def = ObjData(.ObjIndex).MaxDef
         End If
         
-        Call frmBancoObj.InvBoveda.SetItem(Slot, .ObjIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        Call frmBancoObj.InvBoveda.SetItem(Slot, .ObjIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .valor, .Name, .ElementalTags, .PuedeUsar)
 
     End With
     
@@ -4867,9 +4867,11 @@ Private Sub HandleChangeNPCInventorySlot()
         .MaxHit = ObjData(.ObjIndex).MaxHit
         .MinHit = ObjData(.ObjIndex).MinHit
         .Def = ObjData(.ObjIndex).MaxDef
+        .ElementalTags = Reader.ReadInt32()
         .PuedeUsar = Reader.ReadInt8()
         
-        Call frmComerciar.InvComNpc.SetItem(Slot, .ObjIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        
+        Call frmComerciar.InvComNpc.SetItem(Slot, .ObjIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .valor, .Name, .ElementalTags, .PuedeUsar)
     End With
     
     Exit Sub
@@ -5933,6 +5935,7 @@ Private Sub HandleChangeUserTradeSlot()
     Dim cantidad   As Integer
     Dim grhItem    As Long
     Dim ObjIndex   As Integer
+    Dim ElementalTags As Long
 
     If miOferta Then
         Dim OroAEnviar As Long
@@ -5947,9 +5950,10 @@ Private Sub HandleChangeUserTradeSlot()
                 nombreItem = Reader.ReadString8
                 grhItem = Reader.ReadInt32
                 cantidad = Reader.ReadInt32
+                ElementalTags = Reader.ReadInt32
 
                 If cantidad > 0 Then
-                    Call frmComerciarUsu.InvUserSell.SetItem(i, ObjIndex, cantidad, 0, grhItem, 0, 0, 0, 0, 0, nombreItem, 0)
+                    Call frmComerciarUsu.InvUserSell.SetItem(i, ObjIndex, cantidad, 0, grhItem, 0, 0, 0, 0, 0, nombreItem, ElementalTags, 0)
 
                 End If
 
@@ -5969,9 +5973,10 @@ Private Sub HandleChangeUserTradeSlot()
                 nombreItem = Reader.ReadString8
                 grhItem = Reader.ReadInt32
                 cantidad = Reader.ReadInt32
-
+                ElementalTags = Reader.ReadInt32
+                
                 If cantidad > 0 Then
-                    Call frmComerciarUsu.InvOtherSell.SetItem(i, ObjIndex, cantidad, 0, grhItem, 0, 0, 0, 0, 0, nombreItem, 0)
+                    Call frmComerciarUsu.InvOtherSell.SetItem(i, ObjIndex, cantidad, 0, grhItem, 0, 0, 0, 0, 0, nombreItem, ElementalTags, 0)
 
                 End If
 
@@ -7461,7 +7466,7 @@ Private Sub HandleOpenCrafting()
     Dim i As Long
     For i = 1 To MAX_INVENTORY_SLOTS
           With frmMain.Inventario
-                Call frmCrafteo.InvCraftUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+                Call frmCrafteo.InvCraftUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .valor(i), .ItemName(i), .ElementalTags(i), .PuedeUsar(i))
             End With
     Next i
     For i = 1 To MAX_SLOTS_CRAFTEO
@@ -7485,7 +7490,7 @@ Private Sub HandleCraftingItem()
     
     If ObjIndex <> 0 Then
         With ObjData(ObjIndex)
-            Call frmCrafteo.InvCraftItems.SetItem(Slot, ObjIndex, 1, 0, .GrhIndex, .ObjType, 0, 0, 0, .Valor, .Name, 0)
+            Call frmCrafteo.InvCraftItems.SetItem(Slot, ObjIndex, 1, 0, .GrhIndex, .ObjType, 0, 0, 0, .valor, .Name, .ElementalTags, 0)
         End With
     Else
         Call frmCrafteo.InvCraftItems.ClearSlot(Slot)
@@ -7501,7 +7506,7 @@ Private Sub HandleCraftingCatalyst()
     
     If ObjIndex <> 0 Then
         With ObjData(ObjIndex)
-            Call frmCrafteo.InvCraftCatalyst.SetItem(1, ObjIndex, Amount, 0, .GrhIndex, .ObjType, 0, 0, 0, .Valor, .Name, 0)
+            Call frmCrafteo.InvCraftCatalyst.SetItem(1, ObjIndex, Amount, 0, .GrhIndex, .ObjType, 0, 0, 0, .valor, .Name, .ElementalTags, 0)
         End With
     Else
         Call frmCrafteo.InvCraftCatalyst.ClearSlot(1)
