@@ -3303,6 +3303,7 @@ Private Sub HandleObjectCreate()
 
     Dim id       As Long
     
+    Dim ElementalTags As Long
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     
@@ -3310,12 +3311,14 @@ Private Sub HandleObjectCreate()
     
     Amount = Reader.ReadInt16
     
+    ElementalTags = Reader.ReadInt32
     MapData(x, y).ObjGrh.GrhIndex = ObjData(ObjIndex).GrhIndex
     
     MapData(x, y).OBJInfo.ObjIndex = ObjIndex
     
     MapData(x, y).OBJInfo.Amount = Amount
     
+    MapData(x, y).OBJInfo.ElementalTags = ElementalTags
     Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.GrhIndex)
     
     If ObjData(ObjIndex).CreaLuz <> "" Then
@@ -4254,6 +4257,7 @@ Private Sub HandleChangeInventorySlot()
     Dim Value       As Single
     Dim podrausarlo As Byte
     Dim IsBindable As Boolean
+    Dim ElementalTags As Long
 
     Slot = Reader.ReadInt8()
     ObjIndex = Reader.ReadInt16()
@@ -4261,6 +4265,7 @@ Private Sub HandleChangeInventorySlot()
     Equipped = Reader.ReadBool()
     Value = Reader.ReadReal32()
     podrausarlo = Reader.ReadInt8()
+    ElementalTags = Reader.ReadInt32()
     IsBindable = Reader.ReadBool()
     Name = ObjData(ObjIndex).Name
     GrhIndex = ObjData(ObjIndex).GrhIndex
