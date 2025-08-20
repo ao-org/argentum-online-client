@@ -111,10 +111,10 @@ Begin VB.Form frmHerrero
    End
    Begin VB.Image Command5 
       Height          =   510
-      Left            =   2640
+      Left            =   2850
       Stretch         =   -1  'True
-      Top             =   1320
-      Width           =   450
+      Top             =   1395
+      Width           =   510
    End
    Begin VB.Image cmdMenos 
       Height          =   315
@@ -168,31 +168,31 @@ Begin VB.Form frmHerrero
       Width           =   1980
    End
    Begin VB.Image Command2 
-      Height          =   450
-      Left            =   2160
+      Height          =   540
+      Left            =   2250
       Stretch         =   -1  'True
+      Top             =   1350
+      Width           =   510
+   End
+   Begin VB.Image Command1 
+      Height          =   510
+      Left            =   1605
+      OLEDropMode     =   1  'Manual
+      Top             =   1350
+      Width           =   450
+   End
+   Begin VB.Image Command4 
+      Height          =   510
+      Left            =   1050
+      Tag             =   "0"
       Top             =   1365
       Width           =   450
    End
-   Begin VB.Image Command1 
-      Height          =   495
-      Left            =   1680
-      OLEDropMode     =   1  'Manual
-      Top             =   1320
-      Width           =   495
-   End
-   Begin VB.Image Command4 
-      Height          =   480
-      Left            =   1200
-      Tag             =   "0"
-      Top             =   1320
-      Width           =   495
-   End
    Begin VB.Image Command3 
-      Height          =   465
-      Left            =   660
+      Height          =   510
+      Left            =   360
       Top             =   1350
-      Width           =   495
+      Width           =   450
    End
 End
 Attribute VB_Name = "frmHerrero"
@@ -470,7 +470,7 @@ Private Sub Command5_Click()
         Call frmHerrero.lstArmas.AddItem(ObjData(RunasElementalesHerrero(i).Index).Name)
     Next i
 
-    Command5.Picture = LoadInterface("boton-escudo-over.bmp")
+    Command5.Picture = LoadInterface("boton-runas-over.bmp")
     Command1.Picture = Nothing
     Command2.Picture = Nothing
     Command3.Picture = Nothing
