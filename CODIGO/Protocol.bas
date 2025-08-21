@@ -4364,6 +4364,7 @@ Private Sub HandleChangeBankSlot()
     With BankSlot
         Slot = Reader.ReadInt8()
         .ObjIndex = Reader.ReadInt16()
+        .ElementalTags = Reader.ReadInt32()
         .Amount = Reader.ReadInt16()
         .Valor = Reader.ReadInt32()
         .PuedeUsar = Reader.ReadInt8()
