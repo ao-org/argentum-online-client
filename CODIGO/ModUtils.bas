@@ -2066,24 +2066,28 @@ End Function
 
 Public Function ElementalTagsToTxtParser(ByVal ElementalTags As Long) As String
 
-    If ElementalTags = e_ElementalTags.Normal Then
-        ElementalTagsToTxtParser = "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_NORMAL") & "]"
+    Dim tmpString As String
+
+    If ElementalTags And e_ElementalTags.Normal Then
+        tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_NORMAL") & "]"
     End If
     
     If ElementalTags And e_ElementalTags.Fire Then
-        ElementalTagsToTxtParser = "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_FUEGO") & "]"
+        tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_FUEGO") & "]"
     End If
     
     If ElementalTags And e_ElementalTags.Water Then
-        ElementalTagsToTxtParser = "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_AGUA") & "]"
+        tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_AGUA") & "]"
     End If
     
     If ElementalTags And e_ElementalTags.Earth Then
-        ElementalTagsToTxtParser = "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_TIERRA") & "]"
+        tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_TIERRA") & "]"
     End If
     
     If ElementalTags And e_ElementalTags.Wind Then
-        ElementalTagsToTxtParser = "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_AIRE") & "]"
+        tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_AIRE") & "]"
     End If
+    
+    ElementalTagsToTxtParser = tmpString
     
 End Function
