@@ -4086,6 +4086,23 @@ WriteSummonChar_Err:
         '</EhFooter>
 End Sub
 
+Public Sub WriteSummonCharMulti(ByVal userNames As String)
+    Dim arrUsers() As String
+    Dim i As Integer
+    Dim maxUsers As Integer
+    
+    arrUsers = Split(userNames, ",")
+    maxUsers = 4
+        
+    If UBound(arrUsers) > maxUsers - 1 Then
+        ReDim Preserve arrUsers(maxUsers - 1)
+    End If
+    
+    For i = LBound(arrUsers) To UBound(arrUsers)
+        Call WriteSummonChar(Trim$(arrUsers(i)))
+    Next i
+End Sub
+
 ''
 ' Writes the "SpawnListRequest" message to the outgoing data buffer.
 '

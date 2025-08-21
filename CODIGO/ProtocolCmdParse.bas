@@ -1224,7 +1224,17 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                     ' End If
                 End If
-                
+            Case "/SUMALL"
+
+                If EsGM Then
+                    'If notNullArguments Then
+                    Call WriteSummonChar(ArgumentosRaw)
+
+                    'Else
+                    'Avisar que falta el parametro
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
+                    ' End If
+                End If    
             Case "/CC"
                 If EsGM Then
                     Call WriteSpawnListRequest
