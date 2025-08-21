@@ -2448,8 +2448,7 @@ Private Sub HandleConsoleMessage()
     
             Case "NPCNAME"
                 NpcName = NpcData(ReadField(2, chat, Asc("*"))).Name
-                ElementalTags = NpcData(ReadField(2, chat, Asc("*"))).ElementalTags
-                chat = npcName & " " & ElementalTagsToTxtParser(ElementalTags) & ReadField(3, chat, Asc("*"))
+                chat = npcName & ReadField(3, chat, Asc("*"))
     
             Case "O" 'OBJETO
                 objname = ObjData(ReadField(2, chat, Asc("*"))).Name
@@ -2593,18 +2592,6 @@ Private Sub HandleLocaleMsg()
     Dim G         As Byte
 
     Dim b         As Byte
-
-    Dim QueEs     As String
-
-    Dim NpcName   As String
-
-    Dim objname   As String
-
-    Dim Hechizo   As Byte
-
-    Dim userName  As String
-
-    Dim Valor     As String
 
     Dim id        As Integer
 
