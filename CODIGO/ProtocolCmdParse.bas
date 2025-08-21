@@ -1228,13 +1228,13 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                 If EsGM Then
                     'If notNullArguments Then
-                    Call WriteSummonChar(ArgumentosRaw)
+                    Call WriteSummonCharMulti(ArgumentosRaw)
 
                     'Else
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                     ' End If
-                End If    
+                End If
             Case "/CC"
                 If EsGM Then
                     Call WriteSpawnListRequest
