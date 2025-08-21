@@ -43,6 +43,7 @@ Option Explicit
 
 Private isInventory            As Boolean ' Para separar al inventario del main, de los otros
 
+
 Dim InvMaxSlots                As Integer
 
 Dim InvWidth                   As Integer
@@ -738,6 +739,25 @@ Public Sub DrawInventory()
                     tmpString = EQUIPPED_CHARACTER
                     Engine_Text_Render tmpString, x + EQUIPPED_X, y + EQUIPPED_Y, color, 1
                 End If
+                
+                If UserInventory(i).ElementalTags > 0 Then
+                    If UserInventory(i).ElementalTags = e_ElementalTags.Fire Then
+                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Fire, x + 23, y + 21, Color)
+                    End If
+                    
+                    If UserInventory(i).ElementalTags = e_ElementalTags.Water Then
+                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Water, x + 23, y + 21, Color)
+                    End If
+                    
+                    If UserInventory(i).ElementalTags = e_ElementalTags.Earth Then
+                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Earth, x + 23, y + 21, Color)
+                    End If
+                    
+                    If UserInventory(i).ElementalTags = e_ElementalTags.Wind Then
+                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Wind, x + 23, y + 21, Color)
+                    End If
+                End If
+                
                 Dim cdTime As Single: cdTime = GetLongerCdPercent(i)
                 If cdTime > 0 And cdTime < 1 Then
                     Call renderCooldownsInventory(x, y, cdTime)

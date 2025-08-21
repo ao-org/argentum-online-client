@@ -158,6 +158,16 @@ Public Type e_effectResource
     GrhId As Long
 End Type
 
+
+
+Public Enum e_ElementalTagIconsGrhIndex
+    Earth = 10483
+    Fire = 10484
+    Wind = 10485
+    Water = 10486
+End Enum
+
+
 Public EffectResources() As e_effectResource
 
 Public Type t_packetCounters
