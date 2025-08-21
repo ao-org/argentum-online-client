@@ -51,6 +51,11 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
 
     
     Fields = Split(strExtra, "¬")
+    
+    'Elemental Npcs case
+    If bytHeader = 1622 Then
+        Fields(1) = ElementalTagsToTxtParser(CLng(Fields(1)))
+    End If
 
     ' En reversa para evitar pisar campos mayores a 10
     For i = UBound(Fields) To 0 Step -1
