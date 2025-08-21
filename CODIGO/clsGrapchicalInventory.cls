@@ -741,20 +741,37 @@ Public Sub DrawInventory()
                 End If
                 
                 If UserInventory(i).ElementalTags > 0 Then
-                    If UserInventory(i).ElementalTags = e_ElementalTags.Fire Then
-                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Fire, x + 23, y + 21, COLOR_WHITE())
+                    ' Slot corners relative positions
+                    Dim cornerX(3) As Integer
+                    Dim cornerY(3) As Integer
+                    
+                    cornerX(0) = 23: cornerY(0) = 0   ' top right
+                    cornerX(1) = 0:  cornerY(1) = 0   ' top left
+                    cornerX(2) = 23: cornerY(2) = 21  ' bottom right
+                    cornerX(3) = 0:  cornerY(3) = 21  ' bottom left
+                    
+                    Dim cornerIndex As Integer
+                    cornerIndex = 0   ' start from top right
+                    
+                    ' Now check tags in a fixed order
+                    If UserInventory(i).ElementalTags And CLng(e_ElementalTags.Fire) Then
+                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Fire, x + cornerX(cornerIndex), y + cornerY(cornerIndex), COLOR_WHITE())
+                        cornerIndex = cornerIndex + 1
                     End If
                     
-                    If UserInventory(i).ElementalTags = e_ElementalTags.Water Then
-                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Water, x + 23, y + 21, COLOR_WHITE())
+                    If UserInventory(i).ElementalTags And CLng(e_ElementalTags.Water) Then
+                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Water, x + cornerX(cornerIndex), y + cornerY(cornerIndex), COLOR_WHITE())
+                        cornerIndex = cornerIndex + 1
                     End If
                     
-                    If UserInventory(i).ElementalTags = e_ElementalTags.Earth Then
-                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Earth, x + 23, y + 21, COLOR_WHITE())
+                    If UserInventory(i).ElementalTags And CLng(e_ElementalTags.Earth) Then
+                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Earth, x + cornerX(cornerIndex), y + cornerY(cornerIndex), COLOR_WHITE())
+                        cornerIndex = cornerIndex + 1
                     End If
                     
-                    If UserInventory(i).ElementalTags = e_ElementalTags.Wind Then
-                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Wind, x + 23, y + 21, COLOR_WHITE())
+                    If UserInventory(i).ElementalTags And CLng(e_ElementalTags.Wind) Then
+                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Wind, x + cornerX(cornerIndex), y + cornerY(cornerIndex), COLOR_WHITE())
+                        cornerIndex = cornerIndex + 1
                     End If
                 End If
                 
