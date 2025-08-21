@@ -268,6 +268,7 @@ Public Type NpcDatas
     ExpClan As Long
     PuedeInvocar As Byte
     NoMapInfo As Byte
+    ElementalTags As Long
     
 End Type
 

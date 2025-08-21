@@ -2428,7 +2428,10 @@ Private Sub HandleConsoleMessage()
     Dim b         As Byte
     Dim QueEs     As String
     Dim NpcName   As String
+    Dim npcElementTags As Long
     Dim objname   As String
+    Dim ElementalTags As Long
+    Dim quantity  As Integer
     Dim Hechizo   As Integer
     Dim userName  As String
     Dim Valor     As String
@@ -2445,11 +2448,15 @@ Private Sub HandleConsoleMessage()
     
             Case "NPCNAME"
                 NpcName = NpcData(ReadField(2, chat, Asc("*"))).Name
-                chat = NpcName & ReadField(3, chat, Asc("*"))
+                ElementalTags = NpcData(ReadField(2, chat, Asc("*"))).ElementalTags
+                chat = npcName & " " & ElementalTagsToTxtParser(ElementalTags) & ReadField(3, chat, Asc("*"))
     
             Case "O" 'OBJETO
                 objname = ObjData(ReadField(2, chat, Asc("*"))).Name
-                chat = objname & ReadField(3, chat, Asc("*"))
+                quantity = (ReadField(2, chat, Asc("-")))
+                ElementalTags = ReadField(1, ReadField(3, chat, Asc("*")), Asc("-"))
+                
+                chat = objname & " " & ElementalTagsToTxtParser(ElementalTags) & " - " & quantity
             
     
             Case "HECINF"

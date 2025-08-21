@@ -1769,6 +1769,7 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).ExpClan = Val(Leer.GetValue("npc" & Npc, "GiveEXPClan"))
         
         NpcData(Npc).PuedeInvocar = Val(Leer.GetValue("npc" & Npc, "PuedeInvocar"))
+        NpcData(Npc).ElementalTags = val(Leer.GetValue("npc" & Npc, "ElementalTags"))
         aux = Val(Leer.GetValue("npc" & Npc, "NumQuiza"))
 
         If aux = 0 Then
