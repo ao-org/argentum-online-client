@@ -2453,10 +2453,12 @@ Private Sub HandleConsoleMessage()
     
             Case "O" 'OBJETO
                 objname = ObjData(ReadField(2, chat, Asc("*"))).Name
-                quantity = (ReadField(2, chat, Asc("-")))
-                ElementalTags = ReadField(1, ReadField(3, chat, Asc("*")), Asc("-"))
                 
-                chat = objname & " " & ElementalTagsToTxtParser(ElementalTags) & " - " & quantity
+                'natural item elemental tags logical or with rune imbued item
+                ElementalTags = CLng(val(ObjData(ReadField(2, chat, Asc("*"))).ElementalTags)) Or CLng(val(ReadField(4, chat, Asc("*"))))
+                
+                
+                chat = objname & " " & ElementalTagsToTxtParser(ElementalTags) & ReadField(3, chat, Asc("*"))
             
     
             Case "HECINF"
