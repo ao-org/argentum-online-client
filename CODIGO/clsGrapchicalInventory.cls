@@ -742,19 +742,19 @@ Public Sub DrawInventory()
                 
                 If UserInventory(i).ElementalTags > 0 Then
                     If UserInventory(i).ElementalTags = e_ElementalTags.Fire Then
-                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Fire, x + 23, y + 21, Color)
+                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Fire, x + 23, y + 21, COLOR_WHITE())
                     End If
                     
                     If UserInventory(i).ElementalTags = e_ElementalTags.Water Then
-                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Water, x + 23, y + 21, Color)
+                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Water, x + 23, y + 21, COLOR_WHITE())
                     End If
                     
                     If UserInventory(i).ElementalTags = e_ElementalTags.Earth Then
-                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Earth, x + 23, y + 21, Color)
+                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Earth, x + 23, y + 21, COLOR_WHITE())
                     End If
                     
                     If UserInventory(i).ElementalTags = e_ElementalTags.Wind Then
-                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Wind, x + 23, y + 21, Color)
+                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Wind, x + 23, y + 21, COLOR_WHITE())
                     End If
                 End If
                 
