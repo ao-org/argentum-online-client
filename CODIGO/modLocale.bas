@@ -53,7 +53,7 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
     Fields = Split(strExtra, "¬")
     
     'Elemental Npcs case
-    If bytHeader = 1622 Then
+    If bytHeader = 1622 or bytHeader = 1621 Then
         Fields(1) = ElementalTagsToTxtParser(CLng(Fields(1)))
     End If
 
