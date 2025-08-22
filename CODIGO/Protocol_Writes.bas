@@ -4086,6 +4086,41 @@ WriteSummonChar_Err:
         '</EhFooter>
 End Sub
 
+Public Sub WriteSummonCharMulti(ByVal userNames As String)
+    Const MAX_USERS As Integer = 4
+    Dim raw() As String, clean() As String
+    Dim part As Variant, name As String
+    Dim i As Integer, count As Integer
+
+    raw = Split(userNames, ",")
+    ReDim clean(0 To 0): count = 0
+
+    For Each part In raw
+        name = Trim$(CStr(part))
+        If LenB(name) > 0 Then
+            If count = 0 Then
+                ReDim clean(0 To 0)
+            Else
+                ReDim Preserve clean(0 To count)
+            End If
+            clean(count) = name
+            count = count + 1
+            If count = MAX_USERS Then Exit For
+        End If
+    Next part
+
+    If count = 0 Then Exit Sub
+
+    For i = LBound(clean) To UBound(clean)
+        Call WriteSummonChar(clean(i))
+    Next i
+
+    ' Optional: tell the GM if we truncated the list
+    If UBound(raw) >= MAX_USERS Then
+        Call ShowConsoleMsg("SUMALL: Se limitaron a " & CStr(MAX_USERS) & " nombres.")
+    End If
+End Sub
+
 ''
 ' Writes the "SpawnListRequest" message to the outgoing data buffer.
 '
