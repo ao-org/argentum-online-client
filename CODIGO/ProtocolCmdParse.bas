@@ -1224,16 +1224,13 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                     ' End If
                 End If
-            Case "/SUMALL"
-
+             Case "/SUMALL"
                 If EsGM Then
-                    'If notNullArguments Then
-                    Call WriteSummonCharMulti(ArgumentosRaw)
-
-                    'Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
-                    ' End If
+                    If LenB(ArgumentosRaw) > 0 Then
+                        Call WriteSummonCharMulti(ArgumentosRaw)                   
+                    Else
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
+                    End If
                 End If
             Case "/CC"
                 If EsGM Then
