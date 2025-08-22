@@ -1526,7 +1526,7 @@ Private Sub HandleClanSeguro()
         SeguroClanX = False
         
     Else
-        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_CLAN_ACTIVADO."), 65, 190, 156, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_CLAN_ACTIVADO"), 65, 190, 156, False, False, False)
         frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
         SeguroClanX = True
 
