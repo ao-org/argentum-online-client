@@ -678,8 +678,20 @@ Public Sub DrawInventory()
     Dim y         As Integer
     
     Dim tmpString As String
+    
+    Dim CORNER_INDEX As Integer
+    Dim CORNER_X(3) As Integer
+    Dim CORNER_Y(3) As Integer
 
     Dim color(3)  As RGBA
+    CORNER_X(0) = 23
+    CORNER_Y(0) = 0   ' top right
+    CORNER_X(1) = 0
+    CORNER_Y(1) = 0   ' top left
+    CORNER_X(2) = 23
+    CORNER_Y(2) = 21  ' bottom right
+    CORNER_X(3) = 0
+    CORNER_Y(3) = 21  ' bottom left
     
     InvNeedsRedraw = False
 
@@ -707,7 +719,7 @@ Public Sub DrawInventory()
         End If
 
         If InvSelectedItem = i Then
-            Engine_Draw_Box x + SELECTION_BOX_X, y + SELECTION_BOX_Y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(100, 100, 100, 100)
+            Call Engine_Draw_Box(x + SELECTION_BOX_X, y + SELECTION_BOX_Y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(100, 100, 100, 100))
         End If
             
         If UserInventory(i).GrhIndex Then
@@ -733,53 +745,42 @@ Public Sub DrawInventory()
     
                     Engine_Text_Render tmpString, x + HALF_ITEM_SIZE - Engine_Text_Width(tmpString, True) * 0.5, y + LETRA_GRANDE_Y, color, 1
                 End If
-
-                If UserInventory(i).Equipped Then
-                    Call RGBAList(color, 255, 0, 0)
-                    tmpString = EQUIPPED_CHARACTER
-                    Engine_Text_Render tmpString, x + EQUIPPED_X, y + EQUIPPED_Y, color, 1
+            End If
+            
+            
+            If UserInventory(i).Equipped Then
+                Call Engine_Draw_Box(x, y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(255, 255, 0, 20))
+            End If
+        
+            If UserInventory(i).ElementalTags > 0 Then
+                ' Slot corners relative positions
+                CORNER_INDEX = 0
+                
+                ' Now check tags in a fixed order
+                If UserInventory(i).ElementalTags And CLng(e_ElementalTags.Fire) Then
+                    Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Fire, x + CORNER_X(CORNER_INDEX), y + CORNER_Y(CORNER_INDEX), COLOR_WHITE())
+                    CORNER_INDEX = CORNER_INDEX + 1
                 End If
                 
-                If UserInventory(i).ElementalTags > 0 Then
-                    ' Slot corners relative positions
-                    Dim cornerX(3) As Integer
-                    Dim cornerY(3) As Integer
-                    
-                    cornerX(0) = 23: cornerY(0) = 0   ' top right
-                    cornerX(1) = 0:  cornerY(1) = 0   ' top left
-                    cornerX(2) = 23: cornerY(2) = 21  ' bottom right
-                    cornerX(3) = 0:  cornerY(3) = 21  ' bottom left
-                    
-                    Dim cornerIndex As Integer
-                    cornerIndex = 0   ' start from top right
-                    
-                    ' Now check tags in a fixed order
-                    If UserInventory(i).ElementalTags And CLng(e_ElementalTags.Fire) Then
-                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Fire, x + cornerX(cornerIndex), y + cornerY(cornerIndex), COLOR_WHITE())
-                        cornerIndex = cornerIndex + 1
-                    End If
-                    
-                    If UserInventory(i).ElementalTags And CLng(e_ElementalTags.Water) Then
-                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Water, x + cornerX(cornerIndex), y + cornerY(cornerIndex), COLOR_WHITE())
-                        cornerIndex = cornerIndex + 1
-                    End If
-                    
-                    If UserInventory(i).ElementalTags And CLng(e_ElementalTags.Earth) Then
-                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Earth, x + cornerX(cornerIndex), y + cornerY(cornerIndex), COLOR_WHITE())
-                        cornerIndex = cornerIndex + 1
-                    End If
-                    
-                    If UserInventory(i).ElementalTags And CLng(e_ElementalTags.Wind) Then
-                        Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Wind, x + cornerX(cornerIndex), y + cornerY(cornerIndex), COLOR_WHITE())
-                        cornerIndex = cornerIndex + 1
-                    End If
+                If UserInventory(i).ElementalTags And CLng(e_ElementalTags.Water) Then
+                    Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Water, x + CORNER_X(CORNER_INDEX), y + CORNER_Y(CORNER_INDEX), COLOR_WHITE())
+                    CORNER_INDEX = CORNER_INDEX + 1
                 End If
                 
-                Dim cdTime As Single: cdTime = GetLongerCdPercent(i)
-                If cdTime > 0 And cdTime < 1 Then
-                    Call renderCooldownsInventory(x, y, cdTime)
-                    
+                If UserInventory(i).ElementalTags And CLng(e_ElementalTags.Earth) Then
+                    Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Earth, x + CORNER_X(CORNER_INDEX), y + CORNER_Y(CORNER_INDEX), COLOR_WHITE())
+                    CORNER_INDEX = CORNER_INDEX + 1
                 End If
+                
+                If UserInventory(i).ElementalTags And CLng(e_ElementalTags.Wind) Then
+                    Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Wind, x + CORNER_X(CORNER_INDEX), y + CORNER_Y(CORNER_INDEX), COLOR_WHITE())
+                    CORNER_INDEX = CORNER_INDEX + 1
+                End If
+            End If
+            
+            Dim cdTime As Single: cdTime = GetLongerCdPercent(i)
+            If cdTime > 0 And cdTime < 1 Then
+                Call renderCooldownsInventory(x, y, cdTime)
             End If
         End If
 
