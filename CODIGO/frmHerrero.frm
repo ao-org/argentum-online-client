@@ -707,6 +707,10 @@ Private Sub lstArmas_Click()
     List1.AddItem ("Lingote de Oro")
     List1.AddItem ("Carbon")
     List1.AddItem ("Blodium")
+    List1.AddItem ("Esencia de fuego")
+    List1.AddItem ("Esencia de agua")
+    List1.AddItem ("Esencia de tierra")
+    List1.AddItem ("Esencia de viento")
 
 
     Select Case Index
@@ -745,6 +749,10 @@ Private Sub lstArmas_Click()
             List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).LingO)
             List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).Coal)
             List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).Blodium)
+            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).FireEssence)
+            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).WaterEssence)
+            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).EarthEssence)
+            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).WindEssence)
         Case Else
     End Select
 

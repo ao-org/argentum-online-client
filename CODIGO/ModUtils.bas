@@ -249,6 +249,10 @@ Public Type ObjDatas
     Cooldown As Long
     CDType As Integer
     Blodium As Integer
+    FireEssence As Integer
+    WaterEssence As Integer
+    EarthEssence As Integer
+    WindEssence As Integer
     ElementalTags As Long
 End Type
 
