@@ -636,7 +636,7 @@
 	"MENSAJE_608": "Você deve reiniciar o cliente para que as alterações tenham efeito.",
 	"MENSAJE_609": "Alterar idioma",
 	"MENSAJE_610": "Vous devez redémarrer le client pour que les changements prennent effet.",
-	"MENSAJE_611": "Changer de langue",
+	"MENSAJE_611": "Changer de langue",Normal
 	"MENSAJE_612": "Devi riavviare il client per applicare le modifiche.",
 	"MENSAJE_613": "Cambia lingua",
 	"MENSAJE_614": "Para que los cambios tengan efecto deberás volver a abrir el cliente.",
@@ -651,6 +651,10 @@
 	"MENSAJE_QUEST_REQUERIDA": "Quest: ",
 	"MENSAJE_QUEST_CLASE": "Class: ",
 	"MENSAJE_SEGURO_LEGION_ACTIVADO":"You have activated the Legionary Faction insurance.",
-	"MENSAJE_SEGURO_LEGION_DESACTIVADO":"You have disabled the Legionary Faction insurance, you can now attack a Legion."
-
+	"MENSAJE_SEGURO_LEGION_DESACTIVADO":"You have disabled the Legionary Faction insurance, you can now attack a Legion.",
+    "MENSAJE_ELEMENTO_NORMAL": "Normal",
+    "MENSAJE_ELEMENTO_FUEGO" : "Fire",
+    "MENSAJE_ELEMENTO_AGUA" : "Water",
+    "MENSAJE_ELEMENTO_TIERRA" : "Earth",
+    "MENSAJE_ELEMENTO_AIRE" : "Wind"
 }

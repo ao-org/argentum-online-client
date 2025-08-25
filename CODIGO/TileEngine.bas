@@ -354,6 +354,7 @@ End Type
 Public Type Obj
     ObjIndex As Integer
     Amount As Integer
+    ElementalTags As Long
 End Type
 
 'Tipo de las celdas del mapa

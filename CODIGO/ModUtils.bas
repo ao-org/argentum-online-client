@@ -248,6 +248,12 @@ Public Type ObjDatas
     ObjNum As Long
     Cooldown As Long
     CDType As Integer
+    Blodium As Integer
+    FireEssence As Integer
+    WaterEssence As Integer
+    EarthEssence As Integer
+    WindEssence As Integer
+    ElementalTags As Long
 End Type
 
 Public Type NpcDatas
@@ -266,6 +272,7 @@ Public Type NpcDatas
     ExpClan As Long
     PuedeInvocar As Byte
     NoMapInfo As Byte
+    ElementalTags As Long
     
 End Type
 
@@ -2059,4 +2066,32 @@ Public Function IsArrayInitialized(ByRef arr() As t_ActiveEffect) As Boolean
   On Error Resume Next
   rv = UBound(arr)
   IsArrayInitialized = (Err.Number = 0) And rv >= 0
+End Function
+
+Public Function ElementalTagsToTxtParser(ByVal ElementalTags As Long) As String
+
+    Dim tmpString As String
+
+    If ElementalTags And e_ElementalTags.Normal Then
+        tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_NORMAL") & "]"
+    End If
+    
+    If ElementalTags And e_ElementalTags.Fire Then
+        tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_FUEGO") & "]"
+    End If
+    
+    If ElementalTags And e_ElementalTags.Water Then
+        tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_AGUA") & "]"
+    End If
+    
+    If ElementalTags And e_ElementalTags.Earth Then
+        tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_TIERRA") & "]"
+    End If
+    
+    If ElementalTags And e_ElementalTags.Wind Then
+        tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_AIRE") & "]"
+    End If
+    
+    ElementalTagsToTxtParser = tmpString
+    
 End Function

@@ -3653,8 +3653,8 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, Y
         Select Case ObjData(Inventario.OBJIndex(Slot)).ObjType
 
             Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & JsonLanguage.Item("DAMAGE") & ObjData(Inventario.ObjIndex(Slot)).MinHit & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxHit
-
+                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & JsonLanguage.Item("DAMAGE") & ObjData(Inventario.ObjIndex(Slot)).MinHit & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxHit & " " & ElementalTagsToTxtParser(ObjData(Inventario.ObjIndex(Slot)).ElementalTags Or Inventario.ElementalTags(Slot))
+      
             Case eObjType.otArmadura
                 ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & JsonLanguage.Item("DEFENSE") & ObjData(Inventario.ObjIndex(Slot)).MinDef & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxDef
 
