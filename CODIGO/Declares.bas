@@ -841,7 +841,7 @@ Public Const NUMSKILLS                          As Byte = 24
 Public Const NUMATRIBUTOS                       As Byte = 5
 Public Const NUMCLASES                          As Byte = 12
 Public Const NUMRAZAS                           As Byte = 6
-Public Const NUMCIUDADES                        As Byte = 6
+Public Const NUMCIUDADES                        As Byte = 9
 
 
 
