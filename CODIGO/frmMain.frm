@@ -3634,57 +3634,57 @@ Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, x As Single, Y
     
     On Error GoTo picInv_MouseMove_Err
     
+    With Inventario
+        Dim Slot As Byte
 
-    Dim Slot As Byte
-
-    UsaMacro = False
-    
-    Slot = Inventario.GetSlot(x, Y)
-    
-    If Slot <= 0 Then
-        ObjLbl.visible = False
-        Exit Sub
-    End If
-    
-    If Inventario.Amount(Slot) > 0 Then
-    
-        ObjLbl.visible = True
+        UsaMacro = False
         
-        Select Case ObjData(Inventario.OBJIndex(Slot)).ObjType
-
-            Case eObjType.otWeapon
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & JsonLanguage.Item("DAMAGE") & ObjData(Inventario.ObjIndex(Slot)).MinHit & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxHit & " " & ElementalTagsToTxtParser(ObjData(Inventario.ObjIndex(Slot)).ElementalTags Or Inventario.ElementalTags(Slot))
-      
-            Case eObjType.otArmadura
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & JsonLanguage.Item("DEFENSE") & ObjData(Inventario.ObjIndex(Slot)).MinDef & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxDef
-
-            Case eObjType.otCASCO
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & JsonLanguage.Item("DEFENSE") & ObjData(Inventario.ObjIndex(Slot)).MinDef & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxDef
-
-            Case eObjType.otESCUDO
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & JsonLanguage.Item("DEFENSE") & ObjData(Inventario.ObjIndex(Slot)).MinDef & "/" & ObjData(Inventario.ObjIndex(Slot)).MaxDef
-
-            Case Else
-                ObjLbl = Inventario.ItemName(Slot) & " (" & Inventario.Amount(Slot) & ")" & vbCrLf & ObjData(Inventario.OBJIndex(Slot)).Texto
-
-        End Select
+        Slot = .GetSlot(x, Y)
         
-        If Len(ObjLbl.Caption) < 100 Then
-            ObjLbl.FontSize = 7
-            
-        ElseIf Len(ObjLbl.Caption) > 100 And Len(ObjLbl.Caption) < 150 Then
-            ObjLbl.FontSize = 6
-
-            '
-            ' Else
-            '  ObjLbl.FontSize = 5
+        If Slot <= 0 Then
+            ObjLbl.visible = False
+            Exit Sub
         End If
+        
+        If .Amount(Slot) > 0 Then
+        
+            ObjLbl.visible = True
+            
+            Select Case ObjData(.OBJIndex(Slot)).ObjType
 
-    Else
-        ObjLbl.visible = False
+                Case eObjType.otWeapon
+                    ObjLbl = .ItemName(Slot) & " (" & .Amount(Slot) & ")" & vbCrLf & JsonLanguage.Item("DAMAGE") & ObjData(.ObjIndex(Slot)).MinHit & "/" & ObjData(.ObjIndex(Slot)).MaxHit & " " & ElementalTagsToTxtParser(ObjData(.ObjIndex(Slot)).ElementalTags Or .ElementalTags(Slot))
+        
+                Case eObjType.otArmadura
+                    ObjLbl = .ItemName(Slot) & " (" & .Amount(Slot) & ")" & vbCrLf & JsonLanguage.Item("DEFENSE") & ObjData(.ObjIndex(Slot)).MinDef & "/" & ObjData(.ObjIndex(Slot)).MaxDef
 
-    End If
+                Case eObjType.otCASCO
+                    ObjLbl = .ItemName(Slot) & " (" & .Amount(Slot) & ")" & vbCrLf & JsonLanguage.Item("DEFENSE") & ObjData(.ObjIndex(Slot)).MinDef & "/" & ObjData(.ObjIndex(Slot)).MaxDef
 
+                Case eObjType.otESCUDO
+                    ObjLbl = .ItemName(Slot) & " (" & .Amount(Slot) & ")" & vbCrLf & JsonLanguage.Item("DEFENSE") & ObjData(.ObjIndex(Slot)).MinDef & "/" & ObjData(.ObjIndex(Slot)).MaxDef
+
+                Case Else
+                    ObjLbl = .ItemName(Slot) & " (" & .Amount(Slot) & ")" & vbCrLf & ObjData(.OBJIndex(Slot)).Texto
+
+            End Select
+            
+            If Len(ObjLbl.Caption) < 100 Then
+                ObjLbl.FontSize = 7
+                
+            ElseIf Len(ObjLbl.Caption) > 100 And Len(ObjLbl.Caption) < 150 Then
+                ObjLbl.FontSize = 6
+
+                '
+                ' Else
+                '  ObjLbl.FontSize = 5
+            End If
+
+        Else
+            ObjLbl.visible = False
+
+        End If
+    End With
     
     Exit Sub
 
