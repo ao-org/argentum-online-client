@@ -248,6 +248,7 @@ Public Type Char
     active As Byte
     Heading As E_Heading
     Pos As Position
+    LastActivePos As Position
     
     NowPosX As Integer
     NowPosY As Integer
