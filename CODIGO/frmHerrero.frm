@@ -702,58 +702,127 @@ Private Sub lstArmas_Click()
 
     List1.Clear
     List2.Clear
-    List1.AddItem ("Lingote de Hierro")
-    List1.AddItem ("Lingote de Plata")
-    List1.AddItem ("Lingote de Oro")
-    List1.AddItem ("Carbon")
-    List1.AddItem ("Blodium")
-    List1.AddItem ("Esencia de fuego")
-    List1.AddItem ("Esencia de agua")
-    List1.AddItem ("Esencia de tierra")
-    List1.AddItem ("Esencia de viento")
-
+    
+    
+    Dim i As Integer
+    Dim tmpTexts() As String
 
     Select Case Index
         Case 1
+        
+            tmpTexts = AddMaterialNames((ArmasHerrero(lstArmas.ListIndex + 1).Index))
+            
+            For i = LBound(tmpTexts) To UBound(tmpTexts)
+                If Len(tmpTexts(i)) > 0 Then
+                    List1.AddItem tmpTexts(i)
+                End If
+            Next i
+            
             Call Grh_Render_To_Hdc(picture1, ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
-            List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingH)
-            List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingP)
-            List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).LingO)
-            List2.AddItem (ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).Coal)
-            desc.Caption = "Golpe: " & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MinHit & "/" & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MaxHit
+            
+            tmpTexts = AddMaterialValues((ArmasHerrero(lstArmas.ListIndex + 1).Index))
+            
+            For i = LBound(tmpTexts) To UBound(tmpTexts)
+                If Len(tmpTexts(i)) > 0 Then
+                    List2.AddItem tmpTexts(i)
+                End If
+            Next i
+            
+            desc.Caption = "Golpe: " & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MinHit & "/" & ObjData(ArmasHerrero(lstArmas.ListIndex).Index).MaxHit
         Case 2
             Call Grh_Render_To_Hdc(picture1, ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
-            List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingH)
-            List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingP)
-            List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).LingO)
-            List2.AddItem (ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).Coal)
+            
+            tmpTexts = AddMaterialNames((ArmadurasHerrero(lstArmas.ListIndex).Index))
+            
+            For i = LBound(tmpTexts) To UBound(tmpTexts)
+                If Len(tmpTexts(i)) > 0 Then
+                    List1.AddItem tmpTexts(i)
+                End If
+            Next i
+            
+            Call Grh_Render_To_Hdc(Picture1, ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
+            
+            tmpTexts = AddMaterialValues((ArmadurasHerrero(lstArmas.ListIndex).Index))
+            
+            For i = LBound(tmpTexts) To UBound(tmpTexts)
+                If Len(tmpTexts(i)) > 0 Then
+                    List2.AddItem tmpTexts(i)
+                End If
+            Next i
+            
+            
             desc.Caption = "Defensa: " & ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).MaxDef
         Case 3
             Call Grh_Render_To_Hdc(picture1, ObjData(CascosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
-            List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingH)
-            List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingP)
-            List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).LingO)
-            List2.AddItem (ObjData(CascosHerrero(lstArmas.ListIndex).Index).Coal)
+            
+            tmpTexts = AddMaterialNames((CascosHerrero(lstArmas.ListIndex).Index))
+            
+            For i = LBound(tmpTexts) To UBound(tmpTexts)
+                If Len(tmpTexts(i)) > 0 Then
+                    List1.AddItem tmpTexts(i)
+                End If
+            Next i
+            
+            Call Grh_Render_To_Hdc(Picture1, ObjData(CascosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
+            
+            tmpTexts = AddMaterialValues((CascosHerrero(lstArmas.ListIndex).Index))
+            
+            For i = LBound(tmpTexts) To UBound(tmpTexts)
+                If Len(tmpTexts(i)) > 0 Then
+                    List2.AddItem tmpTexts(i)
+                End If
+            Next i
+            
             desc.Caption = "Defensa: " & ObjData(CascosHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(CascosHerrero(lstArmas.ListIndex).Index).MaxDef
         Case 4
             Call Grh_Render_To_Hdc(picture1, ObjData(EscudosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
-            List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingH)
-            List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingP)
-            List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).LingO)
-            List2.AddItem (ObjData(EscudosHerrero(lstArmas.ListIndex).Index).Coal)
+
+
+            tmpTexts = AddMaterialNames((EscudosHerrero(lstArmas.ListIndex).Index))
+            
+            For i = LBound(tmpTexts) To UBound(tmpTexts)
+                If Len(tmpTexts(i)) > 0 Then
+                    List1.AddItem tmpTexts(i)
+                End If
+            Next i
+            
+            Call Grh_Render_To_Hdc(Picture1, ObjData(EscudosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
+            
+            tmpTexts = AddMaterialValues((EscudosHerrero(lstArmas.ListIndex).Index))
+            
+            For i = LBound(tmpTexts) To UBound(tmpTexts)
+                If Len(tmpTexts(i)) > 0 Then
+                    List2.AddItem tmpTexts(i)
+                End If
+            Next i
+
+
+
             desc.Caption = "Defensa: " & ObjData(EscudosHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(EscudosHerrero(lstArmas.ListIndex).Index).MaxDef
         Case 5
             Call Grh_Render_To_Hdc(picture1, ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
-            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).LingH)
-            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).LingP)
-            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).LingO)
-            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).Coal)
-            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).Blodium)
-            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).FireEssence)
-            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).WaterEssence)
-            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).EarthEssence)
-            List2.AddItem (ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).WindEssence)
+            
+            tmpTexts = AddMaterialNames((RunasElementalesHerrero(lstArmas.ListIndex + 1).Index))
+            
+            For i = LBound(tmpTexts) To UBound(tmpTexts)
+                If Len(tmpTexts(i)) > 0 Then
+                    List1.AddItem tmpTexts(i)
+                End If
+            Next i
+            
+            Call Grh_Render_To_Hdc(Picture1, ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
+            
+            tmpTexts = AddMaterialValues((RunasElementalesHerrero(lstArmas.ListIndex + 1).Index))
+            
+            For i = LBound(tmpTexts) To UBound(tmpTexts)
+                If Len(tmpTexts(i)) > 0 Then
+                    List2.AddItem tmpTexts(i)
+                End If
+            Next i
+            
         Case Else
+        
+            
     End Select
 
     picture1.visible = True
@@ -766,4 +835,91 @@ lstArmas_Click_Err:
     Resume Next
     
 End Sub
+
+
+Public Function AddMaterialNames(ByVal ObjectIndex As Integer) As String()
+    
+    Dim result(1 To 9) As String
+    
+    If ObjData(ObjectIndex).LingH > 0 Then
+        result(1) = CStr(JsonLanguage.Item("MENSAJE_LINGOTE_DE_HIERRO"))
+    End If
+    
+    If ObjData(ObjectIndex).LingP > 0 Then
+        result(2) = CStr(JsonLanguage.Item("MENSAJE_LINGOTE_DE_PLATA"))
+    End If
+
+    If ObjData(ObjectIndex).LingO > 0 Then
+        result(3) = CStr(JsonLanguage.Item("MENSAJE_LINGOTE_DE_ORO"))
+    End If
+
+    If ObjData(ObjectIndex).Coal > 0 Then
+        result(4) = CStr(JsonLanguage.Item("MENSAJE_CARBON"))
+    End If
+    If ObjData(ObjectIndex).Blodium > 0 Then
+        result(5) = "Blodium"
+    End If
+
+    If ObjData(ObjectIndex).FireEssence > 0 Then
+        result(6) = CStr(JsonLanguage.Item("MENSAJE_ESENCIA_DE_FUEGO"))
+    End If
+    
+    If ObjData(ObjectIndex).WaterEssence > 0 Then
+        result(7) = CStr(JsonLanguage.Item("MENSAJE_ESENCIA_DE_AGUA"))
+    End If
+    
+    If ObjData(ObjectIndex).EarthEssence > 0 Then
+        result(8) = CStr(JsonLanguage.Item("MENSAJE_ESENCIA_DE_TIERRA"))
+    End If
+    
+    If ObjData(ObjectIndex).WindEssence > 0 Then
+        result(9) = CStr(JsonLanguage.Item("MENSAJE_ESENCIA_DE_AIRE"))
+    End If
+    
+    AddMaterialNames = result
+
+End Function
+
+Public Function AddMaterialValues(ByVal ObjectIndex As Integer) As String()
+
+    Dim result(1 To 9) As String
+    
+    If ObjData(ObjectIndex).LingH > 0 Then
+        result(1) = ObjData(ObjectIndex).LingH
+    End If
+    
+    If ObjData(ObjectIndex).LingP > 0 Then
+        result(2) = ObjData(ObjectIndex).LingP
+    End If
+
+    If ObjData(ObjectIndex).LingO > 0 Then
+        result(3) = ObjData(ObjectIndex).LingO
+    End If
+
+    If ObjData(ObjectIndex).Coal > 0 Then
+        result(4) = ObjData(ObjectIndex).Coal
+    End If
+    If ObjData(ObjectIndex).Blodium > 0 Then
+        result(5) = ObjData(ObjectIndex).Blodium
+    End If
+
+    If ObjData(ObjectIndex).FireEssence > 0 Then
+        result(6) = ObjData(ObjectIndex).FireEssence
+    End If
+    
+    If ObjData(ObjectIndex).WaterEssence > 0 Then
+        result(7) = ObjData(ObjectIndex).WaterEssence
+    End If
+    
+    If ObjData(ObjectIndex).EarthEssence > 0 Then
+        result(8) = ObjData(ObjectIndex).EarthEssence
+    End If
+    
+    If ObjData(ObjectIndex).WindEssence > 0 Then
+        result(9) = ObjData(ObjectIndex).WindEssence
+    End If
+    
+    AddMaterialValues = result
+
+End Function
 
