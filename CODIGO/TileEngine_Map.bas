@@ -304,33 +304,43 @@ Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
 
     If animate Then
         If grh.started > 0 Then
-            Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.started) / grh.speed)
+            Dim num As Long, elapsed As Long
+            num = GrhData(Grh.GrhIndex).NumFrames
+            If num > 1 Then
+                ' Unificado (SIN 0.5)
+                elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
-            If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-                CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-            Else
-                grh.started = 0
+                If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                    CurrentFrame = (elapsed Mod num) + 1
+                Else
+                    Grh.started = 0
+                End If
             End If
-
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
-    If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
-        x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
+    ' Centrado opcional (ahora sí respeta el flag center)
+    If center Then
+        If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
+            x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (32 \ 2)) + 32 \ 2
+        End If
+        If GrhData(CurrentGrhIndex).TileHeight <> 1 Then
+            y = y - Int(GrhData(CurrentGrhIndex).TileHeight * 32) + 32
+        End If
     End If
 
-    If GrhData(grh.GrhIndex).TileHeight <> 1 Then
-        y = y - Int(GrhData(CurrentGrhIndex).TileHeight * 32) + 32
-    End If
     If Not OverlapRect(RenderCullingRect, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight) Then Exit Sub
-    Call Batch_Textured_Box_Shadow(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, MapData(map_x, map_y).light_value)
+
+    Call Batch_Textured_Box_Shadow( _
+        x, y, _
+        GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, _
+        GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, _
+        GrhData(CurrentGrhIndex).FileNum, _
+        MapData(map_x, map_y).light_value _
+    )
     
     Exit Sub
 

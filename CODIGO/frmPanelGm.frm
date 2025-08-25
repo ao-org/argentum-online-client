@@ -651,9 +651,9 @@ Begin VB.Form frmPanelgm
       Top             =   4560
       Width           =   1695
    End
-   Begin VB.CommandButton cmdRecargarObjetos 
+   Begin VB.CommandButton cmdRecargarNPCs 
       BackColor       =   &H8000000A&
-      Caption         =   "Recargar Objetos"
+      Caption         =   "Recargar NPCs"
       Height          =   360
       Left            =   4800
       Style           =   1  'Graphical
@@ -2593,8 +2593,8 @@ Private Sub cmdPenas_Click()
     Call frmPanelgm.txtMod.SetFocus
 End Sub
 
-Private Sub cmdRecargarObjetos_Click()
-    Call WriteReloadObjects
+Private Sub cmdRecargarNPCs_Click()
+    Call WriteReloadNPCs
 End Sub
 
 Private Sub cmdRestringirMapa_Click()
