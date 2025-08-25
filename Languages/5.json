@@ -651,6 +651,10 @@
   "MENSAJE_QUEST_REQUERIDA": "Missione: ",
   "MENSAJE_QUEST_CLASE": "Classe: ",
   "MENSAJE_SEGURO_LEGION_ACTIVADO":"Hai attivato l'assicurazione della Fazione Legionaria.",
-  "MENSAJE_SEGURO_LEGION_DESACTIVADO":"Hai disattivato l'assicurazione della fazione dei Legionari, ora puoi attaccare una Legione."
-
+  "MENSAJE_SEGURO_LEGION_DESACTIVADO":"Hai disattivato l'assicurazione della fazione dei Legionari, ora puoi attaccare una Legione.",
+  "MENSAJE_ELEMENTO_NORMAL": "Normale",
+  "MENSAJE_ELEMENTO_FUEGO" : "Fuoco",
+  "MENSAJE_ELEMENTO_AGUA" : "Acqua",
+  "MENSAJE_ELEMENTO_TIERRA" : "Terra",
+  "MENSAJE_ELEMENTO_AIRE" : "Vento"
 }
