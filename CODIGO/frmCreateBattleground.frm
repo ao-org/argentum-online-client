@@ -403,13 +403,13 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub Form_Load()
-    cmbTipo.List(0) = "DeathMatch"
-    cmbTipo.List(1) = "Abordaje"
-    cmbTipo.List(2) = "Caceria"
-    cmbTipo.List(3) = "Captura la bandera"
+    cmbTipo.List(0) = JsonLanguage.Item("MENSAJE_EVENTO_CAPTURA")
+    cmbTipo.List(1) = JsonLanguage.Item("MENSAJE_EVENTO_CACERIA")
+    cmbTipo.List(2) = JsonLanguage.Item("MENSAJE_EVENTO_DEATHMATCH")
+    cmbTipo.List(3) = JsonLanguage.Item("MENSAJE_EVENTO_ABORDAJE")
     
-    cmbEquipos.List(0) = "Aleatorio"
-    cmbEquipos.List(1) = "Grupos"
+    cmbEquipos.List(0) = JsonLanguage.Item("MENSAJE_EVENTO_MODALIDAD_RANDOM")
+    cmbEquipos.List(1) = JsonLanguage.Item("MENSAJE_EVENTO_MODALIDAD_GRUPOS")
     
     cmbTipo.ListIndex = 0
     cmbEquipos.ListIndex = 0
@@ -465,21 +465,21 @@ On Error GoTo ErrHandler:
     End If
     
     Select Case cmbTipo.ListIndex
-        Case 0
-            Settings.ScenearioType = e_EventType.DeathMatch
-        Case 1
-            Settings.ScenearioType = e_EventType.NavalBattle
-        Case 2
-            Settings.ScenearioType = e_EventType.NpcHunt
-        Case 3
+        Case e_EventType.CaptureTheFlag - 1
             Settings.ScenearioType = e_EventType.CaptureTheFlag
+        Case e_EventType.NpcHunt - 1
+            Settings.ScenearioType = e_EventType.NpcHunt
+        Case e_EventType.DeathMatch - 1
+            Settings.ScenearioType = e_EventType.DeathMatch
+        Case e_EventType.NavalBattle - 1
+            Settings.ScenearioType = e_EventType.NavalBattle
     End Select
     
     Select Case cmbEquipos.ListIndex
-        Case 0
-            Settings.TeamType = e_TeamTypes.eRandom
-        Case 1
+        Case e_TeamTypes.ePremade
             Settings.TeamType = e_TeamTypes.ePremade
+        Case e_TeamTypes.eRandom
+            Settings.TeamType = e_TeamTypes.eRandom
             
     End Select
     

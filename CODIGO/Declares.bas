@@ -53,8 +53,8 @@ Public Enum e_EventType
 End Enum
 
 Public Enum e_TeamTypes
-    ePremade
-    eRandom
+    ePremade = 0
+    eRandom = 1
 End Enum
 
 Public ActiveInventoryTab As e_ActiveTab

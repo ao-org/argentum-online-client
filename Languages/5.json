@@ -651,6 +651,12 @@
   "MENSAJE_QUEST_REQUERIDA": "Missione: ",
   "MENSAJE_QUEST_CLASE": "Classe: ",
   "MENSAJE_SEGURO_LEGION_ACTIVADO":"Hai attivato l'assicurazione della Fazione Legionaria.",
-  "MENSAJE_SEGURO_LEGION_DESACTIVADO":"Hai disattivato l'assicurazione della fazione dei Legionari, ora puoi attaccare una Legione."
+  "MENSAJE_SEGURO_LEGION_DESACTIVADO":"Hai disattivato l'assicurazione della fazione dei Legionari, ora puoi attaccare una Legione.",
+  "MENSAJE_EVENTO_DEATHMATCH":"Scontro mortale",
+  "MENSAJE_EVENTO_CAPTURA":"Catturare la bandiera",
+  "MENSAJE_EVENTO_CACERIA":"Caccia",
+  "MENSAJE_EVENTO_ABORDAJE":"Imbarco navale",
+  "MENSAJE_EVENTO_MODALIDAD_RANDOM": "Casuale",
+  "MENSAJE_EVENTO_MODALIDAD_GRUPOS": "Gruppi"
 
 }

@@ -651,6 +651,12 @@
   "MENSAJE_QUEST_REQUERIDA": "Mission: ",
   "MENSAJE_QUEST_CLASE": "Classe: ",
   "MENSAJE_SEGURO_LEGION_ACTIVADO":"Vous avez activé l'assurance de la faction légionnaire.",
-  "MENSAJE_SEGURO_LEGION_DESACTIVADO":"Vous avez désactivé l'assurance de la faction légionnaire, vous pouvez désormais attaquer une Légion."
+  "MENSAJE_SEGURO_LEGION_DESACTIVADO":"Vous avez désactivé l'assurance de la faction légionnaire, vous pouvez désormais attaquer une Légion.",
+  "MENSAJE_EVENTO_DEATHMATCH":"Match à mort",
+  "MENSAJE_EVENTO_CAPTURA":"Capturer le drapeau",
+  "MENSAJE_EVENTO_CACERIA":"Chasse",
+  "MENSAJE_EVENTO_ABORDAJE":"Approche",
+  "MENSAJE_EVENTO_MODALIDAD_RANDOM": "Aléatoire",
+  "MENSAJE_EVENTO_MODALIDAD_GRUPOS": "Groupes"
 
 }
