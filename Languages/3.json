@@ -651,6 +651,10 @@
   "MENSAJE_QUEST_REQUERIDA": "Missão: ",
   "MENSAJE_QUEST_CLASE": "Aula: ",
   "MENSAJE_SEGURO_LEGION_ACTIVADO":"Você ativou o seguro da Facção Legionária.",
-  "MENSAJE_SEGURO_LEGION_DESACTIVADO":"Você desativou o seguro da Facção Legionária e agora pode atacar uma Legião."
-	
+  "MENSAJE_SEGURO_LEGION_DESACTIVADO":"Você desativou o seguro da Facção Legionária e agora pode atacar uma Legião.",
+  "MENSAJE_ELEMENTO_NORMAL": "Normal",
+  "MENSAJE_ELEMENTO_FUEGO" : "Fogo",
+  "MENSAJE_ELEMENTO_AGUA" : "Água",
+  "MENSAJE_ELEMENTO_TIERRA" : "Terra",
+  "MENSAJE_ELEMENTO_AIRE" : "Vento"
 }

@@ -114,6 +114,14 @@ Public Enum TipoPaso
     CONST_AGUA = 7
 End Enum
 
+Public Enum e_ElementalTags
+    Normal = 0
+    Fire = 1
+    Water = 2
+    Earth = 4
+    Wind = 8
+End Enum
+
 Public Type tPaso
     CantPasos As Byte
     wav() As Integer
@@ -149,6 +157,16 @@ Public CDList As t_ActiveEffectList
 Public Type e_effectResource
     GrhId As Long
 End Type
+
+
+
+Public Enum e_ElementalTagIconsGrhIndex
+    Earth = 10483
+    Fire = 10484
+    Wind = 10485
+    Water = 10486
+End Enum
+
 
 Public EffectResources() As e_effectResource
 
@@ -487,6 +505,7 @@ Type tHerreria
     LPlata As Integer
     LOro As Integer
     Coal As Integer
+    Blodium As Integer
     Index As Integer
 End Type
 
@@ -510,6 +529,7 @@ Public DefensasHerrero(0 To 100)  As tHerreria
 Public ArmadurasHerrero(0 To 100) As tHerreria
 Public CascosHerrero(0 To 100)    As tHerreria
 Public EscudosHerrero(0 To 100)   As tHerreria
+Public RunasElementalesHerrero(0 To 100) As tHerreria
 Public ObjCarpintero(0 To 100)    As Integer
 Public ObjAlquimista(0 To 100)    As Integer
 Public ObjSastre(0 To 100)        As tSasteria
@@ -708,6 +728,7 @@ Type Slot
     MaxHit As Integer
     MinHit As Integer
     PuedeUsar As Byte
+    ElementalTags As Long
     IsBindable As Boolean
 End Type
 
@@ -737,6 +758,7 @@ Type NpCinV
     Def As Integer
     MaxHit As Integer
     MinHit As Integer
+    ElementalTags As Long
     c1 As String
     C2 As String
     c3 As String
