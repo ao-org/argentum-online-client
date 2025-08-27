@@ -651,6 +651,11 @@
 	"MENSAJE_QUEST_REQUERIDA": "Quest: ",
 	"MENSAJE_QUEST_CLASE": "Class: ",
 	"MENSAJE_SEGURO_LEGION_ACTIVADO":"You have activated the Legionary Faction insurance.",
-	"MENSAJE_SEGURO_LEGION_DESACTIVADO":"You have disabled the Legionary Faction insurance, you can now attack a Legion."
-
+	"MENSAJE_SEGURO_LEGION_DESACTIVADO":"You have disabled the Legionary Faction insurance, you can now attack a Legion.",
+    "MENSAJE_EVENTO_DEATHMATCH":"Deathmatch ",
+    "MENSAJE_EVENTO_CAPTURA":"Capture the flag",
+    "MENSAJE_EVENTO_CACERIA":"Hunt",
+    "MENSAJE_EVENTO_ABORDAJE":"Naval boarding",
+    "MENSAJE_EVENTO_MODALIDAD_RANDOM": "Random",
+    "MENSAJE_EVENTO_MODALIDAD_GRUPOS": "Groups"
 }

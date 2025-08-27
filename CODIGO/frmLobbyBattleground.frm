@@ -197,9 +197,9 @@ On Error GoTo ErrHandler:
             .CurrentX = OffX
             .CurrentY = Offy
             Select Case LobbyList(i + Scroll).TeamType
-                Case 1
+                Case e_TeamTypes.eRandom
                     pEvents.Print "Aleatorio"
-                Case 2
+                Case e_TeamTypes.ePremade
                     pEvents.Print "Grupos"
             End Select
             
