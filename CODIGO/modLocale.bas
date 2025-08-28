@@ -30,7 +30,7 @@ Public Destinos() As Tdestino
 
 Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional ByVal strExtra As String = vbNullString) As String
 
-    On Error GoTo ErrorHandler
+    On Error GoTo Locale_Parse_ServerMessage_Err
     
     Dim Fields() As String
 
@@ -48,8 +48,6 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
         Exit Function
     End If
     
-
-    
     Fields = Split(strExtra, "¬")
     
     'Elemental Npcs case
@@ -57,14 +55,23 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
         Fields(1) = ElementalTagsToTxtParser(CLng(Fields(1)))
     End If
 
+    'Look At Tile when clicking a player
+    If bytHeader = 1105 Then
+        Fields = LookAtTileTxtParser(Fields)
+    End If
+
     ' En reversa para evitar pisar campos mayores a 10
     For i = UBound(Fields) To 0 Step -1
         strLocale = Replace(strLocale, "¬" & (i + 1), Fields(i))
     Next
+    
+    
 
-ErrorHandler:
     Locale_Parse_ServerMessage = strLocale
 
+Locale_Parse_ServerMessage_Err:
+Call RegistrarError(Err.Number, Err.Description, "modLocale.Locale_Parse_ServerMessage", Erl)
+    Resume Next
 End Function
 
 ' Manejar el nombre del NPC para los casos especiales

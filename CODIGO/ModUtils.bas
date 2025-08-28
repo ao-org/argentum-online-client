@@ -2095,3 +2095,36 @@ Public Function ElementalTagsToTxtParser(ByVal ElementalTags As Long) As String
     ElementalTagsToTxtParser = tmpString
     
 End Function
+
+Public Function LookAtTileTxtParser(ByVal Fields() As String) As String()
+    On Error GoTo LookAtTileTxtParser_Err
+    Dim parsedFields(1 to 3) As String
+
+    Dim targetName As String
+    Dim targetDescription As String
+    Dim guildName As String
+    Dim Spouse As String
+    Dim CharClass As String
+    Dim CharRace As String
+    Dim Level As String
+    Dim Elo As String
+
+    targetName = Split(Fields(1),"-")(0)
+    targetDescription = Split(Fields(1),"-")(1)
+    guildName = Split(Fields(1),"-")(2)
+    Spouse = Split(Fields(1),"-")(3)
+    CharClass = Split(Fields(1),"-")(4)
+    CharRace = Split(Fields(1),"-")(5)
+    Level = Split(Fields(1),"-")(6)
+    Elo = Split(Fields(1),"-")(7)
+
+        
+
+
+
+LookAtTileTxtParser_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.LookAtTileTxtParser", Erl)
+    Resume Next
+End Function
+
+
