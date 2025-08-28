@@ -162,7 +162,7 @@ Public Enum e_InfoTxts
     Wounded = 262144
     LightlyWounded = 524288
     Intact = 1048576
-    Counselor =  2097152
+    Counselor = 2097152
     DemiGod = 4194304
     God = 8388608
     Admin = 16777216

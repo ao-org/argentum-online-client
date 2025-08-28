@@ -2120,17 +2120,31 @@ Public Function LookAtTileTxtParser(ByRef Fields() As String)
     
     targetName = SplitServerFields(i)
     
+    i = i + 1
+    
     targetDescription = SplitServerFields(i)
+    
+    i = i + 1
     
     guildName = SplitServerFields(i)
     
+    i = i + 1
+    
     Spouse = SplitServerFields(i)
     
-    CharClass = SplitServerFields(i)
+    i = i + 1
     
-    CharRace = SplitServerFields(i)
+    CharClass = IIf(SplitServerFields(i) <> "", SplitServerFields(i), "0")
+    
+    i = i + 1
+    
+    CharRace = IIf(SplitServerFields(i) <> "", SplitServerFields(i), "0")
+    
+    i = i + 1
     
     level = SplitServerFields(i)
+    
+    i = i + 1
     
     Elo = SplitServerFields(i)
 
@@ -2160,7 +2174,7 @@ Public Function LookAtTileTxtParser(ByRef Fields() As String)
         Case e_Class.Bandit
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_BANDIDO")
         Case Else
-            CharClass = JsonLanguage.Item("")
+            CharClass = ""
     End Select
 
     Select Case CByte(CharRace)
