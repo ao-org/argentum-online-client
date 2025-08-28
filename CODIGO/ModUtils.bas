@@ -2111,14 +2111,14 @@ Public Function LookAtTileTxtParser(ByRef Fields() As String)
     Dim StatusMask As Long
     Dim StatusMask2 As Long
 
-    targetName = Split(Fields(1), "-")(0)
-    targetDescription = Split(Fields(1), "-")(1)
-    GuildName = Split(Fields(1), "-")(2)
-    Spouse = Split(Fields(1), "-")(3)
-    CharClass = Split(Fields(1), "-")(4)
-    CharRace = Split(Fields(1), "-")(5)
-    level = Split(Fields(1), "-")(6)
-    Elo = Split(Fields(1), "-")(7)
+    targetName = Split(Fields(0), "-")(0)
+    targetDescription = Split(Fields(0), "-")(1)
+    GuildName = Split(Fields(0), "-")(2)
+    Spouse = Split(Fields(0), "-")(3)
+    CharClass = Split(Fields(0), "-")(4)
+    CharRace = Split(Fields(0), "-")(5)
+    level = Split(Fields(0), "-")(6)
+    Elo = Split(Fields(0), "-")(7)
 
     Select Case CByte(CharClass)
         Case e_Class.Mage
@@ -2164,8 +2164,8 @@ Public Function LookAtTileTxtParser(ByRef Fields() As String)
             CharRace = JsonLanguage.Item("MENSAJE_RAZA_ORCO")
     End Select
 
-    StatusMask = CLng(Fields(2))
-    StatusMask2 = CLng(Fields(3))
+    StatusMask = CLng(Fields(1))
+    StatusMask2 = CLng(Fields(2))
 
     Dim StatusString As String
 
