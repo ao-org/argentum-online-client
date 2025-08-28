@@ -2401,7 +2401,7 @@ Public Function LookAtTileToTxtParser(ByRef Fields() As String)
         Fields(0) = Fields(0) & "Elo:" & Elo & " "
     End If
         
-    If StatusString <> "" Then
+    If StatusString <> "" And StatusString <> "<>" Then
         Fields(1) = StatusString
     Else
         Fields(1) = ""
