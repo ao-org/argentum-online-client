@@ -2401,13 +2401,20 @@ Public Function LookAtTileToTxtParser(ByRef Fields() As String)
         Fields(0) = Fields(0) & "Elo:" & Elo & " "
     End If
         
-    If StatusString <> "" And StatusString <> "<>" Then
+    If StatusString <> "" Then
+        StatusString = Replace(StatusString, "<>", "")
+        StatusString = Replace(StatusString, " ", "")
         Fields(1) = StatusString
     Else
         Fields(1) = ""
     End If
-    
-    Fields(2) = FactionStatusString
+
+    If FactionStatusString <> "" Then
+        StatusString = Replace(StatusString, "<>", "")
+        StatusString = Replace(StatusString, " ", "")
+        Fields(2) = FactionStatusString
+    End If
+
 Exit Function
 
 LookAtTileToTxtParser_Err:
