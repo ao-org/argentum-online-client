@@ -2108,6 +2108,8 @@ Public Function LookAtTileTxtParser(ByVal Fields() As String) As String()
     Dim CharRace As String
     Dim Level As String
     Dim Elo As String
+    Dim StatusMask As Long
+    Dim StatusMask2 As Long
 
     targetName = Split(Fields(1),"-")(0)
     targetDescription = Split(Fields(1),"-")(1)
@@ -2118,9 +2120,225 @@ Public Function LookAtTileTxtParser(ByVal Fields() As String) As String()
     Level = Split(Fields(1),"-")(6)
     Elo = Split(Fields(1),"-")(7)
 
-        
+    Select Case CByte(CharClass)
+        Case e_Class.Mage
+            CharClass = JsonLanguage.Item("MENSAJE_CLASE_MAGO")
+        Case e_Class.Cleric
+            CharClass = JsonLanguage.Item("MENSAJE_CLASE_CLERIGO")
+        Case e_Class.Warrior
+            CharClass = JsonLanguage.Item("MENSAJE_CLASE_GUERRERO")
+        Case e_Class.Assasin
+            CharClass = JsonLanguage.Item("MENSAJE_CLASE_ASESINO")
+        Case e_Class.Bard
+            CharClass = JsonLanguage.Item("MENSAJE_CLASE_BARDO")
+        Case e_Class.Druid
+            CharClass = JsonLanguage.Item("MENSAJE_CLASE_DRUIDA")
+        Case e_Class.Paladin
+            CharClass = JsonLanguage.Item("MENSAJE_CLASE_PALADIN")
+        Case e_Class.Hunter
+            CharClass = JsonLanguage.Item("MENSAJE_CLASE_CAZADOR")
+        Case e_Class.Worker
+            CharClass = JsonLanguage.Item("MENSAJE_CLASE_TRABAJADOR")
+        Case e_Class.Pirat
+            CharClass = JsonLanguage.Item("MENSAJE_CLASE_PIRATA")
+        Case e_Class.Thief
+            CharClass = JsonLanguage.Item("MENSAJE_CLASE_LADRON")
+        Case e_Class.Bandit
+            CharClass = JsonLanguage.Item("MENSAJE_CLASE_BANDIDO")
+        Case Else
+            CharClass = JsonLanguage.Item("Raza desconocida")
+    End Select
 
+    Select Case CByte(CharRace)
+        Case e_Race.Human
+            CharRace = JsonLanguage.Item("MENSAJE_RAZA_HUMANO")
+        Case  e_Race.Elf
+            CharRace = JsonLanguage.Item("MENSAJE_RAZA_ELFO")
+        Case e_Race.DrowElf
+            CharRace = JsonLanguage.Item("MENSAJE_RAZA_ELFO_OSCURO")
+        Case e_Race.Gnome
+            CharRace = JsonLanguage.Item("MENSAJE_RAZA_GNOMO")
+        Case e_Race.Dwarf
+            CharRace = JsonLanguage.Item("MENSAJE_RAZA_ENANO")
+        Case e_Race.Orc
+            CharRace = JsonLanguage.Item("MENSAJE_RAZA_ORCO")
+    End Select
 
+    StatusMask = CLng(Fields(2))
+    StatusMask2 = CLng(Fields(3))
+
+    Dim StatusString As String
+
+    If IsSet(StatusMask,e_InfoTxts.Newbie) Then
+        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_NOVATO") & ">" & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Poisoned) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_ENVENENADO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Blind) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_CEGADO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Paralized) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_PARALIZADO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Inmovilized) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_INMOVILIZADO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Working) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_TRABAJANDO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Invisible) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_INVISIBLE") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Hidden) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_OCULTO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Stupid) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_TORPE") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Cursed) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_MALDITO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Silenced) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_SILENCIADO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Trading) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_COMERCIANDO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Resting) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_DESCANSANDO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Focusing) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_CONCENTRANDOSE") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Incinerated) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_INCINERADO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Dead) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_MUERTO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.AlmostDead) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_CASI_MUERTO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.SeriouslyWounded) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_GRAVEMENTE_HERIDO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Wounded) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_HERIDO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.LightlyWounded) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_LEVEMENTE_HERIDO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Intact) Then
+        StatusString = StatusString  & "|" & JsonLanguage.Item("MENSAJE_ESTADO_INTACTO") & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.Counselor) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CONSEJERO") & ">" & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.DemiGod) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_DEMIGOD") & ">" & " "
+    End If
+
+    If IsSet(StatusMask,e_InfoTxts.God) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_DIOS") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.ChaoticCouncil) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CONSEJO_CAOS") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.Chaotic) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.ChaosFirstHierarchy) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_PRIMERA_JERARQUIA") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.ChaosSecondHierarchy) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_SEGUNDA_JERARQUIA") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.ChaosThirdHierarchy) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_TERCERA_JERARQUIA") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.ChaosFourthHierarchy) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_CUARTA_JERARQUIA") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.ChaosFifthHierarchy) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_QUINTA_JERARQUIA") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.Criminal) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CRIMINAL") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.RoyalCouncil) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CONSEJO_REAL") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.Army) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.ArmyFirstHierarchy) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_PRIMERA_JERARQUIA") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.ArmySecondHierarchy) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_SEGUNDA_JERARQUIA") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.ArmyThirdHierarchy) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_TERCERA_JERARQUIA") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.ArmyFourthHierarchy) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_CUARTA_JERARQUIA") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.ArmyFifthHierarchy) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_QUINTA_JERARQUIA") & ">" & " "
+    End If
+
+    If IsSet(StatusMask2,e_InfoTxts2.Citizen) Then
+        StatusString = StatusString  & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO") & ">" & " "
+    End If
+
+    LookAtTileTxtParser = targetName & " " & _
+                          targetDescription & " " & _
+                          guildName & " " & _
+                          Spouse & " " & _
+                          CharClass & " " & _
+                          CharRace & " " & _
+                          Level & " " & _
+                          Elo & " " & _
+                          StatusString
+Exit Function   
 
 LookAtTileTxtParser_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.LookAtTileTxtParser", Erl)

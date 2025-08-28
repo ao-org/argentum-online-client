@@ -122,6 +122,96 @@ Public Enum e_ElementalTags
     Wind = 8
 End Enum
 
+Public Enum e_ChaosArmyRanks
+    NotEnlisted = 0
+    FirstHierarchy = 1
+    SecondHierarchy = 2
+    ThirdHierarchy = 3
+    FourthHierarchy = 4
+    FifthHierarchy = 5
+End Enum
+
+Public Enum e_RoyalArmyRanks
+    NotEnlisted = 0
+    FirstHierarchy = 1
+    SecondHierarchy = 2
+    ThirdHierarchy = 3
+    FourthHierarchy = 4
+    FifthHierarchy = 5
+End Enum
+
+Public Enum e_InfoTxts
+    Newbie = 1
+    Poisoned = 2
+    Blind = 4
+    Paralized = 8
+    Inmovilized = 16
+    Working = 32
+    Invisible = 64
+    Hidden = 128
+    Stupid = 256
+    Cursed = 512
+    Silenced = 1024
+    Trading = 2048
+    Resting = 4096
+    Focusing = 8192
+    Incinerated = 16384
+    Dead = 32768
+    AlmostDead = 65536
+    SeriouslyWounded = 131072
+    Wounded = 262144
+    LightlyWounded = 524288
+    Intact = 1048576
+    Counselor =  2097152
+    DemiGod = 4194304
+    God = 8388608
+    Admin = 16777216
+End Enum
+
+Public Enum e_InfoTxts2
+    ChaoticCouncil = 1
+    Chaotic = 2
+    Criminal = 4
+    RoyalCouncil = 8
+    Army = 16
+    Citizen = 32
+    ArmyFirstHierarchy = 64
+    ArmySecondHierarchy = 128
+    ArmyThirdHierarchy = 256
+    ArmyFourthHierarchy = 512
+    ArmyFifthHierarchy = 1024
+    ChaosFirstHierarchy = 2048
+    ChaosSecondHierarchy = 4096
+    ChaosThirdHierarchy = 8192
+    ChaosFourthHierarchy = 16384
+    ChaosFifthHierarchy = 32768
+End Enum
+
+Public Enum e_Class
+    Mage = 1    'Mago
+    Cleric      'Clérigo
+    Warrior     'Guerrero
+    Assasin     'Asesino
+    Bard        'Bardo
+    Druid       'Druida
+    Paladin     'Paladín
+    Hunter      'Cazador
+    Worker  'Trabajador
+    Pirat       'Pirata
+    Thief       'Ladron
+    Bandit      'Bandido
+End Enum
+
+Public Enum e_Race
+    Human = 1
+    Elf
+    DrowElf
+    Gnome
+    Dwarf
+    Orc
+End Enum
+
+
 Public Type tPaso
     CantPasos As Byte
     wav() As Integer
