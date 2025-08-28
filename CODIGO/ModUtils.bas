@@ -2096,9 +2096,8 @@ Public Function ElementalTagsToTxtParser(ByVal ElementalTags As Long) As String
     
 End Function
 
-Public Function LookAtTileToTxtParser(ByRef Fields() As String)
-    On Error GoTo LookAtTileToTxtParser_Err
-    Dim parsedFields(1 to 3) As String
+Public Function UserInTileToTxtParser(ByRef Fields() As String)
+    On Error GoTo UserInTileToTxtParser_Err
 
     Dim targetName As String
     Dim targetDescription As String
@@ -2374,11 +2373,11 @@ Public Function LookAtTileToTxtParser(ByRef Fields() As String)
     Fields(0) = targetName & " "
                           
     If targetDescription <> "" Then
-        Fields(0) = Fields(0) &  "<" & targetDescription & ">" & " "
+        Fields(0) = Fields(0) & "<" & targetDescription & ">" & " "
     End If
     
     If guildName <> "" Then
-        Fields(0) = Fields(0) & "<" & guildName & ">"& " "
+        Fields(0) = Fields(0) & "<" & guildName & ">" & " "
     End If
     
     If Spouse <> "" Then
@@ -2417,9 +2416,41 @@ Public Function LookAtTileToTxtParser(ByRef Fields() As String)
 
 Exit Function
 
-LookAtTileToTxtParser_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.LookAtTileToTxtParser", Erl)
+UserInTileToTxtParser_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.UserInTileToTxtParser", Erl)
     Resume Next
 End Function
+
+
+
+Public Function NpcInTileToTxtParser(ByRef Fields() As String)
+
+On Error GoTo NpcInTileToTxtParser_Err
+
+    Dim NpcName As String
+    
+    Dim NpcStatus As String
+    Dim NpcStatusMask As Long
+    Dim NpcLife As String
+    Dim NpcOwner As String
+    
+    NpcName = Fields(0)
+    
+    NpcStatus = Split(Fields(1), "|")(0)
+    NpcStatusMask = CLng(Split(Fields(1), "|")(1))
+    
+    If UBound(Fields) > 2 Then
+        NpcOwner = Fields(2)
+    End If
+    
+    Exit Function
+
+NpcInTileToTxtParser_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.NpcInTileToTxtParser", Erl)
+    Resume Next
+
+End Function
+
+
 
 

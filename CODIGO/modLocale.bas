@@ -50,14 +50,14 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
     
     Fields = Split(strExtra, "¬")
     
-    'Elemental Npcs case
+    'Look At Tile when clicking an npc with or without owner
     If bytHeader = 1622 or bytHeader = 1621 Then
-        Fields(1) = ElementalTagsToTxtParser(CLng(Fields(1)))
+        Call NpcInTileToTxtParser(Fields)
     End If
 
     'Look At Tile when clicking a player
     If bytHeader = 1105 Then
-        Call LookAtTileToTxtParser(Fields)
+        Call UserInTileToTxtParser(Fields)
     End If
 
     ' En reversa para evitar pisar campos mayores a 10
@@ -65,8 +65,6 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
         strLocale = Replace(strLocale, "¬" & (i + 1), Fields(i))
     Next
     
-    
-
     Locale_Parse_ServerMessage = strLocale
 
     Exit Function
