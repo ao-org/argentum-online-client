@@ -2382,7 +2382,7 @@ Public Function LookAtTileToTxtParser(ByRef Fields() As String)
     End If
     
     If Spouse <> "" Then
-        Fields(0) = Fields(0) & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO") & Spouse & ">" & " "
+        Fields(0) = Fields(0) & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CASADO") & " " & Spouse & ">" & " "
     End If
         
     If CharClass <> "" Then
