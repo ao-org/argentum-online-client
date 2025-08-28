@@ -2111,14 +2111,28 @@ Public Function LookAtTileTxtParser(ByRef Fields() As String)
     Dim StatusMask As Long
     Dim StatusMask2 As Long
 
-    targetName = Split(Fields(0), "-")(0)
-    targetDescription = Split(Fields(0), "-")(1)
-    GuildName = Split(Fields(0), "-")(2)
-    Spouse = Split(Fields(0), "-")(3)
-    CharClass = Split(Fields(0), "-")(4)
-    CharRace = Split(Fields(0), "-")(5)
-    level = Split(Fields(0), "-")(6)
-    Elo = Split(Fields(0), "-")(7)
+
+    Dim SplitServerFields() As String
+    SplitServerFields = Split(Fields(0), "-")
+    Dim i As Byte
+    
+    i = LBound(SplitServerFields)
+    
+    targetName = SplitServerFields(i)
+    
+    targetDescription = SplitServerFields(i)
+    
+    guildName = SplitServerFields(i)
+    
+    Spouse = SplitServerFields(i)
+    
+    CharClass = SplitServerFields(i)
+    
+    CharRace = SplitServerFields(i)
+    
+    level = SplitServerFields(i)
+    
+    Elo = SplitServerFields(i)
 
     Select Case CByte(CharClass)
         Case e_Class.Mage
@@ -2146,7 +2160,7 @@ Public Function LookAtTileTxtParser(ByRef Fields() As String)
         Case e_Class.Bandit
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_BANDIDO")
         Case Else
-            CharClass = JsonLanguage.Item("Raza desconocida")
+            CharClass = JsonLanguage.Item("")
     End Select
 
     Select Case CByte(CharRace)
@@ -2162,6 +2176,8 @@ Public Function LookAtTileTxtParser(ByRef Fields() As String)
             CharRace = JsonLanguage.Item("MENSAJE_RAZA_ENANO")
         Case e_Race.Orc
             CharRace = JsonLanguage.Item("MENSAJE_RAZA_ORCO")
+        Case Else
+            CharRace = ""
     End Select
 
     StatusMask = CLng(Fields(1))

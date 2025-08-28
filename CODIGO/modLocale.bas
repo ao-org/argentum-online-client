@@ -69,6 +69,8 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
 
     Locale_Parse_ServerMessage = strLocale
 
+    Exit Function
+
 Locale_Parse_ServerMessage_Err:
 Call RegistrarError(Err.Number, Err.Description, "modLocale.Locale_Parse_ServerMessage", Erl)
     Resume Next
