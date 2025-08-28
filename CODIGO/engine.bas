@@ -4505,7 +4505,7 @@ Draw_Grh_Precalculated_Err:
     Resume Next
 End Sub
 
-Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, Color As RGBA)
+Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, ByRef Color As RGBA)
     
     On Error GoTo Engine_Draw_Box_Err
     

@@ -1715,6 +1715,11 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).LingP = Val(Leer.GetValue("OBJ" & Obj, "LingP"))
         ObjData(Obj).LingO = Val(Leer.GetValue("OBJ" & Obj, "LingO"))
         ObjData(Obj).Coal = Val(Leer.GetValue("OBJ" & Obj, "Coal"))
+        ObjData(Obj).Blodium = val(Leer.GetValue("OBJ" & Obj, "Blodium"))
+        ObjData(Obj).FireEssence = val(Leer.GetValue("OBJ" & Obj, "FireEssence"))
+        ObjData(Obj).WaterEssence = val(Leer.GetValue("OBJ" & Obj, "WaterEssence"))
+        ObjData(Obj).EarthEssence = val(Leer.GetValue("OBJ" & Obj, "EarthEssence"))
+        ObjData(Obj).WindEssence = val(Leer.GetValue("OBJ" & Obj, "WindEssence"))
         ObjData(Obj).Destruye = Val(Leer.GetValue("OBJ" & Obj, "Destruye"))
         ObjData(Obj).SkHerreria = Val(Leer.GetValue("OBJ" & Obj, "SkHerreria"))
         ObjData(Obj).SkPociones = Val(Leer.GetValue("OBJ" & Obj, "SkPociones"))
@@ -1722,6 +1727,7 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).Valor = Val(Leer.GetValue("OBJ" & Obj, "Valor"))
         ObjData(Obj).Agarrable = Val(Leer.GetValue("OBJ" & Obj, "Agarrable"))
         ObjData(Obj).Llave = Val(Leer.GetValue("OBJ" & Obj, "Llave"))
+        ObjData(Obj).ElementalTags = val(Leer.GetValue("OBJ" & Obj, "ElementalTags"))
             
         If Val(Leer.GetValue("OBJ" & Obj, "NFT")) = 1 Then
             ObjShop(i).name = Leer.GetValue("OBJ" & Obj, "Name")
@@ -1767,6 +1773,7 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).ExpClan = Val(Leer.GetValue("npc" & Npc, "GiveEXPClan"))
         
         NpcData(Npc).PuedeInvocar = Val(Leer.GetValue("npc" & Npc, "PuedeInvocar"))
+        NpcData(Npc).ElementalTags = val(Leer.GetValue("npc" & Npc, "ElementalTags"))
         aux = Val(Leer.GetValue("npc" & Npc, "NumQuiza"))
 
         If aux = 0 Then
