@@ -2096,8 +2096,8 @@ Public Function ElementalTagsToTxtParser(ByVal ElementalTags As Long) As String
     
 End Function
 
-Public Function LookAtTileTxtParser(ByRef Fields() As String)
-    On Error GoTo LookAtTileTxtParser_Err
+Public Function LookAtTileToTxtParser(ByRef Fields() As String)
+    On Error GoTo LookAtTileToTxtParser_Err
     Dim parsedFields(1 to 3) As String
 
     Dim targetName As String
@@ -2110,7 +2110,6 @@ Public Function LookAtTileTxtParser(ByRef Fields() As String)
     Dim Elo As String
     Dim StatusMask As Long
     Dim StatusMask2 As Long
-
 
     Dim SplitServerFields() As String
     SplitServerFields = Split(Fields(0), "-")
@@ -2198,6 +2197,7 @@ Public Function LookAtTileTxtParser(ByRef Fields() As String)
     StatusMask2 = CLng(Fields(2))
 
     Dim StatusString As String
+    Dim FactionStatusString As String
 
     If IsSet(StatusMask, e_InfoTxts.Newbie) Then
         StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_NOVATO") & ">" & " "
@@ -2296,82 +2296,110 @@ Public Function LookAtTileTxtParser(ByRef Fields() As String)
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.ChaoticCouncil) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CONSEJO_CAOS") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CONSEJO_CAOS") & ">" & " "
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.Chaotic) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS") & ">" & " "
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.ChaosFirstHierarchy) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_PRIMERA_JERARQUIA") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_PRIMERA_JERARQUIA") & ">"
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.ChaosSecondHierarchy) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_SEGUNDA_JERARQUIA") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_SEGUNDA_JERARQUIA") & ">"
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.ChaosThirdHierarchy) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_TERCERA_JERARQUIA") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_TERCERA_JERARQUIA") & ">"
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.ChaosFourthHierarchy) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_CUARTA_JERARQUIA") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_CUARTA_JERARQUIA") & ">"
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.ChaosFifthHierarchy) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_QUINTA_JERARQUIA") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_QUINTA_JERARQUIA") & ">"
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.Criminal) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CRIMINAL") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CRIMINAL") & ">"
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.RoyalCouncil) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CONSEJO_REAL") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CONSEJO_REAL") & ">" & " "
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.Army) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA") & ">" & " "
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.ArmyFirstHierarchy) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_PRIMERA_JERARQUIA") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_PRIMERA_JERARQUIA") & ">"
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.ArmySecondHierarchy) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_SEGUNDA_JERARQUIA") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_SEGUNDA_JERARQUIA") & ">"
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.ArmyThirdHierarchy) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_TERCERA_JERARQUIA") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_TERCERA_JERARQUIA") & ">"
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.ArmyFourthHierarchy) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_CUARTA_JERARQUIA") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_CUARTA_JERARQUIA") & ">"
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.ArmyFifthHierarchy) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_QUINTA_JERARQUIA") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_QUINTA_JERARQUIA") & ">"
     End If
 
     If IsSet(StatusMask2, e_InfoTxts2.Citizen) Then
-        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO") & ">" & " "
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO") & ">"
     End If
 
-    Fields(0) = targetName & " " & _
-                          targetDescription & " " & _
-                          guildName & " " & _
-                          Spouse & " " & _
-                          CharClass & " " & _
-                          CharRace & " " & _
-                          Level & " " & _
-                          Elo
-    Fields(1) = StatusString
+    Fields(0) = targetName & " "
+                          
+    If targetDescription <> "" Then
+        Fields(0) = Fields(0) & targetDescription & " "
+    End If
+    
+    If guildName <> "" Then
+        Fields(0) = Fields(0) & guildName & " "
+    End If
+    
+    If Spouse <> "" Then
+        Fields(0) = Fields(0) & Spouse & " "
+    End If
+        
+    If CharClass <> "" Then
+        Fields(0) = Fields(0) & "<" & CharClass & "|"
+    End If
+    
+    If CharRace <> "" Then
+        Fields(0) = Fields(0) & CharRace & ">" & " "
+    End If
+    
+    If level <> "" Then
+        Fields(0) = Fields(0) & "<" & JsonLanguage.Item("MENSAJE_NIVEL") & ":" & level & "> "
+    End If
+    
+    If Elo <> "" Then
+        Fields(0) = Fields(0) & "Elo:" & Elo & " "
+    End If
+        
+    If StatusString <> "" Then
+        Fields(1) = StatusString
+    Else
+        Fields(1) = ""
+    End If
+    
+    Fields(2) = FactionStatusString
 Exit Function
 
-LookAtTileTxtParser_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.LookAtTileTxtParser", Erl)
+LookAtTileToTxtParser_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.LookAtTileToTxtParser", Erl)
     Resume Next
 End Function
 

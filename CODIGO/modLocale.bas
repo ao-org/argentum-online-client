@@ -57,7 +57,7 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
 
     'Look At Tile when clicking a player
     If bytHeader = 1105 Then
-        Call LookAtTileTxtParser(Fields)
+        Call LookAtTileToTxtParser(Fields)
     End If
 
     ' En reversa para evitar pisar campos mayores a 10
