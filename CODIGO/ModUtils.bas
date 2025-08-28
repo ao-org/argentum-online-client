@@ -2204,83 +2204,83 @@ Public Function LookAtTileToTxtParser(ByRef Fields() As String)
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Poisoned) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_ENVENENADO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_ENVENENADO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Blind) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_CEGADO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_CEGADO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Paralized) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_PARALIZADO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_PARALIZADO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Inmovilized) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_INMOVILIZADO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_INMOVILIZADO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Working) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_TRABAJANDO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_TRABAJANDO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Invisible) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_INVISIBLE") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_INVISIBLE") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Hidden) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_OCULTO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_OCULTO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Stupid) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_TORPE") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_TORPE") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Cursed) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_MALDITO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_MALDITO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Silenced) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_SILENCIADO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_SILENCIADO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Trading) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_COMERCIANDO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_COMERCIANDO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Resting) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_DESCANSANDO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_DESCANSANDO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Focusing) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_CONCENTRANDOSE") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_CONCENTRANDOSE") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Incinerated) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_INCINERADO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_INCINERADO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Dead) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_MUERTO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_MUERTO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.AlmostDead) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_CASI_MUERTO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_CASI_MUERTO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.SeriouslyWounded) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_GRAVEMENTE_HERIDO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_GRAVEMENTE_HERIDO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Wounded) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_HERIDO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_HERIDO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.LightlyWounded) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_LEVEMENTE_HERIDO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_LEVEMENTE_HERIDO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Intact) Then
-        StatusString = StatusString & "|" & JsonLanguage.Item("MENSAJE_ESTADO_INTACTO") & " "
+        StatusString = StatusString & JsonLanguage.Item("MENSAJE_ESTADO_INTACTO") & " |" & " "
     End If
 
     If IsSet(StatusMask, e_InfoTxts.Counselor) Then
