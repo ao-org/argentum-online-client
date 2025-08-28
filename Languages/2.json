@@ -681,6 +681,8 @@
     "MENSAJE_ESTADO_CONSEJERO": "Advisor",
     "MENSAJE_ESTADO_SEMIDIOS": "Demigod",
     "MENSAJE_ESTADO_DIOS": "God",
+    "MENSAJE_ESTADO_ADMIN" : "Administrator",
+    "MENSAJE_ESTADO_ROLEMASTER": "Role Master",
     "MENSAJE_ESTADO_CONSEJO_CAOS": "Shadow Council",
     "MENSAJE_ESTADO_CAOS": "Dark Legion",
     "MENSAJE_ESTADO_CAOS_PRIMERA_JERARQUIA": "Acolyte",

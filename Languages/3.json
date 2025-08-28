@@ -681,6 +681,8 @@
   "MENSAJE_ESTADO_CONSEJERO": "Conselheiro",
   "MENSAJE_ESTADO_SEMIDIOS": "Semideus",
   "MENSAJE_ESTADO_DIOS": "Deus",
+  "MENSAJE_ESTADO_ADMIN" : "Administrador",
+  "MENSAJE_ESTADO_ROLEMASTER": "Mestre de funções",
   "MENSAJE_ESTADO_CONSEJO_CAOS": "Conselho das Sombras",
   "MENSAJE_ESTADO_CAOS": "Legião Sombria",
   "MENSAJE_ESTADO_CAOS_PRIMERA_JERARQUIA": "Acólito",

@@ -2295,6 +2295,14 @@ Public Function LookAtTileToTxtParser(ByRef Fields() As String)
         StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_DIOS") & ">" & " "
     End If
 
+    If IsSet(StatusMask, e_InfoTxts.Admin) Then
+        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ADMIN") & ">" & " "
+    End If
+
+    If IsSet(StatusMask, e_InfoTxts.RoleMaster) Then
+        StatusString = StatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ROLEMASTER") & ">" & " "
+    End If
+
     If IsSet(StatusMask2, e_InfoTxts2.ChaoticCouncil) Then
         FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CONSEJO_CAOS") & ">" & " "
     End If

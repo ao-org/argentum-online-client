@@ -166,6 +166,7 @@ Public Enum e_InfoTxts
     DemiGod = 4194304
     God = 8388608
     Admin = 16777216
+    RoleMaster = 33554432
 End Enum
 
 Public Enum e_InfoTxts2
