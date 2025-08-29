@@ -707,5 +707,6 @@
     "MENSAJE_ESTADO_ARMADA_CUARTA_JERARQUIA": "Protector del Reino",
     "MENSAJE_ESTADO_ARMADA_QUINTA_JERARQUIA": "Campeón de la Luz",
     "MENSAJE_ESTADO_CIUDADANO": "Ciudadano",
-    "MENSAJE_ESTADO_CASADO" : "Casado con"
+    "MENSAJE_ESTADO_CASADO" : "Casado con",
+    "MENSAJE_ESTADO_PELEANDO" : "Peleando con"
 }

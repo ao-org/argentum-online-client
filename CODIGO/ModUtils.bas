@@ -2428,20 +2428,63 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String)
 On Error GoTo NpcInTileToTxtParser_Err
 
     Dim NpcName As String
-    
-    Dim NpcStatus As String
-    Dim NpcStatusMask As Long
-    Dim NpcLife As String
+    Dim NpcElementalTags As Long
     Dim NpcOwner As String
+    Dim NpcStatuses As String
+    Dim NpcStatusMask As Long
+    Dim Information As String
     
     NpcName = Fields(0)
+    NpcElementalTags = CLng(Fields(1))
     
-    NpcStatus = Split(Fields(1), "|")(0)
-    NpcStatusMask = CLng(Split(Fields(1), "|")(1))
-    
-    If UBound(Fields) > 2 Then
+    If UBound(Fields) = 3 Then
         NpcOwner = Fields(2)
+        NpcStatuses = Fields(3)
+    Else
+        NpcStatuses = Fields(2)
     End If
+    
+    NpcStatusMask = CLng(Split(NpcStatuses, "|")(1))
+    
+    
+    If Split(NpcStatuses, "-")(0) = "" Then
+        If IsSet(NpcStatusMask, e_NpcInfoMask.AlmostDead) Then
+            Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_CASIMUERTO")
+        End If
+        
+        If IsSet(NpcStatusMask, e_NpcInfoMask.SeriouslyWounded) Then
+            Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_GRAVEMENTE_HERIDO")
+        End If
+        
+        If IsSet(NpcStatusMask, e_NpcInfoMask.Wounded) Then
+            Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_HERIDO")
+        End If
+        
+        If IsSet(NpcStatusMask, e_NpcInfoMask.LightlyWounded) Then
+            Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_LEVEMENTE_HERIDO")
+        End If
+        
+        If IsSet(NpcStatusMask, e_NpcInfoMask.Intact) Then
+            Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_INTACTO")
+        End If
+    End If
+    
+    If IsSet(NpcStatusMask, e_NpcInfoMask.Paralized) Then
+        Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_PARALIZADO")
+    End If
+    
+    If IsSet(NpcStatusMask, e_NpcInfoMask.Inmovilized) Then
+        Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_INMOVILIZADO")
+    End If
+    
+    If IsSet(NpcStatusMask, e_NpcInfoMask.Fighting) Then
+        Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_PELEANDO")
+    End If
+    
+    
+    Fields(1) = ElementalTagsToTxtParser(NpcElementalTags)
+    
+    
     
     Exit Function
 
