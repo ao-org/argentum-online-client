@@ -47,6 +47,7 @@ Private Const D3DFVF_UI_VERTEX = (D3DFVF_XYZRHW Or D3DFVF_DIFFUSE)
 
 ' Initialize with device and max quads capacity
 Public Sub Init(ByVal dev As Direct3DDevice8, ByVal maxQuads As Long)
+    On Error Goto Init_Err
     Set m_Device = dev
     vertexCapacity = maxQuads * 4
     ReDim vertices(0 To vertexCapacity - 1)
@@ -56,10 +57,14 @@ Public Sub Init(ByVal dev As Direct3DDevice8, ByVal maxQuads As Long)
     vbSize = vertexCapacity * LenB(vertices(0))
     Set m_VB = dev.CreateVertexBuffer(vbSize, D3DUSAGE_DYNAMIC Or D3DUSAGE_WRITEONLY, D3DFVF_XYZRHW Or D3DFVF_DIFFUSE, D3DPOOL_DEFAULT)
     
+    Exit Sub
+Init_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIRenderer.Init", Erl)
 End Sub
 
 ' Add a quad defined by position, size, per-vertex colors array, and optional alpha
 Public Sub AddQuad(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByRef colors() As Long, Optional ByVal Alpha As Byte = 255)
+    On Error Goto AddQuad_Err
     If vertexCount + 4 > vertexCapacity Then Exit Sub
     Dim idx As Long: idx = vertexCount
     Dim clr As Long, clrAlpha As Long
@@ -81,27 +86,39 @@ Public Sub AddQuad(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As
         vertices(idx + i).Color = clr
     Next i
     vertexCount = vertexCount + 4
+    Exit Sub
+AddQuad_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIRenderer.AddQuad", Erl)
 End Sub
 
 
 Private Sub SaveRenderState(ByVal dev As Direct3DDevice8)
+    On Error Goto SaveRenderState_Err
     oldShader = dev.GetVertexShader
     oldAlpha = dev.GetRenderState(D3DRS_ALPHABLENDENABLE)
     oldSrc = dev.GetRenderState(D3DRS_SRCBLEND)
     oldDest = dev.GetRenderState(D3DRS_DESTBLEND)
+    Exit Sub
+SaveRenderState_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIRenderer.SaveRenderState", Erl)
 End Sub
 
 Private Sub RestoreRenderState(ByVal dev As Direct3DDevice8)
+    On Error Goto RestoreRenderState_Err
     ' Restore vertex shader (or FVF)
     dev.SetVertexShader oldShader
     ' Restore alpha blend states
     dev.SetRenderState D3DRS_ALPHABLENDENABLE, oldAlpha
     dev.SetRenderState D3DRS_SRCBLEND, oldSrc
     dev.SetRenderState D3DRS_DESTBLEND, oldDest
+    Exit Sub
+RestoreRenderState_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIRenderer.RestoreRenderState", Erl)
 End Sub
 
 ' Render all queued quads and clear buffer
 Public Sub Draw(ByVal dev As Direct3DDevice8)
+    On Error Goto Draw_Err
     If vertexCount = 0 Then Exit Sub
     ' Save states
     SaveRenderState dev
@@ -132,13 +149,24 @@ Public Sub Draw(ByVal dev As Direct3DDevice8)
 
     ' Clear for next frame
     vertexCount = 0
+    Exit Sub
+Draw_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIRenderer.Draw", Erl)
 End Sub
 
 ' IUIRenderer interface
 Public Sub AddComponentQuad(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByRef colors() As Long)
+    On Error Goto AddComponentQuad_Err
     Me.AddQuad x, y, w, h, colors
+    Exit Sub
+AddComponentQuad_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIRenderer.AddComponentQuad", Erl)
 End Sub
 Public Sub RenderAll(ByVal dev As Direct3DDevice8)
+    On Error Goto RenderAll_Err
     Draw dev
+    Exit Sub
+RenderAll_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIRenderer.RenderAll", Erl)
 End Sub
 

@@ -161,6 +161,7 @@ Private m_lPtr    As Long
 Private m_tBI     As BITMAPINFO
 
 Public Function CopyToClipboard(Optional ByVal bAsDIB As Boolean = True) As Boolean
+    On Error Goto CopyToClipboard_Err
     
     On Error GoTo CopyToClipboard_Err
     
@@ -246,9 +247,13 @@ CopyToClipboard_Err:
     Call RegistrarError(Err.number, Err.Description, "cDIBSection.CopyToClipboard", Erl)
     Resume Next
     
+    Exit Function
+CopyToClipboard_Err:
+    Call TraceError(Err.Number, Err.Description, "cDIBSection.CopyToClipboard", Erl)
 End Function
 
 Public Function CreateDIB(ByVal lhDC As Long, ByVal lWidth As Long, ByVal lHeight As Long, ByRef hDib As Long) As Boolean
+    On Error Goto CreateDIB_Err
     
     On Error GoTo CreateDIB_Err
     
@@ -274,9 +279,13 @@ CreateDIB_Err:
     Call RegistrarError(Err.number, Err.Description, "cDIBSection.CreateDIB", Erl)
     Resume Next
     
+    Exit Function
+CreateDIB_Err:
+    Call TraceError(Err.Number, Err.Description, "cDIBSection.CreateDIB", Erl)
 End Function
 
 Public Function CreateFromPicture(ByRef picThis As StdPicture)
+    On Error Goto CreateFromPicture_Err
     
     On Error GoTo CreateFromPicture_Err
     
@@ -320,9 +329,13 @@ CreateFromPicture_Err:
     Call RegistrarError(Err.number, Err.Description, "cDIBSection.CreateFromPicture", Erl)
     Resume Next
     
+    Exit Function
+CreateFromPicture_Err:
+    Call TraceError(Err.Number, Err.Description, "cDIBSection.CreateFromPicture", Erl)
 End Function
 
 Public Function Create(ByVal lWidth As Long, ByVal lHeight As Long) As Boolean
+    On Error Goto Create_Err
     
     On Error GoTo Create_Err
     
@@ -348,6 +361,9 @@ Create_Err:
     Call RegistrarError(Err.number, Err.Description, "cDIBSection.Create", Erl)
     Resume Next
     
+    Exit Function
+Create_Err:
+    Call TraceError(Err.Number, Err.Description, "cDIBSection.Create", Erl)
 End Function
 
 Public Property Get BytesPerScanLine() As Long
@@ -397,6 +413,7 @@ Height_Err:
 End Property
 
 Public Sub LoadPictureBlt(ByVal lhDC As Long, Optional ByVal lSrcLeft As Long = 0, Optional ByVal lSrcTop As Long = 0, Optional ByVal lSrcWidth As Long = -1, Optional ByVal lSrcHeight As Long = -1, Optional ByVal eRop As RasterOpConstants = vbSrcCopy)
+    On Error Goto LoadPictureBlt_Err
     
     On Error GoTo LoadPictureBlt_Err
     
@@ -412,9 +429,13 @@ LoadPictureBlt_Err:
     Call RegistrarError(Err.number, Err.Description, "cDIBSection.LoadPictureBlt", Erl)
     Resume Next
     
+    Exit Sub
+LoadPictureBlt_Err:
+    Call TraceError(Err.Number, Err.Description, "cDIBSection.LoadPictureBlt", Erl)
 End Sub
 
 Public Sub PaintPicture(ByVal lhDC As Long, Optional ByVal lDestLeft As Long = 0, Optional ByVal lDestTop As Long = 0, Optional ByVal lDestWidth As Long = -1, Optional ByVal lDestHeight As Long = -1, Optional ByVal lSrcLeft As Long = 0, Optional ByVal lSrcTop As Long = 0, Optional ByVal eRop As RasterOpConstants = vbSrcCopy)
+    On Error Goto PaintPicture_Err
     
     On Error GoTo PaintPicture_Err
     
@@ -430,6 +451,9 @@ PaintPicture_Err:
     Call RegistrarError(Err.number, Err.Description, "cDIBSection.PaintPicture", Erl)
     Resume Next
     
+    Exit Sub
+PaintPicture_Err:
+    Call TraceError(Err.Number, Err.Description, "cDIBSection.PaintPicture", Erl)
 End Sub
 
 Public Property Get hdc() As Long
@@ -478,6 +502,7 @@ DIBSectionBitsPtr_Err:
 End Property
 
 Public Sub RandomiseBits(Optional ByVal bGray As Boolean = False)
+    On Error Goto RandomiseBits_Err
     
     On Error GoTo RandomiseBits_Err
     
@@ -546,9 +571,13 @@ RandomiseBits_Err:
     Call RegistrarError(Err.number, Err.Description, "cDIBSection.RandomiseBits", Erl)
     Resume Next
     
+    Exit Sub
+RandomiseBits_Err:
+    Call TraceError(Err.Number, Err.Description, "cDIBSection.RandomiseBits", Erl)
 End Sub
 
 Public Sub ClearUp()
+    On Error Goto ClearUp_Err
     
     On Error GoTo ClearUp_Err
     
@@ -576,9 +605,13 @@ ClearUp_Err:
     Call RegistrarError(Err.number, Err.Description, "cDIBSection.ClearUp", Erl)
     Resume Next
     
+    Exit Sub
+ClearUp_Err:
+    Call TraceError(Err.Number, Err.Description, "cDIBSection.ClearUp", Erl)
 End Sub
 
 Public Function Resample(ByVal lNewHeight As Long, ByVal lNewWidth As Long) As cDIBSection
+    On Error Goto Resample_Err
     
     On Error GoTo Resample_Err
     
@@ -608,9 +641,13 @@ Resample_Err:
     Call RegistrarError(Err.number, Err.Description, "cDIBSection.Resample", Erl)
     Resume Next
     
+    Exit Function
+Resample_Err:
+    Call TraceError(Err.Number, Err.Description, "cDIBSection.Resample", Erl)
 End Function
 
 Private Function ResampleDib(ByRef cDibTo As cDIBSection) As Boolean
+    On Error Goto ResampleDib_Err
     
     On Error GoTo ResampleDib_Err
     
@@ -749,9 +786,13 @@ ResampleDib_Err:
     Call RegistrarError(Err.number, Err.Description, "cDIBSection.ResampleDib", Erl)
     Resume Next
     
+    Exit Function
+ResampleDib_Err:
+    Call TraceError(Err.Number, Err.Description, "cDIBSection.ResampleDib", Erl)
 End Function
 
 Private Sub Class_Terminate()
+    On Error Goto Class_Terminate_Err
     
     On Error GoTo Class_Terminate_Err
     
@@ -764,5 +805,8 @@ Class_Terminate_Err:
     Call RegistrarError(Err.number, Err.Description, "cDIBSection.Class_Terminate", Erl)
     Resume Next
     
+    Exit Sub
+Class_Terminate_Err:
+    Call TraceError(Err.Number, Err.Description, "cDIBSection.Class_Terminate", Erl)
 End Sub
 

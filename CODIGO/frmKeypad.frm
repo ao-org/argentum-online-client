@@ -429,6 +429,7 @@ Private Const MayIndex = "!@#$%^&*()_+|QWERTYUIOP{}ASDFGHJKL:""ZXCVBNM<>?"
 Private Modo As e_modo_keypad
 
 Private Sub Form_Activate()
+    On Error Goto Form_Activate_Err
 Dim i As Integer
 Dim j As Integer
     i = RandomNumber(-2000, 2000)
@@ -436,23 +437,39 @@ Dim j As Integer
     Me.Top = Me.Top + j
     Me.Left = Me.Left + i
 
+    Exit Sub
+Form_Activate_Err:
+    Call TraceError(Err.Number, Err.Description, "frmKeypad.Form_Activate", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     Me.Picture = LoadPicture(App.path & "\Recursos\Graficos\KeyPadMin.bmp")
     Modo = MINUSCULA
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmKeypad.Form_Load", Erl)
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    On Error Goto Form_Unload_Err
     'frmOldPersonaje.PasswordTxt.Text = Me.txtPassword.Text
+    Exit Sub
+Form_Unload_Err:
+    Call TraceError(Err.Number, Err.Description, "frmKeypad.Form_Unload", Erl)
 End Sub
 
 Private Sub imgEspacio_Click()
+    On Error Goto imgEspacio_Click_Err
     Call Audio.PlayWave(SND_CLICK)
     'Me.txtPassword.Text = Me.txtPassword.Text & " "
     'Me.txtPassword.SetFocus
+    Exit Sub
+imgEspacio_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmKeypad.imgEspacio_Click", Erl)
 End Sub
 Private Sub imgKeyPad_Click(Index As Integer)
+    On Error Goto imgKeyPad_Click_Err
     Call Audio.PlayWave(SND_CLICK)
     If Modo = MAYUSCULA Then
         Me.txtPassword.Text = Me.txtPassword.Text & mid$(MayIndex, Index + 1, 1)
@@ -460,27 +477,42 @@ Private Sub imgKeyPad_Click(Index As Integer)
         Me.txtPassword.Text = Me.txtPassword.Text & mid$(MinIndex, Index + 1, 1)
     End If
     Me.txtPassword.SetFocus
+    Exit Sub
+imgKeyPad_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmKeypad.imgKeyPad_Click", Erl)
 End Sub
 
 Private Sub imgMay_Click()
+    On Error Goto imgMay_Click_Err
     Call Audio.PlayWave(SND_CLICK)
     Me.Picture = LoadPicture(App.path & "\Recursos\Graficos\KeyPadMay.bmp")
     Modo = MAYUSCULA
     Me.txtPassword.SetFocus
+    Exit Sub
+imgMay_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmKeypad.imgMay_Click", Erl)
 End Sub
 
 Private Sub imgMin_Click()
+    On Error Goto imgMin_Click_Err
     Call Audio.PlayWave(SND_CLICK)
     Me.Picture = LoadPicture(App.path & "\Recursos\Graficos\KeyPadMin.bmp")
     Modo = MINUSCULA
     Me.txtPassword.SetFocus
+    Exit Sub
+imgMin_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmKeypad.imgMin_Click", Erl)
 End Sub
 
 Private Sub txtPassword_KeyPress(KeyAscii As Integer)
+    On Error Goto txtPassword_KeyPress_Err
     If KeyAscii = 13 Then
         frmConnect.PasswordTxt.Text = Me.txtPassword.Text
         Unload Me
     Else
         Me.txtPassword.Text = vbNullString
     End If
+    Exit Sub
+txtPassword_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmKeypad.txtPassword_KeyPress", Erl)
 End Sub

@@ -32,9 +32,13 @@ Public initialTime As Long
 Public iconGrh As Long
 
 Public Sub Cooldown_Initialize(ByVal duration As Long, ByVal grh As Long)
+    On Error Goto Cooldown_Initialize_Err
     initialTime = GetTickCount()
     totalTime = duration
     iconGrh = grh
+    Exit Sub
+Cooldown_Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsCooldown.Cooldown_Initialize", Erl)
 End Sub
 
 

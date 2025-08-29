@@ -585,6 +585,7 @@ Dim AnimHead       As Byte
 Public SkillPoints As Byte
 
 Function CheckData() As Boolean
+    On Error Goto CheckData_Err
     
     On Error GoTo CheckData_Err
     
@@ -636,9 +637,13 @@ CheckData_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.CheckData", Erl)
     Resume Next
     
+    Exit Function
+CheckData_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearPersonaje.CheckData", Erl)
 End Function
 
 Function RandomNumber(ByVal LowerBound As Variant, ByVal UpperBound As Variant) As Single
+    On Error Goto RandomNumber_Err
     
     On Error GoTo RandomNumber_Err
     
@@ -654,13 +659,21 @@ RandomNumber_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.RandomNumber", Erl)
     Resume Next
     
+    Exit Function
+RandomNumber_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearPersonaje.RandomNumber", Erl)
 End Function
 
 Private Sub Form_Activate()
+    On Error Goto Form_Activate_Err
     g_game_state.State = e_state_createchar_screen
+    Exit Sub
+Form_Activate_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearPersonaje.Form_Activate", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -684,9 +697,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearPersonaje.Form_Load", Erl)
 End Sub
 
 Private Sub lstProfesion_Click()
+    On Error Goto lstProfesion_Click_Err
     
     On Error GoTo lstProfesion_Click_Err
     
@@ -797,9 +814,13 @@ lstProfesion_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.lstProfesion_Click", Erl)
     Resume Next
     
+    Exit Sub
+lstProfesion_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearPersonaje.lstProfesion_Click", Erl)
 End Sub
 
 Private Sub lstRaza_Click()
+    On Error Goto lstRaza_Click_Err
     
     On Error GoTo lstRaza_Click_Err
     
@@ -827,9 +848,13 @@ lstRaza_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.lstRaza_Click", Erl)
     Resume Next
     
+    Exit Sub
+lstRaza_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearPersonaje.lstRaza_Click", Erl)
 End Sub
 
 Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto render_MouseUp_Err
     
     On Error GoTo render_MouseUp_Err
     
@@ -1017,9 +1042,13 @@ render_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.render_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+render_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearPersonaje.render_MouseUp", Erl)
 End Sub
 
 Private Sub Cabeza_Click()
+    On Error Goto Cabeza_Click_Err
     
     On Error GoTo Cabeza_Click_Err
     
@@ -1035,9 +1064,13 @@ Cabeza_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.Cabeza_Click", Erl)
     Resume Next
     
+    Exit Sub
+Cabeza_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearPersonaje.Cabeza_Click", Erl)
 End Sub
  
 Private Sub lstGenero_Click()
+    On Error Goto lstGenero_Click_Err
     
     On Error GoTo lstGenero_Click_Err
     
@@ -1051,4 +1084,7 @@ lstGenero_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCrearPersonaje.lstGenero_Click", Erl)
     Resume Next
     
+    Exit Sub
+lstGenero_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearPersonaje.lstGenero_Click", Erl)
 End Sub

@@ -78,6 +78,7 @@ Private Declare Function compress Lib "zlib.dll" (dest As Any, destlen As Any, s
 Private Declare Function uncompress Lib "zlib.dll" (dest As Any, destlen As Any, src As Any, ByVal srclen As Long) As Long
 
 Public Sub Compress_Data(ByRef data() As Byte)
+    On Error Goto Compress_Data_Err
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
 'Last Modify Date: 10/13/2004
@@ -136,9 +137,13 @@ Public Sub Compress_Data(ByRef data() As Byte)
     
     'Encrypt the first byte of the compressed data for extra security
     data(0) = data(0) Xor 12
+    Exit Sub
+Compress_Data_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCompresion.Compress_Data", Erl)
 End Sub
 
 Public Sub Decompress_Data(ByRef data() As Byte, ByVal OrigSize As Long)
+    On Error Goto Decompress_Data_Err
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
 'Last Modify Date: 10/13/2004
@@ -158,9 +163,13 @@ Public Sub Decompress_Data(ByRef data() As Byte, ByVal OrigSize As Long)
     data = BufTemp
     
     Erase BufTemp
+    Exit Sub
+Decompress_Data_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCompresion.Decompress_Data", Erl)
 End Sub
 
 Public Sub Encrypt_File_Header(ByRef FileHead As FILEHEADER)
+    On Error Goto Encrypt_File_Header_Err
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
 'Last Modify Date: 10/13/2004
@@ -171,9 +180,13 @@ Public Sub Encrypt_File_Header(ByRef FileHead As FILEHEADER)
         .intNumFiles = .intNumFiles Xor 12345
         .lngFileSize = .lngFileSize Xor 1234567890
     End With
+    Exit Sub
+Encrypt_File_Header_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCompresion.Encrypt_File_Header", Erl)
 End Sub
 
 Public Sub Encrypt_Info_Header(ByRef InfoHead As INFOHEADER)
+    On Error Goto Encrypt_Info_Header_Err
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
 'Last Modify Date: 10/13/2004
@@ -197,9 +210,13 @@ Public Sub Encrypt_Info_Header(ByRef InfoHead As INFOHEADER)
         .lngFileStart = .lngFileStart Xor 123456789
         .strFileName = EncryptedFileName
     End With
+    Exit Sub
+Encrypt_Info_Header_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCompresion.Encrypt_Info_Header", Erl)
 End Sub
 
 Public Function Extract_Files(ByVal file_type As resource_file_type, ByVal resource_path As String, ByRef ResourcePrgbar As ProgressBar, ByRef GeneralPrgBar As ProgressBar, ByRef GeneralLbl As Label, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
+    On Error Goto Extract_Files_Err
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
 'Last Modify Date: 10/13/2004
@@ -377,9 +394,13 @@ ErrHandler:
     Erase InfoHead
     'Display an error message if it didn't work
     MsgBox "Unable to decode binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
+    Exit Function
+Extract_Files_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCompresion.Extract_Files", Erl)
 End Function
 
 Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As String) As Boolean
+    On Error Goto Extract_Patch_Err
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
 'Last Modify Date: 10/13/2004
@@ -663,9 +684,13 @@ ErrHandler:
     Erase InfoHead
     'Display an error message if it didn't work
     MsgBox "Unable to decode binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
+    Exit Function
+Extract_Patch_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCompresion.Extract_Patch", Erl)
 End Function
 
 Public Function Compress_Files(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal dest_path As String, ByRef GeneralPrgBar As ProgressBar) As Boolean
+    On Error Goto Compress_Files_Err
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
 'Last Modify Date: 10/13/2004
@@ -844,8 +869,12 @@ ErrHandler:
     Erase InfoHead
     'Display an error message if it didn't work
     MsgBox "Unable to create binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
+    Exit Function
+Compress_Files_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCompresion.Compress_Files", Erl)
 End Function
 Public Sub Delete_Resources(ByVal resource_path As String)
+    On Error Goto Delete_Resources_Err
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
 'Last Modify Date: 10/13/2004
@@ -858,8 +887,12 @@ On Local Error Resume Next
     Kill resource_path & MP3_PATH & "*.mp3"
     Kill resource_path & MIDI_PATH & "*.mid"
     Kill resource_path & SCRIPT_PATH & "*.*"
+    Exit Sub
+Delete_Resources_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCompresion.Delete_Resources", Erl)
 End Sub
 Public Function Extract_File(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
+    On Error Goto Extract_File_Err
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
 'Last Modify Date: 10/13/2004
@@ -979,11 +1012,15 @@ ErrHandler:
     Erase InfoHead
     'Display an error message if it didn't work
     MsgBox "Unable to decode binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
+    Exit Function
+Extract_File_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCompresion.Extract_File", Erl)
 End Function
 
 
 
 Public Function General_Load_Picture_From_Resource(ByVal picture_file_name As String) As IPicture
+    On Error Goto General_Load_Picture_From_Resource_Err
 '**************************************************************
 'Author: Augusto José Rando
 'Last Modify Date: 6/11/2005
@@ -1004,8 +1041,12 @@ Exit Function
 
 
 
+    Exit Function
+General_Load_Picture_From_Resource_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCompresion.General_Load_Picture_From_Resource", Erl)
 End Function
 Public Sub Delete_File(ByVal file_path As String)
+    On Error Goto Delete_File_Err
 '*****************************************************************
 'Author: Juan Martín Dotuyo Dodero
 'Last Modify Date: 3/03/2005
@@ -1035,8 +1076,12 @@ Public Sub Delete_File(ByVal file_path As String)
 Error_Handler:
     Kill file_path
         
+    Exit Sub
+Delete_File_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCompresion.Delete_File", Erl)
 End Sub
 Public Function General_Drive_Get_Free_Bytes(ByVal DriveName As String) As Currency
+    On Error Goto General_Drive_Get_Free_Bytes_Err
 '**************************************************************
 'Author: Juan Martín Sotuyo Dodero
 'Last Modify Date: 6/07/2004
@@ -1050,4 +1095,7 @@ Public Function General_Drive_Get_Free_Bytes(ByVal DriveName As String) As Curre
     RetVal = GetDiskFreeSpace(Left(DriveName, 2), FB, BT, FBT)
     
     General_Drive_Get_Free_Bytes = FB * 10000 'convert result to actual size in bytes
+    Exit Function
+General_Drive_Get_Free_Bytes_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCompresion.General_Drive_Get_Free_Bytes", Erl)
 End Function

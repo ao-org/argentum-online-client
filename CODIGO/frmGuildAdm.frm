@@ -135,6 +135,7 @@ Private cBotonBuscar As clsGraphicalButton
 
 
 Private Sub cmdBuscar_Click()
+    On Error Goto cmdBuscar_Click_Err
     
     On Error GoTo Image1_Click_Err
     
@@ -183,13 +184,21 @@ Image1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Image1_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdBuscar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildAdm.cmdBuscar_Click", Erl)
 End Sub
 
 Private Sub cmdCerrar_Click()
+    On Error Goto cmdCerrar_Click_Err
     Unload Me
+    Exit Sub
+cmdCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildAdm.cmdCerrar_Click", Erl)
 End Sub
 
 Private Sub cmdFundarClan_Click()
+    On Error Goto cmdFundarClan_Click_Err
     On Error GoTo cmdFundarClan_Click_Err
 
     If UserStats.Estado = 1 Then 'Muerto
@@ -210,10 +219,14 @@ Private Sub cmdFundarClan_Click()
 cmdFundarClan_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildAdm.cmdFundarClan_Click", Erl)
     Resume Next
+    Exit Sub
+cmdFundarClan_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildAdm.cmdFundarClan_Click", Erl)
 End Sub
 
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -232,9 +245,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildAdm.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildAdm.Form_Load", Erl)
 End Sub
 
 Private Sub LoadButtons()
+    On Error Goto LoadButtons_Err
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonFundarClan = New clsGraphicalButton
     Set cBotonBuscar = New clsGraphicalButton
@@ -250,9 +267,13 @@ Private Sub LoadButtons()
     Call cBotonFundarClan.Initialize(cmdFundarClan, "boton-fundar-clan-default.bmp", _
                                                     "boton-fundar-clan-over.bmp", _
                                                     "boton-fundar-clan-off.bmp", Me)
+    Exit Sub
+LoadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildAdm.LoadButtons", Erl)
 End Sub
 
 Private Sub Image3_Click()
+    On Error Goto Image3_Click_Err
     
     On Error GoTo Image3_Click_Err
     
@@ -269,9 +290,16 @@ Image3_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Image3_Click", Erl)
     Resume Next
     
+    Exit Sub
+Image3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildAdm.Image3_Click", Erl)
 End Sub
 
 
 Private Sub lblClose_Click()
+    On Error Goto lblClose_Click_Err
     Unload Me
+    Exit Sub
+lblClose_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildAdm.lblClose_Click", Erl)
 End Sub

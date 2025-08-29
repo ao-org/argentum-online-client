@@ -50,15 +50,20 @@ Public LastButtonPressed As clsGraphicalButton
 Private LimitY As Integer
 
 Public Sub Initialize(ByRef tForm As Form, Optional ByVal VerticalLimit As Integer = 0)
+    On Error Goto Initialize_Err
 
 'Sets the reference to the form
 
     Set Formulario = tForm
     Set LastButtonPressed = New clsGraphicalButton
     LimitY = VerticalLimit
+    Exit Sub
+Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsFormMovementManager.Initialize", Erl)
 End Sub
 
 Private Sub Formulario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Formulario_MouseDown_Err
 
 'Implements the mouse down event of the form.
 
@@ -68,9 +73,13 @@ Private Sub Formulario_MouseDown(Button As Integer, Shift As Integer, x As Singl
 
     DragX = x
     Dragy = y
+    Exit Sub
+Formulario_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "clsFormMovementManager.Formulario_MouseDown", Erl)
 End Sub
 
 Private Sub Formulario_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Formulario_MouseMove_Err
 
 'Implements the mouse move event of the form.
 
@@ -82,5 +91,8 @@ Private Sub Formulario_MouseMove(Button As Integer, Shift As Integer, x As Singl
     'Formulario.Left = Formulario.Left + (X - DragX)
     'Formulario.Top = Formulario.Top + (Y - Dragy)
     'End If
+    Exit Sub
+Formulario_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "clsFormMovementManager.Formulario_MouseMove", Erl)
 End Sub
 

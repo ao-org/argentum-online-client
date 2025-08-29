@@ -139,14 +139,23 @@ Attribute VB_Exposed = False
 '
 '
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmShopPjsAO20.Form_Load", Erl)
 End Sub
 
 Private Sub Label2_Click()
+    On Error Goto Label2_Click_Err
     Call cerrarFormulario
+    Exit Sub
+Label2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmShopPjsAO20.Label2_Click", Erl)
 End Sub
 
 Private Sub lblPublicar_Click()
+    On Error Goto lblPublicar_Click_Err
     If Val(txtValor.Text <= 0) Then
         Call MsgBox(JsonLanguage.Item("MENSAJE_VALOR_PERSONAJE_INVALIDO"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
         Exit Sub
@@ -157,18 +166,29 @@ Private Sub lblPublicar_Click()
         Call cerrarFormulario
     End If
     
+    Exit Sub
+lblPublicar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmShopPjsAO20.lblPublicar_Click", Erl)
 End Sub
 Private Sub cerrarFormulario()
+    On Error Goto cerrarFormulario_Err
     txtValor.Text = ""
     Unload Me
+    Exit Sub
+cerrarFormulario_Err:
+    Call TraceError(Err.Number, Err.Description, "frmShopPjsAO20.cerrarFormulario", Erl)
 End Sub
 
 Private Sub txtValor_Change()
+    On Error Goto txtValor_Change_Err
     textval = txtValor.Text
     If IsNumeric(textval) Then
       numval = textval
     Else
       txtValor.Text = CStr(numval)
     End If
+    Exit Sub
+txtValor_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmShopPjsAO20.txtValor_Change", Erl)
 End Sub
 

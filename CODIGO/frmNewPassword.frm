@@ -106,27 +106,44 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Aceptar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Aceptar_MouseDown_Err
     Aceptar.Picture = LoadInterface("boton-aceptar-ES-off.bmp")
     Aceptar.Tag = "1"
+    Exit Sub
+Aceptar_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewPassword.Aceptar_MouseDown", Erl)
 End Sub
 
 Private Sub btnCerrar_Click()
+    On Error Goto btnCerrar_Click_Err
     Unload Me
+    Exit Sub
+btnCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewPassword.btnCerrar_Click", Erl)
 End Sub
 
 Private Sub btnCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto btnCerrar_MouseDown_Err
     btnCerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
     btnCerrar.Tag = "1"
+    Exit Sub
+btnCerrar_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewPassword.btnCerrar_MouseDown", Erl)
 End Sub
 
 Private Sub btnCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto btnCerrar_MouseMove_Err
     If btnCerrar.Tag = "0" Then
         btnCerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
         btnCerrar.Tag = "1"
     End If
+    Exit Sub
+btnCerrar_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewPassword.btnCerrar_MouseMove", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -142,8 +159,12 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmNewPassword.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewPassword.Form_Load", Erl)
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -159,9 +180,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.number, Err.Description, "frmNewPassword.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewPassword.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -183,9 +208,13 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmNewPassword.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewPassword.Form_MouseMove", Erl)
 End Sub
 
 Private Sub Aceptar_Click()
+    On Error Goto Aceptar_Click_Err
     
     On Error GoTo Image1_Click_Err
 
@@ -208,9 +237,13 @@ Image1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmNewPassword.Image1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Aceptar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewPassword.Aceptar_Click", Erl)
 End Sub
 
 Private Sub Aceptar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Aceptar_MouseMove_Err
     
     On Error GoTo Image1_MouseMove_Err
     
@@ -227,4 +260,7 @@ Image1_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmNewPassword.Image1_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Aceptar_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewPassword.Aceptar_MouseMove", Erl)
 End Sub

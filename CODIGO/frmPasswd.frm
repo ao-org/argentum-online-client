@@ -362,6 +362,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Function CheckDatos() As Boolean
+    On Error Goto CheckDatos_Err
 
 If txtPasswd.Text <> txtPasswdCheck.Text Then
     MsgBox "Los passwords que tipeo no coinciden, por favor vuelva a ingresarlos."
@@ -370,9 +371,13 @@ End If
 
 CheckDatos = True
 
+    Exit Function
+CheckDatos_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPasswd.CheckDatos", Erl)
 End Function
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
 
 If CheckDatos() Then
 
@@ -401,25 +406,40 @@ If CheckDatos() Then
     End If
 End If
 
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPasswd.Command1_Click", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
     EstadoLogin = E_MODO.Dados
     Unload Me
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPasswd.Command2_Click", Erl)
 End Sub
 
 Private Sub Command3_Click()
+    On Error Goto Command3_Click_Err
 txtCorreo = "pablito_3_15@hotmail.com"
 txtCorreoCheck = "pablito_3_15@hotmail.com"
 txtPasswd = "a"
 txtPasswdCheck = "a"
 TxtVerif = lblverificacion
 Call Command1_Click
+    Exit Sub
+Command3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPasswd.Command3_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 Dim Caracteres As Long
 Caracteres = RandomNumber(1000, 9000)
 lblverificacion.Caption = Caracteres
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPasswd.Form_Load", Erl)
 End Sub
 

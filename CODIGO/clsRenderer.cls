@@ -58,14 +58,19 @@ End Type
 Private mDisplayMode As D3DDISPLAYMODE
 
 Private Sub get_game_resolution(ByRef mode As D3DDISPLAYMODE)
+    On Error Goto get_game_resolution_Err
     'For the time being we hard code it to 1024x768x32
     mode.Width = 1024
     mode.Height = 768
     mode.RefreshRate = 60
     mode.format = D3DFMT_A8R8G8B8
+    Exit Sub
+get_game_resolution_Err:
+    Call TraceError(Err.Number, Err.Description, "clsRenderer.get_game_resolution", Erl)
 End Sub
 
 Public Sub list_modes(ByRef d3d As Direct3D8)
+    On Error Goto list_modes_Err
     Dim tmpDispMode As D3DDISPLAYMODE
     Dim i As Long
     For i = 0 To d3d.GetAdapterModeCount(0) - 1 'primary adapter
@@ -73,8 +78,12 @@ Public Sub list_modes(ByRef d3d As Direct3D8)
         frmDebug.add_text_tracebox tmpDispMode.Width & "x" & tmpDispMode.Height & " fmt:" & tmpDispMode.format
         
     Next i
+    Exit Sub
+list_modes_Err:
+    Call TraceError(Err.Number, Err.Description, "clsRenderer.list_modes", Erl)
 End Sub
 Private Function init_dx8_and_d3d() As Long
+    On Error Goto init_dx8_and_d3d_Err
 On Error Resume Next
     Err.Clear
     Set mDirectX = New DirectX8
@@ -98,9 +107,13 @@ On Error Resume Next
                 Exit Function
     End If
     init_dx8_and_d3d = Err.Number
+    Exit Function
+init_dx8_and_d3d_Err:
+    Call TraceError(Err.Number, Err.Description, "clsRenderer.init_dx8_and_d3d", Erl)
 End Function
 
 Public Function init(ByVal window As Long) As Long
+    On Error Goto init_Err
     init = init_dx8_and_d3d()
     If init <> 0 Then
         frmDebug.add_text_tracebox "init_dx8_and_d3d() failed with code " & Init
@@ -112,9 +125,13 @@ Public Function init(ByVal window As Long) As Long
         Exit Function
     End If
     
+    Exit Function
+init_Err:
+    Call TraceError(Err.Number, Err.Description, "clsRenderer.init", Erl)
 End Function
 
 Private Function init_dx_device(ByVal window_handle As Long, _
+    On Error Goto init_dx_device_Err
                                 ByRef d3d_obj As Direct3D8, _
                                 ByRef disp_mode As D3DDISPLAYMODE) As Long
 On Error Resume Next
@@ -170,12 +187,16 @@ On Error Resume Next
         frmDebug.add_text_tracebox "Create Direct3D device: " & Err
     End If
     init_dx_device = Err.Number
+    Exit Function
+init_dx_device_Err:
+    Call TraceError(Err.Number, Err.Description, "clsRenderer.init_dx_device", Erl)
 End Function
 
 
 
 
 Private Sub Class_Initialize()
+    On Error Goto Class_Initialize_Err
     Set mDirectX = Nothing
     Set mDirectD3D8 = Nothing
     Set mDirectD3D = Nothing
@@ -184,4 +205,7 @@ Private Sub Class_Initialize()
     mDisplayMode.Height = ScreenHeight
     mDisplayMode.RefreshRate = 60
     mDisplayMode.format = D3DFMT_A8R8G8B8
+    Exit Sub
+Class_Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsRenderer.Class_Initialize", Erl)
 End Sub

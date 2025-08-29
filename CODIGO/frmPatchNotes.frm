@@ -53,21 +53,37 @@ Private cNextButton As clsGraphicalButton
 
 
 Public Sub SetNotes(ByRef notePath As String)
+    On Error Goto SetNotes_Err
     Me.Picture = LoadInterface(notePath, False)
     MakeFormTransparent Me, vbBlack    'Set the Form "transparent by color."
+    Exit Sub
+SetNotes_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPatchNotes.SetNotes", Erl)
 End Sub
 
 Private Sub cmdNext_Click()
+    On Error Goto cmdNext_Click_Err
     Unload Me
     FrmLogear.Show , frmConnect
+    Exit Sub
+cmdNext_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPatchNotes.cmdNext_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     Set cNextButton = New clsGraphicalButton
     Call cNextButton.Initialize(cmdNext, "boton-aceptar-default.bmp", "boton-aceptar-over.bmp", "boton-aceptar-off.bmp", Me)
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPatchNotes.Form_Load", Erl)
 End Sub
 
 Private Sub Form_LostFocus()
+    On Error Goto Form_LostFocus_Err
     Unload Me
     FrmLogear.Show , frmConnect
+    Exit Sub
+Form_LostFocus_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPatchNotes.Form_LostFocus", Erl)
 End Sub

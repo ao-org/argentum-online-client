@@ -42,6 +42,7 @@ Private mutexHID As Long
 ' @param mutexName The name of the mutex, should be universally unique for the mutex to be created.
 
 Private Function CreateNamedMutex(ByRef mutexName As String) As Boolean
+    On Error Goto CreateNamedMutex_Err
     
     On Error GoTo CreateNamedMutex_Err
 
@@ -67,12 +68,16 @@ CreateNamedMutex_Err:
     Call RegistrarError(Err.Number, Err.Description, "PrevInstance.CreateNamedMutex", Erl)
     Resume Next
     
+    Exit Function
+CreateNamedMutex_Err:
+    Call TraceError(Err.Number, Err.Description, "PrevInstance.CreateNamedMutex", Erl)
 End Function
 
 ''
 ' Checks if there's another instance of the app running, returns True if there is or False otherwise.
 
 Public Function FindPreviousInstance() As Boolean
+    On Error Goto FindPreviousInstance_Err
     
     On Error GoTo FindPreviousInstance_Err
 
@@ -93,12 +98,16 @@ FindPreviousInstance_Err:
     Call RegistrarError(Err.Number, Err.Description, "PrevInstance.FindPreviousInstance", Erl)
     Resume Next
     
+    Exit Function
+FindPreviousInstance_Err:
+    Call TraceError(Err.Number, Err.Description, "PrevInstance.FindPreviousInstance", Erl)
 End Function
 
 ''
 ' Closes the client, allowing other instances to be open.
 
 Public Sub ReleaseInstance()
+    On Error Goto ReleaseInstance_Err
 
     On Error GoTo ReleaseInstance_Err
     
@@ -112,4 +121,7 @@ ReleaseInstance_Err:
     Call RegistrarError(Err.Number, Err.Description, "PrevInstance.ReleaseInstance", Erl)
     Resume Next
     
+    Exit Sub
+ReleaseInstance_Err:
+    Call TraceError(Err.Number, Err.Description, "PrevInstance.ReleaseInstance", Erl)
 End Sub

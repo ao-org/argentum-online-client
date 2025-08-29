@@ -132,6 +132,7 @@ Dim HEIGHT_MAIN_INVENTORY As Integer
 
 #If ConMenuesConextuales = 1 Then   'Argument list varies!!!
     Public Sub Initialize(ByRef DirectDraw As DirectDraw7, ByRef InvPic As PictureBox, ByRef PopUpMenu As Menu, Optional ByVal Width As Integer = 0, Optional ByVal Height As Integer = 0, Optional ByVal OffsetX As Integer = 0, Optional ByVal OffsetY As Integer = 0, Optional ByVal SpaceX As Integer = 0, Optional ByVal SpaceY As Integer = 0, Optional thisInventory As Boolean = False, Optional MIDSPACE As Byte = 0)
+        On Error Goto Initialize_Err
 
     End Sub
 

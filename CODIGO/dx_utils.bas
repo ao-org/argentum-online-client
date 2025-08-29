@@ -25,22 +25,31 @@ Public DirectDevice As Direct3DDevice8
 Public game_resolution As D3DDISPLAYMODE
 
 Public Sub get_game_resolution(ByRef mode As D3DDISPLAYMODE)
+    On Error Goto get_game_resolution_Err
     'For the time being we hard code it to 1024x768x32
     mode.Width = 1024
     mode.Height = 768
     mode.RefreshRate = 60
     mode.format = D3DFMT_A8R8G8B8
+    Exit Sub
+get_game_resolution_Err:
+    Call TraceError(Err.Number, Err.Description, "dx_utils.get_game_resolution", Erl)
 End Sub
 
 Public Sub list_modes(ByRef d3d As Direct3D8)
+    On Error Goto list_modes_Err
     Dim tmpDispMode As D3DDISPLAYMODE
     Dim i As Long
     For i = 0 To d3d.GetAdapterModeCount(0) - 1 'primary adapter
         Call d3d.EnumAdapterModes(0, i, tmpDispMode)
     Next i
+    Exit Sub
+list_modes_Err:
+    Call TraceError(Err.Number, Err.Description, "dx_utils.list_modes", Erl)
 End Sub
 
 Public Function init_dx_objects() As Long
+    On Error Goto init_dx_objects_Err
 On Error Resume Next
     
     Err.Clear
@@ -66,9 +75,13 @@ On Error Resume Next
     End If
     init_dx_objects = Err.Number
     
+    Exit Function
+init_dx_objects_Err:
+    Call TraceError(Err.Number, Err.Description, "dx_utils.init_dx_objects", Erl)
 End Function
 
 Public Function init_dx_device() As Long
+    On Error Goto init_dx_device_Err
 On Error Resume Next
     Dim Caps As D3DCAPS8
     Dim DevType As CONST_D3DDEVTYPE
@@ -122,6 +135,9 @@ On Error Resume Next
     init_dx_device = Err.Number
     
 
+    Exit Function
+init_dx_device_Err:
+    Call TraceError(Err.Number, Err.Description, "dx_utils.init_dx_device", Erl)
 End Function
 
 

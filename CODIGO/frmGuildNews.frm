@@ -247,6 +247,7 @@ Option Explicit
 Private cBotonCerrar As clsGraphicalButton
 Private cBotonDetalles As clsGraphicalButton
 Private Sub beneficios_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto beneficios_MouseMove_Err
     
     On Error GoTo beneficios_MouseMove_Err
     
@@ -260,9 +261,13 @@ beneficios_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildNews.beneficios_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+beneficios_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildNews.beneficios_MouseMove", Erl)
 End Sub
 
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonDetalles = New clsGraphicalButton
     
@@ -273,13 +278,21 @@ Private Sub loadButtons()
                                                 "boton-detalles-over.bmp", _
                                                 "boton-detalles-off.bmp", Me)
 
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildNews.loadButtons", Erl)
 End Sub
 
 Private Sub cmdcerrar_Click()
+    On Error Goto cmdcerrar_Click_Err
     Unload Me
+    Exit Sub
+cmdcerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildNews.cmdcerrar_Click", Erl)
 End Sub
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -296,9 +309,13 @@ Command1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildNews.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildNews.Command1_Click", Erl)
 End Sub
 
 Private Sub cmdDetalles_Click()
+    On Error Goto cmdDetalles_Click_Err
     
     On Error GoTo cmdDetalles_Click_Err
     
@@ -311,9 +328,13 @@ cmdDetalles_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildNews.cmdDetalles_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdDetalles_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildNews.cmdDetalles_Click", Erl)
 End Sub
 
 Private Sub Frame5_DragDrop(source As Control, x As Single, y As Single)
+    On Error Goto Frame5_DragDrop_Err
     
     On Error GoTo Frame5_DragDrop_Err
     
@@ -327,10 +348,14 @@ Frame5_DragDrop_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildNews.Frame5_DragDrop", Erl)
     Resume Next
     
+    Exit Sub
+Frame5_DragDrop_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildNews.Frame5_DragDrop", Erl)
 End Sub
 
 
 Private Sub porciento_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto porciento_MouseMove_Err
     
     On Error GoTo porciento_MouseMove_Err
     
@@ -344,9 +369,13 @@ porciento_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildNews.porciento_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+porciento_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildNews.porciento_MouseMove", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -363,9 +392,13 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildNews.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildNews.Form_Load", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -377,4 +410,7 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildNews.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildNews.Form_MouseMove", Erl)
 End Sub

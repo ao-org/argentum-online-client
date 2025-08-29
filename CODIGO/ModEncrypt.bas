@@ -16,6 +16,7 @@ Attribute VB_Name = "ModEncrypt"
 '
 '
 Public Function SEncriptar(ByVal Cadena As String) As String
+    On Error Goto SEncriptar_Err
     
     On Error GoTo SEncriptar_Err
     
@@ -32,10 +33,14 @@ SEncriptar_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModEncrypt.SEncriptar", Erl)
     Resume Next
     
+    Exit Function
+SEncriptar_Err:
+    Call TraceError(Err.Number, Err.Description, "ModEncrypt.SEncriptar", Erl)
 End Function
 
 ' GSZAO - Encriptación basica y rapida para Strings
 Public Function RndCrypt(ByVal str As String, ByVal Password As String) As String
+    On Error Goto RndCrypt_Err
     
     On Error GoTo RndCrypt_Err
     
@@ -68,5 +73,8 @@ RndCrypt_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModEncrypt.RndCrypt", Erl)
     Resume Next
     
+    Exit Function
+RndCrypt_Err:
+    Call TraceError(Err.Number, Err.Description, "ModEncrypt.RndCrypt", Erl)
 End Function
 

@@ -4,6 +4,7 @@ Attribute VB_Name = "modDX8FIFO"
 Option Explicit
 
 Sub CargarCabezas()
+    On Error Goto CargarCabezas_Err
 
     Dim N            As Integer
 
@@ -57,9 +58,13 @@ Sub CargarCabezas()
         Delete_File Windows_Temp_Dir & "cabezas.ind"
     #End If
     
+    Exit Sub
+CargarCabezas_Err:
+    Call TraceError(Err.Number, Err.Description, "modDX8FIFO.CargarCabezas", Erl)
 End Sub
 
 Sub CargarCascos()
+    On Error Goto CargarCascos_Err
 
     Dim N            As Integer
 
@@ -113,9 +118,13 @@ Sub CargarCascos()
         Delete_File Windows_Temp_Dir & "cascos.ind"
     #End If
 
+    Exit Sub
+CargarCascos_Err:
+    Call TraceError(Err.Number, Err.Description, "modDX8FIFO.CargarCascos", Erl)
 End Sub
 
 Sub CargarCuerpos()
+    On Error Goto CargarCuerpos_Err
 
     Dim N            As Integer
 
@@ -171,9 +180,13 @@ Sub CargarCuerpos()
         Delete_File Windows_Temp_Dir & "personajes.ind"
     #End If
 
+    Exit Sub
+CargarCuerpos_Err:
+    Call TraceError(Err.Number, Err.Description, "modDX8FIFO.CargarCuerpos", Erl)
 End Sub
 
 Sub CargarFxs()
+    On Error Goto CargarFxs_Err
 
     Dim N      As Integer
 
@@ -215,9 +228,13 @@ Sub CargarFxs()
         Delete_File Windows_Temp_Dir & "fxs.ind"
     #End If
 
+    Exit Sub
+CargarFxs_Err:
+    Call TraceError(Err.Number, Err.Description, "modDX8FIFO.CargarFxs", Erl)
 End Sub
 
 Public Function LoadGrhData() As Boolean
+    On Error Goto LoadGrhData_Err
 
     On Error GoTo ErrorHandler
 
@@ -358,9 +375,13 @@ ErrorHandler:
     LoadGrhData = False
     MsgBox "Error " & Err.Description & " durante la carga de Grh.dat! La carga se ha detenido en GRH: " & grh
     
+    Exit Function
+LoadGrhData_Err:
+    Call TraceError(Err.Number, Err.Description, "modDX8FIFO.LoadGrhData", Erl)
 End Function
 
 Public Function CargarMiniMap()
+    On Error Goto CargarMiniMap_Err
 
     Dim count  As Long
 
@@ -402,4 +423,7 @@ ErrorHandler:
     CargarMiniMap = False
     MsgBox "Error " & Err.Description & " durante la carga de Grh.dat! La carga se ha detenido en GRH: " & count
 
+    Exit Function
+CargarMiniMap_Err:
+    Call TraceError(Err.Number, Err.Description, "modDX8FIFO.CargarMiniMap", Erl)
 End Function

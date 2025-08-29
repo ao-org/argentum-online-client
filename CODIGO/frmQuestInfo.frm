@@ -350,6 +350,7 @@ Attribute VB_Exposed = False
 '
 '
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -368,9 +369,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.Form_Load", Erl)
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -387,9 +392,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -407,9 +416,13 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.Form_MouseMove", Erl)
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image1_MouseMove_Err
     
     On Error GoTo Image1_MouseMove_Err
     
@@ -427,9 +440,13 @@ Image1_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Image1_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Image1_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.Image1_MouseMove", Erl)
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image1_MouseUp_Err
     
     On Error GoTo Image1_MouseUp_Err
     
@@ -441,9 +458,13 @@ Image1_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Image1_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+Image1_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.Image1_MouseUp", Erl)
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image2_MouseMove_Err
     
     On Error GoTo Image2_MouseMove_Err
     
@@ -461,9 +482,13 @@ Image2_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Image2_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Image2_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.Image2_MouseMove", Erl)
 End Sub
 
 Private Sub Image2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image2_MouseUp_Err
     
     On Error GoTo Image2_MouseUp_Err
     
@@ -480,9 +505,13 @@ Image2_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Image2_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+Image2_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.Image2_MouseUp", Erl)
 End Sub
 
 Private Sub Image3_Click()
+    On Error Goto Image3_Click_Err
     
     On Error GoTo Image3_Click_Err
     Unload Me
@@ -493,9 +522,13 @@ Image3_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Image3_Click", Erl)
     Resume Next
     
+    Exit Sub
+Image3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.Image3_Click", Erl)
 End Sub
 
 Public Sub ListView1_Click()
+    On Error Goto ListView1_Click_Err
     
     On Error GoTo ListView1_Click_Err
     
@@ -529,9 +562,13 @@ ListView1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.ListView1_Click", Erl)
     Resume Next
     
+    Exit Sub
+ListView1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.ListView1_Click", Erl)
 End Sub
 
 Public Sub ListView2_Click()
+    On Error Goto ListView2_Click_Err
     
     On Error GoTo ListView2_Click_Err
 
@@ -556,16 +593,24 @@ ListView2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.ListView2_Click", Erl)
     Resume Next
     
+    Exit Sub
+ListView2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.ListView2_Click", Erl)
 End Sub
 
 Public Sub ShowQuest(ByVal QuestIndex As Integer)
+    On Error Goto ShowQuest_Err
 
     Call ListViewQuest_ItemClick(ListViewQuest.ListItems(QuestIndex))
 
+    Exit Sub
+ShowQuest_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.ShowQuest", Erl)
 End Sub
 
 
 Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
+    On Error Goto ListViewQuest_ItemClick_Err
     
     On Error GoTo ListViewQuest_ItemClick_Err
     
@@ -698,9 +743,13 @@ ListViewQuest_ItemClick_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.ListViewQuest_ItemClick", Erl)
     Resume Next
     
+    Exit Sub
+ListViewQuest_ItemClick_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.ListViewQuest_ItemClick", Erl)
 End Sub
 
 Private Sub lstQuests_Click()
+    On Error Goto lstQuests_Click_Err
     
     On Error GoTo lstQuests_Click_Err
     
@@ -785,9 +834,16 @@ lstQuests_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.lstQuests_Click", Erl)
     Resume Next
     
+    Exit Sub
+lstQuests_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.lstQuests_Click", Erl)
 End Sub
 
 Private Sub RichTextBox1_Change()
+    On Error Goto RichTextBox1_Change_Err
 
+    Exit Sub
+RichTextBox1_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmQuestInfo.RichTextBox1_Change", Erl)
 End Sub
 

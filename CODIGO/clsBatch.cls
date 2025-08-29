@@ -82,6 +82,7 @@ Private Const LAVA_TILE_FACTOR_X = TilePixelWidth * LAVA_WAVE_FACTOR_X
 Private Const LAVA_TILE_FACTOR_Y = TilePixelHeight * LAVA_WAVE_FACTOR_Y
 
 Public Sub Begin()
+    On Error Goto Begin_Err
     '
     ' Re-Initialize the states of the batch
     '
@@ -100,9 +101,13 @@ Begin_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsBatch.Begin", Erl)
     Resume Next
     
+    Exit Sub
+Begin_Err:
+    Call TraceError(Err.Number, Err.Description, "clsBatch.Begin", Erl)
 End Sub
 
 Public Sub BeginPrecalculated(ByVal x As Single, ByVal y As Single)
+    On Error Goto BeginPrecalculated_Err
     
     On Error GoTo BeginPrecalculated_Err
     
@@ -118,9 +123,13 @@ BeginPrecalculated_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsBatch.BeginPrecalculated", Erl)
     Resume Next
     
+    Exit Sub
+BeginPrecalculated_Err:
+    Call TraceError(Err.Number, Err.Description, "clsBatch.BeginPrecalculated", Erl)
 End Sub
 
 Public Sub EndPrecalculated()
+    On Error Goto EndPrecalculated_Err
     
     On Error GoTo EndPrecalculated_Err
     
@@ -133,9 +142,13 @@ EndPrecalculated_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsBatch.EndPrecalculated", Erl)
     Resume Next
     
+    Exit Sub
+EndPrecalculated_Err:
+    Call TraceError(Err.Number, Err.Description, "clsBatch.EndPrecalculated", Erl)
 End Sub
  
 Public Sub SetAlpha(ByVal IsAlpha As Boolean)
+    On Error Goto SetAlpha_Err
     
     On Error GoTo SetAlpha_Err
     
@@ -169,9 +182,13 @@ SetAlpha_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsBatch.SetAlpha", Erl)
     Resume Next
     
+    Exit Sub
+SetAlpha_Err:
+    Call TraceError(Err.Number, Err.Description, "clsBatch.SetAlpha", Erl)
 End Sub
  
 Public Sub SetTexture(ByRef Texture As Direct3DTexture8)
+    On Error Goto SetTexture_Err
     
     On Error GoTo SetTexture_Err
     
@@ -187,6 +204,9 @@ Public Sub SetTexture(ByRef Texture As Direct3DTexture8)
 SetTexture_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsBatch.SetTexture", Erl)
     Resume Next
+    Exit Sub
+SetTexture_Err:
+    Call TraceError(Err.Number, Err.Description, "clsBatch.SetTexture", Erl)
 End Sub
 
 
@@ -931,6 +951,7 @@ DrawVertices_Err:
 End Sub
  
 Public Sub Finish()
+    On Error Goto Finish_Err
     
     On Error GoTo Finish_Err
     
@@ -947,9 +968,13 @@ Finish_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsBatch.Finish", Erl)
     Resume Next
     
+    Exit Sub
+Finish_Err:
+    Call TraceError(Err.Number, Err.Description, "clsBatch.Finish", Erl)
 End Sub
  
 Public Sub Flush()
+    On Error Goto Flush_Err
     
     On Error GoTo Flush_Err
     
@@ -980,14 +1005,22 @@ Flush_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsBatch.Flush", Erl)
     Resume Next
     
+    Exit Sub
+Flush_Err:
+    Call TraceError(Err.Number, Err.Description, "clsBatch.Flush", Erl)
 End Sub
  
 Public Sub Release()
+    On Error Goto Release_Err
     Set m_VBuffer = Nothing
     Set m_IBuffer = Nothing
+    Exit Sub
+Release_Err:
+    Call TraceError(Err.Number, Err.Description, "clsBatch.Release", Erl)
 End Sub
 
 Public Sub Initialize(ByVal Capacity As Long)
+    On Error Goto Initialize_Err
     
     On Error GoTo Initialize_Err
     
@@ -1030,4 +1063,7 @@ Initialize_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsBatch.Initialize", Erl)
     Resume Next
     
+    Exit Sub
+Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsBatch.Initialize", Erl)
 End Sub

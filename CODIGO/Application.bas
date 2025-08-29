@@ -31,6 +31,7 @@ End Type
 ' @return   True if any of the app's windows are the foreground window, false otherwise.
 
 Public Function IsAppActive() As Boolean
+    On Error Goto IsAppActive_Err
 
     'Checks if this is the active application or not
     
@@ -45,19 +46,27 @@ IsAppActive_Err:
     Call RegistrarError(Err.Number, Err.Description, "Application.IsAppActive", Erl)
     Resume Next
     
+    Exit Function
+IsAppActive_Err:
+    Call TraceError(Err.Number, Err.Description, "Application.IsAppActive", Erl)
 End Function
 
 
 
 Public Sub DeleteFile(ByVal filename As String)
+    On Error Goto DeleteFile_Err
 On Error Resume Next
     If Len(dir$(filename)) > 0 Then
         Kill filename
     End If
+    Exit Sub
+DeleteFile_Err:
+    Call TraceError(Err.Number, Err.Description, "Application.DeleteFile", Erl)
 End Sub
 
 
 Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByVal Componente As String, Optional ByVal Linea As Integer)
+    On Error Goto RegistrarError_Err
  
 On Error GoTo RegistrarError_Err
 
@@ -92,5 +101,8 @@ RegistrarError_Err:
         Call RegistrarError(Err.Number, Err.Description, "ES.RegistrarError", Erl)
 
         
+    Exit Sub
+RegistrarError_Err:
+    Call TraceError(Err.Number, Err.Description, "Application.RegistrarError", Erl)
 End Sub
 

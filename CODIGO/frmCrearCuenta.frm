@@ -166,6 +166,7 @@ Private Const WS_EX_LAYERED = &H80000
  Se le pasa el Hwnd del formulario en cuestión
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+    On Error Goto Is_Transparent_Err
     
     On Error GoTo Is_Transparent_Err
     
@@ -195,10 +196,14 @@ Is_Transparent_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.Is_Transparent", Erl)
     Resume Next
     
+    Exit Function
+Is_Transparent_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.Is_Transparent", Erl)
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+    On Error Goto Aplicar_Transparencia_Err
     
     On Error GoTo Aplicar_Transparencia_Err
     
@@ -234,9 +239,13 @@ Aplicar_Transparencia_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.Aplicar_Transparencia", Erl)
     Resume Next
     
+    Exit Function
+Aplicar_Transparencia_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.Aplicar_Transparencia", Erl)
 End Function
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -254,9 +263,13 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.Form_Load", Erl)
 End Sub
 
 Private Function CheckearDatos() As Boolean
+    On Error Goto CheckearDatos_Err
     
     On Error GoTo CheckearDatos_Err
     
@@ -297,9 +310,13 @@ CheckearDatos_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.CheckearDatos", Erl)
     Resume Next
     
+    Exit Function
+CheckearDatos_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.CheckearDatos", Erl)
 End Function
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -323,9 +340,13 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.Form_MouseMove", Erl)
 End Sub
 
 Private Sub Image1_Click()
+    On Error Goto Image1_Click_Err
     
     On Error GoTo Image1_Click_Err
     
@@ -342,9 +363,13 @@ Image1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.Image1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Image1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.Image1_Click", Erl)
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image1_MouseDown_Err
     'Image1.Picture = LoadInterface("volverpress.bmp")
     
     On Error GoTo Image1_MouseDown_Err
@@ -358,9 +383,13 @@ Image1_MouseDown_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.Image1_MouseDown", Erl)
     Resume Next
     
+    Exit Sub
+Image1_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.Image1_MouseDown", Erl)
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image1_MouseMove_Err
     
     On Error GoTo Image1_MouseMove_Err
     
@@ -378,9 +407,13 @@ Image1_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.Image1_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Image1_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.Image1_MouseMove", Erl)
 End Sub
 
 Private Sub Image2_Click()
+    On Error Goto Image2_Click_Err
     
     On Error GoTo Image2_Click_Err
     
@@ -425,9 +458,13 @@ Image2_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.Image2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Image2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.Image2_Click", Erl)
 End Sub
 
 Private Sub Image2_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image2_MouseDown_Err
     
     On Error GoTo Image2_MouseDown_Err
     
@@ -445,9 +482,13 @@ Image2_MouseDown_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.Image2_MouseDown", Erl)
     Resume Next
     
+    Exit Sub
+Image2_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.Image2_MouseDown", Erl)
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image2_MouseMove_Err
     
     On Error GoTo Image2_MouseMove_Err
     
@@ -465,9 +506,13 @@ Image2_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.Image2_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Image2_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.Image2_MouseMove", Erl)
 End Sub
 
 Private Sub Label1_Click()
+    On Error Goto Label1_Click_Err
     
     On Error GoTo Label1_Click_Err
     
@@ -480,9 +525,13 @@ Label1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.Label1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Label1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.Label1_Click", Erl)
 End Sub
 
 Private Sub valcar_Click()
+    On Error Goto valcar_Click_Err
     
     On Error GoTo valcar_Click_Err
     
@@ -495,4 +544,7 @@ valcar_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCrearCuenta.valcar_Click", Erl)
     Resume Next
     
+    Exit Sub
+valcar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrearCuenta.valcar_Click", Erl)
 End Sub

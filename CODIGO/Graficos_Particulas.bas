@@ -185,6 +185,7 @@ Public ParticulasTotales      As Integer
 
 
 Public Function Particle_Group_Create(ByVal map_x As Integer, ByVal map_y As Integer, ByRef grh_index_list() As Long, ByRef rgb_list() As RGBA, _
+    On Error Goto Particle_Group_Create_Err
    Optional ByVal particle_count As Long = 20, Optional ByVal stream_type As Long = 1, _
    Optional ByVal alpha_blend As Boolean, Optional ByVal alive_counter As Long = -1, _
    Optional ByVal frame_speed As Single = 0.5, Optional ByVal id As Long, _
@@ -226,9 +227,13 @@ Particle_Group_Create_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Create", Erl)
     Resume Next
     
+    Exit Function
+Particle_Group_Create_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Create", Erl)
 End Function
 
 Public Function Particle_Group_Remove(ByVal particle_group_index As Long) As Boolean
+    On Error Goto Particle_Group_Remove_Err
 
     'Make sure it's a legal index
     
@@ -253,9 +258,13 @@ Particle_Group_Remove_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Remove", Erl)
     Resume Next
     
+    Exit Function
+Particle_Group_Remove_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Remove", Erl)
 End Function
 
 Public Function Particle_Group_Remove_All() As Boolean
+    On Error Goto Particle_Group_Remove_All_Err
     
     On Error GoTo Particle_Group_Remove_All_Err
 
@@ -282,9 +291,13 @@ Particle_Group_Remove_All_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Remove_All", Erl)
     Resume Next
     
+    Exit Function
+Particle_Group_Remove_All_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Remove_All", Erl)
 End Function
 
 Public Function Particle_Group_Find(ByVal id As Long) As Long
+    On Error Goto Particle_Group_Find_Err
 
     'Find the index related to the handle
 
@@ -310,9 +323,13 @@ Public Function Particle_Group_Find(ByVal id As Long) As Long
 ErrorHandler:
     Particle_Group_Find = 0
 
+    Exit Function
+Particle_Group_Find_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Find", Erl)
 End Function
 
 Public Function Particle_Group_Edit(ByVal id As Long) As Long
+    On Error Goto Particle_Group_Edit_Err
     On Error GoTo ErrorHandler:
 
     particle_group_list(id).particle_count = CantPartLLuvia
@@ -320,9 +337,13 @@ Public Function Particle_Group_Edit(ByVal id As Long) As Long
     Exit Function
 ErrorHandler:
 
+    Exit Function
+Particle_Group_Edit_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Edit", Erl)
 End Function
 
 Public Sub Particle_Group_Destroy(ByVal particle_group_index As Long)
+    On Error Goto Particle_Group_Destroy_Err
     
     On Error GoTo Particle_Group_Destroy_Err
 
@@ -400,9 +421,13 @@ Particle_Group_Destroy_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Destroy", Erl)
     Resume Next
     
+    Exit Sub
+Particle_Group_Destroy_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Destroy", Erl)
 End Sub
 
 Public Sub Particle_Group_Make(ByVal particle_group_index As Long, ByVal map_x As Integer, ByVal map_y As Integer, _
+    On Error Goto Particle_Group_Make_Err
    ByVal particle_count As Long, ByVal stream_type As Long, ByRef grh_index_list() As Long, ByRef rgb_list() As RGBA, _
    Optional ByVal alpha_blend As Boolean, Optional ByVal alive_counter As Long = -1, _
    Optional ByVal frame_speed As Single = 0.5, Optional ByVal id As Long, _
@@ -521,9 +546,13 @@ Particle_Group_Make_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Make", Erl)
     Resume Next
     
+    Exit Sub
+Particle_Group_Make_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Make", Erl)
 End Sub
 
 Public Sub Char_Particle_Group_Make(ByVal particle_group_index As Long, ByVal char_index As Integer, ByVal particle_char_index As Integer, _
+    On Error Goto Char_Particle_Group_Make_Err
    ByVal particle_count As Long, ByVal stream_type As Long, ByRef grh_index_list() As Long, ByRef rgb_list() As RGBA, _
    Optional ByVal alpha_blend As Boolean, Optional ByVal alive_counter As Long = -1, _
    Optional ByVal frame_speed As Single = 0.5, Optional ByVal id As Long, _
@@ -636,9 +665,13 @@ Char_Particle_Group_Make_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Make", Erl)
     Resume Next
     
+    Exit Sub
+Char_Particle_Group_Make_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Make", Erl)
 End Sub
 
 Public Sub Particle_Incrementar(ByVal id As Integer)
+    On Error Goto Particle_Incrementar_Err
     
     On Error GoTo Particle_Incrementar_Err
     
@@ -662,9 +695,13 @@ Particle_Incrementar_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Incrementar", Erl)
     Resume Next
     
+    Exit Sub
+Particle_Incrementar_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Incrementar", Erl)
 End Sub
 
 Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal screen_x As Integer, ByVal screen_y As Integer)
+    On Error Goto Particle_Group_Render_Err
     
     On Error GoTo Particle_Group_Render_Err
 
@@ -794,9 +831,13 @@ Particle_Group_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Render", Erl)
     Resume Next
     
+    Exit Sub
+Particle_Group_Render_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Render", Erl)
 End Sub
 
 Public Sub Particle_Render(ByRef temp_particle As Particle, ByVal screen_x As Integer, ByVal screen_y As Integer, _
+    On Error Goto Particle_Render_Err
    ByVal grh_index As Long, ByRef rgb_list() As RGBA, _
    Optional ByVal alpha_blend As Boolean, Optional ByVal no_move As Boolean, _
    Optional ByVal x1 As Integer, Optional ByVal y1 As Integer, Optional ByVal Angle As Integer, _
@@ -918,9 +959,13 @@ Particle_Render_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Render", Erl)
     Resume Next
     
+    Exit Sub
+Particle_Render_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Render", Erl)
 End Sub
 
 Public Function Particle_Type_Get(ByVal particle_Index As Long) As Long
+    On Error Goto Particle_Type_Get_Err
     
     On Error GoTo Particle_Type_Get_Err
 
@@ -938,9 +983,13 @@ Particle_Type_Get_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Type_Get", Erl)
     Resume Next
     
+    Exit Function
+Particle_Type_Get_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Type_Get", Erl)
 End Function
 
 Public Function Engine_MeteoParticle_Get() As Long
+    On Error Goto Engine_MeteoParticle_Get_Err
 
     On Error GoTo Engine_MeteoParticle_Get_Err
     
@@ -953,9 +1002,13 @@ Engine_MeteoParticle_Get_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Engine_MeteoParticle_Get", Erl)
     Resume Next
     
+    Exit Function
+Engine_MeteoParticle_Get_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Engine_MeteoParticle_Get", Erl)
 End Function
 
 Public Function Map_Particle_Group_Get(ByVal map_x As Integer, ByVal map_y As Integer) As Long
+    On Error Goto Map_Particle_Group_Get_Err
     
     On Error GoTo Map_Particle_Group_Get_Err
 
@@ -975,9 +1028,13 @@ Map_Particle_Group_Get_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Map_Particle_Group_Get", Erl)
     Resume Next
     
+    Exit Function
+Map_Particle_Group_Get_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Map_Particle_Group_Get", Erl)
 End Function
 
 Public Sub Engine_MeteoParticle_Set(ByVal meteo_part As Long, Optional ByVal already_started As Boolean = True)
+    On Error Goto Engine_MeteoParticle_Set_Err
 
     On Error GoTo Engine_MeteoParticle_Set_Err
     
@@ -1011,9 +1068,13 @@ Engine_MeteoParticle_Set_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Engine_MeteoParticle_Set", Erl)
     Resume Next
     
+    Exit Sub
+Engine_MeteoParticle_Set_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Engine_MeteoParticle_Set", Erl)
 End Sub
 
 Public Sub Engine_spell_Particle_Set(ByVal spell_part As Long)
+    On Error Goto Engine_spell_Particle_Set_Err
 
     On Error GoTo Engine_spell_Particle_Set_Err
     
@@ -1034,9 +1095,13 @@ Engine_spell_Particle_Set_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Engine_spell_Particle_Set", Erl)
     Resume Next
     
+    Exit Sub
+Engine_spell_Particle_Set_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Engine_spell_Particle_Set", Erl)
 End Sub
 
 Public Sub Engine_Select_Particle_Set(ByVal Select_particle As Long)
+    On Error Goto Engine_Select_Particle_Set_Err
 
     On Error GoTo Engine_Select_Particle_Set_Err
     
@@ -1057,9 +1122,13 @@ Engine_Select_Particle_Set_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Engine_Select_Particle_Set", Erl)
     Resume Next
     
+    Exit Sub
+Engine_Select_Particle_Set_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Engine_Select_Particle_Set", Erl)
 End Sub
 
 Public Function Particle_Group_Check(ByVal particle_group_index As Long) As Boolean
+    On Error Goto Particle_Group_Check_Err
     
     On Error GoTo Particle_Group_Check_Err
 
@@ -1079,9 +1148,13 @@ Particle_Group_Check_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Particle_Group_Check", Erl)
     Resume Next
     
+    Exit Function
+Particle_Group_Check_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Check", Erl)
 End Function
 
 Public Function Particle_Group_Next_Open() As Long
+    On Error Goto Particle_Group_Next_Open_Err
 
     On Error GoTo ErrorHandler:
 
@@ -1113,9 +1186,13 @@ Public Function Particle_Group_Next_Open() As Long
 ErrorHandler:
     Particle_Group_Next_Open = 1
 
+    Exit Function
+Particle_Group_Next_Open_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Group_Next_Open", Erl)
 End Function
 
 Public Function General_Char_Particle_Create(ByVal ParticulaInd As Long, ByVal char_index As Integer, Optional ByVal particle_life As Long = 0, Optional ByVal grh As Long = 0) As Long
+    On Error Goto General_Char_Particle_Create_Err
     
     On Error GoTo General_Char_Particle_Create_Err
 
@@ -1153,9 +1230,13 @@ General_Char_Particle_Create_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.General_Char_Particle_Create", Erl)
     Resume Next
     
+    Exit Function
+General_Char_Particle_Create_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.General_Char_Particle_Create", Erl)
 End Function
 
 Public Function General_Particle_Create(ByVal ParticulaInd As Long, ByVal x As Integer, ByVal y As Integer, _
+    On Error Goto General_Particle_Create_Err
                                         Optional ByVal particle_life As Long = 0, Optional ByVal noBorrar As Boolean) As Long
     On Error GoTo General_Particle_Create_Err
 
@@ -1235,9 +1316,13 @@ General_Particle_Create_Err:
 110     Call RegistrarError(Err.Number, Err.Description & " | ParticulaInd: " & ParticulaInd, "Graficos_Particulas.General_Particle_Create", Erl)
         Resume Next
 
+    Exit Function
+General_Particle_Create_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.General_Particle_Create", Erl)
 End Function
 
 Public Function Char_Particle_Group_Create(ByVal char_index As Integer, ByRef grh_index_list() As Long, ByRef rgb_list() As RGBA, _
+    On Error Goto Char_Particle_Group_Create_Err
    Optional ByVal particle_count As Long = 20, Optional ByVal stream_type As Long = 1, _
    Optional ByVal alpha_blend As Boolean, Optional ByVal alive_counter As Long = -1, _
    Optional ByVal frame_speed As Single = 0.5, Optional ByVal id As Long, _
@@ -1276,10 +1361,14 @@ Char_Particle_Group_Create_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Create", Erl)
     Resume Next
     
+    Exit Function
+Char_Particle_Group_Create_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Create", Erl)
 End Function
 
 
 Public Function Char_Particle_Group_Remove(ByVal char_index As Integer, ByVal stream_type As Long)
+    On Error Goto Char_Particle_Group_Remove_Err
 
     On Error GoTo Char_Particle_Group_Remove_Err
     
@@ -1307,9 +1396,13 @@ Char_Particle_Group_Remove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Remove", Erl)
     Resume Next
     
+    Exit Function
+Char_Particle_Group_Remove_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Remove", Erl)
 End Function
 
 Public Function Char_Particle_Group_Remove_All(ByVal char_index As Integer)
+    On Error Goto Char_Particle_Group_Remove_All_Err
     
     On Error GoTo Char_Particle_Group_Remove_All_Err
 
@@ -1331,9 +1424,13 @@ Char_Particle_Group_Remove_All_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Remove_All", Erl)
     Resume Next
     
+    Exit Function
+Char_Particle_Group_Remove_All_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Remove_All", Erl)
 End Function
 
 Private Function Char_Particle_Group_Find(ByVal char_index As Integer, ByVal stream_type As Long) As Integer
+    On Error Goto Char_Particle_Group_Find_Err
 
     On Error GoTo ErrorHandler:
 
@@ -1355,9 +1452,13 @@ Private Function Char_Particle_Group_Find(ByVal char_index As Integer, ByVal str
     Char_Particle_Group_Find = -1
 ErrorHandler:
 
+    Exit Function
+Char_Particle_Group_Find_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Find", Erl)
 End Function
 
 Public Function Char_Particle_Group_Next_Open(ByVal char_index As Integer) As Integer
+    On Error Goto Char_Particle_Group_Next_Open_Err
 
     On Error GoTo ErrorHandler:
 
@@ -1395,6 +1496,9 @@ ErrorHandler:
     ReDim charlist(char_index).particle_group(1 To 1)
     Char_Particle_Group_Next_Open = 1
 
+    Exit Function
+Char_Particle_Group_Next_Open_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Next_Open", Erl)
 End Function
 
 

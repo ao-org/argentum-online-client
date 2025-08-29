@@ -53,12 +53,17 @@ Attribute InvKeys.VB_VarHelpID = -1
 
 ' Evento al hacer clic en el botón "Cerrar"
 Private Sub cmdCerrar_Click()
+    On Error Goto cmdCerrar_Click_Err
     ' Oculta el formulario
     Call frmSkins.WalletSkins
+    Exit Sub
+cmdCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSkins.cmdCerrar_Click", Erl)
 End Sub
 
 ' Evento al cargar el formulario
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     ' Parsea la interfaz del formulario (diseño)
     Call FormParser.Parse_Form(Me)
     
@@ -69,18 +74,26 @@ Private Sub Form_Load()
     frmSkins.Picture = LoadInterface("ventanaskins.bmp")
 
     Exit Sub
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSkins.Form_Load", Erl)
 End Sub
 
 ' Permite mover el formulario arrastrándolo con el mouse
 Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseDown_Err
     If Button = vbLeftButton Then
         Call ReleaseCapture
         Call SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0&)
     End If
+    Exit Sub
+Form_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSkins.Form_MouseDown", Erl)
 End Sub
 
 ' Método público para ocultar el formulario
 Public Sub WalletSkins()
+    On Error Goto WalletSkins_Err
     On Error GoTo WalletSkins_Err
 
     frmSkins.visible = False
@@ -90,6 +103,9 @@ WalletSkins_Err:
     ' Manejo de errores estandarizado
     Call RegistrarError(Err.Number, Err.Description, "frmSkins.WalletSkins", Erl)
     Resume Next
+    Exit Sub
+WalletSkins_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSkins.WalletSkins", Erl)
 End Sub
 
 

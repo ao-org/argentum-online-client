@@ -53,6 +53,7 @@ Private m_PrevDown As Boolean
 Private m_Clicked As Boolean
 
 Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, _
+    On Error Goto Init_Err
                 ByVal w As Long, ByVal h As Long, ByVal font As D3DXFont, _
                 ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
     m_Text = text: m_X = x: m_Y = y
@@ -62,10 +63,17 @@ Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, _
     m_HoverColor = clrHover
     m_ColorText = clrText
     m_Clicked = False: m_PrevDown = False: m_IsHover = False
+    Exit Sub
+Init_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIButton.Init", Erl)
 End Sub
 
 Public Sub SetPosition(ByVal x As Long, ByVal y As Long)
+    On Error Goto SetPosition_Err
     m_X = x: m_Y = y
+    Exit Sub
+SetPosition_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIButton.SetPosition", Erl)
 End Sub
 
 Public Property Get Width() As Long
@@ -83,6 +91,7 @@ Public Property Let WasClicked(ByVal val As Boolean)
 End Property
 
 Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
+    On Error Goto IUIComponent_Render_Err
     Dim clr As Long
     clr = IIf(m_IsHover, m_HoverColor, m_ColorFill)
     Dim cols(3) As Long
@@ -95,12 +104,19 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     rc.Left = m_X: rc.Top = m_Y
     rc.Right = m_X + m_W: rc.Bottom = m_Y + m_H
     m_Font.DrawTextW m_Text, -1, rc, DT_CENTER Or DT_VCENTER Or DT_SINGLELINE, m_ColorText
+    Exit Sub
+IUIComponent_Render_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIButton.IUIComponent_Render", Erl)
 End Sub
 Private Sub IUIComponent_HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
+    On Error Goto IUIComponent_HandleInput_Err
     m_IsHover = (mouseX >= m_X And mouseX <= m_X + m_W And mouseY >= m_Y And mouseY <= m_Y + m_H)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then m_Clicked = True
     m_PrevDown = down
+    Exit Sub
+IUIComponent_HandleInput_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIButton.IUIComponent_HandleInput", Erl)
 End Sub
 
 

@@ -46,28 +46,44 @@ Private oldShader As Long
 Private oldAlpha As Long, oldSrc As Long, oldDest As Long
 
 Public Sub Init()
+    On Error Goto Init_Err
     Set Components = New Collection
+    Exit Sub
+Init_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIManager.Init", Erl)
 End Sub
 
 Public Sub AddComponent(ByVal comp As IUIComponent)
+    On Error Goto AddComponent_Err
     Components.Add comp
+    Exit Sub
+AddComponent_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIManager.AddComponent", Erl)
 End Sub
 
 Public Sub RenderAll(ByVal dev As Direct3DDevice8)
+    On Error Goto RenderAll_Err
     ' Render each component
     Dim comp As IUIComponent
     For Each comp In Components
         comp.render dev
     Next
 
+    Exit Sub
+RenderAll_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIManager.RenderAll", Erl)
 End Sub
 
 
 
 Public Sub HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
+    On Error Goto HandleInput_Err
     Dim comp As IUIComponent
     For Each comp In Components
         comp.HandleInput mouseX, mouseY, mouseButtons
     Next
+    Exit Sub
+HandleInput_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIManager.HandleInput", Erl)
 End Sub
 

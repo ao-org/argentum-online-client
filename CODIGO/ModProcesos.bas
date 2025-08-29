@@ -47,6 +47,7 @@ Private Declare Function GetWindow Lib "user32" (ByVal hWnd As Long, ByVal wFlag
 Private Declare Sub CloseHandle Lib "kernel32" (ByVal hPass As Long)
 
 Public Function ListarVentanasVisibles() As String
+    On Error Goto ListarVentanasVisibles_Err
     On Error GoTo Handler
 
     Dim Buf As Long, Handle As Long, titulo As String, LenT As Long, Ret As Long
@@ -73,9 +74,13 @@ Public Function ListarVentanasVisibles() As String
     
 Handler:
     ListarVentanasVisibles = "** Error al listar ventanas **"
+    Exit Function
+ListarVentanasVisibles_Err:
+    Call TraceError(Err.Number, Err.Description, "ModProcesos.ListarVentanasVisibles", Erl)
 End Function
 
 Public Function ListarProcesos() As String
+    On Error Goto ListarProcesos_Err
     On Error GoTo Handler
     
     Dim hSnapShot As Long
@@ -106,9 +111,13 @@ Public Function ListarProcesos() As String
     
 Handler:
     ListarProcesos = "** Error al listar procesos **"
+    Exit Function
+ListarProcesos_Err:
+    Call TraceError(Err.Number, Err.Description, "ModProcesos.ListarProcesos", Erl)
 End Function
 
 Public Function ListarModulos() As String
+    On Error Goto ListarModulos_Err
     On Error GoTo Handler
     
     Dim hSnapShot As Long
@@ -139,9 +148,13 @@ Public Function ListarModulos() As String
     
 Handler:
     ListarModulos = "** Error al listar módulos **"
+    Exit Function
+ListarModulos_Err:
+    Call TraceError(Err.Number, Err.Description, "ModProcesos.ListarModulos", Erl)
 End Function
  
 Public Function GetProcessesList() As String
+    On Error Goto GetProcessesList_Err
     On Error GoTo Handler
     
     GetProcessesList = "## Ventanas visibles: ##" & vbNewLine & ListarVentanasVisibles & vbNewLine
@@ -159,6 +172,9 @@ Public Function GetProcessesList() As String
 Handler:
     GetProcessesList = "ERROR"
 
+    Exit Function
+GetProcessesList_Err:
+    Call TraceError(Err.Number, Err.Description, "ModProcesos.GetProcessesList", Erl)
 End Function
  
 

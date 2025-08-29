@@ -25,6 +25,7 @@ Public Cosa2 As TCosa
 Public Pelota As TPelota
 
 Public Sub CalcularTodo()
+    On Error Goto CalcularTodo_Err
    ' Pelota.X = Cosa1.X
     'Pelota.Y = Cosa1.Y
     Pelota.DireccionX = Abs(Cosa1.X - Cosa2.X) / CantidadDeFps
@@ -41,5 +42,8 @@ Public Sub CalcularTodo()
     End If
     
     Pelota.fps = 0
+    Exit Sub
+CalcularTodo_Err:
+    Call TraceError(Err.Number, Err.Description, "ModPelota.CalcularTodo", Erl)
 End Sub
 

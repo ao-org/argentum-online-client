@@ -105,6 +105,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -117,9 +118,13 @@ Command1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmUserRequest.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmUserRequest.Command1_Click", Erl)
 End Sub
 
 Public Sub recievePeticion(ByVal p As String)
+    On Error Goto recievePeticion_Err
     
     On Error GoTo recievePeticion_Err
     
@@ -134,9 +139,13 @@ recievePeticion_Err:
     Call RegistrarError(Err.number, Err.Description, "frmUserRequest.recievePeticion", Erl)
     Resume Next
     
+    Exit Sub
+recievePeticion_Err:
+    Call TraceError(Err.Number, Err.Description, "frmUserRequest.recievePeticion", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -149,4 +158,7 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmUserRequest.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmUserRequest.Form_Load", Erl)
 End Sub

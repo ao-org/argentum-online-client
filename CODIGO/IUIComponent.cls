@@ -40,6 +40,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Sub render(ByVal dev As Direct3DDevice8): End Sub
+    On Error Goto render_Err
 
 Public Sub HandleInput(ByVal mouseX As Long, _
     ByVal mouseY As Long, _

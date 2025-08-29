@@ -23,6 +23,7 @@ Public Type tCabecera 'Cabecera de los con
 End Type
 Public MiCabecera As tCabecera
 Public Sub IniciarCabecera(ByRef Cabecera As tCabecera)
+    On Error Goto IniciarCabecera_Err
     
     On Error GoTo IniciarCabecera_Err
     
@@ -35,5 +36,8 @@ IniciarCabecera_Err:
     Call RegistrarError(Err.Number, Err.Description, "GameIni.IniciarCabecera", Erl)
     Resume Next
     
+    Exit Sub
+IniciarCabecera_Err:
+    Call TraceError(Err.Number, Err.Description, "GameIni.IniciarCabecera", Erl)
 End Sub
 

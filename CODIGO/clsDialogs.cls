@@ -101,6 +101,7 @@ Private usedFont                 As StdFont
 ' Initializes the instance of the class.
 
 Private Sub Class_Initialize()
+    On Error Goto Class_Initialize_Err
 
     'Initializes the dialog instance
 
@@ -115,18 +116,26 @@ Class_Initialize_Err:
     Call RegistrarError(Err.number, Err.Description, "clsDialogs.Class_Initialize", Erl)
     Resume Next
     
+    Exit Sub
+Class_Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsDialogs.Class_Initialize", Erl)
 End Sub
 
 ''
 ' Clean up and release resources
 
 Private Sub Class_Terminate()
+    On Error Goto Class_Terminate_Err
 
     'Clean up
     
+    Exit Sub
+Class_Terminate_Err:
+    Call TraceError(Err.Number, Err.Description, "clsDialogs.Class_Terminate", Erl)
 End Sub
 
 Private Function BinarySearch(ByVal charindex As Integer) As Integer
+    On Error Goto BinarySearch_Err
     
     On Error GoTo BinarySearch_Err
 
@@ -169,6 +178,9 @@ BinarySearch_Err:
     Call RegistrarError(Err.number, Err.Description, "clsDialogs.BinarySearch", Erl)
     Resume Next
     
+    Exit Function
+BinarySearch_Err:
+    Call TraceError(Err.Number, Err.Description, "clsDialogs.BinarySearch", Erl)
 End Function
 
 ''
@@ -183,6 +195,7 @@ End Function
 '           the chat is ignored.
 
 Public Sub CreateDialog(ByRef chat As String, ByVal charindex As Integer, ByVal Color As Long)
+    On Error Goto CreateDialog_Err
     
     On Error GoTo CreateDialog_Err
 
@@ -227,6 +240,9 @@ CreateDialog_Err:
     Call RegistrarError(Err.number, Err.Description, "clsDialogs.CreateDialog", Erl)
     Resume Next
     
+    Exit Sub
+CreateDialog_Err:
+    Call TraceError(Err.Number, Err.Description, "clsDialogs.CreateDialog", Erl)
 End Sub
 
 ''
@@ -239,6 +255,7 @@ End Sub
 ' @see      MAX_LENGTH
 
 Private Function FormatChat(ByRef chat As String) As String()
+    On Error Goto FormatChat_Err
     
     On Error GoTo FormatChat_Err
 
@@ -323,6 +340,9 @@ FormatChat_Err:
     Call RegistrarError(Err.number, Err.Description, "clsDialogs.FormatChat", Erl)
     Resume Next
     
+    Exit Function
+FormatChat_Err:
+    Call TraceError(Err.Number, Err.Description, "clsDialogs.FormatChat", Erl)
 End Function
 
 ''
@@ -333,6 +353,7 @@ End Function
 ' @param    charIndex   The character whose dialog's position is being updated.
 
 Public Sub UpdateDialogPos(ByVal x As Integer, ByVal y As Integer, ByVal charindex As Integer)
+    On Error Goto UpdateDialogPos_Err
     
     On Error GoTo UpdateDialogPos_Err
 
@@ -362,12 +383,16 @@ UpdateDialogPos_Err:
     Call RegistrarError(Err.number, Err.Description, "clsDialogs.UpdateDialogPos", Erl)
     Resume Next
     
+    Exit Sub
+UpdateDialogPos_Err:
+    Call TraceError(Err.Number, Err.Description, "clsDialogs.UpdateDialogPos", Erl)
 End Sub
 
 ''
 ' Displays all renderable dialogs on screen.
 
 Public Sub render()
+    On Error Goto render_Err
     
     On Error GoTo render_Err
     
@@ -417,6 +442,9 @@ render_Err:
     Call RegistrarError(Err.number, Err.Description, "clsDialogs.render", Erl)
     Resume Next
     
+    Exit Sub
+render_Err:
+    Call TraceError(Err.Number, Err.Description, "clsDialogs.render", Erl)
 End Sub
 
 ''
@@ -425,6 +453,7 @@ End Sub
 ' @param    charIndex   The character whose dialog will be removed.
 
 Public Sub RemoveDialog(ByVal charindex As Integer)
+    On Error Goto RemoveDialog_Err
     
     On Error GoTo RemoveDialog_Err
 
@@ -451,12 +480,16 @@ RemoveDialog_Err:
     Call RegistrarError(Err.number, Err.Description, "clsDialogs.RemoveDialog", Erl)
     Resume Next
     
+    Exit Sub
+RemoveDialog_Err:
+    Call TraceError(Err.Number, Err.Description, "clsDialogs.RemoveDialog", Erl)
 End Sub
 
 ''
 ' Removes all dialogs from all characters.
 
 Public Sub RemoveAllDialogs()
+    On Error Goto RemoveAllDialogs_Err
 
     'Removes all dialogs from all chars.
     
@@ -471,6 +504,9 @@ RemoveAllDialogs_Err:
     Call RegistrarError(Err.number, Err.Description, "clsDialogs.RemoveAllDialogs", Erl)
     Resume Next
     
+    Exit Sub
+RemoveAllDialogs_Err:
+    Call TraceError(Err.Number, Err.Description, "clsDialogs.RemoveAllDialogs", Erl)
 End Sub
 
 ''

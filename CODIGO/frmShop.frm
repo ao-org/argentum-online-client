@@ -146,16 +146,25 @@ Attribute VB_Exposed = False
 '
 '
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
     Label1.Caption = JsonLanguage.Item("MENSAJE_TRANSACCION_RELOGUEO")
 
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmShop.Form_Load", Erl)
 End Sub
 
 Private Sub Image2_Click()
+    On Error Goto Image2_Click_Err
     Unload Me
+    Exit Sub
+Image2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmShop.Image2_Click", Erl)
 End Sub
 
 Private Sub Image3_Click()
+    On Error Goto Image3_Click_Err
     'Antes de enviar al servidor hago una pre consulta de los créditos en cliente
     Dim obj_to_buy As ObjDatas
     
@@ -183,13 +192,21 @@ Private Sub Image3_Click()
     Else
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENE_CREDITOS_SUFICIENTES"), 255, 0, 0, True)
     End If
+    Exit Sub
+Image3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmShop.Image3_Click", Erl)
 End Sub
 
 Private Sub Image4_Click()
+    On Error Goto Image4_Click_Err
     Unload Me
+    Exit Sub
+Image4_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmShop.Image4_Click", Erl)
 End Sub
 
 Private Sub lstItemShopFilter_Click()
+    On Error Goto lstItemShopFilter_Click_Err
     Dim grh As Long
     Dim i As Long
     
@@ -206,9 +223,13 @@ Private Sub lstItemShopFilter_Click()
     
     Call Grh_Render_To_Hdc(PictureItemShop, grh, 0, 0, False)
         
+    Exit Sub
+lstItemShopFilter_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmShop.lstItemShopFilter_Click", Erl)
 End Sub
 
 Private Sub txtFindObj_Change()
+    On Error Goto txtFindObj_Change_Err
 
     lstItemShopFilter.Clear
     
@@ -222,4 +243,7 @@ Private Sub txtFindObj_Change()
     Next i
     
     
+    Exit Sub
+txtFindObj_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmShop.txtFindObj_Change", Erl)
 End Sub

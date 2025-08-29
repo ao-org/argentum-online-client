@@ -1073,6 +1073,7 @@ Private cBotonCerrar As clsGraphicalButton
 
 
 Public Sub Iniciar_Labels()
+    On Error Goto Iniciar_Labels_Err
     
     On Error GoTo Iniciar_Labels_Err
     
@@ -1092,9 +1093,13 @@ Iniciar_Labels_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Iniciar_Labels", Erl)
     Resume Next
     
+    Exit Sub
+Iniciar_Labels_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.Iniciar_Labels", Erl)
 End Sub
 
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
        
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
@@ -1109,9 +1114,13 @@ Private Sub loadButtons()
                                                 "boton-cerrar-over.bmp", _
                                                 "boton-cerrar-off.bmp", Me)
     
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.loadButtons", Erl)
 End Sub
 
 Private Sub Command1_Click(Index As Integer)
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -1180,9 +1189,13 @@ Command1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.Command1_Click", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
     
     On Error GoTo Command2_Click_Err
     
@@ -1195,13 +1208,21 @@ Command2_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Command2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.Command2_Click", Erl)
 End Sub
 
 Private Sub command1_DblClick(Index As Integer)
+    On Error Goto command1_DblClick_Err
     Command1_Click (Index)
+    Exit Sub
+command1_DblClick_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.command1_DblClick", Erl)
 End Sub
 
 Private Sub Command1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command1_MouseDown_Err
     
     On Error GoTo Command1_MouseDown_Err
     
@@ -1214,9 +1235,13 @@ Command1_MouseDown_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Command1_MouseDown", Erl)
     Resume Next
     
+    Exit Sub
+Command1_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.Command1_MouseDown", Erl)
 End Sub
 
 Private Sub Command1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command1_MouseMove_Err
     
     On Error GoTo Command1_MouseMove_Err
     
@@ -1231,9 +1256,13 @@ Command1_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Command1_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Command1_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.Command1_MouseMove", Erl)
 End Sub
 
 Private Sub command1_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto command1_MouseUp_Err
     
     On Error GoTo command1_MouseUp_Err
     
@@ -1246,8 +1275,12 @@ command1_MouseUp_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.command1_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+command1_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.command1_MouseUp", Erl)
 End Sub
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+    On Error Goto Form_KeyDown_Err
     
     On Error GoTo Form_KeyDown_Err
     
@@ -1263,9 +1296,13 @@ Form_KeyDown_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Form_KeyDown", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyDown_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.Form_KeyDown", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -1284,9 +1321,13 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.Form_Load", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -1320,9 +1361,13 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.Form_MouseMove", Erl)
 End Sub
 
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+    On Error Goto Form_QueryUnload_Err
     
     On Error GoTo Form_QueryUnload_Err
     
@@ -1335,9 +1380,13 @@ Form_QueryUnload_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Form_QueryUnload", Erl)
     Resume Next
     
+    Exit Sub
+Form_QueryUnload_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.Form_QueryUnload", Erl)
 End Sub
 
 Private Sub Image1_Click()
+    On Error Goto Image1_Click_Err
     
     On Error GoTo Image1_Click_Err
     
@@ -1378,10 +1427,14 @@ Image1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Image1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Image1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.Image1_Click", Erl)
 End Sub
 
 
 Private Sub imgCerrar_Click()
+    On Error Goto imgCerrar_Click_Err
     
     On Error GoTo imgCerrar_Click_Err
     
@@ -1420,11 +1473,15 @@ imgCerrar_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.imgCerrar_Click", Erl)
     Resume Next
     
+    Exit Sub
+imgCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.imgCerrar_Click", Erl)
 End Sub
 
 
 
 Private Sub skills_Click(Index As Integer)
+    On Error Goto skills_Click_Err
     
     On Error GoTo skills_Click_Err
     
@@ -1436,9 +1493,13 @@ skills_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.skills_Click", Erl)
     Resume Next
     
+    Exit Sub
+skills_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.skills_Click", Erl)
 End Sub
 
 Private Sub Skills_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Skills_MouseMove_Err
     
     On Error GoTo Skills_MouseMove_Err
     
@@ -1465,5 +1526,8 @@ Skills_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Skills_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Skills_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmEstadisticas.Skills_MouseMove", Erl)
 End Sub
 

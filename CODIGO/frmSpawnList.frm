@@ -132,6 +132,7 @@ Option Explicit
 Public ListaCompleta As Boolean
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -146,9 +147,13 @@ Command1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmSpawnList.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSpawnList.Command1_Click", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
     
     On Error GoTo Command2_Click_Err
     
@@ -160,9 +165,13 @@ Command2_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmSpawnList.Command2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSpawnList.Command2_Click", Erl)
 End Sub
 
 Private Sub Filter_Change()
+    On Error Goto Filter_Change_Err
     
     On Error GoTo Filter_Change_Err
     
@@ -174,9 +183,13 @@ Filter_Change_Err:
     Call RegistrarError(Err.number, Err.Description, "frmSpawnList.Filter_Change", Erl)
     Resume Next
     
+    Exit Sub
+Filter_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSpawnList.Filter_Change", Erl)
 End Sub
 
 Public Sub FillList()
+    On Error Goto FillList_Err
     
     On Error GoTo FillList_Err
 
@@ -201,9 +214,13 @@ FillList_Err:
     Call RegistrarError(Err.number, Err.Description, "frmSpawnList.FillList", Erl)
     Resume Next
     
+    Exit Sub
+FillList_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSpawnList.FillList", Erl)
 End Sub
 
 Private Sub Filter_KeyUp(KeyCode As Integer, Shift As Integer)
+    On Error Goto Filter_KeyUp_Err
     
     If KeyCode = vbKeyEscape Then
     
@@ -216,10 +233,14 @@ Private Sub Filter_KeyUp(KeyCode As Integer, Shift As Integer)
     
     End If
     
+    Exit Sub
+Filter_KeyUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSpawnList.Filter_KeyUp", Erl)
 End Sub
 
 
 Private Sub lstCriaturas_KeyUp(KeyCode As Integer, Shift As Integer)
+    On Error Goto lstCriaturas_KeyUp_Err
 
     If KeyCode = vbKeyEscape Then
     
@@ -233,4 +254,7 @@ Private Sub lstCriaturas_KeyUp(KeyCode As Integer, Shift As Integer)
     
     End If
 
+    Exit Sub
+lstCriaturas_KeyUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSpawnList.lstCriaturas_KeyUp", Erl)
 End Sub

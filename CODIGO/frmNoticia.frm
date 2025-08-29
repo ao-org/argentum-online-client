@@ -150,6 +150,7 @@ Private Const WS_EX_LAYERED = &H80000
  Se le pasa el Hwnd del formulario en cuestión
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+    On Error Goto Is_Transparent_Err
 On Error Resume Next
   
 Dim msg As Long
@@ -166,10 +167,14 @@ Dim msg As Long
        Is_Transparent = False
     End If
   
+    Exit Function
+Is_Transparent_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNoticia.Is_Transparent", Erl)
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, _
+    On Error Goto Aplicar_Transparencia_Err
                                       valor As Integer) As Long
   
 Dim msg As Long
@@ -196,10 +201,17 @@ If Err Then
    Aplicar_Transparencia = 2
 End If
   
+    Exit Function
+Aplicar_Transparencia_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNoticia.Aplicar_Transparencia", Erl)
 End Function
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 
 Call Aplicar_Transparencia(Me.hwnd, 180)
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNoticia.Form_Load", Erl)
 End Sub
 

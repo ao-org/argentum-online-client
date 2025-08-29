@@ -45,6 +45,7 @@ End Type
  
  
 Public Sub Detectar(ByVal hWndTextbox As Long, ByVal hWndOwner As Long)
+    On Error Goto Detectar_Err
   'Don't want to subclass twice!
   If lOldProc = 0 Then
     'Subclass!
@@ -54,9 +55,13 @@ Public Sub Detectar(ByVal hWndTextbox As Long, ByVal hWndOwner As Long)
     hWndParent = hWndOwner 'Geodar
     hWndRTB = hWndTextbox
   End If
+    Exit Sub
+Detectar_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUrl.Detectar", Erl)
 End Sub
  
 Public Sub NoDetectar()
+    On Error Goto NoDetectar_Err
   If lOldProc Then
     SendMessage hWndRTB, EM_AUTOURLDETECT, 0, ByVal 0
     'Reset the window procedure (stop the subclassing)
@@ -64,9 +69,13 @@ Public Sub NoDetectar()
     'Set this to 0 so we can subclass again in future
     lOldProc = 0
   End If
+    Exit Sub
+NoDetectar_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUrl.NoDetectar", Erl)
 End Sub
  
 Public Function WndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+    On Error Goto WndProc_Err
     Dim uHead As NMHDR 'Geodar
     Dim eLink As ENLINK
     Dim eText As TEXTRANGE
@@ -99,5 +108,8 @@ Public Function WndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As 
        
     End Select
     WndProc = CallWindowProc(lOldProc, hwnd, uMsg, wParam, lParam) 'Geodar
+    Exit Function
+WndProc_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUrl.WndProc", Erl)
 End Function
  

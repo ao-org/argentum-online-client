@@ -381,6 +381,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub btnCrear_Click()
+    On Error Goto btnCrear_Click_Err
 On Error GoTo ErrHandler:
 
     Dim Settings As t_NewScenearioSettings
@@ -444,88 +445,135 @@ On Error GoTo ErrHandler:
 ErrHandler:
     Call RegistrarError(Err.Number, Err.Description, "frmCreateBattleGround.btnCrear", Erl)
     Resume Next
+    Exit Sub
+btnCrear_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCreateBattleground.btnCrear_Click", Erl)
 End Sub
 
 Private Sub chkPassword_Click()
+    On Error Goto chkPassword_Click_Err
     tPassword.enabled = chkPassword.Value
     If Not tPassword.enabled Then
         tPassword.Text = ""
     Else
         tPassword.SetFocus
     End If
+    Exit Sub
+chkPassword_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCreateBattleground.chkPassword_Click", Erl)
 End Sub
 
 
 Private Sub cmb10kl_Click()
+    On Error Goto cmb10kl_Click_Err
     Dim Value As Long
     Value = Val(tCosto.Text) - 10000
     If Value < 0 Then Value = 0
     tCosto.Text = Value
+    Exit Sub
+cmb10kl_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCreateBattleground.cmb10kl_Click", Erl)
 End Sub
 
 Private Sub cmb10kp_Click()
+    On Error Goto cmb10kp_Click_Err
     Dim Value As Integer
     Value = Val(tCosto.Text) + 10000
     If Value > 10000000 Then Value = 10000000
     tCosto.Text = Value
+    Exit Sub
+cmb10kp_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCreateBattleground.cmb10kp_Click", Erl)
 End Sub
 
 Private Sub cmb1kl_Click()
+    On Error Goto cmb1kl_Click_Err
     Dim Value As Long
     Value = Val(tCosto.Text) - 1000
     If Value < 0 Then Value = 0
     tCosto.Text = Value
+    Exit Sub
+cmb1kl_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCreateBattleground.cmb1kl_Click", Erl)
 End Sub
 
 Private Sub cmb1kp_Click()
+    On Error Goto cmb1kp_Click_Err
     Dim Value As Long
     Value = Val(tCosto.Text) + 1000
     If Value > 10000000 Then Value = 10000000
     tCosto.Text = Value
+    Exit Sub
+cmb1kp_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCreateBattleground.cmb1kp_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     cmbTipo.ListIndex = 0
     cmbEquipos.ListIndex = 0
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCreateBattleground.Form_Load", Erl)
 End Sub
 
 Private Sub tMaxLvl_LostFocus()
+    On Error Goto tMaxLvl_LostFocus_Err
     Dim Value As Long
     Value = Val(tMaxLvl.Text)
     If Value < 1 Then Value = 1
     If Value > 47 Then Value = 47
     tMaxLvl.Text = Value
+    Exit Sub
+tMaxLvl_LostFocus_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCreateBattleground.tMaxLvl_LostFocus", Erl)
 End Sub
 
 Private Sub tMaxPlayers_LostFocus()
+    On Error Goto tMaxPlayers_LostFocus_Err
     Dim Value As Integer
     Value = Val(tMaxPlayers.Text)
     If Value < 2 Then Value = 2
     If Value > 40 Then Value = 40
     tMaxPlayers.Text = Value
+    Exit Sub
+tMaxPlayers_LostFocus_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCreateBattleground.tMaxPlayers_LostFocus", Erl)
 End Sub
 
 Private Sub tMinLvl_LostFocus()
+    On Error Goto tMinLvl_LostFocus_Err
     Dim Value As Integer
     Value = Val(tMinLvl.Text)
     If Value < 1 Then Value = 1
     If Value > 47 Then Value = 47
     tMinLvl.Text = Value
+    Exit Sub
+tMinLvl_LostFocus_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCreateBattleground.tMinLvl_LostFocus", Erl)
 End Sub
 
 Private Sub tMinPlayers_LostFocus()
+    On Error Goto tMinPlayers_LostFocus_Err
     Dim Value As Integer
     Value = Val(tMinPlayers.Text)
     If Value < 2 Then Value = 2
     If Value > 40 Then Value = 40
     tMinPlayers.Text = Value
+    Exit Sub
+tMinPlayers_LostFocus_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCreateBattleground.tMinPlayers_LostFocus", Erl)
 End Sub
 
 Private Sub tSize_LostFocus()
+    On Error Goto tSize_LostFocus_Err
     Dim Value As Integer
     Value = Val(tSize.Text)
     If Value < 1 Then Value = 1
     If Value > 20 Then Value = 20
     tSize.Text = Value
     lblDivisible.visible = Value Mod Val(tMaxPlayers.Text) <> 0 Or Value Mod Val(tMaxPlayers.Text) <> 0
+    Exit Sub
+tSize_LostFocus_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCreateBattleground.tSize_LostFocus", Erl)
 End Sub

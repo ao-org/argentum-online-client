@@ -64,15 +64,20 @@ Private Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" ( 
     ByVal hwndCallback As Long) As Long
 
 Public Function StopMP3() As Long
+    On Error Goto StopMP3_Err
     StopMP3 = -1
     ' Stop playback of the MP3 file.
     mciSendString "stop mp3", vbNullString, 0, 0
     ' Close the MP3 file to release resources.
     mciSendString "close mp3", vbNullString, 0, 0
     StopMP3 = 1
+    Exit Function
+StopMP3_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.StopMP3", Erl)
 End Function
 
 Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
+    On Error Goto PlayMP3_Err
     Dim command As String
     Dim ret As Long
     
@@ -118,17 +123,25 @@ Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Bool
     ret = mciSendString(command, vbNullString, 0, 0)
     
     PlayMP3 = ret
+    Exit Function
+PlayMP3_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.PlayMP3", Erl)
 End Function
 
 Public Function GetMidiTrackName(ByVal track_id As Integer) As String
+    On Error Goto GetMidiTrackName_Err
     Debug.Assert track_id < UBound(mMidiTrack)
     If track_id < UBound(mMidiTrack) Then
         GetMidiTrackName = mMidiTrack(track_id).Name
     End If
     GetMidiTrackName = ""
+    Exit Function
+GetMidiTrackName_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.GetMidiTrackName", Erl)
 End Function
 
 Private Function InitSoundEngine(hwnd As Long) As Long
+    On Error Goto InitSoundEngine_Err
 On Error Resume Next
     Err.Clear
     Err.Number = 0
@@ -150,9 +163,13 @@ On Error Resume Next
     
     mDirectSound.SetCooperativeLevel hwnd, DSSCL_NORMAL
     InitSoundEngine = Err.Number
+    Exit Function
+InitSoundEngine_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.InitSoundEngine", Erl)
 End Function
 
 Private Function InitMusicEngine(dx8 As DirectX8, hwnd As Long) As Long
+    On Error Goto InitMusicEngine_Err
 On Error Resume Next
     Err.Clear
     With mMidiTrack(1)
@@ -178,10 +195,14 @@ On Error Resume Next
             Set .directMusicPath = .directMusicPerformance.CreateStandardAudioPath(DMUS_APATH_DYNAMIC_3D, 64, True)
     End With
     InitMusicEngine = Err.Number
+    Exit Function
+InitMusicEngine_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.InitMusicEngine", Erl)
 End Function
 
 
 Public Function Init(ByRef dx8 As DirectX8, ByVal hwnd As Long) As Long
+    On Error Goto Init_Err
     Debug.Assert Not dx8 Is Nothing
     Set mDirectX = dx8
     Init = InitSoundEngine(hwnd)
@@ -195,9 +216,13 @@ Public Function Init(ByRef dx8 As DirectX8, ByVal hwnd As Long) As Long
         Exit Function
     End If
     Init = 0
+    Exit Function
+Init_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.Init", Erl)
 End Function
 
 Private Function LoadMidi(ByRef track As MidiTrack, ByVal file_str As String, Optional ByVal volume As Long = 0, Optional ByVal balance As Long = 0) As Boolean
+    On Error Goto LoadMidi_Err
 On Error GoTo Error_Handl
     LoadMidi = False
     If (LenB(file_str) <= 0) Then Exit Function
@@ -222,9 +247,13 @@ On Error GoTo Error_Handl
     Exit Function
 Error_Handl:
     frmDebug.add_text_tracebox "error al cargar musica"
+    Exit Function
+LoadMidi_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.LoadMidi", Erl)
 End Function
 
 Private Function CreateWavBufferFromFile(ByVal file_name As String, ByRef new_buffer As DirectSoundSecondaryBuffer8, Optional ByVal Extraido As Boolean = False) As Boolean
+    On Error Goto CreateWavBufferFromFile_Err
 On Error GoTo CreateWavBufferFromFile_Err
     CreateWavBufferFromFile = False
     Debug.Assert Not mDirectSound Is Nothing
@@ -266,10 +295,14 @@ CreateWavBufferFromFile_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsAudioEngine.CreateWavBufferFromFile " & file_name, Erl)
     Resume Next
     
+    Exit Function
+CreateWavBufferFromFile_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.CreateWavBufferFromFile", Erl)
 End Function
 
 
 Private Function StartPlaying(ByRef Buffer As DirectSoundSecondaryBuffer8, ByVal flags As CONST_DSBPLAYFLAGS, ByVal volume As Long, ByVal pan As Long) As Long
+    On Error Goto StartPlaying_Err
 
 On Error GoTo ErrorHandler
     StartPlaying = False
@@ -298,9 +331,13 @@ On Error GoTo ErrorHandler
 ErrorHandler:
     StartPlaying = False
 
+    Exit Function
+StartPlaying_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.StartPlaying", Erl)
 End Function
 
 Private Function FindTrackByName(ByVal Name As String, Optional ByVal label As String = "") As Integer
+    On Error Goto FindTrackByName_Err
         Dim i As Integer
         For i = 1 To UBound(mAudioTracks)
             With mAudioTracks(i)
@@ -314,9 +351,13 @@ Private Function FindTrackByName(ByVal Name As String, Optional ByVal label As S
             End With
         Next i
         FindTrackByName = -1
+    Exit Function
+FindTrackByName_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.FindTrackByName", Erl)
 End Function
 
 Private Function GetFreeWavTrack() As Integer
+    On Error Goto GetFreeWavTrack_Err
         Dim i As Integer
         For i = 1 To UBound(mAudioTracks) - 1
             With mAudioTracks(i)
@@ -335,9 +376,13 @@ Private Function GetFreeWavTrack() As Integer
             End With
         Next i
         GetFreeWavTrack = -1
+    Exit Function
+GetFreeWavTrack_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.GetFreeWavTrack", Erl)
 End Function
 
 Public Function StopAmbient() As Long
+    On Error Goto StopAmbient_Err
 On Error GoTo StopAmbient_Error_Handl
     StopAmbient = -1
     With mAudioTracks(UBound(mAudioTracks))
@@ -349,9 +394,13 @@ On Error GoTo StopAmbient_Error_Handl
     StopAmbient = 0
     Exit Function
 StopAmbient_Error_Handl:
+    Exit Function
+StopAmbient_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.StopAmbient", Erl)
 End Function
 
 Public Function PlayAmbient(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0) As Long
+    On Error Goto PlayAmbient_Err
 On Error GoTo PlayAmbient_Error_Handl
     Debug.Assert id > 0
     PlayAmbient = -1
@@ -380,9 +429,13 @@ On Error GoTo PlayAmbient_Error_Handl
 
 PlayAmbient_Error_Handl:
 
+    Exit Function
+PlayAmbient_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.PlayAmbient", Erl)
 End Function
 
 Public Function PlayWav(ByVal prefix_sound_id As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
+    On Error Goto PlayWav_Err
 On Error GoTo PlayWav_Error_Handl
 
     Dim sound_id As Integer
@@ -417,8 +470,12 @@ On Error GoTo PlayWav_Error_Handl
 
 PlayWav_Error_Handl:
 
+    Exit Function
+PlayWav_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.PlayWav", Erl)
 End Function
 Public Function RemoveFirstThreeIfUnderscore(ByVal s As String) As String
+    On Error Goto RemoveFirstThreeIfUnderscore_Err
     ' Check for underscore anywhere in the string
     If InStr(s, "_") > 0 Then
         ' If the string is longer than 3 characters, strip off the first 3
@@ -432,8 +489,12 @@ Public Function RemoveFirstThreeIfUnderscore(ByVal s As String) As String
         ' No underscore: return the original string
         RemoveFirstThreeIfUnderscore = s
     End If
+    Exit Function
+RemoveFirstThreeIfUnderscore_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.RemoveFirstThreeIfUnderscore", Erl)
 End Function
 Public Sub ApplyMusicVolume(ByVal volume As Long)
+    On Error Goto ApplyMusicVolume_Err
     Dim i As Integer
     For i = 1 To UBound(mMidiTrack)
             With mMidiTrack(i)
@@ -442,10 +503,14 @@ Public Sub ApplyMusicVolume(ByVal volume As Long)
                 End If
             End With
     Next i
+    Exit Sub
+ApplyMusicVolume_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.ApplyMusicVolume", Erl)
 End Sub
 
 
 Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
+    On Error Goto PlayMidi_Err
 On Error GoTo PlayMidi_Error_Handl
     Debug.Assert id > 0
     PlayMidi = -1
@@ -466,9 +531,13 @@ On Error GoTo PlayMidi_Error_Handl
 
 PlayMidi_Error_Handl:
 
+    Exit Function
+PlayMidi_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.PlayMidi", Erl)
 End Function
 
 Public Function StopAllWavsMatchingLabel(ByVal label As String) As Long
+    On Error Goto StopAllWavsMatchingLabel_Err
     'Stops any wav playing on any track if the label matches the given as a parameter
     On Error GoTo Error_Handl
     StopAllWavsMatchingLabel = -1
@@ -489,9 +558,13 @@ Public Function StopAllWavsMatchingLabel(ByVal label As String) As Long
     StopAllWavsMatchingLabel = 0
     Exit Function
 Error_Handl:
+    Exit Function
+StopAllWavsMatchingLabel_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.StopAllWavsMatchingLabel", Erl)
 End Function
 
 Public Function StopWav(ByVal sound_id As Integer, Optional ByVal label As String = "") As Long
+    On Error Goto StopWav_Err
     On Error GoTo Error_Handl
     Debug.Assert sound_id > 0
     StopWav = -1
@@ -509,9 +582,13 @@ Public Function StopWav(ByVal sound_id As Integer, Optional ByVal label As Strin
         
     Exit Function
 Error_Handl:
+    Exit Function
+StopWav_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.StopWav", Erl)
 End Function
 
 Public Sub StopAllPlayback()
+    On Error Goto StopAllPlayback_Err
     Dim i As Integer
     For i = 1 To UBound(mAudioTracks)
         With mAudioTracks(i)
@@ -530,10 +607,14 @@ Public Sub StopAllPlayback()
                 End If
             End With
     Next i
+    Exit Sub
+StopAllPlayback_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.StopAllPlayback", Erl)
 End Sub
 
 
 Private Sub SetMembersToNothing()
+    On Error Goto SetMembersToNothing_Err
 On Error Resume Next
     
     Dim i As Integer
@@ -562,14 +643,22 @@ On Error Resume Next
     Set mDirectX = Nothing
     Set mDirectSound = Nothing
     Set mDirectSoundEnum = Nothing
+    Exit Sub
+SetMembersToNothing_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.SetMembersToNothing", Erl)
 End Sub
 
 Private Sub Class_Initialize()
+    On Error Goto Class_Initialize_Err
 SetMembersToNothing
+    Exit Sub
+Class_Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.Class_Initialize", Erl)
 End Sub
 
 
 Private Sub Class_Terminate()
+    On Error Goto Class_Terminate_Err
 On Error Resume Next
     Err.Clear
     StopMP3
@@ -583,4 +672,7 @@ On Error Resume Next
             End With
     Next i
     SetMembersToNothing
+    Exit Sub
+Class_Terminate_Err:
+    Call TraceError(Err.Number, Err.Description, "clsAudioEngine.Class_Terminate", Erl)
 End Sub

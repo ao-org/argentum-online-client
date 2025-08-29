@@ -21,21 +21,30 @@ Private Declare Sub MDFile Lib "aamd532.dll" (ByVal f As String, ByVal r As Stri
 Private Declare Sub MDStringFix Lib "aamd532.dll" (ByVal f As String, ByVal t As Long, ByVal r As String)
 
 Public Function MD5String(ByVal P As String) As String
+    On Error Goto MD5String_Err
     Dim r As String * 32, t As Long
     r = Space(32)
     t = Len(P)
     MDStringFix P, t, r
     MD5String = r
+    Exit Function
+MD5String_Err:
+    Call TraceError(Err.Number, Err.Description, "MD5.MD5String", Erl)
 End Function
 
 Public Function MD5File(ByVal f As String) As String
+    On Error Goto MD5File_Err
     Dim r As String * 32
     r = Space(32)
     MDFile f, r
     MD5File = r
+    Exit Function
+MD5File_Err:
+    Call TraceError(Err.Number, Err.Description, "MD5.MD5File", Erl)
 End Function
 
 Public Function hexMd52Asc(ByVal MD5 As String) As String
+    On Error Goto hexMd52Asc_Err
     Dim i As Long
     Dim L As String
     
@@ -45,13 +54,21 @@ Public Function hexMd52Asc(ByVal MD5 As String) As String
         L = mid$(MD5, (2 * i) - 1, 2)
         hexMd52Asc = hexMd52Asc & Chr$(hexHex2Dec(L))
     Next i
+    Exit Function
+hexMd52Asc_Err:
+    Call TraceError(Err.Number, Err.Description, "MD5.hexMd52Asc", Erl)
 End Function
 
 Public Function hexHex2Dec(ByVal hex As String) As Long
+    On Error Goto hexHex2Dec_Err
     hexHex2Dec = Val("&H" & hex)
+    Exit Function
+hexHex2Dec_Err:
+    Call TraceError(Err.Number, Err.Description, "MD5.hexHex2Dec", Erl)
 End Function
 
 Public Function txtOffset(ByVal Text As String, ByVal off As Integer) As String
+    On Error Goto txtOffset_Err
     Dim i As Long
     Dim L As String
     
@@ -59,6 +76,9 @@ Public Function txtOffset(ByVal Text As String, ByVal off As Integer) As String
         L = mid$(Text, i, 1)
         txtOffset = txtOffset & Chr$((Asc(L) + off) And &HFF)
     Next i
+    Exit Function
+txtOffset_Err:
+    Call TraceError(Err.Number, Err.Description, "MD5.txtOffset", Erl)
 End Function
 
 

@@ -220,6 +220,7 @@ Public WithEvents InvBoveda  As clsGrapchicalInventory ' Inventario de la bóved
 Attribute InvBoveda.VB_VarHelpID = -1
 
 Private Sub MoverForm()
+    On Error Goto MoverForm_Err
     
     On Error GoTo moverForm_Err
     
@@ -236,9 +237,13 @@ moverForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.moverForm", Erl)
     Resume Next
     
+    Exit Sub
+MoverForm_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.MoverForm", Erl)
 End Sub
 
 Private Sub cantidad_KeyPress(KeyAscii As Integer)
+    On Error Goto cantidad_KeyPress_Err
     
     On Error GoTo cantidad_KeyPress_Err
     
@@ -263,31 +268,51 @@ cantidad_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.cantidad_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+cantidad_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.cantidad_KeyPress", Erl)
 End Sub
 
 Private Sub cmdMas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdMas_MouseDown_Err
     m_Increment = 1
     tmrNumber.Interval = 30
     tmrNumber.Enabled = True
     Exit Sub
+    Exit Sub
+cmdMas_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.cmdMas_MouseDown", Erl)
 End Sub
 
 Private Sub cmdMas_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdMas_MouseUp_Err
     tmrNumber.Enabled = False
+    Exit Sub
+cmdMas_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.cmdMas_MouseUp", Erl)
 End Sub
 
 Private Sub cmdMenos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdMenos_MouseDown_Err
     cantidad.Text = str((Val(cantidad.Text) - 1))
     m_Increment = -1
     tmrNumber.Interval = 30
     tmrNumber.Enabled = True
+    Exit Sub
+cmdMenos_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.cmdMenos_MouseDown", Erl)
 End Sub
 
 Private Sub cmdMenos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdMenos_MouseUp_Err
     tmrNumber.Enabled = False
+    Exit Sub
+cmdMenos_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.cmdMenos_MouseUp", Erl)
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -304,9 +329,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
 
@@ -323,10 +352,14 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.Form_Load", Erl)
 End Sub
 
 
 Private Sub LoadButtons()
+    On Error Goto LoadButtons_Err
     
     
     Set cBotonRetirar = New clsGraphicalButton
@@ -356,8 +389,12 @@ Private Sub LoadButtons()
                                                 "boton-depositar-off.bmp", Me)
                                                 
     
+    Exit Sub
+LoadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.LoadButtons", Erl)
 End Sub
 Private Sub cmdDepositar_Click()
+    On Error Goto cmdDepositar_Click_Err
     If Not IsNumeric(cantidad.Text) Then Exit Sub
     If Val(cantidad.Text) <= 0 Then Exit Sub
     
@@ -365,9 +402,13 @@ Private Sub cmdDepositar_Click()
 
     If InvBankUsu.SelectedItem <= 0 Then Exit Sub
     Call WriteBankDeposit(InvBankUsu.SelectedItem, min(Val(cantidad.Text), InvBankUsu.Amount(InvBankUsu.SelectedItem)), 0)
+    Exit Sub
+cmdDepositar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.cmdDepositar_Click", Erl)
 End Sub
 
 Private Sub cmdRetirar_Click()
+    On Error Goto cmdRetirar_Click_Err
     If Not IsNumeric(cantidad.Text) Then Exit Sub
     If Val(cantidad.Text) <= 0 Then Exit Sub
 
@@ -375,11 +416,15 @@ Private Sub cmdRetirar_Click()
 
     If InvBoveda.SelectedItem <= 0 Then Exit Sub
     Call WriteBankExtractItem(InvBoveda.SelectedItem, min(Val(cantidad.Text), InvBoveda.Amount(InvBoveda.SelectedItem)), 0)
+    Exit Sub
+cmdRetirar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.cmdRetirar_Click", Erl)
 End Sub
 
 
 
 Private Sub cantidad_Change()
+    On Error Goto cantidad_Change_Err
     
     On Error GoTo cantidad_Change_Err
     
@@ -402,18 +447,26 @@ cantidad_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.cantidad_Change", Erl)
     Resume Next
     
+    Exit Sub
+cantidad_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.cantidad_Change", Erl)
 End Sub
 
 Private Sub Form_MouseMove(button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     On Error GoTo Form_MouseMove_Err
     MoverForm
     Exit Sub
 Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.Form_MouseMove", Erl)
     Resume Next
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.Form_MouseMove", Erl)
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    On Error Goto Form_Unload_Err
     
     On Error GoTo Form_Unload_Err
     
@@ -430,9 +483,13 @@ Form_Unload_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.Form_Unload", Erl)
     Resume Next
     
+    Exit Sub
+Form_Unload_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.Form_Unload", Erl)
 End Sub
 
 Private Sub interface_Click()
+    On Error Goto interface_Click_Err
     
     On Error GoTo interface_Click_Err
     
@@ -454,9 +511,13 @@ interface_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.interface_Click", Erl)
     Resume Next
     
+    Exit Sub
+interface_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.interface_Click", Erl)
 End Sub
 
 Private Sub interface_DblClick()
+    On Error Goto interface_DblClick_Err
 
     On Error GoTo interface_DblClick_Err
 
@@ -473,9 +534,13 @@ interface_DblClick_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.interface_DblClick", Erl)
     Resume Next
     
+    Exit Sub
+interface_DblClick_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.interface_DblClick", Erl)
 End Sub
 
 Private Sub interface_KeyDown(KeyCode As Integer, Shift As Integer)
+    On Error Goto interface_KeyDown_Err
     
     On Error GoTo interface_KeyDown_Err
     
@@ -535,9 +600,13 @@ interface_KeyDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.interface_KeyDown", Erl)
     Resume Next
     
+    Exit Sub
+interface_KeyDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.interface_KeyDown", Erl)
 End Sub
 
 Private Sub InvBoveda_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+    On Error Goto InvBoveda_ItemDropped_Err
     
     On Error GoTo InvBoveda_ItemDropped_Err
     
@@ -565,9 +634,13 @@ InvBoveda_ItemDropped_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.InvBoveda_ItemDropped", Erl)
     Resume Next
     
+    Exit Sub
+InvBoveda_ItemDropped_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.InvBoveda_ItemDropped", Erl)
 End Sub
 
 Private Sub InvBankUsu_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+    On Error Goto InvBankUsu_ItemDropped_Err
     
     On Error GoTo InvBankUsu_ItemDropped_Err
     
@@ -597,9 +670,13 @@ InvBankUsu_ItemDropped_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.InvBankUsu_ItemDropped", Erl)
     Resume Next
     
+    Exit Sub
+InvBankUsu_ItemDropped_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.InvBankUsu_ItemDropped", Erl)
 End Sub
 
 Private Sub salir_Click()
+    On Error Goto salir_Click_Err
     
     On Error GoTo salir_Click_Err
     
@@ -612,9 +689,13 @@ salir_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.salir_Click", Erl)
     Resume Next
     
+    Exit Sub
+salir_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.salir_Click", Erl)
 End Sub
 
 Private Sub tmrNumber_Timer()
+    On Error Goto tmrNumber_Timer_Err
     
     On Error GoTo tmrNumber_Timer_Err
     
@@ -647,4 +728,7 @@ tmrNumber_Timer_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoObj.tmrNumber_Timer", Erl)
     Resume Next
     
+    Exit Sub
+tmrNumber_Timer_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoObj.tmrNumber_Timer", Erl)
 End Sub

@@ -217,6 +217,7 @@ Private cBotonCuenta As clsGraphicalButton
 Private cBotonIngresar As clsGraphicalButton
 
 Private Sub MoverForm()
+    On Error Goto MoverForm_Err
     
     On Error GoTo moverForm_Err
 
@@ -231,9 +232,13 @@ moverForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.moverForm", Erl)
     Resume Next
     
+    Exit Sub
+MoverForm_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmLogear.MoverForm", Erl)
 End Sub
 
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+    On Error Goto Is_Transparent_Err
     
     On Error GoTo Is_Transparent_Err
 
@@ -259,10 +264,14 @@ Is_Transparent_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.Is_Transparent", Erl)
     Resume Next
     
+    Exit Function
+Is_Transparent_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmLogear.Is_Transparent", Erl)
 End Function
 
 'Funcion que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+    On Error Goto Aplicar_Transparencia_Err
     On Error GoTo Aplicar_Transparencia_Err
     
     Dim msg As Long
@@ -294,9 +303,13 @@ Aplicar_Transparencia_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.Aplicar_Transparencia", Erl)
     Resume Next
     
+    Exit Function
+Aplicar_Transparencia_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmLogear.Aplicar_Transparencia", Erl)
 End Function
 
 Private Sub cmdCuenta_Click()
+    On Error Goto cmdCuenta_Click_Err
     
     On Error GoTo btnCuenta_Click_Err
     
@@ -309,14 +322,22 @@ btnCuenta_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.btnCuenta_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdCuenta_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmLogear.cmdCuenta_Click", Erl)
 End Sub
 
 Private Sub Form_Activate()
+    On Error Goto Form_Activate_Err
     Me.Top = frmConnect.Top + frmConnect.Height - Me.Height - 450
     Me.Left = frmConnect.Left + (frmConnect.Width - Me.Width) / 2
+    Exit Sub
+Form_Activate_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmLogear.Form_Activate", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 
     On Error GoTo Form_Load_Err
     
@@ -348,9 +369,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmLogear.Form_Load", Erl)
 End Sub
 
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
 
     Set cBotonSalir = New clsGraphicalButton
     Set cBotonCuenta = New clsGraphicalButton
@@ -359,14 +384,22 @@ Private Sub loadButtons()
     Call cBotonSalir.Initialize(cmdSalir, "boton-salir-default.bmp", "boton-salir-over.bmp", "boton-salir-off.bmp", Me)
     Call cBotonCuenta.Initialize(cmdCuenta, "boton-cuenta-default.bmp", "boton-cuenta-over.bmp", "boton-cuenta-off.bmp", Me)
     Call cBotonIngresar.Initialize(cmdIngresar, "boton-ingresar-default.bmp", "boton-ingresar-over.bmp", "boton-ingresar-off.bmp", Me)
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmLogear.loadButtons", Erl)
 End Sub
 
 Private Sub cmdSalir_Click()
+    On Error Goto cmdSalir_Click_Err
     
     Call CloseClient
 
+    Exit Sub
+cmdSalir_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmLogear.cmdSalir_Click", Erl)
 End Sub
 Private Sub cmdIngresar_Click()
+    On Error Goto cmdIngresar_Click_Err
 On Error GoTo cmdIngresar_Click_Err
     Call SetActiveServer(txtIp.Text, txtPort.Text)
     Call FormParser.Parse_Form(Me, E_WAIT)
@@ -377,9 +410,13 @@ cmdIngresar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.cmdIngresar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdIngresar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmLogear.cmdIngresar_Click", Erl)
 End Sub
 
 Private Sub chkRecordar_Click()
+    On Error Goto chkRecordar_Click_Err
     
     On Error GoTo chkRecordar_Click_Err
 
@@ -400,10 +437,14 @@ chkRecordar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.chkRecordar_Click", Erl)
     Resume Next
     
+    Exit Sub
+chkRecordar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmLogear.chkRecordar_Click", Erl)
 End Sub
 
 
 Private Sub NameTxt_KeyDown(KeyCode As Integer, Shift As Integer)
+    On Error Goto NameTxt_KeyDown_Err
     
     On Error GoTo NameTxt_KeyDown_Err
 
@@ -420,9 +461,13 @@ NameTxt_KeyDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.NameTxt_KeyDown", Erl)
     Resume Next
     
+    Exit Sub
+NameTxt_KeyDown_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmLogear.NameTxt_KeyDown", Erl)
 End Sub
 
 Private Sub PasswordTxt_KeyDown(KeyCode As Integer, Shift As Integer)
+    On Error Goto PasswordTxt_KeyDown_Err
     
     On Error GoTo PasswordTxt_KeyDown_Err
 
@@ -439,4 +484,7 @@ PasswordTxt_KeyDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.PasswordTxt_KeyDown", Erl)
     Resume Next
     
+    Exit Sub
+PasswordTxt_KeyDown_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmLogear.PasswordTxt_KeyDown", Erl)
 End Sub

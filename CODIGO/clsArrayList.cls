@@ -43,6 +43,7 @@ Option Explicit
 Private ArrayList() As Byte
 
 Public Sub Clear()
+    On Error Goto Clear_Err
     
     On Error GoTo Clear_Err
 
@@ -61,9 +62,13 @@ Clear_Err:
     Call RegistrarError(Err.number, Err.Description, "clsArrayList.Clear", Erl)
     Resume Next
     
+    Exit Sub
+Clear_Err:
+    Call TraceError(Err.Number, Err.Description, "clsArrayList.Clear", Erl)
 End Sub
 
 Public Sub Initialize(ByVal min As Integer, ByVal max As Integer)
+    On Error Goto Initialize_Err
     
     On Error GoTo Initialize_Err
 
@@ -79,9 +84,13 @@ Initialize_Err:
     Call RegistrarError(Err.number, Err.Description, "clsArrayList.Initialize", Erl)
     Resume Next
     
+    Exit Sub
+Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsArrayList.Initialize", Erl)
 End Sub
 
 Public Function itemExist(ByVal Item As Integer) As Boolean
+    On Error Goto itemExist_Err
     
     On Error GoTo itemExist_Err
 
@@ -108,9 +117,13 @@ itemExist_Err:
     Call RegistrarError(Err.number, Err.Description, "clsArrayList.itemExist", Erl)
     Resume Next
     
+    Exit Function
+itemExist_Err:
+    Call TraceError(Err.Number, Err.Description, "clsArrayList.itemExist", Erl)
 End Function
 
 Public Function itemPos(ByVal Item As Integer) As Byte
+    On Error Goto itemPos_Err
     
     On Error GoTo itemPos_Err
 
@@ -137,9 +150,13 @@ itemPos_Err:
     Call RegistrarError(Err.number, Err.Description, "clsArrayList.itemPos", Erl)
     Resume Next
     
+    Exit Function
+itemPos_Err:
+    Call TraceError(Err.Number, Err.Description, "clsArrayList.itemPos", Erl)
 End Function
 
 Public Function Item(ByVal Index As Integer) As Byte
+    On Error Goto Item_Err
     
     On Error GoTo Item_Err
 
@@ -154,9 +171,13 @@ Item_Err:
     Call RegistrarError(Err.number, Err.Description, "clsArrayList.Item", Erl)
     Resume Next
     
+    Exit Function
+Item_Err:
+    Call TraceError(Err.Number, Err.Description, "clsArrayList.Item", Erl)
 End Function
 
 Public Sub Add(ByVal Item As Integer)
+    On Error Goto Add_Err
     
     On Error GoTo Add_Err
 
@@ -181,9 +202,13 @@ Add_Err:
     Call RegistrarError(Err.number, Err.Description, "clsArrayList.Add", Erl)
     Resume Next
     
+    Exit Sub
+Add_Err:
+    Call TraceError(Err.Number, Err.Description, "clsArrayList.Add", Erl)
 End Sub
 
 Public Sub Remove(ByVal Item As Integer)
+    On Error Goto Remove_Err
     
     On Error GoTo Remove_Err
 
@@ -217,9 +242,13 @@ Remove_Err:
     Call RegistrarError(Err.number, Err.Description, "clsArrayList.Remove", Erl)
     Resume Next
     
+    Exit Sub
+Remove_Err:
+    Call TraceError(Err.Number, Err.Description, "clsArrayList.Remove", Erl)
 End Sub
 
 Public Function GetLastItem() As Byte
+    On Error Goto GetLastItem_Err
     
     On Error GoTo GetLastItem_Err
 
@@ -246,5 +275,8 @@ GetLastItem_Err:
     Call RegistrarError(Err.number, Err.Description, "clsArrayList.GetLastItem", Erl)
     Resume Next
     
+    Exit Function
+GetLastItem_Err:
+    Call TraceError(Err.Number, Err.Description, "clsArrayList.GetLastItem", Erl)
 End Function
 

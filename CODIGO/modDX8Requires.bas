@@ -84,6 +84,7 @@ Public Const PI As Single = 3.14159265358979
 
 
 Public Function General_Bytes_To_Megabytes(Bytes As Double) As Double
+    On Error Goto General_Bytes_To_Megabytes_Err
     
     On Error GoTo General_Bytes_To_Megabytes_Err
     
@@ -100,9 +101,13 @@ General_Bytes_To_Megabytes_Err:
     Call RegistrarError(Err.Number, Err.Description, "modDX8Requires.General_Bytes_To_Megabytes", Erl)
     Resume Next
     
+    Exit Function
+General_Bytes_To_Megabytes_Err:
+    Call TraceError(Err.Number, Err.Description, "modDX8Requires.General_Bytes_To_Megabytes", Erl)
 End Function
 
 Public Function General_Get_Free_Ram() As Double
+    On Error Goto General_Get_Free_Ram_Err
     
     On Error GoTo General_Get_Free_Ram_Err
     
@@ -121,10 +126,14 @@ General_Get_Free_Ram_Err:
     Call RegistrarError(Err.Number, Err.Description, "modDX8Requires.General_Get_Free_Ram", Erl)
     Resume Next
     
+    Exit Function
+General_Get_Free_Ram_Err:
+    Call TraceError(Err.Number, Err.Description, "modDX8Requires.General_Get_Free_Ram", Erl)
 End Function
 
 
 Public Function ARGB(ByVal r As Long, ByVal G As Long, ByVal B As Long, ByVal A As Long) As Long
+    On Error Goto ARGB_Err
     
     On Error GoTo ARGB_Err
     
@@ -154,5 +163,8 @@ ARGB_Err:
     Call RegistrarError(Err.Number, Err.Description, "modDX8Requires.ARGB", Erl)
     Resume Next
     
+    Exit Function
+ARGB_Err:
+    Call TraceError(Err.Number, Err.Description, "modDX8Requires.ARGB", Erl)
 End Function
 

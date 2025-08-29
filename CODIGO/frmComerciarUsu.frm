@@ -361,6 +361,7 @@ Attribute InvOtherSell.VB_VarHelpID = -1
 Public LasActionBuy As Boolean
 
 Private Sub cmdAceptar_Click()
+    On Error Goto cmdAceptar_Click_Err
     
     On Error GoTo cmdAceptar_Click_Err
     
@@ -373,15 +374,23 @@ cmdAceptar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.cmdAceptar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdAceptar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdAceptar_Click", Erl)
 End Sub
 
 Private Sub cmdAceptar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto cmdAceptar_MouseDown_Err
 
      cmdAceptar.Picture = LoadInterface("boton-aceptar-off.bmp")
     cmdAceptar.Tag = "1"
+    Exit Sub
+cmdAceptar_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdAceptar_MouseDown", Erl)
 End Sub
 
 Private Sub cmdAceptar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto cmdAceptar_MouseMove_Err
     
     On Error GoTo cmdAceptar_MouseMove_Err
     
@@ -406,15 +415,23 @@ cmdAceptar_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.cmdAceptar_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+cmdAceptar_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdAceptar_MouseMove", Erl)
 End Sub
 
 Private Sub cmdAceptar_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto cmdAceptar_MouseUp_Err
      cmdAceptar.Picture = LoadInterface("boton-aceptar-over.bmp")
     cmdAceptar.Tag = "1"
+    Exit Sub
+cmdAceptar_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdAceptar_MouseUp", Erl)
 End Sub
 
 
 Private Sub cmdOfrecer_Click()
+    On Error Goto cmdOfrecer_Click_Err
     
     On Error GoTo cmdOfrecer_Click_Err
     
@@ -431,15 +448,23 @@ cmdOfrecer_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecer_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdOfrecer_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecer_Click", Erl)
 End Sub
 
 Private Sub cmdOfrecer_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto cmdOfrecer_MouseDown_Err
 
     cmdOfrecer.Picture = LoadInterface("boton-ofrecer-off.bmp")
     cmdOfrecer.Tag = "1"
+    Exit Sub
+cmdOfrecer_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecer_MouseDown", Erl)
 End Sub
 
 Private Sub cmdOfrecer_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto cmdOfrecer_MouseMove_Err
     
     On Error GoTo cmdOfrecer_MouseMove_Err
     
@@ -457,13 +482,21 @@ cmdOfrecer_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecer_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+cmdOfrecer_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecer_MouseMove", Erl)
 End Sub
 
 Private Sub cmdOfrecerOro_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto cmdOfrecerOro_MouseDown_Err
     cmdOfrecerOro.Picture = LoadInterface("boton-ofrecer-off.bmp")
     cmdOfrecerOro.Tag = "1"
+    Exit Sub
+cmdOfrecerOro_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecerOro_MouseDown", Erl)
 End Sub
 Private Sub cmdOfrecerOro_Click()
+    On Error Goto cmdOfrecerOro_Click_Err
  On Error GoTo cmdOfrecerOro_Click_Err
 
     If Val(txtOro.Text) > 0 Then
@@ -475,9 +508,13 @@ Private Sub cmdOfrecerOro_Click()
 cmdOfrecerOro_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecerOro_Click", Erl)
     Resume Next
+    Exit Sub
+cmdOfrecerOro_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecerOro_Click", Erl)
 End Sub
 
 Private Sub cmdOfrecerOro_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto cmdOfrecerOro_MouseMove_Err
 
     On Error GoTo cmdOfrecerOro_MouseMove_Err
     
@@ -494,14 +531,22 @@ Private Sub cmdOfrecerOro_MouseMove(Button As Integer, Shift As Integer, X As Si
 cmdOfrecerOro_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecerOro_MouseMove", Erl)
     Resume Next
+    Exit Sub
+cmdOfrecerOro_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecerOro_MouseMove", Erl)
 End Sub
 
 Private Sub cmdOfrecerOro_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto cmdOfrecerOro_MouseUp_Err
     cmdOfrecerOro.Picture = LoadInterface("boton-ofrecer-over.bmp")
     cmdOfrecerOro.Tag = "1"
+    Exit Sub
+cmdOfrecerOro_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdOfrecerOro_MouseUp", Erl)
 End Sub
 
 Private Sub cmdRechazar_Click()
+    On Error Goto cmdRechazar_Click_Err
     
     On Error GoTo cmdRechazar_Click_Err
     
@@ -514,15 +559,23 @@ cmdRechazar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.cmdRechazar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdRechazar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdRechazar_Click", Erl)
 End Sub
 
 Private Sub cmdRechazar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto cmdRechazar_MouseDown_Err
 
      cmdRechazar.Picture = LoadInterface("boton-rechazar-off.bmp")
      cmdRechazar.Tag = "1"
+    Exit Sub
+cmdRechazar_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdRechazar_MouseDown", Erl)
 End Sub
 
 Private Sub cmdRechazar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto cmdRechazar_MouseMove_Err
     
     On Error GoTo cmdRechazar_MouseMove_Err
     
@@ -547,24 +600,36 @@ cmdRechazar_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.cmdRechazar_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+cmdRechazar_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdRechazar_MouseMove", Erl)
 End Sub
 
 
 
 Private Sub Command2_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Command2_MouseDown_Err
 
     '  Command2.Picture = LoadInterface("comercioseguro_cancelarpress.bmp")
     '  Command2.Tag = "1"
+    Exit Sub
+Command2_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.Command2_MouseDown", Erl)
 End Sub
 
 
 Private Sub Form_Deactivate()
+    On Error Goto Form_Deactivate_Err
     'Me.SetFocus
     'Picture1.SetFocus
 
+    Exit Sub
+Form_Deactivate_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.Form_Deactivate", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
         
     On Error GoTo Form_Load_Err
     
@@ -581,18 +646,30 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.Form_Load", Erl)
 End Sub
 Private Sub cmdMenos_Click()
+    On Error Goto cmdMenos_Click_Err
     If Val(txtCant.Text) > 0 Then
         txtCant.Text = Val(txtCant.Text - 1)
     End If
+    Exit Sub
+cmdMenos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdMenos_Click", Erl)
 End Sub
 Private Sub cmdMas_Click()
+    On Error Goto cmdMas_Click_Err
     If Val(txtCant.Text) < 10000 Then
         txtCant.Text = Val(txtCant.Text + 1)
     End If
+    Exit Sub
+cmdMas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.cmdMas_Click", Erl)
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -609,9 +686,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_LostFocus()
+    On Error Goto Form_LostFocus_Err
     
     On Error GoTo Form_LostFocus_Err
     
@@ -624,9 +705,13 @@ Form_LostFocus_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.Form_LostFocus", Erl)
     Resume Next
     
+    Exit Sub
+Form_LostFocus_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.Form_LostFocus", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -648,10 +733,14 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.Form_MouseMove", Erl)
 End Sub
 
 
 Private Sub Image1_Click()
+    On Error Goto Image1_Click_Err
     On Error GoTo Image1_Click_Err
     
     Call WriteUserCommerceReject
@@ -663,9 +752,13 @@ Image1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.Image1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Image1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.Image1_Click", Erl)
 End Sub
 
 Private Sub picInv_Click()
+    On Error Goto picInv_Click_Err
     
     If InvUser.SelectedItem <> 0 Then
         
@@ -677,13 +770,21 @@ Private Sub picInv_Click()
         
     End If
     
+    Exit Sub
+picInv_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.picInv_Click", Erl)
 End Sub
 
 Private Sub picInv_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto picInv_MouseMove_Err
     Call picInv_Click
+    Exit Sub
+picInv_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.picInv_MouseMove", Erl)
 End Sub
 
 Private Sub picInvUserSell_Click()
+    On Error Goto picInvUserSell_Click_Err
     
     If InvUserSell.SelectedItem <> 0 Then
         
@@ -695,9 +796,13 @@ Private Sub picInvUserSell_Click()
         
     End If
     
+    Exit Sub
+picInvUserSell_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.picInvUserSell_Click", Erl)
 End Sub
 
 Private Sub picInvOtherSell_Click()
+    On Error Goto picInvOtherSell_Click_Err
     
     If InvOtherSell.SelectedItem <> 0 Then
         
@@ -709,45 +814,73 @@ Private Sub picInvOtherSell_Click()
     
     End If
     
+    Exit Sub
+picInvOtherSell_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.picInvOtherSell_Click", Erl)
 End Sub
 
 Private Sub picInv_Paint()
+    On Error Goto picInv_Paint_Err
     Call frmComerciarUsu.InvUser.ReDraw
+    Exit Sub
+picInv_Paint_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.picInv_Paint", Erl)
 End Sub
 
 Private Sub picInvOtherSell_Paint()
+    On Error Goto picInvOtherSell_Paint_Err
     Call frmComerciarUsu.InvOtherSell.ReDraw
+    Exit Sub
+picInvOtherSell_Paint_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.picInvOtherSell_Paint", Erl)
 End Sub
 
 Private Sub picInvUserSell_Paint()
+    On Error Goto picInvUserSell_Paint_Err
     Call frmComerciarUsu.InvUserSell.ReDraw
+    Exit Sub
+picInvUserSell_Paint_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.picInvUserSell_Paint", Erl)
 End Sub
 
 Private Sub Text1_GotFocus()
+    On Error Goto Text1_GotFocus_Err
     If Text1.Text = "Escribe un mensaje..." Then
         Text1.Text = ""
         Text1.ForeColor = vbWhite
     End If
+    Exit Sub
+Text1_GotFocus_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.Text1_GotFocus", Erl)
 End Sub
 
 
 Private Sub Text1_KeyPress(KeyAscii As Integer)
+    On Error Goto Text1_KeyPress_Err
     If KeyAscii = 13 Then
         If Text1.Text <> "" Then Call WriteCommerceSendChatMessage(Text1.Text)
         Text1.Text = ""
         KeyAscii = 0
     End If
+    Exit Sub
+Text1_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.Text1_KeyPress", Erl)
 End Sub
 
 
 Private Sub Text1_LostFocus()
+    On Error Goto Text1_LostFocus_Err
     If Text1.Text = "" Then
         Text1.Text = "Escribe un mensaje..."
         Text1.ForeColor = &H757575
     End If
+    Exit Sub
+Text1_LostFocus_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.Text1_LostFocus", Erl)
 End Sub
 
 Private Sub txtCant_Change()
+    On Error Goto txtCant_Change_Err
     
     On Error GoTo txtCant_Change_Err
     
@@ -763,9 +896,13 @@ txtCant_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.txtCant_Change", Erl)
     Resume Next
     
+    Exit Sub
+txtCant_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.txtCant_Change", Erl)
 End Sub
 
 Private Sub txtCant_KeyDown(KeyCode As Integer, Shift As Integer)
+    On Error Goto txtCant_KeyDown_Err
     
     On Error GoTo txtCant_KeyDown_Err
     
@@ -783,9 +920,13 @@ txtCant_KeyDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.txtCant_KeyDown", Erl)
     Resume Next
     
+    Exit Sub
+txtCant_KeyDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.txtCant_KeyDown", Erl)
 End Sub
 
 Private Sub txtCant_KeyPress(KeyAscii As Integer)
+    On Error Goto txtCant_KeyPress_Err
     
     On Error GoTo txtCant_KeyPress_Err
     
@@ -803,6 +944,9 @@ txtCant_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmComerciarUsu.txtCant_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+txtCant_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmComerciarUsu.txtCant_KeyPress", Erl)
 End Sub
 
 '[/Alejo]

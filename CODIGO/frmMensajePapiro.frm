@@ -260,60 +260,112 @@ Private Const WS_EX_LAYERED = &H80000
 Private Const LWA_COLORKEY = &H1&
 
 Private Sub BasicInfoLink_Click()
+    On Error Goto BasicInfoLink_Click_Err
     Call OpenLink("https://www.argentumonline.com.ar/wiki")
+    Exit Sub
+BasicInfoLink_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.BasicInfoLink_Click", Erl)
 End Sub
 
 Private Sub CafecitoLink_Click(Index As Integer)
+    On Error Goto CafecitoLink_Click_Err
     Call OpenLink("https://cafecito.app/nolandstudios")
+    Exit Sub
+CafecitoLink_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.CafecitoLink_Click", Erl)
 End Sub
 
 Private Sub eventNews_Click()
+    On Error Goto eventNews_Click_Err
     Call OpenLink("https://discord.com/channels/761213868352471040/1225542315507056762")
+    Exit Sub
+eventNews_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.eventNews_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 
     Me.Picture = LoadInterface("board.bmp")
     MakeFormTransparent Me, vbBlack    'Set the Form "transparent by color."
 
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.Form_Load", Erl)
 End Sub
 
 Private Sub Form_LostFocus()
+    On Error Goto Form_LostFocus_Err
     Unload Me
+    Exit Sub
+Form_LostFocus_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.Form_LostFocus", Erl)
 End Sub
 
 Private Sub GameRulesLink_Click(Index As Integer)
+    On Error Goto GameRulesLink_Click_Err
     Call OpenLink("https://www.argentumonline.com.ar/reglamento")
+    Exit Sub
+GameRulesLink_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.GameRulesLink_Click", Erl)
 End Sub
 
 Private Sub HelpGuideLink_Click()
+    On Error Goto HelpGuideLink_Click_Err
     Call OpenLink("https://www.argentumonline.com.ar/wiki/guia-general/skills-clases")
+    Exit Sub
+HelpGuideLink_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.HelpGuideLink_Click", Erl)
 End Sub
 
 Private Sub Image1_Click()
+    On Error Goto Image1_Click_Err
     Unload Me
+    Exit Sub
+Image1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.Image1_Click", Erl)
 End Sub
 
 
 Private Sub newsLink_Click()
+    On Error Goto newsLink_Click_Err
     Call OpenLink("https://steamcommunity.com/app/1956740/allnews/")
+    Exit Sub
+newsLink_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.newsLink_Click", Erl)
 End Sub
 
 Private Sub OpenLink(link As String)
+    On Error Goto OpenLink_Err
     ShellExecute ByVal 0&, "open", _
         link, _
         vbNullString, vbNullString, _
         vbMaximizedFocus
+    Exit Sub
+OpenLink_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.OpenLink", Erl)
 End Sub
 
 Private Sub PatreonLink_Click(Index As Integer)
+    On Error Goto PatreonLink_Click_Err
     Call OpenLink("https://www.patreon.com/nolandstudios")
+    Exit Sub
+PatreonLink_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.PatreonLink_Click", Erl)
 End Sub
 
 Private Sub Stream1_Click()
+    On Error Goto Stream1_Click_Err
     Call OpenLink("https://www.twitch.tv/argentumonlineoficial")
+    Exit Sub
+Stream1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.Stream1_Click", Erl)
 End Sub
 
 Private Sub Stream2_Click()
+    On Error Goto Stream2_Click_Err
     Call OpenLink("https://www.twitch.tv/Plus_1986")
+    Exit Sub
+Stream2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensajePapiro.Stream2_Click", Erl)
 End Sub

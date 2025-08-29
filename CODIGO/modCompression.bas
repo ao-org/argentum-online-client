@@ -113,6 +113,7 @@ Private Const MINIMAP_PATH As String = "\MiniMapas\"
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal Length As Long)
 
 Private Sub Decompress_Data(ByRef Data() As Byte, ByVal OrigSize As Long)
+    On Error Goto Decompress_Data_Err
     Dim BufTemp() As Byte
     Dim iv() As Byte
     Dim key() As Byte
@@ -120,13 +121,21 @@ Private Sub Decompress_Data(ByRef Data() As Byte, ByVal OrigSize As Long)
     iv = cnvBytesFromHexStr("FEDCAA9A76543A10FEDCBA9876543322")
     BufTemp = cipherDecryptBytes2(Data, key, iv, "Aes128/CFB/nopad")
     Data = zlibInflate(BufTemp)
+    Exit Sub
+Decompress_Data_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.Decompress_Data", Erl)
 End Sub
 
 Public Sub Decompress_Data_B(ByRef Data() As Byte, ByVal OrigSize As Long)
+    On Error Goto Decompress_Data_B_Err
     Call Decompress_Data(Data, OrigSize)
+    Exit Sub
+Decompress_Data_B_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.Decompress_Data_B", Erl)
 End Sub
 
 Public Function Extract_All_Files(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal Passwd As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
+    On Error Goto Extract_All_Files_Err
 
 'Extracts all files from a resource file
 
@@ -295,9 +304,13 @@ ErrHandler:
     Erase InfoHead
     'Display an error message if it didn't work
     MsgBox "Unable to decode binary file. Reason: " & Err.Number & " : " & Err.Description, vbOKOnly, "Error"
+    Exit Function
+Extract_All_Files_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.Extract_All_Files", Erl)
 End Function
 
 Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As String, ByVal Passwd As String) As Boolean
+    On Error Goto Extract_Patch_Err
 
 'Comrpesses all files to a resource file
 
@@ -583,10 +596,14 @@ ErrHandler:
     Erase SourceData
     Erase InfoHead
 
+    Exit Function
+Extract_Patch_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.Extract_Patch", Erl)
 End Function
 
 
 Public Function Extract_File(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByVal OutputFilePath As String, ByVal Passwd As String, Optional ByVal UseOutputFolder As Boolean = False) As Boolean
+    On Error Goto Extract_File_Err
 
 'Extracts all files from a resource file
 
@@ -712,9 +729,13 @@ ErrHandler:
     Erase SourceData
     'Display an error message if it didn't work
     'MsgBox "Unable to decode binary file. Reason: " & Err.number & " : " & Err.Description, vbOKOnly, "Error"
+    Exit Function
+Extract_File_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.Extract_File", Erl)
 End Function
 
 Public Sub Delete_File(ByVal file_path As String)
+    On Error Goto Delete_File_Err
 
 'Deletes a resource files
 
@@ -742,9 +763,13 @@ Public Sub Delete_File(ByVal file_path As String)
 Error_Handler:
     Kill file_path
         
+    Exit Sub
+Delete_File_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.Delete_File", Erl)
 End Sub
 
 Private Function File_Find(ByVal resource_file_path As String, ByVal file_name As String, ByVal Passwd As String) As INFOHEADER
+    On Error Goto File_Find_Err
 
 'Looks for a compressed file in a resource file. Uses binary search ;)
 
@@ -816,11 +841,15 @@ ErrHandler:
     Close file_handler
     File_Find.strFileName = ""
     File_Find.lngFileSize = 0
+    Exit Function
+File_Find_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.File_Find", Erl)
 End Function
 
 
 
 Public Function General_Drive_Get_Free_Bytes(ByVal DriveName As String) As Currency
+    On Error Goto General_Drive_Get_Free_Bytes_Err
 
     Dim retval As Long
     Dim FB As Currency
@@ -830,10 +859,14 @@ Public Function General_Drive_Get_Free_Bytes(ByVal DriveName As String) As Curre
     retval = GetDiskFreeSpace(Left(DriveName, 2), FB, BT, FBT)
     
     General_Drive_Get_Free_Bytes = FB * 10000 'convert result to actual size in bytes
+    Exit Function
+General_Drive_Get_Free_Bytes_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.General_Drive_Get_Free_Bytes", Erl)
 End Function
 
 
 Public Sub General_Quick_Sort(ByRef SortArray As Variant, ByVal First As Long, ByVal Last As Long)
+    On Error Goto General_Quick_Sort_Err
 
     Dim Low As Long, High As Long
     Dim temp As Variant
@@ -859,10 +892,14 @@ Public Sub General_Quick_Sort(ByRef SortArray As Variant, ByVal First As Long, B
     Loop
     If First < High Then General_Quick_Sort SortArray, First, High
     If Low < Last Then General_Quick_Sort SortArray, Low, Last
+    Exit Sub
+General_Quick_Sort_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.General_Quick_Sort", Erl)
 End Sub
 
 ' Encriptado casero. Funciona para encriptar y desencriptar
 Private Sub DoCrypt_Data(Data() As Byte, ByVal Password As String)
+    On Error Goto DoCrypt_Data_Err
     
     Dim i As Long, c As Integer
     
@@ -877,10 +914,14 @@ Private Sub DoCrypt_Data(Data() As Byte, ByVal Password As String)
         If c < 1 Then c = Len(Password)
     Next
     
+    Exit Sub
+DoCrypt_Data_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.DoCrypt_Data", Erl)
 End Sub
 
 
 Public Function Extract_File_To_Memory(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByRef bytArr() As Byte, ByVal Passwd As String) As Boolean
+    On Error Goto Extract_File_To_Memory_Err
     
     On Error GoTo Extract_File_To_Memory_Err
 
@@ -978,9 +1019,13 @@ Extract_File_To_Memory_Err:
     Call RegistrarError(Err.Number, Err.Description, "modCompression.Extract_File_To_Memory", Erl)
     Resume Next
     
+    Exit Function
+Extract_File_To_Memory_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.Extract_File_To_Memory", Erl)
 End Function
 
 Public Function Extract_File_To_String(ByVal file_type As resource_file_type, ByVal resource_path As String, ByVal file_name As String, ByRef file_str As String, ByVal Passwd As String) As Boolean
+    On Error Goto Extract_File_To_String_Err
 
     Dim Data() As Byte
     
@@ -990,11 +1035,15 @@ Public Function Extract_File_To_String(ByVal file_type As resource_file_type, By
     
     file_str = StrConv(Data, vbUnicode)
     
+    Exit Function
+Extract_File_To_String_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.Extract_File_To_String", Erl)
 End Function
 
 
 
 Public Function GAeneral_Load_Picture_From_Resource(ByVal picture_file_name As String, ByVal Passwd As String) As IPicture
+    On Error Goto GAeneral_Load_Picture_From_Resource_Err
 
     'Loads a picture from a resource file and returns it
 
@@ -1027,9 +1076,13 @@ GAeneral_Load_Picture_From_Resource_Err:
     Call RegistrarError(Err.Number, Err.Description, "modCompression.GAeneral_Load_Picture_From_Resource", Erl)
     Resume Next
     
+    Exit Function
+GAeneral_Load_Picture_From_Resource_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.GAeneral_Load_Picture_From_Resource", Erl)
 End Function
 
 Public Function General_Load_Picture_From_Resource_Ex(ByVal picture_file_name As String, ByVal Passwd As String) As IPicture
+    On Error Goto General_Load_Picture_From_Resource_Ex_Err
 
     'Loads a picture from a resource file loaded in memory and returns it
     
@@ -1047,9 +1100,13 @@ Public Function General_Load_Picture_From_Resource_Ex(ByVal picture_file_name As
 
 ErrorHandler:
 
+    Exit Function
+General_Load_Picture_From_Resource_Ex_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.General_Load_Picture_From_Resource_Ex", Erl)
 End Function
 
 Public Function General_Load_Minimap_From_Resource_Ex(ByVal picture_file_name As String, ByVal Passwd As String) As IPicture
+    On Error Goto General_Load_Minimap_From_Resource_Ex_Err
     On Error GoTo ErrorHandler
 
     Dim bytArr() As Byte
@@ -1064,9 +1121,13 @@ Public Function General_Load_Minimap_From_Resource_Ex(ByVal picture_file_name As
 
 ErrorHandler:
 
+    Exit Function
+General_Load_Minimap_From_Resource_Ex_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.General_Load_Minimap_From_Resource_Ex", Erl)
 End Function
 
 Public Function General_Load_Picture_From_BArray(ByRef bytArr() As Byte) As IPicture
+    On Error Goto General_Load_Picture_From_BArray_Err
 
     'Loads a picture from a byte array
 
@@ -1111,5 +1172,8 @@ Public Function General_Load_Picture_From_BArray(ByRef bytArr() As Byte) As IPic
 
 ErrorHandler:
 
+    Exit Function
+General_Load_Picture_From_BArray_Err:
+    Call TraceError(Err.Number, Err.Description, "modCompression.General_Load_Picture_From_BArray", Erl)
 End Function
 

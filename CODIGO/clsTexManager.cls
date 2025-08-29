@@ -72,17 +72,26 @@ Private Const E_OUTOFMEMORY = 7
 ' Public stats
 '======================
 Public Function GetAllocatedBytes() As Long
+    On Error Goto GetAllocatedBytes_Err
     GetAllocatedBytes = mTotalAllocatedBytes
+    Exit Function
+GetAllocatedBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.GetAllocatedBytes", Erl)
 End Function
 
 Public Function GetAllocatedTextureCount() As Long
+    On Error Goto GetAllocatedTextureCount_Err
     GetAllocatedTextureCount = mTotalTextureCount
+    Exit Function
+GetAllocatedTextureCount_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.GetAllocatedTextureCount", Erl)
 End Function
 
 '======================
 ' Lifecycle
 '======================
 Public Function Init(ByRef D3D8 As D3DX8, ByRef d3d_device As Direct3DDevice8) As Boolean
+    On Error Goto Init_Err
 On Error GoTo Init_Err
     Set mD3D = D3D8
     Set device = d3d_device
@@ -91,9 +100,13 @@ On Error GoTo Init_Err
 Init_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsTexManager.Init", Erl)
     Resume Next
+    Exit Function
+Init_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.Init", Erl)
 End Function
 
 Private Sub Class_Initialize()
+    On Error Goto Class_Initialize_Err
     Dim i As Long
     ReDim TexList(0 To HASH_TABLE_SIZE - 1) As bucket
     For i = 0 To HASH_TABLE_SIZE - 1
@@ -102,9 +115,13 @@ Private Sub Class_Initialize()
     Next i
     mTotalTextureCount = 0
     mTotalAllocatedBytes = 0
+    Exit Sub
+Class_Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.Class_Initialize", Erl)
 End Sub
 
 Private Sub Class_Terminate()
+    On Error Goto Class_Terminate_Err
     Dim i As Long, j As Long
     On Error Resume Next
     For i = 0 To HASH_TABLE_SIZE - 1
@@ -117,17 +134,25 @@ Private Sub Class_Terminate()
         End With
     Next i
     On Error GoTo 0
+    Exit Sub
+Class_Terminate_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.Class_Terminate", Erl)
 End Sub
 
 '======================
 ' Helpers
 '======================
 Private Function BucketIndex(ByVal key As Long) As Long
+    On Error Goto BucketIndex_Err
     ' Use positive mask then modulo (robust for negatives)
     BucketIndex = (key And &H7FFFFFFF) And (HASH_TABLE_SIZE - 1)
+    Exit Function
+BucketIndex_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.BucketIndex", Erl)
 End Function
 
 Private Sub EvictEntry(ByVal bucket As Long, ByVal idx As Long)
+    On Error Goto EvictEntry_Err
     Dim sz As Long, id As Long
     Dim k As Long
     With TexList(bucket).SurfaceEntry(idx)
@@ -166,12 +191,16 @@ Private Sub EvictEntry(ByVal bucket As Long, ByVal idx As Long)
                 " (" & format$(sz / 1048576#, "0.00") & "MB);" & _
                 " Count=" & mTotalTextureCount & _
                 " Mem=" & format$(mTotalAllocatedBytes / 1048576#, "0.00") & "MB"
+    Exit Sub
+EvictEntry_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.EvictEntry", Erl)
 End Sub
 
 '======================
 ' Public: get-or-load
 '======================
 Public Function GetTexture( _
+    On Error Goto GetTexture_Err
     ByVal filename As Integer, _
     ByRef textwidth As Long, _
     ByRef textheight As Long _
@@ -242,12 +271,16 @@ On Error GoTo errhandler
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "clsTexManager.GetTexture", Erl)
     Resume Next
+    Exit Function
+GetTexture_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.GetTexture", Erl)
 End Function
 
 '======================
 ' Eviction: first >60s
 '======================
 Private Function RemoveLRU() As Boolean
+    On Error Goto RemoveLRU_Err
 On Error GoTo errhandler
 
     Const AGE_THRESHOLD_MS As Long = 60000
@@ -272,19 +305,27 @@ On Error GoTo errhandler
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "clsTexManager.RemoveLRU", Erl)
     Resume Next
+    Exit Function
+RemoveLRU_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.RemoveLRU", Erl)
 End Function
 
 Public Sub ReleaseUnusedTextures(ByVal num_textures As Integer)
+    On Error Goto ReleaseUnusedTextures_Err
     Dim i As Long
     For i = 1 To num_textures
         If Not RemoveLRU() Then Exit For
     Next
+    Exit Sub
+ReleaseUnusedTextures_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.ReleaseUnusedTextures", Erl)
 End Sub
 
 '======================
 ' Texture creation
 '======================
 Private Function CreateDirect3DTexture(ByVal FileNum As Integer) As Direct3DTexture8
+    On Error Goto CreateDirect3DTexture_Err
 On Error GoTo ErrHandler
 
     Dim Texture As Direct3DTexture8
@@ -316,12 +357,16 @@ On Error GoTo ErrHandler
 
 ErrHandler:
     frmDebug.add_text_tracebox "ERROR EN GRHLOAD>" & FileNum & ".png"
+    Exit Function
+CreateDirect3DTexture_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.CreateDirect3DTexture", Erl)
 End Function
 
 '======================
 ' Load from disk / resource
 '======================
 Private Function LoadTexture(ByVal filename As String, ByRef Dest As Direct3DTexture8) As Long
+    On Error Goto LoadTexture_Err
 On Error GoTo LoadTexture_ErrHandler
     Set Dest = Nothing
     Dim bytArr() As Byte
@@ -362,12 +407,16 @@ On Error GoTo LoadTexture_ErrHandler
 
 LoadTexture_ErrHandler:
     LoadTexture = Err.Number
+    Exit Function
+LoadTexture_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.LoadTexture", Erl)
 End Function
 
 '======================
 ' Procedural texture
 '======================
 Public Function CreateTexture(ByVal Width As Long, ByVal Height As Long) As Direct3DTexture8
+    On Error Goto CreateTexture_Err
 On Error GoTo ErrHandler
     Dim Texture As Direct3DTexture8
     Set Texture = mD3D.CreateTexture(device, Width, Height, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT)
@@ -375,6 +424,9 @@ On Error GoTo ErrHandler
     Exit Function
 ErrHandler:
     frmDebug.add_text_tracebox "Failed to generate texture, " & Err.Description
+    Exit Function
+CreateTexture_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTexManager.CreateTexture", Erl)
 End Function
 
 

@@ -51,6 +51,7 @@ Private light_last    As Long
 
 
 Public Function Light_Remove(ByVal light_index As Long) As Boolean
+    On Error Goto Light_Remove_Err
     
     On Error GoTo Light_Remove_Err
 
@@ -68,6 +69,9 @@ Light_Remove_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Remove", Erl)
     Resume Next
     
+    Exit Function
+Light_Remove_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Light_Remove", Erl)
 End Function
 
 Friend Function Light_Color_Value_Get(ByVal light_index As Long, ByRef color_value As RGBA) As Boolean
@@ -121,6 +125,7 @@ Light_Create_Err:
 End Function
 
 Public Function Map_Light_Get(ByVal map_x As Integer, ByVal map_y As Integer) As Long
+    On Error Goto Map_Light_Get_Err
 
     'Checks to see if a tile position has a light_index and return it
 
@@ -151,9 +156,13 @@ Public Function Map_Light_Get(ByVal map_x As Integer, ByVal map_y As Integer) As
 ErrorHandler:
     Map_Light_Get = 0
 
+    Exit Function
+Map_Light_Get_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Map_Light_Get", Erl)
 End Function
 
 Public Function Light_Move(ByVal light_index As Long, ByVal map_x As Integer, ByVal map_y As Integer) As Boolean
+    On Error Goto Light_Move_Err
     
     On Error GoTo Light_Move_Err
 
@@ -183,9 +192,13 @@ Light_Move_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Move", Erl)
     Resume Next
     
+    Exit Function
+Light_Move_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Light_Move", Erl)
 End Function
 
 Public Function Light_Move_By_Head(ByVal light_index As Long, ByVal Heading As Byte) As Boolean
+    On Error Goto Light_Move_By_Head_Err
     
     On Error GoTo Light_Move_By_Head_Err
 
@@ -257,9 +270,13 @@ Light_Move_By_Head_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Move_By_Head", Erl)
     Resume Next
     
+    Exit Function
+Light_Move_By_Head_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Light_Move_By_Head", Erl)
 End Function
 
 Private Sub Light_Make(ByVal light_index As Long, ByVal map_x As Integer, ByVal map_y As Integer, rgb_value As RGBA, ByVal range As Long, Optional ByVal id As Long)
+    On Error Goto Light_Make_Err
     
     On Error GoTo Light_Make_Err
 
@@ -288,9 +305,13 @@ Light_Make_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Make", Erl)
     Resume Next
     
+    Exit Sub
+Light_Make_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Light_Make", Erl)
 End Sub
 
 Private Function Light_Check(ByVal light_index As Long) As Boolean
+    On Error Goto Light_Check_Err
     
     On Error GoTo Light_Check_Err
 
@@ -310,9 +331,13 @@ Light_Check_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Check", Erl)
     Resume Next
     
+    Exit Function
+Light_Check_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Light_Check", Erl)
 End Function
 
 Public Sub Light_Render_All(ByVal MinX As Long, ByVal MinY As Long, ByVal MaxX As Long, ByVal MaxY As Long)
+    On Error Goto Light_Render_All_Err
     
     On Error GoTo Light_Render_All_Err
 
@@ -335,9 +360,13 @@ Light_Render_All_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Render_All", Erl)
     Resume Next
     
+    Exit Sub
+Light_Render_All_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Light_Render_All", Erl)
 End Sub
 
 Private Sub Light_Render(ByVal light_index As Long)
+    On Error Goto Light_Render_Err
     
     On Error GoTo Light_Render_Err
     
@@ -468,9 +497,13 @@ Light_Render_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Render", Erl)
     Resume Next
     
+    Exit Sub
+Light_Render_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Light_Render", Erl)
 End Sub
 
 Private Function Light_Next_Open() As Long
+    On Error Goto Light_Next_Open_Err
 
     On Error GoTo ErrorHandler:
 
@@ -500,9 +533,13 @@ Private Function Light_Next_Open() As Long
 ErrorHandler:
     Light_Next_Open = 1
 
+    Exit Function
+Light_Next_Open_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Light_Next_Open", Erl)
 End Function
 
 Public Function Light_Find(ByVal id As Long) As Long
+    On Error Goto Light_Find_Err
 
     'Find the index related to the handle
 
@@ -528,9 +565,13 @@ Public Function Light_Find(ByVal id As Long) As Long
 ErrorHandler:
     Light_Find = 0
 
+    Exit Function
+Light_Find_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Light_Find", Erl)
 End Function
 
 Public Function Light_Remove_All() As Boolean
+    On Error Goto Light_Remove_All_Err
     
     On Error GoTo Light_Remove_All_Err
 
@@ -555,9 +596,13 @@ Light_Remove_All_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Remove_All", Erl)
     Resume Next
     
+    Exit Function
+Light_Remove_All_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Light_Remove_All", Erl)
 End Function
 
 Private Sub Light_Destroy(ByVal light_index As Long)
+    On Error Goto Light_Destroy_Err
     
     On Error GoTo Light_Destroy_Err
 
@@ -594,9 +639,13 @@ Light_Destroy_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Destroy", Erl)
     Resume Next
     
+    Exit Sub
+Light_Destroy_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Light_Destroy", Erl)
 End Sub
 
 Private Sub Light_Erase(ByVal light_index As Long)
+    On Error Goto Light_Erase_Err
     
     On Error GoTo Light_Erase_Err
 
@@ -703,5 +752,8 @@ Light_Erase_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesCuadradas.Light_Erase", Erl)
     Resume Next
     
+    Exit Sub
+Light_Erase_Err:
+    Call TraceError(Err.Number, Err.Description, "clsLucesCuadradas.Light_Erase", Erl)
 End Sub
 

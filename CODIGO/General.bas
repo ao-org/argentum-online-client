@@ -163,6 +163,7 @@ Public SelectedSpellSlot As Integer
 Public FirstSpellInListToRender As Integer
 
 Public Function DirGraficos() As String
+    On Error Goto DirGraficos_Err
     
     On Error GoTo DirGraficos_Err
     
@@ -175,9 +176,13 @@ DirGraficos_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.DirGraficos", Erl)
     Resume Next
     
+    Exit Function
+DirGraficos_Err:
+    Call TraceError(Err.Number, Err.Description, "General.DirGraficos", Erl)
 End Function
 
 Public Function DirSound() As String
+    On Error Goto DirSound_Err
     
     On Error GoTo DirSound_Err
     
@@ -190,9 +195,13 @@ DirSound_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.DirSound", Erl)
     Resume Next
     
+    Exit Function
+DirSound_Err:
+    Call TraceError(Err.Number, Err.Description, "General.DirSound", Erl)
 End Function
 
 Public Function DirMidi() As String
+    On Error Goto DirMidi_Err
     
     On Error GoTo DirMidi_Err
     
@@ -205,9 +214,13 @@ DirMidi_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.DirMidi", Erl)
     Resume Next
     
+    Exit Function
+DirMidi_Err:
+    Call TraceError(Err.Number, Err.Description, "General.DirMidi", Erl)
 End Function
 
 Public Function DirMapas() As String
+    On Error Goto DirMapas_Err
     
     On Error GoTo DirMapas_Err
     
@@ -220,10 +233,14 @@ DirMapas_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.DirMapas", Erl)
     Resume Next
     
+    Exit Function
+DirMapas_Err:
+    Call TraceError(Err.Number, Err.Description, "General.DirMapas", Erl)
 End Function
 
 
 Public Function RandomNumber(ByVal LowerBound As Long, ByVal UpperBound As Long) As Long
+    On Error Goto RandomNumber_Err
     'Initialize randomizer
     
     On Error GoTo RandomNumber_Err
@@ -240,9 +257,13 @@ RandomNumber_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.RandomNumber", Erl)
     Resume Next
     
+    Exit Function
+RandomNumber_Err:
+    Call TraceError(Err.Number, Err.Description, "General.RandomNumber", Erl)
 End Function
 
 Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, Optional ByVal bCrLf As Boolean = True, Optional ByVal Alignment As Byte = rtfLeft)
+    On Error Goto AddtoRichTextBox2_Err
     
     On Error GoTo AddtoRichTextBox2_Err
 
@@ -318,9 +339,13 @@ AddtoRichTextBox2_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.AddtoRichTextBox2", Erl)
     Resume Next
     
+    Exit Sub
+AddtoRichTextBox2_Err:
+    Call TraceError(Err.Number, Err.Description, "General.AddtoRichTextBox2", Erl)
 End Sub
 
 Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, ByVal Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, _
+    On Error Goto AddtoRichTextBox_Err
                      Optional ByVal blue As Integer, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False, _
                      Optional ByVal bCrLf As Boolean = False)
     
@@ -374,10 +399,14 @@ AddtoRichTextBox_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.AddtoRichTextBox", Erl)
     Resume Next
     
+    Exit Sub
+AddtoRichTextBox_Err:
+    Call TraceError(Err.Number, Err.Description, "General.AddtoRichTextBox", Erl)
 End Sub
 
 'Copiado desde https://www.vbforums.com/showthread.php?727119-RESOLVED-VB2010-richtextbox-paragraph-space-width-seleted-and-RichTextBoxStreamType
 Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, Optional ByVal LineSpacing As Long = 20)
+    On Error Goto SelLineSpacing_Err
     ' SpacingRule
     ' Type of line spacing. To use this member, set the PFM_SPACEAFTER flag in the dwMask member. This member can be one of the following values.
     ' 0 - Single spacing. The dyLineSpacing member is ignored.
@@ -400,9 +429,13 @@ Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, O
     ret = SendMessage(rtbTarget.hwnd, EM_SETPARAFORMAT, 0&, Para)
     
     If ret = 0 Then frmDebug.add_text_tracebox "Error al setear el espaciado entre líneas del RichTextBox."
+    Exit Sub
+SelLineSpacing_Err:
+    Call TraceError(Err.Number, Err.Description, "General.SelLineSpacing", Erl)
 End Sub
 
 Public Sub RefreshAllChars()
+    On Error Goto RefreshAllChars_Err
         On Error GoTo RefreshAllChars_Err
         'Goes through the charlist and replots all the characters on the map
         'Used to make sure everyone is visible
@@ -426,9 +459,13 @@ Public Sub RefreshAllChars()
 RefreshAllChars_Err:
 114     Call RegistrarError(Err.Number, Err.Description, "Mod_General.RefreshAllChars", Erl)
 116     Resume Next
+    Exit Sub
+RefreshAllChars_Err:
+    Call TraceError(Err.Number, Err.Description, "General.RefreshAllChars", Erl)
 End Sub
 
 Function AsciiValidos(ByVal cad As String) As Boolean
+    On Error Goto AsciiValidos_Err
     
     On Error GoTo AsciiValidos_Err
     
@@ -458,9 +495,13 @@ AsciiValidos_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.AsciiValidos", Erl)
     Resume Next
     
+    Exit Function
+AsciiValidos_Err:
+    Call TraceError(Err.Number, Err.Description, "General.AsciiValidos", Erl)
 End Function
 
 Function ValidDescriptionCharacters(ByVal cad As String) As Boolean
+    On Error Goto ValidDescriptionCharacters_Err
 
     On Error GoTo ValidDescriptionCharacters_Err
 
@@ -483,9 +524,13 @@ ValidDescriptionCharacters_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.ValidDescriptionCharacters", Erl)
     Resume Next
 
+    Exit Function
+ValidDescriptionCharacters_Err:
+    Call TraceError(Err.Number, Err.Description, "General.ValidDescriptionCharacters", Erl)
 End Function
 
 Function CheckUserDataLoged() As Boolean
+    On Error Goto CheckUserDataLoged_Err
     'Validamos los datos del user
     
     On Error GoTo CheckUserDataLoged_Err
@@ -512,9 +557,13 @@ CheckUserDataLoged_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.CheckUserDataLoged", Erl)
     Resume Next
     
+    Exit Function
+CheckUserDataLoged_Err:
+    Call TraceError(Err.Number, Err.Description, "General.CheckUserDataLoged", Erl)
 End Function
 
 Function CheckUserData(ByVal checkemail As Boolean) As Boolean
+    On Error Goto CheckUserData_Err
     
     On Error GoTo CheckUserData_Err
     
@@ -556,9 +605,13 @@ CheckUserData_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.CheckUserData", Erl)
     Resume Next
     
+    Exit Function
+CheckUserData_Err:
+    Call TraceError(Err.Number, Err.Description, "General.CheckUserData", Erl)
 End Function
 
 Sub UnloadAllForms()
+    On Error Goto UnloadAllForms_Err
     
     On Error GoTo UnloadAllForms_Err
     
@@ -579,9 +632,13 @@ UnloadAllForms_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.UnloadAllForms", Erl)
     Resume Next
     
+    Exit Sub
+UnloadAllForms_Err:
+    Call TraceError(Err.Number, Err.Description, "General.UnloadAllForms", Erl)
 End Sub
 
 Function LegalCharacter(ByVal KeyAscii As Integer) As Boolean
+    On Error Goto LegalCharacter_Err
     
     On Error GoTo LegalCharacter_Err
 
@@ -621,9 +678,13 @@ LegalCharacter_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.LegalCharacter", Erl)
     Resume Next
     
+    Exit Function
+LegalCharacter_Err:
+    Call TraceError(Err.Number, Err.Description, "General.LegalCharacter", Erl)
 End Function
 
 Sub SetConnected()
+    On Error Goto SetConnected_Err
 
     'Sets the client to "Connect" mode
     'Set Connected
@@ -664,8 +725,12 @@ SetConnected_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.SetConnected", Erl)
     Resume Next
     
+    Exit Sub
+SetConnected_Err:
+    Call TraceError(Err.Number, Err.Description, "General.SetConnected", Erl)
 End Sub
 Sub ResetContadores()
+    On Error Goto ResetContadores_Err
     packetCounters.TS_CastSpell = 0
     packetCounters.TS_WorkLeftClick = 0
     packetCounters.TS_LeftClick = 0
@@ -681,9 +746,13 @@ Sub ResetContadores()
     packetCounters.TS_QuestionGM = 0
     packetCounters.TS_ChangeHeading = 0
    
+    Exit Sub
+ResetContadores_Err:
+    Call TraceError(Err.Number, Err.Description, "General.ResetContadores", Erl)
 End Sub
 
 Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
+    On Error Goto MoveTo_Err
     On Error GoTo MoveTo_Err
     If Dumb Then
         If RandomNumber(1, 100) < 50 Then
@@ -783,16 +852,24 @@ MoveTo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.MoveTo", Erl)
     Resume Next
     
+    Exit Sub
+MoveTo_Err:
+    Call TraceError(Err.Number, Err.Description, "General.MoveTo", Erl)
 End Sub
 Public Function EstaSiguiendo() As Boolean
+    On Error Goto EstaSiguiendo_Err
       If CharindexSeguido > 0 Then
             'Call AddtoRichTextBox(frmMain.RecTxt, "No puedes moverte mientras estás revisando a un usuario.", 255, 0, 0, 1)
             EstaSiguiendo = True
             Exit Function
         End If
+    Exit Function
+EstaSiguiendo_Err:
+    Call TraceError(Err.Number, Err.Description, "General.EstaSiguiendo", Erl)
 End Function
 
 Public Sub AddMovementToKeysMovementPressedQueue()
+    On Error Goto AddMovementToKeysMovementPressedQueue_Err
     
     On Error GoTo AddMovementToKeysMovementPressedQueue_Err
     
@@ -835,9 +912,13 @@ AddMovementToKeysMovementPressedQueue_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.AddMovementToKeysMovementPressedQueue", Erl)
     Resume Next
     
+    Exit Sub
+AddMovementToKeysMovementPressedQueue_Err:
+    Call TraceError(Err.Number, Err.Description, "General.AddMovementToKeysMovementPressedQueue", Erl)
 End Sub
 
 Sub Check_Keys()
+    On Error Goto Check_Keys_Err
     
     On Error GoTo Check_Keys_Err
     
@@ -900,9 +981,13 @@ Check_Keys_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.Check_Keys", Erl)
     Resume Next
     
+    Exit Sub
+Check_Keys_Err:
+    Call TraceError(Err.Number, Err.Description, "General.Check_Keys", Erl)
 End Sub
 
 Function ReadField(ByVal Pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
+    On Error Goto ReadField_Err
     
     On Error GoTo ReadField_Err
 
@@ -937,9 +1022,13 @@ ReadField_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.ReadField", Erl)
     Resume Next
     
+    Exit Function
+ReadField_Err:
+    Call TraceError(Err.Number, Err.Description, "General.ReadField", Erl)
 End Function
 
 Function FieldCount(ByRef Text As String, ByVal SepASCII As Byte) As Long
+    On Error Goto FieldCount_Err
     
     On Error GoTo FieldCount_Err
 
@@ -971,9 +1060,13 @@ FieldCount_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.FieldCount", Erl)
     Resume Next
     
+    Exit Function
+FieldCount_Err:
+    Call TraceError(Err.Number, Err.Description, "General.FieldCount", Erl)
 End Function
 
 Function FileExist(ByVal File As String, ByVal FileType As VbFileAttribute) As Boolean
+    On Error Goto FileExist_Err
     
     On Error GoTo FileExist_Err
     
@@ -986,10 +1079,14 @@ FileExist_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.FileExist", Erl)
     Resume Next
     
+    Exit Function
+FileExist_Err:
+    Call TraceError(Err.Number, Err.Description, "General.FileExist", Erl)
 End Function
 
     
 Public Sub SaveStringInFile(ByVal Cadena As String, ByVal nombreArchivo As String)
+    On Error Goto SaveStringInFile_Err
 On Error GoTo ErrorHandler
     Dim fileNumber As Integer
     fileNumber = FreeFile
@@ -998,9 +1095,13 @@ On Error GoTo ErrorHandler
     Close #fileNumber
     Exit Sub
 ErrorHandler:
+    Exit Sub
+SaveStringInFile_Err:
+    Call TraceError(Err.Number, Err.Description, "General.SaveStringInFile", Erl)
 End Sub
 
 Sub parse_cmd_line_args()
+    On Error Goto parse_cmd_line_args_Err
 
 #If REMOTE_CLOSE = 1 Then
     Call Application.DeleteFile("remote_debug.txt")
@@ -1044,10 +1145,14 @@ Sub parse_cmd_line_args()
     Call SaveStringInFile("Using CharacterRemote: " & CharacterRemote, "remote_debug.txt")
 #End If
 
+    Exit Sub
+parse_cmd_line_args_Err:
+    Call TraceError(Err.Number, Err.Description, "General.parse_cmd_line_args", Erl)
 End Sub
 
 
 Sub Main()
+    On Error Goto Main_Err
 
 On Error GoTo Main_Err
 
@@ -1161,9 +1266,13 @@ Main_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.Main", Erl)
     Resume Next
     
+    Exit Sub
+Main_Err:
+    Call TraceError(Err.Number, Err.Description, "General.Main", Erl)
 End Sub
 
 Public Sub RegisterCom()
+    On Error Goto RegisterCom_Err
     On Error GoTo Com_Err:
     If MsgBox(JsonLanguage.Item("MENSAJEBOX_COMPONENTES_FALTANTES"), vbYesNo) = vbYes Then
             If System.ShellExecuteEx("regcom.bat", App.path) Then
@@ -1176,9 +1285,13 @@ Public Sub RegisterCom()
 Com_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.RegisterCom", Erl)
     Resume Next
+    Exit Sub
+RegisterCom_Err:
+    Call TraceError(Err.Number, Err.Description, "General.RegisterCom", Erl)
 End Sub
 
 Public Function SetDefaultServer()
+    On Error Goto SetDefaultServer_Err
 On Error GoTo SetDefaultServer_Err
 
 #If PYMMO = 1 And Developer = 1 Then
@@ -1193,9 +1306,13 @@ On Error GoTo SetDefaultServer_Err
     Exit Function
 SetDefaultServer_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.WriteVar", Erl)
+    Exit Function
+SetDefaultServer_Err:
+    Call TraceError(Err.Number, Err.Description, "General.SetDefaultServer", Erl)
 End Function
 
 Public Function randomMap() As Integer
+    On Error Goto randomMap_Err
     Select Case RandomNumber(1, 8)
         Case 1 ' ulla 45-43
             randomMap = 1
@@ -1214,9 +1331,13 @@ Public Function randomMap() As Integer
         Case 8 ' Polo 78-66
             randomMap = 354
     End Select
+    Exit Function
+randomMap_Err:
+    Call TraceError(Err.Number, Err.Description, "General.randomMap", Erl)
 End Function
 
 Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
+    On Error Goto WriteVar_Err
 
     'Writes a var to a text file
     
@@ -1231,9 +1352,13 @@ WriteVar_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.WriteVar", Erl)
     Resume Next
     
+    Exit Sub
+WriteVar_Err:
+    Call TraceError(Err.Number, Err.Description, "General.WriteVar", Erl)
 End Sub
 
 Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
+    On Error Goto GetVar_Err
     
     On Error GoTo GetVar_Err
 
@@ -1255,9 +1380,13 @@ GetVar_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.GetVar", Erl)
     Resume Next
     
+    Exit Function
+GetVar_Err:
+    Call TraceError(Err.Number, Err.Description, "General.GetVar", Erl)
 End Function
 
 Function GetVarOrDefault(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal DefaultValue As String) As String
+    On Error Goto GetVarOrDefault_Err
     
     On Error GoTo GetVarOrDefault_Err
 
@@ -1274,6 +1403,9 @@ GetVarOrDefault_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.GetVarOrDefault", Erl)
     Resume Next
     
+    Exit Function
+GetVarOrDefault_Err:
+    Call TraceError(Err.Number, Err.Description, "General.GetVarOrDefault", Erl)
 End Function
 
 '[CODE 002]:MatuX
@@ -1282,6 +1414,7 @@ End Function
 '
 '  Corregida por Maraxus para que reconozca como válidas casillas con puntos antes de la arroba y evitar un chequeo innecesario
 Public Function CheckMailString(ByVal sString As String) As Boolean
+    On Error Goto CheckMailString_Err
 
     On Error GoTo errHnd
 
@@ -1318,10 +1451,14 @@ Public Function CheckMailString(ByVal sString As String) As Boolean
 
 errHnd:
 
+    Exit Function
+CheckMailString_Err:
+    Call TraceError(Err.Number, Err.Description, "General.CheckMailString", Erl)
 End Function
 
 '  Corregida por Maraxus para que reconozca como válidas casillas con puntos antes de la arroba
 Private Function CMSValidateChar_(ByVal iAsc As Integer) As Boolean
+    On Error Goto CMSValidateChar__Err
     
     On Error GoTo CMSValidateChar__Err
     
@@ -1334,9 +1471,13 @@ CMSValidateChar__Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.CMSValidateChar_", Erl)
     Resume Next
     
+    Exit Function
+CMSValidateChar__Err:
+    Call TraceError(Err.Number, Err.Description, "General.CMSValidateChar_", Erl)
 End Function
 
 Public Sub LeerLineaComandos()
+    On Error Goto LeerLineaComandos_Err
     
     On Error GoTo LeerLineaComandos_Err
     
@@ -1369,9 +1510,13 @@ LeerLineaComandos_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.LeerLineaComandos", Erl)
     Resume Next
     
+    Exit Sub
+LeerLineaComandos_Err:
+    Call TraceError(Err.Number, Err.Description, "General.LeerLineaComandos", Erl)
 End Sub
 
 Private Sub InicializarNombres()
+    On Error Goto InicializarNombres_Err
 
     'Inicializa los nombres de razas, ciudades, clases, skills, atributos, etc.
     
@@ -1479,12 +1624,16 @@ InicializarNombres_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.InicializarNombres", Erl)
     Resume Next
     
+    Exit Sub
+InicializarNombres_Err:
+    Call TraceError(Err.Number, Err.Description, "General.InicializarNombres", Erl)
 End Sub
 
 ''
 ' Removes all text from the console and dialogs
 
 Public Sub CleanDialogs()
+    On Error Goto CleanDialogs_Err
 
     'Removes all text from the console and dialogs
     'Clean console and dialogs
@@ -1505,9 +1654,13 @@ CleanDialogs_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.CleanDialogs", Erl)
     Resume Next
     
+    Exit Sub
+CleanDialogs_Err:
+    Call TraceError(Err.Number, Err.Description, "General.CleanDialogs", Erl)
 End Sub
 
 Public Sub CloseClient()
+    On Error Goto CloseClient_Err
 
     'Frees all used resources, cleans up and leaves
     ' Allow new instances of the client to be opened
@@ -1555,9 +1708,13 @@ CloseClient_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.CloseClient", Erl)
     Resume Next
     
+    Exit Sub
+CloseClient_Err:
+    Call TraceError(Err.Number, Err.Description, "General.CloseClient", Erl)
 End Sub
 
 Public Function General_Field_Read(ByVal field_pos As Long, ByVal Text As String, ByVal delimiter As String) As String
+    On Error Goto General_Field_Read_Err
     
     On Error GoTo General_Field_Read_Err
 
@@ -1591,9 +1748,13 @@ General_Field_Read_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.General_Field_Read", Erl)
     Resume Next
     
+    Exit Function
+General_Field_Read_Err:
+    Call TraceError(Err.Number, Err.Description, "General.General_Field_Read", Erl)
 End Function
 
 Public Function General_Field_Count(ByVal Text As String, ByVal delimiter As Byte) As Long
+    On Error Goto General_Field_Count_Err
     
     On Error GoTo General_Field_Count_Err
 
@@ -1629,10 +1790,14 @@ General_Field_Count_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.General_Field_Count", Erl)
     Resume Next
     
+    Exit Function
+General_Field_Count_Err:
+    Call TraceError(Err.Number, Err.Description, "General.General_Field_Count", Erl)
 End Function
 
 
 Public Function General_Get_Elapsed_Time() As Single
+    On Error Goto General_Get_Elapsed_Time_Err
     
     On Error GoTo General_Get_Elapsed_Time_Err
 
@@ -1666,10 +1831,14 @@ General_Get_Elapsed_Time_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.General_Get_Elapsed_Time", Erl)
     Resume Next
     
+    Exit Function
+General_Get_Elapsed_Time_Err:
+    Call TraceError(Err.Number, Err.Description, "General.General_Get_Elapsed_Time", Erl)
 End Function
 
 
 Public Function max(ByVal a As Variant, ByVal b As Variant) As Variant
+    On Error Goto max_Err
     
     On Error GoTo max_Err
     
@@ -1688,9 +1857,13 @@ max_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.max", Erl)
     Resume Next
     
+    Exit Function
+max_Err:
+    Call TraceError(Err.Number, Err.Description, "General.max", Erl)
 End Function
 
 Public Function min(ByVal a As Double, ByVal b As Double) As Variant
+    On Error Goto min_Err
     
     On Error GoTo min_Err
     
@@ -1709,9 +1882,13 @@ min_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.min", Erl)
     Resume Next
     
+    Exit Function
+min_Err:
+    Call TraceError(Err.Number, Err.Description, "General.min", Erl)
 End Function
 
 Public Function Clamp(ByVal a As Variant, ByVal min As Variant, ByVal max As Variant) As Variant
+    On Error Goto Clamp_Err
     
     On Error GoTo min_Err
     
@@ -1733,9 +1910,13 @@ min_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.min", Erl)
     Resume Next
     
+    Exit Function
+Clamp_Err:
+    Call TraceError(Err.Number, Err.Description, "General.Clamp", Erl)
 End Function
 
 Public Function LoadInterface(filename As String, _
+    On Error Goto LoadInterface_Err
                               Optional localize As Boolean = True) As IPicture
     On Error Resume Next
     Dim localizedName As String
@@ -1779,9 +1960,13 @@ Public Function LoadInterface(filename As String, _
 errhandler:
     frmDebug.add_text_tracebox "Error loading interface bitmap: " & FileName
 
+    Exit Function
+LoadInterface_Err:
+    Call TraceError(Err.Number, Err.Description, "General.LoadInterface", Erl)
 End Function
 
 Public Function LoadMinimap(ByVal map As Integer) As IPicture
+    On Error Goto LoadMinimap_Err
 
 On Error GoTo errhandler
 
@@ -1796,9 +1981,13 @@ Exit Function
 errhandler:
     frmDebug.add_text_tracebox "Error loading minimap: " & map & ".bmp"
 
+    Exit Function
+LoadMinimap_Err:
+    Call TraceError(Err.Number, Err.Description, "General.LoadMinimap", Erl)
 End Function
 
 Public Function Tilde(ByRef Data As String) As String
+    On Error Goto Tilde_Err
     
     On Error GoTo Tilde_Err
     
@@ -1818,10 +2007,14 @@ Tilde_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.Tilde", Erl)
     Resume Next
     
+    Exit Function
+Tilde_Err:
+    Call TraceError(Err.Number, Err.Description, "General.Tilde", Erl)
 End Function
 
 ' Copiado de https://www.vbforums.com/showthread.php?231468-VB-Detect-if-you-are-running-in-the-IDE
 Function RunningInVB() As Boolean
+    On Error Goto RunningInVB_Err
     'Returns whether we are running in vb(true), or compiled (false)
     
     On Error GoTo RunningInVB_Err
@@ -1847,9 +2040,13 @@ RunningInVB_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.RunningInVB", Erl)
     Resume Next
     
+    Exit Function
+RunningInVB_Err:
+    Call TraceError(Err.Number, Err.Description, "General.RunningInVB", Erl)
 End Function
 
 Function GetTimeFromString(str As String) As Long
+    On Error Goto GetTimeFromString_Err
     
     On Error GoTo GetTimeFromString_Err
     
@@ -1884,9 +2081,13 @@ GetTimeFromString_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.GetTimeFromString", Erl)
     Resume Next
     
+    Exit Function
+GetTimeFromString_Err:
+    Call TraceError(Err.Number, Err.Description, "General.GetTimeFromString", Erl)
 End Function
 
 Public Function GetMd5() As String
+    On Error Goto GetMd5_Err
 
 On Error GoTo Handler
 
@@ -1898,9 +2099,13 @@ Handler:
     Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_CLIENTE_COMPROBAR"), vbOKOnly, JsonLanguage.Item("MENSAJEBOX_TITULO_CLIENTE_CORROMPIDO"))
     End
 
+    Exit Function
+GetMd5_Err:
+    Call TraceError(Err.Number, Err.Description, "General.GetMd5", Erl)
 End Function
 
 Public Sub CheckResources()
+    On Error Goto CheckResources_Err
 
     Dim Data(1 To 200) As Byte
     
@@ -1922,9 +2127,13 @@ Public Sub CheckResources()
         ResourcesPassword = ResourcesPassword & Chr(Data(i * 3 - 1) Xor 37)
     Next
 
+    Exit Sub
+CheckResources_Err:
+    Call TraceError(Err.Number, Err.Description, "General.CheckResources", Erl)
 End Sub
 
 Function ValidarNombre(nombre As String, Error As String) As Boolean
+    On Error Goto ValidarNombre_Err
 
     If Len(nombre) < 3 Or Len(nombre) > 18 Then
         Error = JsonLanguage.Item("ERROR_NOMBRE_LONGITUD_INVALIDA")
@@ -1957,9 +2166,13 @@ Function ValidarNombre(nombre As String, Error As String) As Boolean
     
     ValidarNombre = True
 
+    Exit Function
+ValidarNombre_Err:
+    Call TraceError(Err.Number, Err.Description, "General.ValidarNombre", Erl)
 End Function
 
 Function BeautifyBigNumber(ByVal Number As Long) As String
+    On Error Goto BeautifyBigNumber_Err
 
     If Number > 1000000000 Then
         BeautifyBigNumber = Round(Number * 0.000000001, 3) & "KKK"
@@ -1971,9 +2184,13 @@ Function BeautifyBigNumber(ByVal Number As Long) As String
         BeautifyBigNumber = Number
     End If
 
+    Exit Function
+BeautifyBigNumber_Err:
+    Call TraceError(Err.Number, Err.Description, "General.BeautifyBigNumber", Erl)
 End Function
 
 Public Function IntentarObtenerPezEspecial()
+    On Error Goto IntentarObtenerPezEspecial_Err
     
     Dim acierto As Byte
     
@@ -2011,10 +2228,14 @@ Public Function IntentarObtenerPezEspecial()
     
     
     
+    Exit Function
+IntentarObtenerPezEspecial_Err:
+    Call TraceError(Err.Number, Err.Description, "General.IntentarObtenerPezEspecial", Erl)
 End Function
 
 
 Public Function isValidEmail(Email As String) As Boolean
+    On Error Goto isValidEmail_Err
     Dim At As Integer
     Dim oneDot As Integer
     Dim twoDots As Integer
@@ -2024,10 +2245,14 @@ Public Function isValidEmail(Email As String) As Boolean
     oneDot = InStr(At + 2, Email, ".", vbTextCompare)
     twoDots = InStr(At + 2, Email, "..", vbTextCompare)
     If At = 0 Or oneDot = 0 Or Not twoDots = 0 Or Right(Email, 1) = "." Then isValidEmail = False
+    Exit Function
+isValidEmail_Err:
+    Call TraceError(Err.Number, Err.Description, "General.isValidEmail", Erl)
 End Function
 
 
 Public Sub SetNpcsRenderText()
+    On Error Goto SetNpcsRenderText_Err
 
     ' Carga el JSON con las traducciones en un objeto para su uso a lo largo del proyecto
 
@@ -2043,18 +2268,26 @@ Public Sub SetNpcsRenderText()
        npcs_en_render = Val(render_text)
     End If
 
+    Exit Sub
+SetNpcsRenderText_Err:
+    Call TraceError(Err.Number, Err.Description, "General.SetNpcsRenderText", Erl)
 End Sub
 
 Public Sub deleteCharIndexs()
+    On Error Goto deleteCharIndexs_Err
     Dim i As Long
     For i = 1 To LastChar
         If charlist(i).EsNpc = False And i <> UserCharIndex Then
             Call EraseChar(i)
         End If
     Next i
+    Exit Sub
+deleteCharIndexs_Err:
+    Call TraceError(Err.Number, Err.Description, "General.deleteCharIndexs", Erl)
 End Sub
 
 Public Function GetLocalizedFilename(ByVal language As e_language, ByVal filename As String) As String
+    On Error Goto GetLocalizedFilename_Err
 
     Dim localizedName As String
    
@@ -2074,6 +2307,9 @@ Public Function GetLocalizedFilename(ByVal language As e_language, ByVal filenam
     End Select
 
     GetLocalizedFilename = localizedName
+    Exit Function
+GetLocalizedFilename_Err:
+    Call TraceError(Err.Number, Err.Description, "General.GetLocalizedFilename", Erl)
 End Function
 
 

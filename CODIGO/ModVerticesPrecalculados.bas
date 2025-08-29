@@ -1,5 +1,6 @@
 Attribute VB_Name = "ModVerticesPrecalculados"
 Public Sub PrecalcularVertices(ByVal TilesAncho As Byte, ByVal TilesAlto As Byte)
+    On Error Goto PrecalcularVertices_Err
 
     ReDim m_Data(Capacity * 4 - 1) As TYPE_VERTEX
    
@@ -32,4 +33,7 @@ Public Sub PrecalcularVertices(ByVal TilesAncho As Byte, ByVal TilesAlto As Byte
    
     Call D3DIndexBuffer8SetData(m_IBuffer, 0, UBound(lpIndices), 0, lpIndices(0))
        
+    Exit Sub
+PrecalcularVertices_Err:
+    Call TraceError(Err.Number, Err.Description, "ModVerticesPrecalculados.PrecalcularVertices", Erl)
 End Sub

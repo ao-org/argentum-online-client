@@ -165,6 +165,7 @@ Private cBotonAceptar As clsGraphicalButton
  no se mueva de lugar y no se redimensione
 
 Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
+    On Error Goto Is_Transparent_Err
     
     On Error GoTo Is_Transparent_Err
     
@@ -194,13 +195,21 @@ Is_Transparent_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMensaje.Is_Transparent", Erl)
     Resume Next
     
+    Exit Function
+Is_Transparent_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.Is_Transparent", Erl)
 End Function
 
 Private Sub cmdAceptar_Click()
+    On Error Goto cmdAceptar_Click_Err
     Unload Me
+    Exit Sub
+cmdAceptar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.cmdAceptar_Click", Erl)
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
 
@@ -214,9 +223,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMensaje.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 
     On Error GoTo Form_Load_Err
     If (Not FormParser Is Nothing) Then
@@ -238,17 +251,25 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMensaje.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.Form_Load", Erl)
 End Sub
 
 Private Sub LoadButtons()
+    On Error Goto LoadButtons_Err
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonAceptar = New clsGraphicalButton
     
     Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-Over.bmp", "boton-cerrar-off.bmp", Me)
     Call cBotonAceptar.Initialize(cmdAceptar, "boton-Aceptar-default.bmp", "boton-Aceptar-Over.bmp", "boton-Aceptar-off.bmp", Me)
+    Exit Sub
+LoadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.LoadButtons", Erl)
 End Sub
 
 Private Sub cmdCerrar_Click()
+    On Error Goto cmdCerrar_Click_Err
     On Error GoTo cmdCerrar_Click_Err
     
     Unload Me
@@ -259,10 +280,14 @@ cmdCerrar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMensaje.cmdCerrar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.cmdCerrar_Click", Erl)
 End Sub
 
 
 Public Sub PopupMenuMensaje()
+    On Error Goto PopupMenuMensaje_Err
     
     On Error GoTo PopupMenuMensaje_Err
     
@@ -351,9 +376,13 @@ PopupMenuMensaje_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMensaje.PopupMenuMensaje", Erl)
     Resume Next
     
+    Exit Sub
+PopupMenuMensaje_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.PopupMenuMensaje", Erl)
 End Sub
 
 Private Sub mnuGritar_click()
+    On Error Goto mnuGritar_click_Err
     
     On Error GoTo mnuGritar_click_Err
     
@@ -368,9 +397,13 @@ mnuGritar_click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuGritar_click", Erl)
     Resume Next
     
+    Exit Sub
+mnuGritar_click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.mnuGritar_click", Erl)
 End Sub
 
 Private Sub mnuPrivado_click()
+    On Error Goto mnuPrivado_click_Err
     
     On Error GoTo mnuPrivado_click_Err
     
@@ -394,9 +427,13 @@ mnuPrivado_click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuPrivado_click", Erl)
     Resume Next
     
+    Exit Sub
+mnuPrivado_click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.mnuPrivado_click", Erl)
 End Sub
 
 Private Sub mnuClan_click()
+    On Error Goto mnuClan_click_Err
     
     On Error GoTo mnuClan_click_Err
     
@@ -412,9 +449,13 @@ mnuClan_click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuClan_click", Erl)
     Resume Next
     
+    Exit Sub
+mnuClan_click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.mnuClan_click", Erl)
 End Sub
 
 Private Sub mnuGMs_click()
+    On Error Goto mnuGMs_click_Err
     
     On Error GoTo mnuGMs_click_Err
     
@@ -429,9 +470,13 @@ mnuGMs_click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuGMs_click", Erl)
     Resume Next
     
+    Exit Sub
+mnuGMs_click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.mnuGMs_click", Erl)
 End Sub
 
 Private Sub mnuGrupo_click()
+    On Error Goto mnuGrupo_click_Err
     
     On Error GoTo mnuGrupo_click_Err
     
@@ -446,9 +491,13 @@ mnuGrupo_click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuGrupo_click", Erl)
     Resume Next
     
+    Exit Sub
+mnuGrupo_click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.mnuGrupo_click", Erl)
 End Sub
 
 Private Sub mnuGlobal_Click()
+    On Error Goto mnuGlobal_Click_Err
     
     On Error GoTo mnuGlobal_Click_Err
     
@@ -463,9 +512,13 @@ mnuGlobal_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMensaje.mnuGlobal_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuGlobal_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.mnuGlobal_Click", Erl)
 End Sub
 
 Private Sub mnuFaction_Click()
+    On Error Goto mnuFaction_Click_Err
     
     On Error GoTo mnuFaction_Click_Err
     
@@ -480,4 +533,7 @@ mnuFaction_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMensaje.mnuFaction_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuFaction_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMensaje.mnuFaction_Click", Erl)
 End Sub

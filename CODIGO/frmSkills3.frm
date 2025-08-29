@@ -1300,6 +1300,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click(index As Integer)
+    On Error Goto Command1_Click_Err
 
 Call Audio.PlayWave(SND_CLICK)
 
@@ -1328,9 +1329,13 @@ Else
 End If
 
 puntos.Caption = "Puntos:" & Alocados
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSkills3.Command1_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 
 
 'Nombres de los skills
@@ -1359,9 +1364,13 @@ For i = 0 To NUMSKILLS * 2 - 1
 Next
 
 'Alocados = SkillPoints
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSkills3.Form_Load", Erl)
 End Sub
 
 Private Sub Image1_Click()
+    On Error Goto Image1_Click_Err
     Dim skillChanges(NUMSKILLS) As Byte
     Dim i As Long
 
@@ -1375,5 +1384,8 @@ Private Sub Image1_Click()
     
     SkillPoints = Alocados
     Unload Me
+    Exit Sub
+Image1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSkills3.Image1_Click", Erl)
 End Sub
 

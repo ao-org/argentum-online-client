@@ -1222,6 +1222,7 @@ Option Explicit
 Private TempVars(eMaxBinds) As Integer
 
 Private Sub cmdAccion_Click(Index As Integer)
+    On Error Goto cmdAccion_Click_Err
     
     On Error GoTo cmdAccion_Click_Err
     
@@ -1253,9 +1254,13 @@ cmdAccion_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.cmdAccion_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdAccion_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.cmdAccion_Click", Erl)
 End Sub
 
 Private Sub GuardaConfigEnVariables()
+    On Error Goto GuardaConfigEnVariables_Err
     
     On Error GoTo GuardaConfigEnVariables_Err
     
@@ -1277,9 +1282,13 @@ GuardaConfigEnVariables_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.GuardaConfigEnVariables", Erl)
     Resume Next
     
+    Exit Sub
+GuardaConfigEnVariables_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.GuardaConfigEnVariables", Erl)
 End Sub
 
 Private Sub CargaConfigEnForm()
+    On Error Goto CargaConfigEnForm_Err
     
     On Error GoTo CargaConfigEnForm_Err
     
@@ -1302,9 +1311,13 @@ CargaConfigEnForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.CargaConfigEnForm", Erl)
     Resume Next
     
+    Exit Sub
+CargaConfigEnForm_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.CargaConfigEnForm", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -1351,8 +1364,12 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.Form_Load", Erl)
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -1369,9 +1386,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+    On Error Goto Form_QueryUnload_Err
     
     On Error GoTo Form_QueryUnload_Err
     
@@ -1408,9 +1429,13 @@ Form_QueryUnload_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Form_QueryUnload", Erl)
     Resume Next
     
+    Exit Sub
+Form_QueryUnload_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.Form_QueryUnload", Erl)
 End Sub
 
 Private Sub Option1_Click()
+    On Error Goto Option1_Click_Err
     
     On Error GoTo Option1_Click_Err
     
@@ -1425,9 +1450,13 @@ Option1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Option1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Option1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.Option1_Click", Erl)
 End Sub
 
 Private Sub Option2_Click()
+    On Error Goto Option2_Click_Err
     
     On Error GoTo Option2_Click_Err
 
@@ -1444,9 +1473,13 @@ Option2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Option2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Option2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.Option2_Click", Erl)
 End Sub
 
 Private Sub txConfig_KeyUp(Index As Integer, KeyCode As Integer, Shift As Integer)
+    On Error Goto txConfig_KeyUp_Err
     
     On Error GoTo txConfig_KeyUp_Err
     
@@ -1575,9 +1608,13 @@ txConfig_KeyUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.txConfig_KeyUp", Erl)
     Resume Next
     
+    Exit Sub
+txConfig_KeyUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.txConfig_KeyUp", Erl)
 End Sub
 
 Sub Change_TempKey(Index As Integer, KeyCode As Integer, Name As String)
+    On Error Goto Change_TempKey_Err
     
     On Error GoTo Change_TempKey_Err
     
@@ -1591,9 +1628,13 @@ Change_TempKey_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Change_TempKey", Erl)
     Resume Next
     
+    Exit Sub
+Change_TempKey_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.Change_TempKey", Erl)
 End Sub
 
 Function AlreadyBinded(KeyCode As Integer) As Boolean
+    On Error Goto AlreadyBinded_Err
     
     On Error GoTo AlreadyBinded_Err
     
@@ -1623,9 +1664,13 @@ AlreadyBinded_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.AlreadyBinded", Erl)
     Resume Next
     
+    Exit Function
+AlreadyBinded_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.AlreadyBinded", Erl)
 End Function
 
 Private Function MouseActionToIndex(ByVal Action As e_MouseAction) As Integer
+    On Error Goto MouseActionToIndex_Err
     Select Case Action
         Case e_MouseAction.eThrowOrLook
             MouseActionToIndex = 0
@@ -1636,9 +1681,13 @@ Private Function MouseActionToIndex(ByVal Action As e_MouseAction) As Integer
         Case e_MouseAction.eWhisper
             MouseActionToIndex = 3
     End Select
+    Exit Function
+MouseActionToIndex_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.MouseActionToIndex", Erl)
 End Function
 
 Private Function IndexToMouseAction(ByVal Index As Integer) As e_MouseAction
+    On Error Goto IndexToMouseAction_Err
     Select Case Index
         Case 0
             IndexToMouseAction = e_MouseAction.eThrowOrLook
@@ -1649,5 +1698,8 @@ Private Function IndexToMouseAction(ByVal Index As Integer) As e_MouseAction
         Case 3
             IndexToMouseAction = e_MouseAction.eWhisper
     End Select
+    Exit Function
+IndexToMouseAction_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCustomKeys.IndexToMouseAction", Erl)
 End Function
 

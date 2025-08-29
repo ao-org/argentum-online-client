@@ -258,10 +258,15 @@ Private cBotonMenos As clsGraphicalButton
 
 
 Private Sub cmdcerrar_Click()
+    On Error Goto cmdcerrar_Click_Err
     Unload Me
+    Exit Sub
+cmdcerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.cmdcerrar_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -279,9 +284,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.Form_Load", Erl)
 End Sub
 
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
         
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonConstruir = New clsGraphicalButton
@@ -308,8 +317,12 @@ Private Sub loadButtons()
     Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
                                                 "boton-sm-menos-over.bmp", _
                                                 "boton-sm-menos-off.bmp", Me)
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.loadButtons", Erl)
 End Sub
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -337,14 +350,22 @@ Command1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.Command1_Click", Erl)
 End Sub
 
 
 Private Sub command1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto command1_MouseUp_Err
  If Index <> 1 Then Command1.Picture = LoadInterface("boton-espada-off.bmp")
+    Exit Sub
+command1_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.command1_MouseUp", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
     
     On Error GoTo Command2_Click_Err
     
@@ -377,13 +398,21 @@ Command2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Command2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.Command2_Click", Erl)
 End Sub
 
 Private Sub Command2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command2_MouseUp_Err
     If Index <> 2 Then Command2.Picture = LoadInterface("boton-armadura-off.bmp")
+    Exit Sub
+Command2_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.Command2_MouseUp", Erl)
 End Sub
 
 Private Sub Command3_Click()
+    On Error Goto Command3_Click_Err
     
     On Error GoTo Command3_Click_Err
     
@@ -412,14 +441,22 @@ Command3_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Command3_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.Command3_Click", Erl)
 End Sub
 
 
 Private Sub Command3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command3_MouseUp_Err
     If Index <> 3 Then Command3.Picture = LoadInterface("boton-casco-off.bmp")
+    Exit Sub
+Command3_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.Command3_MouseUp", Erl)
 End Sub
 
 Private Sub Command4_Click()
+    On Error Goto Command4_Click_Err
     
     On Error GoTo Command4_Click_Err
     
@@ -448,13 +485,21 @@ Command4_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Command4_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command4_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.Command4_Click", Erl)
 End Sub
 
 Private Sub Command4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command4_MouseUp_Err
     If Index <> 4 Then Command4.Picture = LoadInterface("boton-escudo-off.bmp")
+    Exit Sub
+Command4_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.Command4_MouseUp", Erl)
 End Sub
 
 Private Sub Command5_Click()
+    On Error Goto Command5_Click_Err
     
     On Error GoTo Command5_Click_Err
     
@@ -483,16 +528,24 @@ Command5_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Command5_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command5_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.Command5_Click", Erl)
 End Sub
 
 Private Sub Command5_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command5_MouseUp_Err
     If Index <> 5 Then Command5.Picture = LoadInterface("boton-escudo-off.bmp")
+    Exit Sub
+Command5_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.Command5_MouseUp", Erl)
 End Sub
 
 
 
 
 Private Sub cmdAceptar_Click()
+    On Error Goto cmdAceptar_Click_Err
     
     On Error GoTo cmdAceptar_Click_Err
     
@@ -505,23 +558,35 @@ cmdAceptar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.cmdAceptar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdAceptar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.cmdAceptar_Click", Erl)
 End Sub
 Private Sub cmdMenos_Click()
+    On Error Goto cmdMenos_Click_Err
     If cantidad > 0 Then
         cantidad = cantidad - 1
     Else
         Exit Sub
     End If
+    Exit Sub
+cmdMenos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.cmdMenos_Click", Erl)
 End Sub
 
 Private Sub cmdMas_Click()
+    On Error Goto cmdMas_Click_Err
     If cantidad <= 9999 Then
         cantidad = cantidad + 1
     Else
         Exit Sub
     End If
+    Exit Sub
+cmdMas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.cmdMas_Click", Erl)
 End Sub
 Private Sub cmdConstruir_Click()
+    On Error Goto cmdConstruir_Click_Err
     
     On Error GoTo cmdConstruir_Click_Err
     
@@ -620,10 +685,14 @@ cmdConstruir_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.cmdConstruir_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdConstruir_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.cmdConstruir_Click", Erl)
 End Sub
 
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
 
@@ -636,14 +705,22 @@ Private Sub Form_KeyPress(KeyAscii As Integer)
 Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Form_KeyPress", Erl)
     Resume Next
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.Form_KeyPress", Erl)
 End Sub
 
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     MoverForm Me.hWnd
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.Form_MouseMove", Erl)
 End Sub
 
 Private Sub List1_Click()
+    On Error Goto List1_Click_Err
     
     On Error GoTo List1_Click_Err
 
@@ -679,9 +756,13 @@ List1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.List1_Click", Erl)
     Resume Next
     
+    Exit Sub
+List1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.List1_Click", Erl)
 End Sub
 
 Private Sub lstArmas_Click()
+    On Error Goto lstArmas_Click_Err
     
     On Error GoTo lstArmas_Click_Err
     
@@ -834,10 +915,14 @@ lstArmas_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.lstArmas_Click", Erl)
     Resume Next
     
+    Exit Sub
+lstArmas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.lstArmas_Click", Erl)
 End Sub
 
 
 Public Function AddMaterialNames(ByVal ObjectIndex As Integer) As String()
+    On Error Goto AddMaterialNames_Err
     
     Dim result(1 To 9) As String
     
@@ -878,9 +963,13 @@ Public Function AddMaterialNames(ByVal ObjectIndex As Integer) As String()
     
     AddMaterialNames = result
 
+    Exit Function
+AddMaterialNames_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.AddMaterialNames", Erl)
 End Function
 
 Public Function AddMaterialValues(ByVal ObjectIndex As Integer) As String()
+    On Error Goto AddMaterialValues_Err
 
     Dim result(1 To 9) As String
     
@@ -921,5 +1010,8 @@ Public Function AddMaterialValues(ByVal ObjectIndex As Integer) As String()
     
     AddMaterialValues = result
 
+    Exit Function
+AddMaterialValues_Err:
+    Call TraceError(Err.Number, Err.Description, "frmHerrero.AddMaterialValues", Erl)
 End Function
 

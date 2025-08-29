@@ -31,6 +31,7 @@ Public Const hotkey_arrow_posx = 200 + 36 * 5 - 5
 Public Const hotkey_arrow_posy = 10
 
 Sub RenderScreen(ByVal center_x As Integer, ByVal center_y As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal HalfTileWidth As Integer, ByVal HalfTileHeight As Integer)
+    On Error Goto RenderScreen_Err
     
     On Error GoTo RenderScreen_Err
 
@@ -817,23 +818,35 @@ RenderScreen_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderScreen", Erl)
     Resume Next
     
+    Exit Sub
+RenderScreen_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderScreen", Erl)
 End Sub
 
 Private Sub WorldToScreen(ByRef world As Vector2, ByRef screen As Vector2, ByVal screenX As Integer, ByVal screenY As Integer, ByVal tilesOffsetX As Integer, ByVal tilesOffsetY As Integer)
+    On Error Goto WorldToScreen_Err
     screen.y = world.y - tilesOffsetY * TilePixelHeight + screenY
     screen.x = world.x - tilesOffsetX * TilePixelWidth + screenX
+    Exit Sub
+WorldToScreen_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_RenderScreen.WorldToScreen", Erl)
 End Sub
 
 Private Sub RenderProjectile(ByRef projetileInstance As Projectile, ByRef screenPos As Vector2, ByRef rgba_list() As RGBA)
+    On Error Goto RenderProjectile_Err
 On Error GoTo RenderProjectile_Err
     Call RGBAList(rgba_list, 255, 255, 255, 255)
     Call DrawSingleGrh(projetileInstance.GrhIndex, screenPos, 0, projetileInstance.Rotation, rgba_list)
     Exit Sub
 RenderProjectile_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderProjectile_Err", Erl)
+    Exit Sub
+RenderProjectile_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderProjectile", Erl)
 End Sub
 
 Function UpdateProjectile(ByRef Projectile As Projectile) As Boolean
+    On Error Goto UpdateProjectile_Err
 On Error GoTo UpdateProjectile_Err
     Dim direction As Vector2
     direction = VSubs(Projectile.TargetPos, Projectile.CurrentPos)
@@ -849,9 +862,13 @@ On Error GoTo UpdateProjectile_Err
     Exit Function
 UpdateProjectile_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.UpdateProjectile_Err", Erl)
+    Exit Function
+UpdateProjectile_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_RenderScreen.UpdateProjectile", Erl)
 End Function
 
 Public Sub InitializeProjectile(ByRef Projectile As Projectile, ByVal StartX As Byte, ByVal StartY As Byte, ByVal endX As Byte, ByVal endY As Byte, ByVal projectileType As Integer)
+    On Error Goto InitializeProjectile_Err
 On Error GoTo InitializeProjectile_Err
     With ProjectileData(projectileType)
         Dim Index As Integer
@@ -881,9 +898,13 @@ On Error GoTo InitializeProjectile_Err
     Exit Sub
 InitializeProjectile_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.InitializeProjectile_Err", Erl)
+    Exit Sub
+InitializeProjectile_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_RenderScreen.InitializeProjectile", Erl)
 End Sub
 
 Private Sub RenderScreen_NombreMapa()
+    On Error Goto RenderScreen_NombreMapa_Err
     
     On Error GoTo RenderScreen_NombreMapa_Err
     
@@ -940,9 +961,13 @@ RenderScreen_NombreMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderScreen_NombreMapa", Erl)
     Resume Next
     
+    Exit Sub
+RenderScreen_NombreMapa_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderScreen_NombreMapa", Erl)
 End Sub
 
 Private Sub DrawHotkey(ByVal HkIndex As Integer, ByVal PosX As Integer, ByVal PosY As Integer)
+    On Error Goto DrawHotkey_Err
     Call Draw_GrhIndex(GRH_INVENTORYSLOT, PosX, PosY)
     If HotkeyList(HkIndex).Index > 0 Then
         If HotkeyList(HkIndex).Type = e_HotkeyType.Item Then
@@ -952,5 +977,8 @@ Private Sub DrawHotkey(ByVal HkIndex As Integer, ByVal PosX As Integer, ByVal Po
         End If
     End If
     Call Engine_Text_Render(HkIndex + 1, PosX + 12, PosY, COLOR_WHITE, 1, True)
+    Exit Sub
+DrawHotkey_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_RenderScreen.DrawHotkey", Erl)
 End Sub
 

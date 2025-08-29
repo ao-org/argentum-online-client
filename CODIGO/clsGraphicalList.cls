@@ -49,11 +49,16 @@ Private lastRendered As Integer
 
 
 Private Sub Class_Initialize()
+    On Error Goto Class_Initialize_Err
 p_Visible = True
 Clear
+    Exit Sub
+Class_Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGraphicalList.Class_Initialize", Erl)
 End Sub
 
 Public Sub Initialize(ByRef LPic As PictureBox, ByVal ForeColor As Long)
+    On Error Goto Initialize_Err
     Set ListPic = LPic
     
     p_ForeColor = ForeColor
@@ -64,6 +69,9 @@ Public Sub Initialize(ByRef LPic As PictureBox, ByVal ForeColor As Long)
     ListPic.ForeColor = ForeColor
     ListPic.Cls
     
+    Exit Sub
+Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGraphicalList.Initialize", Erl)
 End Sub
 
 Public Property Get List(ByVal Index As Integer) As String
@@ -147,22 +155,31 @@ Public Property Get ListCount() As Integer
 End Property
 
 Public Sub AddItem(Item As String)
+    On Error Goto AddItem_Err
 ReDim Preserve lista(p_ListCount)
 lista(p_ListCount) = Item
 p_ListCount = p_ListCount + 1
 If p_ListCount = 1 Then p_ListIndex = 0
 Dibujar
+    Exit Sub
+AddItem_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGraphicalList.AddItem", Erl)
 End Sub
 
 Public Sub Clear()
+    On Error Goto Clear_Err
 ReDim lista(0)
 p_ListCount = 0
 p_ListIndex = -1
 p_Scroll = 0
 If Not ListPic Is Nothing Then Dibujar
+    Exit Sub
+Clear_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGraphicalList.Clear", Erl)
 End Sub
 
 Private Sub Dibujar(Optional refreshPic As Boolean = True)
+    On Error Goto Dibujar_Err
     Dim i As Integer
     Dim PosY As Integer
     If refreshPic Then ListPic.Cls
@@ -207,5 +224,8 @@ Private Sub Dibujar(Optional refreshPic As Boolean = True)
         ListPic.Line (ListPic.ScaleWidth - BarraWidth, PosY + 1)-(ListPic.ScaleWidth - 1, PosY + BarraHeight - 2), barritaColor, BF
         ListPic.Line (ListPic.ScaleWidth - BarraWidth, PosY + 1)-(ListPic.ScaleWidth - 1, PosY + BarraHeight - 2), &H505050, B
     End If
+    Exit Sub
+Dibujar_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGraphicalList.Dibujar", Erl)
 End Sub
 

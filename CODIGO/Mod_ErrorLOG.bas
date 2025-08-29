@@ -35,21 +35,29 @@ Attribute VB_Name = "Mod_ErrorLOG"
 Option Explicit
 
 Public Sub LogError(desc As String)
+    On Error Goto LogError_Err
 On Error Resume Next
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\errores.log" For Append As #nfile
 Print #nfile, desc
 Close #nfile
+    Exit Sub
+LogError_Err:
+    Call TraceError(Err.Number, Err.Description, "Mod_ErrorLOG.LogError", Erl)
 End Sub
 
 Public Sub LogCustom(desc As String)
+    On Error Goto LogCustom_Err
 On Error Resume Next
 Dim nfile As Integer
 nfile = FreeFile ' obtenemos un canal
 Open App.Path & "\custom.log" For Append As #nfile
 Print #nfile, Now & " " & desc
 Close #nfile
+    Exit Sub
+LogCustom_Err:
+    Call TraceError(Err.Number, Err.Description, "Mod_ErrorLOG.LogCustom", Erl)
 End Sub
 
 

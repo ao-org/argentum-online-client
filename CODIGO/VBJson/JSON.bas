@@ -50,10 +50,15 @@ Private m_str()                      As Long
 Private m_length                     As Long
 
 Public Function GetParserErrors() As String
+    On Error Goto GetParserErrors_Err
     GetParserErrors = m_parserrors
+    Exit Function
+GetParserErrors_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.GetParserErrors", Erl)
 End Function
 
 Public Function parse(ByRef str As String) As Object
+    On Error Goto parse_Err
 
     m_decSep = GetRegionalSettings(LOCALE_SDECIMAL)
     m_groupSep = GetRegionalSettings(LOCALE_SGROUPING)
@@ -86,9 +91,13 @@ Public Function parse(ByRef str As String) As Object
     'clean array
     ReDim m_str(1)
 
+    Exit Function
+parse_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.parse", Erl)
 End Function
 
 Private Sub GenerateStringArray(ByRef str As String)
+    On Error Goto GenerateStringArray_Err
 
     Dim i As Long
 
@@ -99,9 +108,13 @@ Private Sub GenerateStringArray(ByRef str As String)
         m_str(i) = AscW(mid$(str, i, 1))
     Next i
 
+    Exit Sub
+GenerateStringArray_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.GenerateStringArray", Erl)
 End Sub
 
 Private Function parseObject(ByRef str As String, ByRef Index As Long) As Dictionary
+    On Error Goto parseObject_Err
 
     Set parseObject = New Dictionary
     
@@ -150,9 +163,13 @@ Private Function parseObject(ByRef str As String, ByRef Index As Long) As Dictio
 
     Loop
 
+    Exit Function
+parseObject_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.parseObject", Erl)
 End Function
 
 Private Function parseArray(ByRef str As String, ByRef Index As Long) As Collection
+    On Error Goto parseArray_Err
 
     Dim charint As Integer
 
@@ -196,9 +213,13 @@ Private Function parseArray(ByRef str As String, ByRef Index As Long) As Collect
 
     Loop
 
+    Exit Function
+parseArray_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.parseArray", Erl)
 End Function
 
 Private Function parseValue(ByRef str As String, ByRef Index As Long)
+    On Error Goto parseValue_Err
 
     Call skipChar(Index)
 
@@ -230,9 +251,13 @@ Private Function parseValue(ByRef str As String, ByRef Index As Long)
 
     End Select
 
+    Exit Function
+parseValue_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.parseValue", Erl)
 End Function
 
 Private Function parseString(ByRef str As String, ByRef Index As Long) As String
+    On Error Goto parseString_Err
 
     Dim quoteint As Integer
 
@@ -305,9 +330,13 @@ Private Function parseString(ByRef str As String, ByRef Index As Long) As String
 
     Loop
    
+    Exit Function
+parseString_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.parseString", Erl)
 End Function
 
 Private Function parseNumber(ByRef str As String, ByRef Index As Long)
+    On Error Goto parseNumber_Err
 
     Dim Value As String
 
@@ -341,9 +370,13 @@ Private Function parseNumber(ByRef str As String, ByRef Index As Long)
 
     Loop
    
+    Exit Function
+parseNumber_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.parseNumber", Erl)
 End Function
 
 Private Function parseBoolean(ByRef str As String, ByRef Index As Long) As Boolean
+    On Error Goto parseBoolean_Err
 
     Call skipChar(Index)
    
@@ -358,9 +391,13 @@ Private Function parseBoolean(ByRef str As String, ByRef Index As Long) As Boole
 
     End If
 
+    Exit Function
+parseBoolean_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.parseBoolean", Erl)
 End Function
 
 Private Function parseNull(ByRef str As String, ByRef Index As Long)
+    On Error Goto parseNull_Err
 
     Call skipChar(Index)
    
@@ -372,9 +409,13 @@ Private Function parseNull(ByRef str As String, ByRef Index As Long)
 
     End If
 
+    Exit Function
+parseNull_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.parseNull", Erl)
 End Function
 
 Private Function parseKey(ByRef Index As Long) As String
+    On Error Goto parseKey_Err
 
     Dim dquote  As Boolean
 
@@ -449,9 +490,13 @@ Private Function parseKey(ByRef Index As Long) As String
 
     Loop
 
+    Exit Function
+parseKey_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.parseKey", Erl)
 End Function
 
 Private Sub skipChar(ByRef Index As Long)
+    On Error Goto skipChar_Err
 
     Dim bComment      As Boolean
 
@@ -521,9 +566,13 @@ Private Sub skipChar(ByRef Index As Long)
         Index = Index + 1
     Loop
 
+    Exit Sub
+skipChar_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.skipChar", Erl)
 End Sub
 
 Public Function GetRegionalSettings(ByVal regionalsetting As Long) As String
+    On Error Goto GetRegionalSettings_Err
     ' Devuelve la configuracion regional del sistema
 
     On Error GoTo ErrorHandler
@@ -564,6 +613,9 @@ ErrorHandler:
 
     End Select
 
+    Exit Function
+GetRegionalSettings_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.GetRegionalSettings", Erl)
 End Function
 
 
@@ -571,6 +623,7 @@ End Function
 
 
 Private Function Encode(ByVal str As String) As String
+    On Error Goto Encode_Err
 
     Dim SB  As New cStringBuilder
     Dim i   As Long
@@ -619,9 +672,13 @@ Private Function Encode(ByVal str As String) As String
     Encode = SB.toString
     Set SB = Nothing
    
+    Exit Function
+Encode_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.Encode", Erl)
 End Function
 
 Public Function StringToJSON(st As String) As String
+    On Error Goto StringToJSON_Err
    
     Const FIELD_SEP = "~"
 
@@ -669,9 +726,13 @@ Public Function StringToJSON(st As String) As String
         StringToJSON = ("( {""Records"": [" & vbNewLine & sRecs.toString & vbNewLine & "], " & """RecordCount"":""" & lRecCnt & """ } )")
 
     End If
+    Exit Function
+StringToJSON_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.StringToJSON", Erl)
 End Function
 
 Public Function RStoJSON(rs As ADODB.Recordset) As String
+    On Error Goto RStoJSON_Err
 
     On Error GoTo errhandler
 
@@ -714,9 +775,13 @@ Public Function RStoJSON(rs As ADODB.Recordset) As String
     Exit Function
 errhandler:
 
+    Exit Function
+RStoJSON_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.RStoJSON", Erl)
 End Function
 
 Public Function toUnicode(str As String) As String
+    On Error Goto toUnicode_Err
 
     Dim x        As Long
 
@@ -771,5 +836,8 @@ Public Function toUnicode(str As String) As String
     toUnicode = uStr.toString
     Exit Function
 
+    Exit Function
+toUnicode_Err:
+    Call TraceError(Err.Number, Err.Description, "JSON.toUnicode", Erl)
 End Function
 

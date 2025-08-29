@@ -29,6 +29,7 @@ Public font_list() As D3DXFont
 Public Fuentes(1 To 6)    As Fuente
 
 Public Sub Engine_Font_Initialize()
+    On Error Goto Engine_Font_Initialize_Err
     
     On Error GoTo Engine_Font_Initialize_Err
     
@@ -503,9 +504,13 @@ Engine_Font_Initialize_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Font_Initialize", Erl)
     Resume Next
     
+    Exit Sub
+Engine_Font_Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Engine_Font_Initialize", Erl)
 End Sub
 
 Public Function Engine_Text_Height(Texto As String, Optional multi As Boolean = False, Optional font As Byte = 1) As Integer
+    On Error Goto Engine_Text_Height_Err
     
     On Error GoTo Engine_Text_Height_Err
     
@@ -587,9 +592,13 @@ Engine_Text_Height_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Height", Erl)
     Resume Next
     
+    Exit Function
+Engine_Text_Height_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Height", Erl)
 End Function
 
 Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+    On Error Goto Engine_Text_Render_LetraGrande_Err
     
     On Error GoTo Engine_Text_Render_LetraGrande_Err
     
@@ -741,9 +750,13 @@ Engine_Text_Render_LetraGrande_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_LetraGrande", Erl)
     Resume Next
     
+    Exit Sub
+Engine_Text_Render_LetraGrande_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_LetraGrande", Erl)
 End Sub
 
 Public Sub RenderText(ByVal Texto As String, _
+    On Error Goto RenderText_Err
  ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, _
  Optional ByVal font_index As Integer = 1, _
  Optional multi_line As Boolean = False, _
@@ -839,9 +852,13 @@ RenderText_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.RenderText", Erl)
     Resume Next
     
+    Exit Sub
+RenderText_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.RenderText", Erl)
 End Sub
 
 Public Sub Engine_Text_Render(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+    On Error Goto Engine_Text_Render_Err
     
     On Error GoTo Engine_Text_Render_Err
     
@@ -996,9 +1013,13 @@ Engine_Text_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
     Resume Next
     
+    Exit Sub
+Engine_Text_Render_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
 End Sub
 
 Public Sub simple_text_render(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional CharIndex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+    On Error Goto simple_text_render_Err
     
     On Error GoTo Engine_Text_Render_Err
     
@@ -1066,9 +1087,13 @@ Engine_Text_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
     Resume Next
     
+    Exit Sub
+simple_text_render_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.simple_text_render", Erl)
 End Sub
 
 Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, ByVal status As Byte, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+    On Error Goto Engine_Text_Render_No_Ladder_Err
     
     On Error GoTo Engine_Text_Render_Err
 
@@ -1193,8 +1218,12 @@ Engine_Text_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
     Resume Next
     
+    Exit Sub
+Engine_Text_Render_No_Ladder_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_No_Ladder", Erl)
 End Sub
 Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+    On Error Goto Engine_Text_RenderGrande_Err
     
     On Error GoTo Engine_Text_RenderGrande_Err
     
@@ -1349,9 +1378,13 @@ Engine_Text_RenderGrande_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_RenderGrande", Erl)
     Resume Next
     
+    Exit Sub
+Engine_Text_RenderGrande_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_RenderGrande", Erl)
 End Sub
 
 Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRef text_color As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Long = 0, Optional ByVal Alpha As Boolean = False)
+    On Error Goto Engine_Text_Render2_Err
     
     On Error GoTo Engine_Text_Render2_Err
 
@@ -1467,9 +1500,13 @@ Engine_Text_Render2_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render2", Erl)
     Resume Next
     
+    Exit Sub
+Engine_Text_Render2_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render2", Erl)
 End Sub
 
 Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False)
+    On Error Goto Engine_Text_Render_Efect_Err
     
     On Error GoTo Engine_Text_Render_Efect_Err
     
@@ -1531,9 +1568,13 @@ Engine_Text_Render_Efect_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_Efect", Erl)
     Resume Next
     
+    Exit Sub
+Engine_Text_Render_Efect_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_Efect", Erl)
 End Sub
 
 Public Function Engine_Text_Width(Texto As String, Optional multi As Boolean = False, Optional Fon As Byte = 1) As Integer
+    On Error Goto Engine_Text_Width_Err
     
     On Error GoTo Engine_Text_Width_Err
     
@@ -1659,9 +1700,13 @@ Engine_Text_Width_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Width", Erl)
     Resume Next
     
+    Exit Function
+Engine_Text_Width_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Width", Erl)
 End Function
 
 Public Function Engine_Text_WidthCentrado(Texto As String, Optional multi As Boolean = False, Optional Fon As Byte = 1) As Integer
+    On Error Goto Engine_Text_WidthCentrado_Err
     
     On Error GoTo Engine_Text_WidthCentrado_Err
     
@@ -1788,9 +1833,13 @@ Engine_Text_WidthCentrado_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_WidthCentrado", Erl)
     Resume Next
     
+    Exit Function
+Engine_Text_WidthCentrado_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_WidthCentrado", Erl)
 End Function
 
 Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal color As Long, ByVal format As Long, Optional ByVal Shadow As Boolean = False)
+    On Error Goto Text_Render_Err
     
     On Error GoTo Text_Render_Err
 
@@ -1821,9 +1870,13 @@ Text_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Text_Render", Erl)
     Resume Next
     
+    Exit Sub
+Text_Render_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Text_Render", Erl)
 End Sub
 
 Public Sub Text_Render_ext(Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal color As Long, Optional ByVal Shadow As Boolean = False, Optional ByVal center As Boolean = False, Optional ByVal font As Long = 0)
+    On Error Goto Text_Render_ext_Err
     
     On Error GoTo Text_Render_ext_Err
     
@@ -1841,9 +1894,13 @@ Text_Render_ext_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Text_Render_ext", Erl)
     Resume Next
     
+    Exit Sub
+Text_Render_ext_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Text_Render_ext", Erl)
 End Sub
 
 Private Sub Font_Make(ByVal font_index As Long, ByVal Style As String, ByVal bold As Boolean, ByVal italic As Boolean, ByVal size As Long)
+    On Error Goto Font_Make_Err
     
     On Error GoTo Font_Make_Err
     
@@ -1875,9 +1932,13 @@ Font_Make_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Font_Make", Erl)
     Resume Next
     
+    Exit Sub
+Font_Make_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Font_Make", Erl)
 End Sub
 
 Public Function Font_Create(ByVal Style As String, ByVal size As Long, ByVal bold As Boolean, ByVal italic As Boolean) As Long
+    On Error Goto Font_Create_Err
 
     On Error GoTo ErrorHandler:
 
@@ -1886,9 +1947,13 @@ Public Function Font_Create(ByVal Style As String, ByVal size As Long, ByVal bol
 ErrorHandler:
     Font_Create = 0
 
+    Exit Function
+Font_Create_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Font_Create", Erl)
 End Function
 
 Public Function Font_Next_Open() As Long
+    On Error Goto Font_Next_Open_Err
     
     On Error GoTo Font_Next_Open_Err
     
@@ -1901,9 +1966,13 @@ Font_Next_Open_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Font_Next_Open", Erl)
     Resume Next
     
+    Exit Function
+Font_Next_Open_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Font_Next_Open", Erl)
 End Function
 
 Public Function Font_Check(ByVal font_index As Long) As Boolean
+    On Error Goto Font_Check_Err
     
     On Error GoTo Font_Check_Err
 
@@ -1919,8 +1988,12 @@ Font_Check_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Font_Check", Erl)
     Resume Next
     
+    Exit Function
+Font_Check_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Font_Check", Erl)
 End Function
 Public Function Prepare_Multiline_Text(Text As String, ByVal MaxWidth As Integer, Optional ByVal FontIndex As Integer = 1) As String()
+    On Error Goto Prepare_Multiline_Text_Err
         
     On Error GoTo Handler
     
@@ -1998,9 +2071,13 @@ Handler:
     ReDim Lines(0)
     Prepare_Multiline_Text = Lines
         
+    Exit Function
+Prepare_Multiline_Text_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Prepare_Multiline_Text", Erl)
 End Function
 
 Public Function Text_Width(Text As String, Optional ByVal FontIndex As Byte = 1) As Integer
+    On Error Goto Text_Width_Err
 
     On Error GoTo Handler
     
@@ -2021,5 +2098,8 @@ Public Function Text_Width(Text As String, Optional ByVal FontIndex As Byte = 1)
 Handler:
     Call RegistrarError(Err.Number, Err.Description, "clsDX8Engine.Text_Width", Erl)
 
+    Exit Function
+Text_Width_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Textos.Text_Width", Erl)
 End Function
 

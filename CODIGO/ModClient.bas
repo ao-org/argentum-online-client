@@ -34,6 +34,7 @@ Private Const WS_EX_LAYERED = &H80000
 Private Const LWA_ALPHA = &H2&
 
 Public Sub Make_Transparent_Richtext(ByVal hwnd As Long)
+    On Error Goto Make_Transparent_Richtext_Err
     'If Win2kXP Then
     
     On Error GoTo Make_Transparent_Richtext_Err
@@ -47,9 +48,13 @@ Make_Transparent_Richtext_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModClient.Make_Transparent_Richtext", Erl)
     Resume Next
     
+    Exit Sub
+Make_Transparent_Richtext_Err:
+    Call TraceError(Err.Number, Err.Description, "ModClient.Make_Transparent_Richtext", Erl)
 End Sub
 
 Public Sub NameMapa(ByVal map As Long)
+    On Error Goto NameMapa_Err
 On Error GoTo NameMapa_Err
 
         frmMain.NameMapa.Caption = MapDat.map_name
@@ -61,9 +66,13 @@ On Error GoTo NameMapa_Err
 NameMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModClient.NameMapa", Erl)
     Resume Next
+    Exit Sub
+NameMapa_Err:
+    Call TraceError(Err.Number, Err.Description, "ModClient.NameMapa", Erl)
 End Sub
 
 Public Sub PrintToConsole(Text As String, Optional ByVal red As Integer = -1, Optional ByVal green As Integer, Optional ByVal blue As Integer, Optional ByVal bold As Boolean, Optional ByVal italic As Boolean, Optional ByVal bCrLf As Boolean, Optional ByVal FontTypeIndex As Byte = 0)
+    On Error Goto PrintToConsole_Err
     
     On Error GoTo PrintToConsole_Err
     
@@ -124,5 +133,8 @@ PrintToConsole_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModClient.PrintToConsole", Erl)
     Resume Next
     
+    Exit Sub
+PrintToConsole_Err:
+    Call TraceError(Err.Number, Err.Description, "ModClient.PrintToConsole", Erl)
 End Sub
 

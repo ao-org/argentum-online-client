@@ -75,6 +75,7 @@ Private hWndRTB    As Long
 Private hWndParent As Long
 
 Public Function WndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+    On Error Goto WndProc_Err
     
     On Error GoTo WndProc_Err
 
@@ -119,10 +120,14 @@ WndProc_Err:
     Call RegistrarError(Err.number, Err.Description, "modUrlDetection.WndProc", Erl)
     Resume Next
     
+    Exit Function
+WndProc_Err:
+    Call TraceError(Err.Number, Err.Description, "modUrlDetection.WndProc", Erl)
 End Function
 
 
 Public Sub EnableURLDetect(ByVal hWndRichTextbox As Long, ByVal hWndOwner As Long)
+    On Error Goto EnableURLDetect_Err
 
     'Enables url detection in richtexbox.
 
@@ -141,9 +146,13 @@ EnableURLDetect_Err:
     Call RegistrarError(Err.number, Err.Description, "modUrlDetection.EnableURLDetect", Erl)
     Resume Next
     
+    Exit Sub
+EnableURLDetect_Err:
+    Call TraceError(Err.Number, Err.Description, "modUrlDetection.EnableURLDetect", Erl)
 End Sub
 
 Public Sub DisableURLDetect()
+    On Error Goto DisableURLDetect_Err
 
     'Disables url detection in richtexbox.
     
@@ -159,9 +168,13 @@ DisableURLDetect_Err:
     Call RegistrarError(Err.number, Err.Description, "modUrlDetection.DisableURLDetect", Erl)
     Resume Next
     
+    Exit Sub
+DisableURLDetect_Err:
+    Call TraceError(Err.Number, Err.Description, "modUrlDetection.DisableURLDetect", Erl)
 End Sub
 
 Public Sub StartCheckingLinks()
+    On Error Goto StartCheckingLinks_Err
     
     On Error GoTo StartCheckingLinks_Err
 
@@ -176,9 +189,13 @@ StartCheckingLinks_Err:
     Call RegistrarError(Err.number, Err.Description, "modUrlDetection.StartCheckingLinks", Erl)
     Resume Next
     
+    Exit Sub
+StartCheckingLinks_Err:
+    Call TraceError(Err.Number, Err.Description, "modUrlDetection.StartCheckingLinks", Erl)
 End Sub
 
 Public Sub StopCheckingLinks()
+    On Error Goto StopCheckingLinks_Err
     
     On Error GoTo StopCheckingLinks_Err
 
@@ -196,4 +213,7 @@ StopCheckingLinks_Err:
     Call RegistrarError(Err.number, Err.Description, "modUrlDetection.StopCheckingLinks", Erl)
     Resume Next
     
+    Exit Sub
+StopCheckingLinks_Err:
+    Call TraceError(Err.Number, Err.Description, "modUrlDetection.StopCheckingLinks", Erl)
 End Sub

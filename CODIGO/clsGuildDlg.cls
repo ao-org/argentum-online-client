@@ -53,6 +53,7 @@ Private Const DIALOG_HEIGHT As Integer = 14
 ' Removes all dialogs from screen.
 
 Public Sub RemoveDialogs()
+    On Error Goto RemoveDialogs_Err
     
     On Error GoTo RemoveDialogs_Err
 
@@ -72,6 +73,9 @@ RemoveDialogs_Err:
     Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.RemoveDialogs", Erl)
     Resume Next
     
+    Exit Sub
+RemoveDialogs_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGuildDlg.RemoveDialogs", Erl)
 End Sub
 
 ''
@@ -127,6 +131,7 @@ Activo_Err:
 End Property
 
 Private Sub Class_Initialize()
+    On Error Goto Class_Initialize_Err
     
     On Error GoTo Class_Initialize_Err
     
@@ -139,9 +144,13 @@ Class_Initialize_Err:
     Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.Class_Initialize", Erl)
     Resume Next
     
+    Exit Sub
+Class_Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGuildDlg.Class_Initialize", Erl)
 End Sub
 
 Public Sub Draw()
+    On Error Goto Draw_Err
     
     On Error GoTo Draw_Err
 
@@ -197,9 +206,13 @@ Draw_Err:
     Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.Draw", Erl)
     Resume Next
     
+    Exit Sub
+Draw_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGuildDlg.Draw", Erl)
 End Sub
 
 Public Sub PassTimer()
+    On Error Goto PassTimer_Err
     
     On Error GoTo PassTimer_Err
     
@@ -216,12 +229,16 @@ PassTimer_Err:
     Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.PassTimer", Erl)
     Resume Next
     
+    Exit Sub
+PassTimer_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGuildDlg.PassTimer", Erl)
 End Sub
 
 ''
 ' Splits dialogs into lines fitting properly the render area and inserts them
 
 Public Sub PushBackText(ByVal s As String, ByVal status As Byte)
+    On Error Goto PushBackText_Err
     
     On Error GoTo PushBackText_Err
 
@@ -249,9 +266,13 @@ PushBackText_Err:
     Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.PushBackText", Erl)
     Resume Next
     
+    Exit Sub
+PushBackText_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGuildDlg.PushBackText", Erl)
 End Sub
 
 Private Sub RealPushBackText(ByVal s As String, ByVal status As Byte)
+    On Error Goto RealPushBackText_Err
     
     On Error GoTo RealPushBackText_Err
 
@@ -273,6 +294,9 @@ RealPushBackText_Err:
     Call RegistrarError(Err.number, Err.Description, "clsGuildDlg.RealPushBackText", Erl)
     Resume Next
     
+    Exit Sub
+RealPushBackText_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGuildDlg.RealPushBackText", Erl)
 End Sub
 
 ''
@@ -320,10 +344,14 @@ End Property
 
 ' Toggle visibility of guild dialogs when user opens guild chatbox
 Public Sub toggle_dialogs_visibility(ByVal visible As Boolean)
+    On Error Goto toggle_dialogs_visibility_Err
 
     force_visible = visible
     ' Reset the alpha to make the chat visible
     Alpha = 255
 
+    Exit Sub
+toggle_dialogs_visibility_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGuildDlg.toggle_dialogs_visibility", Erl)
 End Sub
 

@@ -47,25 +47,41 @@ Private m_freq As Currency
 Private m_overhead As Currency
 
 Public Sub start()
+    On Error Goto start_Err
     QueryPerformanceCounter m_startTime
+    Exit Sub
+start_Err:
+    Call TraceError(Err.Number, Err.Description, "clsInstrument.start", Erl)
 End Sub
 
 Public Function ElapsedSeconds() As Double
+    On Error Goto ElapsedSeconds_Err
     Dim currentTime As Currency
     QueryPerformanceCounter currentTime
     ElapsedSeconds = (currentTime - m_startTime - m_overhead) / m_freq
+    Exit Function
+ElapsedSeconds_Err:
+    Call TraceError(Err.Number, Err.Description, "clsInstrument.ElapsedSeconds", Erl)
 End Function
 
 Public Function ElapsedMilliseconds() As Double
+    On Error Goto ElapsedMilliseconds_Err
     ElapsedMilliseconds = ElapsedSeconds * 1000
+    Exit Function
+ElapsedMilliseconds_Err:
+    Call TraceError(Err.Number, Err.Description, "clsInstrument.ElapsedMilliseconds", Erl)
 End Function
 
 Private Sub Class_Initialize()
+    On Error Goto Class_Initialize_Err
     QueryPerformanceFrequency m_freq
     Dim ctr1 As Currency
     Dim ctr2 As Currency
     QueryPerformanceCounter ctr1
     QueryPerformanceCounter ctr2
     m_overhead = ctr2 - ctr1
+    Exit Sub
+Class_Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsInstrument.Class_Initialize", Erl)
 End Sub
 

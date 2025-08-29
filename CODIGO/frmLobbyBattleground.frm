@@ -73,18 +73,27 @@ Dim Scroll As Integer
 Const MAX_LIST As Integer = 6
 Dim LobbyList() As t_LobbyData
 Private Sub btnCrear_Click()
+    On Error Goto btnCrear_Click_Err
     frmCreateBattleground.Show
     Unload Me
+    Exit Sub
+btnCrear_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmLobbyBattleground.btnCrear_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     ListRefresh
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmLobbyBattleground.Form_Load", Erl)
 End Sub
 Friend Sub SetLobbyList(ByRef List() As t_LobbyData)
     LobbyList = List
 End Sub
 
 Private Sub pEvents_Click()
+    On Error Goto pEvents_Click_Err
 On Error GoTo ErrHandler:
     Dim Password As String
     If MouseIndex > 0 And MouseIndex <= UBound(LobbyList) Then
@@ -106,9 +115,13 @@ On Error GoTo ErrHandler:
 ErrHandler:
     Call RegistrarError(Err.Number, Err.Description, "frmLobbyBattleground.Click", Erl)
     Resume Next
+    Exit Sub
+pEvents_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmLobbyBattleground.pEvents_Click", Erl)
 End Sub
 
 Private Sub pEvents_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto pEvents_MouseMove_Err
     Dim i As Integer
     MouseIndex = 0
     For i = 1 To MAX_LIST
@@ -124,9 +137,13 @@ Private Sub pEvents_MouseMove(Button As Integer, Shift As Integer, X As Single, 
         MouseIndex = -2
     End If
     ListRefresh
+    Exit Sub
+pEvents_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmLobbyBattleground.pEvents_MouseMove", Erl)
 End Sub
 
 Private Sub ListRefresh()
+    On Error Goto ListRefresh_Err
 On Error GoTo ErrHandler:
     Dim OffX As Integer
     Dim Offy As Integer
@@ -250,4 +267,7 @@ On Error GoTo ErrHandler:
 ErrHandler:
     Call RegistrarError(Err.Number, Err.Description, "frmLobbyBattleground.Paint", Erl)
     Resume Next
+    Exit Sub
+ListRefresh_Err:
+    Call TraceError(Err.Number, Err.Description, "frmLobbyBattleground.ListRefresh", Erl)
 End Sub

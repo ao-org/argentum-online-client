@@ -33,6 +33,7 @@ End Type
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal length As Long)
 
 Sub Long_2_RGBA(Dest As RGBA, ByVal Src As Long)
+    On Error Goto Long_2_RGBA_Err
     
     On Error GoTo Long_2_RGBA_Err
     
@@ -44,9 +45,13 @@ Long_2_RGBA_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.Long_2_RGBA", Erl)
     Resume Next
     
+    Exit Sub
+Long_2_RGBA_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.Long_2_RGBA", Erl)
 End Sub
 
 Function RGBA_2_Long(Color As RGBA) As Long
+    On Error Goto RGBA_2_Long_Err
   
     On Error GoTo RGBA_2_Long_Err
     
@@ -58,9 +63,13 @@ RGBA_2_Long_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.RGBA_2_Long", Erl)
     Resume Next
     
+    Exit Function
+RGBA_2_Long_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.RGBA_2_Long", Erl)
 End Function
 
 Function RGBA_From_Long(ByVal Color As Long) As RGBA
+    On Error Goto RGBA_From_Long_Err
     
     
     
@@ -75,9 +84,13 @@ RGBA_From_Long_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.RGBA_From_Long", Erl)
     Resume Next
     
+    Exit Function
+RGBA_From_Long_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.RGBA_From_Long", Erl)
 End Function
 
 Function RGBA_From_Comp(ByVal r As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255) As RGBA
+    On Error Goto RGBA_From_Comp_Err
     
     
     
@@ -95,9 +108,13 @@ RGBA_From_Comp_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.RGBA_From_Comp", Erl)
     Resume Next
     
+    Exit Function
+RGBA_From_Comp_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.RGBA_From_Comp", Erl)
 End Function
 
 Function RGBA_From_vbColor(ByVal Color As Long) As RGBA
+    On Error Goto RGBA_From_vbColor_Err
     
     
     
@@ -117,9 +134,13 @@ RGBA_From_Long_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.RGBA_From_Long", Erl)
     Resume Next
     
+    Exit Function
+RGBA_From_vbColor_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.RGBA_From_vbColor", Erl)
 End Function
 
 Sub SetRGBA(Color As RGBA, ByVal r As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
+    On Error Goto SetRGBA_Err
     
     
     
@@ -137,9 +158,13 @@ SetRGBA_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.SetRGBA", Erl)
     Resume Next
     
+    Exit Sub
+SetRGBA_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.SetRGBA", Erl)
 End Sub
 
 Sub Long_2_RGBAList(Dest() As RGBA, ByVal Src As Long)
+    On Error Goto Long_2_RGBAList_Err
     
     
     
@@ -158,9 +183,13 @@ Long_2_RGBAList_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.Long_2_RGBAList", Erl)
     Resume Next
     
+    Exit Sub
+Long_2_RGBAList_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.Long_2_RGBAList", Erl)
 End Sub
 
 Sub RGBAList(Dest() As RGBA, ByVal r As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255)
+    On Error Goto RGBAList_Err
     
     
     
@@ -179,10 +208,14 @@ RGBAList_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.RGBAList", Erl)
     Resume Next
     
+    Exit Sub
+RGBAList_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.RGBAList", Erl)
 End Sub
 
 
 Sub RGBA_ToList(Dest() As RGBA, Color As RGBA)
+    On Error Goto RGBA_ToList_Err
     
     
     
@@ -201,9 +234,13 @@ RGBAList_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Color.RGBA_ToList", Erl)
     Resume Next
     
+    Exit Sub
+RGBA_ToList_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.RGBA_ToList", Erl)
 End Sub
 
 Sub Copy_RGBAList(Dest() As RGBA, Src() As RGBA)
+    On Error Goto Copy_RGBAList_Err
     
     
     
@@ -222,9 +259,13 @@ Copy_RGBAList_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.Copy_RGBAList", Erl)
     Resume Next
     
+    Exit Sub
+Copy_RGBAList_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.Copy_RGBAList", Erl)
 End Sub
 
 Sub LerpRGBA(Dest As RGBA, A As RGBA, B As RGBA, ByVal Factor As Single)
+    On Error Goto LerpRGBA_Err
     
     
     
@@ -244,9 +285,13 @@ LerpRGBA_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.LerpRGBA", Erl)
     Resume Next
     
+    Exit Sub
+LerpRGBA_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.LerpRGBA", Erl)
 End Sub
 
 Sub LerpRGB(Dest As RGBA, A As RGBA, B As RGBA, ByVal Factor As Single)
+    On Error Goto LerpRGB_Err
     
     On Error GoTo LerpRGB_Err
     
@@ -262,9 +307,13 @@ LerpRGB_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Color.LerpRGB", Erl)
     Resume Next
     
+    Exit Sub
+LerpRGB_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.LerpRGB", Erl)
 End Sub
 
 Sub ModulateRGBA(Dest As RGBA, A As RGBA, B As RGBA)
+    On Error Goto ModulateRGBA_Err
     
     
     
@@ -282,9 +331,13 @@ ModulateRGBA_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.ModulateRGBA", Erl)
     Resume Next
     
+    Exit Sub
+ModulateRGBA_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.ModulateRGBA", Erl)
 End Sub
 
 Sub AddRGBA(Dest As RGBA, A As RGBA, B As RGBA)
+    On Error Goto AddRGBA_Err
     
     
     
@@ -302,9 +355,13 @@ AddRGBA_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.AddRGBA", Erl)
     Resume Next
     
+    Exit Sub
+AddRGBA_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.AddRGBA", Erl)
 End Sub
 
 Function vbColor_2_Long(Color As Long) As Long
+    On Error Goto vbColor_2_Long_Err
     
     
     
@@ -327,9 +384,13 @@ vbColor_2_Long_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.vbColor_2_Long", Erl)
     Resume Next
     
+    Exit Function
+vbColor_2_Long_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.vbColor_2_Long", Erl)
 End Function
 
 Sub Copy_RGBAList_WithAlpha(Dest() As RGBA, Src() As RGBA, ByVal Alpha As Byte)
+    On Error Goto Copy_RGBAList_WithAlpha_Err
     
     
     
@@ -349,9 +410,13 @@ Copy_RGBAList_WithAlpha_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.Copy_RGBAList_WithAlpha", Erl)
     Resume Next
     
+    Exit Sub
+Copy_RGBAList_WithAlpha_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.Copy_RGBAList_WithAlpha", Erl)
 End Sub
 
 Function RGBA_ToString(Color As RGBA) As String
+    On Error Goto RGBA_ToString_Err
     
     
     
@@ -366,5 +431,8 @@ RGBA_ToString_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Color.RGBA_ToString", Erl)
     Resume Next
     
+    Exit Function
+RGBA_ToString_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Color.RGBA_ToString", Erl)
 End Function
 

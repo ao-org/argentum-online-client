@@ -40,39 +40,56 @@ Public language As e_language
 Public JsonLanguage As Object
      
 Private Function GetCountryName() As String
+    On Error Goto GetCountryName_Err
     Dim lID As Long, sBuf As String, lRet As Long
     lID = GetUserDefaultLCID
     sBuf = String$(MAX_BUF, Chr(0))
     lRet = GetLocaleInfo(lID, LOCALE_SCOUNTRY, sBuf, MAX_BUF)
     GetCountryName = Left$(sBuf, lRet - 1)
+    Exit Function
+GetCountryName_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLanguage.GetCountryName", Erl)
 End Function
 
 Private Function GetLocaleEngLanguage() As String
+    On Error Goto GetLocaleEngLanguage_Err
     Dim lID As Long, sBuf As String, lRet As Long
     lID = GetUserDefaultLCID
     sBuf = String$(MAX_BUF, Chr(0))
     lRet = GetLocaleInfo(lID, LOCALE_SENGLANGUAGE, sBuf, MAX_BUF)
     GetLocaleEngLanguage = Left$(sBuf, lRet - 1)
+    Exit Function
+GetLocaleEngLanguage_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLanguage.GetLocaleEngLanguage", Erl)
 End Function
 
 Public Function FileToString(strFileName As String) As String
+    On Error Goto FileToString_Err
     Dim IFile As Variant
     IFile = FreeFile
     Open strFileName For Input As #IFile
         FileToString = StrConv(InputB(LOF(IFile), IFile), vbUnicode)
     Close #IFile
+    Exit Function
+FileToString_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLanguage.FileToString", Erl)
 End Function
 
 Public Function DirLanguage() As String
+    On Error Goto DirLanguage_Err
 On Error GoTo DirLanguage_Err
     DirLanguage = App.path & "\Languages\"
     Exit Function
 DirLanguage_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.DirLanguage", Erl)
     Resume Next
+    Exit Function
+DirLanguage_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLanguage.DirLanguage", Erl)
 End Function
 
 Public Sub SetLanguageApplication()
+    On Error Goto SetLanguageApplication_Err
 On Error GoTo ErrorHandler
     
     Dim Localization As String
@@ -129,5 +146,8 @@ ErrorHandler:
     MsgBox "Error in SetLanguageApplication: " & Err.Description, vbCritical, "Error"
     ' Optional: Fallback to a default language in case of an error
     language = e_language.English
+    Exit Sub
+SetLanguageApplication_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLanguage.SetLanguageApplication", Erl)
 End Sub
 

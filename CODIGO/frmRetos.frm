@@ -483,6 +483,7 @@ Private CaenItems As Boolean
 Private Const MAX_JUGADORES = 5
 
 Private Sub Apuesta_Change()
+    On Error Goto Apuesta_Change_Err
     Dim Sel As Integer
     Sel = Apuesta.SelStart
 
@@ -498,25 +499,41 @@ Private Sub Apuesta_Change()
 
     Apuesta.Text = NewVal
     Apuesta.SelStart = Sel
+    Exit Sub
+Apuesta_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Apuesta_Change", Erl)
 End Sub
 
 Private Sub Cerrar_Click()
+    On Error Goto Cerrar_Click_Err
     Unload Me
+    Exit Sub
+Cerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Cerrar_Click", Erl)
 End Sub
 
 Private Sub Cerrar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Cerrar_MouseDown_Err
     Cerrar.Picture = LoadInterface("boton-cerrar-off.bmp")
     Cerrar.Tag = "1"
+    Exit Sub
+Cerrar_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Cerrar_MouseDown", Erl)
 End Sub
 
 Private Sub Cerrar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Cerrar_MouseMove_Err
     If Cerrar.Tag = "0" Then
         Cerrar.Picture = LoadInterface("boton-cerrar-over.bmp")
         Cerrar.Tag = "1"
     End If
+    Exit Sub
+Cerrar_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Cerrar_MouseMove", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     Me.Picture = LoadInterface("ventanaretos.bmp")
     CAMPO_CORTO.Picture = LoadInterface("campo-corto.bmp")
 
@@ -525,19 +542,31 @@ Private Sub Form_Load()
     CaenItems = False
     Call Aplicar_Transparencia(Me.hWnd, 240)
     Call FormParser.Parse_Form(Me)
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Form_Load", Erl)
 End Sub
 Private Sub cmdMas_Click()
+    On Error Goto cmdMas_Click_Err
     If Val(txtPociones.Text) < 10000 Then
         txtPociones.Text = Val(txtPociones.Text + 1)
     End If
+    Exit Sub
+cmdMas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.cmdMas_Click", Erl)
 End Sub
 
 Private Sub cmdMenos_Click()
+    On Error Goto cmdMenos_Click_Err
     If Val(txtPociones.Text) > 0 Then
         txtPociones.Text = Val(txtPociones.Text - 1)
     End If
+    Exit Sub
+cmdMenos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.cmdMenos_Click", Erl)
 End Sub
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Form_MouseMove_Err
     
     
     Call MoverForm(Me.hWnd)
@@ -561,9 +590,13 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y A
         Set Retar.Picture = Nothing
         Retar.Tag = "0"
     End If
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Form_MouseMove", Erl)
 End Sub
 
 Private Sub Image2_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Image2_MouseUp_Err
     If CaenItems Then
         CaenItems = False
     Else
@@ -579,9 +612,13 @@ Private Sub Image2_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
     End If
     
     Exit Sub
+    Exit Sub
+Image2_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Image2_MouseUp", Erl)
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Image1_MouseUp_Err
     If PocionesRojas Then
         PocionesRojas = False
         CAMPO_CORTO.Visible = False
@@ -601,25 +638,41 @@ Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y A
     End If
     
     Exit Sub
+    Exit Sub
+Image1_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Image1_MouseUp", Erl)
 End Sub
 
 Private Sub Jugador_Change(Index As Integer)
+    On Error Goto Jugador_Change_Err
     Error.Caption = vbNullString
+    Exit Sub
+Jugador_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Jugador_Change", Erl)
 End Sub
 
 Private Sub RestarJugadores_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto RestarJugadores_MouseDown_Err
     RestarJugadores.Picture = LoadInterface("boton-sm-menos-off.bmp")
     RestarJugadores.Tag = "1"
+    Exit Sub
+RestarJugadores_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.RestarJugadores_MouseDown", Erl)
 End Sub
 
 Private Sub RestarJugadores_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto RestarJugadores_MouseMove_Err
     If RestarJugadores.Tag = "0" Then
         RestarJugadores.Picture = LoadInterface("boton-sm-menos-over.bmp")
         RestarJugadores.Tag = "1"
     End If
+    Exit Sub
+RestarJugadores_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.RestarJugadores_MouseMove", Erl)
 End Sub
 
 Private Sub RestarJugadores_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto RestarJugadores_MouseUp_Err
     Dim CantidadJugadores As Byte
     CantidadJugadores = Val(txtPPT.Text)
     
@@ -631,38 +684,62 @@ Private Sub RestarJugadores_MouseUp(Button As Integer, Shift As Integer, X As Si
     RestarJugadores.Tag = "1"
 
     Call ActualizarCampos
+    Exit Sub
+RestarJugadores_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.RestarJugadores_MouseUp", Erl)
 End Sub
 
 Private Sub Retar_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Retar_MouseDown_Err
     Retar.Picture = LoadInterface("boton-retar-off.bmp")
     Retar.Tag = "1"
+    Exit Sub
+Retar_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Retar_MouseDown", Erl)
 End Sub
 
 Private Sub Retar_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Retar_MouseMove_Err
     If Retar.Tag = "0" Then
         Retar.Picture = LoadInterface("boton-retar-over.bmp")
         Retar.Tag = "1"
     End If
+    Exit Sub
+Retar_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Retar_MouseMove", Erl)
 End Sub
 
 Private Sub Retar_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Retar_MouseUp_Err
     Retar.Picture = LoadInterface("boton-retar-over.bmp")
     Retar.Tag = "1"
+    Exit Sub
+Retar_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Retar_MouseUp", Erl)
 End Sub
 
 Private Sub SumarJugadores_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto SumarJugadores_MouseDown_Err
     SumarJugadores.Picture = LoadInterface("boton-sm-mas-off.bmp")
     SumarJugadores.Tag = "1"
+    Exit Sub
+SumarJugadores_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.SumarJugadores_MouseDown", Erl)
 End Sub
 
 Private Sub SumarJugadores_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto SumarJugadores_MouseMove_Err
     If SumarJugadores.Tag = "0" Then
         SumarJugadores.Picture = LoadInterface("boton-sm-mas-over.bmp")
         SumarJugadores.Tag = "1"
     End If
+    Exit Sub
+SumarJugadores_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.SumarJugadores_MouseMove", Erl)
 End Sub
 
 Private Sub Retar_Click()
+    On Error Goto Retar_Click_Err
 
     If Not Validar Then Exit Sub
     
@@ -679,9 +756,13 @@ Private Sub Retar_Click()
     
     Unload Me
 
+    Exit Sub
+Retar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Retar_Click", Erl)
 End Sub
 
 Private Function Validar() As Boolean
+    On Error Goto Validar_Err
     Dim ErrorStr As String
 
     Dim i        As Integer
@@ -724,9 +805,13 @@ Private Function Validar() As Boolean
     Error.Caption = vbNullString
     Validar = True
 
+    Exit Function
+Validar_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.Validar", Erl)
 End Function
 
 Private Sub SumarJugadores_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto SumarJugadores_MouseUp_Err
     Dim CantidadJugadores As Byte
     CantidadJugadores = Val(txtPPT.Text)
     
@@ -738,9 +823,13 @@ Private Sub SumarJugadores_MouseUp(Button As Integer, Shift As Integer, X As Sin
     RestarJugadores.Tag = "1"
     
     Call ActualizarCampos
+    Exit Sub
+SumarJugadores_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.SumarJugadores_MouseUp", Erl)
 End Sub
 
 Private Sub txtPPT_Change()
+    On Error Goto txtPPT_Change_Err
 
     Dim CantidadJugadores As Byte
     CantidadJugadores = Val(txtPPT.Text)
@@ -754,9 +843,13 @@ Private Sub txtPPT_Change()
     
     Call ActualizarCampos
     
+    Exit Sub
+txtPPT_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.txtPPT_Change", Erl)
 End Sub
 
 Private Sub ActualizarCampos()
+    On Error Goto ActualizarCampos_Err
     Dim CantidadJugadores As Byte
     CantidadJugadores = Val(txtPPT.Text)
     
@@ -771,4 +864,7 @@ Private Sub ActualizarCampos()
             Campo(i).Visible = False
         End If
     Next
+    Exit Sub
+ActualizarCampos_Err:
+    Call TraceError(Err.Number, Err.Description, "frmRetos.ActualizarCampos", Erl)
 End Sub

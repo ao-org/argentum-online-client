@@ -47,24 +47,40 @@ Private m_Color(3) As RGBA
 Private m_Color2 As Long
 
 Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal font As D3DXFont, ByVal color As Long)
+    On Error Goto Init_Err
     m_Text = text: m_X = x: m_Y = y
     Set m_Font = font
     Call RGBAList(m_Color, 222, 194, 112)
     m_Color2 = color
+    Exit Sub
+Init_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUILabel.Init", Erl)
 End Sub
 
 ' Allow external positioning
 Public Sub SetPosition(ByVal x As Long, ByVal y As Long)
+    On Error Goto SetPosition_Err
     m_X = x: m_Y = y
+    Exit Sub
+SetPosition_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUILabel.SetPosition", Erl)
 End Sub
 
 Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
+    On Error Goto IUIComponent_Render_Err
     Dim rc As RECT
     rc.Left = m_X: rc.Top = m_Y
     rc.Right = m_X + 400: rc.Bottom = m_Y + 32
     m_Font.DrawTextW m_Text, -1, rc, DT_LEFT Or DT_TOP, m_Color2
+    Exit Sub
+IUIComponent_Render_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUILabel.IUIComponent_Render", Erl)
 End Sub
 
 Private Sub IUIComponent_HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
+    On Error Goto IUIComponent_HandleInput_Err
     ' no-op
+    Exit Sub
+IUIComponent_HandleInput_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUILabel.IUIComponent_HandleInput", Erl)
 End Sub

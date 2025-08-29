@@ -64,6 +64,7 @@ Public delete_char_validate_code As String
 
 
 Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
+    On Error Goto AuthSocket_DataArrival_Err
     
     If Connected Then
         Exit Sub
@@ -120,9 +121,13 @@ Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
 
     End Select
     
+    Exit Sub
+AuthSocket_DataArrival_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.AuthSocket_DataArrival", Erl)
 End Sub
 
 Public Sub OpenSessionRequest()
+    On Error Goto OpenSessionRequest_Err
     
     SessionOpened = False
     
@@ -133,14 +138,22 @@ Public Sub OpenSessionRequest()
     arr(3) = &H4
     Call frmConnect.AuthSocket.SendData(arr)
     
+    Exit Sub
+OpenSessionRequest_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.OpenSessionRequest", Erl)
 End Sub
 Public Sub DebugPrint(ByVal str As String, Optional ByVal int1 As Integer = 0, Optional ByVal int2 As Integer = 0, Optional ByVal int3 As Integer = 0, Optional ByVal asd As Boolean = False)
+    On Error Goto DebugPrint_Err
 
     frmDebug.add_text_tracebox (str)
     
+    Exit Sub
+DebugPrint_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.DebugPrint", Erl)
 End Sub
 
 Public Sub SendAccountLoginRequest()
+    On Error Goto SendAccountLoginRequest_Err
     Dim userName As String
     Dim Password As String
     Dim len_encrypted_username As Integer
@@ -203,9 +216,13 @@ Public Sub SendAccountLoginRequest()
     
     Auth_state = e_state.RequestAccountLogin
     
+    Exit Sub
+SendAccountLoginRequest_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.SendAccountLoginRequest", Erl)
 End Sub
 
 Public Sub SendRequestVerificationCode()
+    On Error Goto SendRequestVerificationCode_Err
     Dim userName As String
     Dim len_encrypted_username As Integer
     
@@ -253,9 +270,13 @@ Public Sub SendRequestVerificationCode()
     
     Auth_state = e_state.RequestVerificationCode
     
+    Exit Sub
+SendRequestVerificationCode_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.SendRequestVerificationCode", Erl)
 End Sub
 
 Public Sub HandleRequestVerificationCode(ByVal BytesTotal As Long)
+    On Error Goto HandleRequestVerificationCode_Err
 
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleRequestVerificationCode", 255, 255, 255, True)
@@ -289,9 +310,13 @@ Public Sub HandleRequestVerificationCode(ByVal BytesTotal As Long)
     
     Auth_state = e_state.Idle
         
+    Exit Sub
+HandleRequestVerificationCode_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.HandleRequestVerificationCode", Erl)
 End Sub
 
 Public Sub SendRequestForgotPassword()
+    On Error Goto SendRequestForgotPassword_Err
     Dim userName As String
     Dim len_encrypted_username As Integer
     
@@ -339,9 +364,13 @@ Public Sub SendRequestForgotPassword()
     
     Auth_state = e_state.RequestForgotPassword
     
+    Exit Sub
+SendRequestForgotPassword_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.SendRequestForgotPassword", Erl)
 End Sub
 
 Public Sub SendValidateAccount()
+    On Error Goto SendValidateAccount_Err
     Dim userName As String
     Dim validate_code As String
     Dim len_encrypted_username As Integer
@@ -403,9 +432,13 @@ Public Sub SendValidateAccount()
     
     Auth_state = e_state.RequestValidateAccount
     
+    Exit Sub
+SendValidateAccount_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.SendValidateAccount", Erl)
 End Sub
 
 Public Sub SendRequestResetPassword()
+    On Error Goto SendRequestResetPassword_Err
     Dim userName As String
     Dim Password As String
     Dim validate_code As String
@@ -485,8 +518,12 @@ Public Sub SendRequestResetPassword()
     
     Auth_state = e_state.RequestResetPassword
     
+    Exit Sub
+SendRequestResetPassword_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.SendRequestResetPassword", Erl)
 End Sub
 Public Sub LogOutRequest()
+    On Error Goto LogOutRequest_Err
     
     Dim logout_request() As Byte
     Dim packet_size As Integer
@@ -513,8 +550,12 @@ Public Sub LogOutRequest()
     
     Auth_state = e_state.RequestLogout
     
+    Exit Sub
+LogOutRequest_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.LogOutRequest", Erl)
 End Sub
 Public Sub HandleLogOutRequest(ByVal BytesTotal As Long)
+    On Error Goto HandleLogOutRequest_Err
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleLogOutRequest", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
@@ -540,8 +581,12 @@ Public Sub HandleLogOutRequest(ByVal BytesTotal As Long)
         End Select
     End If
     Auth_state = e_state.Idle
+    Exit Sub
+HandleLogOutRequest_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.HandleLogOutRequest", Erl)
 End Sub
 Public Sub SendRequestTransferCharacter()
+    On Error Goto SendRequestTransferCharacter_Err
     Dim JSON As String
     Dim len_encrypted_username As Integer
     Dim transfer_request() As Byte
@@ -589,8 +634,12 @@ Public Sub SendRequestTransferCharacter()
     Auth_state = e_state.RequestTransferCharacter
     
 
+    Exit Sub
+SendRequestTransferCharacter_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.SendRequestTransferCharacter", Erl)
 End Sub
 Public Sub SendSignUpRequest()
+    On Error Goto SendSignUpRequest_Err
 
     Dim JSON As String
     Dim len_encrypted_username As Integer
@@ -647,10 +696,14 @@ Public Sub SendSignUpRequest()
     
     Auth_state = e_state.RequestSignUp
     
+    Exit Sub
+SendSignUpRequest_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.SendSignUpRequest", Erl)
 End Sub
 
 
 Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
+    On Error Goto HandleTransferCharRequest_Err
 
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleTransferCharRequest", 255, 255, 255, True)
@@ -695,15 +748,23 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
     End If
     Auth_state = e_state.Idle
 
+    Exit Sub
+HandleTransferCharRequest_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.HandleTransferCharRequest", Erl)
 End Sub
 
 Public Sub showValidateAccountControls()
+    On Error Goto showValidateAccountControls_Err
        Call frmNewAccount.showValidateAccountControls
        frmNewAccount.txtValidateMail.Text = frmNewAccount.txtUsername
 
+    Exit Sub
+showValidateAccountControls_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.showValidateAccountControls", Erl)
 End Sub
 
 Public Sub HandleSignUpRequest(ByVal BytesTotal As Long)
+    On Error Goto HandleSignUpRequest_Err
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleSignUpRequest", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
@@ -757,9 +818,13 @@ Public Sub HandleSignUpRequest(ByVal BytesTotal As Long)
         End Select
     End If
     Auth_state = e_state.Idle
+    Exit Sub
+HandleSignUpRequest_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.HandleSignUpRequest", Erl)
 End Sub
 
 Public Sub SendDeleteCharRequest()
+    On Error Goto SendDeleteCharRequest_Err
 
     Dim JSON As String
     Dim len_encrypted_username As Integer
@@ -799,9 +864,13 @@ Public Sub SendDeleteCharRequest()
     
     Auth_state = e_state.RequestDeleteChar
     
+    Exit Sub
+SendDeleteCharRequest_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.SendDeleteCharRequest", Erl)
 End Sub
 
 Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
+    On Error Goto HandleDeleteCharRequest_Err
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleDeleteCharRequest", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
@@ -833,9 +902,13 @@ Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
 
     End If
     Auth_state = e_state.Idle
+    Exit Sub
+HandleDeleteCharRequest_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.HandleDeleteCharRequest", Erl)
 End Sub
 
 Public Sub SendConfirmDeleteChar()
+    On Error Goto SendConfirmDeleteChar_Err
     Dim userName As String
     Dim validate_code As String
     Dim len_encrypted_username As Integer
@@ -897,9 +970,13 @@ Public Sub SendConfirmDeleteChar()
     
     Auth_state = e_state.ConfirmDeleteChar
     
+    Exit Sub
+SendConfirmDeleteChar_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.SendConfirmDeleteChar", Erl)
 End Sub
 
 Public Sub HandleConfirmDeleteChar(ByVal BytesTotal As Long)
+    On Error Goto HandleConfirmDeleteChar_Err
 
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleConfirmDeleteChar", 255, 255, 255, True)
@@ -934,9 +1011,13 @@ Public Sub HandleConfirmDeleteChar(ByVal BytesTotal As Long)
 
     End If
         
+    Exit Sub
+HandleConfirmDeleteChar_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.HandleConfirmDeleteChar", Erl)
 End Sub
 
 Public Sub PCListRequest()
+    On Error Goto PCListRequest_Err
     Dim userName As String
     Dim len_encrypted_username As Integer
     
@@ -979,8 +1060,12 @@ Public Sub PCListRequest()
     
     Auth_state = e_state.RequestCharList
     
+    Exit Sub
+PCListRequest_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.PCListRequest", Erl)
 End Sub
 Public Sub connectToLoginServer()
+    On Error Goto connectToLoginServer_Err
 
     frmConnect.AuthSocket.Close
     frmConnect.AuthSocket.RemoteHost = IPdelServidorLogin
@@ -992,9 +1077,13 @@ Public Sub connectToLoginServer()
 #End If
     SessionOpened = False
     Auth_state = e_state.Idle
+    Exit Sub
+connectToLoginServer_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.connectToLoginServer", Erl)
 End Sub
 
 Public Sub HandleOpenSession(ByVal BytesTotal As Long)
+    On Error Goto HandleOpenSession_Err
 
     frmDebug.add_text_tracebox "HandleOpenSession"
     
@@ -1018,9 +1107,13 @@ Public Sub HandleOpenSession(ByVal BytesTotal As Long)
     
     SessionOpened = True
     encrypted_session_token = cnvStringFromHexStr(cnvToHex(encrypted_token))
+    Exit Sub
+HandleOpenSession_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.HandleOpenSession", Erl)
 End Sub
 
 Public Sub HandlePCList(ByVal BytesTotal As Long)
+    On Error Goto HandlePCList_Err
 
     If BytesTotal < 4 Then
         frmDebug.add_text_tracebox "HandlePCList: Paquete incorrecto"
@@ -1062,9 +1155,13 @@ Public Sub HandlePCList(ByVal BytesTotal As Long)
     LoginCharacter (CharacterRemote)
 #End If
 
+    Exit Sub
+HandlePCList_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.HandlePCList", Erl)
 End Sub
 
 Public Sub HandleAccountLogin(ByVal BytesTotal As Long)
+    On Error Goto HandleAccountLogin_Err
 
     frmDebug.add_text_tracebox "HandleRequestAccountLogin"
 
@@ -1129,13 +1226,21 @@ Public Sub HandleAccountLogin(ByVal BytesTotal As Long)
         prgRun = False
     End If
 #End If
+    Exit Sub
+HandleAccountLogin_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.HandleAccountLogin", Erl)
 End Sub
 
 Public Sub GotoPasswordReset()
+    On Error Goto GotoPasswordReset_Err
     frmPasswordReset.toggleTextboxs
+    Exit Sub
+GotoPasswordReset_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.GotoPasswordReset", Erl)
 End Sub
 
 Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
+    On Error Goto HandleRequestForgotPassword_Err
 
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleRequestForgotPassword", 255, 255, 255, True)
@@ -1179,9 +1284,13 @@ Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
     frmPasswordReset.cmdEnviar.visible = True
     
         
+    Exit Sub
+HandleRequestForgotPassword_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.HandleRequestForgotPassword", Erl)
 End Sub
 
 Public Sub HandleRequestResetPassword(ByVal BytesTotal As Long)
+    On Error Goto HandleRequestResetPassword_Err
 
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleRequestResetPassword", 255, 255, 255, True)
@@ -1238,15 +1347,23 @@ Public Sub HandleRequestResetPassword(ByVal BytesTotal As Long)
         End Select
     End If
         
+    Exit Sub
+HandleRequestResetPassword_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.HandleRequestResetPassword", Erl)
 End Sub
 
 Public Sub AccountValidated()
+    On Error Goto AccountValidated_Err
     Auth_state = e_state.Idle
     Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CUENTA_VALIDADA"), False, False)
     frmNewAccount.visible = False
+    Exit Sub
+AccountValidated_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.AccountValidated", Erl)
 End Sub
 
 Public Sub HandleValidateAccountRequest(ByVal BytesTotal As Long)
+    On Error Goto HandleValidateAccountRequest_Err
 
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleValidateAccountRequest", 255, 255, 255, True)
@@ -1279,14 +1396,22 @@ Public Sub HandleValidateAccountRequest(ByVal BytesTotal As Long)
         End Select
     End If
         
+    Exit Sub
+HandleValidateAccountRequest_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.HandleValidateAccountRequest", Erl)
 End Sub
 
 Function FileToString(strFileName As String) As String
+    On Error Goto FileToString_Err
   Open strFileName For Input As #1
     FileToString = StrConv(InputB(LOF(1), 1), vbUnicode)
   Close #1
+    Exit Function
+FileToString_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.FileToString", Erl)
 End Function
 Private Sub EraseCharFromPjList(ByVal nick As String)
+    On Error Goto EraseCharFromPjList_Err
     Dim i As Long, J As Long
     
     For i = 1 To CantidadDePersonajesEnCuenta
@@ -1317,8 +1442,12 @@ Private Sub EraseCharFromPjList(ByVal nick As String)
     
     CantidadDePersonajesEnCuenta = CantidadDePersonajesEnCuenta - 1
     
+    Exit Sub
+EraseCharFromPjList_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.EraseCharFromPjList", Erl)
 End Sub
 Private Sub FillAccountData(ByVal Data As String)
+    On Error Goto FillAccountData_Err
     On Error Resume Next
     Dim i As Long
     CantidadDePersonajesEnCuenta = 0
@@ -1429,9 +1558,13 @@ Private Sub FillAccountData(ByVal Data As String)
         End If
     End If
     Call LoadCharacterSelectionScreen
+    Exit Sub
+FillAccountData_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.FillAccountData", Erl)
 End Sub
 
 Public Function estaInmovilizado(ByRef arr() As Byte) As String
+    On Error Goto estaInmovilizado_Err
 
     Dim a As String, b As String
     
@@ -1462,6 +1595,9 @@ Public Function estaInmovilizado(ByRef arr() As Byte) As String
     #End If
     estaInmovilizado = cnvHexStrFromString(b)
     
+    Exit Function
+estaInmovilizado_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAuth.estaInmovilizado", Erl)
 End Function
 
 

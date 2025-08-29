@@ -199,6 +199,7 @@ ProposalType_Err:
 End Property
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -211,9 +212,13 @@ Command1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPeaceProp.Command1_Click", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
     
     On Error GoTo Command2_Click_Err
     
@@ -233,9 +238,13 @@ Command2_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Command2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPeaceProp.Command2_Click", Erl)
 End Sub
 
 Private Sub Command3_Click()
+    On Error Goto Command3_Click_Err
     
     On Error GoTo Command3_Click_Err
     
@@ -258,9 +267,13 @@ Command3_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Command3_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPeaceProp.Command3_Click", Erl)
 End Sub
 
 Private Sub Command4_Click()
+    On Error Goto Command4_Click_Err
     
     On Error GoTo Command4_Click_Err
     
@@ -282,9 +295,13 @@ Command4_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Command4_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command4_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPeaceProp.Command4_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -297,4 +314,7 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPeaceProp.Form_Load", Erl)
 End Sub

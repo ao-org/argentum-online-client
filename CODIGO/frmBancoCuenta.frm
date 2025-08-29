@@ -244,6 +244,7 @@ Public WithEvents InvBovedaCuenta  As clsGrapchicalInventory ' Inventario de la 
 Attribute InvBovedaCuenta.VB_VarHelpID = -1
 
 Private Sub MoverForm()
+    On Error Goto MoverForm_Err
     
     On Error GoTo moverForm_Err
     
@@ -260,9 +261,13 @@ moverForm_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.moverForm", Erl)
     Resume Next
     
+    Exit Sub
+MoverForm_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.MoverForm", Erl)
 End Sub
 
 Private Sub cantidad_KeyPress(KeyAscii As Integer)
+    On Error Goto cantidad_KeyPress_Err
     
     On Error GoTo cantidad_KeyPress_Err
     
@@ -287,9 +292,13 @@ cantidad_KeyPress_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.cantidad_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+cantidad_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.cantidad_KeyPress", Erl)
 End Sub
 
 Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdMasMenos_MouseDown_Err
     
     On Error GoTo cmdMasMenos_MouseDown_Err
     
@@ -319,10 +328,14 @@ cmdMasMenos_MouseDown_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.cmdMasMenos_MouseDown", Erl)
     Resume Next
     
+    Exit Sub
+cmdMasMenos_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.cmdMasMenos_MouseDown", Erl)
 End Sub
 
 
 Private Sub cmdMasMenos_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdMasMenos_MouseUp_Err
     
     On Error GoTo cmdMasMenos_MouseUp_Err
     
@@ -336,9 +349,13 @@ cmdMasMenos_MouseUp_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.cmdMasMenos_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+cmdMasMenos_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.cmdMasMenos_MouseUp", Erl)
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -355,9 +372,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -374,9 +395,13 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.Form_Load", Erl)
 End Sub
 
 Private Sub LoadButtons()
+    On Error Goto LoadButtons_Err
         
     Set cBotonRetirar = New clsGraphicalButton
     Set cBotonDepositar = New clsGraphicalButton
@@ -405,8 +430,12 @@ Private Sub LoadButtons()
                                                 "boton-depositar-off.bmp", Me)
                                                 
     
+    Exit Sub
+LoadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.LoadButtons", Erl)
 End Sub
 Private Sub Image1_Click(Index As Integer)
+    On Error Goto Image1_Click_Err
     
     On Error GoTo Image1_Click_Err
     
@@ -437,9 +466,13 @@ Image1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.Image1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Image1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.Image1_Click", Erl)
 End Sub
 
 Private Sub cantidad_Change()
+    On Error Goto cantidad_Change_Err
     
     On Error GoTo cantidad_Change_Err
     
@@ -462,9 +495,13 @@ cantidad_Change_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.cantidad_Change", Erl)
     Resume Next
     
+    Exit Sub
+cantidad_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.cantidad_Change", Erl)
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    On Error Goto Form_Unload_Err
     
     On Error GoTo Form_Unload_Err
     Call ao20audio.PlayWav(SND_CLICK)
@@ -480,10 +517,14 @@ Form_Unload_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.Form_Unload", Erl)
     Resume Next
     
+    Exit Sub
+Form_Unload_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.Form_Unload", Erl)
 End Sub
 
 
 Private Sub interface_Click()
+    On Error Goto interface_Click_Err
     
     On Error GoTo interface_Click_Err
     
@@ -505,9 +546,13 @@ interface_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.interface_Click", Erl)
     Resume Next
     
+    Exit Sub
+interface_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.interface_Click", Erl)
 End Sub
 
 Private Sub interface_DblClick()
+    On Error Goto interface_DblClick_Err
     
     On Error GoTo interface_DblClick_Err
     
@@ -560,9 +605,13 @@ interface_DblClick_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.interface_DblClick", Erl)
     Resume Next
     
+    Exit Sub
+interface_DblClick_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.interface_DblClick", Erl)
 End Sub
 
 Private Sub interface_KeyDown(KeyCode As Integer, Shift As Integer)
+    On Error Goto interface_KeyDown_Err
     
     On Error GoTo interface_KeyDown_Err
     
@@ -622,9 +671,13 @@ interface_KeyDown_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.interface_KeyDown", Erl)
     Resume Next
     
+    Exit Sub
+interface_KeyDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.interface_KeyDown", Erl)
 End Sub
 
 Private Sub InvBovedaCuenta_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+    On Error Goto InvBovedaCuenta_ItemDropped_Err
     
     On Error GoTo InvBovedaCuenta_ItemDropped_Err
     
@@ -652,9 +705,13 @@ InvBovedaCuenta_ItemDropped_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.InvBovedaCuenta_ItemDropped", Erl)
     Resume Next
     
+    Exit Sub
+InvBovedaCuenta_ItemDropped_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.InvBovedaCuenta_ItemDropped", Erl)
 End Sub
 
 Private Sub InvBankUsuCuenta_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+    On Error Goto InvBankUsuCuenta_ItemDropped_Err
     
     On Error GoTo InvBankUsuCuenta_ItemDropped_Err
     
@@ -685,9 +742,13 @@ InvBankUsuCuenta_ItemDropped_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.InvBankUsuCuenta_ItemDropped", Erl)
     Resume Next
     
+    Exit Sub
+InvBankUsuCuenta_ItemDropped_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.InvBankUsuCuenta_ItemDropped", Erl)
 End Sub
 
 Private Sub salir_Click()
+    On Error Goto salir_Click_Err
     
     On Error GoTo salir_Click_Err
     
@@ -700,9 +761,13 @@ salir_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.salir_Click", Erl)
     Resume Next
     
+    Exit Sub
+salir_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.salir_Click", Erl)
 End Sub
 
 Private Sub tmrNumber_Timer()
+    On Error Goto tmrNumber_Timer_Err
     
     On Error GoTo tmrNumber_Timer_Err
     
@@ -735,6 +800,9 @@ tmrNumber_Timer_Err:
     Call RegistrarError(Err.number, Err.Description, "frmBancoCuenta.tmrNumber_Timer", Erl)
     Resume Next
     
+    Exit Sub
+tmrNumber_Timer_Err:
+    Call TraceError(Err.Number, Err.Description, "frmBancoCuenta.tmrNumber_Timer", Erl)
 End Sub
 
 

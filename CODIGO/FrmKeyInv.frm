@@ -107,6 +107,7 @@ Public WithEvents InvKeys As clsGrapchicalInventory
 Attribute InvKeys.VB_VarHelpID = -1
 
 Private Sub cmdcerrar_Click()
+    On Error Goto cmdcerrar_Click_Err
     
     On Error GoTo cmdcerrar_Click_Err
     
@@ -118,9 +119,13 @@ cmdcerrar_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.cmdcerrar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdcerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmKeyInv.cmdcerrar_Click", Erl)
 End Sub
 
 Private Sub cmdCerrar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdCerrar_MouseDown_Err
     
     On Error GoTo cmdCerrar_MouseDown_Err
     
@@ -133,9 +138,13 @@ cmdCerrar_MouseDown_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.cmdCerrar_MouseDown", Erl)
     Resume Next
     
+    Exit Sub
+cmdCerrar_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmKeyInv.cmdCerrar_MouseDown", Erl)
 End Sub
 
 Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdCerrar_MouseMove_Err
     
     On Error GoTo cmdCerrar_MouseMove_Err
     
@@ -150,9 +159,13 @@ cmdCerrar_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.cmdCerrar_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+cmdCerrar_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmKeyInv.cmdCerrar_MouseMove", Erl)
 End Sub
 
 Private Sub Form_Activate()
+    On Error Goto Form_Activate_Err
     
     On Error GoTo Form_Activate_Err
     
@@ -166,8 +179,12 @@ Form_Activate_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.Form_Activate", Erl)
     Resume Next
     
+    Exit Sub
+Form_Activate_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmKeyInv.Form_Activate", Erl)
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -184,9 +201,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmKeyInv.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -200,9 +221,13 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmKeyInv.Form_Load", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -224,9 +249,13 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmKeyInv.Form_MouseMove", Erl)
 End Sub
 
 Private Sub interface_DblClick()
+    On Error Goto interface_DblClick_Err
     
     On Error GoTo interface_DblClick_Err
     
@@ -242,9 +271,13 @@ interface_DblClick_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.interface_DblClick", Erl)
     Resume Next
     
+    Exit Sub
+interface_DblClick_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmKeyInv.interface_DblClick", Erl)
 End Sub
 
 Private Sub interface_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto interface_MouseMove_Err
     
     On Error GoTo interface_MouseMove_Err
     
@@ -268,9 +301,13 @@ interface_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.interface_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+interface_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmKeyInv.interface_MouseMove", Erl)
 End Sub
 
 Private Sub interface_Paint()
+    On Error Goto interface_Paint_Err
     
     On Error GoTo interface_Paint_Err
     
@@ -282,4 +319,7 @@ interface_Paint_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmKeyInv.interface_Paint", Erl)
     Resume Next
     
+    Exit Sub
+interface_Paint_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmKeyInv.interface_Paint", Erl)
 End Sub

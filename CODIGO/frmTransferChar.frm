@@ -68,12 +68,20 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub cancelButton_Click()
+    On Error Goto cancelButton_Click_Err
 Unload Me
+    Exit Sub
+cancelButton_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmTransferChar.cancelButton_Click", Erl)
 End Sub
 
 Private Sub transferButton_Click()
+    On Error Goto transferButton_Click_Err
 TransferCharNewOwner = Me.textboxTransferEmail.Text
 ModAuth.LoginOperation = e_operation.transfercharacter
 Call connectToLoginServer
 Unload Me
+    Exit Sub
+transferButton_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmTransferChar.transferButton_Click", Erl)
 End Sub

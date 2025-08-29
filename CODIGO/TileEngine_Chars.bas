@@ -18,6 +18,7 @@ Attribute VB_Name = "TileEngine_Chars"
 Option Explicit
 
 Public Sub ResetCharInfo(ByVal charindex As Integer)
+    On Error Goto ResetCharInfo_Err
     
     On Error GoTo ResetCharInfo_Err
     
@@ -85,10 +86,14 @@ ResetCharInfo_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.ResetCharInfo", Erl)
     Resume Next
     
+    Exit Sub
+ResetCharInfo_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.ResetCharInfo", Erl)
 End Sub
 
 
 Public Sub EraseChar(ByVal charindex As Integer, Optional ByVal notCancelMe As Boolean = False)
+    On Error Goto EraseChar_Err
 
     'Erases a character from CharList and map
 
@@ -140,9 +145,13 @@ EraseChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.EraseChar", Erl)
     Resume Next
     
+    Exit Sub
+EraseChar_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.EraseChar", Erl)
 End Sub
 
 Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal CartIndex As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
+    On Error Goto MakeChar_Err
     
     On Error GoTo MakeChar_Err
 
@@ -226,9 +235,13 @@ MakeChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.MakeChar", Erl)
     Resume Next
     
+    Exit Sub
+MakeChar_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.MakeChar", Erl)
 End Sub
 
 Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Heading)
+    On Error Goto Char_Move_by_Head_Err
 
     On Error GoTo Char_Move_by_Head_Err
        
@@ -338,9 +351,13 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
 Char_Move_by_Head_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.Char_Move_by_Head", Erl)
     Resume Next
+    Exit Sub
+Char_Move_by_Head_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.Char_Move_by_Head", Erl)
 End Sub
 
 Public Sub TranslateCharacterToPos(ByVal charindex As Integer, ByVal NewX As Integer, ByVal NewY As Integer, ByVal TranslationTime As Long)
+    On Error Goto TranslateCharacterToPos_Err
 On Error GoTo TranslateCharacterToPos_Err
     Dim TileX, TileY As Integer
     Dim DiffX, DiffY As Integer
@@ -371,13 +388,21 @@ On Error GoTo TranslateCharacterToPos_Err
     Exit Sub
 TranslateCharacterToPos_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.TranslateCharacterToPos", Erl)
+    Exit Sub
+TranslateCharacterToPos_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.TranslateCharacterToPos", Erl)
 End Sub
 
 Public Function IsLadderAt(ByVal TileX As Integer, ByVal TileY As Integer) As Boolean
+    On Error Goto IsLadderAt_Err
     IsLadderAt = MapData(TileX, TileY).ObjGrh.GrhIndex = 26940
+    Exit Function
+IsLadderAt_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.IsLadderAt", Erl)
 End Function
 
 Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByVal nY As Integer)
+    On Error Goto Char_Move_by_Pos_Err
     
     On Error GoTo Char_Move_by_Pos_Err
 
@@ -487,9 +512,13 @@ Char_Move_by_Pos_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.Char_Move_by_Pos", Erl)
     Resume Next
     
+    Exit Sub
+Char_Move_by_Pos_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.Char_Move_by_Pos", Erl)
 End Sub
 
 Public Sub ApplySpeedingToChar(ByVal CharIndex As Integer)
+    On Error Goto ApplySpeedingToChar_Err
     On Error Resume Next
 
     Dim rate As Single
@@ -556,9 +585,13 @@ Public Sub ApplySpeedingToChar(ByVal CharIndex As Integer)
             End If
         Next h
     End With
+    Exit Sub
+ApplySpeedingToChar_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.ApplySpeedingToChar", Erl)
 End Sub
 
 Public Function EstaPCarea(ByVal CharIndex As Integer) As Boolean
+    On Error Goto EstaPCarea_Err
     
     On Error GoTo EstaPCarea_Err
     
@@ -575,9 +608,13 @@ EstaPCarea_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.EstaPCarea", Erl)
     Resume Next
     
+    Exit Function
+EstaPCarea_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.EstaPCarea", Erl)
 End Function
 
 Public Function EstaEnArea(ByVal x As Integer, ByVal y As Integer) As Boolean
+    On Error Goto EstaEnArea_Err
     
     On Error GoTo EstaEnArea_Err
     
@@ -590,9 +627,13 @@ EstaEnArea_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.EstaEnArea", Erl)
     Resume Next
     
+    Exit Function
+EstaEnArea_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.EstaEnArea", Erl)
 End Function
 
 Public Function Char_Check(ByVal char_index As Integer) As Boolean
+    On Error Goto Char_Check_Err
     
     On Error GoTo Char_Check_Err
 
@@ -609,9 +650,13 @@ Char_Check_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.Char_Check", Erl)
     Resume Next
     
+    Exit Function
+Char_Check_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.Char_Check", Erl)
 End Function
 
 Public Function Char_FX_Group_Next_Open(ByVal char_index As Integer) As Integer
+    On Error Goto Char_FX_Group_Next_Open_Err
 
     On Error GoTo ErrorHandler:
 
@@ -648,9 +693,13 @@ ErrorHandler:
     ReDim charlist(char_index).FxList(1 To 1)
     Char_FX_Group_Next_Open = 1
 
+    Exit Function
+Char_FX_Group_Next_Open_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.Char_FX_Group_Next_Open", Erl)
 End Function
 
 Public Sub Char_Dialog_Set(ByVal char_index As Integer, ByVal char_dialog As String, ByVal char_dialog_color As Long, _
+    On Error Goto Char_Dialog_Set_Err
                            ByVal char_dialog_life As Byte, ByVal Sube As Byte, Optional ByVal font_index As Integer = 1, _
                            Optional ByVal IsSpell As Boolean = False, Optional ByVal MinChatTime As Integer = 0, Optional ByVal MaxChatTime As Integer = 0)
     
@@ -705,10 +754,14 @@ Char_Dialog_Set_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.Char_Dialog_Set", Erl)
     Resume Next
     
+    Exit Sub
+Char_Dialog_Set_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.Char_Dialog_Set", Erl)
 End Sub
 
 
 Public Sub Char_Dialog_Remove(ByVal char_index As Integer, ByVal Index As Integer)
+    On Error Goto Char_Dialog_Remove_Err
     
     On Error GoTo Char_Dialog_Remove_Err
     
@@ -749,9 +802,13 @@ Char_Dialog_Remove_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.Char_Dialog_Remove", Erl)
     Resume Next
     
+    Exit Sub
+Char_Dialog_Remove_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.Char_Dialog_Remove", Erl)
 End Sub
 
 Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal fX As Integer, ByVal Loops As Integer)
+    On Error Goto SetCharacterFx_Err
     
     On Error GoTo SetCharacterFx_Err
     
@@ -779,9 +836,13 @@ SetCharacterFx_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.SetCharacterFx", Erl)
     Resume Next
     
+    Exit Sub
+SetCharacterFx_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.SetCharacterFx", Erl)
 End Sub
 
 Public Sub SetCharacterDialogFx(ByVal charindex As Integer, ByVal Text As String, Color As RGBA)
+    On Error Goto SetCharacterDialogFx_Err
 
     With charlist(charindex)
         
@@ -815,9 +876,13 @@ Public Sub SetCharacterDialogFx(ByVal charindex As Integer, ByVal Text As String
         
     End With
     
+    Exit Sub
+SetCharacterDialogFx_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.SetCharacterDialogFx", Erl)
 End Sub
 
 Public Function Get_PixelY_Of_Char(ByVal char_index As Integer) As Integer
+    On Error Goto Get_PixelY_Of_Char_Err
     
     On Error GoTo Get_PixelY_Of_Char_Err
     'Make sure it's a legal char_index
@@ -834,9 +899,13 @@ Get_PixelY_Of_Char_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.Get_PixelY_Of_Char", Erl)
     Resume Next
     
+    Exit Function
+Get_PixelY_Of_Char_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.Get_PixelY_Of_Char", Erl)
 End Function
 
 Public Function Get_Pixelx_Of_Char(ByVal char_index As Integer) As Integer
+    On Error Goto Get_Pixelx_Of_Char_Err
     
     On Error GoTo Get_Pixelx_Of_Char_Err
     'Make sure it's a legal char_index
@@ -853,9 +922,13 @@ Get_Pixelx_Of_Char_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.Get_Pixelx_Of_Char", Erl)
     Resume Next
     
+    Exit Function
+Get_Pixelx_Of_Char_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.Get_Pixelx_Of_Char", Erl)
 End Function
 
 Public Function Get_Pixelx_Of_XY(ByVal x As Byte) As Integer
+    On Error Goto Get_Pixelx_Of_XY_Err
     'Make sure it's a legal char_index
     
     On Error GoTo Get_Pixelx_Of_XY_Err
@@ -870,9 +943,13 @@ Get_Pixelx_Of_XY_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.Get_Pixelx_Of_XY", Erl)
     Resume Next
     
+    Exit Function
+Get_Pixelx_Of_XY_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.Get_Pixelx_Of_XY", Erl)
 End Function
 
 Public Function Get_PixelY_Of_XY(ByVal y As Byte) As Integer
+    On Error Goto Get_PixelY_Of_XY_Err
     'Make sure it's a legal char_index
     
     On Error GoTo Get_PixelY_Of_XY_Err
@@ -887,11 +964,15 @@ Get_PixelY_Of_XY_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.Get_PixelY_Of_XY", Erl)
     Resume Next
     
+    Exit Function
+Get_PixelY_Of_XY_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.Get_PixelY_Of_XY", Erl)
 End Function
 
 
 
 Public Function SyncGrhPhase(ByRef Grh As Grh, ByVal newGrhIndex As Long) As Long
+    On Error Goto SyncGrhPhase_Err
     Dim oldNum As Long, elapsed As Long, phase As Long
     If Grh.started <= 0 Then SyncGrhPhase = FrameTime: Exit Function
     oldNum = GrhData(Grh.GrhIndex).NumFrames
@@ -899,5 +980,8 @@ Public Function SyncGrhPhase(ByRef Grh As Grh, ByVal newGrhIndex As Long) As Lon
     elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
     phase = elapsed Mod oldNum
     SyncGrhPhase = FrameTime - (phase * Grh.speed)
+    Exit Function
+SyncGrhPhase_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Chars.SyncGrhPhase", Erl)
 End Function
 

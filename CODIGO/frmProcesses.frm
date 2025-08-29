@@ -39,6 +39,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Sub ShowProcesses(DATA As String)
+    On Error Goto ShowProcesses_Err
 
     On Error GoTo Handler
 
@@ -68,11 +69,18 @@ Public Sub ShowProcesses(DATA As String)
 Handler:
     Call RegistrarError(Err.Number, Err.Description, "frmProcesses.ShowProcesses")
 
+    Exit Sub
+ShowProcesses_Err:
+    Call TraceError(Err.Number, Err.Description, "frmProcesses.ShowProcesses", Erl)
 End Sub
 
 Private Sub Close_Click()
+    On Error Goto Close_Click_Err
 
     Unload Me
 
+    Exit Sub
+Close_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmProcesses.Close_Click", Erl)
 End Sub
 

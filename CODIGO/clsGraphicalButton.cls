@@ -52,6 +52,7 @@ Private Form_Movement As clsFormMovementManager
 Private OverButton As Boolean    'Indicates wether the mouse is over the button or not
 
 Public Sub Initialize(ByRef imgButton As Image, ByVal imgNormalPath As String, ByVal imgRollOverPath As String, ByVal imgClickPath As String, Optional ByRef Form As Form)
+    On Error Goto Initialize_Err
     Set ButtonHolder = imgButton
     Set Form_Movement = New clsFormMovementManager
     Call Form_Movement.Initialize(Form)
@@ -63,10 +64,14 @@ Public Sub Initialize(ByRef imgButton As Image, ByVal imgNormalPath As String, B
             .Picture = NormalButtonImage
     End With
 
+    Exit Sub
+Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGraphicalButton.Initialize", Erl)
 End Sub
 
 
 Private Sub ButtonHolder_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto ButtonHolder_MouseDown_Err
 
 'Implements the mouse down event of the image button.
 'Toggle to Click image button.
@@ -74,9 +79,13 @@ Private Sub ButtonHolder_MouseDown(Button As Integer, Shift As Integer, X As Sin
 
     ButtonHolder.Picture = ClickButtonImage
     Call ao20audio.playwav(SND_CLICK)
+    Exit Sub
+ButtonHolder_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGraphicalButton.ButtonHolder_MouseDown", Erl)
 End Sub
 
 Private Sub ButtonHolder_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto ButtonHolder_MouseMove_Err
 
 'Implements the mouse move event of the image button.
 'Toggle to pressed image button.
@@ -93,9 +102,13 @@ Private Sub ButtonHolder_MouseMove(Button As Integer, Shift As Integer, X As Sin
         Set Form_Movement.LastButtonPressed = Me
         Call ao20audio.playwav(SND_CLICK_OVER)
     End If
+    Exit Sub
+ButtonHolder_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGraphicalButton.ButtonHolder_MouseMove", Erl)
 End Sub
 
 Public Sub ToggleToNormal()
+    On Error Goto ToggleToNormal_Err
 
 'Toggle to normal image button.
 
@@ -103,14 +116,21 @@ Public Sub ToggleToNormal()
 
     ButtonHolder.Picture = NormalButtonImage
     OverButton = False
+    Exit Sub
+ToggleToNormal_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGraphicalButton.ToggleToNormal", Erl)
 End Sub
 
 Private Sub ButtonHolder_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto ButtonHolder_MouseUp_Err
 
 'Implements the mouse up event of the image button.
 'Toggle to RollOver image button.
 
     ButtonHolder.Picture = RollOverButtonImage
+    Exit Sub
+ButtonHolder_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGraphicalButton.ButtonHolder_MouseUp", Erl)
 End Sub
 
 

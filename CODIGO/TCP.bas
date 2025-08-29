@@ -25,6 +25,7 @@ Public LlegaronAtrib  As Boolean
 
 #If PYMMO = 1 Then
 Sub LoginOrConnect(ByVal Modo As E_MODO)
+    On Error Goto LoginOrConnect_Err
     EstadoLogin = Modo
     
     If Auth_state = e_state.AccountLogged Then
@@ -33,9 +34,13 @@ Sub LoginOrConnect(ByVal Modo As E_MODO)
         Call connectToLoginServer
     End If
   
+    Exit Sub
+LoginOrConnect_Err:
+    Call TraceError(Err.Number, Err.Description, "TCP.LoginOrConnect", Erl)
 End Sub
 #ElseIf PYMMO = 0 Then
 Sub LoginOrConnect(ByVal Modo As E_MODO)
+    On Error Goto LoginOrConnect_Err
     
     EstadoLogin = Modo
     
@@ -45,10 +50,14 @@ Sub LoginOrConnect(ByVal Modo As E_MODO)
         Call Login
     End If
 
+    Exit Sub
+LoginOrConnect_Err:
+    Call TraceError(Err.Number, Err.Description, "TCP.LoginOrConnect", Erl)
 End Sub
 #End If
 
 Sub Login()
+    On Error Goto Login_Err
     
     On Error GoTo Login_Err
     
@@ -74,4 +83,7 @@ Login_Err:
     Call RegistrarError(Err.number, Err.Description, "Mod_TCP.Login", Erl)
     Resume Next
     
+    Exit Sub
+Login_Err:
+    Call TraceError(Err.Number, Err.Description, "TCP.Login", Erl)
 End Sub

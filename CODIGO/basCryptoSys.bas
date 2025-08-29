@@ -854,9 +854,13 @@ Public Declare Function PRF_Bytes Lib "diCryptoSys.dll" (ByRef lpOutput As Byte,
 ' }
 '**/
 Public Function cnvBytesLen(ab() As Byte) As Long
+    On Error Goto cnvBytesLen_Err
     ' Trap error if array is empty
     On Error Resume Next
     cnvBytesLen = UBound(ab) - LBound(ab) + 1
+    Exit Function
+cnvBytesLen_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvBytesLen", Erl)
 End Function
 
 
@@ -867,6 +871,7 @@ End Function
 ' @remark Same as {@link cnvToHex}.
 '**/
 Public Function cnvHexStrFromBytes(abData() As Byte) As String
+    On Error Goto cnvHexStrFromBytes_Err
     Dim strHex As String
     Dim nHexLen As Long
     Dim nDataLen As Long
@@ -883,6 +888,9 @@ Public Function cnvHexStrFromBytes(abData() As Byte) As String
         Exit Function
     End If
     cnvHexStrFromBytes = Left$(strHex, nHexLen)
+    Exit Function
+cnvHexStrFromBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvHexStrFromBytes", Erl)
 End Function
 
 '/**
@@ -892,6 +900,7 @@ End Function
 ' @remark Expecting a string of 8-bit "ANSI" characters.
 '**/
 Public Function cnvHexStrFromString(strData As String) As String
+    On Error Goto cnvHexStrFromString_Err
     Dim strHex As String
     Dim nHexLen As Long
     Dim nDataLen As Long
@@ -910,6 +919,9 @@ Public Function cnvHexStrFromString(strData As String) As String
         Exit Function
     End If
     cnvHexStrFromString = Left$(strHex, nHexLen)
+    Exit Function
+cnvHexStrFromString_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvHexStrFromString", Erl)
 End Function
 
 '/**
@@ -919,6 +931,7 @@ End Function
 ' @remark Same as {@link cnvFromHex}.
 '**/
 Public Function cnvBytesFromHexStr(strHex As String) As Byte()
+    On Error Goto cnvBytesFromHexStr_Err
     Dim abData() As Byte
     Dim nDataLen As Long
     
@@ -935,6 +948,9 @@ Public Function cnvBytesFromHexStr(strHex As String) As Byte()
     End If
     ReDim Preserve abData(nDataLen - 1)
     cnvBytesFromHexStr = abData
+    Exit Function
+cnvBytesFromHexStr_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvBytesFromHexStr", Erl)
 End Function
 
 '/**
@@ -944,10 +960,14 @@ End Function
 ' @remark Output is a string of "ANSI" characters of value between 0 and 255.
 '**/
 Public Function cnvStringFromHexStr(ByVal strHex As String) As String
+    On Error Goto cnvStringFromHexStr_Err
     Dim abData() As Byte
     If Len(strHex) = 0 Then Exit Function
     abData = cnvBytesFromHexStr(strHex)
     cnvStringFromHexStr = StrConv(abData, vbUnicode)
+    Exit Function
+cnvStringFromHexStr_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvStringFromHexStr", Erl)
 End Function
 
 '/**
@@ -956,6 +976,7 @@ End Function
 ' @return Filtered string.
 '**/
 Public Function cnvHexFilter(strHex As String) As String
+    On Error Goto cnvHexFilter_Err
     Dim strFiltered As String
     Dim nLen As Long
     
@@ -967,6 +988,9 @@ Public Function cnvHexFilter(strHex As String) As String
         strFiltered = ""
     End If
     cnvHexFilter = strFiltered
+    Exit Function
+cnvHexFilter_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvHexFilter", Erl)
 End Function
 
 '/**
@@ -976,6 +1000,7 @@ End Function
 ' @remark Same as {@link cnvToBase64}.
 '**/
 Public Function cnvB64StrFromBytes(abData() As Byte) As String
+    On Error Goto cnvB64StrFromBytes_Err
     Dim strB64 As String
     Dim nB64Len As Long
     Dim nDataLen As Long
@@ -987,6 +1012,9 @@ Public Function cnvB64StrFromBytes(abData() As Byte) As String
     nB64Len = CNV_B64StrFromBytes(strB64, nB64Len, abData(0), nDataLen)
     If nB64Len <= 0 Then Exit Function
     cnvB64StrFromBytes = Left$(strB64, nB64Len)
+    Exit Function
+cnvB64StrFromBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvB64StrFromBytes", Erl)
 End Function
 
 '/**
@@ -996,6 +1024,7 @@ End Function
 ' @remark Expecting a string of 8-bit "ANSI" characters.
 '**/
 Public Function cnvB64StrFromString(strData As String) As String
+    On Error Goto cnvB64StrFromString_Err
     Dim strB64 As String
     Dim nB64Len As Long
     Dim nDataLen As Long
@@ -1010,6 +1039,9 @@ Public Function cnvB64StrFromString(strData As String) As String
     nB64Len = CNV_B64StrFromBytes(strB64, nB64Len, abData(0), nDataLen)
     If nB64Len <= 0 Then Exit Function
     cnvB64StrFromString = Left$(strB64, nB64Len)
+    Exit Function
+cnvB64StrFromString_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvB64StrFromString", Erl)
 End Function
 
 '/**
@@ -1019,6 +1051,7 @@ End Function
 ' @remark Same as {@link cnvFromBase64}.
 '**/
 Public Function cnvBytesFromB64Str(strB64 As String) As Byte()
+    On Error Goto cnvBytesFromB64Str_Err
     Dim abData() As Byte
     Dim nDataLen As Long
     
@@ -1031,6 +1064,9 @@ Public Function cnvBytesFromB64Str(strB64 As String) As Byte()
     If nDataLen <= 0 Then Exit Function
     ReDim Preserve abData(nDataLen - 1)
     cnvBytesFromB64Str = abData
+    Exit Function
+cnvBytesFromB64Str_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvBytesFromB64Str", Erl)
 End Function
 
 '/**
@@ -1039,6 +1075,7 @@ End Function
 ' @return Filtered string.
 '**/
 Public Function cnvB64Filter(strB64 As String) As String
+    On Error Goto cnvB64Filter_Err
     Dim strFiltered As String
     Dim nLen As Long
     
@@ -1050,6 +1087,9 @@ Public Function cnvB64Filter(strB64 As String) As String
         strFiltered = ""
     End If
     cnvB64Filter = strFiltered
+    Exit Function
+cnvB64Filter_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvB64Filter", Erl)
 End Function
 
 '/**
@@ -1058,7 +1098,11 @@ End Function
 ' @return Binary value encoded in base64
 '**/
 Public Function cnvB64StrFromHexStr(strHex As String) As String
+    On Error Goto cnvB64StrFromHexStr_Err
     cnvB64StrFromHexStr = cnvB64StrFromBytes(cnvBytesFromHexStr(strHex))
+    Exit Function
+cnvB64StrFromHexStr_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvB64StrFromHexStr", Erl)
 End Function
 
 '/**
@@ -1067,7 +1111,11 @@ End Function
 ' @return Binary value encoded in hexadecimal
 '**/
 Public Function cnvHexStrFromB64Str(strB64 As String) As String
+    On Error Goto cnvHexStrFromB64Str_Err
     cnvHexStrFromB64Str = cnvHexStrFromBytes(cnvBytesFromB64Str(strB64))
+    Exit Function
+cnvHexStrFromB64Str_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvHexStrFromB64Str", Erl)
 End Function
 
 '/**
@@ -1082,10 +1130,14 @@ End Function
 ' }
 '**/
 Public Function cnvHexFromBytesMid(abData() As Byte, nOffset As Long, nBytes As Long) As String
+    On Error Goto cnvHexFromBytesMid_Err
     Dim strHex As String
     ' Lazy but safe! Encode it all then grab the substring
     strHex = cnvHexStrFromBytes(abData)
     cnvHexFromBytesMid = Mid(strHex, nOffset * 2 + 1, nBytes * 2)
+    Exit Function
+cnvHexFromBytesMid_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvHexFromBytesMid", Erl)
 End Function
 
 ' New in [v6.20] more convenient synonyms
@@ -1097,7 +1149,11 @@ End Function
 ' @remark A shorter synonym for {@link cnvHexStrFromBytes}
 '**/
 Public Function cnvToHex(lpData() As Byte) As String
+    On Error Goto cnvToHex_Err
     cnvToHex = cnvHexStrFromBytes(lpData)
+    Exit Function
+cnvToHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvToHex", Erl)
 End Function
 
 '/**
@@ -1107,7 +1163,11 @@ End Function
 ' @remark A shorter synonym for {@link cnvBytesFromHexStr}
 '**/
 Public Function cnvFromHex(strHex As String) As Byte()
+    On Error Goto cnvFromHex_Err
     cnvFromHex = cnvBytesFromHexStr(strHex)
+    Exit Function
+cnvFromHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvFromHex", Erl)
 End Function
 
 '/**
@@ -1117,7 +1177,11 @@ End Function
 ' @remark A shorter synonym for {@link cnvB64StrFromBytes}
 '**/
 Public Function cnvToBase64(lpData() As Byte) As String
+    On Error Goto cnvToBase64_Err
     cnvToBase64 = cnvB64StrFromBytes(lpData)
+    Exit Function
+cnvToBase64_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvToBase64", Erl)
 End Function
 
 '/**
@@ -1127,7 +1191,11 @@ End Function
 ' @remark A shorter synonym for {@link cnvBytesFromB64Str}
 '**/
 Public Function cnvFromBase64(strBase64 As String) As Byte()
+    On Error Goto cnvFromBase64_Err
     cnvFromBase64 = cnvBytesFromB64Str(strBase64)
+    Exit Function
+cnvFromBase64_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvFromBase64", Erl)
 End Function
 
 '/**
@@ -1137,6 +1205,7 @@ End Function
 ' @param nBytes Number of bytes in substring (optional). If negative, copy to end of input.
 '**/
 Public Function cnvBytesMid(Bytes() As Byte, nOffset As Long, Optional nBytes As Long = -1) As Byte()
+    On Error Goto cnvBytesMid_Err
     cnvBytesMid = vbNullString
     Dim MyBytes() As Byte
     Dim nLen As Long
@@ -1161,6 +1230,9 @@ Public Function cnvBytesMid(Bytes() As Byte, nOffset As Long, Optional nBytes As
         MyBytes(i) = Bytes(i + nOffset)
     Next
     cnvBytesMid = MyBytes
+    Exit Function
+cnvBytesMid_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cnvBytesMid", Erl)
 End Function
 
 '/**
@@ -1169,12 +1241,16 @@ End Function
 ' @return Error message, or empty string if no corresponding error code.
 '**/
 Public Function apiErrorLookup(nCode As Long) As String
+    On Error Goto apiErrorLookup_Err
     Dim strMsg As String
     Dim nRet As Long
     
     strMsg = String(128, " ")
     nRet = API_ErrorLookup(strMsg, Len(strMsg), nCode)
     apiErrorLookup = Left(strMsg, nRet)
+    Exit Function
+apiErrorLookup_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.apiErrorLookup", Erl)
 End Function
 
 '/**
@@ -1183,7 +1259,11 @@ End Function
 ' @remark Not all functions set this value.
 '**/
 Public Function apiErrorCode() As Long
+    On Error Goto apiErrorCode_Err
     apiErrorCode = API_ErrorCode()
+    Exit Function
+apiErrorCode_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.apiErrorCode", Erl)
 End Function
 
 
@@ -1198,6 +1278,7 @@ End Function
 ' }
 '**/
 Public Function errFormatErrorMessage(Optional nErrCode As Long = 0, Optional szMsg As String = "") As String
+    On Error Goto errFormatErrorMessage_Err
     Dim nLastCode As Long
     errFormatErrorMessage = vbNullString
     If nErrCode < 0 Then nErrCode = -nErrCode
@@ -1222,6 +1303,9 @@ Public Function errFormatErrorMessage(Optional nErrCode As Long = 0, Optional sz
         errFormatErrorMessage = errFormatErrorMessage & ": " & apiErrorLookup(nLastCode)
     End If
     
+    Exit Function
+errFormatErrorMessage_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.errFormatErrorMessage", Erl)
 End Function
 
 
@@ -1231,6 +1315,7 @@ End Function
 ' @return Hex-encoded random bytes.
 '**/
 Public Function rngNonceHex(nBytes As Long) As String
+    On Error Goto rngNonceHex_Err
     Dim strHex As String
     Dim lngRet As Long
     
@@ -1239,6 +1324,9 @@ Public Function rngNonceHex(nBytes As Long) As String
     If lngRet = 0 Then
         rngNonceHex = strHex
     End If
+    Exit Function
+rngNonceHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.rngNonceHex", Erl)
 End Function
 
 '/**
@@ -1249,6 +1337,7 @@ End Function
 ' @deprecated Use `padHexBlock()`.
 '**/
 Public Function padHexString(ByVal strInputHex As String, nBlockLen As Long) As String
+    On Error Goto padHexString_Err
     Dim nOutChars As Long
     Dim strOutputHex As String
     
@@ -1270,6 +1359,9 @@ Public Function padHexString(ByVal strInputHex As String, nBlockLen As Long) As 
     
     padHexString = strOutputHex
     
+    Exit Function
+padHexString_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.padHexString", Erl)
 End Function
 
 '/**
@@ -1282,6 +1374,7 @@ End Function
 ' @deprecated Use {@link padUnpadHex}.
 '**/
 Public Function unpadHexString(strInputHex As String, nBlockLen As Long) As String
+    On Error Goto unpadHexString_Err
 ' Strips PKCS5 padding from a hex string.
 ' Returns unpadded hex string or, on error, the original input string
 ' -- we do this because an empty string is a valid result.
@@ -1309,6 +1402,9 @@ Public Function unpadHexString(strInputHex As String, nBlockLen As Long) As Stri
     
     unpadHexString = strOutputHex
     
+    Exit Function
+unpadHexString_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.unpadHexString", Erl)
 End Function
 
 
@@ -1331,6 +1427,7 @@ End Function
 ' @remark The input must include the 16-byte tag appended to the ciphertext.
 '**/
 Public Function aeadDecryptWithTag(lpData() As Byte, lpKey() As Byte, lpNonce() As Byte, lpAAD() As Byte, nOptions As Long) As Byte()
+    On Error Goto aeadDecryptWithTag_Err
     aeadDecryptWithTag = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpData)
@@ -1356,6 +1453,9 @@ Public Function aeadDecryptWithTag(lpData() As Byte, lpKey() As Byte, lpNonce() 
     aeadDecryptWithTag = abMyData
 CleanUp:
     If n4 = 0 Then lpAAD = vbNullString
+    Exit Function
+aeadDecryptWithTag_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.aeadDecryptWithTag", Erl)
 End Function
 
 '/**
@@ -1378,6 +1478,7 @@ End Function
 ' or exactly `taglen + ivlen` (28/32) bytes longer if `API_IV_PREFIX` is used.
 '**/
 Public Function aeadEncryptWithTag(lpData() As Byte, lpKey() As Byte, lpNonce() As Byte, lpAAD() As Byte, nOptions As Long) As Byte()
+    On Error Goto aeadEncryptWithTag_Err
     aeadEncryptWithTag = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpData)
@@ -1404,6 +1505,9 @@ Public Function aeadEncryptWithTag(lpData() As Byte, lpKey() As Byte, lpNonce() 
 CleanUp:
     If n1 = 0 Then lpData = vbNullString
     If n4 = 0 Then lpAAD = vbNullString
+    Exit Function
+aeadEncryptWithTag_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.aeadEncryptWithTag", Erl)
 End Function
 
 '/**
@@ -1418,7 +1522,11 @@ End Function
 ' @return Nonzero handle of the AEAD context, or _zero_ if an error occurs.
 '**/
 Public Function aeadInitKey(lpKey() As Byte, nOptions As Long) As Long
+    On Error Goto aeadInitKey_Err
     aeadInitKey = AEAD_InitKey(lpKey(0), cnvBytesLen(lpKey), nOptions)
+    Exit Function
+aeadInitKey_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.aeadInitKey", Erl)
 End Function
 
 '/**
@@ -1428,7 +1536,11 @@ End Function
 ' @return  Zero (0) on success, or a nonzero error code (use {@link apiErrorLookup} to check).
 '**/
 Public Function aeadSetNonce(hContext As Long, lpNonce() As Byte) As Long
+    On Error Goto aeadSetNonce_Err
     aeadSetNonce = AEAD_SetNonce(hContext, lpNonce(0), cnvBytesLen(lpNonce))
+    Exit Function
+aeadSetNonce_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.aeadSetNonce", Erl)
 End Function
 
 '/**
@@ -1441,7 +1553,11 @@ End Function
 ' Returns `MISUSE_ERROR` if called out of sequence.
 '**/
 Public Function aeadAddAAD(hContext As Long, lpAAD() As Byte) As Long
+    On Error Goto aeadAddAAD_Err
     aeadAddAAD = AEAD_AddAAD(hContext, lpAAD(0), cnvBytesLen(lpAAD))
+    Exit Function
+aeadAddAAD_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.aeadAddAAD", Erl)
 End Function
 
 '/**
@@ -1453,7 +1569,11 @@ End Function
 ' Returns `MISUSE_ERROR` if called out of sequence.
 '**/
 Public Function aeadStartEncrypt(hContext As Long) As Long
+    On Error Goto aeadStartEncrypt_Err
     aeadStartEncrypt = AEAD_StartEncrypt(hContext)
+    Exit Function
+aeadStartEncrypt_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.aeadStartEncrypt", Erl)
 End Function
 
 '/**
@@ -1467,7 +1587,11 @@ End Function
 ' __Caution__: do not trust decrypted data until final authentication.
 '**/
 Public Function aeadStartDecrypt(hContext As Long, lpTagToCheck() As Byte) As Long
+    On Error Goto aeadStartDecrypt_Err
     aeadStartDecrypt = AEAD_StartDecrypt(hContext, lpTagToCheck(0), cnvBytesLen(lpTagToCheck))
+    Exit Function
+aeadStartDecrypt_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.aeadStartDecrypt", Erl)
 End Function
 
 '/**
@@ -1481,6 +1605,7 @@ End Function
 ' It must eventually be followed by either {@link aeadFinishEncrypt} or {@link aeadFinishDecrypt}, which must match the start mode.
 '**/
 Public Function aeadUpdate(hContext As Long, lpData() As Byte) As Byte()
+    On Error Goto aeadUpdate_Err
     aeadUpdate = vbNullString
     Dim nb As Long
     nb = cnvBytesLen(lpData)
@@ -1490,6 +1615,9 @@ Public Function aeadUpdate(hContext As Long, lpData() As Byte) As Byte()
     nb = AEAD_Update(hContext, abMyData(0), nb, lpData(0), nb)
     If nb <> 0 Then Exit Function
     aeadUpdate = abMyData
+    Exit Function
+aeadUpdate_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.aeadUpdate", Erl)
 End Function
 
 '/**
@@ -1501,6 +1629,7 @@ End Function
 ' otherwise should be followed by {@link aeadDestroy}.
 '**/
 Public Function aeadFinishEncrypt(hContext As Long) As Byte()
+    On Error Goto aeadFinishEncrypt_Err
     aeadFinishEncrypt = vbNullString
     Dim nb As Long
     nb = API_AEAD_TAG_MAX_BYTES
@@ -1509,6 +1638,9 @@ Public Function aeadFinishEncrypt(hContext As Long) As Byte()
     nb = AEAD_FinishEncrypt(hContext, abMyData(0), nb)
     If nb <> 0 Then Exit Function
     aeadFinishEncrypt = abMyData
+    Exit Function
+aeadFinishEncrypt_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.aeadFinishEncrypt", Erl)
 End Function
 
 '/**
@@ -1522,7 +1654,11 @@ End Function
 ' Returns `MISUSE_ERROR` if called out of sequence.
 '**/
 Public Function aeadFinishDecrypt(hContext As Long) As Long
+    On Error Goto aeadFinishDecrypt_Err
     aeadFinishDecrypt = AEAD_FinishDecrypt(hContext)
+    Exit Function
+aeadFinishDecrypt_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.aeadFinishDecrypt", Erl)
 End Function
 
 '/**
@@ -1531,7 +1667,11 @@ End Function
 ' @return  Zero (0) on success, or a nonzero error code (use {@link apiErrorLookup} to check).
 '**/
 Public Function aeadDestroy(hContext As Long) As Long
+    On Error Goto aeadDestroy_Err
     aeadDestroy = AEAD_Destroy(hContext)
+    Exit Function
+aeadDestroy_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.aeadDestroy", Erl)
 End Function
 
 
@@ -1540,12 +1680,16 @@ End Function
 ' @return Date and time string.
 '**/
 Public Function apiCompileTime() As String
+    On Error Goto apiCompileTime_Err
     Dim nc As Long
     nc = API_CompileTime(vbNullString, 0)
     If nc <= 0 Then Exit Function
     apiCompileTime = String(nc, " ")
     nc = API_CompileTime(apiCompileTime, nc)
     apiCompileTime = Left$(apiCompileTime, nc)
+    Exit Function
+apiCompileTime_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.apiCompileTime", Erl)
 End Function
 
 '/**
@@ -1554,12 +1698,16 @@ End Function
 ' @return File path to current DLL module.
 '**/
 Public Function apiModuleName(Optional nOptions As Long = 0) As String
+    On Error Goto apiModuleName_Err
     Dim nc As Long
     nc = API_ModuleName(vbNullString, 0, nOptions)
     If nc <= 0 Then Exit Function
     apiModuleName = String(nc, " ")
     nc = API_ModuleName(apiModuleName, nc, nOptions)
     apiModuleName = Left$(apiModuleName, nc)
+    Exit Function
+apiModuleName_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.apiModuleName", Erl)
 End Function
 
 '/**
@@ -1567,12 +1715,16 @@ End Function
 ' @return `"Win32"` or `"X64"`.
 '**/
 Public Function apiPlatform() As String
+    On Error Goto apiPlatform_Err
     Dim nc As Long
     nc = API_Platform(vbNullString, 0)
     If nc <= 0 Then Exit Function
     apiPlatform = String(nc, " ")
     nc = API_Platform(apiPlatform, nc)
     apiPlatform = Left$(apiPlatform, nc)
+    Exit Function
+apiPlatform_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.apiPlatform", Erl)
 End Function
 
 '/**
@@ -1581,12 +1733,16 @@ End Function
 ' @return Additional information, e.g. "Licensed Developer Edition".
 '**/
 Public Function apiModuleInfo(Optional nOptions As Long = 0) As String
+    On Error Goto apiModuleInfo_Err
     Dim nc As Long
     nc = API_ModuleInfo(vbNullString, 0, nOptions)
     If nc <= 0 Then Exit Function
     apiModuleInfo = String(nc, " ")
     nc = API_ModuleInfo(apiModuleInfo, nc, nOptions)
     apiModuleInfo = Left$(apiModuleInfo, nc)
+    Exit Function
+apiModuleInfo_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.apiModuleInfo", Erl)
 End Function
 
 '/**
@@ -1595,9 +1751,13 @@ End Function
 ' @return `D`=Developer `T`=Trial.
 '**/
 Public Function apiLicenceType(Optional nOptions As Long = 0) As String
+    On Error Goto apiLicenceType_Err
     Dim n As Long
     n = API_LicenceType(nOptions)
     apiLicenceType = Chr(n)
+    Exit Function
+apiLicenceType_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.apiLicenceType", Erl)
 End Function
 
 '/**
@@ -1605,7 +1765,11 @@ End Function
 ' @return Version number as an integer in form `Major*100*100 + Minor*100 + Revision`. For example, version 6.1.2 would return `60102`.
 '**/
 Public Function apiVersion() As Long
+    On Error Goto apiVersion_Err
     apiVersion = API_Version()
+    Exit Function
+apiVersion_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.apiVersion", Erl)
 End Function
 
 '/**
@@ -1627,6 +1791,7 @@ End Function
 ' @remark Default padding is `Pkcs5` for ECB and CBC mode and `NoPad` for all other modes.
 '**/
 Public Function cipherDecryptBytes(lpInput() As Byte, lpKey() As Byte, lpIV() As Byte, szAlgModePad As String, Optional nOptions As Long = 0) As Byte()
+    On Error Goto cipherDecryptBytes_Err
     cipherDecryptBytes = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpInput)
@@ -1649,11 +1814,18 @@ Public Function cipherDecryptBytes(lpInput() As Byte, lpKey() As Byte, lpIV() As
     cipherDecryptBytes = abMyData
 CleanUp:
     If n3 = 0 Then lpIV = vbNullString
+    Exit Function
+cipherDecryptBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherDecryptBytes", Erl)
 End Function
 
 ' @deprecated Use cipherDecryptBytes()
 Public Function cipherDecryptBytes2(lpInput() As Byte, lpKey() As Byte, lpIV() As Byte, szAlgModePad As String, Optional nOptions As Long = 0) As Byte()
+    On Error Goto cipherDecryptBytes2_Err
     cipherDecryptBytes2 = cipherDecryptBytes(lpInput, lpKey, lpIV, szAlgModePad, nOptions)
+    Exit Function
+cipherDecryptBytes2_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherDecryptBytes2", Erl)
 End Function
 
 '/**
@@ -1675,12 +1847,16 @@ End Function
 ' @remark Default padding is `Pkcs5` for ECB and CBC mode and `NoPad` for all other modes.
 '**/
 Public Function cipherDecryptHex(szInputHex As String, szKeyHex As String, szIvHex As String, szAlgModePad As String, Optional nOptions As Long = 0) As String
+    On Error Goto cipherDecryptHex_Err
     Dim nc As Long
     nc = CIPHER_DecryptHex(vbNullString, 0, szInputHex, szKeyHex, szIvHex, szAlgModePad, nOptions)
     If nc <= 0 Then Exit Function
     cipherDecryptHex = String(nc, " ")
     nc = CIPHER_DecryptHex(cipherDecryptHex, nc, szInputHex, szKeyHex, szIvHex, szAlgModePad, nOptions)
     cipherDecryptHex = Left$(cipherDecryptHex, nc)
+    Exit Function
+cipherDecryptHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherDecryptHex", Erl)
 End Function
 
 '/**
@@ -1702,6 +1878,7 @@ End Function
 ' @remark Default padding is `Pkcs5` for ECB and CBC mode and `NoPad` for all other modes.
 '**/
 Public Function cipherEncryptBytes(lpInput() As Byte, lpKey() As Byte, lpIV() As Byte, szAlgModePad As String, Optional nOptions As Long = 0) As Byte()
+    On Error Goto cipherEncryptBytes_Err
     cipherEncryptBytes = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpInput)
@@ -1725,11 +1902,18 @@ Public Function cipherEncryptBytes(lpInput() As Byte, lpKey() As Byte, lpIV() As
 CleanUp:
     If n1 = 0 Then lpInput = vbNullString
     If n3 = 0 Then lpIV = vbNullString
+    Exit Function
+cipherEncryptBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherEncryptBytes", Erl)
 End Function
 
 ' @deprecated Use cipherEncryptBytes()
 Public Function cipherEncryptBytes2(lpInput() As Byte, lpKey() As Byte, lpIV() As Byte, szAlgModePad As String, Optional nOptions As Long = 0) As Byte()
+    On Error Goto cipherEncryptBytes2_Err
     cipherEncryptBytes2 = cipherEncryptBytes(lpInput, lpKey, lpIV, szAlgModePad, nOptions)
+    Exit Function
+cipherEncryptBytes2_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherEncryptBytes2", Erl)
 End Function
 
 '/**
@@ -1752,12 +1936,16 @@ End Function
 ' @remark Default padding is `Pkcs5` for ECB and CBC mode and `NoPad` for all other modes.
 '**/
 Public Function cipherEncryptHex(szInputHex As String, szKeyHex As String, szIvHex As String, szAlgModePad As String, Optional nOptions As Long = 0) As String
+    On Error Goto cipherEncryptHex_Err
     Dim nc As Long
     nc = CIPHER_EncryptHex(vbNullString, 0, szInputHex, szKeyHex, szIvHex, szAlgModePad, nOptions)
     If nc <= 0 Then Exit Function
     cipherEncryptHex = String(nc, " ")
     nc = CIPHER_EncryptHex(cipherEncryptHex, nc, szInputHex, szKeyHex, szIvHex, szAlgModePad, nOptions)
     cipherEncryptHex = Left$(cipherEncryptHex, nc)
+    Exit Function
+cipherEncryptHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherEncryptHex", Erl)
 End Function
 
 '/**
@@ -1779,6 +1967,7 @@ End Function
 ' @remark `szFileOut` and `szFileIn` must __not__ be the same.
 '**/
 Public Function cipherFileEncrypt(szFileOut As String, szFileIn As String, lpKey() As Byte, lpIV() As Byte, szAlgModePad As String, Optional nOptions As Long = 0) As Long
+    On Error Goto cipherFileEncrypt_Err
     Dim n2 As Long
     n2 = cnvBytesLen(lpKey)
     Dim n3 As Long
@@ -1787,6 +1976,9 @@ Public Function cipherFileEncrypt(szFileOut As String, szFileIn As String, lpKey
     cipherFileEncrypt = CIPHER_FileEncrypt(szFileOut, szFileIn, lpKey(0), n2, lpIV(0), n3, szAlgModePad, nOptions)
 CleanUp:
     If n3 = 0 Then lpIV = vbNullString
+    Exit Function
+cipherFileEncrypt_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherFileEncrypt", Erl)
 End Function
 
 '/**
@@ -1808,6 +2000,7 @@ End Function
 ' @remark `szFileOut` and `szFileIn` must __not__ be the same.
 '**/
 Public Function cipherFileDecrypt(szFileOut As String, szFileIn As String, lpKey() As Byte, lpIV() As Byte, szAlgModePad As String, Optional nOptions As Long = 0) As Long
+    On Error Goto cipherFileDecrypt_Err
     Dim n2 As Long
     n2 = cnvBytesLen(lpKey)
     Dim n3 As Long
@@ -1816,6 +2009,9 @@ Public Function cipherFileDecrypt(szFileOut As String, szFileIn As String, lpKey
     cipherFileDecrypt = CIPHER_FileDecrypt(szFileOut, szFileIn, lpKey(0), n2, lpIV(0), n3, szAlgModePad, nOptions)
 CleanUp:
     If n3 = 0 Then lpIV = vbNullString
+    Exit Function
+cipherFileDecrypt_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherFileDecrypt", Erl)
 End Function
 
 '/**
@@ -1824,7 +2020,11 @@ End Function
 ' @return Zero (0) on success, or a nonzero error code (use {@link apiErrorLookup} to check)
 '**/
 Public Function cipherFinal(hContext As Long) As Long
+    On Error Goto cipherFinal_Err
     cipherFinal = CIPHER_Final(hContext)
+    Exit Function
+cipherFinal_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherFinal", Erl)
 End Function
 
 '/**
@@ -1837,6 +2037,7 @@ End Function
 ' @return Nonzero handle of the CIPHER context, or _zero_ if an error occurs.
 '**/
 Public Function cipherInit(fEncrypt As Integer, szAlgAndMode As String, lpKey() As Byte, lpIV() As Byte, Optional nOptions As Long = 0) As Long
+    On Error Goto cipherInit_Err
     Dim n1 As Long
     n1 = cnvBytesLen(lpKey)
     Dim n2 As Long
@@ -1846,6 +2047,9 @@ Public Function cipherInit(fEncrypt As Integer, szAlgAndMode As String, lpKey() 
     cipherInit = CIPHER_Init(fEncrypt, szAlgAndMode, lpKey(0), n1, lpIV(0), n2, nOptions)
 CleanUp:
     If n2 = 0 Then lpIV = vbNullString
+    Exit Function
+cipherInit_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherInit", Erl)
 End Function
 
 '/**
@@ -1858,7 +2062,11 @@ End Function
 ' @return Nonzero handle of the CIPHER context, or _zero_ if an error occurs.
 '**/
 Public Function cipherInitHex(fEncrypt As Integer, szAlgAndMode As String, szKeyHex As String, szIvHex As String, Optional nOptions As Long = 0) As Long
+    On Error Goto cipherInitHex_Err
     cipherInitHex = CIPHER_InitHex(fEncrypt, szAlgAndMode, szKeyHex, szIvHex, nOptions)
+    Exit Function
+cipherInitHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherInitHex", Erl)
 End Function
 
 '/**
@@ -1870,6 +2078,7 @@ End Function
 ' Input in ECB/CBC mode must be suitably padded to the correct length.
 '**/
 Public Function cipherUpdate(hContext As Long, lpData() As Byte) As Byte()
+    On Error Goto cipherUpdate_Err
     cipherUpdate = vbNullString
     Dim abMyData() As Byte
     Dim nb As Long
@@ -1880,6 +2089,9 @@ Public Function cipherUpdate(hContext As Long, lpData() As Byte) As Byte()
     r = CIPHER_Update(hContext, abMyData(0), nb, lpData(0), nb)
     If r <> 0 Then Exit Function
     cipherUpdate = abMyData
+    Exit Function
+cipherUpdate_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherUpdate", Erl)
 End Function
 
 '/**
@@ -1891,10 +2103,14 @@ End Function
 ' Input in ECB/CBC mode must be suitably padded to the correct length.
 '**/
 Public Function cipherUpdateHex(hContext As Long, szInputHex As String) As String
+    On Error Goto cipherUpdateHex_Err
     Dim nc As Long
     nc = Len(szInputHex)
     cipherUpdateHex = String(nc, " ")
     Call CIPHER_UpdateHex(hContext, cipherUpdateHex, nc, szInputHex)
+    Exit Function
+cipherUpdateHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherUpdateHex", Erl)
 End Function
 
 '/**
@@ -1911,6 +2127,7 @@ End Function
 ' @return Unwrapped key material (or empty array on error).
 '**/
 Public Function cipherKeyUnwrap(lpData() As Byte, lpKek() As Byte, nOptions As Long) As Byte()
+    On Error Goto cipherKeyUnwrap_Err
     cipherKeyUnwrap = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpData)
@@ -1927,6 +2144,9 @@ Public Function cipherKeyUnwrap(lpData() As Byte, lpKek() As Byte, nOptions As L
     If nb <= 0 Then Exit Function
     ReDim Preserve abMyData(nb - 1)
     cipherKeyUnwrap = abMyData
+    Exit Function
+cipherKeyUnwrap_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherKeyUnwrap", Erl)
 End Function
 
 '/**
@@ -1943,6 +2163,7 @@ End Function
 ' @return Wrapped key (or empty array on error).
 '**/
 Public Function cipherKeyWrap(lpData() As Byte, lpKek() As Byte, nOptions As Long) As Byte()
+    On Error Goto cipherKeyWrap_Err
     cipherKeyWrap = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpData)
@@ -1959,6 +2180,9 @@ Public Function cipherKeyWrap(lpData() As Byte, lpKek() As Byte, nOptions As Lon
     If nb <= 0 Then Exit Function
     ReDim Preserve abMyData(nb - 1)
     cipherKeyWrap = abMyData
+    Exit Function
+cipherKeyWrap_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherKeyWrap", Erl)
 End Function
 
 '/**
@@ -1980,6 +2204,7 @@ End Function
 ' @remark Note different order of parameters from core function.
 '**/
 Public Function cipherStreamBytes(lpInput() As Byte, lpKey() As Byte, lpIV() As Byte, nOptions As Long, Optional nCounter As Long = 0) As Byte()
+    On Error Goto cipherStreamBytes_Err
     cipherStreamBytes = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpInput)
@@ -2001,6 +2226,9 @@ Public Function cipherStreamBytes(lpInput() As Byte, lpKey() As Byte, lpIV() As 
     cipherStreamBytes = abMyData
 CleanUp:
     If n3 = 0 Then lpIV = vbNullString
+    Exit Function
+cipherStreamBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherStreamBytes", Erl)
 End Function
 
 
@@ -2029,11 +2257,15 @@ End Function
 ' }
 '**/
 Public Function cipherStreamHex(szInputHex As String, szKeyHex As String, szIvHex As String, nOptions As Long, Optional nCounter As Long = 0) As String
+    On Error Goto cipherStreamHex_Err
     Dim nc As Long
     nc = Len(szInputHex)
     cipherStreamHex = String(nc, " ")
     ' NB order of parameters (nCounter <=> nOptions)
     Call CIPHER_StreamHex(cipherStreamHex, nc, szInputHex, szKeyHex, szIvHex, nCounter, nOptions)
+    Exit Function
+cipherStreamHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherStreamHex", Erl)
 End Function
 
 '/**
@@ -2056,6 +2288,7 @@ End Function
 ' @remark Note different order of parameters from core function.
 '**/
 Public Function cipherStreamFile(szFileOut As String, szFileIn As String, lpKey() As Byte, lpIV() As Byte, nOptions As Long, Optional nCounter As Long = 0) As Long
+    On Error Goto cipherStreamFile_Err
     Dim n2 As Long
     n2 = cnvBytesLen(lpKey)
     If n2 = 0 Then Exit Function
@@ -2067,6 +2300,9 @@ Public Function cipherStreamFile(szFileOut As String, szFileIn As String, lpKey(
     ' NB order of parameters (nCounter <=> nOptions)
     cipherStreamFile = CIPHER_StreamFile(szFileOut, szFileIn, lpKey(0), n2, lpIV(0), n3, nCounter, nOptions)
     If n3 = 0 Then lpIV = vbNullString
+    Exit Function
+cipherStreamFile_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherStreamFile", Erl)
 End Function
 
 '/**
@@ -2087,6 +2323,7 @@ End Function
 ' @remark Note different order of parameters from core function.
 '**/
 Public Function cipherStreamInit(lpKey() As Byte, lpIV() As Byte, nOptions As Long, Optional nCounter As Long = 0) As Long
+    On Error Goto cipherStreamInit_Err
     Dim n2 As Long
     n2 = cnvBytesLen(lpKey)
     If n2 = 0 Then Exit Function
@@ -2098,6 +2335,9 @@ Public Function cipherStreamInit(lpKey() As Byte, lpIV() As Byte, nOptions As Lo
     ' NB order of parameters (nCounter <=> nOptions)
     cipherStreamInit = CIPHER_StreamInit(lpKey(0), n2, lpIV(0), n3, nCounter, nOptions)
     If n3 = 0 Then lpIV = vbNullString
+    Exit Function
+cipherStreamInit_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherStreamInit", Erl)
 End Function
 
 '/**
@@ -2107,6 +2347,7 @@ End Function
 ' @return Encrypted array of exactly the same length as input; or an empty array on error
 '**/
 Public Function cipherStreamUpdate(hContext As Long, lpData() As Byte) As Byte()
+    On Error Goto cipherStreamUpdate_Err
     cipherStreamUpdate = vbNullString
     Dim nb As Long
     nb = cnvBytesLen(lpData)
@@ -2116,6 +2357,9 @@ Public Function cipherStreamUpdate(hContext As Long, lpData() As Byte) As Byte()
     nb = CIPHER_StreamUpdate(hContext, abMyData(0), lpData(0), nb)
     If nb <> 0 Then Exit Function
     cipherStreamUpdate = abMyData
+    Exit Function
+cipherStreamUpdate_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherStreamUpdate", Erl)
 End Function
 
 '/**
@@ -2123,7 +2367,11 @@ End Function
 ' @param hContext Handle to the CIPHERSTREAM context.
 '**/
 Public Function cipherStreamFinal(hContext As Long) As Long
+    On Error Goto cipherStreamFinal_Err
     cipherStreamFinal = CIPHER_StreamFinal(hContext)
+    Exit Function
+cipherStreamFinal_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.cipherStreamFinal", Erl)
 End Function
 
 '/**
@@ -2132,7 +2380,11 @@ End Function
 ' @return CRC-32 checksum as a 32-bit integer value.
 '**/
 Public Function crcBytes(lpInput() As Byte) As Long
+    On Error Goto crcBytes_Err
     crcBytes = CRC_Bytes(lpInput(0), cnvBytesLen(lpInput), 0)
+    Exit Function
+crcBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.crcBytes", Erl)
 End Function
 
 '/**
@@ -2141,7 +2393,11 @@ End Function
 ' @return CRC-32 checksum as a 32-bit integer value.
 '**/
 Public Function crcString(szInput As String) As Long
+    On Error Goto crcString_Err
     crcString = CRC_String(szInput, 0)
+    Exit Function
+crcString_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.crcString", Erl)
 End Function
 
 '/**
@@ -2150,7 +2406,11 @@ End Function
 ' @return CRC-32 checksum as a 32-bit integer value.
 '**/
 Public Function crcFile(szFileName As String) As Long
+    On Error Goto crcFile_Err
     crcFile = CRC_File(szFileName, 0)
+    Exit Function
+crcFile_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.crcFile", Erl)
 End Function
 
 '/**
@@ -2176,6 +2436,7 @@ End Function
 ' @return Message digest in byte array.
 '**/
 Public Function hashBytes(lpMessage() As Byte, nOptions As Long) As Byte()
+    On Error Goto hashBytes_Err
     hashBytes = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpMessage)
@@ -2193,6 +2454,9 @@ Public Function hashBytes(lpMessage() As Byte, nOptions As Long) As Byte()
 CleanUp:
     Dim abMyDummy() As Byte
     If n1 = 0 Then lpMessage = abMyDummy
+    Exit Function
+hashBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.hashBytes", Erl)
 End Function
 
 '/**
@@ -2219,6 +2483,7 @@ End Function
 ' In "text" mode CR-LF pairs will be treated as a single newline (LF) character.
 '**/
 Public Function hashFile(szFileName As String, nOptions As Long) As Byte()
+    On Error Goto hashFile_Err
     hashFile = vbNullString
     Dim abMyData() As Byte
     Dim nb As Long
@@ -2229,6 +2494,9 @@ Public Function hashFile(szFileName As String, nOptions As Long) As Byte()
     If nb <= 0 Then Exit Function
     ReDim Preserve abMyData(nb - 1)
     hashFile = abMyData
+    Exit Function
+hashFile_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.hashFile", Erl)
 End Function
 
 '/**
@@ -2261,6 +2529,7 @@ End Function
 ' }
 '**/
 Public Function hashHexFromBits(lpData() As Byte, nDataBitLen As Long, nOptions As Long) As String
+    On Error Goto hashHexFromBits_Err
     Dim nc As Long
     Dim s As String
     nc = API_MAX_HASH_CHARS
@@ -2272,6 +2541,9 @@ Public Function hashHexFromBits(lpData() As Byte, nDataBitLen As Long, nOptions 
     nc = HASH_HexFromBits(s, nc, lpData(0), nDataBitLen, nOptions)
     If nc <= 0 Then Exit Function
     hashHexFromBits = Left$(s, nc)
+    Exit Function
+hashHexFromBits_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.hashHexFromBits", Erl)
 End Function
 
 '/**
@@ -2297,6 +2569,7 @@ End Function
 ' @return Message digest in hex-encoded format.
 '**/
 Public Function hashHexFromBytes(lpMessage() As Byte, nOptions As Long) As String
+    On Error Goto hashHexFromBytes_Err
     Dim n1 As Long
     n1 = cnvBytesLen(lpMessage)
     ' Fudge to allow empty input array
@@ -2309,6 +2582,9 @@ Public Function hashHexFromBytes(lpMessage() As Byte, nOptions As Long) As Strin
     hashHexFromBytes = Left$(hashHexFromBytes, nc)
 CleanUp:
     If n1 = 0 Then lpMessage = vbNullString
+    Exit Function
+hashHexFromBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.hashHexFromBytes", Erl)
 End Function
 
 '/**
@@ -2335,12 +2611,16 @@ End Function
 ' In "text" mode CR-LF pairs will be treated as a single newline (LF) character.
 '**/
 Public Function hashHexFromFile(szFileName As String, nOptions As Long) As String
+    On Error Goto hashHexFromFile_Err
     Dim nc As Long
     nc = HASH_HexFromFile(vbNullString, 0, szFileName, nOptions)
     If nc <= 0 Then Exit Function
     hashHexFromFile = String(nc, " ")
     nc = HASH_HexFromFile(hashHexFromFile, nc, szFileName, nOptions)
     hashHexFromFile = Left$(hashHexFromFile, nc)
+    Exit Function
+hashHexFromFile_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.hashHexFromFile", Erl)
 End Function
 
 '/**
@@ -2366,12 +2646,16 @@ End Function
 ' @return Message digest in hex-encoded format.
 '**/
 Public Function hashHexFromHex(szMsgHex As String, nOptions As Long) As String
+    On Error Goto hashHexFromHex_Err
     Dim nc As Long
     nc = HASH_HexFromHex(vbNullString, 0, szMsgHex, nOptions)
     If nc <= 0 Then Exit Function
     hashHexFromHex = String(nc, " ")
     nc = HASH_HexFromHex(hashHexFromHex, nc, szMsgHex, nOptions)
     hashHexFromHex = Left$(hashHexFromHex, nc)
+    Exit Function
+hashHexFromHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.hashHexFromHex", Erl)
 End Function
 
 '/**
@@ -2397,12 +2681,16 @@ End Function
 ' @return Message digest in hex-encoded format.
 '**/
 Public Function hashHexFromString(szMessage As String, nOptions As Long) As String
+    On Error Goto hashHexFromString_Err
     Dim nc As Long
     nc = API_MAX_HASH_CHARS
     hashHexFromString = String(nc, " ")
     nc = HASH_HexFromString(hashHexFromString, nc, szMessage, Len(szMessage), nOptions)
     If nc <= 0 Then Exit Function
     hashHexFromString = Left$(hashHexFromString, nc)
+    Exit Function
+hashHexFromString_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.hashHexFromString", Erl)
 End Function
 
 '/**
@@ -2432,7 +2720,11 @@ End Function
 ' }
 '**/
 Public Function hashLength(nAlgId As Long) As Long
+    On Error Goto hashLength_Err
     hashLength = HASH_Length(nAlgId)
+    Exit Function
+hashLength_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.hashLength", Erl)
 End Function
 
 '/**
@@ -2455,7 +2747,11 @@ End Function
 ' {@link hashAddBytes} or {@link hashAddString}.
 '**/
 Public Function hashInit(Optional nAlg As Long = 0) As Long
+    On Error Goto hashInit_Err
     hashInit = HASH_Init(nAlg)
+    Exit Function
+hashInit_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.hashInit", Erl)
 End Function
 
 
@@ -2466,6 +2762,7 @@ End Function
 ' @return Zero (0) on success, or a nonzero error code (use {@link apiErrorLookup} to check)
 '**/
 Public Function hashAddBytes(hContext As Long, lpData() As Byte) As Long
+    On Error Goto hashAddBytes_Err
     Dim n1 As Long
     n1 = cnvBytesLen(lpData)
     ' Fudge to allow an empty input array
@@ -2473,6 +2770,9 @@ Public Function hashAddBytes(hContext As Long, lpData() As Byte) As Long
     hashAddBytes = HASH_AddBytes(hContext, lpData(0), n1)
 CleanUp:
     If n1 = 0 Then lpData = vbNullString
+    Exit Function
+hashAddBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.hashAddBytes", Erl)
 End Function
 
 '/**
@@ -2482,7 +2782,11 @@ End Function
 ' @return Zero (0) on success, or a nonzero error code (use {@link apiErrorLookup} to check)
 '**/
 Public Function hashAddString(hContext As Long, szData As String) As Long
+    On Error Goto hashAddString_Err
     hashAddString = hashAddBytes(hContext, StrConv(szData, vbFromUnicode))
+    Exit Function
+hashAddString_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.hashAddString", Erl)
 End Function
 
 '/**
@@ -2492,6 +2796,7 @@ End Function
 ' @remark Computes the result of all `hashAddBytes` and `hashAddString` calls since `HASH_Init`.
 '**/
 Public Function hashFinal(hContext As Long) As Byte()
+    On Error Goto hashFinal_Err
     hashFinal = vbNullString
     Dim abMyData() As Byte
     Dim nb As Long
@@ -2501,6 +2806,9 @@ Public Function hashFinal(hContext As Long) As Byte()
     If nb <= 0 Then Exit Function
     ReDim Preserve abMyData(nb - 1)
     hashFinal = abMyData
+    Exit Function
+hashFinal_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.hashFinal", Erl)
 End Function
 
 '/**
@@ -2531,6 +2839,7 @@ End Function
 ' @return MAC value in hex-encoded format.
 '**/
 Public Function macBytes(lpMessage() As Byte, lpKey() As Byte, nOptions As Long) As Byte()
+    On Error Goto macBytes_Err
     macBytes = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpMessage)
@@ -2550,6 +2859,9 @@ Public Function macBytes(lpMessage() As Byte, lpKey() As Byte, nOptions As Long)
     macBytes = abMyData
 CleanUp:
     If n1 = 0 Then lpMessage = vbNullString
+    Exit Function
+macBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.macBytes", Erl)
 End Function
 
 '/**
@@ -2580,6 +2892,7 @@ End Function
 ' @return MAC value in hex-encoded format.
 '**/
 Public Function macHexFromBytes(lpMessage() As Byte, lpKey() As Byte, nOptions As Long) As String
+    On Error Goto macHexFromBytes_Err
     Dim n1 As Long
     n1 = cnvBytesLen(lpMessage)
     ' Fudge to allow empty input array
@@ -2595,6 +2908,9 @@ Public Function macHexFromBytes(lpMessage() As Byte, lpKey() As Byte, nOptions A
     macHexFromBytes = Left$(macHexFromBytes, nc)
 CleanUp:
     If n1 = 0 Then lpMessage = vbNullString
+    Exit Function
+macHexFromBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.macHexFromBytes", Erl)
 End Function
 
 '/**
@@ -2625,12 +2941,16 @@ End Function
 ' @return MAC value in hex-encoded format.
 '**/
 Public Function macHexFromHex(szMsgHex As String, szKeyHex As String, nOptions As Long) As String
+    On Error Goto macHexFromHex_Err
     Dim nc As Long
     nc = MAC_HexFromHex(vbNullString, 0, szMsgHex, szKeyHex, nOptions)
     If nc <= 0 Then Exit Function
     macHexFromHex = String(nc, " ")
     nc = MAC_HexFromHex(macHexFromHex, nc, szMsgHex, szKeyHex, nOptions)
     macHexFromHex = Left$(macHexFromHex, nc)
+    Exit Function
+macHexFromHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.macHexFromHex", Erl)
 End Function
 
 '/**
@@ -2648,9 +2968,13 @@ End Function
 ' @remark Once initialized, use the context for subsequent calls to `macAddBytes`, `macAddString` and `macFinal`.
 '**/
 Public Function macInit(lpKey() As Byte, nAlg As Long) As Long
+    On Error Goto macInit_Err
     Dim n1 As Long
     n1 = cnvBytesLen(lpKey)
     macInit = MAC_Init(lpKey(0), n1, nAlg)
+    Exit Function
+macInit_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.macInit", Erl)
 End Function
 
 '/**
@@ -2660,6 +2984,7 @@ End Function
 ' @return Zero (0) on success, or a nonzero error code (use {@link apiErrorLookup} to check)
 '**/
 Public Function macAddBytes(hContext As Long, lpData() As Byte) As Long
+    On Error Goto macAddBytes_Err
     Dim n1 As Long
     n1 = cnvBytesLen(lpData)
     ' Fudge to allow an empty input array
@@ -2667,6 +2992,9 @@ Public Function macAddBytes(hContext As Long, lpData() As Byte) As Long
     macAddBytes = MAC_AddBytes(hContext, lpData(0), n1)
 CleanUp:
     If n1 = 0 Then lpData = vbNullString
+    Exit Function
+macAddBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.macAddBytes", Erl)
 End Function
 
 '/**
@@ -2676,7 +3004,11 @@ End Function
 ' @return Zero (0) on success, or a nonzero error code (use {@link apiErrorLookup} to check)
 '**/
 Public Function macAddString(hContext As Long, szData As String) As Long
+    On Error Goto macAddString_Err
     macAddString = macAddBytes(hContext, StrConv(szData, vbFromUnicode))
+    Exit Function
+macAddString_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.macAddString", Erl)
 End Function
 
 '/**
@@ -2686,6 +3018,7 @@ End Function
 ' @remark Computes the result of all `macAddBytes` and `macAddString` calls since `macInit`.
 '**/
 Public Function macFinal(hContext As Long) As Byte()
+    On Error Goto macFinal_Err
     macFinal = vbNullString
     Dim abMyData() As Byte
     Dim nb As Long
@@ -2695,6 +3028,9 @@ Public Function macFinal(hContext As Long) As Byte()
     If nb <= 0 Then Exit Function
     ReDim Preserve abMyData(nb - 1)
     macFinal = abMyData
+    Exit Function
+macFinal_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.macFinal", Erl)
 End Function
 
 '/**
@@ -2710,6 +3046,7 @@ End Function
 ' @return Padded data in byte array.
 '**/
 Public Function padBytesBlock(lpInput() As Byte, nBlkLen As Long, Optional nOptions As Long = 0) As Byte()
+    On Error Goto padBytesBlock_Err
     padBytesBlock = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpInput)
@@ -2723,6 +3060,9 @@ Public Function padBytesBlock(lpInput() As Byte, nBlkLen As Long, Optional nOpti
     If nb <= 0 Then Exit Function
     ReDim Preserve abMyData(nb - 1)
     padBytesBlock = abMyData
+    Exit Function
+padBytesBlock_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.padBytesBlock", Erl)
 End Function
 
 '/**
@@ -2738,12 +3078,16 @@ End Function
 ' @return Padded data in byte array.
 '**/
 Public Function padHexBlock(szInput As String, nBlkLen As Long, Optional nOptions As Long = 0) As String
+    On Error Goto padHexBlock_Err
     Dim nc As Long
     nc = PAD_HexBlock(vbNullString, 0, szInput & "", nBlkLen, nOptions)
     If nc <= 0 Then Exit Function
     padHexBlock = String(nc, " ")
     nc = PAD_HexBlock(padHexBlock, nc, szInput & "", nBlkLen, nOptions)
     padHexBlock = Left$(padHexBlock, nc)
+    Exit Function
+padHexBlock_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.padHexBlock", Erl)
 End Function
 
 '/**
@@ -2760,6 +3104,7 @@ End Function
 ' @remark An error is indicated by returning the _original_ data which will always be longer than the expected unpadded result.
 '**/
 Public Function padUnpadBytes(lpInput() As Byte, nBlkLen As Long, Optional nOptions As Long = 0) As Byte()
+    On Error Goto padUnpadBytes_Err
     Dim lpOutput() As Byte
     Dim nb As Long
     padUnpadBytes = vbNullString
@@ -2773,6 +3118,9 @@ Public Function padUnpadBytes(lpInput() As Byte, nBlkLen As Long, Optional nOpti
     ' Re-dimension the output to the correct length
     ReDim Preserve lpOutput(nb - 1)
     padUnpadBytes = lpOutput
+    Exit Function
+padUnpadBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.padUnpadBytes", Erl)
 End Function
 
 '/**
@@ -2789,6 +3137,7 @@ End Function
 ' @remark An error is indicated by returning the _original_ data which will always be longer than the expected unpadded result.
 '**/
 Public Function padUnpadHex(szInput As String, nBlkLen As Long, Optional nOptions As Long = 0) As String
+    On Error Goto padUnpadHex_Err
     Dim nc As Long
     ' No need to query for length because we know the output will be shorter than input
     nc = Len(szInput)
@@ -2800,6 +3149,9 @@ Public Function padUnpadHex(szInput As String, nBlkLen As Long, Optional nOption
         Exit Function
     End If
     padUnpadHex = Left$(padUnpadHex, nc)
+    Exit Function
+padUnpadHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.padUnpadHex", Erl)
 End Function
 
 '/**
@@ -2820,6 +3172,7 @@ End Function
 ' @return Key in byte array.
 '**/
 Public Function pbeKdf2(dkBytes As Long, lpPwd() As Byte, lpSalt() As Byte, nCount As Long, nOptions As Long) As Byte()
+    On Error Goto pbeKdf2_Err
     Dim n1 As Long
     n1 = cnvBytesLen(lpPwd)
     If n1 = 0 Then ReDim lpPwd(0)
@@ -2833,6 +3186,9 @@ Public Function pbeKdf2(dkBytes As Long, lpPwd() As Byte, lpSalt() As Byte, nCou
     r = PBE_Kdf2(abMyData(0), dkBytes, lpPwd(0), n1, lpSalt(0), n2, nCount, nOptions)
     If r <> 0 Then Exit Function
     pbeKdf2 = abMyData
+    Exit Function
+pbeKdf2_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.pbeKdf2", Erl)
 End Function
 
 '/**
@@ -2853,10 +3209,14 @@ End Function
 ' @return Key in hex format.
 '**/
 Public Function pbeKdf2Hex(dkBytes As Long, szPwd As String, szSaltHex As String, nCount As Long, nOptions As Long) As String
+    On Error Goto pbeKdf2Hex_Err
     Dim dk As String
     dk = String(2 * dkBytes, " ")
     Call PBE_Kdf2Hex(dk, Len(dk), dkBytes, szPwd, szSaltHex, nCount, nOptions)
     pbeKdf2Hex = dk
+    Exit Function
+pbeKdf2Hex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.pbeKdf2Hex", Erl)
 End Function
 
 '/**
@@ -2871,6 +3231,7 @@ End Function
 ' @return Key in byte array.
 '**/
 Public Function pbeScrypt(dkBytes As Long, lpPwd() As Byte, lpSalt() As Byte, nParamN As Long, nParamR As Long, nParamP As Long, Optional nOptions As Long = 0) As Byte()
+    On Error Goto pbeScrypt_Err
     Dim n1 As Long
     n1 = cnvBytesLen(lpPwd)
     If n1 = 0 Then ReDim lpPwd(0)
@@ -2884,6 +3245,9 @@ Public Function pbeScrypt(dkBytes As Long, lpPwd() As Byte, lpSalt() As Byte, nP
     r = PBE_Scrypt(abMyData(0), dkBytes, lpPwd(0), n1, lpSalt(0), n2, nParamN, nParamR, nParamP, nOptions)
     If r <> 0 Then Exit Function
     pbeScrypt = abMyData
+    Exit Function
+pbeScrypt_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.pbeScrypt", Erl)
 End Function
 
 '/**
@@ -2903,10 +3267,14 @@ End Function
 ' }
 '**/
 Public Function pbeScryptHex(dkBytes As Long, szPwd As String, szSaltHex As String, nParamN As Long, nParamR As Long, nParamP As Long, Optional nOptions As Long = 0) As String
+    On Error Goto pbeScryptHex_Err
     Dim dk As String
     dk = String(2 * dkBytes, " ")
     Call PBE_ScryptHex(dk, Len(dk), dkBytes, szPwd, szSaltHex, nParamN, nParamR, nParamP, nOptions)
     pbeScryptHex = dk
+    Exit Function
+pbeScryptHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.pbeScryptHex", Erl)
 End Function
 
 '/**
@@ -2926,6 +3294,7 @@ End Function
 ' @remark Note different order of parameters from core function.
 '**/
 Public Function prfBytes(nBytes As Long, lpMessage() As Byte, lpKey() As Byte, nOptions As Long, Optional szCustom As String = "") As Byte()
+    On Error Goto prfBytes_Err
     Dim n1 As Long
     n1 = cnvBytesLen(lpMessage)
     If n1 = 0 Then ReDim lpMessage(0)
@@ -2938,6 +3307,9 @@ Public Function prfBytes(nBytes As Long, lpMessage() As Byte, lpKey() As Byte, n
     nBytes = PRF_Bytes(abMyData(0), nBytes, lpMessage(0), n1, lpKey(0), n2, szCustom, nOptions)
     If nBytes <= 0 Then Exit Function
     prfBytes = abMyData
+    Exit Function
+prfBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.prfBytes", Erl)
 End Function
 
 '/**
@@ -2947,12 +3319,16 @@ End Function
 ' @return Array of random bytes.
 '**/
 Public Function rngKeyBytes(nBytes As Long, Optional szSeed As String = "") As Byte()
+    On Error Goto rngKeyBytes_Err
     Dim abMyData() As Byte
     rngKeyBytes = vbNullString
     If nBytes <= 0 Then Exit Function
     ReDim abMyData(nBytes - 1)
     Call RNG_KeyBytes(abMyData(0), nBytes, szSeed, Len(szSeed))
     rngKeyBytes = abMyData
+    Exit Function
+rngKeyBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.rngKeyBytes", Erl)
 End Function
 
 '/**
@@ -2962,11 +3338,15 @@ End Function
 ' @return Random bytes in hex format.
 '**/
 Public Function rngKeyHex(nBytes As Long, Optional szSeed As String = "") As String
+    On Error Goto rngKeyHex_Err
     Dim nc As Long
     If nBytes <= 0 Then Exit Function
     nc = nBytes * 2
     rngKeyHex = String(nc, " ")
     Call RNG_KeyHex(rngKeyHex, nc, nBytes, szSeed, Len(szSeed))
+    Exit Function
+rngKeyHex_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.rngKeyHex", Erl)
 End Function
 
 '/**
@@ -2975,12 +3355,16 @@ End Function
 ' @return Array of random bytes.
 '**/
 Public Function rngNonce(nBytes As Long) As Byte()
+    On Error Goto rngNonce_Err
     Dim abMyData() As Byte
     rngNonce = vbNullString
     If nBytes <= 0 Then Exit Function
     ReDim abMyData(nBytes - 1)
     Call RNG_NonceData(abMyData(0), nBytes)
     rngNonce = abMyData
+    Exit Function
+rngNonce_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.rngNonce", Erl)
 End Function
 
 
@@ -3001,6 +3385,7 @@ End Function
 ' @return Output data in byte array.
 '**/
 Public Function xofBytes(nBytes As Long, lpMessage() As Byte, nOptions As Long) As Byte()
+    On Error Goto xofBytes_Err
     Dim n1 As Long
     n1 = cnvBytesLen(lpMessage)
     If n1 = 0 Then ReDim lpMessage(0)
@@ -3010,6 +3395,9 @@ Public Function xofBytes(nBytes As Long, lpMessage() As Byte, nOptions As Long) 
     nBytes = XOF_Bytes(abMyData(0), nBytes, lpMessage(0), n1, nOptions)
     If nBytes <= 0 Then Exit Function
     xofBytes = abMyData
+    Exit Function
+xofBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.xofBytes", Erl)
 End Function
 
 '/**
@@ -3018,6 +3406,7 @@ End Function
 ' @return Compressed data.
 '**/
 Public Function zlibDeflate(lpInput() As Byte) As Byte()
+    On Error Goto zlibDeflate_Err
     zlibDeflate = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpInput)
@@ -3031,6 +3420,9 @@ Public Function zlibDeflate(lpInput() As Byte) As Byte()
     If nb <= 0 Then Exit Function
     ReDim Preserve abMyData(nb - 1)
     zlibDeflate = abMyData
+    Exit Function
+zlibDeflate_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.zlibDeflate", Erl)
 End Function
 
 '/**
@@ -3040,6 +3432,7 @@ End Function
 ' @remark An empty array may also be returned in the trivial case where the original data was the empty array itself.
 '**/
 Public Function zlibInflate(lpInput() As Byte) As Byte()
+    On Error Goto zlibInflate_Err
     zlibInflate = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpInput)
@@ -3053,6 +3446,9 @@ Public Function zlibInflate(lpInput() As Byte) As Byte()
     If nb <= 0 Then Exit Function
     ReDim Preserve abMyData(nb - 1)
     zlibInflate = abMyData
+    Exit Function
+zlibInflate_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.zlibInflate", Erl)
 End Function
 
 
@@ -3071,6 +3467,7 @@ End Function
 ' @return Compressed data, or an empty array on error.
 '**/
 Public Function comprCompress(lpInput() As Byte, Optional nOptions As Long = API_COMPR_ZLIB) As Byte()
+    On Error Goto comprCompress_Err
     comprCompress = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpInput)
@@ -3084,6 +3481,9 @@ Public Function comprCompress(lpInput() As Byte, Optional nOptions As Long = API
     If nb <= 0 Then Exit Function
     ReDim Preserve abMyData(nb - 1)
     comprCompress = abMyData
+    Exit Function
+comprCompress_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.comprCompress", Erl)
 End Function
 
 '/**
@@ -3097,6 +3497,7 @@ End Function
 ' @return Uncompressed data, or an empty array on error.
 '**/
 Public Function comprUncompress(lpInput() As Byte, Optional nOptions As Long = API_COMPR_ZLIB) As Byte()
+    On Error Goto comprUncompress_Err
     comprUncompress = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpInput)
@@ -3110,6 +3511,9 @@ Public Function comprUncompress(lpInput() As Byte, Optional nOptions As Long = A
     If nb <= 0 Then Exit Function
     ReDim Preserve abMyData(nb - 1)
     comprUncompress = abMyData
+    Exit Function
+comprUncompress_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.comprUncompress", Erl)
 End Function
 
 '/**
@@ -3125,6 +3529,7 @@ End Function
 ' @return Output data, the same length as the input, or an empty array on error.
 '**/
 Public Function blfBytesBlock(fEncrypt As Integer, lpInput() As Byte, lpKey() As Byte, lpIV() As Byte, Optional szMode As String = "ECB") As Byte()
+    On Error Goto blfBytesBlock_Err
     blfBytesBlock = vbNullString
     Dim n1 As Long
     n1 = cnvBytesLen(lpInput)
@@ -3147,6 +3552,9 @@ CleanUp:
     If n3 = 0 Then lpIV = vbNullString
 Done:
     
+    Exit Function
+blfBytesBlock_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.blfBytesBlock", Erl)
 End Function
 
 '/**
@@ -3156,7 +3564,11 @@ End Function
 ' @remark This function does not free any memory; it just zeroises it.
 '**/
 Public Function wipeBytes(lpData() As Byte) As Long
+    On Error Goto wipeBytes_Err
     wipeBytes = WIPE_Bytes(lpData(0), cnvBytesLen(lpData))
+    Exit Function
+wipeBytes_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.wipeBytes", Erl)
 End Function
 
 '/**
@@ -3170,8 +3582,12 @@ End Function
 ' }
 '**/
 Public Function wipeString(szData As String) As String
+    On Error Goto wipeString_Err
     Call WIPE_String(szData, Len(szData))
     wipeString = vbNullString
+    Exit Function
+wipeString_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.wipeString", Erl)
 End Function
 
 '/**
@@ -3187,7 +3603,11 @@ End Function
 ' `API_WIPEFILE_SIMPLE` overwrites the file with a single pass of zero bytes (quicker but less secure).
 '**/
 Public Function wipeFile(szFileName As String, Optional nOptions As Long = 0) As Long
+    On Error Goto wipeFile_Err
     wipeFile = WIPE_File(szFileName, nOptions)
+    Exit Function
+wipeFile_Err:
+    Call TraceError(Err.Number, Err.Description, "basCryptoSys.wipeFile", Erl)
 End Function
 
 

@@ -40,7 +40,11 @@ End Enum
 Private cur_state As e_game_state
 
 Private Sub Class_Initialize()
+    On Error Goto Class_Initialize_Err
 cur_state = e_state_connect_screen
+    Exit Sub
+Class_Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsGameState.Class_Initialize", Erl)
 End Sub
 
 Public Property Get State() As e_game_state

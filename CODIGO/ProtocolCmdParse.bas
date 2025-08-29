@@ -60,6 +60,7 @@ End Enum
 ' @param    RawCommand El comando en version String
 ' @remarks  None Known.
 Public Sub ParseUserCommand(ByVal RawCommand As String)
+    On Error Goto ParseUserCommand_Err
     
     On Error GoTo ParseUserCommand_Err
 
@@ -2156,9 +2157,13 @@ ParseUserCommand_Err:
     Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.ParseUserCommand", Erl)
     Resume Next
     
+    Exit Sub
+ParseUserCommand_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ParseUserCommand", Erl)
 End Sub
 
 Private Sub HandleMapSetting(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto HandleMapSetting_Err
     If argCount < 2 Then
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_PARAMETROS_INCORRECTOS"))
         Exit Sub
@@ -2178,9 +2183,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_PARAMETROS_INCORRECTOS"))
             Exit Sub
     End Select
     Call WriteChangeMapSetting(settingType, arguments(1))
+    Exit Sub
+HandleMapSetting_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.HandleMapSetting", Erl)
 End Sub
 
 Private Sub HandleFeatureToggle(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto HandleFeatureToggle_Err
     If EsGM Then
         If argCount < 2 Then
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_PARAMETROS_INCORRECTOS"))
@@ -2196,9 +2205,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_PARAMETROS_INCORRECTOS"))
             value = arguments(1)
             Call WriteFeatureEnable(varName, value)
     End If
+    Exit Sub
+HandleFeatureToggle_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.HandleFeatureToggle", Erl)
 End Sub
 
 Private Sub HandleReqDebugCmd(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto HandleReqDebugCmd_Err
     If EsGM Then
         If argCount = 0 Then
             Call WriteRequestDebug(e_DebugCommands.eGetLastLogs, arguments(), 0)
@@ -2223,9 +2236,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_PARAMETROS_INCORRECTOS"))
             End If
         End If
     End If
+    Exit Sub
+HandleReqDebugCmd_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.HandleReqDebugCmd", Erl)
 End Sub
 
 Private Sub StartCaptureTheFlag(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto StartCaptureTheFlag_Err
     If argCount >= 6 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) And ValidNumber(arguments(4), eNumber_Types.ent_Long) And ValidNumber(arguments(5), eNumber_Types.ent_Long) Then
             Dim LobbyInfo As t_NewScenearioSettings
@@ -2243,9 +2260,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     Else
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+StartCaptureTheFlag_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.StartCaptureTheFlag", Erl)
 End Sub
 
 Private Sub StartLobby(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto StartLobby_Err
     If argCount >= 3 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
             Dim LobbyInfo As t_NewScenearioSettings
@@ -2261,9 +2282,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     Else
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+StartLobby_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.StartLobby", Erl)
 End Sub
 
 Private Sub StartCustomMap(ByVal mapType As Byte, ByVal Name As String, ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto StartCustomMap_Err
     If argCount >= 3 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
             Dim LobbyInfo As t_NewScenearioSettings
@@ -2279,9 +2304,13 @@ Private Sub StartCustomMap(ByVal mapType As Byte, ByVal Name As String, ByRef ar
     Else
         Call ShowConsoleMsg(Replace$(JsonLanguage.Item("MENSAJE_CREAREVENTO_USO"), "¬1", Name)) ' MENSAJE_CREAREVENTO_USO=Valor incorrecto. Utilice /CREAREVENTO ¬1 PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.
     End If
+    Exit Sub
+StartCustomMap_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.StartCustomMap", Erl)
 End Sub
 
 Private Sub CreateEventCmd(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto CreateEventCmd_Err
     If argCount > 0 Then
         Dim eType As String
         eType = Trim$(UCase$(arguments(0)))
@@ -2303,9 +2332,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INVALID_EVENT_TYPE"))
         'Avisar que falta el parametro
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
     End If
+    Exit Sub
+CreateEventCmd_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.CreateEventCmd", Erl)
 End Sub
 
 Private Sub ConfigLobbyClass(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto ConfigLobbyClass_Err
     If argCount > 1 Then
         Dim eType As String
         eType = Trim$(UCase$(arguments(1)))
@@ -2337,9 +2370,13 @@ Private Sub ConfigLobbyClass(ByRef arguments() As String, ByVal argCount As Inte
     Else
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+ConfigLobbyClass_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ConfigLobbyClass", Erl)
 End Sub
 
 Private Sub ConfigLobbyTeamCount(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto ConfigLobbyTeamCount_Err
     If argCount > 1 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) And ValidNumber(arguments(2), eNumber_Types.ent_Long) And ValidNumber(arguments(3), eNumber_Types.ent_Long) Then
             
@@ -2350,9 +2387,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     Else
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+ConfigLobbyTeamCount_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ConfigLobbyTeamCount", Erl)
 End Sub
 
 Private Sub ConfigLobbyMaxLevel(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto ConfigLobbyMaxLevel_Err
     If argCount >= 2 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
             Call WriteLobbyCommand(e_LobbyCommandId.eSetMaxLevel, arguments(1))
@@ -2363,9 +2404,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     Else
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+ConfigLobbyMaxLevel_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ConfigLobbyMaxLevel", Erl)
 End Sub
 
 Private Sub ConfigLobbyMinLevel(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto ConfigLobbyMinLevel_Err
     If argCount >= 2 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
             Call WriteLobbyCommand(e_LobbyCommandId.eSetMinLevel, arguments(1))
@@ -2376,9 +2421,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     Else
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+ConfigLobbyMinLevel_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ConfigLobbyMinLevel", Erl)
 End Sub
 
 Private Sub ConfigLobbySummonPlayer(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto ConfigLobbySummonPlayer_Err
     If argCount >= 2 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
             Call WriteLobbyCommand(e_LobbyCommandId.eSummonSinglePlayer, arguments(1))
@@ -2389,9 +2438,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     Else
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+ConfigLobbySummonPlayer_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ConfigLobbySummonPlayer", Erl)
 End Sub
 
 Private Sub ConfigLobbyReturnPlayer(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto ConfigLobbyReturnPlayer_Err
     If argCount >= 2 Then
         If ValidNumber(arguments(1), eNumber_Types.ent_Long) Then
             Call WriteLobbyCommand(e_LobbyCommandId.eReturnSinglePlayer, arguments(1))
@@ -2402,9 +2455,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     Else
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+ConfigLobbyReturnPlayer_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ConfigLobbyReturnPlayer", Erl)
 End Sub
 
 Private Sub ConfigLobbyOpenLobby(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto ConfigLobbyOpenLobby_Err
     If argCount >= 2 Then
         If Trim$(UCase$(arguments(1))) = "PRIVATE" Then
             Call WriteLobbyCommand(e_LobbyCommandId.eOpenLobby, "0")
@@ -2415,9 +2472,13 @@ Private Sub ConfigLobbyOpenLobby(ByRef arguments() As String, ByVal argCount As 
         Call WriteLobbyCommand(e_LobbyCommandId.eOpenLobby, "1")
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+ConfigLobbyOpenLobby_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ConfigLobbyOpenLobby", Erl)
 End Sub
 
 Private Sub ConfigLobbyAddPlayer(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto ConfigLobbyAddPlayer_Err
     If argCount >= 2 Then
         Dim PlayerName As String
         Dim i As Integer
@@ -2428,17 +2489,25 @@ Private Sub ConfigLobbyAddPlayer(ByRef arguments() As String, ByVal argCount As 
     Else
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+ConfigLobbyAddPlayer_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ConfigLobbyAddPlayer", Erl)
 End Sub
 
 Private Sub ConfigLobbySetPrice(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto ConfigLobbySetPrice_Err
     If argCount >= 2 Then
         Call WriteLobbyCommand(e_LobbyCommandId.eSetInscriptionPrice, arguments(1))
     Else
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+ConfigLobbySetPrice_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ConfigLobbySetPrice", Erl)
 End Sub
 
 Private Sub ConfigLobbySetTeamSize(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto ConfigLobbySetTeamSize_Err
     If argCount >= 2 Then
         Dim premade As Byte
         premade = 1
@@ -2455,9 +2524,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     Else
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+ConfigLobbySetTeamSize_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ConfigLobbySetTeamSize", Erl)
 End Sub
 
 Private Sub ConfigLobbyKickPlayer(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto ConfigLobbyKickPlayer_Err
     If argCount >= 2 Then
         If ValidNumber(arguments(2), eNumber_Types.ent_Long) Then
             Call WriteLobbyCommand(e_LobbyCommandId.eKickPlayer, arguments(2))
@@ -2467,9 +2540,13 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     Else
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
     End If
+    Exit Sub
+ConfigLobbyKickPlayer_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ConfigLobbyKickPlayer", Erl)
 End Sub
 
 Private Sub ConfigLobby(ByRef arguments() As String, ByVal argCount As Integer)
+    On Error Goto ConfigLobby_Err
     If argCount > 0 Then
         Dim eType As String
         eType = Trim$(UCase$(arguments(0)))
@@ -2514,6 +2591,9 @@ Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_PARAMETRO_INVALIDO_UTILICE"))
         'Avisar que falta el parametro
 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
     End If
+    Exit Sub
+ConfigLobby_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ConfigLobby", Erl)
 End Sub
 ''
 ' Show a console message.
@@ -2526,6 +2606,7 @@ End Sub
 ' @param    italic Sets the font italic style.
 
 Public Sub ShowConsoleMsg(ByVal message As String, Optional ByVal red As Integer = 255, Optional ByVal green As Integer = 255, Optional ByVal blue As Integer = 255, Optional ByVal bold As Boolean = False, Optional ByVal italic As Boolean = False)
+    On Error Goto ShowConsoleMsg_Err
 
     On Error GoTo ShowConsoleMsg_Err
     
@@ -2538,6 +2619,9 @@ ShowConsoleMsg_Err:
     Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.ShowConsoleMsg", Erl)
     Resume Next
     
+    Exit Sub
+ShowConsoleMsg_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ShowConsoleMsg", Erl)
 End Sub
 
 ''
@@ -2547,6 +2631,7 @@ End Sub
 ' @param    Tipo The acceptable type of number.
 
 Public Function ValidNumber(ByVal Numero As String, ByVal TIPO As eNumber_Types) As Boolean
+    On Error Goto ValidNumber_Err
     
     On Error GoTo ValidNumber_Err
 
@@ -2585,6 +2670,9 @@ ValidNumber_Err:
     Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.ValidNumber", Erl)
     Resume Next
     
+    Exit Function
+ValidNumber_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.ValidNumber", Erl)
 End Function
 
 ''
@@ -2593,6 +2681,7 @@ End Function
 ' @param    IP The ip to be checked.
 
 Private Function validipv4str(ByVal IP As String) As Boolean
+    On Error Goto validipv4str_Err
     
     On Error GoTo validipv4str_Err
 
@@ -2613,6 +2702,9 @@ validipv4str_Err:
     Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.validipv4str", Erl)
     Resume Next
     
+    Exit Function
+validipv4str_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.validipv4str", Erl)
 End Function
 
 ''
@@ -2621,6 +2713,7 @@ End Function
 ' @param    IP The ip to be converted.
 
 Private Function str2ipv4l(ByVal IP As String) As Byte()
+    On Error Goto str2ipv4l_Err
     
     On Error GoTo str2ipv4l_Err
 
@@ -2648,6 +2741,9 @@ str2ipv4l_Err:
     Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.str2ipv4l", Erl)
     Resume Next
     
+    Exit Function
+str2ipv4l_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.str2ipv4l", Erl)
 End Function
 
 ''
@@ -2657,6 +2753,7 @@ End Function
 ' @return An bidimensional array with user and mail
 
 Private Function AEMAILSplit(ByRef Text As String) As String()
+    On Error Goto AEMAILSplit_Err
     
     On Error GoTo AEMAILSplit_Err
 
@@ -2688,4 +2785,7 @@ AEMAILSplit_Err:
     Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.AEMAILSplit", Erl)
     Resume Next
     
+    Exit Function
+AEMAILSplit_Err:
+    Call TraceError(Err.Number, Err.Description, "ProtocolCmdParse.AEMAILSplit", Erl)
 End Function

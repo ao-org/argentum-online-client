@@ -260,6 +260,7 @@ Option Explicit
 
 Public ForoIndex As Integer
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
 Dim i
 For Each i In Text
     i.Visible = False
@@ -289,13 +290,21 @@ Else
     Label4.Visible = True
     
 End If
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmForo.Command1_Click", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
 Unload Me
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmForo.Command2_Click", Erl)
 End Sub
 
 Private Sub Command3_Click()
+    On Error Goto Command3_Click_Err
 Label4.Visible = True
 MiMensaje(0).Visible = False
 MiMensaje(1).Visible = False
@@ -307,23 +316,38 @@ For Each i In Text
     i.Visible = False
 Next
 List.Visible = True
+    Exit Sub
+Command3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmForo.Command3_Click", Erl)
 End Sub
 
 Private Sub Form_Deactivate()
+    On Error Goto Form_Deactivate_Err
 'Me.SetFocus
+    Exit Sub
+Form_Deactivate_Err:
+    Call TraceError(Err.Number, Err.Description, "frmForo.Form_Deactivate", Erl)
 End Sub
 
 
 Private Sub List_Click()
+    On Error Goto List_Click_Err
 List.Visible = False
 Text(List.listIndex).Visible = True
 
+    Exit Sub
+List_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmForo.List_Click", Erl)
 End Sub
 
 Private Sub MiMensaje_Change(Index As Integer)
+    On Error Goto MiMensaje_Change_Err
 If Len(MiMensaje(0).Text) <> 0 And Len(MiMensaje(1).Text) <> 0 Then
 Command1.Enabled = True
 End If
 
+    Exit Sub
+MiMensaje_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmForo.MiMensaje_Change", Erl)
 End Sub
 

@@ -31,6 +31,7 @@ Public ProjectionComposedTexture As D3DMATRIX
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByRef destination As Any, ByRef source As Any, ByVal length As Long)
 
 Function MakeVector(ByVal x As Single, ByVal y As Single, ByVal z As Single) As D3DVECTOR
+    On Error Goto MakeVector_Err
 
     On Error GoTo MakeVector_Err
     
@@ -45,9 +46,13 @@ MakeVector_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.MakeVector", Erl)
     Resume Next
     
+    Exit Function
+MakeVector_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Utilidades.MakeVector", Erl)
 End Function
 
 Private Function CreateVertex(x As Single, y As Single, z As Single, Color As RGBA, tu As Single, tv As Single) As TYPE_VERTEX
+    On Error Goto CreateVertex_Err
     
     On Error GoTo CreateVertex_Err
     
@@ -66,10 +71,14 @@ CreateVertex_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.CreateVertex", Erl)
     Resume Next
     
+    Exit Function
+CreateVertex_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Utilidades.CreateVertex", Erl)
 End Function
 
 
 Private Function Geometry_Create_Vertex(ByVal x As Single, ByVal y As Single, ByVal z As Single, Color As RGBA, tu As Single, ByVal tv As Single) As TYPE_VERTEX
+    On Error Goto Geometry_Create_Vertex_Err
 
     On Error GoTo Geometry_Create_Vertex_Err
     
@@ -87,9 +96,13 @@ Geometry_Create_Vertex_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.Geometry_Create_Vertex", Erl)
     Resume Next
     
+    Exit Function
+Geometry_Create_Vertex_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Utilidades.Geometry_Create_Vertex", Erl)
 End Function
 
 Public Sub Geometry_Create_Box(ByRef verts() As TYPE_VERTEX, ByRef Dest As RECT, ByRef Src As RECT, ByRef rgb_list() As RGBA, Optional ByVal Textures_Width As Long, Optional ByVal Textures_Height As Long, Optional ByVal Angle As Single)
+    On Error Goto Geometry_Create_Box_Err
     
     On Error GoTo Geometry_Create_Box_Err
 
@@ -205,9 +218,13 @@ Geometry_Create_Box_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.Geometry_Create_Box", Erl)
     Resume Next
     
+    Exit Sub
+Geometry_Create_Box_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Utilidades.Geometry_Create_Box", Erl)
 End Sub
 
 Public Function BinarySearch(ByVal charindex As Integer) As Integer
+    On Error Goto BinarySearch_Err
     
     On Error GoTo BinarySearch_Err
 
@@ -250,9 +267,13 @@ BinarySearch_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.BinarySearch", Erl)
     Resume Next
     
+    Exit Function
+BinarySearch_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Utilidades.BinarySearch", Erl)
 End Function
 
 Public Sub InitComposedTexture()
+    On Error Goto InitComposedTexture_Err
     
     On Error GoTo InitComposedTexture_Err
     
@@ -276,9 +297,13 @@ InitComposedTexture_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.InitComposedTexture", Erl)
     Resume Next
     
+    Exit Sub
+InitComposedTexture_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Utilidades.InitComposedTexture", Erl)
 End Sub
 
 Public Sub BeginComposedTexture()
+    On Error Goto BeginComposedTexture_Err
     
     On Error GoTo BeginComposedTexture_Err
     
@@ -301,9 +326,13 @@ BeginComposedTexture_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.BeginComposedTexture", Erl)
     Resume Next
     
+    Exit Sub
+BeginComposedTexture_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Utilidades.BeginComposedTexture", Erl)
 End Sub
 
 Public Sub EndComposedTexture()
+    On Error Goto EndComposedTexture_Err
     
     On Error GoTo EndComposedTexture_Err
     
@@ -328,9 +357,13 @@ EndComposedTexture_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.EndComposedTexture", Erl)
     Resume Next
     
+    Exit Sub
+EndComposedTexture_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Utilidades.EndComposedTexture", Erl)
 End Sub
 
 Public Sub PresentComposedTexture(ByVal x As Integer, ByVal y As Integer, ByRef light_value() As RGBA, Optional ByVal Angle As Single = 0, Optional ByVal Shadow As Boolean = False, Optional ByVal Reflection As Boolean = False)
+    On Error Goto PresentComposedTexture_Err
     
     On Error GoTo PresentComposedTexture_Err
     
@@ -368,9 +401,13 @@ PresentComposedTexture_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.PresentComposedTexture", Erl)
     Resume Next
     
+    Exit Sub
+PresentComposedTexture_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Utilidades.PresentComposedTexture", Erl)
 End Sub
 
 Public Function EaseBreathing(ByVal t As Single) As Single
+    On Error Goto EaseBreathing_Err
     
     On Error GoTo EaseBreathing_Err
     
@@ -395,4 +432,7 @@ EaseBreathing_Err:
     Call RegistrarError(Err.number, Err.Description, "Graficos_Utilidades.EaseBreathing", Erl)
     Resume Next
     
+    Exit Function
+EaseBreathing_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Utilidades.EaseBreathing", Erl)
 End Function

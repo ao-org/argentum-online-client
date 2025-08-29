@@ -154,6 +154,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
 
 If txtClanName.Text = "" Then
     MensajeAdvertencia "¡Ingrese un nombre!"
@@ -176,16 +177,31 @@ Site = Text2
 Unload Me
 frmGuildDetails.framAlign.Visible = True
 frmGuildDetails.Show vbModeless, frmMain
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildFoundation.Command1_Click", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
 Unload Me
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildFoundation.Command2_Click", Erl)
 End Sub
 
 Private Sub Form_Deactivate()
+    On Error Goto Form_Deactivate_Err
 Me.SetFocus
+    Exit Sub
+Form_Deactivate_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildFoundation.Form_Deactivate", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 Call FormParser.Parse_Form(Me)
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildFoundation.Form_Load", Erl)
 End Sub

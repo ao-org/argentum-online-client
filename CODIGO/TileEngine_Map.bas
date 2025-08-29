@@ -19,6 +19,7 @@ Option Explicit
 
 
 Sub SwitchMap(ByVal map As Integer, Optional ByVal NewResourceMap As Integer = 0)
+    On Error Goto SwitchMap_Err
 
     
     On Error GoTo SwitchMap_Err
@@ -133,9 +134,13 @@ SwitchMap_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.SwitchMap", Erl)
     Resume Next
     
+    Exit Sub
+SwitchMap_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Map.SwitchMap", Erl)
 End Sub
 
 Function HayAgua(ByVal x As Integer, ByVal y As Integer) As Boolean
+    On Error Goto HayAgua_Err
     
     On Error GoTo HayAgua_Err
     
@@ -159,9 +164,13 @@ HayAgua_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.HayAgua", Erl)
     Resume Next
     
+    Exit Function
+HayAgua_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Map.HayAgua", Erl)
 End Function
 
 Function HayLava(ByVal x As Integer, ByVal y As Integer) As Boolean
+    On Error Goto HayLava_Err
     
     On Error GoTo HayLava_Err
     
@@ -178,11 +187,15 @@ HayLava_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.HayLava", Erl)
     Resume Next
     
+    Exit Function
+HayLava_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Map.HayLava", Erl)
 End Function
 
 
 
 Function AgregarSombra(ByVal GrhIndex As Long) As Boolean
+    On Error Goto AgregarSombra_Err
     
     On Error GoTo AgregarSombra_Err
     
@@ -195,9 +208,13 @@ AgregarSombra_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.AgregarSombra", Erl)
     Resume Next
     
+    Exit Function
+AgregarSombra_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Map.AgregarSombra", Erl)
 End Function
 
 Public Function EsObjetoFijo(ByVal x As Integer, ByVal y As Integer) As Boolean
+    On Error Goto EsObjetoFijo_Err
     
     On Error GoTo EsObjetoFijo_Err
     
@@ -216,9 +233,13 @@ EsObjetoFijo_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.EsObjetoFijo", Erl)
     Resume Next
     
+    Exit Function
+EsObjetoFijo_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Map.EsObjetoFijo", Erl)
 End Function
 
 Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String) As Boolean
+    On Error Goto Letter_Set_Err
 
     On Error GoTo Letter_Set_Err
     
@@ -234,11 +255,15 @@ Letter_Set_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.Letter_Set", Erl)
     Resume Next
     
+    Exit Function
+Letter_Set_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Map.Letter_Set", Erl)
 End Function
 
 
 
 Public Sub SetGlobalLight(ByVal base_light As Long)
+    On Error Goto SetGlobalLight_Err
     
     On Error GoTo SetGlobalLight_Err
     
@@ -252,9 +277,13 @@ SetGlobalLight_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.SetGlobalLight", Erl)
     Resume Next
     
+    Exit Sub
+SetGlobalLight_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Map.SetGlobalLight", Erl)
 End Sub
 
 Public Function Map_FX_Group_Next_Open(ByVal x As Byte, ByVal y As Byte) As Integer
+    On Error Goto Map_FX_Group_Next_Open_Err
 
     On Error GoTo ErrorHandler:
 
@@ -291,9 +320,13 @@ ErrorHandler:
     ReDim MapData(x, y).FxList(1 To 1)
     Map_FX_Group_Next_Open = 1
 
+    Exit Function
+Map_FX_Group_Next_Open_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Map.Map_FX_Group_Next_Open", Erl)
 End Function
 
 Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
+    On Error Goto Draw_Sombra_Err
     
     On Error GoTo Draw_Sombra_Err
 
@@ -348,9 +381,13 @@ Draw_Sombra_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.Draw_Sombra", Erl)
     Resume Next
     
+    Exit Sub
+Draw_Sombra_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Map.Draw_Sombra", Erl)
 End Sub
 
 Sub Engine_Weather_UpdateFog()
+    On Error Goto Engine_Weather_UpdateFog_Err
     
     On Error GoTo Engine_Weather_UpdateFog_Err
 
@@ -453,9 +490,13 @@ Engine_Weather_UpdateFog_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.Engine_Weather_UpdateFog", Erl)
     Resume Next
     
+    Exit Sub
+Engine_Weather_UpdateFog_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Map.Engine_Weather_UpdateFog", Erl)
 End Sub
 
 Sub MapUpdateGlobalLight()
+    On Error Goto MapUpdateGlobalLight_Err
     
     On Error GoTo MapUpdateGlobalLight_Err
     
@@ -482,9 +523,13 @@ MapUpdateGlobalLight_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.MapUpdateGlobalLight", Erl)
     Resume Next
     
+    Exit Sub
+MapUpdateGlobalLight_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Map.MapUpdateGlobalLight", Erl)
 End Sub
 
 Sub MapUpdateGlobalLightRender()
+    On Error Goto MapUpdateGlobalLightRender_Err
     
     On Error GoTo MapUpdateGlobalLight_Err
     
@@ -519,4 +564,7 @@ MapUpdateGlobalLight_Err:
    ' Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.MapUpdateGlobalLightRender", Erl)
     Resume Next
     
+    Exit Sub
+MapUpdateGlobalLightRender_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine_Map.MapUpdateGlobalLightRender", Erl)
 End Sub

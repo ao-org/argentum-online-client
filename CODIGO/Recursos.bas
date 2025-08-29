@@ -275,6 +275,7 @@ Private MoldesBodies() As tMoldeCuerpo
 Private BodiesHeading(1 To 4) As E_Heading
 
 Public Sub CargarRecursos()
+    On Error Goto CargarRecursos_Err
     
     On Error GoTo CargarRecursos_Err
 
@@ -307,12 +308,16 @@ CargarRecursos_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarRecursos", Erl)
     Resume Next
     
+    Exit Sub
+CargarRecursos_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarRecursos", Erl)
 End Sub
 
 ''
 ' Initializes the fonts array
 
 Public Sub InitFontTypes()
+    On Error Goto InitFontTypes_Err
     
     On Error GoTo InitFonts_Err
 
@@ -652,9 +657,13 @@ InitFonts_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.InitFonts", Erl)
     Resume Next
     
+    Exit Sub
+InitFontTypes_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.InitFontTypes", Erl)
 End Sub
 
 Public Sub CargarPasos()
+    On Error Goto CargarPasos_Err
     
     On Error GoTo CargarPasos_Err
     
@@ -703,9 +712,13 @@ CargarPasos_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarPasos", Erl)
     Resume Next
     
+    Exit Sub
+CargarPasos_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarPasos", Erl)
 End Sub
 
 Sub CargarDatosMapa(ByVal map As Integer)
+    On Error Goto CargarDatosMapa_Err
     
     On Error GoTo CargarDatosMapa_Err
     
@@ -971,9 +984,13 @@ cont:
 CargarDatosMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarDatosMapa", Erl)
     
+    Exit Sub
+CargarDatosMapa_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarDatosMapa", Erl)
 End Sub
 
 Public Sub CargarMapa(ByVal map As Integer)
+    On Error Goto CargarMapa_Err
     
     On Error GoTo CargarMapa_Err
 
@@ -1309,9 +1326,13 @@ CargarMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarMapa", Erl)
     Resume Next
     
+    Exit Sub
+CargarMapa_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarMapa", Erl)
 End Sub
 
 Public Sub CargarParticulas()
+    On Error Goto CargarParticulas_Err
     
     On Error GoTo CargarParticulas_Err
 
@@ -1409,9 +1430,13 @@ CargarParticulas_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarParticulas", Erl)
     Resume Next
     
+    Exit Sub
+CargarParticulas_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarParticulas", Erl)
 End Sub
 
 Public Sub CargarParticulasBinary()
+    On Error Goto CargarParticulasBinary_Err
     
     On Error GoTo CargarParticulasBinary_Err
 
@@ -1503,9 +1528,13 @@ CargarParticulasBinary_Err:
     'Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarParticulasBinary", Erl)
     Resume Next
     
+    Exit Sub
+CargarParticulasBinary_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarParticulasBinary", Erl)
 End Sub
 
 Public Sub LoadProjectiles()
+    On Error Goto LoadProjectiles_Err
     Dim ProjectN As Integer
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "ProjectileDef.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
@@ -1531,9 +1560,13 @@ Public Sub LoadProjectiles()
         ProjectileData(Prj).OffsetRotation = Val(IniReader.GetValue("PROJECTILE" & Prj, "OFFSETROTATION"))
         ProjectileData(Prj).RotationSpeed = Val(IniReader.GetValue("PROJECTILE" & Prj, "ROTATIONSPEED"))
     Next Prj
+    Exit Sub
+LoadProjectiles_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.LoadProjectiles", Erl)
 End Sub
 
 Public Sub LoadBuffResources()
+    On Error Goto LoadBuffResources_Err
     Dim EffectCount As Integer
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "Effects.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
@@ -1555,9 +1588,13 @@ Public Sub LoadBuffResources()
     For Prj = 1 To EffectCount
         EffectResources(Prj).GrhId = Val(IniReader.GetValue("Effect" & Prj, "GRH"))
     Next Prj
+    Exit Sub
+LoadBuffResources_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.LoadBuffResources", Erl)
 End Sub
 
 Public Function GetPatchNotes() As String
+    On Error Goto GetPatchNotes_Err
 On Error GoTo GetPatchNotes_Err
     Dim PatchDate As Long
     Dim LastDisplayPatch As Long
@@ -1596,9 +1633,13 @@ On Error GoTo GetPatchNotes_Err
 GetPatchNotes_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.GetPatchNotes", Erl)
     GetPatchNotes = ""
+    Exit Function
+GetPatchNotes_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.GetPatchNotes", Erl)
 End Function
 
 Public Sub CargarIndicesOBJ()
+    On Error Goto CargarIndicesOBJ_Err
     
     On Error GoTo CargarIndicesOBJ_Err
     
@@ -1891,9 +1932,13 @@ CargarIndicesOBJ_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarIndicesOBJ", Erl)
     Resume Next
     
+    Exit Sub
+CargarIndicesOBJ_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarIndicesOBJ", Erl)
 End Sub
 
 Public Sub Cargarmapsworlddata()
+    On Error Goto Cargarmapsworlddata_Err
     
     On Error GoTo Cargarmapsworlddata_Err
 
@@ -1948,9 +1993,13 @@ Cargarmapsworlddata_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.Cargarmapsworlddata", Erl)
     Resume Next
     
+    Exit Sub
+Cargarmapsworlddata_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.Cargarmapsworlddata", Erl)
 End Sub
 
 Sub CargarMoldes()
+    On Error Goto CargarMoldes_Err
 
     BodiesHeading(1) = E_Heading.south
     BodiesHeading(2) = E_Heading.NORTH
@@ -2002,8 +2051,12 @@ Sub CargarMoldes()
         Delete_File Windows_Temp_Dir & "moldes.ini"
     #End If
 
+    Exit Sub
+CargarMoldes_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarMoldes", Erl)
 End Sub
 Sub CargarZonas()
+    On Error Goto CargarZonas_Err
     Dim Reader As clsIniManager
     Dim cantidadZonas As Integer
     Dim i As Integer
@@ -2026,9 +2079,13 @@ Sub CargarZonas()
     Next i
     
     Set Reader = Nothing
+    Exit Sub
+CargarZonas_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarZonas", Erl)
 End Sub
 
 Sub CargarCabezas()
+    On Error Goto CargarCabezas_Err
     
     On Error GoTo CargarCabezas_Err
     
@@ -2093,9 +2150,13 @@ CargarCabezas_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarCabezas", Erl)
     Resume Next
     
+    Exit Sub
+CargarCabezas_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarCabezas", Erl)
 End Sub
 
 Sub CargarCascos()
+    On Error Goto CargarCascos_Err
     
     On Error GoTo CargarCascos_Err
     
@@ -2161,10 +2222,14 @@ CargarCascos_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarCascos", Erl)
     Resume Next
     
+    Exit Sub
+CargarCascos_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarCascos", Erl)
 End Sub
 
 
 Sub CargarCuerpos()
+    On Error Goto CargarCuerpos_Err
     
     On Error GoTo CargarCuerpos_Err
     
@@ -2324,9 +2389,13 @@ CargarCuerpos_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarCuerpos", Erl)
     Resume Next
     
+    Exit Sub
+CargarCuerpos_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarCuerpos", Erl)
 End Sub
 
 Sub CargarFxs()
+    On Error Goto CargarFxs_Err
     
     On Error GoTo CargarFxs_Err
     
@@ -2380,20 +2449,32 @@ CargarFxs_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarFxs", Erl)
     Resume Next
     
+    Exit Sub
+CargarFxs_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarFxs", Erl)
 End Sub
 
 Public Sub CalculateCliptime(ByRef clip As tAnimationClip)
+    On Error Goto CalculateCliptime_Err
     clip.ClipTime = GrhData(FxData(clip.fX).Animacion).speed
+    Exit Sub
+CalculateCliptime_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CalculateCliptime", Erl)
 End Sub
 
 Public Sub CalculateClipsTime(ByRef animData As tComposedAnimation)
+    On Error Goto CalculateClipsTime_Err
     Dim i As Integer
     For i = 1 To UBound(animData.Clips())
         Call CalculateCliptime(animData.Clips(i))
     Next i
+    Exit Sub
+CalculateClipsTime_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CalculateClipsTime", Erl)
 End Sub
 
 Public Sub AddComposedMetitation(ByVal index As Long, ByVal startFx As Long, ByVal loopFx As Long)
+    On Error Goto AddComposedMetitation_Err
     ReDim ComposedFxData(index).Clips(3)
     ComposedFxData(index).Clips(1).fX = startFx
     ComposedFxData(index).Clips(1).LoopCount = 0
@@ -2405,10 +2486,14 @@ Public Sub AddComposedMetitation(ByVal index As Long, ByVal startFx As Long, ByV
     Call CalculateClipsTime(ComposedFxData(index))
     ComposedFxData(index).Clips(3).ClipTime = ComposedFxData(index).Clips(3).ClipTime / 2
     FxToAnimationMap(StartFx) = Index
+    Exit Sub
+AddComposedMetitation_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.AddComposedMetitation", Erl)
 End Sub
 
 
 Public Sub LoadComposedFx()
+    On Error Goto LoadComposedFx_Err
     ReDim ComposedFxData(1 To 21) As tComposedAnimation
     
     ReDim ComposedFxData(1).Clips(1)
@@ -2463,9 +2548,13 @@ Public Sub LoadComposedFx()
     Call AddComposedMetitation(20, 140, 138)
     Call AddComposedMetitation(21, 141, 138)
     
+    Exit Sub
+LoadComposedFx_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.LoadComposedFx", Erl)
 End Sub
 
 Public Function LoadGrhData() As Boolean
+    On Error Goto LoadGrhData_Err
 
     On Error GoTo ErrorHandler
 
@@ -2602,9 +2691,13 @@ ErrorHandler:
     LoadGrhData = False
     MsgBox "Error " & Err.Description & " durante la carga de Grh.dat! La carga se ha detenido en GRH: " & grh
     
+    Exit Function
+LoadGrhData_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.LoadGrhData", Erl)
 End Function
 
 Public Sub LoadGrhIni()
+    On Error Goto LoadGrhIni_Err
     On Error GoTo hErr
 
     Dim FileHandle     As Integer
@@ -2774,10 +2867,14 @@ hErr:
     
     Exit Sub
 
+    Exit Sub
+LoadGrhIni_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.LoadGrhIni", Erl)
 End Sub
 
 
 Sub CargarAnimArmas()
+    On Error Goto CargarAnimArmas_Err
     
     On Error GoTo CargarAnimArmas_Err
     
@@ -2926,9 +3023,13 @@ CargarAnimArmas_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarAnimArmas", Erl)
     Resume Next
     
+    Exit Sub
+CargarAnimArmas_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarAnimArmas", Erl)
 End Sub
 
 Sub CargarColores()
+    On Error Goto CargarColores_Err
     
     On Error GoTo CargarColores_Err
     
@@ -2988,9 +3089,13 @@ CargarColores_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarColores", Erl)
     Resume Next
     
+    Exit Sub
+CargarColores_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarColores", Erl)
 End Sub
 
 Sub CargarCrafteo()
+    On Error Goto CargarCrafteo_Err
     Dim FileName As String
 
     #If Compresion = 1 Then
@@ -3032,9 +3137,13 @@ Sub CargarCrafteo()
     #If Compresion = 1 Then
         Delete_File FileName
     #End If
+    Exit Sub
+CargarCrafteo_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarCrafteo", Erl)
 End Sub
 
 Sub CargarAnimEscudos()
+    On Error Goto CargarAnimEscudos_Err
     
     On Error GoTo CargarAnimEscudos_Err
     
@@ -3181,10 +3290,14 @@ CargarAnimEscudos_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarAnimEscudos", Erl)
     Resume Next
     
+    Exit Sub
+CargarAnimEscudos_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarAnimEscudos", Erl)
 End Sub
 
 
 Sub LoadFonts()
+    On Error Goto LoadFonts_Err
 #If REMOTE_CLOSE = 0 Then
     If LoadFont("Cardo.ttf") Then
         frmMain.NombrePJ.font.name = "Cardo"
@@ -3243,9 +3356,13 @@ Sub LoadFonts()
     #Else
     
     #End If
+    Exit Sub
+LoadFonts_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.LoadFonts", Erl)
 End Sub
 
 Function LoadFont(name As String) As Boolean
+    On Error Goto LoadFont_Err
     Static YaMostreError As Boolean
     LoadFont = AddFontResourceEx(App.path & "\..\Recursos\OUTPUT\" & name, FR_PRIVATE, 0&) <> 0
 
@@ -3253,9 +3370,13 @@ Function LoadFont(name As String) As Boolean
         Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_FUENTES"), vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ERROR_CARGA"))
         YaMostreError = True
     End If
+    Exit Function
+LoadFont_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.LoadFont", Erl)
 End Function
 
 Public Sub CargarNPCsMapData()
+    On Error Goto CargarNPCsMapData_Err
     Dim fh      As Integer
     Dim NumMaps As Integer
     
@@ -3299,10 +3420,14 @@ Public Sub CargarNPCsMapData()
         DoEvents
     Loop
     Close fh
+    Exit Sub
+CargarNPCsMapData_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.CargarNPCsMapData", Erl)
 End Sub
 ' Módulo: modMultilenguaje.bas
 
 Public Function GetLocalizedValue(ByRef Leer As Object, ByVal section As String, ByVal keyBase As String, ByVal langPrefix As String) As String
+    On Error Goto GetLocalizedValue_Err
     Dim localizedKey As String
     localizedKey = LCase(langPrefix) & "_" & keyBase
 
@@ -3313,9 +3438,13 @@ Public Function GetLocalizedValue(ByRef Leer As Object, ByVal section As String,
     End If
 
     GetLocalizedValue = value
+    Exit Function
+GetLocalizedValue_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.GetLocalizedValue", Erl)
 End Function
 
 Public Function GetLanguagePrefix(ByVal language As e_language) As String
+    On Error Goto GetLanguagePrefix_Err
     Select Case language
         Case e_language.Spanish
             GetLanguagePrefix = "sp"
@@ -3330,5 +3459,8 @@ Public Function GetLanguagePrefix(ByVal language As e_language) As String
         Case Else
             GetLanguagePrefix = "en"
     End Select
+    Exit Function
+GetLanguagePrefix_Err:
+    Call TraceError(Err.Number, Err.Description, "Recursos.GetLanguagePrefix", Erl)
 End Function
 

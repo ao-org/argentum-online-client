@@ -142,6 +142,7 @@ Private cBotonCerrar As clsGraphicalButton
 
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -160,9 +161,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCantidad.Form_Load", Erl)
 End Sub
 
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
 
     Set cBotonTirarTodo = New clsGraphicalButton
     Set cBotonTirar = New clsGraphicalButton
@@ -190,8 +195,12 @@ Private Sub loadButtons()
     Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
                                                 "boton-sm-menos-over.bmp", _
                                                 "boton-sm-menos-off.bmp", Me)
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCantidad.loadButtons", Erl)
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     On Error GoTo Form_KeyPress_Err
     
 
@@ -207,9 +216,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCantidad.Form_KeyPress", Erl)
 End Sub
 
 Private Sub cmdcerrar_Click()
+    On Error Goto cmdcerrar_Click_Err
     
     On Error GoTo cmdcerrar_Click_Err
     
@@ -221,10 +234,14 @@ cmdcerrar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.cmdCerrar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdcerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCantidad.cmdcerrar_Click", Erl)
 End Sub
 
 
 Private Sub cmdMas_Click()
+    On Error Goto cmdMas_Click_Err
     
     On Error GoTo cmdMas_Click_Err
     
@@ -238,9 +255,13 @@ cmdMas_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.cmdMas_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdMas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCantidad.cmdMas_Click", Erl)
 End Sub
 
 Private Sub cmdMenos_Click()
+    On Error Goto cmdMenos_Click_Err
     
     On Error GoTo cmdMenos_Click_Err
     
@@ -254,14 +275,22 @@ cmdMenos_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.cmdMenos_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdMenos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCantidad.cmdMenos_Click", Erl)
 End Sub
 
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     MoverForm Me.hwnd
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCantidad.Form_MouseMove", Erl)
 End Sub
 
 Private Sub Text1_KeyPress(KeyAscii As Integer)
+    On Error Goto Text1_KeyPress_Err
     
     On Error GoTo Text1_KeyPress_Err
     
@@ -280,10 +309,14 @@ Text1_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.Text1_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Text1_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCantidad.Text1_KeyPress", Erl)
 End Sub
 
 
 Private Sub Text1_Change()
+    On Error Goto Text1_Change_Err
 
     On Error GoTo errhandler
 
@@ -309,10 +342,14 @@ errhandler:
     'If we got here the user may have pasted (Shift + Insert) a REALLY large number, causing an overflow, so we set amount back to 1
     Text1.Text = "1"
 
+    Exit Sub
+Text1_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCantidad.Text1_Change", Erl)
 End Sub
 
 
 Private Sub cmdTirar_click()
+    On Error Goto cmdTirar_click_Err
     On Error GoTo tirar_click_Err
     
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
@@ -333,9 +370,13 @@ Private Sub cmdTirar_click()
 tirar_click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.tirar_click", Erl)
     Resume Next
+    Exit Sub
+cmdTirar_click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCantidad.cmdTirar_click", Erl)
 End Sub
 
 Private Sub ThrowItem(ByVal SlotIndex As Integer, ByVal ObjIndex As Integer, ByVal Amount As Integer)
+    On Error Goto ThrowItem_Err
     If SlotIndex <> FLAGORO Then
         If ObjData(ObjIndex).Destruye = 0 Then
             Call WriteDrop(SlotIndex, Amount)
@@ -352,9 +393,13 @@ Private Sub ThrowItem(ByVal SlotIndex As Integer, ByVal ObjIndex As Integer, ByV
     Else
         Call WriteDrop(SlotIndex, Amount)
     End If
+    Exit Sub
+ThrowItem_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCantidad.ThrowItem", Erl)
 End Sub
 
 Private Sub cmdTirarTodo_click()
+    On Error Goto cmdTirarTodo_click_Err
     
     On Error GoTo tirartodo_click_Err
     
@@ -410,4 +455,7 @@ tirartodo_click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.tirartodo_click", Erl)
     Resume Next
     
+    Exit Sub
+cmdTirarTodo_click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCantidad.cmdTirarTodo_click", Erl)
 End Sub

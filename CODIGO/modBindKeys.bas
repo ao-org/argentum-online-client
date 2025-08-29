@@ -107,6 +107,7 @@ Const CustomKeyMappingFile As String = "\..\Recursos\OUTPUT\Teclas.ini"
 Const DefaultKeyMappingFile As String = "\..\Recursos\OUTPUT\DefaultKey.ini"
 
 Public Sub LoadBindedKeys()
+    On Error Goto LoadBindedKeys_Err
     
     On Error GoTo LoadBindedKeys_Err
 
@@ -152,9 +153,13 @@ LoadBindedKeys_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.LoadBindedKeys", Erl)
     Resume Next
     
+    Exit Sub
+LoadBindedKeys_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.LoadBindedKeys", Erl)
 End Sub
 
 Private Function GetAction(ByRef DefaultBinds As clsIniManager, ByRef UserBinds As clsIniManager, ByVal Index As Integer) As e_MouseAction
+    On Error Goto GetAction_Err
     Dim Temp As String
     Temp = UserBinds.GetValue("INIT", "ACCION" & Index)
     GetAction = ParseMouseAction(Trim(Temp))
@@ -167,16 +172,24 @@ Private Function GetAction(ByRef DefaultBinds As clsIniManager, ByRef UserBinds 
             GetAction = ParseMouseAction(Trim(Temp))
         End If
     End If
+    Exit Function
+GetAction_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.GetAction", Erl)
 End Function
 
 Private Function GetBind(ByRef DefaultBinds As clsIniManager, ByRef UserBinds As clsIniManager, ByVal key As String) As String
+    On Error Goto GetBind_Err
     GetBind = UserBinds.GetValue("USER", key)
     If GetBind = vbNullString Then
         GetBind = DefaultBinds.GetValue("DEFAULTS", key)
     End If
+    Exit Function
+GetBind_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.GetBind", Erl)
 End Function
 
 Public Sub SaveBindedKeys()
+    On Error Goto SaveBindedKeys_Err
     
     On Error GoTo SaveBindedKeys_Err
     
@@ -204,9 +217,13 @@ SaveBindedKeys_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.SaveBindedKeys", Erl)
     Resume Next
     
+    Exit Sub
+SaveBindedKeys_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.SaveBindedKeys", Erl)
 End Sub
 
 Sub LoadDefaultBinds()
+    On Error Goto LoadDefaultBinds_Err
     
     On Error GoTo LoadDefaultBinds_Err
 
@@ -228,9 +245,13 @@ LoadDefaultBinds_Err:
     Call RegistrarError(Err.Number, Err.Description, "modBindKeys.LoadDefaultBinds", Erl)
     Resume Next
     
+    Exit Sub
+LoadDefaultBinds_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.LoadDefaultBinds", Erl)
 End Sub
 
 Sub LoadDefaultBinds2()
+    On Error Goto LoadDefaultBinds2_Err
     
     On Error GoTo LoadDefaultBinds2_Err
 
@@ -252,9 +273,13 @@ LoadDefaultBinds2_Err:
     Call RegistrarError(Err.Number, Err.Description, "modBindKeys.LoadDefaultBinds2", Erl)
     Resume Next
     
+    Exit Sub
+LoadDefaultBinds2_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.LoadDefaultBinds2", Erl)
 End Sub
 
 Public Function Accionar(ByVal KeyCode As Integer) As Boolean
+    On Error Goto Accionar_Err
     
     On Error GoTo Accionar_Err
     
@@ -470,9 +495,13 @@ Accionar_Err:
     Call RegistrarError(Err.Number, Err.Description, "modBindKeys.Accionar", Erl)
     Resume Next
     
+    Exit Function
+Accionar_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.Accionar", Erl)
 End Function
 
 Public Sub DoHotKey(ByVal HkSlot As Byte)
+    On Error Goto DoHotKey_Err
     If UserStats.estado = 1 Then
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
             Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=¡Estás muerto!
@@ -490,9 +519,13 @@ Public Sub DoHotKey(ByVal HkSlot As Byte)
             Call WriteUseHKeySlot(HkSlot)
         End If
     End If
+    Exit Sub
+DoHotKey_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.DoHotKey", Erl)
 End Sub
 
 Public Sub TirarItem()
+    On Error Goto TirarItem_Err
     On Error GoTo TirarItem_Err
     
         If (frmMain.Inventario.SelectedItem > 0 And frmMain.Inventario.SelectedItem < MAX_INVENTORY_SLOTS + 1) Or (frmMain.Inventario.SelectedItem = FLAGORO) Then
@@ -522,9 +555,13 @@ TirarItem_Err:
     Call RegistrarError(Err.Number, Err.Description, "modBindKeys.TirarItem", Erl)
     Resume Next
     
+    Exit Sub
+TirarItem_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.TirarItem", Erl)
 End Sub
 
 Public Sub AgarrarItem()
+    On Error Goto AgarrarItem_Err
     
     On Error GoTo AgarrarItem_Err
     
@@ -537,9 +574,13 @@ AgarrarItem_Err:
     Call RegistrarError(Err.Number, Err.Description, "modBindKeys.AgarrarItem", Erl)
     Resume Next
     
+    Exit Sub
+AgarrarItem_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.AgarrarItem", Erl)
 End Sub
 
 Public Function BuscarObjEnInv(ObjIndex) As Byte
+    On Error Goto BuscarObjEnInv_Err
     
     On Error GoTo BuscarObjEnInv_Err
     
@@ -566,9 +607,13 @@ BuscarObjEnInv_Err:
     Call RegistrarError(Err.Number, Err.Description, "modBindKeys.BuscarObjEnInv", Erl)
     Resume Next
     
+    Exit Function
+BuscarObjEnInv_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.BuscarObjEnInv", Erl)
 End Function
 
 Private Function MouseActionToString(ByVal Action As e_MouseAction) As String
+    On Error Goto MouseActionToString_Err
     Select Case Action
         Case e_MouseAction.eThrowOrLook
             MouseActionToString = "THROW_LOOK"
@@ -579,9 +624,13 @@ Private Function MouseActionToString(ByVal Action As e_MouseAction) As String
         Case e_MouseAction.eWhisper
             MouseActionToString = "WHISPER"
     End Select
+    Exit Function
+MouseActionToString_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.MouseActionToString", Erl)
 End Function
 
 Private Function ParseMouseAction(ByVal str As String) As e_MouseAction
+    On Error Goto ParseMouseAction_Err
     Select Case str
         Case "THROW_LOOK"
             ParseMouseAction = e_MouseAction.eThrowOrLook
@@ -594,9 +643,13 @@ Private Function ParseMouseAction(ByVal str As String) As e_MouseAction
         Case Else
             ParseMouseAction = e_MouseAction.eUnknown
     End Select
+    Exit Function
+ParseMouseAction_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.ParseMouseAction", Erl)
 End Function
 
 Private Function ParseOldMouseAction(ByVal str As String) As e_MouseAction
+    On Error Goto ParseOldMouseAction_Err
     If str = vbNullString Then
         ParseOldMouseAction = e_MouseAction.eUnknown
     End If
@@ -616,4 +669,7 @@ Private Function ParseOldMouseAction(ByVal str As String) As e_MouseAction
         Case Else
             ParseOldMouseAction = e_MouseAction.eUnknown
     End Select
+    Exit Function
+ParseOldMouseAction_Err:
+    Call TraceError(Err.Number, Err.Description, "modBindKeys.ParseOldMouseAction", Erl)
 End Function

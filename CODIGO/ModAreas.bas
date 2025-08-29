@@ -29,6 +29,7 @@ Public MaxLimiteY      As Integer
 Private Const AREA_DIM As Byte = 12
 
 Public Sub CambioDeArea(ByVal x As Byte, ByVal y As Byte)
+    On Error Goto CambioDeArea_Err
     
     On Error GoTo CambioDeArea_Err
     
@@ -78,4 +79,7 @@ CambioDeArea_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModAreas.CambioDeArea", Erl)
     Resume Next
     
+    Exit Sub
+CambioDeArea_Err:
+    Call TraceError(Err.Number, Err.Description, "ModAreas.CambioDeArea", Erl)
 End Sub

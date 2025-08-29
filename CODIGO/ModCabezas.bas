@@ -20,6 +20,7 @@ Option Explicit
 Public MiCabeza As Integer
 
 Private Sub DrawGrafico(grh As grh, ByVal x As Byte, ByVal y As Byte)
+    On Error Goto DrawGrafico_Err
     
     On Error GoTo DrawGrafico_Err
     
@@ -34,9 +35,13 @@ DrawGrafico_Err:
     Call RegistrarError(Err.number, Err.Description, "ModCabezas.DrawGrafico", Erl)
     Resume Next
     
+    Exit Sub
+DrawGrafico_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCabezas.DrawGrafico", Erl)
 End Sub
 
 Sub DibujarCPJ(ByVal MyHead As Long, Optional ByVal Heading As Byte = 3)
+    On Error Goto DibujarCPJ_Err
     
     On Error GoTo DibujarCPJ_Err
     
@@ -55,9 +60,13 @@ DibujarCPJ_Err:
     Call RegistrarError(Err.number, Err.Description, "ModCabezas.DibujarCPJ", Erl)
     Resume Next
     
+    Exit Sub
+DibujarCPJ_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCabezas.DibujarCPJ", Erl)
 End Sub
 
 Sub DameOpciones()
+    On Error Goto DameOpciones_Err
     
     On Error GoTo DameOpciones_Err
     
@@ -231,5 +240,8 @@ DameOpciones_Err:
     Call RegistrarError(Err.number, Err.Description, "ModCabezas.DameOpciones", Erl)
     Resume Next
     
+    Exit Sub
+DameOpciones_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCabezas.DameOpciones", Erl)
 End Sub
 

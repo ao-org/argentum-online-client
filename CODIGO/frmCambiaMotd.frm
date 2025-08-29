@@ -175,6 +175,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub cmdOk_Click()
+    On Error Goto cmdOk_Click_Err
     
     On Error GoTo cmdOk_Click_Err
     
@@ -219,10 +220,14 @@ cmdOk_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdOk_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdOk_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCambiaMotd.cmdOk_Click", Erl)
 End Sub
 
 'A partir de Command2_Click son todos buttons para agregar color al texto
 Private Sub cmdAzul_Click()
+    On Error Goto cmdAzul_Click_Err
     
     On Error GoTo cmdAzul_Click_Err
     
@@ -235,9 +240,13 @@ cmdAzul_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdAzul_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdAzul_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCambiaMotd.cmdAzul_Click", Erl)
 End Sub
 
 Private Sub cmdRojo_Click()
+    On Error Goto cmdRojo_Click_Err
     
     On Error GoTo cmdRojo_Click_Err
     
@@ -250,9 +259,13 @@ cmdRojo_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdRojo_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdRojo_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCambiaMotd.cmdRojo_Click", Erl)
 End Sub
 
 Private Sub cmdBlanco_Click()
+    On Error Goto cmdBlanco_Click_Err
     
     On Error GoTo cmdBlanco_Click_Err
     
@@ -265,9 +278,13 @@ cmdBlanco_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdBlanco_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdBlanco_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCambiaMotd.cmdBlanco_Click", Erl)
 End Sub
 
 Private Sub cmdGris_Click()
+    On Error Goto cmdGris_Click_Err
     
     On Error GoTo cmdGris_Click_Err
     
@@ -280,9 +297,13 @@ cmdGris_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdGris_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdGris_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCambiaMotd.cmdGris_Click", Erl)
 End Sub
 
 Private Sub cmdAmarillo_Click()
+    On Error Goto cmdAmarillo_Click_Err
     
     On Error GoTo cmdAmarillo_Click_Err
     
@@ -295,9 +316,13 @@ cmdAmarillo_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdAmarillo_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdAmarillo_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCambiaMotd.cmdAmarillo_Click", Erl)
 End Sub
 
 Private Sub cmdMorado_Click()
+    On Error Goto cmdMorado_Click_Err
     
     On Error GoTo cmdMorado_Click_Err
     
@@ -310,9 +335,13 @@ cmdMorado_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdMorado_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdMorado_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCambiaMotd.cmdMorado_Click", Erl)
 End Sub
 
 Private Sub cmdVerde_Click()
+    On Error Goto cmdVerde_Click_Err
     
     On Error GoTo cmdVerde_Click_Err
     
@@ -325,9 +354,13 @@ cmdVerde_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdVerde_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdVerde_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCambiaMotd.cmdVerde_Click", Erl)
 End Sub
 
 Private Sub cmdMarron_Click()
+    On Error Goto cmdMarron_Click_Err
     
     On Error GoTo cmdMarron_Click_Err
     
@@ -340,5 +373,8 @@ cmdMarron_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdMarron_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdMarron_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCambiaMotd.cmdMarron_Click", Erl)
 End Sub
 

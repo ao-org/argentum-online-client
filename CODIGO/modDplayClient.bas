@@ -24,6 +24,7 @@ Public dpc As DirectPlay8Client
 Public dpApp As DPN_APPLICATION_DESC
 
 Public Sub init_direct_play(ByRef dx As DirectX8)
+    On Error Goto init_direct_play_Err
     Err.Clear
     CheckAndEnableDirectPlay
     
@@ -65,9 +66,13 @@ Public Sub init_direct_play(ByRef dx As DirectX8)
       
     End With
     dpc.SetSPCaps DP8SP_TCPIP, scaps
+    Exit Sub
+init_direct_play_Err:
+    Call TraceError(Err.Number, Err.Description, "modDplayClient.init_direct_play", Erl)
 End Sub
 
 Public Sub shutdown_direct_play()
+    On Error Goto shutdown_direct_play_Err
     'Stop our message handler
     If Not dpc Is Nothing Then dpc.UnRegisterMessageHandler
     'Close down our session
@@ -75,10 +80,14 @@ Public Sub shutdown_direct_play()
     Set dpc = Nothing
     'Get rid of our message pump
     'DPlayEventsForm.Un
+    Exit Sub
+shutdown_direct_play_Err:
+    Call TraceError(Err.Number, Err.Description, "modDplayClient.shutdown_direct_play", Erl)
 End Sub
 
 
 Private Sub CheckAndEnableDirectPlay()
+    On Error Goto CheckAndEnableDirectPlay_Err
     If Not IsDirectPlayEnabled() Then
         Dim response As VbMsgBoxResult
         response = MsgBox("DirectPlay is not enabled. Would you like to enable it now?", vbYesNo + vbQuestion, "Enable DirectPlay")
@@ -90,9 +99,13 @@ Private Sub CheckAndEnableDirectPlay()
     Else
         frmDebug.add_text_tracebox "DirectPlay Status: DirectPlay is already enabled."
     End If
+    Exit Sub
+CheckAndEnableDirectPlay_Err:
+    Call TraceError(Err.Number, Err.Description, "modDplayClient.CheckAndEnableDirectPlay", Erl)
 End Sub
 
 Private Function IsDirectPlayEnabled() As Boolean
+    On Error Goto IsDirectPlayEnabled_Err
     On Error Resume Next
     Dim objWMIService As Object
     Dim colFeatures As Object
@@ -108,19 +121,27 @@ Private Function IsDirectPlayEnabled() As Boolean
         End If
     Next
     IsDirectPlayEnabled = False
+    Exit Function
+IsDirectPlayEnabled_Err:
+    Call TraceError(Err.Number, Err.Description, "modDplayClient.IsDirectPlayEnabled", Erl)
 End Function
 
 Private Sub EnableDirectPlay()
+    On Error Goto EnableDirectPlay_Err
     On Error Resume Next
     Dim shell As Object
     Set shell = CreateObject("WScript.Shell")
     shell.Run "dism /online /enable-feature /featurename:DirectPlay /all", 0, True
     MsgBox "DirectPlay has been enabled. Please restart the application.", vbInformation, "DirectPlay Enabled"
     frmDebug.add_text_tracebox "DirectPlay has been enabled. Please restart the application."
+    Exit Sub
+EnableDirectPlay_Err:
+    Call TraceError(Err.Number, Err.Description, "modDplayClient.EnableDirectPlay", Erl)
 End Sub
 
 
 Public Sub HandleDPlayError(ByVal ErrNumber As Long, ByVal ErrDescription As String, ByVal place As String, ByVal line As String)
+    On Error Goto HandleDPlayError_Err
        Select Case err.Number
             Case DPNERR_INVALIDPLAYER
                     Call LogError("DPNERR_INVALIDPLAYER: The player ID is not recognized as a valid player ID for this game session. " & place & " " & line)
@@ -153,6 +174,9 @@ Public Sub HandleDPlayError(ByVal ErrNumber As Long, ByVal ErrDescription As Str
                     Call LogError("Unknown error " & Err.Number & " " & place & " " & line)
         End Select
         err.Clear
+    Exit Sub
+HandleDPlayError_Err:
+    Call TraceError(Err.Number, Err.Description, "modDplayClient.HandleDPlayError", Erl)
 End Sub
 
 

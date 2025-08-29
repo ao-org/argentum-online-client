@@ -1200,6 +1200,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     FrmTorneo.Caption = JsonLanguage.Item("MENSAJE_ORGANIZACION_EVENTO")
     FraTorneosY.Caption = JsonLanguage.Item("MENSAJE_TORNEOS_EVENTOS")
     lblSeleccionarEl.Caption = JsonLanguage.Item("MENSAJE_SELECCIONAR_EVENTO") ' Seleccionar el evento a realizar
@@ -1213,11 +1214,18 @@ Private Sub Form_Load()
     cmdConfigurarE.Caption = JsonLanguage.Item("MENSAJE_CONFIGURAR_INICIAR") ' Configurar e Iniciar
     cmdCancelarTodos.Caption = JsonLanguage.Item("MENSAJE_CANCELAR_LOBBY") ' Cancelar todos los eventos con Lobby
 
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.Form_Load", Erl)
 End Sub
 
 
 Private Sub cmdAnunciarAbordaje_Click()
+    On Error Goto cmdAnunciarAbordaje_Click_Err
 Call ParseUserCommand("/configlobby open ")
+    Exit Sub
+cmdAnunciarAbordaje_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdAnunciarAbordaje_Click", Erl)
 End Sub
 
 '    Argentum 20 - Game Client Program
@@ -1237,35 +1245,60 @@ End Sub
 '
 '
 Private Sub cmdAnunciarEl_Click()
+    On Error Goto cmdAnunciarEl_Click_Err
 Call ParseUserCommand("/configlobby open ")
+    Exit Sub
+cmdAnunciarEl_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdAnunciarEl_Click", Erl)
 End Sub
 
 Private Sub cmdAnunciarEldeath_Click()
+    On Error Goto cmdAnunciarEldeath_Click_Err
 Call ParseUserCommand("/configlobby open ")
+    Exit Sub
+cmdAnunciarEldeath_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdAnunciarEldeath_Click", Erl)
 End Sub
 
 Private Sub cmdCancelar_Click()
+    On Error Goto cmdCancelar_Click_Err
     FrmTorneo.Frame2.visible = False
     FrmTorneo.FraTorneosY.visible = True
+    Exit Sub
+cmdCancelar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdCancelar_Click", Erl)
 End Sub
 
 Private Sub cmdCancelarDeach_Click()
+    On Error Goto cmdCancelarDeach_Click_Err
     FrmTorneo.FraTorneosY.visible = True
     FrmTorneo.FraDeathMach.visible = False
+    Exit Sub
+cmdCancelarDeach_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdCancelarDeach_Click", Erl)
 End Sub
 
 Private Sub cmdCancelarTodos_Click()
+    On Error Goto cmdCancelarTodos_Click_Err
     Call WriteCancelarTorneo
     Call ParseUserCommand("/configlobby end")
     Call ParseUserCommand("/cancelarevento")
+    Exit Sub
+cmdCancelarTodos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdCancelarTodos_Click", Erl)
 End Sub
 
 Private Sub cmdCancelarTorneo_Click()
+    On Error Goto cmdCancelarTorneo_Click_Err
     FrmTorneo.FraTorneosY.visible = True
     FrmTorneo.Frame1.visible = False
+    Exit Sub
+cmdCancelarTorneo_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdCancelarTorneo_Click", Erl)
 End Sub
 
 Private Sub cmdConfigurarE_Click()
+    On Error Goto cmdConfigurarE_Click_Err
 FrmTorneo.FraTorneosY.visible = False
 Select Case True
     Case OptMatarCon.Value
@@ -1279,13 +1312,21 @@ Select Case True
     Case OptAbordaje.Value
         FrmTorneo.FraAbordaje.visible = True
 End Select
+    Exit Sub
+cmdConfigurarE_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdConfigurarE_Click", Erl)
 End Sub
 
 Private Sub cmdCrearEl_Click()
+    On Error Goto cmdCrearEl_Click_Err
 Call ParseUserCommand("/crearevento caceria " & txtPlayer & " " & txtNivelMinino & " " & txtNivelmax)
+    Exit Sub
+cmdCrearEl_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdCrearEl_Click", Erl)
 End Sub
 
 Private Sub cmdCrearElAbordaje_Click()
+    On Error Goto cmdCrearElAbordaje_Click_Err
     ' Comprobar que txtAbordaje sea un número par
     If Not IsNumeric(txtAbordaje.Text) Or Val(txtAbordaje.Text) Mod 2 <> 0 Then
         MsgBox JsonLanguage.Item("MENSAJE_NUMERO_PAR_PARTICIPANTES"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
@@ -1313,9 +1354,13 @@ Private Sub cmdCrearElAbordaje_Click()
 
     ' Si todas las validaciones pasan, llamar a ParseUserCommand
     Call ParseUserCommand("/crearevento navalconquest" & " " & txtAbordaje.Text & " " & txtAbordajelvlMin.Text & " " & txtlvlAbordajeMax.Text)
+    Exit Sub
+cmdCrearElAbordaje_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdCrearElAbordaje_Click", Erl)
 End Sub
 
 Private Sub cmdCrearEldeath_Click()
+    On Error Goto cmdCrearEldeath_Click_Err
     ' Verificar que txtMinlvldeath esté entre 1 y 47 y no sea mayor que txtMaxlvldeath
     If IsNumeric(txtMinlvldeath.Text) And CInt(txtMinlvldeath.Text) >= 1 And CInt(txtMinlvldeath.Text) <= 47 Then
         ' Verificar que txtMaxlvldeath esté entre 1 y 47 y no sea menor que txtMinlvldeath
@@ -1330,31 +1375,55 @@ Private Sub cmdCrearEldeath_Click()
         ' Mostrar un mensaje de error si txtMinlvldeath no cumple con las condiciones
         MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
     End If
+    Exit Sub
+cmdCrearEldeath_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdCrearEldeath_Click", Erl)
 End Sub
 
 
 
 Private Sub cmdIniciarAbordaje_Click()
+    On Error Goto cmdIniciarAbordaje_Click_Err
     Call ParseUserCommand("/configlobby start")
+    Exit Sub
+cmdIniciarAbordaje_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdIniciarAbordaje_Click", Erl)
 End Sub
 
 Private Sub cmdIniciarEl_Click()
+    On Error Goto cmdIniciarEl_Click_Err
     Call ParseUserCommand("/configlobby start")
+    Exit Sub
+cmdIniciarEl_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdIniciarEl_Click", Erl)
 End Sub
 
 Private Sub cmdIniciarEldeath_Click()
+    On Error Goto cmdIniciarEldeath_Click_Err
     Call ParseUserCommand("/configlobby start")
+    Exit Sub
+cmdIniciarEldeath_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdIniciarEldeath_Click", Erl)
 End Sub
 
 Private Sub cmdVerAnotados_Click()
+    On Error Goto cmdVerAnotados_Click_Err
     Call ParseUserCommand("/configlobby list")
+    Exit Sub
+cmdVerAnotados_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdVerAnotados_Click", Erl)
 End Sub
 
 Private Sub cmdVerAnotadosGarrote_Click()
+    On Error Goto cmdVerAnotadosGarrote_Click_Err
     Call ParseUserCommand("/configlobby list")
+    Exit Sub
+cmdVerAnotadosGarrote_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.cmdVerAnotadosGarrote_Click", Erl)
 End Sub
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -1367,27 +1436,47 @@ Command1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmTorneo.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.Command1_Click", Erl)
 End Sub
 
 Private Sub Command3_Click()
+    On Error Goto Command3_Click_Err
     Call ParseUserCommand("/CREAREVENTO CAPTURA " & txtParticipantes & " " & txtRondas & " " & txtNivelMinimo & " " & txtNivelmax & " " & txtPrecio)
+    Exit Sub
+Command3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.Command3_Click", Erl)
 End Sub
 
 Private Sub Command5_Click()
+    On Error Goto Command5_Click_Err
     FrmTorneo.FraCapturaDe.visible = False
     FrmTorneo.FraTorneosY.visible = True
+    Exit Sub
+Command5_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.Command5_Click", Erl)
 End Sub
 
 Private Sub txtEquipo_Change()
+    On Error Goto txtEquipo_Change_Err
 frmDebug.add_text_tracebox txtEquipo
     Call ParseUserCommand("/configlobby setteamsize " & txtEquipo)
+    Exit Sub
+txtEquipo_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.txtEquipo_Change", Erl)
 End Sub
 
 Private Sub txtParti_Change()
+    On Error Goto txtParti_Change_Err
     Call ParseUserCommand("/configlobby setprice " & txtParti)
+    Exit Sub
+txtParti_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.txtParti_Change", Erl)
 End Sub
 
 Private Sub txtValorGarrote_Change()
+    On Error Goto txtValorGarrote_Change_Err
     Dim valor As Integer
 
     If Not IsNumeric(txtValorGarrote.Text) Then
@@ -1405,5 +1494,8 @@ Private Sub txtValorGarrote_Change()
     End If
 
     Call ParseUserCommand("/configlobby setprice " & valor)
+    Exit Sub
+txtValorGarrote_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmTorneo.txtValorGarrote_Change", Erl)
 End Sub
 

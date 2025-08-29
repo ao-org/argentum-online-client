@@ -553,6 +553,7 @@ Private Declare Function SendMessageLongRef Lib "user32" Alias "SendMessageA" (B
 Private m_ASC As Long
 
 Public Sub InitilializeProjectiles()
+    On Error Goto InitilializeProjectiles_Err
     Dim i As Integer
     ReDim AvailableProjectile.IndexInfo(InitialProjectileSize)
     ReDim ActiveProjectile.IndexInfo(InitialProjectileSize)
@@ -561,16 +562,24 @@ Public Sub InitilializeProjectiles()
         AvailableProjectile.IndexInfo(i) = InitialProjectileSize - i + 1
     Next i
     AvailableProjectile.CurrentIndex = InitialProjectileSize
+    Exit Sub
+InitilializeProjectiles_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.InitilializeProjectiles", Erl)
 End Sub
 
 Public Sub ReleaseProjectile(Index As Integer)
+    On Error Goto ReleaseProjectile_Err
     AvailableProjectile.CurrentIndex = AvailableProjectile.CurrentIndex + 1
     AvailableProjectile.IndexInfo(AvailableProjectile.CurrentIndex) = ActiveProjectile.IndexInfo(Index)
     ActiveProjectile.IndexInfo(Index) = ActiveProjectile.IndexInfo(ActiveProjectile.CurrentIndex)
     ActiveProjectile.CurrentIndex = ActiveProjectile.CurrentIndex - 1
+    Exit Sub
+ReleaseProjectile_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.ReleaseProjectile", Erl)
 End Sub
 
 Sub inputbox_Password(El_Form As Form, Caracter As String)
+    On Error Goto inputbox_Password_Err
     
     On Error GoTo inputbox_Password_Err
     
@@ -586,9 +595,13 @@ inputbox_Password_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.inputbox_Password", Erl)
     Resume Next
     
+    Exit Sub
+inputbox_Password_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.inputbox_Password", Erl)
 End Sub
   
 Private Sub TimerProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal idEvent As Long, ByVal dwTime As Long)
+    On Error Goto TimerProc_Err
     
     On Error GoTo TimerProc_Err
     
@@ -610,9 +623,13 @@ TimerProc_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.TimerProc", Erl)
     Resume Next
     
+    Exit Sub
+TimerProc_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.TimerProc", Erl)
 End Sub
 
 Public Function LoadPNGtoICO(pngData() As Byte) As IPicture
+    On Error Goto LoadPNGtoICO_Err
     
     On Error GoTo LoadPNGtoICO_Err
     
@@ -648,9 +665,13 @@ LoadPNGtoICO_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.LoadPNGtoICO", Erl)
     Resume Next
     
+    Exit Function
+LoadPNGtoICO_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.LoadPNGtoICO", Erl)
 End Function
 
 Public Function SetTopMostWindow(hwnd As Long, Topmost As Boolean) As Long
+    On Error Goto SetTopMostWindow_Err
     
     On Error GoTo SetTopMostWindow_Err
     
@@ -670,9 +691,13 @@ SetTopMostWindow_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.SetTopMostWindow", Erl)
     Resume Next
     
+    Exit Function
+SetTopMostWindow_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.SetTopMostWindow", Erl)
 End Function
 
 Public Sub LogError(desc As String)
+    On Error Goto LogError_Err
  On Error GoTo errhandler
     frmDebug.add_text_tracebox "ERROR: " & desc
 
@@ -689,9 +714,13 @@ Public Sub LogError(desc As String)
 
 errhandler:
 
+    Exit Sub
+LogError_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.LogError", Erl)
 End Sub
 
 Sub IniciarCrearPj()
+    On Error Goto IniciarCrearPj_Err
     
     On Error GoTo IniciarCrearPj_Err
     
@@ -738,9 +767,13 @@ IniciarCrearPj_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.IniciarCrearPj", Erl)
     Resume Next
     
+    Exit Sub
+IniciarCrearPj_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.IniciarCrearPj", Erl)
 End Sub
 
 Sub General_Set_Connect()
+    On Error Goto General_Set_Connect_Err
     
     On Error GoTo General_Set_Connect_Err
     
@@ -803,9 +836,13 @@ General_Set_Connect_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Set_Connect", Erl)
     Resume Next
     
+    Exit Sub
+General_Set_Connect_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.General_Set_Connect", Erl)
 End Sub
  
 Public Sub InitializeSurfaceCapture(Frm As Form)
+    On Error Goto InitializeSurfaceCapture_Err
     
     On Error GoTo InitializeSurfaceCapture_Err
     
@@ -819,9 +856,13 @@ InitializeSurfaceCapture_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.InitializeSurfaceCapture", Erl)
     Resume Next
     
+    Exit Sub
+InitializeSurfaceCapture_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.InitializeSurfaceCapture", Erl)
 End Sub
 
 Public Sub ReleaseSurfaceCapture(Frm As Form)
+    On Error Goto ReleaseSurfaceCapture_Err
     
     On Error GoTo ReleaseSurfaceCapture_Err
     
@@ -836,9 +877,13 @@ ReleaseSurfaceCapture_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.ReleaseSurfaceCapture", Erl)
     Resume Next
     
+    Exit Sub
+ReleaseSurfaceCapture_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.ReleaseSurfaceCapture", Erl)
 End Sub
  
 Public Sub ApplySurfaceTo(Frm As Form)
+    On Error Goto ApplySurfaceTo_Err
     
     On Error GoTo ApplySurfaceTo_Err
     
@@ -851,10 +896,14 @@ ApplySurfaceTo_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.ApplySurfaceTo", Erl)
     Resume Next
     
+    Exit Sub
+ApplySurfaceTo_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.ApplySurfaceTo", Erl)
 End Sub
  
 ' Create a polygonal region - has to be more than 2 pts (or 4 input values)
 Public Sub CreateSurfacefromPoints(ParamArray XY())
+    On Error Goto CreateSurfacefromPoints_Err
     
     On Error GoTo CreateSurfacefromPoints_Err
     
@@ -891,10 +940,14 @@ CreateSurfacefromPoints_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromPoints", Erl)
     Resume Next
     
+    Exit Sub
+CreateSurfacefromPoints_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromPoints", Erl)
 End Sub
  
 ' Create a ciruclar/elliptical region
 Public Sub CreateSurfacefromEllipse(x1 As Integer, y1 As Integer, x2 As Integer, y2 As Integer)
+    On Error Goto CreateSurfacefromEllipse_Err
     
     On Error GoTo CreateSurfacefromEllipse_Err
     
@@ -912,10 +965,14 @@ CreateSurfacefromEllipse_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromEllipse", Erl)
     Resume Next
     
+    Exit Sub
+CreateSurfacefromEllipse_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromEllipse", Erl)
 End Sub
  
 ' Create a rectangular region
 Public Sub CreateSurfacefromRect(x1 As Integer, y1 As Integer, x2 As Integer, y2 As Integer)
+    On Error Goto CreateSurfacefromRect_Err
     
     On Error GoTo CreateSurfacefromRect_Err
     
@@ -933,10 +990,14 @@ CreateSurfacefromRect_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromRect", Erl)
     Resume Next
     
+    Exit Sub
+CreateSurfacefromRect_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromRect", Erl)
 End Sub
  
 ' My best creation (more like tweak) yet! Super fast routines qown j00!
 Public Sub CreateSurfacefromMask(Obj As Object, Optional lBackColor As Long)
+    On Error Goto CreateSurfacefromMask_Err
     
     On Error GoTo CreateSurfacefromMask_Err
     
@@ -1067,11 +1128,15 @@ CreateSurfacefromMask_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromMask", Erl)
     Resume Next
     
+    Exit Sub
+CreateSurfacefromMask_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromMask", Erl)
 End Sub
  
 ' XCopied from The Scarms! Felt like my obligation to leave this code intact w/o
 ' any changes to variables, etc (cept for the sub's name). Thanks d00d!
 Public Sub CreateSurfacefromMask_GetPixel(Obj As Object, Optional lBackColor As Long)
+    On Error Goto CreateSurfacefromMask_GetPixel_Err
     
     On Error GoTo CreateSurfacefromMask_GetPixel_Err
     
@@ -1136,9 +1201,13 @@ CreateSurfacefromMask_GetPixel_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromMask_GetPixel", Erl)
     Resume Next
     
+    Exit Sub
+CreateSurfacefromMask_GetPixel_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.CreateSurfacefromMask_GetPixel", Erl)
 End Sub
 
 Public Sub General_Var_Write(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal Value As String)
+    On Error Goto General_Var_Write_Err
 
     'Writes a var to a text file
 
@@ -1153,9 +1222,13 @@ General_Var_Write_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Var_Write", Erl)
     Resume Next
     
+    Exit Sub
+General_Var_Write_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.General_Var_Write", Erl)
 End Sub
 
 Public Sub MensajeAdvertencia(ByVal mensaje As String)
+    On Error Goto MensajeAdvertencia_Err
     
     On Error GoTo MensajeAdvertencia_Err
     
@@ -1168,10 +1241,14 @@ MensajeAdvertencia_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.MensajeAdvertencia", Erl)
     Resume Next
     
+    Exit Sub
+MensajeAdvertencia_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.MensajeAdvertencia", Erl)
 End Sub
 
 
 Public Sub CargarCuentasGuardadas()
+    On Error Goto CargarCuentasGuardadas_Err
 
     Dim Arch As String
         Arch = App.path & "\..\Recursos\OUTPUT\Cuenta.ini"
@@ -1190,9 +1267,13 @@ Public Sub CargarCuentasGuardadas()
         FrmLogear.PasswordTxt.SelStart = Len(FrmLogear.PasswordTxt)
     End If
 
+    Exit Sub
+CargarCuentasGuardadas_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.CargarCuentasGuardadas", Erl)
 End Sub
 
 Public Sub GuardarCuenta(ByVal Name As String, ByVal Password As String)
+    On Error Goto GuardarCuenta_Err
 
     Dim Archivo As String
         Archivo = App.path & "\..\Recursos\OUTPUT\Cuenta.ini"
@@ -1205,6 +1286,9 @@ Public Sub GuardarCuenta(ByVal Name As String, ByVal Password As String)
     
     Call CargarCuentasGuardadas
 
+    Exit Sub
+GuardarCuenta_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.GuardarCuenta", Erl)
 End Sub
 
 'modTimer - ImperiumAO - v1.3.0
@@ -1232,6 +1316,7 @@ End Sub
 
 
 Public Function IntervaloPermiteClick(Optional ByVal Actualizar As Boolean = True) As Boolean
+    On Error Goto IntervaloPermiteClick_Err
     
     On Error GoTo IntervaloPermiteClick_Err
     
@@ -1257,9 +1342,13 @@ IntervaloPermiteClick_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteClick", Erl)
     Resume Next
     
+    Exit Function
+IntervaloPermiteClick_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteClick", Erl)
 End Function
 
 Public Function IntervaloPermiteHeading(Optional ByVal Actualizar As Boolean = True) As Boolean
+    On Error Goto IntervaloPermiteHeading_Err
     
     On Error GoTo IntervaloPermiteHeading_Err
     
@@ -1285,9 +1374,13 @@ IntervaloPermiteHeading_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteHeading", Erl)
     Resume Next
     
+    Exit Function
+IntervaloPermiteHeading_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteHeading", Erl)
 End Function
 
 Public Function IntervaloPermiteLLamadaClan() As Boolean
+    On Error Goto IntervaloPermiteLLamadaClan_Err
     
     On Error GoTo IntervaloPermiteLLamadaClan_Err
     
@@ -1310,9 +1403,13 @@ IntervaloPermiteLLamadaClan_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteLLamadaClan", Erl)
     Resume Next
     
+    Exit Function
+IntervaloPermiteLLamadaClan_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteLLamadaClan", Erl)
 End Function
 
 Public Function IntervaloPermiteAnim() As Boolean
+    On Error Goto IntervaloPermiteAnim_Err
     
     On Error GoTo IntervaloPermiteAnim_Err
     
@@ -1334,9 +1431,13 @@ IntervaloPermiteAnim_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteAnim", Erl)
     Resume Next
     
+    Exit Function
+IntervaloPermiteAnim_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteAnim", Erl)
 End Function
 
 Public Function IntervaloPermiteConectar() As Boolean
+    On Error Goto IntervaloPermiteConectar_Err
     
     On Error GoTo IntervaloPermiteConectar_Err
     
@@ -1358,8 +1459,12 @@ IntervaloPermiteConectar_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteConectar", Erl)
     Resume Next
     
+    Exit Function
+IntervaloPermiteConectar_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.IntervaloPermiteConectar", Erl)
 End Function
 Sub initPacketControl()
+    On Error Goto initPacketControl_Err
     Dim i As Long, J As Long
     For i = LBound(packetControl) To UBound(packetControl)
         With packetControl(i)
@@ -1369,10 +1474,14 @@ Sub initPacketControl()
             Next J
         End With
     Next i
+    Exit Sub
+initPacketControl_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.initPacketControl", Erl)
 End Sub
 
 
 Public Sub WriteConsoleUserChat(ByVal Text As String, ByVal userName As String, ByVal red As Byte, ByVal green As Byte, ByVal blue As Byte, ByVal userStatus As Integer, ByVal Privileges As Integer)
+    On Error Goto WriteConsoleUserChat_Err
     Dim NameRed   As Byte
     Dim NameGreen As Byte
     Dim NameBlue  As Byte
@@ -1422,8 +1531,12 @@ Public Sub WriteConsoleUserChat(ByVal Text As String, ByVal userName As String, 
 
     End If
     Exit Sub
+    Exit Sub
+WriteConsoleUserChat_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.WriteConsoleUserChat", Erl)
 End Sub
 Public Sub WriteChatOverHeadInConsole(ByVal CharIndex As Integer, ByVal ChatText As String, ByVal red As Byte, ByVal green As Byte, ByVal blue As Byte)
+    On Error Goto WriteChatOverHeadInConsole_Err
     
     On Error GoTo WriteChatOverHeadInConsole_Err
     
@@ -1440,10 +1553,14 @@ Public Sub WriteChatOverHeadInConsole(ByVal CharIndex As Integer, ByVal ChatText
 WriteChatOverHeadInConsole_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.WriteChatOverHeadInConsole", Erl)
     Resume Next
+    Exit Sub
+WriteChatOverHeadInConsole_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.WriteChatOverHeadInConsole", Erl)
 End Sub
 
 
 Public Function PonerPuntos(Numero As Long) As String
+    On Error Goto PonerPuntos_Err
     
     On Error GoTo PonerPuntos_Err
     
@@ -1485,9 +1602,13 @@ PonerPuntos_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.PonerPuntos", Erl)
     Resume Next
     
+    Exit Function
+PonerPuntos_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.PonerPuntos", Erl)
 End Function
 
 Public Function General_Var_Get(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
+    On Error Goto General_Var_Get_Err
     
     On Error GoTo General_Var_Get_Err
 
@@ -1517,9 +1638,13 @@ General_Var_Get_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Var_Get", Erl)
     Resume Next
     
+    Exit Function
+General_Var_Get_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.General_Var_Get", Erl)
 End Function
 
 Public Sub DibujarMiniMapa()
+    On Error Goto DibujarMiniMapa_Err
     
         On Error GoTo DibujarMiniMapa_Err
 
@@ -1571,12 +1696,16 @@ Public Sub DibujarMiniMapa()
 DibujarMiniMapa_Err:
 150     Call RegistrarError(Err.Number, Err.Description, "ModUtils.DibujarMiniMapa", Erl)
     
+    Exit Sub
+DibujarMiniMapa_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.DibujarMiniMapa", Erl)
 End Sub
 
 Rem Encripta una cadena de caracteres.
 Rem S = Cadena a encriptar
 Rem P = Password
 Function EncryptStr(ByVal s As String, ByVal p As String) As String
+    On Error Goto EncryptStr_Err
     
     On Error GoTo EncryptStr_Err
     
@@ -1619,12 +1748,16 @@ EncryptStr_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.EncryptStr", Erl)
     Resume Next
     
+    Exit Function
+EncryptStr_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.EncryptStr", Erl)
 End Function
 
 Rem Desencripta una cadena de caracteres.
 Rem S = Cadena a desencriptar
 Rem P = Password
 Function UnEncryptStr(ByVal s As String, ByVal p As String) As String
+    On Error Goto UnEncryptStr_Err
     
     On Error GoTo UnEncryptStr_Err
     
@@ -1667,9 +1800,13 @@ UnEncryptStr_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.UnEncryptStr", Erl)
     Resume Next
     
+    Exit Function
+UnEncryptStr_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.UnEncryptStr", Erl)
 End Function
 
 Public Function Input_Key_Get(ByVal key_code As Byte) As Boolean
+    On Error Goto Input_Key_Get_Err
 
     'Input_Key_Get = (key_state.Key(key_code) > 0)
     
@@ -1684,9 +1821,13 @@ Input_Key_Get_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.Input_Key_Get", Erl)
     Resume Next
     
+    Exit Function
+Input_Key_Get_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.Input_Key_Get", Erl)
 End Function
 
 Public Function Input_Click_Get(ByVal Botton As Byte) As Boolean
+    On Error Goto Input_Click_Get_Err
  On Error GoTo Input_Click_Get_Err
     
     Input_Click_Get = (GetAsyncKeyState(Botton) < 0)
@@ -1698,9 +1839,13 @@ Input_Click_Get_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.Input_Click_Get", Erl)
     Resume Next
     
+    Exit Function
+Input_Click_Get_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.Input_Click_Get", Erl)
 End Function
 
 Public Function General_Get_Temp_Dir() As String
+    On Error Goto General_Get_Temp_Dir_Err
     
     On Error GoTo General_Get_Temp_Dir_Err
 
@@ -1731,9 +1876,13 @@ General_Get_Temp_Dir_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Get_Temp_Dir", Erl)
     Resume Next
     
+    Exit Function
+General_Get_Temp_Dir_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.General_Get_Temp_Dir", Erl)
 End Function
 
 Public Function General_Get_Mouse_Speed() As Long
+    On Error Goto General_Get_Mouse_Speed_Err
 
     On Error GoTo General_Get_Mouse_Speed_Err
     
@@ -1747,9 +1896,13 @@ General_Get_Mouse_Speed_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Get_Mouse_Speed", Erl)
     Resume Next
     
+    Exit Function
+General_Get_Mouse_Speed_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.General_Get_Mouse_Speed", Erl)
 End Function
  
 Public Sub General_Set_Mouse_Speed(ByVal lngSpeed As Long)
+    On Error Goto General_Set_Mouse_Speed_Err
 
     On Error GoTo General_Set_Mouse_Speed_Err
     
@@ -1763,9 +1916,13 @@ General_Set_Mouse_Speed_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Set_Mouse_Speed", Erl)
     Resume Next
     
+    Exit Sub
+General_Set_Mouse_Speed_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.General_Set_Mouse_Speed", Erl)
 End Sub
 
 Public Sub ResetearUserMacro()
+    On Error Goto ResetearUserMacro_Err
 
     On Error GoTo ResetearUserMacro_Err
     
@@ -1795,9 +1952,13 @@ ResetearUserMacro_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.ResetearUserMacro", Erl)
     Resume Next
     
+    Exit Sub
+ResetearUserMacro_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.ResetearUserMacro", Erl)
 End Sub
 
 Public Sub CargarLst()
+    On Error Goto CargarLst_Err
     
     On Error GoTo CargarLst_Err
     
@@ -1818,9 +1979,13 @@ CargarLst_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.CargarLst", Erl)
     Resume Next
     
+    Exit Sub
+CargarLst_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.CargarLst", Erl)
 End Sub
 
 Public Sub CrearFantasma(ByVal CharIndex As Integer)
+    On Error Goto CrearFantasma_Err
     
     On Error GoTo CrearFantasma_Err
     
@@ -1846,9 +2011,13 @@ CrearFantasma_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.CrearFantasma", Erl)
     Resume Next
     
+    Exit Sub
+CrearFantasma_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.CrearFantasma", Erl)
 End Sub
 
 Public Sub CompletarAccionBarra(ByVal BarAccion As Byte)
+    On Error Goto CompletarAccionBarra_Err
     
     On Error GoTo CompletarAccionBarra_Err
     
@@ -1864,9 +2033,13 @@ CompletarAccionBarra_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.CompletarAccionBarra", Erl)
     Resume Next
     
+    Exit Sub
+CompletarAccionBarra_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.CompletarAccionBarra", Erl)
 End Sub
 
 Public Sub ComprobarEstado()
+    On Error Goto ComprobarEstado_Err
     
     On Error GoTo ComprobarEstado_Err
     
@@ -1880,9 +2053,13 @@ ComprobarEstado_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.ComprobarEstado", Erl)
     Resume Next
     
+    Exit Sub
+ComprobarEstado_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.ComprobarEstado", Erl)
 End Sub
 
 Public Function General_Distance_Get(ByVal x1 As Integer, ByVal y1 As Integer, ByVal x2 As Integer, ByVal y2 As Integer) As Integer
+    On Error Goto General_Distance_Get_Err
     
     On Error GoTo General_Distance_Get_Err
     
@@ -1895,9 +2072,13 @@ General_Distance_Get_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Distance_Get", Erl)
     Resume Next
     
+    Exit Function
+General_Distance_Get_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.General_Distance_Get", Erl)
 End Function
 
 Public Sub EndGame(Optional ByVal Closed_ByUser As Boolean = False, Optional ByVal Init_Launcher As Boolean = False)
+    On Error Goto EndGame_Err
     
     On Error GoTo EndGame_Err
     
@@ -1916,9 +2097,13 @@ EndGame_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.EndGame", Erl)
     Resume Next
     
+    Exit Sub
+EndGame_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.EndGame", Erl)
 End Sub
 
 Public Sub Client_UnInitialize_DirectX_Objects()
+    On Error Goto Client_UnInitialize_DirectX_Objects_Err
     
     On Error GoTo Client_UnInitialize_DirectX_Objects_Err
     Set ao20audio.AudioEngine = Nothing
@@ -1931,9 +2116,13 @@ Client_UnInitialize_DirectX_Objects_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.Client_UnInitialize_DirectX_Objects", Erl)
     Resume Next
     
+    Exit Sub
+Client_UnInitialize_DirectX_Objects_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.Client_UnInitialize_DirectX_Objects", Erl)
 End Sub
 
 Public Sub TextoAlAsistente(ByVal Texto As String, ByVal IsLoading As Boolean, ByVal ForceAssistant As Boolean)
+    On Error Goto TextoAlAsistente_Err
     
     On Error GoTo TextoAlAsistente_Err
     frmDebug.add_text_tracebox Texto
@@ -1947,9 +2136,13 @@ TextoAlAsistente_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.TextoAlAsistente", Erl)
     Resume Next
     
+    Exit Sub
+TextoAlAsistente_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.TextoAlAsistente", Erl)
 End Sub
 
 Public Function GetTimeFormated(Mins As Integer) As String
+    On Error Goto GetTimeFormated_Err
     
     On Error GoTo GetTimeFormated_Err
     
@@ -1990,9 +2183,13 @@ GetTimeFormated_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.GetTimeFormated", Erl)
     Resume Next
     
+    Exit Function
+GetTimeFormated_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.GetTimeFormated", Erl)
 End Function
 
 Public Function GetHora(Mins As Integer) As String
+    On Error Goto GetHora_Err
     
     On Error GoTo GetHora_Err
     
@@ -2010,9 +2207,13 @@ GetHora_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.GetHora", Erl)
     Resume Next
     
+    Exit Function
+GetHora_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.GetHora", Erl)
 End Function
 
 Public Function ObtenerIdMapaDeLlamadaDeClan(ByVal Mapa As Integer) As Integer
+    On Error Goto ObtenerIdMapaDeLlamadaDeClan_Err
     
     On Error GoTo ObtenerIdMapaDeLlamadaDeClan_Err
     
@@ -2043,9 +2244,13 @@ ObtenerIdMapaDeLlamadaDeClan_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.ObtenerIdMapaDeLlamadaDeClan", Erl)
     Resume Next
     
+    Exit Function
+ObtenerIdMapaDeLlamadaDeClan_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.ObtenerIdMapaDeLlamadaDeClan", Erl)
 End Function
 
 Public Sub Auto_Drag(ByVal hwnd As Long)
+    On Error Goto Auto_Drag_Err
     
     On Error GoTo Auto_Drag_Err
     
@@ -2059,16 +2264,24 @@ Auto_Drag_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.Auto_Drag", Erl)
     Resume Next
     
+    Exit Sub
+Auto_Drag_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.Auto_Drag", Erl)
 End Sub
 
 Public Function IsArrayInitialized(ByRef arr() As t_ActiveEffect) As Boolean
+    On Error Goto IsArrayInitialized_Err
   Dim rv As Long
   On Error Resume Next
   rv = UBound(arr)
   IsArrayInitialized = (Err.Number = 0) And rv >= 0
+    Exit Function
+IsArrayInitialized_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.IsArrayInitialized", Erl)
 End Function
 
 Public Function ElementalTagsToTxtParser(ByVal ElementalTags As Long) As String
+    On Error Goto ElementalTagsToTxtParser_Err
 
     Dim tmpString As String
 
@@ -2094,4 +2307,7 @@ Public Function ElementalTagsToTxtParser(ByVal ElementalTags As Long) As String
     
     ElementalTagsToTxtParser = tmpString
     
+    Exit Function
+ElementalTagsToTxtParser_Err:
+    Call TraceError(Err.Number, Err.Description, "ModUtils.ElementalTagsToTxtParser", Erl)
 End Function

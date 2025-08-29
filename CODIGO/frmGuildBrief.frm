@@ -200,6 +200,7 @@ Public EsLeader As Boolean
 Private cBotonCerrar As clsGraphicalButton
 Private cBotonSolicitarIngreso As clsGraphicalButton
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
 
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonSolicitarIngreso = New clsGraphicalButton
@@ -212,9 +213,13 @@ Private Sub loadButtons()
                                                     "boton-solicitaringreso-over.bmp", _
                                                     "boton-solicitaringreso-off.bmp", Me)
                                                     
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildBrief.loadButtons", Erl)
 End Sub
 
 Private Sub aliado_Click()
+    On Error Goto aliado_Click_Err
     
     On Error GoTo aliado_Click_Err
     
@@ -230,13 +235,21 @@ aliado_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.aliado_Click", Erl)
     Resume Next
     
+    Exit Sub
+aliado_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildBrief.aliado_Click", Erl)
 End Sub
 
 Private Sub cmdcerrar_Click()
+    On Error Goto cmdcerrar_Click_Err
     Unload Me
+    Exit Sub
+cmdcerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildBrief.cmdcerrar_Click", Erl)
 End Sub
 
 Private Sub cmdSolicitarIngreso_Click()
+    On Error Goto cmdSolicitarIngreso_Click_Err
     
     On Error GoTo cmdSolicitarIngreso_Click_Err
     
@@ -250,9 +263,13 @@ cmdSolicitarIngreso_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildBrief.cmdSolicitarIngreso_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdSolicitarIngreso_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildBrief.cmdSolicitarIngreso_Click", Erl)
 End Sub
 
 Private Sub Command3_Click()
+    On Error Goto Command3_Click_Err
     
     On Error GoTo Command3_Click_Err
     
@@ -268,8 +285,12 @@ Command3_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.Command3_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildBrief.Command3_Click", Erl)
 End Sub
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
        
@@ -283,8 +304,12 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildBrief.Form_Load", Erl)
 End Sub
 Private Sub Guerra_Click()
+    On Error Goto Guerra_Click_Err
     
     On Error GoTo Guerra_Click_Err
     
@@ -298,9 +323,13 @@ Guerra_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.Guerra_Click", Erl)
     Resume Next
     
+    Exit Sub
+Guerra_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildBrief.Guerra_Click", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -312,4 +341,7 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildBrief.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildBrief.Form_MouseMove", Erl)
 End Sub

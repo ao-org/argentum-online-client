@@ -59,6 +59,7 @@ Enum tShapeEstilo
 End Enum
 
 Public Sub Establecer_Borde(mObject As Object, frmParent As Form, Optional COLOR_BORDE As Long = vbBlack, Optional Border_style As BorderStyleConstants = vbBSDot, Optional Size_Border As Integer = 1, Optional estilo_Shape As tShapeEstilo = eCuadrado)
+    On Error Goto Establecer_Borde_Err
     
     On Error GoTo Establecer_Borde_Err
     
@@ -142,4 +143,7 @@ Establecer_Borde_Err:
     Call RegistrarError(Err.number, Err.Description, "ModBordes.Establecer_Borde", Erl)
     Resume Next
     
+    Exit Sub
+Establecer_Borde_Err:
+    Call TraceError(Err.Number, Err.Description, "ModBordes.Establecer_Borde", Erl)
 End Sub

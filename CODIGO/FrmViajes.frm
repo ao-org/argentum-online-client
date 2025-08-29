@@ -93,6 +93,7 @@ Attribute VB_Exposed = False
 '
 '
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -109,9 +110,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmViajes.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmViajes.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -124,9 +129,13 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmViajes.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmViajes.Form_Load", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -145,9 +154,13 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmViajes.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmViajes.Form_MouseMove", Erl)
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image1_MouseMove_Err
     
     On Error GoTo Image1_MouseMove_Err
     
@@ -166,9 +179,13 @@ Image1_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmViajes.Image1_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Image1_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmViajes.Image1_MouseMove", Erl)
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image1_MouseUp_Err
     
     On Error GoTo Image1_MouseUp_Err
     
@@ -188,4 +205,7 @@ Image1_MouseUp_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmViajes.Image1_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+Image1_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmViajes.Image1_MouseUp", Erl)
 End Sub

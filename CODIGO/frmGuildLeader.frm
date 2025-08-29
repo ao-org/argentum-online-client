@@ -275,6 +275,7 @@ Private cBotonActualizar As clsGraphicalButton
 Private cBotonEditarDescripcion As clsGraphicalButton
 
 Private Sub cmdElecciones_Click()
+    On Error Goto cmdElecciones_Click_Err
     
     On Error GoTo cmdElecciones_Click_Err
     
@@ -288,9 +289,13 @@ cmdElecciones_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.cmdElecciones_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdElecciones_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.cmdElecciones_Click", Erl)
 End Sub
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     Exit Sub
@@ -308,9 +313,13 @@ Command1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.Command1_Click", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
     
     On Error GoTo Command2_Click_Err
     
@@ -328,9 +337,13 @@ Command2_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.Command2_Click", Erl)
 End Sub
 
 Private Sub cmdActualizar_Click()
+    On Error Goto cmdActualizar_Click_Err
     Dim k As String
 
     k = Replace(txtguildnews, vbCrLf, "º")
@@ -339,13 +352,21 @@ Private Sub cmdActualizar_Click()
 
     
     Exit Sub
+    Exit Sub
+cmdActualizar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.cmdActualizar_Click", Erl)
 End Sub
 
 Private Sub cmdCerrar_Click()
+    On Error Goto cmdCerrar_Click_Err
     Unload Me
+    Exit Sub
+cmdCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.cmdCerrar_Click", Erl)
 End Sub
 
 Private Sub cmdEditarDescripcion_Click()
+    On Error Goto cmdEditarDescripcion_Click_Err
     Dim fdesc As String
 
     fdesc = InputBox(JsonLanguage.Item("MENSAJEBOX_MODIFICAR_DESCRIPCION"), "Modify Description")
@@ -363,9 +384,13 @@ Private Sub cmdEditarDescripcion_Click()
     
     Exit Sub
 
+    Exit Sub
+cmdEditarDescripcion_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.cmdEditarDescripcion_Click", Erl)
 End Sub
 
 Private Sub Command4_Click()
+    On Error Goto Command4_Click_Err
     
     On Error GoTo Command4_Click_Err
     
@@ -380,16 +405,24 @@ Command4_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.Command4_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command4_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.Command4_Click", Erl)
 End Sub
 
 
 Private Sub Command6_Click()
+    On Error Goto Command6_Click_Err
 
     'Call frmGuildURL.Show(vbModeless, frmGuildLeader)
     'Unload Me
+    Exit Sub
+Command6_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.Command6_Click", Erl)
 End Sub
 
 Private Sub Command7_Click()
+    On Error Goto Command7_Click_Err
     
     On Error GoTo Command7_Click_Err
     
@@ -402,9 +435,13 @@ Command7_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command7_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command7_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.Command7_Click", Erl)
 End Sub
 
 Private Sub Command9_Click()
+    On Error Goto Command9_Click_Err
     
     On Error GoTo Command9_Click_Err
     
@@ -417,9 +454,13 @@ Command9_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command9_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command9_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.Command9_Click", Erl)
 End Sub
 
 Private Sub expne_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto expne_MouseMove_Err
     
     On Error GoTo expne_MouseMove_Err
     
@@ -433,9 +474,13 @@ expne_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.expne_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+expne_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.expne_MouseMove", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
    
     On Error GoTo Form_Load_Err
     
@@ -452,9 +497,13 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.Form_Load", Erl)
 End Sub
 
 Private Sub LoadButtons()
+    On Error Goto LoadButtons_Err
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonActualizar = New clsGraphicalButton
     Set cBotonEditarDescripcion = New clsGraphicalButton
@@ -470,9 +519,13 @@ Private Sub LoadButtons()
                                                 "boton-editar-desc-clan-over.bmp", _
                                                 "boton-editar-desc-clan-off.bmp", Me)
     
+    Exit Sub
+LoadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.LoadButtons", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -488,14 +541,22 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.Form_MouseMove", Erl)
 End Sub
 
 
 Private Sub Frame3_DragDrop(Source As Control, X As Single, Y As Single)
+    On Error Goto Frame3_DragDrop_Err
 
+    Exit Sub
+Frame3_DragDrop_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.Frame3_DragDrop", Erl)
 End Sub
 
 Private Sub Frame4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Frame4_MouseMove_Err
     
     On Error GoTo Frame4_MouseMove_Err
     
@@ -509,30 +570,46 @@ Frame4_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Frame4_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Frame4_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.Frame4_MouseMove", Erl)
 End Sub
 
 Private Sub guildslist_DblClick()
+    On Error Goto guildslist_DblClick_Err
    If guildslist.ListIndex > -1 Then
         frmGuildBrief.EsLeader = True
         Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
         Exit Sub
     End If
+    Exit Sub
+guildslist_DblClick_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.guildslist_DblClick", Erl)
 End Sub
 
 Private Sub members_DblClick()
+    On Error Goto members_DblClick_Err
   If members.ListIndex = -1 Then Exit Sub
     frmCharInfo.frmType = CharInfoFrmType.frmMembers
     Call WriteGuildMemberInfo(members.List(members.ListIndex))
+    Exit Sub
+members_DblClick_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.members_DblClick", Erl)
 End Sub
 
 Private Sub solicitudes_DblClick()
+    On Error Goto solicitudes_DblClick_Err
  If solicitudes.ListIndex = -1 Then Exit Sub
     frmCharInfo.frmType = CharInfoFrmType.frmMembershipRequests
     Call WriteGuildMemberInfo(solicitudes.List(solicitudes.ListIndex))
     Exit Sub
+    Exit Sub
+solicitudes_DblClick_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.solicitudes_DblClick", Erl)
 End Sub
 
 Private Sub porciento_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto porciento_MouseMove_Err
     
     On Error GoTo porciento_MouseMove_Err
     
@@ -546,5 +623,8 @@ porciento_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.porciento_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+porciento_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildLeader.porciento_MouseMove", Erl)
 End Sub
 

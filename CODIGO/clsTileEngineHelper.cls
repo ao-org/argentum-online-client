@@ -33,6 +33,7 @@ Option Explicit
 Private ValidTreeIndices() As Variant
 
 Function IsIndexTree(ByVal GrhIndex As Long) As Boolean
+    On Error Goto IsIndexTree_Err
 On Error Resume Next
     IsIndexTree = False
     Dim i As Long
@@ -42,9 +43,13 @@ On Error Resume Next
             Exit Function
         End If
     Next i
+    Exit Function
+IsIndexTree_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTileEngineHelper.IsIndexTree", Erl)
 End Function
 
 Private Sub Class_Initialize()
+    On Error Goto Class_Initialize_Err
 
     ValidTreeIndices = Array(643, 644, 647, 735, 1121, 2931, 11903, 11904, 11905, 14775, 11906, 70885, 70884, 71042, 71041, 15698, 14504, 14505, 15697, 15510, 12581, 12582, 12583, 12584, 12585, 12586, _
                              12164, 12165, 12166, 12167, 12168, 12169, 12170, 12171, 12172, 12173, 12174, 12175, 12176, 12177, 12178, 12179, 32142, 32143, 32144, 32145, 32146, 32147, 32148, 32149, 32150, 32151, 32152, 32154, _
@@ -52,5 +57,8 @@ Private Sub Class_Initialize()
                              6597, 6598, 15108, 15109, 15110, 12160, 7220, 462, 463, 1877, 1878, 1879, 1880, 1881, 1890, 1892, 433, 460, 461, 9513, 9514, 9515, 9518, 9519, 9520, 9529, 14687, 47726, 12333, 12330, 20369, 21120, 21227, _
                              21352, 12332, 21226, 8258, 32118, 32119, 32129, 32132, 32133, 32135)
                              
+    Exit Sub
+Class_Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsTileEngineHelper.Class_Initialize", Erl)
 End Sub
 

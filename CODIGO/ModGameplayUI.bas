@@ -27,6 +27,7 @@ Attribute VB_Name = "ModGameplayUI"
 '
 
 Public Sub SetupGameplayUI()
+    On Error Goto SetupGameplayUI_Err
    
         frmMain.shapexy.Left = 1200
         frmMain.shapexy.Top = 1200
@@ -54,9 +55,13 @@ Public Sub SetupGameplayUI()
         ActiveInventoryTab = eInventory
 
     Call LoadHotkeys
+    Exit Sub
+SetupGameplayUI_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.SetupGameplayUI", Erl)
 End Sub
 
 Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
+    On Error Goto OnClick_Err
 On Error GoTo OnClick_Err
 
     If pausa Then Exit Sub
@@ -247,9 +252,13 @@ On Error GoTo OnClick_Err
 OnClick_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModGameplayUi.OnClick", Erl)
     Resume Next
+    Exit Sub
+OnClick_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.OnClick", Erl)
 End Sub
 
 Public Sub HandleQuestionResponse(ByVal Result As Boolean)
+    On Error Goto HandleQuestionResponse_Err
     If PreguntaLocal Then
         If Result Then
             Select Case PreguntaNUM
@@ -270,9 +279,13 @@ Public Sub HandleQuestionResponse(ByVal Result As Boolean)
     End If
     Pregunta = False
     PreguntaLocal = False
+    Exit Sub
+HandleQuestionResponse_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.HandleQuestionResponse", Erl)
 End Sub
 
 Public Sub HandleGameplayAreaMouseUp(ByVal Button As Integer, ByVal x As Integer, ByVal y As Integer, ByVal FormTop As Long, _
+    On Error Goto HandleGameplayAreaMouseUp_Err
                                      ByVal FormLeft As Long, ByVal FormHeight As Long, ByRef GameplayArea As RECT)
     clicX = x
     clicY = y
@@ -322,9 +335,13 @@ Public Sub HandleGameplayAreaMouseUp(ByVal Button As Integer, ByVal x As Integer
             End If
         End If
     End If
+    Exit Sub
+HandleGameplayAreaMouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.HandleGameplayAreaMouseUp", Erl)
 End Sub
 
 Public Sub HandleChatMsg(ByVal InputText As String)
+    On Error Goto HandleChatMsg_Err
     Dim str2 As String
     Dim str1 As String
     If LenB(InputText) <> 0 Then
@@ -376,13 +393,21 @@ Public Sub HandleChatMsg(ByVal InputText As String)
         SendingType = 1
         sndPrivateTo = ""
     End If
+    Exit Sub
+HandleChatMsg_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.HandleChatMsg", Erl)
 End Sub
 
 Public Sub UseSelectInvItem()
+    On Error Goto UseSelectInvItem_Err
     
+    Exit Sub
+UseSelectInvItem_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.UseSelectInvItem", Erl)
 End Sub
 
 Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amount As Integer, ByVal Equipped As Byte, _
+    On Error Goto SetInvItem_Err
                       ByVal GrhIndex As Long, ByVal ObjType As Integer, ByVal MaxHit As Integer, ByVal MinHit As Integer, _
                       ByVal Def As Integer, ByVal Value As Single, ByVal Name As String, ByVal CanUse As Byte, ByVal ElementalTags As Long, ByVal IsBindable As Byte)
 
@@ -403,30 +428,50 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         .IsBindable = IsBindable > 0
     End With
     Call frmMain.Inventario.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, Def, Value, Name, ElementalTags, CanUse)
+    Exit Sub
+SetInvItem_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.SetInvItem", Erl)
 End Sub
 
 Public Sub SelectItemSlot(ByVal Slot As Integer)
+    On Error Goto SelectItemSlot_Err
     UserInventory.SelectedSlot = Slot
+    Exit Sub
+SelectItemSlot_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.SelectItemSlot", Erl)
 End Sub
 
 Public Function GetSelectedItemSlot() As Integer
+    On Error Goto GetSelectedItemSlot_Err
     GetSelectedItemSlot = frmMain.Inventario.SelectedItem
+    Exit Function
+GetSelectedItemSlot_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.GetSelectedItemSlot", Erl)
 End Function
 
 Public Function IsItemSelected() As Boolean
+    On Error Goto IsItemSelected_Err
     IsItemSelected = frmMain.Inventario.IsItemSelected
 
+    Exit Function
+IsItemSelected_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.IsItemSelected", Erl)
 End Function
 
 Public Sub UseItemKey()
+    On Error Goto UseItemKey_Err
     If Not MainTimer.Check(TimersIndex.AttackUse, False) Then Exit Sub
         Call CountPacketIterations(packetControl(ClientPacketID.eUseItemU), 100)
         If frmMain.Inventario.IsItemSelected Then
                 Call WriteUseItemU(frmMain.Inventario.SelectedItem)
             End If
+    Exit Sub
+UseItemKey_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.UseItemKey", Erl)
 End Sub
 
 Public Sub UserItemClick()
+    On Error Goto UserItemClick_Err
     If frmCarp.visible Or frmHerrero.visible Or frmComerciar.visible Or frmBancoObj.visible Then Exit Sub
     If pausa Then Exit Sub
     If UserMeditar Then Exit Sub
@@ -435,9 +480,13 @@ Public Sub UserItemClick()
 
     Call UserOrEquipItem(frmMain.Inventario.SelectedItem, frmMain.Inventario.Equipped(frmMain.Inventario.SelectedItem), frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem))
 
+    Exit Sub
+UserItemClick_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.UserItemClick", Erl)
 End Sub
 
 Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByVal ObjIndex As Integer)
+    On Error Goto UserOrEquipItem_Err
     Dim ObjType As Byte
     ObjType = ObjData(ObjIndex).ObjType
     Select Case ObjType
@@ -471,9 +520,13 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
             Call CountPacketIterations(packetControl(ClientPacketID.eUseItem), 180)
             Call WriteUseItem(Slot)
     End Select
+    Exit Sub
+UserOrEquipItem_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.UserOrEquipItem", Erl)
 End Sub
 
 Public Sub HandleKeyUp(KeyCode As Integer, Shift As Integer)
+    On Error Goto HandleKeyUp_Err
     If Not IsInputFocus Then
         If Not IsDialogOpen Then
             If Accionar(KeyCode) Then
@@ -496,32 +549,52 @@ Public Sub HandleKeyUp(KeyCode As Integer, Shift As Integer)
     Else
         Call FocusInput
     End If
+    Exit Sub
+HandleKeyUp_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.HandleKeyUp", Erl)
 End Sub
 
 Public Sub HandleEsc()
+    On Error Goto HandleEsc_Err
 
         frmCerrar.Show , frmMain
 
+    Exit Sub
+HandleEsc_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.HandleEsc", Erl)
 End Sub
 Public Function IsDialogOpen() As Boolean
+    On Error Goto IsDialogOpen_Err
     IsDialogOpen = pausa Or frmComerciar.visible Or frmComerciarUsu.visible Or frmBancoObj.visible Or frmGoliath.visible Or IsGameDialogOpen
+    Exit Function
+IsDialogOpen_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.IsDialogOpen", Erl)
 End Function
 
 Public Function IsInputFocus() As Boolean
+    On Error Goto IsInputFocus_Err
     IsInputFocus = frmMain.SendTxt.visible Or frmMain.SendTxtCmsg.visible
 
+    Exit Function
+IsInputFocus_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.IsInputFocus", Erl)
 End Function
 
 Public Sub OpenAndFocusClanChat()
+    On Error Goto OpenAndFocusClanChat_Err
        If Not frmMain.SendTxt.visible Then
             frmMain.SendTxtCmsg.visible = True
             frmMain.SendTxtCmsg.SetFocus
         End If
 
     Call DialogosClanes.toggle_dialogs_visibility(True)
+    Exit Sub
+OpenAndFocusClanChat_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.OpenAndFocusClanChat", Erl)
 End Sub
 
 Public Sub OpenChatInput()
+    On Error Goto OpenChatInput_Err
         If Not frmCantidad.visible Then
             Call frmMain.CompletarEnvioMensajes
             StartOpenChatTime = GetTickCount
@@ -529,9 +602,13 @@ Public Sub OpenChatInput()
             frmMain.SendTxt.SetFocus
         End If
 
+    Exit Sub
+OpenChatInput_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.OpenChatInput", Erl)
 End Sub
 
 Public Sub FocusInput()
+    On Error Goto FocusInput_Err
 
         If frmMain.SendTxt.visible Then
             frmMain.SendTxt.SetFocus
@@ -540,15 +617,23 @@ Public Sub FocusInput()
             frmMain.SendTxtCmsg.SetFocus
         End If
 
+    Exit Sub
+FocusInput_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.FocusInput", Erl)
 End Sub
 
 Public Function GetGameplayForm() As Form
+    On Error Goto GetGameplayForm_Err
 
         Set GetGameplayForm = frmMain
 
+    Exit Function
+GetGameplayForm_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.GetGameplayForm", Erl)
 End Function
 
 Public Sub UseSpell(ByVal SpellSlot As Byte, ByVal SpellName As String)
+    On Error Goto UseSpell_Err
 If pausa Then Exit Sub
 
     TempTick = GetTickCount And &H7FFFFFFF
@@ -575,9 +660,13 @@ If pausa Then Exit Sub
             UsaLanzar = True
         End If
     End If
+    Exit Sub
+UseSpell_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.UseSpell", Erl)
 End Sub
 
 Public Sub UpdateMapPos()
+    On Error Goto UpdateMapPos_Err
 
         Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
         frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
@@ -585,9 +674,13 @@ Public Sub UpdateMapPos()
             Call frmMapaGrande.ActualizarPosicionMapa
         End If
 
+    Exit Sub
+UpdateMapPos_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.UpdateMapPos", Erl)
 End Sub
 
 Public Sub RequestSkills()
+    On Error Goto RequestSkills_Err
     If pausa Or tutorial_index > 0 Then Exit Sub
     If MostrarTutorial And tutorial_index <= 0 Then
         If tutorial(4).Activo = 1 Then
@@ -600,20 +693,32 @@ Public Sub RequestSkills()
     
     LlegaronSkills = True
     Call WriteRequestSkills
+    Exit Sub
+RequestSkills_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.RequestSkills", Erl)
 End Sub
 
 Public Function IsUsableItem(ByRef ItemData As ObjDatas) As Boolean
+    On Error Goto IsUsableItem_Err
     IsUsableItem = ItemData.ObjType = eObjType.otWeapon Or ItemData.ObjType = eObjType.otPociones Or _
              ItemData.ObjType = eObjType.OtHerramientas Or ItemData.ObjType = eObjType.otInstrumentos Or _
              ItemData.ObjType = eObjType.OtCofre
+    Exit Function
+IsUsableItem_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.IsUsableItem", Erl)
 End Function
 
 Public Sub EquipSelectedItem()
+    On Error Goto EquipSelectedItem_Err
         If frmMain.Inventario.IsItemSelected Then Call WriteEquipItem(frmMain.Inventario.SelectedItem)
 
+    Exit Sub
+EquipSelectedItem_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.EquipSelectedItem", Erl)
 End Sub
 
 Public Sub OpenCreateObjectMenu()
+    On Error Goto OpenCreateObjectMenu_Err
 On Error GoTo createObj_Click_Err
     Dim i As Long
     For i = 1 To NumOBJs
@@ -629,9 +734,13 @@ On Error GoTo createObj_Click_Err
 createObj_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.createObj_Click", Erl)
     Resume Next
+    Exit Sub
+OpenCreateObjectMenu_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.OpenCreateObjectMenu", Erl)
 End Sub
 
 Public Sub SelectInventoryTab()
+    On Error Goto SelectInventoryTab_Err
     ActiveInventoryTab = eInventory
     TempTick = GetTickCount And &H7FFFFFFF
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Inventario Then
@@ -642,9 +751,13 @@ Public Sub SelectInventoryTab()
     If Seguido = 1 Then
             Call WriteNotifyInventarioHechizos(1, hlst.ListIndex, hlst.Scroll)
     End If
+    Exit Sub
+SelectInventoryTab_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.SelectInventoryTab", Erl)
 End Sub
 
 Public Sub SelectSpellTab()
+    On Error Goto SelectSpellTab_Err
     ActiveInventoryTab = eSpellList
     TempTick = GetTickCount And &H7FFFFFFF
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Hechizos Then
@@ -655,14 +768,22 @@ Public Sub SelectSpellTab()
     If Seguido = 1 Then
             Call WriteNotifyInventarioHechizos(2, hlst.ListIndex, hlst.Scroll)
     End If
+    Exit Sub
+SelectSpellTab_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.SelectSpellTab", Erl)
 End Sub
 
 Public Sub GetMinimapPosition(ByRef x As Single, ByRef y As Single)
+    On Error Goto GetMinimapPosition_Err
     x = x * (100 - 2 * HalfWindowTileWidth - 4) / 100 + HalfWindowTileWidth + 2
     y = y * (100 - 2 * HalfWindowTileHeight - 4) / 100 + HalfWindowTileHeight + 2
+    Exit Sub
+GetMinimapPosition_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.GetMinimapPosition", Erl)
 End Sub
 
 Public Sub RequestMeditate()
+    On Error Goto RequestMeditate_Err
     If UserStats.minman = UserStats.maxman Then Exit Sub
     If UserStats.estado = 1 Then
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
@@ -671,21 +792,32 @@ Public Sub RequestMeditate()
         Exit Sub
     End If
     Call WriteMeditate
+    Exit Sub
+RequestMeditate_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.RequestMeditate", Erl)
 End Sub
 
 Public Sub SetHotkey(ByVal Index As Integer, ByVal LastKnownSlot As Integer, ByVal HotkeyType As e_HotkeyType, ByVal HotkeySlot As Integer)
+    On Error Goto SetHotkey_Err
     HotkeyList(HotkeySlot).Index = Index
     HotkeyList(HotkeySlot).LastKnownSlot = LastKnownSlot
     HotkeyList(HotkeySlot).Type = HotkeyType
     Call SaveHotkey(Index, LastKnownSlot, HotkeyType, HotkeySlot)
     Call WriteSetHotkeySlot(HotkeySlot, Index, LastKnownSlot, HotkeyType)
+    Exit Sub
+SetHotkey_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.SetHotkey", Erl)
 End Sub
 
 Public Sub ClearHotkeys()
+    On Error Goto ClearHotkeys_Err
     Dim i As Integer
     For i = 0 To HotKeyCount - 1
         HotkeyList(i).Index = -1
         HotkeyList(i).LastKnownSlot = -1
         HotkeyList(i).Type = Unknown
     Next i
+    Exit Sub
+ClearHotkeys_Err:
+    Call TraceError(Err.Number, Err.Description, "ModGameplayUI.ClearHotkeys", Erl)
 End Sub

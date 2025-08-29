@@ -50,6 +50,7 @@ Private m_btnConnect As clsUIButton
  
     
 Public Sub Init(ByVal dev As Direct3DDevice8, ByVal font As D3DXFont)
+    On Error Goto Init_Err
     Set m_UIMgr = New clsUIManager: m_UIMgr.Init
 
     Set m_lblUser = New clsUILabel
@@ -64,9 +65,13 @@ Public Sub Init(ByVal dev As Direct3DDevice8, ByVal font As D3DXFont)
     
     m_btnConnect.Init "Connect", 0, 0, 100, 30, font, &HFF000040, &HFF606060, &HFFFFFFFF
     m_UIMgr.AddComponent m_btnConnect
+    Exit Sub
+Init_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIConnectScreen.Init", Erl)
 End Sub
 
 Public Sub render(ByVal dev As Direct3DDevice8)
+    On Error Goto render_Err
     Dim sW As Long, sH As Long, wx As Long, wy As Long
     sW = Render_Connect_Rect.Right - Render_Connect_Rect.Left
     sH = Render_Connect_Rect.Bottom - Render_Connect_Rect.Top
@@ -94,14 +99,25 @@ Public Sub render(ByVal dev As Direct3DDevice8)
     
     Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
     
+    Exit Sub
+render_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIConnectScreen.render", Erl)
 End Sub
 
 Public Sub HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
+    On Error Goto HandleInput_Err
     m_UIMgr.HandleInput mouseX, mouseY, mouseButtons
+    Exit Sub
+HandleInput_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIConnectScreen.HandleInput", Erl)
 End Sub
 
 Public Function WasConnectClicked() As Boolean
+    On Error Goto WasConnectClicked_Err
     WasConnectClicked = m_btnConnect.WasClicked
     If WasConnectClicked Then m_btnConnect.WasClicked = False
+    Exit Function
+WasConnectClicked_Err:
+    Call TraceError(Err.Number, Err.Description, "clsUIConnectScreen.WasConnectClicked", Erl)
 End Function
 

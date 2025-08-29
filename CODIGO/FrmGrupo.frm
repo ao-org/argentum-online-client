@@ -109,10 +109,15 @@ Private cBotonInvitar As clsGraphicalButton
 Private cBotonCerrar As clsGraphicalButton
 
 Private Sub cmdAceptar_Click()
+    On Error Goto cmdAceptar_Click_Err
     Unload Me
+    Exit Sub
+cmdAceptar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGrupo.cmdAceptar_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -130,9 +135,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmGrupo.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGrupo.Form_Load", Erl)
 End Sub
 
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonAbandonar = New clsGraphicalButton
@@ -158,8 +167,12 @@ Private Sub loadButtons()
     Call cBotonInvitar.Initialize(cmdInvitar, "boton-mas-default.bmp", _
                                                 "boton-mas-over.bmp", _
                                                 "boton-mas-off.bmp", Me)
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGrupo.loadButtons", Erl)
 End Sub
 Private Sub cmdAbandonar_Click()
+    On Error Goto cmdAbandonar_Click_Err
     
     On Error GoTo cmdAbandonar_Click_Err
     Call WriteAbandonarGrupo
@@ -171,10 +184,14 @@ cmdAbandonar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmGrupo.cmdAbandonar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdAbandonar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGrupo.cmdAbandonar_Click", Erl)
 End Sub
 
 
 Private Sub cmdExpulsar_Click()
+    On Error Goto cmdExpulsar_Click_Err
     
     On Error GoTo cmdExpulsar_Click_Err
 
@@ -189,10 +206,14 @@ cmdExpulsar_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmGrupo.cmdExpulsar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdExpulsar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGrupo.cmdExpulsar_Click", Erl)
 End Sub
 
 
 Private Sub cmdInvitar_Click()
+    On Error Goto cmdInvitar_Click_Err
     
     On Error GoTo cmdInvitar_Click_Err
     
@@ -205,10 +226,14 @@ cmdInvitar_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmGrupo.cmdInvitar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdInvitar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGrupo.cmdInvitar_Click", Erl)
 End Sub
 
 
 Private Sub cmdCerrar_Click()
+    On Error Goto cmdCerrar_Click_Err
     
     On Error GoTo Command2_Click_Err
     
@@ -220,9 +245,13 @@ Command2_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmGrupo.Command2_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGrupo.cmdCerrar_Click", Erl)
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
 
@@ -236,9 +265,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmGrupo.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGrupo.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -250,4 +283,7 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmGrupo.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGrupo.Form_MouseMove", Erl)
 End Sub

@@ -61,30 +61,42 @@ Public UIRenderer As clsUIRenderer
 
 ' Update current mouse state relative to the client window
 Public Sub UpdateMouse(ByVal hWnd As Long)
+    On Error Goto UpdateMouse_Err
     Dim pt As POINTAPI
     If GetCursorPos(pt) Then
         ScreenToClient hWnd, pt
         g_MouseX = pt.x
         g_MouseY = pt.y
     End If
+    Exit Sub
+UpdateMouse_Err:
+    Call TraceError(Err.Number, Err.Description, "dx_ui.UpdateMouse", Erl)
 End Sub
 
 Public Sub init_connect_screen(ByRef dev As Direct3DDevice8)
+    On Error Goto init_connect_screen_Err
     If g_Font Is Nothing Then
         Dim hFont As Long
         hFont = CreateFontA(20, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH Or FF_DONTCARE, "Arial")
         Set g_Font = DirectD3D8.CreateFont(dev, hFont)
     End If
     Set g_connectScreen = New clsUIConnectScreen: g_connectScreen.Init dev, g_Font
+    Exit Sub
+init_connect_screen_Err:
+    Call TraceError(Err.Number, Err.Description, "dx_ui.init_connect_screen", Erl)
 End Sub
 
 
 
 
 Public Sub init_dx_ui(ByRef dev As Direct3DDevice8)
+    On Error Goto init_dx_ui_Err
 #If DXUI Then
     Set UIRenderer = New clsUIRenderer
     Call UIRenderer.Init(DirectDevice, 1000)
     Call init_connect_screen(DirectDevice)
 #End If
+    Exit Sub
+init_dx_ui_Err:
+    Call TraceError(Err.Number, Err.Description, "dx_ui.init_dx_ui", Erl)
 End Sub

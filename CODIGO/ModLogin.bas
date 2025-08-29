@@ -31,6 +31,7 @@ Option Explicit
 Dim ServerSettings As clsIniManager
     
 Public Sub DoLogin(ByVal Account As String, ByVal Password As String, ByVal storeCredentials As Boolean)
+    On Error Goto DoLogin_Err
     On Error GoTo DoLogin_Err
 #If REMOTE_CLOSE = 1 Then
     ModAuth.LoginOperation = e_operation.Authenticate
@@ -62,9 +63,13 @@ Public Sub DoLogin(ByVal Account As String, ByVal Password As String, ByVal stor
 DoLogin_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModLogin.DoLogin", Erl)
     Resume Next
+    Exit Sub
+DoLogin_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.DoLogin", Erl)
 End Sub
 
 Public Sub SetActiveServer(ByVal IP As String, ByVal port As String, Optional IgnoreHardcode As Boolean = False)
+    On Error Goto SetActiveServer_Err
     ServerIndex = IP & ":" & port
     IPdelServidor = IP
     PuertoDelServidor = port
@@ -94,9 +99,13 @@ Public Sub SetActiveServer(ByVal IP As String, ByVal port As String, Optional Ig
     End If
     frmDebug.add_text_tracebox "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
     frmDebug.add_text_tracebox "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
+    Exit Sub
+SetActiveServer_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.SetActiveServer", Erl)
 End Sub
 
 Public Sub SetActiveEnvironment(ByVal environment As String)
+    On Error Goto SetActiveEnvironment_Err
     If ServerSettings Is Nothing Then
         Dim RemotesPath As String
         Set ServerSettings = New clsIniManager
@@ -133,9 +142,13 @@ Public Sub SetActiveEnvironment(ByVal environment As String)
     PuertoDelServidorLogin = ServerSettings.GetValue(environment, "LoginPort" & loginOpt)
     frmDebug.add_text_tracebox "Using Login Server " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
     frmDebug.add_text_tracebox "Using Game Server " & IPdelServidor & ":" & PuertoDelServidor
+    Exit Sub
+SetActiveEnvironment_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.SetActiveEnvironment", Erl)
 End Sub
 
 Public Sub CreateAccount(ByVal Name As String, ByVal Surname As String, ByVal Email As String, ByVal Password As String)
+    On Error Goto CreateAccount_Err
     NewAccountData.Name = Name
     NewAccountData.Surname = Surname
     NewAccountData.Email = Email
@@ -148,9 +161,13 @@ Public Sub CreateAccount(ByVal Name As String, ByVal Surname As String, ByVal Em
     CuentaPassword = Password
     Call LoginOrConnect(CreandoCuenta)
 #End If
+    Exit Sub
+CreateAccount_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.CreateAccount", Erl)
 End Sub
 
 Public Sub LoadCharacterSelectionScreen()
+    On Error Goto LoadCharacterSelectionScreen_Err
     AlphaNiebla = 30
     frmConnect.visible = True
     g_game_state.State = e_state_account_screen
@@ -181,13 +198,21 @@ Public Sub LoadCharacterSelectionScreen()
         frmMain.personaje(4).visible = False
         frmMain.personaje(5).visible = False
     End If
+    Exit Sub
+LoadCharacterSelectionScreen_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.LoadCharacterSelectionScreen", Erl)
 End Sub
 
 Public Sub GoToLogIn()
+    On Error Goto GoToLogIn_Err
     g_game_state.State = e_state_connect_screen
+    Exit Sub
+GoToLogIn_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.GoToLogIn", Erl)
 End Sub
 
 Public Sub LogOut()
+    On Error Goto LogOut_Err
     frmDebug.add_text_tracebox "Vuelvo al login, debería borrar el token"
     Auth_state = e_state.Idle
     Call ComprobarEstado
@@ -206,37 +231,57 @@ Public Sub LogOut()
         Pjs(i).NameMapa = ""
     Next i
     General_Set_Connect
+    Exit Sub
+LogOut_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.LogOut", Erl)
 End Sub
 
 Public Sub ResendValidationCode(ByVal Email As String)
+    On Error Goto ResendValidationCode_Err
     CuentaEmail = Email
     ModAuth.LoginOperation = e_operation.RequestVerificationCode
     Call connectToLoginServer
+    Exit Sub
+ResendValidationCode_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.ResendValidationCode", Erl)
 End Sub
 
 Public Sub ValidateCode(ByVal Email As String, ByVal code As String)
+    On Error Goto ValidateCode_Err
     CuentaEmail = Email
     ValidationCode = code
     ModAuth.LoginOperation = e_operation.ValidateAccount
     Call connectToLoginServer
+    Exit Sub
+ValidateCode_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.ValidateCode", Erl)
 End Sub
 
 Public Sub RequestPasswordReset(ByVal Email As String)
+    On Error Goto RequestPasswordReset_Err
     CuentaEmail = Email
     ModAuth.LoginOperation = e_operation.ForgotPassword
     Call connectToLoginServer
+    Exit Sub
+RequestPasswordReset_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.RequestPasswordReset", Erl)
 End Sub
 
 Public Sub RequestNewPassword(ByVal Email As String, ByVal newPassword As String, ByVal code As String)
+    On Error Goto RequestNewPassword_Err
     CuentaEmail = Email
     ValidationCode = code
     CuentaPassword = newPassword
     ModAuth.LoginOperation = e_operation.ResetPassword
     Auth_state = e_state.RequestResetPassword
     Call connectToLoginServer
+    Exit Sub
+RequestNewPassword_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.RequestNewPassword", Erl)
 End Sub
 
 Public Sub LoginCharacter(ByVal Name As String)
+    On Error Goto LoginCharacter_Err
 On Error GoTo LogearPersonaje_Err
     userName = Name
     If Connected Then
@@ -254,9 +299,13 @@ On Error GoTo LogearPersonaje_Err
 LogearPersonaje_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModLogin.LogearPersonaje", Erl)
     Resume Next
+    Exit Sub
+LoginCharacter_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.LoginCharacter", Erl)
 End Sub
 
 Public Sub ShowLogin()
+    On Error Goto ShowLogin_Err
         frmConnect.Show
         Dim patchNotes As String
         patchNotes = GetPatchNotes()
@@ -266,13 +315,21 @@ Public Sub ShowLogin()
         Else
             FrmLogear.Show , frmConnect
         End If
+    Exit Sub
+ShowLogin_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.ShowLogin", Erl)
 End Sub
 
 Public Sub ShowScharSelection()
+    On Error Goto ShowScharSelection_Err
         Call connectToLoginServer
+    Exit Sub
+ShowScharSelection_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.ShowScharSelection", Erl)
 End Sub
 
 Public Sub CreateCharacter(ByVal Name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As Integer, ByVal Head As Integer, ByVal HomeCity As Integer)
+    On Error Goto CreateCharacter_Err
     userName = Name
     UserStats.Raza = Race
     UserStats.Sexo = Gender
@@ -286,33 +343,49 @@ Public Sub CreateCharacter(ByVal Name As String, ByVal Race As Integer, ByVal Ge
     Call Protocol_Writes.WriteLoginNewChar(userName, UserStats.Raza, UserStats.Sexo, UserStats.Clase, MiCabeza, UserStats.Hogar)
 #End If
     
+    Exit Sub
+CreateCharacter_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.CreateCharacter", Erl)
 End Sub
 
 Public Sub RequestDeleteCharacter()
+    On Error Goto RequestDeleteCharacter_Err
 #If PYMMO = 1 Then
     ModAuth.LoginOperation = e_operation.deletechar
     Call connectToLoginServer
 #Else
     Call DisplayError("Unsoported on localhost.", "")
 #End If
+    Exit Sub
+RequestDeleteCharacter_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.RequestDeleteCharacter", Erl)
 End Sub
 
 Public Sub DeleteCharRequestCode()
+    On Error Goto DeleteCharRequestCode_Err
 
         MsgBox ("Se ha enviado un código de verificación al mail proporcionado.")
 
+    Exit Sub
+DeleteCharRequestCode_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.DeleteCharRequestCode", Erl)
 End Sub
 
 Public Sub TransferChar(ByVal Name As String, ByVal DestinationAccunt As String)
+    On Error Goto TransferChar_Err
     TransferCharNewOwner = DestinationAccunt
     TransferCharname = Name
     Debug.Assert Len(TransferCharNewOwner) > 0
     Debug.Assert Len(Name) > 0
     ModAuth.LoginOperation = e_operation.transfercharacter
     Call connectToLoginServer
+    Exit Sub
+TransferChar_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.TransferChar", Erl)
 End Sub
 
 Public Sub OnClientDisconnect(ByVal Error As Long)
+    On Error Goto OnClientDisconnect_Err
     
 On Error GoTo OnClientDisconnect_Err
 
@@ -361,4 +434,7 @@ On Error GoTo OnClientDisconnect_Err
 OnClientDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModLogin.OnClientDisconnect", Erl)
     Resume Next
+    Exit Sub
+OnClientDisconnect_Err:
+    Call TraceError(Err.Number, Err.Description, "ModLogin.OnClientDisconnect", Erl)
 End Sub

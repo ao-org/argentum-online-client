@@ -156,6 +156,7 @@ Private Const WS_SYSMENU As Long = &H80000   ' Adds system menu (close, minimize
 Private Const WS_THICKFRAME As Long = &H40000 ' Resizable border
 
 Public Sub Form_RemoveTitleBar(F As Form)
+    On Error Goto Form_RemoveTitleBar_Err
 On Error GoTo Form_RemoveTitleBar_Err
     
 #If Developer = 0 Then
@@ -186,9 +187,13 @@ Form_RemoveTitleBar_Err:
     Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.Form_RemoveTitleBar", Erl)
     Resume Next
     
+    Exit Sub
+Form_RemoveTitleBar_Err:
+    Call TraceError(Err.Number, Err.Description, "FormInvi.Form_RemoveTitleBar", Erl)
 End Sub
 
 Public Function MakeFormTransparent(Frm As Form, ByVal lngTransColor As Long)
+    On Error Goto MakeFormTransparent_Err
     
     On Error GoTo MakeFormTransparent_Err
     
@@ -224,9 +229,13 @@ MakeFormTransparent_Err:
     Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.MakeFormTransparent", Erl)
     Resume Next
     
+    Exit Function
+MakeFormTransparent_Err:
+    Call TraceError(Err.Number, Err.Description, "FormInvi.MakeFormTransparent", Erl)
 End Function
 
 Private Function RegionFromBitmap(picSource As Object, ByVal lngTransColor As Long) As Long
+    On Error Goto RegionFromBitmap_Err
     
     On Error GoTo RegionFromBitmap_Err
     
@@ -336,11 +345,15 @@ RegionFromBitmap_Err:
     Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.RegionFromBitmap", Erl)
     Resume Next
     
+    Exit Function
+RegionFromBitmap_Err:
+    Call TraceError(Err.Number, Err.Description, "FormInvi.RegionFromBitmap", Erl)
 End Function
 
 'Code von vbVision:
 'Diese Funktion überprüft, ob die angegebene Function von einer DLL exportiert wird.
 Private Function IsFunctionExported(ByVal sFunction As String, ByVal sModule As String) As Boolean
+    On Error Goto IsFunctionExported_Err
     
     On Error GoTo IsFunctionExported_Err
     
@@ -373,9 +386,13 @@ IsFunctionExported_Err:
     Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.IsFunctionExported", Erl)
     Resume Next
     
+    Exit Function
+IsFunctionExported_Err:
+    Call TraceError(Err.Number, Err.Description, "FormInvi.IsFunctionExported", Erl)
 End Function
 
 Public Function SuperMid(ByVal strMain As String, str1 As String, str2 As String, Optional reverse As Boolean) As String
+    On Error Goto SuperMid_Err
 
     'DESCRIPTION: Extract the portion of a string between the two substrings defined in str1 and str2.
     'DEVELOPER: Ryan Wells (wellsr.com)
@@ -430,10 +447,14 @@ errhandler:
     SuperMid = "A"
 
     'MsgBox "Error extracting strings. Check your input" & vbNewLine & vbNewLine & "Aborting", , "Strings not found"
+    Exit Function
+SuperMid_Err:
+    Call TraceError(Err.Number, Err.Description, "FormInvi.SuperMid", Erl)
 End Function
 
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As Long
+    On Error Goto Aplicar_Transparencia_Err
     
     On Error GoTo Aplicar_Transparencia_Err
     
@@ -469,9 +490,13 @@ Aplicar_Transparencia_Err:
     Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.Aplicar_Transparencia", Erl)
     Resume Next
     
+    Exit Function
+Aplicar_Transparencia_Err:
+    Call TraceError(Err.Number, Err.Description, "FormInvi.Aplicar_Transparencia", Erl)
 End Function
 
 Public Sub MoverForm(ByVal hWnd As Long)
+    On Error Goto MoverForm_Err
     
     On Error GoTo moverForm_Err
     
@@ -488,4 +513,7 @@ moverForm_Err:
     Call RegistrarError(Err.number, Err.Description, "ModuloFunciones.MoverForm", Erl)
     Resume Next
     
+    Exit Sub
+MoverForm_Err:
+    Call TraceError(Err.Number, Err.Description, "FormInvi.MoverForm", Erl)
 End Sub

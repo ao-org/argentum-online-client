@@ -286,14 +286,22 @@ Public GetRemoteError As Boolean
 Public IsGameDialogOpen As Boolean
 
 Public Function GetStringFromPtr(ByVal Ptr As Long, ByVal size As Long) As String
+    On Error Goto GetStringFromPtr_Err
     Dim Buffer() As Byte
     ReDim Buffer(0 To (size - 1)) As Byte
     CopyMemory Buffer(0), ByVal Ptr, size
     GetStringFromPtr = StrConv(Buffer, vbUnicode)
+    Exit Function
+GetStringFromPtr_Err:
+    Call TraceError(Err.Number, Err.Description, "BabelUI.GetStringFromPtr", Erl)
 End Function
 
 Public Sub DisplayError(ByVal message As String, ByVal LocalizationStr As String)
+    On Error Goto DisplayError_Err
     Call MsgBox(message)
+    Exit Sub
+DisplayError_Err:
+    Call TraceError(Err.Number, Err.Description, "BabelUI.DisplayError", Erl)
 End Sub
 
 

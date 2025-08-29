@@ -62,16 +62,25 @@ Option Explicit
 Dim puedo As Boolean
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     If KeyAscii = 27 Then If puedo Then Unload Me
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPres.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     Me.Width = 800 * Screen.TwipsPerPixelX
     Me.Height = 600 * Screen.TwipsPerPixelY
     puedo = False
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPres.Form_Load", Erl)
 End Sub
 
 Private Sub Timer1_Timer()
+    On Error Goto Timer1_Timer_Err
 Static ticks As Long
 
 ticks = ticks + 1
@@ -85,4 +94,7 @@ Else
     Unload Me
 End If
 
+    Exit Sub
+Timer1_Timer_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPres.Timer1_Timer", Erl)
 End Sub

@@ -426,6 +426,7 @@ Private cBotonEstadisticasPersonaje As clsGraphicalButton
 Private cBotonCombate As clsGraphicalButton
 Private cBotonPesca As clsGraphicalButton
 Public Sub Iniciar_Labels()
+    On Error Goto Iniciar_Labels_Err
     
     On Error GoTo Iniciar_Labels_Err
     
@@ -482,14 +483,22 @@ Iniciar_Labels_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmStatistics.Iniciar_Labels", Erl)
     Resume Next
     
+    Exit Sub
+Iniciar_Labels_Err:
+    Call TraceError(Err.Number, Err.Description, "frmStatistics.Iniciar_Labels", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     Iniciar_Labels
     showStatsLabels
     loadButtons
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmStatistics.Form_Load", Erl)
 End Sub
 Private Sub showCombateLabels()
+    On Error Goto showCombateLabels_Err
     
     'Show combate labels
     Me.Label6(0).Visible = True
@@ -510,9 +519,13 @@ Private Sub showCombateLabels()
     Atri(4).Visible = False
     Atri(5).Visible = False
     Me.lblPuntosPesca.Visible = False
+    Exit Sub
+showCombateLabels_Err:
+    Call TraceError(Err.Number, Err.Description, "frmStatistics.showCombateLabels", Erl)
 End Sub
 
 Private Sub showStatsLabels()
+    On Error Goto showStatsLabels_Err
     
     'Show combate labels
     Me.Label6(0).Visible = False
@@ -533,9 +546,13 @@ Private Sub showStatsLabels()
     Atri(4).Visible = True
     Atri(5).Visible = True
     Me.lblPuntosPesca.Visible = False
+    Exit Sub
+showStatsLabels_Err:
+    Call TraceError(Err.Number, Err.Description, "frmStatistics.showStatsLabels", Erl)
 End Sub
 
 Private Sub showPescaLabels()
+    On Error Goto showPescaLabels_Err
         
     Me.lblPuntosPesca.Visible = True
     'Show combate labels
@@ -556,8 +573,12 @@ Private Sub showPescaLabels()
     Atri(3).Visible = False
     Atri(4).Visible = False
     Atri(5).Visible = False
+    Exit Sub
+showPescaLabels_Err:
+    Call TraceError(Err.Number, Err.Description, "frmStatistics.showPescaLabels", Erl)
 End Sub
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
        
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
@@ -586,29 +607,52 @@ Private Sub loadButtons()
                                                  "boton-pesca-over.bmp", _
                                                 "boton-pesca-off.bmp", Me)
     
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmStatistics.loadButtons", Erl)
 End Sub
 Private Sub Image1_Click()
+    On Error Goto Image1_Click_Err
     Unload Me
+    Exit Sub
+Image1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmStatistics.Image1_Click", Erl)
 End Sub
 
 
 Private Sub imgCerrar_Click()
+    On Error Goto imgCerrar_Click_Err
     Unload Me
+    Exit Sub
+imgCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmStatistics.imgCerrar_Click", Erl)
 End Sub
 
 Private Sub ImgCombate_Click()
+    On Error Goto ImgCombate_Click_Err
         showCombateLabels
         Me.Picture = LoadInterface("ventanaestadisticas_combate.bmp")
+    Exit Sub
+ImgCombate_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmStatistics.ImgCombate_Click", Erl)
 End Sub
 
 Private Sub ImgEstadisticasPersonaje_Click()
+    On Error Goto ImgEstadisticasPersonaje_Click_Err
         showStatsLabels
         Me.Picture = LoadInterface("ventanaestadisticas_personaje.bmp")
 
+    Exit Sub
+ImgEstadisticasPersonaje_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmStatistics.ImgEstadisticasPersonaje_Click", Erl)
 End Sub
 
 Private Sub ImgPesca_Click()
+    On Error Goto ImgPesca_Click_Err
         showPescaLabels
         Me.Picture = LoadInterface("ventanaestadisticas_pesca.bmp")
+    Exit Sub
+ImgPesca_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmStatistics.ImgPesca_Click", Erl)
 End Sub
 

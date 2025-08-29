@@ -10,6 +10,7 @@ Private map_letter_a          As Single
 Private map_letter_fadestatus As Byte
 
 Public Sub render()
+    On Error Goto render_Err
 
     '*****************************************************
     '****** Coded by Menduz (lord.yo.wo@gmail.com) *******
@@ -124,9 +125,13 @@ Public Sub render()
 
     Exit Sub
 
+    Exit Sub
+render_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.render", Erl)
 End Sub
 
 Sub ShowNextFrame()
+    On Error Goto ShowNextFrame_Err
 
     'Call RenderSounds
     Static OffsetCounterX As Single
@@ -173,9 +178,13 @@ Sub ShowNextFrame()
                 
     End If
 
+    Exit Sub
+ShowNextFrame_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.ShowNextFrame", Erl)
 End Sub
 
 Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_y As Integer, ByVal Height As Integer, ByVal Width As Integer, ByRef rgb_list() As Long, Optional ByVal h_center As Boolean, Optional ByVal v_center As Boolean, Optional ByVal alpha_blend As Boolean = False)
+    On Error Goto Grh_Render_Advance_Err
 
     '**************************************************************
     'Author: Juan Martín Sotuyo Dodero (juansotuyo@hotmail.com)
@@ -222,9 +231,13 @@ Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal
     'Device_Box_Textured_Render_Advance grh_index, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list, GrhData(grh_index).sX, GrhData(grh_index).sY, Width, Height, alpha_blend, grh.angle
     Device_Textured_Render screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, rgb_list(), alpha_blend, grh.angle
 
+    Exit Sub
+Grh_Render_Advance_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.Grh_Render_Advance", Erl)
 End Sub
 
 Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_y As Integer, ByRef rgb_list() As Long, Optional ByVal h_centered As Boolean = True, Optional ByVal v_centered As Boolean = True, Optional ByVal alpha_blend As Boolean = False)
+    On Error Goto Grh_Render_Err
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -292,9 +305,13 @@ Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_
     'Draw it to device
     Device_Box_Textured_Render grh_index, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list(), GrhData(grh_index).sX, GrhData(grh_index).sY, alpha_blend, grh.angle
 
+    Exit Sub
+Grh_Render_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.Grh_Render", Erl)
 End Sub
 
 Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
+    On Error Goto RenderScreenCiego_Err
     '**************************************************************
     'Author: Aaron Perkins
     'Last Modify Date: 8/14/2007
@@ -709,9 +726,13 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
 
     End If
 
+    Exit Sub
+RenderScreenCiego_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.RenderScreenCiego", Erl)
 End Sub
 
 Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
+    On Error Goto RenderScreen_Err
 
     '**************************************************************
     'Author: Aaron Perkins
@@ -1247,9 +1268,13 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
     End If
 
+    Exit Sub
+RenderScreen_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.RenderScreen", Erl)
 End Sub
 
 Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+    On Error Goto Char_Render_Err
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -1848,9 +1873,13 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
 
     End With
 
+    Exit Sub
+Char_Render_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.Char_Render", Erl)
 End Sub
 
 Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+    On Error Goto Char_RenderCiego_Err
 
     '***************************************************
     'Author: Juan Martín Sotuyo Dodero (Maraxus)
@@ -2118,9 +2147,13 @@ Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Inte
 
     End With
 
+    Exit Sub
+Char_RenderCiego_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.Char_RenderCiego", Erl)
 End Sub
 
 Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+    On Error Goto Char_TextRender_Err
 
     Dim moved         As Boolean
 
@@ -2231,9 +2264,13 @@ Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integ
         '*** End Dialogs ***
     End With
 
+    Exit Sub
+Char_TextRender_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.Char_TextRender", Erl)
 End Sub
 
 Public Sub DrawMainInventory()
+    On Error Goto DrawMainInventory_Err
 
     ' Sólo dibujamos cuando es necesario
     If Not frmmain.Inventario.NeedsRedraw Then Exit Sub
@@ -2260,9 +2297,13 @@ Public Sub DrawMainInventory()
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, frmmain.picInv.hwnd)
 
+    Exit Sub
+DrawMainInventory_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.DrawMainInventory", Erl)
 End Sub
 
 Public Sub DrawInterfaceComerciar()
+    On Error Goto DrawInterfaceComerciar_Err
 
     ' Sólo dibujamos cuando es necesario
     If Not frmComerciar.InvComNpc.NeedsRedraw And Not frmComerciar.InvComUsu.NeedsRedraw Then Exit Sub
@@ -2352,9 +2393,13 @@ Public Sub DrawInterfaceComerciar()
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, frmComerciar.interface.hwnd)
 
+    Exit Sub
+DrawInterfaceComerciar_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.DrawInterfaceComerciar", Erl)
 End Sub
 
 Public Sub DrawInterfaceBoveda()
+    On Error Goto DrawInterfaceBoveda_Err
 
     ' Sólo dibujamos cuando es necesario
     If Not frmBancoObj.InvBoveda.NeedsRedraw And Not frmBancoObj.InvBankUsu.NeedsRedraw Then Exit Sub
@@ -2435,9 +2480,13 @@ Public Sub DrawInterfaceBoveda()
     ' Presentamos la escena
     Call Engine_EndScene(InvRect, frmBancoObj.interface.hwnd)
 
+    Exit Sub
+DrawInterfaceBoveda_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.DrawInterfaceBoveda", Erl)
 End Sub
 
 Public Sub DrawMapaMundo()
+    On Error Goto DrawMapaMundo_Err
 
     On Error Resume Next
 
@@ -2494,9 +2543,13 @@ Public Sub DrawMapaMundo()
     
     Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
 
+    Exit Sub
+DrawMapaMundo_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.DrawMapaMundo", Erl)
 End Sub
 
 Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVal y As Integer, ByVal map_x As Byte, ByVal map_y As Byte, Optional ByVal userindex As Long = 0)
+    On Error Goto Renderizar_Aura_Err
 
     Dim rgb_list(0 To 3) As Long
 
@@ -2561,9 +2614,13 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
 
     End If
     
+    Exit Sub
+Renderizar_Aura_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.Renderizar_Aura", Erl)
 End Sub
 
 Private Sub Renderizar_AuraCiego(ByVal aura_index As String, ByVal x As Integer, ByVal y As Integer, ByVal map_x As Byte, ByVal map_y As Byte)
+    On Error Goto Renderizar_AuraCiego_Err
 
     Dim rgb_list(0 To 3) As Long
 
@@ -2608,9 +2665,13 @@ Private Sub Renderizar_AuraCiego(ByVal aura_index As String, ByVal x As Integer,
     'Y por ultimo renderizamos esta capa con Draw_Grh
     Call Draw_Grh(aura_grh, x, y + 30, 1, 0, rgb_list(), True, map_x, map_y)
     
+    Exit Sub
+Renderizar_AuraCiego_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.Renderizar_AuraCiego", Erl)
 End Sub
 
 Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
+    On Error Goto RenderConnect_Err
 
     Call Engine_BeginScene
 
@@ -3010,9 +3071,13 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     Exit Sub
 
+    Exit Sub
+RenderConnect_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.RenderConnect", Erl)
 End Sub
 
 Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
+    On Error Goto RenderCrearPJ_Err
 
     Call Engine_BeginScene
 
@@ -3282,9 +3347,13 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     'RenderPjsCuenta
 
+    Exit Sub
+RenderCrearPJ_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.RenderCrearPJ", Erl)
 End Sub
 
 Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
+    On Error Goto rendercuenta_Err
 
     Call Engine_BeginScene
 
@@ -3301,9 +3370,13 @@ Public Sub rendercuenta(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pi
     
     Exit Sub
 
+    Exit Sub
+rendercuenta_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.rendercuenta", Erl)
 End Sub
 
 Public Sub RenderUICrearPJ()
+    On Error Goto RenderUICrearPJ_Err
 
     Dim TempGrh         As grh
     
@@ -3604,9 +3677,13 @@ Public Sub RenderUICrearPJ()
     'Engine_Text_Render "DADO", 670, 390, DefaultColor()
     Draw_GrhIndex 1123, 665, 385
 
+    Exit Sub
+RenderUICrearPJ_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.RenderUICrearPJ", Erl)
 End Sub
 
 Public Sub RenderPjsCuenta()
+    On Error Goto RenderPjsCuenta_Err
 
     ' Renderiza el menu para seleccionar las clases
         
@@ -3771,9 +3848,13 @@ Public Sub RenderPjsCuenta()
 
     Next i
 
+    Exit Sub
+RenderPjsCuenta_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.RenderPjsCuenta", Erl)
 End Sub
 
 Sub RenderConsola()
+    On Error Goto RenderConsola_Err
 
     Dim i As Byte
  
@@ -3788,10 +3869,14 @@ Sub RenderConsola()
  
     If UltimaLineavisible = True Then Text_Render font_list(1), Con(i).T, ComienzoY + (MaxLineas * 15) + OffSetConsola - 20, 10, frmmain.renderer.Width, frmmain.renderer.Height, ARGB(Con(MaxLineas).r, Con(MaxLineas).g, Con(i).b, 255), DT_TOP Or DT_LEFT, False
  
+    Exit Sub
+RenderConsola_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.RenderConsola", Erl)
 End Sub
 
 
 Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String) As Boolean
+    On Error Goto Letter_Set_Err
     '*****************************************************************
     'Author: Augusto José Rando
     '*****************************************************************
@@ -3800,9 +3885,13 @@ Public Function Letter_Set(ByVal grh_index As Long, ByVal text_string As String)
     Letter_Set = True
     map_letter_fadestatus = 1
 
+    Exit Function
+Letter_Set_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.Letter_Set", Erl)
 End Function
 
 Public Function Map_Letter_Fade_Set(ByVal grh_index As Long, Optional ByVal after_grh As Long = -1) As Boolean
+    On Error Goto Map_Letter_Fade_Set_Err
 
     '*****************************************************************
     'Author: Augusto José Rando
@@ -3824,9 +3913,13 @@ Public Function Map_Letter_Fade_Set(ByVal grh_index As Long, Optional ByVal afte
     
     Map_Letter_Fade_Set = True
 
+    Exit Function
+Map_Letter_Fade_Set_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.Map_Letter_Fade_Set", Erl)
 End Function
 
 Public Function Map_Letter_UnSet() As Boolean
+    On Error Goto Map_Letter_UnSet_Err
     '*****************************************************************
     'Author: Augusto José Rando
     '*****************************************************************
@@ -3836,9 +3929,13 @@ Public Function Map_Letter_UnSet() As Boolean
     map_letter_grh_next = 0
     Map_Letter_UnSet = True
 
+    Exit Function
+Map_Letter_UnSet_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.Map_Letter_UnSet", Erl)
 End Function
 
 Public Function Letter_UnSet() As Boolean
+    On Error Goto Letter_UnSet_Err
     '*****************************************************************
     'Author: Augusto José Rando
     '*****************************************************************
@@ -3846,5 +3943,8 @@ Public Function Letter_UnSet() As Boolean
     letter_grh.GrhIndex = 0
     Letter_UnSet = True
 
+    Exit Function
+Letter_UnSet_Err:
+    Call TraceError(Err.Number, Err.Description, "Graficos_Renderizado.Letter_UnSet", Erl)
 End Function
 

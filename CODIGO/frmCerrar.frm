@@ -74,14 +74,19 @@ Private cBotonCerrar As clsGraphicalButton
 
 
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
+    On Error Goto Form_KeyUp_Err
   
 
     If (KeyCode = vbKeyEscape) Then
         Unload Me
     End If
+    Exit Sub
+Form_KeyUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCerrar.Form_KeyUp", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -99,9 +104,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCerrar.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCerrar.Form_Load", Erl)
 End Sub
 
 Private Sub LoadButtons()
+    On Error Goto LoadButtons_Err
         
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonConstruir = New clsGraphicalButton
@@ -118,19 +127,34 @@ Private Sub LoadButtons()
     Call cBotonCerrar.Initialize(cmdSalir, "boton-salir-default.bmp", _
                                                 "boton-salir-over.bmp", _
                                                 "boton-salir-off.bmp", Me)
+    Exit Sub
+LoadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCerrar.LoadButtons", Erl)
 End Sub
 
 
 Private Sub cmdCancelar_Click()
+    On Error Goto cmdCancelar_Click_Err
     Unload Me
+    Exit Sub
+cmdCancelar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCerrar.cmdCancelar_Click", Erl)
 End Sub
 
 Private Sub cmdMenuPrincipal_Click()
+    On Error Goto cmdMenuPrincipal_Click_Err
     Call WriteQuit
     Unload Me
+    Exit Sub
+cmdMenuPrincipal_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCerrar.cmdMenuPrincipal_Click", Erl)
 End Sub
 
 Private Sub cmdSalir_Click()
+    On Error Goto cmdSalir_Click_Err
     Call CloseClient
+    Exit Sub
+cmdSalir_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCerrar.cmdSalir_Click", Erl)
 End Sub
 

@@ -154,15 +154,20 @@ Option Explicit
 Private Over As Integer
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     Call Aplicar_Transparencia(Me.hWnd, 180)
     OpcionLbl(0).Caption = JsonLanguage.Item("FORM_OPCION_5")
     OpcionLbl(1).Caption = JsonLanguage.Item("FORM_OPCION_6")
     OpcionLbl(2).Caption = JsonLanguage.Item("FORM_OPCION_7")
     OpcionLbl(3).Caption = JsonLanguage.Item("FORM_OPCION_8")
     Over = -1
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "MenuNPC.Form_Load", Erl)
 End Sub
 
 Private Sub OpcionImg_Click(Index As Integer)
+    On Error Goto OpcionImg_Click_Err
     
     Select Case Index
         Case 0
@@ -177,9 +182,13 @@ Private Sub OpcionImg_Click(Index As Integer)
 
     Unload Me
     
+    Exit Sub
+OpcionImg_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "MenuNPC.OpcionImg_Click", Erl)
 End Sub
 
 Private Sub OpcionImg_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto OpcionImg_MouseMove_Err
     If Over <> Index Then
         If Over >= 0 Then
             OpcionLbl(Over).ForeColor = vbWhite
@@ -187,19 +196,34 @@ Private Sub OpcionImg_MouseMove(Index As Integer, Button As Integer, Shift As In
         OpcionLbl(Index).ForeColor = vbYellow
         Over = Index
     End If
+    Exit Sub
+OpcionImg_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "MenuNPC.OpcionImg_MouseMove", Erl)
 End Sub
 
 Private Sub OpcionLbl_Click(Index As Integer)
+    On Error Goto OpcionLbl_Click_Err
     Call OpcionImg_Click(Index)
+    Exit Sub
+OpcionLbl_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "MenuNPC.OpcionLbl_Click", Erl)
 End Sub
 
 Private Sub OpcionLbl_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto OpcionLbl_MouseMove_Err
     Call OpcionImg_MouseMove(Index, Button, Shift, x, y)
+    Exit Sub
+OpcionLbl_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "MenuNPC.OpcionLbl_MouseMove", Erl)
 End Sub
 
 Public Sub LostFocus()
+    On Error Goto LostFocus_Err
     If Over >= 0 Then
         OpcionLbl(Over).ForeColor = vbWhite
         Over = -1
     End If
+    Exit Sub
+LostFocus_Err:
+    Call TraceError(Err.Number, Err.Description, "MenuNPC.LostFocus", Erl)
 End Sub

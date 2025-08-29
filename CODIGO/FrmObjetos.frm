@@ -242,6 +242,7 @@ Dim lRet As Long, LFI As LVFINDINFO
   
 'Procedimiento que busca: Se le envía el control ListView y el texto a buscar
 Private Sub Buscar_ListView(ListView As ListView, Cadena As String)
+    On Error Goto Buscar_ListView_Err
     
     On Error GoTo Buscar_ListView_Err
     
@@ -291,9 +292,13 @@ Buscar_ListView_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Buscar_ListView", Erl)
     Resume Next
     
+    Exit Sub
+Buscar_ListView_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmObjetos.Buscar_ListView", Erl)
 End Sub
   
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -313,9 +318,13 @@ Command1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmObjetos.Command1_Click", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
     
     On Error GoTo Command2_Click_Err
     
@@ -327,9 +336,13 @@ Command2_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Command2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmObjetos.Command2_Click", Erl)
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -343,9 +356,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmObjetos.Form_KeyPress", Erl)
 End Sub
 
 Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
+    On Error Goto ListView1_ItemClick_Err
     
     On Error GoTo ListView1_ItemClick_Err
     
@@ -363,9 +380,13 @@ ListView1_ItemClick_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmObjetos.ListView1_ItemClick", Erl)
     Resume Next
     
+    Exit Sub
+ListView1_ItemClick_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmObjetos.ListView1_ItemClick", Erl)
 End Sub
 
 Private Sub ListView1_KeyUp(KeyCode As Integer, Shift As Integer)
+    On Error Goto ListView1_KeyUp_Err
 
     If KeyCode = vbKeyEscape Then
     
@@ -381,9 +402,13 @@ Private Sub ListView1_KeyUp(KeyCode As Integer, Shift As Integer)
         End If
     End If
 
+    Exit Sub
+ListView1_KeyUp_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmObjetos.ListView1_KeyUp", Erl)
 End Sub
 
 Private Sub Text1_Change()
+    On Error Goto Text1_Change_Err
 
 On Error GoTo Handle
 
@@ -410,9 +435,13 @@ On Error GoTo Handle
 Handle:
     Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Text1_Change(Buscar)")
     Resume Next
+    Exit Sub
+Text1_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmObjetos.Text1_Change", Erl)
 End Sub
 
 Private Sub Text1_KeyUp(KeyCode As Integer, Shift As Integer)
+    On Error Goto Text1_KeyUp_Err
     
     On Error GoTo Text1_KeyDown_Err
 
@@ -429,4 +458,7 @@ Text1_KeyDown_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmObjetos.Text1_KeyDown", Erl)
     Resume Next
     
+    Exit Sub
+Text1_KeyUp_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmObjetos.Text1_KeyUp", Erl)
 End Sub

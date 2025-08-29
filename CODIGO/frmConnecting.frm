@@ -48,11 +48,16 @@ Private RetryCount As Integer
 Private TimerProgress As Integer
 
 Private Sub cmdCancel_Click()
+    On Error Goto cmdCancel_Click_Err
     Call Disconnect
     Unload Me
+    Exit Sub
+cmdCancel_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnecting.cmdCancel_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     On Error GoTo Form_Load_Err
     
     Call FormParser.Parse_Form(Me)
@@ -68,17 +73,25 @@ Private Sub Form_Load()
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCerrar.Form_Load", Erl)
     Resume Next
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnecting.Form_Load", Erl)
 End Sub
 
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
         
     Set cCancelButton = New clsGraphicalButton
     Call cCancelButton.Initialize(cmdCancel, "boton-cancelar-default.bmp", _
                                                 "boton-cancelar-over.bmp", _
                                                 "boton-cancelar-off.bmp", Me)
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnecting.loadButtons", Erl)
 End Sub
 
 Private Sub Timeout_Timer()
+    On Error Goto Timeout_Timer_Err
 #If DIRECT_PLAY = 0 Then
     Call UpdateConnectionText
     TimerProgress = TimerProgress + 1
@@ -86,9 +99,13 @@ Private Sub Timeout_Timer()
         Call RetryWithAnotherIp
     End If
 #End If
+    Exit Sub
+Timeout_Timer_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnecting.Timeout_Timer", Erl)
 End Sub
 
 Private Sub UpdateConnectionText()
+    On Error Goto UpdateConnectionText_Err
     Dim DisplayText As String
     Dim i As Integer
     DisplayText = "Conectando al servidor"
@@ -96,4 +113,7 @@ Private Sub UpdateConnectionText()
         DisplayText = DisplayText & "."
     Next i
     ConnectionLabel.Caption = DisplayText
+    Exit Sub
+UpdateConnectionText_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnecting.UpdateConnectionText", Erl)
 End Sub

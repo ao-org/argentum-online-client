@@ -75,6 +75,7 @@ Private enabled As Boolean
 
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (pDest As Any, pSrc As Any, ByVal ByteLen As Long)
 Public Sub initMascotaTutorial()
+    On Error Goto initMascotaTutorial_Err
     mascota.posX = 50
     mascota.posY = 50
     
@@ -86,16 +87,28 @@ Public Sub initMascotaTutorial()
     Call InitGrh(mascota.Body(6), 275, 1)
     Call InitGrh(mascota.Body(7), 275, 1)
     Call InitGrh(mascota.Body(8), 275, 1)
+    Exit Sub
+initMascotaTutorial_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.initMascotaTutorial", Erl)
 End Sub
 Private Function RGBA2Lng(r As Byte, G As Byte, B As Byte, A As Byte) As Long
+    On Error Goto RGBA2Lng_Err
     RGBA2Lng = r + G * 256 + B * 65536 + A * 16777216
+    Exit Function
+RGBA2Lng_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.RGBA2Lng", Erl)
 End Function
 Private Function Lng2RGBA(MyLong As Long) As Byte()
+    On Error Goto Lng2RGBA_Err
     Dim MyBytes(3) As Byte
     CopyMemory MyBytes(0), MyLong, 4
     Lng2RGBA = MyBytes
+    Exit Function
+Lng2RGBA_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.Lng2RGBA", Erl)
 End Function
 Public Sub nextCartel()
+    On Error Goto nextCartel_Err
     If tutorial_index = 0 Then Exit Sub
     
     cartel_index = cartel_index + 1
@@ -112,22 +125,34 @@ Public Sub nextCartel()
         Call cerrarCartel
     End If
     
+    Exit Sub
+nextCartel_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.nextCartel", Erl)
 End Sub
 Public Sub cerrarCartel()
+    On Error Goto cerrarCartel_Err
     tutorial_index = 0
     cartel_index = 0
     cartel_duration = 0
     If mascota.visible Then mascota.visible = False
         Call ao20audio.stopwav(TYPING_SOUND)
+    Exit Sub
+cerrarCartel_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.cerrarCartel", Erl)
 End Sub
 Public Sub resetearCartel()
+    On Error Goto resetearCartel_Err
     tutorial_index = 0
     cartel_index = 0
     cartel_visible = False
+    Exit Sub
+resetearCartel_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.resetearCartel", Erl)
 End Sub
 'Duration = 0 calcula solo con largo de texto, Duration = -1 infinito
 
 Public Sub mostrarCartel(ByVal title As String, ByVal Message As String, Optional ByVal headGrh As Long = 0, Optional ByVal duration As Long = 0, Optional ByVal titleColor As Long = -1, Optional ByVal messageColor As Long = -1, Optional ByVal backgroundColor As Long = -1, Optional ByVal EsNpc As Boolean = False, Optional ByVal CartelTitlePosX = 0, Optional ByVal CartelTitlePosY As Long = 0, Optional ByVal CartelMessagePosX As Long = 0, Optional ByVal CartelMessagePosY As Long = 0, Optional ByVal cartelGrhPosX As Long = 0, Optional ByVal cartelGrhPosY As Long = 0, Optional ByVal grhWidth As Long = 0, Optional ByVal grhHeight As Long = 0, Optional ByVal bodyGrh As Long = 0, Optional ByVal HeadOffsetY As Integer = 0)
+    On Error Goto mostrarCartel_Err
     Dim titleColor_byte() As Byte
     Dim messageColor_byte() As Byte
     Dim backgroundColor_byte() As Byte
@@ -197,8 +222,12 @@ Public Sub mostrarCartel(ByVal title As String, ByVal Message As String, Optiona
     cartel_fadestatus = 1
     cartel_fade = 1
     cartel_npc = esNpc
+    Exit Sub
+mostrarCartel_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.mostrarCartel", Erl)
 End Sub
 Public Sub RenderScreen_Cartel()
+    On Error Goto RenderScreen_Cartel_Err
  On Error GoTo RenderScreen_Cartel_Err
     
     
@@ -285,15 +314,23 @@ Public Sub RenderScreen_Cartel()
 RenderScreen_Cartel_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_RenderScreen.RenderScreen_Cartel", Erl)
     Resume Next
+    Exit Sub
+RenderScreen_Cartel_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.RenderScreen_Cartel", Erl)
 End Sub
 Private Function changeAlphaColor(Color() As RGBA, ByVal Alpha As Byte)
+    On Error Goto changeAlphaColor_Err
     Color(0).A = Alpha
     Color(1).A = Alpha
     Color(2).A = Alpha
     Color(3).A = Alpha
+    Exit Function
+changeAlphaColor_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.changeAlphaColor", Erl)
 End Function
 
 Public Sub toggleTutorialActivo(ByVal tutorial_index As Byte)
+    On Error Goto toggleTutorialActivo_Err
     Dim file As String
     With tutorial(tutorial_index)
         If .Activo = 0 Then
@@ -303,8 +340,12 @@ Public Sub toggleTutorialActivo(ByVal tutorial_index As Byte)
         End If
         Call SaveSetting("TUTORIAL" & tutorial_index, "Activo", .Activo)
     End With
+    Exit Sub
+toggleTutorialActivo_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.toggleTutorialActivo", Erl)
 End Sub
 Public Sub cargarTutoriales()
+    On Error Goto cargarTutoriales_Err
     Dim CantidadTutoriales As Long
     Dim i As Long, j As Long
     
@@ -329,10 +370,14 @@ Public Sub cargarTutoriales()
             Next j
         End If
     Next i
+    Exit Sub
+cargarTutoriales_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.cargarTutoriales", Erl)
 End Sub
 
 
 Public Sub Engine_Text_Render_Cartel(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+    On Error Goto Engine_Text_Render_Cartel_Err
     
     On Error GoTo Engine_Text_Render_Cartel_Err
 
@@ -484,9 +529,13 @@ Engine_Text_Render_Cartel_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_Cartel", Erl)
     Resume Next
     
+    Exit Sub
+Engine_Text_Render_Cartel_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.Engine_Text_Render_Cartel", Erl)
 End Sub
 
 Public Sub checkTutorial()
+    On Error Goto checkTutorial_Err
     
     If charlist(UserCharIndex).Pos.x > 10 And charlist(UserCharIndex).Pos.y > 10 And charlist(UserCharIndex).Pos.x < 80 And charlist(UserCharIndex).Pos.y < 80 Then
         
@@ -517,4 +566,7 @@ Public Sub checkTutorial()
   '      enabled = False
         'mascota.dialog = ""
   '  End If
+    Exit Sub
+checkTutorial_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTutorial.checkTutorial", Erl)
 End Sub

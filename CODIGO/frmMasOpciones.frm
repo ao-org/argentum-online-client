@@ -114,6 +114,7 @@ Private Const WS_EX_LAYERED = &H80000
  Se le pasa el Hwnd del formulario en cuestión
   
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+    On Error Goto Is_Transparent_Err
     
     On Error GoTo Is_Transparent_Err
     
@@ -143,10 +144,14 @@ Is_Transparent_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Is_Transparent", Erl)
     Resume Next
     
+    Exit Function
+Is_Transparent_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMasOpciones.Is_Transparent", Erl)
 End Function
   
 'Función que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+    On Error Goto Aplicar_Transparencia_Err
     
     On Error GoTo Aplicar_Transparencia_Err
     
@@ -182,15 +187,23 @@ Aplicar_Transparencia_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Aplicar_Transparencia", Erl)
     Resume Next
     
+    Exit Function
+Aplicar_Transparencia_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMasOpciones.Aplicar_Transparencia", Erl)
 End Function
 
 Private Sub Form_Activate()
+    On Error Goto Form_Activate_Err
     'SetWindowPos Me.hwnd, HWND_TOPMOST, 0, 0, 0, 0, _
      SWP_NOMOVE Or SWP_NOSIZE
 
+    Exit Sub
+Form_Activate_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMasOpciones.Form_Activate", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -205,9 +218,13 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMasOpciones.Form_Load", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -233,9 +250,13 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMasOpciones.Form_MouseMove", Erl)
 End Sub
 
 Private Sub Image1_Click(Index As Integer)
+    On Error Goto Image1_Click_Err
     
     On Error GoTo Image1_Click_Err
     
@@ -276,9 +297,13 @@ Image1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Image1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Image1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMasOpciones.Image1_Click", Erl)
 End Sub
 
 Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image1_MouseMove_Err
     
     On Error GoTo Image1_MouseMove_Err
     
@@ -342,9 +367,13 @@ Image1_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Image1_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Image1_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMasOpciones.Image1_MouseMove", Erl)
 End Sub
 
 Private Sub Image1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image1_MouseDown_Err
     
     On Error GoTo Image1_MouseDown_Err
     
@@ -385,4 +414,7 @@ Image1_MouseDown_Err:
     Call RegistrarError(Err.number, Err.Description, "frmMasOpciones.Image1_MouseDown", Erl)
     Resume Next
     
+    Exit Sub
+Image1_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMasOpciones.Image1_MouseDown", Erl)
 End Sub

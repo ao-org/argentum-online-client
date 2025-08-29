@@ -228,16 +228,25 @@ Dim LastColoured As Byte
 'odio programar sin tiempo (c) el oso
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Form_MouseMove_Err
     lblDescripcion(LastColoured).BorderStyle = 0
     lblDescripcion(LastColoured).BackStyle = 0
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmEligeAlineacion.Form_MouseMove", Erl)
 End Sub
 
 Private Sub lblDescripcion_Click(index As Integer)
+    On Error Goto lblDescripcion_Click_Err
     Call WriteGuildFundate(index)
     Unload Me
+    Exit Sub
+lblDescripcion_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmEligeAlineacion.lblDescripcion_Click", Erl)
 End Sub
 
 Private Sub lblDescripcion_MouseMove(index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto lblDescripcion_MouseMove_Err
     
     If LastColoured <> index Then
         lblDescripcion(LastColoured).BorderStyle = 0
@@ -261,14 +270,25 @@ Private Sub lblDescripcion_MouseMove(index As Integer, Button As Integer, Shift 
     End Select
     
     LastColoured = index
+    Exit Sub
+lblDescripcion_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmEligeAlineacion.lblDescripcion_MouseMove", Erl)
 End Sub
 
 
 Private Sub lblNombre_MouseMove(index As Integer, Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto lblNombre_MouseMove_Err
     lblDescripcion(LastColoured).BorderStyle = 0
     lblDescripcion(LastColoured).BackStyle = 0
+    Exit Sub
+lblNombre_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmEligeAlineacion.lblNombre_MouseMove", Erl)
 End Sub
 
 Private Sub lblSalir_Click()
+    On Error Goto lblSalir_Click_Err
     Unload Me
+    Exit Sub
+lblSalir_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmEligeAlineacion.lblSalir_Click", Erl)
 End Sub

@@ -80,6 +80,7 @@ Private cBotonCancelar As clsGraphicalButton
 Private cBotonCerrar As clsGraphicalButton
 
 Private Sub btnAceptar_Click()
+    On Error Goto btnAceptar_Click_Err
 
     Me.txtDeleteCharCode.Text = Trim(Me.txtDeleteCharCode.Text)
 
@@ -91,24 +92,40 @@ Private Sub btnAceptar_Click()
     Else
         Call MsgBox(JsonLanguage.Item("MENSAJEBOX_CODIGO_INVALIDO"), vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ERROR"))
     End If
+    Exit Sub
+btnAceptar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmDeleteChar.btnAceptar_Click", Erl)
 End Sub
 
 Private Sub btnCerrar_Click()
+    On Error Goto btnCerrar_Click_Err
     Unload Me
+    Exit Sub
+btnCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmDeleteChar.btnCerrar_Click", Erl)
 End Sub
 Private Sub btnCancelar_Click()
+    On Error Goto btnCancelar_Click_Err
     Unload Me
+    Exit Sub
+btnCancelar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmDeleteChar.btnCancelar_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 
     Me.Picture = LoadInterface("ventacodigoverificacion.bmp")
     
     Call loadButtons
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmDeleteChar.Form_Load", Erl)
 End Sub
 
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
        
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonCancelar = New clsGraphicalButton
@@ -127,4 +144,7 @@ Private Sub loadButtons()
                                                 "boton-cerrar-over.bmp", _
                                                 "boton-cerrar-off.bmp", Me)
     
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmDeleteChar.loadButtons", Erl)
 End Sub

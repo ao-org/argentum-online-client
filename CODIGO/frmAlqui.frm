@@ -201,6 +201,7 @@ Attribute VB_Exposed = False
 '
 
 Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdMasMenos_MouseDown_Err
     
     On Error GoTo cmdMasMenos_MouseDown_Err
     
@@ -231,9 +232,13 @@ cmdMasMenos_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoCuenta.cmdMasMenos_MouseDown", Erl)
     Resume Next
     
+    Exit Sub
+cmdMasMenos_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.cmdMasMenos_MouseDown", Erl)
 End Sub
 
 Private Sub Command3_Click()
+    On Error Goto Command3_Click_Err
     
     On Error GoTo Command3_Click_Err
     
@@ -271,9 +276,13 @@ Command3_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Command3_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.Command3_Click", Erl)
 End Sub
 
 Private Sub Command4_Click()
+    On Error Goto Command4_Click_Err
     
     On Error GoTo Command4_Click_Err
     
@@ -286,9 +295,13 @@ Command4_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Command4_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command4_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.Command4_Click", Erl)
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -305,9 +318,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -320,9 +337,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.Form_Load", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -340,9 +361,13 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.Form_MouseMove", Erl)
 End Sub
 
 Private Sub List1_Click()
+    On Error Goto List1_Click_Err
     
     On Error GoTo List1_Click_Err
     
@@ -368,15 +393,23 @@ List1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.List1_Click", Erl)
     Resume Next
     
+    Exit Sub
+List1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.List1_Click", Erl)
 End Sub
 
 Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command3_MouseDown_Err
 
     ' Command3.Picture = LoadInterface("trabajar_construirpress.bmp")
     '  Command3.Tag = "1"
+    Exit Sub
+Command3_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.Command3_MouseDown", Erl)
 End Sub
 
 Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command3_MouseMove_Err
     
     On Error GoTo Command3_MouseMove_Err
     
@@ -397,15 +430,23 @@ Command3_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Command3_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Command3_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.Command3_MouseMove", Erl)
 End Sub
 
 Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command4_MouseDown_Err
 
     '                Command4.Picture = LoadInterface("trabajar_salirpress.bmp")
     '                Command4.Tag = "1"
+    Exit Sub
+Command4_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.Command4_MouseDown", Erl)
 End Sub
 
 Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command4_MouseMove_Err
     
     On Error GoTo Command4_MouseMove_Err
     
@@ -426,9 +467,13 @@ Command4_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Command4_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Command4_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.Command4_MouseMove", Erl)
 End Sub
 
 Private Sub lstArmas_Click()
+    On Error Goto lstArmas_Click_Err
     
     On Error GoTo lstArmas_Click_Err
     
@@ -563,9 +608,13 @@ lstArmas_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.lstArmas_Click", Erl)
     Resume Next
     
+    Exit Sub
+lstArmas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.lstArmas_Click", Erl)
 End Sub
 
 Private Sub salir_Click()
+    On Error Goto salir_Click_Err
     On Error GoTo salir_Click_Err
     
     Unload Me
@@ -576,4 +625,7 @@ Private Sub salir_Click()
 salir_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoCuenta.salir_Click", Erl)
     Resume Next
+    Exit Sub
+salir_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmAlqui.salir_Click", Erl)
 End Sub

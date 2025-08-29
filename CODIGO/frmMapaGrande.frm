@@ -459,13 +459,18 @@ Private Const MAPAS_ANCHO = 19
 Private Const MAPAS_ALTO = 22
 
 Private Sub Form_Activate()
+    On Error Goto Form_Activate_Err
     Call CargarDatosMapa(ResourceMap)
     If ListView1.ListItems.count > 0 Then
         Call ListView1_ItemClick(ListView1.ListItems.Item(1))
     End If
+    Exit Sub
+Form_Activate_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.Form_Activate", Erl)
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+    On Error Goto Form_KeyDown_Err
     
     On Error GoTo Form_KeyDown_Err
     
@@ -479,9 +484,13 @@ Form_KeyDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Form_KeyDown", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.Form_KeyDown", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -500,9 +509,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.Form_Load", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -520,9 +533,13 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.Form_MouseMove", Erl)
 End Sub
 
 Sub DibujarHead(ByVal MyHead As Integer, ByVal yoff As Integer, Optional ByVal Heading As Byte = 3)
+    On Error Goto DibujarHead_Err
     
     On Error GoTo DibujarHead_Err
     
@@ -546,21 +563,33 @@ DibujarHead_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.DibujarHead", Erl)
     Resume Next
     
+    Exit Sub
+DibujarHead_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.DibujarHead", Erl)
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image1_MouseDown_Err
     Image1.Picture = LoadInterface("boton-cerrar-off.bmp")
     Image1.Tag = "1"
+    Exit Sub
+Image1_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.Image1_MouseDown", Erl)
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image1_MouseMove_Err
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("boton-cerrar-over.bmp")
         Image1.Tag = "1"
     End If
+    Exit Sub
+Image1_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.Image1_MouseMove", Erl)
 End Sub
 
 Private Sub ListView1_beforeEdit(ByVal Columna As Integer, Cancel As Boolean)
+    On Error Goto ListView1_beforeEdit_Err
     
     On Error GoTo ListView1_beforeEdit_Err
     
@@ -577,9 +606,13 @@ ListView1_beforeEdit_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.ListView1_beforeEdit", Erl)
     Resume Next
     
+    Exit Sub
+ListView1_beforeEdit_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.ListView1_beforeEdit", Erl)
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image1_MouseUp_Err
     
     On Error GoTo Image1_MouseUp_Err
     
@@ -592,9 +625,13 @@ Image1_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Image1_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+Image1_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.Image1_MouseUp", Erl)
 End Sub
 
 Private Sub Image2_Click()
+    On Error Goto Image2_Click_Err
     
     On Error GoTo Image2_Click_Err
 
@@ -616,9 +653,13 @@ Image2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Image2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Image2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.Image2_Click", Erl)
 End Sub
 
 Private Sub Image3_Click()
+    On Error Goto Image3_Click_Err
     
     On Error GoTo Image3_Click_Err
     
@@ -643,9 +684,13 @@ Image3_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Image3_Click", Erl)
     Resume Next
     
+    Exit Sub
+Image3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.Image3_Click", Erl)
 End Sub
 
 Private Sub Label6_Click()
+    On Error Goto Label6_Click_Err
     
     On Error GoTo Label6_Click_Err
     
@@ -658,9 +703,13 @@ Label6_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Label6_Click", Erl)
     Resume Next
     
+    Exit Sub
+Label6_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.Label6_Click", Erl)
 End Sub
 
 Private Sub Label7_Click()
+    On Error Goto Label7_Click_Err
     
     On Error GoTo Label7_Click_Err
     
@@ -673,9 +722,13 @@ Label7_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Label7_Click", Erl)
     Resume Next
     
+    Exit Sub
+Label7_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.Label7_Click", Erl)
 End Sub
 
 Private Sub listdrop_Click()
+    On Error Goto listdrop_Click_Err
     
     On Error GoTo listdrop_Click_Err
     
@@ -697,9 +750,13 @@ listdrop_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.listdrop_Click", Erl)
     Resume Next
     
+    Exit Sub
+listdrop_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.listdrop_Click", Erl)
 End Sub
 
 Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
+    On Error Goto ListView1_ItemClick_Err
     
     On Error GoTo ListView1_Click_Err
 
@@ -756,17 +813,29 @@ ListView1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.ListView1_Click", Erl)
     Resume Next
     
+    Exit Sub
+ListView1_ItemClick_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.ListView1_ItemClick", Erl)
 End Sub
 
 Private Sub ListView1_KeyDown(KeyCode As Integer, Shift As Integer)
+    On Error Goto ListView1_KeyDown_Err
     KeyCode = 0
+    Exit Sub
+ListView1_KeyDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.ListView1_KeyDown", Erl)
 End Sub
 
 Private Sub ListView1_KeyPress(KeyAscii As Integer)
+    On Error Goto ListView1_KeyPress_Err
     KeyAscii = 0
+    Exit Sub
+ListView1_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.ListView1_KeyPress", Erl)
 End Sub
 
 Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto picMap_MouseDown_Err
     
     On Error GoTo picMap_MouseDown_Err
     
@@ -836,9 +905,13 @@ picMap_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.picMap_MouseDown", Erl)
     Resume Next
     
+    Exit Sub
+picMap_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.picMap_MouseDown", Erl)
 End Sub
 
 Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto picMap_MouseMove_Err
     
     On Error GoTo picMap_MouseMove_Err
     
@@ -851,9 +924,13 @@ picMap_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.picMap_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+picMap_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.picMap_MouseMove", Erl)
 End Sub
 
 Private Sub ActualizarPosicion(ByVal map As Integer)
+    On Error Goto ActualizarPosicion_Err
     Dim x As Long, y As Long
 
     x = (map - 1) Mod MAPAS_ANCHO
@@ -863,9 +940,13 @@ Private Sub ActualizarPosicion(ByVal map As Integer)
     Shape1.Left = x * TILE_SIZE + (UserPos.x * TILE_SIZE / 100) - Shape1.Width \ 2
     
     Shape1.Visible = True
+    Exit Sub
+ActualizarPosicion_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.ActualizarPosicion", Erl)
 End Sub
 
 Public Sub ActualizarPosicionMapa()
+    On Error Goto ActualizarPosicionMapa_Err
     Dim Index As Integer
 
     For Index = 1 To Mundo(WorldActual).Ancho * Mundo(WorldActual).Alto
@@ -877,9 +958,13 @@ Public Sub ActualizarPosicionMapa()
     Next
     
     Shape1.Visible = False
+    Exit Sub
+ActualizarPosicionMapa_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.ActualizarPosicionMapa", Erl)
 End Sub
 
 Public Sub CalcularPosicionMAPA()
+    On Error Goto CalcularPosicionMAPA_Err
     
     On Error GoTo CalcularPosicionMAPA_Err
     
@@ -948,9 +1033,13 @@ CalcularPosicionMAPA_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.CalcularPosicionMAPA", Erl)
     Resume Next
     
+    Exit Sub
+CalcularPosicionMAPA_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.CalcularPosicionMAPA", Erl)
 End Sub
 
 Public Sub ShowClanCall(ByVal Map As Integer, ByVal PosX As Integer, ByVal PosY As Integer)
+    On Error Goto ShowClanCall_Err
     Dim idmap As Integer
     LLamadaDeclanMapa = Map
     idmap = ObtenerIdMapaDeLlamadaDeClan(Map)
@@ -967,4 +1056,7 @@ Public Sub ShowClanCall(ByVal Map As Integer, ByVal PosX As Integer, ByVal PosY 
     Shape2.visible = True
     Shape2.Top = Y * 27
     Shape2.Left = x * 27
+    Exit Sub
+ShowClanCall_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMapaGrande.ShowClanCall", Erl)
 End Sub

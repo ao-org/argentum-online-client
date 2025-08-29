@@ -575,6 +575,7 @@ Private Declare Function GetTextExtentPoint32 Lib "gdi32" Alias "GetTextExtentPo
 Public keysMovementPressedQueue As clsArrayList
 
 Public Sub Init_TileEngine()
+    On Error Goto Init_TileEngine_Err
     
     On Error GoTo Init_TileEngine_Err
     
@@ -611,9 +612,13 @@ Init_TileEngine_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.Init_TileEngine", Erl)
     Resume Next
     
+    Exit Sub
+Init_TileEngine_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.Init_TileEngine", Erl)
 End Sub
 
 Sub ConvertCPtoTP(ByVal viewPortX As Integer, ByVal viewPortY As Integer, ByRef tX As Byte, ByRef tY As Byte)
+    On Error Goto ConvertCPtoTP_Err
 
 On Error GoTo ConvertCPtoTP_Err
     
@@ -633,9 +638,13 @@ ConvertCPtoTP_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.ConvertCPtoTP", Erl)
     Resume Next
     
+    Exit Sub
+ConvertCPtoTP_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.ConvertCPtoTP", Erl)
 End Sub
 
 Public Sub InitGrh(ByRef grh As grh, ByVal grhindex As Long, _
+    On Error Goto InitGrh_Err
 Optional ByVal started As Long = -1, Optional ByVal loops As Integer = INFINITE_LOOPS)
     On Error GoTo InitGrh_Err
 
@@ -684,9 +693,13 @@ InitGrh_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.InitGrh", Erl)
     Resume Next
     
+    Exit Sub
+InitGrh_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.InitGrh", Erl)
 End Sub
 
 Public Sub DoFogataFx()
+    On Error Goto DoFogataFx_Err
     
     On Error GoTo DoFogataFx_Err
     
@@ -715,9 +728,13 @@ DoFogataFx_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.DoFogataFx", Erl)
     Resume Next
     
+    Exit Sub
+DoFogataFx_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.DoFogataFx", Erl)
 End Sub
 
 Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
+    On Error Goto EstaPCarea_Err
     
     On Error GoTo EstaPCarea_Err
     
@@ -734,9 +751,13 @@ EstaPCarea_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.EstaPCarea", Erl)
     Resume Next
     
+    Exit Function
+EstaPCarea_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.EstaPCarea", Erl)
 End Function
 
 Sub DoPasosFx(ByVal charindex As Integer)
+    On Error Goto DoPasosFx_Err
     
     On Error GoTo DoPasosFx_Err
    
@@ -784,9 +805,13 @@ DoPasosFx_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.DoPasosFx", Erl)
     Resume Next
     
+    Exit Sub
+DoPasosFx_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.DoPasosFx", Erl)
 End Sub
 
 Sub DoPasosInvi(ByVal Grh As Long, ByVal Grh2 As Long, ByVal distancia As Byte, ByVal balance As Integer, ByVal step As Boolean)
+    On Error Goto DoPasosInvi_Err
     On Error GoTo DoPasosInvi_Err
 
     Static TerrenoDePaso As TipoPaso
@@ -809,9 +834,13 @@ DoPasosInvi_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.DoPasosInvi", Erl)
     Resume Next
     
+    Exit Sub
+DoPasosInvi_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.DoPasosInvi", Erl)
 End Sub
 
 Public Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer, ByVal Layer2Grh As Long) As TipoPaso
+    On Error Goto GetTerrenoDePaso_Err
     
     On Error GoTo GetTerrenoDePaso_Err
     
@@ -843,9 +872,13 @@ GetTerrenoDePaso_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.GetTerrenoDePaso", Erl)
     Resume Next
     
+    Exit Function
+GetTerrenoDePaso_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.GetTerrenoDePaso", Erl)
 End Function
 
 Sub MoveScreen(ByVal nHeading As E_Heading)
+    On Error Goto MoveScreen_Err
     
     On Error GoTo MoveScreen_Err
 
@@ -904,9 +937,13 @@ MoveScreen_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.MoveScreen", Erl)
     Resume Next
     
+    Exit Sub
+MoveScreen_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.MoveScreen", Erl)
 End Sub
 
 Public Function NearRoof(ByVal x As Integer, ByVal y As Integer) As eTrigger
+    On Error Goto NearRoof_Err
     
     On Error GoTo NearRoof_Err
     
@@ -931,9 +968,13 @@ NearRoof_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.NearRoof", Erl)
     Resume Next
     
+    Exit Function
+NearRoof_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.NearRoof", Erl)
 End Function
 
 Public Function HayTecho(ByVal x As Integer, ByVal y As Integer) As Boolean
+    On Error Goto HayTecho_Err
     
     On Error GoTo HayTecho_Err
 
@@ -947,9 +988,13 @@ HayTecho_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.HayTecho", Erl)
     Resume Next
     
+    Exit Function
+HayTecho_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.HayTecho", Erl)
 End Function
 
 Public Function HayFogata(ByRef location As Position) As Boolean
+    On Error Goto HayFogata_Err
     
     On Error GoTo HayFogata_Err
     
@@ -983,9 +1028,13 @@ HayFogata_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.HayFogata", Erl)
     Resume Next
     
+    Exit Function
+HayFogata_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.HayFogata", Erl)
 End Function
 
 Public Function HayWavAmbiental(ByRef location As Position) As Boolean
+    On Error Goto HayWavAmbiental_Err
     
     On Error GoTo HayWavAmbiental_Err
     
@@ -1018,9 +1067,13 @@ HayWavAmbiental_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.HayWavAmbiental", Erl)
     Resume Next
     
+    Exit Function
+HayWavAmbiental_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.HayWavAmbiental", Erl)
 End Function
 
 Function NextOpenChar() As Integer
+    On Error Goto NextOpenChar_Err
     
     On Error GoTo NextOpenChar_Err
 
@@ -1046,6 +1099,9 @@ NextOpenChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.NextOpenChar", Erl)
     Resume Next
     
+    Exit Function
+NextOpenChar_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.NextOpenChar", Erl)
 End Function
 
 ''
@@ -1054,6 +1110,7 @@ End Function
 ' @return   True if the load was successfull, False otherwise.
 
 Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Heading) As Boolean
+    On Error Goto LegalPos_Err
     
     On Error GoTo LegalPos_Err
 
@@ -1142,9 +1199,13 @@ LegalPos_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.LegalPos", Erl)
     Resume Next
     
+    Exit Function
+LegalPos_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.LegalPos", Erl)
 End Function
 
 Function InMapBounds(ByVal x As Integer, ByVal y As Integer) As Boolean
+    On Error Goto InMapBounds_Err
     
     On Error GoTo InMapBounds_Err
 
@@ -1164,9 +1225,13 @@ InMapBounds_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.InMapBounds", Erl)
     Resume Next
     
+    Exit Function
+InMapBounds_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.InMapBounds", Erl)
 End Function
 
 Function GetBitmapDimensions(ByVal BmpFile As String, ByRef bmWidth As Long, ByRef bmHeight As Long)
+    On Error Goto GetBitmapDimensions_Err
     
     On Error GoTo GetBitmapDimensions_Err
 
@@ -1196,9 +1261,13 @@ GetBitmapDimensions_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.GetBitmapDimensions", Erl)
     Resume Next
     
+    Exit Function
+GetBitmapDimensions_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.GetBitmapDimensions", Erl)
 End Function
 
 Public Sub Grh_Render_To_Hdc(ByRef pic As PictureBox, ByVal grhIndex As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional ByVal Alpha As Integer = False, Optional ByVal ClearColor As Long = &O0)
+    On Error Goto Grh_Render_To_Hdc_Err
     
     On Error GoTo Grh_Render_To_Hdc_Err
     
@@ -1231,9 +1300,13 @@ Grh_Render_To_Hdc_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.Grh_Render_To_Hdc", Erl)
     Resume Next
     
+    Exit Sub
+Grh_Render_To_Hdc_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.Grh_Render_To_Hdc", Erl)
 End Sub
 
 Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, ByVal grhIndex As Long, ByVal screen_x As Integer, ByVal screen_y As Integer, Optional ByVal Alpha As Integer = False)
+    On Error Goto Grh_Render_To_HdcSinBorrar_Err
     
     On Error GoTo Grh_Render_To_HdcSinBorrar_Err
     
@@ -1265,9 +1338,13 @@ Grh_Render_To_HdcSinBorrar_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.Grh_Render_To_HdcSinBorrar", Erl)
     Resume Next
     
+    Exit Sub
+Grh_Render_To_HdcSinBorrar_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.Grh_Render_To_HdcSinBorrar", Erl)
 End Sub
 
 Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal grhIndex As Long) As Boolean
+    On Error Goto HayUserAbajo_Err
     
     On Error GoTo HayUserAbajo_Err
     
@@ -1284,9 +1361,13 @@ HayUserAbajo_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.HayUserAbajo", Erl)
     Resume Next
     
+    Exit Function
+HayUserAbajo_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.HayUserAbajo", Erl)
 End Function
 
 Public Function GetElapsedTime() As Single
+    On Error Goto GetElapsedTime_Err
     
     On Error GoTo GetElapsedTime_Err
 
@@ -1320,9 +1401,13 @@ GetElapsedTime_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.GetElapsedTime", Erl)
     Resume Next
     
+    Exit Function
+GetElapsedTime_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.GetElapsedTime", Erl)
 End Function
 
 Private Sub Grh_Create_Mask(ByRef hdcsrc As Long, ByRef MaskDC As Long, ByVal src_x As Integer, ByVal src_y As Integer, ByVal src_width As Integer, ByVal src_height As Integer)
+    On Error Goto Grh_Create_Mask_Err
     
     On Error GoTo Grh_Create_Mask_Err
 
@@ -1371,9 +1456,13 @@ Grh_Create_Mask_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.Grh_Create_Mask", Erl)
     Resume Next
     
+    Exit Sub
+Grh_Create_Mask_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.Grh_Create_Mask", Erl)
 End Sub
 
 Public Function Convert_Tile_To_View_X(ByVal x As Integer) As Integer
+    On Error Goto Convert_Tile_To_View_X_Err
 
     'Convert tile position into position in view area
     'If engine_windowed Then
@@ -1392,9 +1481,13 @@ Convert_Tile_To_View_X_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.Convert_Tile_To_View_X", Erl)
     Resume Next
     
+    Exit Function
+Convert_Tile_To_View_X_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.Convert_Tile_To_View_X", Erl)
 End Function
 
 Public Function Convert_Tile_To_View_Y(ByVal y As Integer) As Integer
+    On Error Goto Convert_Tile_To_View_Y_Err
 
     'Convert tile position into position in view area
     ' If engine_windowed Then
@@ -1413,9 +1506,13 @@ Convert_Tile_To_View_Y_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.Convert_Tile_To_View_Y", Erl)
     Resume Next
     
+    Exit Function
+Convert_Tile_To_View_Y_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.Convert_Tile_To_View_Y", Erl)
 End Function
 
 Public Function GetTerrainHeight(x As Byte, y As Byte) As Integer
+    On Error Goto GetTerrainHeight_Err
 
     With MapData(x, y)
         Select Case .Graphic(2).GrhIndex
@@ -1455,16 +1552,24 @@ Public Function GetTerrainHeight(x As Byte, y As Byte) As Integer
                 GetTerrainHeight = 0
         End Select
     End With
+    Exit Function
+GetTerrainHeight_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.GetTerrainHeight", Erl)
 End Function
 
 Public Sub ConvertToMinimapPosition(ByRef x As Single, ByRef y As Single, ByVal MarkerWidth As Single, ByVal MarkerHeight As Single)
+    On Error Goto ConvertToMinimapPosition_Err
     'this hard to understand, minimaps only shows playable area, with the borders cut, so instead of showing every tile on the map we have
     '100x100 pixels for ~78x82 tiles
     x = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - MarkerWidth \ 2 - 1
     y = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - MarkerHeight \ 2 - 1
+    Exit Sub
+ConvertToMinimapPosition_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.ConvertToMinimapPosition", Erl)
 End Sub
 
 Public Sub UpdatePlayerRoof()
+    On Error Goto UpdatePlayerRoof_Err
     Dim WasUnderRoof As Boolean: WasUnderRoof = bTecho
     bTecho = HayTecho(UserPos.x, UserPos.y)
     
@@ -1474,8 +1579,12 @@ Public Sub UpdatePlayerRoof()
     ElseIf bNieve And MapDat.NIEVE = 1 Then
         Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_NIEVEIN, SND_NIEVEOUT))
     End If
+    Exit Sub
+UpdatePlayerRoof_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.UpdatePlayerRoof", Erl)
 End Sub
 Private Function SyncGrhPhase(ByRef Grh As Grh, ByVal newGrhIndex As Long) As Long
+    On Error Goto SyncGrhPhase_Err
     Dim oldNum As Long, elapsed As Long, phase As Long
     If Grh.started <= 0 Then SyncGrhPhase = FrameTime: Exit Function
     oldNum = GrhData(Grh.GrhIndex).NumFrames
@@ -1483,9 +1592,13 @@ Private Function SyncGrhPhase(ByRef Grh As Grh, ByVal newGrhIndex As Long) As Lo
     elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
     phase = elapsed Mod oldNum
     SyncGrhPhase = FrameTime - (phase * Grh.speed)
+    Exit Function
+SyncGrhPhase_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.SyncGrhPhase", Erl)
 End Function
 
 Public Sub InitGrhPreserve(ByRef Grh As Grh, ByVal GrhIndex As Long, _
+    On Error Goto InitGrhPreserve_Err
                            Optional ByVal Loops As Integer = INFINITE_LOOPS)
     Dim keepStarted As Long
     If Grh.GrhIndex <> 0 And Grh.started > 0 Then
@@ -1494,6 +1607,9 @@ Public Sub InitGrhPreserve(ByRef Grh As Grh, ByVal GrhIndex As Long, _
         keepStarted = -1
     End If
     Call InitGrh(Grh, GrhIndex, keepStarted, Loops)
+    Exit Sub
+InitGrhPreserve_Err:
+    Call TraceError(Err.Number, Err.Description, "TileEngine.InitGrhPreserve", Erl)
 End Sub
 
 

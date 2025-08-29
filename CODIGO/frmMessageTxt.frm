@@ -321,18 +321,27 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub cancelCmd_Click()
+    On Error Goto cancelCmd_Click_Err
     Unload Me
+    Exit Sub
+cancelCmd_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMessageTxt.cancelCmd_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     Dim I As Long
     
     For I = 0 To 9
         messageTxt(I) = CustomMessages.Message(I)
     Next I
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMessageTxt.Form_Load", Erl)
 End Sub
 
 Private Sub okCmd_Click()
+    On Error Goto okCmd_Click_Err
 On Error GoTo ErrHandler
     Dim I As Long
     
@@ -348,4 +357,7 @@ ErrHandler:
     If Err.Number = CustomMessages.InvalidMessageErrCode Then
         Call MsgBox("El Mensaje " & CStr(I + 1) & " es inválido. Modifiquelo por favor.")
     End If
+    Exit Sub
+okCmd_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMessageTxt.okCmd_Click", Erl)
 End Sub

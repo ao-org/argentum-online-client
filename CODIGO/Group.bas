@@ -42,11 +42,16 @@ Public LastFrameTime As Long
 Public AnimationActive As Boolean
 Public ActiveArrowGrh As Long
 Public Sub Clear()
+    On Error Goto Clear_Err
     GroupSize = 0
     Hide = False
+    Exit Sub
+Clear_Err:
+    Call TraceError(Err.Number, Err.Description, "Group.Clear", Erl)
 End Sub
 
 Public Sub UpdateRenderArea()
+    On Error Goto UpdateRenderArea_Err
     Dim i  As Integer
     Dim DrawCount As Integer
     Dim RenderStartY As Integer
@@ -74,9 +79,13 @@ Public Sub UpdateRenderArea()
         CurrentPivot = 0
     End If
     ActiveArrowGrh = IIf(Hide, HideArrowGrh, ShowArrowGrh)
+    Exit Sub
+UpdateRenderArea_Err:
+    Call TraceError(Err.Number, Err.Description, "Group.UpdateRenderArea", Erl)
 End Sub
 
 Public Sub RenderGroup()
+    On Error Goto RenderGroup_Err
     Dim i  As Integer
     Dim temp_array(3) As RGBA
     Dim HpBarSize As Single
@@ -119,9 +128,13 @@ Public Sub RenderGroup()
         End With
     Next i
     Call Draw_GrhIndex(ActiveArrowGrh, HideShowRect.Left + gameplay_render_offset.x, HideShowRect.Top + gameplay_render_offset.y)
+    Exit Sub
+RenderGroup_Err:
+    Call TraceError(Err.Number, Err.Description, "Group.RenderGroup", Erl)
 End Sub
 
 Public Function HandleMouseInput(ByVal x As Integer, ByVal y As Integer) As Boolean
+    On Error Goto HandleMouseInput_Err
     Dim i As Integer
     If GroupSize < 1 Then Exit Function
     If Not Hide Then
@@ -151,5 +164,8 @@ Public Function HandleMouseInput(ByVal x As Integer, ByVal y As Integer) As Bool
         Hide = Not Hide
         ActiveArrowGrh = IIf(Hide, HideArrowGrh, ShowArrowGrh)
     End If
+    Exit Function
+HandleMouseInput_Err:
+    Call TraceError(Err.Number, Err.Description, "Group.HandleMouseInput", Erl)
 End Function
 

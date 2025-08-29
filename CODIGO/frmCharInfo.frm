@@ -300,6 +300,7 @@ End Enum
 Public frmType As CharInfoFrmType
 
 Private Sub Aceptar_Click()
+    On Error Goto Aceptar_Click_Err
     
     On Error GoTo Aceptar_Click_Err
     
@@ -315,9 +316,13 @@ Aceptar_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCharInfo.Aceptar_Click", Erl)
     Resume Next
     
+    Exit Sub
+Aceptar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCharInfo.Aceptar_Click", Erl)
 End Sub
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -330,9 +335,13 @@ Command1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCharInfo.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCharInfo.Command1_Click", Erl)
 End Sub
 
 Private Sub desc_Click()
+    On Error Goto desc_Click_Err
     
     On Error GoTo desc_Click_Err
     
@@ -345,9 +354,13 @@ desc_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCharInfo.desc_Click", Erl)
     Resume Next
     
+    Exit Sub
+desc_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCharInfo.desc_Click", Erl)
 End Sub
 
 Private Sub Echar_Click()
+    On Error Goto Echar_Click_Err
     
     On Error GoTo Echar_Click_Err
     
@@ -363,9 +376,13 @@ Echar_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCharInfo.Echar_Click", Erl)
     Resume Next
     
+    Exit Sub
+Echar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCharInfo.Echar_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -378,9 +395,13 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCharInfo.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCharInfo.Form_Load", Erl)
 End Sub
 
 Private Sub Rechazar_Click()
+    On Error Goto Rechazar_Click_Err
     
     On Error GoTo Rechazar_Click_Err
     
@@ -397,4 +418,7 @@ Rechazar_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCharInfo.Rechazar_Click", Erl)
     Resume Next
     
+    Exit Sub
+Rechazar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCharInfo.Rechazar_Click", Erl)
 End Sub

@@ -90,12 +90,20 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     If Text1 <> "" Then _
         Call WriteGuildNewWebsite(Text1)
     
     Unload Me
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildURL.Command1_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 Call FormParser.Parse_Form(Me)
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildURL.Form_Load", Erl)
 End Sub

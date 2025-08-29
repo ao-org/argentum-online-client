@@ -562,6 +562,7 @@ Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
 Private cBotonCerrar As clsGraphicalButton
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
 
     Set cBotonCerrar = New clsGraphicalButton
 
@@ -570,9 +571,13 @@ Private Sub loadButtons()
                                                 "boton-cerrar-over.bmp", _
                                                 "boton-cerrar-off.bmp", Me)
 
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.loadButtons", Erl)
 End Sub
 
 Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
+    On Error Goto Is_Transparent_Err
     
     On Error GoTo Is_Transparent_Err
     
@@ -602,10 +607,14 @@ Is_Transparent_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Is_Transparent", Erl)
     Resume Next
     
+    Exit Function
+Is_Transparent_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Is_Transparent", Erl)
 End Function
   
 'Funci n que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
 Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+    On Error Goto Aplicar_Transparencia_Err
     
     On Error GoTo Aplicar_Transparencia_Err
     
@@ -641,9 +650,13 @@ Aplicar_Transparencia_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Aplicar_Transparencia", Erl)
     Resume Next
     
+    Exit Function
+Aplicar_Transparencia_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Aplicar_Transparencia", Erl)
 End Function
 
 Private Sub Alpha_Change()
+    On Error Goto Alpha_Change_Err
     
     On Error GoTo Alpha_Change_Err
     
@@ -656,9 +669,13 @@ Alpha_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Alpha_Change", Erl)
     Resume Next
     
+    Exit Sub
+Alpha_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Alpha_Change", Erl)
 End Sub
 
 Private Sub BtnSolapa_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto BtnSolapa_MouseDown_Err
     
     Dim Name As String
 
@@ -693,17 +710,25 @@ Private Sub BtnSolapa_MouseDown(Index As Integer, Button As Integer, Shift As In
     
     End Select
     
+    Exit Sub
+BtnSolapa_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.BtnSolapa_MouseDown", Erl)
 End Sub
 
 Private Sub BtnSolapa_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto BtnSolapa_MouseMove_Err
 
     If BtnSolapa(Index).Tag = "0" Then
         Call SetSolapa(Index, 1)
     End If
 
+    Exit Sub
+BtnSolapa_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.BtnSolapa_MouseMove", Erl)
 End Sub
 
 Private Sub SetSolapa(Index As Integer, ByVal Tag As String)
+    On Error Goto SetSolapa_Err
 
     Dim Name As String, estado As String
     
@@ -722,16 +747,24 @@ Private Sub SetSolapa(Index As Integer, ByVal Tag As String)
     BtnSolapa(Index).Picture = LoadInterface("boton-" & Name & "-" & estado & ".bmp")
     BtnSolapa(Index).Tag = Tag
 
+    Exit Sub
+SetSolapa_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.SetSolapa", Erl)
 End Sub
 
 Private Sub cbBloqueoHechizos_Click()
+    On Error Goto cbBloqueoHechizos_Click_Err
 
     ModoHechizos = cbBloqueoHechizos.ListIndex
 
+    Exit Sub
+cbBloqueoHechizos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.cbBloqueoHechizos_Click", Erl)
 End Sub
 
 
 Private Sub cbLenguaje_Click()
+    On Error Goto cbLenguaje_Click_Err
 
     Dim message As String, title As String
        
@@ -771,17 +804,25 @@ Private Sub cbLenguaje_Click()
         End If
     End If
     
+    Exit Sub
+cbLenguaje_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.cbLenguaje_Click", Erl)
 End Sub
 
 Private Sub cboLuces_Click()
+    On Error Goto cboLuces_Click_Err
 
     Call SaveSetting("VIDEO", "LuzGlobal", cboLuces.ListIndex)
     selected_light = cboLuces.ListIndex
+    Exit Sub
+cboLuces_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.cboLuces_Click", Erl)
 End Sub
 
 
 
 Private Sub cbTutorial_Click()
+    On Error Goto cbTutorial_Click_Err
     If cbTutorial.ListIndex <> MostrarTutorial Then
         MostrarTutorial = cbTutorial.ListIndex
         If MostrarTutorial Then
@@ -794,15 +835,23 @@ Private Sub cbTutorial_Click()
         End If
         Call SaveSetting("INITTUTORIAL", "MostrarTutorial", cbTutorial.ListIndex)
     End If
+    Exit Sub
+cbTutorial_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.cbTutorial_Click", Erl)
 End Sub
 Private Sub cbRenderNpcs_Click()
+    On Error Goto cbRenderNpcs_Click_Err
            
     If cbRenderNpcs.ListIndex <> npcs_en_render Then
         npcs_en_render = cbRenderNpcs.ListIndex
         Call SaveSetting("OPCIONES", "NpcsEnRender", cbRenderNpcs.ListIndex)
     End If
+    Exit Sub
+cbRenderNpcs_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.cbRenderNpcs_Click", Erl)
 End Sub
 Private Sub Check4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Check4_MouseUp_Err
     
     On Error GoTo Check4_MouseUp_Err
     
@@ -827,9 +876,13 @@ Check4_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check4_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+Check4_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Check4_MouseUp", Erl)
 End Sub
 
 Private Sub Check5_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Check5_MouseUp_Err
     
     On Error GoTo Check5_MouseUp_Err
     
@@ -855,9 +908,13 @@ Check5_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check5_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+Check5_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Check5_MouseUp", Erl)
 End Sub
 
 Private Sub Check2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Check2_MouseUp_Err
     
     On Error GoTo Check2_MouseUp_Err
     CursoresGraficos = Not CursoresGraficos
@@ -878,9 +935,13 @@ Check2_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check2_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+Check2_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Check2_MouseUp", Erl)
 End Sub
 
 Private Sub Check8_Click()
+    On Error Goto Check8_Click_Err
     On Error GoTo Check8_MouseUp_Err
     
     If ScrollArrastrar = 1 Then
@@ -897,11 +958,15 @@ Private Sub Check8_Click()
 Check8_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check8_MouseUp", Erl)
     Resume Next
+    Exit Sub
+Check8_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Check8_Click", Erl)
 End Sub
 
 
 
 Private Sub chkInvertir_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto chkInvertir_MouseUp_Err
     On Error GoTo chkInvertir_MouseUp_Err
     If InvertirSonido = 1 Then
         InvertirSonido = 0
@@ -922,18 +987,26 @@ chkInvertir_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkInvertir_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+chkInvertir_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.chkInvertir_MouseUp", Erl)
 End Sub
 
 Private Sub chkItemsEnRender_Click()
+    On Error Goto chkItemsEnRender_Click_Err
     InfoItemsEnRender = Not InfoItemsEnRender
     If InfoItemsEnRender Then
         chkItemsEnRender.Picture = LoadInterface("check-amarillo.bmp")
     Else
         chkItemsEnRender.Picture = Nothing
     End If
+    Exit Sub
+chkItemsEnRender_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.chkItemsEnRender_Click", Erl)
 End Sub
 
 Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto chkO_MouseUp_Err
     
     On Error GoTo chkO_MouseUp_Err
     
@@ -994,9 +1067,13 @@ chkO_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkO_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+chkO_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.chkO_MouseUp", Erl)
 End Sub
 
 Private Sub cmdayuda_Click()
+    On Error Goto cmdayuda_Click_Err
     
     On Error GoTo cmdayuda_Click_Err
     
@@ -1009,9 +1086,13 @@ cmdayuda_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdayuda_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdayuda_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.cmdayuda_Click", Erl)
 End Sub
 
 Private Sub cmdayuda_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdayuda_MouseMove_Err
     
     On Error GoTo cmdayuda_MouseMove_Err
     
@@ -1029,9 +1110,13 @@ cmdayuda_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdayuda_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+cmdayuda_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.cmdayuda_MouseMove", Erl)
 End Sub
 
 Private Sub Command1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command1_MouseMove_Err
     
     On Error GoTo Command1_MouseMove_Err
     
@@ -1052,9 +1137,13 @@ Command1_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command1_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Command1_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Command1_MouseMove", Erl)
 End Sub
 
 Private Sub cmdCerrar_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdCerrar_MouseMove_Err
     
     On Error GoTo cmdCerrar_MouseMove_Err
     
@@ -1077,11 +1166,15 @@ cmdCerrar_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdCerrar_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+cmdCerrar_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.cmdCerrar_MouseMove", Erl)
 End Sub
 
 
 
 Private Sub cmdWeb_Click()
+    On Error Goto cmdWeb_Click_Err
     
     On Error GoTo cmdWeb_Click_Err
     
@@ -1094,9 +1187,13 @@ cmdWeb_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdWeb_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdWeb_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.cmdWeb_Click", Erl)
 End Sub
 
 Private Sub Command5_Click()
+    On Error Goto Command5_Click_Err
     
     On Error GoTo Command5_Click_Err
     
@@ -1109,9 +1206,13 @@ Command5_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command5_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command5_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Command5_Click", Erl)
 End Sub
 
 Private Sub discord_Click()
+    On Error Goto discord_Click_Err
     
     On Error GoTo discord_Click_Err
     
@@ -1124,9 +1225,13 @@ discord_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.discord_Click", Erl)
     Resume Next
     
+    Exit Sub
+discord_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.discord_Click", Erl)
 End Sub
 
 Private Sub facebook_Click()
+    On Error Goto facebook_Click_Err
     
     On Error GoTo facebook_Click_Err
     
@@ -1139,9 +1244,13 @@ facebook_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.facebook_Click", Erl)
     Resume Next
     
+    Exit Sub
+facebook_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.facebook_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -1180,9 +1289,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Form_Load", Erl)
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -1198,9 +1311,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Check3_MouseUp_Err
 
    ' If Check3 Then
       '  SwapMouseButton 1
@@ -1209,9 +1326,13 @@ Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
       ' SwapMouseButton 0
       ' Check3.Picture = Nothing
   '  End If
+    Exit Sub
+Check3_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Check3_MouseUp", Erl)
 End Sub
 
 Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Check6_MouseUp_Err
     
     On Error GoTo Check6_MouseUp_Err
     
@@ -1237,9 +1358,13 @@ Check6_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check6_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+Check6_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Check6_MouseUp", Erl)
 End Sub
 
 Private Sub Check9_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Check9_MouseUp_Err
     
     On Error GoTo Check9_MouseUp_Err
     
@@ -1265,9 +1390,13 @@ Check9_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check9_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+Check9_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Check9_MouseUp", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
     
     On Error GoTo Command2_Click_Err
     
@@ -1282,9 +1411,13 @@ Command2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Command2_Click", Erl)
 End Sub
 
 Private Sub Command3_Click()
+    On Error Goto Command3_Click_Err
     
     On Error GoTo Command3_Click_Err
     
@@ -1299,9 +1432,13 @@ Command3_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command3_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Command3_Click", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
 
@@ -1341,9 +1478,13 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Form_MouseMove", Erl)
 End Sub
 
 Private Sub cmdcerrar_Click()
+    On Error Goto cmdcerrar_Click_Err
     
     On Error GoTo cmdcerrar_Click_Err
     
@@ -1358,9 +1499,13 @@ cmdcerrar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.cmdcerrar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdcerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.cmdcerrar_Click", Erl)
 End Sub
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -1373,9 +1518,13 @@ Command1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Command1_Click", Erl)
 End Sub
 
 Public Sub Init()
+    On Error Goto Init_Err
     
     On Error GoTo Init_Err
     
@@ -1501,9 +1650,13 @@ Init_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Init", Erl)
     Resume Next
     
+    Exit Sub
+Init_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Init", Erl)
 End Sub
 
 Private Sub Fullscreen_Click()
+    On Error Goto Fullscreen_Click_Err
    PantallaCompleta = Not PantallaCompleta
 
     If PantallaCompleta Then
@@ -1513,9 +1666,13 @@ Private Sub Fullscreen_Click()
         Fullscreen.Picture = Nothing
         Call ResetResolution
     End If
+    Exit Sub
+Fullscreen_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Fullscreen_Click", Erl)
 End Sub
 
 Private Sub HScroll1_Change()
+    On Error Goto HScroll1_Change_Err
     
     On Error GoTo HScroll1_Change_Err
     VolAmbient = HScroll1.Value
@@ -1527,9 +1684,13 @@ HScroll1_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.HScroll1_Change", Erl)
     Resume Next
     
+    Exit Sub
+HScroll1_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.HScroll1_Change", Erl)
 End Sub
 
 Private Sub instagram_Click()
+    On Error Goto instagram_Click_Err
     
     On Error GoTo instagram_Click_Err
     
@@ -1542,9 +1703,13 @@ instagram_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.instagram_Click", Erl)
     Resume Next
     
+    Exit Sub
+instagram_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.instagram_Click", Erl)
 End Sub
 
 Private Sub num_comp_inv_Click()
+    On Error Goto num_comp_inv_Click_Err
     If NumerosCompletosInventario = 0 Then
         NumerosCompletosInventario = 1
         num_comp_inv.Picture = LoadInterface("check-amarillo.bmp")
@@ -1552,9 +1717,13 @@ Private Sub num_comp_inv_Click()
         NumerosCompletosInventario = 0
         num_comp_inv.Picture = Nothing
     End If
+    Exit Sub
+num_comp_inv_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.num_comp_inv_Click", Erl)
 End Sub
 
 Private Sub Respiracion_Click()
+    On Error Goto Respiracion_Click_Err
     MostrarRespiracion = Not MostrarRespiracion
 
     If MostrarRespiracion Then
@@ -1562,9 +1731,13 @@ Private Sub Respiracion_Click()
     Else
         Respiracion.Picture = Nothing
     End If
+    Exit Sub
+Respiracion_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.Respiracion_Click", Erl)
 End Sub
 
 Private Sub scrMidi_Change()
+    On Error Goto scrMidi_Change_Err
     
     On Error GoTo scrMidi_Change_Err
     VolMusic = scrMidi.Value
@@ -1576,9 +1749,13 @@ scrMidi_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrMidi_Change", Erl)
     Resume Next
     
+    Exit Sub
+scrMidi_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.scrMidi_Change", Erl)
 End Sub
 
 Private Sub scrSens_Change()
+    On Error Goto scrSens_Change_Err
     
     On Error GoTo scrSens_Change_Err
     
@@ -1594,9 +1771,13 @@ scrSens_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrSens_Change", Erl)
     Resume Next
     
+    Exit Sub
+scrSens_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.scrSens_Change", Erl)
 End Sub
 
 Private Sub scrVolume_Change()
+    On Error Goto scrVolume_Change_Err
 On Error GoTo scrVolume_Change_Err
     VolFX = scrVolume.Value
     Call ao20audio.SetFxVolume(scrVolume.Value)
@@ -1605,9 +1786,13 @@ On Error GoTo scrVolume_Change_Err
 scrVolume_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolume_Change", Erl)
     Resume Next
+    Exit Sub
+scrVolume_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.scrVolume_Change", Erl)
 End Sub
 
 Public Sub ToggleSoundEffects()
+    On Error Goto ToggleSoundEffects_Err
 
 On Error GoTo toggleSoundEffects_Err
 
@@ -1633,9 +1818,13 @@ On Error GoTo toggleSoundEffects_Err
 toggleSoundEffects_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleSoundEffects", Erl)
     Resume Next
+    Exit Sub
+ToggleSoundEffects_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.ToggleSoundEffects", Erl)
 End Sub
 
 Public Sub ToggleMusic()
+    On Error Goto ToggleMusic_Err
 
 On Error GoTo toggleMusic_Err
 
@@ -1659,5 +1848,8 @@ On Error GoTo toggleMusic_Err
 toggleMusic_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleMusic", Erl)
     Resume Next
+    Exit Sub
+ToggleMusic_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOpciones.ToggleMusic", Erl)
 End Sub
 

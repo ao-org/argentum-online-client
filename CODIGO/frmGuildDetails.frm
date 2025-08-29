@@ -176,6 +176,7 @@ Private cBotonCerrar As clsGraphicalButton
 Private cBotonFundar As clsGraphicalButton
 
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonFundar = New clsGraphicalButton
     
@@ -186,12 +187,20 @@ Private Sub loadButtons()
     Call cBotonFundar.Initialize(cmdFundar, "boton-fundar-clan-default.bmp", _
                                                     "boton-fundar-clan-over.bmp", _
                                                     "boton-fundar-clan-off.bmp", Me)
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildDetails.loadButtons", Erl)
 End Sub
 Private Sub cmdcerrar_Click()
+    On Error Goto cmdcerrar_Click_Err
     Unload Me
+    Exit Sub
+cmdcerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildDetails.cmdcerrar_Click", Erl)
 End Sub
 
 Private Sub cmdFundar_Click()
+    On Error Goto cmdFundar_Click_Err
 
     
     On Error GoTo cmdFundar_Click_Err
@@ -269,9 +278,13 @@ cmdFundar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildDetails.cmdFundar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdFundar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildDetails.cmdFundar_Click", Erl)
 End Sub
 
 Private Sub Form_Deactivate()
+    On Error Goto Form_Deactivate_Err
 
     'If Not frmGuildLeader.Visible Then
     '    Me.SetFocus
@@ -279,9 +292,13 @@ Private Sub Form_Deactivate()
     '    'Unload Me
     'End If
     '
+    Exit Sub
+Form_Deactivate_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildDetails.Form_Deactivate", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -297,8 +314,12 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildDetails.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildDetails.Form_Load", Erl)
 End Sub
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -310,4 +331,7 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildDetails.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGuildDetails.Form_MouseMove", Erl)
 End Sub

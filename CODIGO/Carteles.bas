@@ -25,6 +25,7 @@ Public Leyenda   As String
 Public GrhCartel As Integer
 
 Sub InitCartel(Ley As String, grh As Integer)
+    On Error Goto InitCartel_Err
     
     On Error GoTo InitCartel_Err
     
@@ -45,5 +46,8 @@ InitCartel_Err:
     Call RegistrarError(Err.number, Err.Description, "Carteles.InitCartel", Erl)
     Resume Next
     
+    Exit Sub
+InitCartel_Err:
+    Call TraceError(Err.Number, Err.Description, "Carteles.InitCartel", Erl)
 End Sub
 

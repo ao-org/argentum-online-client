@@ -29,6 +29,7 @@ End Type
 Public Destinos() As Tdestino
 
 Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional ByVal strExtra As String = vbNullString) As String
+    On Error Goto Locale_Parse_ServerMessage_Err
 
     On Error GoTo ErrorHandler
     
@@ -65,10 +66,14 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
 ErrorHandler:
     Locale_Parse_ServerMessage = strLocale
 
+    Exit Function
+Locale_Parse_ServerMessage_Err:
+    Call TraceError(Err.Number, Err.Description, "modLocale.Locale_Parse_ServerMessage", Erl)
 End Function
 
 ' Manejar el nombre del NPC para los casos especiales
 Private Sub HandleNpcName(ByVal bytHeader As Integer, ByRef strExtra As String)
+    On Error Goto HandleNpcName_Err
     Dim npcName As String
     Dim specialNpcHeaders As Variant
     Dim i As Long
@@ -86,9 +91,13 @@ Private Sub HandleNpcName(ByVal bytHeader As Integer, ByRef strExtra As String)
             Exit For
         End If
     Next
+    Exit Sub
+HandleNpcName_Err:
+    Call TraceError(Err.Number, Err.Description, "modLocale.HandleNpcName", Erl)
 End Sub
 
 Public Function General_Get_Line_Count(ByVal FileName As String) As Long
+    On Error Goto General_Get_Line_Count_Err
 
     On Error GoTo ErrorHandler
 
@@ -112,9 +121,13 @@ Public Function General_Get_Line_Count(ByVal FileName As String) As Long
 
 ErrorHandler:
 
+    Exit Function
+General_Get_Line_Count_Err:
+    Call TraceError(Err.Number, Err.Description, "modLocale.General_Get_Line_Count", Erl)
 End Function
 
 Public Function Integer_To_String(ByVal Var As Integer) As String
+    On Error Goto Integer_To_String_Err
     
     On Error GoTo Integer_To_String_Err
 
@@ -142,9 +155,13 @@ Integer_To_String_Err:
     Call RegistrarError(Err.number, Err.Description, "modLocale.Integer_To_String", Erl)
     Resume Next
     
+    Exit Function
+Integer_To_String_Err:
+    Call TraceError(Err.Number, Err.Description, "modLocale.Integer_To_String", Erl)
 End Function
 
 Public Function String_To_Integer(ByRef str As String, ByVal Start As Integer) As Integer
+    On Error Goto String_To_Integer_Err
 
     On Error GoTo Error_Handler
     
@@ -169,9 +186,13 @@ Public Function String_To_Integer(ByRef str As String, ByVal Start As Integer) A
         
 Error_Handler:
         
+    Exit Function
+String_To_Integer_Err:
+    Call TraceError(Err.Number, Err.Description, "modLocale.String_To_Integer", Erl)
 End Function
 
 Public Function Byte_To_String(ByVal Var As Byte) As String
+    On Error Goto Byte_To_String_Err
 
     'Convierte un byte a string
 
@@ -189,9 +210,13 @@ Byte_To_String_Err:
     Call RegistrarError(Err.number, Err.Description, "modLocale.Byte_To_String", Erl)
     Resume Next
     
+    Exit Function
+Byte_To_String_Err:
+    Call TraceError(Err.Number, Err.Description, "modLocale.Byte_To_String", Erl)
 End Function
 
 Public Function String_To_Byte(ByRef str As String, ByVal Start As Integer) As Byte
+    On Error Goto String_To_Byte_Err
 
     On Error GoTo Error_Handler
     
@@ -203,9 +228,13 @@ Public Function String_To_Byte(ByRef str As String, ByVal Start As Integer) As B
         
 Error_Handler:
 
+    Exit Function
+String_To_Byte_Err:
+    Call TraceError(Err.Number, Err.Description, "modLocale.String_To_Byte", Erl)
 End Function
 
 Public Function Long_To_String(ByVal Var As Long) As String
+    On Error Goto Long_To_String_Err
     
     On Error GoTo Long_To_String_Err
 
@@ -248,9 +277,13 @@ Long_To_String_Err:
     Call RegistrarError(Err.number, Err.Description, "modLocale.Long_To_String", Erl)
     Resume Next
     
+    Exit Function
+Long_To_String_Err:
+    Call TraceError(Err.Number, Err.Description, "modLocale.Long_To_String", Erl)
 End Function
 
 Public Function String_To_Long(ByRef str As String, ByVal Start As Integer) As Long
+    On Error Goto String_To_Long_Err
     
     On Error GoTo ErrorHandler
         
@@ -302,5 +335,8 @@ Public Function String_To_Long(ByRef str As String, ByVal Start As Integer) As L
         
 ErrorHandler:
 
+    Exit Function
+String_To_Long_Err:
+    Call TraceError(Err.Number, Err.Description, "modLocale.String_To_Long", Erl)
 End Function
 

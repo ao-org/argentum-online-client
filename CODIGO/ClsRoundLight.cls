@@ -78,6 +78,7 @@ Create_Light_To_Map_Err:
 End Function
 
 Public Function Delete_Light_To_Map(ByVal x As Byte, ByVal y As Byte)
+    On Error Goto Delete_Light_To_Map_Err
     
     On Error GoTo Delete_Light_To_Map_Err
     
@@ -101,9 +102,13 @@ Delete_Light_To_Map_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.Delete_Light_To_Map", Erl)
     Resume Next
     
+    Exit Function
+Delete_Light_To_Map_Err:
+    Call TraceError(Err.Number, Err.Description, "ClsRoundLight.Delete_Light_To_Map", Erl)
 End Function
 
 Public Function Delete_Light_To_Index(ByVal light_index As Byte, Optional RenderFinal As Boolean = True)
+    On Error Goto Delete_Light_To_Index_Err
     
     On Error GoTo Delete_Light_To_Index_Err
     
@@ -149,9 +154,13 @@ Delete_Light_To_Index_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.Delete_Light_To_Index", Erl)
     Resume Next
     
+    Exit Function
+Delete_Light_To_Index_Err:
+    Call TraceError(Err.Number, Err.Description, "ClsRoundLight.Delete_Light_To_Index", Erl)
 End Function
 
 Private Function LightCalculate(ByVal Radio2 As Long, ByVal LightX As Integer, ByVal LightY As Integer, ByVal XCoord As Integer, ByVal YCoord As Integer, TileLight As RGBA, LightColor As RGBA) As RGBA
+    On Error Goto LightCalculate_Err
     
     On Error GoTo LightCalculate_Err
     
@@ -177,9 +186,13 @@ LightCalculate_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.LightCalculate", Erl)
     Resume Next
     
+    Exit Function
+LightCalculate_Err:
+    Call TraceError(Err.Number, Err.Description, "ClsRoundLight.LightCalculate", Erl)
 End Function
      
 Private Sub LightRender(ByVal light_index As Integer)
+    On Error Goto LightRender_Err
     
     On Error GoTo LightRender_Err
     
@@ -266,9 +279,13 @@ LightRender_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.LightRender", Erl)
     Resume Next
     
+    Exit Sub
+LightRender_Err:
+    Call TraceError(Err.Number, Err.Description, "ClsRoundLight.LightRender", Erl)
 End Sub
 
 Public Sub LightRenderAll(ByVal MinX As Long, ByVal MinY As Long, ByVal MaxX As Long, ByVal MaxY As Long)
+    On Error Goto LightRenderAll_Err
     
     On Error GoTo LightRenderAll_Err
     
@@ -288,9 +305,13 @@ LightRenderAll_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.LightRenderAll", Erl)
     Resume Next
     
+    Exit Sub
+LightRenderAll_Err:
+    Call TraceError(Err.Number, Err.Description, "ClsRoundLight.LightRenderAll", Erl)
 End Sub
 
 Public Function Delete_All_LigthRound(Optional RenderFinal As Boolean = True)
+    On Error Goto Delete_All_LigthRound_Err
     
     On Error GoTo Delete_All_LigthRound_Err
     
@@ -307,4 +328,7 @@ Delete_All_LigthRound_Err:
     Call RegistrarError(Err.number, Err.Description, "clsLucesRedondas.Delete_All_LigthRound", Erl)
     Resume Next
     
+    Exit Function
+Delete_All_LigthRound_Err:
+    Call TraceError(Err.Number, Err.Description, "ClsRoundLight.Delete_All_LigthRound", Erl)
 End Function

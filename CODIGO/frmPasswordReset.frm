@@ -163,6 +163,7 @@ Attribute VB_Exposed = False
 '
 '
 Public Function toggleTextboxs()
+    On Error Goto toggleTextboxs_Err
     Me.txtEmail.Visible = Not Me.txtEmail.Visible
     Me.txtCodigo.Visible = Not Me.txtCodigo.Visible
     Me.txtPassword.Visible = Not Me.txtPassword.Visible
@@ -183,9 +184,13 @@ Public Function toggleTextboxs()
         Me.Picture = LoadInterface("ventanarecuperarcontrasena.bmp")
     End If
     
+    Exit Function
+toggleTextboxs_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPasswordReset.toggleTextboxs", Erl)
 End Function
 
 Private Sub cmdEnviar_Click()
+    On Error Goto cmdEnviar_Click_Err
 
     CuentaEmail = Me.txtEmail.Text
     
@@ -229,9 +234,13 @@ Private Sub cmdEnviar_Click()
             Debug.Assert False
     End Select
     
+    Exit Sub
+cmdEnviar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPasswordReset.cmdEnviar_Click", Erl)
 End Sub
 
 Private Sub cmdHaveCode_Click()
+    On Error Goto cmdHaveCode_Click_Err
    
     
     If Not isValidEmail(Me.txtEmail.Text) Then
@@ -240,9 +249,13 @@ Private Sub cmdHaveCode_Click()
     End If
     
     Call toggleTextboxs
+    Exit Sub
+cmdHaveCode_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPasswordReset.cmdHaveCode_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     Me.Picture = LoadInterface("ventanarecuperarcontrasena.bmp")
     
     Me.Left = (frmConnect.Width / 2) - (Me.Width / 2) + frmConnect.Left
@@ -252,9 +265,16 @@ Private Sub Form_Load()
         cmdHaveCode.Caption = "HAVE CODE"
         cmdHaveCode.ForeColor = 1000
     #End If
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPasswordReset.Form_Load", Erl)
 End Sub
 
 Private Sub Image1_Click()
+    On Error Goto Image1_Click_Err
     Unload Me
+    Exit Sub
+Image1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPasswordReset.Image1_Click", Erl)
 End Sub
 

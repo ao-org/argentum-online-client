@@ -1079,9 +1079,17 @@ Public cooldown_ataque As New clsCooldown
 Public cooldown_hechizo As New clsCooldown
 
 Public Function IsStun() As Boolean
+    On Error Goto IsStun_Err
     IsStun = StunEndTime >= GetTickCount()
+    Exit Function
+IsStun_Err:
+    Call TraceError(Err.Number, Err.Description, "Declares.IsStun", Erl)
 End Function
 
 Public Function CanMove() As Boolean
+    On Error Goto CanMove_Err
     CanMove = Not UserParalizado And Not UserInmovilizado And Not IsStun And Not UserStopped
+    Exit Function
+CanMove_Err:
+    Call TraceError(Err.Number, Err.Description, "Declares.CanMove", Erl)
 End Function

@@ -47,6 +47,7 @@ Private Const NUM_CURSORS = 7
 Private hndlList(0 To NUM_CURSORS) As IPictureDisp
  
 Public Sub Parse_Form(ByRef aFrm As Form, Optional ByVal cType As CursorType = E_NORMAL)
+    On Error Goto Parse_Form_Err
     On Error GoTo Parse_Form_Err
 
         ' Exit if CursoresGraficos is disabled
@@ -76,10 +77,14 @@ Parse_Form_Err:
         ' Log the error with the exact line number where it occurred
 240     Call RegistrarError(Err.Number, Err.Description & " | Line: " & Erl, "clsCursor.Parse_Form", Erl)
 250     Resume Next
+    Exit Sub
+Parse_Form_Err:
+    Call TraceError(Err.Number, Err.Description, "clsCursor.Parse_Form", Erl)
 End Sub
 
 ' Helper function to determine the cursor handle based on type
 Private Function GetCursorHandle(ByVal cType As CursorType) As Long
+    On Error Goto GetCursorHandle_Err
     Select Case cType
         Case E_WAIT
             GetCursorHandle = vbHourglass
@@ -91,9 +96,13 @@ Private Function GetCursorHandle(ByVal cType As CursorType) As Long
             ' Default fallback to prevent uninitialized return values
             GetCursorHandle = vbDefault
     End Select
+    Exit Function
+GetCursorHandle_Err:
+    Call TraceError(Err.Number, Err.Description, "clsCursor.GetCursorHandle", Erl)
 End Function
 
 Public Sub Init()
+    On Error Goto Init_Err
     
     On Error GoTo Init_Err
     
@@ -114,5 +123,8 @@ Init_Err:
     Call RegistrarError(Err.number, Err.Description, "clsCursor.Init", Erl)
     Resume Next
     
+    Exit Sub
+Init_Err:
+    Call TraceError(Err.Number, Err.Description, "clsCursor.Init", Erl)
 End Sub
  

@@ -1811,6 +1811,7 @@ Private MisMSG(0 To MAX_GM_MSG) As String
 Private Apunt(0 To MAX_GM_MSG)  As Integer
 
 Public Sub CrearGMmSg(nick As String, msg As String)
+    On Error Goto CrearGMmSg_Err
     
     On Error GoTo CrearGMmSg_Err
     
@@ -1829,9 +1830,13 @@ CrearGMmSg_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CrearGMmSg", Erl)
     Resume Next
     
+    Exit Sub
+CrearGMmSg_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.CrearGMmSg", Erl)
 End Sub
 
 Private Sub BanCuenta_Click()
+    On Error Goto BanCuenta_Click_Err
     
     On Error GoTo BanCuenta_Click_Err
     
@@ -1850,9 +1855,13 @@ BanCuenta_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.BanCuenta_Click", Erl)
     Resume Next
     
+    Exit Sub
+BanCuenta_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.BanCuenta_Click", Erl)
 End Sub
 
 Private Sub BorrarPersonaje_Click()
+    On Error Goto BorrarPersonaje_Click_Err
     
     On Error GoTo BorrarPersonaje_Click_Err
     
@@ -1870,9 +1879,13 @@ BorrarPersonaje_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.BorrarPersonaje_Click", Erl)
     Resume Next
     
+    Exit Sub
+BorrarPersonaje_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.BorrarPersonaje_Click", Erl)
 End Sub
 
 Private Sub BusqedaTesoro_Click()
+    On Error Goto BusqedaTesoro_Click_Err
     
     On Error GoTo BusqedaTesoro_Click_Err
     
@@ -1898,9 +1911,13 @@ BusqedaTesoro_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.BusqedaTesoro_Click", Erl)
     Resume Next
     
+    Exit Sub
+BusqedaTesoro_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.BusqedaTesoro_Click", Erl)
 End Sub
 
 Private Sub Cabeza_Click()
+    On Error Goto Cabeza_Click_Err
     
     On Error GoTo Cabeza_Click_Err
     
@@ -1914,9 +1931,13 @@ Cabeza_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Cabeza_Click", Erl)
     Resume Next
     
+    Exit Sub
+Cabeza_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Cabeza_Click", Erl)
 End Sub
 
 Private Sub CerrarleCliente_Click()
+    On Error Goto CerrarleCliente_Click_Err
     
     On Error GoTo CerrarleCliente_Click_Err
     
@@ -1929,9 +1950,13 @@ CerrarleCliente_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CerrarleCliente_Click", Erl)
     Resume Next
     
+    Exit Sub
+CerrarleCliente_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.CerrarleCliente_Click", Erl)
 End Sub
 
 Private Sub CerrarProceso_Click()
+    On Error Goto CerrarProceso_Click_Err
     
     On Error GoTo CerrarProceso_Click_Err
     
@@ -1949,9 +1974,13 @@ CerrarProceso_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CerrarProceso_Click", Erl)
     Resume Next
     
+    Exit Sub
+CerrarProceso_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.CerrarProceso_Click", Erl)
 End Sub
 
 Private Sub chkAntiCheat_Click()
+    On Error Goto chkAntiCheat_Click_Err
     If chkAntiCheat.Value = 0 Then
         chkOcultar.Value = False
         chkUsarItem.Value = False
@@ -1971,17 +2000,25 @@ Private Sub chkAntiCheat_Click()
         chkInasistido.Value = 1
         chkCarteleo.Value = 1
     End If
+    Exit Sub
+chkAntiCheat_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.chkAntiCheat_Click", Erl)
 End Sub
 
 Private Sub chkVerPanel_Click()
+    On Error Goto chkVerPanel_Click_Err
     If chkVerPanel.Value = 1 Then
         FraControlMacros.visible = False
     Else
         FraControlMacros.visible = True
     End If
+    Exit Sub
+chkVerPanel_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.chkVerPanel_Click", Erl)
 End Sub
 
 Private Sub ciudadanos_Click()
+    On Error Goto ciudadanos_Click_Err
     
     On Error GoTo ciudadanos_Click_Err
     
@@ -1995,9 +2032,13 @@ ciudadanos_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.ciudadanos_Click", Erl)
     Resume Next
     
+    Exit Sub
+ciudadanos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.ciudadanos_Click", Erl)
 End Sub
 
 Private Sub Clase_Click()
+    On Error Goto Clase_Click_Err
     
     On Error GoTo Clase_Click_Err
     
@@ -2011,9 +2052,13 @@ Clase_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Clase_Click", Erl)
     Resume Next
     
+    Exit Sub
+Clase_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Clase_Click", Erl)
 End Sub
 
 Private Sub cmd_Click(Index As Integer)
+    On Error Goto cmd_Click_Err
         
         On Error GoTo cmd_Click_Err
         
@@ -2040,9 +2085,13 @@ cmd_Click_Err:
         MsgBox Err.Description & vbCrLf & "in Argentum20.frmPanelgm.cmd_Click " & "at line " & Erl, vbExclamation + vbOKOnly, "Application Error"
         Resume Next
         
+    Exit Sub
+cmd_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmd_Click", Erl)
 End Sub
 
 Private Sub cmdAccion_Click(Index As Integer)
+    On Error Goto cmdAccion_Click_Err
     
     On Error GoTo 0
     
@@ -2204,9 +2253,13 @@ cmdAccion_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.cmdAccion_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdAccion_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdAccion_Click", Erl)
 End Sub
 
 Private Sub cmdActualiza_Click()
+    On Error Goto cmdActualiza_Click_Err
     
     On Error GoTo cmdActualiza_Click_Err
     
@@ -2220,17 +2273,25 @@ cmdActualiza_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.cmdActualiza_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdActualiza_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdActualiza_Click", Erl)
 End Sub
 
 Private Sub cmdCerrarCliente_Click()
+    On Error Goto cmdCerrarCliente_Click_Err
     tmpUser = cboListaUsus.Text
     Call ParseUserCommand("/SM ")
     Call frmPanelgm.txtMod.SetFocus
     Call WriteGoNearby(tmpUser)
     Call WriteCerraCliente(tmpUser)
+    Exit Sub
+cmdCerrarCliente_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdCerrarCliente_Click", Erl)
 End Sub
 
 Private Sub cmdBanPJ_Click()
+    On Error Goto cmdBanPJ_Click_Err
     tmpUser = cboListaUsus.Text
     Call ParseUserCommand("/BAN")
     tmp = InputBox("Escriba el motivo del BAN.", "Baneo de " & tmpUser)
@@ -2240,13 +2301,21 @@ Private Sub cmdBanPJ_Click()
     Else
         Call WriteBanChar(tmpUser, tmp)
     End If
+    Exit Sub
+cmdBanPJ_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdBanPJ_Click", Erl)
 End Sub
 
 Private Sub cmdBloqueoPos_Click()
+    On Error Goto cmdBloqueoPos_Click_Err
     Call WriteTileBlockedToggle
+    Exit Sub
+cmdBloqueoPos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdBloqueoPos_Click", Erl)
 End Sub
 
 Private Sub cmdBody0_Click(Index As Integer)
+    On Error Goto cmdBody0_Click_Err
 
     tmpUser = "yo"
 
@@ -2254,9 +2323,13 @@ Private Sub cmdBody0_Click(Index As Integer)
     
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
+    Exit Sub
+cmdBody0_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdBody0_Click", Erl)
 End Sub
 
 Private Sub cmdBodyMas_Click()
+    On Error Goto cmdBodyMas_Click_Err
 
     tmpUser = "yo"
     
@@ -2270,9 +2343,13 @@ Private Sub cmdBodyMas_Click()
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
     
+    Exit Sub
+cmdBodyMas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdBodyMas_Click", Erl)
 End Sub
 
 Private Sub cmdBodyMenos_Click()
+    On Error Goto cmdBodyMenos_Click_Err
 
     tmpUser = "yo"
     
@@ -2285,9 +2362,13 @@ Private Sub cmdBodyMenos_Click()
     
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
+    Exit Sub
+cmdBodyMenos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdBodyMenos_Click", Erl)
 End Sub
 
 Private Sub cmdBorrarInformes_Click()
+    On Error Goto cmdBorrarInformes_Click_Err
     Dim ruta As String
     Dim archivos As Variant
     Dim i As Integer
@@ -2304,17 +2385,25 @@ Private Sub cmdBorrarInformes_Click()
             Kill ruta & "\" & archivos(i)
         End If
     Next i
+    Exit Sub
+cmdBorrarInformes_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdBorrarInformes_Click", Erl)
 End Sub
 
 
 Private Sub cmdBoveda_Click()
+    On Error Goto cmdBoveda_Click_Err
     tmpUser = cboListaUsus.Text
     Call WriteRequestCharBank(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
 
+    Exit Sub
+cmdBoveda_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdBoveda_Click", Erl)
 End Sub
 
 Private Sub cmdCarcel_Click()
+    On Error Goto cmdCarcel_Click_Err
     Dim tmp As String
     Dim tmptime As String
     tmpUser = cboListaUsus.Text
@@ -2325,21 +2414,33 @@ Private Sub cmdCarcel_Click()
     Else
         Call WriteJail(tmpUser, tmp, tmptime)
     End If
+    Exit Sub
+cmdCarcel_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdCarcel_Click", Erl)
 End Sub
 
 Private Sub cmdcerrar_Click()
+    On Error Goto cmdcerrar_Click_Err
     
     Call ParseUserCommand("/SM ")
     tmpUser = cboListaUsus.Text
     Call WriteGoNearby(tmpUser)
     
+    Exit Sub
+cmdcerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdcerrar_Click", Erl)
 End Sub
 
 Private Sub cmdOnline_Click()
+    On Error Goto cmdOnline_Click_Err
 
+    Exit Sub
+cmdOnline_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdOnline_Click", Erl)
 End Sub
 
 Private Sub cmdTarget_Click()
+    On Error Goto cmdTarget_Click_Err
     'Dim Usuaritio As String
     
     On Error GoTo cmdTarget_Click_Err
@@ -2359,35 +2460,55 @@ cmdTarget_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.cmdTarget_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdTarget_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdTarget_Click", Erl)
 End Sub
 
 Private Sub cmdComandoGM_Click()
+    On Error Goto cmdComandoGM_Click_Err
 Call ParseUserCommand(txtMod.Text)
+    Exit Sub
+cmdComandoGM_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdComandoGM_Click", Erl)
 End Sub
 
 Private Sub cmdConsulta_Click()
+    On Error Goto cmdConsulta_Click_Err
 
     tmpUser = cboListaUsus.Text
          
     Call ParseUserCommand("/CONSULTA " & tmpUser)
     Call frmPanelgm.txtMod.SetFocus
  
+    Exit Sub
+cmdConsulta_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdConsulta_Click", Erl)
 End Sub
 
 Private Sub cmdEchar_Click()
+    On Error Goto cmdEchar_Click_Err
     tmpUser = cboListaUsus.Text
     Call WriteKick(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
 
+    Exit Sub
+cmdEchar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdEchar_Click", Erl)
 End Sub
 
 Private Sub cmdEjecutar_Click()
+    On Error Goto cmdEjecutar_Click_Err
     tmpUser = cboListaUsus.Text
     Call WriteExecute(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
+cmdEjecutar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdEjecutar_Click", Erl)
 End Sub
 
 Private Sub cmdEscudo_Click(Index As Integer)
+    On Error Goto cmdEscudo_Click_Err
                 
 100     tmpUser = "yo"
 
@@ -2407,9 +2528,13 @@ Private Sub cmdEscudo_Click(Index As Integer)
 114     Call frmPanelgm.txtMod.SetFocus
         
         Exit Sub
+    Exit Sub
+cmdEscudo_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdEscudo_Click", Erl)
 End Sub
 
 Private Sub cmdEventos_Click()
+    On Error Goto cmdEventos_Click_Err
     tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_TIPO_EVENTO") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_TESORO_CONTINENTE") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_TESORO_DUNGEON") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_APARICION_CRIATURA"), JsonLanguage.Item("MENSAJE_INICIAR_EVENTO"))
     
     If IsNumeric(tmp) Then
@@ -2422,10 +2547,14 @@ Private Sub cmdEventos_Click()
     
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
+    Exit Sub
+cmdEventos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdEventos_Click", Erl)
 End Sub
 
 
 Private Sub cmdHeadMenos_Click()
+    On Error Goto cmdHeadMenos_Click_Err
 
     tmpUser = "yo"
        
@@ -2437,9 +2566,13 @@ Private Sub cmdHeadMenos_Click()
     Call ParseUserCommand("/MOD " & tmpUser & " Head " & tmp)
     
     Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
+cmdHeadMenos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdHeadMenos_Click", Erl)
 End Sub
 
 Private Sub cmdHeadMas_Click()
+    On Error Goto cmdHeadMas_Click_Err
 
     tmpUser = "yo"
        
@@ -2452,9 +2585,13 @@ Private Sub cmdHeadMas_Click()
     
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
+    Exit Sub
+cmdHeadMas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdHeadMas_Click", Erl)
 End Sub
 
 Private Sub cmdHead0_Click()
+    On Error Goto cmdHead0_Click_Err
 
     tmpUser = "yo"
     tmp = 0
@@ -2464,69 +2601,109 @@ Private Sub cmdHead0_Click()
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
     
+    Exit Sub
+cmdHead0_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdHead0_Click", Erl)
 End Sub
 
 Private Sub cmdInfo_Click()
+    On Error Goto cmdInfo_Click_Err
 
     tmpUser = cboListaUsus.Text
     Call WriteRequestCharInfo(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
+cmdInfo_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdInfo_Click", Erl)
 End Sub
 
 Private Sub cmdInformación_Click()
+    On Error Goto cmdInformación_Click_Err
     
     tmpUser = cboListaUsus.Text
     
     Call WriteRequestCharStats(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
 
+    Exit Sub
+cmdInformación_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdInformación_Click", Erl)
 End Sub
 
 Private Sub cmdInseguro_Click()
+    On Error Goto cmdInseguro_Click_Err
 Call ParseUserCommand("/MODMAPINFO SEGURO 0")
+    Exit Sub
+cmdInseguro_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdInseguro_Click", Erl)
 End Sub
 
 Private Sub cmdInsertarTrigger_Click()
+    On Error Goto cmdInsertarTrigger_Click_Err
 
     Call ParseUserCommand("/TRIGGER " & txtTextTriggers.Text)
 
+    Exit Sub
+cmdInsertarTrigger_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdInsertarTrigger_Click", Erl)
 End Sub
 
 Private Sub cmdInventario_Click()
+    On Error Goto cmdInventario_Click_Err
     tmpUser = cboListaUsus.Text
     Call ParseUserCommand("/INV " & tmpUser)
     Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
+cmdInventario_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdInventario_Click", Erl)
 End Sub
 
 Private Sub cmdInvisibilidadSi_Click()
+    On Error Goto cmdInvisibilidadSi_Click_Err
 
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "SININVI")
     
+    Exit Sub
+cmdInvisibilidadSi_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdInvisibilidadSi_Click", Erl)
 End Sub
 
 Private Sub cmdInvisible_Click()
+    On Error Goto cmdInvisible_Click_Err
     
     Call ParseUserCommand("/INVISIBLE")
         
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
     
+    Exit Sub
+cmdInvisible_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdInvisible_Click", Erl)
 End Sub
 
 Private Sub cmdIrCerca_Click()
+    On Error Goto cmdIrCerca_Click_Err
     Call ParseUserCommand("/SM ")
     tmpUser = cboListaUsus.Text
     Call WriteGoNearby(tmpUser)
 
+    Exit Sub
+cmdIrCerca_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdIrCerca_Click", Erl)
 End Sub
 
 Private Sub cmdMagiaSin_Click()
+    On Error Goto cmdMagiaSin_Click_Err
 
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "SINMAGIA")
         
+    Exit Sub
+cmdMagiaSin_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdMagiaSin_Click", Erl)
 End Sub
 
 Private Sub cmdMapaSeguro_Click()
+    On Error Goto cmdMapaSeguro_Click_Err
 
     tmp = InputBox(JsonLanguage.Item("MENSAJE_EDICION_MAPA") & vbCrLf & JsonLanguage.Item("MENSAJE_MAPA_INFORMACION") & vbCrLf & JsonLanguage.Item("MENSAJE_MAPA_SEGURO") & vbCrLf & JsonLanguage.Item("MENSAJE_MAPA_INSEGURO"), JsonLanguage.Item("MENSAJE_MODIFICAR"))
     
@@ -2544,17 +2721,25 @@ Private Sub cmdMapaSeguro_Click()
             
     End Select
     
+    Exit Sub
+cmdMapaSeguro_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdMapaSeguro_Click", Erl)
 End Sub
 
 Private Sub cmdMapeo_Click()
+    On Error Goto cmdMapeo_Click_Err
     If frmPanelgm.Width = 7365 Then
         frmPanelgm.Width = 4860
     Else
         frmPanelgm.Width = 7365
     End If
+    Exit Sub
+cmdMapeo_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdMapeo_Click", Erl)
 End Sub
 
 Private Sub cmdMas_Click()
+    On Error Goto cmdMas_Click_Err
     tmpUser = "yo"
        
     txtCasco.Text = txtCasco.Text + 1
@@ -2564,16 +2749,24 @@ Private Sub cmdMas_Click()
     Call ParseUserCommand("/MOD " & tmpUser & " Casco " & tmp)
     
     Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
+cmdMas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdMas_Click", Erl)
 End Sub
 
 Private Sub cmdMatarNPC_Click()
+    On Error Goto cmdMatarNPC_Click_Err
 
 Call ParseUserCommand("/MATA")
     Call frmPanelgm.txtMod.SetFocus
 
+    Exit Sub
+cmdMatarNPC_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdMatarNPC_Click", Erl)
 End Sub
 
 Private Sub cmdMenos_Click()
+    On Error Goto cmdMenos_Click_Err
     tmpUser = "yo"
        
     If txtCasco.Text >= 1 Then txtCasco.Text = txtCasco.Text - 1
@@ -2584,20 +2777,32 @@ Private Sub cmdMenos_Click()
     Call ParseUserCommand("/MOD " & tmpUser & " Casco " & tmp)
     
     Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
+cmdMenos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdMenos_Click", Erl)
 End Sub
 
 
 Private Sub cmdPenas_Click()
+    On Error Goto cmdPenas_Click_Err
     tmpUser = cboListaUsus.Text
     Call WritePunishments(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
+cmdPenas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdPenas_Click", Erl)
 End Sub
 
 Private Sub cmdRecargarNPCs_Click()
+    On Error Goto cmdRecargarNPCs_Click_Err
     Call WriteReloadNPCs
+    Exit Sub
+cmdRecargarNPCs_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdRecargarNPCs_Click", Erl)
 End Sub
 
 Private Sub cmdRestringirMapa_Click()
+    On Error Goto cmdRestringirMapa_Click_Err
 
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "Newbie")
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "NoPKS")
@@ -2607,29 +2812,45 @@ Private Sub cmdRestringirMapa_Click()
     ' faltaria mandar a cada uno a su hogar
     ' tambien los loguean mandarlos a su hogar.
 
+    Exit Sub
+cmdRestringirMapa_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdRestringirMapa_Click", Erl)
 End Sub
 
 Private Sub cmdRevivir_Click()
+    On Error Goto cmdRevivir_Click_Err
 
     tmpUser = cboListaUsus.Text
     
     Call WriteReviveChar(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
     
+    Exit Sub
+cmdRevivir_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdRevivir_Click", Erl)
 End Sub
 
 Private Sub cmdSeguirMouse_Click()
+    On Error Goto cmdSeguirMouse_Click_Err
     tmpUser = cboListaUsus.Text
     chkAutoName.Value = 0
     Call ParseUserCommand("/SM " & tmpUser)
     Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
+cmdSeguirMouse_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdSeguirMouse_Click", Erl)
 End Sub
 
 Private Sub cmdSeguro_Click()
+    On Error Goto cmdSeguro_Click_Err
 Call ParseUserCommand("/MODMAPINFO SEGURO 1")
+    Exit Sub
+cmdSeguro_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdSeguro_Click", Erl)
 End Sub
 
 Private Sub cmdSeleccionarPersonaje_Click(Index As Integer)
+    On Error Goto cmdSeleccionarPersonaje_Click_Err
     'cboListaUsus = List1.List(List1.ListIndex)
     'Call AddtoRichTextBox(frmMain.RecTxt, "Haz click sobre el personaje...", 100, 100, 120, 0, 0)
     'frmMain.MousePointer = 2
@@ -2639,24 +2860,40 @@ Private Sub cmdSeleccionarPersonaje_Click(Index As Integer)
     cboListaUsus = List1.List(List1.ListIndex)
     Call frmPanelgm.txtMod.SetFocus
     'txtHeadUser.Text = cboListaUsus.Text
+    Exit Sub
+cmdSeleccionarPersonaje_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdSeleccionarPersonaje_Click", Erl)
 End Sub
 
 Private Sub cmdSTAT_Click()
+    On Error Goto cmdSTAT_Click_Err
     tmpUser = cboListaUsus.Text
     Call WriteRequestCharStats(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
+cmdSTAT_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdSTAT_Click", Erl)
 End Sub
 
 Private Sub cmdSUMUser_Click()
+    On Error Goto cmdSUMUser_Click_Err
     Call WriteSummonChar(cboListaUsus.Text)
+    Exit Sub
+cmdSUMUser_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdSUMUser_Click", Erl)
 End Sub
 
 Private Sub cmdTrabajando_Click()
+    On Error Goto cmdTrabajando_Click_Err
     Call WriteWorking
     Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
+cmdTrabajando_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdTrabajando_Click", Erl)
 End Sub
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -2670,9 +2907,13 @@ Command1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Command1_Click", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
     
     On Error GoTo Command2_Click_Err
     
@@ -2686,15 +2927,23 @@ Command2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Command2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Command2_Click", Erl)
 End Sub
 
 Private Sub Command3_Click()
+    On Error Goto Command3_Click_Err
     'Call WriteGoNearby(tmpUser)
     Call Destrabar_Click
     Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
+Command3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Command3_Click", Erl)
 End Sub
 
 Private Sub CrearTeleport_Click()
+    On Error Goto CrearTeleport_Click_Err
     
     On Error GoTo CrearTeleport_Click_Err
     
@@ -2708,15 +2957,23 @@ CrearTeleport_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CrearTeleport_Click", Erl)
     Resume Next
     
+    Exit Sub
+CrearTeleport_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.CrearTeleport_Click", Erl)
 End Sub
 
 Private Sub Command4_Click()
+    On Error Goto Command4_Click_Err
     tmpUser = cboListaUsus.Text
     Call WriteGoNearby(tmpUser)
     Call WriteConsulta(tmpUser)
+    Exit Sub
+Command4_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Command4_Click", Erl)
 End Sub
 
 Private Sub creartoneo_Click()
+    On Error Goto creartoneo_Click_Err
     
     On Error GoTo creartoneo_Click_Err
     
@@ -2729,9 +2986,13 @@ creartoneo_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.creartoneo_Click", Erl)
     Resume Next
     
+    Exit Sub
+creartoneo_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.creartoneo_Click", Erl)
 End Sub
 
 Private Sub Criminales_Click()
+    On Error Goto Criminales_Click_Err
     
     On Error GoTo Criminales_Click_Err
     
@@ -2745,9 +3006,13 @@ Criminales_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Criminales_Click", Erl)
     Resume Next
     
+    Exit Sub
+Criminales_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Criminales_Click", Erl)
 End Sub
 
 Private Sub Cuerpo_Click()
+    On Error Goto Cuerpo_Click_Err
     
     On Error GoTo Cuerpo_Click_Err
     
@@ -2761,10 +3026,14 @@ Cuerpo_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Cuerpo_Click", Erl)
     Resume Next
     
+    Exit Sub
+Cuerpo_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Cuerpo_Click", Erl)
 End Sub
 
 
 Private Sub Destrabar_Click()
+    On Error Goto Destrabar_Click_Err
     
     On Error GoTo Destrabar_Click_Err
     
@@ -2778,9 +3047,13 @@ Destrabar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Destrabar_Click", Erl)
     Resume Next
     
+    Exit Sub
+Destrabar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Destrabar_Click", Erl)
 End Sub
 
 Private Sub DestruirTeleport_Click()
+    On Error Goto DestruirTeleport_Click_Err
     
     On Error GoTo DestruirTeleport_Click_Err
     
@@ -2793,9 +3066,13 @@ DestruirTeleport_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.DestruirTeleport_Click", Erl)
     Resume Next
     
+    Exit Sub
+DestruirTeleport_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.DestruirTeleport_Click", Erl)
 End Sub
 
 Private Sub Ejecutar_Click()
+    On Error Goto Ejecutar_Click_Err
     
     On Error GoTo Ejecutar_Click_Err
     
@@ -2809,9 +3086,13 @@ Ejecutar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Ejecutar_Click", Erl)
     Resume Next
     
+    Exit Sub
+Ejecutar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Ejecutar_Click", Erl)
 End Sub
 
 Private Sub Energia_Click()
+    On Error Goto Energia_Click_Err
     
     On Error GoTo Energia_Click_Err
     
@@ -2825,9 +3106,13 @@ Energia_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Energia_Click", Erl)
     Resume Next
     
+    Exit Sub
+Energia_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Energia_Click", Erl)
 End Sub
 
 Private Sub evento1_Click()
+    On Error Goto evento1_Click_Err
     
     On Error GoTo evento1_Click_Err
     
@@ -2840,9 +3125,13 @@ evento1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.evento1_Click", Erl)
     Resume Next
     
+    Exit Sub
+evento1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.evento1_Click", Erl)
 End Sub
 
 Private Sub evento2_Click()
+    On Error Goto evento2_Click_Err
     
     On Error GoTo evento2_Click_Err
     
@@ -2855,9 +3144,13 @@ evento2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.evento2_Click", Erl)
     Resume Next
     
+    Exit Sub
+evento2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.evento2_Click", Erl)
 End Sub
 
 Private Sub evento3_Click()
+    On Error Goto evento3_Click_Err
     
     On Error GoTo evento3_Click_Err
     
@@ -2870,9 +3163,13 @@ evento3_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.evento3_Click", Erl)
     Resume Next
     
+    Exit Sub
+evento3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.evento3_Click", Erl)
 End Sub
 
 Private Sub evento4_Click()
+    On Error Goto evento4_Click_Err
     
     On Error GoTo evento4_Click_Err
     
@@ -2885,9 +3182,13 @@ evento4_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.evento4_Click", Erl)
     Resume Next
     
+    Exit Sub
+evento4_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.evento4_Click", Erl)
 End Sub
 
 Private Sub finalizarevento_Click()
+    On Error Goto finalizarevento_Click_Err
     
     On Error GoTo finalizarevento_Click_Err
     
@@ -2903,13 +3204,21 @@ finalizarevento_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.finalizarevento_Click", Erl)
     Resume Next
     
+    Exit Sub
+finalizarevento_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.finalizarevento_Click", Erl)
 End Sub
 
 Private Sub flash_Click()
+    On Error Goto flash_Click_Err
     Call WriteSetSpeed(15#)
+    Exit Sub
+flash_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.flash_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -2925,8 +3234,12 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Form_Load", Erl)
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -2943,28 +3256,48 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Form_KeyPress", Erl)
 End Sub
 
 Private Sub lento_Click()
+    On Error Goto lento_Click_Err
 
+    Exit Sub
+lento_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.lento_Click", Erl)
 End Sub
 
 Private Sub GlobalEstado_Click()
+    On Error Goto GlobalEstado_Click_Err
 
     Call ParseUserCommand("/ACTIVAR")
+    Exit Sub
+GlobalEstado_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.GlobalEstado_Click", Erl)
 End Sub
 
 Private Sub GuardarMapa_Click()
+    On Error Goto GuardarMapa_Click_Err
 
     Call ParseUserCommand("/BACK")
+    Exit Sub
+GuardarMapa_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.GuardarMapa_Click", Erl)
 End Sub
 
 Private Sub Limpiarmundo_Click()
+    On Error Goto Limpiarmundo_Click_Err
 
     Call ParseUserCommand("/LIMPIARMUNDO")
+    Exit Sub
+Limpiarmundo_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Limpiarmundo_Click", Erl)
 End Sub
 
 Private Sub LimpiarVision_Click()
+    On Error Goto LimpiarVision_Click_Err
     
     On Error GoTo LimpiarVision_Click_Err
     
@@ -2977,9 +3310,13 @@ LimpiarVision_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.LimpiarVision_Click", Erl)
     Resume Next
     
+    Exit Sub
+LimpiarVision_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.LimpiarVision_Click", Erl)
 End Sub
 
 Private Sub List1_Click()
+    On Error Goto List1_Click_Err
     
     On Error GoTo List1_Click_Err
     
@@ -2996,14 +3333,22 @@ List1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.List1_Click", Erl)
     Resume Next
     
+    Exit Sub
+List1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.List1_Click", Erl)
 End Sub
 
 Private Sub List1_DblClick()
+    On Error Goto List1_DblClick_Err
         tmpUser = Split(List1.Text, "(")(0)
         Call WriteGoNearby(tmpUser)
+    Exit Sub
+List1_DblClick_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.List1_DblClick", Erl)
 End Sub
 
 Private Sub List1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto List1_MouseDown_Err
     
     On Error GoTo List1_MouseDown_Err
     
@@ -3020,9 +3365,13 @@ List1_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.List1_MouseDown", Erl)
     Resume Next
     
+    Exit Sub
+List1_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.List1_MouseDown", Erl)
 End Sub
 
 Private Sub Mana_Click()
+    On Error Goto Mana_Click_Err
     
     On Error GoTo Mana_Click_Err
     
@@ -3036,9 +3385,13 @@ Mana_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Mana_Click", Erl)
     Resume Next
     
+    Exit Sub
+Mana_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Mana_Click", Erl)
 End Sub
 
 Private Sub MensajeriaMenu_Click(Index As Integer)
+    On Error Goto MensajeriaMenu_Click_Err
     
     On Error GoTo MensajeriaMenu_Click_Err
     
@@ -3070,9 +3423,13 @@ MensajeriaMenu_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.MensajeriaMenu_Click", Erl)
     Resume Next
     
+    Exit Sub
+MensajeriaMenu_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.MensajeriaMenu_Click", Erl)
 End Sub
 
 Private Sub mnuBorrar_Click()
+    On Error Goto mnuBorrar_Click_Err
     
     On Error GoTo mnuBorrar_Click_Err
     
@@ -3105,9 +3462,13 @@ mnuBorrar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuBorrar_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuBorrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuBorrar_Click", Erl)
 End Sub
 
 Private Sub MnuEnviar_Click(Index As Integer)
+    On Error Goto MnuEnviar_Click_Err
     
     On Error GoTo MnuEnviar_Click_Err
     
@@ -3152,9 +3513,13 @@ MnuEnviar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.MnuEnviar_Click", Erl)
     Resume Next
     
+    Exit Sub
+MnuEnviar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.MnuEnviar_Click", Erl)
 End Sub
 
 Private Sub mnuIRa_Click()
+    On Error Goto mnuIRa_Click_Err
     
     On Error GoTo mnuIRa_Click_Err
     
@@ -3167,9 +3532,13 @@ mnuIRa_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuIRa_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuIRa_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuIRa_Click", Erl)
 End Sub
 
 Private Sub mnuDestrabar_Click()
+    On Error Goto mnuDestrabar_Click_Err
     On Error GoTo mnuDestrabar_Click_Err
     nick = Replace(List1.Text, " ", "+")
     Call WritePossUser(nick)
@@ -3181,9 +3550,13 @@ mnuDestrabar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuDestrabar_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuDestrabar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuDestrabar_Click", Erl)
 End Sub
 
 Private Sub mnutraer_Click()
+    On Error Goto mnutraer_Click_Err
     
     On Error GoTo mnutraer_Click_Err
     
@@ -3196,9 +3569,13 @@ mnutraer_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnutraer_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnutraer_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnutraer_Click", Erl)
 End Sub
 
 Private Sub mnuInvalida_Click()
+    On Error Goto mnuInvalida_Click_Err
     
     On Error GoTo mnuInvalida_Click_Err
     
@@ -3218,9 +3595,13 @@ mnuInvalida_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuInvalida_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuInvalida_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuInvalida_Click", Erl)
 End Sub
 
 Private Sub mnuResponder_Click()
+    On Error Goto mnuResponder_Click_Err
     
     On Error GoTo mnuResponder_Click_Err
     
@@ -3235,9 +3616,13 @@ mnuResponder_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuResponder_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuResponder_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuResponder_Click", Erl)
 End Sub
 
 Private Sub mnuManual_Click()
+    On Error Goto mnuManual_Click_Err
     
     On Error GoTo mnuManual_Click_Err
     
@@ -3251,9 +3636,13 @@ mnuManual_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuManual_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuManual_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuManual_Click", Erl)
 End Sub
 
 Private Sub mnuAccion_Click(Index As Integer)
+    On Error Goto mnuAccion_Click_Err
     
     On Error GoTo mnuAccion_Click_Err
     
@@ -3290,9 +3679,13 @@ mnuAccion_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuAccion_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuAccion_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuAccion_Click", Erl)
 End Sub
 
 Private Sub mnuAdmin_Click(Index As Integer)
+    On Error Goto mnuAdmin_Click_Err
     
     On Error GoTo mnuAdmin_Click_Err
     
@@ -3305,9 +3698,13 @@ mnuAdmin_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuAdmin_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuAdmin_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuAdmin_Click", Erl)
 End Sub
 
 Private Sub mnuAmbiente_Click(Index As Integer)
+    On Error Goto mnuAmbiente_Click_Err
     
     On Error GoTo mnuAmbiente_Click_Err
     
@@ -3320,9 +3717,13 @@ mnuAmbiente_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuAmbiente_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuAmbiente_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuAmbiente_Click", Erl)
 End Sub
 
 Private Sub mnuBan_Click(Index As Integer)
+    On Error Goto mnuBan_Click_Err
     
     On Error GoTo mnuBan_Click_Err
     
@@ -3335,9 +3736,13 @@ mnuBan_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuBan_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuBan_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuBan_Click", Erl)
 End Sub
 
 Private Sub mnuCarcel_Click(Index As Integer)
+    On Error Goto mnuCarcel_Click_Err
     
     On Error GoTo mnuCarcel_Click_Err
     
@@ -3359,9 +3764,13 @@ mnuCarcel_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuCarcel_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuCarcel_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuCarcel_Click", Erl)
 End Sub
 
 Private Sub mnuSilencio_Click(Index As Integer)
+    On Error Goto mnuSilencio_Click_Err
     
     On Error GoTo mnuSilencio_Click_Err
     
@@ -3381,9 +3790,13 @@ mnuSilencio_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuSilencio_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuSilencio_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuSilencio_Click", Erl)
 End Sub
 
 Private Sub mnuHerramientas_Click(Index As Integer)
+    On Error Goto mnuHerramientas_Click_Err
     
     On Error GoTo mnuHerramientas_Click_Err
     
@@ -3396,9 +3809,13 @@ mnuHerramientas_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuHerramientas_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuHerramientas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuHerramientas_Click", Erl)
 End Sub
 
 Private Sub mnuIP_Click(Index As Integer)
+    On Error Goto mnuIP_Click_Err
     
     On Error GoTo mnuIP_Click_Err
     
@@ -3411,9 +3828,13 @@ mnuIP_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuIP_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuIP_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuIP_Click", Erl)
 End Sub
 
 Private Sub mnuReload_Click(Index As Integer)
+    On Error Goto mnuReload_Click_Err
     
     On Error GoTo mnuReload_Click_Err
     
@@ -3457,9 +3878,13 @@ mnuReload_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuReload_Click", Erl)
     Resume Next
     
+    Exit Sub
+mnuReload_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuReload_Click", Erl)
 End Sub
 
 Private Sub MOTD_Click()
+    On Error Goto MOTD_Click_Err
     
     On Error GoTo MOTD_Click_Err
     
@@ -3472,9 +3897,13 @@ MOTD_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.MOTD_Click", Erl)
     Resume Next
     
+    Exit Sub
+MOTD_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.MOTD_Click", Erl)
 End Sub
 
 Private Sub muyrapido_Click()
+    On Error Goto muyrapido_Click_Err
     
     On Error GoTo muyrapido_Click_Err
     
@@ -3486,9 +3915,13 @@ muyrapido_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.muyrapido_Click", Erl)
     Resume Next
     
+    Exit Sub
+muyrapido_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.muyrapido_Click", Erl)
 End Sub
 
 Private Sub Normal_Click()
+    On Error Goto Normal_Click_Err
     
     On Error GoTo Normal_Click_Err
     
@@ -3500,9 +3933,13 @@ Normal_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Normal_Click", Erl)
     Resume Next
     
+    Exit Sub
+Normal_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Normal_Click", Erl)
 End Sub
 
 Private Sub oro_Click()
+    On Error Goto oro_Click_Err
     
     On Error GoTo oro_Click_Err
     
@@ -3516,9 +3953,13 @@ oro_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.oro_Click", Erl)
     Resume Next
     
+    Exit Sub
+oro_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.oro_Click", Erl)
 End Sub
 
 Private Sub personalizado_Click()
+    On Error Goto personalizado_Click_Err
     
     On Error GoTo personalizado_Click_Err
     
@@ -3532,9 +3973,13 @@ personalizado_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.personalizado_Click", Erl)
     Resume Next
     
+    Exit Sub
+personalizado_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.personalizado_Click", Erl)
 End Sub
 
 Private Sub rapido_Click()
+    On Error Goto rapido_Click_Err
     
     On Error GoTo rapido_Click_Err
 
@@ -3546,9 +3991,13 @@ rapido_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.rapido_Click", Erl)
     Resume Next
     
+    Exit Sub
+rapido_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.rapido_Click", Erl)
 End Sub
 
 Private Sub Raza_Click()
+    On Error Goto Raza_Click_Err
     
     On Error GoTo Raza_Click_Err
     
@@ -3562,26 +4011,42 @@ Raza_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Raza_Click", Erl)
     Resume Next
     
+    Exit Sub
+Raza_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Raza_Click", Erl)
 End Sub
 
 Private Sub ResetPozos_Click()
+    On Error Goto ResetPozos_Click_Err
 
     Call ParseUserCommand("/RESETPOZOS")
     
+    Exit Sub
+ResetPozos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.ResetPozos_Click", Erl)
 End Sub
 
 Private Sub SeguroInseguro_Click()
+    On Error Goto SeguroInseguro_Click_Err
 
     Call ParseUserCommand("/MODMAPINFO SEGURO 1")
+    Exit Sub
+SeguroInseguro_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.SeguroInseguro_Click", Erl)
 End Sub
 
 Private Sub SendGlobal_Click()
+    On Error Goto SendGlobal_Click_Err
     If LenB(txtMod.Text) Then Call ParseUserCommand("/GMSG " & txtMod.Text)
     txtMod.Text = ""
     txtMod.SetFocus
+    Exit Sub
+SendGlobal_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.SendGlobal_Click", Erl)
 End Sub
 
 Private Sub SkillLibres_Click()
+    On Error Goto SkillLibres_Click_Err
     
     On Error GoTo SkillLibres_Click_Err
     
@@ -3595,9 +4060,13 @@ SkillLibres_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.SkillLibres_Click", Erl)
     Resume Next
     
+    Exit Sub
+SkillLibres_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.SkillLibres_Click", Erl)
 End Sub
 
 Private Sub Spawn_Click()
+    On Error Goto Spawn_Click_Err
     
     On Error GoTo Spawn_Click_Err
     
@@ -3610,9 +4079,13 @@ Spawn_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Spawn_Click", Erl)
     Resume Next
     
+    Exit Sub
+Spawn_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Spawn_Click", Erl)
 End Sub
 
 Private Sub StaffOnline_Click()
+    On Error Goto StaffOnline_Click_Err
     
     On Error GoTo StaffOnline_Click_Err
     
@@ -3625,14 +4098,22 @@ StaffOnline_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.StaffOnline_Click", Erl)
     Resume Next
     
+    Exit Sub
+StaffOnline_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.StaffOnline_Click", Erl)
 End Sub
 
 Private Sub SubastaEstado_Click()
+    On Error Goto SubastaEstado_Click_Err
 
     Call ParseUserCommand("/SUBASTAACTIVADA")
+    Exit Sub
+SubastaEstado_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.SubastaEstado_Click", Erl)
 End Sub
 
 Private Sub Temporal_Click()
+    On Error Goto Temporal_Click_Err
     
     On Error GoTo Temporal_Click_Err
 
@@ -3655,17 +4136,25 @@ Temporal_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Temporal_Click", Erl)
     Resume Next
     
+    Exit Sub
+Temporal_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Temporal_Click", Erl)
 End Sub
 
 Private Sub cmdButtonActualizarListaGms_Click()
+    On Error Goto cmdButtonActualizarListaGms_Click_Err
     cmdButtonActualizarListaGms.enabled = False
     List1.Clear
     List2.Clear
     Call WriteSOSShowList
     cmdButtonActualizarListaGms.enabled = True
+    Exit Sub
+cmdButtonActualizarListaGms_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.cmdButtonActualizarListaGms_Click", Erl)
 End Sub
 
 Private Sub torneo_cancelar_Click()
+    On Error Goto torneo_cancelar_Click_Err
     
     On Error GoTo torneo_cancelar_Click_Err
     
@@ -3678,9 +4167,13 @@ torneo_cancelar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.torneo_cancelar_Click", Erl)
     Resume Next
     
+    Exit Sub
+torneo_cancelar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.torneo_cancelar_Click", Erl)
 End Sub
 
 Private Sub torneo_comenzar_Click()
+    On Error Goto torneo_comenzar_Click_Err
     
     On Error GoTo torneo_comenzar_Click_Err
     
@@ -3693,60 +4186,108 @@ torneo_comenzar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.torneo_comenzar_Click", Erl)
     Resume Next
     
+    Exit Sub
+torneo_comenzar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.torneo_comenzar_Click", Erl)
 End Sub
 
 Private Sub txtArma_KeyPress(KeyAscii As Integer)
+    On Error Goto txtArma_KeyPress_Err
     If Not IsNumeric(txtArma.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+    Exit Sub
+txtArma_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.txtArma_KeyPress", Erl)
 End Sub
 
 Private Sub txtArma_Change()
+    On Error Goto txtArma_Change_Err
     Call ParseUserCommand("/MOD YO" & " Arma " & txtArma.Text)
+    Exit Sub
+txtArma_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.txtArma_Change", Erl)
 End Sub
 
 
 Private Sub txtBodyYo_KeyPress(KeyAscii As Integer)
+    On Error Goto txtBodyYo_KeyPress_Err
     If Not IsNumeric(txtBodyYo.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+    Exit Sub
+txtBodyYo_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.txtBodyYo_KeyPress", Erl)
 End Sub
 
 Private Sub txtBodyYo_Change()
+    On Error Goto txtBodyYo_Change_Err
     Call ParseUserCommand("/MOD YO" & " Body " & txtBodyYo.Text)
+    Exit Sub
+txtBodyYo_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.txtBodyYo_Change", Erl)
 End Sub
 
 Private Sub txtCasco_KeyPress(KeyAscii As Integer)
+    On Error Goto txtCasco_KeyPress_Err
     If Not IsNumeric(txtCasco.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+    Exit Sub
+txtCasco_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.txtCasco_KeyPress", Erl)
 End Sub
 
 Private Sub txtCasco_Change()
+    On Error Goto txtCasco_Change_Err
     Call ParseUserCommand("/MOD YO" & " Casco " & txtCasco.Text)
+    Exit Sub
+txtCasco_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.txtCasco_Change", Erl)
 End Sub
 
 Private Sub txtEscudo_KeyPress(KeyAscii As Integer)
+    On Error Goto txtEscudo_KeyPress_Err
     If Not IsNumeric(txtEscudo.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+    Exit Sub
+txtEscudo_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.txtEscudo_KeyPress", Erl)
 End Sub
 
 Private Sub txtEscudo_Change()
+    On Error Goto txtEscudo_Change_Err
     Call ParseUserCommand("/MOD YO" & " Escudo " & txtEscudo.Text)
+    Exit Sub
+txtEscudo_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.txtEscudo_Change", Erl)
 End Sub
 
 Private Sub txtHeadNumero_KeyPress(KeyAscii As Integer)
+    On Error Goto txtHeadNumero_KeyPress_Err
     If Not IsNumeric(txtHeadNumero.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+    Exit Sub
+txtHeadNumero_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.txtHeadNumero_KeyPress", Erl)
 End Sub
 
 Private Sub txtHeadNumero_Change()
+    On Error Goto txtHeadNumero_Change_Err
     Call ParseUserCommand("/MOD YO" & " Head " & txtHeadNumero.Text)
+    Exit Sub
+txtHeadNumero_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.txtHeadNumero_Change", Erl)
 End Sub
 
 
 Private Sub txtMod_KeyPress(KeyAscii As Integer)
+    On Error Goto txtMod_KeyPress_Err
     'If Not IsNumeric(txtMod.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
     
     If KeyAscii = vbKeyReturn Then
         Call ParseUserCommand(txtMod.Text)
         txtMod = ""
     End If
+    Exit Sub
+txtMod_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.txtMod_KeyPress", Erl)
 End Sub
 
 Private Sub UnbanCuenta_Click()
+    On Error Goto UnbanCuenta_Click_Err
     
     On Error GoTo UnbanCuenta_Click_Err
     
@@ -3759,9 +4300,13 @@ UnbanCuenta_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.UnbanCuenta_Click", Erl)
     Resume Next
     
+    Exit Sub
+UnbanCuenta_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.UnbanCuenta_Click", Erl)
 End Sub
 
 Private Sub UnbanPersonaje_Click()
+    On Error Goto UnbanPersonaje_Click_Err
     
     On Error GoTo UnbanPersonaje_Click_Err
     
@@ -3780,14 +4325,22 @@ UnbanPersonaje_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.UnbanPersonaje_Click", Erl)
     Resume Next
     
+    Exit Sub
+UnbanPersonaje_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.UnbanPersonaje_Click", Erl)
 End Sub
 
 Private Sub VerPantalla_Click()
+    On Error Goto VerPantalla_Click_Err
     Call ParseUserCommand("/SS " & cboListaUsus.Text)
+    Exit Sub
+VerPantalla_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.VerPantalla_Click", Erl)
 End Sub
 
 
 Private Sub Vida_Click()
+    On Error Goto Vida_Click_Err
     
     On Error GoTo Vida_Click_Err
     
@@ -3801,9 +4354,13 @@ Vida_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Vida_Click", Erl)
     Resume Next
     
+    Exit Sub
+Vida_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.Vida_Click", Erl)
 End Sub
 
 Private Sub ReadNick()
+    On Error Goto ReadNick_Err
     
     On Error GoTo ReadNick_Err
     
@@ -3828,9 +4385,13 @@ ReadNick_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.ReadNick", Erl)
     Resume Next
     
+    Exit Sub
+ReadNick_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.ReadNick", Erl)
 End Sub
 
 Private Sub YoAcciones_Click(Index As Integer)
+    On Error Goto YoAcciones_Click_Err
     
     On Error GoTo YoAcciones_Click_Err
     
@@ -3855,9 +4416,13 @@ YoAcciones_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.YoAcciones_Click", Erl)
     Resume Next
     
+    Exit Sub
+YoAcciones_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.YoAcciones_Click", Erl)
 End Sub
 
 Private Sub mnuConsulta_Click()
+    On Error Goto mnuConsulta_Click_Err
     
     Dim nick As String
         nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
@@ -3868,8 +4433,12 @@ Private Sub mnuConsulta_Click()
         
     End If
 
+    Exit Sub
+mnuConsulta_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.mnuConsulta_Click", Erl)
 End Sub
 Public Sub CadenaChat(ByVal chat As String)
+    On Error Goto CadenaChat_Err
 
 
         Dim Cadena        As String
@@ -4029,9 +4598,13 @@ Public Sub CadenaChat(ByVal chat As String)
                     If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
                 End If
             End If
+    Exit Sub
+CadenaChat_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.CadenaChat", Erl)
 End Sub
 
 Function GuardarTextoEnArchivo(ByVal Cadena As String, ByVal nombreArchivo As String) As Boolean
+    On Error Goto GuardarTextoEnArchivo_Err
     On Error GoTo ErrorHandler
     
     Dim fileNumber As Integer
@@ -4054,4 +4627,7 @@ Function GuardarTextoEnArchivo(ByVal Cadena As String, ByVal nombreArchivo As St
 ErrorHandler:
     ' Si hay un error, indicar que la operación falló
     GuardarTextoEnArchivo = False
+    Exit Function
+GuardarTextoEnArchivo_Err:
+    Call TraceError(Err.Number, Err.Description, "frmPanelGm.GuardarTextoEnArchivo", Erl)
 End Function

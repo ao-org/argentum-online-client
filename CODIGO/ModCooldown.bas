@@ -21,12 +21,17 @@ Const HalfCDDrawSize As Integer = CdDrawSize / 2
 Private colorCooldown As RGBA
 
 Public Sub InitializeEffectArrays()
+    On Error Goto InitializeEffectArrays_Err
     ReDim BuffList.EffectList(ACTIVE_EFFECT_LIST_SIZE) As t_ActiveEffect
     ReDim DeBuffList.EffectList(ACTIVE_EFFECT_LIST_SIZE) As t_ActiveEffect
     ReDim CDList.EffectList(ACTIVE_EFFECT_LIST_SIZE) As t_ActiveEffect
+    Exit Sub
+InitializeEffectArrays_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCooldown.InitializeEffectArrays", Erl)
 End Sub
 
 Private Sub DrawEffectCd(ByVal x As Integer, ByVal y As Integer, ByRef Effect As t_ActiveEffect, ByVal currTime As Long, ByRef colors() As RGBA)
+    On Error Goto DrawEffectCd_Err
     Dim Grh As Grh
     Dim angle As Single
     Call InitGrh(Grh, Effect.Grh)
@@ -40,9 +45,13 @@ Private Sub DrawEffectCd(ByVal x As Integer, ByVal y As Integer, ByRef Effect As
     If Effect.StackCount > 1 Then
         RenderText Effect.StackCount, x - 5, y + HalfCDDrawSize - 12, COLOR_WHITE, 4, False
     End If
+    Exit Sub
+DrawEffectCd_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCooldown.DrawEffectCd", Erl)
 End Sub
 
 Public Sub renderCooldowns(ByVal x As Integer, ByVal y As Integer)
+    On Error Goto renderCooldowns_Err
     Dim Item As clsCooldown
     Call SetRGBA(colorCooldown, 125, 125, 125, 120)
     Dim i As Integer
@@ -85,9 +94,13 @@ Public Sub renderCooldowns(ByVal x As Integer, ByVal y As Integer)
         Next i
         CurrentX = x
     End If
+    Exit Sub
+renderCooldowns_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCooldown.renderCooldowns", Erl)
 End Sub
 
 Public Sub renderCooldownsInventory(ByVal x As Integer, ByVal y As Integer, ByVal cdProgress As Single)
+    On Error Goto renderCooldownsInventory_Err
     Call SetRGBA(colorCooldown, 50, 25, 15, 170)
     x = x + 16
     y = y + 16
@@ -108,9 +121,13 @@ Public Sub renderCooldownsInventory(ByVal x As Integer, ByVal y As Integer, ByVa
         i = i + 1
     End If
 
+    Exit Sub
+renderCooldownsInventory_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCooldown.renderCooldownsInventory", Erl)
 End Sub
 
 Public Sub AddOrUpdateEffect(ByRef EffectList As t_ActiveEffectList, ByRef Effect As t_ActiveEffect)
+    On Error Goto AddOrUpdateEffect_Err
 On Error GoTo AddEffect_Err
     Dim Index As Integer
     Index = FindEffectIndex(EffectList, Effect)
@@ -128,9 +145,13 @@ On Error GoTo AddEffect_Err
     Exit Sub
 AddEffect_Err:
       Call RegistrarError(Err.Number, Err.Description, "modCooldowns.AddEffect", Erl)
+    Exit Sub
+AddOrUpdateEffect_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCooldown.AddOrUpdateEffect", Erl)
 End Sub
 
 Public Function FindEffectIndex(ByRef EffectList As t_ActiveEffectList, ByRef Effect As t_ActiveEffect) As Integer
+    On Error Goto FindEffectIndex_Err
     FindEffectIndex = -1
     Dim i As Integer
 100 For i = 0 To EffectList.EffectCount - 1
@@ -140,9 +161,13 @@ Public Function FindEffectIndex(ByRef EffectList As t_ActiveEffectList, ByRef Ef
             Exit Function
         End If
     Next i
+    Exit Function
+FindEffectIndex_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCooldown.FindEffectIndex", Erl)
 End Function
 
 Public Sub RemoveEffect(ByRef EffectList As t_ActiveEffectList, ByRef Effect As t_ActiveEffect)
+    On Error Goto RemoveEffect_Err
 On Error GoTo RemoveEffect_Err
     Dim Index As Integer
     Index = FindEffectIndex(EffectList, Effect)
@@ -153,9 +178,13 @@ On Error GoTo RemoveEffect_Err
     Exit Sub
 RemoveEffect_Err:
       Call RegistrarError(Err.Number, Err.Description, "modCooldowns.RemoveEffect", Erl)
+    Exit Sub
+RemoveEffect_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCooldown.RemoveEffect", Erl)
 End Sub
 
 Public Sub UpdateEffectTime(ByRef EffectList As t_ActiveEffectList, ByVal CurrTime As Long)
+    On Error Goto UpdateEffectTime_Err
     Dim i As Integer
     Dim PendingTime As Long
     i = 0
@@ -167,11 +196,18 @@ Public Sub UpdateEffectTime(ByRef EffectList As t_ActiveEffectList, ByVal CurrTi
             i = i + 1
         End If
     Wend
+    Exit Sub
+UpdateEffectTime_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCooldown.UpdateEffectTime", Erl)
 End Sub
 
 Public Sub ResetAllCd()
+    On Error Goto ResetAllCd_Err
     BuffList.EffectCount = 0
     DeBuffList.EffectCount = 0
     CDList.EffectCount = 0
+    Exit Sub
+ResetAllCd_Err:
+    Call TraceError(Err.Number, Err.Description, "ModCooldown.ResetAllCd", Erl)
 End Sub
 

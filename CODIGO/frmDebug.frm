@@ -63,10 +63,15 @@ Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
 Private Const EM_SCROLLCARET As Long = &HB7
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 Me.TraceBox.Text = vbNullString
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmDebug.Form_Load", Erl)
 End Sub
 
 Public Sub add_text_tracebox(ByVal s As String)
+    On Error Goto add_text_tracebox_Err
 
     With Me.TraceBox
         Me.TraceBox.Text = Me.TraceBox.Text & s & vbCrLf
@@ -74,4 +79,7 @@ Public Sub add_text_tracebox(ByVal s As String)
         Me.TraceBox.SelLength = 0
         SendMessage Me.TraceBox.hWnd, EM_SCROLLCARET, 0, 0
     End With
+    Exit Sub
+add_text_tracebox_Err:
+    Call TraceError(Err.Number, Err.Description, "frmDebug.add_text_tracebox", Erl)
 End Sub

@@ -46,6 +46,7 @@ Private Const MAX_ITERATIONS_HID = 200
 #If DIRECT_PLAY = 0 Then
 Private Reader As Network.Reader
 Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
+    On Error Goto HandleIncomingData_Err
 #Else
 Private Reader As New clsNetReader
 Public Function HandleIncomingData(dpnotify As DxVBLibA.DPNMSG_RECEIVE) As Boolean
@@ -533,9 +534,13 @@ HandleIncomingData_Err:
         HandleIncomingData = False
     End If
 
+    Exit Function
+HandleIncomingData_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleIncomingData", Erl)
 End Function
 
 Private Sub HandleConnected()
+    On Error Goto HandleConnected_Err
 #If DEBUGGING = 1 Then
     Dim i As Integer
     Dim values() As Byte
@@ -551,9 +556,13 @@ Private Sub HandleConnected()
     'We already sent the LoginExistingChar message with the double click event
     Call Login
 #End If
+    Exit Sub
+HandleConnected_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleConnected", Erl)
 End Sub
 
 Private Sub HandleLogged()
+    On Error Goto HandleLogged_Err
 On Error GoTo HandleLogged_Err
  
     newUser = Reader.ReadBool
@@ -612,12 +621,16 @@ HandleLogged_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLogged", Erl)
     
     
+    Exit Sub
+HandleLogged_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleLogged", Erl)
 End Sub
 
 ''
 ' Handles the RemoveDialogs message.
 
 Private Sub HandleRemoveDialogs()
+    On Error Goto HandleRemoveDialogs_Err
 
     'Remove packet ID
     
@@ -631,12 +644,16 @@ HandleRemoveDialogs_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRemoveDialogs", Erl)
     
     
+    Exit Sub
+HandleRemoveDialogs_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleRemoveDialogs", Erl)
 End Sub
 
 ''
 ' Handles the RemoveCharDialog message.
 
 Private Sub HandleRemoveCharDialog()
+    On Error Goto HandleRemoveCharDialog_Err
     
     On Error GoTo HandleRemoveCharDialog_Err
 
@@ -648,12 +665,16 @@ HandleRemoveCharDialog_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRemoveCharDialog", Erl)
     
     
+    Exit Sub
+HandleRemoveCharDialog_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleRemoveCharDialog", Erl)
 End Sub
 
 ''
 ' Handles the NavigateToggle message.
 
 Private Sub HandleNavigateToggle()
+    On Error Goto HandleNavigateToggle_Err
 
     'Remove packet ID
     
@@ -666,9 +687,13 @@ HandleNavigateToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNavigateToggle", Erl)
     
     
+    Exit Sub
+HandleNavigateToggle_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleNavigateToggle", Erl)
 End Sub
 
 Private Sub HandleNadarToggle()
+    On Error Goto HandleNadarToggle_Err
     
     On Error GoTo HandleNadarToggle_Err
 
@@ -681,9 +706,13 @@ HandleNadarToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNadarToggle", Erl)
     
     
+    Exit Sub
+HandleNadarToggle_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleNadarToggle", Erl)
 End Sub
 
 Private Sub HandleEquiteToggle()
+    On Error Goto HandleEquiteToggle_Err
  
     On Error GoTo HandleEquiteToggle_Err
     
@@ -695,9 +724,13 @@ HandleEquiteToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleEquiteToggle", Erl)
     
     
+    Exit Sub
+HandleEquiteToggle_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleEquiteToggle", Erl)
 End Sub
 
 Private Sub HandleVelocidadToggle()
+    On Error Goto HandleVelocidadToggle_Err
     
     On Error GoTo HandleVelocidadToggle_Err
 
@@ -714,9 +747,13 @@ HandleVelocidadToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleVelocidadToggle", Erl)
     
     
+    Exit Sub
+HandleVelocidadToggle_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleVelocidadToggle", Erl)
 End Sub
 
 Private Sub HandleMacroTrabajoToggle()
+    On Error Goto HandleMacroTrabajoToggle_Err
     'Activa o Desactiva el macro de trabajo
     
     On Error GoTo HandleMacroTrabajoToggle_Err
@@ -751,12 +788,16 @@ HandleMacroTrabajoToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMacroTrabajoToggle", Erl)
     
     
+    Exit Sub
+HandleMacroTrabajoToggle_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleMacroTrabajoToggle", Erl)
 End Sub
 
 ''
 ' Handles the Disconnect message.
 
 Public Sub HandleDisconnect()
+    On Error Goto HandleDisconnect_Err
     
     On Error GoTo HandleDisconnect_Err
 
@@ -989,18 +1030,26 @@ Public Sub HandleDisconnect()
     Exit Sub
 HandleDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDisconnect", Erl)
+    Exit Sub
+HandleDisconnect_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleDisconnect", Erl)
 End Sub
 
 Private Function ShouldUnloadForm(ByVal FormName As String) As Boolean
+    On Error Goto ShouldUnloadForm_Err
     If FormName = frmMain.Name Then Exit Function
     If FormName = frmConnect.Name Then Exit Function
     If FormName = frmMensaje.Name Then Exit Function
     ShouldUnloadForm = True
+    Exit Function
+ShouldUnloadForm_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.ShouldUnloadForm", Erl)
 End Function
 ''
 ' Handles the CommerceEnd message.
 
 Private Sub HandleCommerceEnd()
+    On Error Goto HandleCommerceEnd_Err
 
     On Error GoTo HandleCommerceEnd_Err
 
@@ -1016,12 +1065,16 @@ HandleCommerceEnd_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCommerceEnd", Erl)
     
     
+    Exit Sub
+HandleCommerceEnd_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCommerceEnd", Erl)
 End Sub
 
 ''
 ' Handles the BankEnd message.
 
 Private Sub HandleBankEnd()
+    On Error Goto HandleBankEnd_Err
 
     On Error GoTo HandleBankEnd_Err
 
@@ -1034,12 +1087,16 @@ HandleBankEnd_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBankEnd", Erl)
     
     
+    Exit Sub
+HandleBankEnd_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleBankEnd", Erl)
 End Sub
 
 ''
 ' Handles the CommerceInit message.
 
 Private Sub HandleCommerceInit()
+    On Error Goto HandleCommerceInit_Err
     
     On Error GoTo HandleCommerceInit_Err
     Dim i       As Long
@@ -1068,12 +1125,16 @@ HandleCommerceInit_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCommerceInit", Erl)
     
     
+    Exit Sub
+HandleCommerceInit_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCommerceInit", Erl)
 End Sub
 
 ''
 ' Handles the BankInit message.
 
 Private Sub HandleBankInit()
+    On Error Goto HandleBankInit_Err
     
     On Error GoTo HandleBankInit_Err
 
@@ -1101,9 +1162,13 @@ HandleBankInit_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBankInit", Erl)
     
     
+    Exit Sub
+HandleBankInit_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleBankInit", Erl)
 End Sub
 
 Private Sub HandleGoliath()
+    On Error Goto HandleGoliath_Err
     
     On Error GoTo HandleGoliathInit_Err
 
@@ -1122,9 +1187,13 @@ HandleGoliathInit_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGoliathInit", Erl)
     
     
+    Exit Sub
+HandleGoliath_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleGoliath", Erl)
 End Sub
 
 Private Sub HandleShowFrmLogear()
+    On Error Goto HandleShowFrmLogear_Err
     
     On Error GoTo HandleShowFrmLogear_Err
 
@@ -1139,9 +1208,13 @@ HandleShowFrmLogear_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowFrmLogear", Erl)
     
     
+    Exit Sub
+HandleShowFrmLogear_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowFrmLogear", Erl)
 End Sub
 
 Private Sub HandleShowFrmMapa()
+    On Error Goto HandleShowFrmMapa_Err
     
     On Error GoTo HandleShowFrmMapa_Err
 
@@ -1162,12 +1235,16 @@ HandleShowFrmMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowFrmMapa", Erl)
     
     
+    Exit Sub
+HandleShowFrmMapa_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowFrmMapa", Erl)
 End Sub
 
 ''
 ' Handles the UserCommerceInit message.
 
 Private Sub HandleUserCommerceInit()
+    On Error Goto HandleUserCommerceInit_Err
     
     On Error GoTo HandleUserCommerceInit_Err
 
@@ -1203,12 +1280,16 @@ HandleUserCommerceInit_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCommerceInit", Erl)
     
     
+    Exit Sub
+HandleUserCommerceInit_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUserCommerceInit", Erl)
 End Sub
 
 ''
 ' Handles the UserCommerceEnd message.
 
 Private Sub HandleUserCommerceEnd()
+    On Error Goto HandleUserCommerceEnd_Err
 
     On Error GoTo HandleUserCommerceEnd_Err
     
@@ -1222,12 +1303,16 @@ HandleUserCommerceEnd_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCommerceEnd", Erl)
     
     
+    Exit Sub
+HandleUserCommerceEnd_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUserCommerceEnd", Erl)
 End Sub
 
 ''
 ' Handles the ShowBlacksmithForm message.
 
 Private Sub HandleShowBlacksmithForm()
+    On Error Goto HandleShowBlacksmithForm_Err
 
     On Error GoTo HandleShowBlacksmithForm_Err
     
@@ -1263,12 +1348,16 @@ HandleShowBlacksmithForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowBlacksmithForm", Erl)
     
     
+    Exit Sub
+HandleShowBlacksmithForm_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowBlacksmithForm", Erl)
 End Sub
 
 ''
 ' Handles the ShowCarpenterForm message.
 
 Private Sub HandleShowCarpenterForm()
+    On Error Goto HandleShowCarpenterForm_Err
 
     On Error GoTo HandleShowCarpenterForm_Err
 
@@ -1289,9 +1378,13 @@ HandleShowCarpenterForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowCarpenterForm", Erl)
     
     
+    Exit Sub
+HandleShowCarpenterForm_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowCarpenterForm", Erl)
 End Sub
 
 Private Sub HandleShowAlquimiaForm()
+    On Error Goto HandleShowAlquimiaForm_Err
   
     On Error GoTo HandleShowAlquimiaForm_Err
     
@@ -1320,9 +1413,13 @@ HandleShowAlquimiaForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowAlquimiaForm", Erl)
     
     
+    Exit Sub
+HandleShowAlquimiaForm_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowAlquimiaForm", Erl)
 End Sub
 
 Private Sub HandleShowSastreForm()
+    On Error Goto HandleShowSastreForm_Err
   
     On Error GoTo HandleShowSastreForm_Err
         
@@ -1361,12 +1458,16 @@ HandleShowSastreForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSastreForm", Erl)
     
     
+    Exit Sub
+HandleShowSastreForm_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowSastreForm", Erl)
 End Sub
 
 ''
 ' Handles the NPCKillUser message.
 
 Private Sub HandleNPCKillUser()
+    On Error Goto HandleNPCKillUser_Err
 
     On Error GoTo HandleNPCKillUser_Err
         
@@ -1378,12 +1479,16 @@ HandleNPCKillUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNPCKillUser", Erl)
     
     
+    Exit Sub
+HandleNPCKillUser_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleNPCKillUser", Erl)
 End Sub
 
 ''
 ' Handles the BlockedWithShieldUser message.
 
 Private Sub HandleBlockedWithShieldUser()
+    On Error Goto HandleBlockedWithShieldUser_Err
 
     On Error GoTo HandleBlockedWithShieldUser_Err
         
@@ -1395,12 +1500,16 @@ HandleBlockedWithShieldUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlockedWithShieldUser", Erl)
     
     
+    Exit Sub
+HandleBlockedWithShieldUser_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleBlockedWithShieldUser", Erl)
 End Sub
 
 ''
 ' Handles the BlockedWithShieldOther message.
 
 Private Sub HandleBlockedWithShieldOther()
+    On Error Goto HandleBlockedWithShieldOther_Err
 
     On Error GoTo HandleBlockedWithShieldOther_Err
         
@@ -1412,12 +1521,16 @@ HandleBlockedWithShieldOther_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlockedWithShieldOther", Erl)
     
     
+    Exit Sub
+HandleBlockedWithShieldOther_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleBlockedWithShieldOther", Erl)
 End Sub
 
 ''
 ' Handles the UserSwing message.
 
 Private Sub HandleCharSwing()
+    On Error Goto HandleCharSwing_Err
     
     On Error GoTo HandleCharSwing_Err
     
@@ -1454,12 +1567,16 @@ HandleCharSwing_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharSwing", Erl)
     
     
+    Exit Sub
+HandleCharSwing_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCharSwing", Erl)
 End Sub
 
 ''
 ' Handles the SafeModeOn message.
 
 Private Sub HandleSafeModeOn()
+    On Error Goto HandleSafeModeOn_Err
     On Error GoTo HandleSafeModeOn_Err
     SeguroGame = True
     Call frmMain.DibujarSeguro
@@ -1473,12 +1590,16 @@ HandleSafeModeOn_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSafeModeOn", Erl)
     
     
+    Exit Sub
+HandleSafeModeOn_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleSafeModeOn", Erl)
 End Sub
 
 ''
 ' Handles the SafeModeOff message.
 
 Private Sub HandleSafeModeOff()
+    On Error Goto HandleSafeModeOff_Err
 
     
     On Error GoTo HandleSafeModeOff_Err
@@ -1493,12 +1614,16 @@ HandleSafeModeOff_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSafeModeOff", Erl)
     
     
+    Exit Sub
+HandleSafeModeOff_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleSafeModeOff", Erl)
 End Sub
 
 ''
 ' Handles the ResuscitationSafeOff message.
 
 Private Sub HandlePartySafeOff()
+    On Error Goto HandlePartySafeOff_Err
 
     
     On Error GoTo HandlePartySafeOff_Err
@@ -1511,9 +1636,13 @@ HandlePartySafeOff_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePartySafeOff", Erl)
     
     
+    Exit Sub
+HandlePartySafeOff_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePartySafeOff", Erl)
 End Sub
 
 Private Sub HandleClanSeguro()
+    On Error Goto HandleClanSeguro_Err
     
     On Error GoTo HandleClanSeguro_Err
 
@@ -1541,9 +1670,13 @@ HandleClanSeguro_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleClanSeguro", Erl)
     
     
+    Exit Sub
+HandleClanSeguro_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleClanSeguro", Erl)
 End Sub
 
 Private Sub HandleIntervals()
+    On Error Goto HandleIntervals_Err
     
     On Error GoTo HandleIntervals_Err
 
@@ -1590,9 +1723,13 @@ HandleIntervals_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleIntervals", Erl)
     
     
+    Exit Sub
+HandleIntervals_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleIntervals", Erl)
 End Sub
 
 Private Sub HandleUpdateUserKey()
+    On Error Goto HandleUpdateUserKey_Err
     
     On Error GoTo HandleUpdateUserKey_Err
  
@@ -1610,9 +1747,13 @@ HandleUpdateUserKey_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateUserKey", Erl)
     
     
+    Exit Sub
+HandleUpdateUserKey_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateUserKey", Erl)
 End Sub
 
 Private Sub HandleUpdateDM()
+    On Error Goto HandleUpdateDM_Err
     
     On Error GoTo HandleUpdateDM_Err
  
@@ -1627,9 +1768,13 @@ HandleUpdateDM_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateDM", Erl)
     
     
+    Exit Sub
+HandleUpdateDM_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateDM", Erl)
 End Sub
 
 Private Sub HandleUpdateRM()
+    On Error Goto HandleUpdateRM_Err
     
     On Error GoTo HandleUpdateRM_Err
  
@@ -1644,10 +1789,14 @@ HandleUpdateRM_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateRM", Erl)
     
     
+    Exit Sub
+HandleUpdateRM_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateRM", Erl)
 End Sub
 
 ' Handles the ResuscitationSafeOn message.
 Private Sub HandlePartySafeOn()
+    On Error Goto HandlePartySafeOn_Err
     On Error GoTo HandlePartySafeOn_Err
 
     Call frmMain.ControlSeguroParty(True)
@@ -1659,12 +1808,16 @@ HandlePartySafeOn_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePartySafeOn", Erl)
     
     
+    Exit Sub
+HandlePartySafeOn_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePartySafeOn", Erl)
 End Sub
 
 ''
 ' Handles the CantUseWhileMeditating message.
 
 Private Sub HandleCantUseWhileMeditating()
+    On Error Goto HandleCantUseWhileMeditating_Err
     On Error GoTo HandleCantUseWhileMeditating_Err
 
     Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_USAR_MEDITANDO"), 255, 0, 0, False, False, False)
@@ -1675,12 +1828,16 @@ HandleCantUseWhileMeditating_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCantUseWhileMeditating", Erl)
     
     
+    Exit Sub
+HandleCantUseWhileMeditating_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCantUseWhileMeditating", Erl)
 End Sub
 
 ''
 ' Handles the UpdateSta message.
 
 Private Sub HandleUpdateSta()
+    On Error Goto HandleUpdateSta_Err
     
     On Error GoTo HandleUpdateSta_Err
 
@@ -1694,12 +1851,16 @@ HandleUpdateSta_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateSta", Erl)
     
     
+    Exit Sub
+HandleUpdateSta_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateSta", Erl)
 End Sub
 
 ''
 ' Handles the UpdateMana message.
 
 Private Sub HandleUpdateMana()
+    On Error Goto HandleUpdateMana_Err
     
     On Error GoTo HandleUpdateMana_Err
 
@@ -1723,9 +1884,13 @@ Private Sub HandleUpdateMana()
     Exit Sub
 HandleUpdateMana_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateMana", Erl)
+    Exit Sub
+HandleUpdateMana_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateMana", Erl)
 End Sub
 
 Private Sub HandleUpdateHP()
+    On Error Goto HandleUpdateHP_Err
 On Error GoTo HandleUpdateHP_Err
     Dim NuevoValor As Long
     Dim Shield As Long
@@ -1759,12 +1924,16 @@ On Error GoTo HandleUpdateHP_Err
     Exit Sub
 HandleUpdateHP_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateHP", Erl)
+    Exit Sub
+HandleUpdateHP_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateHP", Erl)
 End Sub
 
 ''
 ' Handles the UpdateGold message.
 
 Private Sub HandleUpdateGold()
+    On Error Goto HandleUpdateGold_Err
     
     On Error GoTo HandleUpdateGold_Err
     'Get data and update form
@@ -1779,11 +1948,15 @@ HandleUpdateGold_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGold", Erl)
     
     
+    Exit Sub
+HandleUpdateGold_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateGold", Erl)
 End Sub
 
 ''
 ' Handles the UpdateExp message.
 Private Sub HandleUpdateExp()
+    On Error Goto HandleUpdateExp_Err
     On Error GoTo HandleUpdateExp_Err
     'Get data and update form
     UserStats.exp = Reader.ReadInt32()
@@ -1791,9 +1964,13 @@ Private Sub HandleUpdateExp()
     Exit Sub
 HandleUpdateExp_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateExp", Erl)
+    Exit Sub
+HandleUpdateExp_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateExp", Erl)
 End Sub
 
 Private Sub HandleChangeMap()
+    On Error Goto HandleChangeMap_Err
     On Error GoTo HandleChangeMap_Err
     UserMap = Reader.ReadInt16()
     ResourceMap = Reader.ReadInt16()
@@ -1817,12 +1994,16 @@ HandleChangeMap_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeMap", Erl)
     
     
+    Exit Sub
+HandleChangeMap_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleChangeMap", Erl)
 End Sub
 
 ''
 ' Handles the PosUpdate message.
 
 Private Sub HandlePosUpdate()
+    On Error Goto HandlePosUpdate_Err
     
     On Error GoTo HandlePosUpdate_Err
     'Remove char from old position
@@ -1854,12 +2035,16 @@ HandlePosUpdate_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePosUpdate", Erl)
     
     
+    Exit Sub
+HandlePosUpdate_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePosUpdate", Erl)
 End Sub
 
 ''
 ' Handles the PosUpdate message.
 
 Private Sub HandlePosUpdateUserChar()
+    On Error Goto HandlePosUpdateUserChar_Err
     
     On Error GoTo HandlePosUpdateUserChar_Err
 
@@ -1895,6 +2080,9 @@ Private Sub HandlePosUpdateUserChar()
 HandlePosUpdateUserChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePosUpdateUserChar", Erl)
         
+    Exit Sub
+HandlePosUpdateUserChar_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePosUpdateUserChar", Erl)
 End Sub
 ''
 ' Handles the NPCHitUser message.
@@ -1903,6 +2091,7 @@ End Sub
 ' Handles the PosUpdate message.
 
 Private Sub HandlePosUpdateChar()
+    On Error Goto HandlePosUpdateChar_Err
     
     On Error GoTo HandlePosUpdateChar_Err
 
@@ -1935,11 +2124,15 @@ Private Sub HandlePosUpdateChar()
 HandlePosUpdateChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePosUpdateChar", Erl)
         
+    Exit Sub
+HandlePosUpdateChar_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePosUpdateChar", Erl)
 End Sub
 ''
 ' Handles the NPCHitUser message.
 
 Private Sub HandleNPCHitUser()
+    On Error Goto HandleNPCHitUser_Err
     
     On Error GoTo HandleNPCHitUser_Err
 
@@ -1979,12 +2172,16 @@ HandleNPCHitUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNPCHitUser", Erl)
     
     
+    Exit Sub
+HandleNPCHitUser_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleNPCHitUser", Erl)
 End Sub
 
 ''
 ' Handles the UserHittingByUser message.
 
 Private Sub HandleUserHittedByUser()
+    On Error Goto HandleUserHittedByUser_Err
     
     On Error GoTo HandleUserHittedByUser_Err
 
@@ -2035,12 +2232,16 @@ HandleUserHittedByUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserHittedByUser", Erl)
     
     
+    Exit Sub
+HandleUserHittedByUser_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUserHittedByUser", Erl)
 End Sub
 
 ''
 ' Handles the UserHittedUser message.
 
 Private Sub HandleUserHittedUser()
+    On Error Goto HandleUserHittedUser_Err
     
     On Error GoTo HandleUserHittedUser_Err
 
@@ -2093,9 +2294,13 @@ HandleUserHittedUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserHittedUser", Erl)
     
     
+    Exit Sub
+HandleUserHittedUser_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUserHittedUser", Erl)
 End Sub
 
 Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
+    On Error Goto HandleChatOverHeadImpl_Err
                                     ByVal CharIndex As Integer, _
                                     ByVal Color As Long, _
                                     ByVal EsSpell As Boolean, _
@@ -2198,10 +2403,14 @@ On Error GoTo errhandler
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChatOverHeadImpl", Erl)
+    Exit Sub
+HandleChatOverHeadImpl_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleChatOverHeadImpl", Erl)
 End Sub
 
 ' Handles the ChatOverHead message.
 Private Sub HandleLocaleChatOverHead()
+    On Error Goto HandleLocaleChatOverHead_Err
     On Error GoTo errhandler
     Dim ChatId       As Integer
     Dim Params As String
@@ -2226,9 +2435,13 @@ Private Sub HandleLocaleChatOverHead()
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLocaleChatOverHead", Erl)
+    Exit Sub
+HandleLocaleChatOverHead_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleLocaleChatOverHead", Erl)
 End Sub
 ' Handles the ChatOverHead message.
 Private Sub HandleChatOverHead()
+    On Error Goto HandleChatOverHead_Err
 
     On Error GoTo errhandler
 
@@ -2252,9 +2465,13 @@ Private Sub HandleChatOverHead()
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChatOverHead", Erl)
+    Exit Sub
+HandleChatOverHead_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleChatOverHead", Erl)
 End Sub
 
 Private Sub HandleTextOverChar()
+    On Error Goto HandleTextOverChar_Err
 
     On Error GoTo errhandler
     
@@ -2278,9 +2495,13 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverChar", Erl)
     
 
+    Exit Sub
+HandleTextOverChar_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleTextOverChar", Erl)
 End Sub
 
 Private Sub HandleTextOverTile()
+    On Error Goto HandleTextOverTile_Err
 
     On Error GoTo errhandler
     
@@ -2332,9 +2553,13 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverTile", Erl)
     
 
+    Exit Sub
+HandleTextOverTile_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleTextOverTile", Erl)
 End Sub
 
 Private Sub HandleTextCharDrop()
+    On Error Goto HandleTextCharDrop_Err
 
     On Error GoTo errhandler
     
@@ -2393,9 +2618,13 @@ Private Sub HandleTextCharDrop()
     
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextCharDrop", Erl)
+    Exit Sub
+HandleTextCharDrop_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleTextCharDrop", Erl)
 End Sub
 
 Private Sub HandleConsoleCharText()
+    On Error Goto HandleConsoleCharText_Err
     Dim Text      As String
     Dim Color     As Long
     Dim SourceName As String
@@ -2413,11 +2642,15 @@ Private Sub HandleConsoleCharText()
     TextColor = RGBA_From_vbColor(Color)
     
     Call WriteConsoleUserChat(Text, SourceName, TextColor.r, TextColor.G, TextColor.b, SourceStatus, Privileges)
+    Exit Sub
+HandleConsoleCharText_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleConsoleCharText", Erl)
 End Sub
 ''
 ' Handles the ConsoleMessage message.
 
 Private Sub HandleConsoleMessage()
+    On Error Goto HandleConsoleMessage_Err
     
     On Error GoTo errhandler
     
@@ -2556,8 +2789,12 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleConsoleMessage", Erl)
     
 
+    Exit Sub
+HandleConsoleMessage_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleConsoleMessage", Erl)
 End Sub
 Private Sub HandleConsoleFactionMessage()
+    On Error Goto HandleConsoleFactionMessage_Err
     On Error GoTo errhandler
     
     Dim chat As String
@@ -2577,8 +2814,12 @@ Private Sub HandleConsoleFactionMessage()
     
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleConsoleFactionMessage", Erl)
+    Exit Sub
+HandleConsoleFactionMessage_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleConsoleFactionMessage", Erl)
 End Sub
 Private Sub HandleLocaleMsg()
+    On Error Goto HandleLocaleMsg_Err
 
     On Error GoTo errhandler
     
@@ -2647,9 +2888,13 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLocaleMsg", Erl)
     
 
+    Exit Sub
+HandleLocaleMsg_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleLocaleMsg", Erl)
 End Sub
 
 Private Sub HandleGuildChat()
+    On Error Goto HandleGuildChat_Err
     On Error GoTo errhandler
 
     Dim finalChat As String
@@ -2702,8 +2947,12 @@ Private Sub HandleGuildChat()
 
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildChat", Erl)
+    Exit Sub
+HandleGuildChat_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleGuildChat", Erl)
 End Sub
 Private Sub HandleShowMessageBox()
+    On Error Goto HandleShowMessageBox_Err
     On Error GoTo errhandler
     
     Dim mensaje As String
@@ -2737,10 +2986,14 @@ Private Sub HandleShowMessageBox()
 errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowMessageBox", Erl)
+    Exit Sub
+HandleShowMessageBox_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowMessageBox", Erl)
 End Sub
 
 
 Private Sub HandleMostrarCuenta()
+    On Error Goto HandleMostrarCuenta_Err
 On Error GoTo errhandler
     
     AlphaNiebla = 30
@@ -2794,12 +3047,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMostrarCuenta", Erl)
     
 
+    Exit Sub
+HandleMostrarCuenta_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleMostrarCuenta", Erl)
 End Sub
 
 ''
 ' Handles the UserIndexInServer message.
 
 Private Sub HandleUserIndexInServer()
+    On Error Goto HandleUserIndexInServer_Err
     
     On Error GoTo HandleUserIndexInServer_Err
 
@@ -2811,12 +3068,16 @@ HandleUserIndexInServer_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserIndexInServer", Erl)
     
     
+    Exit Sub
+HandleUserIndexInServer_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUserIndexInServer", Erl)
 End Sub
 
 ''
 ' Handles the UserCharIndexInServer message.
 
 Private Sub HandleUserCharIndexInServer()
+    On Error Goto HandleUserCharIndexInServer_Err
     
     On Error GoTo HandleUserCharIndexInServer_Err
 
@@ -2843,12 +3104,16 @@ HandleUserCharIndexInServer_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCharIndexInServer", Erl)
     
     
+    Exit Sub
+HandleUserCharIndexInServer_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUserCharIndexInServer", Erl)
 End Sub
 
 ''
 ' Handles the CharacterCreate message.
 
 Private Sub HandleCharacterCreate()
+    On Error Goto HandleCharacterCreate_Err
 
     On Error GoTo errhandler
     
@@ -2990,10 +3255,14 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterCreate", Erl)
     
 
+    Exit Sub
+HandleCharacterCreate_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCharacterCreate", Erl)
 End Sub
 
 
 Private Sub HandleUpdateFlag()
+    On Error Goto HandleUpdateFlag_Err
 
     On Error GoTo errhandler
 
@@ -3016,9 +3285,13 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTextOverChar", Erl)
     
 
+    Exit Sub
+HandleUpdateFlag_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateFlag", Erl)
 End Sub
 
 Private Sub HandleCharacterRemove()
+    On Error Goto HandleCharacterRemove_Err
 On Error GoTo HandleCharacterRemove_Err
     Dim CharIndex   As Integer
     Dim Desvanecido As Boolean
@@ -3041,12 +3314,16 @@ HandleCharacterRemove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterRemove", Erl)
     
     
+    Exit Sub
+HandleCharacterRemove_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCharacterRemove", Erl)
 End Sub
 
 ''
 ' Handles the CharacterMove message.
 
 Private Sub HandleCharacterMove()
+    On Error Goto HandleCharacterMove_Err
     
     On Error GoTo HandleCharacterMove_Err
 
@@ -3072,9 +3349,13 @@ Private Sub HandleCharacterMove()
 
 HandleCharacterMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterMove", Erl)
+    Exit Sub
+HandleCharacterMove_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCharacterMove", Erl)
 End Sub
 
 Private Sub HandleCharacterTranslate()
+    On Error Goto HandleCharacterTranslate_Err
 On Error GoTo HandleCharacterTranslate_Err
     Dim CharIndex As Integer
     Dim TileX     As Byte
@@ -3089,11 +3370,15 @@ On Error GoTo HandleCharacterTranslate_Err
     Exit Sub
 HandleCharacterTranslate_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterTranslate", Erl)
+    Exit Sub
+HandleCharacterTranslate_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCharacterTranslate", Erl)
 End Sub
 ''
 ' Handles the ForceCharMove message.
 
 Private Sub HandleForceCharMove()
+    On Error Goto HandleForceCharMove_Err
     
     On Error GoTo HandleForceCharMove_Err
     
@@ -3123,12 +3408,16 @@ HandleForceCharMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleForceCharMove", Erl)
     
     
+    Exit Sub
+HandleForceCharMove_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleForceCharMove", Erl)
 End Sub
 
 ''
 ' Handles the ForceCharMove message.
 
 Private Sub HandleForceCharMoveSiguiendo()
+    On Error Goto HandleForceCharMoveSiguiendo_Err
     
     On Error GoTo HandleForceCharMoveSiguiendo_Err
     
@@ -3160,10 +3449,14 @@ HandleForceCharMoveSiguiendo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleForceCharMoveSiguiendo", Erl)
     
     
+    Exit Sub
+HandleForceCharMoveSiguiendo_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleForceCharMoveSiguiendo", Erl)
 End Sub
 
 ' Handles the CharacterChange message.
 Private Sub HandleCharacterChange()
+    On Error Goto HandleCharacterChange_Err
     
     On Error GoTo HandleCharacterChange_Err
     
@@ -3318,12 +3611,16 @@ Private Sub HandleCharacterChange()
 
 HandleCharacterChange_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterChange", Erl)
+    Exit Sub
+HandleCharacterChange_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCharacterChange", Erl)
 End Sub
 
 ''
 ' Handles the ObjectCreate message.
 
 Private Sub HandleObjectCreate()
+    On Error Goto HandleObjectCreate_Err
     
     On Error GoTo HandleObjectCreate_Err
 
@@ -3386,9 +3683,13 @@ HandleObjectCreate_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleObjectCreate", Erl)
     
     
+    Exit Sub
+HandleObjectCreate_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleObjectCreate", Erl)
 End Sub
 
 Private Sub HandleFxPiso()
+    On Error Goto HandleFxPiso_Err
     
     On Error GoTo HandleFxPiso_Err
 
@@ -3410,12 +3711,16 @@ HandleFxPiso_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleFxPiso", Erl)
     
     
+    Exit Sub
+HandleFxPiso_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleFxPiso", Erl)
 End Sub
 
 ''
 ' Handles the ObjectDelete message.
 
 Private Sub HandleObjectDelete()
+    On Error Goto HandleObjectDelete_Err
     
     On Error GoTo HandleObjectDelete_Err
 
@@ -3451,12 +3756,16 @@ HandleObjectDelete_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleObjectDelete", Erl)
     
     
+    Exit Sub
+HandleObjectDelete_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleObjectDelete", Erl)
 End Sub
 
 ''
 ' Handles the BlockPosition message.
 
 Private Sub HandleBlockPosition()
+    On Error Goto HandleBlockPosition_Err
     
     On Error GoTo HandleBlockPosition_Err
 
@@ -3475,12 +3784,16 @@ HandleBlockPosition_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlockPosition", Erl)
     
     
+    Exit Sub
+HandleBlockPosition_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleBlockPosition", Erl)
 End Sub
 
 ''
 ' Handles the PlayMIDI message.
 
 Private Sub HandlePlayMIDI()
+    On Error Goto HandlePlayMIDI_Err
     
     On Error GoTo HandlePlayMIDI_Err
 
@@ -3493,9 +3806,13 @@ HandlePlayMIDI_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePlayMIDI", Erl)
     
     
+    Exit Sub
+HandlePlayMIDI_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePlayMIDI", Erl)
 End Sub
 
 Private Sub HandlePlayWave()
+    On Error Goto HandlePlayWave_Err
     On Error GoTo HandlePlayWave_Err
 
     '=== Read packet data ===
@@ -3561,6 +3878,9 @@ Private Sub HandlePlayWave()
 HandlePlayWave_Err:
     ' Log any runtime error for diagnostics
     RegistrarError Err.Number, Err.Description, "Protocol.HandlePlayWave", Erl
+    Exit Sub
+HandlePlayWave_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePlayWave", Erl)
 End Sub
 
 
@@ -3568,6 +3888,7 @@ End Sub
 ' Handles the PlayWave message.
 
 Private Sub HandlePlayWaveStep()
+    On Error Goto HandlePlayWaveStep_Err
     
     On Error GoTo HandlePlayWaveStep_Err
     
@@ -3600,9 +3921,13 @@ HandlePlayWaveStep_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePlayWaveStep", Erl)
     
     
+    Exit Sub
+HandlePlayWaveStep_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePlayWaveStep", Erl)
 End Sub
 
 Private Sub HandlePosLLamadaDeClan()
+    On Error Goto HandlePosLLamadaDeClan_Err
     
     On Error GoTo HandlePosLLamadaDeClan_Err
 
@@ -3627,9 +3952,13 @@ HandlePosLLamadaDeClan_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePosLLamadaDeClan", Erl)
     
     
+    Exit Sub
+HandlePosLLamadaDeClan_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePosLLamadaDeClan", Erl)
 End Sub
 
 Private Sub HandleCharUpdateHP()
+    On Error Goto HandleCharUpdateHP_Err
     
 On Error GoTo HandleCharUpdateHP_Err
     Dim CharIndex As Integer
@@ -3657,9 +3986,13 @@ On Error GoTo HandleCharUpdateHP_Err
 
 HandleCharUpdateHP_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharUpdateHP", Erl)
+    Exit Sub
+HandleCharUpdateHP_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCharUpdateHP", Erl)
 End Sub
 
 Private Sub HandleCharUpdateMAN()
+    On Error Goto HandleCharUpdateMAN_Err
     
     On Error GoTo HandleCharUpdateHP_Err
 
@@ -3682,9 +4015,13 @@ HandleCharUpdateHP_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharUpdateMAN", Erl)
     
     
+    Exit Sub
+HandleCharUpdateMAN_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCharUpdateMAN", Erl)
 End Sub
 
 Private Sub HandleArmaMov()
+    On Error Goto HandleArmaMov_Err
     
     On Error GoTo HandleArmaMov_Err
 
@@ -3707,9 +4044,13 @@ Private Sub HandleArmaMov()
 
 HandleArmaMov_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleArmaMov", Erl)
+    Exit Sub
+HandleArmaMov_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleArmaMov", Erl)
 End Sub
 
 Private Sub HandleCreateProjectile()
+    On Error Goto HandleCreateProjectile_Err
     On Error GoTo HandleCreateProjectile_Err
 
     
@@ -3725,9 +4066,13 @@ Private Sub HandleCreateProjectile()
 
 HandleCreateProjectile_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCreateProjectile", Erl)
+    Exit Sub
+HandleCreateProjectile_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCreateProjectile", Erl)
 End Sub
 
 Private Sub HandleUpdateTrapState()
+    On Error Goto HandleUpdateTrapState_Err
     Dim x, y As Byte
     Dim State As Byte
     State = Reader.ReadInt8()
@@ -3738,9 +4083,13 @@ Private Sub HandleUpdateTrapState()
     Else
         MapData(x, y).Trap.GrhIndex = 0
     End If
+    Exit Sub
+HandleUpdateTrapState_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateTrapState", Erl)
 End Sub
 
 Private Sub HandleUpdateGroupInfo()
+    On Error Goto HandleUpdateGroupInfo_Err
     On Error GoTo HandleUpdateGroupInfo_Err
     Group.GroupSize = Reader.ReadInt8
     Dim i As Integer
@@ -3760,9 +4109,13 @@ Private Sub HandleUpdateGroupInfo()
     Exit Sub
 HandleUpdateGroupInfo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)
+    Exit Sub
+HandleUpdateGroupInfo_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)
 End Sub
 
 Private Sub HandleUpdateCharValue()
+    On Error Goto HandleUpdateCharValue_Err
 On Error GoTo HandleUpdateGroupInfo_Err
     Dim CharIndex As Integer
     Dim CharValueType As Integer
@@ -3777,9 +4130,13 @@ On Error GoTo HandleUpdateGroupInfo_Err
     Exit Sub
 HandleUpdateGroupInfo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateGroupInfo", Erl)
+    Exit Sub
+HandleUpdateCharValue_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateCharValue", Erl)
 End Sub
 
 Private Sub HandleStunStart()
+    On Error Goto HandleStunStart_Err
 On Error GoTo HandleStunStart_Err
     If EstaSiguiendo Then Exit Sub
     Dim duration As Integer
@@ -3790,9 +4147,13 @@ On Error GoTo HandleStunStart_Err
 
 HandleStunStart_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleStunStart", Erl)
+    Exit Sub
+HandleStunStart_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleStunStart", Erl)
 End Sub
 
 Private Sub HandleEscudoMov()
+    On Error Goto HandleEscudoMov_Err
     
     On Error GoTo HandleEscudoMov_Err
 
@@ -3819,12 +4180,16 @@ HandleEscudoMov_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleEscudoMov", Erl)
     
     
+    Exit Sub
+HandleEscudoMov_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleEscudoMov", Erl)
 End Sub
 
 ''
 ' Handles the GuildList message.
 
 Private Sub HandleGuildList()
+    On Error Goto HandleGuildList_Err
 
    
     On Error GoTo errhandler
@@ -3870,12 +4235,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildList", Erl)
     
 
+    Exit Sub
+HandleGuildList_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleGuildList", Erl)
 End Sub
 
 ''
 ' Handles the AreaChanged message.
 
 Private Sub HandleAreaChanged()
+    On Error Goto HandleAreaChanged_Err
     
     On Error GoTo HandleAreaChanged_Err
 
@@ -3894,12 +4263,16 @@ HandleAreaChanged_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAreaChanged", Erl)
     
     
+    Exit Sub
+HandleAreaChanged_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleAreaChanged", Erl)
 End Sub
 
 ''
 ' Handles the PauseToggle message.
 
 Private Sub HandlePauseToggle()
+    On Error Goto HandlePauseToggle_Err
 
     'Remove packet ID
     
@@ -3913,9 +4286,13 @@ HandlePauseToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePauseToggle", Erl)
     
     
+    Exit Sub
+HandlePauseToggle_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePauseToggle", Erl)
 End Sub
 
 Private Sub HandleRainToggle()
+    On Error Goto HandleRainToggle_Err
     On Error GoTo HandleRainToggle_Err
 
 
@@ -3942,6 +4319,9 @@ HandleRainToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRainToggle", Erl)
 
 
+    Exit Sub
+HandleRainToggle_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleRainToggle", Erl)
 End Sub
 
 
@@ -3949,6 +4329,7 @@ End Sub
 ' Handles the CreateFX message.
 
 Private Sub HandleCreateFX()
+    On Error Goto HandleCreateFX_Err
     
     On Error GoTo HandleCreateFX_Err
 
@@ -3985,12 +4366,16 @@ HandleCreateFX_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCreateFX", Erl)
     
     
+    Exit Sub
+HandleCreateFX_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCreateFX", Erl)
 End Sub
 
 ''
 ' Handles the CharAtaca message.
 
 Private Sub HandleCharAtaca()
+    On Error Goto HandleCharAtaca_Err
     
     On Error GoTo HandleCharAtaca_Err
     
@@ -4033,12 +4418,16 @@ HandleCharAtaca_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharAtaca", Erl)
     
     
+    Exit Sub
+HandleCharAtaca_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCharAtaca", Erl)
 End Sub
 
 ''
 ' Handles the CharAtaca message.
 
 Private Sub HandleNotificarClienteSeguido()
+    On Error Goto HandleNotificarClienteSeguido_Err
     
     On Error GoTo NotificarClienteSeguido_Err
     
@@ -4052,6 +4441,9 @@ NotificarClienteSeguido_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.NotificarClienteSeguido", Erl)
     
     
+    Exit Sub
+HandleNotificarClienteSeguido_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleNotificarClienteSeguido", Erl)
 End Sub
 ''
 ' Handles the UpdateUserStats message.
@@ -4059,6 +4451,7 @@ End Sub
 ' Handles the CharAtaca message.
 
 Private Sub HandleRecievePosSeguimiento()
+    On Error Goto HandleRecievePosSeguimiento_Err
     
     On Error GoTo RecievePosSeguimiento_Err
     
@@ -4077,9 +4470,13 @@ RecievePosSeguimiento_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.RecievePosSeguimiento", Erl)
     
     
+    Exit Sub
+HandleRecievePosSeguimiento_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleRecievePosSeguimiento", Erl)
 End Sub
 
 Private Sub HandleCancelarSeguimiento()
+    On Error Goto HandleCancelarSeguimiento_Err
     
     On Error GoTo CancelarSeguimiento_Err
     
@@ -4093,9 +4490,13 @@ Private Sub HandleCancelarSeguimiento()
 CancelarSeguimiento_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.CancelarSeguimiento", Erl)
     
+    Exit Sub
+HandleCancelarSeguimiento_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCancelarSeguimiento", Erl)
 End Sub
 
 Private Sub HandleGetInventarioHechizos()
+    On Error Goto HandleGetInventarioHechizos_Err
     
     On Error GoTo GetInventarioHechizos_Err
     
@@ -4122,10 +4523,14 @@ Private Sub HandleGetInventarioHechizos()
 GetInventarioHechizos_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.GetInventarioHechizos", Erl)
     
+    Exit Sub
+HandleGetInventarioHechizos_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleGetInventarioHechizos", Erl)
 End Sub
 
 
 Private Sub HandleNotificarClienteCasteo()
+    On Error Goto HandleNotificarClienteCasteo_Err
     
     On Error GoTo NotificarClienteCasteo_Err
     
@@ -4147,11 +4552,15 @@ Private Sub HandleNotificarClienteCasteo()
 NotificarClienteCasteo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.NotificarClienteCasteo", Erl)
     
+    Exit Sub
+HandleNotificarClienteCasteo_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleNotificarClienteCasteo", Erl)
 End Sub
 
 
 
 Private Sub HandleSendFollowingCharindex()
+    On Error Goto HandleSendFollowingCharindex_Err
     
     On Error GoTo SendFollowingCharindex_Err
     
@@ -4166,10 +4575,14 @@ Private Sub HandleSendFollowingCharindex()
 SendFollowingCharindex_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.SendFollowingCharindex", Erl)
     
+    Exit Sub
+HandleSendFollowingCharindex_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleSendFollowingCharindex", Erl)
 End Sub
 
 
 Private Sub HandleUpdateUserStats()
+    On Error Goto HandleUpdateUserStats_Err
 On Error GoTo HandleUpdateUserStats_Err
     UserStats.MaxHp = Reader.ReadInt16()
     UserStats.MinHp = Reader.ReadInt16()
@@ -4213,12 +4626,16 @@ HandleUpdateUserStats_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateUserStats", Erl)
     
     
+    Exit Sub
+HandleUpdateUserStats_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateUserStats", Erl)
 End Sub
 
 ''
 ' Handles the WorkRequestTarget message.
 
 Private Sub HandleWorkRequestTarget()
+    On Error Goto HandleWorkRequestTarget_Err
     On Error GoTo HandleWorkRequestTarget_Err
     Dim UsingSkillREcibido As Byte
     
@@ -4272,12 +4689,16 @@ Private Sub HandleWorkRequestTarget()
     Exit Sub
 HandleWorkRequestTarget_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleWorkRequestTarget", Erl)
+    Exit Sub
+HandleWorkRequestTarget_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleWorkRequestTarget", Erl)
 End Sub
 
 ''
 ' Handles the ChangeInventorySlot message.
 
 Private Sub HandleChangeInventorySlot()
+    On Error Goto HandleChangeInventorySlot_Err
 
     On Error GoTo errhandler
     
@@ -4381,22 +4802,30 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeInventorySlot", Erl)
     
 
+    Exit Sub
+HandleChangeInventorySlot_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleChangeInventorySlot", Erl)
 End Sub
 
 ' Handles the InventoryUnlockSlots message.
 Private Sub HandleInventoryUnlockSlots()
+    On Error Goto HandleInventoryUnlockSlots_Err
 On Error GoTo HandleInventoryUnlockSlots_Err
     UserInvUnlocked = Reader.ReadInt8
     Call frmMain.UnlockInvslot(UserInvUnlocked)
     Exit Sub
 HandleInventoryUnlockSlots_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleInventoryUnlockSlots", Erl)
+    Exit Sub
+HandleInventoryUnlockSlots_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleInventoryUnlockSlots", Erl)
 End Sub
 
 ''
 ' Handles the ChangeBankSlot message.
 
 Private Sub HandleChangeBankSlot()
+    On Error Goto HandleChangeBankSlot_Err
     
     On Error GoTo errhandler
     
@@ -4431,12 +4860,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeBankSlot", Erl)
     
 
+    Exit Sub
+HandleChangeBankSlot_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleChangeBankSlot", Erl)
 End Sub
 
 ''
 ' Handles the ChangeSpellSlot message
 
 Private Sub HandleChangeSpellSlot()
+    On Error Goto HandleChangeSpellSlot_Err
 
     On Error GoTo errhandler
     
@@ -4469,12 +4902,16 @@ Private Sub HandleChangeSpellSlot()
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeSpellSlot", Erl)
+    Exit Sub
+HandleChangeSpellSlot_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleChangeSpellSlot", Erl)
 End Sub
 
 ''
 ' Handles the Attributes message.
 
 Private Sub HandleAtributes()
+    On Error Goto HandleAtributes_Err
     
     On Error GoTo HandleAtributes_Err
 
@@ -4504,12 +4941,16 @@ HandleAtributes_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAtributes", Erl)
     
     
+    Exit Sub
+HandleAtributes_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleAtributes", Erl)
 End Sub
 
 ''
 ' Handles the BlacksmithWeapons message.
 
 Private Sub HandleBlacksmithWeapons()
+    On Error Goto HandleBlacksmithWeapons_Err
 
     
     On Error GoTo errhandler
@@ -4543,12 +4984,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithWeapons", Erl)
     
 
+    Exit Sub
+HandleBlacksmithWeapons_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleBlacksmithWeapons", Erl)
 End Sub
 
 ''
 ' Handles the BlacksmithArmors message.
 
 Private Sub HandleBlacksmithArmors()
+    On Error Goto HandleBlacksmithArmors_Err
 
     
     On Error GoTo errhandler
@@ -4612,10 +5057,14 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithArmors", Erl)
     
 
+    Exit Sub
+HandleBlacksmithArmors_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleBlacksmithArmors", Erl)
 End Sub
 
 
 Private Sub HandleBlacksmithExtraObjects()
+    On Error Goto HandleBlacksmithExtraObjects_Err
 
     
     On Error GoTo ErrHandler
@@ -4641,12 +5090,16 @@ ErrHandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithExtraObjects", Erl)
     
 
+    Exit Sub
+HandleBlacksmithExtraObjects_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleBlacksmithExtraObjects", Erl)
 End Sub
 
 ''
 ' Handles the CarpenterObjects message.
 
 Private Sub HandleCarpenterObjects()
+    On Error Goto HandleCarpenterObjects_Err
 
     
     On Error GoTo errhandler
@@ -4678,9 +5131,13 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCarpenterObjects", Erl)
     
 
+    Exit Sub
+HandleCarpenterObjects_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCarpenterObjects", Erl)
 End Sub
 
 Private Sub HandleSastreObjects()
+    On Error Goto HandleSastreObjects_Err
 
     
     On Error GoTo errhandler
@@ -4748,10 +5205,14 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSastreObjects", Erl)
     
 
+    Exit Sub
+HandleSastreObjects_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleSastreObjects", Erl)
 End Sub
 
 
 Private Sub HandleAlquimiaObjects()
+    On Error Goto HandleAlquimiaObjects_Err
 
     
     On Error GoTo errhandler
@@ -4787,12 +5248,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAlquimiaObjects", Erl)
     
 
+    Exit Sub
+HandleAlquimiaObjects_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleAlquimiaObjects", Erl)
 End Sub
 
 ''
 ' Handles the RestOK message.
 
 Private Sub HandleRestOK()
+    On Error Goto HandleRestOK_Err
 
     'Remove packet ID
     
@@ -4806,9 +5271,13 @@ HandleRestOK_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleRestOK", Erl)
     
     
+    Exit Sub
+HandleRestOK_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleRestOK", Erl)
 End Sub
 
 Private Sub HandleErrorMessage()
+    On Error Goto HandleErrorMessage_Err
     On Error GoTo errhandler
     GetRemoteError = True
     Dim str As String
@@ -4818,12 +5287,16 @@ Private Sub HandleErrorMessage()
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleErrorMessage", Erl)
+    Exit Sub
+HandleErrorMessage_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleErrorMessage", Erl)
 End Sub
 
 ''
 ' Handles the Blind message.
 
 Private Sub HandleBlind()
+    On Error Goto HandleBlind_Err
    
     'Remove packet ID
     
@@ -4840,12 +5313,16 @@ HandleBlind_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlind", Erl)
     
     
+    Exit Sub
+HandleBlind_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleBlind", Erl)
 End Sub
 
 ''
 ' Handles the Dumb message.
 
 Private Sub HandleDumb()
+    On Error Goto HandleDumb_Err
 
     'Remove packet ID
     
@@ -4859,12 +5336,16 @@ HandleDumb_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDumb", Erl)
     
     
+    Exit Sub
+HandleDumb_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleDumb", Erl)
 End Sub
 
 ''
 ' Handles the ShowSignal message.
 
 Private Sub HandleShowSignal()
+    On Error Goto HandleShowSignal_Err
 
     On Error GoTo errhandler
     
@@ -4883,12 +5364,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSignal", Erl)
     
 
+    Exit Sub
+HandleShowSignal_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowSignal", Erl)
 End Sub
 
 ''
 ' Handles the ChangeNPCInventorySlot message.
 
 Private Sub HandleChangeNPCInventorySlot()
+    On Error Goto HandleChangeNPCInventorySlot_Err
     On Error GoTo errhandler
     
     Dim Slot As Byte
@@ -4921,12 +5406,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeNPCInventorySlot", Erl)
     
 
+    Exit Sub
+HandleChangeNPCInventorySlot_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleChangeNPCInventorySlot", Erl)
 End Sub
 
 ''
 ' Handles the UpdateHungerAndThirst message.
 
 Private Sub HandleUpdateHungerAndThirst()
+    On Error Goto HandleUpdateHungerAndThirst_Err
 On Error GoTo HandleUpdateHungerAndThirst_Err
   
     UserStats.MaxAGU = Reader.ReadInt8()
@@ -4942,9 +5431,13 @@ HandleUpdateHungerAndThirst_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateHungerAndThirst", Erl)
     
     
+    Exit Sub
+HandleUpdateHungerAndThirst_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateHungerAndThirst", Erl)
 End Sub
 
 Private Sub HandleHora()
+    On Error Goto HandleHora_Err
     
     
     On Error GoTo HandleHora_Err
@@ -4963,9 +5456,13 @@ HandleHora_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleHora", Erl)
     
     
+    Exit Sub
+HandleHora_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleHora", Erl)
 End Sub
  
 Private Sub HandleLight()
+    On Error Goto HandleLight_Err
     
     On Error GoTo HandleLight_Err
  
@@ -4981,9 +5478,13 @@ HandleLight_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLight", Erl)
     
     
+    Exit Sub
+HandleLight_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleLight", Erl)
 End Sub
  
 Private Sub HandleFYA()
+    On Error Goto HandleFYA_Err
     
     On Error GoTo HandleFYA_Err
     
@@ -5020,9 +5521,13 @@ HandleFYA_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleFYA", Erl)
     
     
+    Exit Sub
+HandleFYA_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleFYA", Erl)
 End Sub
 
 Private Sub HandleUpdateNPCSimbolo()
+    On Error Goto HandleUpdateNPCSimbolo_Err
     
     On Error GoTo HandleUpdateNPCSimbolo_Err
     
@@ -5042,9 +5547,13 @@ HandleUpdateNPCSimbolo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateNPCSimbolo", Erl)
     
     
+    Exit Sub
+HandleUpdateNPCSimbolo_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateNPCSimbolo", Erl)
 End Sub
 
 Private Sub HandleCerrarleCliente()
+    On Error Goto HandleCerrarleCliente_Err
     On Error GoTo HandleCerrarleCliente_Err
     
     EngineRun = False
@@ -5057,9 +5566,13 @@ HandleCerrarleCliente_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCerrarleCliente", Erl)
     
     
+    Exit Sub
+HandleCerrarleCliente_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCerrarleCliente", Erl)
 End Sub
 
 Private Sub HandleContadores()
+    On Error Goto HandleContadores_Err
     
     On Error GoTo HandleContadores_Err
    
@@ -5075,9 +5588,13 @@ HandleContadores_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleContadores", Erl)
     
     
+    Exit Sub
+HandleContadores_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleContadores", Erl)
 End Sub
 
 Private Sub HandleShowPapiro()
+    On Error Goto HandleShowPapiro_Err
     On Error GoTo HandleShowPapiro_Err
     
     frmMensajePapiro.Show , GetGameplayForm()
@@ -5087,9 +5604,13 @@ Private Sub HandleShowPapiro()
 
 HandleShowPapiro_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPapiro", Erl)
+    Exit Sub
+HandleShowPapiro_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowPapiro", Erl)
 End Sub
 
 Private Sub HandleUpdateCooldownType()
+    On Error Goto HandleUpdateCooldownType_Err
     On Error GoTo HandleUpdateCooldownType_Err
     
     Dim CDType As Byte
@@ -5099,11 +5620,15 @@ Private Sub HandleUpdateCooldownType()
 
 HandleUpdateCooldownType_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateCooldownType", Erl)
+    Exit Sub
+HandleUpdateCooldownType_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateCooldownType", Erl)
 End Sub
 
 ''
 ' Handles the MiniStats message.
 Private Sub HandleFlashScreen()
+    On Error Goto HandleFlashScreen_Err
     
     On Error GoTo HandleEfectToScreen_Err
 
@@ -5135,9 +5660,13 @@ HandleEfectToScreen_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleEfectToScreen", Erl)
     
     
+    Exit Sub
+HandleFlashScreen_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleFlashScreen", Erl)
 End Sub
 
 Private Sub HandleMiniStats()
+    On Error Goto HandleMiniStats_Err
     
     On Error GoTo HandleMiniStats_Err
     
@@ -5178,12 +5707,16 @@ HandleMiniStats_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMiniStats", Erl)
     
     
+    Exit Sub
+HandleMiniStats_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleMiniStats", Erl)
 End Sub
 
 ''
 ' Handles the LevelUp message.
 
 Private Sub HandleLevelUp()
+    On Error Goto HandleLevelUp_Err
     
     On Error GoTo HandleLevelUp_Err
  
@@ -5196,12 +5729,16 @@ HandleLevelUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLevelUp", Erl)
     
     
+    Exit Sub
+HandleLevelUp_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleLevelUp", Erl)
 End Sub
 
 ''
 ' Handles the AddForumMessage message.
 
 Private Sub HandleAddForumMessage()
+    On Error Goto HandleAddForumMessage_Err
  
     On Error GoTo errhandler
     
@@ -5219,12 +5756,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAddForumMessage", Erl)
     
 
+    Exit Sub
+HandleAddForumMessage_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleAddForumMessage", Erl)
 End Sub
 
 ''
 ' Handles the ShowForumForm message.
 
 Private Sub HandleShowForumForm()
+    On Error Goto HandleShowForumForm_Err
 
     
     On Error GoTo HandleShowForumForm_Err
@@ -5236,12 +5777,16 @@ HandleShowForumForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowForumForm", Erl)
     
     
+    Exit Sub
+HandleShowForumForm_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowForumForm", Erl)
 End Sub
 
 ''
 ' Handles the SetInvisible message.
 
 Private Sub HandleSetInvisible()
+    On Error Goto HandleSetInvisible_Err
     
     On Error GoTo HandleSetInvisible_Err
 
@@ -5291,10 +5836,14 @@ HandleSetInvisible_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSetInvisible", Erl)
     
     
+    Exit Sub
+HandleSetInvisible_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleSetInvisible", Erl)
 End Sub
 
 
 Private Sub HandleMeditateToggle()
+    On Error Goto HandleMeditateToggle_Err
 On Error GoTo HandleMeditateToggle_Err
     
     Dim CharIndex As Integer, Fx As Integer
@@ -5352,12 +5901,16 @@ HandleMeditateToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleMeditateToggle", Erl)
     
     
+    Exit Sub
+HandleMeditateToggle_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleMeditateToggle", Erl)
 End Sub
 
 ''
 ' Handles the BlindNoMore message.
 
 Private Sub HandleBlindNoMore()
+    On Error Goto HandleBlindNoMore_Err
 
     'Remove packet ID
     
@@ -5373,12 +5926,16 @@ HandleBlindNoMore_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlindNoMore", Erl)
     
     
+    Exit Sub
+HandleBlindNoMore_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleBlindNoMore", Erl)
 End Sub
 
 ''
 ' Handles the DumbNoMore message.
 
 Private Sub HandleDumbNoMore()
+    On Error Goto HandleDumbNoMore_Err
 
     'Remove packet ID
     
@@ -5392,12 +5949,16 @@ HandleDumbNoMore_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDumbNoMore", Erl)
     
     
+    Exit Sub
+HandleDumbNoMore_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleDumbNoMore", Erl)
 End Sub
 
 ''
 ' Handles the SendSkills message.
 
 Private Sub HandleSendSkills()
+    On Error Goto HandleSendSkills_Err
     
     On Error GoTo HandleSendSkills_Err
 
@@ -5426,12 +5987,16 @@ HandleSendSkills_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendSkills", Erl)
     
     
+    Exit Sub
+HandleSendSkills_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleSendSkills", Erl)
 End Sub
 
 ''
 ' Handles the TrainerCreatureList message.
 
 Private Sub HandleTrainerCreatureList()
+    On Error Goto HandleTrainerCreatureList_Err
 
     On Error GoTo errhandler
     
@@ -5454,12 +6019,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleTrainerCreatureList", Erl)
     
 
+    Exit Sub
+HandleTrainerCreatureList_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleTrainerCreatureList", Erl)
 End Sub
 
 ''
 ' Handles the GuildNews message.
 
 Private Sub HandleGuildNews()
+    On Error Goto HandleGuildNews_Err
 
     On Error GoTo errhandler
     
@@ -5564,12 +6133,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildNews", Erl)
     
 
+    Exit Sub
+HandleGuildNews_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleGuildNews", Erl)
 End Sub
 
 ''
 ' Handles the OfferDetails message.
 
 Private Sub HandleOfferDetails()
+    On Error Goto HandleOfferDetails_Err
 
     On Error GoTo errhandler
     
@@ -5582,12 +6155,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleOfferDetails", Erl)
     
 
+    Exit Sub
+HandleOfferDetails_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleOfferDetails", Erl)
 End Sub
 
 ''
 ' Handles the AlianceProposalsList message.
 
 Private Sub HandleAlianceProposalsList()
+    On Error Goto HandleAlianceProposalsList_Err
 
     On Error GoTo errhandler
     
@@ -5611,12 +6188,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAlianceProposalsList", Erl)
     
 
+    Exit Sub
+HandleAlianceProposalsList_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleAlianceProposalsList", Erl)
 End Sub
 
 ''
 ' Handles the PeaceProposalsList message.
 
 Private Sub HandlePeaceProposalsList()
+    On Error Goto HandlePeaceProposalsList_Err
 
     On Error GoTo errhandler
     
@@ -5640,12 +6221,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePeaceProposalsList", Erl)
     
 
+    Exit Sub
+HandlePeaceProposalsList_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePeaceProposalsList", Erl)
 End Sub
 
 ''
 ' Handles the CharacterInfo message.
 
 Private Sub HandleCharacterInfo()
+    On Error Goto HandleCharacterInfo_Err
 
     On Error GoTo errhandler
     
@@ -5711,12 +6296,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterInfo", Erl)
     
 
+    Exit Sub
+HandleCharacterInfo_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCharacterInfo", Erl)
 End Sub
 
 ''
 ' Handles the GuildLeaderInfo message.
 
 Private Sub HandleGuildLeaderInfo()
+    On Error Goto HandleGuildLeaderInfo_Err
 
     On Error GoTo errhandler
     
@@ -5838,12 +6427,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildLeaderInfo", Erl)
     
 
+    Exit Sub
+HandleGuildLeaderInfo_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleGuildLeaderInfo", Erl)
 End Sub
 
 ''
 ' Handles the GuildDetails message.
 
 Private Sub HandleGuildDetails()
+    On Error Goto HandleGuildDetails_Err
 
     On Error GoTo errhandler
     
@@ -5884,12 +6477,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildDetails", Erl)
     
 
+    Exit Sub
+HandleGuildDetails_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleGuildDetails", Erl)
 End Sub
 
 ''
 ' Handles the ShowGuildFundationForm message.
 
 Private Sub HandleShowGuildFundationForm()
+    On Error Goto HandleShowGuildFundationForm_Err
 
     'Remove packet ID
     
@@ -5904,12 +6501,16 @@ HandleShowGuildFundationForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowGuildFundationForm", Erl)
     
     
+    Exit Sub
+HandleShowGuildFundationForm_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowGuildFundationForm", Erl)
 End Sub
 
 ''
 ' Handles the ParalizeOK message.
 
 Private Sub HandleParalizeOK()
+    On Error Goto HandleParalizeOK_Err
 
     'Remove packet ID
     
@@ -5923,9 +6524,13 @@ HandleParalizeOK_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParalizeOK", Erl)
     
     
+    Exit Sub
+HandleParalizeOK_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleParalizeOK", Erl)
 End Sub
 
 Private Sub HandleInmovilizadoOK()
+    On Error Goto HandleInmovilizadoOK_Err
 
     'Remove packet ID
     On Error GoTo HandleInmovilizadoOK_Err
@@ -5938,12 +6543,16 @@ HandleInmovilizadoOK_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleInmovilizadoOK", Erl)
     
     
+    Exit Sub
+HandleInmovilizadoOK_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleInmovilizadoOK", Erl)
 End Sub
 
 ''
 ' Handles the ShowUserRequest message.
 
 Private Sub HandleShowUserRequest()
+    On Error Goto HandleShowUserRequest_Err
 
     On Error GoTo errhandler
     
@@ -5957,12 +6566,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowUserRequest", Erl)
     
 
+    Exit Sub
+HandleShowUserRequest_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowUserRequest", Erl)
 End Sub
 
 ''
 ' Handles the ChangeUserTradeSlot message.
 
 Private Sub HandleChangeUserTradeSlot()
+    On Error Goto HandleChangeUserTradeSlot_Err
 
     On Error GoTo errhandler
     
@@ -6036,12 +6649,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeUserTradeSlot", Erl)
     
 
+    Exit Sub
+HandleChangeUserTradeSlot_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleChangeUserTradeSlot", Erl)
 End Sub
 
 ''
 ' Handles the SpawnList message.
 
 Private Sub HandleSpawnList()
+    On Error Goto HandleSpawnList_Err
 
     On Error GoTo errhandler
     
@@ -6058,12 +6675,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSpawnList", Erl)
     
 
+    Exit Sub
+HandleSpawnList_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleSpawnList", Erl)
 End Sub
 
 ''
 ' Handles the ShowSOSForm message.
 
 Private Sub HandleShowSOSForm()
+    On Error Goto HandleShowSOSForm_Err
 
     On Error GoTo errhandler
     
@@ -6097,12 +6718,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowSOSForm", Erl)
     
 
+    Exit Sub
+HandleShowSOSForm_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowSOSForm", Erl)
 End Sub
 
 ''
 ' Handles the ShowMOTDEditionForm message.
 
 Private Sub HandleShowMOTDEditionForm()
+    On Error Goto HandleShowMOTDEditionForm_Err
 
     On Error GoTo errhandler
     
@@ -6116,12 +6741,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowMOTDEditionForm", Erl)
     
 
+    Exit Sub
+HandleShowMOTDEditionForm_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowMOTDEditionForm", Erl)
 End Sub
 
 ''
 ' Handles the ShowGMPanelForm message.
 
 Private Sub HandleShowGMPanelForm()
+    On Error Goto HandleShowGMPanelForm_Err
 
     'Remove packet ID
     
@@ -6198,9 +6827,13 @@ HandleShowGMPanelForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowGMPanelForm", Erl)
     
     
+    Exit Sub
+HandleShowGMPanelForm_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowGMPanelForm", Erl)
 End Sub
 
 Private Sub HandleShowFundarClanForm()
+    On Error Goto HandleShowFundarClanForm_Err
 
     'Remove packet ID
     
@@ -6215,12 +6848,16 @@ HandleShowFundarClanForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowFundarClanForm", Erl)
     
     
+    Exit Sub
+HandleShowFundarClanForm_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowFundarClanForm", Erl)
 End Sub
 
 ''
 ' Handles the UserNameList message.
 
 Private Sub HandleUserNameList()
+    On Error Goto HandleUserNameList_Err
 
     On Error GoTo errhandler
     
@@ -6248,12 +6885,16 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserNameList", Erl)
     
 
+    Exit Sub
+HandleUserNameList_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUserNameList", Erl)
 End Sub
 
 ''
 ' Handles the UpdateTag message.
 
 Private Sub HandleUpdateTagAndStatus()
+    On Error Goto HandleUpdateTagAndStatus_Err
 
     On Error GoTo errhandler
     
@@ -6292,9 +6933,13 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateTagAndStatus", Erl)
     
 
+    Exit Sub
+HandleUpdateTagAndStatus_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateTagAndStatus", Erl)
 End Sub
 
 Private Sub HandleUserOnline()
+    On Error Goto HandleUserOnline_Err
     
     On Error GoTo errhandler
 
@@ -6312,9 +6957,13 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserOnline", Erl)
     
 
+    Exit Sub
+HandleUserOnline_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUserOnline", Erl)
 End Sub
 
 Private Sub HandleParticleFXToFloor()
+    On Error Goto HandleParticleFXToFloor_Err
     
     On Error GoTo HandleParticleFXToFloor_Err
     
@@ -6363,9 +7012,13 @@ HandleParticleFXToFloor_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParticleFXToFloor", Erl)
     
     
+    Exit Sub
+HandleParticleFXToFloor_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleParticleFXToFloor", Erl)
 End Sub
 
 Private Sub HandleLightToFloor()
+    On Error Goto HandleLightToFloor_Err
     
     On Error GoTo HandleLightToFloor_Err
 
@@ -6423,9 +7076,13 @@ HandleLightToFloor_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLightToFloor", Erl)
     
     
+    Exit Sub
+HandleLightToFloor_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleLightToFloor", Erl)
 End Sub
 
 Private Sub HandleParticleFX()
+    On Error Goto HandleParticleFX_Err
     
     On Error GoTo HandleParticleFX_Err
 
@@ -6480,9 +7137,13 @@ HandleParticleFX_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParticleFX", Erl)
     
     
+    Exit Sub
+HandleParticleFX_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleParticleFX", Erl)
 End Sub
 
 Private Sub HandleParticleFXWithDestino()
+    On Error Goto HandleParticleFXWithDestino_Err
     
     On Error GoTo HandleParticleFXWithDestino_Err
 
@@ -6538,9 +7199,13 @@ HandleParticleFXWithDestino_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParticleFXWithDestino", Erl)
     
     
+    Exit Sub
+HandleParticleFXWithDestino_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleParticleFXWithDestino", Erl)
 End Sub
 
 Private Sub HandleParticleFXWithDestinoXY()
+    On Error Goto HandleParticleFXWithDestinoXY_Err
     
     On Error GoTo HandleParticleFXWithDestinoXY_Err
 
@@ -6588,9 +7253,13 @@ HandleParticleFXWithDestinoXY_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleParticleFXWithDestinoXY", Erl)
     
     
+    Exit Sub
+HandleParticleFXWithDestinoXY_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleParticleFXWithDestinoXY", Erl)
 End Sub
 
 Private Sub HandleAuraToChar()
+    On Error Goto HandleAuraToChar_Err
     
         On Error GoTo HandleAuraToChar_Err
 
@@ -6631,9 +7300,13 @@ HandleAuraToChar_Err:
 134     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAuraToChar " & CharIndex, Erl)
     
     
+    Exit Sub
+HandleAuraToChar_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleAuraToChar", Erl)
 End Sub
 
 Private Sub HandleSpeedToChar()
+    On Error Goto HandleSpeedToChar_Err
     
     On Error GoTo HandleSpeedToChar_Err
 
@@ -6653,9 +7326,13 @@ Private Sub HandleSpeedToChar()
 
 HandleSpeedToChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSpeedToChar", Erl)
+    Exit Sub
+HandleSpeedToChar_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleSpeedToChar", Erl)
 End Sub
 
 Private Sub HandleNieveToggle()
+    On Error Goto HandleNieveToggle_Err
 
     'Remove packet ID
 
@@ -6682,9 +7359,13 @@ HandleNieveToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNieveToggle", Erl)
     
     
+    Exit Sub
+HandleNieveToggle_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleNieveToggle", Erl)
 End Sub
 
 Private Sub HandleNieblaToggle()
+    On Error Goto HandleNieblaToggle_Err
 
     'Remove packet ID
     
@@ -6701,10 +7382,14 @@ HandleNieblaToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNieblaToggle", Erl)
     
     
+    Exit Sub
+HandleNieblaToggle_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleNieblaToggle", Erl)
 End Sub
 
 
 Private Sub HandleBindKeys()
+    On Error Goto HandleBindKeys_Err
     
     On Error GoTo HandleBindKeys_Err
 
@@ -6730,9 +7415,13 @@ HandleBindKeys_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBindKeys", Erl)
     
     
+    Exit Sub
+HandleBindKeys_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleBindKeys", Erl)
 End Sub
 
 Private Sub HandleBarFx()
+    On Error Goto HandleBarFx_Err
     
     On Error GoTo HandleBarFx_Err
 
@@ -6756,9 +7445,13 @@ HandleBarFx_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBarFx", Erl)
     
     
+    Exit Sub
+HandleBarFx_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleBarFx", Erl)
 End Sub
  
 Private Sub HandleQuestDetails()
+    On Error Goto HandleQuestDetails_Err
 
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     'Recibe y maneja el paquete QuestDetails del servidor.
@@ -7055,9 +7748,13 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestDetails", Erl)
     
 
+    Exit Sub
+HandleQuestDetails_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleQuestDetails", Erl)
 End Sub
  
 Public Sub HandleQuestListSend()
+    On Error Goto HandleQuestListSend_Err
 
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     'Recibe y maneja el paquete QuestListSend del servidor.
@@ -7106,9 +7803,13 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestListSend", Erl)
     
 
+    Exit Sub
+HandleQuestListSend_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleQuestListSend", Erl)
 End Sub
 
 Public Sub HandleNpcQuestListSend()
+    On Error Goto HandleNpcQuestListSend_Err
 
     '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     'Recibe y maneja el paquete QuestListSend del servidor.
@@ -7269,9 +7970,13 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
     
     
+    Exit Sub
+HandleNpcQuestListSend_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
 End Sub
 
 Private Sub HandleShowPregunta()
+    On Error Goto HandleShowPregunta_Err
     On Error GoTo errhandler
 
     Dim MsgID As Integer
@@ -7285,11 +7990,15 @@ Private Sub HandleShowPregunta()
 
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowPregunta", Erl)
+    Exit Sub
+HandleShowPregunta_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShowPregunta", Erl)
 End Sub
 
 
 
 Private Sub HandleDatosGrupo()
+    On Error Goto HandleDatosGrupo_Err
     
     On Error GoTo HandleDatosGrupo_Err
     
@@ -7323,9 +8032,13 @@ HandleDatosGrupo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDatosGrupo", Erl)
     
     
+    Exit Sub
+HandleDatosGrupo_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleDatosGrupo", Erl)
 End Sub
 
 Private Sub HandleUbicacion()
+    On Error Goto HandleUbicacion_Err
     
     On Error GoTo HandleUbicacion_Err
     
@@ -7354,9 +8067,13 @@ HandleUbicacion_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUbicacion", Erl)
     
     
+    Exit Sub
+HandleUbicacion_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUbicacion", Erl)
 End Sub
 
 Private Sub HandleViajarForm()
+    On Error Goto HandleViajarForm_Err
     
     On Error GoTo HandleViajarForm_Err
             
@@ -7404,9 +8121,13 @@ HandleViajarForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleViajarForm", Erl)
     
     
+    Exit Sub
+HandleViajarForm_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleViajarForm", Erl)
 End Sub
 
 Private Sub HandleSeguroResu()
+    On Error Goto HandleSeguroResu_Err
     
     'Get data and update form
     SeguroResuX = Reader.ReadBool()
@@ -7420,8 +8141,12 @@ Private Sub HandleSeguroResu()
         frmMain.ImgSegResu = LoadInterface("boton-fantasma-off.bmp")
 
     End If
+    Exit Sub
+HandleSeguroResu_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleSeguroResu", Erl)
 End Sub
 Private Sub HandleLegionarySecure()
+    On Error Goto HandleLegionarySecure_Err
     
     'Get data and update form
    LegionarySecureX = Reader.ReadBool()
@@ -7436,15 +8161,23 @@ Private Sub HandleLegionarySecure()
         frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-off.bmp")
       
     End If
+    Exit Sub
+HandleLegionarySecure_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleLegionarySecure", Erl)
 End Sub
 
 Private Sub HandleStopped()
+    On Error Goto HandleStopped_Err
 
     UserStopped = Reader.ReadBool()
 
+    Exit Sub
+HandleStopped_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleStopped", Erl)
 End Sub
 
 Private Sub HandleInvasionInfo()
+    On Error Goto HandleInvasionInfo_Err
 
     InvasionActual = Reader.ReadInt8
     InvasionPorcentajeVida = Reader.ReadInt8
@@ -7455,18 +8188,26 @@ Private Sub HandleInvasionInfo()
     frmMain.Evento.Interval = 10000
     frmMain.Evento.enabled = True
 
+    Exit Sub
+HandleInvasionInfo_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleInvasionInfo", Erl)
 End Sub
 
 Private Sub HandleCommerceRecieveChatMessage()
+    On Error Goto HandleCommerceRecieveChatMessage_Err
     
     Dim message As String
     message = Reader.ReadString8
         
     Call AddtoRichTextBox(frmComerciarUsu.RecTxt, message, 255, 255, 255, 0, False, True)
     
+    Exit Sub
+HandleCommerceRecieveChatMessage_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCommerceRecieveChatMessage", Erl)
 End Sub
 
 Private Sub HandleDoAnimation()
+    On Error Goto HandleDoAnimation_Err
 
     On Error GoTo HandleDoAnimation_Err
 
@@ -7516,9 +8257,13 @@ Private Sub HandleDoAnimation()
     Exit Sub
 HandleDoAnimation_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDoAnimation", Erl)
+    Exit Sub
+HandleDoAnimation_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleDoAnimation", Erl)
 End Sub
 
 Private Sub HandleOpenCrafting()
+    On Error Goto HandleOpenCrafting_Err
 
     Dim TIPO As Byte
     TIPO = Reader.ReadInt8
@@ -7545,9 +8290,13 @@ Private Sub HandleOpenCrafting()
 
     frmCrafteo.Show , GetGameplayForm()
 
+    Exit Sub
+HandleOpenCrafting_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleOpenCrafting", Erl)
 End Sub
 
 Private Sub HandleCraftingItem()
+    On Error Goto HandleCraftingItem_Err
     Dim Slot As Byte, ObjIndex As Integer
     Slot = Reader.ReadInt8
     ObjIndex = Reader.ReadInt16
@@ -7560,9 +8309,13 @@ Private Sub HandleCraftingItem()
         Call frmCrafteo.InvCraftItems.ClearSlot(Slot)
     End If
     
+    Exit Sub
+HandleCraftingItem_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCraftingItem", Erl)
 End Sub
 
 Private Sub HandleCraftingCatalyst()
+    On Error Goto HandleCraftingCatalyst_Err
     Dim ObjIndex As Integer, Amount As Integer, Porcentaje As Byte
     ObjIndex = Reader.ReadInt16
     Amount = Reader.ReadInt16
@@ -7578,9 +8331,13 @@ Private Sub HandleCraftingCatalyst()
 
     frmCrafteo.PorcentajeAcierto = Porcentaje
     
+    Exit Sub
+HandleCraftingCatalyst_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCraftingCatalyst", Erl)
 End Sub
 
 Private Sub HandleCraftingResult()
+    On Error Goto HandleCraftingResult_Err
     Dim ObjIndex As Integer
     ObjIndex = Reader.ReadInt16
 
@@ -7592,9 +8349,13 @@ Private Sub HandleCraftingResult()
     Else
         Call frmCrafteo.SetResult(0, 0, 0)
     End If
+    Exit Sub
+HandleCraftingResult_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleCraftingResult", Erl)
 End Sub
 
 Public Sub HandleAnswerReset()
+    On Error Goto HandleAnswerReset_Err
     On Error GoTo errhandler
 
     If MsgBox(JsonLanguage.Item("MENSAJEBOX_RESETEAR_PERSONAJE"), vbYesNo, "Resetear personaje") = vbYes Then
@@ -7606,8 +8367,12 @@ Public Sub HandleAnswerReset()
 errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAnswerReset", Erl)
+    Exit Sub
+HandleAnswerReset_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleAnswerReset", Erl)
 End Sub
 Public Sub HandleUpdateBankGld()
+    On Error Goto HandleUpdateBankGld_Err
 
     On Error GoTo errhandler
     
@@ -7621,9 +8386,13 @@ errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateBankGld", Erl)
 
+    Exit Sub
+HandleUpdateBankGld_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateBankGld", Erl)
 End Sub
 
 Public Sub HandlePelearConPezEspecial()
+    On Error Goto HandlePelearConPezEspecial_Err
     On Error GoTo errhandler
     
     PosicionBarra = 1
@@ -7643,9 +8412,13 @@ Public Sub HandlePelearConPezEspecial()
 errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePelearConPezEspecial", Erl)
+    Exit Sub
+HandlePelearConPezEspecial_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePelearConPezEspecial", Erl)
 End Sub
 
 Public Sub HandlePrivilegios()
+    On Error Goto HandlePrivilegios_Err
     On Error GoTo errhandler
     
     EsGM = Reader.ReadBool
@@ -7666,12 +8439,20 @@ Public Sub HandlePrivilegios()
 errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandlePrivilegios", Erl)
+    Exit Sub
+HandlePrivilegios_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandlePrivilegios", Erl)
 End Sub
 
 Public Sub HandleShopPjsInit()
+    On Error Goto HandleShopPjsInit_Err
     frmShopPjsAO20.Show , GetGameplayForm()
+    Exit Sub
+HandleShopPjsInit_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShopPjsInit", Erl)
 End Sub
 Public Sub HandleShopInit()
+    On Error Goto HandleShopInit_Err
     
     Dim cant_obj_shop As Long, i As Long
     
@@ -7691,14 +8472,22 @@ Public Sub HandleShopInit()
         Next i
         frmShopAO20.Show , GetGameplayForm()
  
+    Exit Sub
+HandleShopInit_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleShopInit", Erl)
 End Sub
 
 Public Sub HandleUpdateShopClienteCredits()
+    On Error Goto HandleUpdateShopClienteCredits_Err
     credits_shopAO20 = Reader.ReadInt32
     frmShopAO20.lblCredits.Caption = credits_shopAO20
+    Exit Sub
+HandleUpdateShopClienteCredits_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleUpdateShopClienteCredits", Erl)
 End Sub
 
 Public Sub HandleSendSkillCdUpdate()
+    On Error Goto HandleSendSkillCdUpdate_Err
     On Error GoTo errhandler
         Dim Effect As t_ActiveEffect
         Dim ElapsedTime As Long
@@ -7722,9 +8511,13 @@ Public Sub HandleSendSkillCdUpdate()
         Exit Sub
 errhandler:
 132     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendSkillCdUpdate " & Effect.TypeId, Erl)
+    Exit Sub
+HandleSendSkillCdUpdate_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleSendSkillCdUpdate", Erl)
 End Sub
 
 Public Sub HandleSendClientToggles()
+    On Error Goto HandleSendClientToggles_Err
 On Error GoTo errhandler
     Dim ToggleCount As Integer
     ToggleCount = Reader.ReadInt16
@@ -7740,9 +8533,13 @@ On Error GoTo errhandler
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSendClientToggles", Erl)
+    Exit Sub
+HandleSendClientToggles_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleSendClientToggles", Erl)
 End Sub
 
 Public Sub HandleObjQuestListSend()
+    On Error Goto HandleObjQuestListSend_Err
 
     'Recibe y maneja el paquete QuestListSend del servidor.
 
@@ -7894,9 +8691,13 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
 
 
+    Exit Sub
+HandleObjQuestListSend_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleObjQuestListSend", Erl)
 End Sub
 
 Public Sub HandleDebugDataResponse()
+    On Error Goto HandleDebugDataResponse_Err
     On Error GoTo HandleDebugResponse_Err
     
     Dim cantidadDeMensajes As Integer
@@ -7917,17 +8718,25 @@ Public Sub HandleDebugDataResponse()
     Exit Sub
 HandleDebugResponse_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDebugResponse", Erl)
+    Exit Sub
+HandleDebugDataResponse_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleDebugDataResponse", Erl)
 End Sub
 
 Public Sub HandleAntiCheatStartSession()
+    On Error Goto HandleAntiCheatStartSession_Err
 On Error GoTo HandleAntiCheatStartSession_Err
     Call BeginAntiCheatSession
     Exit Sub
 HandleAntiCheatStartSession_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAntiCheatStartSession", Erl)
+    Exit Sub
+HandleAntiCheatStartSession_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleAntiCheatStartSession", Erl)
 End Sub
 
 Public Sub HandleAntiCheatMessage()
+    On Error Goto HandleAntiCheatMessage_Err
 On Error GoTo HandleAntiCheatMessage_Err
     Dim Buffer() As Byte
     Call Reader.ReadSafeArrayInt8(Buffer)
@@ -7935,9 +8744,13 @@ On Error GoTo HandleAntiCheatMessage_Err
     Exit Sub
 HandleAntiCheatMessage_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleAntiCheatMessage", Erl)
+    Exit Sub
+HandleAntiCheatMessage_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleAntiCheatMessage", Erl)
 End Sub
 
 Public Sub HandleReportLobbyList()
+    On Error Goto HandleReportLobbyList_Err
 On Error GoTo HandleReportLobbyList_Err
     Dim OpenLobbyCount As Integer
     Dim LobbyList() As t_LobbyData
@@ -7967,11 +8780,15 @@ On Error GoTo HandleReportLobbyList_Err
     Exit Sub
 HandleReportLobbyList_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDebugResponse", Erl)
+    Exit Sub
+HandleReportLobbyList_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleReportLobbyList", Erl)
 End Sub
 
 #If PYMMO = 0 Then
     
 Public Sub HandleAccountCharacterList()
+    On Error Goto HandleAccountCharacterList_Err
 
     CantidadDePersonajesEnCuenta = Reader.ReadInt
 
@@ -8045,6 +8862,9 @@ Public Sub HandleAccountCharacterList()
     End If
 
     Call LoadCharacterSelectionScreen
+    Exit Sub
+HandleAccountCharacterList_Err:
+    Call TraceError(Err.Number, Err.Description, "Protocol.HandleAccountCharacterList", Erl)
 End Sub
 #End If
 

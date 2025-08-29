@@ -117,6 +117,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
 If frmtip.Check1.value = vbChecked Then
     tipf = "1"
 Else
@@ -124,9 +125,16 @@ Else
 End If
 
 Unload Me
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmtip.Command1_Click", Erl)
 End Sub
 
 Private Sub Form_Deactivate()
+    On Error Goto Form_Deactivate_Err
 Me.SetFocus
+    Exit Sub
+Form_Deactivate_Err:
+    Call TraceError(Err.Number, Err.Description, "frmtip.Form_Deactivate", Erl)
 End Sub
 

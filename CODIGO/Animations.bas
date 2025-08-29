@@ -30,6 +30,7 @@ Type tAnimationPlaybackState
 End Type
 
 Public Sub UpdateAnimation(ByRef animationState As tAnimationPlaybackState)
+    On Error Goto UpdateAnimation_Err
 On Error GoTo UpdateAnimation_Err
     Dim detalTime As Long
     DeltaTime = GetTickCount() - animationState.LastFrameTime
@@ -44,9 +45,13 @@ On Error GoTo UpdateAnimation_Err
 UpdateAnimation_Err:
     Call RegistrarError(Err.Number, Err.Description, "animations.UpdateAnimation", Erl)
     Resume Next
+    Exit Sub
+UpdateAnimation_Err:
+    Call TraceError(Err.Number, Err.Description, "Animations.UpdateAnimation", Erl)
 End Sub
 
 Sub UpdateClip(ByRef animationState As tAnimationPlaybackState)
+    On Error Goto UpdateClip_Err
     With ComposedFxData(animationState.ComposedAnimation).Clips(animationState.ActiveClip)
         If (animationState.ElapsedTime >= .ClipTime) Then
             DeltaTime = animationState.ElapsedTime Mod .ClipTime
@@ -66,9 +71,13 @@ Sub UpdateClip(ByRef animationState As tAnimationPlaybackState)
         End With
         
     End With
+    Exit Sub
+UpdateClip_Err:
+    Call TraceError(Err.Number, Err.Description, "Animations.UpdateClip", Erl)
 End Sub
 
 Sub UpdateFx(ByRef animationState As tAnimationPlaybackState)
+    On Error Goto UpdateFx_Err
     On Error GoTo UpdateFx_Err
 100     With GrhData(animationState.CurrentGrh)
 102         If (animationState.ElapsedTime >= .speed) Then
@@ -88,9 +97,13 @@ Sub UpdateFx(ByRef animationState As tAnimationPlaybackState)
 UpdateFx_Err:
 118     Call RegistrarError(Err.Number, Err.Description, "animations.UpdateFx", Erl)
 120     Resume Next
+    Exit Sub
+UpdateFx_Err:
+    Call TraceError(Err.Number, Err.Description, "Animations.UpdateFx", Erl)
 End Sub
 
 Sub Initialize(ByRef animationState As tAnimationPlaybackState)
+    On Error Goto Initialize_Err
     animationState.CurrentFrame = 1
     animationState.CurrentClipLoops = 0
     animationState.ElapsedTime = 0
@@ -98,9 +111,13 @@ Sub Initialize(ByRef animationState As tAnimationPlaybackState)
     animationState.Alpha = False
     animationState.AlphaValue = 180
     animationState.LastFrameTime = GetTickCount()
+    Exit Sub
+Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "Animations.Initialize", Erl)
 End Sub
 
 Public Function IsLoopActive(ByRef animationState As tAnimationPlaybackState) As Boolean
+    On Error Goto IsLoopActive_Err
     If animationState.PlaybackState = Stopped Or animationState.PlaybackState = Pause Then
         IsLoopActive = False
         Exit Function
@@ -108,9 +125,13 @@ Public Function IsLoopActive(ByRef animationState As tAnimationPlaybackState) As
     With ComposedFxData(animationState.ComposedAnimation).Clips(animationState.ActiveClip)
         IsLoopActive = .LoopCount < 0
     End With
+    Exit Function
+IsLoopActive_Err:
+    Call TraceError(Err.Number, Err.Description, "Animations.IsLoopActive", Erl)
 End Function
 
 Public Sub StartFx(ByRef animationState As tAnimationPlaybackState, ByVal Fx As Long, Optional ByVal loopC As Integer = 0)
+    On Error Goto StartFx_Err
     On Error GoTo StartFx_Err
 100     If Fx = 0 Then
 102         animationState.PlaybackState = Stopped
@@ -135,9 +156,13 @@ Public Sub StartFx(ByRef animationState As tAnimationPlaybackState, ByVal Fx As 
 StartFx_Err:
 122     Call RegistrarError(Err.Number, Err.Description, "animations.StartFx", Erl)
 124     Resume Next
+    Exit Sub
+StartFx_Err:
+    Call TraceError(Err.Number, Err.Description, "Animations.StartFx", Erl)
 End Sub
 
 Sub StartAnimation(ByRef animationState As tAnimationPlaybackState, ByVal composedAnimationIndex As Long)
+    On Error Goto StartAnimation_Err
 On Error GoTo StartAnimation_Err
     If composedAnimationIndex = 0 Then
         animationState.PlaybackState = Stopped
@@ -153,18 +178,26 @@ On Error GoTo StartAnimation_Err
 StartAnimation_Err:
     Call RegistrarError(Err.Number, Err.Description, "animations.StartAnimation", Erl)
     Resume Next
+    Exit Sub
+StartAnimation_Err:
+    Call TraceError(Err.Number, Err.Description, "Animations.StartAnimation", Erl)
 End Sub
 
 Public Sub StartNextClip(ByRef animationState As tAnimationPlaybackState)
+    On Error Goto StartNextClip_Err
 On Error GoTo StartNextClip_Err
     Call ChangeToClip(animationState, animationState.ActiveClip + 1)
     Exit Sub
 StartNextClip_Err:
     Call RegistrarError(Err.Number, Err.Description, "animations.StartNextClip", Erl)
     Resume Next
+    Exit Sub
+StartNextClip_Err:
+    Call TraceError(Err.Number, Err.Description, "Animations.StartNextClip", Erl)
 End Sub
 
 Public Sub ChangeToClip(ByRef animationState As tAnimationPlaybackState, ByVal clipIndex As Integer)
+    On Error Goto ChangeToClip_Err
     On Error GoTo ChangeToClip_Err
 100     If animationState.Fx > 0 Then
 102         animationState.PlaybackState = Stopped
@@ -187,12 +220,19 @@ Public Sub ChangeToClip(ByRef animationState As tAnimationPlaybackState, ByVal c
 ChangeToClip_Err:
 124     Call RegistrarError(Err.Number, Err.Description, "animations.ChangeToClip composed animation: " & animationState.ComposedAnimation & " and clip index: " & clipIndex, Erl)
 126     Resume Next
+    Exit Sub
+ChangeToClip_Err:
+    Call TraceError(Err.Number, Err.Description, "Animations.ChangeToClip", Erl)
 End Sub
 
 Public Function GetFx(ByRef animationState As tAnimationPlaybackState) As Integer
+    On Error Goto GetFx_Err
     If animationState.Fx > 0 Then
         GetFx = animationState.Fx
     Else
         GetFx = ComposedFxData(animationState.ComposedAnimation).Clips(animationState.ActiveClip).Fx
     End If
+    Exit Function
+GetFx_Err:
+    Call TraceError(Err.Number, Err.Description, "Animations.GetFx", Erl)
 End Function

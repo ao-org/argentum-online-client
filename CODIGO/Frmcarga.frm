@@ -35,6 +35,7 @@ Attribute VB_Exposed = False
 '
 '
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -47,4 +48,7 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "Frmcarga.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "Frmcarga.Form_Load", Erl)
 End Sub

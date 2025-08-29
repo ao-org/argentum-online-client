@@ -252,6 +252,7 @@ Private cBotonMenos As clsGraphicalButton
 Private cBotonDepositAll As clsGraphicalButton
 
 Public Sub ParseBancoInfo(ByVal oro As Long, ByVal Items As Byte)
+    On Error Goto ParseBancoInfo_Err
     
     On Error GoTo ParseBancoInfo_Err
 
@@ -271,10 +272,14 @@ ParseBancoInfo_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGoliath.ParseBancoInfo", Erl)
     Resume Next
     
+    Exit Sub
+ParseBancoInfo_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.ParseBancoInfo", Erl)
 End Sub
 
 
 Public Sub UpdateBankGld(ByVal oro As Long)
+    On Error Goto UpdateBankGld_Err
     
     On Error GoTo ParseBancoInfo_Err
 
@@ -287,9 +292,13 @@ ParseBancoInfo_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGoliath.ParseBancoInfo", Erl)
     Resume Next
     
+    Exit Sub
+UpdateBankGld_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.UpdateBankGld", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -306,9 +315,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGoliath.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.Form_Load", Erl)
 End Sub
 
 Private Sub LoadButtons()
+    On Error Goto LoadButtons_Err
        
     Set cBotonBoveda = New clsGraphicalButton
     Set cBotonRetirar = New clsGraphicalButton
@@ -355,10 +368,14 @@ Private Sub LoadButtons()
     Call cBotonDepositAll.Initialize(cmdDepositAll, "boton-depositartodo-default.bmp", _
                                                 "boton-depositartodo-over.bmp", _
                                                 "boton-depositartodo-off.bmp", Me)
+    Exit Sub
+LoadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.LoadButtons", Erl)
 End Sub
 
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -372,9 +389,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGoliath.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseDown_Err
     
     On Error GoTo Form_MouseDown_Err
     
@@ -386,8 +407,12 @@ Form_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGoliath.Form_MouseDown", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.Form_MouseDown", Erl)
 End Sub
 Private Sub cmdDepositAll_Click()
+    On Error Goto cmdDepositAll_Click_Err
 
     If UserStats.GLD <= 0 Then
         lblDatos.Caption = JsonLanguage.Item("MENSAJE_DEPOSITAR_NO_TIENES_ORO")
@@ -396,9 +421,13 @@ Private Sub cmdDepositAll_Click()
     
     Call WriteBankDepositGold(UserStats.GLD)
 
+    Exit Sub
+cmdDepositAll_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.cmdDepositAll_Click", Erl)
 End Sub
 
 Private Sub cmdDepositar_Click()
+    On Error Goto cmdDepositar_Click_Err
     txtDatos.Text = ""
     lblDatos.Caption = ""
     lblDatos.visible = True
@@ -407,9 +436,13 @@ Private Sub cmdDepositar_Click()
     txtname.Visible = False
     cmdDepositAll.visible = True
     TipoOperacion = 1
+    Exit Sub
+cmdDepositar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.cmdDepositar_Click", Erl)
 End Sub
 
 Private Sub cmdRetirar_Click()
+    On Error Goto cmdRetirar_Click_Err
     txtDatos.Text = ""
     lblDatos.Caption = ""
     lblDatos.visible = True
@@ -418,9 +451,13 @@ Private Sub cmdRetirar_Click()
     txtname.Visible = False
     cmdDepositAll.visible = False
     TipoOperacion = 2
+    Exit Sub
+cmdRetirar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.cmdRetirar_Click", Erl)
 End Sub
 
 Private Sub cmdTransferir_Click()
+    On Error Goto cmdTransferir_Click_Err
     txtDatos.Text = ""
     lblDatos.Caption = ""
     lblDatos.visible = True
@@ -429,15 +466,27 @@ Private Sub cmdTransferir_Click()
     txtname.Visible = True
     cmdDepositAll.visible = False
     TipoOperacion = 3
+    Exit Sub
+cmdTransferir_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.cmdTransferir_Click", Erl)
 End Sub
 Private Sub cmdBoveda_Click()
+    On Error Goto cmdBoveda_Click_Err
     Call WriteBankStart
     Unload Me
+    Exit Sub
+cmdBoveda_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.cmdBoveda_Click", Erl)
 End Sub
 Private Sub cmdCerrar_Click()
+    On Error Goto cmdCerrar_Click_Err
     Unload Me
+    Exit Sub
+cmdCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.cmdCerrar_Click", Erl)
 End Sub
 Private Sub cmdAceptar_Click()
+    On Error Goto cmdAceptar_Click_Err
     
     Select Case TipoOperacion
 
@@ -488,35 +537,59 @@ Private Sub cmdAceptar_Click()
             End If
     End Select
 
+    Exit Sub
+cmdAceptar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.cmdAceptar_Click", Erl)
 End Sub
 
 Private Sub cmdMas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdMas_MouseDown_Err
     m_Increment = 1
     tmrNumber.Interval = 30
     tmrNumber.Enabled = True
+    Exit Sub
+cmdMas_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.cmdMas_MouseDown", Erl)
 End Sub
 
 Private Sub cmdMenos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdMenos_MouseDown_Err
     txtDatos.Text = str((Val(txtDatos.Text) - 1))
     m_Increment = -1
     tmrNumber.Interval = 30
     tmrNumber.Enabled = True
+    Exit Sub
+cmdMenos_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.cmdMenos_MouseDown", Erl)
 End Sub
 
 Private Sub cmdMas_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdMas_MouseUp_Err
     tmrNumber.Enabled = False
+    Exit Sub
+cmdMas_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.cmdMas_MouseUp", Erl)
 End Sub
 
 Private Sub cmdMenos_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto cmdMenos_MouseUp_Err
     tmrNumber.Enabled = False
+    Exit Sub
+cmdMenos_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.cmdMenos_MouseUp", Erl)
 End Sub
 
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Form_MouseMove_Err
     MoverForm Me.hwnd
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.Form_MouseMove", Erl)
 End Sub
 
 Private Sub tmrNumber_Timer()
+    On Error Goto tmrNumber_Timer_Err
     
     On Error GoTo tmrNumber_Timer_Err
 
@@ -548,20 +621,31 @@ tmrNumber_Timer_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGoliath.tmrNumber_Timer", Erl)
     Resume Next
     
+    Exit Sub
+tmrNumber_Timer_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.tmrNumber_Timer", Erl)
 End Sub
 
 Private Sub txtname_KeyPress(KeyAscii As Integer)
+    On Error Goto txtname_KeyPress_Err
     If KeyAscii = 8 Then
         Exit Sub
     End If
     
     If InStr(" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", Chr(KeyAscii)) = 0 Then KeyAscii = 0
+    Exit Sub
+txtname_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.txtname_KeyPress", Erl)
 End Sub
 
 Private Sub txtDatos_KeyPress(KeyAscii As Integer)
+    On Error Goto txtDatos_KeyPress_Err
     If KeyAscii = 8 Then
         Exit Sub
     End If
     
     If InStr("0123456789", Chr(KeyAscii)) = 0 Then KeyAscii = 0
+    Exit Sub
+txtDatos_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmGoliath.txtDatos_KeyPress", Erl)
 End Sub

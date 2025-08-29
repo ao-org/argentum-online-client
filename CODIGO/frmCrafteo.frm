@@ -105,58 +105,95 @@ Public PorcentajeAcierto As Byte
 Public PrecioCrafteo As Long
 
 Private Sub BtnAgregarCatalizador_Click()
+    On Error Goto BtnAgregarCatalizador_Click_Err
     If InvCraftUser.SelectedItem > 0 Then
         Call WriteAddCatalyst(InvCraftUser.SelectedItem)
     End If
+    Exit Sub
+BtnAgregarCatalizador_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrafteo.BtnAgregarCatalizador_Click", Erl)
 End Sub
 
 Private Sub BtnAgregarObjeto_Click()
+    On Error Goto BtnAgregarObjeto_Click_Err
     If InvCraftUser.SelectedItem > 0 Then
         Call WriteAddItemCrafting(InvCraftUser.SelectedItem, 0)
     End If
+    Exit Sub
+BtnAgregarObjeto_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrafteo.BtnAgregarObjeto_Click", Erl)
 End Sub
 
 Private Sub BtnQuitarObjeto_Click()
+    On Error Goto BtnQuitarObjeto_Click_Err
     If InvCraftCatalyst.SelectedItem > 0 Then
         Call WriteRemoveCatalyst(0)
     ElseIf InvCraftItems.SelectedItem > 0 Then
         Call WriteRemoveItemCrafting(InvCraftItems.SelectedItem, 0)
     End If
+    Exit Sub
+BtnQuitarObjeto_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrafteo.BtnQuitarObjeto_Click", Erl)
 End Sub
 
 Private Sub BtnSalir_Click()
+    On Error Goto BtnSalir_Click_Err
     Unload Me
+    Exit Sub
+BtnSalir_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrafteo.BtnSalir_Click", Erl)
 End Sub
 
 Private Sub Craftear_Click()
+    On Error Goto Craftear_Click_Err
     Call WriteCraftItem
+    Exit Sub
+Craftear_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrafteo.Craftear_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     Call Aplicar_Transparencia(Me.hwnd, 240)
     Call FormParser.Parse_Form(Me)
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrafteo.Form_Load", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     Call MoverForm(Me.hwnd)
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrafteo.Form_MouseMove", Erl)
 End Sub
 
 Public Sub SetResult(ByVal GrhIndex As Long, ByVal Porcentaje As Byte, ByVal Precio As Long)
+    On Error Goto SetResult_Err
     ResultGrhIndex = GrhIndex
     PorcentajeAcierto = Porcentaje
     PrecioCrafteo = Precio
     ' Forzamos el redibujado
     InvCraftUser.ReDraw
+    Exit Sub
+SetResult_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrafteo.SetResult", Erl)
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    On Error Goto Form_Unload_Err
     If Comerciando Then
         Comerciando = False
         Call WriteCloseCrafting
     End If
+    Exit Sub
+Form_Unload_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrafteo.Form_Unload", Erl)
 End Sub
 
 Private Sub InvCraftCatalyst_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+    On Error Goto InvCraftCatalyst_ItemDropped_Err
     ' Si soltó fuera del catalizador (drag a otro inventario)
     If Drop = 0 Then
         Drop = InvCraftUser.GetSlot(x, y)
@@ -177,9 +214,13 @@ Private Sub InvCraftCatalyst_ItemDropped(ByVal Drag As Integer, ByVal Drop As In
         End If
 
     End If
+    Exit Sub
+InvCraftCatalyst_ItemDropped_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrafteo.InvCraftCatalyst_ItemDropped", Erl)
 End Sub
 
 Private Sub InvCraftItems_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+    On Error Goto InvCraftItems_ItemDropped_Err
     ' Si soltó dentro del mismo inventario
     If Drop > 0 Then
         If Drag <> Drop Then
@@ -205,9 +246,13 @@ Private Sub InvCraftItems_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integ
         End If
 
     End If
+    Exit Sub
+InvCraftItems_ItemDropped_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrafteo.InvCraftItems_ItemDropped", Erl)
 End Sub
 
 Private Sub InvCraftUser_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
+    On Error Goto InvCraftUser_ItemDropped_Err
     ' Si soltó dentro del mismo inventario
     If Drop > 0 Then
         If Drag <> Drop Then
@@ -245,6 +290,9 @@ Private Sub InvCraftUser_ItemDropped(ByVal Drag As Integer, ByVal Drop As Intege
         End If
 
     End If
+    Exit Sub
+InvCraftUser_ItemDropped_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCrafteo.InvCraftUser_ItemDropped", Erl)
 End Sub
 
 

@@ -97,29 +97,49 @@ Private Declare Function RemoveWindowSubclass Lib "comctl32.dll" Alias "#412" (B
 Public Declare Function SendMessageW Lib "user32" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
 
 Public Function FARPROC(pfn As Long) As Long
+    On Error Goto FARPROC_Err
   FARPROC = pfn
+    Exit Function
+FARPROC_Err:
+    Call TraceError(Err.Number, Err.Description, "System.FARPROC", Erl)
 End Function
 
 Public Function HiWord(DWord As Long) As Integer
+    On Error Goto HiWord_Err
     CopyMemory HiWord, ByVal VarPtr(DWord) + 2, 2
+    Exit Function
+HiWord_Err:
+    Call TraceError(Err.Number, Err.Description, "System.HiWord", Erl)
 End Function
 
 Function LoWord(DWord As Long) As Integer
+    On Error Goto LoWord_Err
     CopyMemory LoWord, DWord, 2
+    Exit Function
+LoWord_Err:
+    Call TraceError(Err.Number, Err.Description, "System.LoWord", Erl)
 End Function
 
 Public Function Subclass(hwnd As Long, lpfn As Long) As Long
+    On Error Goto Subclass_Err
 #If DISABLE_SUBCLASSING = 0 Then
     Subclass = SetWindowSubclass(hwnd, lpfn, 0)
 #End If
+    Exit Function
+Subclass_Err:
+    Call TraceError(Err.Number, Err.Description, "System.Subclass", Erl)
 End Function
 
 Public Function UnSubclass(hwnd As Long, lpfn As Long) As Long
+    On Error Goto UnSubclass_Err
     'Only needed if you want to stop the subclassing code and keep the program running.
     'Otherwise, the WndProc function should call this on WM_DESTROY
 #If DISABLE_SUBCLASSING = 0 Then
     UnSubclass = RemoveWindowSubclass(hwnd, lpfn, 0)
 #End If
+    Exit Function
+UnSubclass_Err:
+    Call TraceError(Err.Number, Err.Description, "System.UnSubclass", Erl)
 End Function
 
 'Purpose     :  Synchronously runs a DOS command line and returns the captured screen output.
@@ -131,6 +151,7 @@ End Function
 '               Windows NT ONLY.
 'Revisions   :
 Function ShellExecuteCapture(sCommandLine As String, Optional bShowWindow As Boolean = False) As String
+    On Error Goto ShellExecuteCapture_Err
     Const clReadBytes As Long = 256, INFINITE As Long = &HFFFFFFFF
     Const STARTF_USESHOWWINDOW = &H1, STARTF_USESTDHANDLES = &H100&
     Const SW_HIDE = 0, SW_NORMAL = 1
@@ -197,9 +218,13 @@ Function ShellExecuteCapture(sCommandLine As String, Optional bShowWindow As Boo
     Call CloseHandle(tProcInfo.hThread)
     Call CloseHandle(lhwndReadPipe)
     Call CloseHandle(lhwndWritePipe)
+    Exit Function
+ShellExecuteCapture_Err:
+    Call TraceError(Err.Number, Err.Description, "System.ShellExecuteCapture", Erl)
 End Function
 
 Public Function ShellExecuteEx(path As String, param As String) As Long
+    On Error Goto ShellExecuteEx_Err
 
     Dim tProcInfo As SHELLEXECUTEINFO
     
@@ -210,4 +235,7 @@ Public Function ShellExecuteEx(path As String, param As String) As Long
     tProcInfo.lpParameters = param
     tProcInfo.nShow = 5 'SW_SHOW
     ShellExecuteEx = ShellExecuteExA(tProcInfo)
+    Exit Function
+ShellExecuteEx_Err:
+    Call TraceError(Err.Number, Err.Description, "System.ShellExecuteEx", Erl)
 End Function

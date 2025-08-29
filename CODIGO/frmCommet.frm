@@ -101,6 +101,7 @@ Public Enum TIPO
 End Enum
 
 Public Sub SetTipo(ByVal t As TIPO)
+    On Error Goto SetTipo_Err
     
     On Error GoTo SetTipo_Err
     
@@ -128,9 +129,13 @@ SetTipo_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCommet.SetTipo", Erl)
     Resume Next
     
+    Exit Sub
+SetTipo_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCommet.SetTipo", Erl)
 End Sub
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -182,9 +187,13 @@ Command1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCommet.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCommet.Command1_Click", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
     
     On Error GoTo Command2_Click_Err
     
@@ -197,9 +206,13 @@ Command2_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCommet.Command2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCommet.Command2_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -212,5 +225,8 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmCommet.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCommet.Form_Load", Erl)
 End Sub
 

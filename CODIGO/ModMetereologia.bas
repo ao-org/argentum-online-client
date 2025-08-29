@@ -39,6 +39,7 @@ Public MorningIndex        As Integer
 
 Public MeteoParticle        As Integer
 Public Sub CargarLucesGlobales()
+    On Error Goto CargarLucesGlobales_Err
     On Error GoTo CargarLucesGlobales_Err
     
     selected_light = GetSetting("VIDEO", "LuzGlobal")
@@ -53,9 +54,13 @@ Public Sub CargarLucesGlobales()
 CargarLucesGlobales_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModMetereologia.CargarLucesGlobales", Erl)
     'Resume Next
+    Exit Sub
+CargarLucesGlobales_Err:
+    Call TraceError(Err.Number, Err.Description, "ModMetereologia.CargarLucesGlobales", Erl)
 End Sub
 
 Public Sub IniciarMeteorologia()
+    On Error Goto IniciarMeteorologia_Err
     
     On Error GoTo IniciarMeteorologia_Err
     
@@ -131,9 +136,13 @@ IniciarMeteorologia_Err:
     Call RegistrarError(Err.number, Err.Description, "ModMetereologia.IniciarMeteorologia", Erl)
     Resume Next
     
+    Exit Sub
+IniciarMeteorologia_Err:
+    Call TraceError(Err.Number, Err.Description, "ModMetereologia.IniciarMeteorologia", Erl)
 End Sub
 
 Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
+    On Error Goto RevisarHoraMundo_Err
     
     On Error GoTo RevisarHoraMundo_Err
 
@@ -198,9 +207,13 @@ RevisarHoraMundo_Err:
     Call RegistrarError(Err.number, Err.Description, "ModMetereologia.RevisarHoraMundo", Erl)
     Resume Next
     
+    Exit Sub
+RevisarHoraMundo_Err:
+    Call TraceError(Err.Number, Err.Description, "ModMetereologia.RevisarHoraMundo", Erl)
 End Sub
 
 Public Sub ActualizarLuz(Color As RGBA)
+    On Error Goto ActualizarLuz_Err
     
     On Error GoTo ActualizarLuz_Err
     
@@ -214,9 +227,13 @@ ActualizarLuz_Err:
     Call RegistrarError(Err.number, Err.Description, "ModMetereologia.ActualizarLuz", Erl)
     Resume Next
     
+    Exit Sub
+ActualizarLuz_Err:
+    Call TraceError(Err.Number, Err.Description, "ModMetereologia.ActualizarLuz", Erl)
 End Sub
 
 Public Sub RestaurarLuz()
+    On Error Goto RestaurarLuz_Err
     
     On Error GoTo RestaurarLuz_Err
     
@@ -249,9 +266,13 @@ RestaurarLuz_Err:
     Call RegistrarError(Err.number, Err.Description, "ModMetereologia.RestaurarLuz", Erl)
     Resume Next
     
+    Exit Sub
+RestaurarLuz_Err:
+    Call TraceError(Err.Number, Err.Description, "ModMetereologia.RestaurarLuz", Erl)
 End Sub
 
 Public Function EsNoche() As Boolean
+    On Error Goto EsNoche_Err
     
     On Error GoTo EsNoche_Err
     
@@ -263,4 +284,7 @@ EsNoche_Err:
     Call RegistrarError(Err.number, Err.Description, "ModMetereologia.EsNoche", Erl)
     Resume Next
     
+    Exit Function
+EsNoche_Err:
+    Call TraceError(Err.Number, Err.Description, "ModMetereologia.EsNoche", Erl)
 End Function

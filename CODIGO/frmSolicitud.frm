@@ -126,6 +126,7 @@ Private cBotonCerrar As clsGraphicalButton
 Private cBotonEnviarSolicitud As clsGraphicalButton
 
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
 
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonEnviarSolicitud = New clsGraphicalButton
@@ -138,13 +139,21 @@ Private Sub loadButtons()
                                                     "boton-enviarsolicitud-over.bmp", _
                                                     "boton-enviarsolicitud-off.bmp", Me)
                                                     
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSolicitud.loadButtons", Erl)
 End Sub
 
 Private Sub cmdCerrar_Click()
+    On Error Goto cmdCerrar_Click_Err
     Unload Me
+    Exit Sub
+cmdCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSolicitud.cmdCerrar_Click", Erl)
 End Sub
 
 Private Sub cmdEnviarSolicitud_Click()
+    On Error Goto cmdEnviarSolicitud_Click_Err
     
     On Error GoTo cmdEnviarSolicitud_Click_Err
     
@@ -159,9 +168,13 @@ cmdEnviarSolicitud_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildSol.cmdEnviarSolicitud_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdEnviarSolicitud_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSolicitud.cmdEnviarSolicitud_Click", Erl)
 End Sub
 
 Public Sub RecieveSolicitud(ByVal GuildName As String)
+    On Error Goto RecieveSolicitud_Err
     
     On Error GoTo RecieveSolicitud_Err
     
@@ -175,9 +188,13 @@ RecieveSolicitud_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildSol.RecieveSolicitud", Erl)
     Resume Next
     
+    Exit Sub
+RecieveSolicitud_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSolicitud.RecieveSolicitud", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -192,9 +209,13 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "frmGuildSol.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSolicitud.Form_Load", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -206,4 +227,7 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildSol.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmSolicitud.Form_MouseMove", Erl)
 End Sub

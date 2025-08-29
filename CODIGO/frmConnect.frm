@@ -153,20 +153,33 @@ Public mfConnectComplete As Boolean
 'We will handle all of the msgs here, and report them all back to the callback sub
 'in case the caller cares what's going on
 Private Sub DirectPlay8Event_AddRemovePlayerGroup(ByVal lMsgID As Long, ByVal lPlayerID As Long, ByVal lGroupID As Long, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_AddRemovePlayerGroup_Err
     'VB requires that we must implement *every* member of this interface
     
+    Exit Sub
+DirectPlay8Event_AddRemovePlayerGroup_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_AddRemovePlayerGroup", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_AppDesc(fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_AppDesc_Err
     'VB requires that we must implement *every* member of this interface
   
+    Exit Sub
+DirectPlay8Event_AppDesc_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_AppDesc", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_AsyncOpComplete(dpnotify As DxVBLibA.DPNMSG_ASYNC_OP_COMPLETE, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_AsyncOpComplete_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8Event_AsyncOpComplete_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_AsyncOpComplete", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_ConnectComplete(dpnotify As DxVBLibA.DPNMSG_CONNECT_COMPLETE, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_ConnectComplete_Err
     mfGotEvent = True
     frmDebug.add_text_tracebox "DirectPlay8Event_ConnectComplete"
     If dpnotify.hResultCode = DPNERR_SESSIONFULL Then 'Already too many people joined up
@@ -176,85 +189,160 @@ Private Sub DirectPlay8Event_ConnectComplete(dpnotify As DxVBLibA.DPNMSG_CONNECT
         mfConnectComplete = True
         modNetwork.OnClientConnect dpnotify, fRejectMsg
     End If
+    Exit Sub
+DirectPlay8Event_ConnectComplete_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_ConnectComplete", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_CreateGroup(ByVal lGroupID As Long, ByVal lOwnerID As Long, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_CreateGroup_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8Event_CreateGroup_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_CreateGroup", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_CreatePlayer(ByVal lPlayerID As Long, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_CreatePlayer_Err
     'VB requires that we must implement *every* member of this interface
     frmDebug.add_text_tracebox "DirectPlay8Event_CreatePlayer " & lPlayerID
+    Exit Sub
+DirectPlay8Event_CreatePlayer_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_CreatePlayer", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_DestroyGroup(ByVal lGroupID As Long, ByVal lReason As Long, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_DestroyGroup_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8Event_DestroyGroup_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_DestroyGroup", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_DestroyPlayer(ByVal lPlayerID As Long, ByVal lReason As Long, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_DestroyPlayer_Err
     'VB requires that we must implement *every* member of this interface
     frmDebug.add_text_tracebox "DirectPlay8Event_DestroyPlayer " & lPlayerID
+    Exit Sub
+DirectPlay8Event_DestroyPlayer_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_DestroyPlayer", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_EnumHostsQuery(dpnotify As DxVBLibA.DPNMSG_ENUM_HOSTS_QUERY, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_EnumHostsQuery_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8Event_EnumHostsQuery_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_EnumHostsQuery", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_EnumHostsResponse(dpnotify As DxVBLibA.DPNMSG_ENUM_HOSTS_RESPONSE, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_EnumHostsResponse_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8Event_EnumHostsResponse_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_EnumHostsResponse", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_HostMigrate(ByVal lNewHostID As Long, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_HostMigrate_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8Event_HostMigrate_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_HostMigrate", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_IndicateConnect(dpnotify As DxVBLibA.DPNMSG_INDICATE_CONNECT, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_IndicateConnect_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8Event_IndicateConnect_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_IndicateConnect", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_IndicatedConnectAborted(fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_IndicatedConnectAborted_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8Event_IndicatedConnectAborted_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_IndicatedConnectAborted", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_InfoNotify(ByVal lMsgID As Long, ByVal lNotifyID As Long, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_InfoNotify_Err
     'VB requires that we must implement *every* member of this interface
     frmDebug.add_text_tracebox "DirectPlay8Event_InfoNotify"
+    Exit Sub
+DirectPlay8Event_InfoNotify_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_InfoNotify", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_Receive(dpnotify As DxVBLibA.DPNMSG_RECEIVE, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_Receive_Err
     Call modNetwork.Receive(dpnotify, fRejectMsg)
+    Exit Sub
+DirectPlay8Event_Receive_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_Receive", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_SendComplete(dpnotify As DxVBLibA.DPNMSG_SEND_COMPLETE, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_SendComplete_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8Event_SendComplete_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_SendComplete", Erl)
 End Sub
 
 Private Sub DirectPlay8Event_TerminateSession(dpnotify As DxVBLibA.DPNMSG_TERMINATE_SESSION, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8Event_TerminateSession_Err
     'VB requires that we must implement *every* member of this interface
     frmDebug.add_text_tracebox "DirectPlay8Event_TerminateSession"
     Call modNetwork.OnClientDisconnect(dpnotify, fRejectMsg)
+    Exit Sub
+DirectPlay8Event_TerminateSession_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8Event_TerminateSession", Erl)
 End Sub
 
 Private Sub DirectPlay8LobbyEvent_Connect(dlNotify As DxVBLibA.DPL_MESSAGE_CONNECT, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8LobbyEvent_Connect_Err
    Exit Sub
 ErrOut:
     frmDebug.add_text_tracebox "Error:" & CStr(Err.Number) & " - " & Err.Description
+    Exit Sub
+DirectPlay8LobbyEvent_Connect_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8LobbyEvent_Connect", Erl)
 End Sub
 
 Private Sub DirectPlay8LobbyEvent_ConnectionSettings(ConnectionSettings As DxVBLibA.DPL_MESSAGE_CONNECTION_SETTINGS)
+    On Error Goto DirectPlay8LobbyEvent_ConnectionSettings_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8LobbyEvent_ConnectionSettings_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8LobbyEvent_ConnectionSettings", Erl)
 End Sub
 
 Private Sub DirectPlay8LobbyEvent_Disconnect(ByVal DisconnectID As Long, ByVal lReason As Long)
+    On Error Goto DirectPlay8LobbyEvent_Disconnect_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8LobbyEvent_Disconnect_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8LobbyEvent_Disconnect", Erl)
 End Sub
 
 Private Sub DirectPlay8LobbyEvent_Receive(dlNotify As DxVBLibA.DPL_MESSAGE_RECEIVE, fRejectMsg As Boolean)
+    On Error Goto DirectPlay8LobbyEvent_Receive_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8LobbyEvent_Receive_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8LobbyEvent_Receive", Erl)
 End Sub
 
 Private Sub DirectPlay8LobbyEvent_SessionStatus(ByVal status As Long, ByVal lHandle As Long)
+    On Error Goto DirectPlay8LobbyEvent_SessionStatus_Err
     'VB requires that we must implement *every* member of this interface
+    Exit Sub
+DirectPlay8LobbyEvent_SessionStatus_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.DirectPlay8LobbyEvent_SessionStatus", Erl)
 End Sub
 
 #End If
@@ -263,6 +351,7 @@ End Sub
 
 
 Private Sub AuthSocket_Connect()
+    On Error Goto AuthSocket_Connect_Err
     If Not SessionOpened Then
         Call OpenSessionRequest
         Select Case LoginOperation
@@ -288,23 +377,35 @@ Private Sub AuthSocket_Connect()
         End Select
     End If
     
+    Exit Sub
+AuthSocket_Connect_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.AuthSocket_Connect", Erl)
 End Sub
 
 Private Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
+    On Error Goto AuthSocket_DataArrival_Err
     ModAuth.AuthSocket_DataArrival BytesTotal
+    Exit Sub
+AuthSocket_DataArrival_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.AuthSocket_DataArrival", Erl)
 End Sub
 
 Private Sub AuthSocket_Error(ByVal Number As Integer, Description As String, ByVal Scode As Long, ByVal source As String, ByVal HelpFile As String, ByVal HelpContext As Long, CancelDisplay As Boolean)
+    On Error Goto AuthSocket_Error_Err
 #If REMOTE_CLOSE = 0 Then
 
     Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_SERVIDOR_OFFLINE"), False, SessionOpened)
 #Else
     frmDebug.add_text_tracebox "SERVIDOR OFFLINE"
 #End If
+    Exit Sub
+AuthSocket_Error_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.AuthSocket_Error", Erl)
 End Sub
 
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+    On Error Goto Form_KeyDown_Err
     
     On Error GoTo Form_KeyDown_Err
     
@@ -323,9 +424,13 @@ Form_KeyDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.Form_KeyDown", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.Form_KeyDown", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     If (Not FormParser Is Nothing) Then
@@ -355,14 +460,22 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.Form_Load", Erl)
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    On Error Goto Form_Unload_Err
 Call ao20audio.StopMP3
     
+    Exit Sub
+Form_Unload_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.Form_Unload", Erl)
 End Sub
 
 Private Sub render_DblClick()
+    On Error Goto render_DblClick_Err
 On Error GoTo render_DblClick_Err
     Form_RemoveTitleBar Me
 
@@ -390,11 +503,15 @@ render_DblClick_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.render_DblClick", Erl)
     Resume Next
     
+    Exit Sub
+render_DblClick_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.render_DblClick", Erl)
 End Sub
 
 
 #If PYMMO = 1 Then
 Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto render_MouseUp_Err
     
     On Error GoTo render_MouseUp_Err
     
@@ -721,11 +838,15 @@ render_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.render_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+render_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.render_MouseUp", Erl)
 End Sub
 
 #ElseIf PYMMO = 0 Then
 
 Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto render_MouseUp_Err
     
     On Error GoTo render_MouseUp_Err
     
@@ -1093,10 +1214,14 @@ render_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.render_MouseUp", Erl)
     Resume Next
     
+    Exit Sub
+render_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.render_MouseUp", Erl)
 End Sub
 #End If
 
 Private Sub Rotacion_boton_adelante_clase()
+    On Error Goto Rotacion_boton_adelante_clase_Err
 
     ' Shugar - 27/7/24
     ' Saco de la selección de clases al Ladrón y al Pirata.
@@ -1126,9 +1251,13 @@ Private Sub Rotacion_boton_adelante_clase()
             frmCrearPersonaje.lstProfesion.ListIndex = eClass.Mage - 1
     End Select
 
+    Exit Sub
+Rotacion_boton_adelante_clase_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.Rotacion_boton_adelante_clase", Erl)
 End Sub
 
 Private Sub Rotacion_boton_atras_clase()
+    On Error Goto Rotacion_boton_atras_clase_Err
     
     ' Shugar - 27/7/24
     ' Saco de la selección de clases al Ladrón y al Pirata.
@@ -1158,10 +1287,14 @@ Private Sub Rotacion_boton_atras_clase()
             frmCrearPersonaje.lstProfesion.ListIndex = eClass.Warrior - 1
     End Select
 
+    Exit Sub
+Rotacion_boton_atras_clase_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.Rotacion_boton_atras_clase", Erl)
 End Sub
 
 
 Private Sub Rotacion_boton_adelante_ciudades()
+    On Error Goto Rotacion_boton_adelante_ciudades_Err
 
     ' Shugar - 14/6/24
     ' Limito la selección del hogar a Ulla, Nix, Arghal y Forgat.
@@ -1179,9 +1312,13 @@ Private Sub Rotacion_boton_adelante_ciudades()
             frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cUllathorpe - 1
     End Select
 
+    Exit Sub
+Rotacion_boton_adelante_ciudades_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.Rotacion_boton_adelante_ciudades", Erl)
 End Sub
 
 Private Sub Rotacion_boton_atras_ciudades()
+    On Error Goto Rotacion_boton_atras_ciudades_Err
     
     ' Shugar - 14/6/24
     ' Limito la selección del hogar a Ulla, Nix, Arghal y Forgat.
@@ -1199,9 +1336,13 @@ Private Sub Rotacion_boton_atras_ciudades()
             frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cUllathorpe - 1
     End Select
 
+    Exit Sub
+Rotacion_boton_atras_ciudades_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.Rotacion_boton_atras_ciudades", Erl)
 End Sub
 
 Private Sub txtNombre_Change()
+    On Error Goto txtNombre_Change_Err
     
     On Error GoTo txtNombre_Change_Err
     
@@ -1214,9 +1355,13 @@ txtNombre_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.txtNombre_Change", Erl)
     Resume Next
     
+    Exit Sub
+txtNombre_Change_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.txtNombre_Change", Erl)
 End Sub
 
 Private Sub txtNombre_KeyPress(KeyAscii As Integer)
+    On Error Goto txtNombre_KeyPress_Err
     
     On Error GoTo txtNombre_KeyPress_Err
     
@@ -1229,8 +1374,15 @@ txtNombre_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.txtNombre_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+txtNombre_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.txtNombre_KeyPress", Erl)
 End Sub
 
 Private Sub LogearPersonaje(ByVal nick As String)
+    On Error Goto LogearPersonaje_Err
     Call ModLogin.LoginCharacter(nick)
+    Exit Sub
+LogearPersonaje_Err:
+    Call TraceError(Err.Number, Err.Description, "frmConnect.LogearPersonaje", Erl)
 End Sub

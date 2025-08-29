@@ -86,8 +86,12 @@ Private MainNodes  As Long
 'Default constructor. Does nothing.
 
 Private Sub Class_Initialize()
+    On Error Goto Class_Initialize_Err
 
 
+    Exit Sub
+Class_Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.Class_Initialize", Erl)
 End Sub
 
 ''
@@ -95,6 +99,7 @@ End Sub
 '
 
 Private Sub Class_Terminate()
+    On Error Goto Class_Terminate_Err
     
     On Error GoTo Class_Terminate_Err
 
@@ -120,6 +125,9 @@ Class_Terminate_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.Class_Terminate", Erl)
     Resume Next
     
+    Exit Sub
+Class_Terminate_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.Class_Terminate", Erl)
 End Sub
 
 ''
@@ -129,6 +137,7 @@ End Sub
 ' @see      GetValue
 
 Public Sub Initialize(ByVal File As String)
+    On Error Goto Initialize_Err
     
     On Error GoTo Initialize_Err
 
@@ -222,6 +231,9 @@ Initialize_Err:
     Call RegistrarError(Err.Number, Err.Description & vbNewLine & "Archivo: " & File, "clsIniManager.Initialize", Erl)
     Resume Next
     
+    Exit Sub
+Initialize_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.Initialize", Erl)
 End Sub
 
 ''
@@ -232,6 +244,7 @@ End Sub
 ' @param    last The last index to be considered when sorting.
 
 Private Sub SortChildNodes(ByRef Node As MainNode, _
+    On Error Goto SortChildNodes_Err
                            ByVal First As Integer, _
                            ByVal Last As Integer)
     
@@ -286,6 +299,9 @@ SortChildNodes_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.SortChildNodes", Erl)
     Resume Next
     
+    Exit Sub
+SortChildNodes_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.SortChildNodes", Erl)
 End Sub
 
 ''
@@ -295,6 +311,7 @@ End Sub
 ' @param    last The last index to be considered when sorting.
 
 Private Sub SortMainNodes(ByVal First As Integer, ByVal Last As Integer)
+    On Error Goto SortMainNodes_Err
     
     On Error GoTo SortMainNodes_Err
 
@@ -344,6 +361,9 @@ SortMainNodes_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.SortMainNodes", Erl)
     Resume Next
     
+    Exit Sub
+SortMainNodes_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.SortMainNodes", Erl)
 End Sub
 
 ''
@@ -354,6 +374,7 @@ End Sub
 ' @returns  The value asociated with the given key under the requeted main section of the INI file or a null string if it's not found.
 
 Public Function GetValue(ByVal Main As String, ByVal Key As String)
+    On Error Goto GetValue_Err
     
     On Error GoTo GetValue_Err
 
@@ -385,6 +406,9 @@ GetValue_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.GetValue", Erl)
     Resume Next
     
+    Exit Function
+GetValue_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.GetValue", Erl)
 End Function
 
 ''
@@ -395,6 +419,7 @@ End Function
 ' @returns  The value asociated with the given key under the requeted main section of the INI file or a null string if it's not found.
 
 Public Sub ChangeValue(ByVal Main As String, ByVal Key As String, ByVal Value As String)
+    On Error Goto ChangeValue_Err
     
     On Error GoTo ChangeValue_Err
 
@@ -427,6 +452,9 @@ ChangeValue_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.ChangeValue", Erl)
     Resume Next
     
+    Exit Sub
+ChangeValue_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.ChangeValue", Erl)
 End Sub
 
 ''
@@ -437,6 +465,7 @@ End Sub
 ' @returns  The index in which the value with the key we are looking for is stored or the negation of the index in which it should be if not found.
 
 Private Function FindKey(ByRef Node As MainNode, ByVal Key As String) As Long
+    On Error Goto FindKey_Err
     
     On Error GoTo FindKey_Err
 
@@ -479,6 +508,9 @@ FindKey_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.FindKey", Erl)
     Resume Next
     
+    Exit Function
+FindKey_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.FindKey", Erl)
 End Function
 
 ''
@@ -488,6 +520,7 @@ End Function
 ' @returns  The index in which the main section we are looking for is stored or the negation of the index in which it should be if not found.
 
 Private Function FindMain(ByVal Name As String) As Long
+    On Error Goto FindMain_Err
     
     On Error GoTo FindMain_Err
 
@@ -530,6 +563,9 @@ FindMain_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.FindMain", Erl)
     Resume Next
     
+    Exit Function
+FindMain_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.FindMain", Erl)
 End Function
 
 ''
@@ -539,6 +575,7 @@ End Function
 ' @returns  True if the key exists, false otherwise.
 
 Public Function KeyExists(ByVal Name As String) As Boolean
+    On Error Goto KeyExists_Err
 
     'Returns true of the key exists, false otherwise.
     
@@ -553,9 +590,13 @@ KeyExists_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.KeyExists", Erl)
     Resume Next
     
+    Exit Function
+KeyExists_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.KeyExists", Erl)
 End Function
 
 Private Function AddNode(ByRef Name As String) As Long
+    On Error Goto AddNode_Err
     
     On Error GoTo AddNode_Err
 
@@ -595,9 +636,13 @@ AddNode_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.AddNode", Erl)
     Resume Next
     
+    Exit Function
+AddNode_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.AddNode", Erl)
 End Function
 
 Private Function AddKey(ByRef Main As String, _
+    On Error Goto AddKey_Err
                         ByRef Key As String, _
                         Optional ByRef Value As String = vbNullString) As Long
     
@@ -647,9 +692,13 @@ AddKey_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.AddKey", Erl)
     Resume Next
     
+    Exit Function
+AddKey_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.AddKey", Erl)
 End Function
 
 Public Sub DumpFile(ByRef File As String)
+    On Error Goto DumpFile_Err
     
     On Error GoTo DumpFile_Err
 
@@ -687,9 +736,13 @@ DumpFile_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.DumpFile", Erl)
     Resume Next
     
+    Exit Sub
+DumpFile_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.DumpFile", Erl)
 End Sub
 
 Public Function GetKey(ByVal Main As String, ByVal Index As Long) As String
+    On Error Goto GetKey_Err
 
         On Error GoTo ErrHandler
 
@@ -711,6 +764,9 @@ ErrHandler:
      Call RegistrarError(Err.Number, Err.Description, "clsIniManager.GetKey", Erl)
      Resume Next
         
+    Exit Function
+GetKey_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.GetKey", Erl)
 End Function
 
 Public Property Get EntriesCount(ByVal Main As String) As Long
@@ -738,6 +794,7 @@ ErrHandler:
 End Property
 
 Public Sub GetPair(ByVal Main As String, ByVal Index As Long, ByRef Key As String, ByRef Value As String)
+    On Error Goto GetPair_Err
 
         On Error GoTo ErrHandler
 
@@ -762,10 +819,17 @@ ErrHandler:
 108     Call RegistrarError(Err.Number, Err.Description, "clsIniManager.GetPair", Erl)
 110     Resume Next
         
+    Exit Sub
+GetPair_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.GetPair", Erl)
 End Sub
 
 Public Function GetNode(ByVal i As Long) As String
+    On Error Goto GetNode_Err
     GetNode = fileData(i).Name
+    Exit Function
+GetNode_Err:
+    Call TraceError(Err.Number, Err.Description, "clsIniManager.GetNode", Erl)
 End Function
 
 Public Property Get NodesCount() As Long

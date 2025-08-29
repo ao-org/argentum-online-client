@@ -211,6 +211,7 @@ Const BlackWolfIndex = 1146
 
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
     
     On Error GoTo Command1_Click_Err
     
@@ -236,9 +237,13 @@ Command1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command1_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.Command1_Click", Erl)
 End Sub
 
 Private Sub Command2_Click()
+    On Error Goto Command2_Click_Err
     
     On Error GoTo Command2_Click_Err
     
@@ -264,9 +269,13 @@ Command2_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command2_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.Command2_Click", Erl)
 End Sub
 
 Private Sub Command3_Click()
+    On Error Goto Command3_Click_Err
     
     On Error GoTo Command3_Click_Err
     
@@ -320,9 +329,13 @@ Command3_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command3_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.Command3_Click", Erl)
 End Sub
 
 Private Sub Command4_Click()
+    On Error Goto Command4_Click_Err
     
     On Error GoTo Command4_Click_Err
     
@@ -335,10 +348,14 @@ Command4_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command4_Click", Erl)
     Resume Next
     
+    Exit Sub
+Command4_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.Command4_Click", Erl)
 End Sub
 
 
 Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command4_MouseMove_Err
     
     On Error GoTo Command4_MouseMove_Err
     
@@ -359,9 +376,13 @@ Command4_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command4_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Command4_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.Command4_MouseMove", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -375,8 +396,12 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmSastre.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.Form_Load", Erl)
 End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -393,9 +418,13 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmSastre.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.Form_KeyPress", Erl)
 End Sub
 
 Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Command3_MouseMove_Err
     
     On Error GoTo Command3_MouseMove_Err
     
@@ -416,9 +445,13 @@ Command3_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command3_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Command3_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.Command3_MouseMove", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
     
     On Error GoTo Form_MouseMove_Err
     
@@ -448,13 +481,21 @@ Form_MouseMove_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmSastre.Form_MouseMove", Erl)
     Resume Next
     
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.Form_MouseMove", Erl)
 End Sub
 
 Private Sub cmdCerrar_Click()
+    On Error Goto cmdCerrar_Click_Err
     Unload Me
+    Exit Sub
+cmdCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.cmdCerrar_Click", Erl)
 End Sub
 
 Private Sub Image2_Click()
+    On Error Goto Image2_Click_Err
     If cantidad > 0 Then
         cantidad = cantidad - 1
     Else
@@ -462,13 +503,21 @@ Private Sub Image2_Click()
     End If
 
 
+    Exit Sub
+Image2_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.Image2_Click", Erl)
 End Sub
 
 Private Sub Image3_Click()
+    On Error Goto Image3_Click_Err
     cantidad = cantidad + 1
+    Exit Sub
+Image3_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.Image3_Click", Erl)
 End Sub
 
 Private Sub List1_Click()
+    On Error Goto List1_Click_Err
     
     On Error GoTo List1_Click_Err
     
@@ -502,9 +551,13 @@ List1_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmSastre.List1_Click", Erl)
     Resume Next
     
+    Exit Sub
+List1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.List1_Click", Erl)
 End Sub
 
 Private Sub lstArmas_Click()
+    On Error Goto lstArmas_Click_Err
     
     On Error GoTo lstArmas_Click_Err
     
@@ -551,14 +604,21 @@ lstArmas_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmSastre.lstArmas_Click", Erl)
     Resume Next
     
+    Exit Sub
+lstArmas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.lstArmas_Click", Erl)
 End Sub
 
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
     Set cBotonCerrar = New clsGraphicalButton
     
     Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
                                                 "boton-cerrar-over.bmp", _
                                                 "boton-cerrar-off.bmp", Me)
 
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmSastre.loadButtons", Erl)
 End Sub
 

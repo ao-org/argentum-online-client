@@ -100,6 +100,7 @@ Dim Timer(1 To CANTIDADTIMERS) As Timer
 ' @remarks  Must be donde after creating the timer and before using it, otherwise, Interval will be 0
 
 Public Sub SetInterval(ByVal TimerIndex As TimersIndex, ByVal Interval As Long)
+    On Error Goto SetInterval_Err
     
     On Error GoTo SetInterval_Err
 
@@ -116,6 +117,9 @@ SetInterval_Err:
     Call RegistrarError(Err.number, Err.Description, "clsTimer.SetInterval", Erl)
     Resume Next
     
+    Exit Sub
+SetInterval_Err:
+    Call TraceError(Err.Number, Err.Description, "MainTimer.SetInterval", Erl)
 End Sub
 
 ''
@@ -125,6 +129,7 @@ End Sub
 ' @remarks  Do this for starting the timer.
 
 Public Sub Start(ByVal TimerIndex As TimersIndex)
+    On Error Goto Start_Err
     
     On Error GoTo Start_Err
 
@@ -141,6 +146,9 @@ Start_Err:
     Call RegistrarError(Err.number, Err.Description, "clsTimer.Start", Erl)
     Resume Next
     
+    Exit Sub
+Start_Err:
+    Call TraceError(Err.Number, Err.Description, "MainTimer.Start", Erl)
 End Sub
 
 ''
@@ -150,6 +158,7 @@ End Sub
 ' @remarks  Makes the Timer continue from where it had stoped.
 
 Public Sub Continue(ByVal TimerIndex As TimersIndex)
+    On Error Goto Continue_Err
     
     On Error GoTo Continue_Err
 
@@ -169,6 +178,9 @@ Continue_Err:
     Call RegistrarError(Err.number, Err.Description, "clsTimer.Continue", Erl)
     Resume Next
     
+    Exit Sub
+Continue_Err:
+    Call TraceError(Err.Number, Err.Description, "MainTimer.Continue", Erl)
 End Sub
 
 ''
@@ -178,6 +190,7 @@ End Sub
 ' @remarks  Can be resumed with Continue()
 
 Public Sub Pause(ByVal TimerIndex As TimersIndex)
+    On Error Goto Pause_Err
     
     On Error GoTo Pause_Err
 
@@ -196,6 +209,9 @@ Pause_Err:
     Call RegistrarError(Err.number, Err.Description, "clsTimer.Pause", Erl)
     Resume Next
     
+    Exit Sub
+Pause_Err:
+    Call TraceError(Err.Number, Err.Description, "MainTimer.Pause", Erl)
 End Sub
 
 ''
@@ -207,6 +223,7 @@ End Sub
 ' @remarks  Can´t be done if the timer is stoped or if it had never been started.
 
 Public Function Check(ByVal TimerIndex As TimersIndex, Optional Restart As Boolean = True) As Boolean
+    On Error Goto Check_Err
     
     On Error GoTo Check_Err
 
@@ -237,6 +254,9 @@ Check_Err:
     Call RegistrarError(Err.number, Err.Description, "clsTimer.Check", Erl)
     Resume Next
     
+    Exit Function
+Check_Err:
+    Call TraceError(Err.Number, Err.Description, "MainTimer.Check", Erl)
 End Function
 
 ''
@@ -245,6 +265,7 @@ End Function
 ' @param TimerIndex Timer´s Index
 
 Public Sub Restart(ByVal TimerIndex As TimersIndex)
+    On Error Goto Restart_Err
     
     On Error GoTo Restart_Err
 
@@ -261,5 +282,8 @@ Restart_Err:
     Call RegistrarError(Err.number, Err.Description, "clsTimer.Restart", Erl)
     Resume Next
     
+    Exit Sub
+Restart_Err:
+    Call TraceError(Err.Number, Err.Description, "MainTimer.Restart", Erl)
 End Sub
 

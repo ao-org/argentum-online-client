@@ -210,6 +210,7 @@ Private cBotonMenos As clsGraphicalButton
 
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -227,9 +228,13 @@ Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCarp.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCarp.Form_Load", Erl)
 End Sub
 
 Private Sub LoadButtons()
+    On Error Goto LoadButtons_Err
        
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonConstruir = New clsGraphicalButton
@@ -257,28 +262,44 @@ Private Sub LoadButtons()
     Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
                                                 "boton-sm-menos-over.bmp", _
                                                 "boton-sm-menos-off.bmp", Me)
+    Exit Sub
+LoadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCarp.LoadButtons", Erl)
 End Sub
 
 Private Sub cmdcerrar_Click()
+    On Error Goto cmdcerrar_Click_Err
     Unload Me
+    Exit Sub
+cmdcerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCarp.cmdcerrar_Click", Erl)
 End Sub
 
 Private Sub cmdMenos_Click()
+    On Error Goto cmdMenos_Click_Err
     If cantidad > 0 Then
         cantidad = cantidad - 1
     Else
         Exit Sub
     End If
+    Exit Sub
+cmdMenos_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCarp.cmdMenos_Click", Erl)
 End Sub
 
 Private Sub cmdMas_Click()
+    On Error Goto cmdMas_Click_Err
     If cantidad <= 9999 Then
         cantidad = cantidad + 1
     Else
         Exit Sub
     End If
+    Exit Sub
+cmdMas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCarp.cmdMas_Click", Erl)
 End Sub
 Private Sub cmdConstruir_Click()
+    On Error Goto cmdConstruir_Click_Err
     
     On Error GoTo cmdConstruir_Click_Err
     
@@ -302,11 +323,15 @@ cmdConstruir_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCarp.cmdConstruir_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdConstruir_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCarp.cmdConstruir_Click", Erl)
 End Sub
 
 
 
 Private Sub cmdAceptar_Click()
+    On Error Goto cmdAceptar_Click_Err
     
     On Error GoTo cmdAceptar_Click_Err
     
@@ -318,9 +343,13 @@ cmdAceptar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCarp.cmdAceptar_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdAceptar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCarp.cmdAceptar_Click", Erl)
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error Goto Form_KeyPress_Err
     
     On Error GoTo Form_KeyPress_Err
     
@@ -334,14 +363,22 @@ Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCarp.Form_KeyPress", Erl)
     Resume Next
     
+    Exit Sub
+Form_KeyPress_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCarp.Form_KeyPress", Erl)
 End Sub
 
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Form_MouseMove_Err
     MoverForm Me.hwnd
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCarp.Form_MouseMove", Erl)
 End Sub
 
 Private Sub List1_Click()
+    On Error Goto List1_Click_Err
     
     On Error GoTo List1_Click_Err
 
@@ -366,9 +403,13 @@ List1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCarp.List1_Click", Erl)
     Resume Next
     
+    Exit Sub
+List1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCarp.List1_Click", Erl)
 End Sub
 
 Private Sub lstArmas_Click()
+    On Error Goto lstArmas_Click_Err
     
     On Error GoTo lstArmas_Click_Err
     
@@ -408,4 +449,7 @@ lstArmas_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCarp.lstArmas_Click", Erl)
     Resume Next
     
+    Exit Sub
+lstArmas_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCarp.lstArmas_Click", Erl)
 End Sub

@@ -248,11 +248,16 @@ Private cBotonCancelar As clsGraphicalButton
 Private cBotonCerrar As clsGraphicalButton
 
 Private Sub btnCancel_Click()
+    On Error Goto btnCancel_Click_Err
     Unload Me
+    Exit Sub
+btnCancel_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.btnCancel_Click", Erl)
 End Sub
 
 
 Private Sub btnCreateAccount_Click()
+    On Error Goto btnCreateAccount_Click_Err
     If Val(txtCaptcha.Text) = equals Then
         Call ModLogin.CreateAccount(frmNewAccount.txtName, frmNewAccount.txtSurname, frmNewAccount.txtUsername, frmNewAccount.txtPassword)
         Call calculateCaptcha
@@ -261,42 +266,66 @@ Private Sub btnCreateAccount_Click()
         Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_REVISA_CAPTCHA"), False, False)
         lblCaptchaError.Visible = True
     End If
+    Exit Sub
+btnCreateAccount_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.btnCreateAccount_Click", Erl)
 End Sub
 
 Private Sub btnRestorePassword_Click()
+    On Error Goto btnRestorePassword_Click_Err
     Unload Me
     ModAuth.LoginOperation = e_operation.ForgotPassword
     Auth_state = e_state.RequestForgotPassword
     frmPasswordReset.Show , frmConnect
+    Exit Sub
+btnRestorePassword_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.btnRestorePassword_Click", Erl)
 End Sub
 
 Private Sub btnSendValidarCuenta_Click()
+    On Error Goto btnSendValidarCuenta_Click_Err
         
         txtCodigo.Text = Trim(txtCodigo.Text)
         If txtCodigo.Text <> "" And txtValidateMail.Text <> "" Then
             Call ValidateCode(txtValidateMail.Text, txtCodigo.Text)
         End If
         
+    Exit Sub
+btnSendValidarCuenta_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.btnSendValidarCuenta_Click", Erl)
 End Sub
 
 Private Sub btnVerValidarCuenta_Click()
+    On Error Goto btnVerValidarCuenta_Click_Err
     Me.showValidateAccountControls
+    Exit Sub
+btnVerValidarCuenta_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.btnVerValidarCuenta_Click", Erl)
 End Sub
 
 
 
 Private Sub Form_Activate()
+    On Error Goto Form_Activate_Err
     Me.Top = frmConnect.Top + frmConnect.Height - Me.Height - 450
     Me.Left = frmConnect.Left + (frmConnect.Width - Me.Width) / 2
+    Exit Sub
+Form_Activate_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.Form_Activate", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     Call loadButtons
     Call calculateCaptcha
     Me.Picture = LoadInterface("ventanacrearcuenta.bmp")
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.Form_Load", Erl)
 End Sub
 
 Private Sub loadButtons()
+    On Error Goto loadButtons_Err
        
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonCancelar = New clsGraphicalButton
@@ -314,18 +343,26 @@ Private Sub loadButtons()
                                                 "boton-enviar-over.bmp", _
                                                 "boton-enviar-off.bmp", Me)
     
+    Exit Sub
+loadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.loadButtons", Erl)
 End Sub
 Private Sub calculateCaptcha()
+    On Error Goto calculateCaptcha_Err
     number1 = RandomNumber(0, 9)
     number2 = RandomNumber(0, 9)
     equals = number1 + number2
     lblCaptchaError.Visible = False
     txtCaptcha.Text = ""
     lblCaptcha.Caption = number1 & " + " & number2
+    Exit Sub
+calculateCaptcha_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.calculateCaptcha", Erl)
 End Sub
 
 
 Public Sub showValidateAccountControls()
+    On Error Goto showValidateAccountControls_Err
     
     Me.Picture = LoadInterface("ventanacrearcuentacodigo.bmp")
     Me.btnSendValidarCuenta.Visible = True
@@ -344,20 +381,35 @@ Public Sub showValidateAccountControls()
     Me.btnCreateAccount.Visible = False
     Me.btnRestorePassword.Visible = False
     Me.lblResendVerificationCode.Visible = True
+    Exit Sub
+showValidateAccountControls_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.showValidateAccountControls", Erl)
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Image1_MouseDown_Err
     Me.txtPassword.PasswordChar = ""
+    Exit Sub
+Image1_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.Image1_MouseDown", Erl)
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Image1_MouseUp_Err
     Me.txtPassword.PasswordChar = "*"
+    Exit Sub
+Image1_MouseUp_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.Image1_MouseUp", Erl)
 End Sub
 
 Private Sub lblResendVerificationCode_Click()
+    On Error Goto lblResendVerificationCode_Click_Err
     If isValidEmail(txtValidateMail) Then
         Call ResendValidationCode(Me.txtValidateMail.Text)
     Else
         Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO"), False, False)
     End If
+    Exit Sub
+lblResendVerificationCode_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmNewAccount.lblResendVerificationCode_Click", Erl)
 End Sub

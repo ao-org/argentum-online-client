@@ -24,11 +24,16 @@ Public Const OPTION_AMBIENT_ENABLED As String = "AmbientEnabled"
 Public Const OPTION_INVERTLR_CHANNELS_ENABLED As String = "InverLRChannels"
 
 Public Function GetErrorLogFilename() As String
+    On Error Goto GetErrorLogFilename_Err
    GetErrorLogFilename = App.path & "\logs\Errores.log"
+    Exit Function
+GetErrorLogFilename_Err:
+    Call TraceError(Err.Number, Err.Description, "ao20config.GetErrorLogFilename", Erl)
 End Function
 
 
 Sub SaveConfig()
+    On Error Goto SaveConfig_Err
     On Error GoTo SaveConfig_Err
     
     #If PYMMO = 0 Or DEBUGGING = 1 Then
@@ -72,9 +77,13 @@ SaveConfig_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.SaveConfig", Erl)
     Resume Next
     
+    Exit Sub
+SaveConfig_Err:
+    Call TraceError(Err.Number, Err.Description, "ao20config.SaveConfig", Erl)
 End Sub
 
 Sub LoadConfig()
+    On Error Goto LoadConfig_Err
 
     On Error GoTo ErrorHandler
     Set DialogosClanes = New clsGuildDlg
@@ -185,5 +194,8 @@ ErrorHandler:
     Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_CARGAR_CONFIG"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_CONFIGURACION"))
 
     End
+    Exit Sub
+LoadConfig_Err:
+    Call TraceError(Err.Number, Err.Description, "ao20config.LoadConfig", Erl)
 End Sub
 

@@ -275,18 +275,31 @@ Private cBotonCancelar As clsGraphicalButton
 Private cBotonCerrar As clsGraphicalButton
 
 Private Sub cmdCancelar_Click()
+    On Error Goto cmdCancelar_Click_Err
     Unload Me
+    Exit Sub
+cmdCancelar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGmAyuda.cmdCancelar_Click", Erl)
 End Sub
 
 Private Sub cmdCerrar_Click()
+    On Error Goto cmdCerrar_Click_Err
     Unload Me
+    Exit Sub
+cmdCerrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGmAyuda.cmdCerrar_Click", Erl)
 End Sub
 
 Private Sub cmdButtonEntrarForo_Click()
+    On Error Goto cmdButtonEntrarForo_Click_Err
     Call ShellExecute(0, "Open", "https://www.elmesonhostigado.com/foro", "", App.Path, 1)
+    Exit Sub
+cmdButtonEntrarForo_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGmAyuda.cmdButtonEntrarForo_Click", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
     
     On Error GoTo Form_Load_Err
     
@@ -304,8 +317,12 @@ Form_Load_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmGmAyuda.Form_Load", Erl)
     Resume Next
     
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGmAyuda.Form_Load", Erl)
 End Sub
 Private Sub LoadButtons()
+    On Error Goto LoadButtons_Err
     Set cBotonEnviarMensaje = New clsGraphicalButton
     Set cBotonCancelar = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
@@ -322,9 +339,13 @@ Private Sub LoadButtons()
                                                 "boton-cerrar-over.bmp", _
                                                 "boton-cerrar-off.bmp", Me)
                                                 
+    Exit Sub
+LoadButtons_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGmAyuda.LoadButtons", Erl)
 End Sub
 
 Private Sub cmdEnviarMensaje_Click()
+    On Error Goto cmdEnviarMensaje_Click_Err
     
     On Error GoTo cmdEnviarMensaje_Click_Err
     
@@ -348,13 +369,21 @@ cmdEnviarMensaje_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmGmAyuda.cmdEnviarMensaje_Click", Erl)
     Resume Next
     
+    Exit Sub
+cmdEnviarMensaje_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGmAyuda.cmdEnviarMensaje_Click", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+    On Error Goto Form_MouseMove_Err
     MoverForm Me.hwnd
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGmAyuda.Form_MouseMove", Erl)
 End Sub
 
 Private Sub optConsult_Click(Index As Integer)
+    On Error Goto optConsult_Click_Err
     
     On Error GoTo optConsult_Click_Err
     
@@ -406,9 +435,13 @@ optConsult_Click_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmGmAyuda.optConsult_Click", Erl)
     Resume Next
     
+    Exit Sub
+optConsult_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGmAyuda.optConsult_Click", Erl)
 End Sub
 
 Private Function DarIndiceElegido() As Integer
+    On Error Goto DarIndiceElegido_Err
     
     On Error GoTo DarIndiceElegido_Err
     
@@ -434,5 +467,8 @@ DarIndiceElegido_Err:
     Call RegistrarError(Err.number, Err.Description, "FrmGmAyuda.DarIndiceElegido", Erl)
     Resume Next
     
+    Exit Function
+DarIndiceElegido_Err:
+    Call TraceError(Err.Number, Err.Description, "FrmGmAyuda.DarIndiceElegido", Erl)
 End Function
 

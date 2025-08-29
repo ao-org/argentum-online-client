@@ -67,13 +67,18 @@ Option Explicit
 Private Presentacion As Integer
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 Me.WindowState = vbNormal
 Me.Picture = General_Load_Picture_From_Resource("cargandobn.bmp")
 picLoad.Picture = General_Load_Picture_From_Resource("cargando.bmp")
 
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCargando.Form_Load", Erl)
 End Sub
 
 Private Sub Timer1_Timer()
+    On Error Goto Timer1_Timer_Err
 Timer1.Enabled = False
 frmConnect.Show
 frmConnect.relampago.Enabled = True
@@ -90,9 +95,13 @@ Rem FrmLogear.Visible = True
 FrmLogear.Show , frmConnect
 
 
+    Exit Sub
+Timer1_Timer_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCargando.Timer1_Timer", Erl)
 End Sub
 
 Private Sub Timer2_Timer()
+    On Error Goto Timer2_Timer_Err
 Presentacion = Presentacion + 10
 frmCargando.picLoad.Width = Presentacion
 frmCargando.picLoad.Refresh
@@ -101,4 +110,7 @@ Timer2.Enabled = False
 End If
 
 
+    Exit Sub
+Timer2_Timer_Err:
+    Call TraceError(Err.Number, Err.Description, "frmCargando.Timer2_Timer", Erl)
 End Sub

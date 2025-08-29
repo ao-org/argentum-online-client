@@ -26,6 +26,7 @@ Public LastSentPosX As Integer
 Public LastSentPosY As Integer
 
 Public Function ComprobarPosibleMacro(ByVal MouseX As Integer, ByVal MouseY As Integer) As Boolean
+    On Error Goto ComprobarPosibleMacro_Err
     Call CopyMemory(ContadorMacroClicks(2), ContadorMacroClicks(1), Len(ContadorMacroClicks(1)) * (MAX_COMPROBACIONES - 1))
     
     ContadorMacroClicks(1).x = MouseX
@@ -43,13 +44,21 @@ Public Function ComprobarPosibleMacro(ByVal MouseX As Integer, ByVal MouseY As I
     
     ComprobarPosibleMacro = True
     Call generarLogMacrero
+    Exit Function
+ComprobarPosibleMacro_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTaehcitna.ComprobarPosibleMacro", Erl)
 End Function
 
 Private Sub generarLogMacrero()
+    On Error Goto generarLogMacrero_Err
     Call WriteLogMacroClickHechizo(tMacro.inasistidoPosFija)
+    Exit Sub
+generarLogMacrero_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTaehcitna.generarLogMacrero", Erl)
 End Sub
 
 Public Sub CountPacketIterations(ByRef packetControl As t_packetControl, ByVal expectedAverage As Double)
+    On Error Goto CountPacketIterations_Err
 
     Dim delta As Long
     Dim actualcount As Long
@@ -80,8 +89,12 @@ Public Sub CountPacketIterations(ByRef packetControl As t_packetControl, ByVal e
         Call WriteRepeatMacro
     End If
     
+    Exit Sub
+CountPacketIterations_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTaehcitna.CountPacketIterations", Erl)
 End Sub
 Private Function getPercentageDiff(ByRef packetControl As t_packetControl) As Double
+    On Error Goto getPercentageDiff_Err
 
     Dim i As Long, min As Long, max As Long
     
@@ -104,9 +117,13 @@ Private Function getPercentageDiff(ByRef packetControl As t_packetControl) As Do
     
     getPercentageDiff = 100 - ((min * 100) / max)
     
+    Exit Function
+getPercentageDiff_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTaehcitna.getPercentageDiff", Erl)
 End Function
 
 Private Function getAverage(ByRef packetControl As t_packetControl) As Double
+    On Error Goto getAverage_Err
 
     Dim i As Long, suma As Long
     
@@ -116,9 +133,13 @@ Private Function getAverage(ByRef packetControl As t_packetControl) As Double
     
     getAverage = suma / UBound(packetControl.iterations)
     
+    Exit Function
+getAverage_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTaehcitna.getAverage", Erl)
 End Function
 
 Private Sub alterIndex(ByRef packetControl As t_packetControl)
+    On Error Goto alterIndex_Err
     Dim i As Long
     
     For i = 1 To 10 ' packetControl.cant_iterations
@@ -126,6 +147,9 @@ Private Sub alterIndex(ByRef packetControl As t_packetControl)
             packetControl.iterations(i) = packetControl.iterations(i + 1)
         End If
     Next i
+    Exit Sub
+alterIndex_Err:
+    Call TraceError(Err.Number, Err.Description, "ModTaehcitna.alterIndex", Erl)
 End Sub
 
 

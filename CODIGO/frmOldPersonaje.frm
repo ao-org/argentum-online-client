@@ -108,6 +108,7 @@ Private Const textoSalir = "Volver a la pantalla principal" & vbNewLine & "para 
 
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 Dim j
 For Each j In Image1()
     j.Tag = "0"
@@ -121,9 +122,13 @@ Image1(2).Picture = LoadPicture(App.path & "\Recursos\Graficos\bteclas.jpg")
 
 
 
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOldPersonaje.Form_Load", Erl)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Form_MouseMove_Err
 If Image1(0).Tag = "1" Then
             Me.lblinfo.Visible = False
             Me.lblinfo.Caption = vbNullString
@@ -143,9 +148,13 @@ If Image1(2).Tag = "1" Then
             Image1(2).Picture = LoadPicture(App.path & "\Recursos\Graficos\bteclas.jpg")
 End If
 
+    Exit Sub
+Form_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOldPersonaje.Form_MouseMove", Erl)
 End Sub
 
 Private Sub Image1_Click(Index As Integer)
+    On Error Goto Image1_Click_Err
 
 Call Audio.PlayWave(SND_CLICK)
 
@@ -191,9 +200,13 @@ Select Case Index
 
         
 End Select
+    Exit Sub
+Image1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOldPersonaje.Image1_Click", Erl)
 End Sub
 
 Private Sub Image1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto Image1_MouseMove_Err
 Select Case Index
     Case 0
         If Image1(0).Tag = "0" Then
@@ -221,10 +234,17 @@ Select Case Index
         End If
         
 End Select
+    Exit Sub
+Image1_MouseMove_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOldPersonaje.Image1_MouseMove", Erl)
 End Sub
 
 Private Sub PasswordTxt_KeyDown(KeyCode As Integer, Shift As Integer)
+    On Error Goto PasswordTxt_KeyDown_Err
     If KeyCode = vbKeyReturn Then
         Call Image1_Click(0)
     End If
+    Exit Sub
+PasswordTxt_KeyDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmOldPersonaje.PasswordTxt_KeyDown", Erl)
 End Sub

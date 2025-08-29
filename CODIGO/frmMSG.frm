@@ -142,47 +142,72 @@ Private MisMSG(0 To MAX_GM_MSG) As String
 Private Apunt(0 To MAX_GM_MSG) As Integer
 
 Public Sub CrearGMmSg(Nick As String, msg As String)
+    On Error Goto CrearGMmSg_Err
 If List1.ListCount < MAX_GM_MSG Then
         List1.AddItem Nick & "-" & List1.ListCount
         MisMSG(List1.ListCount - 1) = msg
         Apunt(List1.ListCount - 1) = List1.ListCount - 1
 End If
+    Exit Sub
+CrearGMmSg_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMSG.CrearGMmSg", Erl)
 End Sub
 
 Private Sub Command1_Click()
+    On Error Goto Command1_Click_Err
 Me.Visible = False
 List1.Clear
 List2.Clear
 txtMsg = ""
+    Exit Sub
+Command1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMSG.Command1_Click", Erl)
 End Sub
 
 Private Sub Form_Deactivate()
+    On Error Goto Form_Deactivate_Err
 Me.Visible = False
 List1.Clear
 List2.Clear
 txtMsg = ""
+    Exit Sub
+Form_Deactivate_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMSG.Form_Deactivate", Erl)
 End Sub
 
 Private Sub Form_Load()
+    On Error Goto Form_Load_Err
 List1.Clear
 List2.Clear
 txtMsg = ""
+    Exit Sub
+Form_Load_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMSG.Form_Load", Erl)
 End Sub
 
 Private Sub list1_Click()
+    On Error Goto list1_Click_Err
 Dim ind As Integer
 ind = Val(ReadField(2, List1.List(List1.listIndex), Asc("@")))
 txtMsg = List2.List(List1.listIndex)
+    Exit Sub
+list1_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMSG.list1_Click", Erl)
 End Sub
 
 Private Sub List1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error Goto List1_MouseDown_Err
 If Button = vbRightButton Then
     PopUpMenu menU_usuario
 End If
 
+    Exit Sub
+List1_MouseDown_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMSG.List1_MouseDown", Erl)
 End Sub
 
 Private Sub mnuBorrar_Click()
+    On Error Goto mnuBorrar_Click_Err
     If List1.listIndex < 0 Then Exit Sub
     Call ReadNick
     Dim ProximamentTipo As String
@@ -190,18 +215,30 @@ Private Sub mnuBorrar_Click()
     TIPO = General_Field_Read(1, ProximamentTipo, ")")
     Call WriteSOSRemove(Nick & "Ø" & txtMsg & "Ø" & TIPO)
     List1.RemoveItem List1.listIndex
+    Exit Sub
+mnuBorrar_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMSG.mnuBorrar_Click", Erl)
 End Sub
 Private Sub mnuIR_Click()
+    On Error Goto mnuIR_Click_Err
     Dim aux As String
     aux = mid$(ReadField(1, List1.List(List1.listIndex), Asc("-")), 10, Len(ReadField(1, List1.List(List1.listIndex), Asc("-"))))
     Call WriteGoToChar(aux)
+    Exit Sub
+mnuIR_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMSG.mnuIR_Click", Erl)
 End Sub
 Private Sub mnutraer_Click()
+    On Error Goto mnutraer_Click_Err
     Dim aux As String
     aux = mid$(ReadField(1, List1.List(List1.listIndex), Asc("-")), 10, Len(ReadField(1, List1.List(List1.listIndex), Asc("-"))))
     Call WriteSummonChar(aux)
+    Exit Sub
+mnutraer_Click_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMSG.mnutraer_Click", Erl)
 End Sub
 Private Sub ReadNick()
+    On Error Goto ReadNick_Err
 If List1.Visible Then
     Nick = General_Field_Read(1, List1.List(List1.listIndex), "(")
     If Nick = "" Then Exit Sub
@@ -212,5 +249,8 @@ Else
     Nick = Left$(Nick, Len(Nick))
 End If
 
+    Exit Sub
+ReadNick_Err:
+    Call TraceError(Err.Number, Err.Description, "frmMSG.ReadNick", Erl)
 End Sub
 
