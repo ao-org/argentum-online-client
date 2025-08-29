@@ -2072,23 +2072,25 @@ Public Function ElementalTagsToTxtParser(ByVal ElementalTags As Long) As String
 
     Dim tmpString As String
 
-    If ElementalTags And e_ElementalTags.Normal Then
+    If ElementalTags = e_ElementalTags.Normal Then
         tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_NORMAL") & "]"
+        ElementalTagsToTxtParser = tmpString
+        Exit Function
     End If
     
-    If ElementalTags And e_ElementalTags.Fire Then
+    If IsSet(ElementalTags, e_ElementalTags.Fire) Then
         tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_FUEGO") & "]"
     End If
     
-    If ElementalTags And e_ElementalTags.Water Then
+    If IsSet(ElementalTags, e_ElementalTags.Water) Then
         tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_AGUA") & "]"
     End If
     
-    If ElementalTags And e_ElementalTags.Earth Then
+    If IsSet(ElementalTags, e_ElementalTags.Earth) Then
         tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_TIERRA") & "]"
     End If
     
-    If ElementalTags And e_ElementalTags.Wind Then
+    If IsSet(ElementalTags, e_ElementalTags.Wind) Then
         tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_AIRE") & "]"
     End If
     
@@ -2484,7 +2486,11 @@ On Error GoTo NpcInTileToTxtParser_Err
     
     Fields(1) = ElementalTagsToTxtParser(NpcElementalTags)
     
-    
+    If UBound(Fields) = 3 Then
+        Fields(3) = Split(Replace(NpcStatuses, "-", ""), "|")(0)
+    Else
+        Fields(2) = Split(Replace(NpcStatuses, "-", ""), "|")(0)
+    End If
     
     Exit Function
 
