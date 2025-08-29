@@ -2429,12 +2429,19 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String)
 
 On Error GoTo NpcInTileToTxtParser_Err
 
+    Dim SplitNpcStatus() As String
+    
     Dim NpcName As String
     Dim NpcElementalTags As Long
     Dim NpcOwner As String
     Dim NpcStatuses As String
     Dim NpcStatusMask As Long
-    Dim Information As String
+    Dim extraInfo As String
+    Dim NpcFightingWith As String
+    Dim NpcHpInfo As String
+    Dim NpcIndex As String
+    Dim ParalisisTime As String
+    Dim InmovilizedTime As String
     
     NpcName = Fields(0)
     NpcElementalTags = CLng(Fields(1))
@@ -2446,50 +2453,62 @@ On Error GoTo NpcInTileToTxtParser_Err
         NpcStatuses = Fields(2)
     End If
     
+    SplitNpcStatus = Split(NpcStatuses, "-")
+    NpcHpInfo = SplitNpcStatus(0)
     NpcStatusMask = CLng(Split(NpcStatuses, "|")(1))
+    NpcIndex = SplitNpcStatus(4)
+     
+    If NpcIndex <> "" Then
+        extraInfo = extraInfo & " NpcIndex: " & NpcIndex
+    End If
     
-    
-    If Split(NpcStatuses, "-")(0) = "" Then
+    If NpcStatusMask > 0 Then
         If IsSet(NpcStatusMask, e_NpcInfoMask.AlmostDead) Then
-            Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_CASIMUERTO")
+            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_CASIMUERTO") & "|"
         End If
         
         If IsSet(NpcStatusMask, e_NpcInfoMask.SeriouslyWounded) Then
-            Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_GRAVEMENTE_HERIDO")
+            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_GRAVEMENTE_HERIDO") & "|"
         End If
         
         If IsSet(NpcStatusMask, e_NpcInfoMask.Wounded) Then
-            Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_HERIDO")
+            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_HERIDO") & "|"
         End If
         
         If IsSet(NpcStatusMask, e_NpcInfoMask.LightlyWounded) Then
-            Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_LEVEMENTE_HERIDO")
+            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_LEVEMENTE_HERIDO") & "|"
         End If
         
         If IsSet(NpcStatusMask, e_NpcInfoMask.Intact) Then
-            Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_INTACTO")
+            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_INTACTO") & "|"
+        End If
+        
+        If IsSet(NpcStatusMask, e_NpcInfoMask.Paralized) Then
+            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_PARALIZADO") & "|"
+            ParalisisTime = Split(NpcStatuses, "-")(1)
+            If ParalisisTime <> "" Then
+                extraInfo = extraInfo & "(" & ParalisisTime & ")s" & "|"
+            End If
+            
+        End If
+    
+        If IsSet(NpcStatusMask, e_NpcInfoMask.Inmovilized) Then
+            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_INMOVILIZADO") & "|"
+            ParalisisTime = Split(NpcStatuses, "-")(2)
+        End If
+    
+        If IsSet(NpcStatusMask, e_NpcInfoMask.Fighting) Then
+            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_PELEANDO") & " "
+            NpcFightingWith = Split(NpcStatuses, "-")(2)
         End If
     End If
-    
-    If IsSet(NpcStatusMask, e_NpcInfoMask.Paralized) Then
-        Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_PARALIZADO")
-    End If
-    
-    If IsSet(NpcStatusMask, e_NpcInfoMask.Inmovilized) Then
-        Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_INMOVILIZADO")
-    End If
-    
-    If IsSet(NpcStatusMask, e_NpcInfoMask.Fighting) Then
-        Information = Information & JsonLanguage.Item("MENSAJE_ESTADO_PELEANDO")
-    End If
-    
-    
+
     Fields(1) = ElementalTagsToTxtParser(NpcElementalTags)
     
     If UBound(Fields) = 3 Then
-        Fields(3) = Split(Replace(NpcStatuses, "-", ""), "|")(0)
+        Fields(3) = "<" & NpcHpInfo & extraInfo & NpcFightingWith & ">"
     Else
-        Fields(2) = Split(Replace(NpcStatuses, "-", ""), "|")(0)
+        Fields(2) = "<" & NpcHpInfo & extraInfo & NpcFightingWith & ">"
     End If
     
     Exit Function
