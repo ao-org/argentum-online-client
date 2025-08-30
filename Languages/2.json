@@ -657,5 +657,18 @@
     "MENSAJE_EVENTO_CACERIA":"Hunt",
     "MENSAJE_EVENTO_ABORDAJE":"Naval boarding",
     "MENSAJE_EVENTO_MODALIDAD_RANDOM": "Random",
-    "MENSAJE_EVENTO_MODALIDAD_GRUPOS": "Groups"
+    "MENSAJE_EVENTO_MODALIDAD_GRUPOS": "Groups",
+    "MENSAJE_ELEMENTO_NORMAL": "Normal",
+    "MENSAJE_ELEMENTO_FUEGO" : "Fire",
+    "MENSAJE_ELEMENTO_AGUA" : "Water",
+    "MENSAJE_ELEMENTO_TIERRA" : "Earth",
+    "MENSAJE_ELEMENTO_AIRE" : "Wind",
+    "MENSAJE_LINGOTE_DE_HIERRO": "Iron ingot",
+    "MENSAJE_LINGOTE_DE_PLATA": "Silver ingot",
+    "MENSAJE_LINGOTE_DE_ORO": "Gold ingot",
+    "MENSAJE_CARBON": "Coal",
+    "MENSAJE_ESENCIA_DE_FUEGO": "Essence of fire",
+    "MENSAJE_ESENCIA_DE_AGUA": "Essence of water",
+    "MENSAJE_ESENCIA_DE_TIERRA": "Essence of earth",
+    "MENSAJE_ESENCIA_DE_AIRE": "Essence of wind"
 }

@@ -384,7 +384,7 @@ End Sub
 
 Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amount As Integer, ByVal Equipped As Byte, _
                       ByVal GrhIndex As Long, ByVal ObjType As Integer, ByVal MaxHit As Integer, ByVal MinHit As Integer, _
-                      ByVal Def As Integer, ByVal Value As Single, ByVal Name As String, ByVal CanUse As Byte, ByVal IsBindable As Byte)
+                      ByVal Def As Integer, ByVal Value As Single, ByVal Name As String, ByVal CanUse As Byte, ByVal ElementalTags As Long, ByVal IsBindable As Byte)
 
     If Slot < 1 Or Slot > UBound(UserInventory.Slots) Then Exit Sub
     With UserInventory.Slots(Slot)
@@ -399,9 +399,10 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         .ObjType = ObjType
         .Valor = Value
         .PuedeUsar = CanUse
+        .ElementalTags = ElementalTags
         .IsBindable = IsBindable > 0
     End With
-    Call frmMain.Inventario.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, Def, Value, Name, CanUse)
+    Call frmMain.Inventario.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, Def, Value, Name, ElementalTags, CanUse)
 End Sub
 
 Public Sub SelectItemSlot(ByVal Slot As Integer)

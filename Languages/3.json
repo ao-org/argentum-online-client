@@ -657,6 +657,18 @@
   "MENSAJE_EVENTO_CACERIA":"Caça",
   "MENSAJE_EVENTO_ABORDAJE":"Abordagem",
   "MENSAJE_EVENTO_MODALIDAD_RANDOM": "Aleatório",
-  "MENSAJE_EVENTO_MODALIDAD_GRUPOS": "Grupos"
-	
+  "MENSAJE_EVENTO_MODALIDAD_GRUPOS": "Grupos",
+  "MENSAJE_ELEMENTO_NORMAL": "Normal",
+  "MENSAJE_ELEMENTO_FUEGO" : "Fogo",
+  "MENSAJE_ELEMENTO_AGUA" : "Água",
+  "MENSAJE_ELEMENTO_TIERRA" : "Terra",
+  "MENSAJE_ELEMENTO_AIRE" : "Vento",
+  "MENSAJE_LINGOTE_DE_HIERRO": "Lingote de ferro",
+  "MENSAJE_LINGOTE_DE_PLATA": "Lingote de prata",
+  "MENSAJE_LINGOTE_DE_ORO": "Lingote de ouro",
+  "MENSAJE_CARBON": "Carvão",
+  "MENSAJE_ESENCIA_DE_FUEGO": "Essência de fogo",
+  "MENSAJE_ESENCIA_DE_AGUA": "Essência de água",
+  "MENSAJE_ESENCIA_DE_TIERRA": "Essência de terra",
+  "MENSAJE_ESENCIA_DE_AIRE": "Essência de vento"
 }

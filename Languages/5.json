@@ -657,6 +657,19 @@
   "MENSAJE_EVENTO_CACERIA":"Caccia",
   "MENSAJE_EVENTO_ABORDAJE":"Imbarco navale",
   "MENSAJE_EVENTO_MODALIDAD_RANDOM": "Casuale",
-  "MENSAJE_EVENTO_MODALIDAD_GRUPOS": "Gruppi"
-
+  "MENSAJE_EVENTO_MODALIDAD_GRUPOS": "Gruppi",
+  "MENSAJE_ELEMENTO_NORMAL": "Normale",
+  "MENSAJE_ELEMENTO_FUEGO" : "Fuoco",
+  "MENSAJE_ELEMENTO_AGUA" : "Acqua",
+  "MENSAJE_ELEMENTO_TIERRA" : "Terra",
+  "MENSAJE_ELEMENTO_AIRE" : "Vento",
+  "MENSAJE_LINGOTE_DE_HIERRO": "Lingotto di ferro",
+  "MENSAJE_LINGOTE_DE_PLATA": "Lingotto d'argento",
+  "MENSAJE_LINGOTE_DE_ORO": "Lingotto d'oro",
+  "MENSAJE_CARBON": "Carbone",
+  "MENSAJE_ESENCIA_DE_FUEGO": "Essenza di fuoco",
+  "MENSAJE_ESENCIA_DE_AGUA": "Essenza d'acqua",
+  "MENSAJE_ESENCIA_DE_TIERRA": "Essenza di terra",
+  "MENSAJE_ESENCIA_DE_AIRE": "Essenza di vento"
+  
 }
