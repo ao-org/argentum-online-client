@@ -2482,7 +2482,7 @@ On Error GoTo NpcInTileToTxtParser_Err
             extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_PARALIZADO") & "]"
             ParalisisTime = SplitNpcStatus(1)
             If ParalisisTime <> "" Then
-                extraInfo = extraInfo & "(" & ParalisisTime & ")s" & "]"
+                extraInfo = extraInfo & "(" & ParalisisTime & "s)" & "]"
             End If
             
         End If
@@ -2490,6 +2490,9 @@ On Error GoTo NpcInTileToTxtParser_Err
         If IsSet(NpcStatusMask, e_NpcInfoMask.Inmovilized) Then
             extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_INMOVILIZADO") & "]"
             InmovilizedTime = SplitNpcStatus(2)
+            If InmovilizedTime <> "" Then
+                extraInfo = extraInfo & "(" & InmovilizedTime & "s)" & "]"
+            End If
         End If
     
         If IsSet(NpcStatusMask, e_NpcInfoMask.Fighting) Then
@@ -2508,7 +2511,7 @@ On Error GoTo NpcInTileToTxtParser_Err
         Fields(2) = extraInfo
     End If
 
-    Fields(3) = JsonLanguage.Item("MENSAJE_ESTADO_MASCOTA") & " " & Fields(3)
+    Fields(3) = "[" & JsonLanguage.Item("MENSAJE_ESTADO_MASCOTA") & " " & Fields(3) & "]"
     
     Exit Function
 
