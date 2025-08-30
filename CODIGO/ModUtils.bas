@@ -2433,7 +2433,6 @@ On Error GoTo NpcInTileToTxtParser_Err
     
     Dim NpcName As String
     Dim NpcElementalTags As Long
-    Dim NpcOwner As String
     Dim NpcStatuses As String
     Dim NpcStatusMask As Long
     Dim extraInfo As String
@@ -2445,17 +2444,11 @@ On Error GoTo NpcInTileToTxtParser_Err
     
     NpcName = Fields(0)
     NpcElementalTags = CLng(Fields(1))
-    
-    If UBound(Fields) = 3 Then
-        NpcOwner = Fields(2)
-        NpcStatuses = Fields(3)
-    Else
-        NpcStatuses = Fields(2)
-    End If
+    NpcStatuses = Fields(2)
     
     SplitNpcStatus = Split(NpcStatuses, "-")
     NpcHpInfo = SplitNpcStatus(0)
-    NpcStatusMask = CLng(Split(NpcStatuses, "|")(1))
+    NpcStatusMask = CLng(SplitNpcStatus(5))
     NpcIndex = SplitNpcStatus(4)
      
     If NpcIndex <> "" Then
@@ -2505,11 +2498,7 @@ On Error GoTo NpcInTileToTxtParser_Err
 
     Fields(1) = ElementalTagsToTxtParser(NpcElementalTags)
     
-    If UBound(Fields) = 3 Then
-        Fields(3) = "<" & NpcHpInfo & extraInfo & NpcFightingWith & ">"
-    Else
-        Fields(2) = "<" & NpcHpInfo & extraInfo & NpcFightingWith & ">"
-    End If
+    Fields(2) = "<" & NpcHpInfo & ">" & extraInfo & NpcFightingWith
     
     Exit Function
 
