@@ -700,5 +700,6 @@
   "MENSAJE_ESTADO_ARMADA_QUINTA_JERARQUIA": "Campeão da Luz",
   "MENSAJE_ESTADO_CIUDADANO": "Cidadão",
   "MENSAJE_ESTADO_CASADO" : "Casado com",
-  "MENSAJE_ESTADO_PELEANDO" : "Lutando com"
+  "MENSAJE_ESTADO_PELEANDO" : "Lutando com",
+  "MENSAJE_ESTADO_MASCOTA" : "Mascote de"
 }

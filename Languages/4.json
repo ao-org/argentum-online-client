@@ -700,5 +700,6 @@
   "MENSAJE_ESTADO_ARMADA_QUINTA_JERARQUIA": "Champion de la Lumière",
   "MENSAJE_ESTADO_CIUDADANO": "Citoyen",
   "MENSAJE_ESTADO_CASADO" : "Marié avec",
-  "MENSAJE_ESTADO_PELEANDO" : "Se battre avec"
+  "MENSAJE_ESTADO_PELEANDO" : "Se battre avec",
+  "MENSAJE_ESTADO_MASCOTA": "Mascotte appartenant à"
 }
