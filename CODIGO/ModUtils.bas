@@ -2437,10 +2437,12 @@ On Error GoTo NpcInTileToTxtParser_Err
     Dim NpcStatusMask As Long
     Dim extraInfo As String
     Dim NpcFightingWith As String
+    Dim NpcFightingWithTimer As String
     Dim NpcHpInfo As String
     Dim NpcIndex As String
     Dim ParalisisTime As String
     Dim InmovilizedTime As String
+    
     
     NpcName = Fields(0)
     NpcElementalTags = CLng(Fields(1))
@@ -2457,48 +2459,56 @@ On Error GoTo NpcInTileToTxtParser_Err
     
     If NpcStatusMask > 0 Then
         If IsSet(NpcStatusMask, e_NpcInfoMask.AlmostDead) Then
-            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_CASIMUERTO") & "|"
+            extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_CASIMUERTO") & "]"
         End If
         
         If IsSet(NpcStatusMask, e_NpcInfoMask.SeriouslyWounded) Then
-            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_GRAVEMENTE_HERIDO") & "|"
+            extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_GRAVEMENTE_HERIDO") & "]"
         End If
         
         If IsSet(NpcStatusMask, e_NpcInfoMask.Wounded) Then
-            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_HERIDO") & "|"
+            extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_HERIDO") & "]"
         End If
         
         If IsSet(NpcStatusMask, e_NpcInfoMask.LightlyWounded) Then
-            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_LEVEMENTE_HERIDO") & "|"
+            extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_LEVEMENTE_HERIDO") & "]"
         End If
         
         If IsSet(NpcStatusMask, e_NpcInfoMask.Intact) Then
-            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_INTACTO") & "|"
+            extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_INTACTO") & "]"
         End If
         
         If IsSet(NpcStatusMask, e_NpcInfoMask.Paralized) Then
-            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_PARALIZADO") & "|"
-            ParalisisTime = Split(NpcStatuses, "-")(1)
+            extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_PARALIZADO") & "]"
+            ParalisisTime = SplitNpcStatus(1)
             If ParalisisTime <> "" Then
-                extraInfo = extraInfo & "(" & ParalisisTime & ")s" & "|"
+                extraInfo = extraInfo & "(" & ParalisisTime & ")s" & "]"
             End If
             
         End If
     
         If IsSet(NpcStatusMask, e_NpcInfoMask.Inmovilized) Then
-            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_INMOVILIZADO") & "|"
-            ParalisisTime = Split(NpcStatuses, "-")(2)
+            extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_INMOVILIZADO") & "]"
+            InmovilizedTime = SplitNpcStatus(2)
         End If
     
         If IsSet(NpcStatusMask, e_NpcInfoMask.Fighting) Then
-            extraInfo = extraInfo & JsonLanguage.Item("MENSAJE_ESTADO_PELEANDO") & " "
-            NpcFightingWith = Split(NpcStatuses, "-")(2)
+            extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_PELEANDO")
+            NpcFightingWith = Split(SplitNpcStatus(3), "|")(0)
+            NpcFightingWithTimer = Split(SplitNpcStatus(3), "|")(1)
+            extraInfo = extraInfo & NpcFightingWith & "(" & NpcFightingWithTimer & "s)" & "]"
         End If
     End If
 
     Fields(1) = ElementalTagsToTxtParser(NpcElementalTags)
     
-    Fields(2) = "<" & NpcHpInfo & ">" & extraInfo & NpcFightingWith
+    If NpcHpInfo <> "" Then
+        Fields(2) = "<" & NpcHpInfo & ">" & extraInfo
+    Else
+        Fields(2) = extraInfo
+    End If
+
+    Fields(3) = JsonLanguage.Item("MENSAJE_ESTADO_MASCOTA") & " " & Fields(3)
     
     Exit Function
 
@@ -2507,7 +2517,4 @@ NpcInTileToTxtParser_Err:
     Resume Next
 
 End Function
-
-
-
 
