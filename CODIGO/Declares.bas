@@ -44,6 +44,19 @@ Public Enum e_ActiveTab
     eSpellList
 End Enum
 
+Public Enum e_EventType
+    Generic = 0
+    CaptureTheFlag = 1
+    NpcHunt = 2
+    DeathMatch = 3
+    NavalBattle = 4
+End Enum
+
+Public Enum e_TeamTypes
+    ePremade = 0
+    eRandom = 1
+End Enum
+
 Public ActiveInventoryTab As e_ActiveTab
 Public LastMacroButton As Long
 
