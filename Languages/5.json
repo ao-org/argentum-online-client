@@ -714,5 +714,6 @@
   "MENSAJE_ESTADO_ARMADA_QUINTA_JERARQUIA": "Campione della Luce",
   "MENSAJE_ESTADO_CIUDADANO": "Cittadino",
   "MENSAJE_ESTADO_CASADO" : "Combattere con",
-  "MENSAJE_ESTADO_MASCOTA" : "Mascotte di proprietà di"
+  "MENSAJE_ESTADO_MASCOTA" : "Mascotte di proprietà di",
+  "MENSAJE_DESCRIPCION_GUION_INVALIDO":"I trattini non sono ammessi nella descrizione."
 }
