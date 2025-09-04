@@ -1160,38 +1160,26 @@ Private Sub Rotacion_boton_atras_clase()
 
 End Sub
 
-
 Private Sub Rotacion_boton_adelante_ciudades()
-
-    ' Shugar - 14/6/24
-    ' Limito la selección del hogar a Ulla, Nix, Arghal y Forgat.
-    ' Botón de la derecha: es el que aumenta el index.
-    ' Implementación de buffer circular, arranca en eCiudad.cUllathorpe
-  
+       
     Select Case frmCrearPersonaje.lstHogar.ListIndex
+
         Case eCiudad.cUllathorpe - 1
             frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cNix - 1
+
         Case eCiudad.cNix - 1
             frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cArghal - 1
+
         Case eCiudad.cArghal - 1
-            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cForgat - 1
-        Case eCiudad.cForgat - 1
             frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cUllathorpe - 1
     End Select
 
 End Sub
 
 Private Sub Rotacion_boton_atras_ciudades()
-    
-    ' Shugar - 14/6/24
-    ' Limito la selección del hogar a Ulla, Nix, Arghal y Forgat.
-    ' Botón de la izquierda: es el que disminuye el index.
-    ' Implementación de buffer circular, arranca en eCiudad.cUllathorpe
-    
+ 
     Select Case frmCrearPersonaje.lstHogar.ListIndex
         Case eCiudad.cUllathorpe - 1
-            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cForgat - 1
-        Case eCiudad.cForgat - 1
             frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cArghal - 1
         Case eCiudad.cArghal - 1
             frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cNix - 1

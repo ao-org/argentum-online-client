@@ -70,6 +70,7 @@ Public Enum ServerPacketID
     eAtributes               ' ATR
     eBlacksmithWeapons       ' LAH
     eBlacksmithArmors        ' LAR
+    eBlacksmithExtraObjects
     eCarpenterObjects        ' OBR
     eRestOK                  ' DOK
     eErrorMsg                ' ERR
