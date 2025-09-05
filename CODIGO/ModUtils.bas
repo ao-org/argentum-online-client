@@ -316,6 +316,11 @@ Public Enum Accion_Barra
 
 End Enum
 
+Public Enum e_EquipmentStyle
+        Modern = 0
+        Classic = 1
+End Enum
+
 Public UserMacro As Macro
 
 Type Macro
