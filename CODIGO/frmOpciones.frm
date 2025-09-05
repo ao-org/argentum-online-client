@@ -36,7 +36,38 @@ Begin VB.Form frmOpciones
       TabIndex        =   1
       Top             =   1800
       Width           =   7560
+      Begin VB.TextBox txtEquippedCaracter 
+         BackColor       =   &H80000007&
+         ForeColor       =   &H80000005&
+         Height          =   285
+         Left            =   6240
+         TabIndex        =   20
+         Text            =   "Equipped caracter"
+         Top             =   3240
+         Width           =   495
+      End
+      Begin VB.TextBox txtCoordinateY 
+         BackColor       =   &H80000007&
+         ForeColor       =   &H80000005&
+         Height          =   285
+         Left            =   5760
+         TabIndex        =   19
+         Text            =   "CoordinateY"
+         Top             =   3240
+         Width           =   495
+      End
+      Begin VB.TextBox txtCoordinateX 
+         BackColor       =   &H80000007&
+         ForeColor       =   &H80000005&
+         Height          =   285
+         Left            =   5280
+         TabIndex        =   18
+         Text            =   "CoordinateX"
+         Top             =   3240
+         Width           =   495
+      End
       Begin VB.TextBox txtTransparency 
+         BackColor       =   &H80000007&
          BeginProperty DataFormat 
             Type            =   1
             Format          =   "0"
@@ -46,6 +77,7 @@ Begin VB.Form frmOpciones
             LCID            =   11274
             SubFormatType   =   1
          EndProperty
+         ForeColor       =   &H80000005&
          Height          =   285
          Left            =   6720
          TabIndex        =   17
@@ -54,6 +86,7 @@ Begin VB.Form frmOpciones
          Width           =   495
       End
       Begin VB.TextBox txtBlue 
+         BackColor       =   &H80000007&
          BeginProperty DataFormat 
             Type            =   1
             Format          =   "0"
@@ -63,6 +96,7 @@ Begin VB.Form frmOpciones
             LCID            =   11274
             SubFormatType   =   1
          EndProperty
+         ForeColor       =   &H80000005&
          Height          =   285
          Left            =   6240
          TabIndex        =   16
@@ -71,6 +105,7 @@ Begin VB.Form frmOpciones
          Width           =   495
       End
       Begin VB.TextBox txtGreen 
+         BackColor       =   &H80000007&
          BeginProperty DataFormat 
             Type            =   1
             Format          =   "0"
@@ -80,6 +115,7 @@ Begin VB.Form frmOpciones
             LCID            =   11274
             SubFormatType   =   1
          EndProperty
+         ForeColor       =   &H80000005&
          Height          =   285
          Left            =   5760
          TabIndex        =   15
@@ -88,6 +124,7 @@ Begin VB.Form frmOpciones
          Width           =   495
       End
       Begin VB.TextBox txtRed 
+         BackColor       =   &H80000007&
          BeginProperty DataFormat 
             Type            =   1
             Format          =   "0"
@@ -97,6 +134,7 @@ Begin VB.Form frmOpciones
             LCID            =   11274
             SubFormatType   =   1
          EndProperty
+         ForeColor       =   &H80000005&
          Height          =   285
          Left            =   5280
          TabIndex        =   14
@@ -570,6 +608,10 @@ Private Sub Form_Load()
     txtGreen.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorGreenColor", 255)
     txtBlue.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorBlueColor", 0)
     txtTransparency.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorTransparency", 20)
+    
+    txtCoordinateX.text = GetSetting("OPCIONES", "EquipmentIndicatorCoordinateX")
+    txtCoordinateY.text = GetSetting("OPCIONES", "EquipmentIndicatorCoordinateY")
+    txtEquippedCaracter.text = GetSetting("OPCIONES", "EquipmentIndicatorCaracter")
     
     selected_light = GetSetting("VIDEO", "LuzGlobal")
     
@@ -1049,17 +1091,37 @@ End Sub
 
 Private Sub cmbEquipmentStyle_Click()
 
-    If cmbEquipmentStyle.ListIndex = e_EquipmentStyle.Modern Then
-        txtRed.visible = True
-        txtGreen.visible = True
-        txtBlue.visible = True
-        txtTransparency.visible = True
-    Else
-        txtRed.visible = False
-        txtGreen.visible = False
-        txtBlue.visible = False
-        txtTransparency.visible = False
-    End If
+    Select Case cmbEquipmentStyle.ListIndex
+    
+        Case e_EquipmentStyle.Modern
+            txtRed.visible = True
+            txtGreen.visible = True
+            txtBlue.visible = True
+            txtTransparency.visible = True
+            txtCoordinateX.visible = False
+            txtCoordinateY.visible = False
+            txtEquippedCaracter.visible = False
+        
+        Case e_EquipmentStyle.Classic
+            txtRed.visible = False
+            txtGreen.visible = False
+            txtBlue.visible = False
+            txtTransparency.visible = False
+            txtCoordinateX.visible = True
+            txtCoordinateY.visible = True
+            txtEquippedCaracter.visible = True
+            
+        Case Else
+            
+            txtRed.visible = False
+            txtGreen.visible = False
+            txtBlue.visible = False
+            txtTransparency.visible = False
+            txtCoordinateX.visible = False
+            txtCoordinateY.visible = False
+            txtEquippedCaracter.visible = False
+            
+    End Select
 
     Call SaveSetting("OPCIONES", "EquipmentIndicator", cmbEquipmentStyle.ListIndex)
 End Sub
@@ -1714,3 +1776,55 @@ Private Sub txtTransparency_Change()
     Call SaveSetting("OPCIONES", "EquipmentIndicatorTransparency", CByte(txtTransparency.text))
 End Sub
 
+Private Sub txtCoordinateX_Change()
+    If txtCoordinateX.text = "" Then
+        txtCoordinateX.text = "0"
+    End If
+    
+    If Not IsNumeric(txtCoordinateX.text) Then
+        txtCoordinateX.text = "0"
+    End If
+
+    If val(txtCoordinateX.text) > 30 Then
+        txtCoordinateX.text = "30"
+    End If
+    
+    If val(txtCoordinateX.text) < -20 Then
+        txtCoordinateX.text = "-20"
+    End If
+
+    Call SaveSetting("OPCIONES", "EquipmentIndicatorCoordinateX", CInt(txtCoordinateX.text))
+
+End Sub
+
+Private Sub txtCoordinateY_Change()
+    If txtCoordinateY.text = "" Then
+        txtCoordinateY.text = "0"
+    End If
+    
+    If Not IsNumeric(txtCoordinateY.text) Then
+        txtCoordinateY.text = "0"
+    End If
+
+    If val(txtCoordinateY.text) > 30 Then
+        txtCoordinateY.text = "30"
+    End If
+    
+    If val(txtCoordinateY.text) < -20 Then
+        txtCoordinateY.text = "-20"
+    End If
+
+    Call SaveSetting("OPCIONES", "EquipmentIndicatorCoordinateY", CInt(txtCoordinateY.text))
+
+End Sub
+
+
+Private Sub txtEquippedCaracter_Change()
+
+     If txtEquippedCaracter.text = "" Then
+        txtEquippedCaracter.text = "+"
+    End If
+    
+    Call SaveSetting("OPCIONES", "EquipmentIndicatorCaracter", txtEquippedCaracter.text)
+
+End Sub

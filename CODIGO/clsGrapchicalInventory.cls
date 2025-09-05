@@ -98,12 +98,6 @@ Const ITEM_SIZE = 32 ' El ancho de los items (nunca debería cambiar
 
 Const LETRA_GRANDE_Y = 20 ' Offset Y de cantidad de items (letra grande)
 
-Const EQUIPPED_X = 22 ' Offset X del caracter de equipado
-
-Const EQUIPPED_Y = -2 ' Offset Y del caracter de equipado
-
-Const EQUIPPED_CHARACTER = "+" ' Caracter de item equipado
-
 Const SELECTION_BOX_W = 34 ' Ancho de la cajita de selección (se centra automáticamente)
 
 Const SELECTION_BOX_H = 34 ' Alto de la cajita de selección (se centra automáticamente)
@@ -785,30 +779,38 @@ Public Sub DrawInventory()
             
             If UserInventory(i).Equipped Then
             
+            
+                Dim x_offset As Integer
+                x_offset = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateX")))
+                Dim y_offset As Integer
+                y_offset = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateY")))
+                Dim caracter As String
+                caracter = GetSetting("OPCIONES", "EquipmentIndicatorCaracter")
+            
+                Dim red As Byte
+                red = GetSettingAsByte("OPCIONES", "EquipmentIndicatorRedColor", 255)
+                Dim green As Byte
+                green = GetSettingAsByte("OPCIONES", "EquipmentIndicatorGreenColor", 255)
+                Dim blue As Byte
+                blue = GetSettingAsByte("OPCIONES", "EquipmentIndicatorBlueColor", 0)
+                Dim Transparency As Byte
+                Transparency = GetSettingAsByte("OPCIONES", "EquipmentIndicatorTransparency", 20)
+            
                 Select Case EquipmentStyle
                 
                     Case e_EquipmentStyle.Modern
                     
-                        Dim red As Byte
-                        red = GetSettingAsByte("OPCIONES", "EquipmentIndicatorRedColor", 255)
-                        Dim green As Byte
-                        green = GetSettingAsByte("OPCIONES", "EquipmentIndicatorGreenColor", 255)
-                        Dim blue As Byte
-                        blue = GetSettingAsByte("OPCIONES", "EquipmentIndicatorBlueColor", 0)
-                        Dim Transparency As Byte
-                        Transparency = GetSettingAsByte("OPCIONES", "EquipmentIndicatorTransparency", 20)
-                        
                         Call Engine_Draw_Box(x, y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(red, green, blue, Transparency))
-
+                        
                     Case e_EquipmentStyle.Classic
+
                         Call RGBAList(Color, 255, 0, 0)
-                        tmpString = EQUIPPED_CHARACTER
-                        Engine_Text_Render tmpString, x + EQUIPPED_X, y + EQUIPPED_Y, Color, 1
+                        Engine_Text_Render caracter, x + x_offset, y + y_offset, Color, 1
                     
                     Case Else
+                    
                         Call RGBAList(Color, 255, 0, 0)
-                        tmpString = EQUIPPED_CHARACTER
-                        Engine_Text_Render tmpString, x + EQUIPPED_X, y + EQUIPPED_Y, Color, 1
+                        Engine_Text_Render caracter, x + x_offset, y + y_offset, Color, 1
                 
                 End Select
              
