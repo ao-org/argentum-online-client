@@ -98,12 +98,6 @@ Const ITEM_SIZE = 32 ' El ancho de los items (nunca debería cambiar
 
 Const LETRA_GRANDE_Y = 20 ' Offset Y de cantidad de items (letra grande)
 
-Const EQUIPPED_X = 22 ' Offset X del caracter de equipado
-
-Const EQUIPPED_Y = -2 ' Offset Y del caracter de equipado
-
-Const EQUIPPED_CHARACTER = "+" ' Caracter de item equipado
-
 Const SELECTION_BOX_W = 34 ' Ancho de la cajita de selección (se centra automáticamente)
 
 Const SELECTION_BOX_H = 34 ' Alto de la cajita de selección (se centra automáticamente)
@@ -669,22 +663,29 @@ End Function
 Public Sub DrawInventory()
     
     On Error GoTo DrawInventory_Err
+
+    Dim i              As Byte
+
+    Dim x              As Integer
+
+    Dim y              As Integer
     
-
-    Dim i         As Byte
-
-    Dim x         As Integer
-
-    Dim y         As Integer
+    Dim EquipmentStyle As Byte
     
-    Dim tmpString As String
+    EquipmentStyle = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
+    
+    Dim tmpString                             As String
+
     Dim tmpNaturalAndUserCraftedElementalTags As Long
     
-    Dim CORNER_INDEX As Integer
-    Dim CORNER_X(3) As Integer
-    Dim CORNER_Y(3) As Integer
+    Dim CORNER_INDEX                          As Integer
 
-    Dim color(3)  As RGBA
+    Dim CORNER_X(3)                           As Integer
+
+    Dim CORNER_Y(3)                           As Integer
+
+    Dim Color(3)                              As RGBA
+
     CORNER_X(0) = 23
     CORNER_Y(0) = 0   ' top right
     CORNER_X(1) = 0
@@ -747,11 +748,6 @@ Public Sub DrawInventory()
                     Engine_Text_Render tmpString, x + HALF_ITEM_SIZE - Engine_Text_Width(tmpString, True) * 0.5, y + LETRA_GRANDE_Y, color, 1
                 End If
             End If
-            
-            
-            If UserInventory(i).Equipped Then
-                Call Engine_Draw_Box(x, y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(255, 255, 0, 20))
-            End If
         
             If UserInventory(i).ElementalTags > 0 Or ObjData(UserInventory(i).ObjIndex).ElementalTags > 0 Then
                 ' Slot corners relative positions
@@ -781,17 +777,59 @@ Public Sub DrawInventory()
                 End If
             End If
             
+            If UserInventory(i).Equipped Then
+            
+            
+                Dim x_offset As Integer
+                x_offset = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateX")))
+                Dim y_offset As Integer
+                y_offset = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateY")))
+                Dim caracter As String
+                caracter = GetSetting("OPCIONES", "EquipmentIndicatorCaracter")
+            
+                Dim red As Byte
+                red = GetSettingAsByte("OPCIONES", "EquipmentIndicatorRedColor", 255)
+                Dim green As Byte
+                green = GetSettingAsByte("OPCIONES", "EquipmentIndicatorGreenColor", 255)
+                Dim blue As Byte
+                blue = GetSettingAsByte("OPCIONES", "EquipmentIndicatorBlueColor", 0)
+                Dim Transparency As Byte
+                Transparency = GetSettingAsByte("OPCIONES", "EquipmentIndicatorTransparency", 20)
+            
+                Select Case EquipmentStyle
+                
+                    Case e_EquipmentStyle.Modern
+                    
+                        Call Engine_Draw_Box(x, y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(red, green, blue, Transparency))
+                        
+                    Case e_EquipmentStyle.Classic
+
+                        Call RGBAList(Color, 255, 0, 0)
+                        Engine_Text_Render caracter, x + x_offset, y + y_offset, Color, 1
+                    
+                    Case Else
+                    
+                        Call RGBAList(Color, 255, 0, 0)
+                        Engine_Text_Render caracter, x + x_offset, y + y_offset, Color, 1
+                
+                End Select
+             
+            End If
+            
             Dim cdTime As Single: cdTime = GetLongerCdPercent(i)
+
             If cdTime > 0 And cdTime < 1 Then
                 Call renderCooldownsInventory(x, y, cdTime)
             End If
         End If
 
     Next i
+
     Exit Sub
 
 DrawInventory_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.DrawInventory", Erl)
+
     Resume Next
     
 End Sub
