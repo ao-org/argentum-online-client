@@ -716,5 +716,7 @@
   "MENSAJE_ESTADO_CASADO" : "Casado com",
   "MENSAJE_ESTADO_PELEANDO" : "Lutando com",
   "MENSAJE_ESTADO_MASCOTA" : "Mascote de",
+  "MENSAJE_ESTILO_EQUIPAMIENTO_1" : "Moderno",
+  "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Clássico",
   "MENSAJE_DESCRIPCION_GUION_INVALIDO":"Hífens não são permitidos na descrição."
 }
