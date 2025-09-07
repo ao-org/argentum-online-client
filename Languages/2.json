@@ -717,5 +717,6 @@
     "MENSAJE_ESTADO_PELEANDO" : "Fighting with",
     "MENSAJE_ESTADO_MASCOTA" : "Mascot owned by",
     "MENSAJE_ESTILO_EQUIPAMIENTO_1" : "Modern",
-    "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Classic"
+    "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Classic",
+    "MENSAJE_DESCRIPCION_GUION_INVALIDO":"Hyphens are not allowed in the description."
 }
