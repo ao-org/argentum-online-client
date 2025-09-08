@@ -1123,6 +1123,7 @@ Private Sub cmbEquipmentStyle_Click()
             
     End Select
 
+    EquipmentStyle = cmbEquipmentStyle.ListIndex
     Call SaveSetting("OPCIONES", "EquipmentIndicator", cmbEquipmentStyle.ListIndex)
 End Sub
 
@@ -1710,7 +1711,8 @@ Private Sub txtRed_Change()
         txtRed.text = "0"
     End If
 
-    Call SaveSetting("OPCIONES", "EquipmentIndicatorRedColor", CByte(txtRed.text))
+    RED_SHADER = CByte(txtRed.text)
+    
 End Sub
 
 Private Sub txtGreen_Change()
@@ -1731,7 +1733,8 @@ Private Sub txtGreen_Change()
         txtGreen.text = "0"
     End If
 
-    Call SaveSetting("OPCIONES", "EquipmentIndicatorGreenColor", CByte(txtGreen.text))
+    GREEN_SHADER = CByte(txtGreen.text)
+    
 End Sub
 
 Private Sub txtBlue_Change()
@@ -1752,7 +1755,8 @@ Private Sub txtBlue_Change()
         txtBlue.text = "0"
     End If
 
-    Call SaveSetting("OPCIONES", "EquipmentIndicatorBlueColor", CByte(txtBlue.text))
+    BLUE_SHADER = CByte(txtBlue.text)
+    
 End Sub
 
 Private Sub txtTransparency_Change()
@@ -1773,7 +1777,8 @@ Private Sub txtTransparency_Change()
         txtTransparency.text = "0"
     End If
 
-    Call SaveSetting("OPCIONES", "EquipmentIndicatorTransparency", CByte(txtTransparency.text))
+    SHADER_TRANSPARENCY = CByte(txtTransparency.text)
+    
 End Sub
 
 Private Sub txtCoordinateX_Change()
@@ -1793,7 +1798,8 @@ Private Sub txtCoordinateX_Change()
         txtCoordinateX.text = "-20"
     End If
 
-    Call SaveSetting("OPCIONES", "EquipmentIndicatorCoordinateX", CInt(txtCoordinateX.text))
+    X_OFFSET = CInt(txtCoordinateX.text)
+    
 
 End Sub
 
@@ -1814,8 +1820,7 @@ Private Sub txtCoordinateY_Change()
         txtCoordinateY.text = "-20"
     End If
 
-    Call SaveSetting("OPCIONES", "EquipmentIndicatorCoordinateY", CInt(txtCoordinateY.text))
-
+    Y_OFFSET = CInt(txtCoordinateY.text)
 End Sub
 
 
@@ -1825,6 +1830,6 @@ Private Sub txtEquippedCaracter_Change()
         txtEquippedCaracter.text = "+"
     End If
     
-    Call SaveSetting("OPCIONES", "EquipmentIndicatorCaracter", txtEquippedCaracter.text)
+    EQUIPMENT_CARACTER = txtEquippedCaracter.text
 
 End Sub

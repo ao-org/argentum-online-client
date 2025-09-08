@@ -23,6 +23,15 @@ Public Const OPTION_FX_ENABLED As String = "Fx"
 Public Const OPTION_AMBIENT_ENABLED As String = "AmbientEnabled"
 Public Const OPTION_INVERTLR_CHANNELS_ENABLED As String = "InverLRChannels"
 
+Public X_OFFSET As Integer
+Public Y_OFFSET As Integer
+Public EQUIPMENT_CARACTER As String
+Public RED_SHADER As Byte
+Public GREEN_SHADER As Byte
+Public BLUE_SHADER As Byte
+Public SHADER_TRANSPARENCY As Byte
+Public EquipmentStyle As Byte
+    
 Public Function GetErrorLogFilename() As String
    GetErrorLogFilename = App.path & "\logs\Errores.log"
 End Function
@@ -65,6 +74,14 @@ Sub SaveConfig()
     Call SaveSetting("OPCIONES", "SensibilidadMouse", SensibilidadMouse)
     Call SaveSetting("OPCIONES", "DialogosClanes", IIf(DialogosClanes.Activo, 1, 0))
 
+    Call SaveSetting("OPCIONES", "EquipmentIndicatorRedColor", RED_SHADER)
+    Call SaveSetting("OPCIONES", "EquipmentIndicatorGreenColor", GREEN_SHADER)
+    Call SaveSetting("OPCIONES", "EquipmentIndicatorBlueColor", BLUE_SHADER)
+    Call SaveSetting("OPCIONES", "EquipmentIndicatorTransparency", SHADER_TRANSPARENCY)
+    Call SaveSetting("OPCIONES", "EquipmentIndicatorCoordinateX", X_OFFSET)
+    Call SaveSetting("OPCIONES", "EquipmentIndicatorCoordinateY", Y_OFFSET)
+    Call SaveSetting("OPCIONES", "EquipmentIndicatorCaracter", EQUIPMENT_CARACTER)
+
     
     Exit Sub
 
@@ -91,6 +108,8 @@ Sub LoadConfig()
     FxEnabled = GetSettingAsByte("AUDIO", OPTION_FX_ENABLED, 1)
     AmbientEnabled = GetSettingAsByte("AUDIO", OPTION_AMBIENT_ENABLED, 1)
     InvertirSonido = GetSettingAsByte("AUDIO", OPTION_INVERTLR_CHANNELS_ENABLED, 1)
+
+
     
     'Musica y Sonido - Volumen
     VolMusicFadding = VolMusic
@@ -168,6 +187,15 @@ Sub LoadConfig()
     ModoHechizos = Val(GetSetting("OPCIONES", "ModoHechizos"))
     DialogosClanes.Activo = Val(GetSetting("OPCIONES", "DialogosClanes"))
     NumerosCompletosInventario = Val(GetSetting("OPCIONES", "NumerosCompletosInventario"))
+
+    EquipmentStyle = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
+    RED_SHADER = GetSettingAsByte("OPCIONES", "EquipmentIndicatorRedColor", 255)
+    GREEN_SHADER = GetSettingAsByte("OPCIONES", "EquipmentIndicatorGreenColor", 255)
+    BLUE_SHADER = GetSettingAsByte("OPCIONES", "EquipmentIndicatorBlueColor", 0)
+    SHADER_TRANSPARENCY = GetSettingAsByte("OPCIONES", "EquipmentIndicatorTransparency", 20)
+    X_OFFSET = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateX")))
+    Y_OFFSET = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateY")))
+    EQUIPMENT_CARACTER = GetSetting("OPCIONES", "EquipmentIndicatorCaracter")
 
     'Init
     #If PYMMO = 0 Or DEBUGGING = 1 Then
