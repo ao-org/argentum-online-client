@@ -670,10 +670,6 @@ Public Sub DrawInventory()
 
     Dim y              As Integer
     
-    Dim EquipmentStyle As Byte
-    
-    EquipmentStyle = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
-    
     Dim tmpString                             As String
 
     Dim tmpNaturalAndUserCraftedElementalTags As Long
@@ -780,37 +776,23 @@ Public Sub DrawInventory()
             If UserInventory(i).Equipped Then
             
             
-                Dim x_offset As Integer
-                x_offset = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateX")))
-                Dim y_offset As Integer
-                y_offset = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateY")))
-                Dim caracter As String
-                caracter = GetSetting("OPCIONES", "EquipmentIndicatorCaracter")
-            
-                Dim red As Byte
-                red = GetSettingAsByte("OPCIONES", "EquipmentIndicatorRedColor", 255)
-                Dim green As Byte
-                green = GetSettingAsByte("OPCIONES", "EquipmentIndicatorGreenColor", 255)
-                Dim blue As Byte
-                blue = GetSettingAsByte("OPCIONES", "EquipmentIndicatorBlueColor", 0)
-                Dim Transparency As Byte
-                Transparency = GetSettingAsByte("OPCIONES", "EquipmentIndicatorTransparency", 20)
+
             
                 Select Case EquipmentStyle
                 
                     Case e_EquipmentStyle.Modern
                     
-                        Call Engine_Draw_Box(x, y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(red, green, blue, Transparency))
+                        Call Engine_Draw_Box(x, y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(RED_SHADER, GREEN_SHADER, BLUE_SHADER, SHADER_TRANSPARENCY))
                         
                     Case e_EquipmentStyle.Classic
 
                         Call RGBAList(Color, 255, 0, 0)
-                        Engine_Text_Render caracter, x + x_offset, y + y_offset, Color, 1
+                        Engine_Text_Render EQUIPMENT_CARACTER, x + X_OFFSET, y + Y_OFFSET, Color, 1
                     
                     Case Else
                     
                         Call RGBAList(Color, 255, 0, 0)
-                        Engine_Text_Render caracter, x + x_offset, y + y_offset, Color, 1
+                        Engine_Text_Render EQUIPMENT_CARACTER, x + X_OFFSET, y + Y_OFFSET, Color, 1
                 
                 End Select
              
