@@ -1628,7 +1628,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Else
                 ' Quieto CON animación: disparar (o preservar) idle una sola vez
                 If .Body.Walk(.Heading).started = 0 Or .Body.Walk(.Heading).Loops <> INFINITE_LOOPS Then
-                    SetCharIdle charlist(CharIndex), True
+                    Call SetCharIdle(charlist(CharIndex), True)
                 End If
             End If
         End If
@@ -1779,6 +1779,12 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     .Cart.Walk(.Heading).started = FrameTime
                 End If
             End If
+            If .HasBackpack Then
+                If .BackPack.Walk(.Heading).started = 0 Then
+                    .BackPack.Walk(.Heading).Loops = -1
+                    .BackPack.Walk(.Heading).started = FrameTime
+                End If
+            End If
         Else
             If .HasCart Then
                 If .Cart.Walk(.Heading).started <> 0 Then
@@ -1786,6 +1792,13 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     .Cart.Walk(.Heading).started = 0
                 End If
             End If
+            If .HasBackpack Then
+                If .BackPack.Walk(.Heading).started <> 0 Then
+                    .BackPack.Walk(.Heading).Loops = 0
+                    .BackPack.Walk(.Heading).started = 0
+                End If
+            End If
+
         End If
         
         PixelOffsetX = PixelOffsetX + .MoveOffsetX
@@ -1944,12 +1957,15 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), TextureX, TextureY + .Cart.HeadOffset.y, 1, 1, COLOR_WHITE, False, x, y)
+                        If .HasBackpack Then Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y, 1, 1, COLOR_WHITE, ease, False)
+                        
                     Case E_Heading.NORTH
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
+                        If .HasBackpack Then Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y, 1, 1, COLOR_WHITE, ease, False)
                         
                     Case E_Heading.WEST
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
@@ -1958,13 +1974,17 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), TextureX, TextureY + .Cart.HeadOffset.y, 1, 1, COLOR_WHITE, False, x, y)
+                        If .HasBackpack Then Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y, 1, 1, COLOR_WHITE, ease, False)
+                        
                     Case E_Heading.south
+                        If .HasBackpack Then Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y, 1, 1, COLOR_WHITE, ease, False)
                         If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), TextureX, TextureY + .Cart.HeadOffset.y, 1, 1, COLOR_WHITE, False, x, y)
                         Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
+                        
                 End Select
                      
                 EndComposedTexture
@@ -2387,7 +2407,7 @@ On Error GoTo Start_Err
         DoEvents
 
         Call modNetwork.Poll
-        Call svb_run_callbacks
+        'Call svb_run_callbacks
         Call UpdateAntiCheat
     Loop
 

@@ -2863,6 +2863,7 @@ Private Sub HandleCharacterCreate()
     Dim helmet        As Integer
     Dim privs         As Integer
     Dim Cart          As Integer
+    Dim BackPack      As Integer
     Dim AuraParticula As Byte
     Dim ParticulaFx   As Byte
     Dim appear        As Byte
@@ -2879,6 +2880,7 @@ Private Sub HandleCharacterCreate()
     Shield = Reader.ReadInt16()
     helmet = Reader.ReadInt16()
     Cart = Reader.ReadInt16()
+    BackPack = Reader.ReadInt16()
     
     With charlist(CharIndex)
         Dim loopC, Fx As Integer
@@ -2962,21 +2964,25 @@ Private Sub HandleCharacterCreate()
         End If
 
         .Muerto = (Body = CASPER_BODY_IDLE)
-        Call MakeChar(CharIndex, Body, Head, Heading, x, y, weapon, Shield, helmet, Cart, ParticulaFx, appear)
+        Call MakeChar(CharIndex, Body, Head, Heading, x, y, weapon, Shield, helmet, Cart, BackPack, ParticulaFx, appear)
         
         If .Navegando = False Or UserNadandoTrajeCaucho = True Then
             If .Body.AnimateOnIdle = 0 Then
                 .Body.Walk(.Heading).started = 0
+                .BackPack.Walk(.Heading).started = 0
             ElseIf .Body.Walk(.Heading).started = 0 Then
                 .Body.Walk(.Heading).started = FrameTime
+                .BackPack.Walk(.Heading).started = FrameTime
             End If
             If Not .MovArmaEscudo Then
                 .Arma.WeaponWalk(.Heading).started = 0
                 .Escudo.ShieldWalk(.Heading).started = 0
+                .BackPack.Walk(.Heading).started = 0
             End If
             If .Body.IdleBody > 0 Then
                 .Body = BodyData(.Body.IdleBody)
                 .Body.Walk(.Heading).started = FrameTime
+                .BackPack.Walk(.Heading).started = FrameTime
             End If
         End If
     End With
@@ -3225,6 +3231,14 @@ Private Sub HandleCharacterChange()
         Else
             .Cart = BodyData(TempInt)
             .HasCart = True
+        End If
+
+        TempInt = Reader.ReadInt16()
+        If TempInt <= 2 Or TempInt > UBound(BodyData()) Then
+            .HasBackpack = False
+        Else
+            .BackPack = BodyData(TempInt)
+            .HasBackpack = True
         End If
                 
         .EsEnano = (.Body.HeadOffset.y = -26)
@@ -5188,7 +5202,7 @@ Private Sub HandleLevelUp()
     On Error GoTo HandleLevelUp_Err
  
     SkillPoints = Reader.ReadInt16()
-    Call svb_unlock_achivement("Newbie's fate")
+    'Call svb_unlock_achivement("Newbie's fate")
     
     Exit Sub
 
