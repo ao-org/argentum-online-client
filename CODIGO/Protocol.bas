@@ -2982,16 +2982,6 @@ Private Sub HandleCharacterCreate()
             End If
         End If
         
-        
-        If Not UserNavegando And Not UserNadando And Not UserNadandoTrajeCaucho And Not UserMontado And .HasBackpack Then
-            If .BackPack.AnimateOnIdle = 0 Then
-                .BackPack.Walk(.Heading).started = 0
-            ElseIf .BackPack.Walk(.Heading).started = 0 Then
-                .BackPack.Walk(.Heading).started = FrameTime
-            End If
-        End If
-        
-        
     End With
     
     Call RefreshAllChars
@@ -3202,6 +3192,10 @@ Private Sub HandleCharacterChange()
         Dim prevShieldWalk   As Grh: prevShieldWalk = .Escudo.ShieldWalk(oldHeading)
 
         Dim hadMovArmaEscudo As Boolean: hadMovArmaEscudo = .MovArmaEscudo
+        
+        Dim keepStartIdle As Long
+
+        Dim newGi         As Long
 
         ' ============================================
 
@@ -3294,10 +3288,6 @@ Private Sub HandleCharacterChange()
                     ' Idle con anim: si cambia a IdleBody, preservá fase si venía animando
                     If .Body.IdleBody > 0 Then
 
-                        Dim keepStartIdle As Long
-
-                        Dim newGi         As Long
-
                         newGi = BodyData(.Body.IdleBody).Walk(.Heading).GrhIndex
 
                         If prevWalk.started > 0 And wasMoving Then
@@ -3320,7 +3310,7 @@ Private Sub HandleCharacterChange()
                 End If
             End If
             
-            If Not UserNadando And Not UserNadandoTrajeCaucho And Not UserMontado And Not UserNavegando Then
+            If Not UserNadando And Not UserMontado And Not UserNavegando Then
                 If .BackPack.AnimateOnIdle = 0 Then
                     ' Idle sin anim: parar
                     .BackPack.Walk(.Heading).started = 0
@@ -3361,6 +3351,8 @@ Private Sub HandleCharacterChange()
                 keepStart = FrameTime
             End If
             
+            .Body.Walk(.Heading).started = keepStart
+            
             targetGi = .BackPack.Walk(.Heading).GrhIndex
 
             If wasMoving And prevWalk.started > 0 Then
@@ -3371,8 +3363,6 @@ Private Sub HandleCharacterChange()
                 keepStart = FrameTime
             End If
 
-            .Body.Walk(.Heading).started = keepStart
-            
             .BackPack.Walk(.Heading).started = keepStart
 
             ' Arma/Escudo: mantener en fase con el cuerpo

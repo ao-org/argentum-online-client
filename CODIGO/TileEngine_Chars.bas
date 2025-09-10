@@ -465,11 +465,13 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
                 .Body.Walk(.Heading).Started = FrameTime
                 .Arma.WeaponWalk(.Heading).Started = FrameTime
                 .Escudo.ShieldWalk(.Heading).Started = FrameTime
-                .BackPack.Walk(.Heading).started = FrameTime
                 .Arma.WeaponWalk(.Heading).Loops = INFINITE_LOOPS
                 .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
+            End If
+            
+            If .BackPack.Walk(.Heading).started = 0 Then
+                .BackPack.Walk(.Heading).started = FrameTime
                 .BackPack.Walk(.Heading).Loops = INFINITE_LOOPS
-                
             End If
 
             .MovArmaEscudo = False
