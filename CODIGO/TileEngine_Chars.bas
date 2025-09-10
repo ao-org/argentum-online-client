@@ -142,7 +142,7 @@ EraseChar_Err:
     
 End Sub
 
-Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal CartIndex As Integer,ByVal BackpackIndex As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
+Sub MakeChar(ByVal CharIndex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal CartIndex As Integer, ByVal BackpackIndex As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
     
     On Error GoTo MakeChar_Err
 
@@ -319,9 +319,11 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
             If .Body.Walk(.Heading).Started = 0 Then
                 .Body.Walk(.Heading).Started = FrameTime
                 .Arma.WeaponWalk(.Heading).Started = FrameTime
+                .BackPack.Walk(.Heading).started = FrameTime
                 .Escudo.ShieldWalk(.Heading).Started = FrameTime
                 .Arma.WeaponWalk(.Heading).Loops = INFINITE_LOOPS
                 .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
+                .BackPack.Walk(.Heading).Loops = INFINITE_LOOPS
             End If
             
             .MovArmaEscudo = False
@@ -459,8 +461,11 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
                 .Body.Walk(.Heading).Started = FrameTime
                 .Arma.WeaponWalk(.Heading).Started = FrameTime
                 .Escudo.ShieldWalk(.Heading).Started = FrameTime
+                .BackPack.Walk(.Heading).started = FrameTime
                 .Arma.WeaponWalk(.Heading).Loops = INFINITE_LOOPS
                 .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
+                .BackPack.Walk(.Heading).Loops = INFINITE_LOOPS
+                
             End If
 
             .MovArmaEscudo = False
