@@ -3279,6 +3279,31 @@ Private Sub HandleCharacterChange()
                         .Body.Walk(.Heading).started = FrameTime
                     End If
                 End If
+                
+                
+                If .BackPack.AnimateOnIdle = 0 Then
+                    ' Idle sin anim: parar
+                    .BackPack.Walk(.Heading).started = 0
+                Else
+                    ' Idle con anim: si cambia a IdleBackpack, preservá fase si venía animando
+                    If .BackPack.IdleBody > 0 Then
+                        newGi = BodyData(.BackPack.IdleBody).Walk(.Heading).GrhIndex
+                        If prevWalk.started > 0 And wasMoving Then
+                            keepStartIdle = SyncGrhPhase(prevWalk, newGi)
+                        Else
+                            keepStartIdle = FrameTime
+                        End If
+                        .BackPack = BodyData(.BackPack.IdleBody)
+                        .BackPack.Walk(.Heading).started = keepStartIdle
+                    ElseIf .BackPack.Walk(.Heading).started = 0 Then
+                        .BackPack.Walk(.Heading).started = FrameTime
+                    End If
+                End If
+                
+                
+                
+                
+                
 
                 ' Arma/Escudo en idle: respetá tu regla
                 If Not .MovArmaEscudo Then
@@ -3300,8 +3325,27 @@ Private Sub HandleCharacterChange()
             Else
                 keepStart = FrameTime
             End If
+            
+            
+            
+            targetGi = .BackPack.Walk(.Heading).GrhIndex
+
+            If wasMoving And prevWalk.started > 0 Then
+                keepStart = SyncGrhPhase(prevWalk, targetGi)
+            ElseIf .BackPack.Walk(.Heading).started > 0 Then
+                keepStart = .Body.Walk(.Heading).started
+            Else
+                keepStart = FrameTime
+            End If
+            
+            
+            
+            
+            
 
             .Body.Walk(.Heading).started = keepStart
+            
+            .BackPack.Walk(.Heading).started = keepStart
 
             ' Arma/Escudo: mantener en fase con el cuerpo
             If .MovArmaEscudo Then
