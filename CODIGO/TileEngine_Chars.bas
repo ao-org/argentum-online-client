@@ -313,6 +313,10 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
                     .Body = BodyData(.iBody)
                     .AnimatingBody = 0
                 End If
+                
+                If .BackPack.BodyIndex <> .tmpBackPack Then
+                    .BackPack = BodyData(.tmpBackPack)
+                End If
             End If
 
             ' Start animations (solo al empezar a moverse)

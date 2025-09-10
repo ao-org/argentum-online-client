@@ -1632,14 +1632,11 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             End If
             
-            If .BackPack.AnimateOnIdle = 0 Then
+            If .BackPack.IdleBody = 0 Then
+                
                 ' Quieto SIN animación: congelar la serie de walk en frame estático
                 .BackPack.Walk(.Heading).Loops = 0
                 .BackPack.Walk(.Heading).started = 0
-                If Not .MovArmaEscudo Then
-                    .Arma.WeaponWalk(.Heading).started = 0
-                    .Escudo.ShieldWalk(.Heading).started = 0
-                End If
             Else
                 ' Quieto CON animación: disparar (o preservar) idle una sola vez
                 If .BackPack.Walk(.Heading).started = 0 Or .BackPack.Walk(.Heading).Loops <> INFINITE_LOOPS Then
@@ -1778,6 +1775,14 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
                 .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
             End If
+            
+            
+            If .BackPack.Walk(.Heading).started = 0 Then
+                .BackPack.Walk(.Heading).started = FrameTime
+                .Body.Walk(.Heading).Loops = INFINITE_LOOPS
+            End If
+            
+            
         End If
         ' --- FIN AUTOSTART ---
         
@@ -1810,7 +1815,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     .Cart.Walk(.Heading).started = 0
                 End If
             End If
-            If .HasBackpack Then
+            If .HasBackpack And .BackPack.AnimateOnIdle = 0 Then
                 If .BackPack.Walk(.Heading).started <> 0 Then
                     .BackPack.Walk(.Heading).Loops = 0
                     .BackPack.Walk(.Heading).started = 0
@@ -2251,22 +2256,16 @@ Public Sub SetCharIdle(ByRef C As Char, Optional ByVal force As Boolean = True)
         Else
             ' Idle animado
             .Body.Walk(.Heading).Loops = INFINITE_LOOPS
-            .BackPack.Walk(.Heading).Loops = INFINITE_LOOPS
 
             If force Then
                 .Body.Walk(.Heading).started = FrameTime
-                .BackPack.Walk(.Heading).started = FrameTime
             Else
 
                 If .Body.Walk(.Heading).started > 0 And .BackPack.Walk(.Heading).started > 0 Then
-
                     keepStarted = SyncGrhPhase(.Body.Walk(.Heading), .Body.Walk(.Heading).GrhIndex)
                     .Body.Walk(.Heading).started = keepStarted
-                    keepStarted = SyncGrhPhase(.BackPack.Walk(.Heading), .BackPack.Walk(.Heading).GrhIndex)
-                    .BackPack.Walk(.Heading).started = keepStarted
                 Else
                     .Body.Walk(.Heading).started = FrameTime
-                    .BackPack.Walk(.Heading).started = FrameTime
                 End If
             End If
         End If
@@ -2297,6 +2296,7 @@ Public Sub SetCharIdle(ByRef C As Char, Optional ByVal force As Boolean = True)
                 End If
             End If
         End If
+
 
         .Moving = False
         .Idle = True

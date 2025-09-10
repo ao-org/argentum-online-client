@@ -2969,22 +2969,29 @@ Private Sub HandleCharacterCreate()
         If .Navegando = False Or UserNadandoTrajeCaucho = True Then
             If .Body.AnimateOnIdle = 0 Then
                 .Body.Walk(.Heading).started = 0
-                .BackPack.Walk(.Heading).started = 0
             ElseIf .Body.Walk(.Heading).started = 0 Then
                 .Body.Walk(.Heading).started = FrameTime
-                .BackPack.Walk(.Heading).started = FrameTime
             End If
             If Not .MovArmaEscudo Then
                 .Arma.WeaponWalk(.Heading).started = 0
                 .Escudo.ShieldWalk(.Heading).started = 0
-                .BackPack.Walk(.Heading).started = 0
             End If
             If .Body.IdleBody > 0 Then
                 .Body = BodyData(.Body.IdleBody)
                 .Body.Walk(.Heading).started = FrameTime
+            End If
+        End If
+        
+        
+        If Not UserNavegando And Not UserNadando And Not UserNadandoTrajeCaucho And Not UserMontado And .HasBackpack Then
+            If .BackPack.AnimateOnIdle = 0 Then
+                .BackPack.Walk(.Heading).started = 0
+            ElseIf .BackPack.Walk(.Heading).started = 0 Then
                 .BackPack.Walk(.Heading).started = FrameTime
             End If
         End If
+        
+        
     End With
     
     Call RefreshAllChars
@@ -3174,7 +3181,9 @@ Private Sub HandleCharacterChange()
     On Error GoTo HandleCharacterChange_Err
     
     Dim CharIndex As Integer
+
     Dim TempInt   As Integer
+
     Dim headIndex As Integer
 
     CharIndex = Reader.ReadInt16()
@@ -3182,16 +3191,23 @@ Private Sub HandleCharacterChange()
     With charlist(CharIndex)
 
         ' ===== Preservar estado previo para fase =====
-        Dim wasMoving         As Boolean: wasMoving = .Moving
-        Dim oldHeading        As E_Heading: oldHeading = .Heading
-        Dim prevWalk          As Grh: prevWalk = .Body.Walk(oldHeading)
-        Dim prevWeaponWalk    As Grh: prevWeaponWalk = .Arma.WeaponWalk(oldHeading)
-        Dim prevShieldWalk    As Grh: prevShieldWalk = .Escudo.ShieldWalk(oldHeading)
-        Dim hadMovArmaEscudo  As Boolean: hadMovArmaEscudo = .MovArmaEscudo
+        Dim wasMoving        As Boolean: wasMoving = .Moving
+
+        Dim oldHeading       As E_Heading: oldHeading = .Heading
+
+        Dim prevWalk         As Grh: prevWalk = .Body.Walk(oldHeading)
+
+        Dim prevWeaponWalk   As Grh: prevWeaponWalk = .Arma.WeaponWalk(oldHeading)
+
+        Dim prevShieldWalk   As Grh: prevShieldWalk = .Escudo.ShieldWalk(oldHeading)
+
+        Dim hadMovArmaEscudo As Boolean: hadMovArmaEscudo = .MovArmaEscudo
+
         ' ============================================
 
         ' Body
         TempInt = Reader.ReadInt16()
+
         If TempInt < LBound(BodyData()) Or TempInt > UBound(BodyData()) Then
             .Body = BodyData(0)
             .iBody = 0
@@ -3202,6 +3218,7 @@ Private Sub HandleCharacterChange()
         
         ' Head
         headIndex = Reader.ReadInt16()
+
         If headIndex < LBound(HeadData()) Or headIndex > UBound(HeadData()) Then
             .Head = HeadData(0)
             .IHead = 0
@@ -3217,15 +3234,19 @@ Private Sub HandleCharacterChange()
         
         ' Arma / Escudo / Casco
         TempInt = Reader.ReadInt16()
+
         If TempInt <> 0 And TempInt <= UBound(WeaponAnimData) Then .Arma = WeaponAnimData(TempInt)
 
         TempInt = Reader.ReadInt16()
+
         If TempInt <> 0 And TempInt <= UBound(ShieldAnimData) Then .Escudo = ShieldAnimData(TempInt)
         
         TempInt = Reader.ReadInt16()
+
         If TempInt <> 0 And TempInt <= UBound(CascoAnimData) Then .Casco = CascoAnimData(TempInt)
         
         TempInt = Reader.ReadInt16()
+
         If TempInt <= 2 Or TempInt > UBound(BodyData()) Then
             .HasCart = False
         Else
@@ -3234,10 +3255,13 @@ Private Sub HandleCharacterChange()
         End If
 
         TempInt = Reader.ReadInt16()
+
         If TempInt <= 2 Or TempInt > UBound(BodyData()) Then
             .HasBackpack = False
+            .tmpBackPack = 0
         Else
             .BackPack = BodyData(TempInt)
+            .tmpBackPack = TempInt
             .HasBackpack = True
         End If
                 
@@ -3245,65 +3269,49 @@ Private Sub HandleCharacterChange()
         
         ' FX
         Dim Fx As Integer: Fx = Reader.ReadInt16
+
         Call StartFx(.ActiveAnimation, Fx)
         .Meditating = (Fx <> 0)
         Reader.ReadInt16 ' Ignore loops
         
         ' Flags
         Dim flags As Byte
+
         flags = Reader.ReadInt8()
         .Idle = (flags And &O1)
         .Navegando = (flags And &O2)
 
         ' ==================== ANIMACIÓN / FASE ====================
         If .Idle Then
+
             ' --- IDLE ---
             If .Navegando = False Or UserNadandoTrajeCaucho = True Then
                 If .Body.AnimateOnIdle = 0 Then
                     ' Idle sin anim: parar
                     .Body.Walk(.Heading).started = 0
                 Else
+
                     ' Idle con anim: si cambia a IdleBody, preservá fase si venía animando
                     If .Body.IdleBody > 0 Then
+
                         Dim keepStartIdle As Long
-                        Dim newGi As Long
+
+                        Dim newGi         As Long
+
                         newGi = BodyData(.Body.IdleBody).Walk(.Heading).GrhIndex
+
                         If prevWalk.started > 0 And wasMoving Then
                             keepStartIdle = SyncGrhPhase(prevWalk, newGi)
                         Else
                             keepStartIdle = FrameTime
                         End If
+
                         .Body = BodyData(.Body.IdleBody)
                         .Body.Walk(.Heading).started = keepStartIdle
                     ElseIf .Body.Walk(.Heading).started = 0 Then
                         .Body.Walk(.Heading).started = FrameTime
                     End If
                 End If
-                
-                
-                If .BackPack.AnimateOnIdle = 0 Then
-                    ' Idle sin anim: parar
-                    .BackPack.Walk(.Heading).started = 0
-                Else
-                    ' Idle con anim: si cambia a IdleBackpack, preservá fase si venía animando
-                    If .BackPack.IdleBody > 0 Then
-                        newGi = BodyData(.BackPack.IdleBody).Walk(.Heading).GrhIndex
-                        If prevWalk.started > 0 And wasMoving Then
-                            keepStartIdle = SyncGrhPhase(prevWalk, newGi)
-                        Else
-                            keepStartIdle = FrameTime
-                        End If
-                        .BackPack = BodyData(.BackPack.IdleBody)
-                        .BackPack.Walk(.Heading).started = keepStartIdle
-                    ElseIf .BackPack.Walk(.Heading).started = 0 Then
-                        .BackPack.Walk(.Heading).started = FrameTime
-                    End If
-                End If
-                
-                
-                
-                
-                
 
                 ' Arma/Escudo en idle: respetá tu regla
                 If Not .MovArmaEscudo Then
@@ -3311,11 +3319,38 @@ Private Sub HandleCharacterChange()
                     .Escudo.ShieldWalk(.Heading).started = 0
                 End If
             End If
+            
+            If Not UserNadando And Not UserNadandoTrajeCaucho And Not UserMontado And Not UserNavegando Then
+                If .BackPack.AnimateOnIdle = 0 Then
+                    ' Idle sin anim: parar
+                    .BackPack.Walk(.Heading).started = 0
+                Else
+
+                    ' Idle con anim: si cambia a IdleBackpack, preservá fase si venía animando
+                    If .BackPack.IdleBody > 0 Then
+                        newGi = BodyData(.BackPack.IdleBody).Walk(.Heading).GrhIndex
+
+                        If prevWalk.started > 0 And wasMoving Then
+                            keepStartIdle = SyncGrhPhase(prevWalk, newGi)
+                        Else
+                            keepStartIdle = FrameTime
+                        End If
+
+                        .BackPack = BodyData(.BackPack.IdleBody)
+                        .BackPack.Walk(.Heading).started = keepStartIdle
+                    ElseIf .BackPack.Walk(.Heading).started = 0 Then
+                        .BackPack.Walk(.Heading).started = FrameTime
+                    End If
+                End If
+            End If
 
         Else
+
             ' --- NO IDLE (camina / se mueve) ---
             Dim keepStart As Long
-            Dim targetGi As Long
+
+            Dim targetGi  As Long
+
             targetGi = .Body.Walk(.Heading).GrhIndex
 
             If wasMoving And prevWalk.started > 0 Then
@@ -3326,8 +3361,6 @@ Private Sub HandleCharacterChange()
                 keepStart = FrameTime
             End If
             
-            
-            
             targetGi = .BackPack.Walk(.Heading).GrhIndex
 
             If wasMoving And prevWalk.started > 0 Then
@@ -3337,11 +3370,6 @@ Private Sub HandleCharacterChange()
             Else
                 keepStart = FrameTime
             End If
-            
-            
-            
-            
-            
 
             .Body.Walk(.Heading).started = keepStart
             
@@ -3349,12 +3377,15 @@ Private Sub HandleCharacterChange()
 
             ' Arma/Escudo: mantener en fase con el cuerpo
             If .MovArmaEscudo Then
+
                 Dim keepW As Long, keepS As Long
+
                 If hadMovArmaEscudo And prevWeaponWalk.started > 0 Then
                     keepW = SyncGrhPhase(prevWeaponWalk, .Arma.WeaponWalk(.Heading).GrhIndex)
                 Else
                     keepW = keepStart
                 End If
+
                 If hadMovArmaEscudo And prevShieldWalk.started > 0 Then
                     keepS = SyncGrhPhase(prevShieldWalk, .Escudo.ShieldWalk(.Heading).GrhIndex)
                 Else
@@ -3368,6 +3399,7 @@ Private Sub HandleCharacterChange()
                 .Escudo.ShieldWalk(.Heading).started = 0
             End If
         End If
+
         ' ===========================================================
 
     End With
