@@ -2063,7 +2063,7 @@ Sub Char_Render(ByVal CharIndex As Long, _
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), TextureX, TextureY + .Cart.HeadOffset.y, 1, 1, COLOR_WHITE, False, x, y)
                         
-                        If .HasBackpack And Not UserNadando And Not UserMontado And Not User Then
+                        If .HasBackpack And Not UserNadando And Not UserMontado Then
                             Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y + OffHead, 1, 1, COLOR_WHITE, ease, False)
                         End If
 
@@ -2075,7 +2075,7 @@ Sub Char_Render(ByVal CharIndex As Long, _
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
 
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
-                        If .HasBackpack And Not UserNadando And Not UserMontado And Not User Then
+                        If .HasBackpack And Not UserNadando And Not UserMontado Then
                             Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y + OffHead, 1, 1, COLOR_WHITE, ease, False)
                         End If
 
@@ -2088,13 +2088,13 @@ Sub Char_Render(ByVal CharIndex As Long, _
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), TextureX, TextureY + .Cart.HeadOffset.y, 1, 1, COLOR_WHITE, False, x, y)
-                        If .HasBackpack And Not UserNadando And Not UserMontado And Not User Then
+                        If .HasBackpack And Not UserNadando And Not UserMontado Then
                             Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y + OffHead, 1, 1, COLOR_WHITE, ease, False)
                         End If
 
                     Case E_Heading.south
 
-                        If .HasBackpack And Not UserNadando And Not UserMontado And Not User Then
+                        If .HasBackpack And Not UserNadando And Not UserMontado Then
                             Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y + OffHead, 1, 1, COLOR_WHITE, ease, False)
                         End If
 
