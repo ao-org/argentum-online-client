@@ -3193,9 +3193,9 @@ Private Sub HandleCharacterChange()
 
         Dim hadMovArmaEscudo As Boolean: hadMovArmaEscudo = .MovArmaEscudo
         
-        Dim keepStartIdle As Long
+        Dim keepStartIdle    As Long
 
-        Dim newGi         As Long
+        Dim newGi            As Long
 
         ' ============================================
 
@@ -3286,19 +3286,19 @@ Private Sub HandleCharacterChange()
                 Else
 
                     ' Idle con anim: si cambia a IdleBody, preservá fase si venía animando
-                    If .Body.IdleBody > 0 Then
 
-                        newGi = BodyData(.Body.IdleBody).Walk(.Heading).GrhIndex
+                    newGi = BodyData(.Body.IdleBody).Walk(.Heading).GrhIndex
 
-                        If prevWalk.started > 0 And wasMoving Then
-                            keepStartIdle = SyncGrhPhase(prevWalk, newGi)
-                        Else
-                            keepStartIdle = FrameTime
-                        End If
+                    If prevWalk.started > 0 And wasMoving Then
+                        keepStartIdle = SyncGrhPhase(prevWalk, newGi)
+                    Else
+                        keepStartIdle = FrameTime
+                    End If
 
-                        .Body = BodyData(.Body.IdleBody)
-                        .Body.Walk(.Heading).started = keepStartIdle
-                    ElseIf .Body.Walk(.Heading).started = 0 Then
+                    .Body = BodyData(.Body.IdleBody)
+                    .Body.Walk(.Heading).started = keepStartIdle
+
+                    If .Body.Walk(.Heading).started = 0 Then
                         .Body.Walk(.Heading).started = FrameTime
                     End If
                 End If
@@ -3307,30 +3307,6 @@ Private Sub HandleCharacterChange()
                 If Not .MovArmaEscudo Then
                     .Arma.WeaponWalk(.Heading).started = 0
                     .Escudo.ShieldWalk(.Heading).started = 0
-                End If
-            End If
-            
-            If Not UserNadando And Not UserMontado And Not UserNavegando Then
-                If .BackPack.AnimateOnIdle = 0 Then
-                    ' Idle sin anim: parar
-                    .BackPack.Walk(.Heading).started = 0
-                Else
-
-                    ' Idle con anim: si cambia a IdleBackpack, preservá fase si venía animando
-                    If .BackPack.IdleBody > 0 Then
-                        newGi = BodyData(.BackPack.IdleBody).Walk(.Heading).GrhIndex
-
-                        If prevWalk.started > 0 And wasMoving Then
-                            keepStartIdle = SyncGrhPhase(prevWalk, newGi)
-                        Else
-                            keepStartIdle = FrameTime
-                        End If
-
-                        .BackPack = BodyData(.BackPack.IdleBody)
-                        .BackPack.Walk(.Heading).started = keepStartIdle
-                    ElseIf .BackPack.Walk(.Heading).started = 0 Then
-                        .BackPack.Walk(.Heading).started = FrameTime
-                    End If
                 End If
             End If
 
