@@ -1651,7 +1651,7 @@ Sub Char_Render(ByVal CharIndex As Long, _
                 End If
             End If
             
-            If .BackPack.IdleBody = 0 Then
+            If .BackPack.AnimateOnIdle = 0 And .BackPack.IdleBody = 0 Then
                 
                 ' Quieto SIN animación: congelar la serie de walk en frame estático
                 .BackPack.Walk(.Heading).Loops = 0

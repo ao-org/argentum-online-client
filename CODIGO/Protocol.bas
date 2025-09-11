@@ -3286,20 +3286,22 @@ Private Sub HandleCharacterChange()
                 Else
 
                     ' Idle con anim: si cambia a IdleBody, preservá fase si venía animando
+                    If .Body.IdleBody > 0 Then
+                        newGi = BodyData(.Body.IdleBody).Walk(.Heading).GrhIndex
+                    
+                        If prevWalk.started > 0 And wasMoving Then
+                            keepStartIdle = SyncGrhPhase(prevWalk, newGi)
+                        Else
+                            keepStartIdle = FrameTime
+                        End If
 
-                    newGi = BodyData(.Body.IdleBody).Walk(.Heading).GrhIndex
+                        .Body = BodyData(.Body.IdleBody)
+                        .Body.Walk(.Heading).started = keepStartIdle
+                    ElseIf .Body.Walk(.Heading).started = 0 Then
 
-                    If prevWalk.started > 0 And wasMoving Then
-                        keepStartIdle = SyncGrhPhase(prevWalk, newGi)
-                    Else
-                        keepStartIdle = FrameTime
-                    End If
-
-                    .Body = BodyData(.Body.IdleBody)
-                    .Body.Walk(.Heading).started = keepStartIdle
-
-                    If .Body.Walk(.Heading).started = 0 Then
-                        .Body.Walk(.Heading).started = FrameTime
+                        If .Body.Walk(.Heading).started = 0 Then
+                            .Body.Walk(.Heading).started = FrameTime
+                        End If
                     End If
                 End If
 
