@@ -2080,9 +2080,7 @@ Public Function ElementalTagsToTxtParser(ByVal ElementalTags As Long) As String
     If ElementalTags = e_ElementalTags.Normal Then
         tmpString = tmpString + "[" & JsonLanguage.Item("MENSAJE_ELEMENTO_NORMAL") & "]"
         ElementalTagsToTxtParser = tmpString
-
         Exit Function
-
     End If
     
     If IsSet(ElementalTags, e_ElementalTags.Fire) Then
@@ -2106,33 +2104,21 @@ Public Function ElementalTagsToTxtParser(ByVal ElementalTags As Long) As String
 End Function
 
 Public Function UserInTileToTxtParser(ByRef Fields() As String)
-
     On Error GoTo UserInTileToTxtParser_Err
 
-    Dim targetName          As String
-
-    Dim targetDescription   As String
-
-    Dim guildName           As String
-
-    Dim Spouse              As String
-
-    Dim CharClass           As String
-
-    Dim CharRace            As String
-
-    Dim level               As String
-
-    Dim Elo                 As String
-
-    Dim StatusMask          As Long
-
-    Dim StatusMask2         As Long
+    Dim targetName As String
+    Dim targetDescription As String
+    Dim guildName As String
+    Dim Spouse As String
+    Dim CharClass As String
+    Dim CharRace As String
+    Dim Level As String
+    Dim Elo As String
+    Dim StatusMask As Long
+    Dim StatusMask2 As Long
 
     Dim SplitServerFields() As String
-
     SplitServerFields = Split(Fields(0), "-")
-
     Dim i As Byte
     
     i = LBound(SplitServerFields)
@@ -2168,67 +2154,47 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
     Elo = SplitServerFields(i)
 
     Select Case CByte(CharClass)
-
         Case e_Class.Mage
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_MAGO")
-
         Case e_Class.Cleric
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_CLERIGO")
-
         Case e_Class.Warrior
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_GUERRERO")
-
         Case e_Class.Assasin
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_ASESINO")
-
         Case e_Class.Bard
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_BARDO")
-
         Case e_Class.Druid
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_DRUIDA")
-
         Case e_Class.Paladin
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_PALADIN")
-
         Case e_Class.Hunter
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_CAZADOR")
-
         Case e_Class.Worker
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_TRABAJADOR")
-
         Case e_Class.Pirat
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_PIRATA")
-
         Case e_Class.Thief
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_LADRON")
-
         Case e_Class.Bandit
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_BANDIDO")
-
         Case Else
             CharClass = ""
     End Select
 
     Select Case CByte(CharRace)
-
         Case e_Race.Human
             CharRace = JsonLanguage.Item("MENSAJE_RAZA_HUMANO")
-
         Case e_Race.Elf
             CharRace = JsonLanguage.Item("MENSAJE_RAZA_ELFO")
-
         Case e_Race.DrowElf
             CharRace = JsonLanguage.Item("MENSAJE_RAZA_ELFO_OSCURO")
-
         Case e_Race.Gnome
             CharRace = JsonLanguage.Item("MENSAJE_RAZA_GNOMO")
-
         Case e_Race.Dwarf
             CharRace = JsonLanguage.Item("MENSAJE_RAZA_ENANO")
-
         Case e_Race.Orc
             CharRace = JsonLanguage.Item("MENSAJE_RAZA_ORCO")
-
         Case Else
             CharRace = ""
     End Select
@@ -2236,8 +2202,7 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
     StatusMask = CLng(Fields(1))
     StatusMask2 = CLng(Fields(2))
 
-    Dim StatusString        As String
-
+    Dim StatusString As String
     Dim FactionStatusString As String
 
     If IsSet(StatusMask, e_InfoTxts.Newbie) Then
@@ -2456,42 +2421,33 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
         Fields(2) = FactionStatusString
     End If
 
-    Exit Function
+Exit Function
 
 UserInTileToTxtParser_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.UserInTileToTxtParser", Erl)
-
     Resume Next
-
 End Function
 
-Public Function NpcInTileToTxtParser(ByRef Fields() As String, ByVal bytHeader As Integer)
 
-    On Error GoTo NpcInTileToTxtParser_Err
 
-    Dim SplitNpcStatus()     As String
+Public Function NpcInTileToTxtParser(ByRef Fields() As String)
+
+On Error GoTo NpcInTileToTxtParser_Err
+
+    Dim SplitNpcStatus() As String
     
-    Dim NpcName              As String
-
-    Dim NpcElementalTags     As Long
-
-    Dim NpcStatuses          As String
-
-    Dim NpcStatusMask        As Long
-
-    Dim extraInfo            As String
-
-    Dim NpcFightingWith      As String
-
+    Dim NpcName As String
+    Dim NpcElementalTags As Long
+    Dim NpcStatuses As String
+    Dim NpcStatusMask As Long
+    Dim extraInfo As String
+    Dim NpcFightingWith As String
     Dim NpcFightingWithTimer As String
-
-    Dim NpcHpInfo            As String
-
-    Dim NpcIndex             As String
-
-    Dim ParalisisTime        As String
-
-    Dim InmovilizedTime      As String
+    Dim NpcHpInfo As String
+    Dim NpcIndex As String
+    Dim ParalisisTime As String
+    Dim InmovilizedTime As String
+    
     
     NpcName = Fields(0)
     NpcElementalTags = CLng(Fields(1))
@@ -2530,7 +2486,6 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String, ByVal bytHeader A
         If IsSet(NpcStatusMask, e_NpcInfoMask.Paralized) Then
             extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_PARALIZADO") & "]"
             ParalisisTime = SplitNpcStatus(1)
-
             If ParalisisTime <> "" Then
                 extraInfo = extraInfo & "(" & ParalisisTime & "s)" & "]"
             End If
@@ -2540,7 +2495,6 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String, ByVal bytHeader A
         If IsSet(NpcStatusMask, e_NpcInfoMask.Inmovilized) Then
             extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_INMOVILIZADO") & "]"
             InmovilizedTime = SplitNpcStatus(2)
-
             If InmovilizedTime <> "" Then
                 extraInfo = extraInfo & "(" & InmovilizedTime & "s)" & "]"
             End If
@@ -2562,15 +2516,12 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String, ByVal bytHeader A
         Fields(2) = extraInfo
     End If
 
-    If bytHeader = 1621 Then
-        Fields(3) = "[" & JsonLanguage.Item("MENSAJE_ESTADO_MASCOTA") & " " & Fields(3) & "]"
-    End If
+    Fields(3) = "[" & JsonLanguage.Item("MENSAJE_ESTADO_MASCOTA") & " " & Fields(3) & "]"
     
     Exit Function
 
 NpcInTileToTxtParser_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.NpcInTileToTxtParser", Erl)
-
     Resume Next
 
 End Function
