@@ -142,7 +142,19 @@ EraseChar_Err:
     
 End Sub
 
-Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal CartIndex As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
+Sub MakeChar(ByVal CharIndex As Integer, _
+             ByVal Body As Integer, _
+             ByVal Head As Integer, _
+             ByVal Heading As Byte, _
+             ByVal x As Integer, _
+             ByVal y As Integer, _
+             ByVal Arma As Integer, _
+             ByVal Escudo As Integer, _
+             ByVal Casco As Integer, _
+             ByVal CartIndex As Integer, _
+             ByVal BackpackIndex As Integer, _
+             ByVal ParticulaFx As Byte, _
+             ByVal appear As Byte)
     
     On Error GoTo MakeChar_Err
 
@@ -155,21 +167,26 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
         'If the char wasn't allready active (we are rewritting it) don't increase char count
         If .active = 0 Then NumChars = NumChars + 1
         .HasCart = True
-        If Arma = 0 Or Arma > UBound(WeaponAnimData) Then Arma = 2
-        If Escudo = 0 Or Escudo > UBound(ShieldAnimData) Then Escudo = 2
-        If Casco = 0 Or Casco > UBound(CascoAnimData) Then Casco = 2
-        If CartIndex <= 2 Or CartIndex > UBound(BodyData) Then .HasCart = False
+        .HasBackpack = True
+
+        If Arma = 0 Or Arma > UBound(WeaponAnimData) Then Arma = NO_WEAPON
+        If Escudo = 0 Or Escudo > UBound(ShieldAnimData) Then Escudo = NO_SHIELD
+        If Casco = 0 Or Casco > UBound(CascoAnimData) Then Casco = NO_HELMET
+        If CartIndex <= NO_CART Or CartIndex > UBound(BodyData) Then .HasCart = False
+        If BackpackIndex <= NO_BACKPACK Or BackpackIndex > UBound(BodyData) Then .HasBackpack = False
         
         .IHead = Head
         .iBody = Body
-     '   If Not charindex = UserCharIndex Then
-            .Head = HeadData(Head)
-            .Body = BodyData(Body)
-            .Arma = WeaponAnimData(Arma)
-            .Escudo = ShieldAnimData(Escudo)
-            .Casco = CascoAnimData(Casco)
-            .Cart = BodyData(CartIndex)
-       ' End If
+        .Head = HeadData(Head)
+        .Body = BodyData(Body)
+        .Arma = WeaponAnimData(Arma)
+        .Escudo = ShieldAnimData(Escudo)
+        .Casco = CascoAnimData(Casco)
+        .Cart = BodyData(CartIndex)
+            
+        If Not UserNadando Then
+            .Backpack = BodyData(BackpackIndex)
+        End If
         
         .Heading = Heading
         
@@ -218,12 +235,12 @@ Sub MakeChar(ByVal charindex As Integer, ByVal Body As Integer, ByVal Head As In
     
     'Plot on map
     MapData(x, y).charindex = charindex
-
     
     Exit Sub
 
 MakeChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.MakeChar", Erl)
+
     Resume Next
     
 End Sub
@@ -310,15 +327,21 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
                     .Body = BodyData(.iBody)
                     .AnimatingBody = 0
                 End If
+                
+                If .BackPack.BodyIndex <> .tmpBackPack Then
+                    .BackPack = BodyData(.tmpBackPack)
+                End If
             End If
 
             ' Start animations (solo al empezar a moverse)
             If .Body.Walk(.Heading).Started = 0 Then
                 .Body.Walk(.Heading).Started = FrameTime
                 .Arma.WeaponWalk(.Heading).Started = FrameTime
+                .BackPack.Walk(.Heading).started = FrameTime
                 .Escudo.ShieldWalk(.Heading).Started = FrameTime
                 .Arma.WeaponWalk(.Heading).Loops = INFINITE_LOOPS
                 .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
+                .BackPack.Walk(.Heading).Loops = INFINITE_LOOPS
             End If
             
             .MovArmaEscudo = False
@@ -459,7 +482,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
                 .Arma.WeaponWalk(.Heading).Loops = INFINITE_LOOPS
                 .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
             End If
-
+            
             .MovArmaEscudo = False
             .Moving = True
 
