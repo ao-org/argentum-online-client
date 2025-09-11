@@ -52,7 +52,7 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
     
     'Look At Tile when clicking an npc with or without owner
     If bytHeader = 1622 or bytHeader = 1621 Then
-        Call NpcInTileToTxtParser(Fields)
+        Call NpcInTileToTxtParser(Fields, bytHeader)
     End If
 
     'Look At Tile when clicking a player
