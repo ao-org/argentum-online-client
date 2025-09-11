@@ -142,7 +142,19 @@ EraseChar_Err:
     
 End Sub
 
-Sub MakeChar(ByVal CharIndex As Integer, ByVal Body As Integer, ByVal Head As Integer, ByVal Heading As Byte, ByVal x As Integer, ByVal y As Integer, ByVal Arma As Integer, ByVal Escudo As Integer, ByVal Casco As Integer, ByVal CartIndex As Integer, ByVal BackpackIndex As Integer, ByVal ParticulaFx As Byte, ByVal appear As Byte)
+Sub MakeChar(ByVal CharIndex As Integer, _
+             ByVal Body As Integer, _
+             ByVal Head As Integer, _
+             ByVal Heading As Byte, _
+             ByVal x As Integer, _
+             ByVal y As Integer, _
+             ByVal Arma As Integer, _
+             ByVal Escudo As Integer, _
+             ByVal Casco As Integer, _
+             ByVal CartIndex As Integer, _
+             ByVal BackpackIndex As Integer, _
+             ByVal ParticulaFx As Byte, _
+             ByVal appear As Byte)
     
     On Error GoTo MakeChar_Err
 
@@ -156,6 +168,7 @@ Sub MakeChar(ByVal CharIndex As Integer, ByVal Body As Integer, ByVal Head As In
         If .active = 0 Then NumChars = NumChars + 1
         .HasCart = True
         .HasBackpack = True
+
         If Arma = 0 Or Arma > UBound(WeaponAnimData) Then Arma = 2
         If Escudo = 0 Or Escudo > UBound(ShieldAnimData) Then Escudo = 2
         If Casco = 0 Or Casco > UBound(CascoAnimData) Then Casco = 2
@@ -164,15 +177,16 @@ Sub MakeChar(ByVal CharIndex As Integer, ByVal Body As Integer, ByVal Head As In
         
         .IHead = Head
         .iBody = Body
-     '   If Not charindex = UserCharIndex Then
-            .Head = HeadData(Head)
-            .Body = BodyData(Body)
-            .Arma = WeaponAnimData(Arma)
-            .Escudo = ShieldAnimData(Escudo)
-            .Casco = CascoAnimData(Casco)
-            .Cart = BodyData(CartIndex)
+        .Head = HeadData(Head)
+        .Body = BodyData(Body)
+        .Arma = WeaponAnimData(Arma)
+        .Escudo = ShieldAnimData(Escudo)
+        .Casco = CascoAnimData(Casco)
+        .Cart = BodyData(CartIndex)
+            
+        If Not UserNadando Then
             .Backpack = BodyData(BackpackIndex)
-       ' End If
+        End If
         
         .Heading = Heading
         
@@ -221,12 +235,12 @@ Sub MakeChar(ByVal CharIndex As Integer, ByVal Body As Integer, ByVal Head As In
     
     'Plot on map
     MapData(x, y).charindex = charindex
-
     
     Exit Sub
 
 MakeChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.MakeChar", Erl)
+
     Resume Next
     
 End Sub
