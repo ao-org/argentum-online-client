@@ -5246,7 +5246,7 @@ Private Sub HandleLevelUp()
     On Error GoTo HandleLevelUp_Err
  
     SkillPoints = Reader.ReadInt16()
-    'Call svb_unlock_achivement("Newbie's fate")
+    Call svb_unlock_achivement("Newbie's fate")
     
     Exit Sub
 

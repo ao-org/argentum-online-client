@@ -24,12 +24,20 @@ Public SeguroResuX As Boolean
 Public LegionarySecureX As Boolean
 Public QuePestañaInferior As Byte
 Public newUser As Boolean
+
 Public Enum tMacro
     dobleclick = 1
     Coordenadas = 2
     inasistidoPosFija = 3
     borrarCartel = 4
 End Enum
+
+Public const NO_WEAPON As Byte = 2
+Public const NO_CART As Byte = 2
+Public const NO_HELMET As Byte = 2
+Public const NO_ARMOR As Byte = 2
+Public const NO_SHIELD As Byte = 2
+Public const NO_BACKPACK As Byte = 2
 
 Public Enum tMacroButton
     Inventario = 1

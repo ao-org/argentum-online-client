@@ -169,11 +169,11 @@ Sub MakeChar(ByVal CharIndex As Integer, _
         .HasCart = True
         .HasBackpack = True
 
-        If Arma = 0 Or Arma > UBound(WeaponAnimData) Then Arma = 2
-        If Escudo = 0 Or Escudo > UBound(ShieldAnimData) Then Escudo = 2
-        If Casco = 0 Or Casco > UBound(CascoAnimData) Then Casco = 2
-        If CartIndex <= 2 Or CartIndex > UBound(BodyData) Then .HasCart = False
-        If BackpackIndex <= 2 Or BackpackIndex > UBound(BodyData) Then .HasBackpack = False
+        If Arma = 0 Or Arma > UBound(WeaponAnimData) Then Arma = NO_WEAPON
+        If Escudo = 0 Or Escudo > UBound(ShieldAnimData) Then Escudo = NO_SHIELD
+        If Casco = 0 Or Casco > UBound(CascoAnimData) Then Casco = NO_HELMET
+        If CartIndex <= NO_CART Or CartIndex > UBound(BodyData) Then .HasCart = False
+        If BackpackIndex <= NO_BACKPACK Or BackpackIndex > UBound(BodyData) Then .HasBackpack = False
         
         .IHead = Head
         .iBody = Body
