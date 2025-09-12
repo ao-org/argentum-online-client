@@ -40,9 +40,11 @@ Private Type UI_VERTEX
     z  As Single        'Normalized z
     rhw As Single       'Normalized z rhw
     Color As Long       'Vertex color
+    u  As Single
+    v  As Single
 End Type
 
-Private Const D3DFVF_UI_VERTEX = (D3DFVF_XYZRHW Or D3DFVF_DIFFUSE)
+Private Const D3DFVF_UI_VERTEX = (D3DFVF_XYZRHW Or D3DFVF_DIFFUSE Or D3DFVF_TEX1)
 
 
 ' Initialize with device and max quads capacity
@@ -55,6 +57,182 @@ Public Sub Init(ByVal dev As Direct3DDevice8, ByVal maxQuads As Long)
     Dim vbSize As Long
     vbSize = vertexCapacity * LenB(vertices(0))
     Set m_VB = dev.CreateVertexBuffer(vbSize, D3DUSAGE_DYNAMIC Or D3DUSAGE_WRITEONLY, D3DFVF_XYZRHW Or D3DFVF_DIFFUSE, D3DPOOL_DEFAULT)
+    
+End Sub
+
+Public Function ColorToBytes(ByVal Red As Byte, _
+                             ByVal Green As Byte, _
+                             ByVal Blue As Byte, _
+                             Optional ByVal Alpha As Byte = 255) As Byte()
+    Dim Bytes(0 To 3) As Byte
+    
+    ' Store as RGBA
+    Bytes(0) = Red
+    Bytes(1) = Green
+    Bytes(2) = Blue
+    Bytes(3) = Alpha
+    
+    ColorToBytes = Bytes
+End Function
+
+
+
+Public Sub RenderText(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As Byte, Optional ByVal font_index As Integer = 1, _
+                            Optional multi_line As Boolean = False, Optional CharIndex As Integer = 0, Optional ByVal Alpha As Byte = 255)
+                            
+    
+'    On Error GoTo Engine_Text_Render_Err
+'
+'
+'
+'
+'    Dim a, b, c, d, e, f As Integer
+'
+'    Dim graf          As Grh
+'
+'    Dim temp_array(3) As RGBA
+'
+'    If CharIndex = 0 Then
+'        a = 255
+'    Else
+'        a = Clamp(charlist(CharIndex).AlphaText, 0, 255)
+'    End If
+'
+'    If Alpha <> 255 Then
+'        a = Alpha
+'    End If
+'
+'    Call RGBAList(temp_array, text_color(0).r, text_color(0).G, text_color(0).b, a)
+'
+'    Dim i              As Long
+'
+'    Dim removedDialogs As Long
+'
+'    For i = 0 To dialogCount - 1
+'
+'        'Decrease index to prevent jumping over a dialog
+'        'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
+'        With dialogs(i - removedDialogs)
+'
+'            If FrameTime - .startTime >= .lifeTime Then
+'                Call Char_Dialog_Remove(.CharIndex, CharIndex)
+'
+'                If a <= 0 Then
+'                    removedDialogs = removedDialogs + 1
+'
+'                End If
+'
+'            Else
+'
+'            End If
+'
+'        End With
+'
+'    Next i
+'
+'    Dim Sombra(3) As RGBA 'Sombra
+'    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).b / 6, 0.8 * a)
+'
+'    If (Len(Texto) = 0) Then Exit Sub
+'
+'    d = 0
+'
+'    If multi_line = False Then
+'        e = 0
+'        f = 0
+'
+'        For a = 1 To Len(Texto)
+'            b = Asc(mid(Texto, a, 1))
+'            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+'
+'            If b = 32 Or b = 13 Then
+'                If e >= 32 Then 'reemplazar por lo que os plazca
+'                    f = f + 1
+'                    e = 0
+'                    d = 0
+'                Else
+'
+'                    If b = 32 Then d = d + 4
+'
+'                End If
+'
+'            Else
+'
+'                If graf.GrhIndex > 12 Then
+'
+'                    'mega sombra O-matica
+'                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+'
+'                    If font_index <> 3 Then
+'                        Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
+'
+'                    End If
+'
+'                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
+'
+'                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
+'                    ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
+'                    d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
+'
+'                End If
+'
+'            End If
+'
+'            e = e + 1
+'        Next a
+'
+'    Else
+'        e = 0
+'        f = 0
+'
+'        For a = 1 To Len(Texto)
+'            b = Asc(mid(Texto, a, 1))
+'            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+'
+'            If b = 32 Or b = 13 Then
+'                If e >= 20 Then 'reemplazar por lo que os plazca
+'                    f = f + 1
+'                    e = 0
+'                    d = 0
+'                Else
+'
+'                    If b = 32 Then d = d + 4
+'
+'                End If
+'
+'            Else
+'
+'                If graf.GrhIndex > 12 Then
+'
+'                    'mega sombra O-matica
+'                    graf.GrhIndex = Fuentes(font_index).Caracteres(b)
+'                    Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
+'                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
+'
+'                    ' graf.grhindex = Fuentes(font_index).Caracteres(b)
+'                    'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
+'                    If font_index = 4 Then
+'                        d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth - 1
+'                    Else
+'                        d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
+'
+'                    End If
+'
+'                End If
+'
+'            End If
+'
+'            e = e + 1
+'        Next a
+'
+'    End If
+
+    
+    Exit Sub
+
+Engine_Text_Render_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
+    Resume Next
     
 End Sub
 
@@ -81,6 +259,10 @@ Public Sub AddQuad(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As
         vertices(idx + i).Color = clr
     Next i
     vertexCount = vertexCount + 4
+End Sub
+
+Public Sub AddTexturedQuad(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByRef colors() As Long, Optional ByVal Alpha As Byte = 255)
+    'TODO
 End Sub
 
 
