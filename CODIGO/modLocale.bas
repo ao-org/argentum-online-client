@@ -54,6 +54,11 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
     If bytHeader = 1622 or bytHeader = 1621 Then
         Call NpcInTileToTxtParser(Fields, bytHeader)
     End If
+    
+    If bytHeader = 184 Then
+        Call NpcIndexToName(Fields)
+    End If
+    
 
     'Look At Tile when clicking a player
     If bytHeader = 1105 Then
@@ -310,4 +315,5 @@ Public Function String_To_Long(ByRef str As String, ByVal Start As Integer) As L
 ErrorHandler:
 
 End Function
+
 

@@ -2567,12 +2567,21 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String, ByVal bytHeader A
         Fields(3) = "[" & JsonLanguage.Item("MENSAJE_ESTADO_MASCOTA") & " " & Fields(3) & "]"
     End If
     
+        
     Exit Function
 
 NpcInTileToTxtParser_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.NpcInTileToTxtParser", Erl)
 
     Resume Next
+
+End Function
+
+Public Function NpcIndexToName(ByRef Fields() As String)
+
+    If IsNumeric(Fields(0)) Then
+        Fields(0) = NpcData(Fields(0)).Name
+    End If
 
 End Function
 
