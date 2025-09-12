@@ -24,3 +24,6 @@ REGSVR32 /s %SystemRoot%\SysWOW64\MSINET.OCX
 
 copy "!mypath!RICHTX32.OCX" %SystemRoot%\SysWOW64
 REGSVR32 /s %SystemRoot%\SysWOW64\RICHTX32.OCX
+
+copy "!mypath!MSSTDFMT.DLL" %SystemRoot%\SysWOW64
+REGSVR32 /s %SystemRoot%\SysWOW64\MSSTDFMT.DLL
