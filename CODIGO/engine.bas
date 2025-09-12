@@ -1582,63 +1582,100 @@ Char_TextRender_Err:
     
 End Sub
 
-Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Sub Char_Render(ByVal CharIndex As Long, _
+                ByVal PixelOffsetX As Integer, _
+                ByVal PixelOffsetY As Integer, _
+                ByVal x As Byte, _
+                ByVal y As Byte)
     
     On Error GoTo Char_Render_Err
 
     'Draw char's to screen without offcentering them
     
-    Dim Pos                 As Integer
-    Dim line                As String
-    Dim Color(3)            As RGBA
-    Dim NameColor(3)        As RGBA
-    Dim NameColorClan(3)    As RGBA
-    Dim colorCorazon(3)     As RGBA
-    Dim i                   As Long
-    Dim OffsetYname         As Byte
-    Dim OffsetYClan         As Byte
-    Dim TextureX            As Integer
-    Dim TextureY            As Integer
-    Dim OffArma             As Single
-    Dim OffAuras            As Integer
-    Dim OffHead             As Single
-    Dim MostrarNombre       As Boolean
-    Dim TempGrh             As Grh
-    Dim terrainHeight       As Integer
+    Dim Pos              As Integer
+
+    Dim line             As String
+
+    Dim Color(3)         As RGBA
+
+    Dim NameColor(3)     As RGBA
+
+    Dim NameColorClan(3) As RGBA
+
+    Dim colorCorazon(3)  As RGBA
+
+    Dim i                As Long
+
+    Dim OffsetYname      As Byte
+
+    Dim OffsetYClan      As Byte
+
+    Dim TextureX         As Integer
+
+    Dim TextureY         As Integer
+
+    Dim OffArma          As Single
+
+    Dim OffAuras         As Integer
+
+    Dim OffHead          As Single
+
+    Dim MostrarNombre    As Boolean
+
+    Dim TempGrh          As Grh
+
+    Dim terrainHeight    As Integer
 
     With charlist(CharIndex)
 
         If .Heading = 0 Then Exit Sub
         
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
-        If Not .Moving _
-           And Not .TranslationActive _
-           And .Idle _
-           And .scrollDirectionX = 0 And .scrollDirectionY = 0 _
-           And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
+        If Not .Moving And Not .TranslationActive And .Idle And .scrollDirectionX = 0 And .scrollDirectionY = 0 And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
 
             If .Body.AnimateOnIdle = 0 Then
                 ' Quieto SIN animación: congelar la serie de walk en frame estático
                 .Body.Walk(.Heading).Loops = 0
                 .Body.Walk(.Heading).started = 0
+
                 If Not .MovArmaEscudo Then
                     .Arma.WeaponWalk(.Heading).started = 0
                     .Escudo.ShieldWalk(.Heading).started = 0
                 End If
+
             Else
+
                 ' Quieto CON animación: disparar (o preservar) idle una sola vez
                 If .Body.Walk(.Heading).started = 0 Or .Body.Walk(.Heading).Loops <> INFINITE_LOOPS Then
-                    SetCharIdle charlist(CharIndex), True
+                    Call SetCharIdle(charlist(CharIndex), True)
                 End If
             End If
+            
+            If .BackPack.AnimateOnIdle = 0 And .BackPack.IdleBody = 0 Then
+                
+                ' Quieto SIN animación: congelar la serie de walk en frame estático
+                .BackPack.Walk(.Heading).Loops = 0
+                .BackPack.Walk(.Heading).started = 0
+            Else
+
+                ' Quieto CON animación: disparar (o preservar) idle una sola vez
+                If .BackPack.Walk(.Heading).started = 0 Or .BackPack.Walk(.Heading).Loops <> INFINITE_LOOPS Then
+                    Call SetCharIdle(charlist(CharIndex), False)
+                End If
+            End If
+            
         End If
+
         ' --- FIN GUARD ---
 
         Dim dibujaMiembroClan As Boolean
+
         dibujaMiembroClan = False
         
         Dim verVidaClan As Boolean
+
         verVidaClan = False
+
         If .clan_index > 0 Then
             If .clan_index = charlist(UserCharIndex).clan_index And CharIndex <> UserCharIndex And .Muerto = 0 Then
                 If .clan_nivel >= 6 Then dibujaMiembroClan = True
@@ -1647,9 +1684,11 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         End If
         
         If .Moving Then
+
             'If needed, move left and right
             If .scrollDirectionX <> 0 Then
                 .MoveOffsetX = .MoveOffsetX + ScrollPixelsPerFrameX * Sgn(.scrollDirectionX) * timerTicksPerFrame * .Speeding
+
                 'Check if we already got there
                 If (Sgn(.scrollDirectionX) = 1 And .MoveOffsetX >= 0) Or (Sgn(.scrollDirectionX) = -1 And .MoveOffsetX <= 0) Then
                     .MoveOffsetX = 0
@@ -1660,24 +1699,30 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             'If needed, move up and down
             If .scrollDirectionY <> 0 Then
                 .MoveOffsetY = .MoveOffsetY + ScrollPixelsPerFrameY * Sgn(.scrollDirectionY) * timerTicksPerFrame * .Speeding
+
                 'Check if we already got there
                 If (Sgn(.scrollDirectionY) = 1 And .MoveOffsetY >= 0) Or (Sgn(.scrollDirectionY) = -1 And .MoveOffsetY <= 0) Then
                     .MoveOffsetY = 0
                     .scrollDirectionY = 0
                 End If
             End If
+
             If .scrollDirectionX = 0 And .scrollDirectionY = 0 Then
                 .Moving = False
                 .Idle = True                 ' marcar intención de idle (el guard de arriba decide animación/estático)
             End If
 
         ElseIf .TranslationActive Then
-            Dim ElapsedTime As Long
+
+            Dim ElapsedTime        As Long
+
             Dim TranslationPercent As Double
+
             ElapsedTime = FrameTime - .TranslationStartTime
             TranslationPercent = min(CDbl(ElapsedTime) / .TranslationTime, 1)
             .MoveOffsetX = Interpolate(TilePixelWidth * .scrollDirectionX * -1, 0, TranslationPercent)
             .MoveOffsetY = Interpolate(TilePixelHeight * .scrollDirectionY * -1, 0, TranslationPercent)
+
             If TranslationPercent >= 1 Then
                 .TranslationActive = False
                 .Moving = False
@@ -1685,6 +1730,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
 
         ElseIf .AnimatingBody Then
+
             If .Body.Walk(.Heading).started = 0 Then
                 .AnimatingBody = 0
 
@@ -1697,27 +1743,34 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Else
                     .Body = BodyData(0)
                 End If
+
                 .Body.Walk(.Heading).Loops = -1
+
                 If .Idle Or .Navegando Then
                     .Body.Walk(.Heading).started = FrameTime
                 End If
             End If
 
         ElseIf Not .Idle Then
+
             If .Muerto Then
                 If CharIndex <> UserCharIndex Then
+
                     ' Si no somos nosotros, esperamos un intervalo antes de poner la animación idle para evitar saltos
                     If FrameTime - .LastStep > TIME_CASPER_IDLE Then
                         .Body = BodyData(CASPER_BODY_IDLE)
                         .Body.Walk(.Heading).started = FrameTime
                         .Idle = True
                     End If
+
                 Else
                     .Body = BodyData(CASPER_BODY_IDLE)
                     .Body.Walk(.Heading).started = FrameTime
                     .Idle = True
                 End If
+
             Else
+
                 'Stop animations
                 If .Navegando = False Or UserNadandoTrajeCaucho = True Then
                     If .Body.AnimateOnIdle = 0 Then
@@ -1725,21 +1778,26 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     ElseIf .Body.Walk(.Heading).started = 0 Then
                         .Body.Walk(.Heading).started = FrameTime
                     End If
+
                     If Not .MovArmaEscudo Then
                         .Arma.WeaponWalk(.Heading).started = 0
                         .Escudo.ShieldWalk(.Heading).started = 0
                     End If
+
                     If .Body.IdleBody > 0 Then
                         .Body = BodyData(.Body.IdleBody)
                         .Body.Walk(.Heading).started = FrameTime
                     End If
+                    
                 End If
             End If
+
             .Idle = True
         End If
 
         ' --- AUTOSTART WALK ANIMATION SI ESTÁ MOVIÉNDOSE ---
         If (.Moving Or .TranslationActive) Then
+
             ' Cuerpo: si no estaba animando, arrancar y loop infinito
             If .Body.Walk(.Heading).started = 0 Then
                 .Body.Walk(.Heading).started = FrameTime
@@ -1751,6 +1809,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If .Arma.WeaponWalk(.Heading).started = 0 Then
                     .Arma.WeaponWalk(.Heading).started = .Body.Walk(.Heading).started
                 End If
+
                 .Arma.WeaponWalk(.Heading).Loops = INFINITE_LOOPS
             End If
 
@@ -1758,19 +1817,31 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If .Escudo.ShieldWalk(.Heading).started = 0 Then
                     .Escudo.ShieldWalk(.Heading).started = .Body.Walk(.Heading).started
                 End If
+
                 .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
             End If
+            
+            If .BackPack.Walk(.Heading).started = 0 Then
+                .BackPack.Walk(.Heading).started = FrameTime
+                .Body.Walk(.Heading).Loops = INFINITE_LOOPS
+            End If
+            
         End If
+
         ' --- FIN AUTOSTART ---
         
         terrainHeight = TileEngine.GetTerrainHeight(x, y)
+
         If (.Moving) Then
+
             Dim prevTerrainHeight As Integer
+
             If (.MoveOffsetX < 0) Then
                 prevTerrainHeight = TileEngine.GetTerrainHeight(x - 1, y)
             ElseIf (.MoveOffsetX > 0) Then
                 prevTerrainHeight = TileEngine.GetTerrainHeight(x + 1, y)
             End If
+
             terrainHeight = IntLerp(terrainHeight, prevTerrainHeight, Abs(.MoveOffsetX / TilePixelWidth))
 
             If .HasCart Then
@@ -1779,19 +1850,34 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     .Cart.Walk(.Heading).started = FrameTime
                 End If
             End If
+
         Else
+
             If .HasCart Then
                 If .Cart.Walk(.Heading).started <> 0 Then
                     .Cart.Walk(.Heading).Loops = 0
                     .Cart.Walk(.Heading).started = 0
                 End If
             End If
+
+            If .HasBackpack Then
+                If .BackPack.AnimateOnIdle = 0 Then
+                    If .BackPack.Walk(.Heading).started <> 0 Then
+                        .BackPack.Walk(.Heading).Loops = 0
+                        .BackPack.Walk(.Heading).started = 0
+                    End If
+                    
+                End If
+                
+            End If
+
         End If
         
         PixelOffsetX = PixelOffsetX + .MoveOffsetX
         PixelOffsetY = PixelOffsetY + .MoveOffsetY - terrainHeight
         
         Dim ease As Single
+
         If MostrarRespiracion Then
             ease = EaseBreathing((((FrameTime - .TimeCreated) * 0.25) Mod 1000) * 0.001)
         Else
@@ -1809,14 +1895,22 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call RGBAList(Color, 255, 255, 255, 100)
                     
                     If .priv = 0 Then
+
                         Select Case .status
+
                             Case 0: Call SetRGBA(NameColor(0), ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)  ' Criminal
+
                             Case 1: Call SetRGBA(NameColor(0), ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)  ' Ciudadano
+
                             Case 2: Call SetRGBA(NameColor(0), ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)  ' Caos
+
                             Case 3: Call SetRGBA(NameColor(0), ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)  ' Armada
+
                             Case 4: Call SetRGBA(NameColor(0), ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)  ' Concilio
+
                             Case 5: Call SetRGBA(NameColor(0), ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)  ' Consejo
                         End Select
+
                     Else
                         Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                     End If
@@ -1828,6 +1922,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     MostrarNombre = True
                         
                 Else
+
                     If .Navegando Then
                         MostrarNombre = True
                         Call RGBAList(Color, 125, 125, 125, 125)
@@ -1838,18 +1933,28 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     
                     If dibujaMiembroClan Then
                         MostrarNombre = True
+
                         If .priv = 0 Then
+
                             Select Case .status
+
                                 Case 0: Call SetRGBA(NameColor(0), ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
+
                                 Case 1: Call SetRGBA(NameColor(0), ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
+
                                 Case 2: Call SetRGBA(NameColor(0), ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
+
                                 Case 3: Call SetRGBA(NameColor(0), ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
+
                                 Case 4: Call SetRGBA(NameColor(0), ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
+
                                 Case 5: Call SetRGBA(NameColor(0), ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
                             End Select
+
                         Else
                             Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                         End If
+
                         Call LerpRGBA(NameColor(0), NameColor(0), RGBA_From_Comp(0, 0, 0), 0.5)
                         Call RGBA_ToList(NameColor, NameColor(0))
                         Call RGBA_ToList(colorCorazon, NameColor(0))
@@ -1858,6 +1963,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
 
             Else
+
                 If .Muerto Then
                     Call Copy_RGBAList_WithAlpha(Color, MapData(x, y).light_value, 150)
                 Else
@@ -1871,7 +1977,9 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         Call InitGrh(TempGrh, 839)
                         
                         If .UserMaxHp > 0 Then
+
                             Dim TempColor(3) As RGBA
+
                             Call RGBAList(TempColor, 255, 255, 255, 200)
                             Call Draw_Grh(TempGrh, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 10 + .Body.BodyOffset.y, 1, 0, TempColor, False, 0, 0, 0)
                             Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY + 37 + .Body.BodyOffset.y, .UserMinHp / .UserMaxHp * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
@@ -1886,14 +1994,22 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     MostrarNombre = True
                     
                     If .priv = 0 Then
+
                         Select Case .status
+
                             Case 0: Call RGBAList(NameColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b): Call RGBAList(colorCorazon, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
+
                             Case 1: Call RGBAList(NameColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b): Call RGBAList(colorCorazon, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
+
                             Case 2: Call RGBAList(NameColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b): Call RGBAList(colorCorazon, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
+
                             Case 3: Call RGBAList(NameColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b): Call RGBAList(colorCorazon, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
+
                             Case 4: Call RGBAList(NameColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b): Call RGBAList(colorCorazon, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
+
                             Case 5: Call RGBAList(NameColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b): Call RGBAList(colorCorazon, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
                         End Select
+
                     Else
                         Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                         Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
@@ -1938,33 +2054,58 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Select Case .Heading
 
                     Case E_Heading.EAST
+
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
+
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), TextureX, TextureY + .Cart.HeadOffset.y, 1, 1, COLOR_WHITE, False, x, y)
-                    Case E_Heading.NORTH
-                        If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
-                        If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
-                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
-                        Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
-                        If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         
+                        If .HasBackpack And Not UserNadando And Not UserMontado Then
+                            Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y + OffHead, 1, 1, COLOR_WHITE, ease, False)
+                        End If
+
+                    Case E_Heading.NORTH
+
+                        If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
+                        If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
+                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
+                        Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
+
+                        If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
+                        If .HasBackpack And Not UserNadando And Not UserMontado Then
+                            Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y + OffHead, 1, 1, COLOR_WHITE, ease, False)
+                        End If
+
                     Case E_Heading.WEST
+
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
+
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), TextureX, TextureY + .Cart.HeadOffset.y, 1, 1, COLOR_WHITE, False, x, y)
+                        If .HasBackpack And Not UserNadando And Not UserMontado Then
+                            Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y + OffHead, 1, 1, COLOR_WHITE, ease, False)
+                        End If
+
                     Case E_Heading.south
+
+                        If .HasBackpack And Not UserNadando And Not UserMontado Then
+                            Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y + OffHead, 1, 1, COLOR_WHITE, ease, False)
+                        End If
+
                         If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), TextureX, TextureY + .Cart.HeadOffset.y, 1, 1, COLOR_WHITE, False, x, y)
                         Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
+
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
+                        
                 End Select
                      
                 EndComposedTexture
@@ -1975,6 +2116,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
                     ' Sombra
                     PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, 0, True
+
                     If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, CharIndex)
                     If LenB(.Head_Aura) <> 0 And .Head_Aura <> "0" Then Call Renderizar_Aura(.Head_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, CharIndex)
                     If LenB(.Arma_Aura) <> 0 And .Arma_Aura <> "0" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, CharIndex)
@@ -1999,15 +2141,19 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
                 
                 PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, False
+
                 ' we need to draw this outside the composed texture or it will be cut out
                 If .Heading = E_Heading.NORTH Then
                     If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + .Cart.HeadOffset.y, 1, 1, Color, False, x, y)
                 End If
-            ' Si no, solo dibujamos body
+
+                ' Si no, solo dibujamos body
             Else
+
                 If Not .Invisible Then
                     Call Draw_Sombra(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, False, x, y)
                 End If
+
                 Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, Color, False, x, y)
             End If
     
@@ -2015,40 +2161,58 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Nombres = Not MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).zone.OcultarNombre
      
             If UserCharIndex > 0 Then
+
                 With charlist(UserCharIndex)
+
                     Dim new_music As Integer
+
                     new_music = MapData(.Pos.x, .Pos.y).zone.Musica
+
                     If new_music > 0 Then
                         Call ao20audio.PlayMidi(new_music, True)
                     Else
                         Call ao20audio.PlayMidi(MapDat.music_numberLow, True)
                     End If
+
                 End With
+
             End If
     
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
                 Pos = InStr(.nombre, "<")
+
                 If Pos = 0 Then Pos = InStr(.nombre, "[")
                 If Pos = 0 Then Pos = Len(.nombre) + 2
                 'Nick
                 
                 line = Left$(.nombre, Pos - 2)
+
                 Dim Factor As Double
+
                 Factor = MapData(x, y).light_value(0).r / 255
                 
                 If .Navegando Then
                     If .priv = 0 Then
+
                         Select Case .status
+
                             Case 0: Call RGBAList(NameColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
+
                             Case 1: Call RGBAList(NameColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
+
                             Case 2: Call RGBAList(NameColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
+
                             Case 3: Call RGBAList(NameColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
+
                             Case 4: Call RGBAList(NameColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
+
                             Case 5: Call RGBAList(NameColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
                         End Select
+
                     Else
                         Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                     End If
+
                 Else
                     NameColor(0).r = NameColor(0).r * Factor
                     NameColor(0).G = NameColor(0).G * Factor
@@ -2067,6 +2231,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If .Team > 0 Then
                     Call RGBAList(NameColor, TeamColors(.Team).r, TeamColors(.Team).G, TeamColors(.Team).b, TeamColors(.Team).a)
                 End If
+
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 'Clan
@@ -2083,12 +2248,15 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
                 
                 If .banderaIndex > 0 And .Team > 0 Then
+
                     Dim flag As grh
+
                     If .banderaIndex = 1 Then
                         Call InitGrh(flag, 58712)
                     ElseIf .banderaIndex = 2 Then
                         Call InitGrh(flag, 60298)
                     End If
+
                     Call Draw_Grh(flag, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY - 45 + .Body.BodyOffset.y, 1, 0, Color, True, 0, 0, 0)
                 End If
                 
@@ -2104,6 +2272,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
                     End If
                 End If
+
             ElseIf Nombres And .Team > 0 Then
                 line = JsonLanguage.Item("MENSAJE_544") & .Team & ">"
                 Call RGBAList(NameColor, TeamColors(.Team).r, TeamColors(.Team).G, TeamColors(.Team).b, TeamColors(.Team).a)
@@ -2112,24 +2281,33 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         End If
 
         If .particle_count > 0 Then
+
             For i = 1 To .particle_count
+
                 If .particle_group(i) > 0 Then
                     Particle_Group_Render .particle_group(i), PixelOffsetX + .Body.BodyOffset.x + (TilePixelWidth / 2), PixelOffsetY + .Body.BodyOffset.y
                 End If
+
             Next i
+
         End If
 
         If Nombres And Len(.nombre) > 0 And MostrarNombre And .tipoUsuario > 0 Then
+
             Select Case .tipoUsuario
+
                 Case eTipoUsuario.aventurero
                     Call RGBAList(color, 0, 255, 0, IIf(.Invisible, 120, 255))
+
                 Case eTipoUsuario.heroe
                     Call RGBAList(color, 255, 0, 0, IIf(.Invisible, 160, 255))
+
                 Case eTipoUsuario.Legend
                     Call RGBAList(color, 255, 255, 0, IIf(.Invisible, 120, 255))
             End Select
 
             Dim txt_width As Long
+
             txt_width = Engine_Text_Width(.nombre, True)
             Call Draw_Grh(StarGrh, PixelOffsetX + 1 + .Body.BodyOffset.x + (txt_width / 2) + 8, PixelOffsetY + 20 + .Body.BodyOffset.y, 1, 1, color, False, 0, 0, 0)
         End If
@@ -2143,6 +2321,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY - 28 + .Body.BodyOffset.y, .BarTime / .MaxBarTime * 26, 4, RGBA_From_Comp(3, 214, 166, 120)
 
             .BarTime = .BarTime + (timerElapsedTime / 1000)
+
             If .BarTime >= .MaxBarTime Then
                 charlist(CharIndex).BarTime = 0
                 charlist(CharIndex).BarAccion = 99
@@ -2157,9 +2336,12 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         End If
 
         If .FxCount > 0 Then
+
             For i = 1 To .FxCount
+
                 If .FxList(i).FxIndex > 0 And .FxList(i).started <> 0 Then
                     Call RGBAList(Color, 255, 255, 255, 220)
+
                     If FxData(.FxList(i).FxIndex).IsPNG = 1 Then
                         Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX + .Body.BodyOffset.x, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20 + .Body.BodyOffset.y, 1, 1, Color, False, , , , CharIndex)
                     Else
@@ -2170,6 +2352,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If .FxList(i).started = 0 Then
                     .FxList(i).FxIndex = 0
                 End If
+
             Next i
 
             If .FxList(.FxCount).started = 0 Then
@@ -2183,37 +2366,28 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
 Char_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Char_Render", Erl)
+
     Resume Next
+
 End Sub
 
 Public Sub SetCharIdle(ByRef C As Char, Optional ByVal force As Boolean = True)
+
+    Dim keepStarted As Long
+
     ' Pone anim de quieto. Si AnimateOnIdle=0, NO anima (frame fijo).
     With C
+
         If .Muerto Then
             .Body = BodyData(CASPER_BODY_IDLE)
         Else
+
             If .Body.IdleBody > 0 Then
                 .Body = BodyData(.Body.IdleBody)
             End If
-        End If
 
-        If .Body.AnimateOnIdle = 0 Then
-            ' Parado sin animación
-            .Body.Walk(.Heading).Loops = 0
-            .Body.Walk(.Heading).started = 0
-        Else
-            ' Idle animado
-            .Body.Walk(.Heading).Loops = INFINITE_LOOPS
-            If force Then
-                .Body.Walk(.Heading).started = FrameTime
-            Else
-                If .Body.Walk(.Heading).started > 0 Then
-                    Dim keepStarted As Long
-                    keepStarted = SyncGrhPhase(.Body.Walk(.Heading), .Body.Walk(.Heading).GrhIndex)
-                    .Body.Walk(.Heading).started = keepStarted
-                Else
-                    .Body.Walk(.Heading).started = FrameTime
-                End If
+            If .BackPack.IdleBody > 0 Then
+                .BackPack = BodyData(.BackPack.IdleBody)
             End If
         End If
 
@@ -2221,10 +2395,33 @@ Public Sub SetCharIdle(ByRef C As Char, Optional ByVal force As Boolean = True)
             .Arma.WeaponWalk(.Heading).started = 0
             .Escudo.ShieldWalk(.Heading).started = 0
         End If
+        
+        If .BackPack.AnimateOnIdle = 0 Then
+            ' Parado sin animación
+            .BackPack.Walk(.Heading).Loops = 0
+            .BackPack.Walk(.Heading).started = 0
+        Else
+            ' Idle animado
+            .BackPack.Walk(.Heading).Loops = INFINITE_LOOPS
+
+            If force Then
+                .BackPack.Walk(.Heading).started = FrameTime
+            Else
+
+                If .BackPack.Walk(.Heading).started > 0 And .BackPack.Walk(.Heading).started > 0 Then
+
+                    keepStarted = SyncGrhPhase(.BackPack.Walk(.Heading), .BackPack.Walk(.Heading).GrhIndex)
+                    .BackPack.Walk(.Heading).started = keepStarted
+                Else
+                    .BackPack.Walk(.Heading).started = FrameTime
+                End If
+            End If
+        End If
 
         .Moving = False
         .Idle = True
     End With
+
 End Sub
 
 
@@ -2387,7 +2584,7 @@ On Error GoTo Start_Err
         DoEvents
 
         Call modNetwork.Poll
-        Call svb_run_callbacks
+        'Call svb_run_callbacks
         Call UpdateAntiCheat
     Loop
 
