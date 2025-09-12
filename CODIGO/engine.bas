@@ -3841,36 +3841,49 @@ Private Function renderAttributesColors(ByVal Value As Integer, ByVal x As Integ
     End If
 End Function
 
-
 Public Sub RenderAccountCharacters()
-On Error GoTo RenderAccountCharacters_Err
-    Dim i               As Long: Dim sumax As Long
-    Dim x               As Integer: Dim y As Integer
-    Dim notY            As Integer
-    Dim Color           As RGBA
-    Dim Texto           As String
+
+    On Error GoTo RenderAccountCharacters_Err
+
+    Dim i             As Long: Dim sumax As Long
+
+    Dim x             As Integer: Dim y As Integer
+
+    Dim notY          As Integer
+
+    Dim Color         As RGBA
+
+    Dim Texto         As String
+
     Dim temp_array(3) As RGBA
-    Dim TempColor(3) As RGBA
-    Dim grh As grh
+
+    Dim TempColor(3)  As RGBA
+
+    Dim Grh           As Grh
     
     Texto = CuentaEmail
     sumax = 84
     
     'Dibujo la escena debajo del mapa
-    Call RenderScreen(RenderCuenta_PosX, RenderCuenta_PosY, 0, 0, HalfConnectTileWidth, HalfConnectTileHeight)
+    Call RenderScreen(RenderCuenta_PosX, RenderCuenta_PosY, 0, 0, HalfConnectTileWidth, _
+            HalfConnectTileHeight)
     
     If LastPJSeleccionado <> PJSeleccionado Then
         If AlphaRenderCuenta < MAX_ALPHA_RENDER_CUENTA Then
-            AlphaRenderCuenta = min(AlphaRenderCuenta + timerTicksPerFrame * 10, MAX_ALPHA_RENDER_CUENTA)
+            AlphaRenderCuenta = min(AlphaRenderCuenta + timerTicksPerFrame * 10, _
+                    MAX_ALPHA_RENDER_CUENTA)
         Else
             LastPJSeleccionado = PJSeleccionado
+
             If PJSeleccionado <> 0 Then
                 Call SwitchMap(Pjs(PJSeleccionado).Mapa)
                 RenderCuenta_PosX = Pjs(PJSeleccionado).PosX
                 RenderCuenta_PosY = Pjs(PJSeleccionado).PosY
             End If
         End If
+
     ElseIf PJSeleccionado <> 0 And AlphaRenderCuenta > 0 Then
+
         If Pjs(PJSeleccionado).Mapa <> 0 Then
             AlphaRenderCuenta = max(AlphaRenderCuenta - timerTicksPerFrame * 10, 0)
         End If
@@ -3901,65 +3914,106 @@ On Error GoTo RenderAccountCharacters_Err
         temp_array(2) = Pjs(i).LetraColor
         temp_array(3) = Pjs(i).LetraColor
         
-        Dim Body As Integer
+        Dim Body    As Integer
+
         Dim enBarca As Boolean
+
         Body = Pjs(i).Body
         
         If (Body <> 0) Then
             If PJSeleccionado = i Then
                 Call Particle_Group_Render(Select_part, x + 32, y + 5)
             End If
+            
+            If (Pjs(i).Backpack And Not enBarca) Then
+                Draw_Grh BodyData(Pjs(i).Backpack).Walk(3), x + 15, y + 10, 1, 1, _
+                        COLOR_WHITE
+            End If
 
             If (Body <> 0) Then
                 Draw_Grh BodyData(Body).Walk(3), x + 15, y + 10, 1, 1, COLOR_WHITE
             End If
-            enBarca = Body = 84 Or Body = 85 Or Body = 86 Or Body = 87 Or Body = 1263 Or Body = 1264 Or Body = 1265 Or Body = 1266 Or Body = 1267 Or Body = 1268 Or Body = 1269 Or Body = 1270 Or Body = 1271 Or Body = 1272 Or Body = 1273 Or Body = 1274
+
+            enBarca = Body = 84 Or Body = 85 Or Body = 86 Or Body = 87 Or Body = 1263 _
+                    Or Body = 1264 Or Body = 1265 Or Body = 1266 Or Body = 1267 Or Body _
+                    = 1268 Or Body = 1269 Or Body = 1270 Or Body = 1271 Or Body = 1272 _
+                    Or Body = 1273 Or Body = 1274
             
             If (Pjs(i).Head <> 0) And Not enBarca Then
-                Draw_Grh HeadData(Pjs(i).Head).Head(3), x + 15, y - notY + BodyData(Pjs(i).Body).HeadOffset.y + 10, 1, 0, COLOR_WHITE
+                Draw_Grh HeadData(Pjs(i).Head).Head(3), x + 15, y - notY + BodyData(Pjs( _
+                        i).Body).HeadOffset.y + 10, 1, 0, COLOR_WHITE
             End If
             
             If (Pjs(i).Casco <> 0) Then
-                If Pjs(i).Casco <= UBound(CascoAnimData) And Pjs(i).Casco >= LBound(CascoAnimData) Then
-                    Draw_Grh CascoAnimData(Pjs(i).Casco).Head(3), x + 15, y - notY + BodyData(Pjs(i).Body).HeadOffset.y + 10, 1, 0, COLOR_WHITE
+                If Pjs(i).Casco <= UBound(CascoAnimData) And Pjs(i).Casco >= LBound( _
+                        CascoAnimData) Then
+                    Draw_Grh CascoAnimData(Pjs(i).Casco).Head(3), x + 15, y - notY + _
+                            BodyData(Pjs(i).Body).HeadOffset.y + 10, 1, 0, COLOR_WHITE
                 End If
             End If
             
             If (Pjs(i).Escudo <> 0) Then
-                If Pjs(i).Escudo <= UBound(ShieldAnimData) And Pjs(i).Escudo >= LBound(ShieldAnimData) Then
-                    Draw_Grh ShieldAnimData(Pjs(i).Escudo).ShieldWalk(3), x + 14, y - notY + 10, 1, 0, COLOR_WHITE
+                If Pjs(i).Escudo <= UBound(ShieldAnimData) And Pjs(i).Escudo >= LBound( _
+                        ShieldAnimData) Then
+                    Draw_Grh ShieldAnimData(Pjs(i).Escudo).ShieldWalk(3), x + 14, y - _
+                            notY + 10, 1, 0, COLOR_WHITE
                 End If
             End If
                         
             If (Pjs(i).Arma <> 0) Then
-                If Pjs(i).Arma <= UBound(WeaponAnimData) And Pjs(i).Arma >= LBound(WeaponAnimData) Then
-                    Draw_Grh WeaponAnimData(Pjs(i).Arma).WeaponWalk(3), x + 14, y - notY + 10, 1, 0, COLOR_WHITE
+                If Pjs(i).Arma <= UBound(WeaponAnimData) And Pjs(i).Arma >= LBound( _
+                        WeaponAnimData) Then
+                    Draw_Grh WeaponAnimData(Pjs(i).Arma).WeaponWalk(3), x + 14, y - _
+                            notY + 10, 1, 0, COLOR_WHITE
                 End If
             End If
 
-            Engine_Text_Render Pjs(i).nombre, x + 30 - Engine_Text_Width(Pjs(i).nombre, True) / 2, y + 56 - Engine_Text_Height(Pjs(i).nombre, True), temp_array(), 1, True
+            Engine_Text_Render Pjs(i).nombre, x + 30 - Engine_Text_Width(Pjs(i).nombre, _
+                    True) / 2, y + 56 - Engine_Text_Height(Pjs(i).nombre, True), _
+                    temp_array(), 1, True
             
             If PJSeleccionado = i Then
+
                 Dim Offy As Byte
+
                 Offy = 0
-                Engine_Text_Render Pjs(i).nombre, 511 - Engine_Text_Width(Pjs(i).nombre, True) / 2, 565 - Engine_Text_Height(Pjs(i).nombre, True), temp_array(), 1, True
+                Engine_Text_Render Pjs(i).nombre, 511 - Engine_Text_Width(Pjs( _
+                        i).nombre, True) / 2, 565 - Engine_Text_Height(Pjs(i).nombre, _
+                        True), temp_array(), 1, True
+
                 If Pjs(i).ClanName <> "<>" Then
-                    Engine_Text_Render Pjs(i).ClanName, 511 - Engine_Text_Width(Pjs(i).ClanName, True) / 2, 565 + 15 - Engine_Text_Height(Pjs(i).ClanName, True), temp_array(), 1, True
+                    Engine_Text_Render Pjs(i).ClanName, 511 - Engine_Text_Width(Pjs( _
+                            i).ClanName, True) / 2, 565 + 15 - Engine_Text_Height(Pjs( _
+                            i).ClanName, True), temp_array(), 1, True
                     Offy = 15
                 Else
                     Offy = 0
                 End If
-                Engine_Text_Render JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs(i).Clase), 511 - Engine_Text_Width(JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs(i).Clase), True) / 2, Offy + 570 - Engine_Text_Height(JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs(i).Clase), True), COLOR_WHITE, 1, True
-                Engine_Text_Render JsonLanguage.Item("MENSAJE_570") & Pjs(i).nivel, 511 - Engine_Text_Width(JsonLanguage.Item("MENSAJE_570") & Pjs(i).nivel, True) / 2, Offy + 585 - Engine_Text_Height(JsonLanguage.Item("MENSAJE_570") & Pjs(i).nivel, True), COLOR_WHITE, 1, True
-                Engine_Text_Render CStr(Pjs(i).NameMapa), 511 - Engine_Text_Width(CStr(Pjs(i).NameMapa), True) / 2, Offy + 615 - Engine_Text_Height(CStr(Pjs(i).NameMapa), True), COLOR_WHITE, 1, True
+
+                Engine_Text_Render JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs( _
+                        i).Clase), 511 - Engine_Text_Width(JsonLanguage.Item( _
+                        "MENSAJE_569") & ListaClases(Pjs(i).Clase), True) / 2, Offy + _
+                        570 - Engine_Text_Height(JsonLanguage.Item("MENSAJE_569") & _
+                        ListaClases(Pjs(i).Clase), True), COLOR_WHITE, 1, True
+                Engine_Text_Render JsonLanguage.Item("MENSAJE_570") & Pjs(i).Nivel, 511 _
+                        - Engine_Text_Width(JsonLanguage.Item("MENSAJE_570") & Pjs( _
+                        i).Nivel, True) / 2, Offy + 585 - Engine_Text_Height( _
+                        JsonLanguage.Item("MENSAJE_570") & Pjs(i).Nivel, True), _
+                        COLOR_WHITE, 1, True
+                Engine_Text_Render CStr(Pjs(i).NameMapa), 511 - Engine_Text_Width(CStr( _
+                        Pjs(i).NameMapa), True) / 2, Offy + 615 - Engine_Text_Height( _
+                        CStr(Pjs(i).NameMapa), True), COLOR_WHITE, 1, True
             End If
         End If
+
     Next i
 
     Exit Sub
 
 RenderAccountCharacters_Err:
-    Call RegistrarError(Err.Number, Err.Description, "engine.RenderAccountCharacters", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderAccountCharacters", _
+            Erl)
+
     Resume Next
     
 End Sub

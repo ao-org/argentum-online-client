@@ -8029,80 +8029,112 @@ End Sub
 
 #If PYMMO = 0 Then
     
-Public Sub HandleAccountCharacterList()
+    Public Sub HandleAccountCharacterList()
 
-    CantidadDePersonajesEnCuenta = Reader.ReadInt
+        CantidadDePersonajesEnCuenta = Reader.ReadInt
 
-    Dim ii As Byte
-     'name, head_id, class_id, body_id, pos_map, pos_x, pos_y, level, status, helmet_id, shield_id, weapon_id, guild_index, is_dead, is_sailing
-    For ii = 1 To MAX_PERSONAJES_EN_CUENTA
-        Pjs(ii).nombre = ""
-        Pjs(ii).Head = 0 ' si is_sailing o muerto, cabeza en 0
-        Pjs(ii).Clase = 0
-        Pjs(ii).Body = 0
-        Pjs(ii).Mapa = 0
-        Pjs(ii).PosX = 0
-        Pjs(ii).PosY = 0
-        Pjs(ii).Nivel = 0
-        Pjs(ii).Criminal = 0
-        Pjs(ii).Casco = 0
-        Pjs(ii).Escudo = 0
-        Pjs(ii).Arma = 0
-        Pjs(ii).ClanName = ""
-        Pjs(ii).NameMapa = ""
-    Next ii
-    
-    For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
-        Pjs(ii).nombre = Reader.ReadString8
-        Pjs(ii).Body = Reader.ReadInt
-        Pjs(ii).Head = Reader.ReadInt
-        Pjs(ii).Clase = Reader.ReadInt
-        Pjs(ii).Mapa = Reader.ReadInt
-        Pjs(ii).PosX = Reader.ReadInt
-        Pjs(ii).PosY = Reader.ReadInt
-        Pjs(ii).Nivel = Reader.ReadInt
-        Pjs(ii).Criminal = Reader.ReadInt
-        Pjs(ii).Casco = Reader.ReadInt
-        Pjs(ii).Escudo = Reader.ReadInt
-        Pjs(ii).Arma = Reader.ReadInt
-        Pjs(ii).ClanName = "" ' "<" & "pepito" & ">"
+        Dim ii As Byte
 
-    Next ii
+        For ii = 1 To MAX_PERSONAJES_EN_CUENTA
+            Pjs(ii).nombre = ""
+            Pjs(ii).Head = 0 ' si is_sailing o muerto, cabeza en 0
+            Pjs(ii).Clase = 0
+            Pjs(ii).Body = 0
+            Pjs(ii).Mapa = 0
+            Pjs(ii).PosX = 0
+            Pjs(ii).PosY = 0
+            Pjs(ii).Nivel = 0
+            Pjs(ii).Criminal = 0
+            Pjs(ii).Casco = 0
+            Pjs(ii).Escudo = 0
+            Pjs(ii).Arma = 0
+            Pjs(ii).ClanName = ""
+            Pjs(ii).NameMapa = ""
+            Pjs(ii).Backpack = 0
+        Next ii
     
-    Dim i As Long
-    For i = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
-        Select Case Pjs(i).Criminal
-            Case 0 'Criminal
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).b)
-                Pjs(i).priv = 0
-            Case 1 'Ciudadano
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).b)
-                Pjs(i).priv = 0
-            Case 2 'Caos
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).b)
-                Pjs(i).priv = 0
-            Case 3 'Armada
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).b)
-                Pjs(i).priv = 0
-            Case Else
-        End Select
-    Next i
+        For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+            Pjs(ii).nombre = Reader.ReadString8
+            Pjs(ii).Body = Reader.ReadInt
+            Pjs(ii).Head = Reader.ReadInt
+            Pjs(ii).Clase = Reader.ReadInt
+            Pjs(ii).Mapa = Reader.ReadInt
+            Pjs(ii).PosX = Reader.ReadInt
+            Pjs(ii).PosY = Reader.ReadInt
+            Pjs(ii).Nivel = Reader.ReadInt
+            Pjs(ii).Criminal = Reader.ReadInt
+            Pjs(ii).Casco = Reader.ReadInt
+            Pjs(ii).Escudo = Reader.ReadInt
+            Pjs(ii).Arma = Reader.ReadInt
+            Pjs(ii).Backpack = Reader.ReadInt
+            Pjs(ii).ClanName = ""
+
+        Next ii
     
+        Dim i As Long
+
+        For i = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+
+            Select Case Pjs(i).Criminal
+
+                Case 0 'Criminal
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(50).r, ColoresPJ(50).G, _
+                            ColoresPJ(50).b)
+                    Pjs(i).priv = 0
+
+                Case 1 'Ciudadano
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(49).r, ColoresPJ(49).G, _
+                            ColoresPJ(49).b)
+                    Pjs(i).priv = 0
+
+                Case 2 'Caos
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(6).r, ColoresPJ(6).G, _
+                            ColoresPJ(6).b)
+                    Pjs(i).priv = 0
+
+                Case 3 'Armada
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(8).r, ColoresPJ(8).G, _
+                            ColoresPJ(8).b)
+                    Pjs(i).priv = 0
+
+                Case 4 'consejero
+                
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(1).r, ColoresPJ(1).G, _
+                            ColoresPJ(1).b)
+                
+                Case 5 'semi dios
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(3).r, ColoresPJ(3).G, _
+                            ColoresPJ(3).b)
+                
+                Case 6 'dios
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(4).r, ColoresPJ(4).G, _
+                            ColoresPJ(4).b)
+                
+                Case 7 'admin
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(5).r, ColoresPJ(5).G, _
+                            ColoresPJ(5).b)
+
+                Case Else 'es raro o rolemaster
+                
+            End Select
+
+        Next i
     
-    AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA
+        AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA
    
-    If CantidadDePersonajesEnCuenta > 0 Then
-        PJSeleccionado = 1
-        LastPJSeleccionado = 1
+        If CantidadDePersonajesEnCuenta > 0 Then
+            PJSeleccionado = 1
+            LastPJSeleccionado = 1
         
-        If Pjs(1).Mapa <> 0 Then
-            Call SwitchMap(Pjs(1).Mapa)
-            RenderCuenta_PosX = Pjs(1).PosX
-            RenderCuenta_PosY = Pjs(1).PosY
+            If Pjs(1).Mapa <> 0 Then
+                Call SwitchMap(Pjs(1).Mapa)
+                RenderCuenta_PosX = Pjs(1).PosX
+                RenderCuenta_PosY = Pjs(1).PosY
+            End If
         End If
-    End If
 
-    Call LoadCharacterSelectionScreen
-End Sub
+        Call LoadCharacterSelectionScreen
+    End Sub
+
 #End If
 

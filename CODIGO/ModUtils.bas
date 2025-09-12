@@ -436,6 +436,7 @@ Type UserCuentaPJS
     Casco As Integer
     ClanName As String
     priv As Byte
+    Backpack As Integer
 
 End Type
 
