@@ -33,15 +33,6 @@ Begin VB.Form frmCreateBattleground
    End
    Begin VB.TextBox tSize 
       Alignment       =   2  'Center
-      BeginProperty DataFormat 
-         Type            =   1
-         Format          =   "0"
-         HaveTrueFalseNull=   0
-         FirstDayOfWeek  =   0
-         FirstWeekOfYear =   0
-         LCID            =   11274
-         SubFormatType   =   1
-      EndProperty
       Height          =   285
       Left            =   2640
       MaxLength       =   2
@@ -52,15 +43,6 @@ Begin VB.Form frmCreateBattleground
    End
    Begin VB.TextBox tMaxPlayers 
       Alignment       =   2  'Center
-      BeginProperty DataFormat 
-         Type            =   1
-         Format          =   "0"
-         HaveTrueFalseNull=   0
-         FirstDayOfWeek  =   0
-         FirstWeekOfYear =   0
-         LCID            =   11274
-         SubFormatType   =   1
-      EndProperty
       Height          =   285
       Left            =   3480
       MaxLength       =   2
@@ -71,15 +53,6 @@ Begin VB.Form frmCreateBattleground
    End
    Begin VB.TextBox tMinPlayers 
       Alignment       =   2  'Center
-      BeginProperty DataFormat 
-         Type            =   1
-         Format          =   "0"
-         HaveTrueFalseNull=   0
-         FirstDayOfWeek  =   0
-         FirstWeekOfYear =   0
-         LCID            =   11274
-         SubFormatType   =   1
-      EndProperty
       Height          =   285
       Left            =   2640
       MaxLength       =   2
@@ -90,15 +63,6 @@ Begin VB.Form frmCreateBattleground
    End
    Begin VB.TextBox tMaxLvl 
       Alignment       =   2  'Center
-      BeginProperty DataFormat 
-         Type            =   1
-         Format          =   "0"
-         HaveTrueFalseNull=   0
-         FirstDayOfWeek  =   0
-         FirstWeekOfYear =   0
-         LCID            =   11274
-         SubFormatType   =   1
-      EndProperty
       Height          =   285
       Left            =   3480
       MaxLength       =   2
@@ -109,15 +73,6 @@ Begin VB.Form frmCreateBattleground
    End
    Begin VB.TextBox tMinLvl 
       Alignment       =   2  'Center
-      BeginProperty DataFormat 
-         Type            =   1
-         Format          =   "0"
-         HaveTrueFalseNull=   0
-         FirstDayOfWeek  =   0
-         FirstWeekOfYear =   0
-         LCID            =   11274
-         SubFormatType   =   1
-      EndProperty
       Height          =   285
       Left            =   2640
       MaxLength       =   2
@@ -128,15 +83,6 @@ Begin VB.Form frmCreateBattleground
    End
    Begin VB.TextBox tCosto 
       Alignment       =   2  'Center
-      BeginProperty DataFormat 
-         Type            =   1
-         Format          =   "0"
-         HaveTrueFalseNull=   0
-         FirstDayOfWeek  =   0
-         FirstWeekOfYear =   0
-         LCID            =   11274
-         SubFormatType   =   1
-      EndProperty
       Height          =   285
       Left            =   2640
       MaxLength       =   8

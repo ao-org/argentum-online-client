@@ -68,15 +68,6 @@ Begin VB.Form frmOpciones
       End
       Begin VB.TextBox txtTransparency 
          BackColor       =   &H80000007&
-         BeginProperty DataFormat 
-            Type            =   1
-            Format          =   "0"
-            HaveTrueFalseNull=   0
-            FirstDayOfWeek  =   0
-            FirstWeekOfYear =   0
-            LCID            =   11274
-            SubFormatType   =   1
-         EndProperty
          ForeColor       =   &H80000005&
          Height          =   285
          Left            =   6720
@@ -87,15 +78,6 @@ Begin VB.Form frmOpciones
       End
       Begin VB.TextBox txtBlue 
          BackColor       =   &H80000007&
-         BeginProperty DataFormat 
-            Type            =   1
-            Format          =   "0"
-            HaveTrueFalseNull=   0
-            FirstDayOfWeek  =   0
-            FirstWeekOfYear =   0
-            LCID            =   11274
-            SubFormatType   =   1
-         EndProperty
          ForeColor       =   &H80000005&
          Height          =   285
          Left            =   6240
@@ -106,15 +88,6 @@ Begin VB.Form frmOpciones
       End
       Begin VB.TextBox txtGreen 
          BackColor       =   &H80000007&
-         BeginProperty DataFormat 
-            Type            =   1
-            Format          =   "0"
-            HaveTrueFalseNull=   0
-            FirstDayOfWeek  =   0
-            FirstWeekOfYear =   0
-            LCID            =   11274
-            SubFormatType   =   1
-         EndProperty
          ForeColor       =   &H80000005&
          Height          =   285
          Left            =   5760
@@ -125,15 +98,6 @@ Begin VB.Form frmOpciones
       End
       Begin VB.TextBox txtRed 
          BackColor       =   &H80000007&
-         BeginProperty DataFormat 
-            Type            =   1
-            Format          =   "0"
-            HaveTrueFalseNull=   0
-            FirstDayOfWeek  =   0
-            FirstWeekOfYear =   0
-            LCID            =   11274
-            SubFormatType   =   1
-         EndProperty
          ForeColor       =   &H80000005&
          Height          =   285
          Left            =   5280
