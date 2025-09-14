@@ -308,7 +308,7 @@ Public Sub Draw_Sombra(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer,
             num = GrhData(Grh.GrhIndex).NumFrames
             If num > 1 Then
                 ' Unificado (SIN 0.5)
-                elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
+                Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
 
                 If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
                     CurrentFrame = (elapsed Mod num) + 1
