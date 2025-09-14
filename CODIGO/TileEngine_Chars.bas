@@ -917,6 +917,7 @@ End Function
 Public Function SyncGrhPhase(ByRef Grh As Grh, ByVal newGrhIndex As Long) As Long
     Dim oldNum As Long, elapsed As Long, phase As Long
     If Grh.started <= 0 Then SyncGrhPhase = FrameTime: Exit Function
+    If Grh.GrhIndex = 0 Then SyncGrhPhase = FrameTime: Exit Function
     oldNum = GrhData(Grh.GrhIndex).NumFrames
     If oldNum <= 0 Then SyncGrhPhase = FrameTime: Exit Function
     elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
