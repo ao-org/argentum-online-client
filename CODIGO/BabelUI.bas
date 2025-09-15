@@ -81,6 +81,18 @@ Public Type t_ChatMessage
     ItalicText As Byte
 End Type
 
+Public Enum e_NpcInfoMask
+    AlmostDead = 1
+    SeriouslyWounded = 2
+    Wounded = 4
+    LightlyWounded = 8
+    Intact = 16
+    Poisoned = 32
+    Paralized = 64
+    Inmovilized = 128
+    Fighting = 256
+End Enum
+
 Public Enum e_CDTypeMask
     eBasicAttack = 1
     eRangedAttack = 2

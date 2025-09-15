@@ -571,43 +571,41 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
 
     If animate Then
         If grh.started > 0 Then
-            Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.started) / grh.speed)
+            Dim num As Long, elapsed As Long
+            num = GrhData(Grh.GrhIndex).NumFrames
+            If num > 1 Then
+                ' Unificado: SIN 0.5
+                Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
 
-            If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-                CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-            Else
-                grh.started = 0
+                If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                    CurrentFrame = (elapsed Mod num) + 1
+                Else
+                    Grh.started = 0
+                End If
             End If
-
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
-    'Center Grh over X,Y pos
+    ' Centrado opcional (usar SIEMPRE CurrentGrhIndex)
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * TilePixelWidth \ 2) + TilePixelWidth \ 2
         End If
-
-        If GrhData(grh.GrhIndex).TileHeight <> 1 Then
+        If GrhData(CurrentGrhIndex).TileHeight <> 1 Then
             y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
         End If
     End If
     
     With GrhData(CurrentGrhIndex)
         If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
+
         If .Tx2 = 0 And .FileNum > 0 Then
             Dim Texture As Direct3DTexture8
-
             Dim TextureWidth As Long, TextureHeight As Long
             Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
-        
             .Tx1 = .sX / TextureWidth
             .Tx2 = (.sX + .pixelWidth) / TextureWidth
             .Ty1 = .sY / TextureHeight
@@ -615,7 +613,6 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
         End If
         
         Call Batch_Textured_Box_Pre(x, y, .pixelWidth, .pixelHeight, .Tx1, .Ty1, .Tx2, .Ty2, .FileNum, rgb_list, Alpha, angle)
-    
     End With
     
     Exit Sub
@@ -623,8 +620,8 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
 Draw_Grh_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh", Erl)
     Resume Next
-    
 End Sub
+
 
 Public Sub DrawSingleGrh(ByVal GrhIndex As Long, screenPos As Vector2, Alpha As Single, angle As Single, ByRef rgb_list() As RGBA)
 On Error GoTo DrawSingleGrh_Err
@@ -663,44 +660,42 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
 
     If animate Then
         If grh.started > 0 Then
-            Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.started) / grh.speed)
+            Dim num As Long, elapsed As Long
+            num = GrhData(Grh.GrhIndex).NumFrames
+            If num > 1 Then
+                ' Unificado: SIN 0.5
+                Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
 
-            If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-                CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-            Else
-                grh.started = 0
+                If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                    CurrentFrame = (elapsed Mod num) + 1
+                Else
+                    Grh.started = 0
+                End If
             End If
-
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
-    'Center Grh over X,Y pos
+    ' Centrado opcional (usar SIEMPRE CurrentGrhIndex)
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
-            x = x + Int(TilePixelWidth - GrhData(CurrentGrhIndex).pixelWidth) \ 2
+            x = x + (TilePixelWidth - GrhData(CurrentGrhIndex).pixelWidth) \ 2
         End If
-
-        If GrhData(grh.GrhIndex).TileHeight <> 1 Then
+        If GrhData(CurrentGrhIndex).TileHeight <> 1 Then
             y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
         End If
     End If
 
     With GrhData(CurrentGrhIndex)
         If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
+        
         Dim Texture As Direct3DTexture8
-
         Dim TextureWidth As Long, TextureHeight As Long
         Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
 
         Call SpriteBatch.SetTexture(Texture)
-
         Call SpriteBatch.SetAlpha(Alpha)
         
         If .Tx2 = 0 And .FileNum > 0 Then
@@ -709,10 +704,8 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
             .Ty1 = (.sY + 0.25) / TextureHeight
             .Ty2 = (.sY + .pixelHeight) / TextureHeight
         End If
-        'frmdebug.add_text_tracebox ease
-        'frmdebug.add_text_tracebox .Ty1
-        Call SpriteBatch.DrawBreathing(x, y, .pixelWidth, .pixelHeight, ease, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2)
 
+        Call SpriteBatch.DrawBreathing(x, y, .pixelWidth, .pixelHeight, ease, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2)
     End With
     
     Exit Sub
@@ -720,7 +713,6 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
 Draw_Grh_Breathing_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh_Breathing", Erl)
     Resume Next
-    
 End Sub
 
 Sub Draw_Animation(ByRef animationState As tAnimationPlaybackState, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByRef rgb_list() As RGBA)
@@ -771,13 +763,10 @@ Draw_Animation_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Animation", Erl)
 End Sub
 
-Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single, Optional ByVal CharIndex As Integer)
+Public Sub Draw_GrhFX(ByRef Grh As Grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, ByRef rgb_list() As RGBA, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single, Optional ByVal CharIndex As Integer)
     
     On Error GoTo Draw_GrhFX_Err
     
-
-    
-
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
     Dim CurrentFrame As Integer
@@ -785,65 +774,61 @@ Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal c
 
     If animate Then
         If grh.started > 0 Then
-            Dim ElapsedFrames As Long
-            ElapsedFrames = Fix((FrameTime - grh.started) / grh.speed)
-            
-            If grh.AnimacionContador > 0 Then
-                grh.AnimacionContador = grh.AnimacionContador - ElapsedFrames
+            Dim num As Long, elapsed As Long
+            num = GrhData(Grh.GrhIndex).NumFrames
+            If num > 1 Then
+                ' Unificado: SIN 0.5
+                elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
+                
+                ' Tu contador de animación (con clamp a >= 0)
+                If Grh.AnimacionContador > 0 Then
+                    Grh.AnimacionContador = Grh.AnimacionContador - elapsed
+                    If Grh.AnimacionContador < 0 Then Grh.AnimacionContador = 0
+                End If
+
+                If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                    CurrentFrame = (elapsed Mod num) + 1
+                Else
+                    Grh.started = 0
+                End If
             End If
-
-            If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-                CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-            Else
-                grh.started = 0
-            End If
-
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
+    ' Fade in/out por ventanas de AnimacionContador (con clamps de Alpha)
     If grh.AnimacionContador < grh.CantAnim * 0.1 Then
-            
         grh.Alpha = grh.Alpha - 1
-
+        If Grh.Alpha < 0 Then Grh.Alpha = 0
         Call RGBAList(rgb_list, 255, 255, 255, grh.Alpha)
-
     End If
     
     If grh.AnimacionContador > grh.CantAnim * 0.6 Then
-        If grh.Alpha < 220 Then
-            grh.Alpha = grh.Alpha + 1
-        End If
-        
+        If Grh.Alpha < 220 Then Grh.Alpha = Grh.Alpha + 1
+        If Grh.Alpha > 255 Then Grh.Alpha = 255
         Call RGBAList(rgb_list, 255, 255, 255, grh.Alpha)
-
     End If
 
-    'Center Grh over X,Y pos
+    ' Centrado opcional (usar SIEMPRE CurrentGrhIndex)
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
         End If
-
-        If GrhData(grh.GrhIndex).TileHeight <> 1 Then
+        If GrhData(CurrentGrhIndex).TileHeight <> 1 Then
             y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
         End If
     End If
 
     With GrhData(CurrentGrhIndex)
         If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
+        
         Dim Texture As Direct3DTexture8
-
         Dim TextureWidth As Long, TextureHeight As Long
         Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
 
         Call SpriteBatch.SetTexture(Texture)
-
         Call SpriteBatch.SetAlpha(Alpha)
         
         If .Tx2 = 0 And .FileNum > 0 Then
@@ -854,24 +839,18 @@ Sub Draw_GrhFX(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal c
         End If
 
         Call SpriteBatch.Draw(x, y, .pixelWidth, .pixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, angle)
-
     End With
 
-    
     Exit Sub
 
 Draw_GrhFX_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Draw_GrhFX", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByVal animate As Byte, Optional ByVal Alpha As Boolean, Optional ByVal map_x As Byte = 1, Optional ByVal map_y As Byte = 1, Optional ByVal angle As Single)
     
     On Error GoTo Draw_GrhSinLuz_Err
-    
-
-    
 
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
@@ -880,55 +859,55 @@ Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Inte
 
     If animate Then
         If grh.started > 0 Then
-            Dim ElapsedFrames As Long
-            ElapsedFrames = Fix((FrameTime - grh.started) / grh.speed)
+            Dim num As Long, elapsed As Long
+            num = GrhData(Grh.GrhIndex).NumFrames
+            If num > 1 Then
+                ' Unificado: SIN 0.5
+                Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
 
-            If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-                CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-            Else
-                grh.started = 0
+                If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                    CurrentFrame = (elapsed Mod num) + 1
+                Else
+                    Grh.started = 0
+                End If
             End If
-
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
-    'Center Grh over X,Y pos
+    ' Centrado opcional (usar SIEMPRE CurrentGrhIndex)
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
-
         End If
-
-        If GrhData(grh.GrhIndex).TileHeight <> 1 Then
+        If GrhData(CurrentGrhIndex).TileHeight <> 1 Then
             y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
-
         End If
-
     End If
-    If Not OverlapRect(RenderCullingRect, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight) Then Exit Sub
-    Static light_value(3) As RGBA
 
+    If Not OverlapRect(RenderCullingRect, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight) Then Exit Sub
+
+    Static light_value(3) As RGBA
     light_value(0) = global_light
     light_value(1) = light_value(0)
     light_value(2) = light_value(0)
     light_value(3) = light_value(0)
 
-    'Device_Box_Textured_Render CurrentGrhIndex, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, light_value, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, Alpha, angle
-    Call Batch_Textured_Box(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, GrhData(CurrentGrhIndex).FileNum, light_value, Alpha, angle)
+    Call Batch_Textured_Box( _
+        x, y, _
+        GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, _
+        GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, _
+        GrhData(CurrentGrhIndex).FileNum, _
+        light_value, Alpha, angle _
+    )
 
-    
     Exit Sub
 
 Draw_GrhSinLuz_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Draw_GrhSinLuz", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub render()
@@ -1603,70 +1582,113 @@ Char_TextRender_Err:
     
 End Sub
 
-Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByVal x As Byte, ByVal y As Byte)
+Sub Char_Render(ByVal CharIndex As Long, _
+                ByVal PixelOffsetX As Integer, _
+                ByVal PixelOffsetY As Integer, _
+                ByVal x As Byte, _
+                ByVal y As Byte)
     
     On Error GoTo Char_Render_Err
 
     'Draw char's to screen without offcentering them
     
-    Dim Pos                 As Integer
+    Dim Pos              As Integer
 
-    Dim line                As String
+    Dim line             As String
 
-    Dim Color(3)            As RGBA
-    
-    Dim NameColor(3)        As RGBA
-    Dim NameColorClan(3)    As RGBA
+    Dim Color(3)         As RGBA
 
-    Dim colorCorazon(3)     As RGBA
+    Dim NameColor(3)     As RGBA
 
-    Dim i                   As Long
+    Dim NameColorClan(3) As RGBA
 
-    Dim OffsetYname         As Byte
+    Dim colorCorazon(3)  As RGBA
 
-    Dim OffsetYClan         As Byte
-    
-    Dim TextureX            As Integer
+    Dim i                As Long
 
-    Dim TextureY            As Integer
-    
-    Dim OffArma             As Single
+    Dim OffsetYname      As Byte
 
-    Dim OffAuras            As Integer
+    Dim OffsetYClan      As Byte
 
-    Dim OffHead             As Single
-    
-    Dim MostrarNombre       As Boolean
-    
-    Dim TempGrh As grh
-    
-    Dim terrainHeight As Integer
-    
+    Dim TextureX         As Integer
+
+    Dim TextureY         As Integer
+
+    Dim OffArma          As Single
+
+    Dim OffAuras         As Integer
+
+    Dim OffHead          As Single
+
+    Dim MostrarNombre    As Boolean
+
+    Dim TempGrh          As Grh
+
+    Dim terrainHeight    As Integer
+
     With charlist(CharIndex)
 
         If .Heading = 0 Then Exit Sub
+        
+        ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
+        If Not .Moving And Not .TranslationActive And .Idle And .scrollDirectionX = 0 And .scrollDirectionY = 0 And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
+
+            If .Body.AnimateOnIdle = 0 Then
+                ' Quieto SIN animación: congelar la serie de walk en frame estático
+                .Body.Walk(.Heading).Loops = 0
+                .Body.Walk(.Heading).started = 0
+
+                If Not .MovArmaEscudo Then
+                    .Arma.WeaponWalk(.Heading).started = 0
+                    .Escudo.ShieldWalk(.Heading).started = 0
+                End If
+
+            Else
+
+                ' Quieto CON animación: disparar (o preservar) idle una sola vez
+                If .Body.Walk(.Heading).started = 0 Or .Body.Walk(.Heading).Loops <> INFINITE_LOOPS Then
+                    Call SetCharIdle(charlist(CharIndex), True)
+                End If
+            End If
+            
+            If .BackPack.AnimateOnIdle = 0 And .BackPack.IdleBody = 0 Then
+                
+                ' Quieto SIN animación: congelar la serie de walk en frame estático
+                .BackPack.Walk(.Heading).Loops = 0
+                .BackPack.Walk(.Heading).started = 0
+            Else
+
+                ' Quieto CON animación: disparar (o preservar) idle una sola vez
+                If .BackPack.Walk(.Heading).started = 0 Or .BackPack.Walk(.Heading).Loops <> INFINITE_LOOPS Then
+                    Call SetCharIdle(charlist(CharIndex), False)
+                End If
+            End If
+            
+        End If
+
+        ' --- FIN GUARD ---
+
         Dim dibujaMiembroClan As Boolean
+
         dibujaMiembroClan = False
         
         Dim verVidaClan As Boolean
-        
+
         verVidaClan = False
+
         If .clan_index > 0 Then
             If .clan_index = charlist(UserCharIndex).clan_index And CharIndex <> UserCharIndex And .Muerto = 0 Then
-                If .clan_nivel >= 6 Then
-                    dibujaMiembroClan = True
-                End If
-                
-                If .clan_nivel >= 5 Then
-                    verVidaClan = True
-                End If
+                If .clan_nivel >= 6 Then dibujaMiembroClan = True
+                If .clan_nivel >= 5 Then verVidaClan = True
             End If
         End If
         
         If .Moving Then
+
             'If needed, move left and right
             If .scrollDirectionX <> 0 Then
                 .MoveOffsetX = .MoveOffsetX + ScrollPixelsPerFrameX * Sgn(.scrollDirectionX) * timerTicksPerFrame * .Speeding
+
                 'Check if we already got there
                 If (Sgn(.scrollDirectionX) = 1 And .MoveOffsetX >= 0) Or (Sgn(.scrollDirectionX) = -1 And .MoveOffsetX <= 0) Then
                     .MoveOffsetX = 0
@@ -1677,56 +1699,78 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             'If needed, move up and down
             If .scrollDirectionY <> 0 Then
                 .MoveOffsetY = .MoveOffsetY + ScrollPixelsPerFrameY * Sgn(.scrollDirectionY) * timerTicksPerFrame * .Speeding
+
                 'Check if we already got there
                 If (Sgn(.scrollDirectionY) = 1 And .MoveOffsetY >= 0) Or (Sgn(.scrollDirectionY) = -1 And .MoveOffsetY <= 0) Then
                     .MoveOffsetY = 0
                     .scrollDirectionY = 0
                 End If
             End If
+
             If .scrollDirectionX = 0 And .scrollDirectionY = 0 Then
                 .Moving = False
+                .Idle = True                 ' marcar intención de idle (el guard de arriba decide animación/estático)
             End If
+
         ElseIf .TranslationActive Then
-            Dim ElapsedTime As Long
+
+            Dim ElapsedTime        As Long
+
             Dim TranslationPercent As Double
+
             ElapsedTime = FrameTime - .TranslationStartTime
             TranslationPercent = min(CDbl(ElapsedTime) / .TranslationTime, 1)
-            .MoveOffsetX = Interpolate(32 * .scrollDirectionX * -1, 0, TranslationPercent)
-            .MoveOffsetY = Interpolate(32 * .scrollDirectionY * -1, 0, TranslationPercent)
+            .MoveOffsetX = Interpolate(TilePixelWidth * .scrollDirectionX * -1, 0, TranslationPercent)
+            .MoveOffsetY = Interpolate(TilePixelHeight * .scrollDirectionY * -1, 0, TranslationPercent)
+
             If TranslationPercent >= 1 Then
                 .TranslationActive = False
+                .Moving = False
+                .Idle = True
             End If
+
         ElseIf .AnimatingBody Then
+
             If .Body.Walk(.Heading).started = 0 Then
                 .AnimatingBody = 0
+
+                ' Volver a estado Idle inmediatamente
+                .Idle = True
+
                 If .iBody Then
                     .Body = BodyData(.iBody)
                     .Body.Walk(.Heading).started = FrameTime
                 Else
                     .Body = BodyData(0)
                 End If
+
                 .Body.Walk(.Heading).Loops = -1
+
                 If .Idle Or .Navegando Then
-                    'Start animation
                     .Body.Walk(.Heading).started = FrameTime
                 End If
             End If
+
         ElseIf Not .Idle Then
+
             If .Muerto Then
                 If CharIndex <> UserCharIndex Then
-                    ' Si no somos nosotros, esperamos un intervalo
-                    ' antes de poner la animación idle para evitar saltos
+
+                    ' Si no somos nosotros, esperamos un intervalo antes de poner la animación idle para evitar saltos
                     If FrameTime - .LastStep > TIME_CASPER_IDLE Then
                         .Body = BodyData(CASPER_BODY_IDLE)
                         .Body.Walk(.Heading).started = FrameTime
                         .Idle = True
                     End If
+
                 Else
                     .Body = BodyData(CASPER_BODY_IDLE)
                     .Body.Walk(.Heading).started = FrameTime
                     .Idle = True
                 End If
+
             Else
+
                 'Stop animations
                 If .Navegando = False Or UserNadandoTrajeCaucho = True Then
                     If .Body.AnimateOnIdle = 0 Then
@@ -1734,50 +1778,106 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     ElseIf .Body.Walk(.Heading).started = 0 Then
                         .Body.Walk(.Heading).started = FrameTime
                     End If
+
                     If Not .MovArmaEscudo Then
                         .Arma.WeaponWalk(.Heading).started = 0
                         .Escudo.ShieldWalk(.Heading).started = 0
                     End If
+
                     If .Body.IdleBody > 0 Then
                         .Body = BodyData(.Body.IdleBody)
                         .Body.Walk(.Heading).started = FrameTime
-                        
                     End If
+                    
                 End If
             End If
+
             .Idle = True
         End If
-        
+
+        ' --- AUTOSTART WALK ANIMATION SI ESTÁ MOVIÉNDOSE ---
+        If (.Moving Or .TranslationActive) Then
+
+            ' Cuerpo: si no estaba animando, arrancar y loop infinito
+            If .Body.Walk(.Heading).started = 0 Then
+                .Body.Walk(.Heading).started = FrameTime
+                .Body.Walk(.Heading).Loops = INFINITE_LOOPS
+            End If
+
+            ' Arma/Escudo: en fase con el cuerpo si no venían animando
+            If .Arma.WeaponWalk(.Heading).GrhIndex <> 0 Then
+                If .Arma.WeaponWalk(.Heading).started = 0 Then
+                    .Arma.WeaponWalk(.Heading).started = .Body.Walk(.Heading).started
+                End If
+
+                .Arma.WeaponWalk(.Heading).Loops = INFINITE_LOOPS
+            End If
+
+            If .Escudo.ShieldWalk(.Heading).GrhIndex <> 0 Then
+                If .Escudo.ShieldWalk(.Heading).started = 0 Then
+                    .Escudo.ShieldWalk(.Heading).started = .Body.Walk(.Heading).started
+                End If
+
+                .Escudo.ShieldWalk(.Heading).Loops = INFINITE_LOOPS
+            End If
+            
+            If .BackPack.Walk(.Heading).started = 0 Then
+                .BackPack.Walk(.Heading).started = FrameTime
+                .Body.Walk(.Heading).Loops = INFINITE_LOOPS
+            End If
+            
+        End If
+
+        ' --- FIN AUTOSTART ---
         
         terrainHeight = TileEngine.GetTerrainHeight(x, y)
+
         If (.Moving) Then
+
             Dim prevTerrainHeight As Integer
+
             If (.MoveOffsetX < 0) Then
                 prevTerrainHeight = TileEngine.GetTerrainHeight(x - 1, y)
             ElseIf (.MoveOffsetX > 0) Then
                 prevTerrainHeight = TileEngine.GetTerrainHeight(x + 1, y)
             End If
-            terrainHeight = IntLerp(terrainHeight, prevTerrainHeight, Abs(.MoveOffsetX / 32))
-            
+
+            terrainHeight = IntLerp(terrainHeight, prevTerrainHeight, Abs(.MoveOffsetX / TilePixelWidth))
+
             If .HasCart Then
                 If .Cart.Walk(.Heading).started = 0 Then
                     .Cart.Walk(.Heading).Loops = -1
                     .Cart.Walk(.Heading).started = FrameTime
                 End If
             End If
+
         Else
+
             If .HasCart Then
                 If .Cart.Walk(.Heading).started <> 0 Then
                     .Cart.Walk(.Heading).Loops = 0
                     .Cart.Walk(.Heading).started = 0
                 End If
             End If
+
+            If .HasBackpack Then
+                If .BackPack.AnimateOnIdle = 0 Then
+                    If .BackPack.Walk(.Heading).started <> 0 Then
+                        .BackPack.Walk(.Heading).Loops = 0
+                        .BackPack.Walk(.Heading).started = 0
+                    End If
+                    
+                End If
+                
+            End If
+
         End If
         
         PixelOffsetX = PixelOffsetX + .MoveOffsetX
         PixelOffsetY = PixelOffsetY + .MoveOffsetY - terrainHeight
         
         Dim ease As Single
+
         If MostrarRespiracion Then
             ease = EaseBreathing((((FrameTime - .TimeCreated) * 0.25) Mod 1000) * 0.001)
         Else
@@ -1795,32 +1895,22 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call RGBAList(Color, 255, 255, 255, 100)
                     
                     If .priv = 0 Then
-                        
+
                         Select Case .status
-                            ' Criminal
-                            Case 0
-                                Call SetRGBA(NameColor(0), ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
-                            
-                            ' Ciudadano
-                            Case 1
-                                Call SetRGBA(NameColor(0), ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
-                            
-                            ' Caos
-                            Case 2
-                                Call SetRGBA(NameColor(0), ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
-    
-                            ' Armada
-                            Case 3
-                                Call SetRGBA(NameColor(0), ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
-                                
-                            ' Concilio
-                            Case 4
-                                Call SetRGBA(NameColor(0), ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
-                            ' Consejo
-                            Case 5
-                                Call SetRGBA(NameColor(0), ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
-    
+
+                            Case 0: Call SetRGBA(NameColor(0), ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)  ' Criminal
+
+                            Case 1: Call SetRGBA(NameColor(0), ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)  ' Ciudadano
+
+                            Case 2: Call SetRGBA(NameColor(0), ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)  ' Caos
+
+                            Case 3: Call SetRGBA(NameColor(0), ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)  ' Armada
+
+                            Case 4: Call SetRGBA(NameColor(0), ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)  ' Concilio
+
+                            Case 5: Call SetRGBA(NameColor(0), ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)  ' Consejo
                         End Select
+
                     Else
                         Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                     End If
@@ -1832,7 +1922,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     MostrarNombre = True
                         
                 Else
-                    'refactorizar bien esto, es un asco sino
+
                     If .Navegando Then
                         MostrarNombre = True
                         Call RGBAList(Color, 125, 125, 125, 125)
@@ -1843,37 +1933,28 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     
                     If dibujaMiembroClan Then
                         MostrarNombre = True
-                         If .priv = 0 Then
-                        
-                        Select Case .status
-                            ' Criminal
-                            Case 0
-                                Call SetRGBA(NameColor(0), ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
-                            
-                            ' Ciudadano
-                            Case 1
-                                Call SetRGBA(NameColor(0), ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
-                            
-                            ' Caos
-                            Case 2
-                                Call SetRGBA(NameColor(0), ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
-    
-                            ' Armada
-                            Case 3
-                                Call SetRGBA(NameColor(0), ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
-                                
-                            ' Concilio
-                            Case 4
-                                Call SetRGBA(NameColor(0), ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
-                            ' Consejo
-                            Case 5
-                                Call SetRGBA(NameColor(0), ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
-    
-                        End Select
-                    Else
-                        Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
-                    End If
-                    
+
+                        If .priv = 0 Then
+
+                            Select Case .status
+
+                                Case 0: Call SetRGBA(NameColor(0), ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
+
+                                Case 1: Call SetRGBA(NameColor(0), ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
+
+                                Case 2: Call SetRGBA(NameColor(0), ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
+
+                                Case 3: Call SetRGBA(NameColor(0), ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
+
+                                Case 4: Call SetRGBA(NameColor(0), ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
+
+                                Case 5: Call SetRGBA(NameColor(0), ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
+                            End Select
+
+                        Else
+                            Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
+                        End If
+
                         Call LerpRGBA(NameColor(0), NameColor(0), RGBA_From_Comp(0, 0, 0), 0.5)
                         Call RGBA_ToList(NameColor, NameColor(0))
                         Call RGBA_ToList(colorCorazon, NameColor(0))
@@ -1882,6 +1963,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
 
             Else
+
                 If .Muerto Then
                     Call Copy_RGBAList_WithAlpha(Color, MapData(x, y).light_value, 150)
                 Else
@@ -1895,10 +1977,11 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         Call InitGrh(TempGrh, 839)
                         
                         If .UserMaxHp > 0 Then
+
                             Dim TempColor(3) As RGBA
+
                             Call RGBAList(TempColor, 255, 255, 255, 200)
                             Call Draw_Grh(TempGrh, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 10 + .Body.BodyOffset.y, 1, 0, TempColor, False, 0, 0, 0)
-
                             Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY + 37 + .Body.BodyOffset.y, .UserMinHp / .UserMaxHp * 26, 4, RGBA_From_Comp(255, 0, 0, 255)
                         End If
                     End If
@@ -1910,45 +1993,27 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Else
                     MostrarNombre = True
                     
-                     If .priv = 0 Then
-                        
+                    If .priv = 0 Then
+
                         Select Case .status
-                            ' Criminal
-                            Case 0
-                                Call RGBAList(NameColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
-                            ' Ciudadano
-                            Case 1
-                                Call RGBAList(NameColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
-                            
-                            ' Caos
-                            Case 2
-                                Call RGBAList(NameColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
-    
-                            ' Armada
-                            Case 3
-                                Call RGBAList(NameColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
-                                
-                            ' Concilio
-                            Case 4
-                                Call RGBAList(NameColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
-                            ' Consejo
-                            Case 5
-                                Call RGBAList(NameColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
-    
+
+                            Case 0: Call RGBAList(NameColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b): Call RGBAList(colorCorazon, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
+
+                            Case 1: Call RGBAList(NameColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b): Call RGBAList(colorCorazon, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
+
+                            Case 2: Call RGBAList(NameColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b): Call RGBAList(colorCorazon, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
+
+                            Case 3: Call RGBAList(NameColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b): Call RGBAList(colorCorazon, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
+
+                            Case 4: Call RGBAList(NameColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b): Call RGBAList(colorCorazon, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
+
+                            Case 5: Call RGBAList(NameColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b): Call RGBAList(colorCorazon, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
                         End Select
+
                     Else
                         Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                         Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                     End If
-                    
-                    
-                    
                                         
                     If .group_index > 0 Then
                         If charlist(CharIndex).group_index = charlist(UserCharIndex).group_index Then
@@ -1989,34 +2054,58 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Select Case .Heading
 
                     Case E_Heading.EAST
-    
+
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
+
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), TextureX, TextureY + .Cart.HeadOffset.y, 1, 1, COLOR_WHITE, False, x, y)
-                    Case E_Heading.NORTH
-                        If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
-                        If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
-                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
-                        Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
-                        If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         
+                        If .HasBackpack And Not UserNadando And Not UserMontado Then
+                            Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y + OffHead, 1, 1, COLOR_WHITE, ease, False)
+                        End If
+
+                    Case E_Heading.NORTH
+
+                        If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
+                        If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
+                        Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
+                        Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
+
+                        If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
+                        If .HasBackpack And Not UserNadando And Not UserMontado Then
+                            Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y + OffHead, 1, 1, COLOR_WHITE, ease, False)
+                        End If
+
                     Case E_Heading.WEST
+
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
+
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), TextureX, TextureY + .Cart.HeadOffset.y, 1, 1, COLOR_WHITE, False, x, y)
+                        If .HasBackpack And Not UserNadando And Not UserMontado Then
+                            Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y + OffHead, 1, 1, COLOR_WHITE, ease, False)
+                        End If
+
                     Case E_Heading.south
+
+                        If .HasBackpack And Not UserNadando And Not UserMontado Then
+                            Call Draw_Grh_Breathing(.BackPack.Walk(.Heading), TextureX + .BackPack.BodyOffset.x, TextureY + .BackPack.BodyOffset.y + OffHead, 1, 1, COLOR_WHITE, ease, False)
+                        End If
+
                         If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), TextureX, TextureY + .Cart.HeadOffset.y, 1, 1, COLOR_WHITE, False, x, y)
                         Call Draw_Grh_Breathing(.Body.Walk(.Heading), TextureX, TextureY, 1, 1, COLOR_WHITE, ease)
                         Call Draw_Grh(.Head.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
+
                         If .Casco.Head(.Heading).GrhIndex Then Call Draw_Grh(.Casco.Head(.Heading), TextureX + .Body.HeadOffset.x, TextureY + OffHead, 1, 0, COLOR_WHITE, False, x, y)
                         If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
                         If .Arma.WeaponWalk(.Heading).GrhIndex Then Call Draw_Grh(.Arma.WeaponWalk(.Heading), TextureX, TextureY + OffArma, 1, 1, COLOR_WHITE, False, x, y)
+                        
                 End Select
                      
                 EndComposedTexture
@@ -2027,6 +2116,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
 
                     ' Sombra
                     PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, 0, True
+
                     If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, CharIndex)
                     If LenB(.Head_Aura) <> 0 And .Head_Aura <> "0" Then Call Renderizar_Aura(.Head_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, CharIndex)
                     If LenB(.Arma_Aura) <> 0 And .Arma_Aura <> "0" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + .Body.BodyOffset.y, x, y, CharIndex)
@@ -2051,84 +2141,78 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
                 
                 PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, Color, False
+
                 ' we need to draw this outside the composed texture or it will be cut out
                 If .Heading = E_Heading.NORTH Then
                     If .HasCart Then Call Draw_Grh(.Cart.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + .Cart.HeadOffset.y, 1, 1, Color, False, x, y)
                 End If
-            ' Si no, solo dibujamos body
+
+                ' Si no, solo dibujamos body
             Else
+
                 If Not .Invisible Then
                     Call Draw_Sombra(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, False, x, y)
                 End If
+
                 Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, Color, False, x, y)
             End If
     
             'Draw name over head
             Nombres = Not MapData(charlist(CharIndex).Pos.x, charlist(CharIndex).Pos.y).zone.OcultarNombre
      
-                
             If UserCharIndex > 0 Then
-             With charlist(UserCharIndex)
-                 Dim new_music As Integer
-                 new_music = MapData(.Pos.x, .Pos.y).zone.Musica
-                 
-                 If new_music > 0 Then
-                     Call ao20audio.PlayMidi(new_music, True)
-                 Else
-                     
-                     Call ao20audio.PlayMidi(MapDat.music_numberLow, True)
-                 End If
-             End With
+
+                With charlist(UserCharIndex)
+
+                    Dim new_music As Integer
+
+                    new_music = MapData(.Pos.x, .Pos.y).zone.Musica
+
+                    If new_music > 0 Then
+                        Call ao20audio.PlayMidi(new_music, True)
+                    Else
+                        Call ao20audio.PlayMidi(MapDat.music_numberLow, True)
+                    End If
+
+                End With
+
             End If
     
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
                 Pos = InStr(.nombre, "<")
+
                 If Pos = 0 Then Pos = InStr(.nombre, "[")
                 If Pos = 0 Then Pos = Len(.nombre) + 2
                 'Nick
                 
                 line = Left$(.nombre, Pos - 2)
+
                 Dim Factor As Double
+
                 Factor = MapData(x, y).light_value(0).r / 255
                 
                 If .Navegando Then
-                   
-                     If .priv = 0 Then
-                        
+                    If .priv = 0 Then
+
                         Select Case .status
-                            ' Criminal
-                            Case 0
-                                Call RGBAList(NameColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
-                            ' Ciudadano
-                            Case 1
-                                Call RGBAList(NameColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
-                            
-                            ' Caos
-                            Case 2
-                                Call RGBAList(NameColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
-    
-                            ' Armada
-                            Case 3
-                                Call RGBAList(NameColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
-                                
-                            ' Concilio
-                            Case 4
-                                Call RGBAList(NameColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
-                            ' Consejo
-                            Case 5
-                                Call RGBAList(NameColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
-                                Call RGBAList(colorCorazon, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
-    
+
+                            Case 0: Call RGBAList(NameColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
+
+                            Case 1: Call RGBAList(NameColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
+
+                            Case 2: Call RGBAList(NameColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
+
+                            Case 3: Call RGBAList(NameColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
+
+                            Case 4: Call RGBAList(NameColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
+
+                            Case 5: Call RGBAList(NameColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
                         End Select
+
                     Else
                         Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
-                        Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                     End If
+
                 Else
                     NameColor(0).r = NameColor(0).r * Factor
                     NameColor(0).G = NameColor(0).G * Factor
@@ -2142,16 +2226,15 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     NameColor(3).r = NameColor(3).r * Factor
                     NameColor(3).G = NameColor(3).G * Factor
                     NameColor(3).b = NameColor(3).b * Factor
-                
                 End If
                 
                 If .Team > 0 Then
                     Call RGBAList(NameColor, TeamColors(.Team).r, TeamColors(.Team).G, TeamColors(.Team).b, TeamColors(.Team).a)
                 End If
+
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
 
                 'Clan
-                
                 If .priv = 2 Or .priv = 3 Or .priv = 4 Then
                     line = "<Game Master>"
                 ElseIf .priv = 5 Then
@@ -2165,17 +2248,19 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
                 
                 If .banderaIndex > 0 And .Team > 0 Then
+
                     Dim flag As grh
+
                     If .banderaIndex = 1 Then
                         Call InitGrh(flag, 58712)
                     ElseIf .banderaIndex = 2 Then
                         Call InitGrh(flag, 60298)
                     End If
+
                     Call Draw_Grh(flag, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY - 45 + .Body.BodyOffset.y, 1, 0, Color, True, 0, 0, 0)
                 End If
                 
                 If (UserCharIndex > LBound(charlist) And UserCharIndex < UBound(charlist)) Then
-                    
                     If (.clan_index = charlist(UserCharIndex).clan_index And CharIndex <> UserCharIndex And .EsNpc = False And .Team <= 0) Or (CharIndex = UserCharIndex And .Invisible) Then
                         'Seteo color de nombre del clan solo si es de mi clan
                         Call SetRGBA(NameColorClan(0), 255, 255, 0, 255)
@@ -2187,6 +2272,7 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
                     End If
                 End If
+
             ElseIf Nombres And .Team > 0 Then
                 line = JsonLanguage.Item("MENSAJE_544") & .Team & ">"
                 Call RGBAList(NameColor, TeamColors(.Team).r, TeamColors(.Team).G, TeamColors(.Team).b, TeamColors(.Team).a)
@@ -2205,17 +2291,23 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Next i
 
         End If
+
         If Nombres And Len(.nombre) > 0 And MostrarNombre And .tipoUsuario > 0 Then
+
             Select Case .tipoUsuario
+
                 Case eTipoUsuario.aventurero
                     Call RGBAList(color, 0, 255, 0, IIf(.Invisible, 120, 255))
+
                 Case eTipoUsuario.heroe
                     Call RGBAList(color, 255, 0, 0, IIf(.Invisible, 160, 255))
+
                 Case eTipoUsuario.Legend
                     Call RGBAList(color, 255, 255, 0, IIf(.Invisible, 120, 255))
             End Select
 
             Dim txt_width As Long
+
             txt_width = Engine_Text_Width(.nombre, True)
             Call Draw_Grh(StarGrh, PixelOffsetX + 1 + .Body.BodyOffset.x + (txt_width / 2) + 8, PixelOffsetY + 20 + .Body.BodyOffset.y, 1, 1, color, False, 0, 0, 0)
         End If
@@ -2226,17 +2318,15 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Call RGBAList(Color, 255, 255, 255, 200)
 
             Call Draw_Grh(TempGrh, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY - 55 + .Body.BodyOffset.y, 1, 0, Color, False, 0, 0, 0)
-            
-            Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY - 28 + .Body.BodyOffset.y, .BarTime / .MaxBarTime * 26, 4, RGBA_From_Comp(3, 214, 166, 120) ', RGBA_From_Comp(0, 0, 0, 255)
+            Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY - 28 + .Body.BodyOffset.y, .BarTime / .MaxBarTime * 26, 4, RGBA_From_Comp(3, 214, 166, 120)
 
             .BarTime = .BarTime + (timerElapsedTime / 1000)
-            'frmdebug.add_text_tracebox .BarTime
+
             If .BarTime >= .MaxBarTime Then
                 charlist(CharIndex).BarTime = 0
                 charlist(CharIndex).BarAccion = 99
                 charlist(CharIndex).MaxBarTime = 0
             End If
-
         End If
                    
         ' Meditación
@@ -2257,33 +2347,84 @@ Sub Char_Render(ByVal CharIndex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Else
                         Call Draw_GrhFX(.FxList(i), PixelOffsetX + FxData(.FxList(i).FxIndex).OffsetX + .Body.BodyOffset.x, PixelOffsetY + FxData(.FxList(i).FxIndex).OffsetY + 20 + .Body.BodyOffset.y, 1, 1, Color, True, , , , CharIndex)
                     End If
-
                 End If
 
                 If .FxList(i).started = 0 Then
                     .FxList(i).FxIndex = 0
-
                 End If
 
             Next i
 
             If .FxList(.FxCount).started = 0 Then
                 .FxCount = .FxCount - 1
-
             End If
-
         End If
 
     End With
 
-    
     Exit Sub
 
 Char_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Char_Render", Erl)
+
     Resume Next
-    
+
 End Sub
+
+Public Sub SetCharIdle(ByRef C As Char, Optional ByVal force As Boolean = True)
+
+    Dim keepStarted As Long
+
+    ' Pone anim de quieto. Si AnimateOnIdle=0, NO anima (frame fijo).
+    With C
+
+        If .Muerto Then
+            .Body = BodyData(CASPER_BODY_IDLE)
+        Else
+
+            If .Body.IdleBody > 0 Then
+                .Body = BodyData(.Body.IdleBody)
+            End If
+
+            If .BackPack.IdleBody > 0 Then
+                .BackPack = BodyData(.BackPack.IdleBody)
+            End If
+        End If
+
+        If Not .MovArmaEscudo Then
+            .Arma.WeaponWalk(.Heading).started = 0
+            .Escudo.ShieldWalk(.Heading).started = 0
+        End If
+        
+        If .BackPack.AnimateOnIdle = 0 Then
+            ' Parado sin animación
+            .BackPack.Walk(.Heading).Loops = 0
+            .BackPack.Walk(.Heading).started = 0
+        Else
+            ' Idle animado
+            .BackPack.Walk(.Heading).Loops = INFINITE_LOOPS
+
+            If force Then
+                .BackPack.Walk(.Heading).started = FrameTime
+            Else
+
+                If .BackPack.Walk(.Heading).started > 0 And .BackPack.Walk(.Heading).started > 0 Then
+
+                    keepStarted = SyncGrhPhase(.BackPack.Walk(.Heading), .BackPack.Walk(.Heading).GrhIndex)
+                    .BackPack.Walk(.Heading).started = keepStarted
+                Else
+                    .BackPack.Walk(.Heading).started = FrameTime
+                End If
+            End If
+        End If
+
+        .Moving = False
+        .Idle = True
+    End With
+
+End Sub
+
+
 Public Sub DibujarVidaChar(ByVal CharIndex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer, ByRef OffsetYname As Byte, ByRef OffsetYClan As Byte)
     With charlist(CharIndex)
         Engine_Draw_Box PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 33 + .Body.BodyOffset.y, 33, 5, RGBA_From_Comp(10, 10, 10)
@@ -2443,7 +2584,7 @@ On Error GoTo Start_Err
         DoEvents
 
         Call modNetwork.Poll
-        Call svb_run_callbacks
+        'Call svb_run_callbacks
         Call UpdateAntiCheat
     Loop
 
@@ -3046,114 +3187,114 @@ Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal
     
     On Error GoTo Grh_Render_Advance_Err
 
-    'Similar to Grh_Render, but let´s you resize the Grh
-
-    Dim tile_width  As Integer
-
-    Dim tile_height As Integer
-
-    Dim grh_index   As Long
-    
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
     Dim CurrentFrame As Integer
     CurrentFrame = 1
 
     If grh.started > 0 Then
-        Dim ElapsedFrames As Long
-        ElapsedFrames = Fix((FrameTime - grh.started) / grh.speed)
+        Dim num As Long, elapsed As Long
+        num = GrhData(Grh.GrhIndex).NumFrames
+        If num > 1 Then
+            ' Unificado: SIN 0.5
+            Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
 
-        If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-            CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-        Else
-            grh.started = 0
+            If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                CurrentFrame = (elapsed Mod num) + 1
+            Else
+                Grh.started = 0
+            End If
         End If
-
     End If
 
-    'Figure out what frame to draw (always 1 if not animated)
+    Dim grh_index As Long
     grh_index = GrhData(grh.GrhIndex).Frames(CurrentFrame)
     
-    'Center Grh over X, Y pos
-    If GrhData(grh_index).TileWidth <> 1 Then
-        screen_x = screen_x - Int(GrhData(grh_index).TileWidth * (32 \ 2)) + 32 \ 2
-
+    ' Centrado opcional (usar SIEMPRE el frame actual)
+    If h_center Then
+        If GrhData(grh_index).TileWidth <> 1 Then
+            screen_x = screen_x - Int(GrhData(grh_index).TileWidth * (TilePixelWidth \ 2)) + (TilePixelWidth \ 2)
+        End If
     End If
-    
-    If GrhData(grh_index).TileHeight <> 1 Then
-        screen_y = screen_y - Int(GrhData(grh_index).TileHeight * 32) + 32
-
+    If v_center Then
+        If GrhData(grh_index).TileHeight <> 1 Then
+            screen_y = screen_y - Int(GrhData(grh_index).TileHeight * TilePixelHeight) + TilePixelHeight
+        End If
     End If
+
     If Not OverlapRect(RenderCullingRect, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
-    'Draw it to device
-    'Device_Box_Textured_Render_Advance grh_index, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list, GrhData(grh_index).sX, GrhData(grh_index).sY, Width, Height, alpha_blend, grh.angle
-    Call Batch_Textured_Box_Advance(screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, Width, Height, rgb_list, alpha_blend, grh.angle)
 
-    
+    ' Dibujar con escala Width/Height y el ángulo del Grh
+    Call Batch_Textured_Box_Advance( _
+        screen_x, screen_y, _
+        GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, _
+        GrhData(grh_index).sX, GrhData(grh_index).sY, _
+        GrhData(grh_index).FileNum, _
+        Width, Height, _
+        rgb_list, alpha_blend, Grh.angle _
+    )
+
     Exit Sub
 
 Grh_Render_Advance_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Grh_Render_Advance", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_y As Integer, ByRef rgb_list() As RGBA, Optional ByVal h_centered As Boolean = True, Optional ByVal v_centered As Boolean = True, Optional ByVal alpha_blend As Boolean = False)
     
     On Error GoTo Grh_Render_Err
 
-    'Added centering
-
-    Dim tile_width  As Integer
-
-    Dim tile_height As Integer
-
-    Dim grh_index   As Long
-    
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
     Dim CurrentFrame As Integer
     CurrentFrame = 1
 
     If grh.started > 0 Then
-        Dim ElapsedFrames As Long
-        ElapsedFrames = Fix((FrameTime - grh.started) / grh.speed)
+        Dim num As Long, elapsed As Long
+        num = GrhData(Grh.GrhIndex).NumFrames
+        If num > 1 Then
+            ' Unificado: SIN 0.5
+            Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
 
-        If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-            CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-        Else
-            grh.started = 0
+            If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                CurrentFrame = (elapsed Mod num) + 1
+            Else
+                Grh.started = 0
+            End If
         End If
-
     End If
 
-    'Figure out what frame to draw (always 1 if not animated)
+    Dim grh_index As Long
     grh_index = GrhData(grh.GrhIndex).Frames(CurrentFrame)
     
-    'Center Grh over X, Y pos
-    If GrhData(grh_index).TileWidth <> 1 Then
-        screen_x = screen_x - Int(GrhData(grh_index).TileWidth * (32 \ 2)) + 32 \ 2
-
+    ' Centrado opcional (usar SIEMPRE el frame actual)
+    If h_centered Then
+        If GrhData(grh_index).TileWidth <> 1 Then
+            screen_x = screen_x - Int(GrhData(grh_index).TileWidth * (TilePixelWidth \ 2)) + (TilePixelWidth \ 2)
+        End If
     End If
-    
-    If GrhData(grh_index).TileHeight <> 1 Then
-        screen_y = screen_y - Int(GrhData(grh_index).TileHeight * 32) + 32
-
+    If v_centered Then
+        If GrhData(grh_index).TileHeight <> 1 Then
+            screen_y = screen_y - Int(GrhData(grh_index).TileHeight * TilePixelHeight) + TilePixelHeight
+        End If
     End If
+
     If Not OverlapRect(RenderCullingRect, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
-    'Draw it to device
-    'Device_Box_Textured_Render grh_index, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, rgb_list(), GrhData(grh_index).sX, GrhData(grh_index).sY, alpha_blend, grh.angle
-    Call Batch_Textured_Box(screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData(grh_index).FileNum, rgb_list, alpha_blend, grh.angle)
 
-    
+    Call Batch_Textured_Box( _
+        screen_x, screen_y, _
+        GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, _
+        GrhData(grh_index).sX, GrhData(grh_index).sY, _
+        GrhData(grh_index).FileNum, _
+        rgb_list, alpha_blend, Grh.angle _
+    )
+
     Exit Sub
 
 Grh_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Grh_Render", Erl)
     Resume Next
-    
 End Sub
 
 Private Function Grh_Check(ByVal grh_index As Long) As Boolean
@@ -3700,36 +3841,49 @@ Private Function renderAttributesColors(ByVal Value As Integer, ByVal x As Integ
     End If
 End Function
 
-
 Public Sub RenderAccountCharacters()
-On Error GoTo RenderAccountCharacters_Err
-    Dim i               As Long: Dim sumax As Long
-    Dim x               As Integer: Dim y As Integer
-    Dim notY            As Integer
-    Dim Color           As RGBA
-    Dim Texto           As String
+
+    On Error GoTo RenderAccountCharacters_Err
+
+    Dim i             As Long: Dim sumax As Long
+
+    Dim x             As Integer: Dim y As Integer
+
+    Dim notY          As Integer
+
+    Dim Color         As RGBA
+
+    Dim Texto         As String
+
     Dim temp_array(3) As RGBA
-    Dim TempColor(3) As RGBA
-    Dim grh As grh
+
+    Dim TempColor(3)  As RGBA
+
+    Dim Grh           As Grh
     
     Texto = CuentaEmail
     sumax = 84
     
     'Dibujo la escena debajo del mapa
-    Call RenderScreen(RenderCuenta_PosX, RenderCuenta_PosY, 0, 0, HalfConnectTileWidth, HalfConnectTileHeight)
+    Call RenderScreen(RenderCuenta_PosX, RenderCuenta_PosY, 0, 0, HalfConnectTileWidth, _
+            HalfConnectTileHeight)
     
     If LastPJSeleccionado <> PJSeleccionado Then
         If AlphaRenderCuenta < MAX_ALPHA_RENDER_CUENTA Then
-            AlphaRenderCuenta = min(AlphaRenderCuenta + timerTicksPerFrame * 10, MAX_ALPHA_RENDER_CUENTA)
+            AlphaRenderCuenta = min(AlphaRenderCuenta + timerTicksPerFrame * 10, _
+                    MAX_ALPHA_RENDER_CUENTA)
         Else
             LastPJSeleccionado = PJSeleccionado
+
             If PJSeleccionado <> 0 Then
                 Call SwitchMap(Pjs(PJSeleccionado).Mapa)
                 RenderCuenta_PosX = Pjs(PJSeleccionado).PosX
                 RenderCuenta_PosY = Pjs(PJSeleccionado).PosY
             End If
         End If
+
     ElseIf PJSeleccionado <> 0 And AlphaRenderCuenta > 0 Then
+
         If Pjs(PJSeleccionado).Mapa <> 0 Then
             AlphaRenderCuenta = max(AlphaRenderCuenta - timerTicksPerFrame * 10, 0)
         End If
@@ -3760,65 +3914,106 @@ On Error GoTo RenderAccountCharacters_Err
         temp_array(2) = Pjs(i).LetraColor
         temp_array(3) = Pjs(i).LetraColor
         
-        Dim Body As Integer
+        Dim Body    As Integer
+
         Dim enBarca As Boolean
+
         Body = Pjs(i).Body
         
         If (Body <> 0) Then
             If PJSeleccionado = i Then
                 Call Particle_Group_Render(Select_part, x + 32, y + 5)
             End If
+            
+            If (Pjs(i).Backpack And Not enBarca) Then
+                Draw_Grh BodyData(Pjs(i).Backpack).Walk(3), x + 15, y + 10, 1, 1, _
+                        COLOR_WHITE
+            End If
 
             If (Body <> 0) Then
                 Draw_Grh BodyData(Body).Walk(3), x + 15, y + 10, 1, 1, COLOR_WHITE
             End If
-            enBarca = Body = 84 Or Body = 85 Or Body = 86 Or Body = 87 Or Body = 1263 Or Body = 1264 Or Body = 1265 Or Body = 1266 Or Body = 1267 Or Body = 1268 Or Body = 1269 Or Body = 1270 Or Body = 1271 Or Body = 1272 Or Body = 1273 Or Body = 1274
+
+            enBarca = Body = 84 Or Body = 85 Or Body = 86 Or Body = 87 Or Body = 1263 _
+                    Or Body = 1264 Or Body = 1265 Or Body = 1266 Or Body = 1267 Or Body _
+                    = 1268 Or Body = 1269 Or Body = 1270 Or Body = 1271 Or Body = 1272 _
+                    Or Body = 1273 Or Body = 1274
             
             If (Pjs(i).Head <> 0) And Not enBarca Then
-                Draw_Grh HeadData(Pjs(i).Head).Head(3), x + 15, y - notY + BodyData(Pjs(i).Body).HeadOffset.y + 10, 1, 0, COLOR_WHITE
+                Draw_Grh HeadData(Pjs(i).Head).Head(3), x + 15, y - notY + BodyData(Pjs( _
+                        i).Body).HeadOffset.y + 10, 1, 0, COLOR_WHITE
             End If
             
             If (Pjs(i).Casco <> 0) Then
-                If Pjs(i).Casco <= UBound(CascoAnimData) And Pjs(i).Casco >= LBound(CascoAnimData) Then
-                    Draw_Grh CascoAnimData(Pjs(i).Casco).Head(3), x + 15, y - notY + BodyData(Pjs(i).Body).HeadOffset.y + 10, 1, 0, COLOR_WHITE
+                If Pjs(i).Casco <= UBound(CascoAnimData) And Pjs(i).Casco >= LBound( _
+                        CascoAnimData) Then
+                    Draw_Grh CascoAnimData(Pjs(i).Casco).Head(3), x + 15, y - notY + _
+                            BodyData(Pjs(i).Body).HeadOffset.y + 10, 1, 0, COLOR_WHITE
                 End If
             End If
             
             If (Pjs(i).Escudo <> 0) Then
-                If Pjs(i).Escudo <= UBound(ShieldAnimData) And Pjs(i).Escudo >= LBound(ShieldAnimData) Then
-                    Draw_Grh ShieldAnimData(Pjs(i).Escudo).ShieldWalk(3), x + 14, y - notY + 10, 1, 0, COLOR_WHITE
+                If Pjs(i).Escudo <= UBound(ShieldAnimData) And Pjs(i).Escudo >= LBound( _
+                        ShieldAnimData) Then
+                    Draw_Grh ShieldAnimData(Pjs(i).Escudo).ShieldWalk(3), x + 14, y - _
+                            notY + 10, 1, 0, COLOR_WHITE
                 End If
             End If
                         
             If (Pjs(i).Arma <> 0) Then
-                If Pjs(i).Arma <= UBound(WeaponAnimData) And Pjs(i).Arma >= LBound(WeaponAnimData) Then
-                    Draw_Grh WeaponAnimData(Pjs(i).Arma).WeaponWalk(3), x + 14, y - notY + 10, 1, 0, COLOR_WHITE
+                If Pjs(i).Arma <= UBound(WeaponAnimData) And Pjs(i).Arma >= LBound( _
+                        WeaponAnimData) Then
+                    Draw_Grh WeaponAnimData(Pjs(i).Arma).WeaponWalk(3), x + 14, y - _
+                            notY + 10, 1, 0, COLOR_WHITE
                 End If
             End If
 
-            Engine_Text_Render Pjs(i).nombre, x + 30 - Engine_Text_Width(Pjs(i).nombre, True) / 2, y + 56 - Engine_Text_Height(Pjs(i).nombre, True), temp_array(), 1, True
+            Engine_Text_Render Pjs(i).nombre, x + 30 - Engine_Text_Width(Pjs(i).nombre, _
+                    True) / 2, y + 56 - Engine_Text_Height(Pjs(i).nombre, True), _
+                    temp_array(), 1, True
             
             If PJSeleccionado = i Then
+
                 Dim Offy As Byte
+
                 Offy = 0
-                Engine_Text_Render Pjs(i).nombre, 511 - Engine_Text_Width(Pjs(i).nombre, True) / 2, 565 - Engine_Text_Height(Pjs(i).nombre, True), temp_array(), 1, True
+                Engine_Text_Render Pjs(i).nombre, 511 - Engine_Text_Width(Pjs( _
+                        i).nombre, True) / 2, 565 - Engine_Text_Height(Pjs(i).nombre, _
+                        True), temp_array(), 1, True
+
                 If Pjs(i).ClanName <> "<>" Then
-                    Engine_Text_Render Pjs(i).ClanName, 511 - Engine_Text_Width(Pjs(i).ClanName, True) / 2, 565 + 15 - Engine_Text_Height(Pjs(i).ClanName, True), temp_array(), 1, True
+                    Engine_Text_Render Pjs(i).ClanName, 511 - Engine_Text_Width(Pjs( _
+                            i).ClanName, True) / 2, 565 + 15 - Engine_Text_Height(Pjs( _
+                            i).ClanName, True), temp_array(), 1, True
                     Offy = 15
                 Else
                     Offy = 0
                 End If
-                Engine_Text_Render JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs(i).Clase), 511 - Engine_Text_Width(JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs(i).Clase), True) / 2, Offy + 570 - Engine_Text_Height(JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs(i).Clase), True), COLOR_WHITE, 1, True
-                Engine_Text_Render JsonLanguage.Item("MENSAJE_570") & Pjs(i).nivel, 511 - Engine_Text_Width(JsonLanguage.Item("MENSAJE_570") & Pjs(i).nivel, True) / 2, Offy + 585 - Engine_Text_Height(JsonLanguage.Item("MENSAJE_570") & Pjs(i).nivel, True), COLOR_WHITE, 1, True
-                Engine_Text_Render CStr(Pjs(i).NameMapa), 511 - Engine_Text_Width(CStr(Pjs(i).NameMapa), True) / 2, Offy + 615 - Engine_Text_Height(CStr(Pjs(i).NameMapa), True), COLOR_WHITE, 1, True
+
+                Engine_Text_Render JsonLanguage.Item("MENSAJE_569") & ListaClases(Pjs( _
+                        i).Clase), 511 - Engine_Text_Width(JsonLanguage.Item( _
+                        "MENSAJE_569") & ListaClases(Pjs(i).Clase), True) / 2, Offy + _
+                        570 - Engine_Text_Height(JsonLanguage.Item("MENSAJE_569") & _
+                        ListaClases(Pjs(i).Clase), True), COLOR_WHITE, 1, True
+                Engine_Text_Render JsonLanguage.Item("MENSAJE_570") & Pjs(i).Nivel, 511 _
+                        - Engine_Text_Width(JsonLanguage.Item("MENSAJE_570") & Pjs( _
+                        i).Nivel, True) / 2, Offy + 585 - Engine_Text_Height( _
+                        JsonLanguage.Item("MENSAJE_570") & Pjs(i).Nivel, True), _
+                        COLOR_WHITE, 1, True
+                Engine_Text_Render CStr(Pjs(i).NameMapa), 511 - Engine_Text_Width(CStr( _
+                        Pjs(i).NameMapa), True) / 2, Offy + 615 - Engine_Text_Height( _
+                        CStr(Pjs(i).NameMapa), True), COLOR_WHITE, 1, True
             End If
         End If
+
     Next i
 
     Exit Sub
 
 RenderAccountCharacters_Err:
-    Call RegistrarError(Err.Number, Err.Description, "engine.RenderAccountCharacters", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderAccountCharacters", _
+            Erl)
+
     Resume Next
     
 End Sub
@@ -4427,31 +4622,30 @@ Public Sub Draw_Grh_ItemInWater(ByRef grh As grh, ByVal x As Integer, ByVal y As
 
     If animate Then
         If grh.started > 0 Then
-            Dim ElapsedFrames As Long
-            ElapsedFrames = Fix(0.5 * (FrameTime - grh.started) / grh.speed)
+            Dim num As Long, elapsed As Long
+            num = GrhData(Grh.GrhIndex).NumFrames
+            If num > 1 Then
+                ' Unificado: SIN 0.5
+                Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
 
-            If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-                CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-            Else
-                grh.started = 0
+                If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                    CurrentFrame = (elapsed Mod num) + 1
+                Else
+                    Grh.started = 0
+                End If
             End If
-
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
-    'Center Grh over X,Y pos
+    ' Centrado opcional con el frame actual
     If center Then
         If GrhData(CurrentGrhIndex).TileWidth <> 1 Then
             x = x - Int(GrhData(CurrentGrhIndex).TileWidth * TilePixelWidth \ 2) + TilePixelWidth \ 2
         End If
-
-        If GrhData(grh.GrhIndex).TileHeight <> 1 Then
+        If GrhData(CurrentGrhIndex).TileHeight <> 1 Then
             y = y - Int(GrhData(CurrentGrhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
         End If
     End If
@@ -4460,40 +4654,36 @@ Public Sub Draw_Grh_ItemInWater(ByRef grh As grh, ByVal x As Integer, ByVal y As
         If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
         If .FileNum > 0 Then
             Dim Texture As Direct3DTexture8
-
             Dim TextureWidth As Long, TextureHeight As Long
             Set Texture = SurfaceDB.GetTexture(.FileNum, TextureWidth, TextureHeight)
             
-        
+            ' UVs normalizados
             .Tx1 = .sX / TextureWidth
             .Tx2 = (.sX + .pixelWidth) / TextureWidth
             .Ty1 = .sY / TextureHeight
             .Ty2 = (.sY + .pixelHeight) / TextureHeight
             
+            ' Blending aditivo opcional
             If Alpha Then
                 DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_ONE
                 DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_ONE
             End If
             
             Call SpriteBatch.SetTexture(Texture)
-            Call SpriteBatch.DrawItemInWater(x, y, .pixelWidth, .pixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, angle Mod 360) ' Angle
+            Call SpriteBatch.DrawItemInWater(x, y, .pixelWidth, .pixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, angle Mod 360)
             
             If Alpha Then
                 DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
                 DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
             End If
         End If
-        
-        'Call Batch_Textured_Box_Pre(x, y, .pixelWidth, .pixelHeight, .Tx1, .Ty1, .Tx2, .Ty2, .FileNum, rgb_list, Alpha, Angle)
-    
     End With
     
     Exit Sub
 
 Draw_Grh_Err:
-    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh_ItemInWater", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, ByVal EsAgua As Boolean, ByVal EsLava As Boolean, ByVal MapX As Integer, ByVal MapY As Integer, ByVal MinX As Integer, ByVal MaxX As Integer, ByVal MinY As Integer, ByVal MaxY As Integer)
@@ -4501,36 +4691,34 @@ Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, By
     On Error GoTo Draw_Grh_Precalculated_Err
 
     If Not OverlapRect(RenderCullingRect, grh.x - MinX * TilePixelWidth, grh.y - TilePixelHeight * MinY + gameplay_render_offset.y, TilePixelWidth, TilePixelHeight) Then Exit Sub
-
     If grh.GrhIndex = 0 Or grh.GrhIndex > MaxGrh Then Exit Sub
     
     Dim CurrentFrame As Integer
     CurrentFrame = 1
 
     If grh.started > 0 Then
-        Dim ElapsedFrames As Long
-        ElapsedFrames = Fix((FrameTime - grh.started) / grh.speed)
+        Dim num As Long, elapsed As Long
+        num = GrhData(Grh.GrhIndex).NumFrames
+        If num > 1 Then
+            ' Unificado: SIN 0.5
+            Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
 
-        If grh.Loops = INFINITE_LOOPS Or ElapsedFrames < GrhData(grh.GrhIndex).NumFrames * (grh.Loops + 1) Then
-            CurrentFrame = ElapsedFrames Mod GrhData(grh.GrhIndex).NumFrames + 1
-
-        Else
-            grh.started = 0
+            If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
+                CurrentFrame = (elapsed Mod num) + 1
+            Else
+                Grh.started = 0
+            End If
         End If
-
     End If
     
     Dim CurrentGrhIndex As Long
-    'Figure out what frame to draw (always 1 if not animated)
     CurrentGrhIndex = GrhData(grh.GrhIndex).Frames(CurrentFrame)
 
     Dim Texture As Direct3DTexture8
-
     Dim TextureWidth As Long, TextureHeight As Long
     Set Texture = SurfaceDB.GetTexture(GrhData(CurrentGrhIndex).FileNum, TextureWidth, TextureHeight)
     
     With GrhData(CurrentGrhIndex)
-
         Call SpriteBatch.SetTexture(Texture)
         
         If .Tx2 = 0 And .FileNum > 0 Then
@@ -4547,7 +4735,6 @@ Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, By
             If MapX < MaxX Then Right = (MapData(MapX + 1, MapY).Blocked And FLAG_AGUA) * INV_FLAG_AGUA
             If MapY < MaxY Then Bottom = (MapData(MapX, MapY + 1).Blocked And FLAG_AGUA) * INV_FLAG_AGUA
             If MapX > MinX Then Left = (MapData(MapX - 1, MapY).Blocked And FLAG_AGUA) * INV_FLAG_AGUA
-        
             Call SpriteBatch.DrawWater(grh.x, grh.y, TilePixelWidth, TilePixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, MapX, MapY, Top, Right, Bottom, Left)
         
         ElseIf EsLava Then
@@ -4555,27 +4742,21 @@ Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, By
             If MapX < MaxX Then Right = (MapData(MapX + 1, MapY).Blocked And FLAG_LAVA) * INV_FLAG_LAVA
             If MapY < MaxY Then Bottom = (MapData(MapX, MapY + 1).Blocked And FLAG_LAVA) * INV_FLAG_LAVA
             If MapX > MinX Then Left = (MapData(MapX - 1, MapY).Blocked And FLAG_LAVA) * INV_FLAG_LAVA
-        
             Call SpriteBatch.DrawLava(grh.x, grh.y, TilePixelWidth, TilePixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2, MapX, MapY, Top, Right, Bottom, Left)
         
         Else
-             Call SpriteBatch.Draw(grh.x, grh.y, TilePixelWidth, TilePixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2)
-             
-             
+            Call SpriteBatch.Draw(Grh.x, Grh.y, TilePixelWidth, TilePixelHeight, rgb_list, .Tx1, .Ty1, .Tx2, .Ty2)
         End If
-    
     End With
 
-    
     Exit Sub
 
 Draw_Grh_Precalculated_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Draw_Grh_Precalculated", Erl)
     Resume Next
-    
 End Sub
 
-Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, Color As RGBA)
+Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, ByRef Color As RGBA)
     
     On Error GoTo Engine_Draw_Box_Err
     
@@ -4689,3 +4870,48 @@ Public Function GetTickCount() As Long
     GetTickCount = (timeGetTime And &H7FFFFFFF)
     
 End Function
+
+Public Function CurrentGrhFrame(ByRef Grh As Grh) As Integer
+    Dim num As Long, elapsed As Long
+    If Grh.GrhIndex = 0 Or Grh.GrhIndex > MaxGrh Then CurrentGrhFrame = 1: Exit Function
+    num = GrhData(Grh.GrhIndex).NumFrames
+    If num <= 1 Or Grh.started <= 0 Then CurrentGrhFrame = 1: Exit Function
+
+    ' Unificado (SIN el 0.5)
+    elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
+    CurrentGrhFrame = (elapsed Mod num) + 1
+End Function
+
+Private Function SyncGrhPhase(ByRef Grh As Grh, ByVal newGrhIndex As Long) As Long
+    Dim oldNum As Long, newNum As Long
+    Dim elapsed As Long, phase As Long
+    
+    If Grh.started <= 0 Then
+        SyncGrhPhase = FrameTime
+        Exit Function
+    End If
+    
+    oldNum = GrhData(Grh.GrhIndex).NumFrames
+    newNum = GrhData(newGrhIndex).NumFrames
+    If oldNum <= 0 Or newNum <= 0 Then
+        SyncGrhPhase = FrameTime
+        Exit Function
+    End If
+    
+    elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
+    phase = elapsed Mod oldNum
+    SyncGrhPhase = FrameTime - (phase * Grh.speed)
+End Function
+
+Public Sub InitGrhPreserve(ByRef Grh As Grh, ByVal GrhIndex As Long, _
+                           Optional ByVal Loops As Integer = INFINITE_LOOPS)
+    Dim keepStarted As Long
+    If Grh.GrhIndex <> 0 And Grh.started > 0 Then
+        keepStarted = SyncGrhPhase(Grh, GrhIndex)
+    Else
+        keepStarted = -1 ' deja que InitGrh use FrameTime
+    End If
+    Call InitGrh(Grh, GrhIndex, keepStarted, Loops)
+End Sub
+
+
