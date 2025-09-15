@@ -24,12 +24,20 @@ Public SeguroResuX As Boolean
 Public LegionarySecureX As Boolean
 Public QuePestañaInferior As Byte
 Public newUser As Boolean
+
 Public Enum tMacro
     dobleclick = 1
     Coordenadas = 2
     inasistidoPosFija = 3
     borrarCartel = 4
 End Enum
+
+Public const NO_WEAPON As Byte = 2
+Public const NO_CART As Byte = 2
+Public const NO_HELMET As Byte = 2
+Public const NO_ARMOR As Byte = 2
+Public const NO_SHIELD As Byte = 2
+Public const NO_BACKPACK As Byte = 2
 
 Public Enum tMacroButton
     Inventario = 1
@@ -42,6 +50,19 @@ End Enum
 Public Enum e_ActiveTab
     eInventory
     eSpellList
+End Enum
+
+Public Enum e_EventType
+    Generic = 0
+    CaptureTheFlag = 1
+    NpcHunt = 2
+    DeathMatch = 3
+    NavalBattle = 4
+End Enum
+
+Public Enum e_TeamTypes
+    ePremade = 0
+    eRandom = 1
 End Enum
 
 Public ActiveInventoryTab As e_ActiveTab
@@ -114,6 +135,105 @@ Public Enum TipoPaso
     CONST_AGUA = 7
 End Enum
 
+Public Enum e_ElementalTags
+    Normal = 0
+    Fire = 1
+    Water = 2
+    Earth = 4
+    Wind = 8
+End Enum
+
+Public Enum e_ChaosArmyRanks
+    NotEnlisted = 0
+    FirstHierarchy = 1
+    SecondHierarchy = 2
+    ThirdHierarchy = 3
+    FourthHierarchy = 4
+    FifthHierarchy = 5
+End Enum
+
+Public Enum e_RoyalArmyRanks
+    NotEnlisted = 0
+    FirstHierarchy = 1
+    SecondHierarchy = 2
+    ThirdHierarchy = 3
+    FourthHierarchy = 4
+    FifthHierarchy = 5
+End Enum
+
+Public Enum e_InfoTxts
+    Newbie = 1
+    Poisoned = 2
+    Blind = 4
+    Paralized = 8
+    Inmovilized = 16
+    Working = 32
+    Invisible = 64
+    Hidden = 128
+    Stupid = 256
+    Cursed = 512
+    Silenced = 1024
+    Trading = 2048
+    Resting = 4096
+    Focusing = 8192
+    Incinerated = 16384
+    Dead = 32768
+    AlmostDead = 65536
+    SeriouslyWounded = 131072
+    Wounded = 262144
+    LightlyWounded = 524288
+    Intact = 1048576
+    Counselor = 2097152
+    DemiGod = 4194304
+    God = 8388608
+    Admin = 16777216
+    RoleMaster = 33554432
+End Enum
+
+Public Enum e_InfoTxts2
+    ChaoticCouncil = 1
+    Chaotic = 2
+    Criminal = 4
+    RoyalCouncil = 8
+    Army = 16
+    Citizen = 32
+    ArmyFirstHierarchy = 64
+    ArmySecondHierarchy = 128
+    ArmyThirdHierarchy = 256
+    ArmyFourthHierarchy = 512
+    ArmyFifthHierarchy = 1024
+    ChaosFirstHierarchy = 2048
+    ChaosSecondHierarchy = 4096
+    ChaosThirdHierarchy = 8192
+    ChaosFourthHierarchy = 16384
+    ChaosFifthHierarchy = 32768
+End Enum
+
+Public Enum e_Class
+    Mage = 1    'Mago
+    Cleric      'Clérigo
+    Warrior     'Guerrero
+    Assasin     'Asesino
+    Bard        'Bardo
+    Druid       'Druida
+    Paladin     'Paladín
+    Hunter      'Cazador
+    Worker  'Trabajador
+    Pirat       'Pirata
+    Thief       'Ladron
+    Bandit      'Bandido
+End Enum
+
+Public Enum e_Race
+    Human = 1
+    Elf
+    DrowElf
+    Gnome
+    Dwarf
+    Orc
+End Enum
+
+
 Public Type tPaso
     CantPasos As Byte
     wav() As Integer
@@ -149,6 +269,16 @@ Public CDList As t_ActiveEffectList
 Public Type e_effectResource
     GrhId As Long
 End Type
+
+
+
+Public Enum e_ElementalTagIconsGrhIndex
+    Earth = 10483
+    Fire = 10484
+    Wind = 10485
+    Water = 10486
+End Enum
+
 
 Public EffectResources() As e_effectResource
 
@@ -487,6 +617,7 @@ Type tHerreria
     LPlata As Integer
     LOro As Integer
     Coal As Integer
+    Blodium As Integer
     Index As Integer
 End Type
 
@@ -510,6 +641,7 @@ Public DefensasHerrero(0 To 100)  As tHerreria
 Public ArmadurasHerrero(0 To 100) As tHerreria
 Public CascosHerrero(0 To 100)    As tHerreria
 Public EscudosHerrero(0 To 100)   As tHerreria
+Public RunasElementalesHerrero(0 To 100) As tHerreria
 Public ObjCarpintero(0 To 100)    As Integer
 Public ObjAlquimista(0 To 100)    As Integer
 Public ObjSastre(0 To 100)        As tSasteria
@@ -708,6 +840,7 @@ Type Slot
     MaxHit As Integer
     MinHit As Integer
     PuedeUsar As Byte
+    ElementalTags As Long
     IsBindable As Boolean
 End Type
 
@@ -737,6 +870,7 @@ Type NpCinV
     Def As Integer
     MaxHit As Integer
     MinHit As Integer
+    ElementalTags As Long
     c1 As String
     C2 As String
     c3 As String
