@@ -254,6 +254,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleBlacksmithWeapons
         Case ServerPacketID.eBlacksmithArmors
             Call HandleBlacksmithArmors
+        Case ServerPacketID.eBlacksmithExtraObjects
+            Call HandleBlacksmithExtraObjects
         Case ServerPacketID.eCarpenterObjects
             Call HandleCarpenterObjects
         Case ServerPacketID.eRestOK
@@ -701,9 +703,10 @@ Private Sub HandleVelocidadToggle()
 
     If UserCharIndex = 0 Then Exit Sub
     
-    charlist(UserCharIndex).Speeding = Reader.ReadReal32()
-    
-    Call MainTimer.SetInterval(TimersIndex.Walk, gIntervals.Walk / charlist(UserCharIndex).Speeding)
+        charlist(UserCharIndex).Speeding = Reader.ReadReal32()
+        Call ApplySpeedingToChar(UserCharIndex)
+        Call MainTimer.SetInterval(TimersIndex.Walk, gIntervals.Walk / charlist(UserCharIndex).Speeding)
+
     
     Exit Sub
 
@@ -1048,7 +1051,7 @@ Private Sub HandleCommerceInit()
     For i = 1 To MAX_INVENTORY_SLOTS
       
             With frmMain.Inventario
-                Call frmComerciar.InvComUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+                Call frmComerciar.InvComUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .valor(i), .ItemName(i), .ElementalTags(i), .PuedeUsar(i))
             End With
 
     Next i
@@ -1081,7 +1084,7 @@ Private Sub HandleBankInit()
     For i = 1 To MAX_INVENTORY_SLOTS
 
             With frmMain.Inventario
-                Call frmBancoObj.InvBankUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+                Call frmBancoObj.InvBankUsu.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .valor(i), .ItemName(i), .ElementalTags(i), .PuedeUsar(i))
             End With
 
     Next i
@@ -1176,7 +1179,7 @@ Private Sub HandleUserCommerceInit()
     For i = 1 To MAX_INVENTORY_SLOTS
 
             With frmMain.Inventario
-                Call frmComerciarUsu.InvUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+                Call frmComerciarUsu.InvUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .valor(i), .ItemName(i), .ElementalTags(i), .PuedeUsar(i))
             End With
 
     Next i
@@ -1185,8 +1188,8 @@ Private Sub HandleUserCommerceInit()
     Dim J As Byte
 
     For J = 1 To 6
-        Call frmComerciarUsu.InvOtherSell.SetItem(J, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
-        Call frmComerciarUsu.InvUserSell.SetItem(J, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0)
+        Call frmComerciarUsu.InvOtherSell.SetItem(j, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0, 0)
+        Call frmComerciarUsu.InvUserSell.SetItem(j, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0, 0)
     Next J
     
     'Set state and show form
@@ -1526,7 +1529,7 @@ Private Sub HandleClanSeguro()
         SeguroClanX = False
         
     Else
-        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_CLAN_ACTIVADO."), 65, 190, 156, False, False, False)
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SEGURO_CLAN_ACTIVADO"), 65, 190, 156, False, False, False)
         frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
         SeguroClanX = True
 
@@ -1598,7 +1601,7 @@ Private Sub HandleUpdateUserKey()
     Slot = Reader.ReadInt16
     Llave = Reader.ReadInt16
     
-    Call FrmKeyInv.InvKeys.SetItem(Slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0)
+    Call FrmKeyInv.InvKeys.SetItem(Slot, Llave, 1, 0, ObjData(Llave).GrhIndex, eObjType.otLlaves, 0, 0, 0, 0, ObjData(Llave).Name, 0, 0)
  
     
     Exit Sub
@@ -1633,7 +1636,7 @@ Private Sub HandleUpdateRM()
     Dim Value As Integer
 
     Value = Reader.ReadInt16
-    frmMain.lblResis = "+" & Value
+    frmMain.lblResis = "+" & value & "%"
 
     Exit Sub
 
@@ -2426,7 +2429,10 @@ Private Sub HandleConsoleMessage()
     Dim b         As Byte
     Dim QueEs     As String
     Dim NpcName   As String
+    Dim npcElementTags As Long
     Dim objname   As String
+    Dim ElementalTags As Long
+    Dim quantity  As Integer
     Dim Hechizo   As Integer
     Dim userName  As String
     Dim Valor     As String
@@ -2443,11 +2449,16 @@ Private Sub HandleConsoleMessage()
     
             Case "NPCNAME"
                 NpcName = NpcData(ReadField(2, chat, Asc("*"))).Name
-                chat = NpcName & ReadField(3, chat, Asc("*"))
+                chat = npcName & ReadField(3, chat, Asc("*"))
     
             Case "O" 'OBJETO
                 objname = ObjData(ReadField(2, chat, Asc("*"))).Name
-                chat = objname & ReadField(3, chat, Asc("*"))
+                
+                'natural item elemental tags logical or with rune imbued item
+                ElementalTags = CLng(val(ObjData(ReadField(2, chat, Asc("*"))).ElementalTags)) Or CLng(val(ReadField(4, chat, Asc("*"))))
+                
+                
+                chat = objname & " " & ElementalTagsToTxtParser(ElementalTags) & ReadField(3, chat, Asc("*"))
             
     
             Case "HECINF"
@@ -2582,18 +2593,6 @@ Private Sub HandleLocaleMsg()
     Dim G         As Byte
 
     Dim b         As Byte
-
-    Dim QueEs     As String
-
-    Dim NpcName   As String
-
-    Dim objname   As String
-
-    Dim Hechizo   As Byte
-
-    Dim userName  As String
-
-    Dim Valor     As String
 
     Dim id        As Integer
 
@@ -2864,6 +2863,7 @@ Private Sub HandleCharacterCreate()
     Dim helmet        As Integer
     Dim privs         As Integer
     Dim Cart          As Integer
+    Dim BackPack      As Integer
     Dim AuraParticula As Byte
     Dim ParticulaFx   As Byte
     Dim appear        As Byte
@@ -2880,6 +2880,7 @@ Private Sub HandleCharacterCreate()
     Shield = Reader.ReadInt16()
     helmet = Reader.ReadInt16()
     Cart = Reader.ReadInt16()
+    BackPack = Reader.ReadInt16()
     
     With charlist(CharIndex)
         Dim loopC, Fx As Integer
@@ -2963,7 +2964,7 @@ Private Sub HandleCharacterCreate()
         End If
 
         .Muerto = (Body = CASPER_BODY_IDLE)
-        Call MakeChar(CharIndex, Body, Head, Heading, x, y, weapon, Shield, helmet, Cart, ParticulaFx, appear)
+        Call MakeChar(CharIndex, Body, Head, Heading, x, y, weapon, Shield, helmet, Cart, BackPack, ParticulaFx, appear)
         
         If .Navegando = False Or UserNadandoTrajeCaucho = True Then
             If .Body.AnimateOnIdle = 0 Then
@@ -2980,6 +2981,7 @@ Private Sub HandleCharacterCreate()
                 .Body.Walk(.Heading).started = FrameTime
             End If
         End If
+        
     End With
     
     Call RefreshAllChars
@@ -3163,9 +3165,7 @@ HandleForceCharMoveSiguiendo_Err:
     
 End Sub
 
-''
 ' Handles the CharacterChange message.
-
 Private Sub HandleCharacterChange()
     
     On Error GoTo HandleCharacterChange_Err
@@ -3179,98 +3179,196 @@ Private Sub HandleCharacterChange()
     CharIndex = Reader.ReadInt16()
 
     With charlist(CharIndex)
+
+        ' ===== Preservar estado previo para fase =====
+        Dim wasMoving        As Boolean: wasMoving = .Moving
+
+        Dim oldHeading       As E_Heading: oldHeading = .Heading
+
+        Dim prevWalk         As Grh: prevWalk = .Body.Walk(oldHeading)
+
+        Dim prevWeaponWalk   As Grh: prevWeaponWalk = .Arma.WeaponWalk(oldHeading)
+
+        Dim prevShieldWalk   As Grh: prevShieldWalk = .Escudo.ShieldWalk(oldHeading)
+
+        Dim hadMovArmaEscudo As Boolean: hadMovArmaEscudo = .MovArmaEscudo
+        
+        Dim keepStartIdle    As Long
+
+        Dim newGi            As Long
+
+        ' ============================================
+
+        ' Body
         TempInt = Reader.ReadInt16()
 
         If TempInt < LBound(BodyData()) Or TempInt > UBound(BodyData()) Then
             .Body = BodyData(0)
+            .iBody = 0
         Else
             .Body = BodyData(TempInt)
             .iBody = TempInt
-
         End If
         
+        ' Head
         headIndex = Reader.ReadInt16()
 
         If headIndex < LBound(HeadData()) Or headIndex > UBound(HeadData()) Then
             .Head = HeadData(0)
             .IHead = 0
-            
         Else
             .Head = HeadData(headIndex)
             .IHead = headIndex
-
         End If
 
         .Muerto = (.iBody = CASPER_BODY_IDLE)
         
+        ' Heading nuevo
         .Heading = Reader.ReadInt8()
         
+        ' Arma / Escudo / Casco
         TempInt = Reader.ReadInt16()
 
-        If TempInt <> 0 And TempInt <= UBound(WeaponAnimData) Then
-            .Arma = WeaponAnimData(TempInt)
-        End If
+        If TempInt <> 0 And TempInt <= UBound(WeaponAnimData) Then .Arma = WeaponAnimData(TempInt)
 
         TempInt = Reader.ReadInt16()
 
-        If TempInt <> 0 And TempInt <= UBound(ShieldAnimData) Then
-            .Escudo = ShieldAnimData(TempInt)
-        End If
+        If TempInt <> 0 And TempInt <= UBound(ShieldAnimData) Then .Escudo = ShieldAnimData(TempInt)
         
         TempInt = Reader.ReadInt16()
 
-        If TempInt <> 0 And TempInt <= UBound(CascoAnimData) Then
-            .Casco = CascoAnimData(TempInt)
-        End If
+        If TempInt <> 0 And TempInt <= UBound(CascoAnimData) Then .Casco = CascoAnimData(TempInt)
         
         TempInt = Reader.ReadInt16()
-        
+
         If TempInt <= 2 Or TempInt > UBound(BodyData()) Then
             .HasCart = False
         Else
             .Cart = BodyData(TempInt)
             .HasCart = True
         End If
-                
-        If .Body.HeadOffset.y = -26 Then
-            .EsEnano = True
-        Else
-            .EsEnano = False
 
+        TempInt = Reader.ReadInt16()
+
+        If TempInt <= 2 Or TempInt > UBound(BodyData()) Then
+            .HasBackpack = False
+            .tmpBackPack = 0
+        Else
+            .BackPack = BodyData(TempInt)
+            .tmpBackPack = TempInt
+            .HasBackpack = True
         End If
+                
+        .EsEnano = (.Body.HeadOffset.y = -26)
         
+        ' FX
         Dim Fx As Integer: Fx = Reader.ReadInt16
+
         Call StartFx(.ActiveAnimation, Fx)
+        .Meditating = (Fx <> 0)
+        Reader.ReadInt16 ' Ignore loops
         
-        .Meditating = Fx <> 0
-        
-        Reader.ReadInt16 'Ignore loops
-        
+        ' Flags
         Dim flags As Byte
-        
+
         flags = Reader.ReadInt8()
-        
-        .Idle = flags And &O1
-        .Navegando = flags And &O2
-        
+        .Idle = (flags And &O1)
+        .Navegando = (flags And &O2)
+
+        ' ==================== ANIMACIÓN / FASE ====================
         If .Idle Then
+
+            ' --- IDLE ---
             If .Navegando = False Or UserNadandoTrajeCaucho = True Then
                 If .Body.AnimateOnIdle = 0 Then
+                    ' Idle sin anim: parar
                     .Body.Walk(.Heading).started = 0
-                ElseIf .Body.Walk(.Heading).started = 0 Then
-                    .Body.Walk(.Heading).started = FrameTime
+                Else
+
+                    ' Idle con anim: si cambia a IdleBody, preservá fase si venía animando
+                    If .Body.IdleBody > 0 Then
+                        newGi = BodyData(.Body.IdleBody).Walk(.Heading).GrhIndex
+                    
+                        If prevWalk.started > 0 And wasMoving Then
+                            keepStartIdle = SyncGrhPhase(prevWalk, newGi)
+                        Else
+                            keepStartIdle = FrameTime
+                        End If
+
+                        .Body = BodyData(.Body.IdleBody)
+                        .Body.Walk(.Heading).started = keepStartIdle
+                    ElseIf .Body.Walk(.Heading).started = 0 Then
+
+                        If .Body.Walk(.Heading).started = 0 Then
+                            .Body.Walk(.Heading).started = FrameTime
+                        End If
+                    End If
                 End If
+
+                ' Arma/Escudo en idle: respetá tu regla
                 If Not .MovArmaEscudo Then
                     .Arma.WeaponWalk(.Heading).started = 0
                     .Escudo.ShieldWalk(.Heading).started = 0
                 End If
-                If .Body.IdleBody > 0 Then
-                    .Body = BodyData(.Body.IdleBody)
-                    .Body.Walk(.Heading).started = FrameTime
-                    
+            End If
+
+        Else
+
+            ' --- NO IDLE (camina / se mueve) ---
+            Dim keepStart As Long
+
+            Dim targetGi  As Long
+
+            targetGi = .Body.Walk(.Heading).GrhIndex
+
+            If wasMoving And prevWalk.started > 0 Then
+                keepStart = SyncGrhPhase(prevWalk, targetGi)
+            ElseIf .Body.Walk(.Heading).started > 0 Then
+                keepStart = .Body.Walk(.Heading).started
+            Else
+                keepStart = FrameTime
+            End If
+            
+            .Body.Walk(.Heading).started = keepStart
+            
+            targetGi = .BackPack.Walk(.Heading).GrhIndex
+
+            If wasMoving And prevWalk.started > 0 Then
+                keepStart = SyncGrhPhase(prevWalk, targetGi)
+            ElseIf .BackPack.Walk(.Heading).started > 0 Then
+                keepStart = .Body.Walk(.Heading).started
+            Else
+                keepStart = FrameTime
+            End If
+
+            .BackPack.Walk(.Heading).started = keepStart
+
+            ' Arma/Escudo: mantener en fase con el cuerpo
+            If .MovArmaEscudo Then
+
+                Dim keepW As Long, keepS As Long
+
+                If hadMovArmaEscudo And prevWeaponWalk.started > 0 Then
+                    keepW = SyncGrhPhase(prevWeaponWalk, .Arma.WeaponWalk(.Heading).GrhIndex)
+                Else
+                    keepW = keepStart
                 End If
+
+                If hadMovArmaEscudo And prevShieldWalk.started > 0 Then
+                    keepS = SyncGrhPhase(prevShieldWalk, .Escudo.ShieldWalk(.Heading).GrhIndex)
+                Else
+                    keepS = keepStart
+                End If
+
+                If .Arma.WeaponWalk(.Heading).started = 0 Then .Arma.WeaponWalk(.Heading).started = keepW
+                If .Escudo.ShieldWalk(.Heading).started = 0 Then .Escudo.ShieldWalk(.Heading).started = keepS
+            Else
+                .Arma.WeaponWalk(.Heading).started = 0
+                .Escudo.ShieldWalk(.Heading).started = 0
             End If
         End If
+
+        ' ===========================================================
 
     End With
     
@@ -3301,6 +3399,7 @@ Private Sub HandleObjectCreate()
 
     Dim id       As Long
     
+    Dim ElementalTags As Long
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     
@@ -3308,12 +3407,14 @@ Private Sub HandleObjectCreate()
     
     Amount = Reader.ReadInt16
     
+    ElementalTags = Reader.ReadInt32
     MapData(x, y).ObjGrh.GrhIndex = ObjData(ObjIndex).GrhIndex
     
     MapData(x, y).OBJInfo.ObjIndex = ObjIndex
     
     MapData(x, y).OBJInfo.Amount = Amount
     
+    MapData(x, y).OBJInfo.ElementalTags = ElementalTags
     Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.GrhIndex)
     
     If ObjData(ObjIndex).CreaLuz <> "" Then
@@ -4252,6 +4353,7 @@ Private Sub HandleChangeInventorySlot()
     Dim Value       As Single
     Dim podrausarlo As Byte
     Dim IsBindable As Boolean
+    Dim ElementalTags As Long
 
     Slot = Reader.ReadInt8()
     ObjIndex = Reader.ReadInt16()
@@ -4259,6 +4361,7 @@ Private Sub HandleChangeInventorySlot()
     Equipped = Reader.ReadBool()
     Value = Reader.ReadReal32()
     podrausarlo = Reader.ReadInt8()
+    ElementalTags = Reader.ReadInt32()
     IsBindable = Reader.ReadBool()
     Name = ObjData(ObjIndex).Name
     GrhIndex = ObjData(ObjIndex).GrhIndex
@@ -4314,19 +4417,19 @@ Private Sub HandleChangeInventorySlot()
 
     End If
     
-    Call ModGameplayUI.SetInvItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo, IsBindable)
+    Call ModGameplayUI.SetInvItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo, ElementalTags, IsBindable)
     
     If frmComerciar.visible Then
-        Call frmComerciar.InvComUsu.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+        Call frmComerciar.InvComUsu.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, ElementalTags, podrausarlo)
 
     ElseIf frmBancoObj.visible Then
-        Call frmBancoObj.InvBankUsu.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+        Call frmBancoObj.InvBankUsu.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, ElementalTags, podrausarlo)
         
     ElseIf frmBancoCuenta.visible Then
-        Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+        Call frmBancoCuenta.InvBankUsuCuenta.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, ElementalTags, podrausarlo)
     
     ElseIf frmCrafteo.visible Then
-        Call frmCrafteo.InvCraftUser.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, podrausarlo)
+        Call frmCrafteo.InvCraftUser.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, ElementalTags, podrausarlo)
     End If
 
     Exit Sub
@@ -4361,6 +4464,7 @@ Private Sub HandleChangeBankSlot()
     With BankSlot
         Slot = Reader.ReadInt8()
         .ObjIndex = Reader.ReadInt16()
+        .ElementalTags = Reader.ReadInt32()
         .Amount = Reader.ReadInt16()
         .Valor = Reader.ReadInt32()
         .PuedeUsar = Reader.ReadInt8()
@@ -4374,7 +4478,7 @@ Private Sub HandleChangeBankSlot()
             .Def = ObjData(.ObjIndex).MaxDef
         End If
         
-        Call frmBancoObj.InvBoveda.SetItem(Slot, .ObjIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        Call frmBancoObj.InvBoveda.SetItem(Slot, .ObjIndex, .Amount, .Equipped, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .valor, .Name, .ElementalTags, .PuedeUsar)
 
     End With
     
@@ -4480,12 +4584,6 @@ Private Sub HandleBlacksmithWeapons()
     
     For i = 1 To count
         ArmasHerrero(i).Index = Reader.ReadInt16()
-        ' tmp = ObjData(ArmasHerrero(i).Index).name        'Get the object's name
-        ArmasHerrero(i).LHierro = Reader.ReadInt16()  'The iron needed
-        ArmasHerrero(i).LPlata = Reader.ReadInt16()    'The silver needed
-        ArmasHerrero(i).LOro = Reader.ReadInt16()    'The gold needed
-        ArmasHerrero(i).Coal = Reader.ReadInt16()   'The coal needed
-        ' Call frmHerrero.lstArmas.AddItem(tmp)
     Next i
     
     For i = i To UBound(ArmasHerrero())
@@ -4524,12 +4622,6 @@ Private Sub HandleBlacksmithArmors()
     'Call frmHerrero.lstArmaduras.Clear
     
     For i = 1 To count
-        tmp = Reader.ReadString8()         'Get the object's name
-        DefensasHerrero(i).LHierro = Reader.ReadInt16()   'The iron needed
-        DefensasHerrero(i).LPlata = Reader.ReadInt16()   'The silver needed
-        DefensasHerrero(i).LOro = Reader.ReadInt16()   'The gold needed
-        DefensasHerrero(i).Coal = Reader.ReadInt16()   'The coal needed
-        ' Call frmHerrero.lstArmaduras.AddItem(tmp)
         DefensasHerrero(i).Index = Reader.ReadInt16()
     Next i
         
@@ -4549,11 +4641,7 @@ Private Sub HandleBlacksmithArmors()
         tmpObj = ObjData(DefensasHerrero(i).Index)
         
         If tmpObj.ObjType = 3 Then
-           
             ArmadurasHerrero(a).Index = DefensasHerrero(i).Index
-            ArmadurasHerrero(a).LHierro = DefensasHerrero(i).LHierro
-            ArmadurasHerrero(a).LPlata = DefensasHerrero(i).LPlata
-            ArmadurasHerrero(a).LOro = DefensasHerrero(i).LOro
             a = a + 1
 
         End If
@@ -4561,18 +4649,12 @@ Private Sub HandleBlacksmithArmors()
         ' Escudos (16), Objetos Magicos (21) y Anillos (35) van en la misma lista
         If tmpObj.ObjType = 16 Or tmpObj.ObjType = 35 Or tmpObj.ObjType = 21 Or tmpObj.ObjType = 100 Or tmpObj.ObjType = 30 Then
             EscudosHerrero(e).Index = DefensasHerrero(i).Index
-            EscudosHerrero(e).LHierro = DefensasHerrero(i).LHierro
-            EscudosHerrero(e).LPlata = DefensasHerrero(i).LPlata
-            EscudosHerrero(e).LOro = DefensasHerrero(i).LOro
             e = e + 1
 
         End If
 
         If tmpObj.ObjType = 17 Then
             CascosHerrero(c).Index = DefensasHerrero(i).Index
-            CascosHerrero(c).LHierro = DefensasHerrero(i).LHierro
-            CascosHerrero(c).LPlata = DefensasHerrero(i).LPlata
-            CascosHerrero(c).LOro = DefensasHerrero(i).LOro
             c = c + 1
 
         End If
@@ -4586,6 +4668,35 @@ Private Sub HandleBlacksmithArmors()
 errhandler:
 
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithArmors", Erl)
+    
+
+End Sub
+
+
+Private Sub HandleBlacksmithExtraObjects()
+
+    
+    On Error GoTo ErrHandler
+    
+    Dim count As Integer
+
+    Dim i     As Long
+
+    Dim tmp   As String
+    
+    count = Reader.ReadInt16()
+    
+    Call frmHerrero.lstArmas.Clear
+    
+    For i = 1 To count
+        RunasElementalesHerrero(i).Index = Reader.ReadInt16()
+    Next i
+    
+    Exit Sub
+
+ErrHandler:
+
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleBlacksmithExtraObjects", Erl)
     
 
 End Sub
@@ -4853,9 +4964,11 @@ Private Sub HandleChangeNPCInventorySlot()
         .MaxHit = ObjData(.ObjIndex).MaxHit
         .MinHit = ObjData(.ObjIndex).MinHit
         .Def = ObjData(.ObjIndex).MaxDef
+        .ElementalTags = Reader.ReadInt32()
         .PuedeUsar = Reader.ReadInt8()
         
-        Call frmComerciar.InvComNpc.SetItem(Slot, .ObjIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .Valor, .Name, .PuedeUsar)
+        
+        Call frmComerciar.InvComNpc.SetItem(Slot, .ObjIndex, .Amount, 0, .GrhIndex, .ObjType, .MaxHit, .MinHit, .Def, .valor, .Name, .ElementalTags, .PuedeUsar)
     End With
     
     Exit Sub
@@ -5919,6 +6032,7 @@ Private Sub HandleChangeUserTradeSlot()
     Dim cantidad   As Integer
     Dim grhItem    As Long
     Dim ObjIndex   As Integer
+    Dim ElementalTags As Long
 
     If miOferta Then
         Dim OroAEnviar As Long
@@ -5933,9 +6047,10 @@ Private Sub HandleChangeUserTradeSlot()
                 nombreItem = Reader.ReadString8
                 grhItem = Reader.ReadInt32
                 cantidad = Reader.ReadInt32
+                ElementalTags = Reader.ReadInt32
 
                 If cantidad > 0 Then
-                    Call frmComerciarUsu.InvUserSell.SetItem(i, ObjIndex, cantidad, 0, grhItem, 0, 0, 0, 0, 0, nombreItem, 0)
+                    Call frmComerciarUsu.InvUserSell.SetItem(i, ObjIndex, cantidad, 0, grhItem, 0, 0, 0, 0, 0, nombreItem, ElementalTags, 0)
 
                 End If
 
@@ -5955,9 +6070,10 @@ Private Sub HandleChangeUserTradeSlot()
                 nombreItem = Reader.ReadString8
                 grhItem = Reader.ReadInt32
                 cantidad = Reader.ReadInt32
-
+                ElementalTags = Reader.ReadInt32
+                
                 If cantidad > 0 Then
-                    Call frmComerciarUsu.InvOtherSell.SetItem(i, ObjIndex, cantidad, 0, grhItem, 0, 0, 0, 0, 0, nombreItem, 0)
+                    Call frmComerciarUsu.InvOtherSell.SetItem(i, ObjIndex, cantidad, 0, grhItem, 0, 0, 0, 0, 0, nombreItem, ElementalTags, 0)
 
                 End If
 
@@ -6580,21 +6696,23 @@ Private Sub HandleSpeedToChar()
     On Error GoTo HandleSpeedToChar_Err
 
     Dim CharIndex As Integer
-
     Dim Speeding  As Single
      
     CharIndex = Reader.ReadInt16()
     Speeding = Reader.ReadReal32()
-   
+
+    ' (Opcional defensivo)
+    If CharIndex < LBound(charlist) Or CharIndex > UBound(charlist) Then Exit Sub
+
     charlist(CharIndex).Speeding = Speeding
+    Call ApplySpeedingToChar(CharIndex)   ' <- actualiza .speed de las anims
     
     Exit Sub
 
 HandleSpeedToChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSpeedToChar", Erl)
-    
-    
 End Sub
+
 Private Sub HandleNieveToggle()
 
     'Remove packet ID
@@ -7407,32 +7525,55 @@ Private Sub HandleCommerceRecieveChatMessage()
 End Sub
 
 Private Sub HandleDoAnimation()
-    
-    On Error GoTo HandleCharacterChange_Err
-    
+
+    On Error GoTo HandleDoAnimation_Err
+
     Dim CharIndex As Integer
-
-    Dim TempInt   As Integer
-
-    Dim headIndex As Integer
-
+    Dim oldWalk   As Grh
+    Dim keepStart As Long
     CharIndex = Reader.ReadInt16()
-    
+
     With charlist(CharIndex)
+        ' Guardar el walk anterior ANTES de cambiar el Body
+        oldWalk = .Body.Walk(.Heading)
+
         .AnimatingBody = Reader.ReadInt16()
+
+        ' Calcular el "started" preservando fase si ya estaba animando
+        If oldWalk.started > 0 And .Moving Then
+            keepStart = SyncGrhPhase(oldWalk, BodyData(.AnimatingBody).Walk(.Heading).GrhIndex)
+        Else
+            keepStart = FrameTime
+        End If
+
+        ' Aplicar el cambio de Body y setear started preservado
         .Body = BodyData(.AnimatingBody)
-        'Start animation
-        .Body.Walk(.Heading).started = FrameTime
-        .Body.Walk(.Heading).Loops = 0
+
+        If .Body.Walk(.Heading).started = 0 Or keepStart <> 0 Then
+            .Body.Walk(.Heading).started = keepStart
+                        ' Hacer que la animación de casteo sea de UNA SOLA pasada.
+            ' Si queda en INFINITE_LOOPS nunca vuelve al idle.
+            .Body.Walk(.Heading).Loops = 0
+
+            ' (opcional) evitar que arma/escudo queden loopeando durante el cast
+            If .Arma.WeaponWalk(.Heading).GrhIndex <> 0 Then .Arma.WeaponWalk(.Heading).Loops = 0
+            If .Escudo.ShieldWalk(.Heading).GrhIndex <> 0 Then .Escudo.ShieldWalk(.Heading).Loops = 0
+
+        End If
+
+        ' Mantener arma/escudo en fase con el cuerpo (solo si están “apagados”)
+        If .Arma.WeaponWalk(.Heading).started = 0 Then
+            .Arma.WeaponWalk(.Heading).started = .Body.Walk(.Heading).started
+        End If
+        If .Escudo.ShieldWalk(.Heading).started = 0 Then
+            .Escudo.ShieldWalk(.Heading).started = .Body.Walk(.Heading).started
+        End If
+
         .Idle = False
     End With
-    
     Exit Sub
-
-HandleCharacterChange_Err:
+HandleDoAnimation_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDoAnimation", Erl)
-    
-    
 End Sub
 
 Private Sub HandleOpenCrafting()
@@ -7447,7 +7588,7 @@ Private Sub HandleOpenCrafting()
     Dim i As Long
     For i = 1 To MAX_INVENTORY_SLOTS
           With frmMain.Inventario
-                Call frmCrafteo.InvCraftUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .Valor(i), .ItemName(i), .PuedeUsar(i))
+                Call frmCrafteo.InvCraftUser.SetItem(i, .ObjIndex(i), .Amount(i), .Equipped(i), .GrhIndex(i), .ObjType(i), .MaxHit(i), .MinHit(i), .Def(i), .valor(i), .ItemName(i), .ElementalTags(i), .PuedeUsar(i))
             End With
     Next i
     For i = 1 To MAX_SLOTS_CRAFTEO
@@ -7471,7 +7612,7 @@ Private Sub HandleCraftingItem()
     
     If ObjIndex <> 0 Then
         With ObjData(ObjIndex)
-            Call frmCrafteo.InvCraftItems.SetItem(Slot, ObjIndex, 1, 0, .GrhIndex, .ObjType, 0, 0, 0, .Valor, .Name, 0)
+            Call frmCrafteo.InvCraftItems.SetItem(Slot, ObjIndex, 1, 0, .GrhIndex, .ObjType, 0, 0, 0, .valor, .Name, .ElementalTags, 0)
         End With
     Else
         Call frmCrafteo.InvCraftItems.ClearSlot(Slot)
@@ -7487,7 +7628,7 @@ Private Sub HandleCraftingCatalyst()
     
     If ObjIndex <> 0 Then
         With ObjData(ObjIndex)
-            Call frmCrafteo.InvCraftCatalyst.SetItem(1, ObjIndex, Amount, 0, .GrhIndex, .ObjType, 0, 0, 0, .Valor, .Name, 0)
+            Call frmCrafteo.InvCraftCatalyst.SetItem(1, ObjIndex, Amount, 0, .GrhIndex, .ObjType, 0, 0, 0, .valor, .Name, .ElementalTags, 0)
         End With
     Else
         Call frmCrafteo.InvCraftCatalyst.ClearSlot(1)
@@ -7888,80 +8029,112 @@ End Sub
 
 #If PYMMO = 0 Then
     
-Public Sub HandleAccountCharacterList()
+    Public Sub HandleAccountCharacterList()
 
-    CantidadDePersonajesEnCuenta = Reader.ReadInt
+        CantidadDePersonajesEnCuenta = Reader.ReadInt
 
-    Dim ii As Byte
-     'name, head_id, class_id, body_id, pos_map, pos_x, pos_y, level, status, helmet_id, shield_id, weapon_id, guild_index, is_dead, is_sailing
-    For ii = 1 To MAX_PERSONAJES_EN_CUENTA
-        Pjs(ii).nombre = ""
-        Pjs(ii).Head = 0 ' si is_sailing o muerto, cabeza en 0
-        Pjs(ii).Clase = 0
-        Pjs(ii).Body = 0
-        Pjs(ii).Mapa = 0
-        Pjs(ii).PosX = 0
-        Pjs(ii).PosY = 0
-        Pjs(ii).Nivel = 0
-        Pjs(ii).Criminal = 0
-        Pjs(ii).Casco = 0
-        Pjs(ii).Escudo = 0
-        Pjs(ii).Arma = 0
-        Pjs(ii).ClanName = ""
-        Pjs(ii).NameMapa = ""
-    Next ii
-    
-    For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
-        Pjs(ii).nombre = Reader.ReadString8
-        Pjs(ii).Body = Reader.ReadInt
-        Pjs(ii).Head = Reader.ReadInt
-        Pjs(ii).Clase = Reader.ReadInt
-        Pjs(ii).Mapa = Reader.ReadInt
-        Pjs(ii).PosX = Reader.ReadInt
-        Pjs(ii).PosY = Reader.ReadInt
-        Pjs(ii).Nivel = Reader.ReadInt
-        Pjs(ii).Criminal = Reader.ReadInt
-        Pjs(ii).Casco = Reader.ReadInt
-        Pjs(ii).Escudo = Reader.ReadInt
-        Pjs(ii).Arma = Reader.ReadInt
-        Pjs(ii).ClanName = "" ' "<" & "pepito" & ">"
+        Dim ii As Byte
 
-    Next ii
+        For ii = 1 To MAX_PERSONAJES_EN_CUENTA
+            Pjs(ii).nombre = ""
+            Pjs(ii).Head = 0 ' si is_sailing o muerto, cabeza en 0
+            Pjs(ii).Clase = 0
+            Pjs(ii).Body = 0
+            Pjs(ii).Mapa = 0
+            Pjs(ii).PosX = 0
+            Pjs(ii).PosY = 0
+            Pjs(ii).Nivel = 0
+            Pjs(ii).Criminal = 0
+            Pjs(ii).Casco = 0
+            Pjs(ii).Escudo = 0
+            Pjs(ii).Arma = 0
+            Pjs(ii).ClanName = ""
+            Pjs(ii).NameMapa = ""
+            Pjs(ii).Backpack = 0
+        Next ii
     
-    Dim i As Long
-    For i = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
-        Select Case Pjs(i).Criminal
-            Case 0 'Criminal
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(50).r, ColoresPJ(50).G, ColoresPJ(50).b)
-                Pjs(i).priv = 0
-            Case 1 'Ciudadano
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(49).r, ColoresPJ(49).G, ColoresPJ(49).b)
-                Pjs(i).priv = 0
-            Case 2 'Caos
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(6).r, ColoresPJ(6).G, ColoresPJ(6).b)
-                Pjs(i).priv = 0
-            Case 3 'Armada
-                Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(8).r, ColoresPJ(8).G, ColoresPJ(8).b)
-                Pjs(i).priv = 0
-            Case Else
-        End Select
-    Next i
+        For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+            Pjs(ii).nombre = Reader.ReadString8
+            Pjs(ii).Body = Reader.ReadInt
+            Pjs(ii).Head = Reader.ReadInt
+            Pjs(ii).Clase = Reader.ReadInt
+            Pjs(ii).Mapa = Reader.ReadInt
+            Pjs(ii).PosX = Reader.ReadInt
+            Pjs(ii).PosY = Reader.ReadInt
+            Pjs(ii).Nivel = Reader.ReadInt
+            Pjs(ii).Criminal = Reader.ReadInt
+            Pjs(ii).Casco = Reader.ReadInt
+            Pjs(ii).Escudo = Reader.ReadInt
+            Pjs(ii).Arma = Reader.ReadInt
+            Pjs(ii).Backpack = Reader.ReadInt
+            Pjs(ii).ClanName = ""
+
+        Next ii
     
+        Dim i As Long
+
+        For i = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+
+            Select Case Pjs(i).Criminal
+
+                Case 0 'Criminal
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(50).r, ColoresPJ(50).G, _
+                            ColoresPJ(50).b)
+                    Pjs(i).priv = 0
+
+                Case 1 'Ciudadano
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(49).r, ColoresPJ(49).G, _
+                            ColoresPJ(49).b)
+                    Pjs(i).priv = 0
+
+                Case 2 'Caos
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(6).r, ColoresPJ(6).G, _
+                            ColoresPJ(6).b)
+                    Pjs(i).priv = 0
+
+                Case 3 'Armada
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(8).r, ColoresPJ(8).G, _
+                            ColoresPJ(8).b)
+                    Pjs(i).priv = 0
+
+                Case 4 'consejero
+                
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(1).r, ColoresPJ(1).G, _
+                            ColoresPJ(1).b)
+                
+                Case 5 'semi dios
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(3).r, ColoresPJ(3).G, _
+                            ColoresPJ(3).b)
+                
+                Case 6 'dios
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(4).r, ColoresPJ(4).G, _
+                            ColoresPJ(4).b)
+                
+                Case 7 'admin
+                    Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(5).r, ColoresPJ(5).G, _
+                            ColoresPJ(5).b)
+
+                Case Else 'es raro o rolemaster
+                
+            End Select
+
+        Next i
     
-    AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA
+        AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA
    
-    If CantidadDePersonajesEnCuenta > 0 Then
-        PJSeleccionado = 1
-        LastPJSeleccionado = 1
+        If CantidadDePersonajesEnCuenta > 0 Then
+            PJSeleccionado = 1
+            LastPJSeleccionado = 1
         
-        If Pjs(1).Mapa <> 0 Then
-            Call SwitchMap(Pjs(1).Mapa)
-            RenderCuenta_PosX = Pjs(1).PosX
-            RenderCuenta_PosY = Pjs(1).PosY
+            If Pjs(1).Mapa <> 0 Then
+                Call SwitchMap(Pjs(1).Mapa)
+                RenderCuenta_PosX = Pjs(1).PosX
+                RenderCuenta_PosY = Pjs(1).PosY
+            End If
         End If
-    End If
 
-    Call LoadCharacterSelectionScreen
-End Sub
+        Call LoadCharacterSelectionScreen
+    End Sub
+
 #End If
 

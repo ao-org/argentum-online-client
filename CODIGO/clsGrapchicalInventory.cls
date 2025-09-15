@@ -43,6 +43,7 @@ Option Explicit
 
 Private isInventory            As Boolean ' Para separar al inventario del main, de los otros
 
+
 Dim InvMaxSlots                As Integer
 
 Dim InvWidth                   As Integer
@@ -96,12 +97,6 @@ Public Event ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x A
 Const ITEM_SIZE = 32 ' El ancho de los items (nunca debería cambiar
 
 Const LETRA_GRANDE_Y = 20 ' Offset Y de cantidad de items (letra grande)
-
-Const EQUIPPED_X = 22 ' Offset X del caracter de equipado
-
-Const EQUIPPED_Y = -2 ' Offset Y del caracter de equipado
-
-Const EQUIPPED_CHARACTER = "+" ' Caracter de item equipado
 
 Const SELECTION_BOX_W = 34 ' Ancho de la cajita de selección (se centra automáticamente)
 
@@ -409,6 +404,19 @@ Equipped_Err:
     
 End Property
 
+Public Property Get ElementalTags(ByVal Slot As Byte) As Long
+    On Error GoTo ElementalTags_Err
+    
+    ElementalTags = UserInventory(Slot).ElementalTags
+
+    Exit Property
+
+ElementalTags_Err:
+    Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.ElementalTags", Erl)
+    Resume Next
+
+End Property
+
 Public Property Get PuedeUsar(ByVal Slot As Byte) As Byte
     
     'Retrieves True if the item at the given pos is eqiupped
@@ -502,7 +510,7 @@ ReDraw_Err:
     
 End Sub
 
-Public Sub SetItem(ByVal Slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount As Integer, ByVal eEquipped As Byte, ByVal eGrhIndex As Long, ByVal eObjType As Integer, ByVal eMaxHit As Integer, ByVal eMinHit As Integer, ByVal eDef As Integer, ByVal eValor As Single, ByVal eName As String, ByVal PuedeUsar As Byte)
+Public Sub SetItem(ByVal Slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount As Integer, ByVal eEquipped As Byte, ByVal eGrhIndex As Long, ByVal eObjType As Integer, ByVal eMaxHit As Integer, ByVal eMinHit As Integer, ByVal eDef As Integer, ByVal eValor As Single, ByVal eName As String, ByVal ElementalTags As Long, ByVal PuedeUsar As Byte)
 
     'Sets all data for a given inventory slot
     
@@ -523,7 +531,7 @@ Public Sub SetItem(ByVal Slot As Byte, ByVal eOBJIndex As Integer, ByVal eAmount
         .ObjType = eObjType
         .Valor = eValor
         .PuedeUsar = PuedeUsar
-
+        .ElementalTags = ElementalTags
     End With
 
     InvNeedsRedraw = True
@@ -552,6 +560,7 @@ Public Sub ClearSlot(ByVal Slot As Byte)
         .ObjType = 0
         .Valor = 0
         .PuedeUsar = 0
+        .ElementalTags = 0
 
     End With
 
@@ -654,17 +663,33 @@ End Function
 Public Sub DrawInventory()
     
     On Error GoTo DrawInventory_Err
+
+    Dim i              As Byte
+
+    Dim x              As Integer
+
+    Dim y              As Integer
     
+    Dim tmpString                             As String
 
-    Dim i         As Byte
-
-    Dim x         As Integer
-
-    Dim y         As Integer
+    Dim tmpNaturalAndUserCraftedElementalTags As Long
     
-    Dim tmpString As String
+    Dim CORNER_INDEX                          As Integer
 
-    Dim color(3)  As RGBA
+    Dim CORNER_X(3)                           As Integer
+
+    Dim CORNER_Y(3)                           As Integer
+
+    Dim Color(3)                              As RGBA
+
+    CORNER_X(0) = 23
+    CORNER_Y(0) = 0   ' top right
+    CORNER_X(1) = 0
+    CORNER_Y(1) = 0   ' top left
+    CORNER_X(2) = 23
+    CORNER_Y(2) = 21  ' bottom right
+    CORNER_X(3) = 0
+    CORNER_Y(3) = 21  ' bottom left
     
     InvNeedsRedraw = False
 
@@ -692,7 +717,7 @@ Public Sub DrawInventory()
         End If
 
         If InvSelectedItem = i Then
-            Engine_Draw_Box x + SELECTION_BOX_X, y + SELECTION_BOX_Y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(100, 100, 100, 100)
+            Call Engine_Draw_Box(x + SELECTION_BOX_X, y + SELECTION_BOX_Y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(100, 100, 100, 100))
         End If
             
         If UserInventory(i).GrhIndex Then
@@ -718,25 +743,75 @@ Public Sub DrawInventory()
     
                     Engine_Text_Render tmpString, x + HALF_ITEM_SIZE - Engine_Text_Width(tmpString, True) * 0.5, y + LETRA_GRANDE_Y, color, 1
                 End If
+            End If
+        
+            If UserInventory(i).ElementalTags > 0 Or ObjData(UserInventory(i).ObjIndex).ElementalTags > 0 Then
+                ' Slot corners relative positions
+                CORNER_INDEX = 0
+                
+                tmpNaturalAndUserCraftedElementalTags = UserInventory(i).ElementalTags Or ObjData(UserInventory(i).ObjIndex).ElementalTags
+                
+                ' Now check tags in a fixed order
+                If tmpNaturalAndUserCraftedElementalTags And CLng(e_ElementalTags.Fire) Then
+                    Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Fire, x + CORNER_X(CORNER_INDEX), y + CORNER_Y(CORNER_INDEX), COLOR_WHITE())
+                    CORNER_INDEX = CORNER_INDEX + 1
+                End If
+                
+                If tmpNaturalAndUserCraftedElementalTags And CLng(e_ElementalTags.Water) Then
+                    Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Water, x + CORNER_X(CORNER_INDEX), y + CORNER_Y(CORNER_INDEX), COLOR_WHITE())
+                    CORNER_INDEX = CORNER_INDEX + 1
+                End If
+                
+                If tmpNaturalAndUserCraftedElementalTags And CLng(e_ElementalTags.Earth) Then
+                    Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Earth, x + CORNER_X(CORNER_INDEX), y + CORNER_Y(CORNER_INDEX), COLOR_WHITE())
+                    CORNER_INDEX = CORNER_INDEX + 1
+                End If
+                
+                If tmpNaturalAndUserCraftedElementalTags And CLng(e_ElementalTags.Wind) Then
+                    Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Wind, x + CORNER_X(CORNER_INDEX), y + CORNER_Y(CORNER_INDEX), COLOR_WHITE())
+                    CORNER_INDEX = CORNER_INDEX + 1
+                End If
+            End If
+            
+            If UserInventory(i).Equipped Then
+            
+            
 
-                If UserInventory(i).Equipped Then
-                    Call RGBAList(color, 255, 0, 0)
-                    tmpString = EQUIPPED_CHARACTER
-                    Engine_Text_Render tmpString, x + EQUIPPED_X, y + EQUIPPED_Y, color, 1
-                End If
-                Dim cdTime As Single: cdTime = GetLongerCdPercent(i)
-                If cdTime > 0 And cdTime < 1 Then
-                    Call renderCooldownsInventory(x, y, cdTime)
+            
+                Select Case EquipmentStyle
+                
+                    Case e_EquipmentStyle.Modern
                     
-                End If
+                        Call Engine_Draw_Box(x, y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(RED_SHADER, GREEN_SHADER, BLUE_SHADER, SHADER_TRANSPARENCY))
+                        
+                    Case e_EquipmentStyle.Classic
+
+                        Call RGBAList(Color, 255, 0, 0)
+                        Engine_Text_Render EQUIPMENT_CARACTER, x + X_OFFSET, y + Y_OFFSET, Color, 1
+                    
+                    Case Else
+                    
+                        Call RGBAList(Color, 255, 0, 0)
+                        Engine_Text_Render EQUIPMENT_CARACTER, x + X_OFFSET, y + Y_OFFSET, Color, 1
+                
+                End Select
+             
+            End If
+            
+            Dim cdTime As Single: cdTime = GetLongerCdPercent(i)
+
+            If cdTime > 0 And cdTime < 1 Then
+                Call renderCooldownsInventory(x, y, cdTime)
             End If
         End If
 
     Next i
+
     Exit Sub
 
 DrawInventory_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.DrawInventory", Erl)
+
     Resume Next
     
 End Sub

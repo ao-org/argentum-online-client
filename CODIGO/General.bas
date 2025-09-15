@@ -1051,7 +1051,13 @@ Sub Main()
 
 On Error GoTo Main_Err
 
+
     Call parse_cmd_line_args
+    
+    'Must be at the top to make sure te resources password is loaded before we attempt to load anything
+    'TODO: Remove the PASSWORD, it's useless and slow and remove the call to DoCrypt_Data bytArr, Passwd
+    'Moving forward use only dycryptosys API Decompress_Data_B bytArr, InfoHead.lngFileSizeUncompressed
+    Call CheckResources
     
 #If REMOTE_CLOSE Then
     Call DoLogin("", "", False)
@@ -1065,7 +1071,7 @@ On Error GoTo Main_Err
     Call Frmcarga.Show
     Set FormParser = New clsCursor
     Call FormParser.Init
-    Call CheckResources
+    
     If Not ValidateResources Then
         Call MsgBox(JsonLanguage.Item("MENSAJEBOX_RECURSOS_INVALIDOS"), vbApplicationModal + vbInformation + vbOKOnly, JsonLanguage.Item("MENSAJEBOX_TITULO_RECURSOS_INVALIDOS"))
         End
@@ -1738,13 +1744,15 @@ End Function
 Public Function LoadInterface(filename As String, _
                               Optional localize As Boolean = True) As IPicture
     On Error Resume Next
+    Debug.Assert ResourcesPassword <> "" ' Bad, you're trying to load the asset before loading the ResourcesPassword
+    
     Dim localizedName As String
     localizedName = filename
     If localize Then
         localizedName = GetLocalizedFilename(language, filename)
 
     End If
-
+    
     If FileName <> "" Then
         #If Compresion = 1 Then
             Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(localizedName), ResourcesPassword)

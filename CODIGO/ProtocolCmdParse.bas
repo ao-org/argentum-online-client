@@ -442,11 +442,17 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
 
                     With FontTypes(FontTypeNames.FONTTYPE_INFOIAO)
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_TU_DESCRIPCION_NO"), .red, .green, .blue, .bold, .italic)
-
                     End With
-
                     Exit Sub
 
+                End If
+                
+                
+                If InStr(1, ArgumentosRaw, "-") Then
+                    With FontTypes(FontTypeNames.FONTTYPE_INFOIAO)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_DESCRIPCION_GUION_INVALIDO"), .red, .green, .blue, .bold, .italic)
+                    End With
+                    Exit Sub
                 End If
                 
                 Call WriteChangeDescription(ArgumentosRaw)
@@ -1224,7 +1230,14 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                     ' End If
                 End If
-                
+             Case "/SUMALL"
+                If EsGM Then
+                    If LenB(ArgumentosRaw) > 0 Then
+                        Call WriteSummonCharMulti(ArgumentosRaw)
+                    Else
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
+                    End If
+                End If
             Case "/CC"
                 If EsGM Then
                     Call WriteSpawnListRequest

@@ -258,10 +258,15 @@ Public Type Char
     Head As HeadData
     Casco As HeadData
     Cart As BodyData
+    BackPack As BodyData
+    tmpBackPack As Integer
     Arma As WeaponAnimData
     Escudo As ShieldAnimData
     MovArmaEscudo As Boolean
+    
     HasCart As Boolean
+    HasBackpack As Boolean
+    
     AnimatingBody As Integer
 
     ActiveAnimation As tAnimationPlaybackState
@@ -354,6 +359,7 @@ End Type
 Public Type Obj
     ObjIndex As Integer
     Amount As Integer
+    ElementalTags As Long
 End Type
 
 'Tipo de las celdas del mapa
@@ -1474,3 +1480,25 @@ Public Sub UpdatePlayerRoof()
         Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_NIEVEIN, SND_NIEVEOUT))
     End If
 End Sub
+Private Function SyncGrhPhase(ByRef Grh As Grh, ByVal newGrhIndex As Long) As Long
+    Dim oldNum As Long, elapsed As Long, phase As Long
+    If Grh.started <= 0 Then SyncGrhPhase = FrameTime: Exit Function
+    oldNum = GrhData(Grh.GrhIndex).NumFrames
+    If oldNum <= 0 Then SyncGrhPhase = FrameTime: Exit Function
+    elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
+    phase = elapsed Mod oldNum
+    SyncGrhPhase = FrameTime - (phase * Grh.speed)
+End Function
+
+Public Sub InitGrhPreserve(ByRef Grh As Grh, ByVal GrhIndex As Long, _
+                           Optional ByVal Loops As Integer = INFINITE_LOOPS)
+    Dim keepStarted As Long
+    If Grh.GrhIndex <> 0 And Grh.started > 0 Then
+        keepStarted = SyncGrhPhase(Grh, GrhIndex)
+    Else
+        keepStarted = -1
+    End If
+    Call InitGrh(Grh, GrhIndex, keepStarted, Loops)
+End Sub
+
+
