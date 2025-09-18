@@ -551,7 +551,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 UserStats.Raza = frmCrearPersonaje.lstRaza.ListIndex + 1
                 UserStats.Sexo = frmCrearPersonaje.lstGenero.ListIndex + 1
                 UserStats.Clase = frmCrearPersonaje.lstProfesion.ListIndex + 1
-                UserStats.Hogar = frmCrearPersonaje.lstHogar.ListIndex + 1
+                UserStats.Hogar = 7
                
                 If frmCrearPersonaje.CheckData() Then
                     UserPassword = CuentaPassword
@@ -891,7 +891,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 UserStats.Raza = frmCrearPersonaje.lstRaza.ListIndex + 1
                 UserStats.Sexo = frmCrearPersonaje.lstGenero.ListIndex + 1
                 UserStats.Clase = frmCrearPersonaje.lstProfesion.ListIndex + 1
-                UserStats.Hogar = frmCrearPersonaje.lstHogar.ListIndex + 1
+                UserStats.Hogar = 7
                
                 If frmCrearPersonaje.CheckData() Then
                     UserPassword = CuentaPassword

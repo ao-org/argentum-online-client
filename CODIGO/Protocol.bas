@@ -870,7 +870,7 @@ Public Sub HandleDisconnect()
     UserStats.Sexo = 0
     UserStats.Raza = 0
     MiCabeza = 0
-    UserStats.Hogar = 0
+    UserStats.Hogar = 7
 
     For i = 1 To NUMSKILLS
         UserSkills(i) = 0

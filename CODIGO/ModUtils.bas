@@ -721,10 +721,9 @@ Sub IniciarCrearPj()
     
     
     frmCrearPersonaje.lstHogar.Clear
-    For i = LBound(ListaCiudades()) To UBound(ListaCiudades())
-        frmCrearPersonaje.lstHogar.AddItem ListaCiudades(i)
-    Next i
+    frmCrearPersonaje.lstHogar.AddItem ListaCiudades(eCiudad.cForgat)
     frmCrearPersonaje.lstHogar.ListIndex = 0
+    frmCrearPersonaje.lstHogar.enabled = False  ' opcional, deshabilita el control
     
     
     frmCrearPersonaje.lstProfesion.Clear
