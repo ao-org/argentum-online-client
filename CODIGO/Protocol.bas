@@ -2945,7 +2945,16 @@ Private Sub HandleCharacterCreate()
         .banderaIndex = Reader.ReadInt8()
         .AnimAtaque1 = Reader.ReadInt16()
         
-          
+        'dwarven exoesqueleton exception
+        If .Body.BodyIndex = DwarvenExoesqueletonBody Then
+            weapon = NO_WEAPON
+            Shield = NO_SHIELD
+            helmet = NO_HELMET
+            Cart = NO_CART
+            Backpack = NO_BACKPACK
+            Head = 0
+        End If
+        
         If (.Pos.x <> 0 And .Pos.y <> 0) Then
             If MapData(.Pos.x, .Pos.y).CharIndex = CharIndex Then
                 'Erase the old character from map
@@ -3274,6 +3283,18 @@ Private Sub HandleCharacterChange()
         flags = Reader.ReadInt8()
         .Idle = (flags And &O1)
         .Navegando = (flags And &O2)
+        
+        
+        'exception for dwarven exoesqueleton
+        If .iBody = DwarvenExoesqueletonBody Then
+            .Head = HeadData(0)
+            .HasBackpack = False
+            .HasCart = False
+            .Casco = CascoAnimData(NO_HELMET)
+            .Escudo = ShieldAnimData(NO_SHIELD)
+            .Arma = WeaponAnimData(NO_WEAPON)
+        End If
+        
 
         ' ==================== ANIMACIÓN / FASE ====================
         If .Idle Then
@@ -8068,9 +8089,19 @@ End Sub
             Pjs(ii).Arma = Reader.ReadInt
             Pjs(ii).Backpack = Reader.ReadInt
             Pjs(ii).ClanName = ""
-
         Next ii
-    
+        
+        
+        For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+            If Pjs(ii).Body = DwarvenExoesqueletonBody Then
+                Pjs(ii).Head = 0
+                Pjs(ii).Casco = 0
+                Pjs(ii).Escudo = 0
+                Pjs(ii).Arma = 0
+                Pjs(ii).Backpack = 0
+            End If
+        Next ii
+        
         Dim i As Long
 
         For i = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
