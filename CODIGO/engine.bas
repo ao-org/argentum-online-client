@@ -1652,20 +1652,22 @@ Sub Char_Render(ByVal CharIndex As Long, _
             End If
             
             If .BackPack.AnimateOnIdle = 0 And .BackPack.IdleBody = 0 Then
-                
                 ' Quieto SIN animación: congelar la serie de walk en frame estático
                 .BackPack.Walk(.Heading).Loops = 0
                 .BackPack.Walk(.Heading).started = 0
             Else
-
                 ' Quieto CON animación: disparar (o preservar) idle una sola vez
                 If .BackPack.Walk(.Heading).started = 0 Or .BackPack.Walk(.Heading).Loops <> INFINITE_LOOPS Then
                     Call SetCharIdle(charlist(CharIndex), False)
                 End If
             End If
             
+            Else
+                If .Backpack.BodyIndex <> .tmpBackPack Then
+                    .Backpack = BodyData(.tmpBackPack)
+                End If
         End If
-
+        
         ' --- FIN GUARD ---
 
         Dim dibujaMiembroClan As Boolean

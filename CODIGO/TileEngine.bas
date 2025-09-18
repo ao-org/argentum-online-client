@@ -28,6 +28,8 @@ Public PreguntaLocal         As Boolean
 
 Public PreguntaNUM           As Byte
 
+Public Const DwarvenExoesqueletonBody As Integer = 4993
+
 'Map sizes in tiles
 Public Const XMaxMapSize     As Byte = 100
 
