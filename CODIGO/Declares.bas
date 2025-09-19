@@ -652,6 +652,7 @@ Public UsaMacro                   As Boolean
 Public CnTd                       As Byte
 Public TipoCrafteo()              As tCrafteo
 Public Const MAX_BANCOINVENTORY_SLOTS As Byte = 42
+Public Const MAX_SKINSINVENTORY_SLOTS As Byte = 50
 Public Const MAX_KEYS As Byte = 10
 Public Const MAX_SLOTS_CRAFTEO = 5
 Public Const LoopAdEternum            As Integer = 999
@@ -811,10 +812,17 @@ Public Enum eObjType
     otBotellaLlena = 34
     otManchas = 35          'No se usa
     otpasajes = 36
+    otSkinsWings = 37           'Skins de Alas
     otmapa = 38
+    otSkinsArmours = 39         'Skins de Armaduras
+    otSkinsShields = 40         'Skins de Escudos
+    otSkinsHelmets = 41         'Skins de Cascos o Sombreros, o todo lo que vaya en la cabeza
+    otSkinsWeapons = 42         'Skins Armas
+    otSkinsBoats = 43           'Skins Botes, barcas, galeras, galeones,etc
     OtPozos = 40
     otMonturas = 44
     otRunas = 45
+    otSkinsSpells = 46          'Skins de Hechizos
     OtCorreo = 47
     OtCofre = 48
     OtDonador = 50
@@ -940,6 +948,7 @@ Public Nombres                                  As Boolean
 Public object_angle                             As Single
 'User status vars
 Global OtroInventario(1 To MAX_INVENTORY_SLOTS) As Slot
+Global a_Skins(1 To MAX_BANCOINVENTORY_SLOTS)   As Slot
 Public UserHechizos(1 To MAXHECHI)              As Integer
 Public UserHechizosInterval(1 To MAXHECHI)      As Integer
 Public UserMeditar                              As Boolean

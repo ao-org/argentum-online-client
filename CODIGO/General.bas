@@ -23,6 +23,8 @@ Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 Private Declare Function svb_retlong Lib "steam_vb.dll" (ByVal Number As Long) As Long
 Public Declare Function svb_unlock_achivement Lib "steam_vb.dll" (ByVal Name As String) As Long
 
+Public bSkins As Boolean
+
 Private Type Position
 
     x As Integer

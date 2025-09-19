@@ -2537,6 +2537,11 @@ On Error GoTo Start_Err
                         DrawInventoryUserComercio
                         DrawInventoryOtherComercio
                     End If
+                    
+                    'Utilizo un boolean, para evitar utilizar la propiedad .visible de los formularios, ya que aparentemente instancia el form y baja la performance.
+                    If bSkins Then
+                        DrawInventorySkins
+                    End If
 
                 Case e_state_connect_screen
 #If DXUI Then
@@ -3065,6 +3070,48 @@ DrawInventorysComercio_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.DrawInventorysComercio", Erl)
     Resume Next
     
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : DrawInventorySkins
+' Last Author : [/About] Brian Sabatier (brian.sabatier87@gmail.com - https://github.com/brianirvana/brianirvana)
+' Last Date : 19/9/2025
+' Purpose   :
+'---------------------------------------------------------------------------------------
+
+Public Sub DrawInventorySkins()
+
+Dim InvRect                     As RECT
+
+    ' Sólo dibujamos cuando es necesario
+10  On Error GoTo DrawInventorySkins_Error
+
+20  If Not frmSkins.InvSkins.NeedsRedraw Then Exit Sub
+
+30  InvRect.Left = 0
+40  InvRect.Top = 0
+50  InvRect.Right = frmComerciarUsu.picInv.ScaleWidth
+60  InvRect.Bottom = frmComerciarUsu.picInv.ScaleHeight
+70  RenderCullingRect = InvRect
+    ' Comenzamos la escena
+80  Call Engine_BeginScene
+
+    ' Dibujamos llaves
+90  Call frmSkins.InvSkins.DrawInventory
+
+    ' Presentamos la escena
+100 Call Engine_EndScene(InvRect, frmSkins.interface)
+
+110 RenderCullingRect = GameplayDrawAreaRect
+
+120 On Error GoTo 0
+130 Exit Sub
+
+DrawInventorySkins_Error:
+
+140 Call RegistrarError(Err.Number, Err.Description, "engine.DrawInventorysComercio", Erl)
+150 Resume Next
+
 End Sub
 
 Public Sub DrawInventoryUserComercio()
@@ -4152,19 +4199,20 @@ Public Sub InitializeInventory()
     Set frmComerciarUsu.InvUser = New clsGrapchicalInventory
     Set frmComerciarUsu.InvUserSell = New clsGrapchicalInventory
     Set frmComerciarUsu.InvOtherSell = New clsGrapchicalInventory
-    
     Set frmBancoCuenta.InvBankUsuCuenta = New clsGrapchicalInventory
     Set frmBancoCuenta.InvBovedaCuenta = New clsGrapchicalInventory
-    
     Set FrmKeyInv.InvKeys = New clsGrapchicalInventory
+    Set frmSkins.InvSkins = New clsGrapchicalInventory
     
     Call frmMain.Inventario.Initialize(frmMain.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True, 9)
+    
     Call frmComerciar.InvComUsu.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmComerciar.InvComNpc.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, , 1, 0, 3, 3)
+    
     Call frmComerciarUsu.InvUser.Initialize(frmComerciarUsu.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True)
     Call frmComerciarUsu.InvUserSell.Initialize(frmComerciarUsu.picInvUserSell, 6, , , 0, 0, 3, 3, True)
     Call frmComerciarUsu.InvOtherSell.Initialize(frmComerciarUsu.picInvOtherSell, 6, , , 0, 0, 3, 3, True)
-   
+
     Call frmBancoObj.InvBankUsu.Initialize(frmBancoObj.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmBancoObj.InvBoveda.Initialize(frmBancoObj.interface, MAX_BANCOINVENTORY_SLOTS, 210, 0, 0, 0, 3, 3)
     
@@ -4181,6 +4229,8 @@ Public Sub InitializeInventory()
     Call frmCrafteo.InvCraftUser.Initialize(frmCrafteo.PicInven, MAX_INVENTORY_SLOTS, 210, , 250, 0, 3, 3, True)
     Call frmCrafteo.InvCraftItems.Initialize(frmCrafteo.PicInven, MAX_SLOTS_CRAFTEO, 175, , 25, 180, 3, 3, True)
     Call frmCrafteo.InvCraftCatalyst.Initialize(frmCrafteo.PicInven, 1, 35, 35, 100, 90, 3, 3, True)
+
+    Call frmSkins.InvSkins.Initialize(frmSkins.interface, MAX_SKINSINVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
 
     Exit Sub
 

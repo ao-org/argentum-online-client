@@ -1170,23 +1170,29 @@ End Sub
 '
 ' @param    slot Invetory slot where the item to equip is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteEquipItem(ByVal Slot As Byte)
-        '<EhHeader>
-        On Error GoTo WriteEquipItem_Err
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.eEquipItem)
-102     Call Writer.WriteInt8(Slot)
-        packetCounters.TS_EquipItem = packetCounters.TS_EquipItem + 1
-        Call Writer.WriteInt32(packetCounters.TS_EquipItem)
+Public Sub WriteEquipItem(ByVal Slot As Byte, Optional ByVal bSkin As Boolean = False, Optional ByVal eSkinType As eObjType)
+
+10  On Error GoTo WriteEquipItem_Err
     
-104     Call modNetwork.Send(Writer)
-        '<EhFooter>
-        Exit Sub
+20  Call Writer.WriteInt16(ClientPacketID.eEquipItem)
+30  Call Writer.WriteInt8(Slot)
+40  Call Writer.WriteBool(bSkin)
+
+50  If bSkin Then
+60      Call Writer.WriteInt8(eSkinType)
+70  End If
+
+80  packetCounters.TS_EquipItem = packetCounters.TS_EquipItem + 1
+90  Call Writer.WriteInt32(packetCounters.TS_EquipItem)
+
+100 Call modNetwork.send(Writer)
+
+110 Exit Sub
 
 WriteEquipItem_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEquipItem", Erl)
-        '</EhFooter>
+120 Call Writer.Clear
+130 Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEquipItem", Erl)
+    
 End Sub
 
 ''

@@ -403,6 +403,13 @@ Public Sub SetInvItem(ByVal Slot As Byte, ByVal ObjIndex As Integer, ByVal Amoun
         .IsBindable = IsBindable > 0
     End With
     Call frmMain.Inventario.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, Def, Value, Name, ElementalTags, CanUse)
+
+   On Error GoTo 0
+   Exit Sub
+
+SetInvItem_Error:
+
+    Call Logging.TraceError(Err.Number, Err.Description, "ModGameplayUI.SetInvItem", Erl())
 End Sub
 
 Public Sub SelectItemSlot(ByVal Slot As Integer)

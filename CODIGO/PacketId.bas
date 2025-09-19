@@ -206,6 +206,7 @@ Public Enum ServerPacketID
     eAntiCheatMessage
     eAntiCheatStartSession
     eReportLobbyList
+    eChangeSkinSlot
 #If PYMMO = 0 Then
     eAccountCharacterList
 #End If

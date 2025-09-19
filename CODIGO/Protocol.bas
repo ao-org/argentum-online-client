@@ -494,6 +494,8 @@ On Error GoTo HandleIncomingData_Err
             Call HandleAntiCheatStartSession
         Case ServerPacketID.eReportLobbyList
             Call HandleReportLobbyList
+        Case ServerPacketID.eChangeSkinSlot
+            Call HandleChangeSkinSlot
         #If PYMMO = 0 Then
         Case ServerPacketID.eAccountCharacterList
             Call HandleAccountCharacterList
@@ -4430,6 +4432,10 @@ Private Sub HandleChangeInventorySlot()
     
     ElseIf frmCrafteo.visible Then
         Call frmCrafteo.InvCraftUser.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, ElementalTags, podrausarlo)
+    ElseIf bSkins Then
+        If frmSkins.visible Then
+            Call frmCrafteo.InvCraftUser.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, Name, ElementalTags, podrausarlo)
+        End If
     End If
 
     Exit Sub
@@ -8025,6 +8031,68 @@ On Error GoTo HandleReportLobbyList_Err
     Exit Sub
 HandleReportLobbyList_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDebugResponse", Erl)
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Procedure : HandleChangeSkinSlot
+' Author    : bsabatier
+' Date      : 14/7/2021
+' Purpose   : Skins Visuales de personajes.
+'---------------------------------------------------------------------------------------
+
+Private Sub HandleChangeSkinSlot()
+
+Dim TypeSkin                    As eSkins
+Dim Slot                        As Byte
+Dim ObjIndex                    As Integer
+Dim GrhIndex                    As Long
+Dim Amount                      As Integer
+Dim Equipped                    As Boolean
+Dim Name                        As String
+Dim ObjType                     As Byte
+
+    On Error GoTo HandleChangeSkinSlot_Error
+
+    With Reader
+        Slot = .ReadInt8
+        ObjIndex = .ReadInt16
+        Equipped = .ReadBool
+        
+        GrhIndex = .ReadInt32
+        ObjType = .ReadInt8
+        Name = .ReadString8
+
+        Debug.Print "Skin SLOT: " & Slot & " objIndex: " & ObjIndex & " Amount: " & Amount & " Time: " & Time & " Date: " & Date
+
+        If Slot > 0 Then
+            With a_Skins(Slot)
+                .Amount = Amount
+                .ObjIndex = ObjIndex
+                .ObjType = ObjType
+                .Equipped = Equipped
+                .Name = Name
+                .PuedeUsar = True
+                .GrhIndex = GrhIndex
+            End With
+        End If
+
+        Call Load(frmSkins)
+
+        If Slot > 0 And Amount = 0 Then
+            Call frmSkins.InvSkins.SetItem(Slot, 0, 0, 0, 0, 0, 0, 0, 0, 0, vbNullString, 0, 0)
+        Else
+            Call frmSkins.InvSkins.SetItem(Slot, ObjIndex, Amount, CByte(Equipped), GrhIndex, ObjType, 0, 0, 0, 0, Name, 0, True)
+        End If
+
+    End With
+
+    On Error GoTo 0
+    Exit Sub
+
+HandleChangeSkinSlot_Error:
+
+    Call LogError("Error " & Err.Number & " (" & Err.Description & ") en el procedimiento HandleChangeSkinSlot del módulo Módulo Protocol en la línea: " & Erl())
+
 End Sub
 
 #If PYMMO = 0 Then
