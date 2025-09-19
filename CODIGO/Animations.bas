@@ -1,4 +1,5 @@
 Attribute VB_Name = "Animations"
+Option Explicit
 '    Argentum 20 - Game Client Program
 '    Copyright (C) 2022 - Noland Studios
 '
@@ -31,7 +32,7 @@ End Type
 
 Public Sub UpdateAnimation(ByRef animationState As tAnimationPlaybackState)
 On Error GoTo UpdateAnimation_Err
-    Dim detalTime As Long
+    Dim DeltaTime As Long
     DeltaTime = GetTickCount() - animationState.LastFrameTime
     animationState.LastFrameTime = GetTickCount()
     animationState.ElapsedTime = animationState.ElapsedTime + DeltaTime
@@ -47,6 +48,7 @@ UpdateAnimation_Err:
 End Sub
 
 Sub UpdateClip(ByRef animationState As tAnimationPlaybackState)
+    Dim DeltaTime As Long
     With ComposedFxData(animationState.ComposedAnimation).Clips(animationState.ActiveClip)
         If (animationState.ElapsedTime >= .ClipTime) Then
             DeltaTime = animationState.ElapsedTime Mod .ClipTime
@@ -70,11 +72,12 @@ End Sub
 
 Sub UpdateFx(ByRef animationState As tAnimationPlaybackState)
     On Error GoTo UpdateFx_Err
+    Dim DeltaTime As Long
 100     With GrhData(animationState.CurrentGrh)
 102         If (animationState.ElapsedTime >= .speed) Then
 104             DeltaTime = animationState.ElapsedTime Mod .speed
 106             If (animationState.CurrentClipLoops = 0) Then
-108                 PlaybackState = Stopped
+108                 animationState.PlaybackState = Stopped
                     Exit Sub
                 End If
 110             animationState.CurrentClipLoops = animationState.CurrentClipLoops - 1
