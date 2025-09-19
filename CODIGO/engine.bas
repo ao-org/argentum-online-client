@@ -2586,6 +2586,7 @@ On Error GoTo Start_Err
             Call frmMain.Inventario.ReDraw
         End If
 
+        Sleep 1
         DoEvents
 
         Call modNetwork.Poll
@@ -3090,8 +3091,8 @@ Dim InvRect                     As RECT
 
 30  InvRect.Left = 0
 40  InvRect.Top = 0
-50  InvRect.Right = frmComerciarUsu.picInv.ScaleWidth
-60  InvRect.Bottom = frmComerciarUsu.picInv.ScaleHeight
+50  InvRect.Right = frmSkins.interface.ScaleWidth
+60  InvRect.Bottom = frmSkins.interface.ScaleHeight
 70  RenderCullingRect = InvRect
     ' Comenzamos la escena
 80  Call Engine_BeginScene
@@ -3100,7 +3101,7 @@ Dim InvRect                     As RECT
 90  Call frmSkins.InvSkins.DrawInventory
 
     ' Presentamos la escena
-100 Call Engine_EndScene(InvRect, frmSkins.interface)
+100 Call Engine_EndScene(InvRect, frmSkins.interface.hWnd)
 
 110 RenderCullingRect = GameplayDrawAreaRect
 
@@ -4230,7 +4231,7 @@ Public Sub InitializeInventory()
     Call frmCrafteo.InvCraftItems.Initialize(frmCrafteo.PicInven, MAX_SLOTS_CRAFTEO, 175, , 25, 180, 3, 3, True)
     Call frmCrafteo.InvCraftCatalyst.Initialize(frmCrafteo.PicInven, 1, 35, 35, 100, 90, 3, 3, True)
 
-    Call frmSkins.InvSkins.Initialize(frmSkins.interface, MAX_SKINSINVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
+    Call frmSkins.InvSkins.Initialize(frmSkins.interface, MAX_SKINSINVENTORY_SLOTS, 210, 0, 0, 0, 3, 3, True)
 
     Exit Sub
 

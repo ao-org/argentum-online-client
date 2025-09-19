@@ -26,17 +26,6 @@ Public Enum eNumber_Types
 
 End Enum
 
-Public Enum eSkins
-    None = 0
-    Armors = 1
-    Weapons = 2
-    Shields = 3
-    Helmets = 4
-    Boats = 5
-    Winds = 6
-    BackPack = 7
-End Enum
-
 Public Enum e_LobbyCommandId
     eSetSpawnPos
     eSetMaxLevel

@@ -494,12 +494,13 @@ On Error GoTo HandleIncomingData_Err
             Call HandleAntiCheatStartSession
         Case ServerPacketID.eReportLobbyList
             Call HandleReportLobbyList
-        Case ServerPacketID.eChangeSkinSlot
-            Call HandleChangeSkinSlot
         #If PYMMO = 0 Then
         Case ServerPacketID.eAccountCharacterList
             Call HandleAccountCharacterList
         #End If
+        
+        Case ServerPacketID.eChangeSkinSlot
+            Call HandleChangeSkinSlot
         Case Else
             ' Invalid Message
     End Select
@@ -2717,6 +2718,7 @@ Private Sub HandleShowMessageBox()
     extra = Reader.ReadString8()
     ' Obtener el mensaje a partir del archivo de localización usando el ID
     mensaje = Locale_Parse_ServerMessage(MessageID, extra)
+    Debug.Print "HandleShowMessageBox - extra: " & extra
     
     Select Case g_game_state.State()
         Case e_state_gameplay_screen
@@ -8042,7 +8044,6 @@ End Sub
 
 Private Sub HandleChangeSkinSlot()
 
-Dim TypeSkin                    As eSkins
 Dim Slot                        As Byte
 Dim ObjIndex                    As Integer
 Dim GrhIndex                    As Long
@@ -8062,11 +8063,11 @@ Dim ObjType                     As Byte
         ObjType = .ReadInt8
         Name = .ReadString8
 
-        Debug.Print "Skin SLOT: " & Slot & " objIndex: " & ObjIndex & " Amount: " & Amount & " Time: " & Time & " Date: " & Date
+        Debug.Print "Skin SLOT: " & Slot & " objIndex: " & ObjIndex & " Amount: 1 Time: " & Time & " Date: " & Date
 
         If Slot > 0 Then
             With a_Skins(Slot)
-                .Amount = Amount
+                .Amount = 1
                 .ObjIndex = ObjIndex
                 .ObjType = ObjType
                 .Equipped = Equipped
@@ -8077,13 +8078,7 @@ Dim ObjType                     As Byte
         End If
 
         Call Load(frmSkins)
-
-        If Slot > 0 And Amount = 0 Then
-            Call frmSkins.InvSkins.SetItem(Slot, 0, 0, 0, 0, 0, 0, 0, 0, 0, vbNullString, 0, 0)
-        Else
-            Call frmSkins.InvSkins.SetItem(Slot, ObjIndex, Amount, CByte(Equipped), GrhIndex, ObjType, 0, 0, 0, 0, Name, 0, True)
-        End If
-
+        Call frmSkins.InvSkins.SetItem(Slot, ObjIndex, 1, CByte(Equipped), GrhIndex, ObjType, 0, 0, 0, 0, Name, 0, True)
     End With
 
     On Error GoTo 0

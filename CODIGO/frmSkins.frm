@@ -15,6 +15,7 @@ Begin VB.Form frmSkins
       Italic          =   0   'False
       Strikethrough   =   0   'False
    EndProperty
+   KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    ScaleHeight     =   469.422
    ScaleMode       =   0  'User
@@ -77,8 +78,11 @@ Attribute InvSkins.VB_VarHelpID = -1
 ' Evento al hacer clic en el botón "Cerrar"
 Private Sub cmdCerrar_Click()
     ' Oculta el formulario
-    Call frmSkins.WalletSkins
+    'Call frmSkins.WalletSkins
+    
     bSkins = False
+    Unload Me
+    
 End Sub
 
 ' Evento al cargar el formulario
@@ -102,7 +106,7 @@ Private Sub Form_Load()
     ' Carga la imagen de fondo del formulario desde archivo
     frmSkins.Picture = LoadInterface("ventanaskins.bmp")
     
-
+    bSkins = True
 
     Exit Sub
     
@@ -153,10 +157,9 @@ Static lastItem                 As Long
 
 Dim canEquip                    As Boolean
 
-    If (Me.InvSkins.SelectedItem > 0) And (Me.InvSkins.SelectedItem < MAX_BANCOINVENTORY_SLOTS + 1) Then
+    If (Me.InvSkins.SelectedItem > 0) And (Me.InvSkins.SelectedItem < MAX_SKINSINVENTORY_SLOTS + 1) Then
         lastItem = Me.InvSkins.SelectedItem
-
-        If canEquip Then Call WriteEquipItem(Me.InvSkins.SelectedItem, True, eSkinType)
+        Call WriteEquipItem(Me.InvSkins.SelectedItem, True, eSkinType)
     End If
     
 End Sub
@@ -165,9 +168,13 @@ Private Sub interface_KeyUp(KeyCode As Integer, Shift As Integer)
 
     Select Case KeyCode
         Case BindKeys(e_KeyAction.eEquipItem).KeyCode
-            Call SkinEquip(eObjType.otSkinsArmours)
+            Call SkinEquip(Me.InvSkins.ObjType(Me.InvSkins.SelectedItem)) 'eObjType.otSkinsArmours)
 
         Case Else
             'do nothing?
     End Select
+End Sub
+
+Private Sub interface_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    Call InvSkins.SeleccionarItem(0)
 End Sub

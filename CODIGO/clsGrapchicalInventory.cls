@@ -344,7 +344,6 @@ Public Property Get ObjIndex(ByVal Slot As Byte) As Integer
     
     ObjIndex = UserInventory(Slot).ObjIndex
 
-    
     Exit Property
 
 OBJIndex_Err:
@@ -361,7 +360,6 @@ Public Property Get ObjType(ByVal Slot As Byte) As Integer
     
     ObjType = UserInventory(Slot).ObjType
 
-    
     Exit Property
 
 ObjType_Err:
