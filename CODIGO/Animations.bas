@@ -72,22 +72,32 @@ Sub UpdateFx(ByRef animationState As tAnimationPlaybackState)
     On Error GoTo UpdateFx_Err
 100     With GrhData(animationState.CurrentGrh)
 102         If (animationState.ElapsedTime >= .speed) Then
-104             DeltaTime = animationState.ElapsedTime Mod .speed
-106             If (animationState.CurrentClipLoops = 0) Then
-108                 PlaybackState = Stopped
-                    Exit Sub
+104             Dim loopsCompleted As Long
+106             loopsCompleted = animationState.ElapsedTime \ .speed
+108             DeltaTime = animationState.ElapsedTime Mod .speed
+110             If animationState.CurrentClipLoops = INFINITE_LOOPS Then
+112                 animationState.ElapsedTime = DeltaTime
+            Else
+114                 If loopsCompleted >= animationState.CurrentClipLoops Then
+116                     animationState.CurrentClipLoops = 0
+118                     animationState.ElapsedTime = .speed
+                Else
+120                     animationState.CurrentClipLoops = animationState.CurrentClipLoops - loopsCompleted
+122                     animationState.ElapsedTime = DeltaTime
                 End If
-110             animationState.CurrentClipLoops = animationState.CurrentClipLoops - 1
-112             animationState.ElapsedTime = DeltaTime
             End If
-            Dim progress As Single
-114         progress = animationState.ElapsedTime / .speed
-116         animationState.CurrentFrame = (.NumFrames - 1) * progress + 1
+        End If
+        Dim progress As Single
+124         progress = animationState.ElapsedTime / .speed
+126         animationState.CurrentFrame = (.NumFrames - 1) * progress + 1
+128         If animationState.CurrentClipLoops = 0 And animationState.ElapsedTime >= .speed Then
+130             animationState.PlaybackState = Stopped
+            End If
         End With
         Exit Sub
 UpdateFx_Err:
-118     Call RegistrarError(Err.Number, Err.Description, "animations.UpdateFx", Erl)
-120     Resume Next
+132     Call RegistrarError(Err.Number, Err.Description, "animations.UpdateFx", Erl)
+134     Resume Next
 End Sub
 
 Sub Initialize(ByRef animationState As tAnimationPlaybackState)
@@ -130,7 +140,11 @@ Public Sub StartFx(ByRef animationState As tAnimationPlaybackState, ByVal Fx As 
 114     Call Initialize(animationState)
 116     animationState.Fx = Fx
 118     animationState.CurrentGrh = FxData(Fx).Animacion
-120     animationState.CurrentClipLoops = loopC
+120     If loopC >= 0 Then
+122         animationState.CurrentClipLoops = loopC + 1
+        Else
+124         animationState.CurrentClipLoops = loopC
+        End If
         Exit Sub
 StartFx_Err:
 122     Call RegistrarError(Err.Number, Err.Description, "animations.StartFx", Erl)

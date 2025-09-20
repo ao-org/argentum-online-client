@@ -717,8 +717,17 @@ End Sub
 
 Sub Draw_Animation(ByRef animationState As tAnimationPlaybackState, ByVal x As Integer, ByVal y As Integer, ByVal center As Byte, ByRef rgb_list() As RGBA)
 On Error GoTo Draw_Animation_Err
+    Dim grhIndex As Long
+    grhIndex = animationState.CurrentGrh
+
     If animationState.PlaybackState = Stopped Then
-        Exit Sub
+        If grhIndex = 0 Then
+            Exit Sub
+        End If
+
+        If animationState.ElapsedTime < GrhData(grhIndex).speed Then
+            Exit Sub
+        End If
     End If
     With FxData(GetFx(animationState))
         x = x + .OffsetX
@@ -726,17 +735,17 @@ On Error GoTo Draw_Animation_Err
     End With
     'Center Grh over X,Y pos
     If center Then
-        If GrhData(animationState.CurrentGrh).TileWidth <> 1 Then
-            x = x - Int(GrhData(animationState.CurrentGrh).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
+        If GrhData(grhIndex).TileWidth <> 1 Then
+            x = x - Int(GrhData(grhIndex).TileWidth * (TilePixelWidth \ 2)) + TilePixelWidth \ 2
         End If
 
-        If GrhData(animationState.CurrentGrh).TileHeight <> 1 Then
-            y = y - Int(GrhData(animationState.CurrentGrh).TileHeight * TilePixelHeight) + TilePixelHeight
+        If GrhData(grhIndex).TileHeight <> 1 Then
+            y = y - Int(GrhData(grhIndex).TileHeight * TilePixelHeight) + TilePixelHeight
         End If
     End If
     
     
-    With GrhData(animationState.CurrentGrh)
+    With GrhData(grhIndex)
         Call RGBAList(rgb_list, 255, 255, 255, animationState.AlphaValue)
         With GrhData(.Frames(animationState.CurrentFrame))
             Dim Texture As Direct3DTexture8
