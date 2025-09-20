@@ -4843,7 +4843,7 @@ Public Sub DibujarNPC(PicBox As PictureBox, ByVal Head As Integer, ByVal Body As
         x = (PicBox.ScaleWidth - GrhData(bodyGrh).pixelWidth) \ 2
         y = min(PicBox.ScaleHeight - GrhData(bodyGrh).pixelHeight + BodyData(Body).HeadOffset.y \ 2, (PicBox.ScaleHeight - GrhData(bodyGrh).pixelHeight) \ 2)
         
-        Call Grh_Render_To_Hdc(PicBox, bodyGrh, x, y, False, RGB(11, 11, 11))
+        Call Grh_Render_To_Hdc(PicBox, bodyGrh, x, y, False, RGB(96, 96, 96))
 
         If headGrh Then
             headGrh = GrhData(headGrh).Frames(1)
