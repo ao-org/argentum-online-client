@@ -2584,7 +2584,9 @@ On Error GoTo Start_Err
         DoEvents
 
         Call modNetwork.Poll
-        'Call svb_run_callbacks
+        '#If Api_Steam Then
+            'Call svb_run_callbacks
+        '#end if
         Call UpdateAntiCheat
     Loop
 

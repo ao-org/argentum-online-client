@@ -435,7 +435,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1427,7 +1426,7 @@ Begin VB.Form frmMain
          Caption         =   "Comerciar"
          Visible         =   0   'False
       End
-   End   
+   End
 End
 Attribute VB_Name = "frmMain"
 Attribute VB_GlobalNameSpace = False
@@ -2360,9 +2359,11 @@ Private Sub Form_Unload(Cancel As Integer)
     
     On Error GoTo Form_Unload_Err
     
-    Call svb_shutdown_steam
+    #If Api_Steam Then
+        Call svb_shutdown_steam
+    #End If
+    
     Call DisableURLDetect
-
     
     Exit Sub
 
