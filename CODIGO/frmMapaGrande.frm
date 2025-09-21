@@ -218,6 +218,12 @@ Begin VB.Form frmMapaGrande
          Width           =   435
       End
    End
+   Begin VB.Timer tmrPreview 
+      Enabled         =   0   'False
+      Interval        =   240
+      Left            =   120
+      Top             =   120
+   End
    Begin VB.Label Label9 
       Alignment       =   2  'Center
       BackColor       =   &H00000000&
@@ -444,6 +450,23 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
+
+'=== PREVIEW NPC: estado interno (auto-inyectado) ===
+Private Const PREVIEW_INTERVAL_MS As Integer = 120   ' ~8 fps
+Private Const DIR_TICKS As Integer = 18               ' cada 6 frames, rota dirección
+
+Private pvBody As Integer
+Private pvHead As Integer
+
+Private pvHeading As Integer                          ' 1..4
+Private pvFrame As Integer                            ' 1..N
+Private pvDirTick As Integer
+
+Private pvBaseBody(1 To 4) As Long
+Private pvBaseHead(1 To 4) As Long
+Private pvNumFramesBody(1 To 4) As Integer
+Private pvNumFramesHead(1 To 4) As Integer
+
 Public bmoving      As Boolean
 
 Public dX           As Integer
@@ -483,7 +506,12 @@ End Sub
 
 Private Sub Form_Load()
     
-    On Error GoTo Form_Load_Err
+    
+On Error Resume Next
+tmrPreview.Interval = PREVIEW_INTERVAL_MS
+tmrPreview.enabled = False
+
+On Error GoTo Form_Load_Err
     
     ListView1.BackColor = RGB(7, 7, 7)
     listdrop.BackColor = RGB(7, 7, 7)
@@ -700,62 +728,106 @@ listdrop_Click_Err:
 End Sub
 
 Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
-    
+
     On Error GoTo ListView1_Click_Err
-
-    Label8.Caption = ""
-    Picture1.Refresh
-    
-    If ListView1.ListItems.count <= 0 Then Exit Sub
-
-    Label8.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).Name
-    
-    Call DibujarNPC(Me.PlayerView, NpcData(ListView1.SelectedItem.SubItems(2)).Head, NpcData(ListView1.SelectedItem.SubItems(2)).Body)
-
-    Dim i As Byte
-
-    Label2.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).Hp
-    Label3.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).exp
-    Label4.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).oro
-    Label5.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).MinHit & "/" & NpcData(ListView1.SelectedItem.SubItems(2)).MaxHit
-    Label9.Caption = "EXPERIENCIA DE CLAN: " & NpcData(ListView1.SelectedItem.SubItems(2)).ExpClan & " puntos"
-    listdrop.ListItems.Clear
-    
-    ListView1.ToolTipText = NpcData(ListView1.SelectedItem.SubItems(2)).Name
-
-    If ListView1.SelectedItem.SubItems(2) <> "" Then
-    
-        If NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza <> 0 Then
-
-            '    Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(1)).grhindex,' 0, 0, False)
-            If NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza = 0 Then Exit Sub
-
-            For i = 1 To NpcData(ListView1.SelectedItem.SubItems(2)).NumQuiza
-                '  listdrop.ListItems.Add(1).Text = ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).name
-                'listdrop.ListItems.Add(1).SubItems(2) = ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).grhindex
-            
-                ' Dim subelemento As ListItem
-
-                Dim subelemento As ListItem
-
-                Set subelemento = listdrop.ListItems.Add(, , ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).Name)
-
-                subelemento.SubItems(1) = ObjData((NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(i))).GrhIndex
-            Next i
-
-            Call listdrop_Click
-
-        End If
-
+    ' --- lista vacía o item inválido: limpiar preview y salir
+    If ListView1.ListItems.count = 0 Then
+        PreviewNPC_Clear
+        Exit Sub
     End If
-        
-    
+    If Item Is Nothing Then
+        PreviewNPC_Clear
+        Exit Sub
+    End If
+    If LenB(Item.SubItems(2)) = 0 Then
+        PreviewNPC_Clear
+        Exit Sub
+    End If
+    ' --- Caso: lista vacía ---
+    If ListView1.ListItems.count = 0 Then
+        Label8.Caption = vbNullString
+        Label2.Caption = vbNullString
+        Label3.Caption = vbNullString
+        Label4.Caption = vbNullString
+        Label5.Caption = vbNullString
+        Label9.Caption = vbNullString
+
+        listdrop.ListItems.Clear
+        Picture1.Refresh
+        PlayerView.Cls        ' limpia el área de preview (asegurate que PlayerView sea PictureBox/AutoRedraw)
+        tmrPreview.enabled = False
+        Exit Sub
+    End If
+
+    ' --- Validar item ---
+    If Item Is Nothing Then Exit Sub
+    If LenB(Item.SubItems(2)) = 0 Then Exit Sub
+
+    ' Limpiamos antes de mostrar el nuevo
+    Picture1.Refresh
+    PlayerView.Cls
+    listdrop.ListItems.Clear
+
+    Dim npcIdx As Long
+    npcIdx = CLng(Item.SubItems(2))
+
+    ' --- Activar preview animado ---
+    PreviewNPC_Setup_ByIndex npcIdx
+
+    ' --- Datos en labels ---
+    With NpcData(npcIdx)
+        Label8.Caption = .Name
+        ListView1.ToolTipText = .Name
+
+        Label2.Caption = CStr(.Hp)
+        Label3.Caption = CStr(.exp)
+        Label4.Caption = CStr(.oro)
+        Label5.Caption = CStr(.MinHit) & "/" & CStr(.MaxHit)
+        Label9.Caption = "EXPERIENCIA DE CLAN: " & CStr(.ExpClan) & " puntos"
+
+        ' Snapshot inicial (opcional, además de la animación)
+        Call DibujarNPC(Me.PlayerView, .Head, .Body)
+
+        ' Drops
+        If .NumQuiza > 0 Then
+            Dim i As Integer, objIdx As Long
+            Dim subelemento As ListItem
+            For i = 1 To .NumQuiza
+                objIdx = .QuizaDropea(i)
+                If objIdx > 0 Then
+                    Set subelemento = listdrop.ListItems.Add(, , ObjData(objIdx).Name)
+                    subelemento.SubItems(1) = CStr(ObjData(objIdx).GrhIndex)
+                End If
+            Next i
+            If listdrop.ListItems.count > 0 Then Call listdrop_Click
+        End If
+    End With
+
     Exit Sub
 
 ListView1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.ListView1_Click", Erl)
     Resume Next
-    
+
+End Sub
+
+Private Sub PreviewNPC_Clear()
+    On Error Resume Next
+    ' parar animación
+    tmrPreview.enabled = False
+    ' resetear estado interno
+    pvBody = 0: pvHead = 0
+    pvHeading = 0: pvFrame = 0: pvDirTick = 0
+    ' limpiar UI
+    PlayerView.Cls
+    Picture1.Refresh
+    Label8.Caption = vbNullString
+    Label2.Caption = vbNullString
+    Label3.Caption = vbNullString
+    Label4.Caption = vbNullString
+    Label5.Caption = vbNullString
+    Label9.Caption = vbNullString
+    listdrop.ListItems.Clear
 End Sub
 
 Private Sub ListView1_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -879,6 +951,7 @@ Public Sub ActualizarPosicionMapa()
     Shape1.Visible = False
 End Sub
 
+
 Public Sub CalcularPosicionMAPA()
     
     On Error GoTo CalcularPosicionMAPA_Err
@@ -968,3 +1041,162 @@ Public Sub ShowClanCall(ByVal Map As Integer, ByVal PosX As Integer, ByVal PosY 
     Shape2.Top = Y * 27
     Shape2.Left = x * 27
 End Sub
+Private Sub PreviewNPC_Setup_ByIndex(ByVal npcIdx As Long)
+    On Error GoTo EH
+    
+    pvBody = NpcData(npcIdx).Body
+    pvHead = NpcData(npcIdx).Head
+    
+    Call PreviewNPC_Setup_Grhs(pvBody, pvHead)
+    
+    pvHeading = 3
+    pvFrame = 1
+    pvDirTick = 0
+    
+    tmrPreview.enabled = True
+    Call PreviewNPC_RenderFrame(True)
+    Exit Sub
+EH:
+    tmrPreview.enabled = False
+End Sub
+
+Private Sub PreviewNPC_Setup_Grhs(ByVal bodyId As Integer, ByVal headId As Integer)
+    Dim h As Integer
+    For h = 1 To 4
+        pvBaseBody(h) = 0
+        pvBaseHead(h) = 0
+        pvNumFramesBody(h) = 1
+        pvNumFramesHead(h) = 1
+    Next h
+    
+    If bodyId <> 0 Then
+        For h = 1 To 4
+            pvBaseBody(h) = BodyData(bodyId).Walk(h).GrhIndex
+            If pvBaseBody(h) <> 0 Then
+                pvNumFramesBody(h) = IIf(GrhData(pvBaseBody(h)).NumFrames > 0, GrhData(pvBaseBody(h)).NumFrames, 1)
+            End If
+        Next h
+    End If
+    
+    If headId <> 0 Then
+        For h = 1 To 4
+            pvBaseHead(h) = HeadData(headId).Head(h).GrhIndex
+            If pvBaseHead(h) <> 0 Then
+                pvNumFramesHead(h) = IIf(GrhData(pvBaseHead(h)).NumFrames > 0, GrhData(pvBaseHead(h)).NumFrames, 1)
+            End If
+        Next h
+    End If
+End Sub
+
+Private Sub tmrPreview_Timer()
+    On Error GoTo EH
+    
+    If ListView1.ListItems.count = 0 Then
+        PreviewNPC_Clear
+        Exit Sub
+    End If
+
+    If pvBody = 0 And pvHead = 0 Then Exit Sub
+    If pvHeading < 1 Or pvHeading > 4 Then pvHeading = 1
+    
+    ' Avanzar frame
+    pvFrame = pvFrame + 1
+    Dim maxFrames As Integer
+    maxFrames = pvNumFramesBody(pvHeading)
+    If pvNumFramesHead(pvHeading) > maxFrames Then maxFrames = pvNumFramesHead(pvHeading)
+    If maxFrames <= 0 Then maxFrames = 1
+    If pvFrame > maxFrames Then pvFrame = 1
+    
+    ' Cada DIR_TICKS, rotar dirección (N?E?S?O?N)
+    pvDirTick = pvDirTick + 1
+    If pvDirTick >= DIR_TICKS Then
+        pvDirTick = 0
+        pvHeading = pvHeading + 1
+        If pvHeading > 4 Then pvHeading = 1
+        ' Reiniciar frame al cambiar de dirección (opcional)
+        pvFrame = 1
+    End If
+    
+    Call PreviewNPC_RenderFrame(False)
+    Exit Sub
+EH:
+    ' En errores, no frenamos por ahora
+End Sub
+
+Private Sub PreviewNPC_RenderFrame(ByVal forceClear As Boolean)
+    On Error GoTo EH
+    
+    Dim pic As PictureBox
+    Set pic = Me.PlayerView
+    
+    ' Limpiar fondo
+    If forceClear Then
+        pic.Refresh
+    End If
+    
+    Dim bodyFrameGrh As Long, headFrameGrh As Long
+    Dim bBase As Long, hBase As Long
+    Dim bNF As Integer, hNF As Integer
+    Dim frameB As Integer, frameH As Integer
+    Dim x As Integer, y As Integer
+    
+    bBase = pvBaseBody(pvHeading)
+    hBase = pvBaseHead(pvHeading)
+    bNF = pvNumFramesBody(pvHeading)
+    hNF = pvNumFramesHead(pvHeading)
+    
+    ' Seleccionar frame válido (1..NumFrames)
+    frameB = IIf(bNF > 0, ((pvFrame - 1) Mod bNF) + 1, 1)
+    frameH = IIf(hNF > 0, ((pvFrame - 1) Mod hNF) + 1, 1)
+    
+    ' Expandir a grh de frame concreto
+    If bBase <> 0 Then
+        If GrhData(bBase).NumFrames > 0 Then
+            bodyFrameGrh = GrhData(bBase).Frames(frameB)
+        Else
+            bodyFrameGrh = bBase
+        End If
+    End If
+    
+    If hBase <> 0 Then
+        If GrhData(hBase).NumFrames > 0 Then
+            headFrameGrh = GrhData(hBase).Frames(frameH)
+        Else
+            headFrameGrh = hBase
+        End If
+    End If
+    
+    ' Centrar cuerpo
+    If bodyFrameGrh <> 0 Then
+        x = (pic.ScaleWidth - GrhData(bodyFrameGrh).pixelWidth) \ 2
+        y = (pic.ScaleHeight - GrhData(bodyFrameGrh).pixelHeight) \ 2
+        
+        ' Dibujo cuerpo (limpia el backbuffer del PictureBox)
+        Call Grh_Render_To_Hdc(pic, bodyFrameGrh, x, y, False, RGB(11, 11, 11))
+        
+        ' Superponer cabeza con mismo criterio que DibujarNPC
+        If headFrameGrh <> 0 And pvBody <> 0 Then
+            Dim hx As Integer, hy As Integer
+            hx = (pic.ScaleWidth - GrhData(headFrameGrh).pixelWidth) \ 2 + 1
+            hy = y + GrhData(bodyFrameGrh).pixelHeight - GrhData(headFrameGrh).pixelHeight + BodyData(pvBody).HeadOffset.y
+            Call Grh_Render_To_HdcSinBorrar(pic, headFrameGrh, hx, hy, False)
+        End If
+    ElseIf headFrameGrh <> 0 Then
+        ' Si no hay cuerpo, mostramos solo la cabeza centrada
+        x = (pic.ScaleWidth - GrhData(headFrameGrh).pixelWidth) \ 2
+        y = (pic.ScaleHeight - GrhData(headFrameGrh).pixelHeight) \ 2
+        Call Grh_Render_To_Hdc(pic, headFrameGrh, x, y, False, RGB(11, 11, 11))
+    Else
+        ' Nada que dibujar
+        pic.Refresh
+    End If
+    
+    Exit Sub
+EH:
+    ' Evitar romper preview ante algún grh inválido
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    tmrPreview.enabled = False
+End Sub
+
