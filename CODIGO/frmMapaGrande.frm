@@ -1172,7 +1172,7 @@ Private Sub PreviewNPC_RenderFrame(ByVal forceClear As Boolean)
         y = (pic.ScaleHeight - GrhData(bodyFrameGrh).pixelHeight) \ 2
         
         ' Dibujo cuerpo (limpia el backbuffer del PictureBox)
-        Call Grh_Render_To_Hdc(pic, bodyFrameGrh, x, y, False, RGB(11, 11, 11))
+        Call Grh_Render_To_Hdc(pic, bodyFrameGrh, x, y, False, RGB(30, 30, 30))
         
         ' Superponer cabeza con mismo criterio que DibujarNPC
         If headFrameGrh <> 0 And pvBody <> 0 Then
@@ -1185,7 +1185,7 @@ Private Sub PreviewNPC_RenderFrame(ByVal forceClear As Boolean)
         ' Si no hay cuerpo, mostramos solo la cabeza centrada
         x = (pic.ScaleWidth - GrhData(headFrameGrh).pixelWidth) \ 2
         y = (pic.ScaleHeight - GrhData(headFrameGrh).pixelHeight) \ 2
-        Call Grh_Render_To_Hdc(pic, headFrameGrh, x, y, False, RGB(11, 11, 11))
+        Call Grh_Render_To_Hdc(pic, headFrameGrh, x, y, False, RGB(30, 30, 30))
     Else
         ' Nada que dibujar
         pic.Refresh
