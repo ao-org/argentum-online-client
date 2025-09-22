@@ -43,6 +43,7 @@ Option Explicit
 
 Private isInventory            As Boolean ' Para separar al inventario del main, de los otros
 
+Private isSkinsInventory       As Boolean ' Para separar al inventario de skins, de los otros
 
 Dim InvMaxSlots                As Integer
 
@@ -132,7 +133,7 @@ Dim HEIGHT_MAIN_INVENTORY As Integer
 #Else   'Argument list varies!!!
     Public Sub Initialize(ByRef InvPic As PictureBox, ByVal MaxSlots As Integer, _
                         Optional ByVal Width As Integer = 0, Optional ByVal Height As Integer = 0, Optional ByVal OffsetX As Integer = 0, Optional ByVal OffsetY As Integer = 0, _
-                        Optional ByVal SpaceX As Integer = 0, Optional ByVal SpaceY As Integer = 0, Optional thisInventory As Boolean = False, Optional MIDSPACE As Byte = 0)
+                        Optional ByVal SpaceX As Integer = 0, Optional ByVal SpaceY As Integer = 0, Optional thisInventory As Boolean = False, Optional MIDSPACE As Byte = 0, Optional ByVal bIsSkinsInventory As Boolean = False)
 #End If
 
     'Sets the reference to the picture box on which to render the inventory
@@ -140,6 +141,11 @@ Dim HEIGHT_MAIN_INVENTORY As Integer
     Set InventoryWindow = InvPic
     
     isInventory = thisInventory
+    isSkinsInventory = bIsSkinsInventory
+    
+    If isSkinsInventory Then
+        isInventory = False ' Por las dudas.
+    End If
     
     If Width = 0 Then Width = InvPic.ScaleWidth
     If Height = 0 Then Height = InvPic.ScaleHeight
@@ -659,42 +665,34 @@ GetSlot_Err:
 End Function
 
 Public Sub DrawInventory()
-    
+
+Dim i                           As Byte
+Dim x                           As Integer
+Dim y                           As Integer
+Dim tmpString                   As String
+Dim tmpNaturalAndUserCraftedElementalTags As Long
+Dim CORNER_INDEX                As Integer
+Dim CORNER_X(3)                 As Integer
+Dim CORNER_Y(3)                 As Integer
+Dim Color(3)                    As RGBA
+
     On Error GoTo DrawInventory_Err
 
-    Dim i              As Byte
-
-    Dim x              As Integer
-
-    Dim y              As Integer
-    
-    Dim tmpString                             As String
-
-    Dim tmpNaturalAndUserCraftedElementalTags As Long
-    
-    Dim CORNER_INDEX                          As Integer
-
-    Dim CORNER_X(3)                           As Integer
-
-    Dim CORNER_Y(3)                           As Integer
-
-    Dim Color(3)                              As RGBA
-
     CORNER_X(0) = 23
-    CORNER_Y(0) = 0   ' top right
+    CORNER_Y(0) = 0            ' top right
     CORNER_X(1) = 0
-    CORNER_Y(1) = 0   ' top left
+    CORNER_Y(1) = 0            ' top left
     CORNER_X(2) = 23
-    CORNER_Y(2) = 21  ' bottom right
+    CORNER_Y(2) = 21           ' bottom right
     CORNER_X(3) = 0
-    CORNER_Y(3) = 21  ' bottom left
-    
+    CORNER_Y(3) = 21           ' bottom left
+
     InvNeedsRedraw = False
 
     For i = 1 To UBound(UserInventory)
         x = ((i - 1) Mod ITEMS_PER_ROW) * ITEM_OFFSET_X + InvOffsetX
         y = ((i - 1) \ ITEMS_PER_ROW) * ITEM_OFFSET_Y + InvOffsetY
-        
+
         If isInventory Then
             If (i > MAX_NORMAL_INVENTORY_SLOTS) Then
                 y = y + MAININVENTORY_MIDSPACE
@@ -717,86 +715,82 @@ Public Sub DrawInventory()
         If InvSelectedItem = i Then
             Call Engine_Draw_Box(x + SELECTION_BOX_X, y + SELECTION_BOX_Y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(100, 100, 100, 100))
         End If
-            
-        If UserInventory(i).GrhIndex Then
-            If UserInventory(i).PuedeUsar > 0 Then
-                Call RGBAList(color, 255, 100, 100)
-                
-                Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, color)
 
-            Else
-                Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, COLOR_WHITE())
-               
-            End If
-            
+        If UserInventory(i).GrhIndex Then
+                If UserInventory(i).PuedeUsar > 0 Then
+                    Call RGBAList(Color, 255, 100, 100)
+                    Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, Color)
+                Else
+                    Call Draw_GrhColor(UserInventory(i).GrhIndex, x, y, COLOR_WHITE())
+                End If
             If ShowQuantities Then
                 If UserInventory(i).Amount > 1 Then
                     Call RGBAList(color, 239, 228, 176)
-        
+
                     If InvSelectedItem <> i And UserInventory(i).Amount > 1000 And NumerosCompletosInventario = 0 Then
                         tmpString = Round(UserInventory(i).Amount * 0.001, 1) & "K"
                     Else
                         tmpString = UserInventory(i).Amount
                     End If
-    
+
                     Engine_Text_Render tmpString, x + HALF_ITEM_SIZE - Engine_Text_Width(tmpString, True) * 0.5, y + LETRA_GRANDE_Y, color, 1
                 End If
             End If
-        
+
             If UserInventory(i).ElementalTags > 0 Or ObjData(UserInventory(i).ObjIndex).ElementalTags > 0 Then
                 ' Slot corners relative positions
                 CORNER_INDEX = 0
-                
+
                 tmpNaturalAndUserCraftedElementalTags = UserInventory(i).ElementalTags Or ObjData(UserInventory(i).ObjIndex).ElementalTags
-                
+
                 ' Now check tags in a fixed order
                 If tmpNaturalAndUserCraftedElementalTags And CLng(e_ElementalTags.Fire) Then
                     Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Fire, x + CORNER_X(CORNER_INDEX), y + CORNER_Y(CORNER_INDEX), COLOR_WHITE())
                     CORNER_INDEX = CORNER_INDEX + 1
                 End If
-                
+
                 If tmpNaturalAndUserCraftedElementalTags And CLng(e_ElementalTags.Water) Then
                     Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Water, x + CORNER_X(CORNER_INDEX), y + CORNER_Y(CORNER_INDEX), COLOR_WHITE())
                     CORNER_INDEX = CORNER_INDEX + 1
                 End If
-                
+
                 If tmpNaturalAndUserCraftedElementalTags And CLng(e_ElementalTags.Earth) Then
                     Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Earth, x + CORNER_X(CORNER_INDEX), y + CORNER_Y(CORNER_INDEX), COLOR_WHITE())
                     CORNER_INDEX = CORNER_INDEX + 1
                 End If
-                
+
                 If tmpNaturalAndUserCraftedElementalTags And CLng(e_ElementalTags.Wind) Then
                     Call Draw_GrhColor(e_ElementalTagIconsGrhIndex.Wind, x + CORNER_X(CORNER_INDEX), y + CORNER_Y(CORNER_INDEX), COLOR_WHITE())
                     CORNER_INDEX = CORNER_INDEX + 1
                 End If
             End If
-            
-            If UserInventory(i).Equipped Then
-            
-            
 
-            
+            If UserInventory(i).Equipped Then
+
+
+
+
                 Select Case EquipmentStyle
-                
+
                     Case e_EquipmentStyle.Modern
-                    
+
                         Call Engine_Draw_Box(x, y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(RED_SHADER, GREEN_SHADER, BLUE_SHADER, SHADER_TRANSPARENCY))
-                        
+
                     Case e_EquipmentStyle.Classic
 
                         Call RGBAList(Color, 255, 0, 0)
                         Engine_Text_Render EQUIPMENT_CARACTER, x + X_OFFSET, y + Y_OFFSET, Color, 1
-                    
+
                     Case Else
-                    
+
                         Call RGBAList(Color, 255, 0, 0)
                         Engine_Text_Render EQUIPMENT_CARACTER, x + X_OFFSET, y + Y_OFFSET, Color, 1
-                
+
                 End Select
-             
+
             End If
-            
-            Dim cdTime As Single: cdTime = GetLongerCdPercent(i)
+
+            Dim cdTime          As Single: cdTime = GetLongerCdPercent(i)
 
             If cdTime > 0 And cdTime < 1 Then
                 Call renderCooldownsInventory(x, y, cdTime)
@@ -811,7 +805,7 @@ DrawInventory_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.DrawInventory", Erl)
 
     Resume Next
-    
+
 End Sub
 
 Public Sub DrawDraggedItem()

@@ -4436,7 +4436,7 @@ Private Sub HandleChangeInventorySlot()
         Call frmCrafteo.InvCraftUser.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, ElementalTags, podrausarlo)
     ElseIf bSkins Then
         If frmSkins.visible Then
-            Call frmCrafteo.InvCraftUser.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, Name, ElementalTags, podrausarlo)
+            Call frmCrafteo.InvCraftUser.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, Name, ElementalTags, 0)
         End If
     End If
 
@@ -8072,13 +8072,13 @@ Dim ObjType                     As Byte
                 .ObjType = ObjType
                 .Equipped = Equipped
                 .Name = Name
-                .PuedeUsar = True
+                .PuedeUsar = 0
                 .GrhIndex = GrhIndex
             End With
         End If
 
         Call Load(frmSkins)
-        Call frmSkins.InvSkins.SetItem(Slot, ObjIndex, 1, CByte(Equipped), GrhIndex, ObjType, 0, 0, 0, 0, Name, 0, True)
+        Call frmSkins.InvSkins.SetItem(Slot, ObjIndex, 1, CByte(Equipped), GrhIndex, ObjType, 0, 0, 0, 0, Name, 0, 0)
     End With
 
     On Error GoTo 0
