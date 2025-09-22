@@ -2584,7 +2584,7 @@ On Error GoTo Start_Err
         DoEvents
 
         Call modNetwork.Poll
-        'Call svb_run_callbacks
+        Call svb_run_callbacks
         Call UpdateAntiCheat
     Loop
 
