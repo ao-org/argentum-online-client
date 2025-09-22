@@ -1742,7 +1742,7 @@ On Error GoTo HandleUpdateHP_Err
     Call frmMain.UpdateHpBar
     'Is the user alive??
     If UserStats.MinHp = 0 Then
-        #If Api_Steam Then
+        #If No_Api_Steam = 0 Then
             Call svb_unlock_achivement("Memento Mori")
         #End If
         UserStats.estado = 1
@@ -1973,7 +1973,7 @@ Private Sub HandleNPCHitUser()
 
     End Select
     
-    #If Api_Steam Then
+    #If No_Api_Steam = 0 Then
         Call svb_unlock_achivement("Small victory")
     #End If
     
@@ -4246,7 +4246,7 @@ Private Sub HandleUpdateUserStats()
     UserStats.OroPorNivel = Reader.ReadInt32()
     UserStats.Lvl = Reader.ReadInt8()
 
-    #If Api_Steam Then
+    #If No_Api_Steam = 0 Then
         Select Case UserStats.Lvl:
             Case 10
                 Call svb_unlock_achivement("Adventurer")
@@ -5254,7 +5254,7 @@ Private Sub HandleLevelUp()
  
     SkillPoints = Reader.ReadInt16()
     
-    #If Api_Steam Then
+    #If No_Api_Steam = 0 Then
         Call svb_unlock_achivement("Newbie's fate")
     #End If
     

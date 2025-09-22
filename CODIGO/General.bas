@@ -1092,7 +1092,7 @@ Sub Main()
 
     #If DEBUGGING = 0 Or ENABLE_ANTICHEAT = 1 Then
         SetDllDirectory App.path
-        #If Api_Steam Then
+        #If No_Api_Steam = 0 Then
             Dim steam_init_result As Long
             steam_init_result = svb_init_steam(1956740)
             frmDebug.add_text_tracebox "Init Steam " & steam_init_result
