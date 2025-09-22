@@ -1742,7 +1742,9 @@ On Error GoTo HandleUpdateHP_Err
     Call frmMain.UpdateHpBar
     'Is the user alive??
     If UserStats.MinHp = 0 Then
-        Call svb_unlock_achivement("Memento Mori")
+        #If No_Api_Steam = 0 Then
+            Call svb_unlock_achivement("Memento Mori")
+        #End If
         UserStats.estado = 1
         charlist(UserCharIndex).Invisible = False
         If MostrarTutorial And tutorial_index <= 0 Then
@@ -1971,7 +1973,9 @@ Private Sub HandleNPCHitUser()
 
     End Select
     
-    Call svb_unlock_achivement("Small victory")
+    #If No_Api_Steam = 0 Then
+        Call svb_unlock_achivement("Small victory")
+    #End If
     
     Exit Sub
 
@@ -4228,7 +4232,9 @@ End Sub
 
 
 Private Sub HandleUpdateUserStats()
-On Error GoTo HandleUpdateUserStats_Err
+
+    On Error GoTo HandleUpdateUserStats_Err
+    
     UserStats.MaxHp = Reader.ReadInt16()
     UserStats.MinHp = Reader.ReadInt16()
     UserStats.HpShield = Reader.ReadInt32()
@@ -4239,19 +4245,21 @@ On Error GoTo HandleUpdateUserStats_Err
     UserStats.GLD = Reader.ReadInt32()
     UserStats.OroPorNivel = Reader.ReadInt32()
     UserStats.Lvl = Reader.ReadInt8()
-     
-    Select Case UserStats.Lvl:
-        Case 10
-            Call svb_unlock_achivement("Adventurer")
-        Case 20
-            Call svb_unlock_achivement("Seasoned adventurer")
-        Case 30
-            Call svb_unlock_achivement("Big shot!")
-        Case 40
-            Call svb_unlock_achivement("Oh! You mean business!")
-        Case Else
-            'Nothing
-    End Select
+
+    #If No_Api_Steam = 0 Then
+        Select Case UserStats.Lvl:
+            Case 10
+                Call svb_unlock_achivement("Adventurer")
+            Case 20
+                Call svb_unlock_achivement("Seasoned adventurer")
+            Case 30
+                Call svb_unlock_achivement("Big shot!")
+            Case 40
+                Call svb_unlock_achivement("Oh! You mean business!")
+            Case Else
+                'Nothing
+        End Select
+    #End If
 
     UserStats.PasarNivel = Reader.ReadInt32()
     UserStats.exp = Reader.ReadInt32()
@@ -4269,8 +4277,7 @@ On Error GoTo HandleUpdateUserStats_Err
 
 HandleUpdateUserStats_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateUserStats", Erl)
-    
-    
+
 End Sub
 
 ''
@@ -5246,7 +5253,10 @@ Private Sub HandleLevelUp()
     On Error GoTo HandleLevelUp_Err
  
     SkillPoints = Reader.ReadInt16()
-    Call svb_unlock_achivement("Newbie's fate")
+    
+    #If No_Api_Steam = 0 Then
+        Call svb_unlock_achivement("Newbie's fate")
+    #End If
     
     Exit Sub
 
