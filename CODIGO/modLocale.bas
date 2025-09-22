@@ -31,13 +31,13 @@ Public Destinos() As Tdestino
 Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional ByVal strExtra As String = vbNullString) As String
 
     On Error GoTo Locale_Parse_ServerMessage_Err
-    
-    Dim Fields() As String
 
-    Dim strLocale As String
+    Dim Fields()                As String
 
-    Dim i As Long
-    
+    Dim strLocale               As String
+
+    Dim i                       As Long
+
     strLocale = Locale_SMG(bytHeader)
     
     ' Manejo del caso especial del NPC
@@ -70,7 +70,15 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
     Exit Function
 
 Locale_Parse_ServerMessage_Err:
-Call RegistrarError(Err.Number, Err.Description, "modLocale.Locale_Parse_ServerMessage", Erl)
+
+    Dim errNum                  As Long
+    errNum = Err.Number
+ 
+        Debug.Print "Puede que no exista el mensaje " & bytHeader & ". Intenta correr el generar_localindex."
+    End If
+
+    Call RegistrarError(errNum, Err.Description, "modLocale.Locale_Parse_ServerMessage", Erl)
+
     Resume Next
 End Function
 
