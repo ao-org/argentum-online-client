@@ -47,13 +47,13 @@ Private m_X As Long, m_Y As Long
 Private m_W As Long, m_H As Long
 Private m_Text As String
 Private m_ColorFill As Long, m_HoverColor As Long
-Private m_ColorText() As Byte
+Private m_ColorText As Long
 Private m_IsHover As Boolean
 Private m_PrevDown As Boolean
 Private m_Clicked As Boolean
 
 Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, _
-                ByVal w As Long, ByVal h As Long, ByVal font As D3DXFont, _
+                ByVal w As Long, ByVal h As Long, _
                 ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
     m_Text = text: m_X = x: m_Y = y
     m_W = w: m_H = h

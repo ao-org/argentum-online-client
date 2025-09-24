@@ -49,20 +49,20 @@ Private m_lblPass As clsUILabel
 Private m_btnConnect As clsUIButton
  
     
-Public Sub Init(ByVal dev As Direct3DDevice8, ByVal font As D3DXFont)
+Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager: m_UIMgr.Init
 
     Set m_lblUser = New clsUILabel
-    m_lblUser.Init "Username:", 0, 0, font, &HFFFFFFFF
+    m_lblUser.Init "Username:", 0, 0, &HFFFFFFFF
     m_UIMgr.AddComponent m_lblUser
 
     Set m_lblPass = New clsUILabel
-    m_lblPass.Init "Password:", 0, 0, font, &HFFFFFFFF
+    m_lblPass.Init "Password:", 0, 0, &HFFFFFFFF
     m_UIMgr.AddComponent m_lblPass
 
     Set m_btnConnect = New clsUIButton
     
-    m_btnConnect.Init "Connect", 0, 0, 100, 30, font, &HFF000040, &HFF606060, &HFFFFFFFF
+    m_btnConnect.Init "Connect", 0, 0, 100, 30, &HFF0000, &HFF606060, &HFFFFFFFF
     m_UIMgr.AddComponent m_btnConnect
 End Sub
 
@@ -78,11 +78,11 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         RenderConnect 57, 45, 0, 0
     
         Dim cols(3) As Long
-        cols(0) = &HFF000  ' red
-        cols(1) = &HFF00      ' green
-        cols(2) = &HFFFF      ' blue
-        cols(3) = &HFFFFFF  ' white
-        UIRenderer.AddQuad wx, wy, WINDOW_WIDTH, WINDOW_HEIGHT, cols, 155
+        cols(0) = UI_COLOR_WHITE
+        cols(1) = UI_COLOR_WHITE
+        cols(2) = UI_COLOR_WHITE
+        cols(3) = UI_COLOR_WHITE
+        UIRenderer.AddQuad wx, wy, WINDOW_WIDTH, WINDOW_HEIGHT, cols, 190
         
         ' Position UI
         m_lblUser.SetPosition wx + 20, wy + 40
@@ -90,7 +90,7 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + WINDOW_HEIGHT - 60
         
         m_UIMgr.RenderAll dev
-        UIRenderer.RenderAll DirectDevice
+        UIRenderer.Draw DirectDevice
     
     Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
     

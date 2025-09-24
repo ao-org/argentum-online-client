@@ -2305,8 +2305,12 @@ Start_Err:
 End Sub
 #End If
 
+
+
+
 Public Sub Start()
 On Error GoTo Start_Err
+    
     DoEvents
     Do While prgRun
         If GetGameplayForm().WindowState <> vbMinimized Then
@@ -2376,7 +2380,10 @@ On Error GoTo Start_Err
                 Case e_state_createchar_screen
                     RenderCrearPJ 76, 82, 0, 0
             End Select
-
+            
+            
+            
+    
         Else
         #If DIRECT_PLAY = 0 Then
             Sleep 60&
@@ -3274,7 +3281,7 @@ Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal P
             TileX = 48
             TileY = 36
     End Select
-    
+
     
     Call RenderScreen(TileX, TileY, PixelOffsetX, PixelOffsetY, HalfConnectTileWidth, HalfConnectTileHeight)
         
@@ -3340,7 +3347,6 @@ Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal P
 #End If
     
     FrameTime = GetTickCount()
-    'FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
     

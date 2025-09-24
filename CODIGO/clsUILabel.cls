@@ -42,11 +42,11 @@ Implements IUIComponent
 
 Private m_X As Long, m_Y As Long
 Private m_Text As String
-Private m_Color() As Byte
+Private m_Color As Long
 
-Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal font As D3DXFont, ByVal color As Long)
+Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal color As Long)
     m_Text = text: m_X = x: m_Y = y
-    m_Color = UIRenderer.ColorToBytes(222, 194, 112, 255)
+    m_Color = UIRenderer.ColorToBytes(222, 194, 112, 250)
     
 End Sub
 
