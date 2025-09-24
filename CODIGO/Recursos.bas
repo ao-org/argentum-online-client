@@ -1256,6 +1256,9 @@ Public Sub CargarMapa(ByVal map As Integer)
                 MapData(Objetos(i).x, Objetos(i).y).OBJInfo.ObjIndex = Objetos(i).ObjIndex
                 MapData(Objetos(i).x, Objetos(i).y).OBJInfo.Amount = Objetos(i).ObjAmmount
                 MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex = ObjData(Objetos(i).ObjIndex).GrhIndex
+                If MapData(Objetos(i).x, Objetos(i).y).OBJInfo.Amount <= 0 And ObjData(Objetos(i).ObjIndex).GrhIndexOff <> 0 Then
+                    MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex = ObjData(Objetos(i).ObjIndex).GrhIndexOff
+                End If
                 Call InitGrh(MapData(Objetos(i).x, Objetos(i).y).ObjGrh, MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex)
 
             Next i
@@ -1656,6 +1659,7 @@ Public Sub CargarIndicesOBJ()
     For Obj = 1 To NumOBJs
         DoEvents
         ObjData(Obj).GrhIndex = Val(Leer.GetValue("OBJ" & Obj, "grhindex"))
+        ObjData(Obj).GrhIndexOff = Val(Leer.GetValue("OBJ" & Obj, "GrhIndexOff"))
         If Obj = 403 Then
             frmDebug.add_text_tracebox "asd"
         End If

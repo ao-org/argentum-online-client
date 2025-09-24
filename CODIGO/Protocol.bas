@@ -3404,6 +3404,7 @@ Private Sub HandleObjectCreate()
     Dim id       As Long
     
     Dim ElementalTags As Long
+    Dim GrhIndexToUse As Long
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     
@@ -3412,12 +3413,18 @@ Private Sub HandleObjectCreate()
     Amount = Reader.ReadInt16
     
     ElementalTags = Reader.ReadInt32
-    MapData(x, y).ObjGrh.GrhIndex = ObjData(ObjIndex).GrhIndex
-    
+
+    GrhIndexToUse = ObjData(ObjIndex).GrhIndex
+    If Amount <= 0 And ObjData(ObjIndex).GrhIndexOff <> 0 Then
+        GrhIndexToUse = ObjData(ObjIndex).GrhIndexOff
+    End If
+
+    MapData(x, y).ObjGrh.GrhIndex = GrhIndexToUse
+
     MapData(x, y).OBJInfo.ObjIndex = ObjIndex
-    
+
     MapData(x, y).OBJInfo.Amount = Amount
-    
+
     MapData(x, y).OBJInfo.ElementalTags = ElementalTags
     Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.GrhIndex)
     

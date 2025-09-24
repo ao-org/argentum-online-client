@@ -190,6 +190,7 @@ Public NameMaps(1 To 1000) As NameMapas
 Public Type ObjDatas
 
     GrhIndex As Long ' Indice del grafico que representa el obj
+    GrhIndexOff As Long ' Indice del grafico cuando el recurso esta agotado
     Name As String
     MinDef As Integer
     MaxDef As Integer
