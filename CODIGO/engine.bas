@@ -575,7 +575,7 @@ Public Sub Draw_Grh(ByRef grh As grh, ByVal x As Integer, ByVal y As Integer, By
             num = GrhData(Grh.GrhIndex).NumFrames
             If num > 1 Then
                 ' Unificado: SIN 0.5
-                Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
+                elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
                 If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
                     CurrentFrame = (elapsed Mod num) + 1
@@ -664,7 +664,7 @@ Public Sub Draw_Grh_Breathing(ByRef grh As grh, ByVal x As Integer, ByVal y As I
             num = GrhData(Grh.GrhIndex).NumFrames
             If num > 1 Then
                 ' Unificado: SIN 0.5
-                Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
+                elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
                 If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
                     CurrentFrame = (elapsed Mod num) + 1
@@ -863,7 +863,7 @@ Private Sub Draw_GrhSinLuz(ByRef grh As grh, ByVal x As Integer, ByVal y As Inte
             num = GrhData(Grh.GrhIndex).NumFrames
             If num > 1 Then
                 ' Unificado: SIN 0.5
-                Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
+                elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
                 If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
                     CurrentFrame = (elapsed Mod num) + 1
@@ -2586,7 +2586,9 @@ On Error GoTo Start_Err
         DoEvents
 
         Call modNetwork.Poll
-        'Call svb_run_callbacks
+        #If No_Api_Steam = 0 Then
+            Call svb_run_callbacks
+        #End If
         Call UpdateAntiCheat
     Loop
 
@@ -3199,7 +3201,7 @@ Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal
         num = GrhData(Grh.GrhIndex).NumFrames
         If num > 1 Then
             ' Unificado: SIN 0.5
-            Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
+            elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
             If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
                 CurrentFrame = (elapsed Mod num) + 1
@@ -3257,7 +3259,7 @@ Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_
         num = GrhData(Grh.GrhIndex).NumFrames
         If num > 1 Then
             ' Unificado: SIN 0.5
-            Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
+            elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
             If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
                 CurrentFrame = (elapsed Mod num) + 1
@@ -4628,7 +4630,7 @@ Public Sub Draw_Grh_ItemInWater(ByRef grh As grh, ByVal x As Integer, ByVal y As
             num = GrhData(Grh.GrhIndex).NumFrames
             If num > 1 Then
                 ' Unificado: SIN 0.5
-                Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
+                elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
                 If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
                     CurrentFrame = (elapsed Mod num) + 1
@@ -4703,7 +4705,7 @@ Public Sub Draw_Grh_Precalculated(ByRef grh As grh, ByRef rgb_list() As RGBA, By
         num = GrhData(Grh.GrhIndex).NumFrames
         If num > 1 Then
             ' Unificado: SIN 0.5
-            Elapsed = Fix(0.5 * (FrameTime - Grh.started) / Grh.speed)
+            elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
 
             If Grh.Loops = INFINITE_LOOPS Or elapsed < num * (Grh.Loops + 1) Then
                 CurrentFrame = (elapsed Mod num) + 1
