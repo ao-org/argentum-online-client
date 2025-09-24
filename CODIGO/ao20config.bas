@@ -144,7 +144,7 @@ Sub LoadConfig()
     '   – Lower values free fewer textures (less reload overhead)
     '     but risk higher memory usage.
     '------------------------------------------------------------------------------
-    NumTexRelease = max(1, min(GetSetting("VIDEO", "NumTexRelease"), 250))
+    NumTexRelease = max(1, min(val(GetSetting("VIDEO", "NumTexRelease")), 250))
 
 
     '------------------------------------------------------------------------------
@@ -167,7 +167,7 @@ Sub LoadConfig()
     '   – A higher threshold delays eviction, reducing stutter but increasing
     '     peak memory usage.
     '------------------------------------------------------------------------------
-    TexHighWaterMark = max(200, min(GetSetting("VIDEO", "TexHighWaterMark"), 800))
+    TexHighWaterMark = max(200, min(val(GetSetting("VIDEO", "TexHighWaterMark")), 800))
 
     
     Dim Value As String

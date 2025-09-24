@@ -1586,7 +1586,7 @@ Private Sub scrVolume_Change()
 
     VolFX = scrVolume.Value
     Call ao20audio.SetFxVolume(scrVolume.Value)
-    Call ao20audio.PlayWav(SND_DICE, False, scrVolume.value)
+    Call ao20audio.PlayWav(SND_EXCLAMACION, False, scrVolume.value)
 
     Exit Sub
 

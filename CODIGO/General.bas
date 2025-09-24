@@ -1049,21 +1049,21 @@ End Sub
 
 Sub Main()
 
-On Error GoTo Main_Err
+    On Error GoTo Main_Err
 
 
     Call parse_cmd_line_args
-    
+
     'Must be at the top to make sure te resources password is loaded before we attempt to load anything
     'TODO: Remove the PASSWORD, it's useless and slow and remove the call to DoCrypt_Data bytArr, Passwd
     'Moving forward use only dycryptosys API Decompress_Data_B bytArr, InfoHead.lngFileSizeUncompressed
     Call CheckResources
-    
-#If REMOTE_CLOSE Then
-    Call DoLogin("", "", False)
-    Call bot_main_loop
-    End
-#End If
+
+    #If REMOTE_CLOSE Then
+        Call DoLogin("", "", False)
+        Call bot_main_loop
+        End
+    #End If
 
     Call Application.DeleteFile(ao20config.GetErrorLogFilename())
     Call LoadConfig
@@ -1071,7 +1071,7 @@ On Error GoTo Main_Err
     Call Frmcarga.Show
     Set FormParser = New clsCursor
     Call FormParser.Init
-    
+
     If Not ValidateResources Then
         Call MsgBox(JsonLanguage.Item("MENSAJEBOX_RECURSOS_INVALIDOS"), vbApplicationModal + vbInformation + vbOKOnly, JsonLanguage.Item("MENSAJEBOX_TITULO_RECURSOS_INVALIDOS"))
         End
@@ -1079,44 +1079,46 @@ On Error GoTo Main_Err
     If PantallaCompleta Then
         Call Resolution.SetResolution
     End If
-#If EXPERIMENTAL_RENDERER Then
-    Call new_engine_init(ao20rendering.renderer)
-#Else
-    Call engine_init 'initializes DX
-    Debug.Assert Not DirectX Is Nothing
-    Call ao20audio.CreateAudioEngine(frmConnect.hwnd, DirectX, ao20audio.AudioEngine)
-    Call init_dx_ui(DirectDevice)
-#End If
+    #If EXPERIMENTAL_RENDERER Then
+        Call new_engine_init(ao20rendering.renderer)
+    #Else
+        Call engine_init       'initializes DX
+        Debug.Assert Not DirectX Is Nothing
+        Call ao20audio.CreateAudioEngine(frmConnect.hWnd, DirectX, ao20audio.AudioEngine)
+        Call init_dx_ui(DirectDevice)
+    #End If
 
     Call InitCommonControls
 
     #If DEBUGGING = 0 Or ENABLE_ANTICHEAT = 1 Then
         SetDllDirectory App.path
-        Dim steam_init_result As Long
-        steam_init_result = svb_init_steam(1956740)
-        frmDebug.add_text_tracebox "Init Steam " & steam_init_result
+        #If No_Api_Steam = 0 Then
+            Dim steam_init_result As Long
+            steam_init_result = svb_init_steam(1956740)
+            frmDebug.add_text_tracebox "Init Steam " & steam_init_result
+        #End If
         If Not RunningInVB Then
             If FindPreviousInstance Then
                 Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_EJECUCION"), vbApplicationModal + vbInformation + vbOKOnly, "Error")
                 End
             End If
- 
+
         End If
- 
+
     #End If
 
 
     Call initPacketControl
-    
+
     Call SetNpcsRenderText
     Call cargarTutoriales
     Call InitializeEffectArrays
     CheckMD5 = GetMd5
     SessionOpened = False
-    
+
     Call Load(frmConnect)
     Call Load(FrmLogear)
-    
+
     Windows_Temp_Dir = General_Get_Temp_Dir
 
     Call SetDefaultServer
@@ -1142,10 +1144,10 @@ On Error GoTo Main_Err
     LastOffset2X = 0
     LastOffset2Y = 0
     Call SwitchMap(UserMap)
-    
+
     Dialogos.font = frmMain.font
     DialogosClanes.font = frmMain.font
-    
+
     prgRun = True
     pausa = False
 
@@ -1156,17 +1158,17 @@ On Error GoTo Main_Err
 
     Set AudioEngine = Nothing
 
-    
+
     Exit Sub
 
 Main_Err:
     If Err.Number = 339 Then
         RegisterCom
     End If
-    
+
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.Main", Erl)
     Resume Next
-    
+
 End Sub
 
 Public Sub RegisterCom()
