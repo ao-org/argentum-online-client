@@ -3,16 +3,16 @@ Begin VB.Form frmNewAccount
    BackColor       =   &H80000004&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   5136
-   ClientLeft      =   11256
-   ClientTop       =   10692
+   ClientHeight    =   5130
+   ClientLeft      =   11250
+   ClientTop       =   10695
    ClientWidth     =   5340
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   428
+   ScaleHeight     =   342
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   445
+   ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox txtSurname 
@@ -62,7 +62,7 @@ Begin VB.Form frmNewAccount
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -81,7 +81,7 @@ Begin VB.Form frmNewAccount
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -101,7 +101,7 @@ Begin VB.Form frmNewAccount
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -122,7 +122,7 @@ Begin VB.Form frmNewAccount
       Caption         =   "Reenviar código de activación"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -166,7 +166,7 @@ Begin VB.Form frmNewAccount
       Caption         =   "Captcha incorrecto"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -188,7 +188,7 @@ Begin VB.Form frmNewAccount
       Caption         =   "6 + 4"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -238,28 +238,25 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
-Private number1 As Byte
-Private number2 As Byte
-Private equals As Byte
-
-Private cBotonAceptar As clsGraphicalButton
+Private number1        As Byte
+Private number2        As Byte
+Private equals         As Byte
+Private cBotonAceptar  As clsGraphicalButton
 Private cBotonCancelar As clsGraphicalButton
-Private cBotonCerrar As clsGraphicalButton
+Private cBotonCerrar   As clsGraphicalButton
 
 Private Sub btnCancel_Click()
     Unload Me
 End Sub
 
-
 Private Sub btnCreateAccount_Click()
-    If Val(txtCaptcha.Text) = equals Then
+    If val(txtCaptcha.text) = equals Then
         Call ModLogin.CreateAccount(frmNewAccount.txtName, frmNewAccount.txtSurname, frmNewAccount.txtUsername, frmNewAccount.txtPassword)
         Call calculateCaptcha
     Else
         Call calculateCaptcha
         Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_REVISA_CAPTCHA"), False, False)
-        lblCaptchaError.Visible = True
+        lblCaptchaError.visible = True
     End If
 End Sub
 
@@ -271,19 +268,15 @@ Private Sub btnRestorePassword_Click()
 End Sub
 
 Private Sub btnSendValidarCuenta_Click()
-        
-        txtCodigo.Text = Trim(txtCodigo.Text)
-        If txtCodigo.Text <> "" And txtValidateMail.Text <> "" Then
-            Call ValidateCode(txtValidateMail.Text, txtCodigo.Text)
-        End If
-        
+    txtCodigo.text = Trim(txtCodigo.text)
+    If txtCodigo.text <> "" And txtValidateMail.text <> "" Then
+        Call ValidateCode(txtValidateMail.text, txtCodigo.text)
+    End If
 End Sub
 
 Private Sub btnVerValidarCuenta_Click()
     Me.showValidateAccountControls
 End Sub
-
-
 
 Private Sub Form_Activate()
     Me.Top = frmConnect.Top + frmConnect.Height - Me.Height - 450
@@ -297,66 +290,53 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub loadButtons()
-       
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonCancelar = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
-
-    Call cBotonAceptar.Initialize(btnCreateAccount, "boton-crear-cuenta-rojo-default.bmp", _
-                                                "boton-crear-cuenta-rojo-over.bmp", _
-                                                "boton-crear-cuenta-rojo-off.bmp", Me)
-                                                
-    Call cBotonCancelar.Initialize(btnCancel, "boton-cancelar-default.bmp", _
-                                                "boton-cancelar-over.bmp", _
-                                                "boton-cancelar-off.bmp", Me)
-                                                
-    Call cBotonCerrar.Initialize(btnSendValidarCuenta, "boton-enviar-default.bmp", _
-                                                "boton-enviar-over.bmp", _
-                                                "boton-enviar-off.bmp", Me)
-    
+    Call cBotonAceptar.Initialize(btnCreateAccount, "boton-crear-cuenta-rojo-default.bmp", "boton-crear-cuenta-rojo-over.bmp", "boton-crear-cuenta-rojo-off.bmp", Me)
+    Call cBotonCancelar.Initialize(btnCancel, "boton-cancelar-default.bmp", "boton-cancelar-over.bmp", "boton-cancelar-off.bmp", Me)
+    Call cBotonCerrar.Initialize(btnSendValidarCuenta, "boton-enviar-default.bmp", "boton-enviar-over.bmp", "boton-enviar-off.bmp", Me)
 End Sub
+
 Private Sub calculateCaptcha()
     number1 = RandomNumber(0, 9)
     number2 = RandomNumber(0, 9)
     equals = number1 + number2
-    lblCaptchaError.Visible = False
-    txtCaptcha.Text = ""
+    lblCaptchaError.visible = False
+    txtCaptcha.text = ""
     lblCaptcha.Caption = number1 & " + " & number2
 End Sub
 
-
 Public Sub showValidateAccountControls()
-    
     Me.Picture = LoadInterface("ventanacrearcuentacodigo.bmp")
-    Me.btnSendValidarCuenta.Visible = True
-    Me.txtValidateMail.Visible = True
-    Me.txtCodigo.Visible = True
+    Me.btnSendValidarCuenta.visible = True
+    Me.txtValidateMail.visible = True
+    Me.txtCodigo.visible = True
     Me.btnCancel.Top = 278
-    
-    Me.txtUsername.Visible = False
-    Me.txtPassword.Visible = False
-    Me.txtName.Visible = False
-    Me.txtSurname.Visible = False
-    Me.txtCaptcha.Visible = False
-    Me.lblCaptcha.Visible = False
-    Me.lblCaptchaError.Visible = False
-    Me.btnVerValidarCuenta.Visible = False
-    Me.btnCreateAccount.Visible = False
-    Me.btnRestorePassword.Visible = False
-    Me.lblResendVerificationCode.Visible = True
+    Me.txtUsername.visible = False
+    Me.txtPassword.visible = False
+    Me.txtName.visible = False
+    Me.txtSurname.visible = False
+    Me.txtCaptcha.visible = False
+    Me.lblCaptcha.visible = False
+    Me.lblCaptchaError.visible = False
+    Me.btnVerValidarCuenta.visible = False
+    Me.btnCreateAccount.visible = False
+    Me.btnRestorePassword.visible = False
+    Me.lblResendVerificationCode.visible = True
 End Sub
 
-Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     Me.txtPassword.PasswordChar = ""
 End Sub
 
-Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     Me.txtPassword.PasswordChar = "*"
 End Sub
 
 Private Sub lblResendVerificationCode_Click()
     If isValidEmail(txtValidateMail) Then
-        Call ResendValidationCode(Me.txtValidateMail.Text)
+        Call ResendValidationCode(Me.txtValidateMail.text)
     Else
         Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO"), False, False)
     End If

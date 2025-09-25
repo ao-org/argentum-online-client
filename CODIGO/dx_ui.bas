@@ -26,32 +26,28 @@ Attribute VB_Name = "dx_ui"
 '
 '
 Option Explicit
-
-
 ' Common UI color constants (opaque)
 Public Const UI_COLOR_WHITE As Long = &HFFFFFF     ' &HFFFFFFFF
 Public Const UI_COLOR_BLACK As Long = &H0        ' 0xFF000000
 Public Const UI_COLOR_RED   As Long = &HFF0000   ' 0xFFFF0000
 Public Const UI_COLOR_GREEN As Long = &HFF00FF   ' 0xFF00FF00
 Public Const UI_COLOR_BLUE  As Long = &HFF       ' 0xFF0000FF
-
-
-Public g_connectScreen As clsUIConnectScreen
-
+Public g_connectScreen      As clsUIConnectScreen
 ' Virtual-Key codes
-Public Const VK_LBUTTON As Long = &H1
+Public Const VK_LBUTTON     As Long = &H1
+
 ' Mouse position API
 Private Type POINTAPI
     x As Long
     y As Long
 End Type
+
 Private Declare Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
 Private Declare Function ScreenToClient Lib "user32" (ByVal hWnd As Long, lpPoint As POINTAPI) As Long
-Public g_MouseX As Long
-Public g_MouseY As Long
+Public g_MouseX       As Long
+Public g_MouseY       As Long
 Public g_MouseButtons As Long
-Public UIRenderer As clsUIRenderer
-
+Public UIRenderer     As clsUIRenderer
 
 ' Update current mouse state relative to the client window
 Public Sub UpdateMouse(ByVal hWnd As Long)
@@ -67,13 +63,10 @@ Public Sub init_connect_screen(ByRef dev As Direct3DDevice8)
     Set g_connectScreen = New clsUIConnectScreen: g_connectScreen.Init dev
 End Sub
 
-
-
-
 Public Sub init_dx_ui(ByRef dev As Direct3DDevice8)
-#If DXUI Then
-    Set UIRenderer = New clsUIRenderer
-    Call UIRenderer.Init(DirectDevice, 1000)
-    Call init_connect_screen(DirectDevice)
-#End If
+    #If DXUI Then
+        Set UIRenderer = New clsUIRenderer
+        Call UIRenderer.Init(DirectDevice, 1000)
+        Call init_connect_screen(DirectDevice)
+    #End If
 End Sub

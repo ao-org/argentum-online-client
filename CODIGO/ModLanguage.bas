@@ -16,12 +16,9 @@ Attribute VB_Name = "ModLanguage"
 '
 '
 Option Explicit
-
 Const LOCALE_USER_DEFAULT = &H400
-
 Private Declare Function GetUserDefaultLCID Lib "kernel32" () As Long
 Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
-
 Private Const LOCALE_SCOUNTRY = &H6
 Private Const LOCALE_SLANGUAGE = &H2
 Private Const LOCALE_SENGLANGUAGE = &H1001
@@ -33,10 +30,10 @@ Public Enum e_language
     Portuguese = 3
     French = 4
     Italian = 5
-'    Spanish_Spain = 6   ' Español (España)
+    '    Spanish_Spain = 6   ' Español (España)
 End Enum
 
-Public language As e_language
+Public language     As e_language
 Public JsonLanguage As Object
      
 Private Function GetCountryName() As String
@@ -59,12 +56,12 @@ Public Function FileToString(strFileName As String) As String
     Dim IFile As Variant
     IFile = FreeFile
     Open strFileName For Input As #IFile
-        FileToString = StrConv(InputB(LOF(IFile), IFile), vbUnicode)
+    FileToString = StrConv(InputB(LOF(IFile), IFile), vbUnicode)
     Close #IFile
 End Function
 
 Public Function DirLanguage() As String
-On Error GoTo DirLanguage_Err
+    On Error GoTo DirLanguage_Err
     DirLanguage = App.path & "\Languages\"
     Exit Function
 DirLanguage_Err:
@@ -73,33 +70,27 @@ DirLanguage_Err:
 End Function
 
 Public Sub SetLanguageApplication()
-On Error GoTo ErrorHandler
-    
-    Dim Localization As String
-    Dim LangFilePath As String
+    On Error GoTo ErrorHandler
+    Dim Localization    As String
+    Dim LangFilePath    As String
     Dim LangFileContent As String
     ' Retrieve localization setting
     Localization = GetSetting("OPCIONES", "Language")
-
     ' If no localization is set, determine the default language based on system locale
     If Len(Localization) = 0 Then
         Select Case GetLocaleEngLanguage
             Case "Spanish"
                 language = e_language.Spanish
-                
             Case "English"
                 language = e_language.English
-
             Case "Portuguese"
                 language = e_language.Portuguese
-                
             Case "French"
                 language = e_language.French
-                
             Case "Italian"
                 language = e_language.Italian
-'            Case "Spanish_Spain"
-'                language = e_language.Spanish_Spain
+                '            Case "Spanish_Spain"
+                '                language = e_language.Spanish_Spain
             Case Else
                 ' Default to English if system locale is unsupported
                 language = e_language.English
@@ -110,24 +101,18 @@ On Error GoTo ErrorHandler
         ' Use the stored localization setting
         language = Localization
     End If
-
     ' Build the file path for the language JSON file
     LangFilePath = DirLanguage() & language & ".json"
-
     ' Validate the existence of the language file
     If dir(LangFilePath) = "" Then
         Err.Raise vbObjectError + 1, "SetLanguageApplication", "Language file not found: " & LangFilePath
     End If
-
     ' Load and parse the language JSON file
     LangFileContent = FileToString(LangFilePath)
     Set JsonLanguage = JSON.parse(LangFileContent)
-
     Exit Sub
-
 ErrorHandler:
     MsgBox "Error in SetLanguageApplication: " & Err.Description, vbCritical, "Error"
     ' Optional: Fallback to a default language in case of an error
     language = e_language.English
 End Sub
-

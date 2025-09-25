@@ -40,7 +40,7 @@ End Enum
 Private cur_state As e_game_state
 
 Private Sub Class_Initialize()
-cur_state = e_state_connect_screen
+    cur_state = e_state_connect_screen
 End Sub
 
 Public Property Get State() As e_game_state
@@ -57,5 +57,3 @@ Public Property Let State(ByVal new_state As e_game_state)
     RenderCullingRect = GameplayDrawAreaRect
     cur_state = new_state
 End Property
-
-

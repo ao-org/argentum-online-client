@@ -35,36 +35,33 @@ Public Sub Normalize(ByRef vec As Vector2)
     vec.y = vec.y / leng
 End Sub
 
-Function VAdd(a As Vector2, b As Vector2) As Vector2
+Function VAdd(A As Vector2, B As Vector2) As Vector2
     Dim ret As Vector2
-    ret.x = a.x + b.x
-    ret.y = a.y + b.y
+    ret.x = A.x + B.x
+    ret.y = A.y + B.y
     VAdd = ret
 End Function
 
-Function VSubs(a As Vector2, b As Vector2) As Vector2
+Function VSubs(A As Vector2, B As Vector2) As Vector2
     Dim ret As Vector2
-    ret.x = a.x - b.x
-    ret.y = a.y - b.y
+    ret.x = A.x - B.x
+    ret.y = A.y - B.y
     VSubs = ret
 End Function
 
-Function VMul(a As Vector2, b As Single) As Vector2
+Function VMul(A As Vector2, B As Single) As Vector2
     Dim ret As Vector2
-    ret.x = a.x * b
-    ret.y = a.y * b
+    ret.x = A.x * B
+    ret.y = A.y * B
     VMul = ret
 End Function
 
 Public Function GetAngle(ByVal x1 As Double, ByVal y1 As Double, ByVal x2 As Double, ByVal y2 As Double) As Double
-    Dim XDiff As Double
-    Dim YDiff As Double
+    Dim XDiff     As Double
+    Dim YDiff     As Double
     Dim TempAngle As Double
-
     YDiff = Abs(y2 - y1)
-
     If x1 = x2 And y1 = y2 Then Exit Function
-
     If YDiff = 0 And x1 < x2 Then
         GetAngle = 0
         Exit Function
@@ -72,16 +69,12 @@ Public Function GetAngle(ByVal x1 As Double, ByVal y1 As Double, ByVal x2 As Dou
         GetAngle = 3.14159265358979
         Exit Function
     End If
-
     XDiff = Abs(x2 - x1)
-
     TempAngle = Atn(XDiff / YDiff)
-
     If y2 > y1 Then TempAngle = 3.14159265358979 - TempAngle
     If x2 < x1 Then TempAngle = -TempAngle
     TempAngle = 1.5707963267949 - TempAngle
     If TempAngle < 0 Then TempAngle = 6.28318530717959 + TempAngle
-
     GetAngle = TempAngle
 End Function
 
@@ -97,15 +90,15 @@ Public Function FixAngle(ByVal angle As Single) As Single
     FixAngle = angle
 End Function
 
-Public Function Interpolate(ByVal a As Integer, ByVal b As Integer, ByVal t As Double) As Integer
-    Interpolate = a + CInt((b - a) * t)
+Public Function Interpolate(ByVal A As Integer, ByVal B As Integer, ByVal t As Double) As Integer
+    Interpolate = A + CInt((B - A) * t)
 End Function
 
 Public Function PointIsInsideRect(ByVal x As Integer, ByVal y As Integer, ByRef Rect As Rect) As Boolean
     PointIsInsideRect = x >= Rect.Left And x <= Rect.Right And y >= Rect.Top And y <= Rect.Bottom
 End Function
 
-Public Function OverlapRect(ByRef TargetRect As RECT, ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Heigth As Integer)
+Public Function OverlapRect(ByRef TargetRect As Rect, ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Heigth As Integer)
     OverlapRect = True
     If PointIsInsideRect(x, y, TargetRect) Then Exit Function
     If PointIsInsideRect(x + Width, y, TargetRect) Then Exit Function
@@ -114,19 +107,18 @@ Public Function OverlapRect(ByRef TargetRect As RECT, ByVal x As Integer, ByVal 
     OverlapRect = TargetRect.Left >= x And TargetRect.Left <= (x + Width) And TargetRect.Top >= y And TargetRect.Bottom <= y + Width
 End Function
 
-Public Sub SetMask(ByRef Mask As Long, ByVal Value As Long)
-    Mask = Mask Or Value
+Public Sub SetMask(ByRef Mask As Long, ByVal value As Long)
+    Mask = Mask Or value
 End Sub
 
-Public Function IsSet(ByVal Mask As Long, ByVal Value As Long) As Boolean
-    IsSet = (Mask And Value) > 0
+Public Function IsSet(ByVal Mask As Long, ByVal value As Long) As Boolean
+    IsSet = (Mask And value) > 0
 End Function
 
-Public Sub UnsetMask(ByRef Mask As Long, ByVal Value As Long)
-    Mask = Mask And Not Value
+Public Sub UnsetMask(ByRef Mask As Long, ByVal value As Long)
+    Mask = Mask And Not value
 End Sub
 
 Public Sub ResetMask(ByRef Mask As Long)
     Mask = 0
 End Sub
-

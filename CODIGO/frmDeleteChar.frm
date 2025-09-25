@@ -2,15 +2,15 @@ VERSION 5.00
 Begin VB.Form frmDeleteChar 
    BackColor       =   &H8000000A&
    BorderStyle     =   0  'None
-   ClientHeight    =   2892
+   ClientHeight    =   2895
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   4668
+   ClientWidth     =   4665
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2892
-   ScaleWidth      =   4668
+   ScaleHeight     =   2895
+   ScaleWidth      =   4665
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox txtDeleteCharCode 
@@ -74,19 +74,16 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
-Private cBotonAceptar As clsGraphicalButton
+Private cBotonAceptar  As clsGraphicalButton
 Private cBotonCancelar As clsGraphicalButton
-Private cBotonCerrar As clsGraphicalButton
+Private cBotonCerrar   As clsGraphicalButton
 
 Private Sub btnAceptar_Click()
-
-    Me.txtDeleteCharCode.Text = Trim(Me.txtDeleteCharCode.Text)
-
-    If Me.txtDeleteCharCode.Text <> "" Then
+    Me.txtDeleteCharCode.text = Trim(Me.txtDeleteCharCode.text)
+    If Me.txtDeleteCharCode.text <> "" Then
         ModAuth.LoginOperation = e_operation.ConfirmDeleteChar
         Call connectToLoginServer
-        delete_char_validate_code = frmDeleteChar.txtDeleteCharCode.Text
+        delete_char_validate_code = frmDeleteChar.txtDeleteCharCode.text
         Unload Me
     Else
         Call MsgBox(JsonLanguage.Item("MENSAJEBOX_CODIGO_INVALIDO"), vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ERROR"))
@@ -96,35 +93,21 @@ End Sub
 Private Sub btnCerrar_Click()
     Unload Me
 End Sub
+
 Private Sub btnCancelar_Click()
     Unload Me
 End Sub
 
 Private Sub Form_Load()
-
     Me.Picture = LoadInterface("ventacodigoverificacion.bmp")
-    
     Call loadButtons
-    
 End Sub
 
 Private Sub loadButtons()
-       
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonCancelar = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
-
-
-    Call cBotonAceptar.Initialize(btnAceptar, "boton-aceptar-default.bmp", _
-                                                "boton-aceptar-over.bmp", _
-                                                "boton-aceptar-off.bmp", Me)
-                                                
-    Call cBotonCancelar.Initialize(btnCancelar, "boton-cancelar-default.bmp", _
-                                                "boton-cancelar-over.bmp", _
-                                                "boton-cancelar-off.bmp", Me)
-                                                
-    Call cBotonCerrar.Initialize(btnCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-    
+    Call cBotonAceptar.Initialize(btnAceptar, "boton-aceptar-default.bmp", "boton-aceptar-over.bmp", "boton-aceptar-off.bmp", Me)
+    Call cBotonCancelar.Initialize(btnCancelar, "boton-cancelar-default.bmp", "boton-cancelar-over.bmp", "boton-cancelar-off.bmp", Me)
+    Call cBotonCerrar.Initialize(btnCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
 End Sub

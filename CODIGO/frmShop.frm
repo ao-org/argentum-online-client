@@ -2,23 +2,23 @@ VERSION 5.00
 Begin VB.Form frmShopAO20 
    BorderStyle     =   0  'None
    Caption         =   "Tienda AO20"
-   ClientHeight    =   7128
+   ClientHeight    =   7125
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   6480
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   594
+   ScaleHeight     =   475
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   540
+   ScaleWidth      =   432
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.ListBox lstItemShopFilter 
       Appearance      =   0  'Flat
       BackColor       =   &H80000001&
       ForeColor       =   &H80000000&
-      Height          =   3288
+      Height          =   3150
       Left            =   360
       TabIndex        =   5
       Top             =   2400
@@ -28,7 +28,7 @@ Begin VB.Form frmShopAO20
       Appearance      =   0  'Flat
       BackColor       =   &H80000001&
       ForeColor       =   &H80000000&
-      Height          =   3288
+      Height          =   3150
       Left            =   360
       TabIndex        =   3
       Top             =   2400
@@ -41,9 +41,9 @@ Begin VB.Form frmShopAO20
       ForeColor       =   &H80000008&
       Height          =   495
       Left            =   4770
-      ScaleHeight     =   39
+      ScaleHeight     =   31
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   39
+      ScaleWidth      =   31
       TabIndex        =   2
       Top             =   2880
       Width           =   495
@@ -53,7 +53,7 @@ Begin VB.Form frmShopAO20
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -109,7 +109,7 @@ Begin VB.Form frmShopAO20
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -129,6 +129,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 '    Argentum 20 - Game Client Program
 '    Copyright (C) 2022 - Noland Studios
 '
@@ -148,7 +149,6 @@ Attribute VB_Exposed = False
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
     Label1.Caption = JsonLanguage.Item("MENSAJE_TRANSACCION_RELOGUEO")
-
 End Sub
 
 Private Sub Image2_Click()
@@ -158,28 +158,20 @@ End Sub
 Private Sub Image3_Click()
     'Antes de enviar al servidor hago una pre consulta de los créditos en cliente
     Dim obj_to_buy As ObjDatas
-    
-    Dim i As Long
-    
+    Dim i          As Long
     obj_to_buy = ObjShop(Me.lstItemShopFilter.ListIndex + 1)
-    
     Dim obj_name As String
-    
-    obj_name = Split(lstItemShopFilter.Text, " (")(0)
-    
-    
+    obj_name = Split(lstItemShopFilter.text, " (")(0)
     For i = 1 To UBound(ObjShop)
         If obj_name = ObjShop(i).Name Then
-            obj_to_buy = ObjData(ObjShop(i).objNum)
-            obj_to_buy.objNum = ObjShop(i).objNum
+            obj_to_buy = ObjData(ObjShop(i).ObjNum)
+            obj_to_buy.ObjNum = ObjShop(i).ObjNum
             obj_to_buy.Valor = ObjShop(i).Valor
             Exit For
         End If
     Next i
-    
-    
     If credits_shopAO20 >= obj_to_buy.Valor Then
-        Call writeBuyShopItem(obj_to_buy.objNum)
+        Call writeBuyShopItem(obj_to_buy.ObjNum)
     Else
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENE_CREDITOS_SUFICIENTES"), 255, 0, 0, True)
     End If
@@ -190,36 +182,25 @@ Private Sub Image4_Click()
 End Sub
 
 Private Sub lstItemShopFilter_Click()
-    Dim grh As Long
-    Dim i As Long
-    
+    Dim Grh      As Long
+    Dim i        As Long
     Dim obj_name As String
-    
-    obj_name = Split(lstItemShopFilter.Text, " (")(0)
-    
+    obj_name = Split(lstItemShopFilter.text, " (")(0)
     For i = 1 To UBound(ObjShop)
         If obj_name = ObjShop(i).Name Then
-            grh = ObjData(ObjShop(i).objNum).GrhIndex
+            Grh = ObjData(ObjShop(i).ObjNum).GrhIndex
             Exit For
         End If
     Next i
-    
-    Call Grh_Render_To_Hdc(PictureItemShop, grh, 0, 0, False)
-        
+    Call Grh_Render_To_Hdc(PictureItemShop, Grh, 0, 0, False)
 End Sub
 
 Private Sub txtFindObj_Change()
-
     lstItemShopFilter.Clear
-    
     Dim i As Long
-    
     For i = 1 To UBound(ObjShop)
-        If InStr(1, ObjShop(i).Name, txtFindObj.Text, 1) > 0 Then
+        If InStr(1, ObjShop(i).Name, txtFindObj.text, 1) > 0 Then
             Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )")
         End If
-
     Next i
-    
-    
 End Sub

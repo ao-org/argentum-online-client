@@ -348,68 +348,58 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Form_Load()
     cmbTipo.List(0) = JsonLanguage.Item("MENSAJE_EVENTO_CAPTURA")
     cmbTipo.List(1) = JsonLanguage.Item("MENSAJE_EVENTO_CACERIA")
     cmbTipo.List(2) = JsonLanguage.Item("MENSAJE_EVENTO_DEATHMATCH")
     cmbTipo.List(3) = JsonLanguage.Item("MENSAJE_EVENTO_ABORDAJE")
-    
     cmbEquipos.List(0) = JsonLanguage.Item("MENSAJE_EVENTO_MODALIDAD_RANDOM")
     cmbEquipos.List(1) = JsonLanguage.Item("MENSAJE_EVENTO_MODALIDAD_GRUPOS")
-    
     cmbTipo.ListIndex = 0
     cmbEquipos.ListIndex = 0
-    
     tMinLvl.text = 1
     tMaxLvl.text = 47
     tMaxPlayers.text = 32
     tMinPlayers.text = 2
     tSize.text = 1
     tCosto.text = 0
-    
 End Sub
 
 Private Sub btnCrear_Click()
-On Error GoTo ErrHandler:
-
+    On Error GoTo errhandler:
     Dim Settings As t_NewScenearioSettings
-
-    If Len(tName.Text) < 3 Then
+    If Len(tName.text) < 3 Then
         Call MsgBox(JsonLanguage.Item("MENSAJE_NOMBRE_PARTIDA_CORTO"), vbExclamation)
         tName.SetFocus
         Exit Sub
     End If
-
-    Settings.InscriptionFee = Val(tCosto.Text)
+    Settings.InscriptionFee = val(tCosto.text)
     If Settings.InscriptionFee < 0 Or Settings.InscriptionFee > 10000000 Then
         Call MsgBox(JsonLanguage.Item("MENSAJE_COSTO_PARTIDA_INVALIDO"), vbExclamation)
         tCosto.SetFocus
         Exit Sub
     End If
-
-    Settings.MinLevel = Val(tMinLvl.Text)
-    Settings.MaxLevel = Val(tMaxLvl.Text)
+    Settings.MinLevel = val(tMinLvl.text)
+    Settings.MaxLevel = val(tMaxLvl.text)
     If Settings.MinLevel > Settings.MaxLevel Or Settings.MinLevel > 47 Or Settings.MinLevel < 1 Or Settings.MaxLevel > 47 Or Settings.MaxLevel < 1 Then
         Call MsgBox(JsonLanguage.Item("MENSAJE_LIMITES_NIVELES_INVALIDOS"), vbExclamation)
         tMinLvl.SetFocus
         Exit Sub
     End If
-    
-    Settings.MinPlayers = Val(tMinPlayers.Text)
-    Settings.MaxPlayers = Val(tMaxPlayers.Text)
+    Settings.MinPlayers = val(tMinPlayers.text)
+    Settings.MaxPlayers = val(tMaxPlayers.text)
     If Settings.MinPlayers > Settings.MaxPlayers Or Settings.MinPlayers > 40 Or Settings.MinPlayers < 2 Or Settings.MaxPlayers > 40 Or Settings.MaxPlayers < 2 Then
         Call MsgBox(JsonLanguage.Item("MENSAJE_LIMITES_JUGADORES_INVALIDOS"), vbExclamation)
-
         tMinPlayers.SetFocus
         Exit Sub
     End If
-    Settings.TeamSize = Val(tSize.Text)
+    Settings.TeamSize = val(tSize.text)
     If Settings.MinPlayers Mod Settings.TeamSize <> 0 Or Settings.MaxPlayers Mod Settings.TeamSize <> 0 Then
         Call MsgBox(JsonLanguage.Item("MENSAJE_LIMITE_JUGADORES_DIVISIBLE"), vbExclamation)
         tSize.SetFocus
         Exit Sub
     End If
-    
     Select Case cmbTipo.ListIndex
         Case e_EventType.CaptureTheFlag - 1
             Settings.ScenearioType = e_EventType.CaptureTheFlag
@@ -420,154 +410,118 @@ On Error GoTo ErrHandler:
         Case e_EventType.NavalBattle - 1
             Settings.ScenearioType = e_EventType.NavalBattle
     End Select
-    
     Select Case cmbEquipos.ListIndex
         Case e_TeamTypes.ePremade
             Settings.TeamType = e_TeamTypes.ePremade
         Case e_TeamTypes.eRandom
             Settings.TeamType = e_TeamTypes.eRandom
-            
     End Select
-    
-    Call WriteStartLobby(1, Settings, tName.Text, tPassword.Text)
-    
+    Call WriteStartLobby(1, Settings, tName.text, tPassword.text)
     Unload Me
-    
     Exit Sub
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "frmCreateBattleGround.btnCrear", Erl)
     Resume Next
 End Sub
 
 Private Sub chkPassword_Click()
-    tPassword.enabled = chkPassword.Value
+    tPassword.enabled = chkPassword.value
     If Not tPassword.enabled Then
-        tPassword.Text = ""
+        tPassword.text = ""
     Else
         tPassword.SetFocus
     End If
 End Sub
 
 Private Sub tMaxLvl_Change()
-    Dim Value As Long
-    
+    Dim value As Long
     If tMaxLvl.text = "" Then
         tMaxLvl.text = "1"
     End If
-    
     If Not IsNumeric(tMaxLvl.text) Then
         tMaxLvl.text = "1"
     End If
-    
-    Value = CLng(tMaxLvl.text)
-    
-    If Value > 47 Then
+    value = CLng(tMaxLvl.text)
+    If value > 47 Then
         tMaxLvl.text = "47"
     End If
-    
-    If Value < 1 Then
+    If value < 1 Then
         tMaxLvl.text = "1"
     End If
-    
-    If Value < CLng(tMinLvl.text) Then
+    If value < CLng(tMinLvl.text) Then
         tMaxLvl.text = tMinLvl.text
     End If
-    
 End Sub
+
 Private Sub tMinLvl_Change()
-    Dim Value As Long
-    
+    Dim value As Long
     If tMinLvl.text = "" Then
         tMinLvl.text = "1"
     End If
-    
     If Not IsNumeric(tMinLvl.text) Then
         tMinLvl.text = "1"
     End If
-    
-    Value = CLng(tMinLvl.text)
-    
-    If Value > 47 Then
+    value = CLng(tMinLvl.text)
+    If value > 47 Then
         tMinLvl.text = "47"
     End If
-    
-    If Value < 1 Then
+    If value < 1 Then
         tMinLvl.text = "1"
     End If
-
 End Sub
 
 Private Sub tMaxPlayers_Change()
-    Dim Value As Long
-    
+    Dim value As Long
     If tMaxPlayers.text = "" Then
         tMaxPlayers.text = "1"
     End If
-    
     If Not IsNumeric(tMaxPlayers.text) Then
         tMaxPlayers.text = "1"
     End If
-    
-    Value = CLng(tMaxPlayers.text)
-    
-    If Value > 32 Then
+    value = CLng(tMaxPlayers.text)
+    If value > 32 Then
         tMaxPlayers.text = "32"
     End If
-    
-    If Value < 2 Then
+    If value < 2 Then
         tMaxPlayers.text = "2"
     End If
-    
-    If Value < CLng(tMinPlayers.text) Then
+    If value < CLng(tMinPlayers.text) Then
         tMaxPlayers.text = tMinPlayers.text
     End If
-    
 End Sub
 
 Private Sub tMinPlayers_Change()
-    Dim Value As Long
-    
+    Dim value As Long
     If tMinPlayers.text = "" Then
         tMinPlayers.text = "1"
     End If
-    
     If Not IsNumeric(tMinPlayers.text) Then
         tMinPlayers.text = "1"
     End If
-    
-    Value = CLng(tMinPlayers.text)
-    
-    If Value > 32 Then
+    value = CLng(tMinPlayers.text)
+    If value > 32 Then
         tMinPlayers.text = "32"
     End If
-    
-    If Value < 2 Then
+    If value < 2 Then
         tMinPlayers.text = "2"
     End If
-    
 End Sub
 
 Private Sub tSize_Change()
-    Dim Value As Long
-    
+    Dim value As Long
     If tSize.text = "" Then
         tSize.text = "1"
     End If
-    
     If Not IsNumeric(tSize.text) Then
         tSize.text = "1"
     End If
-    
-    Value = CLng(tSize.text)
-    
+    value = CLng(tSize.text)
     If (cmbEquipos.ListIndex = 1) Then
-        If Value <= 1 Then
+        If value <= 1 Then
             tSize.text = "2"
         End If
     End If
-
-    lblDivisible.visible = Value Mod CLng(tMaxPlayers.text) <> 0 Or Value Mod CLng(tMaxPlayers.text) <> 0
-
+    lblDivisible.visible = value Mod CLng(tMaxPlayers.text) <> 0 Or value Mod CLng(tMaxPlayers.text) <> 0
 End Sub
 
 Private Sub tMinPlayers_LostFocus()
@@ -591,15 +545,11 @@ Private Sub tMaxLvl_LostFocus()
 End Sub
 
 Private Sub cmbEquipos_LostFocus()
-    Dim Value As Long
-    Value = CLng(tSize.text)
-    
+    Dim value As Long
+    value = CLng(tSize.text)
     If (cmbEquipos.ListIndex = 1) Then
-        If Value <= 1 Then
+        If value <= 1 Then
             tSize.text = "2"
         End If
     End If
 End Sub
-
-
-

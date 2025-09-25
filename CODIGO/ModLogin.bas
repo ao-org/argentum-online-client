@@ -25,40 +25,33 @@ Attribute VB_Name = "ModLogin"
 '
 '
 '
-
 Option Explicit
-
 Dim ServerSettings As clsIniManager
     
 Public Sub DoLogin(ByVal Account As String, ByVal Password As String, ByVal storeCredentials As Boolean)
     On Error GoTo DoLogin_Err
-#If REMOTE_CLOSE = 1 Then
-    ModAuth.LoginOperation = e_operation.Authenticate
-    Call LoginOrConnect(E_MODO.IngresandoConCuenta)
-
-#Else
-    If IntervaloPermiteConectar Then
-        CuentaEmail = Account
-        CuentaPassword = Password
-
-        If storeCredentials Then
-            CuentaRecordada.nombre = CuentaEmail
-            CuentaRecordada.Password = CuentaPassword
-            
-            Call GuardarCuenta(CuentaEmail, CuentaPassword)
-        Else
-            ' Reseteamos los datos de cuenta guardados
-            Call GuardarCuenta(vbNullString, vbNullString)
+    #If REMOTE_CLOSE = 1 Then
+        ModAuth.LoginOperation = e_operation.Authenticate
+        Call LoginOrConnect(E_MODO.IngresandoConCuenta)
+    #Else
+        If IntervaloPermiteConectar Then
+            CuentaEmail = Account
+            CuentaPassword = Password
+            If storeCredentials Then
+                CuentaRecordada.nombre = CuentaEmail
+                CuentaRecordada.Password = CuentaPassword
+                Call GuardarCuenta(CuentaEmail, CuentaPassword)
+            Else
+                ' Reseteamos los datos de cuenta guardados
+                Call GuardarCuenta(vbNullString, vbNullString)
+            End If
+            If CheckUserDataLoged() = True Then
+                ModAuth.LoginOperation = e_operation.Authenticate
+                Call LoginOrConnect(E_MODO.IngresandoConCuenta)
+            End If
         End If
-
-        If CheckUserDataLoged() = True Then
-            ModAuth.LoginOperation = e_operation.Authenticate
-            Call LoginOrConnect(E_MODO.IngresandoConCuenta)
-        End If
-    End If
-#End If
+    #End If
     Exit Sub
-
 DoLogin_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModLogin.DoLogin", Erl)
     Resume Next
@@ -68,9 +61,8 @@ Public Sub SetActiveServer(ByVal IP As String, ByVal port As String, Optional Ig
     ServerIndex = IP & ":" & port
     IPdelServidor = IP
     PuertoDelServidor = port
-    
     #If PYMMO = 0 Or DEBUGGING = 1 Then
-            Call SaveSetting("INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
+        Call SaveSetting("INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
     #End If
     If Not IgnoreHardcode Then
         #If PYMMO = 1 Then
@@ -100,26 +92,25 @@ Public Sub SetActiveEnvironment(ByVal environment As String)
     If ServerSettings Is Nothing Then
         Dim RemotesPath As String
         Set ServerSettings = New clsIniManager
-#If Compresion = 1 Then
-        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "Remotes.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de Remotes.ini!"
-            MsgBox Err.Description
-            Exit Sub
-        End If
-        RemotesPath = Windows_Temp_Dir & "Remotes.ini"
-#Else
-        RemotesPath = App.path & "\..\Recursos\init\Remotes.ini"
-#End If
+        #If Compresion = 1 Then
+            If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "Remotes.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
+                Err.Description = "¡No se puede cargar el archivo de Remotes.ini!"
+                MsgBox Err.Description
+                Exit Sub
+            End If
+            RemotesPath = Windows_Temp_Dir & "Remotes.ini"
+        #Else
+            RemotesPath = App.path & "\..\Recursos\init\Remotes.ini"
+        #End If
         Debug.Assert FileExist(RemotesPath, vbNormal)
         Call ServerSettings.Initialize(RemotesPath)
-        
     End If
-#If Developer = 0 And DEBUGGING = 0 Then
-    environment = "Production"
-#End If
+    #If Developer = 0 And DEBUGGING = 0 Then
+        environment = "Production"
+    #End If
     Dim loginServers As Integer
-    loginServers = Val(ServerSettings.GetValue(environment, "LoginCount"))
-    ServerIpCount = Val(ServerSettings.GetValue(environment, "ServerCount"))
+    loginServers = val(ServerSettings.GetValue(environment, "LoginCount"))
+    ServerIpCount = val(ServerSettings.GetValue(environment, "ServerCount"))
     Dim loginOpt, serverOpt, k As Integer
     For k = 1 To 100
         serverOpt = RandomNumber(1, ServerIpCount)
@@ -140,30 +131,27 @@ Public Sub CreateAccount(ByVal Name As String, ByVal Surname As String, ByVal Em
     NewAccountData.Surname = Surname
     NewAccountData.Email = Email
     NewAccountData.Password = Password
-#If PYMMO = 1 Then
-    ModAuth.LoginOperation = e_operation.SignUp
-    Call connectToLoginServer
-#Else
-    CuentaEmail = Email
-    CuentaPassword = Password
-    Call LoginOrConnect(CreandoCuenta)
-#End If
+    #If PYMMO = 1 Then
+        ModAuth.LoginOperation = e_operation.SignUp
+        Call connectToLoginServer
+    #Else
+        CuentaEmail = Email
+        CuentaPassword = Password
+        Call LoginOrConnect(CreandoCuenta)
+    #End If
 End Sub
 
 Public Sub LoadCharacterSelectionScreen()
     AlphaNiebla = 30
     frmConnect.visible = True
     g_game_state.State = e_state_account_screen
-   
     SugerenciaAMostrar = RandomNumber(1, NumSug)
     Call ao20audio.PlayWav(192)
     Call Graficos_Particulas.Particle_Group_Remove_All
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
-    
     If FrmLogear.visible Then Unload FrmLogear
     If frmNewAccount.visible Then Unload frmNewAccount
-    
     If frmMain.visible Then
         UserParalizado = False
         UserInmovilizado = False
@@ -237,19 +225,19 @@ Public Sub RequestNewPassword(ByVal Email As String, ByVal newPassword As String
 End Sub
 
 Public Sub LoginCharacter(ByVal Name As String)
-On Error GoTo LogearPersonaje_Err
+    On Error GoTo LogearPersonaje_Err
     userName = Name
     If Connected Then
         frmMain.ShowFPS.enabled = True
     End If
-#If PYMMO = 0 Then
-    Call Protocol_Writes.WriteLoginExistingChar
-#End If
-#If PYMMO = 1 Then
-    Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
-    ModAuth.LoginOperation = e_operation.Authenticate
-    Call LoginOrConnect(E_MODO.Normal)
-#End If
+    #If PYMMO = 0 Then
+        Call Protocol_Writes.WriteLoginExistingChar
+    #End If
+    #If PYMMO = 1 Then
+        Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
+        ModAuth.LoginOperation = e_operation.Authenticate
+        Call LoginOrConnect(E_MODO.Normal)
+    #End If
     Exit Sub
 LogearPersonaje_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModLogin.LogearPersonaje", Erl)
@@ -257,19 +245,19 @@ LogearPersonaje_Err:
 End Sub
 
 Public Sub ShowLogin()
-        frmConnect.Show
-        Dim patchNotes As String
-        patchNotes = GetPatchNotes()
-        If Not patchNotes = "" Then
-            frmPatchNotes.SetNotes (patchNotes)
-            frmPatchNotes.Show , frmConnect
-        Else
-            FrmLogear.Show , frmConnect
-        End If
+    frmConnect.Show
+    Dim patchNotes As String
+    patchNotes = GetPatchNotes()
+    If Not patchNotes = "" Then
+        frmPatchNotes.SetNotes (patchNotes)
+        frmPatchNotes.Show , frmConnect
+    Else
+        FrmLogear.Show , frmConnect
+    End If
 End Sub
 
 Public Sub ShowScharSelection()
-        Call connectToLoginServer
+    Call connectToLoginServer
 End Sub
 
 Public Sub CreateCharacter(ByVal Name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As Integer, ByVal Head As Integer, ByVal HomeCity As Integer)
@@ -279,28 +267,25 @@ Public Sub CreateCharacter(ByVal Name As String, ByVal Race As Integer, ByVal Ge
     UserStats.Clase = Class
     MiCabeza = Head
     UserStats.Hogar = HomeCity
-#If PYMMO = 1 Then
-    Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
-    Call LoginOrConnect(E_MODO.CrearNuevoPj)
-#Else
-    Call Protocol_Writes.WriteLoginNewChar(userName, UserStats.Raza, UserStats.Sexo, UserStats.Clase, MiCabeza, UserStats.Hogar)
-#End If
-    
+    #If PYMMO = 1 Then
+        Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
+        Call LoginOrConnect(E_MODO.CrearNuevoPj)
+    #Else
+        Call Protocol_Writes.WriteLoginNewChar(userName, UserStats.Raza, UserStats.Sexo, UserStats.Clase, MiCabeza, UserStats.Hogar)
+    #End If
 End Sub
 
 Public Sub RequestDeleteCharacter()
-#If PYMMO = 1 Then
-    ModAuth.LoginOperation = e_operation.deletechar
-    Call connectToLoginServer
-#Else
-    Call DisplayError("Unsoported on localhost.", "")
-#End If
+    #If PYMMO = 1 Then
+        ModAuth.LoginOperation = e_operation.deletechar
+        Call connectToLoginServer
+    #Else
+        Call DisplayError("Unsoported on localhost.", "")
+    #End If
 End Sub
 
 Public Sub DeleteCharRequestCode()
-
-        MsgBox ("Se ha enviado un código de verificación al mail proporcionado.")
-
+    MsgBox ("Se ha enviado un código de verificación al mail proporcionado.")
 End Sub
 
 Public Sub TransferChar(ByVal Name As String, ByVal DestinationAccunt As String)
@@ -313,50 +298,47 @@ Public Sub TransferChar(ByVal Name As String, ByVal DestinationAccunt As String)
 End Sub
 
 Public Sub OnClientDisconnect(ByVal Error As Long)
-    
-On Error GoTo OnClientDisconnect_Err
-
-#If REMOTE_CLOSE = 0 Then
-    If (Error = 10061) Then
-        If frmConnect.visible Then
-            Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_CONEXION"), "connection-failure")
-        Else
-            Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_CONEXION_SERVIDOR"), "connection-failure")
-        End If
-    Else
-        frmConnect.MousePointer = 1
-        frmMain.ShowFPS.enabled = False
-        If (Error <> 0 And Error <> 2) Then
-            Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_CONEXION_SERVIDOR"), "connection-failure")
-            
+    On Error GoTo OnClientDisconnect_Err
+    #If REMOTE_CLOSE = 0 Then
+        If (Error = 10061) Then
             If frmConnect.visible Then
-                Connected = False
+                Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_CONEXION"), "connection-failure")
             Else
-                If (Connected) Then
-                    Call HandleDisconnect
-                End If
+                Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_CONEXION_SERVIDOR"), "connection-failure")
             End If
         Else
-            If Error <> 0 Then
-                Call RegistrarError(Error, "Conexion cerrada", "OnClientDisconnect")
-            End If
-            If frmConnect.visible Then
-                Connected = False
+            frmConnect.MousePointer = 1
+            frmMain.ShowFPS.enabled = False
+            If (Error <> 0 And Error <> 2) Then
+                Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_CONEXION_SERVIDOR"), "connection-failure")
+                If frmConnect.visible Then
+                    Connected = False
+                Else
+                    If (Connected) Then
+                        Call HandleDisconnect
+                    End If
+                End If
             Else
-                If (Connected) Then
-                    Call HandleDisconnect
+                If Error <> 0 Then
+                    Call RegistrarError(Error, "Conexion cerrada", "OnClientDisconnect")
+                End If
+                If frmConnect.visible Then
+                    Connected = False
+                Else
+                    If (Connected) Then
+                        Call HandleDisconnect
+                    End If
+                End If
+                If Not GetRemoteError And Error > 0 Then
+                    Call DisplayError(JsonLanguage.Item("MENSAJE_CONEXION_CERRADA"), "connection-closed")
                 End If
             End If
-            If Not GetRemoteError And Error > 0 Then
-                Call DisplayError(JsonLanguage.Item("MENSAJE_CONEXION_CERRADA"), "connection-closed")
-            End If
         End If
-    End If
-#Else
-    frmDebug.add_text_tracebox "OnClientDisconnect " & Error
-    Call SaveStringInFile("OnClientDisconnect " & Error, "remote_debug.txt")
-    prgRun = False
-#End If
+    #Else
+        frmDebug.add_text_tracebox "OnClientDisconnect " & Error
+        Call SaveStringInFile("OnClientDisconnect " & Error, "remote_debug.txt")
+        prgRun = False
+    #End If
     Exit Sub
 OnClientDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModLogin.OnClientDisconnect", Erl)

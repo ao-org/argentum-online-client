@@ -16,12 +16,10 @@ Attribute VB_Name = "modDplayClient"
 '
 '
 #If DIRECT_PLAY = 1 Then
-Option Explicit
-
-Public Const AppGuid = "{5726CF1F-702B-4008-98BC-BF9C95F9E288}"
-
-Public dpc As DirectPlay8Client
-Public dpApp As DPN_APPLICATION_DESC
+    Option Explicit
+    Public Const AppGuid = "{5726CF1F-702B-4008-98BC-BF9C95F9E288}"
+    Public dpc   As DirectPlay8Client
+    Public dpApp As DPN_APPLICATION_DESC
 
 Public Sub init_direct_play(ByRef dx As DirectX8)
     Err.Clear
@@ -49,19 +47,19 @@ Public Sub init_direct_play(ByRef dx As DirectX8)
      With scaps
         .lBuffersPerThread = 16
         frmDebug.add_text_tracebox ("DPLAY_SP_CAPS:lBuffersPerThread :" & .lBuffersPerThread)
-        frmDebug.txtBuffersPerThread.Text = .lBuffersPerThread
+        frmDebug.txtBuffersPerThread.text = .lBuffersPerThread
         
         frmDebug.add_text_tracebox ("DPLAY_SP_CAPS:lDefaultEnumRetryInterval :" & .lDefaultEnumRetryInterval)
-        frmDebug.txtDefaultEnumRetryInterval.Text = .lDefaultEnumRetryInterval
+        frmDebug.txtDefaultEnumRetryInterval.text = .lDefaultEnumRetryInterval
         
         frmDebug.add_text_tracebox ("DPLAY_SP_CAPS:lDefaultEnumTimeout :" & .lDefaultEnumTimeout)
-        frmDebug.txtDefaultEnumTimeout.Text = .lDefaultEnumTimeout
+        frmDebug.txtDefaultEnumTimeout.text = .lDefaultEnumTimeout
         
         frmDebug.add_text_tracebox ("DPLAY_SP_CAPS:lSystemBufferSize :" & .lSystemBufferSize)
-        frmDebug.txtSystemBufferSize.Text = .lSystemBufferSize
+        frmDebug.txtSystemBufferSize.text = .lSystemBufferSize
         
         frmDebug.add_text_tracebox ("DPLAY_SP_CAPS:lNumThreads :" & .lNumThreads)
-        frmDebug.txtNumThreads.Text = .lNumThreads
+        frmDebug.txtNumThreads.text = .lNumThreads
       
     End With
     dpc.SetSPCaps DP8SP_TCPIP, scaps
@@ -121,7 +119,7 @@ End Sub
 
 
 Public Sub HandleDPlayError(ByVal ErrNumber As Long, ByVal ErrDescription As String, ByVal place As String, ByVal line As String)
-       Select Case err.Number
+       Select Case Err.Number
             Case DPNERR_INVALIDPLAYER
                     Call LogError("DPNERR_INVALIDPLAYER: The player ID is not recognized as a valid player ID for this game session. " & place & " " & line)
             Case DPNERR_INVALIDPARAM
@@ -152,7 +150,7 @@ Public Sub HandleDPlayError(ByVal ErrNumber As Long, ByVal ErrDescription As Str
             Case Else
                     Call LogError("Unknown error " & Err.Number & " " & place & " " & line)
         End Select
-        err.Clear
+        Err.Clear
 End Sub
 
 

@@ -25,26 +25,17 @@ Attribute VB_Exposed = False
 '    GNU Affero General Public License for more details.
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 Option Base 0
-
 Option Explicit
-
-
-Private mDirectX As New DirectX8
-Private mDirectD3D8 As D3DX8
-Private mDirectD3D As Direct3D8
-
-Private mDirectDevice As Direct3DDevice8
-
-Private mD3DPP As D3DPRESENT_PARAMETERS
-
-Private mProjection As D3DMATRIX
+Private mDirectX        As New DirectX8
+Private mDirectD3D8     As D3DX8
+Private mDirectD3D      As Direct3D8
+Private mDirectDevice   As Direct3DDevice8
+Private mD3DPP          As D3DPRESENT_PARAMETERS
+Private mProjection     As D3DMATRIX
 Private mIdentityMatrix As D3DMATRIX
-
-Const ScreenWidth  As Integer = 1024
-Const ScreenHeight As Integer = 768
-
+Const ScreenWidth       As Integer = 1024
+Const ScreenHeight      As Integer = 768
 
 Private Type NEW_TYPE_VERTEX
     x       As Single
@@ -67,62 +58,57 @@ End Sub
 
 Public Sub list_modes(ByRef d3d As Direct3D8)
     Dim tmpDispMode As D3DDISPLAYMODE
-    Dim i As Long
+    Dim i           As Long
     For i = 0 To d3d.GetAdapterModeCount(0) - 1 'primary adapter
         Call d3d.EnumAdapterModes(0, i, tmpDispMode)
         frmDebug.add_text_tracebox tmpDispMode.Width & "x" & tmpDispMode.Height & " fmt:" & tmpDispMode.format
-        
     Next i
 End Sub
+
 Private Function init_dx8_and_d3d() As Long
-On Error Resume Next
+    On Error Resume Next
     Err.Clear
     Set mDirectX = New DirectX8
     If Err.Number <> 0 Then
-                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX8"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
-                Exit Function
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX8"), vbCritical, App.title)
+        frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+        Exit Function
     End If
-    
     Set mDirectD3D = DirectX.Direct3DCreate()
     If Err.Number <> 0 Then
-                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTD3D"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
-                Exit Function
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTD3D"), vbCritical, App.title)
+        frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+        Exit Function
     End If
-    
     Set mDirectD3D8 = New D3DX8
     If Err.Number <> 0 Then
-                Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTD3D8"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
-                Exit Function
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTD3D8"), vbCritical, App.title)
+        frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+        Exit Function
     End If
     init_dx8_and_d3d = Err.Number
 End Function
 
-Public Function init(ByVal window As Long) As Long
-    init = init_dx8_and_d3d()
-    If init <> 0 Then
+Public Function Init(ByVal window As Long) As Long
+    Init = init_dx8_and_d3d()
+    If Init <> 0 Then
         frmDebug.add_text_tracebox "init_dx8_and_d3d() failed with code " & Init
         Exit Function
     End If
-    init = init_dx_device(window, mDirectD3D, mDisplayMode)
-    If init <> 0 Then
+    Init = init_dx_device(window, mDirectD3D, mDisplayMode)
+    If Init <> 0 Then
         frmDebug.add_text_tracebox "init_dx_device() failed with code " & Init
         Exit Function
     End If
-    
 End Function
 
-Private Function init_dx_device(ByVal window_handle As Long, _
-                                ByRef d3d_obj As Direct3D8, _
-                                ByRef disp_mode As D3DDISPLAYMODE) As Long
-On Error Resume Next
+Private Function init_dx_device(ByVal window_handle As Long, ByRef d3d_obj As Direct3D8, ByRef disp_mode As D3DDISPLAYMODE) As Long
+    On Error Resume Next
     Debug.Assert Not d3d_obj Is Nothing
-    Dim Caps As D3DCAPS8
-    Dim DevType As CONST_D3DDEVTYPE
+    Dim Caps             As D3DCAPS8
+    Dim DevType          As CONST_D3DDEVTYPE
     Dim DevBehaviorFlags As Long
-    Dim d3dDispMode  As D3DDISPLAYMODE
+    Dim d3dDispMode      As D3DDISPLAYMODE
     Err.Clear
     d3d_obj.GetDeviceCaps D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, Caps
     If Err.Number = D3DERR_NOTAVAILABLE Then
@@ -144,7 +130,6 @@ On Error Resume Next
         End If
     End If
     d3d_obj.GetAdapterDisplayMode D3DADAPTER_DEFAULT, d3dDispMode
-    
     frmDebug.add_text_tracebox "Using; Windowed; mode"
     Debug.Assert disp_mode.Width > 0
     Debug.Assert disp_mode.Height > 0
@@ -157,9 +142,7 @@ On Error Resume Next
     mD3DPP.hDeviceWindow = window_handle
     mD3DPP.EnableAutoDepthStencil = 1
     mD3DPP.AutoDepthStencilFormat = D3DFMT_D16
-    
     Err.Clear
- 
     Set mDirectDevice = d3d_obj.CreateDevice(D3DADAPTER_DEFAULT, DevType, window_handle, DevBehaviorFlags, mD3DPP)
     frmDebug.add_text_tracebox "Create Direct3D device: " & Err
     If (Err.Number <> 0) Then
@@ -171,9 +154,6 @@ On Error Resume Next
     End If
     init_dx_device = Err.Number
 End Function
-
-
-
 
 Private Sub Class_Initialize()
     Set mDirectX = Nothing
