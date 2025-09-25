@@ -1742,7 +1742,9 @@ On Error GoTo HandleUpdateHP_Err
     Call frmMain.UpdateHpBar
     'Is the user alive??
     If UserStats.MinHp = 0 Then
-        Call svb_unlock_achivement("Memento Mori")
+        #If No_Api_Steam = 0 Then
+            Call svb_unlock_achivement("Memento Mori")
+        #End If
         UserStats.estado = 1
         charlist(UserCharIndex).Invisible = False
         If MostrarTutorial And tutorial_index <= 0 Then
@@ -1971,7 +1973,9 @@ Private Sub HandleNPCHitUser()
 
     End Select
     
-    Call svb_unlock_achivement("Small victory")
+    #If No_Api_Steam = 0 Then
+        Call svb_unlock_achivement("Small victory")
+    #End If
     
     Exit Sub
 
@@ -2945,7 +2949,16 @@ Private Sub HandleCharacterCreate()
         .banderaIndex = Reader.ReadInt8()
         .AnimAtaque1 = Reader.ReadInt16()
         
-          
+        'dwarven exoesqueleton exception
+        If .Body.BodyIndex = DwarvenExoesqueletonBody Then
+            weapon = NO_WEAPON
+            Shield = NO_SHIELD
+            helmet = NO_HELMET
+            Cart = NO_CART
+            Backpack = NO_BACKPACK
+            Head = 0
+        End If
+        
         If (.Pos.x <> 0 And .Pos.y <> 0) Then
             If MapData(.Pos.x, .Pos.y).CharIndex = CharIndex Then
                 'Erase the old character from map
@@ -3274,6 +3287,18 @@ Private Sub HandleCharacterChange()
         flags = Reader.ReadInt8()
         .Idle = (flags And &O1)
         .Navegando = (flags And &O2)
+        
+        
+        'exception for dwarven exoesqueleton
+        If .iBody = DwarvenExoesqueletonBody Then
+            .Head = HeadData(0)
+            .HasBackpack = False
+            .HasCart = False
+            .Casco = CascoAnimData(NO_HELMET)
+            .Escudo = ShieldAnimData(NO_SHIELD)
+            .Arma = WeaponAnimData(NO_WEAPON)
+        End If
+        
 
         ' ==================== ANIMACIÓN / FASE ====================
         If .Idle Then
@@ -4228,7 +4253,9 @@ End Sub
 
 
 Private Sub HandleUpdateUserStats()
-On Error GoTo HandleUpdateUserStats_Err
+
+    On Error GoTo HandleUpdateUserStats_Err
+    
     UserStats.MaxHp = Reader.ReadInt16()
     UserStats.MinHp = Reader.ReadInt16()
     UserStats.HpShield = Reader.ReadInt32()
@@ -4239,19 +4266,21 @@ On Error GoTo HandleUpdateUserStats_Err
     UserStats.GLD = Reader.ReadInt32()
     UserStats.OroPorNivel = Reader.ReadInt32()
     UserStats.Lvl = Reader.ReadInt8()
-     
-    Select Case UserStats.Lvl:
-        Case 10
-            Call svb_unlock_achivement("Adventurer")
-        Case 20
-            Call svb_unlock_achivement("Seasoned adventurer")
-        Case 30
-            Call svb_unlock_achivement("Big shot!")
-        Case 40
-            Call svb_unlock_achivement("Oh! You mean business!")
-        Case Else
-            'Nothing
-    End Select
+
+    #If No_Api_Steam = 0 Then
+        Select Case UserStats.Lvl:
+            Case 10
+                Call svb_unlock_achivement("Adventurer")
+            Case 20
+                Call svb_unlock_achivement("Seasoned adventurer")
+            Case 30
+                Call svb_unlock_achivement("Big shot!")
+            Case 40
+                Call svb_unlock_achivement("Oh! You mean business!")
+            Case Else
+                'Nothing
+        End Select
+    #End If
 
     UserStats.PasarNivel = Reader.ReadInt32()
     UserStats.exp = Reader.ReadInt32()
@@ -4269,8 +4298,7 @@ On Error GoTo HandleUpdateUserStats_Err
 
 HandleUpdateUserStats_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateUserStats", Erl)
-    
-    
+
 End Sub
 
 ''
@@ -5246,7 +5274,10 @@ Private Sub HandleLevelUp()
     On Error GoTo HandleLevelUp_Err
  
     SkillPoints = Reader.ReadInt16()
-    Call svb_unlock_achivement("Newbie's fate")
+    
+    #If No_Api_Steam = 0 Then
+        Call svb_unlock_achivement("Newbie's fate")
+    #End If
     
     Exit Sub
 
@@ -8068,9 +8099,19 @@ End Sub
             Pjs(ii).Arma = Reader.ReadInt
             Pjs(ii).Backpack = Reader.ReadInt
             Pjs(ii).ClanName = ""
-
         Next ii
-    
+        
+        
+        For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+            If Pjs(ii).Body = DwarvenExoesqueletonBody Then
+                Pjs(ii).Head = 0
+                Pjs(ii).Casco = 0
+                Pjs(ii).Escudo = 0
+                Pjs(ii).Arma = 0
+                Pjs(ii).Backpack = 0
+            End If
+        Next ii
+        
         Dim i As Long
 
         For i = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)

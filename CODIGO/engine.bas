@@ -1652,20 +1652,22 @@ Sub Char_Render(ByVal CharIndex As Long, _
             End If
             
             If .BackPack.AnimateOnIdle = 0 And .BackPack.IdleBody = 0 Then
-                
                 ' Quieto SIN animación: congelar la serie de walk en frame estático
                 .BackPack.Walk(.Heading).Loops = 0
                 .BackPack.Walk(.Heading).started = 0
             Else
-
                 ' Quieto CON animación: disparar (o preservar) idle una sola vez
                 If .BackPack.Walk(.Heading).started = 0 Or .BackPack.Walk(.Heading).Loops <> INFINITE_LOOPS Then
                     Call SetCharIdle(charlist(CharIndex), False)
                 End If
             End If
             
+            Else
+                If .Backpack.BodyIndex <> .tmpBackPack Then
+                    .Backpack = BodyData(.tmpBackPack)
+                End If
         End If
-
+        
         ' --- FIN GUARD ---
 
         Dim dibujaMiembroClan As Boolean
@@ -2502,8 +2504,12 @@ Start_Err:
 End Sub
 #End If
 
+
+
+
 Public Sub Start()
 On Error GoTo Start_Err
+    
     DoEvents
     Do While prgRun
         If GetGameplayForm().WindowState <> vbMinimized Then
@@ -2573,7 +2579,10 @@ On Error GoTo Start_Err
                 Case e_state_createchar_screen
                     RenderCrearPJ 76, 82, 0, 0
             End Select
-
+            
+            
+            
+    
         Else
         #If DIRECT_PLAY = 0 Then
             Sleep 60&
@@ -2584,7 +2593,9 @@ On Error GoTo Start_Err
         DoEvents
 
         Call modNetwork.Poll
-        'Call svb_run_callbacks
+        #If No_Api_Steam = 0 Then
+            Call svb_run_callbacks
+        #End If
         Call UpdateAntiCheat
     Loop
 
@@ -3471,7 +3482,7 @@ Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal P
             TileX = 48
             TileY = 36
     End Select
-    
+
     
     Call RenderScreen(TileX, TileY, PixelOffsetX, PixelOffsetY, HalfConnectTileWidth, HalfConnectTileHeight)
         
@@ -3537,7 +3548,6 @@ Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal P
 #End If
     
     FrameTime = GetTickCount()
-    'FramesPerSecCounter = FramesPerSecCounter + 1
     timerElapsedTime = GetElapsedTime()
     timerTicksPerFrame = timerElapsedTime * engineBaseSpeed
     
