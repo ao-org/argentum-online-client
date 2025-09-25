@@ -16,6 +16,4 @@ Attribute VB_Name = "ao20rendering"
 '
 '
 Option Explicit
-
-Public renderer                         As clsRenderer
-
+Public renderer As clsRenderer

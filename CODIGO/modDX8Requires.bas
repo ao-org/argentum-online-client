@@ -16,10 +16,7 @@ Attribute VB_Name = "modDX8Requires"
 '
 '
 Option Explicit
-
-
 ' CARGA DE TEXTURAS
-
 Public SurfaceDB As clsTexManager
 
 Public Type D3D8Textures
@@ -29,13 +26,16 @@ Public Type D3D8Textures
 End Type
 
 'To get free bytes in drive
-Private Declare Function GetDiskFreeSpace Lib "kernel32" Alias "GetDiskFreeSpaceExA" (ByVal lpRootPathName As String, FreeBytesToCaller As Currency, BytesTotal As Currency, FreeBytesTotal As Currency) As Long
-
+Private Declare Function GetDiskFreeSpace _
+                Lib "kernel32" _
+                Alias "GetDiskFreeSpaceExA" (ByVal lpRootPathName As String, _
+                                             FreeBytesToCaller As Currency, _
+                                             BytesTotal As Currency, _
+                                             FreeBytesTotal As Currency) As Long
 'To get free bytes in RAM
 Private pUdtMemStatus As MEMORYSTATUS
 
 Private Type MEMORYSTATUS
-
     dwLength As Long
     dwMemoryLoad As Long
     dwTotalPhys As Long
@@ -44,115 +44,73 @@ Private Type MEMORYSTATUS
     dwAvailPageFile As Long
     dwTotalVirtual As Long
     dwAvailVirtual As Long
-
 End Type
 
 Private Declare Sub GlobalMemoryStatus Lib "kernel32" (lpBuffer As MEMORYSTATUS)
 ' FIN - CARGA DE TEXTURAS
-
 ' FIN - CARGA DE TEXTURAS
-    
 ' The D3DPRESENT_PARAMETERS type holds a description of the way
 ' in which DirectX will display it's rendering.
-Public D3DWindow As D3DPRESENT_PARAMETERS
-
-Public SpriteBatch As New clsBatch
-
-Public Projection As D3DMATRIX
-Public IdentityMatrix As D3DMATRIX
-
+Public D3DWindow       As D3DPRESENT_PARAMETERS
+Public SpriteBatch     As New clsBatch
+Public Projection      As D3DMATRIX
+Public IdentityMatrix  As D3DMATRIX
 Public ModoAceleracion As String
 
 Public Type TYPE_VERTEX
-
     x       As Single
     y       As Single
     z       As Single
-
-    Color   As RGBA
-
+    color   As RGBA
     tX      As Single
     tY      As Single
-
 End Type
 
 Public Const PI As Single = 3.14159265358979
 
-
 ' FIN - MOTOR GRAFICO
-
-
-
 Public Function General_Bytes_To_Megabytes(Bytes As Double) As Double
-    
     On Error GoTo General_Bytes_To_Megabytes_Err
-    
-
     Dim dblAns As Double
-
     dblAns = (Bytes / 1024) / 1024
     General_Bytes_To_Megabytes = format(dblAns, "###,###,##0.00")
-
-    
     Exit Function
-
 General_Bytes_To_Megabytes_Err:
     Call RegistrarError(Err.Number, Err.Description, "modDX8Requires.General_Bytes_To_Megabytes", Erl)
     Resume Next
-    
 End Function
 
 Public Function General_Get_Free_Ram() As Double
-    
     On Error GoTo General_Get_Free_Ram_Err
-    
-
     'Return Value in Megabytes
     Dim dblAns As Double
-
     GlobalMemoryStatus pUdtMemStatus
     dblAns = pUdtMemStatus.dwAvailPhys
     General_Get_Free_Ram = General_Bytes_To_Megabytes(dblAns)
-
-    
     Exit Function
-
 General_Get_Free_Ram_Err:
     Call RegistrarError(Err.Number, Err.Description, "modDX8Requires.General_Get_Free_Ram", Erl)
     Resume Next
-    
 End Function
 
-
-Public Function ARGB(ByVal r As Long, ByVal G As Long, ByVal B As Long, ByVal A As Long) As Long
-    
+Public Function ARGB(ByVal R As Long, ByVal G As Long, ByVal B As Long, ByVal A As Long) As Long
     On Error GoTo ARGB_Err
-    
-        
     Dim c As Long
-        
     If A > 127 Then
         A = A - 128
         c = A * 2 ^ 24 Or &H80000000
-        c = c Or r * 2 ^ 16
+        c = c Or R * 2 ^ 16
         c = c Or G * 2 ^ 8
         c = c Or B
     Else
         c = A * 2 ^ 24
-        c = c Or r * 2 ^ 16
+        c = c Or R * 2 ^ 16
         c = c Or G * 2 ^ 8
         c = c Or B
-
     End If
-    
     ARGB = c
-
-    
     Exit Function
-
 ARGB_Err:
     Call RegistrarError(Err.Number, Err.Description, "modDX8Requires.ARGB", Erl)
     Resume Next
-    
 End Function
-

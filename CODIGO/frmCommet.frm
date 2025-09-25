@@ -84,133 +84,84 @@ Attribute VB_Exposed = False
 '
 '
 '
-
-
 Option Explicit
-
 Public nombre As String
-
 Public t      As TIPO
 
 Public Enum TIPO
-
     ALIANZA = 1
     PAZ = 2
     RECHAZOPJ = 3
-
 End Enum
 
 Public Sub SetTipo(ByVal t As TIPO)
-    
     On Error GoTo SetTipo_Err
-    
-
     Select Case t
-
         Case TIPO.ALIANZA
             Me.Caption = "Detalle de solicitud de alianza"
             Me.Text1.MaxLength = 200
-
         Case TIPO.PAZ
             Me.Caption = "Detalle de solicitud de Paz"
             Me.Text1.MaxLength = 200
-
         Case TIPO.RECHAZOPJ
             Me.Caption = "Detalle de rechazo de membresía"
             Me.Text1.MaxLength = 50
-
     End Select
-
-    
     Exit Sub
-
 SetTipo_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCommet.SetTipo", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCommet.SetTipo", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command1_Click()
-    
     On Error GoTo Command1_Click_Err
-    
-
     If Text1 = "" Then
         If t = PAZ Or t = ALIANZA Then
             MsgBox JsonLanguage.Item("MENSAJEBOX_SOLICITAR_PAZ") & nombre
         Else
             MsgBox JsonLanguage.Item("MENSAJEBOX_RECHAZAR_MEMBRESIA") & nombre
-
         End If
-
         Exit Sub
-
     End If
-
     If t = PAZ Then
-        Call WriteGuildOfferPeace(Nombre, Replace(Text1, vbCrLf, "º"))
+        Call WriteGuildOfferPeace(nombre, Replace(Text1, vbCrLf, "º"))
     ElseIf t = ALIANZA Then
-        Call WriteGuildOfferAlliance(Nombre, Replace(Text1, vbCrLf, "º"))
+        Call WriteGuildOfferAlliance(nombre, Replace(Text1, vbCrLf, "º"))
     ElseIf t = RECHAZOPJ Then
-        Call WriteGuildRejectNewMember(nombre, Replace(Replace(Text1.Text, ",", " "), vbCrLf, " "))
-
+        Call WriteGuildRejectNewMember(nombre, Replace(Replace(Text1.text, ",", " "), vbCrLf, " "))
         'Sacamos el char de la lista de aspirantes
         Dim i As Long
-
         For i = 0 To frmGuildLeader.solicitudes.ListCount - 1
-
             If frmGuildLeader.solicitudes.List(i) = nombre Then
                 frmGuildLeader.solicitudes.RemoveItem i
                 Exit For
-
             End If
-
         Next i
-    
         Me.Hide
         Unload frmCharInfo
-
         'Call SendData("GLINFO")
     End If
-
     Unload Me
-
-    
     Exit Sub
-
 Command1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCommet.Command1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCommet.Command1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command2_Click()
-    
     On Error GoTo Command2_Click_Err
-    
     Unload Me
-
-    
     Exit Sub
-
 Command2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCommet.Command2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCommet.Command2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Call FormParser.Parse_Form(Me)
-
-    
     Exit Sub
-
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCommet.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCommet.Form_Load", Erl)
     Resume Next
-    
 End Sub
-

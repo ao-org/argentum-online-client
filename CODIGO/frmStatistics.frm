@@ -2,16 +2,16 @@ VERSION 5.00
 Begin VB.Form frmStatistics 
    BorderStyle     =   0  'None
    Caption         =   "Form2"
-   ClientHeight    =   8268
+   ClientHeight    =   8265
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   5388
+   ClientWidth     =   5385
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   689
+   ScaleHeight     =   551
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   449
+   ScaleWidth      =   359
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.Label lblPuntosPesca 
@@ -20,7 +20,7 @@ Begin VB.Form frmStatistics
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -63,7 +63,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Elfo"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -84,7 +84,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Elfo"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -105,7 +105,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Neutral"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -133,7 +133,7 @@ Begin VB.Form frmStatistics
       Caption         =   "15"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -154,7 +154,7 @@ Begin VB.Form frmStatistics
       Caption         =   "15"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -175,7 +175,7 @@ Begin VB.Form frmStatistics
       Caption         =   "15"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -196,7 +196,7 @@ Begin VB.Form frmStatistics
       Caption         =   "15"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -216,7 +216,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Paladin"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -236,7 +236,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Elfo"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -256,7 +256,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Hombre"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -276,7 +276,7 @@ Begin VB.Form frmStatistics
       Caption         =   "10 min"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -296,7 +296,7 @@ Begin VB.Form frmStatistics
       Caption         =   "Neutral"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -318,7 +318,7 @@ Begin VB.Form frmStatistics
       Caption         =   "15"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -338,7 +338,7 @@ Begin VB.Form frmStatistics
       Caption         =   "100"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -359,7 +359,7 @@ Begin VB.Form frmStatistics
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -380,7 +380,7 @@ Begin VB.Form frmStatistics
       Caption         =   "0"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -419,49 +419,36 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
-Private cBotonAceptar As clsGraphicalButton
-Private cBotonCerrar As clsGraphicalButton
+Private cBotonAceptar               As clsGraphicalButton
+Private cBotonCerrar                As clsGraphicalButton
 Private cBotonEstadisticasPersonaje As clsGraphicalButton
-Private cBotonCombate As clsGraphicalButton
-Private cBotonPesca As clsGraphicalButton
-Public Sub Iniciar_Labels()
-    
-    On Error GoTo Iniciar_Labels_Err
-    
+Private cBotonCombate               As clsGraphicalButton
+Private cBotonPesca                 As clsGraphicalButton
 
+Public Sub Iniciar_Labels()
+    On Error GoTo Iniciar_Labels_Err
     'Iniciamos los labels con los valores de los atributos y los skills
     Dim i As Integer
-
     For i = 1 To NUMATRIBUTOS 'Colocado
         Atri(i).Caption = UserAtributos(i)
     Next
-
     Select Case UserEstadisticas.Alineacion
-
         Case 0
             Label6(9).Caption = "Criminal"
             Label6(9).ForeColor = RGB(255, 0, 0)
-
         Case 1
             Label6(9).Caption = "Ciudadano"
             Label6(9).ForeColor = RGB(0, 128, 255)
-
         Case 2
             Label6(9).Caption = "Caos"
             Label6(9).ForeColor = RGB(128, 0, 0)
-
         Case 3
             Label6(9).Caption = "Imperial"
             Label6(9).ForeColor = RGB(33, 133, 132)
-        
         Case Else
             Label6(9).Caption = "Desconocido"
-
     End Select
-
     With UserEstadisticas
-
         Label6(0).Caption = .CriminalesMatados 'Colocado
         Label6(1).Caption = .CiudadanosMatados 'Colocado
         Label6(3).Caption = .NpcsMatados
@@ -472,16 +459,11 @@ Public Sub Iniciar_Labels()
         Label6(8).Caption = .Raza
         lblPuntosPesca.Caption = .PuntosPesca
         lblpuntosbattle.Caption = .BattlePuntos
-    
     End With
-
-    
     Exit Sub
-
 Iniciar_Labels_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmStatistics.Iniciar_Labels", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Load()
@@ -489,126 +471,96 @@ Private Sub Form_Load()
     showStatsLabels
     loadButtons
 End Sub
+
 Private Sub showCombateLabels()
-    
     'Show combate labels
-    Me.Label6(0).Visible = True
-    Me.Label6(1).Visible = True
-    Me.Label6(3).Visible = True
-    
+    Me.Label6(0).visible = True
+    Me.Label6(1).visible = True
+    Me.Label6(3).visible = True
     'Hide other labels
-    
-    Me.Label6(4).Visible = False
-    Me.Label6(5).Visible = False
-    Me.Label6(6).Visible = False
-    Me.Label6(8).Visible = False
-    Me.Label6(9).Visible = False
-    
-    Atri(1).Visible = False
-    Atri(2).Visible = False
-    Atri(3).Visible = False
-    Atri(4).Visible = False
-    Atri(5).Visible = False
-    Me.lblPuntosPesca.Visible = False
+    Me.Label6(4).visible = False
+    Me.Label6(5).visible = False
+    Me.Label6(6).visible = False
+    Me.Label6(8).visible = False
+    Me.Label6(9).visible = False
+    Atri(1).visible = False
+    Atri(2).visible = False
+    Atri(3).visible = False
+    Atri(4).visible = False
+    Atri(5).visible = False
+    Me.lblPuntosPesca.visible = False
 End Sub
 
 Private Sub showStatsLabels()
-    
     'Show combate labels
-    Me.Label6(0).Visible = False
-    Me.Label6(1).Visible = False
-    Me.Label6(3).Visible = False
-    
+    Me.Label6(0).visible = False
+    Me.Label6(1).visible = False
+    Me.Label6(3).visible = False
     'Hide other labels
-    
-    Me.Label6(4).Visible = True
-    Me.Label6(5).Visible = True
-    Me.Label6(6).Visible = True
-    Me.Label6(8).Visible = True
-    Me.Label6(9).Visible = True
-    
-    Atri(1).Visible = True
-    Atri(2).Visible = True
-    Atri(3).Visible = True
-    Atri(4).Visible = True
-    Atri(5).Visible = True
-    Me.lblPuntosPesca.Visible = False
+    Me.Label6(4).visible = True
+    Me.Label6(5).visible = True
+    Me.Label6(6).visible = True
+    Me.Label6(8).visible = True
+    Me.Label6(9).visible = True
+    Atri(1).visible = True
+    Atri(2).visible = True
+    Atri(3).visible = True
+    Atri(4).visible = True
+    Atri(5).visible = True
+    Me.lblPuntosPesca.visible = False
 End Sub
 
 Private Sub showPescaLabels()
-        
-    Me.lblPuntosPesca.Visible = True
+    Me.lblPuntosPesca.visible = True
     'Show combate labels
-    Me.Label6(0).Visible = False
-    Me.Label6(1).Visible = False
-    Me.Label6(3).Visible = False
-    
+    Me.Label6(0).visible = False
+    Me.Label6(1).visible = False
+    Me.Label6(3).visible = False
     'Hide other labels
-    
-    Me.Label6(4).Visible = False
-    Me.Label6(5).Visible = False
-    Me.Label6(6).Visible = False
-    Me.Label6(8).Visible = False
-    Me.Label6(9).Visible = False
-    
-    Atri(1).Visible = False
-    Atri(2).Visible = False
-    Atri(3).Visible = False
-    Atri(4).Visible = False
-    Atri(5).Visible = False
+    Me.Label6(4).visible = False
+    Me.Label6(5).visible = False
+    Me.Label6(6).visible = False
+    Me.Label6(8).visible = False
+    Me.Label6(9).visible = False
+    Atri(1).visible = False
+    Atri(2).visible = False
+    Atri(3).visible = False
+    Atri(4).visible = False
+    Atri(5).visible = False
 End Sub
+
 Private Sub loadButtons()
-       
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonEstadisticasPersonaje = New clsGraphicalButton
     Set cBotonCombate = New clsGraphicalButton
     Set cBotonPesca = New clsGraphicalButton
-
-    Call cBotonAceptar.Initialize(Image1, "boton-aceptar-default.bmp", _
-                                                "boton-aceptar-over.bmp", _
-                                                "boton-aceptar-off.bmp", Me)
-                                                
-                                                
-    Call cBotonCerrar.Initialize(imgCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-    
-    Call cBotonEstadisticasPersonaje.Initialize(ImgEstadisticasPersonaje, "boton-personaje-default.bmp", _
-                                                "boton-personaje-over.bmp", _
-                                                "boton-personaje-off.bmp", Me)
-    
-    Call cBotonCombate.Initialize(ImgCombate, "boton-retos-default.bmp", _
-                                                "boton-retos-over.bmp", _
-                                                "boton-retos-off.bmp", Me)
-    
-    Call cBotonPesca.Initialize(ImgPesca, "boton-pesca-default.bmp", _
-                                                 "boton-pesca-over.bmp", _
-                                                "boton-pesca-off.bmp", Me)
-    
+    Call cBotonAceptar.Initialize(Image1, "boton-aceptar-default.bmp", "boton-aceptar-over.bmp", "boton-aceptar-off.bmp", Me)
+    Call cBotonCerrar.Initialize(imgCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
+    Call cBotonEstadisticasPersonaje.Initialize(ImgEstadisticasPersonaje, "boton-personaje-default.bmp", "boton-personaje-over.bmp", "boton-personaje-off.bmp", Me)
+    Call cBotonCombate.Initialize(ImgCombate, "boton-retos-default.bmp", "boton-retos-over.bmp", "boton-retos-off.bmp", Me)
+    Call cBotonPesca.Initialize(ImgPesca, "boton-pesca-default.bmp", "boton-pesca-over.bmp", "boton-pesca-off.bmp", Me)
 End Sub
+
 Private Sub Image1_Click()
     Unload Me
 End Sub
-
 
 Private Sub imgCerrar_Click()
     Unload Me
 End Sub
 
 Private Sub ImgCombate_Click()
-        showCombateLabels
-        Me.Picture = LoadInterface("ventanaestadisticas_combate.bmp")
+    showCombateLabels
+    Me.Picture = LoadInterface("ventanaestadisticas_combate.bmp")
 End Sub
 
 Private Sub ImgEstadisticasPersonaje_Click()
-        showStatsLabels
-        Me.Picture = LoadInterface("ventanaestadisticas_personaje.bmp")
-
+    showStatsLabels
+    Me.Picture = LoadInterface("ventanaestadisticas_personaje.bmp")
 End Sub
 
 Private Sub ImgPesca_Click()
-        showPescaLabels
-        Me.Picture = LoadInterface("ventanaestadisticas_pesca.bmp")
+    showPescaLabels
+    Me.Picture = LoadInterface("ventanaestadisticas_pesca.bmp")
 End Sub
-

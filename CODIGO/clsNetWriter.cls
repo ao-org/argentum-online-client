@@ -25,30 +25,26 @@ Attribute VB_Exposed = False
 '    GNU Affero General Public License for more details.
 '    You should have received a copy of the GNU Affero General Public License
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 #If DIRECT_PLAY = 1 Then
-
-Option Base 0
-
-Option Explicit
-
-Private oMsg() As Byte
-Private lOffset As Long
+    Option Base 0
+    Option Explicit
+    Private oMsg()  As Byte
+    Private loffset As Long
 
 
 Public Sub Clear()
-    lOffset = NewBuffer(oMsg)
+    loffset = NewBuffer(oMsg)
 End Sub
 Public Sub WriteInt16(ByVal v As Integer)
-    AddDataToBuffer oMsg, v, SIZE_INTEGER, lOffset
+    AddDataToBuffer oMsg, v, SIZE_INTEGER, loffset
 End Sub
 
 Public Sub WriteInt8(ByVal v As Byte)
-    AddDataToBuffer oMsg, v, SIZE_BYTE, lOffset
+    AddDataToBuffer oMsg, v, SIZE_BYTE, loffset
 End Sub
 Public Sub send()
 On Error GoTo send_error:
-    err.Clear
+    Err.Clear
     ReDim Preserve oMsg(0 To loffset - 1)
 #If Developer = 1 Then
     Call SaveStringInFile("Sending:" & ByteArrayToDecimalString(oMsg), "send_debug.txt")
@@ -58,7 +54,7 @@ On Error GoTo send_error:
     Exit Sub
 send_error:
     Me.Clear
-    If err.Number <> 0 Then
+    If Err.Number <> 0 Then
         Call HandleDPlayError(Err.Number, Err.Description, "modnetwork.send", Erl)
     End If
 End Sub
@@ -77,11 +73,11 @@ Public Sub WriteString8(ByVal v As String)
         ' this is a workaround because the game is trying to send empty strings and DP will crash if we call AddStringToBuffer with an empty str
         v = "0"
     End If
-    AddStringToBuffer oMsg, v, lOffset
+    AddStringToBuffer oMsg, v, loffset
 End Sub
 
 Public Sub WriteSafeArrayInt8(value() As Byte)
-    Debug.Assert (UBound(Value) - LBound(Value)) + 1 > 0
+    Debug.Assert (UBound(value) - LBound(value)) + 1 > 0
     WriteInt32 LBound(value)
     WriteInt32 UBound(value)
     Dim i As Integer
@@ -90,7 +86,7 @@ Public Sub WriteSafeArrayInt8(value() As Byte)
     Next i
 End Sub
 Private Sub Class_Initialize()
- lOffset = NewBuffer(oMsg)
+ loffset = NewBuffer(oMsg)
 End Sub
 
 #End If

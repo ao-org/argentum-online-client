@@ -4,14 +4,14 @@ Begin VB.Form frmCerrar
    BackColor       =   &H80000005&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   2796
+   ClientHeight    =   2790
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   3240
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2796
+   ScaleHeight     =   2790
    ScaleWidth      =   3240
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
@@ -56,70 +56,42 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-  
 'Función para saber si formulario ya es transparente. _
  Se le pasa el Hwnd del formulario en cuestión
- 
-Public bmoving      As Boolean
-
-Public dX           As Integer
-
-Public dy           As Integer
-
-Private RealizoCambios As String
-
-Private cBotonAceptar As clsGraphicalButton
+Public bmoving          As Boolean
+Public dx               As Integer
+Public dy               As Integer
+Private RealizoCambios  As String
+Private cBotonAceptar   As clsGraphicalButton
 Private cBotonConstruir As clsGraphicalButton
-Private cBotonCerrar As clsGraphicalButton
-
+Private cBotonCerrar    As clsGraphicalButton
 
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
-  
-
     If (KeyCode = vbKeyEscape) Then
         Unload Me
     End If
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Call FormParser.Parse_Form(Me)
-    Call Aplicar_Transparencia(Me.hwnd, 240)
-
-    
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     Me.Picture = LoadInterface("desconectar.bmp")
-    
-    Call LoadButtons
-    
+    Call loadButtons
     Exit Sub
-    
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCerrar.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
-Private Sub LoadButtons()
-        
+Private Sub loadButtons()
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonConstruir = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
-
-    Call cBotonAceptar.Initialize(cmdMenuPrincipal, "boton-mainmenu-default.bmp", _
-                                                "boton-mainmenu-over.bmp", _
-                                                "boton-mainmenu-off.bmp", Me)
-    
-    Call cBotonConstruir.Initialize(cmdCancelar, "boton-cancelar-default.bmp", _
-                                                "boton-cancelar-over.bmp", _
-                                                "boton-cancelar-off.bmp", Me)
-                                                
-    Call cBotonCerrar.Initialize(cmdSalir, "boton-salir-default.bmp", _
-                                                "boton-salir-over.bmp", _
-                                                "boton-salir-off.bmp", Me)
+    Call cBotonAceptar.Initialize(cmdMenuPrincipal, "boton-mainmenu-default.bmp", "boton-mainmenu-over.bmp", "boton-mainmenu-off.bmp", Me)
+    Call cBotonConstruir.Initialize(cmdCancelar, "boton-cancelar-default.bmp", "boton-cancelar-over.bmp", "boton-cancelar-off.bmp", Me)
+    Call cBotonCerrar.Initialize(cmdSalir, "boton-salir-default.bmp", "boton-salir-over.bmp", "boton-salir-off.bmp", Me)
 End Sub
-
 
 Private Sub cmdCancelar_Click()
     Unload Me
@@ -133,4 +105,3 @@ End Sub
 Private Sub cmdSalir_Click()
     Call CloseClient
 End Sub
-

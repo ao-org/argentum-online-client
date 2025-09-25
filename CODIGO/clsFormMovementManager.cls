@@ -37,43 +37,32 @@ Attribute VB_Exposed = False
 '
 '
 '
-
 Option Explicit
-
 Dim WithEvents Formulario As Form
 Attribute Formulario.VB_VarHelpID = -1
-
-Private DragX As Single
-Private Dragy As Single
-Public LastButtonPressed As clsGraphicalButton
-
-Private LimitY As Integer
+Private DragX             As Single
+Private Dragy             As Single
+Public LastButtonPressed  As clsGraphicalButton
+Private LimitY            As Integer
 
 Public Sub Initialize(ByRef tForm As Form, Optional ByVal VerticalLimit As Integer = 0)
-
-'Sets the reference to the form
-
+    'Sets the reference to the form
     Set Formulario = tForm
     Set LastButtonPressed = New clsGraphicalButton
     LimitY = VerticalLimit
 End Sub
 
 Private Sub Formulario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-'Implements the mouse down event of the form.
-
+    'Implements the mouse down event of the form.
     If LimitY > 0 Then
         If y > LimitY Then Exit Sub
     End If
-
     DragX = x
     Dragy = y
 End Sub
 
 Private Sub Formulario_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-
-'Implements the mouse move event of the form.
-
+    'Implements the mouse move event of the form.
     If LimitY > 0 Then
         If y > LimitY Then Exit Sub
     End If
@@ -83,4 +72,3 @@ Private Sub Formulario_MouseMove(Button As Integer, Shift As Integer, x As Singl
     'Formulario.Top = Formulario.Top + (Y - Dragy)
     'End If
 End Sub
-

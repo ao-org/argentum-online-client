@@ -489,7 +489,6 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
 Private Over As Integer
 
 Private Sub Form_Load()
@@ -510,117 +509,88 @@ Private Sub Form_Load()
     OpcionLbl(13).Caption = JsonLanguage.Item("FORM_OPCION_22")
     OpcionLbl(14).Caption = JsonLanguage.Item("FORM_OPCION_23")
     OpcionLbl(15).Caption = JsonLanguage.Item("FORM_OPCION_24")
-
-    
     Over = -1
 End Sub
 
 Private Sub OpcionImg_Click(Index As Integer)
-
-    Dim tmp As String
+    Dim tmp     As String
     Dim tmptime As String
-
     Select Case Index
-
         Case 0
-            Call ParseUserCommand("/SUM " & TargetName)
-
+            Call ParseUserCommand("/SUM " & targetName)
         Case 1
-            Call ParseUserCommand("/CONSULTA " & TargetName)
-
+            Call ParseUserCommand("/CONSULTA " & targetName)
         Case 2
-            Call ParseUserCommand("/INFO " & TargetName)
-            
+            Call ParseUserCommand("/INFO " & targetName)
         Case 3
-            Call ParseUserCommand("/STAT " & TargetName)
-
+            Call ParseUserCommand("/STAT " & targetName)
         Case 4
-            Call ParseUserCommand("/BAL " & TargetName)
-
+            Call ParseUserCommand("/BAL " & targetName)
         Case 5
-            Call ParseUserCommand("/BOV " & TargetName)
-
+            Call ParseUserCommand("/BOV " & targetName)
         Case 6
-            Call ParseUserCommand("/INV " & TargetName)
-            
+            Call ParseUserCommand("/INV " & targetName)
         Case 7
-            Call ParseUserCommand("/revivir " & TargetName)
-
+            Call ParseUserCommand("/revivir " & targetName)
         Case 8
-            Call ParseUserCommand("/echar " & TargetName)
-
+            Call ParseUserCommand("/echar " & targetName)
         Case 9
-            Call ParseUserCommand("/ejecutar " & TargetName)
-'
+            Call ParseUserCommand("/ejecutar " & targetName)
+            '
         Case 10
-            Call ParseUserCommand("/SM " & TargetName)
-
+            Call ParseUserCommand("/SM " & targetName)
         Case 11
-            Call ParseUserCommand("/PENAS " & TargetName)
-
+            Call ParseUserCommand("/PENAS " & targetName)
         Case 12
-            tmp = InputBox("Escriba el motivo del Silenciado.", "Silenciaso de " & TargetName)
-            
+            tmp = InputBox("Escriba el motivo del Silenciado.", "Silenciaso de " & targetName)
             If tmp = "" Then
-                InputBox ("No se puede Silenciar si dar motivos a " & TargetName)
+                InputBox ("No se puede Silenciar si dar motivos a " & targetName)
             Else
-                Call ParseUserCommand("/SILENCIAR " & TargetName & "@" & tmp)
+                Call ParseUserCommand("/SILENCIAR " & targetName & "@" & tmp)
             End If
-            
         Case 13
             Dim mensajes(1 To 15) As String
-                mensajes(1) = JsonLanguage.Item("MENSAJE_HORA_ACTUAL")
-                mensajes(2) = JsonLanguage.Item("MENSAJE_LLUVIA")
-                mensajes(3) = JsonLanguage.Item("MENSAJE_ZONA_SEGURA")
-                mensajes(4) = JsonLanguage.Item("MENSAJE_ARBOLES_O_ARENA")
-                mensajes(5) = JsonLanguage.Item("MENSAJE_DIA_O_NOCHE")
-                mensajes(6) = JsonLanguage.Item("MENSAJE_CIELO_CLARO_O_OSCURO")
-                mensajes(7) = JsonLanguage.Item("MENSAJE_ENTORNO_DESIERTO_O_BOSQUE")
-                mensajes(8) = JsonLanguage.Item("MENSAJE_HORA_SERVIDOR")
-                mensajes(9) = JsonLanguage.Item("MENSAJE_ZONA_SEGURA_PERSONAJE")
-                mensajes(10) = JsonLanguage.Item("MENSAJE_LLUVIA_O_SECO")
-                mensajes(11) = JsonLanguage.Item("MENSAJE_ENTORNO_BOSQUE_O_DESIERTO")
-                mensajes(12) = JsonLanguage.Item("MENSAJE_MOMENTO_DEL_DIA")
-                mensajes(13) = JsonLanguage.Item("MENSAJE_NOCHE_ACTUAL")
-                mensajes(14) = JsonLanguage.Item("MENSAJE_ZONA_SEGURA_EN_PANTALLA")
-                mensajes(15) = JsonLanguage.Item("MENSAJE_HORA_DEL_JUEGO")
-
+            mensajes(1) = JsonLanguage.Item("MENSAJE_HORA_ACTUAL")
+            mensajes(2) = JsonLanguage.Item("MENSAJE_LLUVIA")
+            mensajes(3) = JsonLanguage.Item("MENSAJE_ZONA_SEGURA")
+            mensajes(4) = JsonLanguage.Item("MENSAJE_ARBOLES_O_ARENA")
+            mensajes(5) = JsonLanguage.Item("MENSAJE_DIA_O_NOCHE")
+            mensajes(6) = JsonLanguage.Item("MENSAJE_CIELO_CLARO_O_OSCURO")
+            mensajes(7) = JsonLanguage.Item("MENSAJE_ENTORNO_DESIERTO_O_BOSQUE")
+            mensajes(8) = JsonLanguage.Item("MENSAJE_HORA_SERVIDOR")
+            mensajes(9) = JsonLanguage.Item("MENSAJE_ZONA_SEGURA_PERSONAJE")
+            mensajes(10) = JsonLanguage.Item("MENSAJE_LLUVIA_O_SECO")
+            mensajes(11) = JsonLanguage.Item("MENSAJE_ENTORNO_BOSQUE_O_DESIERTO")
+            mensajes(12) = JsonLanguage.Item("MENSAJE_MOMENTO_DEL_DIA")
+            mensajes(13) = JsonLanguage.Item("MENSAJE_NOCHE_ACTUAL")
+            mensajes(14) = JsonLanguage.Item("MENSAJE_ZONA_SEGURA_EN_PANTALLA")
+            mensajes(15) = JsonLanguage.Item("MENSAJE_HORA_DEL_JUEGO")
             Dim MensajeSeleccionado As String
-            Dim idx As Integer
-            
+            Dim idx                 As Integer
             Randomize
             idx = Int((15 * Rnd) + 1)
-            MensajeSeleccionado = Replace(mensajes(idx), "¬1", TargetName)
-            
-            Call ParseUserCommand("/MENSAJEINFORMACION " & TargetName & "@" & MensajeSeleccionado)
+            MensajeSeleccionado = Replace(mensajes(idx), "¬1", targetName)
+            Call ParseUserCommand("/MENSAJEINFORMACION " & targetName & "@" & MensajeSeleccionado)
             ' agregar que el mensaje lo pueda leer yo tambien
-            Call AddtoRichTextBox(frmMain.RecTxt, "MENSAJE A " & TargetName & ": " & MensajeSeleccionado, 0, 255, 255, True)
-
-
-            
+            Call AddtoRichTextBox(frmMain.RecTxt, "MENSAJE A " & targetName & ": " & MensajeSeleccionado, 0, 255, 255, True)
         Case 14
-            tmp = InputBox("Escriba el motivo de Carcel .", "Carcel a " & TargetName)
-            tmptime = InputBox("Escriba el tiempo de Carcel .", "Tiempo de Carcel a " & TargetName)
+            tmp = InputBox("Escriba el motivo de Carcel .", "Carcel a " & targetName)
+            tmptime = InputBox("Escriba el tiempo de Carcel .", "Tiempo de Carcel a " & targetName)
             If tmp = "" Or tmptime = "" Then
                 MsgBox "Faltan datos. Repita la acción.", vbExclamation, "Error"
             Else
-                Call WriteJail(TargetName, tmp, tmptime)
+                Call WriteJail(targetName, tmp, tmptime)
             End If
         Case 15
-        
             Call ParseUserCommand("/BAN")
-            tmp = InputBox("Escriba el motivo del BAN.", "Baneo de " & TargetName)
-
+            tmp = InputBox("Escriba el motivo del BAN.", "Baneo de " & targetName)
             If tmp = "" Then
-                InputBox ("No se puede bannear si dar motivos a " & TargetName)
+                InputBox ("No se puede bannear si dar motivos a " & targetName)
             Else
-                Call WriteBanChar(TargetName, tmp)
+                Call WriteBanChar(targetName, tmp)
             End If
-            
     End Select
-
     Unload Me
-    
 End Sub
 
 Private Sub OpcionImg_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)

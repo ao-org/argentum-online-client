@@ -1199,6 +1199,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Private Sub Form_Load()
     FrmTorneo.Caption = JsonLanguage.Item("MENSAJE_ORGANIZACION_EVENTO")
     FraTorneosY.Caption = JsonLanguage.Item("MENSAJE_TORNEOS_EVENTOS")
@@ -1212,12 +1213,10 @@ Private Sub Form_Load()
     OptAbordaje.Caption = JsonLanguage.Item("MENSAJE_ABORDAJE") ' Abordaje
     cmdConfigurarE.Caption = JsonLanguage.Item("MENSAJE_CONFIGURAR_INICIAR") ' Configurar e Iniciar
     cmdCancelarTodos.Caption = JsonLanguage.Item("MENSAJE_CANCELAR_LOBBY") ' Cancelar todos los eventos con Lobby
-
 End Sub
 
-
 Private Sub cmdAnunciarAbordaje_Click()
-Call ParseUserCommand("/configlobby open ")
+    Call ParseUserCommand("/configlobby open ")
 End Sub
 
 '    Argentum 20 - Game Client Program
@@ -1237,11 +1236,11 @@ End Sub
 '
 '
 Private Sub cmdAnunciarEl_Click()
-Call ParseUserCommand("/configlobby open ")
+    Call ParseUserCommand("/configlobby open ")
 End Sub
 
 Private Sub cmdAnunciarEldeath_Click()
-Call ParseUserCommand("/configlobby open ")
+    Call ParseUserCommand("/configlobby open ")
 End Sub
 
 Private Sub cmdCancelar_Click()
@@ -1266,62 +1265,57 @@ Private Sub cmdCancelarTorneo_Click()
 End Sub
 
 Private Sub cmdConfigurarE_Click()
-FrmTorneo.FraTorneosY.visible = False
-Select Case True
-    Case OptMatarCon.Value
-        FrmTorneo.Frame2.visible = True
-    Case OptElDe.Value
-        FrmTorneo.FraDeathMach.visible = True
-    Case OptCapturaDe.Value
-        FrmTorneo.FraCapturaDe.visible = True
-    Case OptTorneo.Value
-        FrmTorneo.Frame1.visible = True
-    Case OptAbordaje.Value
-        FrmTorneo.FraAbordaje.visible = True
-End Select
+    FrmTorneo.FraTorneosY.visible = False
+    Select Case True
+        Case OptMatarCon.value
+            FrmTorneo.Frame2.visible = True
+        Case OptElDe.value
+            FrmTorneo.FraDeathMach.visible = True
+        Case OptCapturaDe.value
+            FrmTorneo.FraCapturaDe.visible = True
+        Case OptTorneo.value
+            FrmTorneo.Frame1.visible = True
+        Case OptAbordaje.value
+            FrmTorneo.FraAbordaje.visible = True
+    End Select
 End Sub
 
 Private Sub cmdCrearEl_Click()
-Call ParseUserCommand("/crearevento caceria " & txtPlayer & " " & txtNivelMinino & " " & txtNivelmax)
+    Call ParseUserCommand("/crearevento caceria " & txtPlayer & " " & txtNivelMinino & " " & txtNivelmax)
 End Sub
 
 Private Sub cmdCrearElAbordaje_Click()
     ' Comprobar que txtAbordaje sea un número par
-    If Not IsNumeric(txtAbordaje.Text) Or Val(txtAbordaje.Text) Mod 2 <> 0 Then
+    If Not IsNumeric(txtAbordaje.text) Or val(txtAbordaje.text) Mod 2 <> 0 Then
         MsgBox JsonLanguage.Item("MENSAJE_NUMERO_PAR_PARTICIPANTES"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
         Exit Sub
     End If
-
     ' Comprobar que txtAbordajelvlMin esté entre 1 y 47
-    If Not IsNumeric(txtAbordajelvlMin.Text) Or Val(txtAbordajelvlMin.Text) < 1 Or Val(txtAbordajelvlMin.Text) > 47 Then
+    If Not IsNumeric(txtAbordajelvlMin.text) Or val(txtAbordajelvlMin.text) < 1 Or val(txtAbordajelvlMin.text) > 47 Then
         MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_ABORDAJE"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
-
         Exit Sub
     End If
-
     ' Comprobar que txtlvlAbordajeMax esté entre 1 y 47
-    If Not IsNumeric(txtlvlAbordajeMax.Text) Or Val(txtlvlAbordajeMax.Text) < 1 Or Val(txtlvlAbordajeMax.Text) > 47 Then
+    If Not IsNumeric(txtlvlAbordajeMax.text) Or val(txtlvlAbordajeMax.text) < 1 Or val(txtlvlAbordajeMax.text) > 47 Then
         MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO_ABORDAJE"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
         Exit Sub
     End If
-
     ' Comprobar que txtAbordajelvlMin sea menor que txtlvlAbordajeMax
-    If Val(txtAbordajelvlMin.Text) >= Val(txtlvlAbordajeMax.Text) Then
+    If val(txtAbordajelvlMin.text) >= val(txtlvlAbordajeMax.text) Then
         MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_MAYOR_MAXIMO"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
         Exit Sub
     End If
-
     ' Si todas las validaciones pasan, llamar a ParseUserCommand
-    Call ParseUserCommand("/crearevento navalconquest" & " " & txtAbordaje.Text & " " & txtAbordajelvlMin.Text & " " & txtlvlAbordajeMax.Text)
+    Call ParseUserCommand("/crearevento navalconquest" & " " & txtAbordaje.text & " " & txtAbordajelvlMin.text & " " & txtlvlAbordajeMax.text)
 End Sub
 
 Private Sub cmdCrearEldeath_Click()
     ' Verificar que txtMinlvldeath esté entre 1 y 47 y no sea mayor que txtMaxlvldeath
-    If IsNumeric(txtMinlvldeath.Text) And CInt(txtMinlvldeath.Text) >= 1 And CInt(txtMinlvldeath.Text) <= 47 Then
+    If IsNumeric(txtMinlvldeath.text) And CInt(txtMinlvldeath.text) >= 1 And CInt(txtMinlvldeath.text) <= 47 Then
         ' Verificar que txtMaxlvldeath esté entre 1 y 47 y no sea menor que txtMinlvldeath
-        If IsNumeric(txtMaxlvldeath.Text) And CInt(txtMaxlvldeath.Text) >= 1 And CInt(txtMaxlvldeath.Text) <= 47 And CInt(txtMaxlvldeath.Text) >= CInt(txtMinlvldeath.Text) Then
+        If IsNumeric(txtMaxlvldeath.text) And CInt(txtMaxlvldeath.text) >= 1 And CInt(txtMaxlvldeath.text) <= 47 And CInt(txtMaxlvldeath.text) >= CInt(txtMinlvldeath.text) Then
             ' Llamar a la función ParseUserCommand con los valores válidos
-            Call ParseUserCommand("/crearevento deathmatch " & txtPlayerDeath.Text & " " & txtMinlvldeath.Text & " " & txtMaxlvldeath.Text)
+            Call ParseUserCommand("/crearevento deathmatch " & txtPlayerDeath.text & " " & txtMinlvldeath.text & " " & txtMaxlvldeath.text)
         Else
             ' Mostrar un mensaje de error si txtMaxlvldeath no cumple con las condiciones
             MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
@@ -1331,8 +1325,6 @@ Private Sub cmdCrearEldeath_Click()
         MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
     End If
 End Sub
-
-
 
 Private Sub cmdIniciarAbordaje_Click()
     Call ParseUserCommand("/configlobby start")
@@ -1355,18 +1347,13 @@ Private Sub cmdVerAnotadosGarrote_Click()
 End Sub
 
 Private Sub Command1_Click()
-    
     On Error GoTo Command1_Click_Err
-    
-    Call WriteCreaerTorneo(nivelmin, nivelmax, cupos, costo.Text, Check1.Value, Check2.Value, Check3.Value, Check4.Value, Check5.Value, Check6.Value, Check7.Value, Check8.Value, Check9.Value, Check10.Value, Check11.Value, Check12.Value, map, x, y, nombre, reglas)
-
-    
+    Call WriteCreaerTorneo(nivelmin, nivelmax, cupos, costo.text, Check1.value, Check2.value, Check3.value, Check4.value, Check5.value, Check6.value, Check7.value, Check8.value, _
+            Check9.value, Check10.value, Check11.value, Check12.value, map, x, y, nombre, reglas)
     Exit Sub
-
 Command1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmTorneo.Command1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command3_Click()
@@ -1379,7 +1366,7 @@ Private Sub Command5_Click()
 End Sub
 
 Private Sub txtEquipo_Change()
-frmDebug.add_text_tracebox txtEquipo
+    frmDebug.add_text_tracebox txtEquipo
     Call ParseUserCommand("/configlobby setteamsize " & txtEquipo)
 End Sub
 
@@ -1388,22 +1375,17 @@ Private Sub txtParti_Change()
 End Sub
 
 Private Sub txtValorGarrote_Change()
-    Dim valor As Integer
-
-    If Not IsNumeric(txtValorGarrote.Text) Then
+    Dim Valor As Integer
+    If Not IsNumeric(txtValorGarrote.text) Then
         MsgBox JsonLanguage.Item("MENSAJE_VALOR_NUMERO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
-        txtValorGarrote.Text = ""
+        txtValorGarrote.text = ""
         Exit Sub
     End If
-
-    valor = CInt(txtValorGarrote.Text)
-
-    If valor > 100000 Then
+    Valor = CInt(txtValorGarrote.text)
+    If Valor > 100000 Then
         MsgBox JsonLanguage.Item("MENSAJE_VALOR_MAXIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
-        txtValorGarrote.Text = ""
+        txtValorGarrote.text = ""
         Exit Sub
     End If
-
-    Call ParseUserCommand("/configlobby setprice " & valor)
+    Call ParseUserCommand("/configlobby setprice " & Valor)
 End Sub
-

@@ -201,51 +201,32 @@ Attribute VB_Exposed = False
 '
 
 Private Sub cmdMasMenos_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo cmdMasMenos_MouseDown_Err
-    
-
     Call ao20audio.PlayWav(SND_CLICK)
-
     Select Case Index
-
         Case 0
             cmdMasMenos(Index).Picture = LoadInterface("boton-sm-menos-off.bmp")
-            cantidad.Text = str((Val(cantidad.Text) - 1))
+            cantidad.text = str((val(cantidad.text) - 1))
             m_Increment = -1
-
         Case 1
             cmdMasMenos(Index).Picture = LoadInterface("boton-sm-mas-off.bmp")
-            cantidad.Text = str((Val(cantidad.Text) + 1))
+            cantidad.text = str((val(cantidad.text) + 1))
             m_Increment = 1
-
     End Select
-
     tmrNumber.Interval = 10
     tmrNumber.enabled = True
-
-    
     Exit Sub
-
 cmdMasMenos_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoCuenta.cmdMasMenos_MouseDown", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command3_Click()
-    
     On Error GoTo Command3_Click_Err
-    
-
-    
-    
     If lstArmas.ListIndex < 0 Then
         MsgBox JsonLanguage.Item("MENSAJE_SELECCIONAR_OBJETO"), vbExclamation + vbOKOnly
         Exit Sub
-
     End If
-
     If cantidad > 1 Then
         UserMacro.cantidad = cantidad
         UserMacro.TIPO = 1
@@ -257,198 +238,126 @@ Private Sub Command3_Click()
         frmMain.MacroLadder.enabled = True
     Else
         Call WriteCraftAlquimista(ObjAlquimista(lstArmas.ListIndex + 1))
-
         If frmMain.macrotrabajo.enabled Then MacroBltIndex = ObjAlquimista(lstArmas.ListIndex + 1)
-    
     End If
-
     Unload Me
-
-    
     Exit Sub
-
 Command3_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Command3_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command4_Click()
-    
     On Error GoTo Command4_Click_Err
-    
     Unload Me
-
-    
     Exit Sub
-
 Command4_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Command4_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-    
     On Error GoTo Form_KeyPress_Err
-    
-
     If (KeyAscii = 27) Then
         Unload Me
-
     End If
-
-    
     Exit Sub
-
 Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Form_KeyPress", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Call FormParser.Parse_Form(Me)
-
-    
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Form_MouseMove_Err
-    
     Call MoverForm(Me.hWnd)
-    
     Command4.Picture = Nothing
     Command4.Tag = "0"
     Command3.Picture = Nothing
     Command3.Tag = "0"
-
-    
     Exit Sub
-
 Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Form_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub List1_Click()
-    
     On Error GoTo List1_Click_Err
-    
-
-    
-
-    Dim SR As RECT, DR As RECT
-
+    Dim SR As Rect, DR As Rect
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
     SR.Bottom = 32
-
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
     DR.Bottom = 32
     Call Grh_Render_To_Hdc(picture1, 21926, 0, 0, False)
-    
     Exit Sub
-
 List1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.List1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command3_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-
     ' Command3.Picture = LoadInterface("trabajar_construirpress.bmp")
     '  Command3.Tag = "1"
 End Sub
 
 Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Command3_MouseMove_Err
-    
-
     If Command3.Tag = "0" Then
         Command3.Picture = LoadInterface("boton-elaborar-over.bmp")
         Command3.Tag = "1"
-
     End If
-    
     Command4.Picture = Nothing
     Command4.Tag = "0"
-
-    
     Exit Sub
-
 Command3_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Command3_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command4_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-
     '                Command4.Picture = LoadInterface("trabajar_salirpress.bmp")
     '                Command4.Tag = "1"
 End Sub
 
 Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Command4_MouseMove_Err
-    
-
     If Command4.Tag = "0" Then
         Command4.Picture = LoadInterface("boton-cancelar-over.bmp")
         Command4.Tag = "1"
-
     End If
-
     Command3.Picture = Nothing
     Command3.Tag = "0"
-
-    
     Exit Sub
-
 Command4_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.Command4_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub lstArmas_Click()
-    
     On Error GoTo lstArmas_Click_Err
-    
-
-    
-
-    Dim SR As RECT, DR As RECT
-
+    Dim SR As Rect, DR As Rect
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
     SR.Bottom = 32
-
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
     DR.Bottom = 32
     Call frmAlqui.List1.Clear
     Call frmAlqui.List2.Clear
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Raices) > 0 Then
         frmAlqui.List1.AddItem ("Raices")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Raices)
@@ -461,118 +370,90 @@ Private Sub lstArmas_Click()
         frmAlqui.List1.AddItem ("Cuchara")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Cuchara)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Mortero) > 0 Then
         frmAlqui.List1.AddItem ("Mortero")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Mortero)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FrascoAlq) > 0 Then
         frmAlqui.List1.AddItem ("FrascoAlq")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FrascoAlq)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FrascoElixir) > 0 Then
         frmAlqui.List1.AddItem ("FrascoElixir")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FrascoElixir)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Dosificador) > 0 Then
         frmAlqui.List1.AddItem ("Dosificador")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Dosificador)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Orquidea) > 0 Then
         frmAlqui.List1.AddItem ("Orquidea")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Orquidea)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Carmesi) > 0 Then
         frmAlqui.List1.AddItem ("Carmesi")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Carmesi)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).HongoDeLuz) > 0 Then
         frmAlqui.List1.AddItem ("HongoDeLuz")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).HongoDeLuz)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Esporas) > 0 Then
         frmAlqui.List1.AddItem ("Esporas")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Esporas)
     End If
-
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Tuna) > 0 Then
         frmAlqui.List1.AddItem ("Tuna")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Tuna)
     End If
-
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Cala) > 0 Then
         frmAlqui.List1.AddItem ("Cala")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Cala)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).ColaDeZorro) > 0 Then
         frmAlqui.List1.AddItem ("ColaDeZorro")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).ColaDeZorro)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FlorOceano) > 0 Then
         frmAlqui.List1.AddItem ("FlorOceano")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FlorOceano)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FlorRoja) > 0 Then
         frmAlqui.List1.AddItem ("FlorRoja")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).FlorRoja)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Hierva) > 0 Then
         frmAlqui.List1.AddItem ("Hierva")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Hierva)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).HojasDeRin) > 0 Then
         frmAlqui.List1.AddItem ("HojasDeRin")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).HojasDeRin)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).HojasRojas) > 0 Then
         frmAlqui.List1.AddItem ("HojasRojas")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).HojasRojas)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).SemillasPros) > 0 Then
         frmAlqui.List1.AddItem ("SemillasPros")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).SemillasPros)
     End If
-    
     If (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Pimiento) > 0 Then
         frmAlqui.List1.AddItem ("Pimiento")
         frmAlqui.List2.AddItem (ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Pimiento)
     End If
-    
     desc.Caption = ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).Texto
-
     Call Grh_Render_To_Hdc(picture1, ObjData(ObjAlquimista(lstArmas.ListIndex + 1)).GrhIndex, 0, 0, False)
-    
-    
     Exit Sub
-
 lstArmas_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmAlqui.lstArmas_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub salir_Click()
     On Error GoTo salir_Click_Err
-    
     Unload Me
-
-    
     Exit Sub
-
 salir_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmBancoCuenta.salir_Click", Erl)
     Resume Next

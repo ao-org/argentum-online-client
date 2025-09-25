@@ -116,217 +116,140 @@ Attribute VB_Exposed = False
 '
 '
 '
-
 Public bmoving As Boolean
-
-Public dX      As Integer
-
+Public dx      As Integer
 Public dy      As Integer
 Option Explicit
-
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
-
 Const MOUSE_MOVE    As Long = &HF012&
-
 Private Declare Function ReleaseCapture Lib "user32" () As Long
-
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
-
-
-Private cBotonMas As clsGraphicalButton
-Private cBotonMenos As clsGraphicalButton
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
+Private cBotonMas       As clsGraphicalButton
+Private cBotonMenos     As clsGraphicalButton
 Private cBotonTirarTodo As clsGraphicalButton
-Private cBotonTirar As clsGraphicalButton
-Private cBotonCerrar As clsGraphicalButton
-
+Private cBotonTirar     As clsGraphicalButton
+Private cBotonCerrar    As clsGraphicalButton
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
-    Call Aplicar_Transparencia(Me.hwnd, 240)
-    
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     'Call FormParser.Parse_Form(Me)
     Text1.SelStart = 1
-    
     Me.Picture = LoadInterface("cantidad.bmp")
-    
     Call loadButtons
-    
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub loadButtons()
-
     Set cBotonTirarTodo = New clsGraphicalButton
     Set cBotonTirar = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonMas = New clsGraphicalButton
     Set cBotonMenos = New clsGraphicalButton
-
-
-    Call cBotonTirarTodo.Initialize(cmdTirarTodo, "boton-tirar-todo-default.bmp", _
-                                                "boton-tirar-todo-over.bmp", _
-                                                "boton-tirar-todo-off.bmp", Me)
-    
-    Call cBotonTirar.Initialize(cmdTirar, "boton-tirar-default.bmp", _
-                                                "boton-tirar-over.bmp", _
-                                                "boton-tirar-off.bmp", Me)
-                                                
-    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-                                                
-    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", _
-                                                "boton-sm-mas-over.bmp", _
-                                                "boton-sm-mas-off.bmp", Me)
-                                                
-    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
-                                                "boton-sm-menos-over.bmp", _
-                                                "boton-sm-menos-off.bmp", Me)
+    Call cBotonTirarTodo.Initialize(cmdTirarTodo, "boton-tirar-todo-default.bmp", "boton-tirar-todo-over.bmp", "boton-tirar-todo-off.bmp", Me)
+    Call cBotonTirar.Initialize(cmdTirar, "boton-tirar-default.bmp", "boton-tirar-over.bmp", "boton-tirar-off.bmp", Me)
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
+    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", "boton-sm-mas-over.bmp", "boton-sm-mas-off.bmp", Me)
+    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", "boton-sm-menos-over.bmp", "boton-sm-menos-off.bmp", Me)
 End Sub
+
 Private Sub Form_KeyPress(KeyAscii As Integer)
     On Error GoTo Form_KeyPress_Err
-    
-
     If (KeyAscii = 27) Then
         Unload Me
-
     End If
-
-    
     Exit Sub
-
 Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.Form_KeyPress", Erl)
     Resume Next
-    
 End Sub
 
-Private Sub cmdcerrar_Click()
-    
+Private Sub cmdCerrar_Click()
     On Error GoTo cmdcerrar_Click_Err
-    
     Unload Me
-    
     Exit Sub
-
 cmdcerrar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.cmdCerrar_Click", Erl)
     Resume Next
-    
 End Sub
 
-
 Private Sub cmdMas_Click()
-    
     On Error GoTo cmdMas_Click_Err
-    
-    If Val(Text1.Text) < MAX_INVENTORY_OBJS Then
-        Text1.Text = Val(Text1.Text) + 1
+    If val(Text1.text) < MAX_INVENTORY_OBJS Then
+        Text1.text = val(Text1.text) + 1
     End If
-    
     Exit Sub
-
 cmdMas_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.cmdMas_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdMenos_Click()
-    
     On Error GoTo cmdMenos_Click_Err
-    
-    If Val(Text1.Text) > 0 Then
-        Text1.Text = Val(Text1.Text) - 1
+    If val(Text1.text) > 0 Then
+        Text1.text = val(Text1.text) - 1
     End If
-    
     Exit Sub
-
 cmdMenos_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.cmdMenos_Click", Erl)
     Resume Next
-    
 End Sub
 
-
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    MoverForm Me.hwnd
+    MoverForm Me.hWnd
 End Sub
 
 Private Sub Text1_KeyPress(KeyAscii As Integer)
-    
     On Error GoTo Text1_KeyPress_Err
-    
-
     If (KeyAscii <> 8) Then
         If (KeyAscii < 48 Or KeyAscii > 57) Then
             KeyAscii = 0
-
         End If
     End If
-
-    
     Exit Sub
-
 Text1_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.Text1_KeyPress", Erl)
     Resume Next
-    
 End Sub
 
-
 Private Sub Text1_Change()
-
     On Error GoTo errhandler
-
-    If Val(Text1.Text) < 0 Then
-        Text1.Text = "1"
-
+    If val(Text1.text) < 0 Then
+        Text1.text = "1"
     End If
     If frmMain.Inventario.SelectedItem <> FLAGORO Then
-        If Val(Text1.Text) > MAX_INVENTORY_OBJS Then
-            Text1.Text = "10000"
-            Text1.SelStart = Len(Text1.Text)
-    
+        If val(Text1.text) > MAX_INVENTORY_OBJS Then
+            Text1.text = "10000"
+            Text1.SelStart = Len(Text1.text)
         End If
     Else
-        If Val(Text1.Text) > 100000 Then
-            Text1.Text = "100000"
-            Text1.SelStart = Len(Text1.Text)
+        If val(Text1.text) > 100000 Then
+            Text1.text = "100000"
+            Text1.SelStart = Len(Text1.text)
         End If
     End If
-    
     Exit Sub
 errhandler:
     'If we got here the user may have pasted (Shift + Insert) a REALLY large number, causing an overflow, so we set amount back to 1
-    Text1.Text = "1"
-
+    Text1.text = "1"
 End Sub
-
 
 Private Sub cmdTirar_click()
     On Error GoTo tirar_click_Err
-    
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
     Call ao20audio.PlayWav(SND_CLICK)
-    If LenB(frmCantidad.Text1.Text) > 0 Then
-        If Not IsNumeric(frmCantidad.Text1.Text) Then Exit Sub  'Should never happen
-      
-            If UserInventory.SelectedSlot <> FLAGORO Then
-                Call ThrowItem(frmMain.Inventario.SelectedItem, frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem), frmCantidad.Text1.Text)
-            Else
-                Call ThrowItem(frmMain.Inventario.SelectedItem, 0, frmCantidad.Text1.Text)
-            End If
-
-        frmCantidad.Text1.Text = ""
+    If LenB(frmCantidad.Text1.text) > 0 Then
+        If Not IsNumeric(frmCantidad.Text1.text) Then Exit Sub  'Should never happen
+        If UserInventory.SelectedSlot <> FLAGORO Then
+            Call ThrowItem(frmMain.Inventario.SelectedItem, frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem), frmCantidad.Text1.text)
+        Else
+            Call ThrowItem(frmMain.Inventario.SelectedItem, 0, frmCantidad.Text1.text)
+        End If
+        frmCantidad.Text1.text = ""
     End If
     Unload Me
     Exit Sub
@@ -340,10 +263,8 @@ Private Sub ThrowItem(ByVal SlotIndex As Integer, ByVal ObjIndex As Integer, ByV
         If ObjData(ObjIndex).Destruye = 0 Then
             Call WriteDrop(SlotIndex, Amount)
         Else
-
-                PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
-                Pregunta = True
-
+            PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
+            Pregunta = True
             DestItemSlot = SlotIndex
             DestItemCant = Amount
             PreguntaLocal = True
@@ -355,40 +276,29 @@ Private Sub ThrowItem(ByVal SlotIndex As Integer, ByVal ObjIndex As Integer, ByV
 End Sub
 
 Private Sub cmdTirarTodo_click()
-    
     On Error GoTo tirartodo_click_Err
-    
-
     If Not MainTimer.Check(TimersIndex.Drop) Then Exit Sub
-
     Call ao20audio.PlayWav(SND_CLICK)
     Dim SelectedSlot As Integer
-    Dim ObjIndex As Integer
-    Dim Amount As Integer
+    Dim ObjIndex     As Integer
+    Dim Amount       As Integer
     SelectedSlot = frmMain.Inventario.SelectedItem
     If SelectedSlot <> FLAGORO Then
         ObjIndex = frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem)
         Amount = frmMain.Inventario.Amount(frmMain.Inventario.SelectedItem)
     End If
-
     If SelectedSlot = 0 Then Exit Sub
-    
-    
     If SelectedSlot <> FLAGORO Then
         If ObjData(ObjIndex).Destruye = 0 Then
             Call WriteDrop(SelectedSlot, Amount)
         Else
-
             PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
             Pregunta = True
-
             DestItemSlot = SelectedSlot
             DestItemCant = Amount
-            
             PreguntaLocal = True
             PreguntaNUM = 1
         End If
-
         Unload Me
     Else
         If UserStats.GLD > 100000 Then
@@ -398,16 +308,10 @@ Private Sub cmdTirarTodo_click()
             Call WriteDrop(SelectedSlot, UserStats.GLD)
             Unload Me
         End If
-
     End If
-
-    frmCantidad.Text1.Text = ""
-
-    
+    frmCantidad.Text1.text = ""
     Exit Sub
-
 tirartodo_click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCantidad.tirartodo_click", Erl)
     Resume Next
-    
 End Sub

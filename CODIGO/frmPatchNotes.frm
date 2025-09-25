@@ -51,7 +51,6 @@ Attribute VB_Exposed = False
 '```
 Private cNextButton As clsGraphicalButton
 
-
 Public Sub SetNotes(ByRef notePath As String)
     Me.Picture = LoadInterface(notePath, False)
     MakeFormTransparent Me, vbBlack    'Set the Form "transparent by color."

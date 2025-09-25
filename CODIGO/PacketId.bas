@@ -1,4 +1,5 @@
 Attribute VB_Name = "PacketId"
+
 Public Enum ServerPacketID
     eMinPacket
     eConnected
@@ -101,14 +102,13 @@ Public Enum ServerPacketID
     eStunStart               ' Stun start time
     eShowUserRequest         ' PETICIO
     eChangeUserTradeSlot     ' COMUSUINV
-     'SendNight              ' NOC
+    'SendNight              ' NOC
     eUpdateTagAndStatus
     eFYA
     eCerrarleCliente
     eContadores
     eShowPapiro
     eUpdateCooldownType
-    
     'GM messages
     eSpawnListt               ' SPL
     eShowSOSForm             ' MSOS
@@ -206,9 +206,9 @@ Public Enum ServerPacketID
     eAntiCheatMessage
     eAntiCheatStartSession
     eReportLobbyList
-#If PYMMO = 0 Then
-    eAccountCharacterList
-#End If
+    #If PYMMO = 0 Then
+        eAccountCharacterList
+    #End If
     eMaxPacket
     [PacketCount]
 End Enum
@@ -317,7 +317,6 @@ Public Enum ClientPacketID
     eUseSpellMacro           'UMH
     eUseItem                 'USA
     eCraftBlacksmith         'CNS
-    
     'GM messages
     eGMMessage               '/GMSG
     eshowName                '/SHOWNAME
@@ -539,13 +538,10 @@ Public Enum ClientPacketID
     eAntiCheatMessage
     eRequestLobbyList
     #If PYMMO = 0 Then
-    eCreateAccount
-    eLoginAccount
-    eDeleteCharacter
+        eCreateAccount
+        eLoginAccount
+        eDeleteCharacter
     #End If
     eMaxPacket
     [PacketCount]
 End Enum
-
-
-

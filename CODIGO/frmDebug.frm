@@ -19,7 +19,6 @@ Begin VB.Form frmDebug
       _ExtentX        =   17171
       _ExtentY        =   15266
       _Version        =   393217
-      Enabled         =   -1  'True
       ScrollBars      =   3
       TextRTF         =   $"frmDebug.frx":0000
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -55,22 +54,18 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
 ' Then send the EM_SCROLLCARET message to scroll the caret into view.
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" _
-    (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Private Const EM_SCROLLCARET As Long = &HB7
 
 Private Sub Form_Load()
-Me.TraceBox.Text = vbNullString
+    Me.TraceBox.text = vbNullString
 End Sub
 
 Public Sub add_text_tracebox(ByVal s As String)
-
     With Me.TraceBox
-        Me.TraceBox.Text = Me.TraceBox.Text & s & vbCrLf
-        Me.TraceBox.SelStart = Len(Me.TraceBox.Text)
+        Me.TraceBox.text = Me.TraceBox.text & s & vbCrLf
+        Me.TraceBox.SelStart = Len(Me.TraceBox.text)
         Me.TraceBox.SelLength = 0
         SendMessage Me.TraceBox.hWnd, EM_SCROLLCARET, 0, 0
     End With

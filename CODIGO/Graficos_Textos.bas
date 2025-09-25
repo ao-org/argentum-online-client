@@ -24,17 +24,12 @@ End Type
 
 Public font_count      As Long
 Public font_last       As Long
-Public font_list() As D3DXFont
-
-Public Fuentes(1 To 6)    As Fuente
+Public font_list()     As D3DXFont
+Public Fuentes(1 To 6) As Fuente
 
 Public Sub Engine_Font_Initialize()
-    
     On Error GoTo Engine_Font_Initialize_Err
-    
-
     Dim A As Integer
-
     Fuentes(1).Tamanio = 9
     Fuentes(1).Caracteres(32) = 21494
     Fuentes(1).Caracteres(48) = 21452
@@ -47,15 +42,12 @@ Public Sub Engine_Font_Initialize()
     Fuentes(1).Caracteres(55) = 21459
     Fuentes(1).Caracteres(56) = 21460
     Fuentes(1).Caracteres(57) = 21461
-
     For A = 0 To 25
         Fuentes(1).Caracteres(A + 97) = 21400 + A
     Next A
-
     For A = 0 To 25
         Fuentes(1).Caracteres(A + 65) = 21426 + A
     Next A
-
     Fuentes(1).Caracteres(33) = 21462
     Fuentes(1).Caracteres(161) = 21463
     Fuentes(1).Caracteres(34) = 21464
@@ -121,7 +113,6 @@ Public Sub Engine_Font_Initialize()
     Fuentes(1).Caracteres(207) = 25241
     Fuentes(1).Caracteres(214) = 25242
     Fuentes(1).Caracteres(212) = 25243
-
     Fuentes(2).Tamanio = 9
     Fuentes(2).Caracteres(97) = 21936
     Fuentes(2).Caracteres(108) = 21937
@@ -140,7 +131,6 @@ Public Sub Engine_Font_Initialize()
     Fuentes(2).Caracteres(33) = 21950
     Fuentes(2).Caracteres(161) = 21951
     Fuentes(2).Caracteres(42) = 21952
-
     Fuentes(3).Tamanio = 40
     Fuentes(3).Caracteres(48) = 20428 '0
     Fuentes(3).Caracteres(49) = 20429 '1
@@ -152,16 +142,12 @@ Public Sub Engine_Font_Initialize()
     Fuentes(3).Caracteres(55) = 20435 '7
     Fuentes(3).Caracteres(56) = 20436 '8
     Fuentes(3).Caracteres(57) = 20437 '9
-
     For A = 0 To 25
-        Fuentes(3).Caracteres(a + 97) = 20477 + a 'Desde la a hasta la z (sin ñ)
+        Fuentes(3).Caracteres(A + 97) = 20477 + A 'Desde la a hasta la z (sin ñ)
     Next A
-
     For A = 0 To 25
-        Fuentes(3).Caracteres(a + 65) = 20445 + a 'Desde la A hasta la Z (sin Ñ)
-
+        Fuentes(3).Caracteres(A + 65) = 20445 + A 'Desde la A hasta la Z (sin Ñ)
     Next A
-
     Fuentes(3).Caracteres(33) = 20413 '!
     Fuentes(3).Caracteres(161) = 20541 '¡
     Fuentes(3).Caracteres(34) = 20414 '"
@@ -226,10 +212,8 @@ Public Sub Engine_Font_Initialize()
     Fuentes(3).Caracteres(207) = 24877 '
     Fuentes(3).Caracteres(214) = 24878 '
     Fuentes(3).Caracteres(212) = 24879 '
-
     Fuentes(3).Caracteres(172) = 20552 '¬
     Fuentes(3).Caracteres(186) = 20556 'º
-
     Fuentes(4).Tamanio = 3
     Fuentes(4).Caracteres(48) = 13852
     Fuentes(4).Caracteres(49) = 13853
@@ -241,15 +225,12 @@ Public Sub Engine_Font_Initialize()
     Fuentes(4).Caracteres(55) = 13859
     Fuentes(4).Caracteres(56) = 13860
     Fuentes(4).Caracteres(57) = 13861
-
     For A = 0 To 25
         Fuentes(4).Caracteres(A + 97) = 13800 + A
     Next A
-
     For A = 0 To 25
         Fuentes(4).Caracteres(A + 65) = 13826 + A
     Next A
-
     Fuentes(4).Caracteres(33) = 13862
     Fuentes(4).Caracteres(161) = 13863
     Fuentes(4).Caracteres(34) = 13864
@@ -283,7 +264,6 @@ Public Sub Engine_Font_Initialize()
     Fuentes(4).Caracteres(58) = 13891
     Fuentes(4).Caracteres(59) = 13892
     Fuentes(4).Caracteres(124) = 13893
-
     Fuentes(4).Caracteres(252) = 24948 '    ü
     Fuentes(4).Caracteres(220) = 24949 'Ü
     Fuentes(3).Caracteres(225) = 8490 'á
@@ -316,17 +296,14 @@ Public Sub Engine_Font_Initialize()
     Fuentes(3).Caracteres(207) = 24877 '
     Fuentes(3).Caracteres(214) = 24878 '
     Fuentes(3).Caracteres(212) = 24879 '
-
     Fuentes(3).Caracteres(172) = 20552 '¬
     Fuentes(3).Caracteres(186) = 20556 'º
-
     Fuentes(1).Caracteres(196) = 25238
     Fuentes(1).Caracteres(194) = 25239
     Fuentes(1).Caracteres(203) = 25240
     Fuentes(1).Caracteres(207) = 25241
     Fuentes(1).Caracteres(214) = 25242
     Fuentes(1).Caracteres(212) = 25243
-
     Fuentes(5).Tamanio = 50
     Fuentes(5).Caracteres(48) = 30127
     Fuentes(5).Caracteres(49) = 30128
@@ -338,15 +315,12 @@ Public Sub Engine_Font_Initialize()
     Fuentes(5).Caracteres(55) = 30134
     Fuentes(5).Caracteres(56) = 30135
     Fuentes(5).Caracteres(57) = 30136
-
     For A = 0 To 25
         Fuentes(5).Caracteres(A + 97) = 30176 + A
     Next A
-
     For A = 0 To 25
         Fuentes(5).Caracteres(A + 65) = 30144 + A
     Next A
-
     Fuentes(5).Caracteres(33) = 30112 '!
     Fuentes(5).Caracteres(161) = 20541 '¡
     Fuentes(5).Caracteres(34) = 30113 '"
@@ -411,10 +385,8 @@ Public Sub Engine_Font_Initialize()
     Fuentes(5).Caracteres(207) = 24877 '
     Fuentes(5).Caracteres(214) = 24878 '
     Fuentes(5).Caracteres(212) = 24879 '
-
     Fuentes(5).Caracteres(172) = 20552 '¬
     Fuentes(5).Caracteres(186) = 20556 'º
-
     Fuentes(6).Tamanio = 50
     Fuentes(6).Caracteres(48) = 45866
     Fuentes(6).Caracteres(49) = 45867
@@ -426,15 +398,12 @@ Public Sub Engine_Font_Initialize()
     Fuentes(6).Caracteres(55) = 45873
     Fuentes(6).Caracteres(56) = 45874
     Fuentes(6).Caracteres(57) = 45875
-
     For A = 0 To 25
         Fuentes(6).Caracteres(A + 97) = 45915 + A
     Next A
-
     For A = 0 To 25
         Fuentes(6).Caracteres(A + 65) = 45883 + A
     Next A
-
     Fuentes(6).Caracteres(33) = 13862
     Fuentes(6).Caracteres(161) = 13863
     Fuentes(6).Caracteres(34) = 13864
@@ -468,7 +437,6 @@ Public Sub Engine_Font_Initialize()
     Fuentes(6).Caracteres(58) = 13891
     Fuentes(6).Caracteres(59) = 13892
     Fuentes(6).Caracteres(124) = 13893
-
     Fuentes(6).Caracteres(252) = 18200
     Fuentes(6).Caracteres(220) = 18201
     Fuentes(6).Caracteres(225) = 18202
@@ -495,275 +463,192 @@ Public Sub Engine_Font_Initialize()
     Fuentes(6).Caracteres(217) = 18223
     Fuentes(6).Caracteres(241) = 18224
     Fuentes(6).Caracteres(209) = 18225
-
-    
     Exit Sub
-
 Engine_Font_Initialize_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Font_Initialize", Erl)
     Resume Next
-    
 End Sub
 
 Public Function Engine_Text_Height(Texto As String, Optional multi As Boolean = False, Optional font As Byte = 1) As Integer
-    
     On Error GoTo Engine_Text_Height_Err
-    
-
     Dim A, B, c, d, e, f As Integer
-
-    Dim graf As grh
-  
+    Dim graf As Grh
     If multi = False Then
         Engine_Text_Height = 0
     Else
         e = 0
         f = 0
-
         If font = 1 Then
-
             For A = 1 To Len(Texto)
                 B = Asc(mid(Texto, A, 1))
                 graf.GrhIndex = Fuentes(1).Caracteres(B)
-
                 If B = 32 Or B = 13 Then
                     If e >= 20 Then 'reemplazar por lo que os plazca
                         f = f + 1
                         e = 0
                         d = 0
                     Else
-
                         If B = 32 Then
                             d = d + 4
-
                         End If
-
                     End If
-
                     'Else
                     'If graf.GrhIndex > 12 Then
                 End If
-
                 e = e + 1
             Next A
-
         Else
-    
             For A = 1 To Len(Texto)
                 B = Asc(mid(Texto, A, 1))
                 graf.GrhIndex = Fuentes(font).Caracteres(B)
-
                 If B = 32 Or B = 13 Then
                     If e >= 20 Then 'reemplazar por lo que os plazca
                         f = f + 1
                         e = 0
                         d = 0
                     Else
-
                         If B = 32 Then
                             d = d + 4
-
                         End If
-
                     End If
-
                     'Else
                     'If graf.GrhIndex > 12 Then
                 End If
-
                 e = e + 1
             Next A
-  
         End If
-
         Engine_Text_Height = f * 14
-  
     End If
-
-    
     Exit Function
-
 Engine_Text_Height_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Height", Erl)
     Resume Next
-    
 End Function
 
-Sub Engine_Text_Render_LetraGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
-    
+Sub Engine_Text_Render_LetraGrande(Texto As String, _
+                                   x As Integer, _
+                                   y As Integer, _
+                                   ByRef text_color() As RGBA, _
+                                   Optional ByVal font_index As Integer = 1, _
+                                   Optional multi_line As Boolean = False, _
+                                   Optional charindex As Integer = 0, _
+                                   Optional ByVal alpha As Byte = 255)
     On Error GoTo Engine_Text_Render_LetraGrande_Err
-    
-
-    
-
     Dim A, B, c, d, e, f As Integer
-
-    Dim graf          As grh
-
+    Dim graf          As Grh
     Dim temp_array(3) As RGBA 'Si le queres dar color a la letra pasa este parametro dsp xD
-
     temp_array(0) = text_color(0)
-
     If charindex = 0 Then
         A = 255
     Else
         A = charlist(charindex).AlphaText
     End If
-
-    If Alpha <> 255 Then
-        A = Alpha
+    If alpha <> 255 Then
+        A = alpha
     End If
-
     Dim i              As Long
-
     Dim removedDialogs As Long
-
     For i = 0 To dialogCount - 1
-
         'Decrease index to prevent jumping over a dialog
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
-
             If FrameTime - .startTime >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
-                             
                 If charlist(charindex).AlphaText = 0 Then
                     removedDialogs = removedDialogs + 1
-
                 End If
-
             Else
-            
             End If
-
         End With
-
     Next i
-
     If (Len(Texto) = 0) Then Exit Sub
-
     d = 0
-
     If multi_line = False Then
         e = 0
         f = 0
-
         For A = 1 To Len(Texto)
             B = Asc(mid(Texto, A, 1))
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
             If B = 32 Or B = 13 Then
                 If e >= 35 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
-
                     If B = 32 Then d = d + 30
-
                 End If
-
             Else
-
                 If graf.GrhIndex > 12 Then
-
                     'mega sombra O-matica
                     graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
                     If font_index <> 3 Then
-
                         'Call Draw_GrhColor(graf.GrhIndex, (x + d), y + f * 14, Sombra())
                     End If
-
                     Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
-                
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
                     d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth - 70
-
                 End If
-
             End If
-
             e = e + 1
         Next A
-
     Else
         e = 0
         f = 0
-
         For A = 1 To Len(Texto)
             B = Asc(mid(Texto, A, 1))
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
             If B = 32 Or B = 13 Then
                 If e >= 33 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
-
                     If B = 32 Then d = d + 2
-
                 End If
-
             Else
-
                 If graf.GrhIndex > 12 Then
-
                     'mega sombra O-matica
                     graf.GrhIndex = Fuentes(font_index).Caracteres(B)
                     ' Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
                     Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
                     If font_index = 5 Then
                         d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth - 50
                     Else
                         d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
                     End If
-
                 End If
-
             End If
-
             e = e + 1
         Next A
-
     End If
-
-    
     Exit Sub
-
 Engine_Text_Render_LetraGrande_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_LetraGrande", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub RenderText(ByVal Texto As String, _
- ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, _
- Optional ByVal font_index As Integer = 1, _
- Optional multi_line As Boolean = False, _
- Optional charindex As Integer = 0, _
- Optional ByVal Alpha As Byte = 255)
-On Error GoTo RenderText_Err
-    
+                      ByVal x As Integer, _
+                      ByVal y As Integer, _
+                      ByRef text_color() As RGBA, _
+                      Optional ByVal font_index As Integer = 1, _
+                      Optional multi_line As Boolean = False, _
+                      Optional charindex As Integer = 0, _
+                      Optional ByVal alpha As Byte = 255)
+    On Error GoTo RenderText_Err
     If (Len(Texto) = 0) Then Exit Sub
-    
     Dim A, B, c, d, e, f As Integer
-    Dim graf          As grh
-
+    Dim graf As Grh
     If charindex = 0 Then
         A = 255
     Else
         A = charlist(charindex).AlphaText
     End If
-
-    If Alpha <> 255 Then
-        A = Alpha
+    If alpha <> 255 Then
+        A = alpha
     End If
     Dim i              As Long
     Dim removedDialogs As Long
@@ -779,7 +664,6 @@ On Error GoTo RenderText_Err
             End If
         End With
     Next i
-
     d = 0
     If multi_line = False Then
         e = 0
@@ -832,264 +716,191 @@ On Error GoTo RenderText_Err
             e = e + 1
         Next A
     End If
-    
     Exit Sub
-
 RenderText_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.RenderText", Erl)
     Resume Next
-    
 End Sub
 
-Public Sub Engine_Text_Render(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
-    
+Public Sub Engine_Text_Render(Texto As String, _
+                              ByVal x As Integer, _
+                              ByVal y As Integer, _
+                              ByRef text_color() As RGBA, _
+                              Optional ByVal font_index As Integer = 1, _
+                              Optional multi_line As Boolean = False, _
+                              Optional charindex As Integer = 0, _
+                              Optional ByVal alpha As Byte = 255)
     On Error GoTo Engine_Text_Render_Err
-    
-
-    
-
     Dim A, B, c, d, e, f As Integer
-
-    Dim graf          As grh
-
+    Dim graf          As Grh
     Dim temp_array(3) As RGBA
-
     If charindex = 0 Then
         A = 255
     Else
         A = Clamp(charlist(charindex).AlphaText, 0, 255)
     End If
-
-    If Alpha <> 255 Then
-        A = Alpha
+    If alpha <> 255 Then
+        A = alpha
     End If
-    
-    Call RGBAList(temp_array, text_color(0).r, text_color(0).G, text_color(0).B, A)
-
+    Call RGBAList(temp_array, text_color(0).R, text_color(0).G, text_color(0).B, A)
     Dim i              As Long
-
     Dim removedDialogs As Long
-
     For i = 0 To dialogCount - 1
-
         'Decrease index to prevent jumping over a dialog
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
-
             If FrameTime - .startTime >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
-                             
                 If A <= 0 Then
                     removedDialogs = removedDialogs + 1
-
                 End If
-
             Else
-            
             End If
-
         End With
-
     Next i
-
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * A)
-
+    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * A)
     If (Len(Texto) = 0) Then Exit Sub
-
     d = 0
-
     If multi_line = False Then
         e = 0
         f = 0
-
         For A = 1 To Len(Texto)
             B = Asc(mid(Texto, A, 1))
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
             If B = 32 Or B = 13 Then
                 If e >= 32 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
-
                     If B = 32 Then d = d + 4
-
                 End If
-
             Else
-
                 If graf.GrhIndex > 12 Then
-
                     'mega sombra O-matica
                     graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
                     If font_index <> 3 Then
                         Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-
                     End If
-
                     Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
                     d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
                 End If
-
             End If
-
             e = e + 1
         Next A
-
     Else
         e = 0
         f = 0
-
         For A = 1 To Len(Texto)
             B = Asc(mid(Texto, A, 1))
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
             If B = 32 Or B = 13 Then
                 If e >= 20 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
-
                     If B = 32 Then d = d + 4
-
                 End If
-
             Else
-
                 If graf.GrhIndex > 12 Then
-
                     'mega sombra O-matica
                     graf.GrhIndex = Fuentes(font_index).Caracteres(B)
                     Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
                     Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
                     If font_index = 4 Then
                         d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth - 1
                     Else
                         d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
                     End If
-
                 End If
-
             End If
-
             e = e + 1
         Next A
-
     End If
-
-    
     Exit Sub
-
 Engine_Text_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
     Resume Next
-    
 End Sub
 
-Public Sub simple_text_render(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional CharIndex As Integer = 0, Optional ByVal Alpha As Byte = 255)
-    
+Public Sub simple_text_render(Texto As String, _
+                              ByVal x As Integer, _
+                              ByVal y As Integer, _
+                              ByRef text_color() As RGBA, _
+                              Optional ByVal font_index As Integer = 1, _
+                              Optional multi_line As Boolean = False, _
+                              Optional charindex As Integer = 0, _
+                              Optional ByVal alpha As Byte = 255)
     On Error GoTo Engine_Text_Render_Err
-    
-
-    
-
-    Dim a, b, c, d, e, f As Integer
-
-    Dim graf          As grh
-
+    Dim A, B, c, d, e, f As Integer
+    Dim graf          As Grh
     Dim temp_array(3) As RGBA
-
-    If CharIndex = 0 Then
-        a = 255
-    Else
-        a = Clamp(charlist(CharIndex).AlphaText, 0, 255)
-    End If
-
-    If Alpha <> 255 Then
-        a = Alpha
-    End If
-    
-    Call RGBAList(temp_array, text_color(0).r, text_color(0).G, text_color(0).b, a)
-
-    Dim i              As Long
-
-   
-    Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).b / 6, 0.8 * a)
-
-    If (Len(Texto) = 0) Then Exit Sub
-
-    d = 0
-
-
-
-    f = 0
-
-    For a = 1 To Len(Texto)
-        b = Asc(mid(Texto, a, 1))
-        graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-
-        If graf.GrhIndex > 12 Then
-
-            'mega sombra O-matica
-            graf.GrhIndex = Fuentes(font_index).Caracteres(b)
-            Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-            Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-        
-            ' graf.grhindex = Fuentes(font_index).Caracteres(b)
-            If font_index = 4 Then
-                d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth - 1
-            Else
-                d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
-            End If
-
-        End If
-
-    Next a
-
-    Exit Sub
-
-Engine_Text_Render_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
-    Resume Next
-    
-End Sub
-
-Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByVal y As Integer, ByRef text_color() As RGBA, ByVal status As Byte, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
-    
-    On Error GoTo Engine_Text_Render_Err
-
-    Dim A As Integer, B As Integer, c As Integer, d As Integer
-
-    Dim graf          As grh
-
-    Dim color1(3) As RGBA
-    Dim color2(3) As RGBA
-
     If charindex = 0 Then
         A = 255
     Else
         A = Clamp(charlist(charindex).AlphaText, 0, 255)
     End If
-
-    If Alpha <> 255 Then
-        A = Alpha
+    If alpha <> 255 Then
+        A = alpha
     End If
-    
-     Select Case status
+    Call RGBAList(temp_array, text_color(0).R, text_color(0).G, text_color(0).B, A)
+    Dim i         As Long
+    Dim Sombra(3) As RGBA 'Sombra
+    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * A)
+    If (Len(Texto) = 0) Then Exit Sub
+    d = 0
+    f = 0
+    For A = 1 To Len(Texto)
+        B = Asc(mid(Texto, A, 1))
+        graf.GrhIndex = Fuentes(font_index).Caracteres(B)
+        If graf.GrhIndex > 12 Then
+            'mega sombra O-matica
+            graf.GrhIndex = Fuentes(font_index).Caracteres(B)
+            Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
+            Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
+            ' graf.grhindex = Fuentes(font_index).Caracteres(b)
+            If font_index = 4 Then
+                d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth - 1
+            Else
+                d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
+            End If
+        End If
+    Next A
+    Exit Sub
+Engine_Text_Render_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
+    Resume Next
+End Sub
+
+Public Sub Engine_Text_Render_No_Ladder(Texto As String, _
+                                        ByVal x As Integer, _
+                                        ByVal y As Integer, _
+                                        ByRef text_color() As RGBA, _
+                                        ByVal status As Byte, _
+                                        Optional ByVal font_index As Integer = 1, _
+                                        Optional multi_line As Boolean = False, _
+                                        Optional charindex As Integer = 0, _
+                                        Optional ByVal alpha As Byte = 255)
+    On Error GoTo Engine_Text_Render_Err
+    Dim A         As Integer, B As Integer, c As Integer, d As Integer
+    Dim graf      As Grh
+    Dim color1(3) As RGBA
+    Dim color2(3) As RGBA
+    If charindex = 0 Then
+        A = 255
+    Else
+        A = Clamp(charlist(charindex).AlphaText, 0, 255)
+    End If
+    If alpha <> 255 Then
+        A = alpha
+    End If
+    Select Case status
         Case 0 'criminal
             Call RGBAList(color1, 225, 0, 0, A)
             Call RGBAList(color2, 255, 255, 255, A)
@@ -1118,908 +929,628 @@ Public Sub Engine_Text_Render_No_Ladder(Texto As String, ByVal x As Integer, ByV
             Call RGBAList(color1, 222, 194, 112, A)
             Call RGBAList(color2, 255, 255, 255, A)
     End Select
-    
-    
     'Call RGBAList(color2, 255, 255, 255, A)
     Dim i              As Long
-
     Dim removedDialogs As Long
-
     For i = 0 To dialogCount - 1
-
         'Decrease index to prevent jumping over a dialog
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
-
             If FrameTime - .startTime >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
-                             
                 If A <= 0 Then
                     removedDialogs = removedDialogs + 1
-
                 End If
-
             Else
-            
             End If
-
         End With
-
     Next i
-    
-
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * A)
-
+    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * A)
     If (Len(Texto) = 0) Then Exit Sub
-
     Dim row As Integer, charPos As Integer
     d = 0
     row = 0
     charPos = 0
     Dim separador As Boolean
-        For A = 1 To Len(Texto)
-            B = Asc(mid(Texto, A, 1))
+    For A = 1 To Len(Texto)
+        B = Asc(mid(Texto, A, 1))
+        graf.GrhIndex = Fuentes(font_index).Caracteres(B)
+        If B = 1 Then separador = Not separador
+        If graf.GrhIndex > 12 Then
+            'mega sombra O-matica
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-            If B = 1 Then separador = Not separador
-                If graf.GrhIndex > 12 Then
-
-                    'mega sombra O-matica
-                    graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-                    
-                    If font_index <> 3 Then
-                        Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + 10, Sombra())
-                    End If
-                    
-                    If status >= 0 And status <= 5 Or status = 10 Then
-                        If separador Then
-                            Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color1)
-                        Else
-                            Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color2)
-                        End If
-                    Else
-                        Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color2)
-                    End If
-                    d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
+            If font_index <> 3 Then
+                Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + 10, Sombra())
+            End If
+            If status >= 0 And status <= 5 Or status = 10 Then
+                If separador Then
+                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color1)
+                Else
+                    Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color2)
                 End If
-
-            charPos = charPos + 1
-        Next A
-
-    
+            Else
+                Call Draw_GrhFont(graf.GrhIndex, (x + d), y + 10, color2)
+            End If
+            d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
+        End If
+        charPos = charPos + 1
+    Next A
     Exit Sub
-
 Engine_Text_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render", Erl)
     Resume Next
-    
 End Sub
-Public Sub Engine_Text_RenderGrande(Texto As String, x As Integer, y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Integer = 0, Optional ByVal Alpha As Byte = 255)
-    
+
+Public Sub Engine_Text_RenderGrande(Texto As String, _
+                                    x As Integer, _
+                                    y As Integer, _
+                                    ByRef text_color() As RGBA, _
+                                    Optional ByVal font_index As Integer = 1, _
+                                    Optional multi_line As Boolean = False, _
+                                    Optional charindex As Integer = 0, _
+                                    Optional ByVal alpha As Byte = 255)
     On Error GoTo Engine_Text_RenderGrande_Err
-    
-
-    
-
     Dim A, B, c, d, e, f As Integer
-
-    Dim graf          As grh
-
+    Dim graf          As Grh
     Dim temp_array(3) As RGBA
-
     If charindex = 0 Then
         A = 255
     Else
         A = charlist(charindex).AlphaText
     End If
-
-    If Alpha <> 255 Then
-        A = Alpha
+    If alpha <> 255 Then
+        A = alpha
     End If
-
-    Call RGBAList(temp_array, text_color(0).r, text_color(0).G, text_color(0).B, A)
-
+    Call RGBAList(temp_array, text_color(0).R, text_color(0).G, text_color(0).B, A)
     Dim i              As Long
-
     Dim removedDialogs As Long
-
     For i = 0 To dialogCount - 1
-
         'Decrease index to prevent jumping over a dialog
         'Crappy VB will cache the limit of the For loop, so even if it changed, it won't matter
         With dialogs(i - removedDialogs)
-
             If FrameTime - .startTime >= .lifeTime Then
                 Call Char_Dialog_Remove(.charindex, charindex)
-                             
                 If A <= 0 Then
                     removedDialogs = removedDialogs + 1
-
                 End If
-
             Else
-            
             End If
-
         End With
-
     Next i
-
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * Alpha)
-
+    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * alpha)
     If (Len(Texto) = 0) Then Exit Sub
-
     d = 0
-
     If multi_line = False Then
         e = 0
         f = 0
-
         For A = 1 To Len(Texto)
             B = Asc(mid(Texto, A, 1))
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
             If B = 32 Or B = 13 Then
                 If e >= 35 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
-
                     If B = 32 Then d = d + 12
-
                 End If
-
             Else
-
                 If graf.GrhIndex > 12 Then
-
                     'mega sombra O-matica
                     graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
                     If font_index <> 3 Then
                         Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, Sombra())
-
                     End If
-
                     Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, temp_array())
-                
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
                     d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
                 End If
-
             End If
-
             e = e + 1
         Next A
-
     Else
         e = 0
         f = 0
-
         For A = 1 To Len(Texto)
             B = Asc(mid(Texto, A, 1))
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
             If B = 32 Or B = 13 Then
                 If e >= 10 Then 'reemplazar por lo que os plazca
                     f = f + 3
                     e = 0
                     d = 0
                 Else
-
                     If B = 32 Then d = d + 12
-
                 End If
-
             Else
-
                 If graf.GrhIndex > 12 Then
-
                     'mega sombra O-matica
                     graf.GrhIndex = Fuentes(font_index).Caracteres(B)
                     'Call Draw_GrhColor(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
                     Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
                     If font_index = 4 Then
                         d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
                     Else
                         d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
                     End If
-
                 End If
-
             End If
-
             e = e + 1
         Next A
-
     End If
-
-    
     Exit Sub
-
 Engine_Text_RenderGrande_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_RenderGrande", Erl)
     Resume Next
-    
 End Sub
 
-Public Sub Engine_Text_Render2(Texto As String, x As Integer, y As Integer, ByRef text_color As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False, Optional charindex As Long = 0, Optional ByVal Alpha As Boolean = False)
-    
+Public Sub Engine_Text_Render2(Texto As String, _
+                               x As Integer, _
+                               y As Integer, _
+                               ByRef text_color As RGBA, _
+                               Optional ByVal font_index As Integer = 1, _
+                               Optional multi_line As Boolean = False, _
+                               Optional charindex As Long = 0, _
+                               Optional ByVal alpha As Boolean = False)
     On Error GoTo Engine_Text_Render2_Err
-
     Dim A, B, c, d, e, f As Integer
-
-    Dim graf          As grh
-
+    Dim graf          As Grh
     Dim temp_array(3) As RGBA
-
-    Call RGBAList(temp_array, text_color.r, text_color.G, text_color.B, text_color.A)
-
+    Call RGBAList(temp_array, text_color.R, text_color.G, text_color.B, text_color.A)
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color.r / 6, text_color.G / 6, text_color.B / 6, 0.8 * text_color.A)
-
+    Call RGBAList(Sombra, text_color.R / 6, text_color.G / 6, text_color.B / 6, 0.8 * text_color.A)
     If (Len(Texto) = 0) Then Exit Sub
-
     d = 0
-
     If multi_line = False Then
         e = 0
         f = 0
-
         For A = 1 To Len(Texto)
             B = Asc(mid(Texto, A, 1))
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
             If B = 32 Or B = 13 Then
                 If e >= 35 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
-
                     If B = 32 Then d = d + 4
-
                 End If
-
             Else
-
                 If graf.GrhIndex > 12 Then
-
                     'mega sombra O-matica
                     graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
                     If font_index <> 3 Then
                         Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-
                     End If
-
                     Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     ' Grh_Render graf, (X + d), Y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
                     d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
                 End If
-
             End If
-
             e = e + 1
         Next A
-
     Else
         e = 0
         f = 0
-
         For A = 1 To Len(Texto)
             B = Asc(mid(Texto, A, 1))
             graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
             If B = 32 Or B = 13 Then
                 If e >= 20 Then 'reemplazar por lo que os plazca
                     f = f + 1
                     e = 0
                     d = 0
                 Else
-
                     If B = 32 Then d = d + 4
-
                 End If
-
             Else
-
                 If graf.GrhIndex > 12 Then
-
                     'mega sombra O-matica
                     graf.GrhIndex = Fuentes(font_index).Caracteres(B)
                     Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
                     Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, temp_array())
-                
                     ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                     'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
                     If font_index <> 3 Then
                         d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
                     Else
                         d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
                     End If
-
                 End If
-
             End If
-
             e = e + 1
         Next A
-
     End If
-
-    
     Exit Sub
-
 Engine_Text_Render2_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render2", Erl)
     Resume Next
-    
 End Sub
 
-Public Sub Engine_Text_Render_Efect(charindex As Integer, Texto As String, x As Integer, y As Integer, ByRef text_color() As RGBA, Optional ByVal font_index As Integer = 1, Optional multi_line As Boolean = False)
-    
+Public Sub Engine_Text_Render_Efect(charindex As Integer, _
+                                    Texto As String, _
+                                    x As Integer, _
+                                    y As Integer, _
+                                    ByRef text_color() As RGBA, _
+                                    Optional ByVal font_index As Integer = 1, _
+                                    Optional multi_line As Boolean = False)
     On Error GoTo Engine_Text_Render_Efect_Err
-    
-
     Dim A, B, c, d, e, f As Integer
-
-    Dim graf As grh
-
+    Dim graf As Grh
     If (Len(Texto) = 0) Then Exit Sub
-
     d = 0
     e = 0
     f = 0
-
     Dim Sombra(3) As RGBA 'Sombra
-    Call RGBAList(Sombra, text_color(0).r / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * text_color(0).A)
-
+    Call RGBAList(Sombra, text_color(0).R / 6, text_color(0).G / 6, text_color(0).B / 6, 0.8 * text_color(0).A)
     For A = 1 To Len(Texto)
         B = Asc(mid(Texto, A, 1))
         graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-
         If B = 32 Or B = 13 Then
             If e >= 20 Then 'reemplazar por lo que os plazca
                 f = f + 1
                 e = 0
                 d = 0
             Else
-
                 If B = 32 Then d = d + 4
-
             End If
-
         Else
-
             If graf.GrhIndex > 12 Then
-
                 'mega sombra O-matica
                 graf.GrhIndex = Fuentes(font_index).Caracteres(B)
-                
                 Call Draw_GrhFont(graf.GrhIndex, (x + d) + 1, y + 1 + f * 14, Sombra())
-      
                 Call Draw_GrhFont(graf.GrhIndex, (x + d), y + f * 14, text_color())
-                
                 ' graf.grhindex = Fuentes(font_index).Caracteres(b)
                 'Grh_Render graf, (x + d), y + f * 14, temp_array, False, False, False '14 es el height de esta fuente dsp lo hacemos dinamico
                 d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth
-
             End If
-
         End If
-
         e = e + 1
     Next A
-
-    
     Exit Sub
-
 Engine_Text_Render_Efect_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Render_Efect", Erl)
     Resume Next
-    
 End Sub
 
 Public Function Engine_Text_Width(Texto As String, Optional multi As Boolean = False, Optional Fon As Byte = 1) As Integer
-    
     On Error GoTo Engine_Text_Width_Err
-    
-
     Dim A, B, d, e, f As Integer
-
-    Dim graf As grh
-
+    Dim graf As Grh
     Select Case Fon
-
         Case 1
-
             If multi = False Then
-
                 For A = 1 To Len(Texto)
                     B = Asc(mid(Texto, A, 1))
                     graf.GrhIndex = Fuentes(1).Caracteres(B)
-
                     If graf.GrhIndex = 0 Then graf.GrhIndex = 1
                     If B <> 32 Then
                         Engine_Text_Width = Engine_Text_Width + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
                     Else
                         Engine_Text_Width = Engine_Text_Width + 4
-
                     End If
-
                 Next A
-
             Else
                 e = 0
                 f = 0
-
                 For A = 1 To Len(Texto)
                     B = Asc(mid(Texto, A, 1))
                     graf.GrhIndex = Fuentes(1).Caracteres(B)
-
                     If B = 32 Or B = 13 Then
                         If e >= 20 Then 'reemplazar por lo que os plazca
                             f = f + 1
                             e = 0
                             d = 0
                         Else
-
                             If B = 32 Then d = d + 4
-
                         End If
-
                     Else
-
                         If graf.GrhIndex > 12 Then
                             d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
-
                             If d > Engine_Text_Width Then Engine_Text_Width = d
-
                         End If
-
                     End If
-
                     e = e + 1
                 Next A
-
             End If
-
         Case 4
-
             If multi = False Then
-
                 For A = 1 To Len(Texto)
                     B = Asc(mid(Texto, A, 1))
                     graf.GrhIndex = Fuentes(Fon).Caracteres(B)
-
                     If graf.GrhIndex = 0 Then graf.GrhIndex = 1
                     If B <> 20 Then
                         Engine_Text_Width = Engine_Text_Width + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth + 10
                     Else
                         Engine_Text_Width = Engine_Text_Width - 15
-
                     End If
-
                 Next A
-
             Else
                 e = 0
                 f = 0
-
                 For A = 1 To Len(Texto)
                     B = Asc(mid(Texto, A, 1))
                     graf.GrhIndex = Fuentes(Fon).Caracteres(B)
-
                     If B = 32 Or B = 13 Then
                         If e >= 20 Then 'reemplazar por lo que os plazca
                             f = f + 1
                             e = 0
                             d = 0
                         Else
-
                             If B = 32 Then d = d + 4
-
                         End If
-
                     Else
-
                         If graf.GrhIndex > 12 Then
                             d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
-
                             If d > Engine_Text_Width Then Engine_Text_Width = d
-
                         End If
-
                     End If
-
                     e = e + 1
                 Next A
-
             End If
-
     End Select
-
-    
     Exit Function
-
 Engine_Text_Width_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_Width", Erl)
     Resume Next
-    
 End Function
 
 Public Function Engine_Text_WidthCentrado(Texto As String, Optional multi As Boolean = False, Optional Fon As Byte = 1) As Integer
-    
     On Error GoTo Engine_Text_WidthCentrado_Err
-    
-
     Dim A, B, d, e, f As Integer
-
-    Dim graf As grh
-
+    Dim graf As Grh
     Select Case Fon
-
         Case 1
             '
-
             If multi = False Then
-
                 For A = 1 To Len(Texto)
                     B = Asc(mid(Texto, A, 1))
                     graf.GrhIndex = Fuentes(1).Caracteres(B)
-
                     If graf.GrhIndex = 0 Then graf.GrhIndex = 1
                     If B <> 32 Then
                         Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth '+ 1
                     Else
                         Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + 4
-
                     End If
-
                 Next A
-
             Else
                 e = 0
                 f = 0
-
                 For A = 1 To Len(Texto)
                     B = Asc(mid(Texto, A, 1))
                     graf.GrhIndex = Fuentes(1).Caracteres(B)
-
                     If B = 32 Or B = 13 Then
                         If e >= 20 Then 'reemplazar por lo que os plazca
                             f = f + 1
                             e = 0
                             d = 0
                         Else
-
                             If B = 32 Then d = d + 4
-
                         End If
-
                     Else
-
                         If graf.GrhIndex > 12 Then
                             d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
-
                             If d > Engine_Text_WidthCentrado Then Engine_Text_WidthCentrado = d
-
                         End If
-
                     End If
-
                     e = e + 1
                 Next A
-
             End If
-
         Case 4
-
             If multi = False Then
-
                 For A = 1 To Len(Texto)
                     B = Asc(mid(Texto, A, 1))
                     graf.GrhIndex = Fuentes(Fon).Caracteres(B)
-
                     If graf.GrhIndex = 0 Then graf.GrhIndex = 1
                     If B <> 20 Then
                         Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth + 10
                     Else
                         Engine_Text_WidthCentrado = Engine_Text_WidthCentrado - 15
-
                     End If
-
                 Next A
-
             Else
                 e = 0
                 f = 0
-
                 For A = 1 To Len(Texto)
                     B = Asc(mid(Texto, A, 1))
                     graf.GrhIndex = Fuentes(Fon).Caracteres(B)
-
                     If B = 32 Or B = 13 Then
                         If e >= 20 Then 'reemplazar por lo que os plazca
                             f = f + 1
                             e = 0
                             d = 0
                         Else
-
                             If B = 32 Then d = d + 4
-
                         End If
-
                     Else
-
                         If graf.GrhIndex > 12 Then
                             d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
-
                             If d > Engine_Text_WidthCentrado Then Engine_Text_WidthCentrado = d
-
                         End If
-
                     End If
-
                     e = e + 1
                 Next A
-
             End If
-
     End Select
-
-    
     Exit Function
-
 Engine_Text_WidthCentrado_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Text_WidthCentrado", Erl)
     Resume Next
-    
 End Function
 
-Public Sub Text_Render(ByVal font As D3DXFont, Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal color As Long, ByVal format As Long, Optional ByVal Shadow As Boolean = False)
-    
+Public Sub Text_Render(ByVal font As D3DXFont, _
+                       text As String, _
+                       ByVal Top As Long, _
+                       ByVal Left As Long, _
+                       ByVal Width As Long, _
+                       ByVal Height As Long, _
+                       ByVal color As Long, _
+                       ByVal format As Long, _
+                       Optional ByVal Shadow As Boolean = False)
     On Error GoTo Text_Render_Err
-
-    Dim TextRect   As RECT
-
-    Dim ShadowRect As RECT
-    
+    Dim TextRect   As Rect
+    Dim ShadowRect As Rect
     TextRect.Top = Top
     TextRect.Left = Left
     TextRect.Bottom = Top + Height
     TextRect.Right = Left + Width
-    
     If Shadow Then
         ShadowRect.Top = Top - 1
         ShadowRect.Left = Left - 2
         ShadowRect.Bottom = (Top + Height) - 1
         ShadowRect.Right = (Left + Width) - 2
-        DirectD3D8.DrawText font, &HFF000000, Text, ShadowRect, format
-
+        DirectD3D8.drawText font, &HFF000000, text, ShadowRect, format
     End If
-    
-    DirectD3D8.DrawText font, color, Text, TextRect, format
-
-    
+    DirectD3D8.drawText font, color, text, TextRect, format
     Exit Sub
-
 Text_Render_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Text_Render", Erl)
     Resume Next
-    
 End Sub
 
-Public Sub Text_Render_ext(Text As String, ByVal Top As Long, ByVal Left As Long, ByVal Width As Long, ByVal Height As Long, ByVal color As Long, Optional ByVal Shadow As Boolean = False, Optional ByVal center As Boolean = False, Optional ByVal font As Long = 0)
-    
+Public Sub Text_Render_ext(text As String, _
+                           ByVal Top As Long, _
+                           ByVal Left As Long, _
+                           ByVal Width As Long, _
+                           ByVal Height As Long, _
+                           ByVal color As Long, _
+                           Optional ByVal Shadow As Boolean = False, _
+                           Optional ByVal center As Boolean = False, _
+                           Optional ByVal font As Long = 0)
     On Error GoTo Text_Render_ext_Err
-    
-
     If center = True Then
-        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, color, DT_VCENTER & DT_CENTER, Shadow)
+        Call Text_Render(font_list(font), text, Top, Left, Width, Height, color, DT_VCENTER & DT_CENTER, Shadow)
     Else
-        Call Text_Render(font_list(font), Text, Top, Left, Width, Height, color, DT_TOP Or DT_LEFT, Shadow)
+        Call Text_Render(font_list(font), text, Top, Left, Width, Height, color, DT_TOP Or DT_LEFT, Shadow)
     End If
-
-    
     Exit Sub
-
 Text_Render_ext_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Text_Render_ext", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Font_Make(ByVal font_index As Long, ByVal Style As String, ByVal bold As Boolean, ByVal italic As Boolean, ByVal size As Long)
-    
     On Error GoTo Font_Make_Err
-    
-
     If font_index > font_last Then
         font_last = font_index
         ReDim Preserve font_list(1 To font_last)
-
     End If
-
     font_count = font_count + 1
-    
     Dim font_desc As IFont
-
     Dim fnt       As New StdFont
-
     fnt.Name = Style
     fnt.size = size
     fnt.bold = bold
     fnt.italic = italic
-    
     Set font_desc = fnt
     Set font_list(font_index) = DirectD3D8.CreateFont(DirectDevice, font_desc.hFont)
-
-    
     Exit Sub
-
 Font_Make_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Font_Make", Erl)
     Resume Next
-    
 End Sub
 
 Public Function Font_Create(ByVal Style As String, ByVal size As Long, ByVal bold As Boolean, ByVal italic As Boolean) As Long
-
     On Error GoTo ErrorHandler:
-
     Font_Create = Font_Next_Open
     Font_Make Font_Create, Style, bold, italic, size
 ErrorHandler:
     Font_Create = 0
-
 End Function
 
 Public Function Font_Next_Open() As Long
-    
     On Error GoTo Font_Next_Open_Err
-    
     Font_Next_Open = font_last + 1
-
-    
     Exit Function
-
 Font_Next_Open_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Font_Next_Open", Erl)
     Resume Next
-    
 End Function
 
 Public Function Font_Check(ByVal font_index As Long) As Boolean
-    
     On Error GoTo Font_Check_Err
-
     If font_index > 0 And font_index <= font_last Then
         Font_Check = True
-
     End If
-
-    
     Exit Function
-
 Font_Check_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Font_Check", Erl)
     Resume Next
-    
 End Function
-Public Function Prepare_Multiline_Text(Text As String, ByVal MaxWidth As Integer, Optional ByVal FontIndex As Integer = 1) As String()
-        
+
+Public Function Prepare_Multiline_Text(text As String, ByVal MaxWidth As Integer, Optional ByVal FontIndex As Integer = 1) As String()
     On Error GoTo Handler
-    
     Dim Lines() As String
-    
-    If LenB(Text) = 0 Then
+    If LenB(text) = 0 Then
         ReDim Lines(0)
         Prepare_Multiline_Text = Lines
         Exit Function
     End If
-
     Dim LetterIndex As Long, CurLetter As Integer, LastBreak As Long, CanBreak As Long, CurWidth As Integer, CurLine As Integer, CanBreakWidth As Integer
-
     With Fuentes(FontIndex)
-
         LastBreak = 1
-
-        For LetterIndex = 1 To Len(Text)
-            CurLetter = Asc(mid$(Text, LetterIndex, 1))
-
+        For LetterIndex = 1 To Len(text)
+            CurLetter = Asc(mid$(text, LetterIndex, 1))
             If CurLetter = vbKeyReturn Then
                 ReDim Preserve Lines(CurLine)
-                
                 If LetterIndex - LastBreak > 0 Then
-                    Lines(CurLine) = mid$(Text, LastBreak, LetterIndex - LastBreak)
+                    Lines(CurLine) = mid$(text, LastBreak, LetterIndex - LastBreak)
                 End If
-
                 LastBreak = LetterIndex + 2
                 CanBreak = LastBreak
                 CurLine = CurLine + 1
                 CurWidth = 0
-            
             Else
                 If .Caracteres(CurLetter) <> 0 Then CurWidth = CurWidth + GrhData(.Caracteres(CurLetter)).pixelWidth
-
-
                 If CurLetter = vbKeySpace Or CurLetter = vbKeyTab Then
                     CanBreak = LetterIndex
                     CanBreakWidth = CurWidth
                 End If
-
                 If CurWidth > MaxWidth And MaxWidth > 0 Then
                     ReDim Preserve Lines(CurLine)
-
                     If CanBreak - LastBreak > 0 Then
-                        Lines(CurLine) = mid$(Text, LastBreak, CanBreak - LastBreak)
+                        Lines(CurLine) = mid$(text, LastBreak, CanBreak - LastBreak)
                         CurWidth = CurWidth - CanBreakWidth
                         LastBreak = CanBreak + 1
                     Else
-                        Lines(CurLine) = mid$(Text, LastBreak, LetterIndex - LastBreak)
+                        Lines(CurLine) = mid$(text, LastBreak, LetterIndex - LastBreak)
                         CurWidth = GrhData(.Caracteres(CurLetter)).pixelWidth
                         LastBreak = LetterIndex
                     End If
-
                     CanBreak = LastBreak
                     CurLine = CurLine + 1
                 End If
             End If
         Next
-        
         If LetterIndex - LastBreak > 0 Then
             ReDim Preserve Lines(CurLine)
-            Lines(CurLine) = mid$(Text, LastBreak, LetterIndex - LastBreak)
+            Lines(CurLine) = mid$(text, LastBreak, LetterIndex - LastBreak)
         End If
-
     End With
-    
     Prepare_Multiline_Text = Lines
-    
     Exit Function
-    
 Handler:
     Call RegistrarError(Err.Number, Err.Description, "clsDX8Engine.Prepare_Multiline_Text", Erl)
-    
     ReDim Lines(0)
     Prepare_Multiline_Text = Lines
-        
 End Function
 
-Public Function Text_Width(Text As String, Optional ByVal FontIndex As Byte = 1) As Integer
-
+Public Function Text_Width(text As String, Optional ByVal FontIndex As Byte = 1) As Integer
     On Error GoTo Handler
-    
     Dim LetterIndex As Long, CurLetter As Integer
-
     With Fuentes(FontIndex)
-
-        For LetterIndex = 1 To Len(Text)
-            CurLetter = Asc(mid$(Text, LetterIndex, 1))
-
+        For LetterIndex = 1 To Len(text)
+            CurLetter = Asc(mid$(text, LetterIndex, 1))
             Text_Width = Text_Width + GrhData(.Caracteres(CurLetter)).pixelWidth
         Next
-
     End With
-    
     Exit Function
-
 Handler:
     Call RegistrarError(Err.Number, Err.Description, "clsDX8Engine.Text_Width", Erl)
-
 End Function
-

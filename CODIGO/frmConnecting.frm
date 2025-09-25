@@ -44,7 +44,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private cCancelButton As clsGraphicalButton
-Private RetryCount As Integer
+Private RetryCount    As Integer
 Private TimerProgress As Integer
 
 Private Sub cmdCancel_Click()
@@ -54,9 +54,8 @@ End Sub
 
 Private Sub Form_Load()
     On Error GoTo Form_Load_Err
-    
     Call FormParser.Parse_Form(Me)
-    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     RetryCount = 0
     Me.Picture = LoadInterface("Marco.bmp", False)
     TimerProgress = 0
@@ -64,33 +63,29 @@ Private Sub Form_Load()
     Call loadButtons
     Call UpdateConnectionText
     Exit Sub
-    
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCerrar.Form_Load", Erl)
     Resume Next
 End Sub
 
 Private Sub loadButtons()
-        
     Set cCancelButton = New clsGraphicalButton
-    Call cCancelButton.Initialize(cmdCancel, "boton-cancelar-default.bmp", _
-                                                "boton-cancelar-over.bmp", _
-                                                "boton-cancelar-off.bmp", Me)
+    Call cCancelButton.Initialize(cmdCancel, "boton-cancelar-default.bmp", "boton-cancelar-over.bmp", "boton-cancelar-off.bmp", Me)
 End Sub
 
 Private Sub Timeout_Timer()
-#If DIRECT_PLAY = 0 Then
-    Call UpdateConnectionText
-    TimerProgress = TimerProgress + 1
-    If TimerProgress Mod 20 = 19 Then
-        Call RetryWithAnotherIp
-    End If
-#End If
+    #If DIRECT_PLAY = 0 Then
+        Call UpdateConnectionText
+        TimerProgress = TimerProgress + 1
+        If TimerProgress Mod 20 = 19 Then
+            Call RetryWithAnotherIp
+        End If
+    #End If
 End Sub
 
 Private Sub UpdateConnectionText()
     Dim DisplayText As String
-    Dim i As Integer
+    Dim i           As Integer
     DisplayText = "Conectando al servidor"
     For i = 0 To TimerProgress Mod 4
         DisplayText = DisplayText & "."

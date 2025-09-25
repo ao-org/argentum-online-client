@@ -3,14 +3,14 @@ Begin VB.Form frmTransferChar
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Character Transfer"
    ClientHeight    =   2340
-   ClientLeft      =   40
-   ClientTop       =   380
-   ClientWidth     =   5080
+   ClientLeft      =   45
+   ClientTop       =   375
+   ClientWidth     =   5070
    ControlBox      =   0   'False
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   2340
-   ScaleWidth      =   5080
+   ScaleWidth      =   5070
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton cancelButton 
       Caption         =   "Cancel"
@@ -68,12 +68,12 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub cancelButton_Click()
-Unload Me
+    Unload Me
 End Sub
 
 Private Sub transferButton_Click()
-TransferCharNewOwner = Me.textboxTransferEmail.Text
-ModAuth.LoginOperation = e_operation.transfercharacter
-Call connectToLoginServer
-Unload Me
+    TransferCharNewOwner = Me.textboxTransferEmail.text
+    ModAuth.LoginOperation = e_operation.transfercharacter
+    Call connectToLoginServer
+    Unload Me
 End Sub

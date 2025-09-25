@@ -16,49 +16,43 @@ Attribute VB_Name = "MD5"
 '
 '
 Option Explicit
+Private Declare Sub MDFile Lib "aamd532.dll" (ByVal f As String, ByVal R As String)
+Private Declare Sub MDStringFix Lib "aamd532.dll" (ByVal f As String, ByVal t As Long, ByVal R As String)
 
-Private Declare Sub MDFile Lib "aamd532.dll" (ByVal f As String, ByVal r As String)
-Private Declare Sub MDStringFix Lib "aamd532.dll" (ByVal f As String, ByVal t As Long, ByVal r As String)
-
-Public Function MD5String(ByVal P As String) As String
-    Dim r As String * 32, t As Long
-    r = Space(32)
-    t = Len(P)
-    MDStringFix P, t, r
-    MD5String = r
+Public Function MD5String(ByVal p As String) As String
+    Dim R As String * 32, t As Long
+    R = Space(32)
+    t = Len(p)
+    MDStringFix p, t, R
+    MD5String = R
 End Function
 
 Public Function MD5File(ByVal f As String) As String
-    Dim r As String * 32
-    r = Space(32)
-    MDFile f, r
-    MD5File = r
+    Dim R As String * 32
+    R = Space(32)
+    MDFile f, R
+    MD5File = R
 End Function
 
 Public Function hexMd52Asc(ByVal MD5 As String) As String
     Dim i As Long
-    Dim L As String
-    
+    Dim l As String
     If Len(MD5) And &H1 Then MD5 = "0" & MD5
-    
     For i = 1 To Len(MD5) \ 2
-        L = mid$(MD5, (2 * i) - 1, 2)
-        hexMd52Asc = hexMd52Asc & Chr$(hexHex2Dec(L))
+        l = mid$(MD5, (2 * i) - 1, 2)
+        hexMd52Asc = hexMd52Asc & Chr$(hexHex2Dec(l))
     Next i
 End Function
 
 Public Function hexHex2Dec(ByVal hex As String) As Long
-    hexHex2Dec = Val("&H" & hex)
+    hexHex2Dec = val("&H" & hex)
 End Function
 
-Public Function txtOffset(ByVal Text As String, ByVal off As Integer) As String
+Public Function txtOffset(ByVal text As String, ByVal off As Integer) As String
     Dim i As Long
-    Dim L As String
-    
-    For i = 1 To Len(Text)
-        L = mid$(Text, i, 1)
-        txtOffset = txtOffset & Chr$((Asc(L) + off) And &HFF)
+    Dim l As String
+    For i = 1 To Len(text)
+        l = mid$(text, i, 1)
+        txtOffset = txtOffset & Chr$((Asc(l) + off) And &HFF)
     Next i
 End Function
-
-
