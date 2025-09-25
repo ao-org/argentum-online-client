@@ -27,14 +27,12 @@ Attribute VB_Exposed = False
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 '
-Public totalTime As Long
+Public totalTime   As Long
 Public initialTime As Long
-Public iconGrh As Long
+Public iconGrh     As Long
 
-Public Sub Cooldown_Initialize(ByVal duration As Long, ByVal grh As Long)
+Public Sub Cooldown_Initialize(ByVal duration As Long, ByVal Grh As Long)
     initialTime = GetTickCount()
     totalTime = duration
-    iconGrh = grh
+    iconGrh = Grh
 End Sub
-
-

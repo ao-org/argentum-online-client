@@ -150,7 +150,6 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
 Private Over As Integer
 
 Private Sub Form_Load()
@@ -163,7 +162,6 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub OpcionImg_Click(Index As Integer)
-    
     Select Case Index
         Case 0
             Call ParseUserCommand("/QUIETO")
@@ -174,9 +172,7 @@ Private Sub OpcionImg_Click(Index As Integer)
         Case 3
             Call ParseUserCommand("/LIBERARTODOS")
     End Select
-
     Unload Me
-    
 End Sub
 
 Private Sub OpcionImg_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)

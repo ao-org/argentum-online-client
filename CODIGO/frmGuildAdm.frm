@@ -128,61 +128,42 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
 Private cBotonFundarClan As clsGraphicalButton
-Private cBotonCerrar As clsGraphicalButton
-Private cBotonBuscar As clsGraphicalButton
-
+Private cBotonCerrar     As clsGraphicalButton
+Private cBotonBuscar     As clsGraphicalButton
 
 Private Sub cmdBuscar_Click()
-    
     On Error GoTo Image1_Click_Err
-    
     Dim i As Long
-
     frmGuildAdm.guildslist.Clear
-    
     If Not ListaClanes Then Exit Sub
-    
-    If Len(Filtro.Text) <> 0 Then
+    If Len(Filtro.text) <> 0 Then
         For i = 0 To UBound(ClanesList)
-
             If Combo1.ListIndex < 5 Then
                 If ClanesList(i).Alineacion = Combo1.ListIndex Then
-                    If InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.Text)) <> 0 Then
+                    If InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.text)) <> 0 Then
                         Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
                     End If
                 End If
-            ElseIf InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.Text)) <> 0 Then
+            ElseIf InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.text)) <> 0 Then
                 Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
             End If
-    
         Next i
-        
     Else
         For i = 0 To UBound(ClanesList)
-
             If Combo1.ListIndex < 5 Then
                 If ClanesList(i).Alineacion = Combo1.ListIndex Then
                     Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
-    
                 End If
-    
             Else
-                
                 Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
-    
             End If
-    
         Next i
     End If
-    
     Exit Sub
-
 Image1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Image1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildAdm.Image1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdCerrar_Click()
@@ -191,86 +172,51 @@ End Sub
 
 Private Sub cmdFundarClan_Click()
     On Error GoTo cmdFundarClan_Click_Err
-
-    If UserStats.Estado = 1 Then 'Muerto
-
+    If UserStats.estado = 1 Then 'Muerto
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
-           Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
         End With
-
         Exit Sub
-
     End If
-                   
     Call WriteQuieroFundarClan
-
-    
     Exit Sub
-
 cmdFundarClan_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildAdm.cmdFundarClan_Click", Erl)
     Resume Next
 End Sub
 
-
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
-
     Call FormParser.Parse_Form(Me)
-    
     Me.Picture = LoadInterface("ventanaclanes.bmp")
-    
-    Call LoadButtons
+    Call loadButtons
     Combo1.ListIndex = 5
-
-    
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildAdm.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
-Private Sub LoadButtons()
+Private Sub loadButtons()
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonFundarClan = New clsGraphicalButton
     Set cBotonBuscar = New clsGraphicalButton
-    
-    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-
-    Call cBotonBuscar.Initialize(cmdBuscar, "boton-buscar-default.bmp", _
-                                                    "boton-buscar-over.bmp", _
-                                                    "boton-buscar-off.bmp", Me)
-                                                    
-    Call cBotonFundarClan.Initialize(cmdFundarClan, "boton-fundar-clan-default.bmp", _
-                                                    "boton-fundar-clan-over.bmp", _
-                                                    "boton-fundar-clan-off.bmp", Me)
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
+    Call cBotonBuscar.Initialize(cmdBuscar, "boton-buscar-default.bmp", "boton-buscar-over.bmp", "boton-buscar-off.bmp", Me)
+    Call cBotonFundarClan.Initialize(cmdFundarClan, "boton-fundar-clan-default.bmp", "boton-fundar-clan-over.bmp", "boton-fundar-clan-off.bmp", Me)
 End Sub
 
 Private Sub Image3_Click()
-    
     On Error GoTo Image3_Click_Err
-    
     'Si nos encontramos con un guild con nombre vacío algo sospechoso está pasando, x las dudas no hacemos nada.
     If Len(guildslist.List(guildslist.ListIndex)) = 0 Then Exit Sub
-    
     frmGuildBrief.EsLeader = False
-    
     Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
-    
     Exit Sub
-
 Image3_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildAdm.Image3_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildAdm.Image3_Click", Erl)
     Resume Next
-    
 End Sub
-
 
 Private Sub lblClose_Click()
     Unload Me

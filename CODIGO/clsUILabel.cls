@@ -39,15 +39,13 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 Implements IUIComponent
-
-Private m_X As Long, m_Y As Long
-Private m_Text As String
+Private m_X     As Long, m_Y As Long
+Private m_Text  As String
 Private m_Color As Long
 
-Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal color As Long)
+Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal color As Long)
     m_Text = text: m_X = x: m_Y = y
     m_Color = UIRenderer.ColorToBytes(222, 194, 112, 250)
-    
 End Sub
 
 ' Allow external positioning
@@ -56,10 +54,9 @@ Public Sub SetPosition(ByVal x As Long, ByVal y As Long)
 End Sub
 
 Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
-    Dim rc As RECT
+    Dim rc As Rect
     rc.Left = m_X: rc.Top = m_Y
     rc.Right = m_X + 400: rc.Bottom = m_Y + 32
-    
     Call UIRenderer.RenderText(m_Text, rc.Left, rc.Top, m_Color, 1, True, 0, 128)
 End Sub
 

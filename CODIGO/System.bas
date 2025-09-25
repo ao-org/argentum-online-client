@@ -16,7 +16,12 @@ Attribute VB_Name = "System"
 '
 '
 Private Declare Function CreatePipe Lib "kernel32" (phReadPipe As Long, phWritePipe As Long, lpPipeAttributes As Any, ByVal nSize As Long) As Long
-Private Declare Function ReadFile Lib "kernel32" (ByVal hFile As Long, ByVal lpBuffer As String, ByVal nNumberOfBytesToRead As Long, lpNumberOfBytesRead As Long, ByVal lpOverlapped As Any) As Long
+Private Declare Function ReadFile _
+                Lib "kernel32" (ByVal hFile As Long, _
+                                ByVal lpBuffer As String, _
+                                ByVal nNumberOfBytesToRead As Long, _
+                                lpNumberOfBytesRead As Long, _
+                                ByVal lpOverlapped As Any) As Long
 Private Declare Function GetNamedPipeInfo Lib "kernel32" (ByVal hNamedPipe As Long, lType As Long, lLenOutBuf As Long, lLenInBuf As Long, lMaxInstances As Long) As Long
 
 Private Type SECURITY_ATTRIBUTES
@@ -49,7 +54,7 @@ End Type
 Private Type SHELLEXECUTEINFO
     cbSize As Long
     fMask As Long
-    hwnd As Long
+    hWnd As Long
     lpVerb As String
     lpFile As String
     lpParameters As String
@@ -73,31 +78,43 @@ Private Type PROCESS_INFORMATION
 End Type
 
 ' Clipboard formats
-Public Const CF_TEXT As Long = 1
+Public Const CF_TEXT        As Long = 1
 Public Const CF_UNICODETEXT As Long = 13
-Public Const CF_OEMTEXT As Long = 7
+Public Const CF_OEMTEXT     As Long = 7
 ' Windows API function declarations
 Public Declare Function GetClipboardData Lib "user32" (ByVal wFormat As Long) As Long
 Public Declare Function IsClipboardFormatAvailable Lib "user32" (ByVal wFormat As Long) As Long
-Public Declare Function OpenClipboard Lib "user32" (ByVal hwnd As Long) As Long
+Public Declare Function OpenClipboard Lib "user32" (ByVal hWnd As Long) As Long
 Public Declare Function CloseClipboard Lib "user32" () As Long
 Public Declare Function GlobalLock Lib "kernel32" (ByVal hMem As Long) As Long
 Public Declare Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
 Public Declare Function lstrlenA Lib "kernel32" (ByVal lpString As Long) As Long
-
-
 Private Declare Function WaitForSingleObject Lib "kernel32" (ByVal hHandle As Long, ByVal dwMilliseconds As Long) As Long
-Private Declare Function CreateProcessA Lib "kernel32" (ByVal lpApplicationName As Long, ByVal lpCommandLine As String, lpProcessAttributes As Any, lpThreadAttributes As Any, ByVal bInheritHandles As Long, ByVal dwCreationFlags As Long, ByVal lpEnvironment As Long, ByVal lpCurrentDirectory As Long, lpStartupInfo As Any, lpProcessInformation As Any) As Long
+Private Declare Function CreateProcessA _
+                Lib "kernel32" (ByVal lpApplicationName As Long, _
+                                ByVal lpCommandLine As String, _
+                                lpProcessAttributes As Any, _
+                                lpThreadAttributes As Any, _
+                                ByVal bInheritHandles As Long, _
+                                ByVal dwCreationFlags As Long, _
+                                ByVal lpEnvironment As Long, _
+                                ByVal lpCurrentDirectory As Long, _
+                                lpStartupInfo As Any, _
+                                lpProcessInformation As Any) As Long
 Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
 Private Declare Function ShellExecuteExA Lib "shell32.dll" (pExecInfo As SHELLEXECUTEINFO) As Long
-
-Public Declare Function DefSubclassProc Lib "comctl32.dll" Alias "#413" (ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-Private Declare Function SetWindowSubclass Lib "comctl32.dll" Alias "#410" (ByVal hwnd As Long, ByVal pfnSubclass As Long, ByVal uIdSubclass As Long, Optional ByVal dwRefData As Long) As Long
-Private Declare Function RemoveWindowSubclass Lib "comctl32.dll" Alias "#412" (ByVal hwnd As Long, ByVal pfnSubclass As Long, ByVal uIdSubclass As Long) As Long
-Public Declare Function SendMessageW Lib "user32" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
+Public Declare Function DefSubclassProc Lib "comctl32.dll" Alias "#413" (ByVal hWnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Private Declare Function SetWindowSubclass _
+                Lib "comctl32.dll" _
+                Alias "#410" (ByVal hWnd As Long, _
+                              ByVal pfnSubclass As Long, _
+                              ByVal uIdSubclass As Long, _
+                              Optional ByVal dwRefData As Long) As Long
+Private Declare Function RemoveWindowSubclass Lib "comctl32.dll" Alias "#412" (ByVal hWnd As Long, ByVal pfnSubclass As Long, ByVal uIdSubclass As Long) As Long
+Public Declare Function SendMessageW Lib "user32" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
 
 Public Function FARPROC(pfn As Long) As Long
-  FARPROC = pfn
+    FARPROC = pfn
 End Function
 
 Public Function HiWord(DWord As Long) As Integer
@@ -108,18 +125,18 @@ Function LoWord(DWord As Long) As Integer
     CopyMemory LoWord, DWord, 2
 End Function
 
-Public Function Subclass(hwnd As Long, lpfn As Long) As Long
-#If DISABLE_SUBCLASSING = 0 Then
-    Subclass = SetWindowSubclass(hwnd, lpfn, 0)
-#End If
+Public Function Subclass(hWnd As Long, lpfn As Long) As Long
+    #If DISABLE_SUBCLASSING = 0 Then
+        Subclass = SetWindowSubclass(hWnd, lpfn, 0)
+    #End If
 End Function
 
-Public Function UnSubclass(hwnd As Long, lpfn As Long) As Long
+Public Function UnSubclass(hWnd As Long, lpfn As Long) As Long
     'Only needed if you want to stop the subclassing code and keep the program running.
     'Otherwise, the WndProc function should call this on WM_DESTROY
-#If DISABLE_SUBCLASSING = 0 Then
-    UnSubclass = RemoveWindowSubclass(hwnd, lpfn, 0)
-#End If
+    #If DISABLE_SUBCLASSING = 0 Then
+        UnSubclass = RemoveWindowSubclass(hWnd, lpfn, 0)
+    #End If
 End Function
 
 'Purpose     :  Synchronously runs a DOS command line and returns the captured screen output.
@@ -135,29 +152,23 @@ Function ShellExecuteCapture(sCommandLine As String, Optional bShowWindow As Boo
     Const STARTF_USESHOWWINDOW = &H1, STARTF_USESTDHANDLES = &H100&
     Const SW_HIDE = 0, SW_NORMAL = 1
     Const NORMAL_PRIORITY_CLASS = &H20&
-
     Const PIPE_CLIENT_END = &H0     'The handle refers to the client end of a named pipe instance. This is the default.
     Const PIPE_SERVER_END = &H1     'The handle refers to the server end of a named pipe instance. If this value is not specified, the handle refers to the client end of a named pipe instance.
     Const PIPE_TYPE_BYTE = &H0      'The named pipe is a byte pipe. This is the default.
     Const PIPE_TYPE_MESSAGE = &H4   'The named pipe is a message pipe. If this value is not specified, the pipe is a byte pipe
-
-
-    Dim tProcInfo As PROCESS_INFORMATION, lRetVal As Long, lSuccess As Long
-    Dim tStartupInf As STARTUPINFO
+    Dim tProcInfo    As PROCESS_INFORMATION, lRetVal As Long, lSuccess As Long
+    Dim tStartupInf  As STARTUPINFO
     Dim tSecurAttrib As SECURITY_ATTRIBUTES, lhwndReadPipe As Long, lhwndWritePipe As Long
-    Dim lBytesRead As Long, sBuffer As String
-    Dim lPipeOutLen As Long, lPipeInLen As Long, lMaxInst As Long
-
+    Dim lBytesRead   As Long, sBuffer As String
+    Dim lPipeOutLen  As Long, lPipeInLen As Long, lMaxInst As Long
     tSecurAttrib.nLength = Len(tSecurAttrib)
     tSecurAttrib.bInheritHandle = 1&
     tSecurAttrib.lpSecurityDescriptor = 0&
-
     lRetVal = CreatePipe(lhwndReadPipe, lhwndWritePipe, tSecurAttrib, 0)
     If lRetVal = 0 Then
         'CreatePipe failed
         Exit Function
     End If
-
     tStartupInf.cb = Len(tStartupInf)
     tStartupInf.dwFlags = STARTF_USESTDHANDLES Or STARTF_USESHOWWINDOW
     tStartupInf.hStdOutput = lhwndWritePipe
@@ -168,17 +179,14 @@ Function ShellExecuteCapture(sCommandLine As String, Optional bShowWindow As Boo
         'Hide the DOS window
         tStartupInf.wShowWindow = SW_HIDE
     End If
-
     lRetVal = CreateProcessA(0&, sCommandLine, tSecurAttrib, tSecurAttrib, 1&, NORMAL_PRIORITY_CLASS, 0&, 0&, tStartupInf, tProcInfo)
     If lRetVal <> 1 Then
         'CreateProcess failed
         Exit Function
     End If
-
     'Process created, wait for completion. Note, this will cause your application
     'to hang indefinately until this process completes.
     WaitForSingleObject tProcInfo.hProcess, INFINITE
-
     'Determine pipes contents
     lSuccess = GetNamedPipeInfo(lhwndReadPipe, PIPE_TYPE_BYTE, lPipeOutLen, lPipeInLen, lMaxInst)
     If lSuccess Then
@@ -191,7 +199,6 @@ Function ShellExecuteCapture(sCommandLine As String, Optional bShowWindow As Boo
             ShellExecuteCapture = Left$(sBuffer, lBytesRead)
         End If
     End If
-
     'Close handlesStrConv
     Call CloseHandle(tProcInfo.hProcess)
     Call CloseHandle(tProcInfo.hThread)
@@ -200,9 +207,7 @@ Function ShellExecuteCapture(sCommandLine As String, Optional bShowWindow As Boo
 End Function
 
 Public Function ShellExecuteEx(path As String, param As String) As Long
-
     Dim tProcInfo As SHELLEXECUTEINFO
-    
     tProcInfo.cbSize = Len(tProcInfo)
     tProcInfo.fMask = 256 '0x00000100 SEE_MASK_FLAG_DDEWAIT
     tProcInfo.lpVerb = "runas" ' ask to run as admin

@@ -38,12 +38,11 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
 ' Manages a collection of UI components and preserves render state
 Private Components As Collection
 ' Helper to save UI render states
-Private oldShader As Long
-Private oldAlpha As Long, oldSrc As Long, oldDest As Long
+Private oldShader  As Long
+Private oldAlpha   As Long, oldSrc As Long, oldDest As Long
 
 Public Sub Init()
     Set Components = New Collection
@@ -59,10 +58,7 @@ Public Sub RenderAll(ByVal dev As Direct3DDevice8)
     For Each comp In Components
         comp.render dev
     Next
-
 End Sub
-
-
 
 Public Sub HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
     Dim comp As IUIComponent
@@ -70,4 +66,3 @@ Public Sub HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseBu
         comp.HandleInput mouseX, mouseY, mouseButtons
     Next
 End Sub
-

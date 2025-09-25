@@ -28,36 +28,36 @@ Private Declare Sub Update Lib "AOACClient.dll" ()
 Private Declare Sub BeginSession Lib "AOACClient.dll" (ByRef userName As String)
 Private Declare Sub EndSession Lib "AOACClient.dll" ()
 Public Declare Sub HandleRemoteMessage Lib "AOACClient.dll" (ByRef data As Byte, ByVal DataSize As Integer)
-Public Declare Function GetCrc32 Lib "AOACClient.dll" (ByVal Path As String) As Long
+Public Declare Function GetCrc32 Lib "AOACClient.dll" (ByVal path As String) As Long
 
 Public Sub InitializeAntiCheat()
-On Error GoTo InitializeAC_Err
-#If ENABLE_ANTICHEAT = 1 Then
-    Dim InitResult As e_ACInitResult
-    Dim Callbacks As t_AntiCheatCallbacks
-    Callbacks.SendToServer = FARPROC(AddressOf SendToServerCB)
-    Callbacks.LogMessage = FARPROC(AddressOf LogMessageCB)
-    InitResult = InitializeAC(Callbacks)
-    If InitResult <> eOk Then
-        Call DisplayError(JsonLanguage.Item("MENSAJE_ANTICHEAT_NO_ACTIVADO"), "")
-    End If
-#End If
-Exit Sub
+    On Error GoTo InitializeAC_Err
+    #If ENABLE_ANTICHEAT = 1 Then
+        Dim InitResult As e_ACInitResult
+        Dim Callbacks  As t_AntiCheatCallbacks
+        Callbacks.SendToServer = FARPROC(AddressOf SendToServerCB)
+        Callbacks.LogMessage = FARPROC(AddressOf LogMessageCB)
+        InitResult = InitializeAC(Callbacks)
+        If InitResult <> eOk Then
+            Call DisplayError(JsonLanguage.Item("MENSAJE_ANTICHEAT_NO_ACTIVADO"), "")
+        End If
+    #End If
+    Exit Sub
 InitializeAC_Err:
     Call RegistrarError(Err.Number, Err.Description, "AOAC.InitializeAC", Erl)
 End Sub
 
 Public Sub UnloadAntiCheat()
-#If ENABLE_ANTICHEAT = 1 Then
-    Call UnloadAC
-#End If
+    #If ENABLE_ANTICHEAT = 1 Then
+        Call UnloadAC
+    #End If
 End Sub
 
-Public Sub SendToServerCB(ByVal Data As Long, ByVal DataSize As Long)
-    Call WriteAntiCheatMessage(Data, DataSize)
+Public Sub SendToServerCB(ByVal data As Long, ByVal DataSize As Long)
+    Call WriteAntiCheatMessage(data, DataSize)
 End Sub
 
-Public Sub LogMessageCB(ByRef message As SINGLESTRINGPARAM, ByVal Level As Long)
+Public Sub LogMessageCB(ByRef message As SINGLESTRINGPARAM, ByVal level As Long)
     Dim MessageStr As String
     If message.Len > 0 Then
         MessageStr = GetStringFromPtr(message.Ptr, message.Len)
@@ -65,26 +65,26 @@ Public Sub LogMessageCB(ByRef message As SINGLESTRINGPARAM, ByVal Level As Long)
     Call LogError(MessageStr)
 End Sub
 
-Public Sub HandleAntiCheatServerMessage(ByRef Data() As Byte)
-#If ENABLE_ANTICHEAT = 1 Then
-    Call HandleRemoteMessage(Data(0), UBound(Data))
-#End If
+Public Sub HandleAntiCheatServerMessage(ByRef data() As Byte)
+    #If ENABLE_ANTICHEAT = 1 Then
+        Call HandleRemoteMessage(data(0), UBound(data))
+    #End If
 End Sub
 
 Public Sub UpdateAntiCheat()
-#If ENABLE_ANTICHEAT = 1 Then
-   Call Update
-#End If
+    #If ENABLE_ANTICHEAT = 1 Then
+        Call Update
+    #End If
 End Sub
 
 Public Sub BeginAntiCheatSession()
-#If ENABLE_ANTICHEAT = 1 Then
-    Call BeginSession(userName)
-#End If
+    #If ENABLE_ANTICHEAT = 1 Then
+        Call BeginSession(userName)
+    #End If
 End Sub
 
 Public Sub EndAntiCheatSession()
-#If ENABLE_ANTICHEAT = 1 Then
-    Call EndSession
-#End If
+    #If ENABLE_ANTICHEAT = 1 Then
+        Call EndSession
+    #End If
 End Sub

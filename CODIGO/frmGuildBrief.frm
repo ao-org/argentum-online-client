@@ -193,123 +193,83 @@ Attribute VB_Exposed = False
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
 Option Explicit
-
-Public EsLeader As Boolean
-Private cBotonCerrar As clsGraphicalButton
+Public EsLeader                As Boolean
+Private cBotonCerrar           As clsGraphicalButton
 Private cBotonSolicitarIngreso As clsGraphicalButton
-Private Sub loadButtons()
 
+Private Sub loadButtons()
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonSolicitarIngreso = New clsGraphicalButton
-    
-    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-                                                
-    Call cBotonSolicitarIngreso.Initialize(cmdSolicitarIngreso, "boton-solicitaringreso-default.bmp", _
-                                                    "boton-solicitaringreso-over.bmp", _
-                                                    "boton-solicitaringreso-off.bmp", Me)
-                                                    
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
+    Call cBotonSolicitarIngreso.Initialize(cmdSolicitarIngreso, "boton-solicitaringreso-default.bmp", "boton-solicitaringreso-over.bmp", "boton-solicitaringreso-off.bmp", Me)
 End Sub
 
 Private Sub aliado_Click()
-    
     On Error GoTo aliado_Click_Err
-    
     frmCommet.nombre = Right(nombre.Caption, Len(nombre.Caption) - 7)
     frmCommet.t = TIPO.ALIANZA
     frmCommet.Caption = "Ingrese propuesta de alianza"
     Call frmCommet.Show(vbModal, frmGuildBrief)
-
-    
     Exit Sub
-
 aliado_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.aliado_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildBrief.aliado_Click", Erl)
     Resume Next
-    
 End Sub
 
-Private Sub cmdcerrar_Click()
+Private Sub cmdCerrar_Click()
     Unload Me
 End Sub
 
 Private Sub cmdSolicitarIngreso_Click()
-    
     On Error GoTo cmdSolicitarIngreso_Click_Err
-    
     Call frmGuildSol.RecieveSolicitud(nombre)
     Call frmGuildSol.Show(vbModal, frmGuildBrief)
-
-    
     Exit Sub
-
 cmdSolicitarIngreso_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildBrief.cmdSolicitarIngreso_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command3_Click()
-    
     On Error GoTo Command3_Click_Err
-    
     frmCommet.nombre = Right(nombre, Len(nombre) - 7)
     frmCommet.t = TIPO.PAZ
     frmCommet.Caption = "Ingrese propuesta de paz"
     Call frmCommet.Show(vbModal, frmGuildBrief)
-
-    
     Exit Sub
-
 Command3_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.Command3_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildBrief.Command3_Click", Erl)
     Resume Next
-    
 End Sub
+
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-       
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanaclanes_detalles.bmp")
-    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     Call loadButtons
     Exit Sub
-
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildBrief.Form_Load", Erl)
     Resume Next
-    
 End Sub
+
 Private Sub Guerra_Click()
-    
     On Error GoTo Guerra_Click_Err
-    
     Call WriteGuildDeclareWar(Right(nombre.Caption, Len(nombre.Caption) - 7))
     Unload Me
-
-    
     Exit Sub
-
 Guerra_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildBrief.Guerra_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildBrief.Guerra_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Form_MouseMove_Err
-    
-    Call MoverForm(Me.hwnd)
-    
+    Call MoverForm(Me.hWnd)
     Exit Sub
-
 Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildBrief.Form_MouseMove", Erl)
     Resume Next
-    
 End Sub

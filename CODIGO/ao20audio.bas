@@ -16,7 +16,6 @@ Attribute VB_Name = "ao20audio"
 '
 '
 Option Explicit
-
 'Sonidos
 Public Const SND_EXCLAMACION   As Integer = 451
 Public Const SND_CLICK         As String = 500
@@ -35,33 +34,32 @@ Public Const SND_RESUCITAR     As Integer = 104
 Public Const SND_CURAR         As Integer = 101
 Public Const SND_DOPA          As Integer = 77
 Public Const SND_MEDITATE      As Integer = 158
+Public AudioEngine             As clsAudioEngine
+Public MusicEnabled            As Byte
+Public FxEnabled               As Byte
+Public AudioEnabled            As Byte
+Public AmbientEnabled          As Byte
+Private CurMusicVolume         As Long
+Private CurAmbientVolume       As Long
+Private CurFxVolume            As Long
 
-Public AudioEngine As clsAudioEngine
-Public MusicEnabled As Byte
-Public FxEnabled As Byte
-Public AudioEnabled As Byte
-Public AmbientEnabled As Byte
-Private CurMusicVolume As Long
-Private CurAmbientVolume As Long
-Private CurFxVolume As Long
-
-Public Sub CreateAudioEngine(ByVal hwnd As Long, ByRef dx8 As DirectX8, ByRef renderer As clsAudioEngine)
-On Error GoTo AudioEngineInitErr:
+Public Sub CreateAudioEngine(ByVal hWnd As Long, ByRef dx8 As DirectX8, ByRef renderer As clsAudioEngine)
+    On Error GoTo AudioEngineInitErr:
     If AudioEnabled Then
         Set AudioEngine = New clsAudioEngine
-        Call AudioEngine.Init(dx8, hwnd)
+        Call AudioEngine.Init(dx8, hWnd)
         frmDebug.add_text_tracebox "Audio Engine OK"
         Exit Sub
     Else
         frmDebug.add_text_tracebox "Warning Audio Disabled"
     End If
-    
     Exit Sub
 AudioEngineInitErr:
     Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_CREACION_ENGINE_AUDIO"), vbCritical, "Argentum20")
     frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
     End
 End Sub
+
 Public Sub SetMusicVolume(ByVal NewVolume As Long)
     CurMusicVolume = NewVolume
     If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
@@ -88,9 +86,9 @@ Public Sub PlayAmbientAudio(ByVal UserMap As Long)
     If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
         Dim wav As Integer
         If EsNoche Then
-            wav = ReadField(1, Val(MapDat.ambient), Asc("-"))
+            wav = ReadField(1, val(MapDat.ambient), Asc("-"))
         Else
-            wav = ReadField(2, Val(MapDat.ambient), Asc("-"))
+            wav = ReadField(2, val(MapDat.ambient), Asc("-"))
         End If
         If wav <> 0 Then
             Call ao20audio.AudioEngine.PlayAmbient(wav, True, CurAmbientVolume)
@@ -113,7 +111,11 @@ Public Function PlayAmbientWav(ByVal id As Integer, Optional ByVal looping As Bo
     End If
 End Function
 
-Public Function PlayWav(ByVal id As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
+Public Function PlayWav(ByVal id As String, _
+                        Optional ByVal looping As Boolean = False, _
+                        Optional ByVal volume As Long = 0, _
+                        Optional ByVal pan As Long = 0, _
+                        Optional ByVal label As String = "") As Long
     PlayWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
         PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, min(CurFxVolume, volume), pan, label)
@@ -130,12 +132,12 @@ End Function
 Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
     PlayMP3 = -1
     If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
-        PlayMP3 = ao20audio.AudioEngine.PlayMP3(FileName, looping, min(CurMusicVolume, volume))
+        PlayMP3 = ao20audio.AudioEngine.PlayMP3(filename, looping, min(CurMusicVolume, volume))
     End If
 End Function
 
 Public Function StopWav(ByVal id As String, Optional ByVal label As String = "") As Long
-   StopWav = -1
+    StopWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
         StopWav = ao20audio.AudioEngine.StopWav(id, label)
     End If
@@ -180,11 +182,11 @@ Public Function GetMidiFilesPath() As String
 End Function
 
 Public Function GetCompressedResourcesPath() As String
- GetCompressedResourcesPath = App.path & "\..\Recursos\OUTPUT\"
+    GetCompressedResourcesPath = App.path & "\..\Recursos\OUTPUT\"
 End Function
 
 Public Function ComputeCharFxVolume(ByRef Pos As Position) As Long
-On Error GoTo ComputeCharFxVolumenErr:
+    On Error GoTo ComputeCharFxVolumenErr:
     Dim total_distance As Integer
     total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
     ComputeCharFxVolume = ComputeCharFxVolumeByDistance(total_distance)
@@ -195,7 +197,7 @@ ComputeCharFxVolumenErr:
 End Function
 
 Public Function ComputeCharFxPan(ByRef Pos As Position) As Long
-On Error GoTo ComputeCharFxPanErr:
+    On Error GoTo ComputeCharFxPanErr:
     Dim total_distance As Integer, position_sgn As Integer, curr_x As Integer, curr_y As Integer
     ComputeCharFxPan = 0
     total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
@@ -226,7 +228,7 @@ ComputeCharFxPanErr:
 End Function
 
 Public Function ComputeCharFxPanByDistance(ByVal total_distance As Integer, position_sgn As Integer) As Long
-On Error GoTo ComputeCharFxPanByDistance_err:
+    On Error GoTo ComputeCharFxPanByDistance_err:
     If InvertirSonido Then
         position_sgn = position_sgn * -1
     End If
@@ -238,14 +240,13 @@ On Error GoTo ComputeCharFxPanByDistance_err:
         ComputeCharFxPanByDistance = position_sgn * 9000
     End If
     Exit Function
-
 ComputeCharFxPanByDistance_err:
     Call RegistrarError(Err.Number, Err.Description, "clsSoundEngine.Calculate_Pan_By_Distance", Erl)
     Resume Next
 End Function
 
 Public Function ComputeCharFxVolumeByDistance(ByVal distance As Byte) As Long
-On Error GoTo ComputeCharFxVolumeByDistance_err:
+    On Error GoTo ComputeCharFxVolumeByDistance_err:
     distance = Abs(distance)
     If distance < 20 Then
         ComputeCharFxVolumeByDistance = VolFX - distance * 120
@@ -258,5 +259,3 @@ ComputeCharFxVolumeByDistance_err:
     Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxVolumeByDistance", Erl)
     Resume Next
 End Function
-
-

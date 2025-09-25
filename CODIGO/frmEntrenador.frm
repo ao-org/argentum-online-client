@@ -2,14 +2,14 @@ VERSION 5.00
 Begin VB.Form frmEntrenador 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Seleccione la criatura"
-   ClientHeight    =   3708
-   ClientLeft      =   48
+   ClientHeight    =   3705
+   ClientLeft      =   45
    ClientTop       =   300
-   ClientWidth     =   3744
+   ClientWidth     =   3750
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,8 +19,8 @@ Begin VB.Form frmEntrenador
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   3708
-   ScaleWidth      =   3744
+   ScaleHeight     =   3705
+   ScaleWidth      =   3750
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton Command2 
@@ -37,7 +37,7 @@ Begin VB.Form frmEntrenador
       Caption         =   "Luchar"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -55,14 +55,14 @@ Begin VB.Form frmEntrenador
    Begin VB.ListBox lstCriaturas 
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   2292
+      Height          =   2205
       Left            =   240
       TabIndex        =   0
       Top             =   480
@@ -75,7 +75,7 @@ Begin VB.Form frmEntrenador
       Caption         =   "¿Con qué criatura deseas combatir?"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -141,7 +141,6 @@ Attribute VB_Exposed = False
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
 '[CODE]:MatuX
 '
 '    Le puse el iconito de la manito a los botones ^_^,
@@ -149,37 +148,23 @@ Attribute VB_Exposed = False
 '   una más linda :)
 '
 '[END]'
-
 Option Explicit
 
 Private Sub Command1_Click()
-    
     On Error GoTo Command1_Click_Err
-    
     Call WriteTrain(lstCriaturas.ListIndex + 1)
     Unload Me
-
-    
     Exit Sub
-
 Command1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEntrenador.Command1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEntrenador.Command1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command2_Click()
-    
     On Error GoTo Command2_Click_Err
-    
     Unload Me
-
-    
     Exit Sub
-
 Command2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEntrenador.Command2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEntrenador.Command2_Click", Erl)
     Resume Next
-    
 End Sub
-
