@@ -85,6 +85,12 @@ Private Sub cmdCerrar_Click()
     
 End Sub
 
+Private Sub Form_Initialize()
+    
+    bSkins = True
+
+End Sub
+
 ' Evento al cargar el formulario
 '---------------------------------------------------------------------------------------
 ' Procedure : Form_Load
@@ -107,7 +113,8 @@ Private Sub Form_Load()
     frmSkins.Picture = LoadInterface("ventanaskins.bmp")
     
     bSkins = True
-
+    Call InvSkins.ReDraw
+    DoEvents
     Exit Sub
     
 

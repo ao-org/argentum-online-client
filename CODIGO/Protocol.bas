@@ -4434,10 +4434,6 @@ Private Sub HandleChangeInventorySlot()
     
     ElseIf frmCrafteo.visible Then
         Call frmCrafteo.InvCraftUser.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, Value, Name, ElementalTags, podrausarlo)
-    ElseIf bSkins Then
-        If frmSkins.visible Then
-            Call frmCrafteo.InvCraftUser.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, MinDef, value, Name, ElementalTags, 0)
-        End If
     End If
 
     Exit Sub
