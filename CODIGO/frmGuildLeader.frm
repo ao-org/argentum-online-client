@@ -76,7 +76,7 @@ Begin VB.Form frmGuildLeader
       BackStyle       =   0  'Transparent
       Caption         =   "12"
       BeginProperty Font 
-         Name            =   "Alegreya Sans AO"
+         Name            =   "Arial"
          Size            =   12
          Charset         =   0
          Weight          =   400
@@ -117,7 +117,7 @@ Begin VB.Form frmGuildLeader
       BackStyle       =   0  'Transparent
       Caption         =   "25"
       BeginProperty Font 
-         Name            =   "Alegreya Sans AO"
+         Name            =   "Arial"
          Size            =   12
          Charset         =   0
          Weight          =   400
@@ -175,7 +175,7 @@ Begin VB.Form frmGuildLeader
       BackStyle       =   0  'Transparent
       Caption         =   "12"
       BeginProperty Font 
-         Name            =   "Alegreya Sans AO"
+         Name            =   "Arial"
          Size            =   12
          Charset         =   0
          Weight          =   400
@@ -194,7 +194,7 @@ Begin VB.Form frmGuildLeader
       BackStyle       =   0  'Transparent
       Caption         =   "No atacarse / Chat de clan / Pedir ayuda (K)  / Verse Invisible / Marca de clan / Verse vida."
       BeginProperty Font 
-         Name            =   "Alegreya Sans AO"
+         Name            =   "Arial"
          Size            =   9
          Charset         =   0
          Weight          =   400
@@ -269,75 +269,49 @@ Attribute VB_Exposed = False
 'Código Postal 1900
 'Pablo Ignacio Márquez
 Option Explicit
-
-Private cBotonCerrar As clsGraphicalButton
-Private cBotonActualizar As clsGraphicalButton
+Private cBotonCerrar            As clsGraphicalButton
+Private cBotonActualizar        As clsGraphicalButton
 Private cBotonEditarDescripcion As clsGraphicalButton
 
 Private Sub cmdElecciones_Click()
-    
     On Error GoTo cmdElecciones_Click_Err
-    
     Call WriteGuildOpenElections
     Unload Me
-
-    
     Exit Sub
-
 cmdElecciones_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.cmdElecciones_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.cmdElecciones_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command1_Click()
-    
     On Error GoTo Command1_Click_Err
     Exit Sub
-
     If solicitudes.ListIndex = -1 Then Exit Sub
-    
     frmCharInfo.frmType = CharInfoFrmType.frmMembershipRequests
     'Call WriteGuildMemberInfo(solicitudes.List(solicitudes.ListIndex))
-
     'Unload Me
-    
     Exit Sub
-
 Command1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.Command1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command2_Click()
-    
     On Error GoTo Command2_Click_Err
-    
-
     If members.ListIndex = -1 Then Exit Sub
-    
     frmCharInfo.frmType = CharInfoFrmType.frmMembers
     Call WriteGuildMemberInfo(members.List(members.ListIndex))
-
     'Unload Me
-    
     Exit Sub
-
 Command2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.Command2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdActualizar_Click()
     Dim k As String
-
     k = Replace(txtguildnews, vbCrLf, "º")
-    
     Call WriteGuildUpdateNews(k)
-
-    
     Exit Sub
 End Sub
 
@@ -347,172 +321,109 @@ End Sub
 
 Private Sub cmdEditarDescripcion_Click()
     Dim fdesc As String
-
     fdesc = InputBox(JsonLanguage.Item("MENSAJEBOX_MODIFICAR_DESCRIPCION"), "Modify Description")
-
     fdesc = Replace(fdesc, vbCrLf, "º", , , vbBinaryCompare)
-    
     If Not ValidDescriptionCharacters(fdesc) Then
         MsgBox JsonLanguage.Item("MENSAJEBOX_DESCRIPCION_INVALIDA")
         Exit Sub
     Else
         Call WriteClanCodexUpdate(fdesc)
-
     End If
-
-    
     Exit Sub
-
 End Sub
 
 Private Sub Command4_Click()
-    
     On Error GoTo Command4_Click_Err
-    
     frmGuildBrief.EsLeader = True
     Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
-
     'Unload Me
-    
     Exit Sub
-
 Command4_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.Command4_Click", Erl)
     Resume Next
-    
 End Sub
 
-
 Private Sub Command6_Click()
-
     'Call frmGuildURL.Show(vbModeless, frmGuildLeader)
     'Unload Me
 End Sub
 
 Private Sub Command7_Click()
-    
     On Error GoTo Command7_Click_Err
-    
     Call WriteGuildPeacePropList
-
-    
     Exit Sub
-
 Command7_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command7_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.Command7_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command9_Click()
-    
     On Error GoTo Command9_Click_Err
-    
     Call WriteGuildAlliancePropList
-
-    
     Exit Sub
-
 Command9_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Command9_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.Command9_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub expne_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo expne_MouseMove_Err
-    
-    porciento.Visible = True
-    expcount.Visible = False
-
-    
+    porciento.visible = True
+    expcount.visible = False
     Exit Sub
-
 expne_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.expne_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.expne_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Load()
-   
     On Error GoTo Form_Load_Err
-    
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanaadminclan.bmp")
     EXPBAR.Picture = LoadInterface("barra-nivel-clan.bmp")
-    
-    Call Aplicar_Transparencia(Me.hwnd, 240)
-    
-    Call LoadButtons
+    Call Aplicar_Transparencia(Me.hWnd, 240)
+    Call loadButtons
     Exit Sub
-
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
-Private Sub LoadButtons()
+Private Sub loadButtons()
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonActualizar = New clsGraphicalButton
     Set cBotonEditarDescripcion = New clsGraphicalButton
-    
-    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-                                                
-    Call cBotonActualizar.Initialize(cmdActualizar, "boton-actualizar-default.bmp", _
-                                                "boton-actualizar-over.bmp", _
-                                                "boton-actualizar-off.bmp", Me)
-    Call cBotonEditarDescripcion.Initialize(cmdEditarDescripcion, "boton-editar-desc-clan-default.bmp", _
-                                                "boton-editar-desc-clan-over.bmp", _
-                                                "boton-editar-desc-clan-off.bmp", Me)
-    
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
+    Call cBotonActualizar.Initialize(cmdActualizar, "boton-actualizar-default.bmp", "boton-actualizar-over.bmp", "boton-actualizar-off.bmp", Me)
+    Call cBotonEditarDescripcion.Initialize(cmdEditarDescripcion, "boton-editar-desc-clan-default.bmp", "boton-editar-desc-clan-over.bmp", "boton-editar-desc-clan-off.bmp", Me)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Form_MouseMove_Err
-    
-    Call MoverForm(Me.hwnd)
-    
-    porciento.Visible = True
-    expcount.Visible = False
-
-    
+    Call MoverForm(Me.hWnd)
+    porciento.visible = True
+    expcount.visible = False
     Exit Sub
-
 Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Form_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.Form_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
-
-Private Sub Frame3_DragDrop(Source As Control, X As Single, Y As Single)
-
+Private Sub Frame3_DragDrop(Source As Control, x As Single, y As Single)
 End Sub
 
 Private Sub Frame4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Frame4_MouseMove_Err
-    
-    porciento.Visible = True
-    expcount.Visible = False
-
-    
+    porciento.visible = True
+    expcount.visible = False
     Exit Sub
-
 Frame4_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.Frame4_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.Frame4_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub guildslist_DblClick()
-   If guildslist.ListIndex > -1 Then
+    If guildslist.ListIndex > -1 Then
         frmGuildBrief.EsLeader = True
         Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
         Exit Sub
@@ -520,31 +431,24 @@ Private Sub guildslist_DblClick()
 End Sub
 
 Private Sub members_DblClick()
-  If members.ListIndex = -1 Then Exit Sub
+    If members.ListIndex = -1 Then Exit Sub
     frmCharInfo.frmType = CharInfoFrmType.frmMembers
     Call WriteGuildMemberInfo(members.List(members.ListIndex))
 End Sub
 
 Private Sub solicitudes_DblClick()
- If solicitudes.ListIndex = -1 Then Exit Sub
+    If solicitudes.ListIndex = -1 Then Exit Sub
     frmCharInfo.frmType = CharInfoFrmType.frmMembershipRequests
     Call WriteGuildMemberInfo(solicitudes.List(solicitudes.ListIndex))
     Exit Sub
 End Sub
 
 Private Sub porciento_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo porciento_MouseMove_Err
-    
-    porciento.Visible = False
-    expcount.Visible = True
-
-    
+    porciento.visible = False
+    expcount.visible = True
     Exit Sub
-
 porciento_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildLeader.porciento_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildLeader.porciento_MouseMove", Erl)
     Resume Next
-    
 End Sub
-

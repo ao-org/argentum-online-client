@@ -238,7 +238,6 @@ Attribute VB_Exposed = False
 'Argentum Online is based on Baronsoft's VB6 Online RPG
 'You can contact the original creator of ORE at aaron@baronsoft.com
 'for more information about ORE please visit http://www.baronsoft.com/
-
 'You can contact me at:
 'morgolock@speedy.com.ar
 'www.geocities.com/gmorgolock
@@ -247,136 +246,87 @@ Attribute VB_Exposed = False
 'Código Postal 1900
 'Pablo Ignacio Márquez
 Dim Index As Byte
-
 Option Explicit
-
-Private cBotonAceptar As clsGraphicalButton
+Private cBotonAceptar   As clsGraphicalButton
 Private cBotonConstruir As clsGraphicalButton
-Private cBotonCerrar As clsGraphicalButton
-Private cBotonMas As clsGraphicalButton
-Private cBotonMenos As clsGraphicalButton
+Private cBotonCerrar    As clsGraphicalButton
+Private cBotonMas       As clsGraphicalButton
+Private cBotonMenos     As clsGraphicalButton
 
-
-Private Sub cmdcerrar_Click()
+Private Sub cmdCerrar_Click()
     Unload Me
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Call Aplicar_Transparencia(Me.hWnd, 240)
-    
     Call FormParser.Parse_Form(Me)
-    
     Me.Picture = LoadInterface("VentanaHerreria.bmp")
     Call loadButtons
-    
     Index = 3
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub loadButtons()
-        
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonConstruir = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonMas = New clsGraphicalButton
     Set cBotonMenos = New clsGraphicalButton
-
-    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-default.bmp", _
-                                                "boton-aceptar-over.bmp", _
-                                                "boton-aceptar-off.bmp", Me)
-    
-    Call cBotonConstruir.Initialize(cmdConstruir, "boton-construir-default.bmp", _
-                                                "boton-construir-over.bmp", _
-                                                "boton-construir-off.bmp", Me)
-                                                
-    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-                                                
-    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", _
-                                                "boton-sm-mas-over.bmp", _
-                                                "boton-sm-mas-off.bmp", Me)
-                                                
-    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
-                                                "boton-sm-menos-over.bmp", _
-                                                "boton-sm-menos-off.bmp", Me)
+    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-default.bmp", "boton-aceptar-over.bmp", "boton-aceptar-off.bmp", Me)
+    Call cBotonConstruir.Initialize(cmdConstruir, "boton-construir-default.bmp", "boton-construir-over.bmp", "boton-construir-off.bmp", Me)
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
+    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", "boton-sm-mas-over.bmp", "boton-sm-mas-off.bmp", Me)
+    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", "boton-sm-menos-over.bmp", "boton-sm-menos-off.bmp", Me)
 End Sub
+
 Private Sub Command1_Click()
-    
     On Error GoTo Command1_Click_Err
-    
     Index = 1
-
     Dim i As Byte
-
     lstArmas.Clear
-
     For i = 1 To UBound(ArmasHerrero())
-
         If ArmasHerrero(i).Index = 0 Then Exit For
         Call frmHerrero.lstArmas.AddItem(ObjData(ArmasHerrero(i).Index).Name)
     Next i
-    
     Command1.Picture = LoadInterface("boton-espada-over.bmp")
     Command3.Picture = Nothing
     Command2.Picture = Nothing
     Command4.Picture = Nothing
     Command5.Picture = Nothing
-    
     Exit Sub
-
 Command1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Command1_Click", Erl)
     Resume Next
-    
 End Sub
 
-
 Private Sub command1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
- If Index <> 1 Then Command1.Picture = LoadInterface("boton-espada-off.bmp")
+    If Index <> 1 Then Command1.Picture = LoadInterface("boton-espada-off.bmp")
 End Sub
 
 Private Sub Command2_Click()
-    
     On Error GoTo Command2_Click_Err
-    
     Index = 2
-
     Dim i As Byte
-
     lstArmas.Clear
-
     For i = 0 To UBound(ArmadurasHerrero())
-
         If ArmadurasHerrero(i).Index = 0 Then Exit For
         If ObjData(ArmadurasHerrero(i).Index).ObjType = 3 Then
             Call frmHerrero.lstArmas.AddItem(ObjData(ArmadurasHerrero(i).Index).Name)
-
         End If
-
     Next i
-    
     Command2.Picture = LoadInterface("boton-armadura-over.bmp")
     Command1.Picture = Nothing
     Command3.Picture = Nothing
     Command4.Picture = Nothing
     Command5.Picture = Nothing
-
-    
     Exit Sub
-
 Command2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Command2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -384,70 +334,47 @@ Private Sub Command2_MouseUp(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 Private Sub Command3_Click()
-    
     On Error GoTo Command3_Click_Err
-    
     Index = 3
-
     lstArmas.Clear
-
     Dim i As Byte
-
     For i = 0 To UBound(CascosHerrero())
-
         If CascosHerrero(i).Index = 0 Then Exit For
         Call frmHerrero.lstArmas.AddItem(ObjData(CascosHerrero(i).Index).Name)
     Next i
-
     Command3.Picture = LoadInterface("boton-casco-over.bmp")
     Command1.Picture = Nothing
     Command2.Picture = Nothing
     Command4.Picture = Nothing
     Command5.Picture = Nothing
-
-    
     Exit Sub
-
 Command3_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Command3_Click", Erl)
     Resume Next
-    
 End Sub
-
 
 Private Sub Command3_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Index <> 3 Then Command3.Picture = LoadInterface("boton-casco-off.bmp")
 End Sub
 
 Private Sub Command4_Click()
-    
     On Error GoTo Command4_Click_Err
-    
     Index = 4
-
     lstArmas.Clear
-
     Dim i As Byte
-
     For i = 0 To UBound(EscudosHerrero())
-
         If EscudosHerrero(i).Index = 0 Then Exit For
         Call frmHerrero.lstArmas.AddItem(ObjData(EscudosHerrero(i).Index).Name)
     Next i
-
     Command4.Picture = LoadInterface("boton-escudo-over.bmp")
     Command1.Picture = Nothing
     Command2.Picture = Nothing
     Command3.Picture = Nothing
     Command5.Picture = Nothing
-
-    
     Exit Sub
-
 Command4_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Command4_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command4_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -455,57 +382,38 @@ Private Sub Command4_MouseUp(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 Private Sub Command5_Click()
-    
     On Error GoTo Command5_Click_Err
-    
     Index = 5
-
     lstArmas.Clear
-
     Dim i As Byte
-
     For i = 1 To UBound(RunasElementalesHerrero())
-
         If RunasElementalesHerrero(i).Index = 0 Then Exit For
         Call frmHerrero.lstArmas.AddItem(ObjData(RunasElementalesHerrero(i).Index).Name)
     Next i
-
     Command5.Picture = LoadInterface("boton-runas-over.bmp")
     Command1.Picture = Nothing
     Command2.Picture = Nothing
     Command3.Picture = Nothing
     Command4.Picture = Nothing
-
-    
     Exit Sub
-
 Command5_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Command5_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command5_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Index <> 5 Then Command5.Picture = LoadInterface("boton-escudo-off.bmp")
 End Sub
 
-
-
-
 Private Sub cmdAceptar_Click()
-    
     On Error GoTo cmdAceptar_Click_Err
-    
     Unload Me
-
-    
     Exit Sub
-
 cmdAceptar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.cmdAceptar_Click", Erl)
     Resume Next
-    
 End Sub
+
 Private Sub cmdMenos_Click()
     If cantidad > 0 Then
         cantidad = cantidad - 1
@@ -521,10 +429,9 @@ Private Sub cmdMas_Click()
         Exit Sub
     End If
 End Sub
+
 Private Sub cmdConstruir_Click()
-    
     On Error GoTo cmdConstruir_Click_Err
-    
     Select Case Index
         Case 1
             If cantidad > 1 Then
@@ -538,10 +445,8 @@ Private Sub cmdConstruir_Click()
                 frmMain.MacroLadder.enabled = True
             Else
                 Call WriteCraftBlacksmith(ArmasHerrero(lstArmas.ListIndex + 1).Index)
-    
                 If frmMain.macrotrabajo.enabled Then MacroBltIndex = ArmasHerrero(lstArmas.ListIndex + 1).Index
             End If
-            
         Case 2
             If cantidad > 1 Then
                 UserMacro.cantidad = cantidad
@@ -554,13 +459,9 @@ Private Sub cmdConstruir_Click()
                 frmMain.MacroLadder.enabled = True
             Else
                 Call WriteCraftBlacksmith(ArmadurasHerrero(lstArmas.ListIndex).Index)
-    
                 If frmMain.macrotrabajo.enabled Then MacroBltIndex = ArmadurasHerrero(lstArmas.ListIndex).Index
-                
             End If
-            
         Case 3
-        
             If cantidad > 1 Then
                 UserMacro.cantidad = cantidad
                 UserMacro.TIPO = 4
@@ -572,9 +473,7 @@ Private Sub cmdConstruir_Click()
                 frmMain.MacroLadder.enabled = True
             Else
                 Call WriteCraftBlacksmith(CascosHerrero(lstArmas.ListIndex).Index)
-    
                 If frmMain.macrotrabajo.enabled Then MacroBltIndex = CascosHerrero(lstArmas.ListIndex).Index
-                
             End If
         Case 4
             If cantidad > 1 Then
@@ -588,13 +487,10 @@ Private Sub cmdConstruir_Click()
                 frmMain.MacroLadder.enabled = True
             Else
                 Call WriteCraftBlacksmith(EscudosHerrero(lstArmas.ListIndex).Index)
-    
                 If frmMain.macrotrabajo.enabled Then MacroBltIndex = EscudosHerrero(lstArmas.ListIndex).Index
-                
             End If
-            
         Case 5
-             If cantidad > 1 Then
+            If cantidad > 1 Then
                 UserMacro.cantidad = cantidad
                 UserMacro.TIPO = 4
                 UserMacro.Index = EscudosHerrero(lstArmas.ListIndex).Index
@@ -605,321 +501,221 @@ Private Sub cmdConstruir_Click()
                 frmMain.MacroLadder.enabled = True
             Else
                 Call WriteCraftBlacksmith(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index)
-    
                 If frmMain.macrotrabajo.enabled Then MacroBltIndex = EscudosHerrero(lstArmas.ListIndex).Index
-                
             End If
         Case Else
     End Select
-
-
     Unload Me
     Exit Sub
-
 cmdConstruir_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.cmdConstruir_Click", Erl)
     Resume Next
-    
 End Sub
 
-
 Private Sub Form_KeyPress(KeyAscii As Integer)
-    
     On Error GoTo Form_KeyPress_Err
-
     If (KeyAscii = 27) Then
         Unload Me
     End If
-    
     Exit Sub
-
 Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.Form_KeyPress", Erl)
     Resume Next
 End Sub
-
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     MoverForm Me.hWnd
 End Sub
 
 Private Sub List1_Click()
-    
     On Error GoTo List1_Click_Err
-
-    Dim SR As RECT, DR As RECT
-
+    Dim SR As Rect, DR As Rect
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
     SR.Bottom = 32
-
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
     DR.Bottom = 32
-
     Dim Grh As Long
-
     If List1.ListIndex = 0 Then
         Grh = 724
     ElseIf List1.ListIndex = 1 Then
         Grh = 725
     ElseIf List1.ListIndex = 2 Then
         Grh = 723
-
     End If
-
     Call Grh_Render_To_Hdc(picture1, Grh, 0, 0, False)
-
-    
     Exit Sub
-
 List1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.List1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub lstArmas_Click()
-    
     On Error GoTo lstArmas_Click_Err
-    
-
-    
-
-    Dim SR As RECT, DR As RECT
-
+    Dim SR As Rect, DR As Rect
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
     SR.Bottom = 32
-
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
     DR.Bottom = 32
-
     List1.Clear
     List2.Clear
-    
-    
-    Dim i As Integer
+    Dim i          As Integer
     Dim tmpTexts() As String
-
     Select Case Index
         Case 1
-        
             tmpTexts = AddMaterialNames((ArmasHerrero(lstArmas.ListIndex + 1).Index))
-            
             For i = LBound(tmpTexts) To UBound(tmpTexts)
                 If Len(tmpTexts(i)) > 0 Then
                     List1.AddItem tmpTexts(i)
                 End If
             Next i
-            
             Call Grh_Render_To_Hdc(picture1, ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
-            
             tmpTexts = AddMaterialValues((ArmasHerrero(lstArmas.ListIndex + 1).Index))
-            
             For i = LBound(tmpTexts) To UBound(tmpTexts)
                 If Len(tmpTexts(i)) > 0 Then
                     List2.AddItem tmpTexts(i)
                 End If
             Next i
-            
             desc.Caption = "Golpe: " & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MinHit & "/" & ObjData(ArmasHerrero(lstArmas.ListIndex).Index).MaxHit
         Case 2
             Call Grh_Render_To_Hdc(picture1, ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
-            
             tmpTexts = AddMaterialNames((ArmadurasHerrero(lstArmas.ListIndex).Index))
-            
             For i = LBound(tmpTexts) To UBound(tmpTexts)
                 If Len(tmpTexts(i)) > 0 Then
                     List1.AddItem tmpTexts(i)
                 End If
             Next i
-            
-            Call Grh_Render_To_Hdc(Picture1, ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
-            
+            Call Grh_Render_To_Hdc(picture1, ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
             tmpTexts = AddMaterialValues((ArmadurasHerrero(lstArmas.ListIndex).Index))
-            
             For i = LBound(tmpTexts) To UBound(tmpTexts)
                 If Len(tmpTexts(i)) > 0 Then
                     List2.AddItem tmpTexts(i)
                 End If
             Next i
-            
-            
             desc.Caption = "Defensa: " & ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).MaxDef
         Case 3
             Call Grh_Render_To_Hdc(picture1, ObjData(CascosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
-            
             tmpTexts = AddMaterialNames((CascosHerrero(lstArmas.ListIndex).Index))
-            
             For i = LBound(tmpTexts) To UBound(tmpTexts)
                 If Len(tmpTexts(i)) > 0 Then
                     List1.AddItem tmpTexts(i)
                 End If
             Next i
-            
-            Call Grh_Render_To_Hdc(Picture1, ObjData(CascosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
-            
+            Call Grh_Render_To_Hdc(picture1, ObjData(CascosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
             tmpTexts = AddMaterialValues((CascosHerrero(lstArmas.ListIndex).Index))
-            
             For i = LBound(tmpTexts) To UBound(tmpTexts)
                 If Len(tmpTexts(i)) > 0 Then
                     List2.AddItem tmpTexts(i)
                 End If
             Next i
-            
             desc.Caption = "Defensa: " & ObjData(CascosHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(CascosHerrero(lstArmas.ListIndex).Index).MaxDef
         Case 4
             Call Grh_Render_To_Hdc(picture1, ObjData(EscudosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
-
-
             tmpTexts = AddMaterialNames((EscudosHerrero(lstArmas.ListIndex).Index))
-            
             For i = LBound(tmpTexts) To UBound(tmpTexts)
                 If Len(tmpTexts(i)) > 0 Then
                     List1.AddItem tmpTexts(i)
                 End If
             Next i
-            
-            Call Grh_Render_To_Hdc(Picture1, ObjData(EscudosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
-            
+            Call Grh_Render_To_Hdc(picture1, ObjData(EscudosHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
             tmpTexts = AddMaterialValues((EscudosHerrero(lstArmas.ListIndex).Index))
-            
             For i = LBound(tmpTexts) To UBound(tmpTexts)
                 If Len(tmpTexts(i)) > 0 Then
                     List2.AddItem tmpTexts(i)
                 End If
             Next i
-
-
-
             desc.Caption = "Defensa: " & ObjData(EscudosHerrero(lstArmas.ListIndex).Index).MinDef & "/" & ObjData(EscudosHerrero(lstArmas.ListIndex).Index).MaxDef
         Case 5
             Call Grh_Render_To_Hdc(picture1, ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
-            
             tmpTexts = AddMaterialNames((RunasElementalesHerrero(lstArmas.ListIndex + 1).Index))
-            
             For i = LBound(tmpTexts) To UBound(tmpTexts)
                 If Len(tmpTexts(i)) > 0 Then
                     List1.AddItem tmpTexts(i)
                 End If
             Next i
-            
-            Call Grh_Render_To_Hdc(Picture1, ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
-            
+            Call Grh_Render_To_Hdc(picture1, ObjData(RunasElementalesHerrero(lstArmas.ListIndex + 1).Index).GrhIndex, 0, 0)
             tmpTexts = AddMaterialValues((RunasElementalesHerrero(lstArmas.ListIndex + 1).Index))
-            
             For i = LBound(tmpTexts) To UBound(tmpTexts)
                 If Len(tmpTexts(i)) > 0 Then
                     List2.AddItem tmpTexts(i)
                 End If
             Next i
-            
         Case Else
-        
-            
     End Select
-
     picture1.visible = True
-
-    
     Exit Sub
-
 lstArmas_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmHerrero.lstArmas_Click", Erl)
     Resume Next
-    
 End Sub
 
-
-Public Function AddMaterialNames(ByVal ObjectIndex As Integer) As String()
-    
-    Dim result(1 To 9) As String
-    
-    If ObjData(ObjectIndex).LingH > 0 Then
-        result(1) = CStr(JsonLanguage.Item("MENSAJE_LINGOTE_DE_HIERRO"))
+Public Function AddMaterialNames(ByVal objectIndex As Integer) As String()
+    Dim Result(1 To 9) As String
+    If ObjData(objectIndex).LingH > 0 Then
+        Result(1) = CStr(JsonLanguage.Item("MENSAJE_LINGOTE_DE_HIERRO"))
     End If
-    
-    If ObjData(ObjectIndex).LingP > 0 Then
-        result(2) = CStr(JsonLanguage.Item("MENSAJE_LINGOTE_DE_PLATA"))
+    If ObjData(objectIndex).LingP > 0 Then
+        Result(2) = CStr(JsonLanguage.Item("MENSAJE_LINGOTE_DE_PLATA"))
     End If
-
-    If ObjData(ObjectIndex).LingO > 0 Then
-        result(3) = CStr(JsonLanguage.Item("MENSAJE_LINGOTE_DE_ORO"))
+    If ObjData(objectIndex).LingO > 0 Then
+        Result(3) = CStr(JsonLanguage.Item("MENSAJE_LINGOTE_DE_ORO"))
     End If
-
-    If ObjData(ObjectIndex).Coal > 0 Then
-        result(4) = CStr(JsonLanguage.Item("MENSAJE_CARBON"))
+    If ObjData(objectIndex).Coal > 0 Then
+        Result(4) = CStr(JsonLanguage.Item("MENSAJE_CARBON"))
     End If
-    If ObjData(ObjectIndex).Blodium > 0 Then
-        result(5) = "Blodium"
+    If ObjData(objectIndex).Blodium > 0 Then
+        Result(5) = "Blodium"
     End If
-
-    If ObjData(ObjectIndex).FireEssence > 0 Then
-        result(6) = CStr(JsonLanguage.Item("MENSAJE_ESENCIA_DE_FUEGO"))
+    If ObjData(objectIndex).FireEssence > 0 Then
+        Result(6) = CStr(JsonLanguage.Item("MENSAJE_ESENCIA_DE_FUEGO"))
     End If
-    
-    If ObjData(ObjectIndex).WaterEssence > 0 Then
-        result(7) = CStr(JsonLanguage.Item("MENSAJE_ESENCIA_DE_AGUA"))
+    If ObjData(objectIndex).WaterEssence > 0 Then
+        Result(7) = CStr(JsonLanguage.Item("MENSAJE_ESENCIA_DE_AGUA"))
     End If
-    
-    If ObjData(ObjectIndex).EarthEssence > 0 Then
-        result(8) = CStr(JsonLanguage.Item("MENSAJE_ESENCIA_DE_TIERRA"))
+    If ObjData(objectIndex).EarthEssence > 0 Then
+        Result(8) = CStr(JsonLanguage.Item("MENSAJE_ESENCIA_DE_TIERRA"))
     End If
-    
-    If ObjData(ObjectIndex).WindEssence > 0 Then
-        result(9) = CStr(JsonLanguage.Item("MENSAJE_ESENCIA_DE_AIRE"))
+    If ObjData(objectIndex).WindEssence > 0 Then
+        Result(9) = CStr(JsonLanguage.Item("MENSAJE_ESENCIA_DE_AIRE"))
     End If
-    
-    AddMaterialNames = result
-
+    AddMaterialNames = Result
 End Function
 
-Public Function AddMaterialValues(ByVal ObjectIndex As Integer) As String()
-
-    Dim result(1 To 9) As String
-    
-    If ObjData(ObjectIndex).LingH > 0 Then
-        result(1) = ObjData(ObjectIndex).LingH
+Public Function AddMaterialValues(ByVal objectIndex As Integer) As String()
+    Dim Result(1 To 9) As String
+    If ObjData(objectIndex).LingH > 0 Then
+        Result(1) = ObjData(objectIndex).LingH
     End If
-    
-    If ObjData(ObjectIndex).LingP > 0 Then
-        result(2) = ObjData(ObjectIndex).LingP
+    If ObjData(objectIndex).LingP > 0 Then
+        Result(2) = ObjData(objectIndex).LingP
     End If
-
-    If ObjData(ObjectIndex).LingO > 0 Then
-        result(3) = ObjData(ObjectIndex).LingO
+    If ObjData(objectIndex).LingO > 0 Then
+        Result(3) = ObjData(objectIndex).LingO
     End If
-
-    If ObjData(ObjectIndex).Coal > 0 Then
-        result(4) = ObjData(ObjectIndex).Coal
+    If ObjData(objectIndex).Coal > 0 Then
+        Result(4) = ObjData(objectIndex).Coal
     End If
-    If ObjData(ObjectIndex).Blodium > 0 Then
-        result(5) = ObjData(ObjectIndex).Blodium
+    If ObjData(objectIndex).Blodium > 0 Then
+        Result(5) = ObjData(objectIndex).Blodium
     End If
-
-    If ObjData(ObjectIndex).FireEssence > 0 Then
-        result(6) = ObjData(ObjectIndex).FireEssence
+    If ObjData(objectIndex).FireEssence > 0 Then
+        Result(6) = ObjData(objectIndex).FireEssence
     End If
-    
-    If ObjData(ObjectIndex).WaterEssence > 0 Then
-        result(7) = ObjData(ObjectIndex).WaterEssence
+    If ObjData(objectIndex).WaterEssence > 0 Then
+        Result(7) = ObjData(objectIndex).WaterEssence
     End If
-    
-    If ObjData(ObjectIndex).EarthEssence > 0 Then
-        result(8) = ObjData(ObjectIndex).EarthEssence
+    If ObjData(objectIndex).EarthEssence > 0 Then
+        Result(8) = ObjData(objectIndex).EarthEssence
     End If
-    
-    If ObjData(ObjectIndex).WindEssence > 0 Then
-        result(9) = ObjData(ObjectIndex).WindEssence
+    If ObjData(objectIndex).WindEssence > 0 Then
+        Result(9) = ObjData(objectIndex).WindEssence
     End If
-    
-    AddMaterialValues = result
-
+    AddMaterialValues = Result
 End Function
-

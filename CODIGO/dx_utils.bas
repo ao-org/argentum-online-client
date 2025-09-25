@@ -16,12 +16,10 @@ Attribute VB_Name = "dx_utils"
 '
 '
 Option Explicit
-
-Public DirectX As DirectX8
-Public DirectD3D8 As D3DX8
-Public DirectD3D As Direct3D8
-Public DirectDevice As Direct3DDevice8
-
+Public DirectX         As DirectX8
+Public DirectD3D8      As D3DX8
+Public DirectD3D       As Direct3D8
+Public DirectDevice    As Direct3DDevice8
 Public game_resolution As D3DDISPLAYMODE
 
 Public Sub get_game_resolution(ByRef mode As D3DDISPLAYMODE)
@@ -34,46 +32,42 @@ End Sub
 
 Public Sub list_modes(ByRef d3d As Direct3D8)
     Dim tmpDispMode As D3DDISPLAYMODE
-    Dim i As Long
+    Dim i           As Long
     For i = 0 To d3d.GetAdapterModeCount(0) - 1 'primary adapter
         Call d3d.EnumAdapterModes(0, i, tmpDispMode)
     Next i
 End Sub
 
 Public Function init_dx_objects() As Long
-On Error Resume Next
-    
+    On Error Resume Next
     Err.Clear
     Set DirectX = New DirectX8
     If Err.Number <> 0 Then
-                Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_DIRECTX"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
-                Exit Function
+        Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_DIRECTX"), vbCritical, App.title)
+        frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+        Exit Function
     End If
-    
     Set DirectD3D = DirectX.Direct3DCreate()
     If Err.Number <> 0 Then
-                Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_DIRECTD3D"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
-                Exit Function
+        Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_DIRECTD3D"), vbCritical, App.title)
+        frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+        Exit Function
     End If
-    
     Set DirectD3D8 = New D3DX8
     If Err.Number <> 0 Then
-                Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_DIRECTD3D8"), vbCritical, App.title)
-                frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
-                Exit Function
+        Call MsgBox(JsonLanguage.Item("MENSAJE_ERROR_DIRECTD3D8"), vbCritical, App.title)
+        frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
+        Exit Function
     End If
     init_dx_objects = Err.Number
-    
 End Function
 
 Public Function init_dx_device() As Long
-On Error Resume Next
-    Dim Caps As D3DCAPS8
-    Dim DevType As CONST_D3DDEVTYPE
+    On Error Resume Next
+    Dim Caps             As D3DCAPS8
+    Dim DevType          As CONST_D3DDEVTYPE
     Dim DevBehaviorFlags As Long
-    Dim d3dDispMode  As D3DDISPLAYMODE
+    Dim d3dDispMode      As D3DDISPLAYMODE
     Err.Clear
     DirectD3D.GetDeviceCaps D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, Caps
     If Err.Number = D3DERR_NOTAVAILABLE Then
@@ -95,10 +89,8 @@ On Error Resume Next
         End If
     End If
     DirectD3D.GetAdapterDisplayMode D3DADAPTER_DEFAULT, d3dDispMode
-    
     'Moving forward we want the backbuffer size and fmt to be configurable
     Call get_game_resolution(game_resolution)
-
     frmDebug.add_text_tracebox "Using; Windowed; mode"
     D3DWindow.Windowed = 1
     D3DWindow.BackBufferWidth = game_resolution.Width
@@ -106,22 +98,18 @@ On Error Resume Next
     D3DWindow.BackBufferFormat = game_resolution.format
     D3DWindow.SwapEffect = D3DSWAPEFFECT_DISCARD
     D3DWindow.BackBufferCount = 1
-    D3DWindow.hDeviceWindow = frmMain.renderer.hwnd
+    D3DWindow.hDeviceWindow = frmMain.renderer.hWnd
     D3DWindow.EnableAutoDepthStencil = 1
     D3DWindow.AutoDepthStencilFormat = D3DFMT_D16
     Err.Clear
-    Set DirectDevice = DirectD3D.CreateDevice(D3DADAPTER_DEFAULT, DevType, frmMain.renderer.hwnd, DevBehaviorFlags, D3DWindow)
+    Set DirectDevice = DirectD3D.CreateDevice(D3DADAPTER_DEFAULT, DevType, frmMain.renderer.hWnd, DevBehaviorFlags, D3DWindow)
     frmDebug.add_text_tracebox "Create; Direct3D; device: " & Err
     If (Err.Number <> 0) Then
         'if we failed to create the device with D3DFMT_A8R8G8B8 we try to do it with current display fmt
         D3DWindow.BackBufferFormat = d3dDispMode.format
         Err.Clear
-        Set DirectDevice = DirectD3D.CreateDevice(D3DADAPTER_DEFAULT, DevType, frmMain.renderer.hwnd, DevBehaviorFlags, D3DWindow)
+        Set DirectDevice = DirectD3D.CreateDevice(D3DADAPTER_DEFAULT, DevType, frmMain.renderer.hWnd, DevBehaviorFlags, D3DWindow)
         frmDebug.add_text_tracebox "Create; Direct3D; device: " & Err
     End If
     init_dx_device = Err.Number
-    
-
 End Function
-
-

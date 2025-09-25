@@ -4,7 +4,7 @@ Begin VB.Form frmPasswordReset
    AutoRedraw      =   -1  'True
    BackColor       =   &H80000005&
    BorderStyle     =   0  'None
-   ClientHeight    =   5136
+   ClientHeight    =   5130
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   5340
@@ -13,16 +13,16 @@ Begin VB.Form frmPasswordReset
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   428
+   ScaleHeight     =   342
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   445
+   ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox txtPasswordConfirm 
       BackColor       =   &H000D1312&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -42,7 +42,7 @@ Begin VB.Form frmPasswordReset
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -83,7 +83,7 @@ Begin VB.Form frmPasswordReset
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -103,7 +103,7 @@ Begin VB.Form frmPasswordReset
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -146,6 +146,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 '    Argentum 20 - Game Client Program
 '    Copyright (C) 2022 - Noland Studios
 '
@@ -163,12 +164,11 @@ Attribute VB_Exposed = False
 '
 '
 Public Function toggleTextboxs()
-    Me.txtEmail.Visible = Not Me.txtEmail.Visible
-    Me.txtCodigo.Visible = Not Me.txtCodigo.Visible
-    Me.txtPassword.Visible = Not Me.txtPassword.Visible
-    Me.txtPasswordConfirm.Visible = Not Me.txtPasswordConfirm.Visible
-    cmdHaveCode.Visible = Not cmdHaveCode.Visible
-    
+    Me.txtEmail.visible = Not Me.txtEmail.visible
+    Me.txtCodigo.visible = Not Me.txtCodigo.visible
+    Me.txtPassword.visible = Not Me.txtPassword.visible
+    Me.txtPasswordConfirm.visible = Not Me.txtPasswordConfirm.visible
+    cmdHaveCode.visible = Not cmdHaveCode.visible
     If cmdEnviar.Top = 275 Then
         cmdEnviar.Top = 240
         Image1.Top = 240
@@ -176,79 +176,58 @@ Public Function toggleTextboxs()
         cmdEnviar.Top = 275
         Image1.Top = 275
     End If
-    
-    If Me.txtPassword.Visible Then
+    If Me.txtPassword.visible Then
         Me.Picture = LoadInterface("ventanarecuperarcontrasena2.bmp")
     Else
         Me.Picture = LoadInterface("ventanarecuperarcontrasena.bmp")
     End If
-    
 End Function
 
 Private Sub cmdEnviar_Click()
-
-    CuentaEmail = Me.txtEmail.Text
-    
-    Me.txtCodigo.Text = Trim(Me.txtCodigo.Text)
-    
-'   If ModAuth.LoginOperation = e_operation.ForgotPassword And Auth_state <> e_state.Idle Then
+    CuentaEmail = Me.txtEmail.text
+    Me.txtCodigo.text = Trim(Me.txtCodigo.text)
+    '   If ModAuth.LoginOperation = e_operation.ForgotPassword And Auth_state <> e_state.Idle Then
     Select Case ModAuth.LoginOperation
-    
         Case e_operation.ResetPassword
-            
-            If Me.txtPassword.Text = "" Or Me.txtPasswordConfirm.Text = "" Or Me.txtCodigo.Text = "" Then
+            If Me.txtPassword.text = "" Or Me.txtPasswordConfirm.text = "" Or Me.txtCodigo.text = "" Then
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CAMPOS_INCOMPLETOS"), False, True)
                 Exit Sub
             End If
-            
-            If Not isValidEmail(Me.txtEmail.Text) Then
+            If Not isValidEmail(Me.txtEmail.text) Then
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO"), False, True)
                 Exit Sub
             End If
-            
-            If Me.txtPassword.Text <> Me.txtPasswordConfirm.Text Then
+            If Me.txtPassword.text <> Me.txtPasswordConfirm.text Then
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CONTRASENAS_NO_COINCIDEN"), False, False)
-
                 Exit Sub
             End If
-            
-            Call ModLogin.RequestNewPassword(frmPasswordReset.txtEmail.Text, frmPasswordReset.txtPassword.Text, Trim(frmPasswordReset.txtCodigo.Text))
+            Call ModLogin.RequestNewPassword(frmPasswordReset.txtEmail.text, frmPasswordReset.txtPassword.text, Trim(frmPasswordReset.txtCodigo.text))
         Case e_operation.ForgotPassword
-        
-
-            If Not isValidEmail(Me.txtEmail.Text) Then
+            If Not isValidEmail(Me.txtEmail.text) Then
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO"), False, False)
-
                 Exit Sub
             End If
-    
             'cmdEnviar.Visible = False
             lblSolicitandoCodigo.visible = True
             Call connectToLoginServer
         Case other
             Debug.Assert False
     End Select
-    
 End Sub
 
 Private Sub cmdHaveCode_Click()
-   
-    
-    If Not isValidEmail(Me.txtEmail.Text) Then
+    If Not isValidEmail(Me.txtEmail.text) Then
         MsgBox "El email ingresado es inválido."
         Exit Sub
     End If
-    
     Call toggleTextboxs
 End Sub
 
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanarecuperarcontrasena.bmp")
-    
     Me.Left = (frmConnect.Width / 2) - (Me.Width / 2) + frmConnect.Left
     Me.Top = frmConnect.Height - Me.Height - 400 + frmConnect.Top
-    
-     #If DEBUGGING = 1 Then
+    #If DEBUGGING = 1 Then
         cmdHaveCode.Caption = "HAVE CODE"
         cmdHaveCode.ForeColor = 1000
     #End If
@@ -257,4 +236,3 @@ End Sub
 Private Sub Image1_Click()
     Unload Me
 End Sub
-

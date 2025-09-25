@@ -1,10 +1,8 @@
 Attribute VB_Name = "BabelUI"
 Option Explicit
-
 Const CreateCharMap = 782
 Const CreateCharMapX = 25
 Const CreateCharMapY = 35
-
 'windows messages
 Private Const WM_DESTROY = &H2
 Private Const WM_MOUSEWHEEL = &H20A
@@ -67,15 +65,15 @@ Public Type BABELSETTINGS
 End Type
 
 Public Type t_Color
-    r As Byte
+    R As Byte
     G As Byte
-    b As Byte
+    B As Byte
 End Type
 
 Public Type t_ChatMessage
     Sender As String
     SenderColor As t_Color
-    Text As String
+    text As String
     TextColor As t_Color
     BoldText As Byte
     ItalicText As Byte
@@ -113,7 +111,7 @@ Public Type t_InvItem
     MaxHit As Integer
     MinDef As Integer
     MaxDef As Integer
-    Value As Single
+    value As Single
     Cooldown As Long
     CDType As Integer
     CDMask As Long
@@ -267,9 +265,6 @@ Public Type t_GuildInfo
     level As Byte
 End Type
 
-
-
-
 Public Enum MouseEvent
     kType_MouseMoved = 0
     kType_MouseDown = 1
@@ -290,11 +285,7 @@ Public Enum KeyEventType
     kType_Char = 3
 End Enum
 
-
-
-
-Public GetRemoteError As Boolean
-
+Public GetRemoteError   As Boolean
 Public IsGameDialogOpen As Boolean
 
 Public Function GetStringFromPtr(ByVal Ptr As Long, ByVal size As Long) As String
@@ -307,5 +298,3 @@ End Function
 Public Sub DisplayError(ByVal message As String, ByVal LocalizationStr As String)
     Call MsgBox(message)
 End Sub
-
-

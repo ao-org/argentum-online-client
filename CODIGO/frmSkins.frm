@@ -62,15 +62,12 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
-
 ' Constantes para simular el movimiento de la ventana
 Private Const WM_SYSCOMMAND As Long = &H112&
 Private Const MOUSE_MOVE    As Long = &HF012&
-
 ' Declaraciones de funciones API de Windows
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-
 ' Declaración de variable con evento de inventario gráfico
 Public WithEvents InvSkins As clsGrapchicalInventory
 Attribute InvSkins.VB_VarHelpID = -1
@@ -105,10 +102,8 @@ Private Sub Form_Load()
    On Error GoTo Form_Load_Error
 
     Call FormParser.Parse_Form(Me)
-    
     ' Aplica transparencia al formulario (valor 240 de opacidad)
     Call Aplicar_Transparencia(Me.hWnd, 240)
-
     ' Carga la imagen de fondo del formulario desde archivo
     frmSkins.Picture = LoadInterface("ventanaskins.bmp")
     
@@ -141,9 +136,7 @@ End Sub
 Public Sub WalletSkins()
     
     On Error GoTo WalletSkins_Err
-
     Exit Sub
-
 WalletSkins_Err:
     ' Manejo de errores estandarizado
     Call RegistrarError(Err.Number, Err.Description, "frmSkins.WalletSkins", Erl)

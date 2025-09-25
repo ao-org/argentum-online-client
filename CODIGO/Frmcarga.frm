@@ -3,13 +3,13 @@ Begin VB.Form Frmcarga
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Cargando..."
-   ClientHeight    =   1596
+   ClientHeight    =   1590
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   2412
+   ClientWidth     =   2415
    LinkTopic       =   "Form1"
-   ScaleHeight     =   1596
-   ScaleWidth      =   2412
+   ScaleHeight     =   1590
+   ScaleWidth      =   2415
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
 End
@@ -18,6 +18,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 '    Argentum 20 - Game Client Program
 '    Copyright (C) 2022 - Noland Studios
 '
@@ -35,16 +36,11 @@ Attribute VB_Exposed = False
 '
 '
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Me.Picture = LoadInterface("VentanaCargando.bmp")
     MakeFormTransparent Me, vbBlack
-
     Exit Sub
-
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "Frmcarga.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Frmcarga.Form_Load", Erl)
     Resume Next
-    
 End Sub

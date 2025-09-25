@@ -118,26 +118,16 @@ Attribute VB_Exposed = False
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
 Option Explicit
-
-Dim CName As String
-Private cBotonCerrar As clsGraphicalButton
+Dim CName                     As String
+Private cBotonCerrar          As clsGraphicalButton
 Private cBotonEnviarSolicitud As clsGraphicalButton
 
 Private Sub loadButtons()
-
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonEnviarSolicitud = New clsGraphicalButton
-    
-    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-                                                
-    Call cBotonEnviarSolicitud.Initialize(cmdEnviarSolicitud, "boton-enviarsolicitud-default.bmp", _
-                                                    "boton-enviarsolicitud-over.bmp", _
-                                                    "boton-enviarsolicitud-off.bmp", Me)
-                                                    
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
+    Call cBotonEnviarSolicitud.Initialize(cmdEnviarSolicitud, "boton-enviarsolicitud-default.bmp", "boton-enviarsolicitud-over.bmp", "boton-enviarsolicitud-off.bmp", Me)
 End Sub
 
 Private Sub cmdCerrar_Click()
@@ -145,65 +135,41 @@ Private Sub cmdCerrar_Click()
 End Sub
 
 Private Sub cmdEnviarSolicitud_Click()
-    
     On Error GoTo cmdEnviarSolicitud_Click_Err
-    
-    Call WriteGuildRequestMembership(CName, Replace(Replace(Text1.Text, ",", ";"), vbCrLf, "º"))
-
+    Call WriteGuildRequestMembership(CName, Replace(Replace(Text1.text, ",", ";"), vbCrLf, "º"))
     Unload Me
-
-    
     Exit Sub
-
 cmdEnviarSolicitud_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildSol.cmdEnviarSolicitud_Click", Erl)
     Resume Next
-    
 End Sub
 
-Public Sub RecieveSolicitud(ByVal GuildName As String)
-    
+Public Sub RecieveSolicitud(ByVal guildName As String)
     On Error GoTo RecieveSolicitud_Err
-    
-
-    CName = GuildName
-
-    
+    CName = guildName
     Exit Sub
-
 RecieveSolicitud_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildSol.RecieveSolicitud", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildSol.RecieveSolicitud", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanaclanes_solicitud_ingreso.bmp")
-    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     Call loadButtons
-    
     Exit Sub
-
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildSol.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildSol.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Form_MouseMove_Err
-    
-    Call MoverForm(Me.hwnd)
-    
+    Call MoverForm(Me.hWnd)
     Exit Sub
-
 Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildSol.Form_MouseMove", Erl)
     Resume Next
-    
 End Sub

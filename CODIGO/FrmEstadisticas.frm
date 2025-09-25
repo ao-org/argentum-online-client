@@ -1048,153 +1048,92 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
 Public bmoving      As Boolean
-
-Public dX           As Integer
-
+Public dx           As Integer
 Public dy           As Integer
-
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
-
 Const MOUSE_MOVE    As Long = &HF012&
-
 Private Declare Function ReleaseCapture Lib "user32" () As Long
-
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
-
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 Private RealizoCambios                As Long
-
 Private PonerloEnRojo(1 To NUMSKILLS) As Boolean
-
-Private cBotonAceptar As clsGraphicalButton
-Private cBotonCerrar As clsGraphicalButton
-
+Private cBotonAceptar                 As clsGraphicalButton
+Private cBotonCerrar                  As clsGraphicalButton
 
 Public Sub Iniciar_Labels()
-    
     On Error GoTo Iniciar_Labels_Err
-    
-
     'Iniciamos los labels con los valores de los atributos y los skills
     Dim i As Integer
-
     For i = 1 To NUMSKILLS
         If UserSkills(i) > 100 Then UserSkills(i) = 100
-
         Text1(i).Caption = UserSkills(i)
     Next
-    
     Exit Sub
-
 Iniciar_Labels_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Iniciar_Labels", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.Iniciar_Labels", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub loadButtons()
-       
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
-
-
-    Call cBotonAceptar.Initialize(Image1, "boton-aceptar-default.bmp", _
-                                                "boton-aceptar-over.bmp", _
-                                                "boton-aceptar-off.bmp", Me)
-                                                
-                                                
-    Call cBotonCerrar.Initialize(imgCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-    
+    Call cBotonAceptar.Initialize(Image1, "boton-aceptar-default.bmp", "boton-aceptar-over.bmp", "boton-aceptar-off.bmp", Me)
+    Call cBotonCerrar.Initialize(imgCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
 End Sub
 
 Private Sub Command1_Click(Index As Integer)
-    
     On Error GoTo Command1_Click_Err
-    
     Dim indice
-
     Dim skilloriginal
-
     indice = Index \ 2 + 1
-
     If (Index And &H1) = 0 Then
         If Alocados > 0 Then
             indice = Index \ 2 + 1
-
             If indice > NUMSKILLS Then indice = NUMSKILLS
-            If Val(Text1(indice).Caption) < MAXSKILLPOINTS Then
-                Text1(indice).Caption = Val(Text1(indice).Caption) + 1
+            If val(Text1(indice).Caption) < MAXSKILLPOINTS Then
+                Text1(indice).Caption = val(Text1(indice).Caption) + 1
                 flags(indice) = flags(indice) + 1
                 Alocados = Alocados - 1
                 RealizoCambios = RealizoCambios + 1
-
             End If
-            
         End If
-
     Else
-
         If Alocados < SkillPoints Then
-        
             indice = Index \ 2 + 1
-
-            If Val(Text1(indice).Caption) > 0 And flags(indice) > 0 Then
-                Text1(indice).Caption = Val(Text1(indice).Caption) - 1
+            If val(Text1(indice).Caption) > 0 And flags(indice) > 0 Then
+                Text1(indice).Caption = val(Text1(indice).Caption) - 1
                 flags(indice) = flags(indice) - 1
                 Alocados = Alocados + 1
                 RealizoCambios = RealizoCambios - 1
-
             End If
-
         End If
-
     End If
-
-    puntos.Caption = Alocados
-
+    Puntos.Caption = Alocados
     Dim ladder As Byte
-
-    ladder = Val(Text1(indice).Caption)
-
+    ladder = val(Text1(indice).Caption)
     If UserSkills(indice) < ladder Then
         Text1(indice).ForeColor = vbRed
         PonerloEnRojo(indice) = True
-
     End If
-
     If UserSkills(indice) = ladder Then
         Text1(indice).ForeColor = &H40C0&
         RealizoCambios = RealizoCambios - 1
         PonerloEnRojo(indice) = False
-
     End If
-
-    
     Exit Sub
-
 Command1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Command1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.Command1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command2_Click()
-    
     On Error GoTo Command2_Click_Err
-    
     Unload Me
-
-    
     Exit Sub
-
 Command2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Command2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.Command2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub command1_DblClick(Index As Integer)
@@ -1202,268 +1141,169 @@ Private Sub command1_DblClick(Index As Integer)
 End Sub
 
 Private Sub Command1_MouseDown(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Command1_MouseDown_Err
-    
     Set Command1(Index).Picture = LoadInterface(IIf(Index Mod 2 = 1, "boton-sm-flecha-izq-off.bmp", "boton-sm-flecha-der-off.bmp"))
     Command1(Index).Tag = "1"
-    
     Exit Sub
-
 Command1_MouseDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Command1_MouseDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.Command1_MouseDown", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command1_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Command1_MouseMove_Err
-    
     If Command1(Index).Tag = "0" Then
         Set Command1(Index).Picture = LoadInterface(IIf(Index Mod 2 = 1, "boton-sm-flecha-izq-over.bmp", "boton-sm-flecha-der-over.bmp"))
         Command1(Index).Tag = "1"
     End If
-
     Exit Sub
-
 Command1_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Command1_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.Command1_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub command1_MouseUp(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo command1_MouseUp_Err
-    
     Set Command1(Index) = Nothing
     Command1(Index).Tag = "0"
-    
     Exit Sub
-
 command1_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.command1_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.command1_MouseUp", Erl)
     Resume Next
-    
 End Sub
+
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
-    
     On Error GoTo Form_KeyDown_Err
-    
     If KeyCode = 27 Then
         Unload Me
-
     End If
-
-    
     Exit Sub
-
 Form_KeyDown_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Form_KeyDown", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.Form_KeyDown", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
-    Call Aplicar_Transparencia(Me.hwnd, 240)
-    
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     Call FormParser.Parse_Form(Me)
     'Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
     RealizoCambios = 0
     ReDim flags(1 To NUMSKILLS)
-    
     Call loadButtons
-    
     Exit Sub
-
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Form_MouseMove_Err
-    
-    MoverForm Me.hwnd
+    MoverForm Me.hWnd
     'If Image1.Tag = "1" Then
     ' Image1.Picture = LoadInterface("botonlargoaceptar.bmp")
     '    Image1.Tag = "0"
     'End If
     Image1.Picture = Nothing
-    
     Dim A As Integer
-
     For A = 1 To NUMSKILLS
-
         If Not PonerloEnRojo(A) Then
             Text1(A).ForeColor = &HEA4EB
-
             'Skills(a).ForeColor = vbWhite
         End If
-
         If PonerloEnRojo(A) = True Then
             Text1(A).ForeColor = vbRed
-
         End If
-
     Next A
-    
     Exit Sub
-
 Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Form_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.Form_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
-    
     On Error GoTo Form_QueryUnload_Err
-    
     Unload Me
-
-    
     Exit Sub
-
 Form_QueryUnload_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Form_QueryUnload", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.Form_QueryUnload", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Image1_Click()
-    
     On Error GoTo Image1_Click_Err
-    
-
     If RealizoCambios >= 1 Then
         If MsgBox(JsonLanguage.Item("MENSAJEBOX_GUARDAR_SKILLPOINTS"), vbYesNo) = vbYes Then
-
             Dim skillChanges(NUMSKILLS) As Byte
-
             Dim i                       As Long
-
             For i = 1 To NUMSKILLS
                 skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(Text1(i).Caption)
-        
+                UserSkills(i) = val(Text1(i).Caption)
             Next i
-    
             Call WriteModifySkills(skillChanges())
-    
             SkillPoints = Alocados
             Unload Me
-
         End If
-
     End If
-
     Unload Me
-    
     For i = 1 To NUMSKILLS
         PonerloEnRojo(i) = False
     Next i
-
-    
     Exit Sub
-
 Image1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Image1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.Image1_Click", Erl)
     Resume Next
-    
 End Sub
-
 
 Private Sub imgCerrar_Click()
-    
     On Error GoTo imgCerrar_Click_Err
-    
     If RealizoCambios >= 1 Then
         If MsgBox(JsonLanguage.Item("MENSAJEBOX_CAMBIOS_SKILLPOINTS"), vbYesNo) = vbYes Then
-
             Dim skillChanges(NUMSKILLS) As Byte
-
             Dim i                       As Long
-
             For i = 1 To NUMSKILLS
                 skillChanges(i) = CByte(Text1(i).Caption) - UserSkills(i)
                 'Actualizamos nuestros datos locales
-                UserSkills(i) = Val(Text1(i).Caption)
+                UserSkills(i) = val(Text1(i).Caption)
             Next i
-    
             Call WriteModifySkills(skillChanges())
-    
             SkillPoints = Alocados
             Unload Me
-
         End If
-
     End If
-    
     For i = 1 To NUMSKILLS
         PonerloEnRojo(i) = False
     Next i
-
     Unload Me
-
-    
     Exit Sub
-
 imgCerrar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.imgCerrar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.imgCerrar_Click", Erl)
     Resume Next
-    
 End Sub
 
-
-
 Private Sub skills_Click(Index As Integer)
-    
     On Error GoTo skills_Click_Err
-    
     AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_INFORMACION_DE_SKILL") & SkillsDesc(Index), 2, 51, 223, 1, 1
-
     Exit Sub
-
 skills_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.skills_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.skills_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Skills_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Skills_MouseMove_Err
-    
-
     Dim A As Integer
-
     For A = 1 To NUMSKILLS
-
         If Not PonerloEnRojo(A) Then
             Text1(A).ForeColor = &HEA4EB
-
         End If
-
         'Skills(a).ForeColor = vbWhite
     Next A
-
     Text1(Index).ForeColor = vbBlue
-
     'Skills(index).ForeColor = vbBlue
-    
     Exit Sub
-
 Skills_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmEstadisticas.Skills_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmEstadisticas.Skills_MouseMove", Erl)
     Resume Next
-    
 End Sub
-

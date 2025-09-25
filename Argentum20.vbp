@@ -181,11 +181,12 @@ MinorVer=1
 RevisionVer=95
 AutoIncrementVer=0
 ServerSupportFiles=0
-VersionComments="https://www.ao20.com.ar"
-VersionCompanyName="Argentum20"
-VersionLegalCopyright="Argentum20 Staff"
-VersionProductName="Argentum20 by Noland Studios"
-CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1"
+VersionComments="https://www.argentumonline.com.ar/"
+VersionCompanyName="Argentum Online"
+VersionLegalCopyright="Argentum Online ©"
+VersionLegalTrademarks="Argentum Online ©"
+VersionProductName="Argentum Online by Noland Studios"
+CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 1"
 CompilationType=0
 OptimizationType=0
 FavorPentiumPro(tm)=0

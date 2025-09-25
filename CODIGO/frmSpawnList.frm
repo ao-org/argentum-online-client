@@ -2,15 +2,15 @@ VERSION 5.00
 Begin VB.Form frmSpawnList 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Invocar NPC"
-   ClientHeight    =   4176
-   ClientLeft      =   48
-   ClientTop       =   216
-   ClientWidth     =   2772
+   ClientHeight    =   4185
+   ClientLeft      =   45
+   ClientTop       =   210
+   ClientWidth     =   2775
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4176
-   ScaleWidth      =   2772
+   ScaleHeight     =   4185
+   ScaleWidth      =   2775
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox Filter 
@@ -24,7 +24,7 @@ Begin VB.Form frmSpawnList
       Caption         =   "Spawn"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -42,14 +42,14 @@ Begin VB.Form frmSpawnList
    Begin VB.ListBox lstCriaturas 
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   2904
+      Height          =   2790
       Left            =   120
       TabIndex        =   1
       Top             =   480
@@ -60,7 +60,7 @@ Begin VB.Form frmSpawnList
       Caption         =   "Filtrar:"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -126,111 +126,71 @@ Attribute VB_Exposed = False
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
 Option Explicit
-
 Public ListaCompleta As Boolean
 
 Private Sub Command1_Click()
-    
     On Error GoTo Command1_Click_Err
-    
     If lstCriaturas.ListIndex < 0 Then Exit Sub
-
     Call WriteSpawnCreature(lstCriaturas.ItemData(lstCriaturas.ListIndex))
-
-    
     Exit Sub
-
 Command1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmSpawnList.Command1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmSpawnList.Command1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command2_Click()
-    
     On Error GoTo Command2_Click_Err
-    
     Unload Me
-    
     Exit Sub
-
 Command2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmSpawnList.Command2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmSpawnList.Command2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Filter_Change()
-    
     On Error GoTo Filter_Change_Err
-    
     FillList
-    
     Exit Sub
-
 Filter_Change_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmSpawnList.Filter_Change", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmSpawnList.Filter_Change", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub FillList()
-    
     On Error GoTo FillList_Err
-
     lstCriaturas.Clear
-
     Dim i As Long
-
     For i = 1 To UBound(NpcData())
-        If NpcData(i).name <> "Vacío" Then
+        If NpcData(i).Name <> "Vacío" Then
             If NpcData(i).PuedeInvocar = 1 Or ListaCompleta Then
-                If InStr(1, Tilde(NpcData(i).Name), Tilde(Filter.Text)) Then
+                If InStr(1, Tilde(NpcData(i).Name), Tilde(Filter.text)) Then
                     Call lstCriaturas.AddItem(i & " - " & NpcData(i).Name)
                     lstCriaturas.ItemData(lstCriaturas.NewIndex) = i
                 End If
             End If
         End If
     Next i
-    
     Exit Sub
-
 FillList_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmSpawnList.FillList", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmSpawnList.FillList", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Filter_KeyUp(KeyCode As Integer, Shift As Integer)
-    
     If KeyCode = vbKeyEscape Then
-    
         Unload Me
-    
     ElseIf KeyCode = vbKeyReturn Then
-    
         lstCriaturas.ListIndex = 0
         lstCriaturas.SetFocus
-    
     End If
-    
 End Sub
 
-
 Private Sub lstCriaturas_KeyUp(KeyCode As Integer, Shift As Integer)
-
     If KeyCode = vbKeyEscape Then
-    
         Unload Me
-    
     ElseIf KeyCode = vbKeyReturn Then
-    
         If lstCriaturas.ListIndex < 0 Then Exit Sub
-
         Call WriteSpawnCreature(lstCriaturas.ItemData(lstCriaturas.ListIndex))
-    
     End If
-
 End Sub
