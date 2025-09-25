@@ -38,13 +38,11 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
-Private Declare Function QueryPerformanceCounter Lib "Kernel32" (x As Currency) As Boolean
-Private Declare Function QueryPerformanceFrequency Lib "Kernel32" (x As Currency) As Boolean
-
+Private Declare Function QueryPerformanceCounter Lib "kernel32" (x As Currency) As Boolean
+Private Declare Function QueryPerformanceFrequency Lib "kernel32" (x As Currency) As Boolean
 Private m_startTime As Currency
-Private m_freq As Currency
-Private m_overhead As Currency
+Private m_freq      As Currency
+Private m_overhead  As Currency
 
 Public Sub start()
     QueryPerformanceCounter m_startTime
@@ -68,4 +66,3 @@ Private Sub Class_Initialize()
     QueryPerformanceCounter ctr2
     m_overhead = ctr2 - ctr1
 End Sub
-

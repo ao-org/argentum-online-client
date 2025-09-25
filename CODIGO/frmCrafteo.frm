@@ -2,16 +2,16 @@ VERSION 5.00
 Begin VB.Form frmCrafteo 
    BackColor       =   &H00FFFFFF&
    BorderStyle     =   0  'None
-   ClientHeight    =   5076
+   ClientHeight    =   5070
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   9000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   423
+   ScaleHeight     =   338
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   750
+   ScaleWidth      =   600
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton BtnAgregarCatalizador 
@@ -60,9 +60,9 @@ Begin VB.Form frmCrafteo
       BorderStyle     =   0  'None
       Height          =   3675
       Left            =   360
-      ScaleHeight     =   306
+      ScaleHeight     =   245
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   690
+      ScaleWidth      =   552
       TabIndex        =   0
       Top             =   600
       Width           =   8280
@@ -90,19 +90,17 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
-Public WithEvents InvCraftUser As clsGrapchicalInventory
+Public WithEvents InvCraftUser     As clsGrapchicalInventory
 Attribute InvCraftUser.VB_VarHelpID = -1
-Public WithEvents InvCraftItems As clsGrapchicalInventory
+Public WithEvents InvCraftItems    As clsGrapchicalInventory
 Attribute InvCraftItems.VB_VarHelpID = -1
 Public WithEvents InvCraftCatalyst As clsGrapchicalInventory
 Attribute InvCraftCatalyst.VB_VarHelpID = -1
-
-Public InventoryGrhIndex As Long
-Public TipoGrhIndex As Long
-Public ResultGrhIndex As Long
-Public PorcentajeAcierto As Byte
-Public PrecioCrafteo As Long
+Public InventoryGrhIndex           As Long
+Public TipoGrhIndex                As Long
+Public ResultGrhIndex              As Long
+Public PorcentajeAcierto           As Byte
+Public PrecioCrafteo               As Long
 
 Private Sub BtnAgregarCatalizador_Click()
     If InvCraftUser.SelectedItem > 0 Then
@@ -133,12 +131,12 @@ Private Sub Craftear_Click()
 End Sub
 
 Private Sub Form_Load()
-    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     Call FormParser.Parse_Form(Me)
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    Call MoverForm(Me.hwnd)
+    Call MoverForm(Me.hWnd)
 End Sub
 
 Public Sub SetResult(ByVal GrhIndex As Long, ByVal Porcentaje As Byte, ByVal Precio As Long)
@@ -160,22 +158,19 @@ Private Sub InvCraftCatalyst_ItemDropped(ByVal Drag As Integer, ByVal Drop As In
     ' Si soltó fuera del catalizador (drag a otro inventario)
     If Drop = 0 Then
         Drop = InvCraftUser.GetSlot(x, y)
-
         ' Si lo soltó dentro del inventario
         If Drop > 0 Then
             ' Si ya había un item en ese slot
-            If InvCraftUser.OBJIndex(Drop) Then
+            If InvCraftUser.ObjIndex(Drop) Then
                 ' Y es distinto al que estamos devolviendo
-                If InvCraftItems.OBJIndex(Drag) <> InvCraftUser.OBJIndex(Drop) Then
+                If InvCraftItems.ObjIndex(Drag) <> InvCraftUser.ObjIndex(Drop) Then
                     ' Lo tiramos en cualquier otro slot del inventario
                     Drop = 0
                 End If
             End If
-
             ' Movemos el catalizador al inventario
             Call WriteRemoveCatalyst(Drop)
         End If
-
     End If
 End Sub
 
@@ -188,22 +183,19 @@ Private Sub InvCraftItems_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integ
         End If
     Else
         Drop = InvCraftUser.GetSlot(x, y)
-
         ' Si lo soltó dentro del inventario
         If Drop > 0 Then
             ' Si ya había un item en ese slot
-            If InvCraftUser.OBJIndex(Drop) Then
+            If InvCraftUser.ObjIndex(Drop) Then
                 ' Y es distinto al que estamos devolviendo
-                If InvCraftItems.OBJIndex(Drag) <> InvCraftUser.OBJIndex(Drop) Then
+                If InvCraftItems.ObjIndex(Drag) <> InvCraftUser.ObjIndex(Drop) Then
                     ' Lo tiramos en cualquier otro slot del inventario
                     Drop = 0
                 End If
             End If
-
             ' Sacamos el item al slot que indicó
             Call WriteRemoveItemCrafting(Drag, Drop)
         End If
-
     End If
 End Sub
 
@@ -216,35 +208,27 @@ Private Sub InvCraftUser_ItemDropped(ByVal Drag As Integer, ByVal Drop As Intege
         End If
     Else
         Drop = InvCraftItems.GetSlot(x, y)
-
         ' Si lo soltó dentro de los slots de crafteo
         If Drop > 0 Then
             ' Si ya había un item en ese slot
-            If InvCraftItems.OBJIndex(Drop) Then
+            If InvCraftItems.ObjIndex(Drop) Then
                 ' Lo devolvemos al inventario
                 Call WriteRemoveItemCrafting(Drop, 0)
             End If
-
             ' Agregamos el item al slot de crafteo
             Call WriteAddItemCrafting(Drag, Drop)
-
         Else
             Drop = InvCraftCatalyst.GetSlot(x, y)
-            
             ' Si lo soltó dentro del slot del catalizador
             If Drop > 0 Then
                 ' Si ya había un item en ese slot
-                If InvCraftCatalyst.OBJIndex(Drop) Then
+                If InvCraftCatalyst.ObjIndex(Drop) Then
                     ' Lo devolvemos al inventario
                     Call WriteRemoveCatalyst(0)
                 End If
-    
                 ' Agregamos el item al slot del catalizador
                 Call WriteAddCatalyst(Drag)
             End If
         End If
-
     End If
 End Sub
-
-

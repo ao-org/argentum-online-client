@@ -237,24 +237,9 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
-Private Declare Function GetWindowLong Lib "user32" _
-    Alias "GetWindowLongW" ( _
-    ByVal hwnd As Long, _
-    ByVal nIndex As Long) As Long
-    
-Private Declare Function SetWindowLong Lib "user32" _
-    Alias "SetWindowLongW" ( _
-    ByVal hwnd As Long, _
-    ByVal nIndex As Long, _
-    ByVal dwNewLong As Long) As Long
-    
-Private Declare Function SetLayeredWindowAttributes Lib "user32" ( _
-    ByVal hwnd As Long, _
-    ByVal crKey As Long, _
-    ByVal bAlpha As Byte, _
-    ByVal dwFlags As Long) As Long
-    
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongW" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongW" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 Private Const GWL_EXSTYLE = -20
 Private Const WS_EX_LAYERED = &H80000
 Private Const LWA_COLORKEY = &H1&
@@ -272,10 +257,8 @@ Private Sub eventNews_Click()
 End Sub
 
 Private Sub Form_Load()
-
     Me.Picture = LoadInterface("board.bmp")
     MakeFormTransparent Me, vbBlack    'Set the Form "transparent by color."
-
 End Sub
 
 Private Sub Form_LostFocus()
@@ -294,16 +277,12 @@ Private Sub Image1_Click()
     Unload Me
 End Sub
 
-
 Private Sub newsLink_Click()
     Call OpenLink("https://steamcommunity.com/app/1956740/allnews/")
 End Sub
 
 Private Sub OpenLink(link As String)
-    ShellExecute ByVal 0&, "open", _
-        link, _
-        vbNullString, vbNullString, _
-        vbMaximizedFocus
+    ShellExecute ByVal 0&, "open", link, vbNullString, vbNullString, vbMaximizedFocus
 End Sub
 
 Private Sub PatreonLink_Click(Index As Integer)

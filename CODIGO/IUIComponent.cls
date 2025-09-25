@@ -41,7 +41,4 @@ Option Explicit
 
 Public Sub render(ByVal dev As Direct3DDevice8): End Sub
 
-Public Sub HandleInput(ByVal mouseX As Long, _
-    ByVal mouseY As Long, _
-    ByVal mouseButtons As Long): End Sub
-
+Public Sub HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long): End Sub

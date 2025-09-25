@@ -37,8 +37,6 @@ Attribute VB_Exposed = False
 '
 '
 '
-
-
 Option Explicit
 
 ''
@@ -48,14 +46,11 @@ Option Explicit
 ' @param CurrentTick Current Tick in which the Timer is.
 ' @param StartTick Tick in which current cicle has started.
 ' @param Run True if the timer is active.
-
 Private Type Timer
-
     Interval As Long
     CurrentTick As Long
     StartTick As Long
     Run As Boolean
-
 End Type
 
 ''
@@ -69,7 +64,6 @@ End Type
 ' @param CastSpell              Controls the casting of spells.
 ' @param Arrows                 Controls the shooting of arrows.
 Public Enum TimersIndex
-
     Attack = 1
     UseItemWithU = 2
     UseItemWithDblClick = 3
@@ -81,14 +75,12 @@ Public Enum TimersIndex
     AttackUse = 9
     Walk = 10
     Drop = 11
-
 End Enum
 
 ''
 ' How many timers we are going to use-
 '
-Private Const CANTIDADTIMERS As Byte = 11
-
+Private Const CANTIDADTIMERS   As Byte = 11
 'Timers
 Dim Timer(1 To CANTIDADTIMERS) As Timer
 
@@ -98,24 +90,15 @@ Dim Timer(1 To CANTIDADTIMERS) As Timer
 ' @param TimerIndex Timer´s Index
 ' @param Interval New lenght for the Timer´s cicle in miliseconds.
 ' @remarks  Must be donde after creating the timer and before using it, otherwise, Interval will be 0
-
 Public Sub SetInterval(ByVal TimerIndex As TimersIndex, ByVal Interval As Long)
-    
     On Error GoTo SetInterval_Err
-
     'Desc: Sets a new interval for a timer.
-
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
-    
     Timer(TimerIndex).Interval = Interval
-
-    
     Exit Sub
-
 SetInterval_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsTimer.SetInterval", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsTimer.SetInterval", Erl)
     Resume Next
-    
 End Sub
 
 ''
@@ -123,24 +106,15 @@ End Sub
 '
 ' @param TimerIndex Timer´s Index
 ' @remarks  Do this for starting the timer.
-
-Public Sub Start(ByVal TimerIndex As TimersIndex)
-    
+Public Sub start(ByVal TimerIndex As TimersIndex)
     On Error GoTo Start_Err
-
     'Desc: Starts running the Timer.
-
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
-    
     Timer(TimerIndex).Run = True 'We allow the Timer to run.
-
-    
     Exit Sub
-
 Start_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsTimer.Start", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsTimer.Start", Erl)
     Resume Next
-    
 End Sub
 
 ''
@@ -148,27 +122,17 @@ End Sub
 '
 ' @param TimerIndex Timer´s Index
 ' @remarks  Makes the Timer continue from where it had stoped.
-
 Public Sub Continue(ByVal TimerIndex As TimersIndex)
-    
     On Error GoTo Continue_Err
-
     'Desc: Continue our timer from where we had stopped it.
-
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
-    
     Timer(TimerIndex).Run = True 'We allow the Timer to run.
-    
     'We´ll set the StartTick again
     Timer(TimerIndex).StartTick = Timer(TimerIndex).StartTick + Timer(TimerIndex).CurrentTick
-
-    
     Exit Sub
-
 Continue_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsTimer.Continue", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsTimer.Continue", Erl)
     Resume Next
-    
 End Sub
 
 ''
@@ -176,26 +140,16 @@ End Sub
 '
 ' @param TimerIndex Timer´s Index
 ' @remarks  Can be resumed with Continue()
-
 Public Sub Pause(ByVal TimerIndex As TimersIndex)
-    
     On Error GoTo Pause_Err
-
     'Desc: Pauses the timer.
-
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
-    
     Timer(TimerIndex).Run = False 'Don´t allow the timer to run.
-    
     Timer(TimerIndex).CurrentTick = FrameTime - Timer(TimerIndex).StartTick 'Calculates acutual tick
-
-    
     Exit Sub
-
 Pause_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsTimer.Pause", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsTimer.Pause", Erl)
     Resume Next
-    
 End Sub
 
 ''
@@ -205,61 +159,37 @@ End Sub
 ' @param Restart If true, restart if we timer has ticked
 ' @return True if the interval has already been elapsed
 ' @remarks  Can´t be done if the timer is stoped or if it had never been started.
-
 Public Function Check(ByVal TimerIndex As TimersIndex, Optional Restart As Boolean = True) As Boolean
-    
     On Error GoTo Check_Err
-
     'Added Restart as boolean
     'Desc: Checks if the Timer has alredy "ticked"
     'Returns: True if it has ticked, False if not.
-
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Function
-    
     If Not Timer(TimerIndex).Run Then Exit Function 'If we weren´t allowed to run, exit function
-    
     Timer(TimerIndex).CurrentTick = FrameTime - Timer(TimerIndex).StartTick 'Calcutates CurrentTick
-    
     If Timer(TimerIndex).CurrentTick >= Timer(TimerIndex).Interval Then
         Check = True 'We have Ticked!
-
         If Restart Then
             Timer(TimerIndex).StartTick = FrameTime 'Restart Timer (Nicer than calling Restart() )
-
         End If
-
     End If
-
-    
     Exit Function
-
 Check_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsTimer.Check", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsTimer.Check", Erl)
     Resume Next
-    
 End Function
 
 ''
 ' Restarts timer.
 '
 ' @param TimerIndex Timer´s Index
-
 Public Sub Restart(ByVal TimerIndex As TimersIndex)
-    
     On Error GoTo Restart_Err
-
     'Desc: Restarts timer
-
     If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
-    
     Timer(TimerIndex).StartTick = FrameTime
-
-    
     Exit Sub
-
 Restart_Err:
-    Call RegistrarError(Err.number, Err.Description, "clsTimer.Restart", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "clsTimer.Restart", Erl)
     Resume Next
-    
 End Sub
-

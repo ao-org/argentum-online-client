@@ -16,24 +16,20 @@ Attribute VB_Name = "Mod_TCP"
 '
 '
 Option Explicit
-
-
 Public LlegaronSkills As Boolean
 Public LlegaronStats  As Boolean
 Public LlegaronAtrib  As Boolean
 
-
 #If PYMMO = 1 Then
-Sub LoginOrConnect(ByVal Modo As E_MODO)
-    EstadoLogin = Modo
-    
-    If Auth_state = e_state.AccountLogged Then
-        Call Login
-    Else
-        Call connectToLoginServer
-    End If
-  
-End Sub
+    Sub LoginOrConnect(ByVal Modo As E_MODO)
+        EstadoLogin = Modo
+        If Auth_state = e_state.AccountLogged Then
+            Call Login
+        Else
+            Call connectToLoginServer
+        End If
+    End Sub
+
 #ElseIf PYMMO = 0 Then
 Sub LoginOrConnect(ByVal Modo As E_MODO)
     
@@ -49,29 +45,21 @@ End Sub
 #End If
 
 Sub Login()
-    
     On Error GoTo Login_Err
-    
     Select Case EstadoLogin
-    
         Case E_MODO.Normal
             Call WriteLoginExistingChar
-        
         Case E_MODO.CrearNuevoPj
             Call WriteLoginNewChar(userName, UserStats.Raza, UserStats.Sexo, UserStats.Clase, MiCabeza, UserStats.Hogar)
-#If PYMMO = 0 Then
-        Case E_MODO.IngresandoConCuenta
-            Call WriteLoginAccount
-        
-        Case E_MODO.CreandoCuenta
-            Call WriteCreateAccount
-#End If
+            #If PYMMO = 0 Then
+            Case E_MODO.IngresandoConCuenta
+                Call WriteLoginAccount
+            Case E_MODO.CreandoCuenta
+                Call WriteCreateAccount
+            #End If
     End Select
-
     Exit Sub
-
 Login_Err:
-    Call RegistrarError(Err.number, Err.Description, "Mod_TCP.Login", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Mod_TCP.Login", Erl)
     Resume Next
-    
 End Sub

@@ -242,139 +242,88 @@ Attribute VB_Exposed = False
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
 Option Explicit
-Private cBotonCerrar As clsGraphicalButton
+Private cBotonCerrar   As clsGraphicalButton
 Private cBotonDetalles As clsGraphicalButton
+
 Private Sub beneficios_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo beneficios_MouseMove_Err
-    
-    porciento.Visible = True
-    expcount.Visible = False
-
-    
+    porciento.visible = True
+    expcount.visible = False
     Exit Sub
-
 beneficios_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildNews.beneficios_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildNews.beneficios_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub loadButtons()
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonDetalles = New clsGraphicalButton
-    
-    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-    Call cBotonDetalles.Initialize(cmdDetalles, "boton-detalles-default.bmp", _
-                                                "boton-detalles-over.bmp", _
-                                                "boton-detalles-off.bmp", Me)
-
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
+    Call cBotonDetalles.Initialize(cmdDetalles, "boton-detalles-default.bmp", "boton-detalles-over.bmp", "boton-detalles-off.bmp", Me)
 End Sub
 
-Private Sub cmdcerrar_Click()
+Private Sub cmdCerrar_Click()
     Unload Me
 End Sub
 
 Private Sub Command1_Click()
-    
     On Error GoTo Command1_Click_Err
-    
-
-    
-
     Unload Me
     frmMain.SetFocus
-
-    
     Exit Sub
-
 Command1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildNews.Command1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildNews.Command1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdDetalles_Click()
-    
     On Error GoTo cmdDetalles_Click_Err
-    
     Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
-
-    
     Exit Sub
-
 cmdDetalles_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildNews.cmdDetalles_Click", Erl)
     Resume Next
-    
 End Sub
 
-Private Sub Frame5_DragDrop(source As Control, x As Single, y As Single)
-    
+Private Sub Frame5_DragDrop(Source As Control, x As Single, y As Single)
     On Error GoTo Frame5_DragDrop_Err
-    
-    porciento.Visible = True
-    expcount.Visible = False
-
-    
+    porciento.visible = True
+    expcount.visible = False
     Exit Sub
-
 Frame5_DragDrop_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildNews.Frame5_DragDrop", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildNews.Frame5_DragDrop", Erl)
     Resume Next
-    
 End Sub
-
 
 Private Sub porciento_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo porciento_MouseMove_Err
-    
-    porciento.Visible = False
-    expcount.Visible = True
-
-    
+    porciento.visible = False
+    expcount.visible = True
     Exit Sub
-
 porciento_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildNews.porciento_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildNews.porciento_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanaclanes_noticias.bmp")
-        
-    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     Call loadButtons
     Exit Sub
-    
     Exit Sub
-
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildNews.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildNews.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Form_MouseMove_Err
-    
-    Call MoverForm(Me.hwnd)
-    
+    Call MoverForm(Me.hWnd)
     Exit Sub
-
 Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildNews.Form_MouseMove", Erl)
     Resume Next
-    
 End Sub

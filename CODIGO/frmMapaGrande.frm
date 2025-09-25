@@ -449,36 +449,24 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
-
 '=== PREVIEW NPC: estado interno (auto-inyectado) ===
 Private Const PREVIEW_INTERVAL_MS As Integer = 120   ' ~8 fps
-Private Const DIR_TICKS As Integer = 18               ' cada 6 frames, rota dirección
-
-Private pvBody As Integer
-Private pvHead As Integer
-
-Private pvHeading As Integer                          ' 1..4
-Private pvFrame As Integer                            ' 1..N
-Private pvDirTick As Integer
-
-Private pvBaseBody(1 To 4) As Long
-Private pvBaseHead(1 To 4) As Long
-Private pvNumFramesBody(1 To 4) As Integer
-Private pvNumFramesHead(1 To 4) As Integer
-
-Public bmoving      As Boolean
-
-Public dX           As Integer
-
-Public dy           As Integer
-
-Public Referencias  As Boolean
-
+Private Const DIR_TICKS           As Integer = 18               ' cada 6 frames, rota dirección
+Private pvBody                    As Integer
+Private pvHead                    As Integer
+Private pvHeading                 As Integer                          ' 1..4
+Private pvFrame                   As Integer                            ' 1..N
+Private pvDirTick                 As Integer
+Private pvBaseBody(1 To 4)        As Long
+Private pvBaseHead(1 To 4)        As Long
+Private pvNumFramesBody(1 To 4)   As Integer
+Private pvNumFramesHead(1 To 4)   As Integer
+Public bmoving                    As Boolean
+Public dx                         As Integer
+Public dy                         As Integer
+Public Referencias                As Boolean
 Private Const TILE_SIZE = 27
-
 Private Const MAPAS_ANCHO = 19
-
 Private Const MAPAS_ALTO = 22
 
 Private Sub Form_Activate()
@@ -489,91 +477,60 @@ Private Sub Form_Activate()
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
-    
     On Error GoTo Form_KeyDown_Err
-    
     If KeyCode = 27 Then
-        Me.Visible = False
+        Me.visible = False
     End If
-    
     Exit Sub
-
 Form_KeyDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Form_KeyDown", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Load()
-    
-    
-On Error Resume Next
-tmrPreview.Interval = PREVIEW_INTERVAL_MS
-tmrPreview.enabled = False
-
-On Error GoTo Form_Load_Err
-    
+    On Error Resume Next
+    tmrPreview.Interval = PREVIEW_INTERVAL_MS
+    tmrPreview.enabled = False
+    On Error GoTo Form_Load_Err
     ListView1.BackColor = RGB(7, 7, 7)
     listdrop.BackColor = RGB(7, 7, 7)
     lblMapInfo(0).ForeColor = RGB(235, 164, 14)
-    
     Call FormParser.Parse_Form(Me)
     Call Aplicar_Transparencia(Me.hWnd, 240)
-    
-   ' picMap.Picture = LoadInterface("mapa.bmp")
-    
+    ' picMap.Picture = LoadInterface("mapa.bmp")
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Form_MouseMove_Err
-    
-    MoverForm Me.hwnd
+    MoverForm Me.hWnd
     Image1 = Nothing
-    
     If Image1.Tag = "1" Then
         Image1.Picture = Nothing
         Image1.Tag = "0"
     End If
-    
     Exit Sub
-
 Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Form_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Sub DibujarHead(ByVal MyHead As Integer, ByVal yoff As Integer, Optional ByVal Heading As Byte = 3)
-    
     On Error GoTo DibujarHead_Err
-    
-
-    Dim grh As grh
-
-    grh = HeadData(MyHead).Head(3)
-
+    Dim Grh As Grh
+    Grh = HeadData(MyHead).Head(3)
     Dim x As Long
-
     Dim y As Long
-
-    x = PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
-    y = PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight + yoff / 2
-    Call Grh_Render_To_Hdc(PlayerView, grh.GrhIndex, x - 1, y, False)
-
-    
+    x = PlayerView.ScaleWidth / 2 - GrhData(Grh.GrhIndex).pixelWidth / 2
+    y = PlayerView.ScaleHeight / 2 - GrhData(Grh.GrhIndex).pixelHeight + yoff / 2
+    Call Grh_Render_To_Hdc(PlayerView, Grh.GrhIndex, x - 1, y, False)
     Exit Sub
-
 DibujarHead_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.DibujarHead", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Image1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
@@ -589,43 +546,27 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
 End Sub
 
 Private Sub ListView1_beforeEdit(ByVal Columna As Integer, Cancel As Boolean)
-    
     On Error GoTo ListView1_beforeEdit_Err
-    
-
     If Columna > 5 Then
         Cancel = True
-
     End If
-
-    
     Exit Sub
-
 ListView1_beforeEdit_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.ListView1_beforeEdit", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Image1_MouseUp_Err
-    
-    Me.Visible = False
-
-    
+    Me.visible = False
     Exit Sub
-
 Image1_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Image1_MouseUp", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Image2_Click()
-    
     On Error GoTo Image2_Click_Err
-
     If WorldActual = 1 Then
         WorldActual = 2
         Image2.Picture = LoadInterface("check-amarillo.bmp")
@@ -633,26 +574,17 @@ Private Sub Image2_Click()
         WorldActual = 1
         Image2.Picture = Nothing
     End If
-    
     ActualizarPosicionMapa
-
     picMap.Picture = LoadInterface("mapa" & WorldActual & ".bmp")
-    
     Exit Sub
-
 Image2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Image2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Image3_Click()
-    
     On Error GoTo Image3_Click_Err
-    
-
     If Dungeon Then Exit Sub
-
     If Referencias Then
         picMap.Picture = LoadInterface("mapa" & WorldActual & ".bmp")
         Image3.Picture = Nothing
@@ -661,74 +593,46 @@ Private Sub Image3_Click()
         Referencias = True
         picMap.Picture = LoadInterface("mapa_referencias.bmp")
         Image3.Picture = LoadInterface("check-amarillo.bmp")
-
     End If
-
-    
     Exit Sub
-
 Image3_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Image3_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Label6_Click()
-    
     On Error GoTo Label6_Click_Err
-    
     Call Image2_Click
-
-    
     Exit Sub
-
 Label6_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Label6_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Label7_Click()
-    
     On Error GoTo Label7_Click_Err
-    
     Call Image3_Click
-
-    
     Exit Sub
-
 Label7_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Label7_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub listdrop_Click()
-    
     On Error GoTo listdrop_Click_Err
-    
-
-    
-
     'Picture1.Refresh
-    Picture1.BackColor = vbBlack
-    Picture1.Refresh
-
+    picture1.BackColor = vbBlack
+    picture1.Refresh
     'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
     If listdrop.ListItems.count <= 0 Then Exit Sub
-    Call Grh_Render_To_Hdc(Picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
-
-    
+    Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
     Exit Sub
-
 listdrop_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.listdrop_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
-
     On Error GoTo ListView1_Click_Err
     ' --- lista vacía o item inválido: limpiar preview y salir
     If ListView1.ListItems.count = 0 Then
@@ -751,46 +655,37 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
         Label4.Caption = vbNullString
         Label5.Caption = vbNullString
         Label9.Caption = vbNullString
-
         listdrop.ListItems.Clear
-        Picture1.Refresh
+        picture1.Refresh
         PlayerView.Cls        ' limpia el área de preview (asegurate que PlayerView sea PictureBox/AutoRedraw)
         tmrPreview.enabled = False
         Exit Sub
     End If
-
     ' --- Validar item ---
     If Item Is Nothing Then Exit Sub
     If LenB(Item.SubItems(2)) = 0 Then Exit Sub
-
     ' Limpiamos antes de mostrar el nuevo
-    Picture1.Refresh
+    picture1.Refresh
     PlayerView.Cls
     listdrop.ListItems.Clear
-
     Dim npcIdx As Long
     npcIdx = CLng(Item.SubItems(2))
-
     ' --- Activar preview animado ---
     PreviewNPC_Setup_ByIndex npcIdx
-
     ' --- Datos en labels ---
     With NpcData(npcIdx)
         Label8.Caption = .Name
         ListView1.ToolTipText = .Name
-
         Label2.Caption = CStr(.Hp)
         Label3.Caption = CStr(.exp)
         Label4.Caption = CStr(.oro)
         Label5.Caption = CStr(.MinHit) & "/" & CStr(.MaxHit)
         Label9.Caption = "EXPERIENCIA DE CLAN: " & CStr(.ExpClan) & " puntos"
-
         ' Snapshot inicial (opcional, además de la animación)
         Call DibujarNPC(Me.PlayerView, .Head, .Body)
-
         ' Drops
         If .NumQuiza > 0 Then
-            Dim i As Integer, objIdx As Long
+            Dim i           As Integer, objIdx As Long
             Dim subelemento As ListItem
             For i = 1 To .NumQuiza
                 objIdx = .QuizaDropea(i)
@@ -802,13 +697,10 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
             If listdrop.ListItems.count > 0 Then Call listdrop_Click
         End If
     End With
-
     Exit Sub
-
 ListView1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.ListView1_Click", Erl)
     Resume Next
-
 End Sub
 
 Private Sub PreviewNPC_Clear()
@@ -820,7 +712,7 @@ Private Sub PreviewNPC_Clear()
     pvHeading = 0: pvFrame = 0: pvDirTick = 0
     ' limpiar UI
     PlayerView.Cls
-    Picture1.Refresh
+    picture1.Refresh
     Label8.Caption = vbNullString
     Label2.Caption = vbNullString
     Label3.Caption = vbNullString
@@ -839,50 +731,32 @@ Private Sub ListView1_KeyPress(KeyAscii As Integer)
 End Sub
 
 Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo picMap_MouseDown_Err
-    
-
-    
-
-    lblAllies.Visible = True
-
+    lblAllies.visible = True
     Dim PosX As Integer
-
     Dim PosY As Integer
-
     Dim Mapa As Integer
-    
     'lblAllies.top = Y * 18 / 32
     'lblAllies.left = X * 14 / 32
-    
     If x >= llamadadeclan.Left And x <= llamadadeclan.Left + llamadadeclan.Width And y >= llamadadeclan.Top And y <= llamadadeclan.Top + llamadadeclan.Height Then
-        AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_UBICACION_DE_COMPANERO") & LLamadaDeclanMapa & "-" & LLamadaDeclanX & "-" & LLamadaDeclanY & ").", 2, 51, 223, 1, 1
-
+        AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_UBICACION_DE_COMPANERO") & LLamadaDeclanMapa & "-" & LLamadaDeclanX & "-" & LLamadaDeclanY & ").", 2, 51, _
+                223, 1, 1
     End If
-
     ' Para obtener las coordenadas (x, y) del "slot" divido la posición del cursor
     ' por el tamaño de los tiles y me quedo solo con la parte entera
     PosX = Int(x / TILE_SIZE) ' PosX = Valor entero entre 0 y (MAPAS_ANCHO - 1)
     PosY = Int(y / TILE_SIZE) ' PosY = Valor entero entre 0 y (MAPAS_ALTO - 1)
-    
     ' Uso estas coordeandas para calcular el índice del mapa
     Mapa = PosX + PosY * MAPAS_ANCHO + 1 ' +1 porque los mapas empiezan en 1
-    
     ' Luego multiplico por TILE_SIZE para tener la posición final en donde poner el indicador
     PosX = PosX * TILE_SIZE
     PosY = PosY * TILE_SIZE
-
-
-        If Mundo(WorldActual).MapIndice(Mapa) = 0 Then Exit Sub
-        Call CargarDatosMapa(Mundo(WorldActual).MapIndice(Mapa))
-        lblMapInfo(0) = MapDat.map_name & "(" & Mundo(WorldActual).MapIndice(Mapa) & ")"
-        
-        If Button = vbRightButton Then
-            Call ParseUserCommand("/TELEP YO " & Mundo(WorldActual).MapIndice(Mapa) & " " & 50 & " " & 50)
-
-        End If
-
+    If Mundo(WorldActual).MapIndice(Mapa) = 0 Then Exit Sub
+    Call CargarDatosMapa(Mundo(WorldActual).MapIndice(Mapa))
+    lblMapInfo(0) = MapDat.map_name & "(" & Mundo(WorldActual).MapIndice(Mapa) & ")"
+    If Button = vbRightButton Then
+        Call ParseUserCommand("/TELEP YO " & Mundo(WorldActual).MapIndice(Mapa) & " " & 50 & " " & 50)
+    End If
     Label2.Caption = ""
     Label3.Caption = ""
     Label4.Caption = ""
@@ -890,169 +764,125 @@ Private Sub picMap_MouseDown(Button As Integer, Shift As Integer, x As Single, y
     Label9.Caption = ""
     Me.PlayerView.Cls 'Limpia el PictureBox que muestra al npc
     listdrop.ListItems.Clear
-    
     ListView1.SetFocus
     'listdrop.SetFocus
     If ListView1.ListItems.count > 0 Then
         Call ListView1_ItemClick(ListView1.ListItems.Item(1))
     End If
     Call listdrop_Click
-
     lblAllies.Top = PosY
     lblAllies.Left = PosX
-
-    
     Exit Sub
-
 picMap_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.picMap_MouseDown", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub picMap_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo picMap_MouseMove_Err
-    
-    MoverForm Me.hwnd
-
-    
+    MoverForm Me.hWnd
     Exit Sub
-
 picMap_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.picMap_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub ActualizarPosicion(ByVal map As Integer)
     Dim x As Long, y As Long
-
     x = (map - 1) Mod MAPAS_ANCHO
     y = Int((map - 1) / MAPAS_ANCHO)
-
     Shape1.Top = y * TILE_SIZE + (UserPos.y * TILE_SIZE / 100) - Shape1.Height \ 2
     Shape1.Left = x * TILE_SIZE + (UserPos.x * TILE_SIZE / 100) - Shape1.Width \ 2
-    
-    Shape1.Visible = True
+    Shape1.visible = True
 End Sub
 
 Public Sub ActualizarPosicionMapa()
     Dim Index As Integer
-
     For Index = 1 To Mundo(WorldActual).Ancho * Mundo(WorldActual).Alto
-
         If Mundo(WorldActual).MapIndice(Index) = UserMap Then
             Call ActualizarPosicion(Index)
             Exit Sub
         End If
     Next
-    
-    Shape1.Visible = False
+    Shape1.visible = False
 End Sub
 
-
 Public Sub CalcularPosicionMAPA()
-    
     On Error GoTo CalcularPosicionMAPA_Err
-    
     frmMapaGrande.lblMapInfo(0) = MapDat.map_name & "(" & UserMap & ")"
-
     If NameMaps(ResourceMap).desc <> "" Then
         frmMapaGrande.Label1.Caption = NameMaps(ResourceMap).desc
     Else
         frmMapaGrande.Label1.Caption = "Sin información relevante."
-
     End If
-
-    Dim i       As Integer
-    Dim j       As Byte
-
+    Dim i        As Integer
+    Dim J        As Byte
     Dim Encontre As Boolean
-    
-    
-    For j = 1 To TotalWorlds
-        For i = 1 To Mundo(j).Ancho * Mundo(j).Alto
-    
-            If Mundo(j).MapIndice(i) = UserMap Then
+    For J = 1 To TotalWorlds
+        For i = 1 To Mundo(J).Ancho * Mundo(J).Alto
+            If Mundo(J).MapIndice(i) = UserMap Then
                 idmap = i
                 Encontre = True
-                frmMapaGrande.picMap.Picture = LoadInterface("mapa" & j & ".bmp")
-                WorldActual = j
-
-                If j = 1 Then
+                frmMapaGrande.picMap.Picture = LoadInterface("mapa" & J & ".bmp")
+                WorldActual = J
+                If J = 1 Then
                     frmMapaGrande.Image2.Picture = Nothing
                 Else
                     frmMapaGrande.Image2.Picture = LoadInterface("check-amarillo.bmp")
                 End If
-                
                 Call ActualizarPosicion(idmap)
-
                 Dim x As Long, y As Long
                 x = (idmap - 1) Mod MAPAS_ANCHO
                 y = Int((idmap - 1) / MAPAS_ANCHO)
                 lblAllies.Top = y * TILE_SIZE
                 lblAllies.Left = x * TILE_SIZE
-                lblAllies.Visible = True
-
+                lblAllies.visible = True
                 Exit For
             End If
         Next i
-        
         If Encontre Then
             Exit For
         End If
-    Next j
-    
+    Next J
     If Encontre = False Then
-        If Not frmMapaGrande.Visible Then
+        If Not frmMapaGrande.visible Then
             WorldActual = 1
             frmMapaGrande.picMap.Picture = LoadInterface("mapa1.bmp")
             frmMapaGrande.Image2.Picture = Nothing
         End If
-
     End If
-    
     Call CargarDatosMapa(ResourceMap)
-    
     Exit Sub
-
 CalcularPosicionMAPA_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.CalcularPosicionMAPA", Erl)
     Resume Next
-    
 End Sub
 
-Public Sub ShowClanCall(ByVal Map As Integer, ByVal PosX As Integer, ByVal PosY As Integer)
+Public Sub ShowClanCall(ByVal map As Integer, ByVal PosX As Integer, ByVal PosY As Integer)
     Dim idmap As Integer
-    LLamadaDeclanMapa = Map
-    idmap = ObtenerIdMapaDeLlamadaDeClan(Map)
-
+    LLamadaDeclanMapa = map
+    idmap = ObtenerIdMapaDeLlamadaDeClan(map)
     Dim x As Long
     Dim y As Long
     x = (idmap - 1) Mod 19
-    Y = Int((idmap - 1) / 19)
-    
-    llamadadeclan.Top = Y * 27 + (PosY / 4.5)
+    y = Int((idmap - 1) / 19)
+    llamadadeclan.Top = y * 27 + (PosY / 4.5)
     llamadadeclan.Left = x * 27 + (PosX / 4.5)
     llamadadeclan.visible = True
     frmMain.LlamaDeclan.enabled = True
     Shape2.visible = True
-    Shape2.Top = Y * 27
+    Shape2.Top = y * 27
     Shape2.Left = x * 27
 End Sub
+
 Private Sub PreviewNPC_Setup_ByIndex(ByVal npcIdx As Long)
     On Error GoTo EH
-    
     pvBody = NpcData(npcIdx).Body
     pvHead = NpcData(npcIdx).Head
-    
     Call PreviewNPC_Setup_Grhs(pvBody, pvHead)
-    
     pvHeading = 3
     pvFrame = 1
     pvDirTick = 0
-    
     tmrPreview.enabled = True
     Call PreviewNPC_RenderFrame(True)
     Exit Sub
@@ -1068,7 +898,6 @@ Private Sub PreviewNPC_Setup_Grhs(ByVal bodyId As Integer, ByVal headId As Integ
         pvNumFramesBody(h) = 1
         pvNumFramesHead(h) = 1
     Next h
-    
     If bodyId <> 0 Then
         For h = 1 To 4
             pvBaseBody(h) = BodyData(bodyId).Walk(h).GrhIndex
@@ -1077,7 +906,6 @@ Private Sub PreviewNPC_Setup_Grhs(ByVal bodyId As Integer, ByVal headId As Integ
             End If
         Next h
     End If
-    
     If headId <> 0 Then
         For h = 1 To 4
             pvBaseHead(h) = HeadData(headId).Head(h).GrhIndex
@@ -1090,15 +918,12 @@ End Sub
 
 Private Sub tmrPreview_Timer()
     On Error GoTo EH
-    
     If ListView1.ListItems.count = 0 Then
         PreviewNPC_Clear
         Exit Sub
     End If
-
     If pvBody = 0 And pvHead = 0 Then Exit Sub
     If pvHeading < 1 Or pvHeading > 4 Then pvHeading = 1
-    
     ' Avanzar frame
     pvFrame = pvFrame + 1
     Dim maxFrames As Integer
@@ -1106,7 +931,6 @@ Private Sub tmrPreview_Timer()
     If pvNumFramesHead(pvHeading) > maxFrames Then maxFrames = pvNumFramesHead(pvHeading)
     If maxFrames <= 0 Then maxFrames = 1
     If pvFrame > maxFrames Then pvFrame = 1
-    
     ' Cada DIR_TICKS, rotar dirección (N?E?S?O?N)
     pvDirTick = pvDirTick + 1
     If pvDirTick >= DIR_TICKS Then
@@ -1116,7 +940,6 @@ Private Sub tmrPreview_Timer()
         ' Reiniciar frame al cambiar de dirección (opcional)
         pvFrame = 1
     End If
-    
     Call PreviewNPC_RenderFrame(False)
     Exit Sub
 EH:
@@ -1125,30 +948,24 @@ End Sub
 
 Private Sub PreviewNPC_RenderFrame(ByVal forceClear As Boolean)
     On Error GoTo EH
-    
     Dim pic As PictureBox
     Set pic = Me.PlayerView
-    
     ' Limpiar fondo
     If forceClear Then
         pic.Refresh
     End If
-    
     Dim bodyFrameGrh As Long, headFrameGrh As Long
-    Dim bBase As Long, hBase As Long
-    Dim bNF As Integer, hNF As Integer
-    Dim frameB As Integer, frameH As Integer
-    Dim x As Integer, y As Integer
-    
+    Dim bBase        As Long, hBase As Long
+    Dim bNF          As Integer, hNF As Integer
+    Dim frameB       As Integer, frameH As Integer
+    Dim x            As Integer, y As Integer
     bBase = pvBaseBody(pvHeading)
     hBase = pvBaseHead(pvHeading)
     bNF = pvNumFramesBody(pvHeading)
     hNF = pvNumFramesHead(pvHeading)
-    
     ' Seleccionar frame válido (1..NumFrames)
     frameB = IIf(bNF > 0, ((pvFrame - 1) Mod bNF) + 1, 1)
     frameH = IIf(hNF > 0, ((pvFrame - 1) Mod hNF) + 1, 1)
-    
     ' Expandir a grh de frame concreto
     If bBase <> 0 Then
         If GrhData(bBase).NumFrames > 0 Then
@@ -1157,7 +974,6 @@ Private Sub PreviewNPC_RenderFrame(ByVal forceClear As Boolean)
             bodyFrameGrh = bBase
         End If
     End If
-    
     If hBase <> 0 Then
         If GrhData(hBase).NumFrames > 0 Then
             headFrameGrh = GrhData(hBase).Frames(frameH)
@@ -1165,15 +981,12 @@ Private Sub PreviewNPC_RenderFrame(ByVal forceClear As Boolean)
             headFrameGrh = hBase
         End If
     End If
-    
     ' Centrar cuerpo
     If bodyFrameGrh <> 0 Then
         x = (pic.ScaleWidth - GrhData(bodyFrameGrh).pixelWidth) \ 2
         y = (pic.ScaleHeight - GrhData(bodyFrameGrh).pixelHeight) \ 2
-        
         ' Dibujo cuerpo (limpia el backbuffer del PictureBox)
-        Call Grh_Render_To_Hdc(pic, bodyFrameGrh, x, y, False, RGB(11, 11, 11))
-        
+        Call Grh_Render_To_Hdc(pic, bodyFrameGrh, x, y, False, RGB(30, 30, 30))
         ' Superponer cabeza con mismo criterio que DibujarNPC
         If headFrameGrh <> 0 And pvBody <> 0 Then
             Dim hx As Integer, hy As Integer
@@ -1185,12 +998,11 @@ Private Sub PreviewNPC_RenderFrame(ByVal forceClear As Boolean)
         ' Si no hay cuerpo, mostramos solo la cabeza centrada
         x = (pic.ScaleWidth - GrhData(headFrameGrh).pixelWidth) \ 2
         y = (pic.ScaleHeight - GrhData(headFrameGrh).pixelHeight) \ 2
-        Call Grh_Render_To_Hdc(pic, headFrameGrh, x, y, False, RGB(11, 11, 11))
+        Call Grh_Render_To_Hdc(pic, headFrameGrh, x, y, False, RGB(30, 30, 30))
     Else
         ' Nada que dibujar
         pic.Refresh
     End If
-    
     Exit Sub
 EH:
     ' Evitar romper preview ante algún grh inválido
@@ -1199,4 +1011,3 @@ End Sub
 Private Sub Form_Unload(Cancel As Integer)
     tmrPreview.enabled = False
 End Sub
-

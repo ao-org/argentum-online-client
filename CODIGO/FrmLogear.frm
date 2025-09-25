@@ -173,142 +173,103 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
 'Declaracion del Api SetLayeredWindowAttributes que establece _
  la transparencia al form
-Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hwnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
-
+Private Declare Function SetLayeredWindowAttributes Lib "user32" (ByVal hWnd As Long, ByVal crKey As Long, ByVal bAlpha As Byte, ByVal dwFlags As Long) As Long
 'Recupera el estilo de la ventana
-Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long) As Long
-
+Private Declare Function GetWindowLong Lib "user32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
 'Declaracion del Api SetWindowLong necesaria para aplicar un estilo _
  al form antes de usar el Api SetLayeredWindowAttributes
-
-Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hwnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
-
+Private Declare Function SetWindowLong Lib "user32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 Private Const GWL_EXSTYLE = (-20)
 Private Const LWA_ALPHA = &H2
 Private Const WS_EX_LAYERED = &H80000
-
 'Funcion para saber si formulario ya es transparente. _
  Se le pasa el Hwnd del formulario en cuestion
-
 Public bmoving      As Boolean
-Public dX           As Integer
+Public dx           As Integer
 Public dy           As Integer
-
 ' Constantes para SendMessage
 Const WM_SYSCOMMAND As Long = &H112&
 Const MOUSE_MOVE    As Long = &HF012&
-
 Private Declare Function ReleaseCapture Lib "user32" () As Long
-Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
-
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Long) As Long
 Private RealizoCambios As String
-
-Private Declare Function SetWindowPos Lib "user32" (ByVal hwnd As Long, ByVal hWndInsertAfter As Long, ByVal x As Long, ByVal y As Long, ByVal cx As Long, ByVal cy As Long, ByVal wFlags As Long) As Long
+Private Declare Function SetWindowPos _
+                Lib "user32" (ByVal hWnd As Long, _
+                              ByVal hWndInsertAfter As Long, _
+                              ByVal x As Long, _
+                              ByVal y As Long, _
+                              ByVal cx As Long, _
+                              ByVal cy As Long, _
+                              ByVal wFlags As Long) As Long
 Private Const HWND_TOPMOST = -1
 Private Const HWND_NOTOPMOST = -2
 Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
-
-Private cBotonSalir As clsGraphicalButton
-Private cBotonCuenta As clsGraphicalButton
+Private cBotonSalir    As clsGraphicalButton
+Private cBotonCuenta   As clsGraphicalButton
 Private cBotonIngresar As clsGraphicalButton
 
 Private Sub MoverForm()
-    
     On Error GoTo moverForm_Err
-
     Dim res As Long
-
     ReleaseCapture
-    res = SendMessage(Me.hwnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
-    
+    res = SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0)
     Exit Sub
-
 moverForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.moverForm", Erl)
     Resume Next
-    
 End Sub
 
-Public Function Is_Transparent(ByVal hwnd As Long) As Boolean
-    
+Public Function Is_Transparent(ByVal hWnd As Long) As Boolean
     On Error GoTo Is_Transparent_Err
-
     Dim msg As Long
-
-    msg = GetWindowLong(hwnd, GWL_EXSTYLE)
-
+    msg = GetWindowLong(hWnd, GWL_EXSTYLE)
     If (msg And WS_EX_LAYERED) = WS_EX_LAYERED Then
         Is_Transparent = True
     Else
         Is_Transparent = False
-
     End If
-
     If Err Then
         Is_Transparent = False
     End If
-
-    
     Exit Function
-
 Is_Transparent_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.Is_Transparent", Erl)
     Resume Next
-    
 End Function
 
 'Funcion que aplica la transparencia, se le pasa el hwnd del form y un valor de 0 a 255
-Public Function Aplicar_Transparencia(ByVal hwnd As Long, Valor As Integer) As Long
+Public Function Aplicar_Transparencia(ByVal hWnd As Long, Valor As Integer) As Long
     On Error GoTo Aplicar_Transparencia_Err
-    
     Dim msg As Long
-
     If Valor < 0 Or Valor > 255 Then
         Aplicar_Transparencia = 1
     Else
-        msg = GetWindowLong(hwnd, GWL_EXSTYLE)
+        msg = GetWindowLong(hWnd, GWL_EXSTYLE)
         msg = msg Or WS_EX_LAYERED
-
-        SetWindowLong hwnd, GWL_EXSTYLE, msg
-
+        SetWindowLong hWnd, GWL_EXSTYLE, msg
         'Establece la transparencia
-        SetLayeredWindowAttributes hwnd, 0, Valor, LWA_ALPHA
-
+        SetLayeredWindowAttributes hWnd, 0, Valor, LWA_ALPHA
         Aplicar_Transparencia = 0
-
     End If
-
     If Err Then
         Aplicar_Transparencia = 2
-
     End If
-
-    
     Exit Function
-
 Aplicar_Transparencia_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.Aplicar_Transparencia", Erl)
     Resume Next
-    
 End Function
 
 Private Sub cmdCuenta_Click()
-    
     On Error GoTo btnCuenta_Click_Err
-    
     frmNewAccount.Show , frmConnect
-
-    
     Exit Sub
-
 btnCuenta_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.btnCuenta_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Activate()
@@ -317,72 +278,55 @@ Private Sub Form_Activate()
 End Sub
 
 Private Sub Form_Load()
-
     On Error GoTo Form_Load_Err
-    
     Call FormParser.Parse_Form(Me)
-    
     Call CargarCuentasGuardadas
-    Call Aplicar_Transparencia(Me.hwnd, 240)
-    
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     Me.Picture = LoadInterface("ventanaconectar.bmp")
-    
     #If DEBUGGING = 1 Then
         txtPort.visible = True
         txtIp.visible = True
         lblPort.visible = True
         lblIp.visible = True
     #End If
-    
     Me.PasswordTxt.visible = True
     Call CargarLst
     Call loadButtons
-    Call SetActiveServer(txtIp.Text, txtPort.Text)
-
+    Call SetActiveServer(txtIp.text, txtPort.text)
     lblIp.Caption = JsonLanguage.Item("MENSAJE_SERVIDOR") ' Servidor:
     lblPort.Caption = JsonLanguage.Item("MENSAJE_PUERTO") ' Puerto
-
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub loadButtons()
-
     Set cBotonSalir = New clsGraphicalButton
     Set cBotonCuenta = New clsGraphicalButton
     Set cBotonIngresar = New clsGraphicalButton
-    
     Call cBotonSalir.Initialize(cmdSalir, "boton-salir-default.bmp", "boton-salir-over.bmp", "boton-salir-off.bmp", Me)
     Call cBotonCuenta.Initialize(cmdCuenta, "boton-cuenta-default.bmp", "boton-cuenta-over.bmp", "boton-cuenta-off.bmp", Me)
     Call cBotonIngresar.Initialize(cmdIngresar, "boton-ingresar-default.bmp", "boton-ingresar-over.bmp", "boton-ingresar-off.bmp", Me)
 End Sub
 
 Private Sub cmdSalir_Click()
-    
     Call CloseClient
-
 End Sub
-Private Sub cmdIngresar_Click()
-On Error GoTo cmdIngresar_Click_Err
-    Call SetActiveServer(txtIp.Text, txtPort.Text)
-    Call FormParser.Parse_Form(Me, E_WAIT)
-    Call DoLogin(NameTxt.Text, PasswordTxt.Text, chkRecordar.Tag = "1")
-    Exit Sub
 
+Private Sub cmdIngresar_Click()
+    On Error GoTo cmdIngresar_Click_Err
+    Call SetActiveServer(txtIp.text, txtPort.text)
+    Call FormParser.Parse_Form(Me, E_WAIT)
+    Call DoLogin(NameTxt.text, PasswordTxt.text, chkRecordar.Tag = "1")
+    Exit Sub
 cmdIngresar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.cmdIngresar_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub chkRecordar_Click()
-    
     On Error GoTo chkRecordar_Click_Err
-
     If chkRecordar.Tag = "0" Then
         chkRecordar.Picture = LoadInterface("check-amarillo.bmp")
         Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_RECORDAR_CUENTA"), False, True)
@@ -392,51 +336,36 @@ Private Sub chkRecordar_Click()
         chkRecordar.Tag = "0"
         Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_NO_RECORDAR"), False, True)
     End If
-
-    
     Exit Sub
-
 chkRecordar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.chkRecordar_Click", Erl)
     Resume Next
-    
 End Sub
 
-
 Private Sub NameTxt_KeyDown(KeyCode As Integer, Shift As Integer)
-    
     On Error GoTo NameTxt_KeyDown_Err
-
     If KeyCode = 27 Then
         prgRun = False
         End
     ElseIf KeyCode = vbKeyReturn Then
         Call cmdIngresar_Click
     End If
-    
     Exit Sub
-
 NameTxt_KeyDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.NameTxt_KeyDown", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub PasswordTxt_KeyDown(KeyCode As Integer, Shift As Integer)
-    
     On Error GoTo PasswordTxt_KeyDown_Err
-
     If KeyCode = 27 Then
         prgRun = False
         End
     ElseIf KeyCode = vbKeyReturn Then
         Call cmdIngresar_Click
     End If
-    
     Exit Sub
-
 PasswordTxt_KeyDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.PasswordTxt_KeyDown", Erl)
     Resume Next
-    
 End Sub

@@ -2,16 +2,16 @@ VERSION 5.00
 Begin VB.Form FrmGmAyuda 
    BorderStyle     =   0  'None
    Caption         =   "Formulario de mensaje a administradores"
-   ClientHeight    =   6528
-   ClientLeft      =   3228
-   ClientTop       =   1332
-   ClientWidth     =   7044
+   ClientHeight    =   6525
+   ClientLeft      =   3225
+   ClientTop       =   1335
+   ClientWidth     =   7050
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   544
+   ScaleHeight     =   435
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   587
+   ScaleWidth      =   470
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.CommandButton cmdButtonEntrarForo 
@@ -27,7 +27,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Consulta regular"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -45,7 +45,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Descargo"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -63,7 +63,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Acusación"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -81,7 +81,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Sugerencia"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -99,7 +99,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Reporte de bug"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -117,7 +117,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Otro"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -135,7 +135,7 @@ Begin VB.Form FrmGmAyuda
       Caption         =   "Queja"
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -154,7 +154,7 @@ Begin VB.Form FrmGmAyuda
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -269,10 +269,9 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
 Private cBotonEnviarMensaje As clsGraphicalButton
-Private cBotonCancelar As clsGraphicalButton
-Private cBotonCerrar As clsGraphicalButton
+Private cBotonCancelar      As clsGraphicalButton
+Private cBotonCerrar        As clsGraphicalButton
 
 Private Sub cmdCancelar_Click()
     Unload Me
@@ -283,156 +282,98 @@ Private Sub cmdCerrar_Click()
 End Sub
 
 Private Sub cmdButtonEntrarForo_Click()
-    Call ShellExecute(0, "Open", "https://www.elmesonhostigado.com/foro", "", App.Path, 1)
+    Call ShellExecute(0, "Open", "https://www.elmesonhostigado.com/foro", "", App.path, 1)
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
-    Call Aplicar_Transparencia(Me.hwnd, 240)
-
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     'Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanagm.bmp")
-    
-    Call LoadButtons
-
-    
+    Call loadButtons
     Exit Sub
-
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmGmAyuda.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmGmAyuda.Form_Load", Erl)
     Resume Next
-    
 End Sub
-Private Sub LoadButtons()
+
+Private Sub loadButtons()
     Set cBotonEnviarMensaje = New clsGraphicalButton
     Set cBotonCancelar = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
-    
-    Call cBotonEnviarMensaje.Initialize(cmdEnviarMensaje, "boton-enviar-default.bmp", _
-                                                "boton-enviar-over.bmp", _
-                                                "boton-enviar-off.bmp", Me)
-    
-    Call cBotonCancelar.Initialize(cmdCancelar, "boton-cancelar-default.bmp", _
-                                                "boton-cancelar-over.bmp", _
-                                                "boton-cancelar-off.bmp", Me)
-                                                
-    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-                                                
+    Call cBotonEnviarMensaje.Initialize(cmdEnviarMensaje, "boton-enviar-default.bmp", "boton-enviar-over.bmp", "boton-enviar-off.bmp", Me)
+    Call cBotonCancelar.Initialize(cmdCancelar, "boton-cancelar-default.bmp", "boton-cancelar-over.bmp", "boton-cancelar-off.bmp", Me)
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
 End Sub
 
 Private Sub cmdEnviarMensaje_Click()
-    
     On Error GoTo cmdEnviarMensaje_Click_Err
-    
-
-    If txtMotivo.Text = "" Then
+    If txtMotivo.text = "" Then
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEBES_ESCRIBIR_TU_MENSAJE."), 255, 255, 255, False, False, False)
         Exit Sub
     ElseIf DarIndiceElegido = -1 Then
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEBES_ELEGIR_EL_MOTIVO_DE_TU_CONSULTA"), 255, 255, 255, False, False, False)
         Exit Sub
     Else
-        Call WriteQuestionGM(txtMotivo.Text, optConsulta(DarIndiceElegido).Caption)
+        Call WriteQuestionGM(txtMotivo.text, optConsulta(DarIndiceElegido).Caption)
         Unload Me
-
     End If
-
-    
     Exit Sub
-
 cmdEnviarMensaje_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmGmAyuda.cmdEnviarMensaje_Click", Erl)
     Resume Next
-    
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    MoverForm Me.hwnd
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    MoverForm Me.hWnd
 End Sub
 
 Private Sub optConsult_Click(Index As Integer)
-    
     On Error GoTo optConsult_Click_Err
-    
-
     Dim i As Integer
-
     For i = 0 To 6
-
         If i <> Index Then
             optConsult(i).Picture = Nothing
             optConsult(i).Tag = 0
         Else
             optConsult(i).Picture = LoadInterface("radio-on.bmp")
             optConsult(i).Tag = 1
-
         End If
-
     Next i
-
     Select Case Index
-
         Case 0
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("¡MENSAJE_EXPLIQUE_CORRECTAMENTE_EL_MOTIVO_DE_SU_CONSULTA"), 255, 255, 255, False, False, False)
-
         Case 1
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEJE_EL_NOMBRE_DEL_PERSONAJE_Y_ADMINISTRADOR"), 255, 255, 255, False, False, False)
-
         Case 2
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SE_PRIORIZARA_CONSULTA_A_ADMINISTRADORES"), 255, 255, 255, False, False, False)
-
         Case 3
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SUGERENCIA_LEIDA_Y_TOMADA_EN_CUENTA"), 255, 255, 255, False, False, False)
-
         Case 4
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_EXPLIQUE_DETALLADAMENTE_EL_ERROR"), 255, 255, 255, False, False, False)
-
         Case 5
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_DEJE_DATOS_POSIBLES_PARA_CONSULTAS_GENERALES"), 255, 255, 255, False, False, False)
-
         Case 6
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_QUEJA_HACIA_MIEMBRO_DEL_STAFF"), 255, 255, 255, False, False, False)
-
     End Select
-
-    
     Exit Sub
-
 optConsult_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmGmAyuda.optConsult_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmGmAyuda.optConsult_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Function DarIndiceElegido() As Integer
-    
     On Error GoTo DarIndiceElegido_Err
-    
-
     Dim i As Integer
-
     For i = 0 To 6
-
         If optConsult(i).Tag = 1 Then
             DarIndiceElegido = i
             Exit Function
-
         End If
-
     Next i
-
     DarIndiceElegido = -1
-
-    
     Exit Function
-
 DarIndiceElegido_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmGmAyuda.DarIndiceElegido", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmGmAyuda.DarIndiceElegido", Erl)
     Resume Next
-    
 End Function
-
