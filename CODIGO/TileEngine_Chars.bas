@@ -917,6 +917,11 @@ End Function
 Public Function SyncGrhPhase(ByRef Grh As Grh, ByVal newGrhIndex As Long) As Long
     Dim oldNum As Long, elapsed As Long, phase As Long
     If Grh.started <= 0 Then SyncGrhPhase = FrameTime: Exit Function
+    
+    'guard to cover npcs that dont have attacking/idle animation
+    'because SyncGrh and BodyChange are polymorfic with ncps&players
+    If Grh.GrhIndex = 0 Then SyncGrhPhase = FrameTime: Exit Function
+    
     oldNum = GrhData(Grh.GrhIndex).NumFrames
     If oldNum <= 0 Then SyncGrhPhase = FrameTime: Exit Function
     elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
