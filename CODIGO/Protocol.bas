@@ -4921,6 +4921,7 @@ Private Sub HandleQuestDetails()
     FrmQuests.ListView1.ListItems.Clear
     FrmQuestInfo.ListView2.ListItems.Clear
     FrmQuestInfo.ListView1.ListItems.Clear
+    FrmQuests.ListView1.ColumnHeaders(2).Width = 780 'Agrando el ancho de la columna para que entre la cantidad de npcs correctamente
     FrmQuests.PlayerView.BackColor = RGB(11, 11, 11)
     FrmQuests.picture1.BackColor = RGB(19, 14, 11)
     FrmQuests.PlayerView.Refresh
