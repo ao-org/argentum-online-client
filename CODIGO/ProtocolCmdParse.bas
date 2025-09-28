@@ -449,12 +449,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_COMENTARIO"))
                 End If
-            Case "/HORA", "/HOUR"
-                If notNullArguments And EsGM Then
-                    Call WriteSetTime(GetTimeFromString(ArgumentosRaw))
-                Else
-                    Call WriteServerTime
-                End If
             Case "/DONDE", "/WHERE"
                 If notNullArguments Then
                     Call WriteWhere(ArgumentosRaw)
@@ -1399,10 +1393,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                             Call WriteCleanSOS
                     End Select
                 End If
-            Case "/NOCHE"
-                Call WriteNight
-            Case "/DIA"
-                Call WriteDay
             Case "/ECHARTODOSPJS", "/EARTHODOSPJS"
                 Call WriteKickAllChars
             Case "/RELOADNPCS"

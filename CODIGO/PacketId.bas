@@ -324,7 +324,6 @@ Public Enum ClientPacketID
     eOnlineChaosLegion       '/ONLINECAOS
     eGoNearby                '/IRCERCA
     ecomment                 '/REM
-    eserverTime              '/HORA
     eWhere                   '/DONDE
     eCreaturesInMap          '/NENE
     eWarpMeToTarget          '/TELEPLOC
@@ -425,7 +424,6 @@ Public Enum ClientPacketID
     eSaveChars               '/GRABAR
     eCleanSOS                '/BORRAR SOS
     eShowServerForm          '/SHOW INT
-    enight                   '/NOCHE
     eKickAllChars            '/ECHARTODOSPJS
     eReloadNPCs              '/RELOADNPCS
     eReloadServerIni         '/RELOADSINI
@@ -438,8 +436,6 @@ Public Enum ClientPacketID
     eGlobalMessage           '/CONSOLA
     eGlobalOnOff
     eUseKey
-    eDay
-    eSetTime
     eDonateGold              '/DONAR
     ePromedio                '/PROMEDIO
     eGiveItem                '/DAR
