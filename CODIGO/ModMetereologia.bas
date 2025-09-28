@@ -152,7 +152,7 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
             global_light = night_light
     End Select
     UpdateLights = True
-    frmMain.lblhora = Right$("00" & HoraActual, 2) & ":" & Right$("00" & Minutos, 2)
+    frmMain.lblhora = format$(Time$, "HH:MM")
     Exit Sub
 RevisarHoraMundo_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModMetereologia.RevisarHoraMundo", Erl)
