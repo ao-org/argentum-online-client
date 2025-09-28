@@ -1642,7 +1642,7 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
                             50, 80, bodyGrh, 1)
                 Else
                     Dim HeadOffsetY As Integer
-                    HeadOffsetY = CInt(BodyData(NpcData(text).Body).HeadOffset.y)
+                    HeadOffsetY = CInt(BodyData(NpcData(text).Body).HeadOffset.y) - 30
                     Call mostrarCartel(Split(NpcData(text).Name, " <")(0), NpcData(text).desc, headGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, _
                             50, 100, bodyGrh, HeadOffsetY)
                 End If
