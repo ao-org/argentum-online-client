@@ -29,9 +29,10 @@ Option Explicit
 ' Common UI color constants (opaque)
 Public Const UI_COLOR_WHITE As Long = &HFFFFFF     ' &HFFFFFFFF
 Public Const UI_COLOR_BLACK As Long = &H0        ' 0xFF000000
-Public Const UI_COLOR_RED   As Long = &HFF0000   ' 0xFFFF0000
+Public Const UI_COLOR_BLUE   As Long = &HFF0000   ' 0xFFFF0000
 Public Const UI_COLOR_GREEN As Long = &HFF00FF   ' 0xFF00FF00
-Public Const UI_COLOR_BLUE  As Long = &HFF       ' 0xFF0000FF
+Public Const UI_COLOR_RED  As Long = &HFF       ' 0xFF0000FF
+Public Const UI_MAX_QUADS As Long = 2000
 Public g_connectScreen      As clsUIConnectScreen
 ' Virtual-Key codes
 Public Const VK_LBUTTON     As Long = &H1
@@ -48,6 +49,8 @@ Public g_MouseX       As Long
 Public g_MouseY       As Long
 Public g_MouseButtons As Long
 Public UIRenderer     As clsUIRenderer
+Public UITextures As clsTexManager
+    
 
 ' Update current mouse state relative to the client window
 Public Sub UpdateMouse(ByVal hWnd As Long)
@@ -63,10 +66,31 @@ Public Sub init_connect_screen(ByRef dev As Direct3DDevice8)
     Set g_connectScreen = New clsUIConnectScreen: g_connectScreen.Init dev
 End Sub
 
+Private Sub preload_ui_textures()
+#If DXUI Then
+    ' Preload all UI textures you will use (ids are examples)
+    Dim ids()
+    Dim w As Long: Dim h As Long
+    ids = Array(14, 21)     ' <- put your real atlas/skin ids here
+
+    Dim i As Long, tex As Direct3DTexture8
+    For i = LBound(ids) To UBound(ids)
+        Set tex = UITextures.GetTexture(ids(i), w, h)  ' fetch or load from manager cache
+        Debug.Assert Not tex Is Nothing
+        Debug.Print "UI texture bytes: "; CStr(UITextures.GetAllocatedBytes())
+
+    Next i
+#End If
+End Sub
+
 Public Sub init_dx_ui(ByRef dev As Direct3DDevice8)
     #If DXUI Then
+        Set UITextures = New clsTexManager
+        Call UITextures.Init(DirectD3D8, dev)
         Set UIRenderer = New clsUIRenderer
-        Call UIRenderer.Init(DirectDevice, 1000)
+        preload_ui_textures
+            
+        Call UIRenderer.Init(DirectDevice, UI_MAX_QUADS)
         Call init_connect_screen(DirectDevice)
     #End If
 End Sub
