@@ -114,6 +114,7 @@ IniciarMeteorologia_Err:
 End Sub
 
 Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
+    Debug.Assert DuracionDia > 0
     On Error GoTo RevisarHoraMundo_Err
     Dim Elapsed As Single
     Elapsed = (FrameTime - HoraMundo) / DuracionDia
