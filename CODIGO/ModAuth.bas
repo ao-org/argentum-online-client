@@ -492,45 +492,45 @@ Public Sub SendSignUpRequest()
     Auth_state = e_state.RequestSignUp
 End Sub
 
-Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    Call DebugPrint("HandleTransferCharRequest", 255, 255, 255, True)
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    Dim data() As Byte
-    frmConnect.AuthSocket.PeekData data, vbByte, BytesTotal
-    frmConnect.AuthSocket.GetData data, vbByte, 2
-    If data(0) = &H20 And data(1) = &H26 Then
-        Call DebugPrint("TRANSFER_CHARACTER_OKAY", 0, 255, 0, True)
-        Call DisplayError(JsonLanguage.Item("MENSAJE_TRANSFERENCIA_REALIZADA"), "TRANSFER_CHARACTER_OKAY")
-        Call EraseCharFromPjList(TransferCharname)
-        frmConnect.AuthSocket.GetData data, vbByte, 2
-        Auth_state = e_state.Idle
-    Else
-        Call DebugPrint("TRANSFER CHAR ERROR", 255, 0, 0, True)
-        frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
-            Case 1
-                Call DisplayError(JsonLanguage.Item("MENSAJE_CUENTA_INVALIDA"), "invalid-account")
-            Case 3
-                Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_BASE_DATOS"), "database-error")
-            Case 12
-                Call DisplayError(JsonLanguage.Item("MENSAJE_EMAIL_NO_VALIDO"), "invalid-email")
-            Case 51
-                Call DisplayError(JsonLanguage.Item("MENSAJE_NO_DUENO_PERSONAJE"), "not-char-owner")
-            Case 52
-                Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "invalid-request")
-            Case 54
-                Call DisplayError(JsonLanguage.Item("MENSAJE_NUEVO_DUENO_NO_EXISTE"), "newowner-not-exist")
-            Case 55
-                Call DisplayError(JsonLanguage.Item("MENSAJE_NO_ES_PATREON"), "not-patreon")
-            Case 57
-                Call DisplayError(JsonLanguage.Item("MENSAJE_CREDITOS_INSUFICIENTES"), "not-enough-credits")
-            Case Else
-                Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO"), "unknown-error")
-        End Select
-    End If
-    Auth_state = e_state.Idle
-End Sub
+'Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
+'    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+'    Call DebugPrint("HandleTransferCharRequest", 255, 255, 255, True)
+'    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+'    Dim data() As Byte
+'    frmConnect.AuthSocket.PeekData data, vbByte, BytesTotal
+'    frmConnect.AuthSocket.GetData data, vbByte, 2
+'    If data(0) = &H20 And data(1) = &H26 Then
+'        Call DebugPrint("TRANSFER_CHARACTER_OKAY", 0, 255, 0, True)
+'        Call DisplayError(JsonLanguage.Item("MENSAJE_TRANSFERENCIA_REALIZADA"), "TRANSFER_CHARACTER_OKAY")
+'        Call EraseCharFromPjList(TransferCharname)
+'        frmConnect.AuthSocket.GetData data, vbByte, 2
+'        Auth_state = e_state.Idle
+'    Else
+'        Call DebugPrint("TRANSFER CHAR ERROR", 255, 0, 0, True)
+'        frmConnect.AuthSocket.GetData data, vbByte, 4
+'        Select Case MakeInt(data(3), data(2))
+'            Case 1
+'                Call DisplayError(JsonLanguage.Item("MENSAJE_CUENTA_INVALIDA"), "invalid-account")
+'            Case 3
+'                Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_BASE_DATOS"), "database-error")
+'            Case 12
+'                Call DisplayError(JsonLanguage.Item("MENSAJE_EMAIL_NO_VALIDO"), "invalid-email")
+'            Case 51
+'                Call DisplayError(JsonLanguage.Item("MENSAJE_NO_DUENO_PERSONAJE"), "not-char-owner")
+'            Case 52
+'                Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "invalid-request")
+'            Case 54
+'                Call DisplayError(JsonLanguage.Item("MENSAJE_NUEVO_DUENO_NO_EXISTE"), "newowner-not-exist")
+'            Case 55
+'                Call DisplayError(JsonLanguage.Item("MENSAJE_NO_ES_PATREON"), "not-patreon")
+'            Case 57
+'                Call DisplayError(JsonLanguage.Item("MENSAJE_CREDITOS_INSUFICIENTES"), "not-enough-credits")
+'            Case Else
+'                Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO"), "unknown-error")
+'        End Select
+'    End If
+'    Auth_state = e_state.Idle
+'End Sub
 
 Public Sub showValidateAccountControls()
     Call frmNewAccount.showValidateAccountControls

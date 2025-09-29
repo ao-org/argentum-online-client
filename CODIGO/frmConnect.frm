@@ -483,9 +483,9 @@ End Sub
                 If (x > 14 And x < 112) And (y > 675 And y < 708) Then
                     character_screen_action = e_action_delete_character
                 End If
-                If (x > 980 And x < 1000) And (y > 675 And y < 708) Then
-                    character_screen_action = e_action_transfer_character
-                End If
+'                If (x > 980 And x < 1000) And (y > 675 And y < 708) Then
+'                    character_screen_action = e_action_transfer_character
+'                End If
                 If (x > 19 And x < 48) And (y > 21 And y < 45) Then
                     character_screen_action = e_action_logout_account
                 End If
@@ -546,12 +546,12 @@ End Sub
                         frmConnect.txtNombre.SetFocus
                         Call ao20audio.PlayWav(SND_DICE)
                     Case e_action_transfer_character
-                        If SelectedCharIndex = 0 Then Exit Sub
-                        TransferCharname = Pjs(SelectedCharIndex).nombre
-                        If MsgBox(JsonLanguage.Item("MENSAJEBOX_TRANSFERIR_PERSONAJE") & TransferCharname & JsonLanguage.Item("MENSAJEBOX_A_OTRA_CUENTA"), vbYesNo + vbQuestion, _
-                                JsonLanguage.Item("MENSAJEBOX_TRANSFERIR_TITULO")) = vbYes Then
-                            frmTransferChar.Show , frmConnect
-                        End If
+'                        If SelectedCharIndex = 0 Then Exit Sub
+'                        TransferCharname = Pjs(SelectedCharIndex).nombre
+'                        If MsgBox(JsonLanguage.Item("MENSAJEBOX_TRANSFERIR_PERSONAJE") & TransferCharname & JsonLanguage.Item("MENSAJEBOX_A_OTRA_CUENTA"), vbYesNo + vbQuestion, _
+'                                JsonLanguage.Item("MENSAJEBOX_TRANSFERIR_TITULO")) = vbYes Then
+'                            frmTransferChar.Show , frmConnect
+'                        End If
                     Case e_action_delete_character
                         If SelectedCharIndex = 0 Then Exit Sub
                         DeleteUser = Pjs(SelectedCharIndex).nombre
@@ -793,9 +793,9 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 character_screen_action = e_action_delete_character
             End If
             
-            If (x > 980 And x < 1000) And (y > 675 And y < 708) Then
-                character_screen_action = e_action_transfer_character
-            End If
+'            If (x > 980 And x < 1000) And (y > 675 And y < 708) Then
+'                character_screen_action = e_action_transfer_character
+'            End If
             
             If (x > 19 And x < 48) And (y > 21 And y < 45) Then ' Boton deslogear
                 character_screen_action = e_action_logout_account
