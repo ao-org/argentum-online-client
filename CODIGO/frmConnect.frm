@@ -274,8 +274,8 @@ Private Sub AuthSocket_Connect()
                 Auth_state = e_state.ConfirmDeleteChar
             Case e_operation.RequestVerificationCode
                 Auth_state = e_state.RequestVerificationCode
-            Case e_operation.transfercharacter
-                Auth_state = e_state.RequestTransferCharacter
+            'Case e_operation.transfercharacter
+                'Auth_state = e_state.RequestTransferCharacter
         End Select
     End If
 End Sub

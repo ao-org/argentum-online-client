@@ -86,8 +86,8 @@ Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
                     Call SendConfirmDeleteChar
                 Case e_state.RequestVerificationCode
                     Call SendRequestVerificationCode
-                Case e_state.RequestTransferCharacter
-                    Call SendRequestTransferCharacter
+                'Case e_state.RequestTransferCharacter
+                    'Call SendRequestTransferCharacter
             End Select
         End If
         Exit Sub
@@ -111,8 +111,8 @@ Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
             Call HandleConfirmDeleteChar(BytesTotal)
         Case e_state.RequestVerificationCode
             Call HandleRequestVerificationCode(BytesTotal)
-        Case e_state.RequestTransferCharacter
-            Call HandleTransferCharRequest(BytesTotal)
+        'Case e_state.RequestTransferCharacter
+            'Call HandleTransferCharRequest(BytesTotal)
     End Select
 End Sub
 
@@ -418,38 +418,38 @@ Public Sub HandleLogOutRequest(ByVal BytesTotal As Long)
 End Sub
 
 Public Sub SendRequestTransferCharacter()
-    Dim JSON                   As String
-    Dim len_encrypted_username As Integer
-    Dim transfer_request()     As Byte
-    Dim packet_size            As Integer
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    Call DebugPrint("SendRequestTransferCharacter", 255, 255, 255, True)
-    Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    Dim old_owner_str As String
-    old_owner_str = CuentaEmail
-    JSON = ""
-    JSON = "{ "
-    JSON = JSON & "  ""currentOwner"": """ & old_owner_str & """ , "
-    JSON = JSON & "  ""pc"": """ & TransferCharname & """ , "
-    JSON = JSON & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
-    JSON = JSON & "  ""newOwner"": """ & TransferCharNewOwner & """"
-    JSON = JSON & " }"
-    Dim encrypted_json()   As Byte
-    Dim encrypted_json_b64 As String
-    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), JSON)
-    Call Str2ByteArr(encrypted_json_b64, encrypted_json)
-    Dim len_json As Integer
-    len_json = Len(encrypted_json_b64)
-    ReDim transfer_request(1 To (2 + 2 + len_json))
-    packet_size = UBound(transfer_request)
-    transfer_request(1) = &H20
-    transfer_request(2) = &H25
-    'Siguientes 2 bytes indican tamaño total del paquete
-    transfer_request(3) = hiByte(packet_size)
-    transfer_request(4) = LoByte(packet_size)
-    Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, transfer_request, len_json, 5)
-    Call frmConnect.AuthSocket.SendData(transfer_request)
-    Auth_state = e_state.RequestTransferCharacter
+'    Dim JSON                   As String
+'    Dim len_encrypted_username As Integer
+'    Dim transfer_request()     As Byte
+'    Dim packet_size            As Integer
+'    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+'    Call DebugPrint("SendRequestTransferCharacter", 255, 255, 255, True)
+'    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+'    Dim old_owner_str As String
+'    old_owner_str = CuentaEmail
+'    JSON = ""
+'    JSON = "{ "
+'    JSON = JSON & "  ""currentOwner"": """ & old_owner_str & """ , "
+'    JSON = JSON & "  ""pc"": """ & TransferCharname & """ , "
+'    JSON = JSON & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
+'    JSON = JSON & "  ""newOwner"": """ & TransferCharNewOwner & """"
+'    JSON = JSON & " }"
+'    Dim encrypted_json()   As Byte
+'    Dim encrypted_json_b64 As String
+'    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), JSON)
+'    Call Str2ByteArr(encrypted_json_b64, encrypted_json)
+'    Dim len_json As Integer
+'    len_json = Len(encrypted_json_b64)
+'    ReDim transfer_request(1 To (2 + 2 + len_json))
+'    packet_size = UBound(transfer_request)
+'    transfer_request(1) = &H20
+'    transfer_request(2) = &H25
+'    'Siguientes 2 bytes indican tamaño total del paquete
+'    transfer_request(3) = hiByte(packet_size)
+'    transfer_request(4) = LoByte(packet_size)
+'    Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, transfer_request, len_json, 5)
+'    Call frmConnect.AuthSocket.SendData(transfer_request)
+'    Auth_state = e_state.RequestTransferCharacter
 End Sub
 
 Public Sub SendSignUpRequest()
