@@ -3704,40 +3704,17 @@ HandleUpdateHungerAndThirst_Err:
 End Sub
 
 
-' ===== Helpers (client) =====
-Private Function TicksElapsed(ByVal startTick As Long, ByVal currentTick As Long) As Double
-    If currentTick >= startTick Then
-        TicksElapsed = CDbl(currentTick - startTick)
-    Else
-        TicksElapsed = 4294967296# - CDbl(startTick) + CDbl(currentTick) ' 2^32
-    End If
-End Function
-
-Private Function PosMod(ByVal a As Double, ByVal m As Long) As Long
-    If m <= 0 Then PosMod = 0: Exit Function
-    Dim r As Double
-    r = a - m * Fix(a / m)   ' r in [0, m)
-    PosMod = CLng(r)
-End Function
-
 
 Private Sub HandleHora()
     On Error GoTo HandleHora_Err
 
     Dim elapsedFromServer As Long
-    elapsedFromServer = Reader.ReadInt32()  ' ms into the day (server view)
+    Dim dayLen As Long
+    elapsedFromServer = Reader.ReadInt32()
+    dayLen = Reader.ReadInt32()
+    
 
-    DuracionDia = Reader.ReadInt32()
-    If DuracionDia <= 0 Then DuracionDia = 1
-
-    ' Safety: clamp to [0, DuracionDia)
-    Dim elapsedNorm As Long
-    elapsedNorm = PosMod(CDbl(elapsedFromServer), DuracionDia)
-
-    ' Anchor our local base so that (now - HoraMundo) ˜ elapsedNorm
-    Dim nowTicks As Long
-    nowTicks = GetTickCount()
-    HoraMundo = nowTicks - elapsedNorm  ' store raw; only compare via TicksElapsed()
+    WorldTime_HandleHora elapsedFromServer, dayLen
 
     If Not Connected Then
         RevisarHoraMundo True
