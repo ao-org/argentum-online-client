@@ -114,15 +114,26 @@ IniciarMeteorologia_Err:
 End Sub
 
 Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
-    Debug.Assert DuracionDia > 0
     On Error GoTo RevisarHoraMundo_Err
-    Dim Elapsed As Single
-    Elapsed = (FrameTime - HoraMundo) / DuracionDia
-    Elapsed = (Elapsed - Fix(Elapsed)) * 24
+
+    Dim dayLen As Long
+    dayLen = WorldTime_DayLenMs()
+    If dayLen <= 0 Then Exit Sub   ' not initialized yet
+
+    ' ms within current in-game day [0..dayLen-1], wrap-safe
+    Dim ms As Long
+    ms = WorldTime_Ms()
+
+    ' Convert to a 24h clock as Double to keep precision
+    Dim elapsed24 As Double
+    elapsed24 = (CDbl(ms) / CDbl(dayLen)) * 24#   ' hours in [0,24)
+
     Dim HoraActual As Integer
-    HoraActual = Fix(Elapsed)
+    HoraActual = Fix(elapsed24)                   ' 0..23
+
     Dim CurrentIndex As Integer
-    CurrentIndex = HoraActual \ 2
+    CurrentIndex = HoraActual \ 2                 ' each index = 2 hours
+
     If CurrentIndex <> TimeIndex Then
         TimeIndex = CurrentIndex
         If MapDat.base_light = 0 Then
@@ -138,23 +149,33 @@ Public Sub RevisarHoraMundo(Optional ByVal Instantaneo As Boolean = False)
             End If
         End If
     End If
+
+    ' Minutes + interpolation factor within the current hour
+    Dim frac As Double
+    frac = elapsed24 - HoraActual                 ' 0..1
+
     Dim Minutos As Integer
-    Dim Factor  As Double
-    Minutos = (Elapsed - HoraActual) * 60
-    Factor = CDbl(Minutos) / CDbl(60)
+    Minutos = CLng(Fix(frac * 60#))               ' 0..59
+
+    Dim Factor As Double
+    Factor = frac                                 ' 0..1 between previous and current hour
+
     Dim HoraAnterior As Integer
-    HoraAnterior = HoraActual - 1
+    HoraAnterior = (HoraActual + 23) Mod 24
+
     Select Case selected_light
         Case e_selectedlight.hourLight
-            Call LerpRGB(global_light, DayColors((24 + HoraAnterior) Mod 24), DayColors(HoraActual), Factor)
+            Call LerpRGB(global_light, DayColors(HoraAnterior), DayColors(HoraActual), Factor)
         Case e_selectedlight.dayLight
             global_light = day_light
         Case e_selectedlight.nightLight
             global_light = night_light
     End Select
+
     UpdateLights = True
-    frmMain.lblhora = Right$("00" & HoraActual, 2) & ":" & Right$("00" & Minutos, 2)
+    frmMain.lblhora = Right$("00" & CStr(HoraActual), 2) & ":" & Right$("00" & CStr(Minutos), 2)
     Exit Sub
+
 RevisarHoraMundo_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModMetereologia.RevisarHoraMundo", Erl)
     Resume Next
