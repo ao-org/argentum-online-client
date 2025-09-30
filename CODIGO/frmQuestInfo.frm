@@ -531,7 +531,7 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
             End If
             ' Si tiene habilidad requerida
             If .RequiredSkill.SkillType > 0 Then
-                requisitos = requisitos & SkillsNames(.RequiredSkill.SkillType) & ": " & .RequiredSkill.RequiredValue & vbCrLf
+                requisitos = requisitos & vbCrLf & SkillsNames(.RequiredSkill.SkillType) & ": " & .RequiredSkill.RequiredValue & vbCrLf
             End If
             ' Limpiamos y mostramos los requisitos
             FrmQuestInfo.Text1.text = ""
