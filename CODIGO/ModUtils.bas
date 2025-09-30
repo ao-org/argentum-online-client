@@ -42,22 +42,22 @@ Type Effect_Type
     ViajeChar  As Integer  '< CharIndex al que viaja.
     DestinoChar As Integer
     Viaje_X    As Integer   '< X hacia donde se dirije.
-    End_Effect As Integer  '< Particula De la explosiï¿½n.
-    FxEnd_Effect As Integer  '< Particula De la explosiï¿½n.
-    End_Loops  As Integer  '< Loops del fx de la explosiï¿½n.
+    End_Effect As Integer  '< Particula De la explosión.
+    FxEnd_Effect As Integer  '< Particula De la explosión.
+    End_Loops  As Integer  '< Loops del fx de la explosión.
     Viaje_Y    As Integer   '< Y hacia donde se dirije.
     ViajeSpeed As Single   '< Velocidad de viaje.
     Now_Moved  As Long     '< Tiempo del movimiento actual.
-    Last_Move  As Long     '< Tiempo del ï¿½ltimo movimiento.
-    Now_X      As Integer  '< Posiciï¿½n X actual
-    Now_Y      As Integer  '< Posiciï¿½n Y actual
-    Slot_Used  As Boolean  '< Si estï¿½ usandose este slot.
+    Last_Move  As Long     '< Tiempo del último movimiento.
+    Now_X      As Integer  '< Posición X actual
+    Now_Y      As Integer  '< Posición Y actual
+    Slot_Used  As Boolean  '< Si está usandose este slot.
     wav        As Integer
     DestX As Byte
     DesyY As Byte
 End Type
 
-Public Const NO_INDEX = -1         '< ï¿½ndice no vï¿½lido.
+Public Const NO_INDEX = -1         '< índice no válido.
 Public Effect()     As Effect_Type
 'Destruccion de items
 Public DestItemSlot As Byte
@@ -921,7 +921,7 @@ End Sub
 'You should have received a copy of the GNU Lesser General Public
 'License along with this library; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-'Augusto Josï¿½ Rando (barrin@imperiumao.com.ar)
+'Augusto José Rando (barrin@imperiumao.com.ar)
 '   - First Relase
 Public Function IntervaloPermiteClick(Optional ByVal Actualizar As Boolean = True) As Boolean
     On Error GoTo IntervaloPermiteClick_Err

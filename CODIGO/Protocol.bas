@@ -5095,7 +5095,7 @@ Private Sub HandleQuestDetails()
             subelemento.SubItems(3) = 1
         Next i
     End If
-    'Determinamos que formulario se muestra, segï¿½n si recibimos la informaciï¿½n y la quest estï¿½ empezada o no.
+    'Determinamos que formulario se muestra, según si recibimos la información y la quest está empezada o no.
     If QuestEmpezada Then
         FrmQuests.txtInfo.text = tmpStr
         Call FrmQuests.ListView1_Click
@@ -5266,7 +5266,7 @@ Public Sub HandleNpcQuestListSend()
         End Select
         FrmQuestInfo.ListViewQuest.Refresh
     Next J
-    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest estï¿½ empezada o no.
+    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest está empezada o no.
     FrmQuestInfo.Show vbModeless, GetGameplayForm()
     FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
     Call FrmQuestInfo.ShowQuest(1)
@@ -5742,7 +5742,7 @@ Public Sub HandleObjQuestListSend()
             subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
     End Select
     FrmQuestInfo.ListViewQuest.Refresh
-    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest estï¿½ empezada o no.
+    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest está empezada o no.
     FrmQuestInfo.Show vbModeless, GetGameplayForm()
     FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
     Call FrmQuestInfo.ShowQuest(1)

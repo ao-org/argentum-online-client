@@ -82,6 +82,10 @@ Private Sub cmdCerrar_Click()
     
 End Sub
 
+Private Sub Form_Activate()
+    Call InvSkins.ReDraw
+End Sub
+
 Private Sub Form_Initialize()
     
     bSkins = True

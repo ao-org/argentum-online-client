@@ -22,7 +22,7 @@ Public SeguroParty      As Boolean
 Public SeguroClanX      As Boolean
 Public SeguroResuX      As Boolean
 Public LegionarySecureX As Boolean
-Public QuePestaï¿½aInferior As Byte
+Public QuePestañaInferior As Byte
 Public newUser As Boolean
 
 Public Enum tMacro
@@ -208,12 +208,12 @@ End Enum
 
 Public Enum e_Class
     Mage = 1    'Mago
-    Cleric      'Clï¿½rigo
+    Cleric      'Clérigo
     Warrior     'Guerrero
     Assasin     'Asesino
     Bard        'Bardo
     Druid       'Druida
-    paladin     'Paladï¿½n
+    paladin     'Paladín
     Hunter      'Cazador
     Worker  'Trabajador
     Pirat       'Pirata
@@ -392,7 +392,7 @@ End Enum
 Public clicX                      As Long
 Public clicY                      As Long
 Public FxLoops                    As Long
-'ï¿½Estamos haciendo efecto fade?
+'¿Estamos haciendo efecto fade?
 Public mFadingStatus              As Byte
 Public mFadingMusicMod            As Long
 Public NextMP3                    As Byte
@@ -490,7 +490,7 @@ Public CuentaEmail          As String
 Public CharacterRemote      As String
 Public NamePj(1 To 8)       As String
 Public ValidationCode       As String
-'Objetos pï¿½blicos
+'Objetos públicos
 Public DialogosClanes       As clsGuildDlg
 Public CurMp3               As Byte
 Public Const Mp3_Dir = "\..\Recursos\Mp3\"
@@ -571,7 +571,7 @@ Public Site                   As String
 Public UserCiego              As Boolean
 Public UserEstupido           As Boolean
 Public NoRes                  As Boolean 'no cambiar la resolucion
-Public Launcher               As Boolean 'ï¿½Habrio desde el Launcher?
+Public Launcher               As Boolean '¿Habrio desde el Launcher?
 Public AmbientalesBufferIndex As Long
 Public RainBufferIndex        As Long
 Public FogataBufferIndex      As Long
@@ -672,12 +672,12 @@ Public Const INV_FLAG_LAVA           As Single = 1 / FLAG_LAVA
 
 Public Enum eClass
     Mage = 1    'Mago
-    Cleric      'Clï¿½rigo
+    Cleric      'Clérigo
     Warrior     'Guerrero
     Assasin     'Asesino
     Bard        'Bardo
     Druid       'Druida
-    paladin     'Paladï¿½n
+    paladin     'Paladín
     Hunter      'Cazador
     Trabajador  'Trabajador
     Pirat       'Pirata
@@ -709,7 +709,7 @@ Public Enum eSkill
     Tacticas = 3
     Armas = 4
     Meditar = 5
-    Apuï¿½alar = 6
+    Apuñalar = 6
     Ocultarse = 7
     Supervivencia = 8
     Comerciar = 9
@@ -769,7 +769,7 @@ Public Enum eObjType
     otForos = 10
     otPociones = 11
     otBebidas = 13
-    otLeï¿½a = 14
+    otLeña = 14
     otFogata = 15
     otESCUDO = 16
     otCASCO = 17

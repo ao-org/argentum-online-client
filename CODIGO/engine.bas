@@ -620,7 +620,7 @@ Public Sub Draw_GrhFX(ByRef Grh As Grh, _
             If num > 1 Then
                 ' Unificado: SIN 0.5
                 Elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
-                ' Tu contador de animaciï¿½n (con clamp a >= 0)
+                ' Tu contador de animación (con clamp a >= 0)
                 If Grh.AnimacionContador > 0 Then
                     Grh.AnimacionContador = Grh.AnimacionContador - Elapsed
                     If Grh.AnimacionContador < 0 Then Grh.AnimacionContador = 0
@@ -882,7 +882,7 @@ Public Function calcular_direccion(ByRef dir_vector As Position) As Long
 End Function
 
 Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
-    'calculo el pixel en el que estï¿½ cada usuario y
+    'calculo el pixel en el que está cada usuario y
     Dim target_x As Long
     Dim target_y As Long
     'target_charindex in pixels on render:
@@ -904,7 +904,7 @@ Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Inte
     'If (RandomNumber(1, 70) = 1) Then direccion = Not direccion
     angle = angle + RandomNumber(2, 10) * IIf(direccion, 1, -1) / 1500 * timerElapsedTime
     If dist_x > 40 Then
-        mascota.PosX = mascota.PosX + (dir_vector.x / (frmMain.renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleraciï¿½n.
+        mascota.PosX = mascota.PosX + (dir_vector.x / (frmMain.renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleración.
         isAnimated = 1
     End If
     mascota.PosX = mascota.PosX - LastOffset2X
@@ -1276,7 +1276,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
         If Not .Moving And Not .TranslationActive And .Idle And .scrollDirectionX = 0 And .scrollDirectionY = 0 And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
             If .Body.AnimateOnIdle = 0 Then
-                ' Quieto SIN animaciï¿½n: congelar la serie de walk en frame estï¿½tico
+                ' Quieto SIN animación: congelar la serie de walk en frame estético
                 .Body.Walk(.Heading).Loops = 0
                 .Body.Walk(.Heading).started = 0
                 If Not .MovArmaEscudo Then
@@ -1284,17 +1284,17 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     .Escudo.ShieldWalk(.Heading).started = 0
                 End If
             Else
-                ' Quieto CON animaciï¿½n: disparar (o preservar) idle una sola vez
+                ' Quieto CON animación: disparar (o preservar) idle una sola vez
                 If .Body.Walk(.Heading).started = 0 Or .Body.Walk(.Heading).Loops <> INFINITE_LOOPS Then
                     Call SetCharIdle(charlist(charindex), True)
                 End If
             End If
             If .Backpack.AnimateOnIdle = 0 And .Backpack.IdleBody = 0 Then
-                ' Quieto SIN animaciï¿½n: congelar la serie de walk en frame estï¿½tico
+                ' Quieto SIN animación: congelar la serie de walk en frame estético
                 .Backpack.Walk(.Heading).Loops = 0
                 .Backpack.Walk(.Heading).started = 0
             Else
-                ' Quieto CON animaciï¿½n: disparar (o preservar) idle una sola vez
+                ' Quieto CON animación: disparar (o preservar) idle una sola vez
                 If .Backpack.Walk(.Heading).started = 0 Or .Backpack.Walk(.Heading).Loops <> INFINITE_LOOPS Then
                     Call SetCharIdle(charlist(charindex), False)
                 End If
@@ -1336,7 +1336,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             If .scrollDirectionX = 0 And .scrollDirectionY = 0 Then
                 .Moving = False
-                .Idle = True                 ' marcar intenciï¿½n de idle (el guard de arriba decide animaciï¿½n/estï¿½tico)
+                .Idle = True                 ' marcar intención de idle (el guard de arriba decide animación/estético)
             End If
         ElseIf .TranslationActive Then
             Dim ElapsedTime        As Long
@@ -1369,7 +1369,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         ElseIf Not .Idle Then
             If .Muerto Then
                 If charindex <> UserCharIndex Then
-                    ' Si no somos nosotros, esperamos un intervalo antes de poner la animaciï¿½n idle para evitar saltos
+                    ' Si no somos nosotros, esperamos un intervalo antes de poner la animación idle para evitar saltos
                     If FrameTime - .LastStep > TIME_CASPER_IDLE Then
                         .Body = BodyData(CASPER_BODY_IDLE)
                         .Body.Walk(.Heading).started = FrameTime
@@ -1400,14 +1400,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             .Idle = True
         End If
-        ' --- AUTOSTART WALK ANIMATION SI ESTï¿½ MOVIï¿½NDOSE ---
+        ' --- AUTOSTART WALK ANIMATION SI ESTÁ MOVIÉNDOSE ---
         If (.Moving Or .TranslationActive) Then
             ' Cuerpo: si no estaba animando, arrancar y loop infinito
             If .Body.Walk(.Heading).started = 0 Then
                 .Body.Walk(.Heading).started = FrameTime
                 .Body.Walk(.Heading).Loops = INFINITE_LOOPS
             End If
-            ' Arma/Escudo: en fase con el cuerpo si no venï¿½an animando
+            ' Arma/Escudo: en fase con el cuerpo si no venían animando
             If .Arma.WeaponWalk(.Heading).GrhIndex <> 0 Then
                 If .Arma.WeaponWalk(.Heading).started = 0 Then
                     .Arma.WeaponWalk(.Heading).started = .Body.Walk(.Heading).started
@@ -1813,7 +1813,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 charlist(charindex).MaxBarTime = 0
             End If
         End If
-        ' Meditaciï¿½n
+        ' Meditación
         If .ActiveAnimation.PlaybackState <> Stopped Then
             Call UpdateAnimation(.ActiveAnimation)
             Call Draw_Animation(.ActiveAnimation, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 4 + .Body.BodyOffset.y, 1, color)
@@ -1864,7 +1864,7 @@ Public Sub SetCharIdle(ByRef c As Char, Optional ByVal force As Boolean = True)
             .Escudo.ShieldWalk(.Heading).started = 0
         End If
         If .Backpack.AnimateOnIdle = 0 Then
-            ' Parado sin animaciï¿½n
+            ' Parado sin animación
             .Backpack.Walk(.Heading).Loops = 0
             .Backpack.Walk(.Heading).started = 0
         Else
@@ -1989,6 +1989,7 @@ Public Sub start()
                     'Utilizo un boolean, para evitar utilizar la propiedad .visible de los formularios, ya que aparentemente instancia el form y baja la performance.
                     If bSkins Then
                         DrawInventorySkins
+                        Debug.Print "Renderizando skins"
                     End If
 
                 Case e_state_connect_screen
@@ -2086,7 +2087,7 @@ End Function
 
 Public Sub DrawMainInventory()
     On Error GoTo DrawMainInventory_Err
-    ' Sï¿½lo dibujamos cuando es necesario
+    ' Sólo dibujamos cuando es necesario
     'If Not frmMain.Inventario.NeedsRedraw Then Exit Sub
     Dim InvRect As Rect
     InvRect.Left = 0
@@ -2111,7 +2112,7 @@ End Sub
 
 Public Sub DrawInterfaceComerciar()
     On Error GoTo DrawInterfaceComerciar_Err
-    ' Sï¿½lo dibujamos cuando es necesario
+    ' Sólo dibujamos cuando es necesario
     If Not frmComerciar.InvComNpc.NeedsRedraw And Not frmComerciar.InvComUsu.NeedsRedraw Then Exit Sub
     Dim InvRect As Rect
     InvRect.Left = 0
@@ -2127,19 +2128,19 @@ Public Sub DrawInterfaceComerciar()
     Call frmComerciar.InvComNpc.DrawInventory
     ' Dibujamos items del usuario
     Call frmComerciar.InvComUsu.DrawInventory
-    ' Dibujamos "ambos" items arrastrados (aunque sï¿½lo puede estar uno activo a la vez)
+    ' Dibujamos "ambos" items arrastrados (aunque sólo puede estar uno activo a la vez)
     Call frmComerciar.InvComNpc.DrawDraggedItem
     Call frmComerciar.InvComUsu.DrawDraggedItem
-    ' Me fijo quï¿½ inventario estï¿½ seleccionado
+    ' Me fijo qué inventario está seleccionado
     Dim CurrentInventory As clsGrapchicalInventory
     Dim cantidad         As Integer
     If frmComerciar.InvComNpc.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComNpc
-        ' Al comprar, calculamos el valor segï¿½n la cantidad exacta que ingresï¿½
+        ' Al comprar, calculamos el valor según la cantidad exacta que ingresó
         cantidad = val(frmComerciar.cantidad.text)
     ElseIf frmComerciar.InvComUsu.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComUsu
-        ' Al vender, calculamos el valor segï¿½n el min(cantidad_ingresada, cantidad_items)
+        ' Al vender, calculamos el valor según el min(cantidad_ingresada, cantidad_items)
         cantidad = min(val(frmComerciar.cantidad.text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
     End If
     ' Si hay alguno seleccionado
@@ -2181,7 +2182,7 @@ End Sub
 
 Public Sub DrawInterfaceBovedaCuenta()
     On Error GoTo DrawInterfaceBoveda_Err
-    ' Sï¿½lo dibujamos cuando es necesario
+    ' Sólo dibujamos cuando es necesario
     If Not frmBancoCuenta.InvBovedaCuenta.NeedsRedraw And Not frmBancoCuenta.InvBankUsuCuenta.NeedsRedraw Then Exit Sub
     Dim InvRect As Rect
     InvRect.Left = 0
@@ -2191,16 +2192,16 @@ Public Sub DrawInterfaceBovedaCuenta()
     RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
-    ' Dibujamos el fondo de la bï¿½veda
+    ' Dibujamos el fondo de la bóveda
     Call Draw_GrhIndex(838, 0, 0)
-    ' Dibujamos items de la bï¿½veda
+    ' Dibujamos items de la bóveda
     Call frmBancoCuenta.InvBovedaCuenta.DrawInventory
     ' Dibujamos items del usuario
     Call frmBancoCuenta.InvBankUsuCuenta.DrawInventory
-    ' Dibujamos "ambos" items arrastrados (aunque sï¿½lo puede estar uno activo a la vez)
+    ' Dibujamos "ambos" items arrastrados (aunque sólo puede estar uno activo a la vez)
     Call frmBancoCuenta.InvBovedaCuenta.DrawDraggedItem
     Call frmBancoCuenta.InvBankUsuCuenta.DrawDraggedItem
-    ' Me fijo quï¿½ inventario estï¿½ seleccionado
+    ' Me fijo qué inventario está seleccionado
     Dim CurrentInventory As clsGrapchicalInventory
     If frmBancoCuenta.InvBovedaCuenta.SelectedItem > 0 Then
         Set CurrentInventory = frmBancoCuenta.InvBovedaCuenta
@@ -2243,7 +2244,7 @@ End Sub
 
 Public Sub DrawInterfaceBoveda()
     On Error GoTo DrawInterfaceBoveda_Err
-    ' Sï¿½lo dibujamos cuando es necesario
+    ' Sólo dibujamos cuando es necesario
     If Not frmBancoObj.InvBoveda.NeedsRedraw And Not frmBancoObj.InvBankUsu.NeedsRedraw Then Exit Sub
     Dim InvRect As Rect
     InvRect.Left = 0
@@ -2253,16 +2254,16 @@ Public Sub DrawInterfaceBoveda()
     RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
-    ' Dibujamos el fondo de la bï¿½veda
+    ' Dibujamos el fondo de la bóveda
     Call Draw_GrhIndex(838, 0, 0)
-    ' Dibujamos items de la bï¿½veda
+    ' Dibujamos items de la bóveda
     Call frmBancoObj.InvBoveda.DrawInventory
     ' Dibujamos items del usuario
     Call frmBancoObj.InvBankUsu.DrawInventory
-    ' Dibujamos "ambos" items arrastrados (aunque sï¿½lo puede estar uno activo a la vez)
+    ' Dibujamos "ambos" items arrastrados (aunque sólo puede estar uno activo a la vez)
     Call frmBancoObj.InvBoveda.DrawDraggedItem
     Call frmBancoObj.InvBankUsu.DrawDraggedItem
-    ' Me fijo quï¿½ inventario estï¿½ seleccionado
+    ' Me fijo qué inventario está seleccionado
     Dim CurrentInventory As clsGrapchicalInventory
     If frmBancoObj.InvBoveda.SelectedItem > 0 Then
         Set CurrentInventory = frmBancoObj.InvBoveda
@@ -2305,7 +2306,7 @@ End Sub
 
 Public Sub DrawInterfaceKeys()
     On Error GoTo DrawInterfaceKeys_Err
-    ' Sï¿½lo dibujamos cuando es necesario
+    ' Sólo dibujamos cuando es necesario
     If Not FrmKeyInv.InvKeys.NeedsRedraw Then Exit Sub
     Dim InvRect As Rect
     InvRect.Left = 0
@@ -2315,7 +2316,7 @@ Public Sub DrawInterfaceKeys()
     RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
-    ' Dibujamos el fondo de la bï¿½veda
+    ' Dibujamos el fondo de la bóveda
     'Call Draw_GrhIndex(838, 0, 0)
     ' Dibujamos llaves
     Call FrmKeyInv.InvKeys.DrawInventory
@@ -2330,7 +2331,7 @@ End Sub
 
 Public Sub DrawInventoryComercio()
     On Error GoTo DrawInventorysComercio_Err
-    ' Sï¿½lo dibujamos cuando es necesario
+    ' Sólo dibujamos cuando es necesario
     If Not frmComerciarUsu.InvUser.NeedsRedraw Then Exit Sub
     Dim InvRect As Rect
     InvRect.Left = 0
@@ -2362,7 +2363,7 @@ Public Sub DrawInventorySkins()
 
 Dim InvRect                     As RECT
 
-    ' Sï¿½lo dibujamos cuando es necesario
+    ' Sólo dibujamos cuando es necesario
 10  On Error GoTo DrawInventorySkins_Error
 
 20  If Not frmSkins.InvSkins.NeedsRedraw Then Exit Sub
@@ -2395,7 +2396,7 @@ End Sub
 
 Public Sub DrawInventoryUserComercio()
     On Error GoTo DrawInventoryUserComercio_Err
-    ' Sï¿½lo dibujamos cuando es necesario
+    ' Sólo dibujamos cuando es necesario
     If Not frmComerciarUsu.InvUserSell.NeedsRedraw Then Exit Sub
     Dim InvRect As Rect
     InvRect.Left = 0
@@ -2418,7 +2419,7 @@ End Sub
 
 Public Sub DrawInventoryOtherComercio()
     On Error GoTo DrawInventoryOtherComercio_Err
-    ' Sï¿½lo dibujamos cuando es necesario
+    ' Sólo dibujamos cuando es necesario
     If Not frmComerciarUsu.InvOtherSell.NeedsRedraw Then Exit Sub
     Dim InvRect As Rect
     InvRect.Left = 0
@@ -2441,7 +2442,7 @@ End Sub
 
 Public Sub DrawInterfaceCrafting()
     On Error GoTo DrawInterfaceBoveda_Err
-    ' Sï¿½lo dibujamos cuando es necesario
+    ' Sólo dibujamos cuando es necesario
     If Not frmCrafteo.InvCraftUser.NeedsRedraw And Not frmCrafteo.InvCraftItems.NeedsRedraw And Not frmCrafteo.InvCraftCatalyst.NeedsRedraw Then Exit Sub
     Dim InvRect As Rect
     InvRect.Left = 0
@@ -2467,7 +2468,7 @@ Public Sub DrawInterfaceCrafting()
     Else
         Call Draw_GrhIndex(frmCrafteo.TipoGrhIndex, 100, 15)
     End If
-    ' Dibujamos los items arrastrados (aunque sï¿½lo puede estar uno activo a la vez)
+    ' Dibujamos los items arrastrados (aunque sólo puede estar uno activo a la vez)
     Call frmCrafteo.InvCraftUser.DrawDraggedItem
     Call frmCrafteo.InvCraftItems.DrawDraggedItem
     Call frmCrafteo.InvCraftCatalyst.DrawDraggedItem
@@ -2520,7 +2521,7 @@ Public Sub Grh_Render_Advance(ByRef Grh As Grh, _
         End If
     End If
     If Not OverlapRect(RenderCullingRect, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
-    ' Dibujar con escala Width/Height y el ï¿½ngulo del Grh
+    ' Dibujar con escala Width/Height y el ángulo del Grh
     Call Batch_Textured_Box_Advance(screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData( _
             grh_index).FileNum, Width, Height, rgb_list, alpha_blend, Grh.angle)
     Exit Sub
@@ -2848,7 +2849,7 @@ Public Sub RenderUICrearPJ()
     Call renderAttributesColors(atributeValue, 305 + OffX, 473 + Offy) ' Atributo Inteligencia
     atributeValue = val(frmCrearPersonaje.lbConstitucion.Caption) + val(frmCrearPersonaje.modConstitucion.Caption)
     Engine_Text_Render JsonLanguage.Item("MENSAJE_567"), 185 + OffX, 500 + Offy, COLOR_WHITE, , True
-    Call renderAttributesColors(atributeValue, 305 + OffX, 503 + Offy) ' Atributo Constituciï¿½n
+    Call renderAttributesColors(atributeValue, 305 + OffX, 503 + Offy) ' Atributo Constitución
     atributeValue = val(frmCrearPersonaje.lbCarisma.Caption) + val(frmCrearPersonaje.modCarisma.Caption)
     Engine_Text_Render JsonLanguage.Item("MENSAJE_568"), 185 + OffX, 530 + Offy, COLOR_WHITE, , True
     Call renderAttributesColors(atributeValue, 305 + OffX, 533 + Offy) ' Atributo Carisma
@@ -3162,7 +3163,7 @@ Public Sub Terminate_Index(ByVal effect_Index As Integer)
     '
     ' @ Destruye un indice del array
     Dim clear_Index As Effect_Type
-    'Si es un slot vï¿½lido
+    'Si es un slot válido
     If (effect_Index <> 0) And (effect_Index <= UBound(Effect())) Then
         Effect(effect_Index) = clear_Index
     End If
@@ -3197,7 +3198,7 @@ Public Function Effect_Begin(ByVal Fx_Index As Integer, _
             .ViajeChar = Emisor
             .DestinoChar = receptor
             .wav = wav
-            'Explosiï¿½n?
+            'Explosión?
             If (explosion_FX_Index <> 0) And (Fx = 0) Then
                 .End_Effect = explosion_FX_Index
                 .End_Loops = explosion_FX_Loops
@@ -3245,7 +3246,7 @@ Public Function Effect_BeginXY(ByVal Fx_Index As Integer, _
             .DestX = DestinoX
             .DesyY = Destinoy
             .wav = wav
-            'Explosiï¿½n?
+            'Explosión?
             If (explosion_FX_Index <> 0) And (Fx = 0) Then
                 .End_Effect = explosion_FX_Index
                 .End_Loops = explosion_FX_Loops
@@ -3310,16 +3311,16 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 .Viaje_Y = Get_PixelY_Of_XY(.DesyY) - 32
             End If
         End If
-        'Actualiza el ï¿½ngulo.
+        'Actualiza el ángulo.
         target_Angle = Engine_GetAngle(.Now_X, .Now_Y, CInt(.Viaje_X), CInt(.Viaje_Y))
-        'Actualiza la posiciï¿½n del efecto.
+        'Actualiza la posición del efecto.
         .Now_X = (.Now_X + Sin(target_Angle * DegreeToRadian) * .ViajeSpeed * timerTicksPerFrame * 9)
         .Now_Y = (.Now_Y - Cos(target_Angle * DegreeToRadian) * .ViajeSpeed * timerTicksPerFrame * 9)
-        'Si hay posiciï¿½n dibuja.
+        'Si hay posición dibuja.
         If (.Now_X <> 0) And (.Now_Y <> 0) Then
             ' Call DDrawTransGrhtoSurface(.FX_Grh, .Now_X, .Now_Y, 1, 1)
             Call Particle_Group_Render(spell_particle, .Now_X, .Now_Y)
-            'Check si terminï¿½.
+            'Check si terminó.
             ' If (.FX_Grh.Started = 0) Then .Fx_Index = 0: .Slot_Used = False
             If Abs(CInt(.Viaje_X) - CInt(.Now_X)) < 5 Then
                 .Now_X = .Viaje_X
@@ -3328,7 +3329,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 .Now_Y = .Viaje_Y
             End If
             If (.Now_X = .Viaje_X) And (.Now_Y = .Viaje_Y) Then
-                'Inicializa la explosiï¿½n : p
+                'Inicializa la explosión : p
                 If (.End_Effect <> 0) And .DestinoChar <> 0 Then
                     If .DestinoChar <> 0 Then
                         Call General_Char_Particle_Create(.End_Effect, .DestinoChar, .End_Loops)
@@ -3436,10 +3437,10 @@ End Function
 Public Function GetFreeIndex() As Integer
     On Error GoTo GetFreeIndex_Err
     '
-    ' @ Devuelve un ï¿½ndice para un nuevo FX.
+    ' @ Devuelve un índice para un nuevo FX.
     Dim i As Long
     For i = 1 To UBound(Effect())
-        'No estï¿½ usado.
+        'No está usado.
         If Not Effect(i).Slot_Used Then
             GetFreeIndex = CInt(i)
             Exit Function

@@ -17,7 +17,7 @@ Attribute VB_Name = "ModGameplayUI"
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 '    This program was based on Argentum Online 0.11.6
-'    Copyright (C) 2002 Mï¿½rquez Pablo Ignacio
+'    Copyright (C) 2002 Márquez Pablo Ignacio
 '
 '    Argentum Online is based on Baronsoft's VB6 Online RPG
 '    You can contact the original creator of ORE at aaron@baronsoft.com
@@ -115,7 +115,7 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
                                         Exit Sub
                                     End If
                                     With FontTypes(FontTypeNames.FONTTYPE_TALK)
-                                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_LANZAMIENTO_RAPIDO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_LANZAMIENTO_RAPIDO=No puedes lanzar hechizos tan rï¿½pido.
+                                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_LANZAMIENTO_RAPIDO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_LANZAMIENTO_RAPIDO=No puedes lanzar hechizos tan rápido.
                                     End With
                                 Else
                                     Exit Sub
@@ -127,7 +127,7 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
                                     Exit Sub
                                 End If
                                 With FontTypes(FontTypeNames.FONTTYPE_TALK)
-                                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ATAQUE_RAPIDO_GOLPE"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ATAQUE_RAPIDO_GOLPE=No puedes lanzar tan rï¿½pido despuï¿½s de un golpe.
+                                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ATAQUE_RAPIDO_GOLPE"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ATAQUE_RAPIDO_GOLPE=No puedes lanzar tan rápido después de un golpe.
                                 End With
                             Else
                                 Exit Sub
@@ -233,7 +233,7 @@ Public Sub HandleQuestionResponse(ByVal Result As Boolean)
     If PreguntaLocal Then
         If Result Then
             Select Case PreguntaNUM
-                Case 1 'ï¿½Destruir item?
+                Case 1 '¿Destruir item?
                     Call WriteDrop(DestItemSlot, DestItemCant)
                 Case 2 ' Denunciar
                     Call WriteDenounce(targetName)
@@ -538,7 +538,7 @@ Public Sub UseSpell(ByVal SpellSlot As Byte, ByVal SpellName As String)
     End If
     iClickTick = TempTick
     LastMacroButton = tMacroButton.Lanzar
-    If SpellName <> "(Vacï¿½o)" Then
+    If SpellName <> "(Vacío)" Then
         If UserStats.estado = 1 Then
             With FontTypes(FontTypeNames.FONTTYPE_INFO)
                 Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -641,7 +641,7 @@ Public Sub RequestMeditate()
     If UserStats.minman = UserStats.maxman Then Exit Sub
     If UserStats.estado = 1 Then
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
-            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=ï¿½Estï¿½s muerto!
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=¡Estás muerto!
         End With
         Exit Sub
     End If
