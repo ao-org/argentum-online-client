@@ -55,10 +55,11 @@ Private mHalfPixel  As Single
 ' Saved render state
 Private Type SavedState
     Shader      As Long
-    VB0Stride As Long
+    VB0Stride   As Long
     BaseVBIndex As Long
-    VB0 As Direct3DVertexBuffer8
-    ib  As Direct3DIndexBuffer8
+    VB0         As Direct3DVertexBuffer8
+    ib          As Direct3DIndexBuffer8
+    Tex0        As Direct3DBaseTexture8
     ZEnable     As Long
     AlphaBlend  As Long
     SrcBlend    As Long
@@ -78,6 +79,9 @@ Private mSaved      As SavedState
 Private gFrameCount As Long
 Private gLastTick   As Long
 Private gFPS        As Long
+
+
+Private mTexMan As clsTexManager
 
 Private Sub InitFPS()
     gFrameCount = 0
@@ -103,11 +107,11 @@ Private Sub UpdateAndRenderFPS()
     simple_text_render "FPS: " & CStr(gFPS), 10, 10, col, 1, True
 End Sub
 
-Public Function ColorToBytes(ByVal R As Byte, ByVal G As Byte, ByVal B As Byte, Optional ByVal A As Byte = 255) As Long
+Public Function ColorToBytes(ByVal r As Byte, ByVal g As Byte, ByVal b As Byte, Optional ByVal A As Byte = 255) As Long
     Dim p(0 To 3) As Byte   ' [0]=B, [1]=G, [2]=R, [3]=A
-    p(0) = B
-    p(1) = G
-    p(2) = R
+    p(0) = b
+    p(1) = g
+    p(2) = r
     p(3) = A
     CopyMemory ColorToBytes, p(0), 4
 End Function
@@ -133,9 +137,9 @@ End Sub
 ' Public API
 ' =====================================================================================
 ' Pack bytes to ARGB (what D3D expects). Memory order = [B,G,R,A].
-Private Function ARGB(ByVal A As Byte, ByVal R As Byte, ByVal G As Byte, ByVal B As Byte) As Long
+Private Function ARGB(ByVal A As Byte, ByVal r As Byte, ByVal g As Byte, ByVal b As Byte) As Long
     Dim p(0 To 3) As Byte
-    p(0) = B: p(1) = G: p(2) = R: p(3) = A
+    p(0) = b: p(1) = g: p(2) = r: p(3) = A
     CopyMemory ARGB, p(0), 4
 End Function
 
@@ -309,6 +313,7 @@ End Sub
 Public Sub SaveRenderState(ByVal dev As Direct3DDevice8)
     Dim vb     As Direct3DVertexBuffer8, ib As Direct3DIndexBuffer8
     Dim stride As Long, baseIdx As Long
+    Set mSaved.Tex0 = dev.GetTexture(0)
     mSaved.Shader = dev.GetVertexShader
     dev.GetStreamSource 0, vb, stride: Set mSaved.VB0 = vb: mSaved.VB0Stride = stride
     dev.GetIndices ib, baseIdx: Set mSaved.ib = ib: mSaved.BaseVBIndex = baseIdx
@@ -328,6 +333,8 @@ Public Sub SaveRenderState(ByVal dev As Direct3DDevice8)
 End Sub
 
 Public Sub RestoreRenderState(ByVal dev As Direct3DDevice8)
+    dev.SetTexture 0, mSaved.Tex0
+    Set mSaved.Tex0 = Nothing
     dev.SetVertexShader mSaved.Shader
     dev.SetStreamSource 0, mSaved.VB0, mSaved.VB0Stride
     dev.SetIndices mSaved.ib, mSaved.BaseVBIndex
@@ -367,13 +374,169 @@ Fallback:
     SafeColor = Fallback
 End Function
 
+
+
+
+Private Function ARGBToVBColor(ByVal argbColor As Long) As Long
+    Dim r As Long, g As Long, b As Long
+    r = (argbColor \ &H10000) And &HFF&
+    g = (argbColor \ &H100&) And &HFF&
+    b = argbColor And &HFF&
+    ARGBToVBColor = (b * &H10000) Or (g * &H100) Or r
+End Function
+
+Private Function NormalizeTextColor(ByVal inputColor As Long) As Long
+    If (inputColor And &HFF000000) = 0 Then
+        NormalizeTextColor = inputColor
+    Else
+        NormalizeTextColor = ARGBToVBColor(inputColor)
+    End If
+End Function
+
+Private Sub AddGlyphQuad(ByVal glyphIndex As Long, ByVal drawX As Long, ByVal drawY As Long, ByVal vbColor As Long, ByVal alphaVal As Byte)
+    If glyphIndex <= 0 Then Exit Sub
+
+    Dim finalIndex As Long
+    finalIndex = glyphIndex
+
+    If GrhData(finalIndex).NumFrames > 0 Then
+        If GrhData(finalIndex).NumFrames >= 1 Then
+            finalIndex = GrhData(finalIndex).Frames(1)
+        End If
+    End If
+
+    If finalIndex <= 0 Then Exit Sub
+
+    Dim glyphWidth As Long
+    Dim glyphHeight As Long
+    glyphWidth = GrhData(finalIndex).pixelWidth + 1
+    glyphHeight = GrhData(finalIndex).pixelHeight + 1
+
+    Dim cols(3) As Long
+    cols(0) = vbColor
+    cols(1) = vbColor
+    cols(2) = vbColor
+    cols(3) = vbColor
+
+    Dim startCmd As Long
+    Dim startVert As Long
+    startCmd = cmdCount
+    startVert = vertexCount
+
+    AddQuad drawX, drawY, glyphWidth, glyphHeight, cols, alphaVal
+
+    If cmdCount <= startCmd Then Exit Sub
+
+    If SurfaceDB Is Nothing Then Exit Sub
+
+    Dim texWidth As Long, texHeight As Long
+    Dim glyphTex As Direct3DTexture8
+    Set glyphTex = SurfaceDB.GetTexture(GrhData(finalIndex).FileNum, texWidth, texHeight)
+    Set cmds(startCmd).tex = glyphTex
+
+    Dim u0 As Single, v0 As Single, u1 As Single, v1 As Single
+    If texWidth <> 0 And texHeight <> 0 Then
+        u0 = (GrhData(finalIndex).sX + 0.25) / texWidth
+        v0 = (GrhData(finalIndex).sY + 0.25) / texHeight
+        u1 = (GrhData(finalIndex).sX + glyphWidth) / texWidth
+        v1 = (GrhData(finalIndex).sY + glyphHeight) / texHeight
+    Else
+        u0 = 0!
+        v0 = 0!
+        u1 = 1!
+        v1 = 1!
+    End If
+
+    With vertices(startVert + 0)
+        .tu = u0
+        .tv = v0
+    End With
+    With vertices(startVert + 1)
+        .tu = u1
+        .tv = v0
+    End With
+    With vertices(startVert + 2)
+        .tu = u0
+        .tv = v1
+    End With
+    With vertices(startVert + 3)
+        .tu = u1
+        .tv = v1
+    End With
+End Sub
+
 Public Sub RenderText(Texto As String, _
                       ByVal x As Integer, _
                       ByVal y As Integer, _
                       ByVal color As Long, _
                       Optional ByVal font_index As Integer = 1, _
-                      Optional multi_line As Boolean = False, _
-                      Optional charindex As Integer = 0, _
                       Optional ByVal alpha As Byte = 255)
-    '    On Error GoTo Engine_Text_Render_Err
+   
+ 
+ On Error GoTo RenderText_Err
+
+    If Len(Texto) = 0 Then Exit Sub
+
+    Dim graf As Grh
+    Dim alphaValue As Byte
+    alphaValue = alpha
+
+    Dim vbColor As Long
+    vbColor = NormalizeTextColor(color)
+
+    Dim advanceX As Long
+    Dim charsOnLine As Long
+    Dim lineIndex As Long
+    Dim idx As Long
+    Const WRAP_THRESHOLD As Long = 33
+
+    advanceX = 0
+    For idx = 1 To Len(Texto)
+        Dim charCode As Long
+        charCode = Asc(mid$(Texto, idx, 1))
+
+        If charCode = 13 Or charCode = 10 Then
+            lineIndex = lineIndex + 1
+            advanceX = 0
+            charsOnLine = 0
+        Else
+            graf.GrhIndex = Fuentes(font_index).Caracteres(charCode)
+
+            If charCode = 32 Then
+                If charsOnLine >= WRAP_THRESHOLD Then
+                    lineIndex = lineIndex + 1
+                    advanceX = 0
+                    charsOnLine = 0
+                Else
+                    advanceX = advanceX + 2
+                    charsOnLine = charsOnLine + 1
+                End If
+            ElseIf graf.GrhIndex > 12 Then
+                Dim glyphIdx As Long
+                glyphIdx = graf.GrhIndex
+
+                AddGlyphQuad glyphIdx, x + advanceX, y + lineIndex * 14, vbColor, alphaValue
+
+                If GrhData(glyphIdx).NumFrames > 0 Then
+                    glyphIdx = GrhData(glyphIdx).Frames(1)
+                End If
+
+                If glyphIdx > 0 Then
+                    If font_index = 4 Then
+                        advanceX = advanceX + GrhData(glyphIdx).pixelWidth - 1
+                    Else
+                        advanceX = advanceX + GrhData(glyphIdx).pixelWidth
+                    End If
+                End If
+
+                charsOnLine = charsOnLine + 1
+            End If
+        End If
+    Next idx
+
+    Exit Sub
+RenderText_Err:
+    
+    Call RegistrarError(Err.Number, Err.Description, "clsUIRenderer.RenderText", Erl)
+    Resume Next
 End Sub

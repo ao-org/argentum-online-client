@@ -1972,8 +1972,6 @@ Private Sub cmdAccion_Click(Index As Integer)
         Case 4 '/REM 0.12.1
             tmp = InputBox("¿Comentario?", "Ingrese comentario")
             Call WriteComment(tmp)
-        Case 5 '/HORA 0.12.1
-            Call WriteServerTime
         Case 6 '/DONDE NICK 0.12.1
             If LenB(nick) <> 0 Then Call WriteWhere(nick)
         Case 7 '/NENE 0.12.1
@@ -2028,20 +2026,6 @@ Private Sub cmdAccion_Click(Index As Integer)
             Call WriteOnlineMap
         Case 31 '/LLUVIA 0.12.1
             Call WriteRainToggle
-        Case 32
-            Dim Elapsed As Single
-            Elapsed = (FrameTime - HoraMundo) / DuracionDia
-            Elapsed = (Elapsed - Fix(Elapsed)) * 24
-            Dim HoraActual As Integer
-            HoraActual = Fix(Elapsed)
-            ' Es de noche?
-            If HoraActual >= 0 And HoraActual <= 6 Then
-                ' Hacemos de dia
-                Call WriteDay
-                ' Viceversa
-            Else
-                Call WriteNight
-            End If
         Case 33
             Call ParseUserCommand("/PAUSAR")
         Case 34 '/LIMPIARMUNDO 0.12.1

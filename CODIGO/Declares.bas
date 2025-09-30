@@ -85,7 +85,6 @@ Public NpcWorlds(1 To 2000)             As Byte
 Public ViajarInterface                  As Byte
 Public FormParser                       As clsCursor
 Public HoraMundo                        As Long
-Public DuracionDia                      As Long
 Public EsGM                             As Boolean
 Public MapInfoEspeciales                As String
 Public LLamadaDeclanMapa                As Integer
