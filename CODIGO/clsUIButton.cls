@@ -55,7 +55,7 @@ Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w 
     m_W = w: m_H = h
     m_ColorFill = clrFill
     m_HoverColor = clrHover
-    m_ColorText = UIRenderer.ColorToBytes(255, 255, 255, 255)
+    m_ColorText = clrText
     m_Clicked = False: m_PrevDown = False: m_IsHover = False
 End Sub
 
@@ -88,10 +88,10 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     cols(2) = clr
     cols(3) = clr
     UIRenderer.AddQuad m_X, m_Y, m_W, m_H, cols
-    Dim rc As Rect
+    Dim rc As RECT
     rc.Left = m_X: rc.Top = m_Y
     rc.Right = m_X + m_W: rc.Bottom = m_Y + m_H
-    Call UIRenderer.RenderText(m_Text, rc.Left, rc.Top, m_ColorText, 1, True, 0, 128)
+    Call UIRenderer.RenderText(m_Text, rc.Left, rc.Top, m_ColorText, 1, 255)
 End Sub
 
 Private Sub IUIComponent_HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)

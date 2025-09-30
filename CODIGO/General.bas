@@ -1355,28 +1355,6 @@ RunningInVB_Err:
     Resume Next
 End Function
 
-Function GetTimeFromString(str As String) As Long
-    On Error GoTo GetTimeFromString_Err
-    If Len(str) = 0 Then Exit Function
-    Dim Splitted() As String
-    Splitted = Split(str, ":")
-    Dim Hour As Long, min As Long
-    Hour = val(Splitted(0))
-    If Hour < 0 Then Hour = 0
-    If Hour > 23 Then Hour = 23
-    GetTimeFromString = Hour * 60
-    If UBound(Splitted) > 0 Then
-        min = val(Splitted(1))
-        If min < 0 Then min = 0
-        If min > 59 Then min = 59
-        GetTimeFromString = GetTimeFromString + min
-    End If
-    GetTimeFromString = GetTimeFromString * (DuracionDia / 1440)
-    Exit Function
-GetTimeFromString_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Mod_General.GetTimeFromString", Erl)
-    Resume Next
-End Function
 
 Public Function GetMd5() As String
     On Error GoTo Handler

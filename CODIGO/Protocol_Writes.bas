@@ -2764,23 +2764,6 @@ WriteComment_Err:
     '</EhFooter>
 End Sub
 
-''
-' Writes the "ServerTime" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteServerTime()
-    '<EhHeader>
-    On Error GoTo WriteServerTime_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eserverTime)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteServerTime_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteServerTime", Erl)
-    '</EhFooter>
-End Sub
 
 ''
 ' Writes the "Where" message to the outgoing data buffer.
@@ -4997,53 +4980,6 @@ Public Sub WriteShowServerForm()
 WriteShowServerForm_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteShowServerForm", Erl)
-    '</EhFooter>
-End Sub
-
-''
-' Writes the "Night" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteNight()
-    '<EhHeader>
-    On Error GoTo WriteNight_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.enight)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteNight_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteNight", Erl)
-    '</EhFooter>
-End Sub
-
-Public Sub WriteDay()
-    '<EhHeader>
-    On Error GoTo WriteDay_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eDay)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteDay_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDay", Erl)
-    '</EhFooter>
-End Sub
-
-Public Sub WriteSetTime(ByVal Time As Long)
-    '<EhHeader>
-    On Error GoTo WriteSetTime_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eSetTime)
-    Call Writer.WriteInt32(Time)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteSetTime_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSetTime", Erl)
     '</EhFooter>
 End Sub
 

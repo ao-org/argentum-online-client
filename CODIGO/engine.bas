@@ -3656,11 +3656,6 @@ DibujarNPC_Err:
     Resume Next
 End Sub
 
-Public Function GetTickCount() As Long
-    ' Devolvemos el valor absoluto de la cantidad de ticks que paso desde que prendimos la PC
-    GetTickCount = (timeGetTime And &H7FFFFFFF)
-End Function
-
 Public Function CurrentGrhFrame(ByRef Grh As Grh) As Integer
     Dim num As Long, Elapsed As Long
     If Grh.GrhIndex = 0 Or Grh.GrhIndex > MaxGrh Then CurrentGrhFrame = 1: Exit Function

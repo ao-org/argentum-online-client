@@ -1644,7 +1644,7 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
                             50, 80, bodyGrh, 1)
                 Else
                     Dim HeadOffsetY As Integer
-                    HeadOffsetY = CInt(BodyData(NpcData(text).Body).HeadOffset.y)
+                    HeadOffsetY = CInt(BodyData(NpcData(text).Body).HeadOffset.y) - 30
                     Call mostrarCartel(Split(NpcData(text).Name, " <")(0), NpcData(text).desc, headGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, _
                             50, 100, bodyGrh, HeadOffsetY)
                 End If
@@ -3705,17 +3705,28 @@ HandleUpdateHungerAndThirst_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUpdateHungerAndThirst", Erl)
 End Sub
 
+
+
 Private Sub HandleHora()
     On Error GoTo HandleHora_Err
-    HoraMundo = GetTickCount() - Reader.ReadInt32()
-    DuracionDia = Reader.ReadInt32()
+
+    Dim elapsedFromServer As Long
+    Dim dayLen As Long
+    elapsedFromServer = Reader.ReadInt32()
+    dayLen = Reader.ReadInt32()
+    
+
+    WorldTime_HandleHora elapsedFromServer, dayLen
+
     If Not Connected Then
-        Call RevisarHoraMundo(True)
+        RevisarHoraMundo True
     End If
     Exit Sub
+
 HandleHora_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleHora", Erl)
+    RegistrarError Err.Number, Err.Description, "Protocol.HandleHora", Erl
 End Sub
+
  
 Private Sub HandleLight()
     On Error GoTo HandleLight_Err
@@ -4923,6 +4934,7 @@ Private Sub HandleQuestDetails()
     FrmQuests.ListView1.ListItems.Clear
     FrmQuestInfo.ListView2.ListItems.Clear
     FrmQuestInfo.ListView1.ListItems.Clear
+    FrmQuests.ListView1.ColumnHeaders(2).Width = 780 'Agrando el ancho de la columna para que entre la cantidad de npcs correctamente
     FrmQuests.PlayerView.BackColor = RGB(11, 11, 11)
     FrmQuests.picture1.BackColor = RGB(19, 14, 11)
     FrmQuests.PlayerView.Refresh
