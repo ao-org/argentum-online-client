@@ -3056,11 +3056,31 @@ Private Sub HandleCharAtaca()
     VictimIndex = Reader.ReadInt16()
     danio = Reader.ReadInt32()
     AnimAttack = Reader.ReadInt16()
-    Dim Grh As Grh
+    Dim oldWalk    As Grh
+    Dim keepStart  As Long
     With charlist(NpcIndex)
         If AnimAttack > 0 Then
+            oldWalk = .Body.Walk(.Heading)
+            .AnimatingBody = AnimAttack
+            .Idle = False
             .Body = BodyData(AnimAttack)
-            .Body.Walk(.Heading).started = FrameTime
+            .Body.Walk(.Heading).Loops = 0
+            If oldWalk.started > 0 And .Moving Then
+                keepStart = SyncGrhPhase(oldWalk, .Body.Walk(.Heading).GrhIndex)
+            Else
+                keepStart = FrameTime
+            End If
+            .Body.Walk(.Heading).started = keepStart
+            If Not .MovArmaEscudo Then
+                If .Arma.WeaponWalk(.Heading).GrhIndex <> 0 Then
+                    .Arma.WeaponWalk(.Heading).Loops = 0
+                    .Arma.WeaponWalk(.Heading).started = .Body.Walk(.Heading).started
+                End If
+                If .Escudo.ShieldWalk(.Heading).GrhIndex <> 0 Then
+                    .Escudo.ShieldWalk(.Heading).Loops = 0
+                    .Escudo.ShieldWalk(.Heading).started = .Body.Walk(.Heading).started
+                End If
+            End If
         Else
             If Not .Moving Then
                 .MovArmaEscudo = True
