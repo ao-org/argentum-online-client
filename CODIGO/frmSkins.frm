@@ -172,6 +172,7 @@ Private Sub interface_KeyUp(KeyCode As Integer, Shift As Integer)
 
     Select Case KeyCode
         Case BindKeys(e_KeyAction.eEquipItem).KeyCode
+            If Me.InvSkins.SelectedItem = 0 Then Exit Sub
             Call SkinEquip(Me.InvSkins.ObjType(Me.InvSkins.SelectedItem)) 'eObjType.otSkinsArmours)
 
         Case Else
