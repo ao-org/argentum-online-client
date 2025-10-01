@@ -1989,7 +1989,7 @@ Public Sub start()
                     'Utilizo un boolean, para evitar utilizar la propiedad .visible de los formularios, ya que aparentemente instancia el form y baja la performance.
                     If bSkins Then
                         DrawInventorySkins
-                        Debug.Print "Renderizando skins"
+                        'Debug.Print "Renderizando skins"
                     End If
 
                 Case e_state_connect_screen
