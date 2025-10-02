@@ -1833,3 +1833,42 @@ NpcInTileToTxtParser_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.NpcInTileToTxtParser", Erl)
     Resume Next
 End Function
+
+Public Function SkillsNamesToTxtParser(ByRef Fields() As String)
+On Error GoTo SkillsNamesToTxtParser_Err
+
+    Dim skillID As Integer
+    skillID = CInt(Fields(0))
+    
+    Select Case skillID
+        Case 1:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_MAGIA"))
+        Case 2:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_ROBAR"))
+        Case 3:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_TACTICAS"))
+        Case 4:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_ARMAS"))
+        Case 5:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_MEDITAR"))
+        Case 6:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_APUÑALAR"))
+        Case 7:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_OCULTARSE"))
+        Case 8:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_SUPERVIVENCIA"))
+        Case 9:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_COMERCIAR"))
+        Case 10: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_DEFENSA"))
+        Case 11: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_LIDERAZGO"))
+        Case 12: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_PROYECTILES"))
+        Case 13: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_WRESTLING"))
+        Case 14: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_NAVEGACION"))
+        Case 15: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_EQUITACION"))
+        Case 16: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_RESISTENCIA"))
+        Case 17: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_TALAR"))
+        Case 18: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_PESCAR"))
+        Case 19: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_MINERIA"))
+        Case 20: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_HERRERIA"))
+        Case 21: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_CARPINTERIA"))
+        Case 22: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_ALQUIMIA"))
+        Case 23: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_SASTRERIA"))
+        Case 24: Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_DOMAR"))
+    End Select
+        
+    Exit Function
+SkillsNamesToTxtParser_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.SkillsNamesToTxtParser", Erl)
+    Resume Next
+End Function
