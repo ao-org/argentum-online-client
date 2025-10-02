@@ -4604,8 +4604,6 @@ errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserNameList", Erl)
 End Sub
 
-''
-' Handles the UpdateTag message.
 Private Sub HandleUpdateTagAndStatus()
     On Error GoTo errhandler
     Dim charindex   As Integer
@@ -4615,13 +4613,13 @@ Private Sub HandleUpdateTagAndStatus()
     charindex = Reader.ReadInt16()
     status = Reader.ReadInt8()
     NombreYClan = Reader.ReadString8()
+    group_index = Reader.ReadInt16()
     Dim Pos As Integer
     Pos = InStr(NombreYClan, "<")
     If Pos = 0 Then Pos = InStr(NombreYClan, "[")
     If Pos = 0 Then Pos = Len(NombreYClan) + 2
     charlist(charindex).nombre = Left$(NombreYClan, Pos - 2)
     charlist(charindex).clan = mid$(NombreYClan, Pos)
-    group_index = Reader.ReadInt16()
     'Update char status adn tag!
     charlist(charindex).status = status
     charlist(charindex).group_index = group_index
