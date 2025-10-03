@@ -68,10 +68,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Dim MouseIndex As Integer
-Dim Scroll As Integer
-Const MAX_LIST As Integer = 6
+Dim MouseIndex  As Integer
+Dim Scroll      As Integer
+Const MAX_LIST  As Integer = 6
 Dim LobbyList() As t_LobbyData
+
 Private Sub btnCrear_Click()
     frmCreateBattleground.Show
     Unload Me
@@ -80,12 +81,13 @@ End Sub
 Private Sub Form_Load()
     ListRefresh
 End Sub
+
 Friend Sub SetLobbyList(ByRef List() As t_LobbyData)
     LobbyList = List
 End Sub
 
 Private Sub pEvents_Click()
-On Error GoTo ErrHandler:
+    On Error GoTo errhandler:
     Dim Password As String
     If MouseIndex > 0 And MouseIndex <= UBound(LobbyList) Then
         If LobbyList(MouseIndex).IsPrivate Then
@@ -103,31 +105,31 @@ On Error GoTo ErrHandler:
         If Scroll < 0 Then Scroll = 0
     End If
     Exit Sub
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "frmLobbyBattleground.Click", Erl)
     Resume Next
 End Sub
 
-Private Sub pEvents_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub pEvents_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     Dim i As Integer
     MouseIndex = 0
     For i = 1 To MAX_LIST
-        If X >= 810 And X <= 810 + 70 And Y >= i * 45 And Y <= 35 + i * 45 Then
+        If x >= 810 And x <= 810 + 70 And y >= i * 45 And y <= 35 + i * 45 Then
             MouseIndex = i + Scroll
             Exit For
         End If
     Next i
-    If X >= pEvents.Width - 15 And X <= pEvents.Width - 5 And Y >= 45 And Y <= 50 Then
+    If x >= pEvents.Width - 15 And x <= pEvents.Width - 5 And y >= 45 And y <= 50 Then
         MouseIndex = -1
     End If
-    If X >= pEvents.Width - 15 And X <= pEvents.Width - 5 And Y >= pEvents.Height - 15 And Y <= pEvents.Height - 10 Then
+    If x >= pEvents.Width - 15 And x <= pEvents.Width - 5 And y >= pEvents.Height - 15 And y <= pEvents.Height - 10 Then
         MouseIndex = -2
     End If
     ListRefresh
 End Sub
 
 Private Sub ListRefresh()
-On Error GoTo ErrHandler:
+    On Error GoTo errhandler:
     Dim OffX As Integer
     Dim Offy As Integer
     With pEvents
@@ -136,63 +138,50 @@ On Error GoTo ErrHandler:
         .FontSize = 10
         OffX = 10
         Offy = 10
-        
         .CurrentX = OffX
         .CurrentY = Offy
         pEvents.Print "Descripción"
-        
         OffX = OffX + 140
         .CurrentX = OffX
         .CurrentY = Offy
         pEvents.Print "Tipo"
-        
         OffX = OffX + 100
         .CurrentX = OffX
         .CurrentY = Offy
         pEvents.Print "Tamaño de grupos"
-        
         OffX = OffX + 130
         .CurrentX = OffX
         .CurrentY = Offy
         pEvents.Print "Formato de equipos"
-        
         OffX = OffX + 130
         .CurrentX = OffX
         .CurrentY = Offy
         pEvents.Print "Límite de nivel"
-        
         OffX = OffX + 130
         .CurrentX = OffX
         .CurrentY = Offy
         pEvents.Print "Jugadores"
-        
         OffX = OffX + 100
         .CurrentX = OffX
         .CurrentY = Offy
         pEvents.Print "Valor"
-        
         pEvents.Line (0, 40)-(.Width, 40)
-        
         Dim i As Integer
         For i = 1 To MAX_LIST
             If i + Scroll > UBound(LobbyList) Then Exit For
-            
             Offy = Offy + 45
             OffX = 10
             .CurrentX = OffX
             .CurrentY = Offy
             pEvents.Print LobbyList(i + Scroll).Description
-            
             OffX = OffX + 140
             .CurrentX = OffX
             .CurrentY = Offy
             pEvents.Print LobbyList(i + Scroll).ScenarioType
-            
             OffX = OffX + 100
             .CurrentX = OffX
             .CurrentY = Offy
             pEvents.Print LobbyList(i + Scroll).TeamSize
-            
             OffX = OffX + 130
             .CurrentX = OffX
             .CurrentY = Offy
@@ -202,30 +191,24 @@ On Error GoTo ErrHandler:
                 Case e_TeamTypes.ePremade
                     pEvents.Print "Grupos"
             End Select
-            
-            
             OffX = OffX + 130
             .CurrentX = OffX
             .CurrentY = Offy
             pEvents.Print LobbyList(i + Scroll).MinLevel & "/" & LobbyList(i + Scroll).MaxLevel
-            
             OffX = OffX + 130
             .CurrentX = OffX
             .CurrentY = Offy
             pEvents.Print LobbyList(i + Scroll).RegisteredPlayers & "/" & LobbyList(i + Scroll).MaxPlayers
-            
             OffX = OffX + 100
             .CurrentX = OffX
             .CurrentY = Offy
             pEvents.Print LobbyList(i + Scroll).InscriptionPrice
-            
             OffX = OffX + 80
             If MouseIndex = i Then
                 pEvents.ForeColor = RGB(45, 45, 45)
                 pEvents.Line (OffX - 10, Offy - 10)-(OffX + 60, Offy + 25), , BF
                 pEvents.ForeColor = vbWhite
                 pEvents.Line (OffX - 10, Offy - 10)-(OffX + 60, Offy + 25), , B
-                
             Else
                 pEvents.Line (OffX - 10, Offy - 10)-(OffX + 60, Offy + 25), , B
             End If
@@ -233,21 +216,18 @@ On Error GoTo ErrHandler:
             .CurrentY = Offy
             pEvents.Print IIf(LobbyList(i + Scroll).IsPrivate, "* Ingresar", "Ingresar")
         Next i
-        
         .ForeColor = vbWhite
         If MouseIndex = -2 Then .ForeColor = RGB(200, 0, 0)
         pEvents.Line (pEvents.Width - 15, pEvents.Height - 15)-(pEvents.Width - 15 + 5, pEvents.Height - 15 + 5)
         pEvents.Line (pEvents.Width - 15 + 5, pEvents.Height - 15 + 5)-(pEvents.Width - 15 + 11, pEvents.Height - 16)
-        
         .ForeColor = vbWhite
         If MouseIndex = -1 Then .ForeColor = RGB(200, 0, 0)
         pEvents.Line (pEvents.Width - 15, 50)-(pEvents.Width - 15 + 5, 50 - 5)
         pEvents.Line (pEvents.Width - 15 + 5, 50 - 5)-(pEvents.Width - 15 + 11, 51)
         .ForeColor = vbWhite
     End With
-
     Exit Sub
-ErrHandler:
+errhandler:
     Call RegistrarError(Err.Number, Err.Description, "frmLobbyBattleground.Paint", Erl)
     Resume Next
 End Sub

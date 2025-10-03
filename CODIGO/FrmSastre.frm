@@ -202,77 +202,48 @@ Attribute VB_Exposed = False
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 '
-Private indice As Byte
+Private indice       As Byte
 Private cBotonCerrar As clsGraphicalButton
 Const PielTigreBengalaIndex = 1145
 Const PielTigreIndex = 4339
 Const BlackWolfIndex = 1146
 
-
-
 Private Sub Command1_Click()
-    
     On Error GoTo Command1_Click_Err
-    
-
     Dim i As Byte
-
     indice = 1
     lstArmas.Clear
-
     For i = 1 To UBound(SastreRopas())
-
         If SastreRopas(i).Index = 0 Then Exit For
         lstArmas.AddItem (ObjData(SastreRopas(i).Index).Name)
     Next i
-
     Command1.Picture = LoadInterface("sastreria_vestimentahover.bmp")
     Command2.Picture = Nothing
-
-    
     Exit Sub
-
 Command1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.Command1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command2_Click()
-    
     On Error GoTo Command2_Click_Err
-    
-
     Dim i As Byte
-
     indice = 2
     lstArmas.Clear
-
     For i = 1 To UBound(SastreGorros())
-
         If SastreGorros(i).Index = 0 Then Exit For
         lstArmas.AddItem (ObjData(SastreGorros(i).Index).Name)
     Next i
-    
     Command2.Picture = LoadInterface("sastreria_gorroshover.bmp")
     Command1.Picture = Nothing
-
-    
     Exit Sub
-
 Command2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.Command2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command3_Click()
-    
     On Error GoTo Command3_Click_Err
-    
-
-    
-
     If indice = 1 Then
         If cantidad > 1 Then
             UserMacro.Intervalo = gIntervals.BuildWork
@@ -282,17 +253,13 @@ Private Sub Command3_Click()
             AddtoRichTextBox frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR."), 2, 51, 223, 1, 1
             UserMacro.Activado = True
             frmMain.MacroLadder.Interval = gIntervals.BuildWork
-            frmMain.MacroLadder.Enabled = True
+            frmMain.MacroLadder.enabled = True
         Else
             Call WriteCraftSastre(SastreRopas(lstArmas.ListIndex + 1).Index)
-
-            If frmMain.macrotrabajo.Enabled Then MacroBltIndex = SastreRopas(lstArmas.ListIndex + 1).Index
-
+            If frmMain.macrotrabajo.enabled Then MacroBltIndex = SastreRopas(lstArmas.ListIndex + 1).Index
         End If
-
         Unload Me
     ElseIf indice = 2 Then
-
         If cantidad > 1 Then
             UserMacro.cantidad = cantidad
             UserMacro.TIPO = 3
@@ -301,153 +268,97 @@ Private Sub Command3_Click()
             UserMacro.Intervalo = gIntervals.BuildWork
             UserMacro.Activado = True
             frmMain.MacroLadder.Interval = gIntervals.BuildWork
-            frmMain.MacroLadder.Enabled = True
+            frmMain.MacroLadder.enabled = True
         Else
             Call WriteCraftSastre(SastreGorros(lstArmas.ListIndex + 1).Index)
-
-            If frmMain.macrotrabajo.Enabled Then MacroBltIndex = SastreGorros(lstArmas.ListIndex + 1).Index
-
+            If frmMain.macrotrabajo.enabled Then MacroBltIndex = SastreGorros(lstArmas.ListIndex + 1).Index
         End If
-
     End If
-
     Unload Me
-
-    
     Exit Sub
-
 Command3_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command3_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.Command3_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command4_Click()
-    
     On Error GoTo Command4_Click_Err
-    
     Unload Me
-
-    
     Exit Sub
-
 Command4_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command4_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.Command4_Click", Erl)
     Resume Next
-    
 End Sub
 
-
 Private Sub Command4_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Command4_MouseMove_Err
-    
-
     If Command4.Tag = "0" Then
         Command4.Picture = LoadInterface("boton-cancelar-over.bmp")
         Command4.Tag = "1"
-
     End If
-
     Command3.Picture = Nothing
     Command3.Tag = "0"
-
-    
     Exit Sub
-
 Command4_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command4_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.Command4_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Call FormParser.Parse_Form(Me)
     indice = 1
     Call loadButtons
-    
     Exit Sub
-
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.Form_Load", Erl)
     Resume Next
-    
 End Sub
-Private Sub Form_KeyPress(KeyAscii As Integer)
-    
-    On Error GoTo Form_KeyPress_Err
-    
 
+Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error GoTo Form_KeyPress_Err
     If (KeyAscii = 27) Then
         Unload Me
-
     End If
-
-    
     Exit Sub
-
 Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Form_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.Form_KeyPress", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command3_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Command3_MouseMove_Err
-    
-
     If Command3.Tag = "0" Then
         Command3.Picture = LoadInterface("boton-elaborar-over.bmp")
         Command3.Tag = "1"
-
     End If
-
     Command4.Picture = Nothing
     Command4.Tag = "0"
-
-    
     Exit Sub
-
 Command3_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Command3_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.Command3_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Form_MouseMove_Err
-    
-    Call MoverForm(Me.hwnd)
-    
+    Call MoverForm(Me.hWnd)
     If indice <> 1 Then
         Command1.Picture = Nothing
         Command1.Tag = "0"
-
     End If
-
     If indice <> 2 Then
         Command2.Picture = Nothing
         Command2.Tag = "0"
-
     End If
-
     Command3.Picture = Nothing
     Command3.Tag = "0"
     Command4.Picture = Nothing
     Command4.Tag = "0"
-
-    
     Exit Sub
-
 Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmSastre.Form_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.Form_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdCerrar_Click()
@@ -460,8 +371,6 @@ Private Sub Image2_Click()
     Else
         Exit Sub
     End If
-
-
 End Sub
 
 Private Sub Image3_Click()
@@ -469,48 +378,31 @@ Private Sub Image3_Click()
 End Sub
 
 Private Sub List1_Click()
-    
     On Error GoTo List1_Click_Err
-    
-
-    
-
-    Dim grh As Long
-
+    Dim Grh As Long
     If List1.ListIndex = 0 Then
-        grh = 697
+        Grh = 697
     ElseIf List1.ListIndex = 1 Then
-        grh = 699
+        Grh = 699
     ElseIf List1.ListIndex = 2 Then
-        grh = 698
+        Grh = 698
     ElseIf List1.ListIndex = 3 Then
         Grh = ObjData(BlackWolfIndex).GrhIndex
     ElseIf List1.ListIndex = 4 Then
         Grh = ObjData(PielTigreIndex).GrhIndex
     ElseIf List1.ListIndex = 5 Then
         Grh = ObjData(PielTigreBengalaIndex).GrhIndex
-        
-
     End If
-
-    Call Grh_Render_To_Hdc(picture1, grh, 0, 0, False)
-
-    
+    Call Grh_Render_To_Hdc(picture1, Grh, 0, 0, False)
     Exit Sub
-
 List1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmSastre.List1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.List1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub lstArmas_Click()
-    
     On Error GoTo lstArmas_Click_Err
-    
-
     Dim Obj As ObjDatas
-    
     If indice = 1 Then
         Obj = ObjData(SastreRopas(lstArmas.ListIndex + 1).Index)
     ElseIf indice = 2 Then
@@ -518,47 +410,29 @@ Private Sub lstArmas_Click()
     Else
         Exit Sub
     End If
-
     List1.Clear
     List2.Clear
-        
-        List1.AddItem "Piel de Lobo"
-        List2.AddItem Obj.PielLobo
-    
-        List1.AddItem "Piel de Oso Pardo"
-        List2.AddItem Obj.PielOsoPardo
-  
-        List1.AddItem "Piel de Oso Polar"
-        List2.AddItem Obj.PielOsoPolar
-       
-        List1.AddItem "Piel de Lobo Negro"
-        List2.AddItem Obj.PielLoboNegro
-      
-        List1.AddItem "Piel de Tigre"
-        List2.AddItem Obj.PielTigre
-    
-        List1.AddItem "Piel de Tigre Bengala"
-        List2.AddItem Obj.PielTigreBengala
-      
+    List1.AddItem "Piel de Lobo"
+    List2.AddItem Obj.PielLobo
+    List1.AddItem "Piel de Oso Pardo"
+    List2.AddItem Obj.PielOsoPardo
+    List1.AddItem "Piel de Oso Polar"
+    List2.AddItem Obj.PielOsoPolar
+    List1.AddItem "Piel de Lobo Negro"
+    List2.AddItem Obj.PielLoboNegro
+    List1.AddItem "Piel de Tigre"
+    List2.AddItem Obj.PielTigre
+    List1.AddItem "Piel de Tigre Bengala"
+    List2.AddItem Obj.PielTigreBengala
     Call Grh_Render_To_Hdc(picture1, Obj.GrhIndex, 0, 0)
-    
     desc.Caption = "Defensa: " & Obj.MinDef & "/" & Obj.MaxDef
-
-    
     Exit Sub
-
 lstArmas_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmSastre.lstArmas_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmSastre.lstArmas_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub loadButtons()
     Set cBotonCerrar = New clsGraphicalButton
-    
-    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
 End Sub
-

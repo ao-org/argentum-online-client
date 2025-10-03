@@ -39,18 +39,13 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 Implements IUIComponent
+Private m_X     As Long, m_Y As Long
+Private m_Text  As String
+Private m_Color As Long
 
-Private m_X As Long, m_Y As Long
-Private m_Text As String
-Private m_Font As D3DXFont
-Private m_Color(3) As RGBA
-Private m_Color2 As Long
-
-Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal font As D3DXFont, ByVal color As Long)
+Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal color As Long)
     m_Text = text: m_X = x: m_Y = y
-    Set m_Font = font
-    Call RGBAList(m_Color, 222, 194, 112)
-    m_Color2 = color
+    m_Color = color
 End Sub
 
 ' Allow external positioning
@@ -62,7 +57,7 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Dim rc As RECT
     rc.Left = m_X: rc.Top = m_Y
     rc.Right = m_X + 400: rc.Bottom = m_Y + 32
-    m_Font.DrawTextW m_Text, -1, rc, DT_LEFT Or DT_TOP, m_Color2
+    Call UIRenderer.RenderText(m_Text, rc.Left, rc.Top, m_Color, 1, 128)
 End Sub
 
 Private Sub IUIComponent_HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)

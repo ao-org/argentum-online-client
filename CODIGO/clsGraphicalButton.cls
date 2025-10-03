@@ -37,19 +37,14 @@ Attribute VB_Exposed = False
 '
 '
 '
-
 Option Explicit
-
 Private WithEvents ButtonHolder As Image
 Attribute ButtonHolder.VB_VarHelpID = -1
-
-Private RollOverButtonImage As Picture  'img holder
-Private NormalButtonImage As Picture    'img holder
-Private ClickButtonImage As Picture  'img holder
-
-Private Form_Movement As clsFormMovementManager
-
-Private OverButton As Boolean    'Indicates wether the mouse is over the button or not
+Private RollOverButtonImage     As Picture  'img holder
+Private NormalButtonImage       As Picture    'img holder
+Private ClickButtonImage        As Picture  'img holder
+Private Form_Movement           As clsFormMovementManager
+Private OverButton              As Boolean    'Indicates wether the mouse is over the button or not
 
 Public Sub Initialize(ByRef imgButton As Image, ByVal imgNormalPath As String, ByVal imgRollOverPath As String, ByVal imgClickPath As String, Optional ByRef Form As Form)
     Set ButtonHolder = imgButton
@@ -58,59 +53,40 @@ Public Sub Initialize(ByRef imgButton As Image, ByVal imgNormalPath As String, B
     Set RollOverButtonImage = LoadInterface(imgRollOverPath)
     Set NormalButtonImage = LoadInterface(imgNormalPath)
     Set ClickButtonImage = LoadInterface(imgClickPath)
-
     With ButtonHolder
-            .Picture = NormalButtonImage
+        .Picture = NormalButtonImage
     End With
-
 End Sub
 
-
-Private Sub ButtonHolder_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-'Implements the mouse down event of the image button.
-'Toggle to Click image button.
-
-
+Private Sub ButtonHolder_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+    'Implements the mouse down event of the image button.
+    'Toggle to Click image button.
     ButtonHolder.Picture = ClickButtonImage
-    Call ao20audio.playwav(SND_CLICK)
+    Call ao20audio.PlayWav(SND_CLICK)
 End Sub
 
-Private Sub ButtonHolder_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-'Implements the mouse move event of the image button.
-'Toggle to pressed image button.
-
-
+Private Sub ButtonHolder_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    'Implements the mouse move event of the image button.
+    'Toggle to pressed image button.
     If Not OverButton Then
-
         'This helps when two buttons are close
         Form_Movement.LastButtonPressed.ToggleToNormal
-
         ButtonHolder.Picture = RollOverButtonImage
         OverButton = True
-
         Set Form_Movement.LastButtonPressed = Me
-        Call ao20audio.playwav(SND_CLICK_OVER)
+        Call ao20audio.PlayWav(SND_CLICK_OVER)
     End If
 End Sub
 
 Public Sub ToggleToNormal()
-
-'Toggle to normal image button.
-
+    'Toggle to normal image button.
     If Not OverButton Then Exit Sub
-
     ButtonHolder.Picture = NormalButtonImage
     OverButton = False
 End Sub
 
-Private Sub ButtonHolder_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
-
-'Implements the mouse up event of the image button.
-'Toggle to RollOver image button.
-
+Private Sub ButtonHolder_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    'Implements the mouse up event of the image button.
+    'Toggle to RollOver image button.
     ButtonHolder.Picture = RollOverButtonImage
 End Sub
-
-

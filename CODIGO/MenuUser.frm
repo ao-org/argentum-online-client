@@ -178,7 +178,6 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
 Private Over As Integer
 
 Private Sub Form_Load()
@@ -188,45 +187,34 @@ Private Sub Form_Load()
     OpcionLbl(2).Caption = JsonLanguage.Item("FORM_OPCION_2")
     OpcionLbl(3).Caption = JsonLanguage.Item("FORM_OPCION_3")
     OpcionLbl(4).Caption = JsonLanguage.Item("FORM_OPCION_4")
-
     Over = -1
 End Sub
 
 Private Sub OpcionImg_Click(Index As Integer)
-    
     Select Case Index
         Case 0
             Call ParseUserCommand("/COMERCIAR")
-            
         Case 1
             Call WriteWorkLeftClick(TargetX, TargetY, eSkill.Grupo)
-            
         Case 2
-            TargetName = Replace(TargetName, " ", "+")
-            sndPrivateTo = TargetName
-            frmMain.SendTxt.Text = ("\" & sndPrivateTo & " ")
-
-            stxtbuffer = frmMain.SendTxt.Text
-            frmMain.SendTxt.SelStart = Len(frmMain.SendTxt.Text)
-            
+            targetName = Replace(targetName, " ", "+")
+            sndPrivateTo = targetName
+            frmMain.SendTxt.text = ("\" & sndPrivateTo & " ")
+            stxtbuffer = frmMain.SendTxt.text
+            frmMain.SendTxt.SelStart = Len(frmMain.SendTxt.text)
             If frmMain.SendTxtCmsg.visible = False Then
                 frmMain.SendTxt.visible = True
                 frmMain.SendTxt.SetFocus
             Else
-               frmMain.SendTxtCmsg.SetFocus
+                frmMain.SendTxtCmsg.SetFocus
             End If
         Case 3
             frmRetos.Show
-            frmRetos.Jugador(1).Text = TargetName
-            
-            
+            frmRetos.Jugador(1).text = targetName
         Case 4
-            Call ParseUserCommand("/DENUNCIAR " & TargetName)
-        
+            Call ParseUserCommand("/DENUNCIAR " & targetName)
     End Select
-
     Unload Me
-    
 End Sub
 
 Private Sub OpcionImg_MouseMove(Index As Integer, Button As Integer, Shift As Integer, x As Single, y As Single)

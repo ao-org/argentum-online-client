@@ -170,7 +170,6 @@ Attribute VB_Exposed = False
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
 Option Explicit
 Private cBotonCerrar As clsGraphicalButton
 Private cBotonFundar As clsGraphicalButton
@@ -178,101 +177,69 @@ Private cBotonFundar As clsGraphicalButton
 Private Sub loadButtons()
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonFundar = New clsGraphicalButton
-    
-    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-                                                
-    Call cBotonFundar.Initialize(cmdFundar, "boton-fundar-clan-default.bmp", _
-                                                    "boton-fundar-clan-over.bmp", _
-                                                    "boton-fundar-clan-off.bmp", Me)
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
+    Call cBotonFundar.Initialize(cmdFundar, "boton-fundar-clan-default.bmp", "boton-fundar-clan-over.bmp", "boton-fundar-clan-off.bmp", Me)
 End Sub
-Private Sub cmdcerrar_Click()
+
+Private Sub cmdCerrar_Click()
     Unload Me
 End Sub
 
 Private Sub cmdFundar_Click()
-
-    
     On Error GoTo cmdFundar_Click_Err
-    
-            Dim fdesc      As String
-
-            Dim Codex()    As String
-
-            Dim k          As Byte
-
-            Dim Cont       As Byte
-
-            Dim Alineacion As Byte
-            
-            If txtClanName.Text = "" Then
-                MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_INGRESAR_NOMBRE")
-                
-                Exit Sub
-
-            End If
-
-            If Len(txtClanName.Text) <= 30 Then
-                If Not AsciiValidos(txtClanName) Then
-                    MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_NOMBRE_INVALIDO")
-                    Exit Sub
-
-                End If
-
-            Else
-                MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_NOMBRE_DEMASIADO_EXTENSO")
-                Exit Sub
-
-            End If
-
-            ClanName = txtClanName
-    
-            fdesc = Replace(txtDesc, vbCrLf, "º", , , vbBinaryCompare)
-    
-            If Combo1.Text = "" Then
-                MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_DEFINIR_ALINEAMIENTO_CLAN")
-                Exit Sub
-
-            End If
-    
-            If CreandoClan Then
-                If Combo1.ListIndex < 0 Then
-                    MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_DEFINIR_ALINEAMIENTO_CLAN")
-                    Exit Sub
-                End If
-
-                If Combo1.ListIndex = eClanType.ct_Neutral Then
-                    Alineacion = eClanType.ct_Neutral
-                ElseIf Combo1.ListIndex = eClanType.ct_Real Then
-                    Alineacion = eClanType.ct_Real
-                ElseIf Combo1.ListIndex = eClanType.ct_Caos Then
-                    Alineacion = eClanType.ct_Caos
-                ElseIf Combo1.ListIndex = eClanType.ct_Ciudadana Then
-                    Alineacion = eClanType.ct_Ciudadana
-                ElseIf Combo1.ListIndex = eClanType.ct_Criminal Then
-                    Alineacion = eClanType.ct_Criminal
-                End If
-        
-                Call WriteCreateNewGuild(fdesc, ClanName, Alineacion)
-            Else
-                Call WriteClanCodexUpdate(fdesc)
-
-            End If
-
-            CreandoClan = False
-            Unload Me
-               
+    Dim fdesc      As String
+    Dim Codex()    As String
+    Dim k          As Byte
+    Dim cont       As Byte
+    Dim Alineacion As Byte
+    If txtClanName.text = "" Then
+        MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_INGRESAR_NOMBRE")
+        Exit Sub
+    End If
+    If Len(txtClanName.text) <= 30 Then
+        If Not AsciiValidos(txtClanName) Then
+            MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_NOMBRE_INVALIDO")
+            Exit Sub
+        End If
+    Else
+        MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_NOMBRE_DEMASIADO_EXTENSO")
+        Exit Sub
+    End If
+    ClanName = txtClanName
+    fdesc = Replace(txtDesc, vbCrLf, "º", , , vbBinaryCompare)
+    If Combo1.text = "" Then
+        MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_DEFINIR_ALINEAMIENTO_CLAN")
+        Exit Sub
+    End If
+    If CreandoClan Then
+        If Combo1.ListIndex < 0 Then
+            MensajeAdvertencia JsonLanguage.Item("ADVERTENCIA_DEFINIR_ALINEAMIENTO_CLAN")
+            Exit Sub
+        End If
+        If Combo1.ListIndex = eClanType.ct_Neutral Then
+            Alineacion = eClanType.ct_Neutral
+        ElseIf Combo1.ListIndex = eClanType.ct_Real Then
+            Alineacion = eClanType.ct_Real
+        ElseIf Combo1.ListIndex = eClanType.ct_Caos Then
+            Alineacion = eClanType.ct_Caos
+        ElseIf Combo1.ListIndex = eClanType.ct_Ciudadana Then
+            Alineacion = eClanType.ct_Ciudadana
+        ElseIf Combo1.ListIndex = eClanType.ct_Criminal Then
+            Alineacion = eClanType.ct_Criminal
+        End If
+        Call WriteCreateNewGuild(fdesc, ClanName, Alineacion)
+    Else
+        Call WriteClanCodexUpdate(fdesc)
+    End If
+    CreandoClan = False
+    Unload Me
     Exit Sub
-
 cmdFundar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildDetails.cmdFundar_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Deactivate()
-
     'If Not frmGuildLeader.Visible Then
     '    Me.SetFocus
     'Else
@@ -282,32 +249,22 @@ Private Sub Form_Deactivate()
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanaclanes_fundar.bmp")
-    Call Aplicar_Transparencia(Me.hwnd, 240)
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     Call loadButtons
-    
     Exit Sub
-
-
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmGuildDetails.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildDetails.Form_Load", Erl)
     Resume Next
-    
 End Sub
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    
-    On Error GoTo Form_MouseMove_Err
-    
-    Call MoverForm(Me.hwnd)
-    
-    Exit Sub
 
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error GoTo Form_MouseMove_Err
+    Call MoverForm(Me.hWnd)
+    Exit Sub
 Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmGuildDetails.Form_MouseMove", Erl)
     Resume Next
-    
 End Sub

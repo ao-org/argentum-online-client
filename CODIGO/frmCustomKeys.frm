@@ -1218,96 +1218,63 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
 Private TempVars(eMaxBinds) As Integer
 
 Private Sub cmdAccion_Click(Index As Integer)
-    
     On Error GoTo cmdAccion_Click_Err
-    
-
     Dim i         As Integer
-
     Dim bCambio   As Boolean
-
     Dim Resultado As VbMsgBoxResult
-
     Select Case Index
-    
         Case 0
             Call GuardaConfigEnVariables
             Call SaveBindedKeys
-
         Case 1
             Call LoadDefaultBinds
             Call CargaConfigEnForm
             Call SaveBindedKeys
-
     End Select
     Unload Me
-
-    
     Exit Sub
-
 cmdAccion_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.cmdAccion_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub GuardaConfigEnVariables()
-    
     On Error GoTo GuardaConfigEnVariables_Err
-    
-
     Dim i As Integer
-
     For i = 1 To NUMBINDS
-        BindKeys(i).Name = txConfig(i - 1).Text
+        BindKeys(i).Name = txConfig(i - 1).text
         BindKeys(i).KeyCode = TempVars(i - 1)
     Next
-
     ACCION1 = IndexToMouseAction(AccionList1.ListIndex)
     ACCION2 = IndexToMouseAction(AccionList2.ListIndex)
     ACCION3 = IndexToMouseAction(AccionList3.ListIndex)
-
     Exit Sub
-
 GuardaConfigEnVariables_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.GuardaConfigEnVariables", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub CargaConfigEnForm()
-    
     On Error GoTo CargaConfigEnForm_Err
-    
-
     Dim i As Integer
-
     For i = 1 To NUMBINDS
-        txConfig(i - 1).Text = BindKeys(i).Name
+        txConfig(i - 1).text = BindKeys(i).Name
         TempVars(i - 1) = BindKeys(i).KeyCode
     Next
-
     AccionList1.ListIndex = MouseActionToIndex(ACCION1)
     AccionList2.ListIndex = MouseActionToIndex(ACCION2)
     AccionList3.ListIndex = MouseActionToIndex(ACCION3)
-
-    
     Exit Sub
-
 CargaConfigEnForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.CargaConfigEnForm", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Call CargaConfigEnForm
     Call FormParser.Parse_Form(Me)
     lblSalirDel(0).Caption = JsonLanguage.Item("MENSAJE_507") ' Seguro de grupo
@@ -1344,126 +1311,78 @@ Private Sub Form_Load()
     Option1.Caption = JsonLanguage.Item("MENSAJE_538") ' Clásica
     Option2.Caption = JsonLanguage.Item("MENSAJE_539") ' Moderna
     frmCustomKeys.Caption = JsonLanguage.Item("MENSAJE_541") ' Configuración de controles
-    
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Form_Load", Erl)
     Resume Next
-    
 End Sub
-Private Sub Form_KeyPress(KeyAscii As Integer)
-    
-    On Error GoTo Form_KeyPress_Err
-    
 
+Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error GoTo Form_KeyPress_Err
     If (KeyAscii = 27) Then
         Unload Me
-
     End If
-
-    
     Exit Sub
-
 Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Form_KeyPress", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
-    
     On Error GoTo Form_QueryUnload_Err
-    
-
     Dim i         As Integer
-
     Dim bCambio   As Boolean
-
     Dim Resultado As VbMsgBoxResult
-
     For i = 1 To NUMBINDS
-
         If TempVars(i - 1) <> BindKeys(i).KeyCode Then
             bCambio = True
             Exit For
-
         End If
-
     Next
-
     If bCambio Then
         Resultado = MsgBox(JsonLanguage.Item("MENSAJEBOX_CAMBIOS_CONFIGURACION"), vbQuestion + vbYesNoCancel, "Guardar cambios")
-
         If Resultado = vbYes Then Call GuardaConfigEnVariables
-
     End If
-
     If Resultado = vbCancel Then Cancel = 1
-
-    
     Exit Sub
-
 Form_QueryUnload_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Form_QueryUnload", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Option1_Click()
-    
     On Error GoTo Option1_Click_Err
-    
     Call LoadDefaultBinds
     Call CargaConfigEnForm
     Call SaveBindedKeys
-
-    
     Exit Sub
-
 Option1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Option1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Option2_Click()
-    
     On Error GoTo Option2_Click_Err
-
     PermitirMoverse = 0
-
     Call LoadDefaultBinds2
     Call CargaConfigEnForm
     Call SaveBindedKeys
-
-    
     Exit Sub
-
 Option2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Option2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub txConfig_KeyUp(Index As Integer, KeyCode As Integer, Shift As Integer)
-    
     On Error GoTo txConfig_KeyUp_Err
-    
-
     Dim Name As String
-
-    Name = txConfig(Index).Text
-
+    Name = txConfig(Index).text
     If KeyCode > 0 Then
-    
         If AlreadyBinded(KeyCode) Then
             Beep
             txConfig(Index).ForeColor = vbRed
             Exit Sub
-
         End If
-    
         If KeyCode = vbKeyShift Then
             Name = "Shift"
         ElseIf KeyCode = vbKeyLeft Then
@@ -1559,70 +1478,44 @@ Private Sub txConfig_KeyUp(Index As Integer, KeyCode As Integer, Shift As Intege
         ElseIf KeyCode = vbKeyBack Then
             Name = "Borrar"
         Else
-    
             Name = Chr(KeyCode)
-
         End If
-    
         Call Change_TempKey(Index, KeyCode, Name)
-
     End If
-
-    
     Exit Sub
-
 txConfig_KeyUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.txConfig_KeyUp", Erl)
     Resume Next
-    
 End Sub
 
 Sub Change_TempKey(Index As Integer, KeyCode As Integer, Name As String)
-    
     On Error GoTo Change_TempKey_Err
-    
     TempVars(Index) = KeyCode
-    txConfig(Index).Text = Name
-
-    
+    txConfig(Index).text = Name
     Exit Sub
-
 Change_TempKey_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.Change_TempKey", Erl)
     Resume Next
-    
 End Sub
 
 Function AlreadyBinded(KeyCode As Integer) As Boolean
-    
     On Error GoTo AlreadyBinded_Err
-    
-
     Dim i As Integer
-
     'If (KeyCode >= vbKeyF1 And KeyCode <= vbKeyF12) Or (KeyCode = 44) Or (KeyCode = 106) Then
     'If (KeyCode = 44) Or (KeyCode = 106) Then
     '   AlreadyBinded = True
     '   Exit Function
     'End If
-
     For i = 1 To NUMBINDS
-
         If (TempVars(i - 1) = KeyCode) Then
             AlreadyBinded = True
             Exit Function
-
         End If
-
     Next i
-
-    
     Exit Function
-
 AlreadyBinded_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCustomKeys.AlreadyBinded", Erl)
     Resume Next
-    
 End Function
 
 Private Function MouseActionToIndex(ByVal Action As e_MouseAction) As Integer
@@ -1650,4 +1543,3 @@ Private Function IndexToMouseAction(ByVal Index As Integer) As e_MouseAction
             IndexToMouseAction = e_MouseAction.eWhisper
     End Select
 End Function
-

@@ -2,14 +2,14 @@ VERSION 5.00
 Begin VB.Form frmPeaceProp 
    BorderStyle     =   4  'Fixed ToolWindow
    Caption         =   "Ofertas de paz"
-   ClientHeight    =   2892
-   ClientLeft      =   48
-   ClientTop       =   216
+   ClientHeight    =   2895
+   ClientLeft      =   45
+   ClientTop       =   210
    ClientWidth     =   4980
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,7 +19,7 @@ Begin VB.Form frmPeaceProp
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2892
+   ScaleHeight     =   2895
    ScaleWidth      =   4980
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
@@ -27,7 +27,7 @@ Begin VB.Form frmPeaceProp
       Caption         =   "Rechazar"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -46,7 +46,7 @@ Begin VB.Form frmPeaceProp
       Caption         =   "Aceptar"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -65,7 +65,7 @@ Begin VB.Form frmPeaceProp
       Caption         =   "Detalles"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -85,7 +85,7 @@ Begin VB.Form frmPeaceProp
       Caption         =   "Cerrar"
       BeginProperty Font 
          Name            =   "Verdana"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -103,14 +103,14 @@ Begin VB.Form frmPeaceProp
    Begin VB.ListBox lista 
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   7.8
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   1968
+      Height          =   1815
       ItemData        =   "frmPeaceProp.frx":0548
       Left            =   120
       List            =   "frmPeaceProp.frx":054A
@@ -171,130 +171,82 @@ Attribute VB_Exposed = False
 'La Plata - Pcia, Buenos Aires - Republica Argentina
 'Código Postal 1900
 'Pablo Ignacio Márquez
-
 Option Explicit
-
 Private tipoprop As TIPO_PROPUESTA
 
 Public Enum TIPO_PROPUESTA
-
     ALIANZA = 1
     PAZ = 2
-
 End Enum
 
 Public Property Let ProposalType(ByVal nValue As TIPO_PROPUESTA)
-    
     On Error GoTo ProposalType_Err
-    
     tipoprop = nValue
-
-    
     Exit Property
-
 ProposalType_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.ProposalType", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPeaceProp.ProposalType", Erl)
     Resume Next
-    
 End Property
 
 Private Sub Command1_Click()
-    
     On Error GoTo Command1_Click_Err
-    
     Unload Me
-
-    
     Exit Sub
-
 Command1_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Command1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPeaceProp.Command1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command2_Click()
-    
     On Error GoTo Command2_Click_Err
-    
-
     'Me.Visible = False
     If tipoprop = PAZ Then
         Call WriteGuildPeaceDetails(lista.List(lista.ListIndex))
     Else
         Call WriteGuildAllianceDetails(lista.List(lista.ListIndex))
-
     End If
-
-    
     Exit Sub
-
 Command2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Command2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPeaceProp.Command2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command3_Click()
-    
     On Error GoTo Command3_Click_Err
-    
-
     'Me.Visible = False
     If tipoprop = PAZ Then
         Call WriteGuildAcceptPeace(lista.List(lista.ListIndex))
     Else
         Call WriteGuildAcceptAlliance(lista.List(lista.ListIndex))
-
     End If
-
     Me.Hide
     Unload Me
-
-    
     Exit Sub
-
 Command3_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Command3_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPeaceProp.Command3_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command4_Click()
-    
     On Error GoTo Command4_Click_Err
-    
-
     If tipoprop = PAZ Then
         Call WriteGuildRejectPeace(lista.List(lista.ListIndex))
     Else
         Call WriteGuildRejectAlliance(lista.List(lista.ListIndex))
-
     End If
-
     Me.Hide
     Unload Me
-
-    
     Exit Sub
-
 Command4_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Command4_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPeaceProp.Command4_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Call FormParser.Parse_Form(Me)
-
-    
     Exit Sub
-
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmPeaceProp.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmPeaceProp.Form_Load", Erl)
     Resume Next
-    
 End Sub

@@ -3,15 +3,15 @@ Begin VB.Form frmShopPjsAO20
    BackColor       =   &H00404040&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   2328
+   ClientHeight    =   2325
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   4776
+   ClientWidth     =   4770
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2328
-   ScaleWidth      =   4776
+   ScaleHeight     =   2325
+   ScaleWidth      =   4770
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.TextBox txtValor 
@@ -42,7 +42,7 @@ Begin VB.Form frmShopPjsAO20
       Caption         =   "Costo por publicar: 20.000 monedas de oro"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   9.6
+         Size            =   9.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -82,7 +82,7 @@ Begin VB.Form frmShopPjsAO20
       Caption         =   "Publicar personaje"
       BeginProperty Font 
          Name            =   "MS Sans Serif"
-         Size            =   13.8
+         Size            =   13.5
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -122,6 +122,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 '    Argentum 20 - Game Client Program
 '    Copyright (C) 2022 - Noland Studios
 '
@@ -139,7 +140,6 @@ Attribute VB_Exposed = False
 '
 '
 Private Sub Form_Load()
-
 End Sub
 
 Private Sub Label2_Click()
@@ -147,28 +147,27 @@ Private Sub Label2_Click()
 End Sub
 
 Private Sub lblPublicar_Click()
-    If Val(txtValor.Text <= 0) Then
+    If val(txtValor.text <= 0) Then
         Call MsgBox(JsonLanguage.Item("MENSAJE_VALOR_PERSONAJE_INVALIDO"), vbCritical, JsonLanguage.Item("MENSAJE_TITULO_ERROR"))
         Exit Sub
     End If
-    
-    If MsgBox(JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE") & UserName & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_VALOR") & txtValor.Text & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_COSTO"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJE_TITULO_PUBLICAR_PERSONAJE")) = vbYes Then
-        Call writePublicarPersonajeMAO(Val(txtValor.Text))
+    If MsgBox(JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE") & userName & JsonLanguage.Item("MENSAJE_PUBLICAR_PERSONAJE_VALOR") & txtValor.text & JsonLanguage.Item( _
+            "MENSAJE_PUBLICAR_PERSONAJE_COSTO"), vbYesNo + vbQuestion, JsonLanguage.Item("MENSAJE_TITULO_PUBLICAR_PERSONAJE")) = vbYes Then
+        Call writePublicarPersonajeMAO(val(txtValor.text))
         Call cerrarFormulario
     End If
-    
 End Sub
+
 Private Sub cerrarFormulario()
-    txtValor.Text = ""
+    txtValor.text = ""
     Unload Me
 End Sub
 
 Private Sub txtValor_Change()
-    textval = txtValor.Text
+    textval = txtValor.text
     If IsNumeric(textval) Then
-      numval = textval
+        numval = textval
     Else
-      txtValor.Text = CStr(numval)
+        txtValor.text = CStr(numval)
     End If
 End Sub
-

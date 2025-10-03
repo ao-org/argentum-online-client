@@ -25,7 +25,6 @@ Begin VB.Form FrmQuestInfo
       _ExtentY        =   5106
       _Version        =   393217
       BorderStyle     =   0
-      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
@@ -333,6 +332,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 '    Argentum 20 - Game Client Program
 '    Copyright (C) 2022 - Noland Studios
 '
@@ -350,155 +350,100 @@ Attribute VB_Exposed = False
 '
 '
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Me.Picture = LoadInterface("ventananuevamision.bmp")
     titulo.Caption = JsonLanguage.Item("MENSAJE_TITULO_MISION")
     lblRepetible.Caption = JsonLanguage.Item("MENSAJE_MISION_REPETIBLE")
-
     Text1.BackColor = RGB(11, 11, 11)
     PlayerView.BackColor = RGB(11, 11, 11)
     picture1.BackColor = RGB(19, 14, 11)
     Call Aplicar_Transparencia(Me.hWnd, 240)
-    
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-    
     On Error GoTo Form_KeyPress_Err
-    
-
     If (KeyAscii = 27) Then
         Unload Me
-
     End If
-    
-    
     Exit Sub
-
 Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Form_KeyPress", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Form_MouseMove_Err
-    
     MoverForm Me.hWnd
-    
     Image1.Picture = Nothing
     Image1.Tag = 0
     Image2.Picture = Nothing
     Image2.Tag = 0
-
-    
     Exit Sub
-
 Form_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Form_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Image1_MouseMove_Err
-    
-
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("boton-rechazar-over.bmp")
         Image1.Tag = "1"
-
     End If
-
-    
     Exit Sub
-
 Image1_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Image1_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Image1_MouseUp_Err
-    
     Unload Me
-
     Exit Sub
-
 Image1_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Image1_MouseUp", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Image2_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Image2_MouseMove_Err
-    
-
     If Image2.Tag = "0" Then
         Image2.Picture = LoadInterface("boton-aceptar-over.bmp")
         Image2.Tag = "1"
-
     End If
-
-    
     Exit Sub
-
 Image2_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Image2_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Image2_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Image2_MouseUp_Err
-    
-
-
     If ListViewQuest.SelectedItem.Index > 0 Then
-            Call WriteQuestAccept(ListViewQuest.SelectedItem.Index)
+        Call WriteQuestAccept(ListViewQuest.SelectedItem.Index)
         Unload Me
     End If
-    
     Exit Sub
-
 Image2_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Image2_MouseUp", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Image3_Click()
-    
     On Error GoTo Image3_Click_Err
     Unload Me
-    
     Exit Sub
-
 Image3_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Image3_Click", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub ListView1_Click()
-    
     On Error GoTo ListView1_Click_Err
-    
     If ListView1.SelectedItem Is Nothing Then Exit Sub
     Dim x As Long
     Dim y As Long
@@ -506,7 +451,6 @@ Public Sub ListView1_Click()
         If ListView1.SelectedItem.SubItems(3) = 0 Then
             PlayerView.BackColor = RGB(11, 11, 11)
             Call DibujarNPC(PlayerView, NpcData(ListView1.SelectedItem.SubItems(2)).Head, NpcData(ListView1.SelectedItem.SubItems(2)).Body, 3)
-
             npclbl.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
         ElseIf ListView1.SelectedItem.SubItems(3) = 2 Then
             x = (PlayerView.ScaleWidth - GrhData(HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex).pixelWidth) / 2
@@ -519,113 +463,80 @@ Public Sub ListView1_Click()
             Call Grh_Render_To_Hdc(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False, RGB(11, 11, 11))
             npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
         End If
-
     End If
-
-    
     Exit Sub
-
 ListView1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.ListView1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub ListView2_Click()
-    
     On Error GoTo ListView2_Click_Err
-
     If ListView2.SelectedItem Is Nothing Then Exit Sub
-
     If ListView2.SelectedItem.SubItems(3) = 2 Then
         Call Grh_Render_To_Hdc(picture1, HechizoData(ListView2.SelectedItem.SubItems(2)).IconoIndex, 0, 0, False, RGB(19, 14, 11))
     ElseIf ListView2.SelectedItem.SubItems(2) <> "" Then
         Call Grh_Render_To_Hdc(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(19, 14, 11))
     End If
-    
     If ListView2.SelectedItem.SubItems(3) = 2 Then
         objetolbl.Caption = HechizoData(ListView2.SelectedItem.SubItems(2)).nombre & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
     Else
         objetolbl.Caption = ObjData(ListView2.SelectedItem.SubItems(2)).Name & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
     End If
-
-    
     Exit Sub
-
 ListView2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.ListView2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Public Sub ShowQuest(ByVal QuestIndex As Integer)
-
     Call ListViewQuest_ItemClick(ListViewQuest.ListItems(QuestIndex))
-
 End Sub
 
-
 Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
-    
     On Error GoTo ListViewQuest_ItemClick_Err
-    
     If ListViewQuest.SelectedItem Is Nothing Then Exit Sub
-    
     If Len(ListViewQuest.SelectedItem.SubItems(2)) <> 0 Then
-        
         Dim QuestIndex As Integer
-
         QuestIndex = ListViewQuest.SelectedItem.SubItems(2)
-        
         FrmQuestInfo.ListView2.ListItems.Clear
         FrmQuestInfo.ListView1.ListItems.Clear
-            
         FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
-        
-        FrmQuestInfo.Text1.Text = ""
+        FrmQuestInfo.Text1.text = ""
         PlayerView.BackColor = RGB(11, 11, 11)
         picture1.BackColor = RGB(19, 14, 11)
         PlayerView.Refresh
         picture1.Refresh
         npclbl.Caption = ""
         objetolbl.Caption = ""
-        
-        lblRepetible.Visible = QuestList(QuestIndex).Repetible = 1
-        
+        lblRepetible.visible = QuestList(QuestIndex).Repetible = 1
         With QuestList(QuestIndex)
             Dim requisitos As String
             requisitos = .desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf
-        
             ' Si tiene clase requerida
             If .RequiredClass <> 0 And RequiredClass <= 12 Then
                 requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(.RequiredClass) & vbCrLf
             End If
-        
             ' Si tiene nivel requerido
             If .RequiredLevel <> 0 Then
                 requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & .RequiredLevel & vbCrLf
             End If
-            
             ' Si hay límite de nivel
             If .LimitLevel <> 0 Then
                 requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_MAXIMO") & .LimitLevel & vbCrLf
             End If
-        
             ' Si tiene quest previa requerida
             If .RequiredQuest <> 0 Then
                 requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(.RequiredQuest).nombre
             End If
-            
             ' Si tiene habilidad requerida
             If .RequiredSkill.SkillType > 0 Then
-                requisitos = requisitos & SkillsNames(.RequiredSkill.SkillType) & ": " & .RequiredSkill.RequiredValue & vbCrLf
+                requisitos = requisitos & vbCrLf & SkillsNames(.RequiredSkill.SkillType) & ": " & .RequiredSkill.RequiredValue & vbCrLf
             End If
-            
             ' Limpiamos y mostramos los requisitos
-            FrmQuestInfo.Text1.Text = ""
+            FrmQuestInfo.Text1.text = ""
             Call AddtoRichTextBox(Text1, requisitos, 128, 128, 128)
         End With
-        
         If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
             If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
                 FrmQuestInfo.ListView1.FlatScrollBar = False
@@ -634,21 +545,19 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
                 FrmQuestInfo.ListView1.FlatScrollBar = True
                 FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1800
             End If
-            
-            
             For i = 1 To UBound(QuestList(QuestIndex).RequiredNPC)
-                    Dim subelemento As ListItem
-                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(i).NpcIndex).Name)
-                    subelemento.SubItems(1) = QuestList(QuestIndex).RequiredNPC(i).Amount
-                    subelemento.SubItems(2) = QuestList(QuestIndex).RequiredNPC(i).NpcIndex
-                    subelemento.SubItems(3) = 0
+                Dim subelemento As ListItem
+                Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(i).NpcIndex).Name)
+                subelemento.SubItems(1) = QuestList(QuestIndex).RequiredNPC(i).Amount
+                subelemento.SubItems(2) = QuestList(QuestIndex).RequiredNPC(i).NpcIndex
+                subelemento.SubItems(3) = 0
             Next i
         End If
         If LBound(QuestList(QuestIndex).RequiredOBJ) > 0 Then  'Hay OBJs
             For i = 1 To UBound(QuestList(QuestIndex).RequiredOBJ)
-                Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).OBJIndex).Name)
+                Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).ObjIndex).Name)
                 subelemento.SubItems(1) = QuestList(QuestIndex).RequiredOBJ(i).Amount
-                subelemento.SubItems(2) = QuestList(QuestIndex).RequiredOBJ(i).OBJIndex
+                subelemento.SubItems(2) = QuestList(QuestIndex).RequiredOBJ(i).ObjIndex
                 subelemento.SubItems(3) = 1
             Next i
         End If
@@ -658,28 +567,23 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
             subelemento.SubItems(2) = QuestList(QuestIndex).RequiredSpellList(i)
             subelemento.SubItems(3) = 2
         Next i
-        
         If QuestList(QuestIndex).RewardGLD <> 0 Then
-             Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
-             subelemento.SubItems(1) = BeautifyBigNumber(QuestList(QuestIndex).RewardGLD)
-             subelemento.SubItems(2) = 12
-             subelemento.SubItems(3) = 0
+            Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
+            subelemento.SubItems(1) = BeautifyBigNumber(QuestList(QuestIndex).RewardGLD)
+            subelemento.SubItems(2) = 12
+            subelemento.SubItems(3) = 0
         End If
-        
-        
         If QuestList(QuestIndex).RewardEXP <> 0 Then
             Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
             subelemento.SubItems(1) = BeautifyBigNumber(QuestList(QuestIndex).RewardEXP)
             subelemento.SubItems(2) = 608
             subelemento.SubItems(3) = 1
         End If
-        
-        
         If UBound(QuestList(QuestIndex).RewardOBJ) > 0 Then
             For i = 1 To UBound(QuestList(QuestIndex).RewardOBJ)
-                Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(QuestList(QuestIndex).RewardOBJ(i).OBJIndex).Name)
+                Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(QuestList(QuestIndex).RewardOBJ(i).ObjIndex).Name)
                 subelemento.SubItems(1) = QuestList(QuestIndex).RewardOBJ(i).Amount
-                subelemento.SubItems(2) = QuestList(QuestIndex).RewardOBJ(i).OBJIndex
+                subelemento.SubItems(2) = QuestList(QuestIndex).RewardOBJ(i).ObjIndex
                 subelemento.SubItems(3) = 1
             Next i
         End If
@@ -689,7 +593,6 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
             subelemento.SubItems(2) = QuestList(QuestIndex).RewardSkill(i)
             subelemento.SubItems(3) = 2
         Next i
-                
         Call ListView1_Click
         Call ListView2_Click
     End If
@@ -697,97 +600,76 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
 ListViewQuest_ItemClick_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.ListViewQuest_ItemClick", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub lstQuests_Click()
-    
     On Error GoTo lstQuests_Click_Err
-    
-Dim QuestIndex As Byte
-
-QuestIndex = Val(ReadField(1, lstQuests.List(lstQuests.ListIndex), Asc("-")))
-
-FrmQuestInfo.ListView2.ListItems.Clear
-FrmQuestInfo.ListView1.ListItems.Clear
-            
-                FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
-               
-                FrmQuestInfo.Text1.Text = ""
-                Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf, 128, 128, 128)
-                'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
-                'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
-               
-               
-
-                
-                
-                If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
-                    If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
-                        FrmQuestInfo.ListView1.FlatScrollBar = False
-                        FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1550
-                    Else
-                        FrmQuestInfo.ListView1.FlatScrollBar = True
-                        FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1800
-                    End If
-                    
-                    For i = 1 To UBound(QuestList(QuestIndex).RequiredNPC)
-                            Dim subelemento As ListItem
-                            Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(i).NpcIndex).Name)
-                            subelemento.SubItems(1) = QuestList(QuestIndex).RequiredNPC(i).Amount
-                            subelemento.SubItems(2) = QuestList(QuestIndex).RequiredNPC(i).NpcIndex
-                            subelemento.SubItems(3) = 0
-                    Next i
-                End If
-    
-                If LBound(QuestList(QuestIndex).RequiredOBJ) > 0 Then  'Hay OBJs
-                    For i = 1 To UBound(QuestList(QuestIndex).RequiredOBJ)
-                        Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).OBJIndex).Name)
-                        subelemento.SubItems(1) = QuestList(QuestIndex).RequiredOBJ(i).Amount
-                        subelemento.SubItems(2) = QuestList(QuestIndex).RequiredOBJ(i).OBJIndex
-                        subelemento.SubItems(3) = 1
-                    Next i
-                End If
-                For i = 1 To UBound(QuestList(QuestIndex).RequiredSpellList) 'hay spells
-                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).ObjIndex).Name)
-                    subelemento.SubItems(1) = 1
-                    subelemento.SubItems(2) = QuestList(QuestIndex).RequiredSpellList(i)
-                    subelemento.SubItems(3) = 2
-                Next i
-               
-                Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
-                subelemento.SubItems(1) = QuestList(QuestIndex).RewardGLD
-                subelemento.SubItems(2) = 12
-                subelemento.SubItems(3) = 0
-               
-                Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
-                subelemento.SubItems(1) = QuestList(QuestIndex).RewardEXP
-                subelemento.SubItems(2) = 608
-                subelemento.SubItems(3) = 1
-
-                If UBound(QuestList(QuestIndex).RewardOBJ) > 0 Then
-                    For i = 1 To UBound(QuestList(QuestIndex).RewardOBJ)
-                        Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(QuestList(QuestIndex).RewardOBJ(i).OBJIndex).Name)
-                        subelemento.SubItems(1) = QuestList(QuestIndex).RewardOBJ(i).Amount
-                        subelemento.SubItems(2) = QuestList(QuestIndex).RewardOBJ(i).OBJIndex
-                        subelemento.SubItems(3) = 1
-                    Next i
-                End If
-                For i = 1 To QuestList(QuestIndex).RewardSkillCount
-                    Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , HechizoData(QuestList(QuestIndex).RewardSkill(i)).nombre)
-                    subelemento.SubItems(1) = 1
-                    subelemento.SubItems(2) = ""
-                    subelemento.SubItems(3) = 2
-                Next i
+    Dim QuestIndex As Byte
+    QuestIndex = val(ReadField(1, lstQuests.List(lstQuests.ListIndex), Asc("-")))
+    FrmQuestInfo.ListView2.ListItems.Clear
+    FrmQuestInfo.ListView1.ListItems.Clear
+    FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
+    FrmQuestInfo.Text1.text = ""
+    Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf, 128, 128, 128)
+    'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
+    'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
+    If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
+        If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
+            FrmQuestInfo.ListView1.FlatScrollBar = False
+            FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1550
+        Else
+            FrmQuestInfo.ListView1.FlatScrollBar = True
+            FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1800
+        End If
+        For i = 1 To UBound(QuestList(QuestIndex).RequiredNPC)
+            Dim subelemento As ListItem
+            Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(QuestList(QuestIndex).RequiredNPC(i).NpcIndex).Name)
+            subelemento.SubItems(1) = QuestList(QuestIndex).RequiredNPC(i).Amount
+            subelemento.SubItems(2) = QuestList(QuestIndex).RequiredNPC(i).NpcIndex
+            subelemento.SubItems(3) = 0
+        Next i
+    End If
+    If LBound(QuestList(QuestIndex).RequiredOBJ) > 0 Then  'Hay OBJs
+        For i = 1 To UBound(QuestList(QuestIndex).RequiredOBJ)
+            Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).ObjIndex).Name)
+            subelemento.SubItems(1) = QuestList(QuestIndex).RequiredOBJ(i).Amount
+            subelemento.SubItems(2) = QuestList(QuestIndex).RequiredOBJ(i).ObjIndex
+            subelemento.SubItems(3) = 1
+        Next i
+    End If
+    For i = 1 To UBound(QuestList(QuestIndex).RequiredSpellList) 'hay spells
+        Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(QuestList(QuestIndex).RequiredOBJ(i).ObjIndex).Name)
+        subelemento.SubItems(1) = 1
+        subelemento.SubItems(2) = QuestList(QuestIndex).RequiredSpellList(i)
+        subelemento.SubItems(3) = 2
+    Next i
+    Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
+    subelemento.SubItems(1) = QuestList(QuestIndex).RewardGLD
+    subelemento.SubItems(2) = 12
+    subelemento.SubItems(3) = 0
+    Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
+    subelemento.SubItems(1) = QuestList(QuestIndex).RewardEXP
+    subelemento.SubItems(2) = 608
+    subelemento.SubItems(3) = 1
+    If UBound(QuestList(QuestIndex).RewardOBJ) > 0 Then
+        For i = 1 To UBound(QuestList(QuestIndex).RewardOBJ)
+            Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(QuestList(QuestIndex).RewardOBJ(i).ObjIndex).Name)
+            subelemento.SubItems(1) = QuestList(QuestIndex).RewardOBJ(i).Amount
+            subelemento.SubItems(2) = QuestList(QuestIndex).RewardOBJ(i).ObjIndex
+            subelemento.SubItems(3) = 1
+        Next i
+    End If
+    For i = 1 To QuestList(QuestIndex).RewardSkillCount
+        Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , HechizoData(QuestList(QuestIndex).RewardSkill(i)).nombre)
+        subelemento.SubItems(1) = 1
+        subelemento.SubItems(2) = ""
+        subelemento.SubItems(3) = 2
+    Next i
     Exit Sub
-
 lstQuests_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.lstQuests_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub RichTextBox1_Change()
-
 End Sub
-

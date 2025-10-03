@@ -39,25 +39,20 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 Implements IUIComponent
-
 ' Button component: draws a colored quad with hover and click support
 ' Requires D3DVertex UDT defined in a standard module
+Private m_X         As Long, m_Y As Long
+Private m_W         As Long, m_H As Long
+Private m_Text      As String
+Private m_ColorFill As Long, m_HoverColor As Long
+Private m_ColorText As Long
+Private m_IsHover   As Boolean
+Private m_PrevDown  As Boolean
+Private m_Clicked   As Boolean
 
-Private m_X As Long, m_Y As Long
-Private m_W As Long, m_H As Long
-Private m_Text As String
-Private m_Font As D3DXFont
-Private m_ColorFill As Long, m_HoverColor As Long, m_ColorText As Long
-Private m_IsHover As Boolean
-Private m_PrevDown As Boolean
-Private m_Clicked As Boolean
-
-Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, _
-                ByVal w As Long, ByVal h As Long, ByVal font As D3DXFont, _
-                ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
+Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
     m_Text = text: m_X = x: m_Y = y
     m_W = w: m_H = h
-    Set m_Font = font
     m_ColorFill = clrFill
     m_HoverColor = clrHover
     m_ColorText = clrText
@@ -71,6 +66,7 @@ End Sub
 Public Property Get Width() As Long
     Width = m_W
 End Property
+
 Public Property Get Height() As Long
     Height = m_H
 End Property
@@ -78,6 +74,7 @@ End Property
 Public Property Get WasClicked() As Boolean
     WasClicked = m_Clicked
 End Property
+
 Public Property Let WasClicked(ByVal val As Boolean)
     m_Clicked = val
 End Property
@@ -94,13 +91,12 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Dim rc As RECT
     rc.Left = m_X: rc.Top = m_Y
     rc.Right = m_X + m_W: rc.Bottom = m_Y + m_H
-    m_Font.DrawTextW m_Text, -1, rc, DT_CENTER Or DT_VCENTER Or DT_SINGLELINE, m_ColorText
+    Call UIRenderer.RenderText(m_Text, rc.Left, rc.Top, m_ColorText, 1, 255)
 End Sub
+
 Private Sub IUIComponent_HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
     m_IsHover = (mouseX >= m_X And mouseX <= m_X + m_W And mouseY >= m_Y And mouseY <= m_Y + m_H)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then m_Clicked = True
     m_PrevDown = down
 End Sub
-
-

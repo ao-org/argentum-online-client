@@ -16,7 +16,6 @@ Attribute VB_Name = "Application"
 '
 '
 Option Explicit
-
 Private Declare Function GetActiveWindow Lib "user32" () As Long
 
 Private Type UltimoError
@@ -29,68 +28,39 @@ End Type
 ' Checks if this is the active (foreground) application or not.
 '
 ' @return   True if any of the app's windows are the foreground window, false otherwise.
-
 Public Function IsAppActive() As Boolean
-
     'Checks if this is the active application or not
-    
     On Error GoTo IsAppActive_Err
-    
     IsAppActive = (GetActiveWindow <> 0)
-
-    
     Exit Function
-
 IsAppActive_Err:
     Call RegistrarError(Err.Number, Err.Description, "Application.IsAppActive", Erl)
     Resume Next
-    
 End Function
 
-
-
 Public Sub DeleteFile(ByVal filename As String)
-On Error Resume Next
+    On Error Resume Next
     If Len(dir$(filename)) > 0 Then
         Kill filename
     End If
 End Sub
 
-
 Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByVal Componente As String, Optional ByVal Linea As Integer)
- 
-On Error GoTo RegistrarError_Err
-
-112     Dim File As Integer: File = FreeFile
-
-114     Open GetErrorLogFilename() For Append As #File
-    
-116         Print #File, "Error: " & Numero
-118         Print #File, "Descripcion: " & Descripcion
-        
-120         Print #File, "Componente: " & Componente
-
-122         If LenB(Linea) <> 0 Then
-124             Print #File, "Linea: " & Linea
-            End If
-
-126         Print #File, "Fecha y Hora: " & Date$ & "-" & Time$
-        
-128         Print #File, vbNullString
-        
-130     Close #File
-    
-132     frmDebug.add_text_tracebox "Error: " & Numero & vbNewLine & _
-                    "Descripcion: " & Descripcion & vbNewLine & _
-                    "Componente: " & Componente & vbNewLine & _
-                    "Linea: " & Linea & vbNewLine & _
-                    "Fecha y Hora: " & Date$ & "-" & Time$ & vbNewLine
-        
-        Exit Sub
-
+    On Error GoTo RegistrarError_Err
+    Dim File As Integer: File = FreeFile
+    Open GetErrorLogFilename() For Append As #File
+    Print #File, "Error: " & Numero
+    Print #File, "Descripcion: " & Descripcion
+    Print #File, "Componente: " & Componente
+    If LenB(Linea) <> 0 Then
+        Print #File, "Linea: " & Linea
+    End If
+    Print #File, "Fecha y Hora: " & Date$ & "-" & Time$
+    Print #File, vbNullString
+    Close #File
+    frmDebug.add_text_tracebox "Error: " & Numero & vbNewLine & "Descripcion: " & Descripcion & vbNewLine & "Componente: " & Componente & vbNewLine & "Linea: " & Linea & _
+            vbNewLine & "Fecha y Hora: " & Date$ & "-" & Time$ & vbNewLine
+    Exit Sub
 RegistrarError_Err:
-        Call RegistrarError(Err.Number, Err.Description, "ES.RegistrarError", Erl)
-
-        
+    Call RegistrarError(Err.Number, Err.Description, "ES.RegistrarError", Erl)
 End Sub
-

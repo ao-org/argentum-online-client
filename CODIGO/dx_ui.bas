@@ -26,38 +26,31 @@ Attribute VB_Name = "dx_ui"
 '
 '
 Option Explicit
-
-
-Private Declare Function CreateFontA Lib "gdi32" _
-    (ByVal nHeight As Long, ByVal nWidth As Long, ByVal nEscapement As Long, ByVal nOrientation As Long, _
-     ByVal fnWeight As Long, ByVal fdwItalic As Long, ByVal fdwUnderline As Long, ByVal fdwStrikeOut As Long, _
-     ByVal fdwCharSet As Long, ByVal fdwOutputPrecision As Long, ByVal fdwClipPrecision As Long, _
-     ByVal fdwQuality As Long, ByVal fdwPitchAndFamily As Long, ByVal lpszFace As String) As Long
-
-' Font constants
-Private Const FW_NORMAL As Long = 400
-Private Const DEFAULT_CHARSET As Long = 1
-Private Const OUT_DEFAULT_PRECIS As Long = 0
-Private Const DEFAULT_QUALITY As Long = 0
-Private Const DEFAULT_PITCH As Long = 0
-Private Const FF_DONTCARE As Long = 0
-
-Public g_connectScreen As clsUIConnectScreen
-Public g_Font As D3DXFont
+' Common UI color constants (opaque)
+Public Const UI_COLOR_WHITE As Long = &HFFFFFF     ' &HFFFFFFFF
+Public Const UI_COLOR_BLACK As Long = &H0        ' 0xFF000000
+Public Const UI_COLOR_BLUE   As Long = &HFF0000   ' 0xFFFF0000
+Public Const UI_COLOR_GREEN As Long = &HFF00FF   ' 0xFF00FF00
+Public Const UI_COLOR_RED  As Long = &HFF       ' 0xFF0000FF
+Public Const UI_MAX_QUADS As Long = 2000
+Public g_connectScreen      As clsUIConnectScreen
 ' Virtual-Key codes
-Public Const VK_LBUTTON As Long = &H1
+Public Const VK_LBUTTON     As Long = &H1
+
 ' Mouse position API
 Private Type POINTAPI
     x As Long
     y As Long
 End Type
+
 Private Declare Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
 Private Declare Function ScreenToClient Lib "user32" (ByVal hWnd As Long, lpPoint As POINTAPI) As Long
-Public g_MouseX As Long
-Public g_MouseY As Long
+Public g_MouseX       As Long
+Public g_MouseY       As Long
 Public g_MouseButtons As Long
-Public UIRenderer As clsUIRenderer
-
+Public UIRenderer     As clsUIRenderer
+Public UITextures As clsTexManager
+    
 
 ' Update current mouse state relative to the client window
 Public Sub UpdateMouse(ByVal hWnd As Long)
@@ -70,21 +63,34 @@ Public Sub UpdateMouse(ByVal hWnd As Long)
 End Sub
 
 Public Sub init_connect_screen(ByRef dev As Direct3DDevice8)
-    If g_Font Is Nothing Then
-        Dim hFont As Long
-        hFont = CreateFontA(20, 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH Or FF_DONTCARE, "Arial")
-        Set g_Font = DirectD3D8.CreateFont(dev, hFont)
-    End If
-    Set g_connectScreen = New clsUIConnectScreen: g_connectScreen.Init dev, g_Font
+    Set g_connectScreen = New clsUIConnectScreen: g_connectScreen.Init dev
 End Sub
 
+Private Sub preload_ui_textures()
+#If DXUI Then
+    ' Preload all UI textures you will use (ids are examples)
+    Dim ids()
+    Dim w As Long: Dim h As Long
+    ids = Array(14, 21)     ' <- put your real atlas/skin ids here
 
+    Dim i As Long, tex As Direct3DTexture8
+    For i = LBound(ids) To UBound(ids)
+        Set tex = UITextures.GetTexture(ids(i), w, h)  ' fetch or load from manager cache
+        Debug.Assert Not tex Is Nothing
+        Debug.Print "UI texture bytes: "; CStr(UITextures.GetAllocatedBytes())
 
+    Next i
+#End If
+End Sub
 
 Public Sub init_dx_ui(ByRef dev As Direct3DDevice8)
-#If DXUI Then
-    Set UIRenderer = New clsUIRenderer
-    Call UIRenderer.Init(DirectDevice, 1000)
-    Call init_connect_screen(DirectDevice)
-#End If
+    #If DXUI Then
+        Set UITextures = New clsTexManager
+        Call UITextures.Init(DirectD3D8, dev)
+        Set UIRenderer = New clsUIRenderer
+        preload_ui_textures
+            
+        Call UIRenderer.Init(DirectDevice, UI_MAX_QUADS)
+        Call init_connect_screen(DirectDevice)
+    #End If
 End Sub

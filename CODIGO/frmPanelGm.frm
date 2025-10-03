@@ -1789,192 +1789,127 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
-Dim nick       As String
-
-Dim tmp        As String
-
-Dim tmpUser        As String
-
-Dim Resultado  As Boolean
-
-Public ContMacro  As Integer
-
-Public LastStr As String
-
+Dim nick         As String
+Dim tmp          As String
+Dim tmpUser      As String
+Dim Resultado    As Boolean
+Public ContMacro As Integer
+Public LastStr   As String
 Private Const MAX_GM_MSG = 300
-
 Dim reason                      As Long
-
 Private MisMSG(0 To MAX_GM_MSG) As String
-
 Private Apunt(0 To MAX_GM_MSG)  As Integer
 
 Public Sub CrearGMmSg(nick As String, msg As String)
-    
     On Error GoTo CrearGMmSg_Err
-    
-
     If List1.ListCount < MAX_GM_MSG Then
         List1.AddItem nick & "-" & List1.ListCount
         MisMSG(List1.ListCount - 1) = msg
         Apunt(List1.ListCount - 1) = List1.ListCount - 1
-
     End If
-
-    
     Exit Sub
-
 CrearGMmSg_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CrearGMmSg", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub BanCuenta_Click()
-    
     On Error GoTo BanCuenta_Click_Err
-    
     tmp = InputBox(JsonLanguage.Item("INPUTBOX_MOTIVO"), JsonLanguage.Item("INPUTBOX_TITULO"))
-    nick = cboListaUsus.Text
-
+    nick = cboListaUsus.text
     If MsgBox(JsonLanguage.Item("MENSAJEBOX_BANEAR_CUENTA") & " " & nick, vbYesNo + vbQuestion) = vbYes Then
         Call WriteBanCuenta(nick, tmp)
-
     End If
-
-    
     Exit Sub
-
 BanCuenta_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.BanCuenta_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub BorrarPersonaje_Click()
-    
     On Error GoTo BorrarPersonaje_Click_Err
-    
-
-    If MsgBox(JsonLanguage.Item("MENSAJEBOX_BORRAR_PERSONAJE") & " " & cboListaUsus.Text, vbYesNo + vbQuestion) = vbYes Then
-
-
-        Call ParseUserCommand("/KILLCHAR " & cboListaUsus.Text)
+    If MsgBox(JsonLanguage.Item("MENSAJEBOX_BORRAR_PERSONAJE") & " " & cboListaUsus.text, vbYesNo + vbQuestion) = vbYes Then
+        Call ParseUserCommand("/KILLCHAR " & cboListaUsus.text)
     End If
-
-    
     Exit Sub
-
 BorrarPersonaje_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.BorrarPersonaje_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub BusqedaTesoro_Click()
-    
     On Error GoTo BusqedaTesoro_Click_Err
-    
-
-    tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_TIPO_EVENTO") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_TESORO_CONTINENTE") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_TESORO_DUNGEON") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_APARICION_CRIATURA"), JsonLanguage.Item("MENSAJE_INICIAR_EVENTO"))
-
+    tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_TIPO_EVENTO") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_TESORO_CONTINENTE") & vbCrLf & JsonLanguage.Item( _
+            "MENSAJE_EVENTO_TESORO_DUNGEON") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_APARICION_CRIATURA"), JsonLanguage.Item("MENSAJE_INICIAR_EVENTO"))
     If tmp >= 3 Or tmp = "" Then
         Exit Sub
     End If
-    
     If IsNumeric(tmp) Then
-
         Call WriteBusquedaTesoro(CByte(tmp))
     Else
         MsgBox JsonLanguage.Item("MENSAJE_TIPO_INVALIDO"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
-
     End If
-
-    
     Exit Sub
-
 BusqedaTesoro_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.BusqedaTesoro_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Cabeza_Click()
-    
     On Error GoTo Cabeza_Click_Err
-    
     tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_VALOR_CABEZA"), JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
-
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " Head " & tmp)
-    
+    Call ParseUserCommand("/MOD " & cboListaUsus.text & " Head " & tmp)
     Exit Sub
-
 Cabeza_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Cabeza_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub CerrarleCliente_Click()
-    
     On Error GoTo CerrarleCliente_Click_Err
-    
-    Call WriteCerraCliente(cboListaUsus.Text)
-
-    
+    Call WriteCerraCliente(cboListaUsus.text)
     Exit Sub
-
 CerrarleCliente_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CerrarleCliente_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub CerrarProceso_Click()
-    
     On Error GoTo CerrarProceso_Click_Err
-    
     tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_NOMBRE_PROCESO"), JsonLanguage.Item("MENSAJE_CERRAR_PROCESO"))
-
     If tmp <> "" Then
-
-        Call ParseUserCommand("/CERRARPROCESO " & cboListaUsus.Text & "@" & tmp)
+        Call ParseUserCommand("/CERRARPROCESO " & cboListaUsus.text & "@" & tmp)
     End If
-
-    
     Exit Sub
-
 CerrarProceso_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CerrarProceso_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub chkAntiCheat_Click()
-    If chkAntiCheat.Value = 0 Then
-        chkOcultar.Value = False
-        chkUsarItem.Value = False
-        chkLeftClick.Value = False
-        chkPaquetes.Value = False
-        chkCoordenadas.Value = False
-        chkClicks.Value = False
-        chkInasistido.Value = False
-        chkCarteleo.Value = False
+    If chkAntiCheat.value = 0 Then
+        chkOcultar.value = False
+        chkUsarItem.value = False
+        chkLeftClick.value = False
+        chkPaquetes.value = False
+        chkCoordenadas.value = False
+        chkClicks.value = False
+        chkInasistido.value = False
+        chkCarteleo.value = False
     Else
-        chkOcultar.Value = 1
-        chkUsarItem.Value = 1
-        chkLeftClick.Value = 1
-        chkPaquetes.Value = 1
-        chkCoordenadas.Value = 1
-        chkClicks.Value = 1
-        chkInasistido.Value = 1
-        chkCarteleo.Value = 1
+        chkOcultar.value = 1
+        chkUsarItem.value = 1
+        chkLeftClick.value = 1
+        chkPaquetes.value = 1
+        chkCoordenadas.value = 1
+        chkClicks.value = 1
+        chkInasistido.value = 1
+        chkCarteleo.value = 1
     End If
 End Sub
 
 Private Sub chkVerPanel_Click()
-    If chkVerPanel.Value = 1 Then
+    If chkVerPanel.value = 1 Then
         FraControlMacros.visible = False
     Else
         FraControlMacros.visible = True
@@ -1982,248 +1917,145 @@ Private Sub chkVerPanel_Click()
 End Sub
 
 Private Sub ciudadanos_Click()
-    
     On Error GoTo ciudadanos_Click_Err
-    
     tmp = InputBox("Ingrese el valor de ciudadanos que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
-
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CIU " & tmp)
-    
+    Call ParseUserCommand("/MOD " & cboListaUsus.text & " CIU " & tmp)
     Exit Sub
-
 ciudadanos_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.ciudadanos_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Clase_Click()
-    
     On Error GoTo Clase_Click_Err
-    
     tmp = InputBox("Ingrese el valor de clase Libres que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
-
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CLASE " & tmp)
-    
+    Call ParseUserCommand("/MOD " & cboListaUsus.text & " CLASE " & tmp)
     Exit Sub
-
 Clase_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Clase_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmd_Click(Index As Integer)
-        
-        On Error GoTo cmd_Click_Err
-        
-100     tmpUser = "yo"
-
-102     Select Case Index
-     
-            Case 0
-104             txtArma.Text = txtArma.Text + 1
-
-106         Case 1
-108             If txtArma.Text >= 1 Then txtArma.Text = txtArma.Text - 1
-        End Select
-    
-110     tmp = txtArma.Text
-
-112     Call ParseUserCommand("/MOD " & tmpUser & " Arma " & tmp)
-    
-114     Call frmPanelgm.txtMod.SetFocus
-        
-        Exit Sub
-
+    On Error GoTo cmd_Click_Err
+    tmpUser = "yo"
+    Select Case Index
+        Case 0
+            txtArma.text = txtArma.text + 1
+        Case 1
+            If txtArma.text >= 1 Then txtArma.text = txtArma.text - 1
+    End Select
+    tmp = txtArma.text
+    Call ParseUserCommand("/MOD " & tmpUser & " Arma " & tmp)
+    Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
 cmd_Click_Err:
-        MsgBox Err.Description & vbCrLf & "in Argentum20.frmPanelgm.cmd_Click " & "at line " & Erl, vbExclamation + vbOKOnly, "Application Error"
-        Resume Next
-        
+    MsgBox Err.Description & vbCrLf & "in Argentum20.frmPanelgm.cmd_Click " & "at line " & Erl, vbExclamation + vbOKOnly, "Application Error"
+    Resume Next
 End Sub
 
 Private Sub cmdAccion_Click(Index As Integer)
-    
     On Error GoTo 0
-    
-    nick = Replace(cboListaUsus.Text, " ", "+")
-
+    nick = Replace(cboListaUsus.text, " ", "+")
     Select Case Index
-
         Case 0 '/ECHAR NICK 0.12.1
             Call WriteKick(nick)
-
         Case 1 '/BAN NICK MOTIVO 0.12.1
             tmp = InputBox(JsonLanguage.Item("MENSAJE_MOTIVO"), JsonLanguage.Item("TITULO_MOTIVO"))
-
-            If MsgBox(JsonLanguage.Item("MENSAJEBOX_BANEAR_PERSONAJE") & " " & cboListaUsus.Text, vbYesNo + vbQuestion) = vbYes Then
+            If MsgBox(JsonLanguage.Item("MENSAJEBOX_BANEAR_PERSONAJE") & " " & cboListaUsus.text, vbYesNo + vbQuestion) = vbYes Then
                 Call WriteBanChar(nick, tmp)
-
             End If
-
         Case 2 '/SUM NICK 0.12.1
-
             If LenB(nick) <> 0 Then Call WriteSummonChar(nick)
-
         Case 3 '/ira NICK 0.12.1
-
             If LenB(nick) <> 0 Then Call WriteGoToChar(nick)
-
         Case 4 '/REM 0.12.1
             tmp = InputBox("¿Comentario?", "Ingrese comentario")
             Call WriteComment(tmp)
-
-        Case 5 '/HORA 0.12.1
-            Call WriteServerTime
-
         Case 6 '/DONDE NICK 0.12.1
-
             If LenB(nick) <> 0 Then Call WriteWhere(nick)
-
         Case 7 '/NENE 0.12.1
             tmp = InputBox("¿En qué mapa?", "")
             Call ParseUserCommand("/NENE " & tmp)
-
         Case 8 '/info nick
             Call ParseUserCommand("/INFO " & nick)
-   
         Case 9 '/inv nick
             Call ParseUserCommand("/INV " & nick)
-   
         Case 10 '/skills nick
             Call ParseUserCommand("/SKILLS " & nick)
-   
         Case 11 '/CARCEL NICK @ MOTIVO  0.12.1
             tmp = InputBox("¿Minutos a encarcelar? (hasta 60)", "")
-
             If tmp > 1 Then
                 Call ParseUserCommand("/CARCEL " & nick & "@encarcelado via panelgm@" & tmp)
-           
             Else
                 MsgBox JsonLanguage.Item("MENSAJE_TIEMPO_INVALIDO")
-            
             End If
-
         Case 13 '/nick2ip NICK 0.12.1
             Call WriteNickToIP(nick)
-
         Case 14 '/Lastip NICK 0.12.1
             Call WriteLastIP(nick)
-
         Case 15 '/IrCerca NICK 0.12.1
-
             If LenB(nick) <> 0 Then Call WriteGoNearby(nick)
-
         Case 17 '/BANIP IP 0.12.1
             Call ShowConsoleMsg("Not supported.")
         Case 18 '/bov nick
-
         Case 19 '/BANED IP AND PERSONAJE 0.12.1   REVISAR
-    
             Call ShowConsoleMsg("Not supported.")
-
         Case 20 '/PENAS NICK 0.12.1
             Call WritePunishments(nick)
-
         Case 21 '/REVIVIR NICK 0.12.1
             Call WriteReviveChar(nick)
-
         Case 22 'ADVERTENCIA 0.12.1
             tmp = InputBox("Escriba el motivo de la advertencia.", "Advertir a " & nick)
-
             If LenB(tmp) <> 0 Then
                 Call ParseUserCommand("/ADVERTENCIA " & nick & "@" & tmp)
-
             End If
-
         Case 23 '/TRABAJANDO 0.12.1
             Call WriteWorking
-
         Case 25 '/BANIPLIST 0.12.1
             Call ShowConsoleMsg("Not supported.")
-
         Case 26 '/BLOQ 0.12.1
             Call WriteTileBlockedToggle
-
         Case 27 '/APAGAR 0.12.1
-
             'Call WriteTurnOffServer
         Case 28 '/GRABAR 0.12.1
             Call WriteSaveChars
-
         Case 29 '/DOBACKUP 0.12.1
             Call WriteDoBackup
-
         Case 30 '/ONLINEMAP 0.12.1
             Call WriteOnlineMap
-
         Case 31 '/LLUVIA 0.12.1
             Call WriteRainToggle
-
-        Case 32
-            Dim Elapsed As Single
-            Elapsed = (FrameTime - HoraMundo) / DuracionDia
-            Elapsed = (Elapsed - Fix(Elapsed)) * 24
-        
-            Dim HoraActual As Integer
-            HoraActual = Fix(Elapsed)
-            
-            ' Es de noche?
-            If HoraActual >= 0 And HoraActual <= 6 Then
-                ' Hacemos de dia
-                Call WriteDay
-                ' Viceversa
-            Else
-                Call WriteNight
-            End If
-
         Case 33
-
             Call ParseUserCommand("/PAUSAR")
-
         Case 34 '/LIMPIARMUNDO 0.12.1
             Call WriteCleanWorld
-
         Case 35 '/SILENCIO NICK@TIEMPO
-
             tmp = InputBox("¿Minutos a silenciar? (hasta 255)", "")
-
             If MsgBox(JsonLanguage.Item("MENSAJE_SILENCIAR_PERSONAJE") & nick & """?", vbYesNo + vbQuestion) = vbYes Then
                 If tmp > 255 Then Exit Sub
-                Call ParseUserCommand("/SILENCIAR " & cboListaUsus.Text & "@" & tmp)
-
+                Call ParseUserCommand("/SILENCIAR " & cboListaUsus.text & "@" & tmp)
             End If
-
     End Select
-
     nick = ""
-    
     Exit Sub
-
 cmdAccion_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.cmdAccion_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdActualiza_Click()
-    
     On Error GoTo cmdActualiza_Click_Err
-    
     Call WriteRequestUserList
-    
     Call frmPanelgm.txtMod.SetFocus
-    
     Exit Sub
-
 cmdActualiza_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.cmdActualiza_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdCerrarCliente_Click()
-    tmpUser = cboListaUsus.Text
+    tmpUser = cboListaUsus.text
     Call ParseUserCommand("/SM ")
     Call frmPanelgm.txtMod.SetFocus
     Call WriteGoNearby(tmpUser)
@@ -2231,10 +2063,9 @@ Private Sub cmdCerrarCliente_Click()
 End Sub
 
 Private Sub cmdBanPJ_Click()
-    tmpUser = cboListaUsus.Text
+    tmpUser = cboListaUsus.text
     Call ParseUserCommand("/BAN")
     tmp = InputBox("Escriba el motivo del BAN.", "Baneo de " & tmpUser)
-
     If tmp = "" Then
         InputBox ("No se puede bannear si dar motivos a " & tmpUser)
     Else
@@ -2247,57 +2078,39 @@ Private Sub cmdBloqueoPos_Click()
 End Sub
 
 Private Sub cmdBody0_Click(Index As Integer)
-
     tmpUser = "yo"
-
     Call ParseUserCommand("/MOD " & tmpUser & " Body 0")
-    
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
 End Sub
 
 Private Sub cmdBodyMas_Click()
-
     tmpUser = "yo"
-    
-    txtBodyYo.Text = txtBodyYo.Text + 1
-    
-    tmp = txtBodyYo.Text
-    
-
+    txtBodyYo.text = txtBodyYo.text + 1
+    tmp = txtBodyYo.text
     Call ParseUserCommand("/MOD " & tmpUser & " Body " & tmp)
-    
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
-    
 End Sub
 
 Private Sub cmdBodyMenos_Click()
-
     tmpUser = "yo"
-    
-    If txtBodyYo.Text >= 1 Then txtBodyYo.Text = txtBodyYo.Text - 1
-    
-    tmp = txtBodyYo.Text
-    
-
+    If txtBodyYo.text >= 1 Then txtBodyYo.text = txtBodyYo.text - 1
+    tmp = txtBodyYo.text
     Call ParseUserCommand("/MOD " & tmpUser & " Body " & tmp)
-    
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
 End Sub
 
 Private Sub cmdBorrarInformes_Click()
-    Dim ruta As String
+    Dim ruta     As String
     Dim archivos As Variant
-    Dim i As Integer
-
+    Dim i        As Integer
     ' Obtén la ruta del directorio del ejecutable
     ruta = App.path
-
     ' Definir los nombres de los archivos
-    archivos = Array("MacroOcultar.txt", "MacroUseItemU.txt", "MacroUseItem.txt", "MacroGuildMessage.txt", "MacroLeftClick.txt", "MacroChangeHeading.txt", "MacroCoordenadas.txt", "MacroDeClick.txt", "MacroInasistido.txt", "MacroCarteleo.txt", "MacroDePaquetes.txt", "MacroTotal.txt")
-
+    archivos = Array("MacroOcultar.txt", "MacroUseItemU.txt", "MacroUseItem.txt", "MacroGuildMessage.txt", "MacroLeftClick.txt", "MacroChangeHeading.txt", _
+            "MacroCoordenadas.txt", "MacroDeClick.txt", "MacroInasistido.txt", "MacroCarteleo.txt", "MacroDePaquetes.txt", "MacroTotal.txt")
     ' Verificar y eliminar cada archivo en la lista
     For i = LBound(archivos) To UBound(archivos)
         If dir(ruta & "\" & archivos(i)) <> "" Then
@@ -2306,20 +2119,18 @@ Private Sub cmdBorrarInformes_Click()
     Next i
 End Sub
 
-
 Private Sub cmdBoveda_Click()
-    tmpUser = cboListaUsus.Text
+    tmpUser = cboListaUsus.text
     Call WriteRequestCharBank(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
-
 End Sub
 
 Private Sub cmdCarcel_Click()
-    Dim tmp As String
+    Dim tmp     As String
     Dim tmptime As String
-    tmpUser = cboListaUsus.Text
-    tmp = InputBox("Escriba el motivo de Carcel .", "Carcel a " & TargetName)
-    tmptime = InputBox("Escriba el tiempo de Carcel .", "Tiempo de Carcel a " & TargetName)
+    tmpUser = cboListaUsus.text
+    tmp = InputBox("Escriba el motivo de Carcel .", "Carcel a " & targetName)
+    tmptime = InputBox("Escriba el tiempo de Carcel .", "Tiempo de Carcel a " & targetName)
     If tmp = "" Or tmptime = "" Then
         MsgBox JsonLanguage.Item("MENSAJE_FALTAN_DATOS"), vbExclamation, "Error"
     Else
@@ -2327,223 +2138,160 @@ Private Sub cmdCarcel_Click()
     End If
 End Sub
 
-Private Sub cmdcerrar_Click()
-    
+Private Sub cmdCerrar_Click()
     Call ParseUserCommand("/SM ")
-    tmpUser = cboListaUsus.Text
+    tmpUser = cboListaUsus.text
     Call WriteGoNearby(tmpUser)
-    
 End Sub
 
 Private Sub cmdOnline_Click()
-
 End Sub
 
 Private Sub cmdTarget_Click()
     'Dim Usuaritio As String
-    
     On Error GoTo cmdTarget_Click_Err
-    
-
     'cboListaUsus = List1.List(List1.ListIndex)
     'Call AddtoRichTextBox(frmMain.RecTxt, "Haz click sobre el personaje...", 100, 100, 120, 0, 0)
     'frmMain.MousePointer = 2
     'frmMain.PanelSelect = True
     'Call SendData("TGUSER")
     Call WriteMarcaDeGm
-
-    
     Exit Sub
-
 cmdTarget_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.cmdTarget_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdComandoGM_Click()
-Call ParseUserCommand(txtMod.Text)
+    Call ParseUserCommand(txtMod.text)
 End Sub
 
 Private Sub cmdConsulta_Click()
-
-    tmpUser = cboListaUsus.Text
-         
+    tmpUser = cboListaUsus.text
     Call ParseUserCommand("/CONSULTA " & tmpUser)
     Call frmPanelgm.txtMod.SetFocus
- 
 End Sub
 
 Private Sub cmdEchar_Click()
-    tmpUser = cboListaUsus.Text
+    tmpUser = cboListaUsus.text
     Call WriteKick(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
-
 End Sub
 
 Private Sub cmdEjecutar_Click()
-    tmpUser = cboListaUsus.Text
+    tmpUser = cboListaUsus.text
     Call WriteExecute(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub cmdEscudo_Click(Index As Integer)
-                
-100     tmpUser = "yo"
-
-102     Select Case Index
-     
-            Case 0
-104             txtEscudo.Text = txtEscudo.Text + 1
-
-106         Case 1
-108             If txtEscudo.Text >= 1 Then txtEscudo.Text = txtEscudo.Text - 1
-        End Select
-    
-110     tmp = txtEscudo.Text
-
-112     Call ParseUserCommand("/MOD " & tmpUser & " Escudo " & tmp)
-    
-114     Call frmPanelgm.txtMod.SetFocus
-        
-        Exit Sub
-End Sub
-
-Private Sub cmdEventos_Click()
-    tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_TIPO_EVENTO") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_TESORO_CONTINENTE") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_TESORO_DUNGEON") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_APARICION_CRIATURA"), JsonLanguage.Item("MENSAJE_INICIAR_EVENTO"))
-    
-    If IsNumeric(tmp) Then
-
-        Call WriteBusquedaTesoro(CByte(tmp))
-    Else
-        MsgBox JsonLanguage.Item("MENSAJE_TIPO_INVALIDO"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
-
-    End If
-    
+    tmpUser = "yo"
+    Select Case Index
+        Case 0
+            txtEscudo.text = txtEscudo.text + 1
+        Case 1
+            If txtEscudo.text >= 1 Then txtEscudo.text = txtEscudo.text - 1
+    End Select
+    tmp = txtEscudo.text
+    Call ParseUserCommand("/MOD " & tmpUser & " Escudo " & tmp)
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
 End Sub
 
+Private Sub cmdEventos_Click()
+    tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_TIPO_EVENTO") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_TESORO_CONTINENTE") & vbCrLf & JsonLanguage.Item( _
+            "MENSAJE_EVENTO_TESORO_DUNGEON") & vbCrLf & JsonLanguage.Item("MENSAJE_EVENTO_APARICION_CRIATURA"), JsonLanguage.Item("MENSAJE_INICIAR_EVENTO"))
+    If IsNumeric(tmp) Then
+        Call WriteBusquedaTesoro(CByte(tmp))
+    Else
+        MsgBox JsonLanguage.Item("MENSAJE_TIPO_INVALIDO"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
+    End If
+    Call frmPanelgm.txtMod.SetFocus
+    Exit Sub
+End Sub
 
 Private Sub cmdHeadMenos_Click()
-
     tmpUser = "yo"
-       
-    If txtHeadNumero.Text >= 1 Then txtHeadNumero.Text = txtHeadNumero.Text - 1
-    
-    tmp = txtHeadNumero.Text
-    
-
+    If txtHeadNumero.text >= 1 Then txtHeadNumero.text = txtHeadNumero.text - 1
+    tmp = txtHeadNumero.text
     Call ParseUserCommand("/MOD " & tmpUser & " Head " & tmp)
-    
     Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub cmdHeadMas_Click()
-
     tmpUser = "yo"
-       
-    txtHeadNumero.Text = txtHeadNumero.Text + 1
-    
-    tmp = txtHeadNumero.Text
-    
-
+    txtHeadNumero.text = txtHeadNumero.text + 1
+    tmp = txtHeadNumero.text
     Call ParseUserCommand("/MOD " & tmpUser & " Head " & tmp)
-    
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
 End Sub
 
 Private Sub cmdHead0_Click()
-
     tmpUser = "yo"
     tmp = 0
-
     Call ParseUserCommand("/MOD " & tmpUser & " Head " & tmp)
-    
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
-    
 End Sub
 
 Private Sub cmdInfo_Click()
-
-    tmpUser = cboListaUsus.Text
+    tmpUser = cboListaUsus.text
     Call WriteRequestCharInfo(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub cmdInformación_Click()
-    
-    tmpUser = cboListaUsus.Text
-    
+    tmpUser = cboListaUsus.text
     Call WriteRequestCharStats(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
-
 End Sub
 
 Private Sub cmdInseguro_Click()
-Call ParseUserCommand("/MODMAPINFO SEGURO 0")
+    Call ParseUserCommand("/MODMAPINFO SEGURO 0")
 End Sub
 
 Private Sub cmdInsertarTrigger_Click()
-
-    Call ParseUserCommand("/TRIGGER " & txtTextTriggers.Text)
-
+    Call ParseUserCommand("/TRIGGER " & txtTextTriggers.text)
 End Sub
 
 Private Sub cmdInventario_Click()
-    tmpUser = cboListaUsus.Text
+    tmpUser = cboListaUsus.text
     Call ParseUserCommand("/INV " & tmpUser)
     Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub cmdInvisibilidadSi_Click()
-
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "SININVI")
-    
 End Sub
 
 Private Sub cmdInvisible_Click()
-    
     Call ParseUserCommand("/INVISIBLE")
-        
     Call frmPanelgm.txtMod.SetFocus
     Exit Sub
-    
 End Sub
 
 Private Sub cmdIrCerca_Click()
     Call ParseUserCommand("/SM ")
-    tmpUser = cboListaUsus.Text
+    tmpUser = cboListaUsus.text
     Call WriteGoNearby(tmpUser)
-
 End Sub
 
 Private Sub cmdMagiaSin_Click()
-
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "SINMAGIA")
-        
 End Sub
 
 Private Sub cmdMapaSeguro_Click()
-
-    tmp = InputBox(JsonLanguage.Item("MENSAJE_EDICION_MAPA") & vbCrLf & JsonLanguage.Item("MENSAJE_MAPA_INFORMACION") & vbCrLf & JsonLanguage.Item("MENSAJE_MAPA_SEGURO") & vbCrLf & JsonLanguage.Item("MENSAJE_MAPA_INSEGURO"), JsonLanguage.Item("MENSAJE_MODIFICAR"))
-    
+    tmp = InputBox(JsonLanguage.Item("MENSAJE_EDICION_MAPA") & vbCrLf & JsonLanguage.Item("MENSAJE_MAPA_INFORMACION") & vbCrLf & JsonLanguage.Item("MENSAJE_MAPA_SEGURO") & _
+            vbCrLf & JsonLanguage.Item("MENSAJE_MAPA_INSEGURO"), JsonLanguage.Item("MENSAJE_MODIFICAR"))
     Select Case tmp
-
         Case 0
             Call ParseUserCommand("/MAPINFO")
-
         Case 1
             Call ParseUserCommand("/MODMAPINFO SEGURO 1")
-
         Case 2
             Call ParseUserCommand("/MODMAPINFO SEGURO 0")
-            
-            
     End Select
-    
 End Sub
 
 Private Sub cmdMapeo_Click()
@@ -2556,39 +2304,27 @@ End Sub
 
 Private Sub cmdMas_Click()
     tmpUser = "yo"
-       
-    txtCasco.Text = txtCasco.Text + 1
-        
-    tmp = txtCasco.Text
-        
+    txtCasco.text = txtCasco.text + 1
+    tmp = txtCasco.text
     Call ParseUserCommand("/MOD " & tmpUser & " Casco " & tmp)
-    
     Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub cmdMatarNPC_Click()
-
-Call ParseUserCommand("/MATA")
+    Call ParseUserCommand("/MATA")
     Call frmPanelgm.txtMod.SetFocus
-
 End Sub
 
 Private Sub cmdMenos_Click()
     tmpUser = "yo"
-       
-    If txtCasco.Text >= 1 Then txtCasco.Text = txtCasco.Text - 1
-        
-    tmp = txtCasco.Text
-    
-    
+    If txtCasco.text >= 1 Then txtCasco.text = txtCasco.text - 1
+    tmp = txtCasco.text
     Call ParseUserCommand("/MOD " & tmpUser & " Casco " & tmp)
-    
     Call frmPanelgm.txtMod.SetFocus
 End Sub
 
-
 Private Sub cmdPenas_Click()
-    tmpUser = cboListaUsus.Text
+    tmpUser = cboListaUsus.text
     Call WritePunishments(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
 End Sub
@@ -2598,7 +2334,6 @@ Private Sub cmdRecargarNPCs_Click()
 End Sub
 
 Private Sub cmdRestringirMapa_Click()
-
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "Newbie")
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "NoPKS")
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "NoCIUD")
@@ -2606,27 +2341,23 @@ Private Sub cmdRestringirMapa_Click()
     ' luego de restringir
     ' faltaria mandar a cada uno a su hogar
     ' tambien los loguean mandarlos a su hogar.
-
 End Sub
 
 Private Sub cmdRevivir_Click()
-
-    tmpUser = cboListaUsus.Text
-    
+    tmpUser = cboListaUsus.text
     Call WriteReviveChar(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
-    
 End Sub
 
 Private Sub cmdSeguirMouse_Click()
-    tmpUser = cboListaUsus.Text
-    chkAutoName.Value = 0
+    tmpUser = cboListaUsus.text
+    chkAutoName.value = 0
     Call ParseUserCommand("/SM " & tmpUser)
     Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub cmdSeguro_Click()
-Call ParseUserCommand("/MODMAPINFO SEGURO 1")
+    Call ParseUserCommand("/MODMAPINFO SEGURO 1")
 End Sub
 
 Private Sub cmdSeleccionarPersonaje_Click(Index As Integer)
@@ -2642,13 +2373,13 @@ Private Sub cmdSeleccionarPersonaje_Click(Index As Integer)
 End Sub
 
 Private Sub cmdSTAT_Click()
-    tmpUser = cboListaUsus.Text
+    tmpUser = cboListaUsus.text
     Call WriteRequestCharStats(tmpUser)
     Call frmPanelgm.txtMod.SetFocus
 End Sub
 
 Private Sub cmdSUMUser_Click()
-    Call WriteSummonChar(cboListaUsus.Text)
+    Call WriteSummonChar(cboListaUsus.text)
 End Sub
 
 Private Sub cmdTrabajando_Click()
@@ -2657,35 +2388,23 @@ Private Sub cmdTrabajando_Click()
 End Sub
 
 Private Sub Command1_Click()
-    
     On Error GoTo Command1_Click_Err
-    
     List1.visible = True
     List2.visible = False
-
-    
     Exit Sub
-
 Command1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Command1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command2_Click()
-    
     On Error GoTo Command2_Click_Err
-    
     List1.visible = False
     List2.visible = True
-
-    
     Exit Sub
-
 Command2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Command2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command3_Click()
@@ -2695,214 +2414,134 @@ Private Sub Command3_Click()
 End Sub
 
 Private Sub CrearTeleport_Click()
-    
     On Error GoTo CrearTeleport_Click_Err
-    
     tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_COORDENADAS"), JsonLanguage.Item("MENSAJE_INGRESAR_POSICIONES"))
     Call ParseUserCommand("/CT " & tmp)
-
-    
     Exit Sub
-
 CrearTeleport_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.CrearTeleport_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Command4_Click()
-    tmpUser = cboListaUsus.Text
+    tmpUser = cboListaUsus.text
     Call WriteGoNearby(tmpUser)
     Call WriteConsulta(tmpUser)
 End Sub
 
 Private Sub creartoneo_Click()
-    
     On Error GoTo creartoneo_Click_Err
-    
     FrmTorneo.Show
-
-    
     Exit Sub
-
 creartoneo_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.creartoneo_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Criminales_Click()
-    
     On Error GoTo Criminales_Click_Err
-    
     tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_VALOR_CRIMINALES"), JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
-
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " CRI " & tmp)
-    
+    Call ParseUserCommand("/MOD " & cboListaUsus.text & " CRI " & tmp)
     Exit Sub
-
 Criminales_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Criminales_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Cuerpo_Click()
-    
     On Error GoTo Cuerpo_Click_Err
-    
     tmp = InputBox("Ingrese el valor de cuerpo que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
-
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " BODY " & tmp)
-    
+    Call ParseUserCommand("/MOD " & cboListaUsus.text & " BODY " & tmp)
     Exit Sub
-
 Cuerpo_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Cuerpo_Click", Erl)
     Resume Next
-    
 End Sub
 
-
 Private Sub Destrabar_Click()
-    
     On Error GoTo Destrabar_Click_Err
-    
-    nick = Replace(List1.Text, " ", "+")
+    nick = Replace(List1.text, " ", "+")
     Call WritePossUser(nick)
-
-    
     Exit Sub
-
 Destrabar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Destrabar_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub DestruirTeleport_Click()
-    
     On Error GoTo DestruirTeleport_Click_Err
-    
     Call WriteTeleportDestroy '/DT 0.12.1
-
-    
     Exit Sub
-
 DestruirTeleport_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.DestruirTeleport_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Ejecutar_Click()
-    
     On Error GoTo Ejecutar_Click_Err
-    
-    nick = cboListaUsus.Text
+    nick = cboListaUsus.text
     Call WriteExecute(nick) '/EJECUTAR NICK 0.12.1
-
-    
     Exit Sub
-
 Ejecutar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Ejecutar_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Energia_Click()
-    
     On Error GoTo Energia_Click_Err
-    
     tmp = InputBox("Ingrese el valor de energia que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
-
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " EN " & tmp)
-    
+    Call ParseUserCommand("/MOD " & cboListaUsus.text & " EN " & tmp)
     Exit Sub
-
 Energia_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Energia_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub evento1_Click()
-    
     On Error GoTo evento1_Click_Err
-    
     Call WriteCrearEvento(3, 30, 2)
-
-    
     Exit Sub
-
 evento1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.evento1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub evento2_Click()
-    
     On Error GoTo evento2_Click_Err
-    
     Call WriteCrearEvento(3, 30, 3)
-
-    
     Exit Sub
-
 evento2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.evento2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub evento3_Click()
-    
     On Error GoTo evento3_Click_Err
-    
     Call WriteCrearEvento(3, 30, 5)
-
-    
     Exit Sub
-
 evento3_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.evento3_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub evento4_Click()
-    
     On Error GoTo evento4_Click_Err
-    
     Call WriteCrearEvento(2, 30, 3)
-
-    
     Exit Sub
-
 evento4_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.evento4_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub finalizarevento_Click()
-    
     On Error GoTo finalizarevento_Click_Err
-    
-
     If MsgBox(JsonLanguage.Item("MENSAJE_FINALIZAR_EVENTO"), vbYesNo + vbQuestion, "¡ATENCIÓN!") = vbYes Then
         Call WriteFinEvento
     End If
-
-    
     Exit Sub
-
 finalizarevento_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.finalizarevento_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub flash_Click()
@@ -2910,751 +2549,476 @@ Private Sub flash_Click()
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     List1.Clear
     List2.Clear
-    txtMsg.Text = ""
+    txtMsg.text = ""
     Call WriteRequestUserList
-    
-    
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Form_Load", Erl)
     Resume Next
-    
 End Sub
-Private Sub Form_KeyPress(KeyAscii As Integer)
-    
-    On Error GoTo Form_KeyPress_Err
-    
 
+Private Sub Form_KeyPress(KeyAscii As Integer)
+    On Error GoTo Form_KeyPress_Err
     If (KeyAscii = 27) Then
         Unload Me
-
     End If
-
-    
     Exit Sub
-
 Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Form_KeyPress", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub lento_Click()
-
 End Sub
 
 Private Sub GlobalEstado_Click()
-
     Call ParseUserCommand("/ACTIVAR")
 End Sub
 
 Private Sub GuardarMapa_Click()
-
     Call ParseUserCommand("/BACK")
 End Sub
 
 Private Sub Limpiarmundo_Click()
-
     Call ParseUserCommand("/LIMPIARMUNDO")
 End Sub
 
 Private Sub LimpiarVision_Click()
-    
     On Error GoTo LimpiarVision_Click_Err
-    
     Call WriteDestroyAllItemsInArea
-
-    
     Exit Sub
-
 LimpiarVision_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.LimpiarVision_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub List1_Click()
-    
     On Error GoTo List1_Click_Err
-    
-
     Dim ind As Integer
-
-    ind = Val(ReadField(2, List1.List(List1.ListIndex), Asc("@")))
+    ind = val(ReadField(2, List1.List(List1.ListIndex), Asc("@")))
     txtMsg = List2.List(List1.ListIndex)
-    
-    
     Exit Sub
-
 List1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.List1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub List1_DblClick()
-        tmpUser = Split(List1.Text, "(")(0)
-        Call WriteGoNearby(tmpUser)
+    tmpUser = Split(List1.text, "(")(0)
+    Call WriteGoNearby(tmpUser)
 End Sub
 
 Private Sub List1_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo List1_MouseDown_Err
-    
-
     If Button = vbRightButton Then
         PopUpMenu mnuUsuario
-
     End If
-
-    
     Exit Sub
-
 List1_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.List1_MouseDown", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Mana_Click()
-    
     On Error GoTo Mana_Click_Err
-    
     tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_VALOR_MANA"), JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
-
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " MP " & tmp)
-    
+    Call ParseUserCommand("/MOD " & cboListaUsus.text & " MP " & tmp)
     Exit Sub
-
 Mana_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Mana_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub MensajeriaMenu_Click(Index As Integer)
-    
     On Error GoTo MensajeriaMenu_Click_Err
-    
-
     Select Case Index
-
         Case 0 'Mensaje por consola a usuarios 0.12.1
             tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_TEXTO"), JsonLanguage.Item("MENSAJE_CONSOLA_USUARIOS"))
             If LenB(tmp) Then Call WriteServerMessage(tmp)
-
         Case 1 'Mensaje por ventana a usuarios 0.12.1
             tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_TEXTO"), JsonLanguage.Item("MENSAJE_SISTEMA_USUARIOS"))
             If LenB(tmp) Then Call WriteSystemMessage(tmp)
-
         Case 2 'Mensaje por consola a GMS 0.12.1
             tmp = InputBox(JsonLanguage.Item("MENSAJE_ESCRIBIR_MENSAJE"), JsonLanguage.Item("MENSAJE_CONSOLA_GM"))
             If LenB(tmp) Then Call WriteGMMessage(tmp)
-
         Case 3 'Hablar como NPC 0.12.1
             tmp = InputBox(JsonLanguage.Item("MENSAJE_ESCRIBIR_UN_MENSAJE"), JsonLanguage.Item("MENSAJE_HABLAR_POR_NPC"))
             If LenB(tmp) Then Call WriteTalkAsNPC(tmp)
-
     End Select
-
-    
     Exit Sub
-
 MensajeriaMenu_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.MensajeriaMenu_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuBorrar_Click()
-    
     On Error GoTo mnuBorrar_Click_Err
-    
-
     Dim elitem          As String
     Dim ProximamentTipo As String
     Dim TIPO            As String
-
     elitem = List1.ListIndex
-
     If List1.ListIndex < 0 Then Exit Sub
-    
     Call ReadNick
-    
     ProximamentTipo = General_Field_Read(2, List1.List(List1.ListIndex), "(")
-    
     TIPO = General_Field_Read(1, ProximamentTipo, ")")
-    
     Call WriteSOSRemove(nick & "Ø" & txtMsg & "Ø" & TIPO)
-    
     Call List1.RemoveItem(List1.ListIndex)
     Call List2.RemoveItem(elitem)
-    
-    txtMsg.Text = vbNullString
-
-    
+    txtMsg.text = vbNullString
     Exit Sub
-
 mnuBorrar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuBorrar_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub MnuEnviar_Click(Index As Integer)
-    
     On Error GoTo MnuEnviar_Click_Err
-    
-
     Dim Coordenadas As String
-
-    nick = Replace(cboListaUsus.Text, " ", "+")
-
+    nick = Replace(cboListaUsus.text, " ", "+")
     Select Case Index
-            
-         Case 0 'Ulla
+        Case 0 'Ulla
             Coordenadas = "1 55 45"
             Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
-
         Case 1 'Nix
             Coordenadas = "34 40 85"
             Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
-
         Case 2 'Bander
             Coordenadas = "59 45 45"
             Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
-
         Case 3 'Arghal
             Coordenadas = "151 37 69"
             Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
-
         Case 4 'Otro
-
             If LenB(nick) <> 0 Then
                 Coordenadas = InputBox(JsonLanguage.Item("MENSAJE_INDICAR_POSICION"), JsonLanguage.Item("MENSAJE_TRANSPORTAR_A") & nick)
-
                 If LenB(Coordenadas) <> 0 Then Call ParseUserCommand("/TELEP " & nick & " " & Coordenadas)
-
             End If
-
     End Select
-
-    
     Exit Sub
-
 MnuEnviar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.MnuEnviar_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuIRa_Click()
-    
     On Error GoTo mnuIRa_Click_Err
-    
     Call WriteGoToChar(ReadField(1, List1.List(List1.ListIndex), Asc("(")))
-
-    
     Exit Sub
-
 mnuIRa_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuIRa_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuDestrabar_Click()
     On Error GoTo mnuDestrabar_Click_Err
-    nick = Replace(List1.Text, " ", "+")
+    nick = Replace(List1.text, " ", "+")
     Call WritePossUser(nick)
-
-    
     Exit Sub
-
 mnuDestrabar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuDestrabar_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnutraer_Click()
-    
     On Error GoTo mnutraer_Click_Err
-    
     Call WriteSummonChar(ReadField(1, List1.List(List1.ListIndex), Asc("(")))
-
-    
     Exit Sub
-
 mnutraer_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnutraer_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuInvalida_Click()
-    
     On Error GoTo mnuInvalida_Click_Err
-    
     nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-    
     Call ParseUserCommand("/MENSAJEINFORMACION " & nick & "@" & "Su consulta fue rechazada debido a que esta fue catalogada como invalida.")
-
     ' Lo advertimos
     Call WriteWarnUser(nick, "Consulta a GM's inválida.")
-    
     ' Borramos el mensaje de la lista.
     Call mnuBorrar_Click
-    
     Exit Sub
-
 mnuInvalida_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuInvalida_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuResponder_Click()
-    
     On Error GoTo mnuResponder_Click_Err
-    
     nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
     tmp = InputBox("Ingrese la respuesta:", "Responder consulta")
     Call ParseUserCommand("/MENSAJEINFORMACION " & nick & "@" & tmp)
-
-    
     Exit Sub
-
 mnuResponder_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuResponder_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuManual_Click()
-    
     On Error GoTo mnuManual_Click_Err
-    
     nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-    Call ParseUserCommand("/MENSAJEINFORMACION " & nick & "@" & "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.argentum20.com.ar.")
-
-    
+    Call ParseUserCommand("/MENSAJEINFORMACION " & nick & "@" & _
+            "Su consulta fue rechazada debido a que la respuesta se encuentra en el Manual o FAQ de nuestra pagina web. Para mas información visite: www.argentum20.com.ar.")
     Exit Sub
-
 mnuManual_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuManual_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuAccion_Click(Index As Integer)
-    
     On Error GoTo mnuAccion_Click_Err
-    
-    nick = cboListaUsus.Text
-
+    nick = cboListaUsus.text
     If LenB(nick) <> 0 Then
-
         Select Case Index
-
             Case 0 ' Informacion General
                 Call WriteRequestCharStats(nick)
-
             Case 1 ' Inventario
                 Call WriteRequestCharInventory(nick)
-
             Case 2 'Skill
                 Call WriteRequestCharSkills(nick)
-
             Case 3 'Atributos
                 Call WriteRequestCharInfo(nick)
-
             Case 4 'Boveda
                 Call WriteRequestCharBank(nick)
                 Call WriteRequestCharGold(nick)
-
         End Select
-
     End If
-
-    
     Exit Sub
-
 mnuAccion_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuAccion_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuAdmin_Click(Index As Integer)
-    
     On Error GoTo mnuAdmin_Click_Err
-    
     Call cmdAccion_Click(Index)
-
-    
     Exit Sub
-
 mnuAdmin_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuAdmin_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuAmbiente_Click(Index As Integer)
-    
     On Error GoTo mnuAmbiente_Click_Err
-    
     Call cmdAccion_Click(Index)
-
-    
     Exit Sub
-
 mnuAmbiente_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuAmbiente_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuBan_Click(Index As Integer)
-    
     On Error GoTo mnuBan_Click_Err
-    
     Call cmdAccion_Click(Index)
-
-    
     Exit Sub
-
 mnuBan_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuBan_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuCarcel_Click(Index As Integer)
-    
     On Error GoTo mnuCarcel_Click_Err
-    
-
     If Index = 60 Then
         Call cmdAccion_Click(11)
         Exit Sub
-
     End If
-
-    nick = cboListaUsus.Text
-
+    nick = cboListaUsus.text
     Call ParseUserCommand("/CARCEL " & nick & "@encarcelado via panelgm@" & Index)
-
-    
     Exit Sub
-
 mnuCarcel_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuCarcel_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuSilencio_Click(Index As Integer)
-    
     On Error GoTo mnuSilencio_Click_Err
-    
-
     If Index = 60 Then
         Call cmdAccion_Click(35)
         Exit Sub
-
     End If
-
-    Call ParseUserCommand("/SILENCIAR " & cboListaUsus.Text & "@" & Index)
-
-    
+    Call ParseUserCommand("/SILENCIAR " & cboListaUsus.text & "@" & Index)
     Exit Sub
-
 mnuSilencio_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuSilencio_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuHerramientas_Click(Index As Integer)
-    
     On Error GoTo mnuHerramientas_Click_Err
-    
     Call cmdAccion_Click(Index)
-
-    
     Exit Sub
-
 mnuHerramientas_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuHerramientas_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuIP_Click(Index As Integer)
-    
     On Error GoTo mnuIP_Click_Err
-    
     Call cmdAccion_Click(Index)
-
-    
     Exit Sub
-
 mnuIP_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuIP_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuReload_Click(Index As Integer)
-    
     On Error GoTo mnuReload_Click_Err
-    
-
     Select Case Index
-
         Case 1 'Reload objetos
             Call WriteReloadObjects
-
         Case 2 'Reload server.ini
             Call WriteReloadServerIni
-
         Case 3 'Reload mapas
-
             Call ParseUserCommand("/RELOAD MAP")
-            
         Case 4 'Reload hechizos
             Call WriteReloadSpells
-
         Case 5 'Reload motd
-
             Call ParseUserCommand("/RELOADMOTD")
         Case 6 'Reload npcs
             Call WriteReloadNPCs
-
         Case 7 'Reload sockets
-
-             If MsgBox(JsonLanguage.Item("MENSAJE_REINICIAR_API"), vbYesNo, "Advertencia") = vbYes Then
-               '   Call SendData("/RELOAD SOCK")
-           End If
-
-    Case 8 'Reload otros
-
-        Call ParseUserCommand("/RELOADOPCIONES")
-End Select
-
-    
+            If MsgBox(JsonLanguage.Item("MENSAJE_REINICIAR_API"), vbYesNo, "Advertencia") = vbYes Then
+                '   Call SendData("/RELOAD SOCK")
+            End If
+        Case 8 'Reload otros
+            Call ParseUserCommand("/RELOADOPCIONES")
+    End Select
     Exit Sub
-
 mnuReload_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuReload_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub MOTD_Click()
-    
     On Error GoTo MOTD_Click_Err
-    
     Call WriteChangeMOTD 'Cambiar MOTD 0.12.1
-
-    
     Exit Sub
-
 MOTD_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.MOTD_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub muyrapido_Click()
-    
     On Error GoTo muyrapido_Click_Err
-    
     Call WriteSetSpeed(5#)
-    
     Exit Sub
-
 muyrapido_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.muyrapido_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Normal_Click()
-    
     On Error GoTo Normal_Click_Err
-    
     Call WriteSetSpeed(1#)
-    
     Exit Sub
-
 Normal_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Normal_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub oro_Click()
-    
     On Error GoTo oro_Click_Err
-    
     tmp = InputBox("Ingrese el valor de oro que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
-
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " ORO " & tmp)
-    
+    Call ParseUserCommand("/MOD " & cboListaUsus.text & " ORO " & tmp)
     Exit Sub
-
 oro_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.oro_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub personalizado_Click()
-    
     On Error GoTo personalizado_Click_Err
-    
-    tmp = InputBox("Ingrese evento  Tipo@Duracion@Multiplicacion" & vbCrLf & vbCrLf & "Tipo 1=Multiplica Oro" & vbCrLf & "Tipo 2=Multiplica Experiencia" & vbCrLf & "Tipo 3=Multiplica Recoleccion" & vbCrLf & "Tipo 4=Multiplica Dropeo" & vbCrLf & "Tipo 5=Multiplica Oro y Experiencia" & vbCrLf & "Tipo 6=Multiplica Oro, experiencia y recoleccion" & vbCrLf & "Tipo 7=Multiplica Todo" & vbCrLf & "Duracion= Maximo: 59" & vbCrLf & "Multiplicacion= Maximo 3", "Creacion de nuevo evento")
+    tmp = InputBox("Ingrese evento  Tipo@Duracion@Multiplicacion" & vbCrLf & vbCrLf & "Tipo 1=Multiplica Oro" & vbCrLf & "Tipo 2=Multiplica Experiencia" & vbCrLf & _
+            "Tipo 3=Multiplica Recoleccion" & vbCrLf & "Tipo 4=Multiplica Dropeo" & vbCrLf & "Tipo 5=Multiplica Oro y Experiencia" & vbCrLf & _
+            "Tipo 6=Multiplica Oro, experiencia y recoleccion" & vbCrLf & "Tipo 7=Multiplica Todo" & vbCrLf & "Duracion= Maximo: 59" & vbCrLf & "Multiplicacion= Maximo 3", _
+            "Creacion de nuevo evento")
     Call ParseUserCommand("/CREAREVENTO " & tmp)
-
-    
     Exit Sub
-
 personalizado_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.personalizado_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub rapido_Click()
-    
     On Error GoTo rapido_Click_Err
-
     Call WriteSetSpeed(2#)
-
     Exit Sub
-
 rapido_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.rapido_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Raza_Click()
-    
     On Error GoTo Raza_Click_Err
-    
     tmp = InputBox("Ingrese el valor de raza que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
-
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " RAZA " & tmp)
-    
+    Call ParseUserCommand("/MOD " & cboListaUsus.text & " RAZA " & tmp)
     Exit Sub
-
 Raza_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Raza_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub ResetPozos_Click()
-
     Call ParseUserCommand("/RESETPOZOS")
-    
 End Sub
 
 Private Sub SeguroInseguro_Click()
-
     Call ParseUserCommand("/MODMAPINFO SEGURO 1")
 End Sub
 
 Private Sub SendGlobal_Click()
-    If LenB(txtMod.Text) Then Call ParseUserCommand("/GMSG " & txtMod.Text)
-    txtMod.Text = ""
+    If LenB(txtMod.text) Then Call ParseUserCommand("/GMSG " & txtMod.text)
+    txtMod.text = ""
     txtMod.SetFocus
 End Sub
 
 Private Sub SkillLibres_Click()
-    
     On Error GoTo SkillLibres_Click_Err
-    
     tmp = InputBox("Ingrese el valor de skills Libres que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
-
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " SKILLSLIBRES " & tmp)
-    
+    Call ParseUserCommand("/MOD " & cboListaUsus.text & " SKILLSLIBRES " & tmp)
     Exit Sub
-
 SkillLibres_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.SkillLibres_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Spawn_Click()
-    
     On Error GoTo Spawn_Click_Err
-    
     Call WriteSpawnListRequest
-
-    
     Exit Sub
-
 Spawn_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Spawn_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub StaffOnline_Click()
-    
     On Error GoTo StaffOnline_Click_Err
-    
     Call WriteOnlineGM '/ONLINEGM 0.12.1
-
-    
     Exit Sub
-
 StaffOnline_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.StaffOnline_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub SubastaEstado_Click()
-
     Call ParseUserCommand("/SUBASTAACTIVADA")
 End Sub
 
 Private Sub Temporal_Click()
-    
     On Error GoTo Temporal_Click_Err
-
     Dim tmp  As String
-
     Dim tmp2 As Byte
-
     tmp2 = InputBox(JsonLanguage.Item("MENSAJE_CANTIDAD_DIAS"), JsonLanguage.Item("TITULO_CANTIDAD_DIAS"))
     tmp = InputBox(JsonLanguage.Item("MENSAJE_MOTIVO"), JsonLanguage.Item("TITULO_MOTIVO"))
-    
-    If MsgBox(JsonLanguage.Item("MENSAJE_BANEAR_PERSONAJE") & " " & cboListaUsus.Text & " " & tmp2, vbYesNo + vbQuestion) = vbYes Then
-
-        Call WriteBanTemporal(cboListaUsus.Text, tmp, tmp2)
-
+    If MsgBox(JsonLanguage.Item("MENSAJE_BANEAR_PERSONAJE") & " " & cboListaUsus.text & " " & tmp2, vbYesNo + vbQuestion) = vbYes Then
+        Call WriteBanTemporal(cboListaUsus.text, tmp, tmp2)
     End If
-
     Exit Sub
-
 Temporal_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Temporal_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdButtonActualizarListaGms_Click()
@@ -3666,391 +3030,297 @@ Private Sub cmdButtonActualizarListaGms_Click()
 End Sub
 
 Private Sub torneo_cancelar_Click()
-    
     On Error GoTo torneo_cancelar_Click_Err
-    
     Call WriteCancelarTorneo
     Call ParseUserCommand("/configlobby end")
-    
     Exit Sub
-
 torneo_cancelar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.torneo_cancelar_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub torneo_comenzar_Click()
-    
     On Error GoTo torneo_comenzar_Click_Err
-    
     Call WriteComenzarTorneo
-
-    
     Exit Sub
-
 torneo_comenzar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.torneo_comenzar_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub txtArma_KeyPress(KeyAscii As Integer)
-    If Not IsNumeric(txtArma.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+    If Not IsNumeric(txtArma.text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
 End Sub
 
 Private Sub txtArma_Change()
-    Call ParseUserCommand("/MOD YO" & " Arma " & txtArma.Text)
+    Call ParseUserCommand("/MOD YO" & " Arma " & txtArma.text)
 End Sub
 
-
 Private Sub txtBodyYo_KeyPress(KeyAscii As Integer)
-    If Not IsNumeric(txtBodyYo.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+    If Not IsNumeric(txtBodyYo.text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
 End Sub
 
 Private Sub txtBodyYo_Change()
-    Call ParseUserCommand("/MOD YO" & " Body " & txtBodyYo.Text)
+    Call ParseUserCommand("/MOD YO" & " Body " & txtBodyYo.text)
 End Sub
 
 Private Sub txtCasco_KeyPress(KeyAscii As Integer)
-    If Not IsNumeric(txtCasco.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+    If Not IsNumeric(txtCasco.text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
 End Sub
 
 Private Sub txtCasco_Change()
-    Call ParseUserCommand("/MOD YO" & " Casco " & txtCasco.Text)
+    Call ParseUserCommand("/MOD YO" & " Casco " & txtCasco.text)
 End Sub
 
 Private Sub txtEscudo_KeyPress(KeyAscii As Integer)
-    If Not IsNumeric(txtEscudo.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+    If Not IsNumeric(txtEscudo.text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
 End Sub
 
 Private Sub txtEscudo_Change()
-    Call ParseUserCommand("/MOD YO" & " Escudo " & txtEscudo.Text)
+    Call ParseUserCommand("/MOD YO" & " Escudo " & txtEscudo.text)
 End Sub
 
 Private Sub txtHeadNumero_KeyPress(KeyAscii As Integer)
-    If Not IsNumeric(txtHeadNumero.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
+    If Not IsNumeric(txtHeadNumero.text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
 End Sub
 
 Private Sub txtHeadNumero_Change()
-    Call ParseUserCommand("/MOD YO" & " Head " & txtHeadNumero.Text)
+    Call ParseUserCommand("/MOD YO" & " Head " & txtHeadNumero.text)
 End Sub
-
 
 Private Sub txtMod_KeyPress(KeyAscii As Integer)
     'If Not IsNumeric(txtMod.Text & Chr(KeyAscii)) And Not KeyAscii = 8 Then KeyAscii = 0
-    
     If KeyAscii = vbKeyReturn Then
-        Call ParseUserCommand(txtMod.Text)
+        Call ParseUserCommand(txtMod.text)
         txtMod = ""
     End If
 End Sub
 
 Private Sub UnbanCuenta_Click()
-    
     On Error GoTo UnbanCuenta_Click_Err
-    
-    Call WriteUnBanCuenta(cboListaUsus.Text)
-
-    
+    Call WriteUnBanCuenta(cboListaUsus.text)
     Exit Sub
-
 UnbanCuenta_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.UnbanCuenta_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub UnbanPersonaje_Click()
-    
     On Error GoTo UnbanPersonaje_Click_Err
-    
-    nick = cboListaUsus.Text
-
+    nick = cboListaUsus.text
     If MsgBox(JsonLanguage.Item("MENSAJEBOX_REMOVE_BAN") & " " & nick, vbYesNo + vbQuestion, "Confirmation") = vbYes Then
-
         Call WriteUnbanChar(nick)
-
     End If
-
-    
     Exit Sub
-
 UnbanPersonaje_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.UnbanPersonaje_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub VerPantalla_Click()
-    Call ParseUserCommand("/SS " & cboListaUsus.Text)
+    Call ParseUserCommand("/SS " & cboListaUsus.text)
 End Sub
 
-
 Private Sub Vida_Click()
-    
     On Error GoTo Vida_Click_Err
-    
     tmp = InputBox("Ingrese el valor de vida que desea editar.", JsonLanguage.Item("MENSAJE_EDICION_USUARIOS"))
-
-    Call ParseUserCommand("/MOD " & cboListaUsus.Text & " HP " & tmp)
-    
+    Call ParseUserCommand("/MOD " & cboListaUsus.text & " HP " & tmp)
     Exit Sub
-
 Vida_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.Vida_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub ReadNick()
-    
     On Error GoTo ReadNick_Err
-    
-
     If List1.visible Then
         nick = General_Field_Read(1, List1.List(List1.ListIndex), "(")
-
         If nick = "" Then Exit Sub
         nick = Left$(nick, Len(nick))
     Else
         nick = General_Field_Read(1, List2.List(List2.ListIndex), "(")
-
         If nick = "" Then Exit Sub
         nick = Left$(nick, Len(nick))
-
     End If
-
-    
     Exit Sub
-
 ReadNick_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.ReadNick", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub YoAcciones_Click(Index As Integer)
-    
     On Error GoTo YoAcciones_Click_Err
-    
-
     Select Case Index
-
         Case 0 '/INVISIBLE 0.12.1
             Call WriteInvisible
-
         Case 1 'CHATCOLOR 0.12.1
             tmp = InputBox("Defina el color (R G B). Deje en blanco para usar el default.", "Cambiar color del chat")
             Call ParseUserCommand("/CHATCOLOR " & tmp)
-
         Case 2
-
     End Select
-    
-    
     Exit Sub
-
 YoAcciones_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.YoAcciones_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub mnuConsulta_Click()
-    
     Dim nick As String
-        nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
-    
+    nick = ReadField(1, List1.List(List1.ListIndex), Asc("("))
     If Len(nick) <> 0 Then
-        
         Call WriteConsulta(nick)
-        
     End If
-
 End Sub
+
 Public Sub CadenaChat(ByVal chat As String)
-
-
-        Dim Cadena        As String
-
-        Dim partes()      As String
-
-        Dim nombre        As String
-
-        Dim PosicionBarra As Integer
-
-        ' La cadena original
-        Cadena = chat
-        
-        ' Divide la cadena en partes utilizando "Usuarios trabajando:" como separador
-        partes = Split(Cadena, "Usuarios trabajando:")
-
-        ' Verifica si hay al menos dos partes en la matriz resultante
-            If UBound(partes) >= 1 Then
-                
-                ' Limpia el contenido actual del ComboBox
-                cboListaUsus.Clear
-                
-                ' Divide la parte en nombres individuales
-                Dim Nombres As Variant
-                Nombres = Split(partes(1), ",")
-                
-                ' Agrega cada nombre al ComboBox después de eliminar los espacios adicionales
-                Dim i As Integer
-                For i = 0 To UBound(Nombres)
-                    cboListaUsus.AddItem Trim(Nombres(i))
-                Next i
-            End If
-
-        ' Divide la cadena en partes utilizando "Control de paquetes -> El usuario" como separador
-        partes = Split(Cadena, "Control Paquetes---> El usuario")
-
-        ' Verifica si hay al menos dos partes en la matriz resultante
-        If UBound(partes) >= 1 Then
-            ' La segunda parte (índice 1) contiene el nombre y otros caracteres
-            nombre = partes(1)
-            ' Encuentra la posición de la barra vertical "|" en la cadena
-            PosicionBarra = InStr(nombre, "|")
-
-            If PosicionBarra > 0 Then
-                ' Si se encontró la barra vertical, obtén solo la parte del nombre antes de "|"
-                nombre = Left(nombre, PosicionBarra - 1)
-                ' Elimina espacios en blanco al principio y al final del nombre
-                nombre = Trim(nombre)
-                If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
-                If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroDePaquetes.txt")
-                If frmPanelgm.chkPaquetes.Value = 1 Then Call WriteCerraCliente(nombre)
-            End If
+    Dim Cadena        As String
+    Dim partes()      As String
+    Dim nombre        As String
+    Dim PosicionBarra As Integer
+    ' La cadena original
+    Cadena = chat
+    ' Divide la cadena en partes utilizando "Usuarios trabajando:" como separador
+    partes = Split(Cadena, "Usuarios trabajando:")
+    ' Verifica si hay al menos dos partes en la matriz resultante
+    If UBound(partes) >= 1 Then
+        ' Limpia el contenido actual del ComboBox
+        cboListaUsus.Clear
+        ' Divide la parte en nombres individuales
+        Dim Nombres As Variant
+        Nombres = Split(partes(1), ",")
+        ' Agrega cada nombre al ComboBox después de eliminar los espacios adicionales
+        Dim i As Integer
+        For i = 0 To UBound(Nombres)
+            cboListaUsus.AddItem Trim(Nombres(i))
+        Next i
+    End If
+    ' Divide la cadena en partes utilizando "Control de paquetes -> El usuario" como separador
+    partes = Split(Cadena, "Control Paquetes---> El usuario")
+    ' Verifica si hay al menos dos partes en la matriz resultante
+    If UBound(partes) >= 1 Then
+        ' La segunda parte (índice 1) contiene el nombre y otros caracteres
+        nombre = partes(1)
+        ' Encuentra la posición de la barra vertical "|" en la cadena
+        PosicionBarra = InStr(nombre, "|")
+        If PosicionBarra > 0 Then
+            ' Si se encontró la barra vertical, obtén solo la parte del nombre antes de "|"
+            nombre = Left(nombre, PosicionBarra - 1)
+            ' Elimina espacios en blanco al principio y al final del nombre
+            nombre = Trim(nombre)
+            If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+            If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroDePaquetes.txt")
+            If frmPanelgm.chkPaquetes.value = 1 Then Call WriteCerraCliente(nombre)
         End If
-
-            ' Divide la cadena en partes utilizando "Control de macro---> El usuario" como separador
-            partes = Split(Cadena, "Control de macro---> El usuario")
-            
-            ' Verifica si hay al menos dos partes en la matriz resultante
-            If UBound(partes) >= 1 Then
-                ' La segunda parte (índice 1) contiene el nombre y otros caracteres
-                nombre = partes(1)
-                ' Encuentra la posición de la barra vertical "|" en la cadena
-                PosicionBarra = InStr(nombre, "|")
-            
-                If PosicionBarra > 0 Then
-                    ' Si se encontró la barra vertical, obtén solo la parte del nombre antes de "|"
-                    nombre = Left(nombre, PosicionBarra - 1)
-                    ' Elimina espacios en blanco al principio y al final del nombre
-                    nombre = Trim(nombre)
-                    
-                    ' Declarar TiempoAnterior como Static fuera de la función
-                    Static TiempoAnterior As Single
-
-                    ' Verificar si la cadena contiene ciertos textos utilizando Select Case
-                    Select Case True
-                        Case InStr(Cadena, "Ocultar") > 0
-                            If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Ocultar ", "MacroOcultar.txt")
-                            'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkOcultar.Value = 1 Then
-                                If frmPanelgm.cboListaUsus.Text = nombre Then
-                                    ' Obtener el tiempo actual en milisegundos
-                                    Dim TiempoActual As Single
-                                    TiempoActual = Timer
-                                    
-                                    If TiempoActual - TiempoAnterior < frmPanelgm.txtSegundos Then
-                                        Call WriteCerraCliente(nombre)
-                                    End If
-                                    TiempoAnterior = TiempoActual
-                                End If
+    End If
+    ' Divide la cadena en partes utilizando "Control de macro---> El usuario" como separador
+    partes = Split(Cadena, "Control de macro---> El usuario")
+    ' Verifica si hay al menos dos partes en la matriz resultante
+    If UBound(partes) >= 1 Then
+        ' La segunda parte (índice 1) contiene el nombre y otros caracteres
+        nombre = partes(1)
+        ' Encuentra la posición de la barra vertical "|" en la cadena
+        PosicionBarra = InStr(nombre, "|")
+        If PosicionBarra > 0 Then
+            ' Si se encontró la barra vertical, obtén solo la parte del nombre antes de "|"
+            nombre = Left(nombre, PosicionBarra - 1)
+            ' Elimina espacios en blanco al principio y al final del nombre
+            nombre = Trim(nombre)
+            ' Declarar TiempoAnterior como Static fuera de la función
+            Static TiempoAnterior As Single
+            ' Verificar si la cadena contiene ciertos textos utilizando Select Case
+            Select Case True
+                Case InStr(Cadena, "Ocultar") > 0
+                    If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Ocultar ", "MacroOcultar.txt")
+                    'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                    If frmPanelgm.chkOcultar.value = 1 Then
+                        If frmPanelgm.cboListaUsus.text = nombre Then
+                            ' Obtener el tiempo actual en milisegundos
+                            Dim TiempoActual As Single
+                            TiempoActual = Timer
+                            If TiempoActual - TiempoAnterior < frmPanelgm.txtSegundos Then
+                                Call WriteCerraCliente(nombre)
                             End If
-                        Case InStr(Cadena, "UseItemU") > 0
-                            If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem U ", "MacroUseItemU.txt")
-                            'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkUsarItem.Value = 1 Then Call WriteCerraCliente(nombre)
-                        Case InStr(Cadena, "UseItem") > 0
-                            If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem ", "MacroUseItem.txt")
-                            'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkUsarItem.Value = 1 Then Call WriteCerraCliente(nombre)
-                        Case InStr(Cadena, "GuildMessage") > 0
-                            If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de GuildMessage ", "MacroGuildMessage.txt")
-                            'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                        Case InStr(Cadena, "LeftClick") > 0
-                            Resultado = GuardarTextoEnArchivo(nombre & ",Macro de LeftClick ", "MacroLeftClick.txt")
-                            'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkLeftClick.Value = 1 Then Call WriteCerraCliente(nombre)
-                        Case InStr(Cadena, "ChangeHeading") > 0
-                            Resultado = GuardarTextoEnArchivo(nombre & ",Macro de ChangeHeading ", "MacroChangeHeading.txt")
-                            'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                        Case Else
-                            ' Manejar el caso en el que no hay coincidencias
-                    End Select
-            
-                    If frmPanelgm.chkAutoName.Value = 1 Then frmPanelgm.cboListaUsus.Text = nombre
-                    If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
-                End If
-            End If
-
-        ' Divide la cadena en partes utilizando "AntiCheat> El usuario" como separador
-        partes = Split(Cadena, "AntiCheat--> El usuario")
-            
-            ' Verifica si hay al menos dos partes en la matriz resultante
-            If UBound(partes) >= 1 Then
-                ' La segunda parte (índice 1) contiene el nombre y otros caracteres
-                nombre = partes(1)
-                ' Encuentra la posición de la barra vertical "|" en la cadena
-                PosicionBarra = InStr(nombre, "|")
-            
-                If PosicionBarra > 0 Then
-                    ' Si se encontró la barra vertical, obtén solo la parte del nombre antes de "|"
-                    nombre = Left(nombre, PosicionBarra - 1)
-                    ' Elimina espacios en blanco al principio y al final del nombre
-                    nombre = Trim(nombre)
-
-                    ' Verificar si la cadena contiene ciertos textos utilizando Select Case
-                    Select Case True
-                        Case InStr(Cadena, "COORDENADAS.") > 0
-                            If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Cordenadas", "MacroCoordenadas.txt")
-                            'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkCoordenadas.Value = 1 Then Call WriteCerraCliente(nombre)
-                        Case InStr(Cadena, ").") > 0
-                            If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de click", "MacroDeClick.txt")
-                            'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkClicks.Value = 1 Then Call WriteCerraCliente(nombre)
-                        Case InStr(Cadena, "INASISTIDO.") > 0
-                            If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro Inasistido", "MacroInasistido.txt")
-                            'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkInasistido.Value = 1 Then Call WriteCerraCliente(nombre)
-                        Case InStr(Cadena, "CARTELEO.") > 0
-                            If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Carteleo", "MacroCarteleo.txt")
-                            'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                            If frmPanelgm.chkCarteleo.Value = 1 Then Call WriteCerraCliente(nombre)
-                        Case Else
-                            ' Manejar el caso en el que no hay coincidencias
-                    End Select
-            
-                    If frmPanelgm.chkAutoName.Value = 1 Then frmPanelgm.cboListaUsus.Text = nombre
-                    If chkInfoTXT.Value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
-                End If
-            End If
+                            TiempoAnterior = TiempoActual
+                        End If
+                    End If
+                Case InStr(Cadena, "UseItemU") > 0
+                    If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem U ", "MacroUseItemU.txt")
+                    'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                    If frmPanelgm.chkUsarItem.value = 1 Then Call WriteCerraCliente(nombre)
+                Case InStr(Cadena, "UseItem") > 0
+                    If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem ", "MacroUseItem.txt")
+                    'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                    If frmPanelgm.chkUsarItem.value = 1 Then Call WriteCerraCliente(nombre)
+                Case InStr(Cadena, "GuildMessage") > 0
+                    If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de GuildMessage ", "MacroGuildMessage.txt")
+                    'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                Case InStr(Cadena, "LeftClick") > 0
+                    Resultado = GuardarTextoEnArchivo(nombre & ",Macro de LeftClick ", "MacroLeftClick.txt")
+                    'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                    If frmPanelgm.chkLeftClick.value = 1 Then Call WriteCerraCliente(nombre)
+                Case InStr(Cadena, "ChangeHeading") > 0
+                    Resultado = GuardarTextoEnArchivo(nombre & ",Macro de ChangeHeading ", "MacroChangeHeading.txt")
+                    'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                Case Else
+                    ' Manejar el caso en el que no hay coincidencias
+            End Select
+            If frmPanelgm.chkAutoName.value = 1 Then frmPanelgm.cboListaUsus.text = nombre
+            If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+        End If
+    End If
+    ' Divide la cadena en partes utilizando "AntiCheat> El usuario" como separador
+    partes = Split(Cadena, "AntiCheat--> El usuario")
+    ' Verifica si hay al menos dos partes en la matriz resultante
+    If UBound(partes) >= 1 Then
+        ' La segunda parte (índice 1) contiene el nombre y otros caracteres
+        nombre = partes(1)
+        ' Encuentra la posición de la barra vertical "|" en la cadena
+        PosicionBarra = InStr(nombre, "|")
+        If PosicionBarra > 0 Then
+            ' Si se encontró la barra vertical, obtén solo la parte del nombre antes de "|"
+            nombre = Left(nombre, PosicionBarra - 1)
+            ' Elimina espacios en blanco al principio y al final del nombre
+            nombre = Trim(nombre)
+            ' Verificar si la cadena contiene ciertos textos utilizando Select Case
+            Select Case True
+                Case InStr(Cadena, "COORDENADAS.") > 0
+                    If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Cordenadas", "MacroCoordenadas.txt")
+                    'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                    If frmPanelgm.chkCoordenadas.value = 1 Then Call WriteCerraCliente(nombre)
+                Case InStr(Cadena, ").") > 0
+                    If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de click", "MacroDeClick.txt")
+                    'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                    If frmPanelgm.chkClicks.value = 1 Then Call WriteCerraCliente(nombre)
+                Case InStr(Cadena, "INASISTIDO.") > 0
+                    If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro Inasistido", "MacroInasistido.txt")
+                    'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                    If frmPanelgm.chkInasistido.value = 1 Then Call WriteCerraCliente(nombre)
+                Case InStr(Cadena, "CARTELEO.") > 0
+                    If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Carteleo", "MacroCarteleo.txt")
+                    'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
+                    If frmPanelgm.chkCarteleo.value = 1 Then Call WriteCerraCliente(nombre)
+                Case Else
+                    ' Manejar el caso en el que no hay coincidencias
+            End Select
+            If frmPanelgm.chkAutoName.value = 1 Then frmPanelgm.cboListaUsus.text = nombre
+            If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+        End If
+    End If
 End Sub
 
 Function GuardarTextoEnArchivo(ByVal Cadena As String, ByVal nombreArchivo As String) As Boolean
     On Error GoTo ErrorHandler
-    
     Dim fileNumber As Integer
-    
     ' Abrir el archivo en modo de adición (agregará contenido sin sobrescribir)
     fileNumber = FreeFile
     Open nombreArchivo For Append As fileNumber
-    
     ' Escribir la fecha y hora actual junto con la cadena en el archivo
     Print #fileNumber, Now & " " & Cadena ' O usa vbNewLine en lugar de vbCrLf si lo prefieres
-    
     ' Cerrar el archivo
     Close #fileNumber
-    
     ' Indicar que la operación se realizó con éxito
     GuardarTextoEnArchivo = True
-    
     Exit Function
-
 ErrorHandler:
     ' Si hay un error, indicar que la operación falló
     GuardarTextoEnArchivo = False

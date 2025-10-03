@@ -175,170 +175,103 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub cmdOk_Click()
-    
     On Error GoTo cmdOk_Click_Err
-    
-
     Dim t() As String
-
-    Dim i   As Long, N As Long, Pos As Long
-    
-    If Len(txtMotd.Text) >= 2 Then
-        If Right$(txtMotd.Text, 2) = vbCrLf Then txtMotd.Text = Left$(txtMotd.Text, Len(txtMotd.Text) - 2)
-
+    Dim i   As Long, n As Long, Pos As Long
+    If Len(txtMotd.text) >= 2 Then
+        If Right$(txtMotd.text, 2) = vbCrLf Then txtMotd.text = Left$(txtMotd.text, Len(txtMotd.text) - 2)
     End If
-    
-    t = Split(txtMotd.Text, vbCrLf)
-    
+    t = Split(txtMotd.text, vbCrLf)
     'hola~1~1~1~1~1
-    
     For i = LBound(t) To UBound(t)
-        N = 0
+        n = 0
         Pos = InStr(1, t(i), "~")
-
         Do While Pos > 0 And Pos < Len(t(i))
-            N = N + 1
+            n = n + 1
             Pos = InStr(Pos + 1, t(i), "~")
         Loop
-
-        If N <> 5 Then
+        If n <> 5 Then
             MsgBox JsonLanguage.Item("MENSAJEBOX_ERROR_FORMATO_LINEA") & i + 1 & "."
             Exit Sub
-
         End If
-
     Next i
-    
-    Call WriteSetMOTD(txtMotd.Text)
+    Call WriteSetMOTD(txtMotd.text)
     Unload Me
-
-    
     Exit Sub
-
 cmdOk_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdOk_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCambiaMotd.cmdOk_Click", Erl)
     Resume Next
-    
 End Sub
 
 'A partir de Command2_Click son todos buttons para agregar color al texto
 Private Sub cmdAzul_Click()
-    
     On Error GoTo cmdAzul_Click_Err
-    
-    txtMotd.Text = txtMotd & "~50~70~250~" & CStr(chkBold.Value) & "~" & CStr(chkItalic.Value)
-
-    
+    txtMotd.text = txtMotd & "~50~70~250~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
     Exit Sub
-
 cmdAzul_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdAzul_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCambiaMotd.cmdAzul_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdRojo_Click()
-    
     On Error GoTo cmdRojo_Click_Err
-    
-    txtMotd.Text = txtMotd & "~255~0~0~" & CStr(chkBold.Value) & "~" & CStr(chkItalic.Value)
-
-    
+    txtMotd.text = txtMotd & "~255~0~0~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
     Exit Sub
-
 cmdRojo_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdRojo_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCambiaMotd.cmdRojo_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdBlanco_Click()
-    
     On Error GoTo cmdBlanco_Click_Err
-    
-    txtMotd.Text = txtMotd & "~255~255~255~" & CStr(chkBold.Value) & "~" & CStr(chkItalic.Value)
-
-    
+    txtMotd.text = txtMotd & "~255~255~255~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
     Exit Sub
-
 cmdBlanco_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdBlanco_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCambiaMotd.cmdBlanco_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdGris_Click()
-    
     On Error GoTo cmdGris_Click_Err
-    
-    txtMotd.Text = txtMotd & "~157~157~157~" & CStr(chkBold.Value) & "~" & CStr(chkItalic.Value)
-
-    
+    txtMotd.text = txtMotd & "~157~157~157~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
     Exit Sub
-
 cmdGris_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdGris_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCambiaMotd.cmdGris_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdAmarillo_Click()
-    
     On Error GoTo cmdAmarillo_Click_Err
-    
-    txtMotd.Text = txtMotd & "~244~244~0~" & CStr(chkBold.Value) & "~" & CStr(chkItalic.Value)
-
-    
+    txtMotd.text = txtMotd & "~244~244~0~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
     Exit Sub
-
 cmdAmarillo_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdAmarillo_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCambiaMotd.cmdAmarillo_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdMorado_Click()
-    
     On Error GoTo cmdMorado_Click_Err
-    
-    txtMotd.Text = txtMotd & "~128~0~128~" & CStr(chkBold.Value) & "~" & CStr(chkItalic.Value)
-
-    
+    txtMotd.text = txtMotd & "~128~0~128~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
     Exit Sub
-
 cmdMorado_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdMorado_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCambiaMotd.cmdMorado_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdVerde_Click()
-    
     On Error GoTo cmdVerde_Click_Err
-    
-    txtMotd.Text = txtMotd & "~23~104~26~" & CStr(chkBold.Value) & "~" & CStr(chkItalic.Value)
-
-    
+    txtMotd.text = txtMotd & "~23~104~26~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
     Exit Sub
-
 cmdVerde_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdVerde_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCambiaMotd.cmdVerde_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub cmdMarron_Click()
-    
     On Error GoTo cmdMarron_Click_Err
-    
-    txtMotd.Text = txtMotd & "~97~58~31~" & CStr(chkBold.Value) & "~" & CStr(chkItalic.Value)
-
-    
+    txtMotd.text = txtMotd & "~97~58~31~" & CStr(chkBold.value) & "~" & CStr(chkItalic.value)
     Exit Sub
-
 cmdMarron_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "frmCambiaMotd.cmdMarron_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmCambiaMotd.cmdMarron_Click", Erl)
     Resume Next
-    
 End Sub
-

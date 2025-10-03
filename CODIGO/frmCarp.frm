@@ -4,13 +4,13 @@ Begin VB.Form frmCarp
    BackColor       =   &H80000001&
    BorderStyle     =   0  'None
    Caption         =   "Trabajar de carpintero"
-   ClientHeight    =   6528
+   ClientHeight    =   6525
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   7068
+   ClientWidth     =   7065
    BeginProperty Font 
       Name            =   "Verdana"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -20,9 +20,9 @@ Begin VB.Form frmCarp
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   544
+   ScaleHeight     =   435
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   589
+   ScaleWidth      =   471
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.ListBox lstArmas 
@@ -30,7 +30,7 @@ Begin VB.Form frmCarp
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -38,7 +38,7 @@ Begin VB.Form frmCarp
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   3696
+      Height          =   3540
       Left            =   525
       TabIndex        =   4
       Top             =   1440
@@ -49,7 +49,7 @@ Begin VB.Form frmCarp
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -57,7 +57,7 @@ Begin VB.Form frmCarp
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1248
+      Height          =   1200
       Left            =   3840
       TabIndex        =   3
       Top             =   2520
@@ -69,7 +69,7 @@ Begin VB.Form frmCarp
       Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -77,7 +77,7 @@ Begin VB.Form frmCarp
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1248
+      Height          =   1200
       ItemData        =   "frmCarp.frx":0000
       Left            =   5760
       List            =   "frmCarp.frx":0007
@@ -148,7 +148,7 @@ Begin VB.Form frmCarp
       BackStyle       =   0  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
-         Size            =   6.6
+         Size            =   6.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -199,67 +199,38 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
-
-Private cBotonAceptar As clsGraphicalButton
+Private cBotonAceptar   As clsGraphicalButton
 Private cBotonConstruir As clsGraphicalButton
-Private cBotonCerrar As clsGraphicalButton
-Private cBotonMas As clsGraphicalButton
-Private cBotonMenos As clsGraphicalButton
-
-
+Private cBotonCerrar    As clsGraphicalButton
+Private cBotonMas       As clsGraphicalButton
+Private cBotonMenos     As clsGraphicalButton
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
-    Call Aplicar_Transparencia(Me.hwnd, 240)
-    
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     Call FormParser.Parse_Form(Me)
-    
     Me.Picture = LoadInterface("VentanaCarpinteria.bmp")
-    
-    Call LoadButtons
-    
+    Call loadButtons
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCarp.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
-Private Sub LoadButtons()
-       
+Private Sub loadButtons()
     Set cBotonAceptar = New clsGraphicalButton
     Set cBotonConstruir = New clsGraphicalButton
     Set cBotonCerrar = New clsGraphicalButton
     Set cBotonMas = New clsGraphicalButton
     Set cBotonMenos = New clsGraphicalButton
-
-
-    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-default.bmp", _
-                                                "boton-aceptar-over.bmp", _
-                                                "boton-aceptar-off.bmp", Me)
-    
-    Call cBotonConstruir.Initialize(cmdConstruir, "boton-construir-default.bmp", _
-                                                "boton-construir-over.bmp", _
-                                                "boton-construir-off.bmp", Me)
-                                                
-    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-                                                
-    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", _
-                                                "boton-sm-mas-over.bmp", _
-                                                "boton-sm-mas-off.bmp", Me)
-                                                
-    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", _
-                                                "boton-sm-menos-over.bmp", _
-                                                "boton-sm-menos-off.bmp", Me)
+    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-default.bmp", "boton-aceptar-over.bmp", "boton-aceptar-off.bmp", Me)
+    Call cBotonConstruir.Initialize(cmdConstruir, "boton-construir-default.bmp", "boton-construir-over.bmp", "boton-construir-off.bmp", Me)
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
+    Call cBotonMas.Initialize(cmdMas, "boton-sm-mas-default.bmp", "boton-sm-mas-over.bmp", "boton-sm-mas-off.bmp", Me)
+    Call cBotonMenos.Initialize(cmdMenos, "boton-sm-menos-default.bmp", "boton-sm-menos-over.bmp", "boton-sm-menos-off.bmp", Me)
 End Sub
 
-Private Sub cmdcerrar_Click()
+Private Sub cmdCerrar_Click()
     Unload Me
 End Sub
 
@@ -278,134 +249,86 @@ Private Sub cmdMas_Click()
         Exit Sub
     End If
 End Sub
+
 Private Sub cmdConstruir_Click()
-    
     On Error GoTo cmdConstruir_Click_Err
-    
-    
     'Si el indice seleccionado es -1 es xq no seleccionamos un item de la lista.
     If lstArmas.ListIndex = -1 Then Exit Sub
-
     If cantidad > 0 Then
         Call WriteCraftCarpenter(ObjCarpintero(lstArmas.ListIndex + 1), CLng(cantidad))
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_COMIENZAS_A_TRABAJAR."), 2, 51, 223, 1, 1)
     Else
         Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_LA_CANTIDAD_DEBE_SER_MAYOR_A_0."), 2, 51, 223, 1, 1)
     End If
-
     Unload Me
-    
-    
     Exit Sub
-
 cmdConstruir_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCarp.cmdConstruir_Click", Erl)
     Resume Next
-    
 End Sub
 
-
-
 Private Sub cmdAceptar_Click()
-    
     On Error GoTo cmdAceptar_Click_Err
-    
     Unload Me
-    
     Exit Sub
-
 cmdAceptar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCarp.cmdAceptar_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-    
     On Error GoTo Form_KeyPress_Err
-    
-
     If (KeyAscii = vbKeyEscape) Then Unload Me
-
-    
     Exit Sub
-
 Form_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCarp.Form_KeyPress", Erl)
     Resume Next
-    
 End Sub
 
-
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    MoverForm Me.hwnd
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    MoverForm Me.hWnd
 End Sub
 
 Private Sub List1_Click()
-    
     On Error GoTo List1_Click_Err
-
-    Dim SR As RECT, DR As RECT
-
+    Dim SR As Rect, DR As Rect
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
     SR.Bottom = 32
-
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
     DR.Bottom = 32
-    
     Call Grh_Render_To_Hdc(picture1, IIf(List1.ListIndex = 0, 550, 5348), 0, 0, False)
-
-    
     Exit Sub
-
 List1_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCarp.List1_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub lstArmas_Click()
-    
     On Error GoTo lstArmas_Click_Err
-    
-
-    
-
-    Dim SR As RECT, DR As RECT
-
+    Dim SR As Rect, DR As Rect
     SR.Left = 0
     SR.Top = 0
     SR.Right = 32
     SR.Bottom = 32
-
     DR.Left = 0
     DR.Top = 0
     DR.Right = 32
     DR.Bottom = 32
-    
     Call frmCarp.List1.Clear
     Call frmCarp.List2.Clear
-    
     Call frmCarp.List1.AddItem("Leña")
     Call frmCarp.List1.AddItem("Leña elfica")
     Call frmCarp.List2.AddItem(ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).Madera)
     Call frmCarp.List2.AddItem(ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).MaderaElfica)
-
     desc.Caption = ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).Texto
-
     Call Grh_Render_To_Hdc(Me.picture1, ObjData(ObjCarpintero(lstArmas.ListIndex + 1)).GrhIndex, 0, 0)
-    
-    picture1.Visible = True
-    
-    
+    picture1.visible = True
     Exit Sub
-
 lstArmas_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmCarp.lstArmas_Click", Erl)
     Resume Next
-    
 End Sub

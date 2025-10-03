@@ -16,20 +16,28 @@ Attribute VB_Name = "Mod_Declaraciones"
 '
 '
 Option Explicit
-Public langPrefix As String
-Public SeguroGame As Boolean
-Public SeguroParty As Boolean
-Public SeguroClanX As Boolean
-Public SeguroResuX As Boolean
+Public langPrefix       As String
+Public SeguroGame       As Boolean
+Public SeguroParty      As Boolean
+Public SeguroClanX      As Boolean
+Public SeguroResuX      As Boolean
 Public LegionarySecureX As Boolean
 Public QuePestañaInferior As Byte
 Public newUser As Boolean
+
 Public Enum tMacro
     dobleclick = 1
     Coordenadas = 2
     inasistidoPosFija = 3
     borrarCartel = 4
 End Enum
+
+Public Const NO_WEAPON   As Byte = 2
+Public Const NO_CART     As Byte = 2
+Public Const NO_HELMET   As Byte = 2
+Public Const NO_ARMOR    As Byte = 2
+Public Const NO_SHIELD   As Byte = 2
+Public Const NO_BACKPACK As Byte = 2
 
 Public Enum tMacroButton
     Inventario = 1
@@ -57,27 +65,26 @@ Public Enum e_TeamTypes
     eRandom = 1
 End Enum
 
-Public ActiveInventoryTab As e_ActiveTab
-Public LastMacroButton As Long
-
-Public LastOpenChatCounter As Long
+Public ActiveInventoryTab          As e_ActiveTab
+Public LastMacroButton             As Long
+Public LastOpenChatCounter         As Long
 Public LastElapsedTimeChat(1 To 6) As Double
-Public StartOpenChatTime As Double
+Public StartOpenChatTime           As Double
+Public TieneAntorcha               As Boolean
 
-Public TieneAntorcha As Boolean
 Public Enum TipoAntorcha
     AntorchaBasica = 0
     AntorchaReforzada
     AntorchaLaMejor
 End Enum
-Public DeltaAntorcha As Double
-Public credits_shopAO20 As Long
-Public CantNpcWorld         As Integer
-Public NpcWorlds(1 To 2000) As Byte
+
+Public DeltaAntorcha                    As Double
+Public credits_shopAO20                 As Long
+Public CantNpcWorld                     As Integer
+Public NpcWorlds(1 To 2000)             As Byte
 Public ViajarInterface                  As Byte
 Public FormParser                       As clsCursor
 Public HoraMundo                        As Long
-Public DuracionDia                      As Long
 Public EsGM                             As Boolean
 Public MapInfoEspeciales                As String
 Public LLamadaDeclanMapa                As Integer
@@ -94,28 +101,25 @@ Public Const GRH_INVENTORYSLOT          As Long = 47743
 Public Const GRH_INVENTORYSLOT_EXTRA    As Long = 47742
 Public Const GRH_INVENTORYSLOT_LOCKED   As Long = 1122
 Public Const GRH_INVENTORYSLOT_SELECTED As Long = 32873
-
 ' Cantidad de "slots" en el inventario basico
 Public Const MAX_NORMAL_INVENTORY_SLOTS As Byte = 24
 ' Cantidad de "slots" en el inventario con slots desbloqueados
 Public Const MAX_INVENTORY_SLOTS        As Byte = 42
 Public Const ARBOL_ALPHA_TIME           As Long = 150
 Public Const ARBOL_MIN_ALPHA            As Byte = 130
-
 'Creacion de PJ 17/8/20
-Public RazaRecomendada   As String
-Public CPBody            As Long
-Public CPBodyE           As Long
-Public CPArma            As Long
-Public CPGorro           As Long
-Public CPEscudo          As Long
-
+Public RazaRecomendada                  As String
+Public CPBody                           As Long
+Public CPBodyE                          As Long
+Public CPArma                           As Long
+Public CPGorro                          As Long
+Public CPEscudo                         As Long
 'Public CPArma As Long
-Public CPAura            As String
-Public CPHead            As Long
-Public CPHeading         As Long
-Public CPEquipado        As Boolean
-Public CPName            As String
+Public CPAura                           As String
+Public CPHead                           As Long
+Public CPHeading                        As Long
+Public CPEquipado                       As Boolean
+Public CPName                           As String
 
 Public Enum TipoPaso
     CONST_BOSQUE = 1
@@ -208,7 +212,7 @@ Public Enum e_Class
     Assasin     'Asesino
     Bard        'Bardo
     Druid       'Druida
-    Paladin     'Paladín
+    paladin     'Paladín
     Hunter      'Cazador
     Worker  'Trabajador
     Pirat       'Pirata
@@ -225,7 +229,6 @@ Public Enum e_Race
     Orc
 End Enum
 
-
 Public Type tPaso
     CantPasos As Byte
     wav() As Integer
@@ -240,29 +243,28 @@ End Enum
 
 Public Type t_ActiveEffect
     EffectType As e_EffectType
-    Duration As Long
-    StartTime As Long
+    duration As Long
+    startTime As Long
     Grh As Long
-    Id As Long
+    id As Long
     TypeId As Integer
     StackCount As Integer
 End Type
 
 Public Const ACTIVE_EFFECT_LIST_SIZE As Integer = 10
+
 Public Type t_ActiveEffectList
     EffectList() As t_ActiveEffect
     EffectCount As Integer
 End Type
 
-Public BuffList As t_ActiveEffectList
+Public BuffList   As t_ActiveEffectList
 Public DeBuffList As t_ActiveEffectList
-Public CDList As t_ActiveEffectList
+Public CDList     As t_ActiveEffectList
 
 Public Type e_effectResource
     GrhId As Long
 End Type
-
-
 
 Public Enum e_ElementalTagIconsGrhIndex
     Earth = 10483
@@ -270,7 +272,6 @@ Public Enum e_ElementalTagIconsGrhIndex
     Wind = 10485
     Water = 10486
 End Enum
-
 
 Public EffectResources() As e_effectResource
 
@@ -334,47 +335,49 @@ Public Type t_HotkeyEntry
     Index As Integer
     LastKnownSlot As Integer
 End Type
+
 Public Const HotKeyCount As Integer = 10
 
 Public Enum e_FeatureToggleMask
     eEnableHotkeys = 1
 End Enum
-Public HideHotkeys As Boolean
-Public HotkeyList(HotKeyCount) As t_HotkeyEntry
-Public packetControl(ClientPacketID.eMinPacket To ClientPacketID.eMaxPacket) As t_packetControl
-Public Const NUM_PASOS       As Byte = 7
-Public Pasos()               As tPaso
-Public PosXMacro             As Integer
-Public PosYMacro             As Long
-Public MacrosHorizontal      As Boolean
-Public MacroPos              As Byte
-Public UserWeaponEqpSlot     As Byte
-Public UserArmourEqpSlot     As Byte
-Public UserHelmEqpSlot       As Byte
-Public UserShieldEqpSlot     As Byte
-Public TextAsistente         As String
-Public TextEfectAsistente    As Single
-Public ClickEnAsistente      As Long
-Public ClickEnAsistenteRandom      As Long
-Public LastClickAsistente    As Long
-Public PJSeleccionado        As Byte
-Public LastPJSeleccionado    As Byte
-Public AlphaRenderCuenta     As Single
-Public RenderCuenta_PosX     As Integer
-Public RenderCuenta_PosY     As Integer
-Public Const MAX_ALPHA_RENDER_CUENTA = 85
-Public AlphaNiebla           As Byte
-Public MaxAlphaNiebla        As Byte
-Public ExpMult               As Integer
-Public OroMult               As Integer
-Public DireccionDeCaminata   As String
-Public CaminandoMacro        As Boolean
-Public CaminarX              As Integer
-Public CaminarY              As Integer
-Public FeatureToggles        As Long 'use values from e_FeatureToggleMask
-Public gDragState             As t_DragState
 
-Public character_screen_action    As e_connect_user_action
+Public HideHotkeys                                                           As Boolean
+Public HotkeyList(HotKeyCount)                                               As t_HotkeyEntry
+Public packetControl(ClientPacketID.eMinPacket To ClientPacketID.eMaxPacket) As t_packetControl
+Public Const NUM_PASOS                                                       As Byte = 7
+Public Pasos()                                                               As tPaso
+Public PosXMacro                                                             As Integer
+Public PosYMacro                                                             As Long
+Public MacrosHorizontal                                                      As Boolean
+Public MacroPos                                                              As Byte
+Public UserWeaponEqpSlot                                                     As Byte
+Public UserArmourEqpSlot                                                     As Byte
+Public UserHelmEqpSlot                                                       As Byte
+Public UserShieldEqpSlot                                                     As Byte
+Public TextAsistente                                                         As String
+Public TextEfectAsistente                                                    As Single
+Public ClickEnAsistente                                                      As Long
+Public ClickEnAsistenteRandom                                                As Long
+Public LastClickAsistente                                                    As Long
+Public PJSeleccionado                                                        As Byte
+Public LastPJSeleccionado                                                    As Byte
+Public AlphaRenderCuenta                                                     As Single
+Public RenderCuenta_PosX                                                     As Integer
+Public RenderCuenta_PosY                                                     As Integer
+Public Const MAX_ALPHA_RENDER_CUENTA = 85
+Public AlphaNiebla             As Byte
+Public MaxAlphaNiebla          As Byte
+Public ExpMult                 As Integer
+Public OroMult                 As Integer
+Public DireccionDeCaminata     As String
+Public CaminandoMacro          As Boolean
+Public CaminarX                As Integer
+Public CaminarY                As Integer
+Public FeatureToggles          As Long 'use values from e_FeatureToggleMask
+Public gDragState              As t_DragState
+Public character_screen_action As e_connect_user_action
+
 Public Enum e_connect_user_action
     e_action_nothing_to_do = 0
     e_action_create_character = 1
@@ -385,14 +388,15 @@ Public Enum e_connect_user_action
     e_action_transfer_character = 6
 End Enum
 
-Public clicX                 As Long
-Public clicY                 As Long
-Public FxLoops               As Long
+Public clicX                      As Long
+Public clicY                      As Long
+Public FxLoops                    As Long
 '¿Estamos haciendo efecto fade?
-Public mFadingStatus         As Byte
-Public mFadingMusicMod       As Long
-Public NextMP3               As Byte
+Public mFadingStatus              As Byte
+Public mFadingMusicMod            As Long
+Public NextMP3                    As Byte
 Public CdTimes(e_CdTypes.CDCount) As Long
+
 Public Enum E_SISTEMA_MUSICA
     CONST_DESHABILITADA = 0
     CONST_MIDI = 1
@@ -427,24 +431,20 @@ Public OpcionMenu                  As Byte
 Public EntradaX                    As Byte
 Public EntradaY                    As Byte
 Public Declare Function SetPixel Lib "gdi32" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal crColor As Long) As Long
-Public MouseX                 As Long
-Public MouseY                 As Long
-Public tX                     As Byte
-Public tY                     As Byte
-Public UltimaTextura          As Long
-
-
-Public g_game_state As New clsGameState
-
-
-Public ParticleLluviaDorada   As Long
+Public mouseX               As Long
+Public mouseY               As Long
+Public tX                   As Byte
+Public tY                   As Byte
+Public UltimaTextura        As Long
+Public g_game_state         As New clsGameState
+Public ParticleLluviaDorada As Long
 'Compresion
-Public Windows_Temp_Dir       As String
-Public spell_particle         As Long
-Public Select_part            As Long
-Public EfectoEnproceso        As Boolean
-Public MostrarOnline          As Boolean
-Public usersOnline            As Integer
+Public Windows_Temp_Dir     As String
+Public spell_particle       As Long
+Public Select_part          As Long
+Public EfectoEnproceso      As Boolean
+Public MostrarOnline        As Boolean
+Public usersOnline          As Integer
 
 Public Enum e_selectedlight
     hourLight = 0
@@ -452,8 +452,7 @@ Public Enum e_selectedlight
     nightLight
 End Enum
 
-Public selected_light As String
-
+Public selected_light         As String
 Public global_light           As RGBA
 Public night_light            As RGBA
 Public day_light              As RGBA
@@ -461,12 +460,10 @@ Public map_light              As RGBA
 Public last_light             As RGBA
 Public next_light             As RGBA
 Public light_transition       As Single
-Public npcs_en_render As Byte
-
+Public npcs_en_render         As Byte
 Public Const Particula_Lluvia As Long = 58
 Public Const Particula_Nieve  As Long = 57
 Public VolMusicFadding        As Integer
-
 #If DEBUGGING = 1 Then
     Public IPServers(1 To 4) As String
 #Else
@@ -482,56 +479,49 @@ Public Type tServerInfo
     puertoLogin As Integer
 End Type
 
-Public ServersLst()   As tServerInfo
-Public EngineStats    As Boolean
-Public DeleteUser     As String
-Public TransferCharname As String
+Public ServersLst()         As tServerInfo
+Public EngineStats          As Boolean
+Public DeleteUser           As String
+Public TransferCharname     As String
 Public TransferCharNewOwner As String
-Public CuentaPassword As String
-Public CuentaEmail    As String
-Public CharacterRemote    As String
-Public NamePj(1 To 8) As String
-Public ValidationCode As String
-
+Public CuentaPassword       As String
+Public CuentaEmail          As String
+Public CharacterRemote      As String
+Public NamePj(1 To 8)       As String
+Public ValidationCode       As String
 'Objetos públicos
-Public DialogosClanes As clsGuildDlg
-Public CurMp3         As Byte
-
+Public DialogosClanes       As clsGuildDlg
+Public CurMp3               As Byte
 Public Const Mp3_Dir = "\..\Recursos\Mp3\"
 
 'Opciones Clasicas
-
 'RGB Type
 Public Type RGB
-    r As Long
+    R As Long
     G As Long
     B As Long
 End Type
 
 Public Type ARGB
     A As Single
-    r As Long
+    R As Long
     G As Long
     B As Long
 End Type
 
-Public ObjFile    As String
-Public StreamFile As String
-Public NumAuras   As Byte
+Public ObjFile                 As String
+Public StreamFile              As String
+Public NumAuras                As Byte
 Public InvOroComUsu(2)         As New clsGrapchicalInventory ' Inventarios de oro (ambos usuarios)
 Public InvOfferComUsu(1)       As New clsGrapchicalInventory ' Inventarios de ofertas (ambos usuarios)
-
 Public Audio_MP3_Load          As Boolean
 Public Audio_MP3_Play          As Boolean
 ''
 'The main timer of the game.
 Public MainTimer               As New clsTimer
-
 Public TargetXMacro            As Byte
 Public TargetYMacro            As Byte
-
 ' Head index of the casper. Used to know if a char is killed
-
 ' Constantes de intervalo
 Public Const INT_MACRO_HECHIS  As Integer = 500
 Public Const INT_MACRO_TRABAJO As Integer = 1200
@@ -551,23 +541,23 @@ Public Type t_Intervals
     HitUseItem As Long
 End Type
 
-Public gIntervals As t_Intervals
-Public Const INT_SENTRPU       As Integer = 2000
-Public MacroBltIndex           As Integer
-Public Const CASPER_BODY       As Integer = 830
-Public Const CASPER_BODY_IDLE  As Integer = 829
-Public Const TIME_CASPER_IDLE  As Long = 300
-Public Const NUMATRIBUTES      As Byte = 5
+Public gIntervals             As t_Intervals
+Public Const INT_SENTRPU      As Integer = 2000
+Public MacroBltIndex          As Integer
+Public Const CASPER_BODY      As Integer = 830
+Public Const CASPER_BODY_IDLE As Integer = 829
+Public Const TIME_CASPER_IDLE As Long = 300
+Public Const NUMATRIBUTES     As Byte = 5
 'Musica
-Public Const MIdi_Inicio       As Byte = 6
-Public Const Mp3_Inicio        As Byte = 1
-Public MActivated              As Boolean
- 
+Public Const MIdi_Inicio      As Byte = 6
+Public Const Mp3_Inicio       As Byte = 1
+Public MActivated             As Boolean
 ''
 'States wether sound is currently activated or not
-Public sActivated              As Boolean
+Public sActivated             As Boolean
+
 Public Type tColor
-    r As Byte
+    R As Byte
     G As Byte
     B As Byte
 End Type
@@ -584,7 +574,7 @@ Public Launcher               As Boolean '¿Habrio desde el Launcher?
 Public AmbientalesBufferIndex As Long
 Public RainBufferIndex        As Long
 Public FogataBufferIndex      As Long
-Public TargetName             As String
+Public targetName             As String
 Public TargetX                As Integer
 Public TargetY                As Integer
 Public Const bCabeza = 1
@@ -593,17 +583,14 @@ Public Const bPiernaDerecha = 3
 Public Const bBrazoDerecho = 4
 Public Const bBrazoIzquierdo = 5
 Public Const bTorso = 6
-
 'Timers de GetTickCount
 Public Const tAt = 2000
 Public Const tUs = 600
 Public Const PrimerBodyBarco = 84
 Public Const UltimoBodyBarco = 87
-
-Public NumEscudosAnims As Integer
-Public casteaArea As Boolean
+Public NumEscudosAnims  As Integer
+Public casteaArea       As Boolean
 Public RadioHechizoArea As Byte
-
 Type tHerreria
     LHierro As Integer
     LPlata As Integer
@@ -628,26 +615,26 @@ Type tCrafteo
     Icono As Long
 End Type
 
-Public ArmasHerrero(0 To 100)     As tHerreria
-Public DefensasHerrero(0 To 100)  As tHerreria
-Public ArmadurasHerrero(0 To 100) As tHerreria
-Public CascosHerrero(0 To 100)    As tHerreria
-Public EscudosHerrero(0 To 100)   As tHerreria
+Public ArmasHerrero(0 To 100)            As tHerreria
+Public DefensasHerrero(0 To 100)         As tHerreria
+Public ArmadurasHerrero(0 To 100)        As tHerreria
+Public CascosHerrero(0 To 100)           As tHerreria
+Public EscudosHerrero(0 To 100)          As tHerreria
 Public RunasElementalesHerrero(0 To 100) As tHerreria
-Public ObjCarpintero(0 To 100)    As Integer
-Public ObjAlquimista(0 To 100)    As Integer
-Public ObjSastre(0 To 100)        As tSasteria
-Public SastreRopas(0 To 100)      As tSasteria
-Public SastreGorros(0 To 100)     As tSasteria
-Public UsaLanzar                  As Boolean
-Public UsaMacro                   As Boolean
-Public CnTd                       As Byte
-Public TipoCrafteo()              As tCrafteo
-Public Const MAX_BANCOINVENTORY_SLOTS As Byte = 42
-Public Const MAX_KEYS As Byte = 10
+Public ObjCarpintero(0 To 100)           As Integer
+Public ObjAlquimista(0 To 100)           As Integer
+Public ObjSastre(0 To 100)               As tSasteria
+Public SastreRopas(0 To 100)             As tSasteria
+Public SastreGorros(0 To 100)            As tSasteria
+Public UsaLanzar                         As Boolean
+Public UsaMacro                          As Boolean
+Public CnTd                              As Byte
+Public TipoCrafteo()                     As tCrafteo
+Public Const MAX_BANCOINVENTORY_SLOTS    As Byte = 42
+Public Const MAX_KEYS                    As Byte = 10
 Public Const MAX_SLOTS_CRAFTEO = 5
-Public Const LoopAdEternum            As Integer = 999
-Public OffsetLimitScreen              As Long
+Public Const LoopAdEternum As Integer = 999
+Public OffsetLimitScreen   As Long
 
 'Direcciones
 Public Enum E_Heading
@@ -739,12 +726,10 @@ Public Enum eSkill
     Alquimia = 22
     Sastreria = 23
     Domar = 24
-    
     TargetableItem = 25
     Grupo = 90
     MarcaDeClan = 91
     MarcaDeGM = 92
-
 End Enum
 
 Public Enum eAtributos
@@ -815,10 +800,7 @@ Public Enum eObjType
     otCualquiera = 1000
 End Enum
 
-Public Const FundirMetal                           As Integer = 88
-
-
-
+Public Const FundirMetal As Integer = 88
 'Inventario
 Type Slot
     ObjIndex As Integer
@@ -922,7 +904,7 @@ Public Type t_UserStats
     PasarNivel As Long
     exp As Long
     estado As Byte '0 = Vivo & 1 = Muerto
-    Str As Byte
+    str As Byte
     Agi As Byte
     StrState As e_BuffSate
     AgiState As e_BuffSate
@@ -935,7 +917,7 @@ Global OtroInventario(1 To MAX_INVENTORY_SLOTS) As Slot
 Public UserHechizos(1 To MAXHECHI)              As Integer
 Public UserHechizosInterval(1 To MAXHECHI)      As Integer
 Public UserMeditar                              As Boolean
-Public UserName                                 As String
+Public userName                                 As String
 Public UserPassword                             As String
 Public UserStats                                As t_UserStats
 Public UserInventory                            As t_UserInvetory
@@ -968,10 +950,6 @@ Public Const NUMATRIBUTOS                       As Byte = 5
 Public Const NUMCLASES                          As Byte = 12
 Public Const NUMRAZAS                           As Byte = 6
 Public Const NUMCIUDADES                        As Byte = 6
-
-
-
-
 Type tModRaza
     Fuerza As Integer
     Agilidad As Integer
@@ -994,7 +972,7 @@ Public SkillPoints                       As Integer
 Public Alocados                          As Integer
 Public flags()                           As Integer
 Public Oscuridad                         As Integer
-Public isLogged                            As Boolean
+Public isLogged                          As Boolean
 Public UsingSkill                        As Integer
 Public InvasionActual                    As Byte
 Public InvasionPorcentajeVida            As Byte
@@ -1070,7 +1048,6 @@ Public Enum eTrigger
     ZONAPELEA = 6
     CURA = 7
     DETALLEAGUA = 8
-    
     VALIDONADO = 11
     ESCALERA = 12
     WORKERONLY = 13
@@ -1081,69 +1058,74 @@ Public Enum eTrigger
 End Enum
 
 'Server stuff
-Public RequestPosTimer   As Integer 'Used in main loop
-Public stxtbuffer        As String 'Holds temp raw data from server
-Public stxtbuffercmsg    As String 'Holds temp raw data from server
-Public SendNewChar       As Boolean 'Used during login
-Public Connected         As Boolean 'True when connected to server
-Public FullLogout        As Boolean
-Public DownloadingMap    As Boolean 'Currently downloading a map from server
-Public UserMap           As Integer
-Public ResourceMap       As Integer
-Public LastRenderMap     As Integer
-
+Public RequestPosTimer        As Integer 'Used in main loop
+Public stxtbuffer             As String 'Holds temp raw data from server
+Public stxtbuffercmsg         As String 'Holds temp raw data from server
+Public SendNewChar            As Boolean 'Used during login
+Public Connected              As Boolean 'True when connected to server
+Public FullLogout             As Boolean
+Public DownloadingMap         As Boolean 'Currently downloading a map from server
+Public UserMap                As Integer
+Public ResourceMap            As Integer
+Public LastRenderMap          As Integer
 'Control
-Public prgRun            As Boolean 'When true the program ends
-Public IPdelServidor     As String
-Public PuertoDelServidor As String
+Public prgRun                 As Boolean 'When true the program ends
+Public IPdelServidor          As String
+Public PuertoDelServidor      As String
 Public IPdelServidorLogin     As String
 Public PuertoDelServidorLogin As String
-
 #If REMOTE_CLOSE = 1 Then
-Public InitiateShutdownProcess As Boolean
-Public ShutdownProcessTimer As New clsInstrument
+    Public InitiateShutdownProcess As Boolean
+    Public ShutdownProcessTimer    As New clsInstrument
 #End If
 '
 '********** FUNCIONES API ***********
 '
-
 'para escribir y leer variables
-Public Declare Function writeprivateprofilestring Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpString As String, ByVal lpFileName As String) As Long
-
-Public Declare Function getprivateprofilestring Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationname As String, ByVal lpKeyname As Any, ByVal lpdefault As String, ByVal lpreturnedstring As String, ByVal nSize As Long, ByVal lpFileName As String) As Long
-
+Public Declare Function writeprivateprofilestring _
+               Lib "kernel32" _
+               Alias "WritePrivateProfileStringA" (ByVal lpApplicationName As String, _
+                                                   ByVal lpKeyname As Any, _
+                                                   ByVal lpString As String, _
+                                                   ByVal lpFileName As String) As Long
+Public Declare Function getprivateprofilestring _
+               Lib "kernel32" _
+               Alias "GetPrivateProfileStringA" (ByVal lpApplicationName As String, _
+                                                 ByVal lpKeyname As Any, _
+                                                 ByVal lpdefault As String, _
+                                                 ByVal lpreturnedstring As String, _
+                                                 ByVal nSize As Long, _
+                                                 ByVal lpFileName As String) As Long
 'Teclado
 Public Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Integer
-
 Public Declare Function GetAsyncKeyState Lib "user32" (ByVal nVirtKey As Long) As Integer
-
 Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
-
 'Para ejecutar el Internet Explorer para el manual
-Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
+Public Declare Function ShellExecute _
+               Lib "shell32.dll" _
+               Alias "ShellExecuteA" (ByVal hWnd As Long, _
+                                      ByVal lpOperation As String, _
+                                      ByVal lpFile As String, _
+                                      ByVal lpParameters As String, _
+                                      ByVal lpDirectory As String, _
+                                      ByVal nShowCmd As Long) As Long
 
 'Lista de cabezas
 Public Type tIndiceCabeza
-
     Head(1 To 4) As Long
-
 End Type
 
 Public Type tIndiceCuerpo
-
     Body(1 To 4) As Long
     HeadOffsetX As Integer
     HeadOffsetY As Integer
-
 End Type
 
 Public Type tIndiceFx
-
     Animacion As Long
     OffsetX As Integer
     OffsetY As Integer
     IsPNG As Integer
-
 End Type
 
 Public Type t_LobbyData
@@ -1163,24 +1145,21 @@ Public Type t_LobbyData
 End Type
 
 ' Load custom font
-Public Declare Function AddFontResourceEx Lib "gdi32.dll" Alias "AddFontResourceExA" (ByVal lpcstr As String, ByVal dword As Long, ByRef DESIGNVECTOR) As Long
+Public Declare Function AddFontResourceEx Lib "gdi32.dll" Alias "AddFontResourceExA" (ByVal lpcstr As String, ByVal DWord As Long, ByRef DESIGNVECTOR) As Long
 Public Const FR_PRIVATE As Long = &H10
-
-Public Seguido As Byte
+Public Seguido          As Byte
 
 Public Type t_tutorial
-    grh As Long
-    activo As Byte
+    Grh As Long
+    Activo As Byte
     titulo As String
     textos() As String
 End Type
 
-Public tutorial() As t_tutorial
-
+Public tutorial()                  As t_tutorial
 Public Const DISTANCIA_ENVIO_DATOS As Byte = 3
-
-Public cooldown_ataque As New clsCooldown
-Public cooldown_hechizo As New clsCooldown
+Public cooldown_ataque             As New clsCooldown
+Public cooldown_hechizo            As New clsCooldown
 
 Public Function IsStun() As Boolean
     IsStun = StunEndTime >= GetTickCount()

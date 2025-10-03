@@ -16,25 +16,21 @@ Attribute VB_Name = "ModSettings"
 '
 '
 Option Explicit
-
-Const CustomSettingsFile As String = "\..\Recursos\OUTPUT\Configuracion.ini"
+Const CustomSettingsFile  As String = "\..\Recursos\OUTPUT\Configuracion.ini"
 Const DefaultSettingsFile As String = "\..\Recursos\OUTPUT\DefaultSettings.ini"
-Const HotKeySettingsFile As String = "\..\Recursos\OUTPUT\Hotkeys.ini"
+Const HotKeySettingsFile  As String = "\..\Recursos\OUTPUT\Hotkeys.ini"
 
 Public Function InitializeSettings() As Boolean
-    
     If Not FileExist(App.path & DefaultSettingsFile, vbArchive) Then
         InitializeSettings = False
         Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ARCHIVO_NO_ENCONTRADO") & App.path & DefaultSettingsFile, vbInformation + vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ADVERTENCIA"))
         Exit Function
     End If
-    
     If Not FileExist(App.path & CustomSettingsFile, vbArchive) Then
         Call FileSystem.FileCopy(App.path & DefaultSettingsFile, App.path & CustomSettingsFile)
     End If
     InitializeSettings = True
 End Function
-
 
 Public Function GetSetting(ByVal Section As String, ByVal Name As String) As String
     Dim currentValue As String
@@ -46,22 +42,20 @@ Public Function GetSetting(ByVal Section As String, ByVal Name As String) As Str
 End Function
 
 Public Function GetSettingAsByte(ByVal Section As String, ByVal Name As String, ByVal DefaultValue As Byte) As Byte
-On Error GoTo GetSettingAsByteErr:
+    On Error GoTo GetSettingAsByteErr:
     GetSettingAsByte = DefaultValue
-    Dim Value As String
-    Value = GetSetting(Section, Name)
-    If Value = "" Then Exit Function
-    GetSettingAsByte = CByte(Value)
+    Dim value As String
+    value = GetSetting(Section, Name)
+    If value = "" Then Exit Function
+    GetSettingAsByte = CByte(value)
     Exit Function
 GetSettingAsByteErr:
-    
-    Call LogError("Error in GetSettingAsByte Section: " & Section & " Name: " & Name & " Actual value: " & Value)
-
+    Call LogError("Error in GetSettingAsByte Section: " & Section & " Name: " & Name & " Actual value: " & value)
     GetSettingAsByte = DefaultValue
 End Function
 
-Public Sub SaveSetting(ByVal Section As String, ByVal Name As String, ByVal Value As String)
-    Call WriteVar(App.path & CustomSettingsFile, Section, Name, Value)
+Public Sub SaveSetting(ByVal Section As String, ByVal Name As String, ByVal value As String)
+    Call WriteVar(App.path & CustomSettingsFile, Section, Name, value)
 End Sub
 
 Public Sub LoadHotkeys()
@@ -72,26 +66,25 @@ Public Sub LoadHotkeys()
     If Not FileExist(FilePath, vbArchive) Then
         Exit Sub
     End If
-    
     For i = 0 To HotKeyCount - 1
-        HotkeyList(i).Index = Val(GetVar(FilePath, UserName, "BindIndex" & i))
-        HotkeyList(i).LastKnownSlot = Val(GetVar(FilePath, UserName, "LastSlot" & i))
-        HotkeyList(i).Type = Val(GetVar(FilePath, UserName, "Type" & i))
+        HotkeyList(i).Index = val(GetVar(FilePath, userName, "BindIndex" & i))
+        HotkeyList(i).LastKnownSlot = val(GetVar(FilePath, userName, "LastSlot" & i))
+        HotkeyList(i).Type = val(GetVar(FilePath, userName, "Type" & i))
         Call WriteSetHotkeySlot(i, HotkeyList(i).Index, HotkeyList(i).LastKnownSlot, HotkeyList(i).Type)
     Next i
-    HideHotkeys = Val(GetVar(FilePath, UserName, "HideHotkeys"))
+    HideHotkeys = val(GetVar(FilePath, userName, "HideHotkeys"))
 End Sub
 
 Public Sub SaveHotkey(ByVal Index As Integer, ByVal LastKnownSlot As Integer, ByVal HotkeyType As e_HotkeyType, ByVal HotkeySlot As Integer)
     Dim FilePath As String
     FilePath = App.path & HotKeySettingsFile
-    Call General_Var_Write(FilePath, UserName, "BindIndex" & HotkeySlot, Index)
-    Call General_Var_Write(FilePath, UserName, "LastSlot" & HotkeySlot, LastKnownSlot)
-    Call General_Var_Write(FilePath, UserName, "Type" & HotkeySlot, HotkeyType)
+    Call General_Var_Write(FilePath, userName, "BindIndex" & HotkeySlot, Index)
+    Call General_Var_Write(FilePath, userName, "LastSlot" & HotkeySlot, LastKnownSlot)
+    Call General_Var_Write(FilePath, userName, "Type" & HotkeySlot, HotkeyType)
 End Sub
 
 Public Sub SaveHideHotkeys()
     Dim FilePath As String
     FilePath = App.path & HotKeySettingsFile
-    Call General_Var_Write(FilePath, UserName, "HideHotkeys", IIf(HideHotkeys, 1, 0))
+    Call General_Var_Write(FilePath, userName, "HideHotkeys", IIf(HideHotkeys, 1, 0))
 End Sub

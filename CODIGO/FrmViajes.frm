@@ -7,10 +7,10 @@ Begin VB.Form FrmViajes
    ClientHeight    =   5580
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   6516
+   ClientWidth     =   6510
    BeginProperty Font 
       Name            =   "Tahoma"
-      Size            =   8.4
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,7 +19,7 @@ Begin VB.Form FrmViajes
    EndProperty
    LinkTopic       =   "Form1"
    ScaleHeight     =   5580
-   ScaleWidth      =   6516
+   ScaleWidth      =   6510
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.ListBox List1 
@@ -27,7 +27,7 @@ Begin VB.Form FrmViajes
       BackColor       =   &H00000000&
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   8.4
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -35,7 +35,7 @@ Begin VB.Form FrmViajes
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1176
+      Height          =   1080
       Left            =   360
       TabIndex        =   0
       Top             =   1630
@@ -76,6 +76,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 '    Argentum 20 - Game Client Program
 '    Copyright (C) 2022 - Noland Studios
 '
@@ -93,99 +94,60 @@ Attribute VB_Exposed = False
 '
 '
 Private Sub Form_KeyPress(KeyAscii As Integer)
-    
     On Error GoTo Form_KeyPress_Err
-    
-
     If (KeyAscii = 27) Then
         Unload Me
-
     End If
-
-    
     Exit Sub
-
 Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmViajes.Form_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmViajes.Form_KeyPress", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     Call FormParser.Parse_Form(Me)
-
-    
     Exit Sub
-
 Form_Load_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmViajes.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmViajes.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Form_MouseMove_Err
-    
-
     If Image1.Tag = "1" Then
         Image1.Picture = Nothing
         Image2.Picture = Nothing
         Image1.Tag = "0"
-
     End If
-
-    
     Exit Sub
-
 Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmViajes.Form_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmViajes.Form_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Image1_MouseMove_Err
-    
-
     If Image1.Tag = "0" Then
         Image1.Picture = LoadInterface("viajarhover" & ViajarInterface & ".bmp")
         Image2.Picture = LoadInterface("viaje" & ViajarInterface & "ok.bmp")
         Image1.Tag = "1"
-
     End If
-
-    
     Exit Sub
-
 Image1_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmViajes.Image1_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmViajes.Image1_MouseMove", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     On Error GoTo Image1_MouseUp_Err
-    
-
     Dim destino As Byte
-
     destino = List1.ListIndex + 1
-
     If destino <= 0 Then Exit Sub
     Unload Me
     Call WriteCompletarViaje(Destinos(destino).CityDest, Destinos(destino).costo)
-
-    
     Exit Sub
-
 Image1_MouseUp_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmViajes.Image1_MouseUp", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmViajes.Image1_MouseUp", Erl)
     Resume Next
-    
 End Sub

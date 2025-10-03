@@ -101,35 +101,26 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-
-Private cBotonAceptar As clsGraphicalButton
+Private cBotonAceptar   As clsGraphicalButton
 Private cBotonAbandonar As clsGraphicalButton
-Private cBotonExpulsar As clsGraphicalButton
-Private cBotonInvitar As clsGraphicalButton
-Private cBotonCerrar As clsGraphicalButton
+Private cBotonExpulsar  As clsGraphicalButton
+Private cBotonInvitar   As clsGraphicalButton
+Private cBotonCerrar    As clsGraphicalButton
 
 Private Sub cmdAceptar_Click()
     Unload Me
 End Sub
 
 Private Sub Form_Load()
-    
     On Error GoTo Form_Load_Err
-    
     'Call FormParser.Parse_Form(Me)
-    
-    Call Aplicar_Transparencia(Me.hwnd, 240)
-    
+    Call Aplicar_Transparencia(Me.hWnd, 240)
     Me.Picture = LoadInterface("ventanagrupo.bmp")
-    
     Call loadButtons
-    
     Exit Sub
-
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmGrupo.Form_Load", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub loadButtons()
@@ -138,116 +129,70 @@ Private Sub loadButtons()
     Set cBotonAbandonar = New clsGraphicalButton
     Set cBotonExpulsar = New clsGraphicalButton
     Set cBotonInvitar = New clsGraphicalButton
-    
-    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-default.bmp", _
-                                                "boton-aceptar-over.bmp", _
-                                                "boton-aceptar-off.bmp", Me)
-                                                
-    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", _
-                                                "boton-cerrar-over.bmp", _
-                                                "boton-cerrar-off.bmp", Me)
-                                                
-    Call cBotonAbandonar.Initialize(cmdAbandonar, "boton-abandonar-default.bmp", _
-                                                "boton-abandonar-over.bmp", _
-                                                "boton-abandonar-off.bmp", Me)
-                                                
-    Call cBotonExpulsar.Initialize(cmdExpulsar, "boton-menos-default.bmp", _
-                                                "boton-menos-over.bmp", _
-                                                "boton-menos-off.bmp", Me)
-                                                
-    Call cBotonInvitar.Initialize(cmdInvitar, "boton-mas-default.bmp", _
-                                                "boton-mas-over.bmp", _
-                                                "boton-mas-off.bmp", Me)
+    Call cBotonAceptar.Initialize(cmdAceptar, "boton-aceptar-default.bmp", "boton-aceptar-over.bmp", "boton-aceptar-off.bmp", Me)
+    Call cBotonCerrar.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
+    Call cBotonAbandonar.Initialize(cmdAbandonar, "boton-abandonar-default.bmp", "boton-abandonar-over.bmp", "boton-abandonar-off.bmp", Me)
+    Call cBotonExpulsar.Initialize(cmdExpulsar, "boton-menos-default.bmp", "boton-menos-over.bmp", "boton-menos-off.bmp", Me)
+    Call cBotonInvitar.Initialize(cmdInvitar, "boton-mas-default.bmp", "boton-mas-over.bmp", "boton-mas-off.bmp", Me)
 End Sub
+
 Private Sub cmdAbandonar_Click()
-    
     On Error GoTo cmdAbandonar_Click_Err
     Call WriteAbandonarGrupo
     Unload Me
-    
     Exit Sub
-
 cmdAbandonar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmGrupo.cmdAbandonar_Click", Erl)
     Resume Next
-    
 End Sub
 
-
 Private Sub cmdExpulsar_Click()
-    
     On Error GoTo cmdExpulsar_Click_Err
-
     If lstGrupo.ListIndex >= 0 Then
         Call WriteEcharDeGrupo(lstGrupo.ListIndex)
         Unload Me
     End If
-    
     Exit Sub
-
 cmdExpulsar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.cmdExpulsar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmGrupo.cmdExpulsar_Click", Erl)
     Resume Next
-    
 End Sub
-
 
 Private Sub cmdInvitar_Click()
-    
     On Error GoTo cmdInvitar_Click_Err
-    
     Unload Me
     Call WriteInvitarGrupo
-    
     Exit Sub
-
 cmdInvitar_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.cmdInvitar_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmGrupo.cmdInvitar_Click", Erl)
     Resume Next
-    
 End Sub
 
-
 Private Sub cmdCerrar_Click()
-    
     On Error GoTo Command2_Click_Err
-    
     Unload Me
-    
     Exit Sub
-
 Command2_Click_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.Command2_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmGrupo.Command2_Click", Erl)
     Resume Next
-    
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-    
     On Error GoTo Form_KeyPress_Err
-
     If (KeyAscii = 27) Then
         Unload Me
     End If
-    
     Exit Sub
-
 Form_KeyPress_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.Form_KeyPress", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmGrupo.Form_KeyPress", Erl)
     Resume Next
-    
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
-    
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo Form_MouseMove_Err
-    
-    Call moverForm(Me.hWnd)
-    
+    Call MoverForm(Me.hWnd)
     Exit Sub
-
 Form_MouseMove_Err:
-    Call RegistrarError(Err.number, Err.Description, "FrmGrupo.Form_MouseMove", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "FrmGrupo.Form_MouseMove", Erl)
     Resume Next
-    
 End Sub
