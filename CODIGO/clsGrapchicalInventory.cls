@@ -245,10 +245,10 @@ End Property
 Public Property Get ObjIndex(ByVal Slot As Byte) As Integer
     'Retrieves the selected item's object index
     On Error GoTo OBJIndex_Err
-    If Slot = 0 Then
-        Exit Property
+    ObjIndex = 0
+    If Slot >= LBound(UserInventory) And Slot <= UBound(UserInventory) Then
+            ObjIndex = UserInventory(Slot).ObjIndex
     End If
-    ObjIndex = UserInventory(Slot).ObjIndex
     Exit Property
 OBJIndex_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.OBJIndex", Erl)
