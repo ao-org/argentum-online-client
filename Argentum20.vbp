@@ -184,9 +184,9 @@ VersionLegalCopyright="Argentum20 Staff"
 VersionProductName="Argentum20 by Noland Studios"
 CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1"
 CompilationType=0
-OptimizationType=0
+OptimizationType=2
 FavorPentiumPro(tm)=0
-CodeViewDebugInfo=0
+CodeViewDebugInfo=-1
 NoAliasing=0
 BoundsCheck=0
 OverflowCheck=0
