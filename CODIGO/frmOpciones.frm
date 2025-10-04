@@ -6,7 +6,7 @@ Begin VB.Form frmOpciones
    ClientHeight    =   7515
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   8145
+   ClientWidth     =   8040
    ControlBox      =   0   'False
    FillColor       =   &H00C0C0C0&
    BeginProperty Font 
@@ -23,7 +23,7 @@ Begin VB.Form frmOpciones
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   7515
-   ScaleWidth      =   8145
+   ScaleWidth      =   8040
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
    Begin VB.PictureBox PanelJugabilidad 
