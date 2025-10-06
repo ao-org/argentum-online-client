@@ -25,6 +25,7 @@ Begin VB.Form frmMain
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
+   Moveable        =   0   'False
    NegotiateMenus  =   0   'False
    ScaleHeight     =   928
    ScaleMode       =   3  'Pixel
@@ -434,6 +435,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
