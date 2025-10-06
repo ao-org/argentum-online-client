@@ -48,6 +48,27 @@ Begin VB.Form frmSkins
       Top             =   720
       Width           =   3165
    End
+   Begin VB.Label lblItemData 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "ItemData"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   6.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00E0E0E0&
+      Height          =   495
+      Left            =   120
+      TabIndex        =   1
+      Top             =   6600
+      Width           =   3420
+   End
    Begin VB.Image cmdCerrar 
       Height          =   420
       Left            =   3120
@@ -178,6 +199,12 @@ Private Sub interface_KeyUp(KeyCode As Integer, Shift As Integer)
         Case Else
             'do nothing?
     End Select
+End Sub
+
+Private Sub interface_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If InvSkins.SelectedItem > 0 Then
+        Me.lblItemData.Caption = InvSkins.GetInfo(InvSkins.ObjIndex(InvSkins.SelectedItem))
+    End If
 End Sub
 
 Private Sub interface_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
