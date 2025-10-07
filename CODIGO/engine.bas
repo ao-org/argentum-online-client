@@ -2352,13 +2352,6 @@ DrawInventorysComercio_Err:
     Resume Next
 End Sub
 
-'---------------------------------------------------------------------------------------
-' Procedure : DrawInventorySkins
-' Last Author : [/About] Brian Sabatier (brian.sabatier87@gmail.com - https://github.com/brianirvana/brianirvana)
-' Last Date : 19/9/2025
-' Purpose   :
-'---------------------------------------------------------------------------------------
-
 Public Sub DrawInventorySkins()
 
 Dim InvRect                     As RECT

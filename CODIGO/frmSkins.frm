@@ -113,14 +113,6 @@ Private Sub Form_Initialize()
 
 End Sub
 
-' Evento al cargar el formulario
-'---------------------------------------------------------------------------------------
-' Procedure : Form_Load
-' Last Author : [/About] Brian Sabatier (brian.sabatier87@gmail.com - https://github.com/brianirvana/brianirvana)
-' Last Date : 19/9/2025
-' Purpose   :
-'---------------------------------------------------------------------------------------
-
 Private Sub Form_Load()
 
     ' Parsea la interfaz del formulario (diseño)
