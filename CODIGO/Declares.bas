@@ -631,7 +631,7 @@ Public UsaMacro                          As Boolean
 Public CnTd                              As Byte
 Public TipoCrafteo()                     As tCrafteo
 Public Const MAX_BANCOINVENTORY_SLOTS    As Byte = 42
-Public Const MAX_SKINSINVENTORY_SLOTS    As Byte = 50
+Public Const MAX_SKINSINVENTORY_SLOTS    As Byte = 66
 Public Const MAX_KEYS                    As Byte = 10
 Public Const MAX_SLOTS_CRAFTEO = 5
 Public Const LoopAdEternum As Integer = 999
@@ -922,7 +922,7 @@ Public Nombres                                  As Boolean
 Public object_angle                             As Single
 'User status vars
 Global OtroInventario(1 To MAX_INVENTORY_SLOTS) As Slot
-Global a_Skins(1 To MAX_BANCOINVENTORY_SLOTS)   As Slot
+Global a_Skins(1 To MAX_SKINSINVENTORY_SLOTS)   As Slot
 Public UserHechizos(1 To MAXHECHI)              As Integer
 Public UserHechizosInterval(1 To MAXHECHI)      As Integer
 Public UserMeditar                              As Boolean

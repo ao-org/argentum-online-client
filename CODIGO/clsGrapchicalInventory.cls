@@ -507,6 +507,8 @@ Public Sub DrawInventory()
                 'Slot Default
                 Call Draw_GrhIndex(GRH_INVENTORYSLOT, x, y)
             End If
+        Else
+            Call Draw_GrhIndex(GRH_INVENTORYSLOT_EXTRA, x, y)
         End If
         If InvSelectedItem = i Then
             Call Engine_Draw_Box(x + SELECTION_BOX_X, y + SELECTION_BOX_Y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(100, 100, 100, 100))

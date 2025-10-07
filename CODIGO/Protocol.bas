@@ -776,6 +776,10 @@ Public Sub HandleDisconnect()
     For i = 1 To MAX_SLOTS_CRAFTEO
         Call frmCrafteo.InvCraftItems.ClearSlot(i)
     Next i
+    For i = 1 To MAX_SKINSINVENTORY_SLOTS
+        Call frmSkins.InvSkins.ClearSlot(i)
+    Next i
+    
     Call frmCrafteo.InvCraftCatalyst.ClearSlot(1)
     UserInvUnlocked = 0
     Alocados = 0
