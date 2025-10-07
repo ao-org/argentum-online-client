@@ -362,7 +362,7 @@ Public Function PlayWav(ByVal prefix_sound_id As String, _
     If mBuffer(sound_id) Is Nothing Then
         Dim i As Integer
         Call CreateWavBufferFromFile(prefix_sound_id, mBuffer(sound_id))
-        'Debug.Assert Not mBuffer(sound_id) Is Nothing
+        Debug.Assert Not mBuffer(sound_id) Is Nothing
         If mBuffer(sound_id) Is Nothing Then
             PlayWav = -1
             Exit Function
