@@ -48,6 +48,13 @@ Begin VB.Form frmSkins
       Top             =   720
       Width           =   3165
    End
+   Begin VB.Image imgDeleteItem 
+      Appearance      =   0  'Flat
+      Height          =   375
+      Left            =   240
+      Top             =   240
+      Width           =   375
+   End
    Begin VB.Label lblItemData 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
@@ -90,6 +97,7 @@ Private Const MOUSE_MOVE    As Long = &HF012&
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 ' Declaración de variable con evento de inventario gráfico
+Private cBotonEliminarItem As clsGraphicalButton
 Public WithEvents InvSkins As clsGrapchicalInventory
 Attribute InvSkins.VB_VarHelpID = -1
 
@@ -123,6 +131,9 @@ Private Sub Form_Load()
     Call Aplicar_Transparencia(Me.hWnd, 240)
     ' Carga la imagen de fondo del formulario desde archivo
     frmSkins.Picture = LoadInterface("ventanaskins.bmp")
+    
+    Set cBotonEliminarItem = New clsGraphicalButton
+    Call cBotonEliminarItem.Initialize(imgDeleteItem, "boton-borrar-item-default.bmp", "boton-borrar-item-over.bmp", "boton-borrar-item-off.bmp", Me)
     
     bSkins = True
     Call InvSkins.ReDraw
@@ -179,6 +190,16 @@ Dim canEquip                    As Boolean
         Call WriteEquipItem(Me.InvSkins.SelectedItem, True, eSkinType)
     End If
     
+End Sub
+
+Private Sub imgDeleteItem_Click()
+    If Not InvSkins.IsItemSelected Then
+        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_NO_TIENE_ITEM_SELECCIONADO"), 255, 255, 255, False, False, False)
+    Else
+        If MsgBox(JsonLanguage.Item("MENSAJEBOX_ELIMINAR_ITEM"), vbYesNo, JsonLanguage.Item("MENSAJEBOX_TITULO_ELIMINAR_ITEM")) = vbYes Then
+            Call WriteDeleteItem(InvSkins.SelectedItem, True)
+        End If
+    End If
 End Sub
 
 Private Sub interface_KeyUp(KeyCode As Integer, Shift As Integer)

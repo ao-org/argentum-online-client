@@ -5080,14 +5080,14 @@ End Sub
 ' @param    g The green component of the new chat color.
 ' @param    b The blue component of the new chat color.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteChatColor(ByVal R As Byte, ByVal G As Byte, ByVal B As Byte)
+Public Sub WriteChatColor(ByVal r As Byte, ByVal g As Byte, ByVal b As Byte)
     '<EhHeader>
     On Error GoTo WriteChatColor_Err
     '</EhHeader>
     Call Writer.WriteInt16(ClientPacketID.eChatColor)
-    Call Writer.WriteInt8(R)
-    Call Writer.WriteInt8(G)
-    Call Writer.WriteInt8(B)
+    Call Writer.WriteInt8(r)
+    Call Writer.WriteInt8(g)
+    Call Writer.WriteInt8(b)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
@@ -5837,10 +5837,11 @@ WriteResetearPersonaje_Err:
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResetearPersonaje", Erl)
 End Sub
 
-Public Sub WriteDeleteItem(ByVal Slot As Byte)
+Public Sub WriteDeleteItem(ByVal Slot As Byte, Optional ByVal isSkin As Boolean = False)
     On Error GoTo WriteDeleteItem_Err
     '</EhHeader>
     Call Writer.WriteInt16(ClientPacketID.eDeleteItem)
+    Call Writer.WriteBool(isSkin)
     Call Writer.WriteInt8(Slot)
     Call modNetwork.send(Writer)
     '<EhFooter>
