@@ -5080,14 +5080,14 @@ End Sub
 ' @param    g The green component of the new chat color.
 ' @param    b The blue component of the new chat color.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteChatColor(ByVal r As Byte, ByVal g As Byte, ByVal b As Byte)
+Public Sub WriteChatColor(ByVal R As Byte, ByVal G As Byte, ByVal B As Byte)
     '<EhHeader>
     On Error GoTo WriteChatColor_Err
     '</EhHeader>
     Call Writer.WriteInt16(ClientPacketID.eChatColor)
-    Call Writer.WriteInt8(r)
-    Call Writer.WriteInt8(g)
-    Call Writer.WriteInt8(b)
+    Call Writer.WriteInt8(R)
+    Call Writer.WriteInt8(G)
+    Call Writer.WriteInt8(B)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
