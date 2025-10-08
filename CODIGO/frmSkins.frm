@@ -121,6 +121,14 @@ Private Sub Form_Initialize()
 
 End Sub
 
+Private Sub Form_KeyPress(KeyAscii As Integer)
+    
+    If KeyAscii = 27 Then
+        Unload Me
+    End If
+    
+End Sub
+
 Private Sub Form_Load()
 
     ' Parsea la interfaz del formulario (diseño)

@@ -1300,7 +1300,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             End If
         Else
-            If .Backpack.BodyIndex <> .tmpBackPack Then
+            If .Backpack.BodyIndex <> .tmpBackPack And .tmpBackPack <> 0 Then
                 .Backpack = BodyData(.tmpBackPack)
             End If
         End If
