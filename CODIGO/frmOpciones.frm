@@ -40,80 +40,80 @@ Begin VB.Form frmOpciones
          BackColor       =   &H80000007&
          ForeColor       =   &H80000005&
          Height          =   285
-         Left            =   6240
+         Left            =   2580
          TabIndex        =   20
          Text            =   "Equipped caracter"
-         Top             =   3240
+         Top             =   4440
          Width           =   495
       End
       Begin VB.TextBox txtCoordinateY 
          BackColor       =   &H80000007&
          ForeColor       =   &H80000005&
          Height          =   285
-         Left            =   5760
+         Left            =   2085
          TabIndex        =   19
          Text            =   "CoordinateY"
-         Top             =   3240
+         Top             =   4440
          Width           =   495
       End
       Begin VB.TextBox txtCoordinateX 
          BackColor       =   &H80000007&
          ForeColor       =   &H80000005&
          Height          =   285
-         Left            =   5280
+         Left            =   1590
          TabIndex        =   18
          Text            =   "CoordinateX"
-         Top             =   3240
+         Top             =   4440
          Width           =   495
       End
       Begin VB.TextBox txtTransparency 
          BackColor       =   &H80000007&
          ForeColor       =   &H80000005&
          Height          =   285
-         Left            =   6720
+         Left            =   3075
          TabIndex        =   17
          Text            =   "Transparency"
-         Top             =   3240
+         Top             =   4440
          Width           =   495
       End
       Begin VB.TextBox txtBlue 
          BackColor       =   &H80000007&
-         ForeColor       =   &H80000005&
+         ForeColor       =   &H00FF0000&
          Height          =   285
-         Left            =   6240
+         Left            =   2580
          TabIndex        =   16
          Text            =   "Blue"
-         Top             =   3240
+         Top             =   4440
          Width           =   495
       End
       Begin VB.TextBox txtGreen 
          BackColor       =   &H80000007&
-         ForeColor       =   &H80000005&
+         ForeColor       =   &H0000FF00&
          Height          =   285
-         Left            =   5760
+         Left            =   2085
          TabIndex        =   15
          Text            =   "Green"
-         Top             =   3240
+         Top             =   4440
          Width           =   495
       End
       Begin VB.TextBox txtRed 
          BackColor       =   &H80000007&
-         ForeColor       =   &H80000005&
+         ForeColor       =   &H000000FF&
          Height          =   285
-         Left            =   5280
+         Left            =   1590
          TabIndex        =   14
          Text            =   "Red"
-         Top             =   3240
+         Top             =   4440
          Width           =   495
       End
       Begin VB.ComboBox cmbEquipmentStyle 
          BackColor       =   &H80000008&
          ForeColor       =   &H80000005&
          Height          =   315
-         Left            =   3960
+         Left            =   240
          Style           =   2  'Dropdown List
          TabIndex        =   13
-         Top             =   3240
+         Top             =   4425
          Width           =   1335
       End
       Begin VB.ComboBox cbTutorial 
@@ -121,11 +121,11 @@ Begin VB.Form frmOpciones
          ForeColor       =   &H8000000B&
          Height          =   315
          ItemData        =   "frmOpciones.frx":0152
-         Left            =   5160
+         Left            =   5700
          List            =   "frmOpciones.frx":0154
          Style           =   2  'Dropdown List
          TabIndex        =   12
-         Top             =   4320
+         Top             =   4425
          Width           =   1695
       End
       Begin VB.ComboBox cbRenderNpcs 
@@ -133,11 +133,11 @@ Begin VB.Form frmOpciones
          ForeColor       =   &H8000000B&
          Height          =   315
          ItemData        =   "frmOpciones.frx":0156
-         Left            =   1560
+         Left            =   3900
          List            =   "frmOpciones.frx":0158
          Style           =   2  'Dropdown List
          TabIndex        =   11
-         Top             =   4320
+         Top             =   4425
          Width           =   1695
       End
       Begin VB.ComboBox cbLenguaje 
