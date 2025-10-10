@@ -2357,33 +2357,33 @@ Public Sub DrawInventorySkins()
 Dim InvRect                     As RECT
 
     ' Sólo dibujamos cuando es necesario
-10  On Error GoTo DrawInventorySkins_Error
+    On Error GoTo DrawInventorySkins_Error
 
-20  If Not frmSkins.InvSkins.NeedsRedraw Then Exit Sub
+    If Not frmSkins.InvSkins.NeedsRedraw Then Exit Sub
 
-30  InvRect.Left = 0
-40  InvRect.Top = 0
-50  InvRect.Right = frmSkins.interface.ScaleWidth
-60  InvRect.Bottom = frmSkins.interface.ScaleHeight
-70  RenderCullingRect = InvRect
+    InvRect.Left = 0
+    InvRect.Top = 0
+    InvRect.Right = frmSkins.interface.ScaleWidth
+    InvRect.Bottom = frmSkins.interface.ScaleHeight
+    RenderCullingRect = InvRect
     ' Comenzamos la escena
-80  Call Engine_BeginScene
+    Call Engine_BeginScene
 
     ' Dibujamos llaves
-90  Call frmSkins.InvSkins.DrawInventory
+    Call frmSkins.InvSkins.DrawInventory
 
     ' Presentamos la escena
-100 Call Engine_EndScene(InvRect, frmSkins.interface.hWnd)
+    Call Engine_EndScene(InvRect, frmSkins.interface.hWnd)
 
-110 RenderCullingRect = GameplayDrawAreaRect
+    RenderCullingRect = GameplayDrawAreaRect
 
-120 On Error GoTo 0
-130 Exit Sub
+    On Error GoTo 0
+    Exit Sub
 
 DrawInventorySkins_Error:
 
-140 Call RegistrarError(Err.Number, Err.Description, "engine.DrawInventorysComercio", Erl)
-150 Resume Next
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawInventorysComercio", Erl)
+    Resume Next
 
 End Sub
 

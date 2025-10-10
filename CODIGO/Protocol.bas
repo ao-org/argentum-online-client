@@ -5844,13 +5844,6 @@ HandleReportLobbyList_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDebugResponse", Erl)
 End Sub
 
-'---------------------------------------------------------------------------------------
-' Procedure : HandleChangeSkinSlot
-' Author    : bsabatier
-' Date      : 14/7/2021
-' Purpose   : Skins Visuales de personajes.
-'---------------------------------------------------------------------------------------
-
 Private Sub HandleChangeSkinSlot()
 
 Dim Slot                        As Byte
