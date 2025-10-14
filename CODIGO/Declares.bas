@@ -796,7 +796,6 @@ Public Enum eObjType
     otSkinsHelmets = 41         'Skins de Cascos o Sombreros, o todo lo que vaya en la cabeza
     otSkinsWeapons = 42         'Skins Armas
     otSkinsBoats = 43           'Skins Botes, barcas, galeras, galeones,etc
-    OtPozos = 40
     otMonturas = 44
     otRunas = 45
     otSkinsSpells = 46          'Skins de Hechizos
