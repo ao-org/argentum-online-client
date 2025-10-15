@@ -216,6 +216,17 @@ Begin VB.Form frmOpciones
       Top             =   1800
       Visible         =   0   'False
       Width           =   7560
+      Begin VB.HScrollBar scrVolumeSteps 
+         Height          =   315
+         LargeChange     =   1000
+         Left            =   3960
+         Max             =   0
+         Min             =   -4000
+         SmallChange     =   2
+         TabIndex        =   21
+         Top             =   4200
+         Width           =   3375
+      End
       Begin VB.HScrollBar HScroll1 
          Height          =   315
          LargeChange     =   1000
@@ -248,6 +259,12 @@ Begin VB.Form frmOpciones
          TabIndex        =   5
          Top             =   600
          Width           =   3375
+      End
+      Begin VB.Image chkSteps 
+         Height          =   255
+         Left            =   255
+         Top             =   2715
+         Width           =   255
       End
       Begin VB.Image chko 
          Height          =   255
@@ -503,6 +520,27 @@ Private Const HWND_NOTOPMOST = -2
 Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
 Private cBotonCerrar As clsGraphicalButton
+
+Private Sub chkSteps_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error GoTo chkSteps_MouseUp_Err
+    Call ao20audio.PlayWav(SND_CLICK)
+            If ao20audio.FxStepsEnabled = 1 Then
+                scrVolumeSteps.enabled = False
+                ao20audio.FxStepsEnabled = 0
+            Else
+                scrVolumeSteps.enabled = True
+                ao20audio.FxStepsEnabled = 1
+            End If
+            If ao20audio.FxStepsEnabled = 0 Then
+                chkSteps.Picture = Nothing
+            Else
+                chkSteps.Picture = LoadInterface("check-amarillo.bmp")
+            End If
+    Exit Sub
+chkSteps_MouseUp_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkSteps_MouseUp", Erl)
+    Resume Next
+End Sub
 
 Private Sub Form_Load()
     On Error GoTo Form_Load_Err
@@ -1125,12 +1163,18 @@ Public Sub Init()
     Else
         chkInvertir.Picture = LoadInterface("check-amarillo.bmp")
     End If
+    If ao20audio.FxStepsEnabled = 0 Then
+        chkSteps.Picture = Nothing
+    Else
+        chkSteps.Picture = LoadInterface("check-amarillo.bmp")
+    End If
     If FPSFLAG = 0 Then
         Check6.Picture = Nothing
     Else
         Check6.Picture = LoadInterface("check-amarillo.bmp")
     End If
     scrVolume.value = max(scrVolume.min, min(scrVolume.max, VolFX))
+    scrVolumeSteps.value = max(scrVolumeSteps.min, min(scrVolumeSteps.max, VolSteps))
     HScroll1.value = max(HScroll1.min, min(HScroll1.max, VolAmbient))
     scrMidi.value = max(scrMidi.min, min(scrMidi.max, VolMusic))
     Call cbBloqueoHechizos.Clear
@@ -1226,6 +1270,15 @@ Private Sub scrVolume_Change()
     Exit Sub
 scrVolume_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolume_Change", Erl)
+    Resume Next
+End Sub
+Private Sub scrVolumeSteps_Change()
+    On Error GoTo scrVolumeSteps_Change_Err
+    VolSteps = scrVolumeSteps.value
+    Call ao20audio.SetVolumeSteps(scrVolumeSteps.value)
+    Exit Sub
+scrVolumeSteps_Change_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolumeSteps_Change", Erl)
     Resume Next
 End Sub
 
