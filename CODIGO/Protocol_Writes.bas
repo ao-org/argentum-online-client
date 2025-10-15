@@ -1043,21 +1043,29 @@ End Sub
 '
 ' @param    slot Invetory slot where the item to equip is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteEquipItem(ByVal Slot As Byte)
-    '<EhHeader>
-    On Error GoTo WriteEquipItem_Err
-    '</EhHeader>
+Public Sub WriteEquipItem(ByVal Slot As Byte, Optional ByVal bSkin As Boolean = False, Optional ByVal eSkinType As eObjType)
+
+ On Error GoTo WriteEquipItem_Err
+    
     Call Writer.WriteInt16(ClientPacketID.eEquipItem)
     Call Writer.WriteInt8(Slot)
+    Call Writer.WriteBool(bSkin)
+
+    If bSkin Then
+        Call Writer.WriteInt8(eSkinType)
+    End If
+
     packetCounters.TS_EquipItem = packetCounters.TS_EquipItem + 1
     Call Writer.WriteInt32(packetCounters.TS_EquipItem)
+
     Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
+
+ Exit Sub
+
 WriteEquipItem_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEquipItem", Erl)
-    '</EhFooter>
+    
 End Sub
 
 ''
@@ -5829,10 +5837,11 @@ WriteResetearPersonaje_Err:
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResetearPersonaje", Erl)
 End Sub
 
-Public Sub WriteDeleteItem(ByVal Slot As Byte)
+Public Sub WriteDeleteItem(ByVal Slot As Byte, Optional ByVal isSkin As Boolean = False)
     On Error GoTo WriteDeleteItem_Err
     '</EhHeader>
     Call Writer.WriteInt16(ClientPacketID.eDeleteItem)
+    Call Writer.WriteBool(isSkin)
     Call Writer.WriteInt8(Slot)
     Call modNetwork.send(Writer)
     '<EhFooter>
