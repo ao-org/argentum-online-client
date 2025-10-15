@@ -709,7 +709,7 @@ Begin VB.Form frmPanelgm
       Style           =   1  'Graphical
       TabIndex        =   40
       TabStop         =   0   'False
-      Top             =   4320
+      Top             =   7320
       Width           =   800
    End
    Begin VB.CommandButton cmdEscudo 
@@ -1018,7 +1018,7 @@ Begin VB.Form frmPanelgm
       Height          =   285
       Left            =   120
       TabIndex        =   0
-      Top             =   4320
+      Top             =   7320
       Width           =   3615
    End
    Begin VB.CommandButton cmdRevivir 
@@ -1073,7 +1073,7 @@ Begin VB.Form frmPanelgm
       Left            =   3840
       Style           =   1  'Graphical
       TabIndex        =   5
-      Top             =   7320
+      Top             =   4320
       Width           =   855
    End
    Begin VB.CommandButton cmdSeleccionarPersonaje 
@@ -1136,7 +1136,7 @@ Begin VB.Form frmPanelgm
       Left            =   120
       Sorted          =   -1  'True
       TabIndex        =   1
-      Top             =   7320
+      Top             =   4320
       Width           =   3675
    End
    Begin VB.ListBox List2 
