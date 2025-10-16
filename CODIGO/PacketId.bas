@@ -539,6 +539,7 @@ Public Enum ClientPacketID
         eLoginAccount
         eDeleteCharacter
     #End If
+    eChangeSkinSlot
     eMaxPacket
     [PacketCount]
 End Enum
