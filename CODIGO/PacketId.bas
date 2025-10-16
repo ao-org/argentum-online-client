@@ -259,7 +259,7 @@ Public Enum ClientPacketID
     eGuildLeave              '/SALIRCLAN
     eRequestAccountState     '/BALANCE
     ePetStand                '/QUIETO
-    ePetFollow               '/ACOMPAÑAR
+    ePetFollow               '/ACOMPAÃ‘AR
     ePetLeave                '/LIBERAR
     eGrupoMsg                '/GrupoMsg
     eTrainList               '/ENTRENAR
@@ -539,6 +539,7 @@ Public Enum ClientPacketID
         eLoginAccount
         eDeleteCharacter
     #End If
+    eChangeSkinSlot
     eMaxPacket
     [PacketCount]
 End Enum
