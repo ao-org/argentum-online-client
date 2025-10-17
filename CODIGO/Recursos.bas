@@ -1358,6 +1358,9 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).ExpClan = val(Leer.GetValue("npc" & Npc, "GiveEXPClan"))
         NpcData(Npc).PuedeInvocar = val(Leer.GetValue("npc" & Npc, "PuedeInvocar"))
         NpcData(Npc).ElementalTags = val(Leer.GetValue("npc" & Npc, "ElementalTags"))
+        NpcData(Npc).NpcType = val(Leer.GetValue("npc" & Npc, "NpcType"))
+        NpcData(Npc).Comercia = val(Leer.GetValue("npc" & Npc, "Comercia"))
+        
         aux = val(Leer.GetValue("npc" & Npc, "NumQuiza"))
         If aux = 0 Then
             NpcData(Npc).NumQuiza = 0
@@ -1367,6 +1370,18 @@ Public Sub CargarIndicesOBJ()
             For loopC = 1 To NpcData(Npc).NumQuiza
                 NpcData(Npc).QuizaDropea(loopC) = val(Leer.GetValue("npc" & Npc, "QuizaDropea" & loopC))
                 ' frmdebug.add_text_tracebox NpcData(Npc).QuizaDropea(loopc)
+            Next loopC
+        End If
+        
+        ' Leer NroItems y sus Obj()
+        aux = val(Leer.GetValue("npc" & Npc, "NROITEMS"))
+        If aux = 0 Then
+            NpcData(Npc).NroItems = 0
+        Else
+            NpcData(Npc).NroItems = val(aux)
+            ReDim NpcData(Npc).Obj(1 To NpcData(Npc).NroItems) As Integer
+            For loopC = 1 To NpcData(Npc).NroItems
+                NpcData(Npc).Obj(loopC) = val(Leer.GetValue("npc" & Npc, "Obj" & loopC))
             Next loopC
         End If
 Continue:

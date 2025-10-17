@@ -232,6 +232,10 @@ Public Type NpcDatas
     PuedeInvocar As Byte
     NoMapInfo As Byte
     ElementalTags As Long
+    NpcType As Integer
+    NroItems As Integer
+    Obj() As Integer
+    Comercia As Integer
 End Type
 
 Public Type HechizoDatas

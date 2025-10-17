@@ -634,7 +634,8 @@ End Sub
 
 Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
     On Error GoTo ListView1_Click_Err
-    ' --- lista vacía o item inválido: limpiar preview y salir
+    
+    ' --- Lista vacía o item inválido: limpiar preview y salir ---
     If ListView1.ListItems.count = 0 Then
         PreviewNPC_Clear
         Exit Sub
@@ -643,11 +644,17 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
         PreviewNPC_Clear
         Exit Sub
     End If
+
+    If Item Is Nothing Then
+        PreviewNPC_Clear
+        Exit Sub
+    End If
     If LenB(Item.SubItems(2)) = 0 Then
         PreviewNPC_Clear
         Exit Sub
     End If
-    ' --- Caso: lista vacía ---
+    
+    ' --- Caso: lista vacía, limpiar ---
     If ListView1.ListItems.count = 0 Then
         Label8.Caption = vbNullString
         Label2.Caption = vbNullString
@@ -657,21 +664,26 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
         Label9.Caption = vbNullString
         listdrop.ListItems.Clear
         picture1.Refresh
-        PlayerView.Cls        ' limpia el área de preview (asegurate que PlayerView sea PictureBox/AutoRedraw)
+        PlayerView.Cls
         tmrPreview.enabled = False
         Exit Sub
     End If
+
     ' --- Validar item ---
     If Item Is Nothing Then Exit Sub
     If LenB(Item.SubItems(2)) = 0 Then Exit Sub
-    ' Limpiamos antes de mostrar el nuevo
+
+    Dim npcIdx As Long
+    npcIdx = CLng(Item.SubItems(2))
+    
+    ' --- Limpiamos antes de mostrar el nuevo ---
     picture1.Refresh
     PlayerView.Cls
     listdrop.ListItems.Clear
-    Dim npcIdx As Long
-    npcIdx = CLng(Item.SubItems(2))
+    
     ' --- Activar preview animado ---
     PreviewNPC_Setup_ByIndex npcIdx
+    
     ' --- Datos en labels ---
     With NpcData(npcIdx)
         Label8.Caption = .Name
@@ -681,19 +693,37 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
         Label4.Caption = CStr(.oro)
         Label5.Caption = CStr(.MinHit) & "/" & CStr(.MaxHit)
         Label9.Caption = "EXPERIENCIA DE CLAN: " & CStr(.ExpClan) & " puntos"
+        
         ' Snapshot inicial (opcional, además de la animación)
         Call DibujarNPC(Me.PlayerView, .Head, .Body)
-        ' Drops
-        If .NumQuiza > 0 Then
-            Dim i           As Integer, objIdx As Long
+        
+        ' --- Drops ---
+        If .NumQuiza > 0 Or .NpcType = 0 And (.NroItems > 0 And .Comercia < 1) Then
+            Dim i As Integer, objIdx As Long
             Dim subelemento As ListItem
-            For i = 1 To .NumQuiza
-                objIdx = .QuizaDropea(i)
-                If objIdx > 0 Then
-                    Set subelemento = listdrop.ListItems.Add(, , ObjData(objIdx).Name)
-                    subelemento.SubItems(1) = CStr(ObjData(objIdx).GrhIndex)
-                End If
-            Next i
+        
+            ' --- Si tiene drop por QuizaDropea ---
+            If .NumQuiza > 0 Then
+                For i = 1 To .NumQuiza
+                    objIdx = .QuizaDropea(i)
+                    If objIdx > 0 Then
+                        Set subelemento = listdrop.ListItems.Add(, , ObjData(objIdx).Name)
+                        subelemento.SubItems(1) = CStr(ObjData(objIdx).GrhIndex)
+                    End If
+                Next i
+            End If
+        
+            ' --- Si tiene drop 100% (NroItems > 0 y NO es vendedor) ---
+            If .NpcType = 0 And (.NroItems > 0 And .Comercia < 1) Then
+                For i = 1 To .NroItems
+                    objIdx = .Obj(i)
+                    If objIdx > 0 Then
+                        Set subelemento = listdrop.ListItems.Add(, , ObjData(objIdx).Name)
+                        subelemento.SubItems(1) = CStr(ObjData(objIdx).GrhIndex)
+                    End If
+                Next i
+            End If
+            
             If listdrop.ListItems.count > 0 Then Call listdrop_Click
         End If
     End With
