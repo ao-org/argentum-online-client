@@ -19,6 +19,7 @@ Option Explicit
 
 Public Enum eNumber_Types
     ent_Byte
+    ent_JailMinutes
     ent_Integer
     ent_Long
     ent_Trigger
@@ -584,7 +585,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@")
                     If UBound(tmpArr) = 2 Then
-                        If ValidNumber(tmpArr(2), eNumber_Types.ent_Byte) Then
+                        If ValidNumber(tmpArr(2), eNumber_Types.ent_JailMinutes) Then
                             Call WriteJail(tmpArr(0), tmpArr(1), tmpArr(2))
                         Else
                             'No es numerico
@@ -1905,6 +1906,9 @@ Public Function ValidNumber(ByVal Numero As String, ByVal TIPO As eNumber_Types)
         Case eNumber_Types.ent_Byte
             Minimo = 0
             Maximo = 255
+        Case eNumber_Types.ent_JailMinutes
+            Minimo = 0
+            Maximo = 8640
         Case eNumber_Types.ent_Integer
             Minimo = -32768
             Maximo = 32767
