@@ -23,25 +23,25 @@ Begin VB.Form FrmLogear
       BackColor       =   &H80000001&
       BorderStyle     =   0  'None
       ForeColor       =   &H80000004&
-      Height          =   285
+      Height          =   270
       Left            =   3600
       TabIndex        =   4
       Text            =   "7667"
       Top             =   2640
       Visible         =   0   'False
-      Width           =   1455
+      Width           =   1110
    End
    Begin VB.TextBox txtIp 
       BackColor       =   &H80000001&
       BorderStyle     =   0  'None
       ForeColor       =   &H80000004&
-      Height          =   285
+      Height          =   270
       Left            =   1320
       TabIndex        =   3
       Text            =   "127.0.0.1"
       Top             =   2640
       Visible         =   0   'False
-      Width           =   1455
+      Width           =   1290
    End
    Begin VB.TextBox PasswordTxt 
       Appearance      =   0  'Flat
