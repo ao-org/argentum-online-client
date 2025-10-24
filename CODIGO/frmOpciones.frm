@@ -26,16 +26,6 @@ Begin VB.Form frmOpciones
    ScaleWidth      =   8040
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.ComboBox cmbVRAM 
-      BackColor       =   &H80000008&
-      ForeColor       =   &H80000005&
-      Height          =   315
-      Left            =   480
-      Style           =   2  'Dropdown List
-      TabIndex        =   21
-      Top             =   5640
-      Width           =   1335
-   End
    Begin VB.PictureBox PanelJugabilidad 
       BorderStyle     =   0  'None
       Height          =   4845
@@ -305,6 +295,16 @@ Begin VB.Form frmOpciones
       Top             =   1800
       Visible         =   0   'False
       Width           =   7560
+      Begin VB.ComboBox cmbVRAM 
+         BackColor       =   &H80000008&
+         ForeColor       =   &H80000005&
+         Height          =   315
+         Left            =   4080
+         Style           =   2  'Dropdown List
+         TabIndex        =   21
+         Top             =   720
+         Width           =   1335
+      End
       Begin VB.ComboBox cboLuces 
          Height          =   315
          ItemData        =   "frmOpciones.frx":015E
