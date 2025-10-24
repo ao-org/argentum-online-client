@@ -26,6 +26,16 @@ Begin VB.Form frmOpciones
    ScaleWidth      =   8040
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.ComboBox cmbVRAM 
+      BackColor       =   &H80000008&
+      ForeColor       =   &H80000005&
+      Height          =   315
+      Left            =   480
+      Style           =   2  'Dropdown List
+      TabIndex        =   21
+      Top             =   5640
+      Width           =   1335
+   End
    Begin VB.PictureBox PanelJugabilidad 
       BorderStyle     =   0  'None
       Height          =   4845
@@ -504,6 +514,33 @@ Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
 Private cBotonCerrar As clsGraphicalButton
 
+Private Sub cmbVRAM_Click()
+    If cmbVRAM.text = "" Then
+        cmbVRAM.text = cmbVRAM.ItemData(0)
+    End If
+    If Not IsNumeric(cmbVRAM.text) Then
+        cmbVRAM.text = cmbVRAM.ItemData(0)
+    End If
+    TexHighWaterMark = CLng(cmbVRAM.text)
+    Select Case TexHighWaterMark
+        Case Is < 128
+            NumTexRelease = 15
+        Case 128
+            NumTexRelease = 25
+        Case 256
+            NumTexRelease = 25
+        Case 512
+            NumTexRelease = 25
+        Case 1024
+            NumTexRelease = 50
+        Case 2048
+            NumTexRelease = 50
+        Case Is > 2048
+            NumTexRelease = 125
+    End Select
+    
+End Sub
+
 Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     Call Aplicar_Transparencia(Me.hWnd, 240)
@@ -523,6 +560,24 @@ Private Sub Form_Load()
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_602"))  ' Italiano
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_1"))
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_2"))
+    
+    Dim ms As MEMORYSTATUS
+    Dim totalMB As Long
+    Dim i As Long
+    Dim val As Long
+    GlobalMemoryStatus ms
+    totalMB = ms.dwTotalPhys / (1024# * 1024#) ' Convert bytes ? MB
+    cmbVRAM.Clear
+    ' Populate with values that make sense based on total RAM
+    ' Start from 128 MB and double each time until totalMB/2
+    val = 128
+    Do While val <= (totalMB / 2)
+        cmbVRAM.AddItem val
+        val = val * 2
+    Loop
+    cmbVRAM.AddItem totalMB
+    cmbVRAM.text = TexHighWaterMark
+    
     cmbEquipmentStyle.ListIndex = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
     txtRed.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorRedColor", 255)
     txtGreen.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorGreenColor", 255)
