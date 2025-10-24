@@ -868,6 +868,11 @@ Private Sub HandleCommerceEnd()
     On Error GoTo HandleCommerceEnd_Err
     'Reset vars
     Comerciando = False
+    'Hide question prompt if it is still being displayed
+    Pregunta = False
+    PreguntaLocal = False
+    PreguntaScreen = vbNullString
+    PreguntaNUM = 0
     'Hide form
     ' Unload frmComerciar
     Exit Sub
@@ -1000,6 +1005,10 @@ Private Sub HandleUserCommerceEnd()
     'Destroy the form and reset the state
     Unload frmComerciarUsu
     Comerciando = False
+    Pregunta = False
+    PreguntaLocal = False
+    PreguntaScreen = vbNullString
+    PreguntaNUM = 0
     Exit Sub
 HandleUserCommerceEnd_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCommerceEnd", Erl)
