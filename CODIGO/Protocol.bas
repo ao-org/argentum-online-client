@@ -4946,10 +4946,7 @@ HandleBarFx_Err:
 End Sub
  
 Private Sub HandleQuestDetails()
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     'Recibe y maneja el paquete QuestDetails del servidor.
-    'Last modified: 31/01/2010 by Amraphen
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     On Error GoTo errhandler
     Dim tmpStr         As String
     Dim tmpByte        As Byte
@@ -5057,6 +5054,7 @@ Private Sub HandleQuestDetails()
     Else
         QuestIndex = Reader.ReadInt16
         FrmQuests.titulo.Caption = QuestList(QuestIndex).nombre
+        FrmQuests.lblRepetible.visible = QuestList(QuestIndex).Repetible = 1
         LevelRequerido = Reader.ReadInt8
         QuestRequerida = Reader.ReadInt16
         FrmQuests.detalle.text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & JsonLanguage.Item( _
