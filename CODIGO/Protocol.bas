@@ -2440,12 +2440,20 @@ Private Sub HandleCharacterChange()
         ' ===== Preservar estado previo para fase =====
         Dim wasMoving        As Boolean: wasMoving = .Moving
         Dim oldHeading       As E_Heading: oldHeading = .Heading
-        Dim prevWalk         As Grh: prevWalk = .Body.Walk(oldHeading)
-        Dim prevWeaponWalk   As Grh: prevWeaponWalk = .Arma.WeaponWalk(oldHeading)
-        Dim prevShieldWalk   As Grh: prevShieldWalk = .Escudo.ShieldWalk(oldHeading)
+        Dim prevWalk         As Grh
+        Dim prevWeaponWalk   As Grh
+        Dim prevShieldWalk   As Grh
         Dim hadMovArmaEscudo As Boolean: hadMovArmaEscudo = .MovArmaEscudo
         Dim keepStartIdle    As Long
         Dim newGi            As Long
+        
+        'guard for not in client entities such as Gms or invisible enemies
+        If oldHeading > 0 Then
+            prevWalk = .Body.Walk(oldHeading)
+            prevWeaponWalk = .Arma.WeaponWalk(oldHeading)
+            prevShieldWalk = .Escudo.ShieldWalk(oldHeading)
+        End If
+        
         ' ============================================
         ' Body
         TempInt = Reader.ReadInt16()
@@ -3971,13 +3979,16 @@ Private Sub HandleSetInvisible()
                         .MoveOffsetY = 0
                     End If
                 Else
-                    If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
-                    .Pos.x = x
-                    .Pos.y = y
-                    MapData(x, y).charindex = charindex
-                    If Abs(.MoveOffsetX) > 32 Or Abs(.MoveOffsetY) > 32 Or (.MoveOffsetX <> 0 And .MoveOffsetY <> 0) Then
-                        .MoveOffsetX = 0
-                        .MoveOffsetY = 0
+                    'guard for invisible entities such as Gms or invisible enemies
+                    If .Pos.x > 0 And .Pos.y > 0 Then
+                        If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+                        .Pos.x = x
+                        .Pos.y = y
+                        MapData(x, y).charindex = charindex
+                        If Abs(.MoveOffsetX) > 32 Or Abs(.MoveOffsetY) > 32 Or (.MoveOffsetX <> 0 And .MoveOffsetY <> 0) Then
+                            .MoveOffsetX = 0
+                            .MoveOffsetY = 0
+                        End If
                     End If
                 End If
             End If
