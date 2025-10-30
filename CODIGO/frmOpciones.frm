@@ -317,11 +317,12 @@ Begin VB.Form frmOpciones
       Begin VB.Label lbl_VRAM 
          BackStyle       =   0  'Transparent
          Caption         =   "Label1"
-         Height          =   195
-         Left            =   4080
+         ForeColor       =   &H00FFFFFF&
+         Height          =   255
+         Left            =   3240
          TabIndex        =   22
          Top             =   720
-         Width           =   465
+         Width           =   2175
       End
       Begin VB.Image num_comp_inv 
          Height          =   255
