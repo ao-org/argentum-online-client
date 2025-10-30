@@ -299,7 +299,7 @@ Begin VB.Form frmOpciones
          BackColor       =   &H80000008&
          ForeColor       =   &H80000005&
          Height          =   315
-         Left            =   4080
+         Left            =   6120
          Style           =   2  'Dropdown List
          TabIndex        =   21
          Top             =   720
@@ -319,7 +319,7 @@ Begin VB.Form frmOpciones
          Caption         =   "Label1"
          ForeColor       =   &H00FFFFFF&
          Height          =   255
-         Left            =   3240
+         Left            =   3840
          TabIndex        =   22
          Top             =   720
          Width           =   2175
