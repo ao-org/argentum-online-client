@@ -299,7 +299,7 @@ Begin VB.Form frmOpciones
          BackColor       =   &H80000008&
          ForeColor       =   &H80000005&
          Height          =   315
-         Left            =   6120
+         Left            =   5400
          Style           =   2  'Dropdown List
          TabIndex        =   21
          Top             =   720
@@ -308,19 +308,19 @@ Begin VB.Form frmOpciones
       Begin VB.ComboBox cboLuces 
          Height          =   315
          ItemData        =   "frmOpciones.frx":015E
-         Left            =   240
+         Left            =   5400
          List            =   "frmOpciones.frx":016B
          TabIndex        =   10
-         Top             =   3960
-         Width           =   2175
-        End
+         Top             =   1080
+         Width           =   1575
+      End
       Begin VB.Label lbl_AmbientLight 
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
          Caption         =   "Luz ambiental:"
          ForeColor       =   &H00FFFFFF&
          Height          =   195
-         Left            =   4080
+         Left            =   4320
          TabIndex        =   23
          Top             =   1080
          Width           =   1155
