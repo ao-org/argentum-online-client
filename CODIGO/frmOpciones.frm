@@ -313,6 +313,7 @@ Begin VB.Form frmOpciones
          TabIndex        =   10
          Top             =   3960
          Width           =   2175
+        End
       Begin VB.Label lbl_AmbientLight 
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
