@@ -717,5 +717,6 @@
   "MENSAJE_ESTADO_MASCOTA" : "Mascotte di proprietà di",
   "MENSAJE_ESTILO_EQUIPAMIENTO_1" : "Moderno",
   "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Classico",
-  "MENSAJE_DESCRIPCION_GUION_INVALIDO":"I trattini non sono ammessi nella descrizione."
+  "MENSAJE_DESCRIPCION_GUION_INVALIDO":"I trattini non sono ammessi nella descrizione.",
+  "LABEL_VRAM_USAGE":"soglia VRAM:"
 }

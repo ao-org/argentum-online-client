@@ -123,7 +123,7 @@ Sub LoadConfig()
     '     but risk higher memory usage.
     '------------------------------------------------------------------------------
     'defaults to 25 in DeffaultSettings.ini
-    NumTexRelease = val(GetSetting("VIDEO", "NumTexRelease"))
+    NumTexRelease = max(val(GetSetting("VIDEO", "NumTexRelease")), 25)
     '------------------------------------------------------------------------------
     ' Configuration: VIDEO.TexHighWaterMark
     '
@@ -142,7 +142,7 @@ Sub LoadConfig()
     '     peak memory usage.
     '------------------------------------------------------------------------------
     'defaults to 512 in DeffaultSettings.ini
-    TexHighWaterMark = val(GetSetting("VIDEO", "TexHighWaterMark"))
+    TexHighWaterMark = max(val(GetSetting("VIDEO", "TexHighWaterMark")), 512)
     
     Dim value As String
     value = GetSetting("VIDEO", "MostrarRespiracion")

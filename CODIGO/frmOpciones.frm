@@ -314,6 +314,15 @@ Begin VB.Form frmOpciones
          Top             =   3960
          Width           =   2175
       End
+      Begin VB.Label lbl_VRAM 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Label1"
+         Height          =   195
+         Left            =   4080
+         TabIndex        =   22
+         Top             =   720
+         Width           =   465
+      End
       Begin VB.Image num_comp_inv 
          Height          =   255
          Left            =   270
@@ -561,22 +570,19 @@ Private Sub Form_Load()
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_1"))
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_2"))
     
-    Dim ms As MEMORYSTATUS
-    Dim totalMB As Long
-    Dim i As Long
-    Dim val As Long
-    GlobalMemoryStatus ms
-    totalMB = ms.dwTotalPhys / (1024# * 1024#) ' Convert bytes ? MB
-    cmbVRAM.Clear
-    ' Populate with values that make sense based on total RAM
-    ' Start from 128 MB and double each time until totalMB/2
-    val = 128
-    Do While val <= (totalMB / 2)
-        cmbVRAM.AddItem val
-        val = val * 2
-    Loop
-    cmbVRAM.AddItem totalMB
-    cmbVRAM.text = TexHighWaterMark
+    Dim i As Integer
+    Dim Mem As Long
+    Mem = getMaxAvailablePhysicalMemory
+    For i = 0 To 4
+        cmbVRAM.AddItem (Mem)
+        If Mem = TexHighWaterMark Then
+            cmbVRAM.ListIndex = i
+        End If
+        Mem = Mem / 2
+    Next i
+    lbl_VRAM = JsonLanguage.Item("LABEL_VRAM_USAGE")
+    
+    
     
     cmbEquipmentStyle.ListIndex = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
     txtRed.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorRedColor", 255)
@@ -1430,3 +1436,14 @@ Private Sub txtEquippedCaracter_Change()
     End If
     EQUIPMENT_CARACTER = txtEquippedCaracter.text
 End Sub
+
+
+Public Function getMaxAvailablePhysicalMemory() As Long
+    Dim ms As MEMORYSTATUS
+    Dim totalMB As Long
+    Dim i As Long
+    Dim val As Long
+    GlobalMemoryStatus ms
+    getMaxAvailablePhysicalMemory = (ms.dwTotalPhys / (1024# * 1024#)) ' Convert bytes ? MB
+
+End Function
