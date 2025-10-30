@@ -313,16 +313,26 @@ Begin VB.Form frmOpciones
          TabIndex        =   10
          Top             =   3960
          Width           =   2175
+      Begin VB.Label lbl_AmbientLight 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Luz ambiental:"
+         ForeColor       =   &H00FFFFFF&
+         Height          =   195
+         Left            =   4080
+         TabIndex        =   23
+         Top             =   1080
+         Width           =   1155
       End
       Begin VB.Label lbl_VRAM 
          BackStyle       =   0  'Transparent
-         Caption         =   "Label1"
+         Caption         =   "Umbral de VRAM:"
          ForeColor       =   &H00FFFFFF&
          Height          =   255
-         Left            =   3840
+         Left            =   4080
          TabIndex        =   22
          Top             =   720
-         Width           =   2175
+         Width           =   1335
       End
       Begin VB.Image num_comp_inv 
          Height          =   255
@@ -582,7 +592,7 @@ Private Sub Form_Load()
         Mem = Mem / 2
     Next i
     lbl_VRAM = JsonLanguage.Item("LABEL_VRAM_USAGE")
-    
+    lbl_AmbientLight = JsonLanguage.Item("LABEL_AMBIENT_LIGHT")
     
     
     cmbEquipmentStyle.ListIndex = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)

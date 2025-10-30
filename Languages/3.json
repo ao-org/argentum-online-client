@@ -719,5 +719,6 @@
   "MENSAJE_ESTILO_EQUIPAMIENTO_1" : "Moderno",
   "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Clássico",
   "MENSAJE_DESCRIPCION_GUION_INVALIDO":"Hífens não são permitidos na descrição.",
-  "LABEL_VRAM_USAGE":"Limite de VRAM:"
+  "LABEL_VRAM_USAGE":"Limite de VRAM:",
+  "LABEL_AMBIENT_LIGHT" : "Luz ambiente:"
 }
