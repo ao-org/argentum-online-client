@@ -29,6 +29,7 @@ End Type
 Private gShopPreview() As tShopPreviewInfo
 Private gPreviewInitialized As Boolean
 Private gBodyLookup() As tShopBodyLookup
+Private gBodyLookupInitialized As Boolean
 
 Public Sub ShopPreview_Reset(ByVal maxObj As Long)
     On Error GoTo ShopPreview_Reset_Err
@@ -37,6 +38,7 @@ Public Sub ShopPreview_Reset(ByVal maxObj As Long)
     ReDim gShopPreview(0 To maxObj) As tShopPreviewInfo
     gPreviewInitialized = True
     Erase gBodyLookup
+    gBodyLookupInitialized = False
     Exit Sub
 
 ShopPreview_Reset_Err:
@@ -97,10 +99,12 @@ Private Sub EnsureBodyLookupSize(ByVal bodyIndex As Long)
     Else
         ReDim gBodyLookup(0 To newSize) As tShopBodyLookup
     End If
+    gBodyLookupInitialized = True
     Exit Sub
 
 EnsureBodyLookupSize_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModShopPreview.EnsureBodyLookupSize", Erl)
+    gBodyLookupInitialized = False
     Resume Next
 End Sub
 
@@ -149,13 +153,12 @@ End Function
 Private Function IsBodyLookupInitialized() As Boolean
     On Error GoTo IsBodyLookupInitialized_Err
 
-    Dim lb As Long
-    lb = LBound(gBodyLookup)
-    IsBodyLookupInitialized = True
+    IsBodyLookupInitialized = gBodyLookupInitialized
     Exit Function
 
 IsBodyLookupInitialized_Err:
     IsBodyLookupInitialized = False
+    gBodyLookupInitialized = False
 End Function
 
 Public Function ShopPreview_GetBodyOverride(ByVal objNum As Long, ByVal race As eRaza, ByVal gender As eGenero) As Integer
