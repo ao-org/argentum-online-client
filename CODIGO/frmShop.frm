@@ -163,6 +163,7 @@ Attribute VB_Exposed = False
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
     Label1.Caption = JsonLanguage.Item("MENSAJE_TRANSACCION_RELOGUEO")
+    Call RenderUserPreview
 End Sub
 
 Private Sub Image2_Click()
@@ -217,4 +218,44 @@ Private Sub txtFindObj_Change()
             Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )")
         End If
     Next i
+End Sub
+
+Private Sub RenderUserPreview()
+    On Error GoTo RenderUserPreview_Err
+    If picUserPreview.AutoRedraw = 0 Then
+        picUserPreview.AutoRedraw = True
+    End If
+    picUserPreview.BackColor = RGB(11, 11, 11)
+    picUserPreview.Cls
+
+    If UserCharIndex <= 0 Or UserCharIndex > UBound(charlist) Then Exit Sub
+
+    Dim bodyId   As Integer
+    Dim headId   As Integer
+    Dim heading  As Byte
+
+    bodyId = charlist(UserCharIndex).iBody
+    headId = charlist(UserCharIndex).IHead
+
+    If bodyId <= 0 Or bodyId > UBound(BodyData) Then Exit Sub
+
+    heading = charlist(UserCharIndex).Heading
+    If heading < 1 Or heading > 4 Then
+        heading = south
+    End If
+
+    Call DibujarNPC(picUserPreview, headId, bodyId, heading)
+    Exit Sub
+RenderUserPreview_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.RenderUserPreview", Erl)
+    Resume Next
+End Sub
+
+Public Sub UpdateUserPreview()
+    On Error GoTo UpdateUserPreview_Err
+    Call RenderUserPreview
+    Exit Sub
+UpdateUserPreview_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.UpdateUserPreview", Erl)
+    Resume Next
 End Sub

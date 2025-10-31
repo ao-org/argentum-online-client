@@ -2585,6 +2585,11 @@ Private Sub HandleCharacterChange()
         End If
         ' ===========================================================
     End With
+    If charindex = UserCharIndex Then
+        If IsFormLoaded("frmShopAO20") Then
+            Call frmShopAO20.UpdateUserPreview
+        End If
+    End If
     Exit Sub
 HandleCharacterChange_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterChange", Erl)
@@ -5632,6 +5637,7 @@ Public Sub HandleShopInit()
         Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )", i - 1)
     Next i
     frmShopAO20.Show , GetGameplayForm()
+    Call frmShopAO20.UpdateUserPreview
 End Sub
 
 Public Sub HandleUpdateShopClienteCredits()
