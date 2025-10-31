@@ -92,6 +92,7 @@ Begin VB.Form frmShopAO20
       TabIndex        =   4
       Top             =   5160
       Width           =   1815
+      Visible         =   0   'False
    End
    Begin VB.Image Image4 
       Height          =   375
