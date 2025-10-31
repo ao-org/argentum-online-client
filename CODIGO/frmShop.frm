@@ -22,7 +22,7 @@ Begin VB.Form frmShopAO20
       Height          =   3150
       Left            =   360
       TabIndex        =   5
-      Top             =   36000
+      Top             =   2400
       Width           =   3255
    End
    Begin VB.ListBox lstItemsShop 
