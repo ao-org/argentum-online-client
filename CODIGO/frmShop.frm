@@ -7,6 +7,7 @@ Begin VB.Form frmShopAO20
    ClientTop       =   0
    ClientWidth     =   6480
    LinkTopic       =   "Form1"
+   KeyPreview      =   -1  'True
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   475
@@ -47,6 +48,20 @@ Begin VB.Form frmShopAO20
       TabIndex        =   2
       Top             =   2880
       Width           =   495
+   End
+   Begin VB.PictureBox picUserPreview 
+      Appearance      =   0  'Flat
+      AutoRedraw      =   -1  'True
+      BackColor       =   &H80000001&
+      ForeColor       =   &H80000008&
+      Height          =   2940
+      Left            =   3960
+      ScaleHeight     =   196
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   124
+      TabIndex        =   6
+      Top             =   240
+      Width           =   1860
    End
    Begin VB.TextBox txtFindObj 
       BackColor       =   &H80000007&
@@ -146,9 +161,45 @@ Attribute VB_Exposed = False
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 '
+Private mPreviewHeading As E_Heading
+Private mPreviewOverrideBodyIndex As Integer
+
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
     Label1.Caption = JsonLanguage.Item("MENSAJE_TRANSACCION_RELOGUEO")
+    mPreviewHeading = E_Heading.south
+    mPreviewOverrideBodyIndex = 0
+    Call DrawUserPreview(mPreviewOverrideBodyIndex)
+End Sub
+
+Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+    On Error GoTo Form_KeyDown_Err
+
+    Dim newHeading As E_Heading
+    newHeading = mPreviewHeading
+
+    Select Case KeyCode
+        Case vbKeyUp
+            newHeading = E_Heading.NORTH
+        Case vbKeyRight
+            newHeading = E_Heading.EAST
+        Case vbKeyDown
+            newHeading = E_Heading.south
+        Case vbKeyLeft
+            newHeading = E_Heading.WEST
+        Case Else
+            Exit Sub
+    End Select
+
+    If newHeading <> mPreviewHeading Then
+        mPreviewHeading = newHeading
+        Call DrawUserPreview(mPreviewOverrideBodyIndex)
+    End If
+    Exit Sub
+
+Form_KeyDown_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.Form_KeyDown", Erl)
+    Resume Next
 End Sub
 
 Private Sub Image2_Click()
@@ -185,14 +236,19 @@ Private Sub lstItemShopFilter_Click()
     Dim Grh      As Long
     Dim i        As Long
     Dim obj_name As String
+    Dim objNum   As Long
+    Dim objType  As Byte
     obj_name = Split(lstItemShopFilter.text, " (")(0)
     For i = 1 To UBound(ObjShop)
         If obj_name = ObjShop(i).Name Then
-            Grh = ObjData(ObjShop(i).ObjNum).GrhIndex
+            objNum = ObjShop(i).ObjNum
+            Grh = ObjData(objNum).GrhIndex
+            objType = ObjData(objNum).ObjType
             Exit For
         End If
     Next i
     Call Grh_Render_To_Hdc(PictureItemShop, Grh, 0, 0, False)
+    Call UpdateUserPreviewSelection(objNum, objType)
 End Sub
 
 Private Sub txtFindObj_Change()
@@ -204,3 +260,75 @@ Private Sub txtFindObj_Change()
         End If
     Next i
 End Sub
+
+Private Sub DrawUserPreview(Optional ByVal overrideBodyIndex As Integer = 0)
+    On Error GoTo DrawUserPreview_Err
+    If UserCharIndex <= 0 Then Exit Sub
+    If picUserPreview.Width = 0 Or picUserPreview.Height = 0 Then Exit Sub
+
+    Dim bodyIndex As Integer
+    Dim headIndex As Integer
+    Dim heading   As E_Heading
+
+    headIndex = charlist(UserCharIndex).IHead
+    bodyIndex = charlist(UserCharIndex).iBody
+
+    If overrideBodyIndex > 0 Then
+        If overrideBodyIndex >= LBound(BodyData) And overrideBodyIndex <= UBound(BodyData) Then
+            bodyIndex = overrideBodyIndex
+        End If
+    End If
+
+    If bodyIndex < LBound(BodyData) Or bodyIndex > UBound(BodyData) Then Exit Sub
+    If headIndex < LBound(HeadData) Or headIndex > UBound(HeadData) Then headIndex = 0
+
+    heading = mPreviewHeading
+    If heading < E_Heading.NORTH Or heading > E_Heading.WEST Then heading = E_Heading.south
+
+    Call DibujarNPC(picUserPreview, headIndex, bodyIndex, heading)
+    Exit Sub
+
+DrawUserPreview_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.DrawUserPreview", Erl)
+    Resume Next
+End Sub
+
+Private Sub UpdateUserPreviewSelection(ByVal objNum As Long, ByVal objType As Byte)
+    On Error GoTo UpdateUserPreviewSelection_Err
+
+    mPreviewOverrideBodyIndex = 0
+
+    If objNum > 0 Then
+        If objType = eObjType.otArmadura Or objType = eObjType.otSkinsArmours Then
+            mPreviewOverrideBodyIndex = ResolvePreviewBodyIndex(objNum)
+        End If
+    End If
+
+    Call DrawUserPreview(mPreviewOverrideBodyIndex)
+    Exit Sub
+
+UpdateUserPreviewSelection_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.UpdateUserPreviewSelection", Erl)
+    Resume Next
+End Sub
+
+Private Function ResolvePreviewBodyIndex(ByVal objNum As Long) As Integer
+    On Error GoTo ResolvePreviewBodyIndex_Err
+
+    Dim candidate As Long
+
+    If objNum > 0 Then
+        candidate = ObjData(objNum).GrhIndex
+        If candidate >= LBound(BodyData) And candidate <= UBound(BodyData) Then
+            ResolvePreviewBodyIndex = candidate
+            Exit Function
+        End If
+    End If
+
+    ResolvePreviewBodyIndex = 0
+    Exit Function
+
+ResolvePreviewBodyIndex_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolvePreviewBodyIndex", Erl)
+    ResolvePreviewBodyIndex = 0
+End Function
