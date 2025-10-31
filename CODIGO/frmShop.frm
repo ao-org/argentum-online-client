@@ -337,13 +337,20 @@ Private Sub DrawUserPreview()
     Dim headFrame As Long
     Dim headX As Integer
     Dim headY As Integer
+    Dim headOffsetX As Integer
     Dim headDrawn As Boolean
     If headIndex >= LBound(HeadData) And headIndex <= UBound(HeadData) Then
         headFrame = ResolvePreviewGrhFrame(HeadData(headIndex).Head(heading).GrhIndex)
     End If
 
     If headFrame > 0 And bodyFrame > 0 Then
-        headX = (picUserPreview.ScaleWidth - GrhData(headFrame).pixelWidth) \ 2 - 1
+        If bodyIndex >= LBound(BodyData) And bodyIndex <= UBound(BodyData) Then
+            headOffsetX = BodyData(bodyIndex).HeadOffset.x - BodyData(bodyIndex).BodyOffset.x
+        Else
+            headOffsetX = 0
+        End If
+
+        headX = bodyX + headOffsetX
         headY = bodyY + GrhData(bodyFrame).pixelHeight - GrhData(headFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y
         Call Grh_Render_To_HdcSinBorrar(picUserPreview, headFrame, headX, headY, False)
         headDrawn = True
@@ -359,7 +366,16 @@ Private Sub DrawUserPreview()
                 helmetX = headX
                 helmetY = headY
             Else
-                helmetX = (picUserPreview.ScaleWidth - GrhData(helmetFrame).pixelWidth) \ 2 - 1
+                If bodyFrame > 0 Then
+                    If bodyIndex >= LBound(BodyData) And bodyIndex <= UBound(BodyData) Then
+                        headOffsetX = BodyData(bodyIndex).HeadOffset.x - BodyData(bodyIndex).BodyOffset.x
+                    Else
+                        headOffsetX = 0
+                    End If
+                    helmetX = bodyX + headOffsetX
+                Else
+                    helmetX = (picUserPreview.ScaleWidth - GrhData(helmetFrame).pixelWidth) \ 2
+                End If
                 If bodyFrame > 0 Then
                     helmetY = bodyY + GrhData(bodyFrame).pixelHeight - GrhData(helmetFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y
                 Else
