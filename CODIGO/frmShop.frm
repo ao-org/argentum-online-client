@@ -168,6 +168,8 @@ Private Const SHOP_HELMET_OFFSET_X As Long = -2
 Private mPreviewHeading As E_Heading
 Private mPreviewBodyOverride As Long
 Private mPreviewHelmetObjNum As Long
+Private mLastDrawnBody As Long
+Private mLastDrawnHead As Long
 
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
@@ -175,6 +177,8 @@ Private Sub Form_Load()
     mPreviewHeading = E_Heading.south
     mPreviewBodyOverride = 0
     mPreviewHelmetObjNum = 0
+    mLastDrawnBody = 0
+    mLastDrawnHead = 0
     Label1.Caption = JsonLanguage.Item("MENSAJE_TRANSACCION_RELOGUEO")
     Call DrawUserPreview
 End Sub
@@ -241,6 +245,12 @@ Private Sub DrawUserPreview()
 
     If mPreviewBodyOverride > 0 Then
         bodyIndex = mPreviewBodyOverride
+    ElseIf bodyIndex <= 0 And mLastDrawnBody > 0 Then
+        bodyIndex = mLastDrawnBody
+    End If
+
+    If headIndex <= 0 And mLastDrawnHead > 0 Then
+        headIndex = mLastDrawnHead
     End If
 
     Dim bodyLower As Long
@@ -317,6 +327,10 @@ Private Sub DrawUserPreview()
     End If
 
     Call picUserPreview.Refresh
+    mLastDrawnBody = bodyIndex
+    If headIndex > 0 Then
+        mLastDrawnHead = headIndex
+    End If
 
     Exit Sub
 
