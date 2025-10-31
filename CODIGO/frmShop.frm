@@ -382,6 +382,7 @@ Private Sub DrawUserPreview()
                     helmetY = (picUserPreview.ScaleHeight - GrhData(helmetFrame).pixelHeight) \ 2
                 End If
             End If
+            helmetX = helmetX - 2
             Call Grh_Render_To_HdcSinBorrar(picUserPreview, helmetFrame, helmetX, helmetY, False)
         End If
     End If
