@@ -54,9 +54,9 @@ Begin VB.Form frmShopAO20
       AutoRedraw      =   -1  'True
       BackColor       =   &H80000001&
       ForeColor       =   &H80000008&
-      Height          =   2940
+      Height          =   1905
       Left            =   4095
-      ScaleHeight     =   196
+      ScaleHeight     =   127
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   124
       TabIndex        =   6
