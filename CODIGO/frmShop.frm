@@ -48,6 +48,20 @@ Begin VB.Form frmShopAO20
       Top             =   2880
       Width           =   495
    End
+   Begin VB.PictureBox picUserPreview 
+      Appearance      =   0  'Flat
+      AutoRedraw      =   -1  'True
+      BackColor       =   &H80000001&
+      ForeColor       =   &H80000008&
+      Height          =   1905
+      Left            =   4095
+      ScaleHeight     =   127
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   124
+      TabIndex        =   6
+      Top             =   3600
+      Width           =   1860
+   End
    Begin VB.TextBox txtFindObj 
       BackColor       =   &H80000007&
       BorderStyle     =   0  'None
