@@ -131,7 +131,6 @@ Module=dx_utils; CODIGO\dx_utils.bas
 Module=Math; CODIGO\Math.bas
 Class=clsGameState; CODIGO\clsGameState.cls
 Module=ModUtils; CODIGO\ModUtils.bas
-Module=ModShopPreview; CODIGO\ModShopPreview.bas
 Form=CODIGO\frmTransferChar.frm
 Module=ModLogin; CODIGO\ModLogin.bas
 Module=BabelUI; CODIGO\BabelUI.bas

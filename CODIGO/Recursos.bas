@@ -1246,7 +1246,6 @@ Public Sub CargarIndicesOBJ()
     NumQuest = val(Leer.GetValue("INIT", "NUMQUESTS"))
     NumSug = val(Leer.GetValue("INIT", "NUMSUGERENCIAS"))
     ReDim ObjData(0 To NumOBJs) As ObjDatas
-    Call ShopPreview_Reset(NumOBJs)
     ReDim NpcData(0 To NumNpcs) As NpcDatas
     ReDim HechizoData(0 To NumHechizos) As HechizoDatas
     ReDim Locale_SMG(0 To NumLocaleMsg) As String
@@ -1272,9 +1271,6 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).MinHit = val(Leer.GetValue("OBJ" & Obj, "MinHit"))
         ObjData(Obj).MaxHit = val(Leer.GetValue("OBJ" & Obj, "MaxHit"))
         ObjData(Obj).ObjType = val(Leer.GetValue("OBJ" & Obj, "ObjType"))
-        If ObjData(Obj).ObjType = eObjType.otArmadura Or ObjData(Obj).ObjType = eObjType.otSkinsArmours Then
-            Call ShopPreview_RegisterArmorBodies(Obj, Leer)
-        End If
         ObjData(Obj).Cooldown = val(Leer.GetValue("OBJ" & Obj, "CD"))
         ObjData(Obj).CDType = val(Leer.GetValue("OBJ" & Obj, "CDType"))
         ObjData(Obj).CreaGRH = Leer.GetValue("OBJ" & Obj, "CreaGRH")
