@@ -433,6 +433,16 @@ Private Function ResolvePreviewBodyIndex(ByVal objNum As Long, ByVal objType As 
     race = UserStats.Raza
     gender = UserStats.Sexo
 
+    If race < eRaza.Humano Or race > eRaza.Orco Or gender < eGenero.Hombre Or gender > eGenero.Mujer Then
+        If UserCharIndex > 0 Then
+            Dim currentBody As Integer
+            currentBody = charlist(UserCharIndex).iBody
+            If ShopPreview_GuessRaceGender(currentBody, race, gender) Then
+                ' race and gender resolved from current body
+            End If
+        End If
+    End If
+
     If race >= eRaza.Humano And race <= eRaza.Orco And gender >= eGenero.Hombre And gender <= eGenero.Mujer Then
         candidate = ObjData(objNum).PreviewBody(race, gender)
         If candidate = 0 Then

@@ -21,8 +21,14 @@ Private Type tShopPreviewInfo
     DefaultBody As Integer
 End Type
 
+Private Type tShopBodyLookup
+    Race As eRaza
+    Gender As eGenero
+End Type
+
 Private gShopPreview() As tShopPreviewInfo
 Private gPreviewInitialized As Boolean
+Private gBodyLookup() As tShopBodyLookup
 
 Public Sub ShopPreview_Reset(ByVal maxObj As Long)
     On Error GoTo ShopPreview_Reset_Err
@@ -30,6 +36,7 @@ Public Sub ShopPreview_Reset(ByVal maxObj As Long)
     If maxObj < 0 Then maxObj = 0
     ReDim gShopPreview(0 To maxObj) As tShopPreviewInfo
     gPreviewInitialized = True
+    Erase gBodyLookup
     Exit Sub
 
 ShopPreview_Reset_Err:
@@ -67,6 +74,89 @@ ShopPreview_SetBodyOverride_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModShopPreview.ShopPreview_SetBodyOverride", Erl)
     Resume Next
 End Sub
+
+Private Sub EnsureBodyLookupSize(ByVal bodyIndex As Long)
+    On Error GoTo EnsureBodyLookupSize_Err
+
+    If bodyIndex <= 0 Then Exit Sub
+
+    If IsBodyLookupInitialized() Then
+        If bodyIndex <= UBound(gBodyLookup) Then Exit Sub
+    End If
+
+    Dim newSize As Long
+    If IsBodyLookupInitialized() Then
+        newSize = UBound(gBodyLookup)
+    Else
+        newSize = 0
+    End If
+
+    If bodyIndex > newSize Then newSize = bodyIndex
+    If IsBodyLookupInitialized() Then
+        ReDim Preserve gBodyLookup(0 To newSize) As tShopBodyLookup
+    Else
+        ReDim gBodyLookup(0 To newSize) As tShopBodyLookup
+    End If
+    Exit Sub
+
+EnsureBodyLookupSize_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModShopPreview.EnsureBodyLookupSize", Erl)
+    Resume Next
+End Sub
+
+Private Sub ShopPreview_RegisterBodyMapping(ByVal bodyIndex As Integer, ByVal race As eRaza, ByVal gender As eGenero)
+    On Error GoTo ShopPreview_RegisterBodyMapping_Err
+
+    If bodyIndex <= 0 Then Exit Sub
+    If race < eRaza.Humano Or race > eRaza.Orco Then Exit Sub
+    If gender < eGenero.Hombre Or gender > eGenero.Mujer Then Exit Sub
+
+    Call EnsureBodyLookupSize(bodyIndex)
+    If IsBodyLookupInitialized() Then
+        gBodyLookup(bodyIndex).Race = race
+        gBodyLookup(bodyIndex).Gender = gender
+    End If
+    Exit Sub
+
+ShopPreview_RegisterBodyMapping_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModShopPreview.ShopPreview_RegisterBodyMapping", Erl)
+    Resume Next
+End Sub
+
+Public Function ShopPreview_GuessRaceGender(ByVal bodyIndex As Integer, ByRef race As eRaza, ByRef gender As eGenero) As Boolean
+    On Error GoTo ShopPreview_GuessRaceGender_Err
+
+    If bodyIndex < 0 Then Exit Function
+
+    If IsBodyLookupInitialized() Then
+        If bodyIndex >= LBound(gBodyLookup) And bodyIndex <= UBound(gBodyLookup) Then
+            If gBodyLookup(bodyIndex).Race >= eRaza.Humano And gBodyLookup(bodyIndex).Race <= eRaza.Orco Then
+                If gBodyLookup(bodyIndex).Gender >= eGenero.Hombre And gBodyLookup(bodyIndex).Gender <= eGenero.Mujer Then
+                    race = gBodyLookup(bodyIndex).Race
+                    gender = gBodyLookup(bodyIndex).Gender
+                    ShopPreview_GuessRaceGender = True
+                End If
+            End If
+        End If
+    End If
+    Exit Function
+
+ShopPreview_GuessRaceGender_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModShopPreview.ShopPreview_GuessRaceGender", Erl)
+    ShopPreview_GuessRaceGender = False
+End Function
+
+Private Function IsBodyLookupInitialized() As Boolean
+    On Error GoTo IsBodyLookupInitialized_Err
+
+    Dim lb As Long
+    lb = LBound(gBodyLookup)
+    IsBodyLookupInitialized = True
+    Exit Function
+
+IsBodyLookupInitialized_Err:
+    IsBodyLookupInitialized = False
+End Function
 
 Public Function ShopPreview_GetBodyOverride(ByVal objNum As Long, ByVal race As eRaza, ByVal gender As eGenero) As Integer
     On Error GoTo ShopPreview_GetBodyOverride_Err
@@ -128,6 +218,7 @@ Public Sub ShopPreview_RegisterArmorBodies(ByVal objNum As Long, ByRef reader As
             bodyIndex = overrides(race, gender)
             ObjData(objNum).PreviewBody(race, gender) = bodyIndex
             Call ShopPreview_SetBodyOverride(objNum, race, gender, bodyIndex)
+            Call ShopPreview_RegisterBodyMapping(bodyIndex, race, gender)
             If defaultBody = 0 And bodyIndex > 0 Then
                 defaultBody = bodyIndex
             End If
