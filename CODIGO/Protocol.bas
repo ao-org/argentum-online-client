@@ -60,14 +60,14 @@ End Function
 #If DIRECT_PLAY = 0 Then
     Private Reader As Network.Reader
 
-Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
+Public Function HandleIncomingData(ByVal incomingMessage As Network.Reader) As Boolean
 #Else
     Private Reader As New clsNetReader
     Public Function HandleIncomingData(dpnotify As DxVBLibA.DPNMSG_RECEIVE) As Boolean
     #End If
     On Error GoTo HandleIncomingData_Err
     #If DIRECT_PLAY = 0 Then
-        Set Reader = message
+        Set Reader = incomingMessage
     #Else
         Reader.set_data dpnotify
     #End If
@@ -95,7 +95,7 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call SaveStringInFile(chat, "remote_debug.txt")
             Case Else
                 'don't care, just consume
-                Do While (message.GetAvailable() > 0)
+                Do While (incomingMessage.GetAvailable() > 0)
                     PacketId = Reader.ReadInt8
                 Loop
         End Select
