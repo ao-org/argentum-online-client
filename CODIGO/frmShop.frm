@@ -268,15 +268,36 @@ Private Sub DrawUserPreview()
         Exit Sub
     End If
 
+    Dim drawn As Boolean
+    drawn = RenderPreviewWithOverrides(bodyIndex, headIndex)
+
+    If Not drawn Then
+        drawn = DrawBasePreview(bodyIndex, headIndex)
+    End If
+
+    If drawn Then
+        mLastDrawnBody = bodyIndex
+        If headIndex > 0 Then
+            mLastDrawnHead = headIndex
+        End If
+    End If
+
+    Exit Sub
+
+DrawUserPreview_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.DrawUserPreview", Erl)
+End Sub
+
+Private Function RenderPreviewWithOverrides(ByVal bodyIndex As Long, ByVal headIndex As Long) As Boolean
+    On Error GoTo RenderPreviewWithOverrides_Err
+
     Dim walkGrh As Long
     walkGrh = BodyData(bodyIndex).Walk(mPreviewHeading).GrhIndex
-    If walkGrh <= 0 Or walkGrh > UBound(GrhData) Then Exit Sub
+    If walkGrh <= 0 Or walkGrh > UBound(GrhData) Then Exit Function
 
     Dim bodyFrame As Long
     bodyFrame = GetGrhFrame(walkGrh, 1)
-    If bodyFrame <= 0 Or bodyFrame > UBound(GrhData) Then Exit Sub
-
-    Call picUserPreview.Cls
+    If bodyFrame <= 0 Or bodyFrame > UBound(GrhData) Then Exit Function
 
     Dim bodyWidth As Long
     Dim bodyHeight As Long
@@ -289,54 +310,131 @@ Private Sub DrawUserPreview()
     Dim drawY As Long
     drawY = min(picUserPreview.ScaleHeight - bodyHeight + BodyData(bodyIndex).HeadOffset.y \ 2, (picUserPreview.ScaleHeight - bodyHeight) \ 2)
 
+    Dim headFrame As Long
+    Dim headX As Long
+    Dim headY As Long
+    Dim hasHead As Boolean
+    hasHead = TryResolveHeadFrame(headIndex, bodyIndex, drawY, bodyHeight, headFrame, headX, headY)
+
+    Dim helmetFrame As Long
+    Dim helmetX As Long
+    Dim helmetY As Long
+    Dim hasHelmet As Boolean
+    hasHelmet = TryResolveHelmetFrame(bodyIndex, drawY, bodyHeight, helmetFrame, helmetX, helmetY)
+
+    Call picUserPreview.Cls
     Call Grh_Render_To_Hdc(picUserPreview, bodyFrame, drawX, drawY, False, RGB(11, 11, 11))
+
+    If hasHead Then
+        Call Grh_Render_To_HdcSinBorrar(picUserPreview, headFrame, headX, headY, False)
+    End If
+
+    If hasHelmet Then
+        Call Grh_Render_To_HdcSinBorrar(picUserPreview, helmetFrame, helmetX, helmetY, False)
+    End If
+
+    Call picUserPreview.Refresh
+    RenderPreviewWithOverrides = True
+    Exit Function
+
+RenderPreviewWithOverrides_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.RenderPreviewWithOverrides", Erl)
+    RenderPreviewWithOverrides = False
+End Function
+
+Private Function DrawBasePreview(ByVal bodyIndex As Long, ByVal headIndex As Long) As Boolean
+    On Error GoTo DrawBasePreview_Err
+
+    Call picUserPreview.Cls
+    Call DibujarNPC(picUserPreview, headIndex, bodyIndex, mPreviewHeading)
+
+    Dim walkGrh As Long
+    walkGrh = BodyData(bodyIndex).Walk(mPreviewHeading).GrhIndex
+    If walkGrh > 0 And walkGrh <= UBound(GrhData) Then
+        Dim bodyFrame As Long
+        bodyFrame = GetGrhFrame(walkGrh, 1)
+        If bodyFrame > 0 And bodyFrame <= UBound(GrhData) Then
+            Dim bodyHeight As Long
+            bodyHeight = GrhData(bodyFrame).pixelHeight
+            Dim drawY As Long
+            drawY = min(picUserPreview.ScaleHeight - bodyHeight + BodyData(bodyIndex).HeadOffset.y \ 2, (picUserPreview.ScaleHeight - bodyHeight) \ 2)
+
+            Dim helmetFrame As Long
+            Dim helmetX As Long
+            Dim helmetY As Long
+            If TryResolveHelmetFrame(bodyIndex, drawY, bodyHeight, helmetFrame, helmetX, helmetY) Then
+                Call Grh_Render_To_HdcSinBorrar(picUserPreview, helmetFrame, helmetX, helmetY, False)
+            End If
+        End If
+    End If
+
+    Call picUserPreview.Refresh
+    DrawBasePreview = True
+    Exit Function
+
+DrawBasePreview_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.DrawBasePreview", Erl)
+    DrawBasePreview = False
+End Function
+
+Private Function TryResolveHeadFrame(ByVal headIndex As Long, ByVal bodyIndex As Long, ByVal drawY As Long, ByVal bodyHeight As Long, _
+                                     ByRef headFrame As Long, ByRef headX As Long, ByRef headY As Long) As Boolean
+    On Error GoTo TryResolveHeadFrame_Err
+
+    If headIndex <= 0 Then Exit Function
 
     Dim headLower As Long
     Dim headUpper As Long
     On Error Resume Next
     headLower = LBound(HeadData)
     headUpper = UBound(HeadData)
-    On Error GoTo DrawUserPreview_Err
-
-    If headIndex >= headLower And headIndex <= headUpper And headIndex > 0 Then
-        Dim headGrh As Long
-        headGrh = HeadData(headIndex).Head(mPreviewHeading).GrhIndex
-        If headGrh > 0 And headGrh <= UBound(GrhData) Then
-            Dim headFrame As Long
-            headFrame = GetGrhFrame(headGrh, 1)
-            If headFrame > 0 Then
-                Dim headX As Long
-                Dim headY As Long
-                headX = (picUserPreview.ScaleWidth - GrhData(headFrame).pixelWidth) \ 2 + BodyData(bodyIndex).HeadOffset.x
-                headY = drawY + bodyHeight - GrhData(headFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y
-                Call Grh_Render_To_HdcSinBorrar(picUserPreview, headFrame, headX, headY, False)
-            End If
-        End If
+    If Err.Number <> 0 Then
+        Err.Clear
+        Exit Function
     End If
+    On Error GoTo TryResolveHeadFrame_Err
 
-    If mPreviewHelmetObjNum > 0 Then
-        Dim helmetFrame As Long
-        helmetFrame = ResolveHelmetFrame(mPreviewHelmetObjNum, mPreviewHeading)
-        If helmetFrame > 0 And helmetFrame <= UBound(GrhData) Then
-            Dim helmetX As Long
-            Dim helmetY As Long
-            helmetX = (picUserPreview.ScaleWidth - GrhData(helmetFrame).pixelWidth) \ 2 + BodyData(bodyIndex).HeadOffset.x + SHOP_HELMET_OFFSET_X
-            helmetY = drawY + bodyHeight - GrhData(helmetFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y
-            Call Grh_Render_To_HdcSinBorrar(picUserPreview, helmetFrame, helmetX, helmetY, False)
-        End If
-    End If
+    If headIndex < headLower Or headIndex > headUpper Then Exit Function
 
-    Call picUserPreview.Refresh
-    mLastDrawnBody = bodyIndex
-    If headIndex > 0 Then
-        mLastDrawnHead = headIndex
-    End If
+    Dim headGrh As Long
+    headGrh = HeadData(headIndex).Head(mPreviewHeading).GrhIndex
+    If headGrh <= 0 Or headGrh > UBound(GrhData) Then Exit Function
 
-    Exit Sub
+    headFrame = GetGrhFrame(headGrh, 1)
+    If headFrame <= 0 Or headFrame > UBound(GrhData) Then Exit Function
 
-DrawUserPreview_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.DrawUserPreview", Erl)
-End Sub
+    headX = (picUserPreview.ScaleWidth - GrhData(headFrame).pixelWidth) \ 2 + BodyData(bodyIndex).HeadOffset.x
+    headY = drawY + bodyHeight - GrhData(headFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y
+
+    TryResolveHeadFrame = True
+    Exit Function
+
+TryResolveHeadFrame_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.TryResolveHeadFrame", Erl)
+    headFrame = 0
+    TryResolveHeadFrame = False
+End Function
+
+Private Function TryResolveHelmetFrame(ByVal bodyIndex As Long, ByVal drawY As Long, ByVal bodyHeight As Long, _
+                                       ByRef helmetFrame As Long, ByRef helmetX As Long, ByRef helmetY As Long) As Boolean
+    On Error GoTo TryResolveHelmetFrame_Err
+
+    If mPreviewHelmetObjNum <= 0 Then Exit Function
+
+    helmetFrame = ResolveHelmetFrame(mPreviewHelmetObjNum, mPreviewHeading)
+    If helmetFrame <= 0 Or helmetFrame > UBound(GrhData) Then Exit Function
+
+    helmetX = (picUserPreview.ScaleWidth - GrhData(helmetFrame).pixelWidth) \ 2 + BodyData(bodyIndex).HeadOffset.x + SHOP_HELMET_OFFSET_X
+    helmetY = drawY + bodyHeight - GrhData(helmetFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y
+
+    TryResolveHelmetFrame = True
+    Exit Function
+
+TryResolveHelmetFrame_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.TryResolveHelmetFrame", Erl)
+    helmetFrame = 0
+    TryResolveHelmetFrame = False
+End Function
 
 Private Sub RefreshSelectedItemPreview()
     On Error GoTo RefreshSelectedItemPreview_Err
