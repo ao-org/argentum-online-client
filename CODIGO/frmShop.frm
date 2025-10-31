@@ -22,7 +22,7 @@ Begin VB.Form frmShopAO20
       Height          =   3150
       Left            =   360
       TabIndex        =   5
-      Top             =   2400
+      Top             =   36000
       Width           =   3255
    End
    Begin VB.ListBox lstItemsShop 
@@ -55,12 +55,12 @@ Begin VB.Form frmShopAO20
       BackColor       =   &H80000001&
       ForeColor       =   &H80000008&
       Height          =   2940
-      Left            =   3960
+      Left            =   4095
       ScaleHeight     =   196
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   124
       TabIndex        =   6
-      Top             =   240
+      Top             =   3600
       Width           =   1860
    End
    Begin VB.TextBox txtFindObj 
