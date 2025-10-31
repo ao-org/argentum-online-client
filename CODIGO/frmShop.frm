@@ -217,15 +217,7 @@ Private Sub DrawUserPreview()
 
     Dim bodyIndex As Long
     Dim headIndex As Long
-    bodyIndex = UserBody
-    headIndex = UserHead
-
-    If UserCharIndex >= LBound(charlist) And UserCharIndex <= UBound(charlist) Then
-        With charlist(UserCharIndex)
-            If .Body > 0 Then bodyIndex = .Body
-            If .Head > 0 Then headIndex = .Head
-        End With
-    End If
+    Call GetUserAppearance(bodyIndex, headIndex)
 
     If bodyIndex <= 0 Then Exit Sub
 
