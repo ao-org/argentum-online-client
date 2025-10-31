@@ -102,19 +102,40 @@ Public Sub ShopPreview_RegisterArmorBodies(ByVal objNum As Long, ByRef reader As
     On Error GoTo ShopPreview_RegisterArmorBodies_Err
 
     If reader Is Nothing Then Exit Sub
+    If objNum < LBound(ObjData) Or objNum > UBound(ObjData) Then Exit Sub
 
-    Call ShopPreview_SetBodyOverride(objNum, eRaza.Humano, eGenero.Hombre, val(reader.GetValue("OBJ" & objNum, "RopajeHumano")))
-    Call ShopPreview_SetBodyOverride(objNum, eRaza.Humano, eGenero.Mujer, val(reader.GetValue("OBJ" & objNum, "RopajeHumana")))
-    Call ShopPreview_SetBodyOverride(objNum, eRaza.Elfo, eGenero.Hombre, val(reader.GetValue("OBJ" & objNum, "RopajeElfo")))
-    Call ShopPreview_SetBodyOverride(objNum, eRaza.Elfo, eGenero.Mujer, val(reader.GetValue("OBJ" & objNum, "RopajeElfa")))
-    Call ShopPreview_SetBodyOverride(objNum, eRaza.ElfoOscuro, eGenero.Hombre, val(reader.GetValue("OBJ" & objNum, "RopajeElfoOscuro")))
-    Call ShopPreview_SetBodyOverride(objNum, eRaza.ElfoOscuro, eGenero.Mujer, val(reader.GetValue("OBJ" & objNum, "RopajeElfaOscura")))
-    Call ShopPreview_SetBodyOverride(objNum, eRaza.Gnomo, eGenero.Hombre, val(reader.GetValue("OBJ" & objNum, "RopajeGnomo")))
-    Call ShopPreview_SetBodyOverride(objNum, eRaza.Gnomo, eGenero.Mujer, val(reader.GetValue("OBJ" & objNum, "RopajeGnoma")))
-    Call ShopPreview_SetBodyOverride(objNum, eRaza.Enano, eGenero.Hombre, val(reader.GetValue("OBJ" & objNum, "RopajeEnano")))
-    Call ShopPreview_SetBodyOverride(objNum, eRaza.Enano, eGenero.Mujer, val(reader.GetValue("OBJ" & objNum, "RopajeEnana")))
-    Call ShopPreview_SetBodyOverride(objNum, eRaza.Orco, eGenero.Hombre, val(reader.GetValue("OBJ" & objNum, "RopajeOrco")))
-    Call ShopPreview_SetBodyOverride(objNum, eRaza.Orco, eGenero.Mujer, val(reader.GetValue("OBJ" & objNum, "RopajeOrca")))
+    Dim overrides(1 To eRaza.Orco, 1 To eGenero.Mujer) As Integer
+    overrides(eRaza.Humano, eGenero.Hombre) = Val(reader.GetValue("OBJ" & objNum, "RopajeHumano"))
+    overrides(eRaza.Humano, eGenero.Mujer) = Val(reader.GetValue("OBJ" & objNum, "RopajeHumana"))
+    overrides(eRaza.Elfo, eGenero.Hombre) = Val(reader.GetValue("OBJ" & objNum, "RopajeElfo"))
+    overrides(eRaza.Elfo, eGenero.Mujer) = Val(reader.GetValue("OBJ" & objNum, "RopajeElfa"))
+    overrides(eRaza.ElfoOscuro, eGenero.Hombre) = Val(reader.GetValue("OBJ" & objNum, "RopajeElfoOscuro"))
+    overrides(eRaza.ElfoOscuro, eGenero.Mujer) = Val(reader.GetValue("OBJ" & objNum, "RopajeElfaOscura"))
+    overrides(eRaza.Gnomo, eGenero.Hombre) = Val(reader.GetValue("OBJ" & objNum, "RopajeGnomo"))
+    overrides(eRaza.Gnomo, eGenero.Mujer) = Val(reader.GetValue("OBJ" & objNum, "RopajeGnoma"))
+    overrides(eRaza.Enano, eGenero.Hombre) = Val(reader.GetValue("OBJ" & objNum, "RopajeEnano"))
+    overrides(eRaza.Enano, eGenero.Mujer) = Val(reader.GetValue("OBJ" & objNum, "RopajeEnana"))
+    overrides(eRaza.Orco, eGenero.Hombre) = Val(reader.GetValue("OBJ" & objNum, "RopajeOrco"))
+    overrides(eRaza.Orco, eGenero.Mujer) = Val(reader.GetValue("OBJ" & objNum, "RopajeOrca"))
+
+    Dim race As eRaza
+    Dim gender As eGenero
+    Dim defaultBody As Integer
+    Dim bodyIndex As Integer
+
+    For race = eRaza.Humano To eRaza.Orco
+        For gender = eGenero.Hombre To eGenero.Mujer
+            bodyIndex = overrides(race, gender)
+            ObjData(objNum).PreviewBody(race, gender) = bodyIndex
+            Call ShopPreview_SetBodyOverride(objNum, race, gender, bodyIndex)
+            If defaultBody = 0 And bodyIndex > 0 Then
+                defaultBody = bodyIndex
+            End If
+        Next gender
+    Next race
+
+    ObjData(objNum).PreviewDefaultBody = defaultBody
+    Call ShopPreview_SetDefaultBody(objNum, defaultBody)
     Exit Sub
 
 ShopPreview_RegisterArmorBodies_Err:

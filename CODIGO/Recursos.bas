@@ -1259,7 +1259,6 @@ Public Sub CargarIndicesOBJ()
     For Obj = 1 To NumOBJs
         DoEvents
         ObjData(Obj).GrhIndex = val(Leer.GetValue("OBJ" & Obj, "grhindex"))
-        Call ShopPreview_SetDefaultBody(Obj, ObjData(Obj).GrhIndex)
         If Obj = 403 Then
             frmDebug.add_text_tracebox "asd"
         End If

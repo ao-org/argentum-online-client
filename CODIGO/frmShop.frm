@@ -241,16 +241,24 @@ Private Sub lstItemShopFilter_Click()
     Dim i        As Long
     Dim obj_name As String
     Dim objNum   As Long
-    Dim objType  As Byte
+    Dim objType  As Integer
     obj_name = Split(lstItemShopFilter.text, " (")(0)
     For i = 1 To UBound(ObjShop)
         If obj_name = ObjShop(i).Name Then
             objNum = ObjShop(i).ObjNum
-            Grh = ObjData(objNum).GrhIndex
-            objType = ObjData(objNum).ObjType
             Exit For
         End If
     Next i
+
+    If objNum > 0 And objNum <= UBound(ObjData) Then
+        Grh = ObjData(objNum).GrhIndex
+        objType = ObjData(objNum).ObjType
+    Else
+        objNum = 0
+        Grh = 0
+        objType = 0
+    End If
+
     Call Grh_Render_To_Hdc(PictureItemShop, Grh, 0, 0, False)
     Call UpdateUserPreviewSelection(objNum, objType)
 End Sub
@@ -362,7 +370,7 @@ DrawUserPreview_Err:
     Resume Next
 End Sub
 
-Private Sub UpdateUserPreviewSelection(ByVal objNum As Long, ByVal objType As Byte)
+Private Sub UpdateUserPreviewSelection(ByVal objNum As Long, ByVal objType As Integer)
     On Error GoTo UpdateUserPreviewSelection_Err
 
     mPreviewOverrideBodyIndex = 0
@@ -388,7 +396,7 @@ UpdateUserPreviewSelection_Err:
     Resume Next
 End Sub
 
-Private Function ResolvePreviewBodyIndex(ByVal objNum As Long, ByVal objType As Byte) As Integer
+Private Function ResolvePreviewBodyIndex(ByVal objNum As Long, ByVal objType As Integer) As Integer
     On Error GoTo ResolvePreviewBodyIndex_Err
 
     Dim candidate As Long
@@ -396,19 +404,27 @@ Private Function ResolvePreviewBodyIndex(ByVal objNum As Long, ByVal objType As 
     Dim gender As eGenero
 
     If objNum <= 0 Then GoTo ResolvePreviewBodyIndex_CleanExit
+    If objNum > UBound(ObjData) Then GoTo ResolvePreviewBodyIndex_CleanExit
 
     race = UserStats.Raza
     gender = UserStats.Sexo
 
     If race >= eRaza.Humano And race <= eRaza.Orco And gender >= eGenero.Hombre And gender <= eGenero.Mujer Then
-        candidate = ShopPreview_GetBodyOverride(objNum, race, gender)
+        candidate = ObjData(objNum).PreviewBody(race, gender)
+        If candidate = 0 Then
+            candidate = ShopPreview_GetBodyOverride(objNum, race, gender)
+        End If
     End If
 
     If candidate = 0 Then
-        candidate = ShopPreview_GetDefaultBody(objNum)
-        If candidate = 0 And objType <> eObjType.otSkinsArmours Then
-            candidate = ObjData(objNum).GrhIndex
+        candidate = ObjData(objNum).PreviewDefaultBody
+        If candidate = 0 Then
+            candidate = ShopPreview_GetDefaultBody(objNum)
         End If
+    End If
+
+    If candidate = 0 And objType <> eObjType.otSkinsArmours Then
+        candidate = ObjData(objNum).GrhIndex
     End If
 
     If candidate >= LBound(BodyData) And candidate <= UBound(BodyData) Then

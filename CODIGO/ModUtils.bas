@@ -214,6 +214,8 @@ Public Type ObjDatas
     EarthEssence As Integer
     WindEssence As Integer
     ElementalTags As Long
+    PreviewBody(1 To eRaza.Orco, 1 To eGenero.Mujer) As Integer
+    PreviewDefaultBody As Integer
 End Type
 
 Public Type NpcDatas
