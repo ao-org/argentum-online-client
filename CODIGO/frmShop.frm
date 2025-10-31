@@ -218,19 +218,25 @@ Private Sub DrawUserPreview()
 
     Call picUserPreview.Cls
 
-    If UserCharIndex < LBound(charlist) Or UserCharIndex > UBound(charlist) Then Exit Sub
-
     Dim bodyIndex As Integer
     Dim headIndex As Integer
 
-    With charlist(UserCharIndex)
-        bodyIndex = .iBody
-        headIndex = .IHead
-    End With
+    bodyIndex = UserBody
+    headIndex = UserHead
+
+    If UserCharIndex >= LBound(charlist) And UserCharIndex <= UBound(charlist) Then
+        With charlist(UserCharIndex)
+            If .iBody > 0 Then bodyIndex = .iBody
+            If .IHead > 0 Then headIndex = .IHead
+        End With
+    End If
 
     If bodyIndex <= 0 Then Exit Sub
+    If bodyIndex > UBound(BodyData) Then Exit Sub
+    If headIndex < LBound(HeadData) Or headIndex > UBound(HeadData) Then headIndex = 0
 
     Call DibujarNPC(picUserPreview, headIndex, bodyIndex, E_Heading.south)
+    Call picUserPreview.Refresh
 
     Exit Sub
 
