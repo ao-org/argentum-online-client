@@ -48,6 +48,21 @@ Begin VB.Form frmShopAO20
       Top             =   2880
       Width           =   495
    End
+
+   Begin VB.PictureBox picUserPreview 
+      Appearance      =   0  'Flat
+      AutoRedraw      =   -1  'True
+      BackColor       =   &H80000001&
+      ForeColor       =   &H80000008&
+      Height          =   1905
+      Left            =   4095
+      ScaleHeight     =   127
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   124
+      TabIndex        =   6
+      Top             =   3600
+      Width           =   1860
+   End
    Begin VB.TextBox txtFindObj 
       BackColor       =   &H80000007&
       BorderStyle     =   0  'None
@@ -146,9 +161,22 @@ Attribute VB_Exposed = False
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 '
+Option Explicit
+
+Private Const SHOP_HELMET_OFFSET_X As Long = -2
+
+Private mPreviewHeading As E_Heading
+Private mPreviewBodyOverride As Long
+Private mPreviewHelmetObjNum As Long
+
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
+    Me.KeyPreview = True
+    mPreviewHeading = E_Heading.south
+    mPreviewBodyOverride = 0
+    mPreviewHelmetObjNum = 0
     Label1.Caption = JsonLanguage.Item("MENSAJE_TRANSACCION_RELOGUEO")
+    Call DrawUserPreview
 End Sub
 
 Private Sub Image2_Click()
@@ -158,18 +186,7 @@ End Sub
 Private Sub Image3_Click()
     'Antes de enviar al servidor hago una pre consulta de los créditos en cliente
     Dim obj_to_buy As ObjDatas
-    Dim i          As Long
-    obj_to_buy = ObjShop(Me.lstItemShopFilter.ListIndex + 1)
-    Dim obj_name As String
-    obj_name = Split(lstItemShopFilter.text, " (")(0)
-    For i = 1 To UBound(ObjShop)
-        If obj_name = ObjShop(i).Name Then
-            obj_to_buy = ObjData(ObjShop(i).ObjNum)
-            obj_to_buy.ObjNum = ObjShop(i).ObjNum
-            obj_to_buy.Valor = ObjShop(i).Valor
-            Exit For
-        End If
-    Next i
+    If Not GetSelectedShopObject(obj_to_buy) Then Exit Sub
     If credits_shopAO20 >= obj_to_buy.Valor Then
         Call writeBuyShopItem(obj_to_buy.ObjNum)
     Else
@@ -181,19 +198,499 @@ Private Sub Image4_Click()
     Unload Me
 End Sub
 
-Private Sub lstItemShopFilter_Click()
-    Dim Grh      As Long
-    Dim i        As Long
-    Dim obj_name As String
-    obj_name = Split(lstItemShopFilter.text, " (")(0)
-    For i = 1 To UBound(ObjShop)
-        If obj_name = ObjShop(i).Name Then
-            Grh = ObjData(ObjShop(i).ObjNum).GrhIndex
-            Exit For
-        End If
-    Next i
-    Call Grh_Render_To_Hdc(PictureItemShop, Grh, 0, 0, False)
+Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+    Dim newHeading As E_Heading
+    newHeading = mPreviewHeading
+
+    Select Case KeyCode
+        Case vbKeyUp
+            newHeading = E_Heading.NORTH
+        Case vbKeyRight
+            newHeading = E_Heading.EAST
+        Case vbKeyDown
+            newHeading = E_Heading.south
+        Case vbKeyLeft
+            newHeading = E_Heading.WEST
+        Case Else
+            Exit Sub
+    End Select
+
+    If newHeading <> mPreviewHeading Then
+        mPreviewHeading = newHeading
+        Call DrawUserPreview
+    End If
 End Sub
+
+Private Sub lstItemShopFilter_Click()
+    Call RefreshSelectedItemPreview
+End Sub
+
+Private Sub lstItemShopFilter_KeyUp(KeyCode As Integer, Shift As Integer)
+    Select Case KeyCode
+        Case vbKeyUp, vbKeyDown, vbKeyPageUp, vbKeyPageDown, vbKeyHome, vbKeyEnd
+            Call RefreshSelectedItemPreview
+    End Select
+End Sub
+
+Private Sub DrawUserPreview()
+    On Error GoTo DrawUserPreview_Err
+
+    Call picUserPreview.Cls
+
+    Dim bodyIndex As Long
+    Dim headIndex As Long
+    Call GetUserAppearance(bodyIndex, headIndex)
+
+    If mPreviewBodyOverride > 0 Then
+        bodyIndex = mPreviewBodyOverride
+    End If
+
+    Dim bodyLower As Long
+    Dim bodyUpper As Long
+    On Error Resume Next
+    bodyLower = LBound(BodyData)
+    bodyUpper = UBound(BodyData)
+    If Err.Number <> 0 Then
+        Err.Clear
+        Exit Sub
+    End If
+    On Error GoTo DrawUserPreview_Err
+
+    If bodyIndex < bodyLower Or bodyIndex > bodyUpper Then
+        Exit Sub
+    End If
+
+    Dim walkGrh As Long
+    walkGrh = BodyData(bodyIndex).Walk(mPreviewHeading).GrhIndex
+    If walkGrh <= 0 Or walkGrh > UBound(GrhData) Then Exit Sub
+
+    Dim bodyFrame As Long
+    bodyFrame = GetGrhFrame(walkGrh, 1)
+    If bodyFrame <= 0 Or bodyFrame > UBound(GrhData) Then Exit Sub
+
+    Dim bodyWidth As Long
+    Dim bodyHeight As Long
+    bodyWidth = GrhData(bodyFrame).pixelWidth
+    bodyHeight = GrhData(bodyFrame).pixelHeight
+
+    Dim drawX As Long
+    drawX = (picUserPreview.ScaleWidth - bodyWidth) \ 2
+
+    Dim drawY As Long
+    drawY = min(picUserPreview.ScaleHeight - bodyHeight + BodyData(bodyIndex).HeadOffset.y \ 2, (picUserPreview.ScaleHeight - bodyHeight) \ 2)
+
+    Call Grh_Render_To_Hdc(picUserPreview, bodyFrame, drawX, drawY, False, RGB(11, 11, 11))
+
+    Dim headLower As Long
+    Dim headUpper As Long
+    On Error Resume Next
+    headLower = LBound(HeadData)
+    headUpper = UBound(HeadData)
+    On Error GoTo DrawUserPreview_Err
+
+    If headIndex >= headLower And headIndex <= headUpper And headIndex > 0 Then
+        Dim headGrh As Long
+        headGrh = HeadData(headIndex).Head(mPreviewHeading).GrhIndex
+        If headGrh > 0 And headGrh <= UBound(GrhData) Then
+            Dim headFrame As Long
+            headFrame = GetGrhFrame(headGrh, 1)
+            If headFrame > 0 Then
+                Dim headX As Long
+                Dim headY As Long
+                headX = (picUserPreview.ScaleWidth - GrhData(headFrame).pixelWidth) \ 2 + BodyData(bodyIndex).HeadOffset.x
+                headY = drawY + bodyHeight - GrhData(headFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y
+                Call Grh_Render_To_HdcSinBorrar(picUserPreview, headFrame, headX, headY, False)
+            End If
+        End If
+    End If
+
+    If mPreviewHelmetObjNum > 0 Then
+        Dim helmetFrame As Long
+        helmetFrame = ResolveHelmetFrame(mPreviewHelmetObjNum, mPreviewHeading)
+        If helmetFrame > 0 And helmetFrame <= UBound(GrhData) Then
+            Dim helmetX As Long
+            Dim helmetY As Long
+            helmetX = (picUserPreview.ScaleWidth - GrhData(helmetFrame).pixelWidth) \ 2 + BodyData(bodyIndex).HeadOffset.x + SHOP_HELMET_OFFSET_X
+            helmetY = drawY + bodyHeight - GrhData(helmetFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y
+            Call Grh_Render_To_HdcSinBorrar(picUserPreview, helmetFrame, helmetX, helmetY, False)
+        End If
+    End If
+
+    Call picUserPreview.Refresh
+
+    Exit Sub
+
+DrawUserPreview_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.DrawUserPreview", Erl)
+End Sub
+
+Private Sub RefreshSelectedItemPreview()
+    On Error GoTo RefreshSelectedItemPreview_Err
+
+    mPreviewBodyOverride = 0
+    mPreviewHelmetObjNum = 0
+
+    Dim shopIndex As Long
+    shopIndex = SelectedShopIndex()
+    If shopIndex = 0 Then
+        Call PictureItemShop.Cls
+        Call DrawUserPreview
+        Exit Sub
+    End If
+
+    Dim objNum As Long
+    objNum = ObjShop(shopIndex).ObjNum
+    If objNum < LBound(ObjData) Or objNum > UBound(ObjData) Then
+        Call PictureItemShop.Cls
+        Call DrawUserPreview
+        Exit Sub
+    End If
+
+    Dim itemFrame As Long
+    itemFrame = GetGrhFrame(ObjData(objNum).GrhIndex, 1)
+    If itemFrame > 0 Then
+        Call Grh_Render_To_Hdc(PictureItemShop, itemFrame, 0, 0, False)
+    Else
+        Call PictureItemShop.Cls
+    End If
+
+    Dim objType As eObjType
+    objType = ObjData(objNum).ObjType
+
+    Dim resolvedBody As Long
+    resolvedBody = ResolvePreviewBody(objNum)
+
+    Select Case objType
+        Case eObjType.otArmadura, eObjType.otSkinsArmours, eObjType.otMonturas
+            If resolvedBody > 0 Then mPreviewBodyOverride = resolvedBody
+    End Select
+
+    If objType = eObjType.otCASCO Or objType = eObjType.otSkinsHelmets Then
+        mPreviewHelmetObjNum = objNum
+    End If
+
+    Call DrawUserPreview
+    Exit Sub
+
+RefreshSelectedItemPreview_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.RefreshSelectedItemPreview", Erl)
+End Sub
+
+Private Function SelectedShopIndex() As Long
+    On Error GoTo SelectedShopIndex_Err
+
+    Dim listIndex As Long
+    listIndex = lstItemShopFilter.ListIndex
+    If listIndex < 0 Then Exit Function
+
+    Dim dataIndex As Long
+    If listIndex >= 0 And listIndex < lstItemShopFilter.ListCount Then
+        dataIndex = lstItemShopFilter.ItemData(listIndex)
+    End If
+
+    dataIndex = dataIndex + 1
+
+    Dim upper As Long
+    On Error Resume Next
+    upper = UBound(ObjShop)
+    If Err.Number <> 0 Then
+        Err.Clear
+        Exit Function
+    End If
+    On Error GoTo SelectedShopIndex_Err
+
+    If dataIndex < 1 Or dataIndex > upper Then Exit Function
+
+    SelectedShopIndex = dataIndex
+    Exit Function
+
+SelectedShopIndex_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.SelectedShopIndex", Erl)
+End Function
+
+Private Function GetSelectedShopObject(ByRef obj_to_buy As ObjDatas) As Boolean
+    On Error GoTo GetSelectedShopObject_Err
+
+    Dim shopIndex As Long
+    shopIndex = SelectedShopIndex()
+    If shopIndex = 0 Then Exit Function
+
+    Dim objNum As Long
+    objNum = ObjShop(shopIndex).ObjNum
+    If objNum < LBound(ObjData) Or objNum > UBound(ObjData) Then Exit Function
+
+    obj_to_buy = ObjData(objNum)
+    obj_to_buy.ObjNum = objNum
+    obj_to_buy.Valor = ObjShop(shopIndex).Valor
+    obj_to_buy.Name = ObjShop(shopIndex).Name
+    GetSelectedShopObject = True
+    Exit Function
+
+GetSelectedShopObject_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.GetSelectedShopObject", Erl)
+End Function
+
+Private Sub GetUserAppearance(ByRef bodyIndex As Long, ByRef headIndex As Long)
+    On Error GoTo GetUserAppearance_Err
+
+    bodyIndex = UserBody
+    headIndex = UserHead
+
+    Dim charLower As Long
+    Dim charUpper As Long
+    On Error Resume Next
+    charLower = LBound(charlist)
+    charUpper = UBound(charlist)
+    If Err.Number = 0 Then
+        If UserCharIndex >= charLower And UserCharIndex <= charUpper Then
+            With charlist(UserCharIndex)
+                If .iBody > 0 Then bodyIndex = .iBody
+                If .IHead > 0 Then headIndex = .IHead
+            End With
+        End If
+    Else
+        Err.Clear
+    End If
+    On Error GoTo GetUserAppearance_Err
+
+    Dim bodyLower As Long
+    Dim bodyUpper As Long
+    On Error Resume Next
+    bodyLower = LBound(BodyData)
+    bodyUpper = UBound(BodyData)
+    If Err.Number <> 0 Then
+        Err.Clear
+        bodyIndex = 0
+    ElseIf bodyIndex < bodyLower Or bodyIndex > bodyUpper Then
+        bodyIndex = 0
+    End If
+
+    Dim headLower As Long
+    Dim headUpper As Long
+    On Error Resume Next
+    headLower = LBound(HeadData)
+    headUpper = UBound(HeadData)
+    If Err.Number <> 0 Then
+        Err.Clear
+        headIndex = 0
+    ElseIf headIndex < headLower Or headIndex > headUpper Then
+        headIndex = 0
+    End If
+    On Error GoTo GetUserAppearance_Err
+
+    Exit Sub
+
+GetUserAppearance_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.GetUserAppearance", Erl)
+    bodyIndex = 0
+    headIndex = 0
+End Sub
+
+Private Function ResolvePreviewBody(ByVal objNum As Long) As Long
+    On Error GoTo ResolvePreviewBody_Err
+
+    If objNum < LBound(ObjData) Or objNum > UBound(ObjData) Then Exit Function
+
+    Dim obj As ObjDatas
+    obj = ObjData(objNum)
+
+    Dim candidate As Long
+    Select Case obj.ObjType
+        Case eObjType.otArmadura, eObjType.otSkinsArmours, eObjType.otMonturas
+            candidate = ResolveBodyByRace(obj)
+            If candidate = 0 Then candidate = ResolveBodyByIndexValue(obj.GrhIndex)
+        Case Else
+            candidate = ResolveBodyByIndexValue(obj.GrhIndex)
+    End Select
+
+    If candidate > 0 Then
+        Dim lower As Long
+        Dim upper As Long
+        On Error Resume Next
+        lower = LBound(BodyData)
+        upper = UBound(BodyData)
+        If Err.Number <> 0 Then
+            Err.Clear
+            candidate = 0
+        ElseIf candidate < lower Or candidate > upper Then
+            candidate = 0
+        End If
+    End If
+    On Error GoTo ResolvePreviewBody_Err
+
+    ResolvePreviewBody = candidate
+    Exit Function
+
+ResolvePreviewBody_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolvePreviewBody", Erl)
+    ResolvePreviewBody = 0
+End Function
+
+Private Function ResolveBodyByRace(ByRef obj As ObjDatas) As Long
+    On Error GoTo ResolveBodyByRace_Err
+
+    Dim race As Long
+    race = UserStats.Raza
+    Dim gender As Long
+    gender = UserStats.Sexo
+
+    If gender <> eGenero.Mujer Then gender = eGenero.Hombre
+
+    Select Case race
+        Case eRaza.Humano
+            If gender = eGenero.Mujer Then
+                ResolveBodyByRace = obj.RopajeHumana
+            Else
+                ResolveBodyByRace = obj.RopajeHumano
+            End If
+        Case eRaza.Elfo
+            If gender = eGenero.Mujer Then
+                ResolveBodyByRace = obj.RopajeElfa
+            Else
+                ResolveBodyByRace = obj.RopajeElfo
+            End If
+        Case eRaza.ElfoOscuro
+            If gender = eGenero.Mujer Then
+                ResolveBodyByRace = obj.RopajeElfaOscura
+            Else
+                ResolveBodyByRace = obj.RopajeElfoOscuro
+            End If
+        Case eRaza.Gnomo
+            If gender = eGenero.Mujer Then
+                ResolveBodyByRace = obj.RopajeGnoma
+            Else
+                ResolveBodyByRace = obj.RopajeGnomo
+            End If
+        Case eRaza.Enano
+            If gender = eGenero.Mujer Then
+                ResolveBodyByRace = obj.RopajeEnana
+            Else
+                ResolveBodyByRace = obj.RopajeEnano
+            End If
+        Case eRaza.Orco
+            If gender = eGenero.Mujer Then
+                ResolveBodyByRace = obj.RopajeOrca
+            Else
+                ResolveBodyByRace = obj.RopajeOrco
+            End If
+    End Select
+    Exit Function
+
+ResolveBodyByRace_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolveBodyByRace", Erl)
+    ResolveBodyByRace = 0
+End Function
+
+Private Function ResolveBodyByIndexValue(ByVal value As Long) As Long
+    On Error GoTo ResolveBodyByIndexValue_Err
+
+    If value <= 0 Then Exit Function
+
+    Dim lower As Long
+    Dim upper As Long
+    On Error Resume Next
+    lower = LBound(BodyData)
+    upper = UBound(BodyData)
+    If Err.Number <> 0 Then
+        Err.Clear
+        Exit Function
+    End If
+    On Error GoTo ResolveBodyByIndexValue_Err
+
+    If value >= lower And value <= upper Then
+        ResolveBodyByIndexValue = value
+        Exit Function
+    End If
+
+    If value <= UBound(GrhData) Then
+        Dim i As Long
+        For i = lower To upper
+            Dim walkGrh As Long
+            walkGrh = BodyData(i).Walk(E_Heading.south).GrhIndex
+            If walkGrh = value Then
+                ResolveBodyByIndexValue = i
+                Exit Function
+            End If
+            If walkGrh > 0 And walkGrh <= UBound(GrhData) Then
+                Dim frame As Long
+                frame = GetGrhFrame(walkGrh, 1)
+                If frame = value Then
+                    ResolveBodyByIndexValue = i
+                    Exit Function
+                End If
+            End If
+        Next i
+    End If
+    Exit Function
+
+ResolveBodyByIndexValue_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolveBodyByIndexValue", Erl)
+    ResolveBodyByIndexValue = 0
+End Function
+
+Private Function GetGrhFrame(ByVal baseGrh As Long, Optional ByVal frameIndex As Long = 1) As Long
+    On Error GoTo GetGrhFrame_Err
+
+    If baseGrh <= 0 Or baseGrh > UBound(GrhData) Then Exit Function
+
+    Dim numFrames As Long
+    numFrames = GrhData(baseGrh).NumFrames
+
+    If numFrames <= 1 Then
+        GetGrhFrame = baseGrh
+    Else
+        If frameIndex <= 0 Or frameIndex > numFrames Then frameIndex = 1
+        GetGrhFrame = GrhData(baseGrh).Frames(frameIndex)
+        If GetGrhFrame = 0 Then
+            GetGrhFrame = GrhData(baseGrh).Frames(1)
+        End If
+    End If
+    Exit Function
+
+GetGrhFrame_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.GetGrhFrame", Erl)
+    GetGrhFrame = 0
+End Function
+
+Private Function ResolveHelmetFrame(ByVal objNum As Long, ByVal heading As E_Heading) As Long
+    On Error GoTo ResolveHelmetFrame_Err
+
+    If objNum < LBound(ObjData) Or objNum > UBound(ObjData) Then Exit Function
+
+    Dim baseGrh As Long
+    baseGrh = ObjData(objNum).GrhIndex
+    If baseGrh <= 0 Then Exit Function
+
+    If heading < E_Heading.NORTH Or heading > E_Heading.WEST Then
+        heading = E_Heading.south
+    End If
+
+    Dim cascoLower As Long
+    Dim cascoUpper As Long
+    On Error Resume Next
+    cascoLower = LBound(CascoAnimData)
+    cascoUpper = UBound(CascoAnimData)
+    If Err.Number = 0 Then
+        If baseGrh >= cascoLower And baseGrh <= cascoUpper Then
+            Dim cascoGrh As Long
+            cascoGrh = CascoAnimData(baseGrh).Head(heading).GrhIndex
+            If cascoGrh > 0 Then
+                ResolveHelmetFrame = GetGrhFrame(cascoGrh, 1)
+                Exit Function
+            End If
+        End If
+    Else
+        Err.Clear
+    End If
+    On Error GoTo ResolveHelmetFrame_Err
+
+    ResolveHelmetFrame = GetGrhFrame(baseGrh, heading)
+    Exit Function
+
+ResolveHelmetFrame_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolveHelmetFrame", Erl)
+    ResolveHelmetFrame = 0
+End Function
 
 Private Sub txtFindObj_Change()
     lstItemShopFilter.Clear
@@ -203,4 +700,5 @@ Private Sub txtFindObj_Change()
             Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )")
         End If
     Next i
+    Call RefreshSelectedItemPreview
 End Sub
