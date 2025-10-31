@@ -5620,7 +5620,7 @@ Public Sub HandleShopPjsInit()
 End Sub
 
 Public Sub HandleShopInit()
-    Dim cant_obj_shop As Long, i As Long
+    Dim cant_obj_shop As Long, i As Long, addedIndex As Long
     cant_obj_shop = Reader.ReadInt16
     credits_shopAO20 = Reader.ReadInt32
     frmShopAO20.lblCredits.Caption = credits_shopAO20
@@ -5630,6 +5630,10 @@ Public Sub HandleShopInit()
         ObjShop(i).Valor = Reader.ReadInt32
         ObjShop(i).Name = Reader.ReadString8
         Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )", i - 1)
+        addedIndex = frmShopAO20.lstItemShopFilter.NewIndex
+        If addedIndex >= 0 Then
+            frmShopAO20.lstItemShopFilter.ItemData(addedIndex) = i
+        End If
     Next i
     frmShopAO20.Show , GetGameplayForm()
 End Sub

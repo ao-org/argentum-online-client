@@ -388,7 +388,9 @@ Private Function SelectedShopIndex() As Long
         dataIndex = lstItemShopFilter.ItemData(listIndex)
     End If
 
-    dataIndex = dataIndex + 1
+    If dataIndex <= 0 Then
+        dataIndex = listIndex + 1
+    End If
 
     Dim upper As Long
     On Error Resume Next
@@ -695,9 +697,16 @@ End Function
 Private Sub txtFindObj_Change()
     lstItemShopFilter.Clear
     Dim i As Long
+    Dim displayText As String
+    Dim addedIndex As Long
     For i = 1 To UBound(ObjShop)
         If InStr(1, ObjShop(i).Name, txtFindObj.text, 1) > 0 Then
-            Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )")
+            displayText = ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )"
+            lstItemShopFilter.AddItem displayText
+            addedIndex = lstItemShopFilter.NewIndex
+            If addedIndex >= 0 Then
+                lstItemShopFilter.ItemData(addedIndex) = i
+            End If
         End If
     Next i
     Call RefreshSelectedItemPreview
