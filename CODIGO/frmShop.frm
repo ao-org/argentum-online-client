@@ -221,7 +221,7 @@ Private Sub DrawUserPreview()
     If UserCharIndex < LBound(charlist) Or UserCharIndex > UBound(charlist) Then Exit Sub
 
     With charlist(UserCharIndex)
-        If .Body <= 0 Then Exit Sub
+        If .iBody <= 0 Then Exit Sub
         Call DibujarNPC(picUserPreview, .Head, .Body, E_Heading.south)
     End With
 
