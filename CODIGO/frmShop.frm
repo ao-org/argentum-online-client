@@ -163,23 +163,35 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-'Vista previa simplificada: deshabilitamos la lógica adicional de overrides.
+'Vista previa completa con control de overrides y registro de depuración.
 Private mPreviewHeading As E_Heading
-'Private mPreviewBodyOverride As Long
-'Private mPreviewHelmetObjNum As Long
-'Private mLastDrawnBody As Long
-'Private mLastDrawnHead As Long
+Private mPreviewBodyOverride As Long
+Private mPreviewHelmetObjNum As Long
+Private mLastDrawnBody As Long
+Private mLastDrawnHead As Long
+
+Private Const cHelmetXOffset As Long = -2
+
+Private Function NormalizeHeading(ByVal value As E_Heading) As E_Heading
+    If value < E_Heading.NORTH Then
+        NormalizeHeading = E_Heading.WEST
+    ElseIf value > E_Heading.WEST Then
+        NormalizeHeading = E_Heading.NORTH
+    Else
+        NormalizeHeading = value
+    End If
+End Function
 
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
-    'Vista previa simplificada: se deshabilita la rotación y overrides.
+    Me.KeyPreview = True
     mPreviewHeading = E_Heading.south
-    'mPreviewBodyOverride = 0
-    'mPreviewHelmetObjNum = 0
-    'mLastDrawnBody = 0
-    'mLastDrawnHead = 0
+    mPreviewBodyOverride = 0
+    mPreviewHelmetObjNum = 0
+    mLastDrawnBody = 0
+    mLastDrawnHead = 0
     Label1.Caption = JsonLanguage.Item("MENSAJE_TRANSACCION_RELOGUEO")
-    Call DrawUserPreview
+    Call RefreshSelectedItemPreview
 End Sub
 
 Private Sub Image2_Click()
@@ -202,37 +214,184 @@ Private Sub Image4_Click()
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
-    'Vista previa simplificada: sin rotación mediante teclado.
-End Sub
-Private Sub lstItemShopFilter_Click()
+    On Error GoTo Form_KeyDown_Err
+
+    Dim previousHeading As E_Heading
+    previousHeading = mPreviewHeading
+
+    Select Case KeyCode
+        Case vbKeyLeft
+            mPreviewHeading = NormalizeHeading(mPreviewHeading - 1)
+        Case vbKeyRight
+            mPreviewHeading = NormalizeHeading(mPreviewHeading + 1)
+        Case vbKeyUp
+            mPreviewHeading = E_Heading.NORTH
+        Case vbKeyDown
+            mPreviewHeading = E_Heading.south
+        Case Else
+            Exit Sub
+    End Select
+
+    Debug.Print "[ShopPreview] Form_KeyDown - Heading de " & previousHeading & " a " & mPreviewHeading
+
     Call DrawUserPreview
+    Exit Sub
+
+Form_KeyDown_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.Form_KeyDown", Erl)
+End Sub
+
+Private Sub lstItemShopFilter_Click()
+    Debug.Print "[ShopPreview] lstItemShopFilter_Click - index=" & lstItemShopFilter.ListIndex
+    Call RefreshSelectedItemPreview
 End Sub
 Private Sub lstItemShopFilter_KeyUp(KeyCode As Integer, Shift As Integer)
-    Call DrawUserPreview
+    Debug.Print "[ShopPreview] lstItemShopFilter_KeyUp - index=" & lstItemShopFilter.ListIndex
+    Call RefreshSelectedItemPreview
 End Sub
+
 Private Sub DrawUserPreview()
     On Error GoTo DrawUserPreview_Err
-
-    Call picUserPreview.Cls
 
     Dim bodyIndex As Long
     Dim headIndex As Long
     Call GetUserAppearance(bodyIndex, headIndex)
 
-    If bodyIndex <= 0 Then Exit Sub
+    If mPreviewBodyOverride > 0 Then
+        Debug.Print "[ShopPreview] DrawUserPreview - override body=" & mPreviewBodyOverride
+        bodyIndex = mPreviewBodyOverride
+    End If
 
-    Call DibujarNPC(picUserPreview, headIndex, bodyIndex, mPreviewHeading)
+    If bodyIndex <= 0 Then
+        Debug.Print "[ShopPreview] DrawUserPreview - cuerpo inválido, se evita limpiar"
+        Exit Sub
+    End If
+
+    Dim heading As E_Heading
+    heading = NormalizeHeading(mPreviewHeading)
+
+    Dim bodyFrame As Long
+    bodyFrame = ResolveBodyFrame(bodyIndex, heading)
+    If bodyFrame <= 0 Then
+        Debug.Print "[ShopPreview] DrawUserPreview - sin frame de cuerpo válido"
+        Exit Sub
+    End If
+
+    Call picUserPreview.Cls
+    Debug.Print "[ShopPreview] DrawUserPreview - limpiando picture"
+
+    Dim bodyWidth As Long
+    Dim bodyHeight As Long
+    bodyWidth = GrhData(bodyFrame).pixelWidth
+    bodyHeight = GrhData(bodyFrame).pixelHeight
+
+    Dim bodyX As Long
+    Dim bodyY As Long
+    bodyX = (picUserPreview.ScaleWidth - bodyWidth) \ 2
+    bodyY = min(picUserPreview.ScaleHeight - bodyHeight + BodyData(bodyIndex).HeadOffset.y \ 2, _
+                (picUserPreview.ScaleHeight - bodyHeight) \ 2)
+
+    Call Grh_Render_To_Hdc(picUserPreview, bodyFrame, bodyX, bodyY, False, RGB(11, 11, 11))
+
+    Dim headFrame As Long
+    Dim headX As Long
+    Dim headY As Long
+    headFrame = ResolveHeadFrame(headIndex, heading)
+    If headFrame > 0 Then
+        headX = (picUserPreview.ScaleWidth - GrhData(headFrame).pixelWidth) \ 2 + 1
+        headY = bodyY + bodyHeight - GrhData(headFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y
+        Call Grh_Render_To_HdcSinBorrar(picUserPreview, headFrame, headX, headY, False)
+    Else
+        Debug.Print "[ShopPreview] DrawUserPreview - sin cabeza válida"
+    End If
+
+    If mPreviewHelmetObjNum > 0 Then
+        Dim helmetFrame As Long
+        helmetFrame = ResolveHelmetFrame(mPreviewHelmetObjNum, heading)
+        If helmetFrame > 0 Then
+            Dim helmetWidth As Long
+            Dim helmetHeight As Long
+            helmetWidth = GrhData(helmetFrame).pixelWidth
+            helmetHeight = GrhData(helmetFrame).pixelHeight
+
+            Dim helmetX As Long
+            Dim helmetY As Long
+            helmetX = ((picUserPreview.ScaleWidth - helmetWidth) \ 2) + cHelmetXOffset
+            helmetY = bodyY + bodyHeight - helmetHeight + BodyData(bodyIndex).HeadOffset.y
+            Call Grh_Render_To_HdcSinBorrar(picUserPreview, helmetFrame, helmetX, helmetY, False)
+            Debug.Print "[ShopPreview] DrawUserPreview - casco dibujado obj=" & mPreviewHelmetObjNum & _
+                        " frame=" & helmetFrame & " en (" & helmetX & "," & helmetY & ")"
+        Else
+            Debug.Print "[ShopPreview] DrawUserPreview - casco sin frame válido (obj=" & mPreviewHelmetObjNum & ")"
+        End If
+    End If
+
+    mLastDrawnBody = bodyIndex
+    mLastDrawnHead = headIndex
+
+    Debug.Print "[ShopPreview] DrawUserPreview - cuerpo=" & bodyIndex & " cabeza=" & headIndex & _
+                " heading=" & heading
     Call picUserPreview.Refresh
     Exit Sub
 
 DrawUserPreview_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.DrawUserPreview", Erl)
 End Sub
-Private Sub RefreshSelectedItemPreview()
-    'Vista previa simplificada: solo redibuja al usuario.
-    Call DrawUserPreview
-End Sub
-#If False Then
+
+Private Function ResolveBodyFrame(ByVal bodyIndex As Long, ByVal heading As E_Heading) As Long
+    On Error GoTo ResolveBodyFrame_Err
+
+    Dim lower As Long
+    Dim upper As Long
+    On Error Resume Next
+    lower = LBound(BodyData)
+    upper = UBound(BodyData)
+    If Err.Number <> 0 Then
+        Err.Clear
+        Exit Function
+    End If
+    On Error GoTo ResolveBodyFrame_Err
+
+    If bodyIndex < lower Or bodyIndex > upper Then Exit Function
+
+    Dim grhIndex As Long
+    grhIndex = BodyData(bodyIndex).Walk(heading).GrhIndex
+    ResolveBodyFrame = GetGrhFrame(grhIndex, 1)
+    Exit Function
+
+ResolveBodyFrame_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolveBodyFrame", Erl)
+    ResolveBodyFrame = 0
+End Function
+
+Private Function ResolveHeadFrame(ByVal headIndex As Long, ByVal heading As E_Heading) As Long
+    On Error GoTo ResolveHeadFrame_Err
+
+    If headIndex <= 0 Then Exit Function
+
+    Dim lower As Long
+    Dim upper As Long
+    On Error Resume Next
+    lower = LBound(HeadData)
+    upper = UBound(HeadData)
+    If Err.Number <> 0 Then
+        Err.Clear
+        Exit Function
+    End If
+    On Error GoTo ResolveHeadFrame_Err
+
+    If headIndex < lower Or headIndex > upper Then Exit Function
+
+    Dim grhIndex As Long
+    grhIndex = HeadData(headIndex).Head(heading).GrhIndex
+    ResolveHeadFrame = GetGrhFrame(grhIndex, 1)
+    Exit Function
+
+ResolveHeadFrame_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolveHeadFrame", Erl)
+    ResolveHeadFrame = 0
+End Function
+
 Private Sub RefreshSelectedItemPreview()
     On Error GoTo RefreshSelectedItemPreview_Err
 
@@ -243,6 +402,7 @@ Private Sub RefreshSelectedItemPreview()
     shopIndex = SelectedShopIndex()
     If shopIndex = 0 Then
         Call PictureItemShop.Cls
+        Debug.Print "[ShopPreview] RefreshSelectedItemPreview - sin selección"
         Call DrawUserPreview
         Exit Sub
     End If
@@ -251,6 +411,7 @@ Private Sub RefreshSelectedItemPreview()
     objNum = ObjShop(shopIndex).ObjNum
     If objNum < LBound(ObjData) Or objNum > UBound(ObjData) Then
         Call PictureItemShop.Cls
+        Debug.Print "[ShopPreview] RefreshSelectedItemPreview - ObjNum inválido: " & objNum
         Call DrawUserPreview
         Exit Sub
     End If
@@ -259,8 +420,10 @@ Private Sub RefreshSelectedItemPreview()
     itemFrame = GetGrhFrame(ObjData(objNum).GrhIndex, 1)
     If itemFrame > 0 Then
         Call Grh_Render_To_Hdc(PictureItemShop, itemFrame, 0, 0, False)
+        Debug.Print "[ShopPreview] RefreshSelectedItemPreview - itemFrame=" & itemFrame
     Else
         Call PictureItemShop.Cls
+        Debug.Print "[ShopPreview] RefreshSelectedItemPreview - sin frame para ObjNum=" & objNum
     End If
 
     Dim objType As eObjType
@@ -271,13 +434,20 @@ Private Sub RefreshSelectedItemPreview()
 
     Select Case objType
         Case eObjType.otArmadura, eObjType.otSkinsArmours, eObjType.otMonturas
-            If resolvedBody > 0 Then mPreviewBodyOverride = resolvedBody
+            If resolvedBody > 0 Then
+                mPreviewBodyOverride = resolvedBody
+                Debug.Print "[ShopPreview] RefreshSelectedItemPreview - override cuerpo=" & resolvedBody
+            Else
+                Debug.Print "[ShopPreview] RefreshSelectedItemPreview - override cuerpo inválido para obj=" & objNum
+            End If
     End Select
 
     If objType = eObjType.otCASCO Or objType = eObjType.otSkinsHelmets Then
         mPreviewHelmetObjNum = objNum
+        Debug.Print "[ShopPreview] RefreshSelectedItemPreview - casco seleccionado obj=" & objNum
     End If
 
+    Debug.Print "[ShopPreview] RefreshSelectedItemPreview - objNum=" & objNum & " tipo=" & objType
     Call DrawUserPreview
     Exit Sub
 
@@ -285,7 +455,6 @@ RefreshSelectedItemPreview_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.RefreshSelectedItemPreview", Erl)
 End Sub
 
-#End If
 Private Function SelectedShopIndex() As Long
     On Error GoTo SelectedShopIndex_Err
 
