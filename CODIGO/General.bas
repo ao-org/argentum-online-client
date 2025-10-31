@@ -441,21 +441,6 @@ UnloadAllForms_Err:
     Resume Next
 End Sub
 
-Public Function IsFormLoaded(ByVal formName As String) As Boolean
-    On Error GoTo IsFormLoaded_Err
-    Dim mifrm As Form
-    For Each mifrm In Forms
-        If StrComp(mifrm.Name, formName, vbTextCompare) = 0 Then
-            IsFormLoaded = True
-            Exit Function
-        End If
-    Next
-    Exit Function
-IsFormLoaded_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Mod_General.IsFormLoaded", Erl)
-    Resume Next
-End Function
-
 Function LegalCharacter(ByVal KeyAscii As Integer) As Boolean
     On Error GoTo LegalCharacter_Err
     'Only allow characters that are Win 95 filename compatible

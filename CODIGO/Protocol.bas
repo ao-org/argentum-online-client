@@ -2435,6 +2435,7 @@ Private Sub HandleCharacterChange()
     Dim charindex As Integer
     Dim TempInt   As Integer
     Dim headIndex As Integer
+    Dim frm       As Form
     charindex = Reader.ReadInt16()
     With charlist(charindex)
         ' ===== Preservar estado previo para fase =====
@@ -2585,10 +2586,16 @@ Private Sub HandleCharacterChange()
         End If
         ' ===========================================================
     End With
+
     If charindex = UserCharIndex Then
-        If IsFormLoaded("frmShopAO20") Then
-            Call frmShopAO20.UpdateUserPreview
-        End If
+        For Each frm In Forms
+            If frm.Name = "frmShopAO20" Then
+                If frm.Visible Then
+                    Call frmShopAO20.UpdateUserPreview
+                End If
+                Exit For
+            End If
+        Next frm
     End If
     Exit Sub
 HandleCharacterChange_Err:

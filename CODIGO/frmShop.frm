@@ -163,7 +163,8 @@ Attribute VB_Exposed = False
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
     Label1.Caption = JsonLanguage.Item("MENSAJE_TRANSACCION_RELOGUEO")
-    Call RenderUserPreview
+    picUserPreview.BackColor = RGB(11, 11, 11)
+    Call UpdateUserPreview
 End Sub
 
 Private Sub Image2_Click()
@@ -219,43 +220,41 @@ Private Sub txtFindObj_Change()
         End If
     Next i
 End Sub
+Public Sub UpdateUserPreview()
+    On Error GoTo UpdateUserPreview_Err
 
-Private Sub RenderUserPreview()
-    On Error GoTo RenderUserPreview_Err
-    If picUserPreview.AutoRedraw = 0 Then
-        picUserPreview.AutoRedraw = True
-    End If
-    picUserPreview.BackColor = RGB(11, 11, 11)
-    picUserPreview.Cls
-
-    If UserCharIndex <= 0 Or UserCharIndex > UBound(charlist) Then Exit Sub
-
-    Dim bodyId   As Integer
-    Dim headId   As Integer
-    Dim heading  As Byte
-
-    bodyId = charlist(UserCharIndex).iBody
-    headId = charlist(UserCharIndex).IHead
-
-    If bodyId <= 0 Or bodyId > UBound(BodyData) Then Exit Sub
-
-    heading = charlist(UserCharIndex).Heading
-    If heading < 1 Or heading > 4 Then
-        heading = south
-    End If
-
-    Call DibujarNPC(picUserPreview, headId, bodyId, heading)
+    Call RenderUserPreview
     Exit Sub
-RenderUserPreview_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.RenderUserPreview", Erl)
+
+UpdateUserPreview_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.UpdateUserPreview", Erl)
     Resume Next
 End Sub
 
-Public Sub UpdateUserPreview()
-    On Error GoTo UpdateUserPreview_Err
-    Call RenderUserPreview
+Private Sub RenderUserPreview()
+    On Error GoTo RenderUserPreview_Err
+
+    picUserPreview.Cls
+    picUserPreview.BackColor = RGB(11, 11, 11)
+
+    If UserCharIndex < LBound(charlist) Or UserCharIndex > UBound(charlist) Then Exit Sub
+
+    Dim bodyId   As Integer
+    Dim headId   As Integer
+    Dim heading  As E_Heading
+
+    bodyId = charlist(UserCharIndex).iBody
+    headId = charlist(UserCharIndex).IHead
+    heading = charlist(UserCharIndex).Heading
+
+    If bodyId < LBound(BodyData) Or bodyId > UBound(BodyData) Then Exit Sub
+    If headId < LBound(HeadData) Or headId > UBound(HeadData) Then headId = 0
+    If heading < NORTH Or heading > WEST Then heading = south
+
+    Call DibujarNPC(picUserPreview, headId, bodyId, heading)
     Exit Sub
-UpdateUserPreview_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.UpdateUserPreview", Erl)
+
+RenderUserPreview_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.RenderUserPreview", Erl)
     Resume Next
 End Sub
