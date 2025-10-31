@@ -345,26 +345,26 @@ End Function
 Private Function DrawBasePreview(ByVal bodyIndex As Long, ByVal headIndex As Long) As Boolean
     On Error GoTo DrawBasePreview_Err
 
+    Dim walkGrh As Long
+    walkGrh = BodyData(bodyIndex).Walk(mPreviewHeading).GrhIndex
+    If walkGrh <= 0 Or walkGrh > UBound(GrhData) Then Exit Function
+
     Call picUserPreview.Cls
     Call DibujarNPC(picUserPreview, headIndex, bodyIndex, mPreviewHeading)
 
-    Dim walkGrh As Long
-    walkGrh = BodyData(bodyIndex).Walk(mPreviewHeading).GrhIndex
-    If walkGrh > 0 And walkGrh <= UBound(GrhData) Then
-        Dim bodyFrame As Long
-        bodyFrame = GetGrhFrame(walkGrh, 1)
-        If bodyFrame > 0 And bodyFrame <= UBound(GrhData) Then
-            Dim bodyHeight As Long
-            bodyHeight = GrhData(bodyFrame).pixelHeight
-            Dim drawY As Long
-            drawY = min(picUserPreview.ScaleHeight - bodyHeight + BodyData(bodyIndex).HeadOffset.y \ 2, (picUserPreview.ScaleHeight - bodyHeight) \ 2)
+    Dim bodyFrame As Long
+    bodyFrame = GetGrhFrame(walkGrh, 1)
+    If bodyFrame > 0 And bodyFrame <= UBound(GrhData) Then
+        Dim bodyHeight As Long
+        bodyHeight = GrhData(bodyFrame).pixelHeight
+        Dim drawY As Long
+        drawY = min(picUserPreview.ScaleHeight - bodyHeight + BodyData(bodyIndex).HeadOffset.y \ 2, (picUserPreview.ScaleHeight - bodyHeight) \ 2)
 
-            Dim helmetFrame As Long
-            Dim helmetX As Long
-            Dim helmetY As Long
-            If TryResolveHelmetFrame(bodyIndex, drawY, bodyHeight, helmetFrame, helmetX, helmetY) Then
-                Call Grh_Render_To_HdcSinBorrar(picUserPreview, helmetFrame, helmetX, helmetY, False)
-            End If
+        Dim helmetFrame As Long
+        Dim helmetX As Long
+        Dim helmetY As Long
+        If TryResolveHelmetFrame(bodyIndex, drawY, bodyHeight, helmetFrame, helmetX, helmetY) Then
+            Call Grh_Render_To_HdcSinBorrar(picUserPreview, helmetFrame, helmetX, helmetY, False)
         End If
     End If
 
