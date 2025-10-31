@@ -33,6 +33,30 @@ Private Const SEPARATOR As String * 1 = vbNullChar
 Private LastPacket      As Byte
 Private IterationsHID   As Integer
 Private Const MAX_ITERATIONS_HID = 200
+Private Function NormalizePreviewRace(ByVal value As Long) As eRaza
+    If value >= eRaza.Humano And value <= eRaza.Orco Then
+        NormalizePreviewRace = value
+    ElseIf value >= 0 And value < eRaza.Humano Then
+        Dim adjusted As Long
+        adjusted = value + 1
+        If adjusted >= eRaza.Humano And adjusted <= eRaza.Orco Then
+            NormalizePreviewRace = adjusted
+        End If
+    End If
+End Function
+
+Private Function NormalizePreviewGender(ByVal value As Long) As eGenero
+    If value >= eGenero.Hombre And value <= eGenero.Mujer Then
+        NormalizePreviewGender = value
+    ElseIf value >= 0 And value < eGenero.Hombre Then
+        Dim adjusted As Long
+        adjusted = value + 1
+        If adjusted >= eGenero.Hombre And adjusted <= eGenero.Mujer Then
+            NormalizePreviewGender = adjusted
+        End If
+    End If
+End Function
+
 #If DIRECT_PLAY = 0 Then
     Private Reader As Network.Reader
 
@@ -3878,6 +3902,11 @@ End Sub
 Private Sub HandleMiniStats()
     On Error GoTo HandleMiniStats_Err
     With UserEstadisticas
+        Dim rawGender As Long
+        Dim rawRace As Long
+        Dim normalizedGender As eGenero
+        Dim normalizedRace As eRaza
+
         .CiudadanosMatados = Reader.ReadInt32()
         .CriminalesMatados = Reader.ReadInt32()
         .Alineacion = Reader.ReadInt8()
@@ -3885,15 +3914,29 @@ Private Sub HandleMiniStats()
         .Clase = ListaClases(Reader.ReadInt8())
         .PenaCarcel = Reader.ReadInt32()
         .VecesQueMoriste = Reader.ReadInt32()
-        .Genero = Reader.ReadInt8()
+
+        rawGender = Reader.ReadInt8()
+        normalizedGender = NormalizePreviewGender(rawGender)
+        If normalizedGender <> 0 Then
+            UserStats.Sexo = normalizedGender
+        End If
         .PuntosPesca = Reader.ReadInt32()
-        If .Genero = 1 Then
+        If normalizedGender = eGenero.Hombre Then
             .Genero = JsonLanguage.Item("MENSAJE_576")
         Else
             .Genero = JsonLanguage.Item("MENSAJE_577")
         End If
-        .Raza = Reader.ReadInt8()
-        .Raza = ListaRazas(.Raza)
+
+        rawRace = Reader.ReadInt8()
+        normalizedRace = NormalizePreviewRace(rawRace)
+        If normalizedRace <> 0 Then
+            UserStats.Raza = normalizedRace
+            .Raza = ListaRazas(normalizedRace)
+        ElseIf rawRace >= LBound(ListaRazas) And rawRace <= UBound(ListaRazas) Then
+            .Raza = ListaRazas(rawRace)
+        Else
+            .Raza = vbNullString
+        End If
     End With
     If LlegaronAtrib Then
         frmStatistics.Iniciar_Labels
