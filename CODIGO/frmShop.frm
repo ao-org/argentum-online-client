@@ -221,15 +221,19 @@ Private Sub DrawUserPreview()
     Dim bodyIndex As Integer
     Dim headIndex As Integer
 
-    If UserCharIndex < LBound(charlist) Or UserCharIndex > UBound(charlist) Then Exit Sub
+    bodyIndex = UserBody
+    headIndex = UserHead
 
-    With charlist(UserCharIndex)
-        bodyIndex = .iBody
-        headIndex = .IHead
-    End With
+    If UserCharIndex >= LBound(charlist) And UserCharIndex <= UBound(charlist) Then
+        With charlist(UserCharIndex)
+            If .active <> 0 Then
+                If .iBody <> 0 Then bodyIndex = .iBody
+                If .IHead <> 0 Then headIndex = .IHead
+            End If
+        End With
+    End If
 
-    If bodyIndex <= 0 Then Exit Sub
-    If bodyIndex > UBound(BodyData) Then Exit Sub
+    If bodyIndex < LBound(BodyData) Or bodyIndex > UBound(BodyData) Then Exit Sub
 
     If headIndex < LBound(HeadData) Or headIndex > UBound(HeadData) Then
         headIndex = 0
