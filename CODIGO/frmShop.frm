@@ -48,6 +48,21 @@ Begin VB.Form frmShopAO20
       Top             =   2880
       Width           =   495
    End
+
+   Begin VB.PictureBox picUserPreview 
+      Appearance      =   0  'Flat
+      AutoRedraw      =   -1  'True
+      BackColor       =   &H80000001&
+      ForeColor       =   &H80000008&
+      Height          =   1905
+      Left            =   4095
+      ScaleHeight     =   127
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   124
+      TabIndex        =   6
+      Top             =   3600
+      Width           =   1860
+   End
    Begin VB.TextBox txtFindObj 
       BackColor       =   &H80000007&
       BorderStyle     =   0  'None
@@ -146,9 +161,12 @@ Attribute VB_Exposed = False
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 '
+Option Explicit
+
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
     Label1.Caption = JsonLanguage.Item("MENSAJE_TRANSACCION_RELOGUEO")
+    Call DrawUserPreview
 End Sub
 
 Private Sub Image2_Click()
@@ -193,6 +211,44 @@ Private Sub lstItemShopFilter_Click()
         End If
     Next i
     Call Grh_Render_To_Hdc(PictureItemShop, Grh, 0, 0, False)
+End Sub
+
+Private Sub DrawUserPreview()
+    On Error GoTo DrawUserPreview_Err
+
+    Call picUserPreview.Cls
+
+    Dim bodyIndex As Integer
+    Dim headIndex As Integer
+
+    bodyIndex = UserBody
+    headIndex = UserHead
+
+    If UserCharIndex >= LBound(charlist) And UserCharIndex <= UBound(charlist) Then
+        With charlist(UserCharIndex)
+            If .iBody >= LBound(BodyData) And .iBody <= UBound(BodyData) Then
+                bodyIndex = .iBody
+            End If
+
+            If .IHead >= LBound(HeadData) And .IHead <= UBound(HeadData) Then
+                headIndex = .IHead
+            End If
+        End With
+    End If
+
+    If bodyIndex < LBound(BodyData) Or bodyIndex > UBound(BodyData) Then Exit Sub
+
+    If headIndex < LBound(HeadData) Or headIndex > UBound(HeadData) Then
+        headIndex = 0
+    End If
+
+    Call DibujarNPC(picUserPreview, headIndex, bodyIndex, E_Heading.south)
+    Call picUserPreview.Refresh
+
+    Exit Sub
+
+DrawUserPreview_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.DrawUserPreview", Erl)
 End Sub
 
 Private Sub txtFindObj_Change()
