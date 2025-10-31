@@ -235,8 +235,6 @@ End Sub
 Private Sub DrawUserPreview()
     On Error GoTo DrawUserPreview_Err
 
-    Call picUserPreview.Cls
-
     Dim bodyIndex As Long
     Dim headIndex As Long
     Call GetUserAppearance(bodyIndex, headIndex)
@@ -267,6 +265,8 @@ Private Sub DrawUserPreview()
     Dim bodyFrame As Long
     bodyFrame = GetGrhFrame(walkGrh, 1)
     If bodyFrame <= 0 Or bodyFrame > UBound(GrhData) Then Exit Sub
+
+    Call picUserPreview.Cls
 
     Dim bodyWidth As Long
     Dim bodyHeight As Long
@@ -446,7 +446,11 @@ Private Sub GetUserAppearance(ByRef bodyIndex As Long, ByRef headIndex As Long)
     If Err.Number = 0 Then
         If UserCharIndex >= charLower And UserCharIndex <= charUpper Then
             With charlist(UserCharIndex)
-                If .iBody > 0 Then bodyIndex = .iBody
+                If .iBody > 0 Then
+                    bodyIndex = .iBody
+                ElseIf .Body.BodyIndex > 0 Then
+                    bodyIndex = .Body.BodyIndex
+                End If
                 If .IHead > 0 Then headIndex = .IHead
             End With
         End If
