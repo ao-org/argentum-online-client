@@ -218,41 +218,62 @@ Private Sub DrawUserPreview()
 
     Call picUserPreview.Cls
 
-    Dim bodyIndex As Integer
-    Dim headIndex As Integer
+    If UserCharIndex < LBound(charlist) Or UserCharIndex > UBound(charlist) Then Exit Sub
 
-    bodyIndex = 0
-    headIndex = 0
+    With charlist(UserCharIndex)
+        Dim bodyWalkGrh As Long
+        bodyWalkGrh = .Body.Walk(E_Heading.south).GrhIndex
+        If bodyWalkGrh <= 0 Or bodyWalkGrh > UBound(GrhData) Then Exit Sub
 
-    If UserCharIndex >= LBound(charlist) And UserCharIndex <= UBound(charlist) Then
-        With charlist(UserCharIndex)
-            If .Body.BodyIndex > 0 And .Body.BodyIndex <= UBound(BodyData) Then
-                bodyIndex = .Body.BodyIndex
-            ElseIf .iBody > 0 And .iBody <= UBound(BodyData) Then
-                bodyIndex = .iBody
+        Dim bodyFrame As Long
+        bodyFrame = GrhData(bodyWalkGrh).Frames(1)
+        If bodyFrame <= 0 Or bodyFrame > UBound(GrhData) Then Exit Sub
+
+        Dim headFrame As Long
+        If .IHead > 0 And .IHead <= UBound(HeadData) Then
+            Dim headWalkGrh As Long
+            headWalkGrh = .Head.Head(E_Heading.south).GrhIndex
+            If headWalkGrh > 0 And headWalkGrh <= UBound(GrhData) Then
+                headFrame = GrhData(headWalkGrh).Frames(1)
+                If headFrame <= 0 Or headFrame > UBound(GrhData) Then headFrame = 0
             End If
+        End If
 
-            If .IHead > 0 And .IHead <= UBound(HeadData) Then
-                headIndex = .IHead
-            End If
-        End With
-    End If
+        Dim bodyWidth As Integer
+        Dim bodyHeight As Integer
+        bodyWidth = GrhData(bodyFrame).pixelWidth
+        bodyHeight = GrhData(bodyFrame).pixelHeight
 
-    If bodyIndex = 0 And UserBody > 0 And UserBody <= UBound(BodyData) Then
-        bodyIndex = UserBody
-    End If
+        Dim drawX As Integer
+        drawX = (picUserPreview.ScaleWidth - bodyWidth) \ 2
 
-    If headIndex = 0 And UserHead > 0 And UserHead <= UBound(HeadData) Then
-        headIndex = UserHead
-    End If
+        Dim centeredY As Integer
+        centeredY = (picUserPreview.ScaleHeight - bodyHeight) \ 2
 
-    If bodyIndex <= 0 Or bodyIndex > UBound(BodyData) Then Exit Sub
+        Dim offsetY As Integer
+        offsetY = .Body.HeadOffset.y
 
-    If headIndex <= 0 Or headIndex > UBound(HeadData) Then
-        headIndex = 0
-    End If
+        Dim anchorY As Integer
+        anchorY = picUserPreview.ScaleHeight - bodyHeight + offsetY \ 2
+        If anchorY > centeredY Then
+            anchorY = centeredY
+        End If
 
-    Call DibujarNPC(picUserPreview, headIndex, bodyIndex, E_Heading.south)
+        Call Grh_Render_To_Hdc(picUserPreview, bodyFrame, drawX, anchorY, False, RGB(11, 11, 11))
+
+        If headFrame > 0 Then
+            Dim headWidth As Integer
+            Dim headHeight As Integer
+            headWidth = GrhData(headFrame).pixelWidth
+            headHeight = GrhData(headFrame).pixelHeight
+
+            drawX = (picUserPreview.ScaleWidth - headWidth) \ 2 + 1
+            Dim headY As Integer
+            headY = anchorY + bodyHeight - headHeight + offsetY
+            Call Grh_Render_To_HdcSinBorrar(picUserPreview, headFrame, drawX, headY, False)
+        End If
+    End With
+
     Call picUserPreview.Refresh
 
     Exit Sub
