@@ -165,6 +165,9 @@ Private mPreviewHeading As E_Heading
 Private mPreviewOverrideBodyIndex As Integer
 Private mPreviewHelmetGrhIndex As Long
 Private mPreviewMountGrhIndex As Long
+Private mPreviewUserRace As eRaza
+Private mPreviewUserGender As eGenero
+Private mPreviewHasUserDemographics As Boolean
 
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
@@ -173,6 +176,10 @@ Private Sub Form_Load()
     mPreviewOverrideBodyIndex = 0
     mPreviewHelmetGrhIndex = 0
     mPreviewMountGrhIndex = 0
+    mPreviewUserRace = 0
+    mPreviewUserGender = 0
+    mPreviewHasUserDemographics = False
+    Call EnsurePreviewUserContext
     Call DrawUserPreview
 End Sub
 
@@ -400,6 +407,7 @@ Private Sub UpdateUserPreviewSelection(ByVal objNum As Long, ByVal objType As In
     mPreviewOverrideBodyIndex = 0
     mPreviewHelmetGrhIndex = 0
     mPreviewMountGrhIndex = 0
+    Call EnsurePreviewUserContext
 
     If objNum > 0 Then
         Select Case objType
@@ -430,20 +438,22 @@ Private Function ResolvePreviewBodyIndex(ByVal objNum As Long, ByVal objType As 
     If objNum <= 0 Then GoTo ResolvePreviewBodyIndex_CleanExit
     If objNum > UBound(ObjData) Then GoTo ResolvePreviewBodyIndex_CleanExit
 
-    race = UserStats.Raza
-    gender = UserStats.Sexo
+    If Not GetPreviewUserRaceGender(race, gender) Then
+        race = 0
+        gender = 0
+    End If
 
-    If race < eRaza.Humano Or race > eRaza.Orco Or gender < eGenero.Hombre Or gender > eGenero.Mujer Then
+    If Not IsValidPreviewRaceGender(race, gender) Then
         If UserCharIndex > 0 Then
             Dim currentBody As Integer
             currentBody = charlist(UserCharIndex).iBody
-            If ShopPreview_GuessRaceGender(currentBody, race, gender) Then
-                ' race and gender resolved from current body
+            If ShopPreview_ResolveRaceGender(currentBody, race, gender) Then
+                Call CachePreviewUserRaceGender(race, gender)
             End If
         End If
     End If
 
-    If race >= eRaza.Humano And race <= eRaza.Orco And gender >= eGenero.Hombre And gender <= eGenero.Mujer Then
+    If IsValidPreviewRaceGender(race, gender) Then
         candidate = ObjData(objNum).PreviewBody(race, gender)
         If candidate = 0 Then
             candidate = ShopPreview_GetBodyOverride(objNum, race, gender)
@@ -473,6 +483,217 @@ ResolvePreviewBodyIndex_CleanExit:
 ResolvePreviewBodyIndex_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolvePreviewBodyIndex", Erl)
     ResolvePreviewBodyIndex = 0
+End Function
+
+Private Sub EnsurePreviewUserContext()
+    On Error GoTo EnsurePreviewUserContext_Err
+
+    If mPreviewHasUserDemographics Then Exit Sub
+
+    Dim race As eRaza
+    Dim gender As eGenero
+
+    Call GetPreviewUserRaceGender(race, gender)
+    Exit Sub
+
+EnsurePreviewUserContext_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.EnsurePreviewUserContext", Erl)
+End Sub
+
+Private Sub CachePreviewUserRaceGender(ByVal race As eRaza, ByVal gender As eGenero)
+    If IsValidPreviewRaceGender(race, gender) Then
+        mPreviewUserRace = race
+        mPreviewUserGender = gender
+        mPreviewHasUserDemographics = True
+    End If
+End Sub
+
+Private Function GetPreviewUserRaceGender(ByRef race As eRaza, ByRef gender As eGenero) As Boolean
+    On Error GoTo GetPreviewUserRaceGender_Err
+
+    race = 0
+    gender = 0
+
+    If mPreviewHasUserDemographics Then
+        race = mPreviewUserRace
+        gender = mPreviewUserGender
+        GetPreviewUserRaceGender = True
+        Exit Function
+    End If
+
+    If ResolvePreviewUserRaceGender(race, gender) Then
+        Call CachePreviewUserRaceGender(race, gender)
+        GetPreviewUserRaceGender = True
+    End If
+    Exit Function
+
+GetPreviewUserRaceGender_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.GetPreviewUserRaceGender", Erl)
+    GetPreviewUserRaceGender = False
+End Function
+
+Private Function ResolvePreviewUserRaceGender(ByRef race As eRaza, ByRef gender As eGenero) As Boolean
+    On Error GoTo ResolvePreviewUserRaceGender_Err
+
+    Dim candidateRace As eRaza
+    Dim candidateGender As eGenero
+    Dim statsRace As eRaza
+    Dim statsGender As eGenero
+
+    candidateRace = UserStats.Raza
+    candidateGender = UserStats.Sexo
+
+    If IsValidPreviewRaceGender(candidateRace, candidateGender) Then
+        race = candidateRace
+        gender = candidateGender
+        ResolvePreviewUserRaceGender = True
+        Exit Function
+    End If
+
+    If UserCharIndex > 0 Then
+        Dim bodyIndex As Integer
+        bodyIndex = charlist(UserCharIndex).iBody
+        If ShopPreview_ResolveRaceGender(bodyIndex, candidateRace, candidateGender) Then
+            race = candidateRace
+            gender = candidateGender
+            ResolvePreviewUserRaceGender = True
+            Exit Function
+        End If
+    End If
+
+    Call TryResolveRaceGenderFromStatsStrings(statsRace, statsGender)
+
+    If Not IsValidPreviewRace(candidateRace) Then candidateRace = statsRace
+    If Not IsValidPreviewGender(candidateGender) Then candidateGender = statsGender
+
+    If IsValidPreviewRaceGender(candidateRace, candidateGender) Then
+        race = candidateRace
+        gender = candidateGender
+        ResolvePreviewUserRaceGender = True
+    End If
+    Exit Function
+
+ResolvePreviewUserRaceGender_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolvePreviewUserRaceGender", Erl)
+    ResolvePreviewUserRaceGender = False
+End Function
+
+Private Sub TryResolveRaceGenderFromStatsStrings(ByRef race As eRaza, ByRef gender As eGenero)
+    On Error GoTo TryResolveRaceGenderFromStatsStrings_Err
+
+    race = 0
+    gender = 0
+
+    Call TryResolveRaceString(UserEstadisticas.Raza, race)
+    Call TryResolveGenderString(UserEstadisticas.Genero, gender)
+    Exit Sub
+
+TryResolveRaceGenderFromStatsStrings_Err:
+    race = 0
+    gender = 0
+End Sub
+
+Private Sub TryResolveRaceString(ByVal source As String, ByRef race As eRaza)
+    On Error GoTo TryResolveRaceString_Err
+
+    Dim value As String
+    value = Trim$(source)
+    If LenB(value) = 0 Then Exit Sub
+
+    Dim candidate As eRaza
+    For candidate = eRaza.Humano To eRaza.Orco
+        If StrComp(value, ListaRazas(candidate), vbTextCompare) = 0 Then
+            race = candidate
+            Exit Sub
+        End If
+    Next candidate
+
+    Select Case LCase$(value)
+        Case "humano": race = eRaza.Humano: Exit Sub
+        Case "elfo": race = eRaza.Elfo: Exit Sub
+        Case "elfooscuro", "elfo oscuro", "elfo-oscuro": race = eRaza.ElfoOscuro: Exit Sub
+        Case "gnomo": race = eRaza.Gnomo: Exit Sub
+        Case "enano": race = eRaza.Enano: Exit Sub
+        Case "orco": race = eRaza.Orco: Exit Sub
+    End Select
+
+    If ListaRazasEs.Exists(value) Then
+        Select Case LCase$(CStr(ListaRazasEs.Item(value)))
+            Case "humano": race = eRaza.Humano
+            Case "elfo": race = eRaza.Elfo
+            Case "elfooscuro": race = eRaza.ElfoOscuro
+            Case "gnomo": race = eRaza.Gnomo
+            Case "enano": race = eRaza.Enano
+            Case "orco": race = eRaza.Orco
+        End Select
+    End If
+    Exit Sub
+
+TryResolveRaceString_Err:
+    race = 0
+End Sub
+
+Private Sub TryResolveGenderString(ByVal source As String, ByRef gender As eGenero)
+    On Error GoTo TryResolveGenderString_Err
+
+    Dim value As String
+    value = Trim$(source)
+    If LenB(value) = 0 Then Exit Sub
+
+    Dim maleLabels(0 To 2) As String
+    maleLabels(0) = "Hombre"
+    maleLabels(1) = GetLocalizedValueSafe("MENSAJE_GENERO_HOMBRE")
+    maleLabels(2) = GetLocalizedValueSafe("MENSAJE_576")
+
+    Dim femaleLabels(0 To 2) As String
+    femaleLabels(0) = "Mujer"
+    femaleLabels(1) = GetLocalizedValueSafe("MENSAJE_GENERO_MUJER")
+    femaleLabels(2) = GetLocalizedValueSafe("MENSAJE_577")
+
+    Dim i As Long
+    For i = LBound(maleLabels) To UBound(maleLabels)
+        If LenB(maleLabels(i)) > 0 Then
+            If StrComp(value, maleLabels(i), vbTextCompare) = 0 Then
+                gender = eGenero.Hombre
+                Exit Sub
+            End If
+        End If
+    Next i
+
+    For i = LBound(femaleLabels) To UBound(femaleLabels)
+        If LenB(femaleLabels(i)) > 0 Then
+            If StrComp(value, femaleLabels(i), vbTextCompare) = 0 Then
+                gender = eGenero.Mujer
+                Exit Sub
+            End If
+        End If
+    Next i
+    Exit Sub
+
+TryResolveGenderString_Err:
+    gender = 0
+End Sub
+
+Private Function GetLocalizedValueSafe(ByVal key As String) As String
+    On Error GoTo GetLocalizedValueSafe_Err
+
+    GetLocalizedValueSafe = JsonLanguage.Item(key)
+    Exit Function
+
+GetLocalizedValueSafe_Err:
+    GetLocalizedValueSafe = vbNullString
+End Function
+
+Private Function IsValidPreviewRace(ByVal race As eRaza) As Boolean
+    IsValidPreviewRace = (race >= eRaza.Humano And race <= eRaza.Orco)
+End Function
+
+Private Function IsValidPreviewGender(ByVal gender As eGenero) As Boolean
+    IsValidPreviewGender = (gender >= eGenero.Hombre And gender <= eGenero.Mujer)
+End Function
+
+Private Function IsValidPreviewRaceGender(ByVal race As eRaza, ByVal gender As eGenero) As Boolean
+    IsValidPreviewRaceGender = IsValidPreviewRace(race) And IsValidPreviewGender(gender)
 End Function
 
 Private Function ResolvePreviewMountGrh(ByVal objNum As Long) As Long

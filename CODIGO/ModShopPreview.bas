@@ -150,6 +150,55 @@ ShopPreview_GuessRaceGender_Err:
     ShopPreview_GuessRaceGender = False
 End Function
 
+Public Function ShopPreview_ResolveRaceGender(ByVal bodyIndex As Integer, ByRef race As eRaza, ByRef gender As eGenero) As Boolean
+    On Error GoTo ShopPreview_ResolveRaceGender_Err
+
+    If bodyIndex <= 0 Then Exit Function
+
+    If ShopPreview_GuessRaceGender(bodyIndex, race, gender) Then
+        ShopPreview_ResolveRaceGender = True
+        Exit Function
+    End If
+
+    If Not IsObjDataInitialized() Then Exit Function
+
+    Dim objNum As Long
+    Dim candidateRace As eRaza
+    Dim candidateGender As eGenero
+
+    For objNum = LBound(ObjData) To UBound(ObjData)
+        For candidateRace = eRaza.Humano To eRaza.Orco
+            For candidateGender = eGenero.Hombre To eGenero.Mujer
+                If ObjData(objNum).PreviewBody(candidateRace, candidateGender) = bodyIndex Then
+                    race = candidateRace
+                    gender = candidateGender
+                    Call ShopPreview_RegisterBodyMapping(bodyIndex, race, gender)
+                    ShopPreview_ResolveRaceGender = True
+                    Exit Function
+                End If
+            Next candidateGender
+        Next candidateRace
+    Next objNum
+
+    Exit Function
+
+ShopPreview_ResolveRaceGender_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModShopPreview.ShopPreview_ResolveRaceGender", Erl)
+    ShopPreview_ResolveRaceGender = False
+End Function
+
+Private Function IsObjDataInitialized() As Boolean
+    On Error GoTo IsObjDataInitialized_Err
+
+    Dim lb As Long
+    lb = LBound(ObjData)
+    IsObjDataInitialized = True
+    Exit Function
+
+IsObjDataInitialized_Err:
+    IsObjDataInitialized = False
+End Function
+
 Private Function IsBodyLookupInitialized() As Boolean
     On Error GoTo IsBodyLookupInitialized_Err
 
