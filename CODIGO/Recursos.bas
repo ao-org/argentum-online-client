@@ -1246,6 +1246,7 @@ Public Sub CargarIndicesOBJ()
     NumQuest = val(Leer.GetValue("INIT", "NUMQUESTS"))
     NumSug = val(Leer.GetValue("INIT", "NUMSUGERENCIAS"))
     ReDim ObjData(0 To NumOBJs) As ObjDatas
+    Call ShopPreview_Reset(NumOBJs)
     ReDim NpcData(0 To NumNpcs) As NpcDatas
     ReDim HechizoData(0 To NumHechizos) As HechizoDatas
     ReDim Locale_SMG(0 To NumLocaleMsg) As String
@@ -1258,6 +1259,7 @@ Public Sub CargarIndicesOBJ()
     For Obj = 1 To NumOBJs
         DoEvents
         ObjData(Obj).GrhIndex = val(Leer.GetValue("OBJ" & Obj, "grhindex"))
+        Call ShopPreview_SetDefaultBody(Obj, ObjData(Obj).GrhIndex)
         If Obj = 403 Then
             frmDebug.add_text_tracebox "asd"
         End If
@@ -1271,6 +1273,9 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).MinHit = val(Leer.GetValue("OBJ" & Obj, "MinHit"))
         ObjData(Obj).MaxHit = val(Leer.GetValue("OBJ" & Obj, "MaxHit"))
         ObjData(Obj).ObjType = val(Leer.GetValue("OBJ" & Obj, "ObjType"))
+        If ObjData(Obj).ObjType = eObjType.otArmadura Or ObjData(Obj).ObjType = eObjType.otSkinsArmours Then
+            Call ShopPreview_RegisterArmorBodies(Obj, Leer)
+        End If
         ObjData(Obj).Cooldown = val(Leer.GetValue("OBJ" & Obj, "CD"))
         ObjData(Obj).CDType = val(Leer.GetValue("OBJ" & Obj, "CDType"))
         ObjData(Obj).CreaGRH = Leer.GetValue("OBJ" & Obj, "CreaGRH")
@@ -1325,18 +1330,6 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).Agarrable = val(Leer.GetValue("OBJ" & Obj, "Agarrable"))
         ObjData(Obj).Llave = val(Leer.GetValue("OBJ" & Obj, "Llave"))
         ObjData(Obj).ElementalTags = val(Leer.GetValue("OBJ" & Obj, "ElementalTags"))
-        ObjData(Obj).RopajeHumano = val(Leer.GetValue("OBJ" & Obj, "RopajeHumano"))
-        ObjData(Obj).RopajeHumana = val(Leer.GetValue("OBJ" & Obj, "RopajeHumana"))
-        ObjData(Obj).RopajeElfo = val(Leer.GetValue("OBJ" & Obj, "RopajeElfo"))
-        ObjData(Obj).RopajeElfa = val(Leer.GetValue("OBJ" & Obj, "RopajeElfa"))
-        ObjData(Obj).RopajeElfoOscuro = val(Leer.GetValue("OBJ" & Obj, "RopajeElfoOscuro"))
-        ObjData(Obj).RopajeElfaOscura = val(Leer.GetValue("OBJ" & Obj, "RopajeElfaOscura"))
-        ObjData(Obj).RopajeGnomo = val(Leer.GetValue("OBJ" & Obj, "RopajeGnomo"))
-        ObjData(Obj).RopajeGnoma = val(Leer.GetValue("OBJ" & Obj, "RopajeGnoma"))
-        ObjData(Obj).RopajeEnano = val(Leer.GetValue("OBJ" & Obj, "RopajeEnano"))
-        ObjData(Obj).RopajeEnana = val(Leer.GetValue("OBJ" & Obj, "RopajeEnana"))
-        ObjData(Obj).RopajeOrco = val(Leer.GetValue("OBJ" & Obj, "RopajeOrco"))
-        ObjData(Obj).RopajeOrca = val(Leer.GetValue("OBJ" & Obj, "RopajeOrca"))
         If val(Leer.GetValue("OBJ" & Obj, "NFT")) = 1 Then
             ObjShop(i).Name = Leer.GetValue("OBJ" & Obj, "Name")
             ObjShop(i).Valor = val(Leer.GetValue("OBJ" & Obj, "Valor"))

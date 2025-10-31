@@ -163,13 +163,17 @@ Attribute VB_Exposed = False
 '
 Private mPreviewHeading As E_Heading
 Private mPreviewOverrideBodyIndex As Integer
+Private mPreviewHelmetGrhIndex As Long
+Private mPreviewMountGrhIndex As Long
 
 Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanatiendaao20.bmp")
     Label1.Caption = JsonLanguage.Item("MENSAJE_TRANSACCION_RELOGUEO")
     mPreviewHeading = E_Heading.south
     mPreviewOverrideBodyIndex = 0
-    Call DrawUserPreview(mPreviewOverrideBodyIndex)
+    mPreviewHelmetGrhIndex = 0
+    mPreviewMountGrhIndex = 0
+    Call DrawUserPreview
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -193,7 +197,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 
     If newHeading <> mPreviewHeading Then
         mPreviewHeading = newHeading
-        Call DrawUserPreview(mPreviewOverrideBodyIndex)
+        Call DrawUserPreview
     End If
     Exit Sub
 
@@ -261,31 +265,96 @@ Private Sub txtFindObj_Change()
     Next i
 End Sub
 
-Private Sub DrawUserPreview(Optional ByVal overrideBodyIndex As Integer = 0)
+Private Sub DrawUserPreview()
     On Error GoTo DrawUserPreview_Err
+
     If UserCharIndex <= 0 Then Exit Sub
     If picUserPreview.Width = 0 Or picUserPreview.Height = 0 Then Exit Sub
 
     Dim bodyIndex As Integer
     Dim headIndex As Integer
-    Dim heading   As E_Heading
+    Dim heading As E_Heading
 
-    headIndex = charlist(UserCharIndex).IHead
     bodyIndex = charlist(UserCharIndex).iBody
+    headIndex = charlist(UserCharIndex).IHead
 
-    If overrideBodyIndex > 0 Then
-        If overrideBodyIndex >= LBound(BodyData) And overrideBodyIndex <= UBound(BodyData) Then
-            bodyIndex = overrideBodyIndex
+    If mPreviewOverrideBodyIndex > 0 Then
+        If mPreviewOverrideBodyIndex >= LBound(BodyData) And mPreviewOverrideBodyIndex <= UBound(BodyData) Then
+            bodyIndex = mPreviewOverrideBodyIndex
         End If
     End If
 
     If bodyIndex < LBound(BodyData) Or bodyIndex > UBound(BodyData) Then Exit Sub
-    If headIndex < LBound(HeadData) Or headIndex > UBound(HeadData) Then headIndex = 0
 
     heading = mPreviewHeading
     If heading < E_Heading.NORTH Or heading > E_Heading.WEST Then heading = E_Heading.south
 
-    Call DibujarNPC(picUserPreview, headIndex, bodyIndex, heading)
+    Dim bodyGrh As Long
+    Dim bodyFrame As Long
+    Dim mountFrame As Long
+    Dim mountDrawn As Boolean
+    Dim backgroundColor As Long
+
+    bodyGrh = BodyData(bodyIndex).Walk(heading).GrhIndex
+    bodyFrame = ResolvePreviewGrhFrame(bodyGrh)
+    backgroundColor = RGB(11, 11, 11)
+
+    If mPreviewMountGrhIndex > 0 Then
+        mountFrame = ResolvePreviewGrhFrame(mPreviewMountGrhIndex)
+        If mountFrame > 0 Then
+            Dim mountX As Integer
+            Dim mountY As Integer
+            mountX = (picUserPreview.ScaleWidth - GrhData(mountFrame).pixelWidth) \ 2
+            mountY = picUserPreview.ScaleHeight - GrhData(mountFrame).pixelHeight
+            Call Grh_Render_To_Hdc(picUserPreview, mountFrame, mountX, mountY, False, backgroundColor)
+            mountDrawn = True
+        End If
+    End If
+
+    Dim bodyX As Integer
+    Dim bodyY As Integer
+    If bodyFrame > 0 Then
+        bodyX = (picUserPreview.ScaleWidth - GrhData(bodyFrame).pixelWidth) \ 2
+        bodyY = min(picUserPreview.ScaleHeight - GrhData(bodyFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y \ 2, (picUserPreview.ScaleHeight - GrhData(bodyFrame).pixelHeight) \ 2)
+        If mountDrawn Then
+            Call Grh_Render_To_HdcSinBorrar(picUserPreview, bodyFrame, bodyX, bodyY, False)
+        Else
+            Call Grh_Render_To_Hdc(picUserPreview, bodyFrame, bodyX, bodyY, False, backgroundColor)
+            mountDrawn = True
+        End If
+    ElseIf Not mountDrawn Then
+        picUserPreview.Cls
+    End If
+
+    Dim headFrame As Long
+    Dim headX As Integer
+    Dim headY As Integer
+    If headIndex >= LBound(HeadData) And headIndex <= UBound(HeadData) Then
+        headFrame = ResolvePreviewGrhFrame(HeadData(headIndex).Head(heading).GrhIndex)
+    End If
+
+    If headFrame > 0 And bodyFrame > 0 Then
+        headX = (picUserPreview.ScaleWidth - GrhData(headFrame).pixelWidth) \ 2 + 1
+        headY = bodyY + GrhData(bodyFrame).pixelHeight - GrhData(headFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y
+        Call Grh_Render_To_HdcSinBorrar(picUserPreview, headFrame, headX, headY, False)
+    End If
+
+    If mPreviewHelmetGrhIndex > 0 Then
+        Dim helmetFrame As Long
+        helmetFrame = ResolvePreviewGrhFrame(mPreviewHelmetGrhIndex)
+        If helmetFrame > 0 Then
+            Dim helmetX As Integer
+            Dim helmetY As Integer
+            helmetX = (picUserPreview.ScaleWidth - GrhData(helmetFrame).pixelWidth) \ 2 + 1
+            If headFrame > 0 Then
+                helmetY = headY + (GrhData(headFrame).pixelHeight - GrhData(helmetFrame).pixelHeight) \ 2
+            Else
+                helmetY = bodyY
+            End If
+            Call Grh_Render_To_HdcSinBorrar(picUserPreview, helmetFrame, helmetX, helmetY, False)
+        End If
+    End If
+
     Exit Sub
 
 DrawUserPreview_Err:
@@ -297,14 +366,21 @@ Private Sub UpdateUserPreviewSelection(ByVal objNum As Long, ByVal objType As By
     On Error GoTo UpdateUserPreviewSelection_Err
 
     mPreviewOverrideBodyIndex = 0
+    mPreviewHelmetGrhIndex = 0
+    mPreviewMountGrhIndex = 0
 
     If objNum > 0 Then
-        If objType = eObjType.otArmadura Or objType = eObjType.otSkinsArmours Then
-            mPreviewOverrideBodyIndex = ResolvePreviewBodyIndex(objNum, objType)
-        End If
+        Select Case objType
+            Case eObjType.otArmadura, eObjType.otSkinsArmours
+                mPreviewOverrideBodyIndex = ResolvePreviewBodyIndex(objNum, objType)
+            Case eObjType.otCASCO, eObjType.otSkinsHelmets
+                mPreviewHelmetGrhIndex = ObjData(objNum).GrhIndex
+            Case eObjType.otMonturas
+                mPreviewMountGrhIndex = ResolvePreviewMountGrh(objNum)
+        End Select
     End If
 
-    Call DrawUserPreview(mPreviewOverrideBodyIndex)
+    Call DrawUserPreview
     Exit Sub
 
 UpdateUserPreviewSelection_Err:
@@ -316,19 +392,22 @@ Private Function ResolvePreviewBodyIndex(ByVal objNum As Long, ByVal objType As 
     On Error GoTo ResolvePreviewBodyIndex_Err
 
     Dim candidate As Long
-    Dim obj As ObjDatas
+    Dim race As eRaza
+    Dim gender As eGenero
 
     If objNum <= 0 Then GoTo ResolvePreviewBodyIndex_CleanExit
 
-    obj = ObjData(objNum)
+    race = UserStats.Raza
+    gender = UserStats.Sexo
 
-    If objType = eObjType.otSkinsArmours Or objType = eObjType.otArmadura Then
-        candidate = ResolveRaceSpecificBody(obj)
+    If race >= eRaza.Humano And race <= eRaza.Orco And gender >= eGenero.Hombre And gender <= eGenero.Mujer Then
+        candidate = ShopPreview_GetBodyOverride(objNum, race, gender)
     End If
 
     If candidate = 0 Then
-        If objType <> eObjType.otSkinsArmours Then
-            candidate = obj.GrhIndex
+        candidate = ShopPreview_GetDefaultBody(objNum)
+        If candidate = 0 And objType <> eObjType.otSkinsArmours Then
+            candidate = ObjData(objNum).GrhIndex
         End If
     End If
 
@@ -346,57 +425,45 @@ ResolvePreviewBodyIndex_Err:
     ResolvePreviewBodyIndex = 0
 End Function
 
-Private Function ResolveRaceSpecificBody(ByRef obj As ObjDatas) As Long
-    On Error GoTo ResolveRaceSpecificBody_Err
+Private Function ResolvePreviewMountGrh(ByVal objNum As Long) As Long
+    On Error GoTo ResolvePreviewMountGrh_Err
 
-    Dim race As eRaza
-    Dim gender As eGenero
+    Dim candidate As Long
 
-    race = UserStats.Raza
-    gender = UserStats.Sexo
+    If objNum <= 0 Then GoTo ResolvePreviewMountGrh_CleanExit
 
-    Select Case race
-        Case eRaza.Humano
-            If gender = eGenero.Mujer Then
-                ResolveRaceSpecificBody = obj.RopajeHumana
-            Else
-                ResolveRaceSpecificBody = obj.RopajeHumano
-            End If
-        Case eRaza.Elfo
-            If gender = eGenero.Mujer Then
-                ResolveRaceSpecificBody = obj.RopajeElfa
-            Else
-                ResolveRaceSpecificBody = obj.RopajeElfo
-            End If
-        Case eRaza.ElfoOscuro
-            If gender = eGenero.Mujer Then
-                ResolveRaceSpecificBody = obj.RopajeElfaOscura
-            Else
-                ResolveRaceSpecificBody = obj.RopajeElfoOscuro
-            End If
-        Case eRaza.Gnomo
-            If gender = eGenero.Mujer Then
-                ResolveRaceSpecificBody = obj.RopajeGnoma
-            Else
-                ResolveRaceSpecificBody = obj.RopajeGnomo
-            End If
-        Case eRaza.Enano
-            If gender = eGenero.Mujer Then
-                ResolveRaceSpecificBody = obj.RopajeEnana
-            Else
-                ResolveRaceSpecificBody = obj.RopajeEnano
-            End If
-        Case eRaza.Orco
-            If gender = eGenero.Mujer Then
-                ResolveRaceSpecificBody = obj.RopajeOrca
-            Else
-                ResolveRaceSpecificBody = obj.RopajeOrco
-            End If
-    End Select
+    candidate = ObjData(objNum).GrhIndex
+    If candidate > 0 And candidate <= UBound(GrhData) Then
+        ResolvePreviewMountGrh = candidate
+        Exit Function
+    End If
 
+ResolvePreviewMountGrh_CleanExit:
+    ResolvePreviewMountGrh = 0
     Exit Function
 
-ResolveRaceSpecificBody_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolveRaceSpecificBody", Erl)
-    ResolveRaceSpecificBody = 0
+ResolvePreviewMountGrh_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolvePreviewMountGrh", Erl)
+    ResolvePreviewMountGrh = 0
+End Function
+
+Private Function ResolvePreviewGrhFrame(ByVal grhIndex As Long) As Long
+    On Error GoTo ResolvePreviewGrhFrame_Err
+
+    If grhIndex <= 0 Or grhIndex > UBound(GrhData) Then GoTo ResolvePreviewGrhFrame_CleanExit
+
+    If GrhData(grhIndex).NumFrames > 0 Then
+        ResolvePreviewGrhFrame = GrhData(grhIndex).Frames(1)
+    Else
+        ResolvePreviewGrhFrame = grhIndex
+    End If
+    Exit Function
+
+ResolvePreviewGrhFrame_CleanExit:
+    ResolvePreviewGrhFrame = 0
+    Exit Function
+
+ResolvePreviewGrhFrame_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolvePreviewGrhFrame", Erl)
+    ResolvePreviewGrhFrame = 0
 End Function
