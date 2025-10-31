@@ -214,6 +214,18 @@ Public Type ObjDatas
     EarthEssence As Integer
     WindEssence As Integer
     ElementalTags As Long
+    RopajeHumano As Integer
+    RopajeHumana As Integer
+    RopajeElfo As Integer
+    RopajeElfa As Integer
+    RopajeElfoOscuro As Integer
+    RopajeElfaOscura As Integer
+    RopajeGnomo As Integer
+    RopajeGnoma As Integer
+    RopajeEnano As Integer
+    RopajeEnana As Integer
+    RopajeOrco As Integer
+    RopajeOrca As Integer
 End Type
 
 Public Type NpcDatas

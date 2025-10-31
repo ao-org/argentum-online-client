@@ -300,7 +300,7 @@ Private Sub UpdateUserPreviewSelection(ByVal objNum As Long, ByVal objType As By
 
     If objNum > 0 Then
         If objType = eObjType.otArmadura Or objType = eObjType.otSkinsArmours Then
-            mPreviewOverrideBodyIndex = ResolvePreviewBodyIndex(objNum)
+            mPreviewOverrideBodyIndex = ResolvePreviewBodyIndex(objNum, objType)
         End If
     End If
 
@@ -312,23 +312,91 @@ UpdateUserPreviewSelection_Err:
     Resume Next
 End Sub
 
-Private Function ResolvePreviewBodyIndex(ByVal objNum As Long) As Integer
+Private Function ResolvePreviewBodyIndex(ByVal objNum As Long, ByVal objType As Byte) As Integer
     On Error GoTo ResolvePreviewBodyIndex_Err
 
     Dim candidate As Long
+    Dim obj As ObjDatas
 
-    If objNum > 0 Then
-        candidate = ObjData(objNum).GrhIndex
-        If candidate >= LBound(BodyData) And candidate <= UBound(BodyData) Then
-            ResolvePreviewBodyIndex = candidate
-            Exit Function
+    If objNum <= 0 Then GoTo ResolvePreviewBodyIndex_CleanExit
+
+    obj = ObjData(objNum)
+
+    If objType = eObjType.otSkinsArmours Or objType = eObjType.otArmadura Then
+        candidate = ResolveRaceSpecificBody(obj)
+    End If
+
+    If candidate = 0 Then
+        If objType <> eObjType.otSkinsArmours Then
+            candidate = obj.GrhIndex
         End If
     End If
 
+    If candidate >= LBound(BodyData) And candidate <= UBound(BodyData) Then
+        ResolvePreviewBodyIndex = candidate
+        Exit Function
+    End If
+
+ResolvePreviewBodyIndex_CleanExit:
     ResolvePreviewBodyIndex = 0
     Exit Function
 
 ResolvePreviewBodyIndex_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolvePreviewBodyIndex", Erl)
     ResolvePreviewBodyIndex = 0
+End Function
+
+Private Function ResolveRaceSpecificBody(ByRef obj As ObjDatas) As Long
+    On Error GoTo ResolveRaceSpecificBody_Err
+
+    Dim race As eRaza
+    Dim gender As eGenero
+
+    race = UserStats.Raza
+    gender = UserStats.Sexo
+
+    Select Case race
+        Case eRaza.Humano
+            If gender = eGenero.Mujer Then
+                ResolveRaceSpecificBody = obj.RopajeHumana
+            Else
+                ResolveRaceSpecificBody = obj.RopajeHumano
+            End If
+        Case eRaza.Elfo
+            If gender = eGenero.Mujer Then
+                ResolveRaceSpecificBody = obj.RopajeElfa
+            Else
+                ResolveRaceSpecificBody = obj.RopajeElfo
+            End If
+        Case eRaza.ElfoOscuro
+            If gender = eGenero.Mujer Then
+                ResolveRaceSpecificBody = obj.RopajeElfaOscura
+            Else
+                ResolveRaceSpecificBody = obj.RopajeElfoOscuro
+            End If
+        Case eRaza.Gnomo
+            If gender = eGenero.Mujer Then
+                ResolveRaceSpecificBody = obj.RopajeGnoma
+            Else
+                ResolveRaceSpecificBody = obj.RopajeGnomo
+            End If
+        Case eRaza.Enano
+            If gender = eGenero.Mujer Then
+                ResolveRaceSpecificBody = obj.RopajeEnana
+            Else
+                ResolveRaceSpecificBody = obj.RopajeEnano
+            End If
+        Case eRaza.Orco
+            If gender = eGenero.Mujer Then
+                ResolveRaceSpecificBody = obj.RopajeOrca
+            Else
+                ResolveRaceSpecificBody = obj.RopajeOrco
+            End If
+    End Select
+
+    Exit Function
+
+ResolveRaceSpecificBody_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmShopAO20.ResolveRaceSpecificBody", Erl)
+    ResolveRaceSpecificBody = 0
 End Function
