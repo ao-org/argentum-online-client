@@ -343,7 +343,7 @@ Private Sub DrawUserPreview()
     End If
 
     If headFrame > 0 And bodyFrame > 0 Then
-        headX = (picUserPreview.ScaleWidth - GrhData(headFrame).pixelWidth) \ 2 + 1
+        headX = (picUserPreview.ScaleWidth - GrhData(headFrame).pixelWidth) \ 2 - 1
         headY = bodyY + GrhData(bodyFrame).pixelHeight - GrhData(headFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y
         Call Grh_Render_To_HdcSinBorrar(picUserPreview, headFrame, headX, headY, False)
         headDrawn = True
@@ -359,7 +359,7 @@ Private Sub DrawUserPreview()
                 helmetX = headX
                 helmetY = headY
             Else
-                helmetX = (picUserPreview.ScaleWidth - GrhData(helmetFrame).pixelWidth) \ 2 + 1
+                helmetX = (picUserPreview.ScaleWidth - GrhData(helmetFrame).pixelWidth) \ 2 - 1
                 If bodyFrame > 0 Then
                     helmetY = bodyY + GrhData(bodyFrame).pixelHeight - GrhData(helmetFrame).pixelHeight + BodyData(bodyIndex).HeadOffset.y
                 Else
