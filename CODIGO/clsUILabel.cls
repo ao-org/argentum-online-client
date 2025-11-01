@@ -60,6 +60,10 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Call UIRenderer.RenderText(m_Text, rc.Left, rc.Top, m_Color, 1, 128)
 End Sub
 
-Private Sub IUIComponent_HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
+    ' no-op
+End Sub
+
+Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Integer, ByVal shiftState As Integer)
     ' no-op
 End Sub

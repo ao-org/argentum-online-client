@@ -60,9 +60,16 @@ Public Sub RenderAll(ByVal dev As Direct3DDevice8)
     Next
 End Sub
 
-Public Sub HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
+Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
     Dim comp As IUIComponent
     For Each comp In Components
-        comp.HandleInput mouseX, mouseY, mouseButtons
+        comp.HandleMouse mouseX, mouseY, mouseButtons
+    Next
+End Sub
+
+Public Sub HandleKeyboard(ByVal keyCode As Integer, ByVal shiftState As Integer)
+    Dim comp As IUIComponent
+    For Each comp In Components
+        comp.HandleKeyboard keyCode, shiftState
     Next
 End Sub
