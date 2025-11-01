@@ -117,8 +117,12 @@ Public Sub render(ByVal dev As Direct3DDevice8)
 End Sub
 
 
-Public Sub HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
-    m_UIMgr.HandleInput mouseX, mouseY, mouseButtons
+Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
+    m_UIMgr.HandleMouse mouseX, mouseY, mouseButtons
+End Sub
+
+Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
+    m_UIMgr.HandleKeyboard keyCode, shiftState
 End Sub
 
 Public Function WasConnectClicked() As Boolean

@@ -306,6 +306,12 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     ElseIf KeyCode = vbKeyF9 Then
         frmDebug.Show
     End If
+
+    #If DXUI Then
+        If Not g_connectScreen Is Nothing Then
+            g_connectScreen.HandleKeyboard KeyCode, Shift
+        End If
+    #End If
     Exit Sub
 Form_KeyDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.Form_KeyDown", Erl)
