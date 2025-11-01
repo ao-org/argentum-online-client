@@ -64,6 +64,6 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
     ' no-op
 End Sub
 
-Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
+Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Integer, ByVal shiftState As Integer)
     ' no-op
 End Sub

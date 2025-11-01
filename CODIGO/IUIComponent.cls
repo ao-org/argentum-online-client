@@ -43,4 +43,4 @@ Public Sub render(ByVal dev As Direct3DDevice8): End Sub
 
 Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long): End Sub
 
-Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long): End Sub
+Public Sub HandleKeyboard(ByVal keyCode As Integer, ByVal shiftState As Integer): End Sub

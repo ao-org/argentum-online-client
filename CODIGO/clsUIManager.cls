@@ -67,7 +67,7 @@ Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseBu
     Next
 End Sub
 
-Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
+Public Sub HandleKeyboard(ByVal keyCode As Integer, ByVal shiftState As Integer)
     Dim comp As IUIComponent
     For Each comp In Components
         comp.HandleKeyboard keyCode, shiftState

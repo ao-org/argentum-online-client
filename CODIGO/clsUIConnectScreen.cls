@@ -121,7 +121,7 @@ Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseBu
     m_UIMgr.HandleMouse mouseX, mouseY, mouseButtons
 End Sub
 
-Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
+Public Sub HandleKeyboard(ByVal keyCode As Integer, ByVal shiftState As Integer)
     m_UIMgr.HandleKeyboard keyCode, shiftState
 End Sub
 
