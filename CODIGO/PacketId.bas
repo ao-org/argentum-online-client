@@ -426,10 +426,6 @@ Public Enum ClientPacketID
     eCleanSOS                '/BORRAR SOS
     eShowServerForm          '/SHOW INT
     eKickAllChars            '/ECHARTODOSPJS
-    eReloadNPCs              '/RELOADNPCS
-    eReloadServerIni         '/RELOADSINI
-    eReloadSpells            '/RELOADHECHIZOS
-    eReloadObjects           '/RELOADOBJ
     eChatColor               '/CHATCOLOR
     eIgnored                 '/IGNORADO
     eCheckSlot               '/SLOT
