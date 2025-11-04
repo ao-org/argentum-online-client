@@ -213,8 +213,6 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call HandleGetInventarioHechizos
             Case ServerPacketID.eNotificarClienteCasteo
                 Call HandleNotificarClienteCasteo
-            Case ServerPacketID.eSendFollowingCharindex
-                Call HandleSendFollowingCharindex
             Case ServerPacketID.eNotificarClienteSeguido
                 Call HandleNotificarClienteSeguido
             Case ServerPacketID.eUpdateUserStats
@@ -3163,17 +3161,6 @@ NotificarClienteCasteo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.NotificarClienteCasteo", Erl)
 End Sub
 
-Private Sub HandleSendFollowingCharindex()
-    On Error GoTo SendFollowingCharindex_Err
-    Dim charindex As Integer
-    charindex = Reader.ReadInt16()
-    UserCharIndex = charindex
-    CharindexSeguido = charindex
-    OffsetLimitScreen = 31
-    Exit Sub
-SendFollowingCharindex_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.SendFollowingCharindex", Erl)
-End Sub
 
 Private Sub HandleUpdateUserStats()
     On Error GoTo HandleUpdateUserStats_Err

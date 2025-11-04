@@ -189,7 +189,6 @@ Public Enum ServerPacketID
     eNotificarClienteSeguido
     eGetInventarioHechizos
     eNotificarClienteCasteo
-    eSendFollowingCharindex
     eForceCharMoveSiguiendo
     ePosUpdateUserChar
     ePosUpdateChar
