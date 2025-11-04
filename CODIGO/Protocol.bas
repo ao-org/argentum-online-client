@@ -209,10 +209,6 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call HandleCreateFX
             Case ServerPacketID.eCharAtaca
                 Call HandleCharAtaca
-            Case ServerPacketID.eRecievePosSeguimiento
-                Call HandleRecievePosSeguimiento
-            Case ServerPacketID.eCancelarSeguimiento
-                Call HandleCancelarSeguimiento
             Case ServerPacketID.eGetInventarioHechizos
                 Call HandleGetInventarioHechizos
             Case ServerPacketID.eNotificarClienteCasteo
@@ -3128,32 +3124,6 @@ NotificarClienteSeguido_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.NotificarClienteSeguido", Erl)
 End Sub
 
-''
-' Handles the UpdateUserStats message.
-''
-' Handles the CharAtaca message.
-Private Sub HandleRecievePosSeguimiento()
-    On Error GoTo RecievePosSeguimiento_Err
-    Dim PosX As Integer
-    Dim PosY As Integer
-    PosX = Reader.ReadInt16()
-    PosY = Reader.ReadInt16()
-    frmMain.shapexy.Left = PosX - 6
-    Exit Sub
-RecievePosSeguimiento_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.RecievePosSeguimiento", Erl)
-End Sub
-
-Private Sub HandleCancelarSeguimiento()
-    On Error GoTo CancelarSeguimiento_Err
-    frmMain.shapexy.Left = 1200
-    frmMain.shapexy.Top = 1200
-    CharindexSeguido = 0
-    OffsetLimitScreen = 32
-    Exit Sub
-CancelarSeguimiento_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.CancelarSeguimiento", Erl)
-End Sub
 
 Private Sub HandleGetInventarioHechizos()
     On Error GoTo GetInventarioHechizos_Err

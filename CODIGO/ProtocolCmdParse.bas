@@ -767,8 +767,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                 End If
-            Case "/SM"
-                Call WriteSeguirMouse(ArgumentosRaw)
             Case "/PERDONFACCION", "/FORGIVENESS"
                 If notNullArguments Then
                     Call WritePerdonFaccion(ArgumentosRaw)
