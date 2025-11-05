@@ -33,9 +33,9 @@ Private Declare Function GetDiskFreeSpace _
                                              BytesTotal As Currency, _
                                              FreeBytesTotal As Currency) As Long
 'To get free bytes in RAM
-Private pUdtMemStatus As MEMORYSTATUS
+Public pUdtMemStatus As MEMORYSTATUS
 
-Private Type MEMORYSTATUS
+Public Type MEMORYSTATUS
     dwLength As Long
     dwMemoryLoad As Long
     dwTotalPhys As Long
@@ -46,7 +46,7 @@ Private Type MEMORYSTATUS
     dwAvailVirtual As Long
 End Type
 
-Private Declare Sub GlobalMemoryStatus Lib "kernel32" (lpBuffer As MEMORYSTATUS)
+Public Declare Sub GlobalMemoryStatus Lib "kernel32" (lpBuffer As MEMORYSTATUS)
 ' FIN - CARGA DE TEXTURAS
 ' FIN - CARGA DE TEXTURAS
 ' The D3DPRESENT_PARAMETERS type holds a description of the way

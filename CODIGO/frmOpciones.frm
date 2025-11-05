@@ -295,14 +295,45 @@ Begin VB.Form frmOpciones
       Top             =   1800
       Visible         =   0   'False
       Width           =   7560
+      Begin VB.ComboBox cmbVRAM 
+         BackColor       =   &H80000008&
+         ForeColor       =   &H80000005&
+         Height          =   315
+         Left            =   5400
+         Style           =   2  'Dropdown List
+         TabIndex        =   21
+         Top             =   720
+         Width           =   1335
+      End
       Begin VB.ComboBox cboLuces 
          Height          =   315
          ItemData        =   "frmOpciones.frx":015E
-         Left            =   240
+         Left            =   5400
          List            =   "frmOpciones.frx":016B
          TabIndex        =   10
-         Top             =   3960
-         Width           =   2175
+         Top             =   1080
+         Width           =   1575
+      End
+      Begin VB.Label lbl_AmbientLight 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Luz ambiental:"
+         ForeColor       =   &H00FFFFFF&
+         Height          =   195
+         Left            =   4320
+         TabIndex        =   23
+         Top             =   1080
+         Width           =   1155
+      End
+      Begin VB.Label lbl_VRAM 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Umbral de VRAM:"
+         ForeColor       =   &H00FFFFFF&
+         Height          =   255
+         Left            =   4080
+         TabIndex        =   22
+         Top             =   720
+         Width           =   1335
       End
       Begin VB.Image num_comp_inv 
          Height          =   255
@@ -504,6 +535,33 @@ Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
 Private cBotonCerrar As clsGraphicalButton
 
+Private Sub cmbVRAM_Click()
+    If cmbVRAM.text = "" Then
+        cmbVRAM.text = cmbVRAM.ItemData(0)
+    End If
+    If Not IsNumeric(cmbVRAM.text) Then
+        cmbVRAM.text = cmbVRAM.ItemData(0)
+    End If
+    TexHighWaterMark = CLng(cmbVRAM.text)
+    Select Case TexHighWaterMark
+        Case Is < 128
+            NumTexRelease = 15
+        Case 128
+            NumTexRelease = 25
+        Case 256
+            NumTexRelease = 25
+        Case 512
+            NumTexRelease = 25
+        Case 1024
+            NumTexRelease = 50
+        Case 2048
+            NumTexRelease = 50
+        Case Is > 2048
+            NumTexRelease = 125
+    End Select
+    
+End Sub
+
 Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     Call Aplicar_Transparencia(Me.hWnd, 240)
@@ -523,6 +581,11 @@ Private Sub Form_Load()
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_602"))  ' Italiano
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_1"))
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_2"))
+    Call loadVramComboOptions()
+    lbl_VRAM = JsonLanguage.Item("LABEL_VRAM_USAGE")
+    lbl_AmbientLight = JsonLanguage.Item("LABEL_AMBIENT_LIGHT")
+    
+    
     cmbEquipmentStyle.ListIndex = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
     txtRed.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorRedColor", 255)
     txtGreen.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorGreenColor", 255)
@@ -1375,3 +1438,28 @@ Private Sub txtEquippedCaracter_Change()
     End If
     EQUIPMENT_CARACTER = txtEquippedCaracter.text
 End Sub
+
+
+Private Sub loadVramComboOptions()
+    Dim i As Integer
+    Dim Mem As Long
+    Mem = getMaxAvailablePhysicalMemoryInMb
+    For i = 0 To 4
+        cmbVRAM.AddItem (Mem)
+        If Mem = TexHighWaterMark Then
+            cmbVRAM.ListIndex = i
+        End If
+        Mem = Mem / 2
+    Next i
+End Sub
+
+
+Public Function getMaxAvailablePhysicalMemoryInMb() As Long
+    Dim ms As MEMORYSTATUS
+    Dim totalMB As Long
+    Dim i As Long
+    Dim val As Long
+    GlobalMemoryStatus ms
+    getMaxAvailablePhysicalMemoryInMb = (ms.dwTotalPhys / (1024# * 1024#)) ' Convert bytes ? MB
+
+End Function
