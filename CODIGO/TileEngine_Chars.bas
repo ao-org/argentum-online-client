@@ -614,8 +614,9 @@ End Sub
 
 Public Sub SetCharacterFx(ByVal charindex As Integer, ByVal Fx As Integer, ByVal Loops As Integer)
     On Error GoTo SetCharacterFx_Err
-    If Fx = 0 Then Exit Sub
-    'Sets an FX to the character.
+    If Fx < LBound(FxData) Or Fx > UBound(FxData) Then
+        Exit Sub
+    End If
     Dim indice As Byte
     With charlist(charindex)
         indice = Char_FX_Group_Next_Open(charindex)

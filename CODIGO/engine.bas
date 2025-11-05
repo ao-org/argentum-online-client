@@ -2004,7 +2004,7 @@ Public Sub start()
                         UpdateMouse frmConnect.render.hWnd
                         g_MouseButtons = GetAsyncKeyState(VK_LBUTTON) And &H8000 ' left button state
                         ' Pass movement and clicks to UI
-                        g_connectScreen.HandleInput g_MouseX, g_MouseY, g_MouseButtons
+                        g_connectScreen.HandleMouse g_MouseX, g_MouseY, g_MouseButtons
                         If g_connectScreen.WasConnectClicked Then
                             Debug.Print "g_connectScreen.WasConnectClicked"
                             'Call SetActiveServer(txtIp.text, txtPort.text)

@@ -187,11 +187,8 @@ Public Enum ServerPacketID
     eUpdateFlag
     eCharAtaca
     eNotificarClienteSeguido
-    eRecievePosSeguimiento
-    eCancelarSeguimiento
     eGetInventarioHechizos
     eNotificarClienteCasteo
-    eSendFollowingCharindex
     eForceCharMoveSiguiendo
     ePosUpdateUserChar
     ePosUpdateChar
@@ -426,10 +423,6 @@ Public Enum ClientPacketID
     eCleanSOS                '/BORRAR SOS
     eShowServerForm          '/SHOW INT
     eKickAllChars            '/ECHARTODOSPJS
-    eReloadNPCs              '/RELOADNPCS
-    eReloadServerIni         '/RELOADSINI
-    eReloadSpells            '/RELOADHECHIZOS
-    eReloadObjects           '/RELOADOBJ
     eChatColor               '/CHATCOLOR
     eIgnored                 '/IGNORADO
     eCheckSlot               '/SLOT
@@ -521,8 +514,6 @@ Public Enum ClientPacketID
     ePerdonFaccion              '/PERDONFACCION NAME
     eStartEvent           '/EVENTO CAPTURA/LOBBY
     eCancelarEvento          '/CANCELAREVENTO
-    eSeguirMouse
-    eSendPosSeguimiento
     eNotifyInventarioHechizos
     ePublicarPersonajeMAO
     eEventoFaccionario

@@ -3345,29 +3345,6 @@ WriteReviveChar_Err:
     '</EhFooter>
 End Sub
 
-''
-' Writes the "ReviveChar" message to the outgoing data buffer.
-'
-' @param    username The user to eb revived.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteSeguirMouse(ByVal userName As String)
-    '<EhHeader>
-    On Error GoTo WriteSeguirMouse_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eSeguirMouse)
-    Call Writer.WriteString8(userName)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteSeguirMouse_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteSeguirMouse", Erl)
-    '</EhFooter>
-End Sub
-
-Public Sub WriteSendPosSeguimiento(ByVal Cheat_X As Integer, ByVal Cheat_Y As Integer)
-    'TODO: delete this
-End Sub
 
 Public Sub WritePerdonFaccion(ByVal userName As String)
     '<EhHeader>
@@ -4998,78 +4975,6 @@ Public Sub WriteKickAllChars()
 WriteKickAllChars_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteKickAllChars", Erl)
-    '</EhFooter>
-End Sub
-
-''
-' Writes the "ReloadNPCs" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteReloadNPCs()
-    '<EhHeader>
-    On Error GoTo WriteReloadNPCs_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eReloadNPCs)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteReloadNPCs_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteReloadNPCs", Erl)
-    '</EhFooter>
-End Sub
-
-''
-' Writes the "ReloadServerIni" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteReloadServerIni()
-    '<EhHeader>
-    On Error GoTo WriteReloadServerIni_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eReloadServerIni)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteReloadServerIni_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteReloadServerIni", Erl)
-    '</EhFooter>
-End Sub
-
-''
-' Writes the "ReloadSpells" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteReloadSpells()
-    '<EhHeader>
-    On Error GoTo WriteReloadSpells_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eReloadSpells)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteReloadSpells_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteReloadSpells", Erl)
-    '</EhFooter>
-End Sub
-
-''
-' Writes the "ReloadObjects" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteReloadObjects()
-    '<EhHeader>
-    On Error GoTo WriteReloadObjects_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eReloadObjects)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteReloadObjects_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteReloadObjects", Erl)
     '</EhFooter>
 End Sub
 

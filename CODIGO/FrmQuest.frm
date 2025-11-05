@@ -208,6 +208,27 @@ Begin VB.Form FrmQuests
       EndProperty
       Picture         =   "FrmQuest.frx":CF0A
    End
+   Begin VB.Label lblRepetible 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "Misión repetible"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   -1  'True
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00C0C0C0&
+      Height          =   255
+      Left            =   4880
+      TabIndex        =   10
+      Top             =   1870
+      Visible         =   0   'False
+      Width           =   1455
+   End
    Begin VB.Label objetolbl 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
@@ -285,7 +306,7 @@ Begin VB.Form FrmQuests
       Height          =   255
       Left            =   3960
       TabIndex        =   2
-      Top             =   1800
+      Top             =   1700
       Width           =   3255
    End
 End
@@ -317,6 +338,7 @@ Private Sub Form_Load()
     PlayerView.BackColor = RGB(11, 11, 11)
     picture1.BackColor = RGB(19, 14, 11)
     Me.Picture = LoadInterface("ventanadetallemision.bmp")
+    lblRepetible.Caption = JsonLanguage.Item("MENSAJE_MISION_REPETIBLE")
     Call Aplicar_Transparencia(Me.hWnd, 240)
     Exit Sub
 Form_Load_Err:

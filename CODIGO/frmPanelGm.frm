@@ -2329,9 +2329,6 @@ Private Sub cmdPenas_Click()
     Call frmPanelgm.txtMod.SetFocus
 End Sub
 
-Private Sub cmdRecargarNPCs_Click()
-    Call WriteReloadNPCs
-End Sub
 
 Private Sub cmdRestringirMapa_Click()
     Call ParseUserCommand("/MODMAPINFO RESTRINGIR " & "Newbie")
@@ -2863,33 +2860,6 @@ mnuIP_Click_Err:
     Resume Next
 End Sub
 
-Private Sub mnuReload_Click(Index As Integer)
-    On Error GoTo mnuReload_Click_Err
-    Select Case Index
-        Case 1 'Reload objetos
-            Call WriteReloadObjects
-        Case 2 'Reload server.ini
-            Call WriteReloadServerIni
-        Case 3 'Reload mapas
-            Call ParseUserCommand("/RELOAD MAP")
-        Case 4 'Reload hechizos
-            Call WriteReloadSpells
-        Case 5 'Reload motd
-            Call ParseUserCommand("/RELOADMOTD")
-        Case 6 'Reload npcs
-            Call WriteReloadNPCs
-        Case 7 'Reload sockets
-            If MsgBox(JsonLanguage.Item("MENSAJE_REINICIAR_API"), vbYesNo, "Advertencia") = vbYes Then
-                '   Call SendData("/RELOAD SOCK")
-            End If
-        Case 8 'Reload otros
-            Call ParseUserCommand("/RELOADOPCIONES")
-    End Select
-    Exit Sub
-mnuReload_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuReload_Click", Erl)
-    Resume Next
-End Sub
 
 Private Sub MOTD_Click()
     On Error GoTo MOTD_Click_Err
