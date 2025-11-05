@@ -581,17 +581,7 @@ Private Sub Form_Load()
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_602"))  ' Italiano
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_1"))
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_2"))
-    
-    Dim i As Integer
-    Dim Mem As Long
-    Mem = getMaxAvailablePhysicalMemory
-    For i = 0 To 4
-        cmbVRAM.AddItem (Mem)
-        If Mem = TexHighWaterMark Then
-            cmbVRAM.ListIndex = i
-        End If
-        Mem = Mem / 2
-    Next i
+    Call loadVramComboOptions()
     lbl_VRAM = JsonLanguage.Item("LABEL_VRAM_USAGE")
     lbl_AmbientLight = JsonLanguage.Item("LABEL_AMBIENT_LIGHT")
     
@@ -1450,12 +1440,26 @@ Private Sub txtEquippedCaracter_Change()
 End Sub
 
 
-Public Function getMaxAvailablePhysicalMemory() As Long
+Private Sub loadVramComboOptions()
+    Dim i As Integer
+    Dim Mem As Long
+    Mem = getMaxAvailablePhysicalMemoryInMb
+    For i = 0 To 4
+        cmbVRAM.AddItem (Mem)
+        If Mem = TexHighWaterMark Then
+            cmbVRAM.ListIndex = i
+        End If
+        Mem = Mem / 2
+    Next i
+End Sub
+
+
+Public Function getMaxAvailablePhysicalMemoryInMb() As Long
     Dim ms As MEMORYSTATUS
     Dim totalMB As Long
     Dim i As Long
     Dim val As Long
     GlobalMemoryStatus ms
-    getMaxAvailablePhysicalMemory = (ms.dwTotalPhys / (1024# * 1024#)) ' Convert bytes ? MB
+    getMaxAvailablePhysicalMemoryInMb = (ms.dwTotalPhys / (1024# * 1024#)) ' Convert bytes ? MB
 
 End Function

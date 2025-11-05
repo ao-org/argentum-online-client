@@ -123,7 +123,7 @@ Sub LoadConfig()
     '     but risk higher memory usage.
     '------------------------------------------------------------------------------
     'defaults to 25 in DeffaultSettings.ini
-    NumTexRelease = max(val(GetSetting("VIDEO", "NumTexRelease")), 25)
+    NumTexRelease = max(25, min(val(GetSetting("VIDEO", "NumTexRelease")), 250))
     '------------------------------------------------------------------------------
     ' Configuration: VIDEO.TexHighWaterMark
     '
@@ -133,8 +133,8 @@ Sub LoadConfig()
     '
     '
     '   • Reads the INI setting [VIDEO] TexHighWaterMark (in megabytes)
-    '   • Ensures the high-water mark is at least 128 MB
-    '
+    '   • Ensures the high-water mark is at least 200 MB
+    '   • Caps the high-water mark at 2048 MB to avoid overly late eviction
     ' Tuning:
     '   – A lower threshold triggers eviction more often, keeping VRAM tighter
     '     at the cost of potential stutter.
@@ -142,7 +142,7 @@ Sub LoadConfig()
     '     peak memory usage.
     '------------------------------------------------------------------------------
     'defaults to 512 in DeffaultSettings.ini
-    TexHighWaterMark = max(val(GetSetting("VIDEO", "TexHighWaterMark")), 512)
+    TexHighWaterMark = max(200, min(val(GetSetting("VIDEO", "TexHighWaterMark")), 2048))
     
     Dim value As String
     value = GetSetting("VIDEO", "MostrarRespiracion")
