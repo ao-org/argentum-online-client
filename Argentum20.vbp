@@ -1,10 +1,10 @@
 Type=Exe
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
-Reference=*\G{56A868B0-0AD4-11CE-B03A-0020AF0BA770}#1.0#0#..\..\..\..\Windows\System32\quartz.dll#ActiveMovie control type library
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
+Reference=*\G{56A868B0-0AD4-11CE-B03A-0020AF0BA770}#1.0#0#..\..\Windows\System32\quartz.dll#ActiveMovie control type library
 Reference=*\G{88D89F7C-BB59-4F13-9850-93CBD874039D}#1.5#0#..\argentum20-server\Aurora.Network.dll#Aurora.Network - Aurora Engine - Network
-Reference=*\G{420B2830-E718-11CF-893D-00A0C9054228}#1.0#0#..\..\..\..\Windows\SysWOW64\scrrun.dll#Microsoft Scripting Runtime
-Reference=*\G{B691E011-1797-432E-907A-4D8C69339129}#6.1#0#..\..\..\..\Program Files (x86)\Common Files\System\ado\msado15.dll#Microsoft ActiveX Data Objects 6.1 Library
-Reference=*\G{E1211242-8E94-11D1-8808-00C04FC2C603}#1.0#0#DX8VB.DLL#DirectX 8 for Visual Basic Type Library
+Reference=*\G{420B2830-E718-11CF-893D-00A0C9054228}#1.0#0#..\..\Windows\SysWOW64\scrrun.dll#Microsoft Scripting Runtime
+Reference=*\G{B691E011-1797-432E-907A-4D8C69339129}#6.1#0#..\..\Program Files (x86)\Common Files\System\ado\msado15.dll#Microsoft ActiveX Data Objects 6.1 Library
+Reference=*\G{E1211242-8E94-11D1-8808-00C04FC2C603}#1.0#0#dx8vb.dll#DirectX 8 for Visual Basic Type Library
 Object={48E59290-9880-11CF-9754-00AA00C00908}#1.0#0; MSINET.OCX
 Object={3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0; RICHTX32.OCX
 Object={831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0; MSCOMCTL.OCX
@@ -164,6 +164,9 @@ Class=clsUIConnectScreen; CODIGO\clsUIConnectScreen.cls
 Class=clsUIRenderer; CODIGO\clsUIRenderer.cls
 Module=modWorldTime; CODIGO\modWorldTime.bas
 Module=modElapsedTime; CODIGO\modElapsedTime.bas
+Class=clsUIInputbox; CODIGO\clsUIInputbox.cls
+Class=clsUICheckbox; clsUICheckbox.cls
+Class=clsUIBoxInfo; clsUIBoxInfo.cls
 ResFile32="AO20.res"
 IconForm="frmMain"
 Startup="Sub Main"
@@ -184,7 +187,7 @@ VersionCompanyName="Argentum Online"
 VersionLegalCopyright="Argentum Online ©"
 VersionLegalTrademarks="Argentum Online ©"
 VersionProductName="Argentum Online by Noland Studios"
-CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 1"
+CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 1 : DXUI = 1"
 CompilationType=0
 OptimizationType=0
 FavorPentiumPro(tm)=0
