@@ -107,12 +107,12 @@ Private Sub UpdateAndRenderFPS()
     simple_text_render "FPS: " & CStr(gFPS), 10, 10, col, 1, True
 End Sub
 
-Public Function ColorToBytes(ByVal r As Byte, ByVal g As Byte, ByVal b As Byte, Optional ByVal A As Byte = 255) As Long
+Public Function ColorToBytes(ByVal r As Byte, ByVal G As Byte, ByVal b As Byte, Optional ByVal a As Byte = 255) As Long
     Dim p(0 To 3) As Byte   ' [0]=B, [1]=G, [2]=R, [3]=A
     p(0) = b
-    p(1) = g
+    p(1) = G
     p(2) = r
-    p(3) = A
+    p(3) = a
     CopyMemory ColorToBytes, p(0), 4
 End Function
 
@@ -137,15 +137,15 @@ End Sub
 ' Public API
 ' =====================================================================================
 ' Pack bytes to ARGB (what D3D expects). Memory order = [B,G,R,A].
-Private Function ARGB(ByVal A As Byte, ByVal r As Byte, ByVal g As Byte, ByVal b As Byte) As Long
+Private Function ARGB(ByVal a As Byte, ByVal r As Byte, ByVal G As Byte, ByVal b As Byte) As Long
     Dim p(0 To 3) As Byte
-    p(0) = b: p(1) = g: p(2) = r: p(3) = A
+    p(0) = b: p(1) = G: p(2) = r: p(3) = a
     CopyMemory ARGB, p(0), 4
 End Function
 
 ' Convert a VB/OLE color (BGR: 0x00BBGGRR) + alpha -> D3D ARGB.
-Private Function FromVBColor(ByVal vbColor As Long, ByVal A As Byte) As Long
-    FromVBColor = ARGB(A, vbColor And &HFF&, (vbColor \ &H100&) And &HFF&, (vbColor \ &H10000) And &HFF&)
+Private Function FromVBColor(ByVal vbColor As Long, ByVal a As Byte) As Long
+    FromVBColor = ARGB(a, vbColor And &HFF&, (vbColor \ &H100&) And &HFF&, (vbColor \ &H10000) And &HFF&)
 End Function
 
 Public Sub AddQuad(ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByRef colors() As Long, Optional ByVal alpha As Byte = 255)
@@ -356,13 +356,13 @@ End Sub
 ' =====================================================================================
 ' Helpers
 ' =====================================================================================
-Private Function ColorWithAlpha(ByVal baseColor As Long, ByVal A As Byte) As Long
+Private Function ColorWithAlpha(ByVal baseColor As Long, ByVal a As Byte) As Long
     ' baseColor is a VB/OLE color (0x00BBGGRR). Pack to D3D ARGB (0xAARRGGBB)
     Dim out(0 To 3) As Byte
     out(0) = (baseColor \ &H10000) And &HFF&  ' B
     out(1) = (baseColor \ &H100&) And &HFF&   ' G
     out(2) = baseColor And &HFF&              ' R
-    out(3) = A                                ' A
+    out(3) = a                                ' A
     CopyMemory ColorWithAlpha, out(0), 4
 End Function
 
@@ -378,11 +378,11 @@ End Function
 
 
 Private Function ARGBToVBColor(ByVal argbColor As Long) As Long
-    Dim r As Long, g As Long, b As Long
+    Dim r As Long, G As Long, b As Long
     r = (argbColor \ &H10000) And &HFF&
-    g = (argbColor \ &H100&) And &HFF&
+    G = (argbColor \ &H100&) And &HFF&
     b = argbColor And &HFF&
-    ARGBToVBColor = (b * &H10000) Or (g * &H100) Or r
+    ARGBToVBColor = (b * &H10000) Or (G * &H100) Or r
 End Function
 
 Private Function NormalizeTextColor(ByVal inputColor As Long) As Long
@@ -429,17 +429,17 @@ Private Sub AddGlyphQuad(ByVal glyphIndex As Long, ByVal drawX As Long, ByVal dr
 
     If SurfaceDB Is Nothing Then Exit Sub
 
-    Dim texWidth As Long, texHeight As Long
+    Dim texwidth As Long, texheight As Long
     Dim glyphTex As Direct3DTexture8
-    Set glyphTex = SurfaceDB.GetTexture(GrhData(finalIndex).FileNum, texWidth, texHeight)
+    Set glyphTex = SurfaceDB.GetTexture(GrhData(finalIndex).FileNum, texwidth, texheight)
     Set cmds(startCmd).tex = glyphTex
 
     Dim u0 As Single, v0 As Single, u1 As Single, v1 As Single
-    If texWidth <> 0 And texHeight <> 0 Then
-        u0 = (GrhData(finalIndex).sX + 0.25) / texWidth
-        v0 = (GrhData(finalIndex).sY + 0.25) / texHeight
-        u1 = (GrhData(finalIndex).sX + glyphWidth) / texWidth
-        v1 = (GrhData(finalIndex).sY + glyphHeight) / texHeight
+    If texwidth <> 0 And texheight <> 0 Then
+        u0 = (GrhData(finalIndex).sX + 0.25) / texwidth
+        v0 = (GrhData(finalIndex).sY + 0.25) / texheight
+        u1 = (GrhData(finalIndex).sX + glyphWidth) / texwidth
+        v1 = (GrhData(finalIndex).sY + glyphHeight) / texheight
     Else
         u0 = 0!
         v0 = 0!
@@ -478,8 +478,8 @@ Public Sub RenderText(Texto As String, _
     If Len(Texto) = 0 Then Exit Sub
 
     Dim graf As Grh
-    Dim alphaValue As Byte
-    alphaValue = alpha
+    Dim AlphaValue As Byte
+    AlphaValue = alpha
 
     Dim vbColor As Long
     vbColor = NormalizeTextColor(color)
@@ -515,7 +515,7 @@ Public Sub RenderText(Texto As String, _
                 Dim glyphIdx As Long
                 glyphIdx = graf.GrhIndex
 
-                AddGlyphQuad glyphIdx, x + advanceX, y + lineIndex * 14, vbColor, alphaValue
+                AddGlyphQuad glyphIdx, x + advanceX, y + lineIndex * 14, vbColor, AlphaValue
 
                 If GrhData(glyphIdx).NumFrames > 0 Then
                     glyphIdx = GrhData(glyphIdx).Frames(1)
