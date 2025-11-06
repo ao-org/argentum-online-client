@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "clsUIButton"
+Attribute VB_Name = "clsUIBoxInfo"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -50,6 +50,9 @@ Private m_IsHover   As Boolean
 Private m_PrevDown  As Boolean
 Private m_Clicked   As Boolean
 Private m_Focus As Boolean
+Private m_marginLeft As Integer
+Private m_marginTop As Integer
+Private m_Draw   As Boolean
 
 Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
     m_Text = text: m_X = x: m_Y = y
@@ -59,10 +62,11 @@ Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w 
     m_ColorText = clrText
     m_Clicked = False: m_PrevDown = False: m_IsHover = False
     m_Focus = False
+    m_Draw = False
 End Sub
 
-Public Sub SetPosition(ByVal x As Long, ByVal y As Long)
-    m_X = x: m_Y = y
+Public Sub SetPosition(ByVal x As Long, ByVal y As Long, ByVal d As Boolean)
+    m_X = x: m_Y = y: m_Draw = d
 End Sub
 
 Public Property Get Width() As Long
@@ -82,41 +86,57 @@ Public Property Let WasClicked(ByVal val As Boolean)
 End Property
 
 Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
+    If Not m_Draw Then Exit Sub
     Dim clr As Long
     clr = IIf(m_IsHover, m_HoverColor, m_ColorFill)
+    
+    Dim gliphW As Integer
+    Dim gliphH As Integer
+    Dim gliphPerRow As Integer
+    Dim gliphPerCol As Integer
+    gliphW = 7
+    gliphH = 12
+    gliphPerRow = (m_W / gliphW) - 2
+    gliphPerCol = m_H / gliphH
+    
     Dim cols(3) As Long
     cols(0) = clr
     cols(1) = clr
     cols(2) = clr
     cols(3) = clr
-    UIRenderer.AddQuad m_X, m_Y, m_W, m_H, cols
-    Dim rc As RECT
-    rc.Left = m_X: rc.Top = m_Y
-    Dim RECT As RECT
-    Dim startX As Integer
-    Dim startY As Integer
-    startX = m_X + (m_W - (Len(m_Text) * 7)) / 2
-    startY = m_Y + (m_H - 12) / 2
-    rc.Left = startX: rc.Top = startY
-    rc.Right = m_X + m_W: rc.Bottom = m_Y + m_H
-    Call UIRenderer.RenderText(m_Text, rc.Left, rc.Top, m_ColorText, 1, 255)
+    
+    Dim cols2(3) As Long
+    cols2(0) = m_HoverColor
+    cols2(1) = m_HoverColor
+    cols2(2) = m_HoverColor
+    cols2(3) = m_HoverColor
+    
+    UIRenderer.AddQuad m_X, m_Y, m_W, m_H, cols2
+'    UIRenderer.AddQuad m_X + m_W - 15, m_Y, 15, 15, cols
+    Dim i As Long
+    Dim strTextAux As String
+    For i = 0 To gliphPerRow
+        strTextAux = mid(m_Text, i * gliphPerRow + 1, gliphPerRow)
+        Call UIRenderer.RenderText(strTextAux, m_X + 10, m_Y + (gliphH * i) + 15, m_ColorText, 1, 255)
+    Next i
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
     m_IsHover = (mouseX >= m_X And mouseX <= m_X + m_W And mouseY >= m_Y And mouseY <= m_Y + m_H)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then
         m_Clicked = True
-        hit = True
+'        Hit = True
         m_Focus = True
     End If
     m_PrevDown = down
 End Sub
 
-Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
+Private Sub IUIComponent_HandleKeyboard(ByVal KeyCode As Long, ByVal shiftState As Long)
     ' no-op for now
 End Sub
 
 Private Sub IUIComponent_SetFocus(ByVal val As Boolean)
     m_Focus = val
 End Sub
+

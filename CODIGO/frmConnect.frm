@@ -298,14 +298,19 @@ Private Sub AuthSocket_Error(ByVal Number As Integer, _
     #End If
 End Sub
 
-Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+Private Sub Form_KeyDown(keyCode As Integer, Shift As Integer)
     On Error GoTo Form_KeyDown_Err
-    If KeyCode = vbKeyEscape Then
+    If keyCode = vbKeyEscape Then
         prgRun = False
         End
-    ElseIf KeyCode = vbKeyF9 Then
+    ElseIf keyCode = vbKeyF9 Then
         frmDebug.Show
     End If
+     #If DXUI Then
+        If Not g_connectScreen Is Nothing Then
+            g_connectScreen.HandleKeyboard keyCode, Shift
+        End If
+    #End If
     Exit Sub
 Form_KeyDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmConnect.Form_KeyDown", Erl)

@@ -43,6 +43,7 @@ Private Components As Collection
 ' Helper to save UI render states
 Private oldShader  As Long
 Private oldAlpha   As Long, oldSrc As Long, oldDest As Long
+Private compFocusedIndex As Integer
 
 Public Sub Init()
     Set Components = New Collection
@@ -50,6 +51,7 @@ End Sub
 
 Public Sub AddComponent(ByVal comp As IUIComponent)
     Components.Add comp
+    compFocusedIndex = 0
 End Sub
 
 Public Sub RenderAll(ByVal dev As Direct3DDevice8)
@@ -60,9 +62,29 @@ Public Sub RenderAll(ByVal dev As Direct3DDevice8)
     Next
 End Sub
 
-Public Sub HandleInput(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
+
+Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
+    Dim Hit As Boolean
+    Dim comp As IUIComponent
+    Dim Index As Integer
+    Index = 1
+    Dim compFocused As IUIComponent
+    For Each comp In Components
+        Hit = False
+        comp.HandleMouse mouseX, mouseY, mouseButtons, Hit
+        If Hit And (compFocusedIndex <> Index) Then
+            If (compFocusedIndex <> 0) Then
+                Components.Item(compFocusedIndex).SetFocus (False)
+            End If
+            compFocusedIndex = Index
+        End If
+        Index = Index + 1
+    Next
+End Sub
+
+Public Sub HandleKeyboard(ByVal KeyCode As Long, ByVal shiftState As Long)
     Dim comp As IUIComponent
     For Each comp In Components
-        comp.HandleInput mouseX, mouseY, mouseButtons
+        comp.HandleKeyboard KeyCode, shiftState
     Next
 End Sub
