@@ -5586,6 +5586,7 @@ Public Sub HandleShopInit()
         ObjShop(i).ObjNum = Reader.ReadInt32
         ObjShop(i).Valor = Reader.ReadInt32
         ObjShop(i).Name = Reader.ReadString8
+        ObjShop(i).RequiereObjeto = ObjData(ObjShop(i).ObjNum).RequiereObjeto
         Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )", i - 1)
     Next i
     frmShopAO20.Show , GetGameplayForm()

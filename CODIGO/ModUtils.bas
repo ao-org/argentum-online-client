@@ -203,6 +203,7 @@ Public Type ObjDatas
     SkPociones As Byte
     Sksastreria As Byte
     Valor As Long
+    RequiereObjeto As Long
     Agarrable As Boolean
     Llave As Integer
     ObjNum As Long

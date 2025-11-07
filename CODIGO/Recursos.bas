@@ -1250,6 +1250,7 @@ Public Sub CargarIndicesOBJ()
     ReDim HechizoData(0 To NumHechizos) As HechizoDatas
     ReDim Locale_SMG(0 To NumLocaleMsg) As String
     ReDim ObjShop(1 To 1) As ObjDatas
+    i = 0
     Debug.Assert NumQuest > 0
     Debug.Assert NumSug > 0
     ReDim QuestList(1 To NumQuest)
@@ -1322,16 +1323,30 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).SkPociones = val(Leer.GetValue("OBJ" & Obj, "SkPociones"))
         ObjData(Obj).Sksastreria = val(Leer.GetValue("OBJ" & Obj, "Sksastreria"))
         ObjData(Obj).Valor = val(Leer.GetValue("OBJ" & Obj, "Valor"))
+        ObjData(Obj).RequiereObjeto = val(Leer.GetValue("OBJ" & Obj, "RequiereObjeto"))
         ObjData(Obj).Agarrable = val(Leer.GetValue("OBJ" & Obj, "Agarrable"))
         ObjData(Obj).Llave = val(Leer.GetValue("OBJ" & Obj, "Llave"))
         ObjData(Obj).ElementalTags = val(Leer.GetValue("OBJ" & Obj, "ElementalTags"))
         If val(Leer.GetValue("OBJ" & Obj, "NFT")) = 1 Then
+            i = i + 1
+            If i > UBound(ObjShop) Then
+                ReDim Preserve ObjShop(1 To i) As ObjDatas
+            End If
             ObjShop(i).Name = Leer.GetValue("OBJ" & Obj, "Name")
             ObjShop(i).Valor = val(Leer.GetValue("OBJ" & Obj, "Valor"))
             ObjShop(i).ObjNum = Obj
-            ReDim Preserve ObjShop(1 To (UBound(ObjShop) + 1)) As ObjDatas
+            ObjShop(i).RequiereObjeto = ObjData(Obj).RequiereObjeto
         End If
     Next Obj
+    If i = 0 Then
+        ReDim ObjShop(1 To 1) As ObjDatas
+        ObjShop(1).Name = vbNullString
+        ObjShop(1).Valor = 0
+        ObjShop(1).ObjNum = 0
+        ObjShop(1).RequiereObjeto = 0
+    ElseIf UBound(ObjShop) > i Then
+        ReDim Preserve ObjShop(1 To i) As ObjDatas
+    End If
     Dim aux   As String
     Dim loopC As Byte
     For Npc = 1 To NumNpcs
