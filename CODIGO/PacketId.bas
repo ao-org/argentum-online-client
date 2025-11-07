@@ -187,11 +187,8 @@ Public Enum ServerPacketID
     eUpdateFlag
     eCharAtaca
     eNotificarClienteSeguido
-    eRecievePosSeguimiento
-    eCancelarSeguimiento
     eGetInventarioHechizos
     eNotificarClienteCasteo
-    eSendFollowingCharindex
     eForceCharMoveSiguiendo
     ePosUpdateUserChar
     ePosUpdateChar
@@ -206,9 +203,10 @@ Public Enum ServerPacketID
     eAntiCheatMessage
     eAntiCheatStartSession
     eReportLobbyList
-    #If PYMMO = 0 Then
-        eAccountCharacterList
-    #End If
+#If PYMMO = 0 Then
+    eAccountCharacterList
+#End If
+    eChangeSkinSlot
     eMaxPacket
     [PacketCount]
 End Enum
@@ -425,10 +423,6 @@ Public Enum ClientPacketID
     eCleanSOS                '/BORRAR SOS
     eShowServerForm          '/SHOW INT
     eKickAllChars            '/ECHARTODOSPJS
-    eReloadNPCs              '/RELOADNPCS
-    eReloadServerIni         '/RELOADSINI
-    eReloadSpells            '/RELOADHECHIZOS
-    eReloadObjects           '/RELOADOBJ
     eChatColor               '/CHATCOLOR
     eIgnored                 '/IGNORADO
     eCheckSlot               '/SLOT
@@ -520,8 +514,6 @@ Public Enum ClientPacketID
     ePerdonFaccion              '/PERDONFACCION NAME
     eStartEvent           '/EVENTO CAPTURA/LOBBY
     eCancelarEvento          '/CANCELAREVENTO
-    eSeguirMouse
-    eSendPosSeguimiento
     eNotifyInventarioHechizos
     ePublicarPersonajeMAO
     eEventoFaccionario
@@ -538,6 +530,7 @@ Public Enum ClientPacketID
         eLoginAccount
         eDeleteCharacter
     #End If
+    eChangeSkinSlot
     eMaxPacket
     [PacketCount]
 End Enum

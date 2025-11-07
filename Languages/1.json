@@ -698,7 +698,7 @@
     "MENSAJE_ESTADO_DIOS" : "Dios",
     "MENSAJE_ESTADO_ADMIN" : "Administrador",
     "MENSAJE_ESTADO_ROLEMASTER": "Rol Master",
-    "MENSAJE_ESTADO_CONSEJO_CAOS" : "Concillio de las sombras",
+    "MENSAJE_ESTADO_CONSEJO_CAOS" : "Concilio de las Sombras",
     "MENSAJE_ESTADO_CAOS" : "Legión Oscura",
     "MENSAJE_ESTADO_CAOS_PRIMERA_JERARQUIA": "Acólito",
     "MENSAJE_ESTADO_CAOS_SEGUNDA_JERARQUIA": "Emisario del Caos",
@@ -719,5 +719,7 @@
     "MENSAJE_ESTADO_MASCOTA" : "Mascota de",
     "MENSAJE_ESTILO_EQUIPAMIENTO_1" : "Moderno",
     "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Clásico",
-    "MENSAJE_DESCRIPCION_GUION_INVALIDO":"No se permiten guiones en la descripción."
+    "MENSAJE_DESCRIPCION_GUION_INVALIDO":"No se permiten guiones en la descripción.",
+    "LABEL_VRAM_USAGE":"Umbral de VRAM:",
+    "LABEL_AMBIENT_LIGHT" : "Luz ambiental:"
 }

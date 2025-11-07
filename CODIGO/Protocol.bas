@@ -209,16 +209,10 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call HandleCreateFX
             Case ServerPacketID.eCharAtaca
                 Call HandleCharAtaca
-            Case ServerPacketID.eRecievePosSeguimiento
-                Call HandleRecievePosSeguimiento
-            Case ServerPacketID.eCancelarSeguimiento
-                Call HandleCancelarSeguimiento
             Case ServerPacketID.eGetInventarioHechizos
                 Call HandleGetInventarioHechizos
             Case ServerPacketID.eNotificarClienteCasteo
                 Call HandleNotificarClienteCasteo
-            Case ServerPacketID.eSendFollowingCharindex
-                Call HandleSendFollowingCharindex
             Case ServerPacketID.eNotificarClienteSeguido
                 Call HandleNotificarClienteSeguido
             Case ServerPacketID.eUpdateUserStats
@@ -479,6 +473,8 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call HandleAntiCheatStartSession
             Case ServerPacketID.eReportLobbyList
                 Call HandleReportLobbyList
+            Case ServerPacketID.eChangeSkinSlot
+                Call HandleChangeSkinSlot
                 #If PYMMO = 0 Then
                 Case ServerPacketID.eAccountCharacterList
                     Call HandleAccountCharacterList
@@ -776,6 +772,10 @@ Public Sub HandleDisconnect()
     For i = 1 To MAX_SLOTS_CRAFTEO
         Call frmCrafteo.InvCraftItems.ClearSlot(i)
     Next i
+    For i = 1 To MAX_SKINSINVENTORY_SLOTS
+        Call frmSkins.InvSkins.ClearSlot(i)
+    Next i
+    
     Call frmCrafteo.InvCraftCatalyst.ClearSlot(1)
     UserInvUnlocked = 0
     Alocados = 0
@@ -2199,6 +2199,7 @@ Private Sub HandleCharacterCreate()
     helmet = Reader.ReadInt16()
     Cart = Reader.ReadInt16()
     Backpack = Reader.ReadInt16()
+    
     With charlist(charindex)
         Dim loopC, Fx As Integer
         Fx = Reader.ReadInt16
@@ -2248,6 +2249,13 @@ Private Sub HandleCharacterCreate()
         .Team = Reader.ReadInt8()
         .banderaIndex = Reader.ReadInt8()
         .AnimAtaque1 = Reader.ReadInt16()
+        
+        If Backpack > 0 Then
+            .Backpack = BodyData(Backpack)
+            .tmpBackPack = Backpack
+            .HasBackpack = True
+        End If
+        
         'dwarven exoesqueleton exception
         If .Body.BodyIndex = DwarvenExoesqueletonBody Then
             weapon = NO_WEAPON
@@ -2416,6 +2424,7 @@ End Sub
 
 ' Handles the CharacterChange message.
 Private Sub HandleCharacterChange()
+    
     On Error GoTo HandleCharacterChange_Err
     Dim charindex As Integer
     Dim TempInt   As Integer
@@ -3113,32 +3122,6 @@ NotificarClienteSeguido_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.NotificarClienteSeguido", Erl)
 End Sub
 
-''
-' Handles the UpdateUserStats message.
-''
-' Handles the CharAtaca message.
-Private Sub HandleRecievePosSeguimiento()
-    On Error GoTo RecievePosSeguimiento_Err
-    Dim PosX As Integer
-    Dim PosY As Integer
-    PosX = Reader.ReadInt16()
-    PosY = Reader.ReadInt16()
-    frmMain.shapexy.Left = PosX - 6
-    Exit Sub
-RecievePosSeguimiento_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.RecievePosSeguimiento", Erl)
-End Sub
-
-Private Sub HandleCancelarSeguimiento()
-    On Error GoTo CancelarSeguimiento_Err
-    frmMain.shapexy.Left = 1200
-    frmMain.shapexy.Top = 1200
-    CharindexSeguido = 0
-    OffsetLimitScreen = 32
-    Exit Sub
-CancelarSeguimiento_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.CancelarSeguimiento", Erl)
-End Sub
 
 Private Sub HandleGetInventarioHechizos()
     On Error GoTo GetInventarioHechizos_Err
@@ -3178,17 +3161,6 @@ NotificarClienteCasteo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.NotificarClienteCasteo", Erl)
 End Sub
 
-Private Sub HandleSendFollowingCharindex()
-    On Error GoTo SendFollowingCharindex_Err
-    Dim charindex As Integer
-    charindex = Reader.ReadInt16()
-    UserCharIndex = charindex
-    CharindexSeguido = charindex
-    OffsetLimitScreen = 31
-    Exit Sub
-SendFollowingCharindex_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.SendFollowingCharindex", Erl)
-End Sub
 
 Private Sub HandleUpdateUserStats()
     On Error GoTo HandleUpdateUserStats_Err
@@ -4931,10 +4903,7 @@ HandleBarFx_Err:
 End Sub
  
 Private Sub HandleQuestDetails()
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     'Recibe y maneja el paquete QuestDetails del servidor.
-    'Last modified: 31/01/2010 by Amraphen
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     On Error GoTo errhandler
     Dim tmpStr         As String
     Dim tmpByte        As Byte
@@ -5042,6 +5011,7 @@ Private Sub HandleQuestDetails()
     Else
         QuestIndex = Reader.ReadInt16
         FrmQuests.titulo.Caption = QuestList(QuestIndex).nombre
+        FrmQuests.lblRepetible.visible = QuestList(QuestIndex).Repetible = 1
         LevelRequerido = Reader.ReadInt8
         QuestRequerida = Reader.ReadInt16
         FrmQuests.detalle.text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & JsonLanguage.Item( _
@@ -5125,7 +5095,7 @@ Private Sub HandleQuestDetails()
             subelemento.SubItems(3) = 1
         Next i
     End If
-    'Determinamos que formulario se muestra, segï¿½n si recibimos la informaciï¿½n y la quest estï¿½ empezada o no.
+    'Determinamos que formulario se muestra, según si recibimos la información y la quest está empezada o no.
     If QuestEmpezada Then
         FrmQuests.txtInfo.text = tmpStr
         Call FrmQuests.ListView1_Click
@@ -5296,7 +5266,7 @@ Public Sub HandleNpcQuestListSend()
         End Select
         FrmQuestInfo.ListViewQuest.Refresh
     Next J
-    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest estï¿½ empezada o no.
+    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest está empezada o no.
     FrmQuestInfo.Show vbModeless, GetGameplayForm()
     FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
     Call FrmQuestInfo.ShowQuest(1)
@@ -5772,7 +5742,7 @@ Public Sub HandleObjQuestListSend()
             subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
     End Select
     FrmQuestInfo.ListViewQuest.Refresh
-    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest estï¿½ empezada o no.
+    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest está empezada o no.
     FrmQuestInfo.Show vbModeless, GetGameplayForm()
     FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
     Call FrmQuestInfo.ShowQuest(1)
@@ -5847,6 +5817,54 @@ Public Sub HandleReportLobbyList()
     Exit Sub
 HandleReportLobbyList_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDebugResponse", Erl)
+End Sub
+
+Private Sub HandleChangeSkinSlot()
+
+Dim Slot                        As Byte
+Dim ObjIndex                    As Integer
+Dim GrhIndex                    As Long
+Dim Amount                      As Integer
+Dim Equipped                    As Boolean
+Dim Name                        As String
+Dim ObjType                     As Byte
+
+    On Error GoTo HandleChangeSkinSlot_Error
+
+    With Reader
+        Slot = .ReadInt8
+        ObjIndex = .ReadInt16
+        Equipped = .ReadBool
+        
+        GrhIndex = .ReadInt32
+        ObjType = .ReadInt8
+        Name = .ReadString8
+
+        Debug.Print "Skin SLOT: " & Slot & " objIndex: " & ObjIndex & " Amount: 1 Time: " & Time & " Date: " & Date
+
+        If Slot > 0 Then
+            With a_Skins(Slot)
+                .Amount = 1
+                .ObjIndex = ObjIndex
+                .ObjType = ObjType
+                .Equipped = Equipped
+                .Name = Name
+                .PuedeUsar = 0
+                .GrhIndex = GrhIndex
+            End With
+        End If
+
+        Call Load(frmSkins)
+        Call frmSkins.InvSkins.SetItem(Slot, ObjIndex, 1, CByte(Equipped), GrhIndex, ObjType, 0, 0, 0, 0, Name, 0, 0)
+    End With
+
+    On Error GoTo 0
+    Exit Sub
+
+HandleChangeSkinSlot_Error:
+
+    Call LogError("Error " & Err.Number & " (" & Err.Description & ") en el procedimiento HandleChangeSkinSlot del módulo Módulo Protocol en la línea: " & Erl())
+
 End Sub
 
 #If PYMMO = 0 Then

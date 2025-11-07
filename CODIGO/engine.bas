@@ -1276,7 +1276,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
         If Not .Moving And Not .TranslationActive And .Idle And .scrollDirectionX = 0 And .scrollDirectionY = 0 And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
             If .Body.AnimateOnIdle = 0 Then
-                ' Quieto SIN animación: congelar la serie de walk en frame estático
+                ' Quieto SIN animación: congelar la serie de walk en frame estético
                 .Body.Walk(.Heading).Loops = 0
                 .Body.Walk(.Heading).started = 0
                 If Not .MovArmaEscudo Then
@@ -1290,7 +1290,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             End If
             If .Backpack.AnimateOnIdle = 0 And .Backpack.IdleBody = 0 Then
-                ' Quieto SIN animación: congelar la serie de walk en frame estático
+                ' Quieto SIN animación: congelar la serie de walk en frame estético
                 .Backpack.Walk(.Heading).Loops = 0
                 .Backpack.Walk(.Heading).started = 0
             Else
@@ -1300,7 +1300,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             End If
         Else
-            If .Backpack.BodyIndex <> .tmpBackPack Then
+            If .Backpack.BodyIndex <> .tmpBackPack And .tmpBackPack <> 0 Then
                 .Backpack = BodyData(.tmpBackPack)
             End If
         End If
@@ -1336,7 +1336,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             If .scrollDirectionX = 0 And .scrollDirectionY = 0 Then
                 .Moving = False
-                .Idle = True                 ' marcar intención de idle (el guard de arriba decide animación/estático)
+                .Idle = True                 ' marcar intención de idle (el guard de arriba decide animación/estético)
             End If
         ElseIf .TranslationActive Then
             Dim ElapsedTime        As Long
@@ -1985,6 +1985,13 @@ Public Sub start()
                         DrawInventoryUserComercio
                         DrawInventoryOtherComercio
                     End If
+                    
+                    'Utilizo un boolean, para evitar utilizar la propiedad .visible de los formularios, ya que aparentemente instancia el form y baja la performance.
+                    If bSkins Then
+                        DrawInventorySkins
+                        'Debug.Print "Renderizando skins"
+                    End If
+
                 Case e_state_connect_screen
                     #If DXUI Then
                         If Not frmConnect.visible Then
@@ -1997,7 +2004,7 @@ Public Sub start()
                         UpdateMouse frmConnect.render.hWnd
                         g_MouseButtons = GetAsyncKeyState(VK_LBUTTON) And &H8000 ' left button state
                         ' Pass movement and clicks to UI
-                        g_connectScreen.HandleInput g_MouseX, g_MouseY, g_MouseButtons
+                        g_connectScreen.HandleMouse g_MouseX, g_MouseY, g_MouseButtons
                         If g_connectScreen.WasConnectClicked Then
                             Debug.Print "g_connectScreen.WasConnectClicked"
                             'Call SetActiveServer(txtIp.text, txtPort.text)
@@ -2343,6 +2350,41 @@ Public Sub DrawInventoryComercio()
 DrawInventorysComercio_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.DrawInventorysComercio", Erl)
     Resume Next
+End Sub
+
+Public Sub DrawInventorySkins()
+
+Dim InvRect                     As RECT
+
+    ' Sólo dibujamos cuando es necesario
+    On Error GoTo DrawInventorySkins_Error
+
+    If Not frmSkins.InvSkins.NeedsRedraw Then Exit Sub
+
+    InvRect.Left = 0
+    InvRect.Top = 0
+    InvRect.Right = frmSkins.interface.ScaleWidth
+    InvRect.Bottom = frmSkins.interface.ScaleHeight
+    RenderCullingRect = InvRect
+    ' Comenzamos la escena
+    Call Engine_BeginScene
+
+    ' Dibujamos llaves
+    Call frmSkins.InvSkins.DrawInventory
+
+    ' Presentamos la escena
+    Call Engine_EndScene(InvRect, frmSkins.interface.hWnd)
+
+    RenderCullingRect = GameplayDrawAreaRect
+
+    On Error GoTo 0
+    Exit Sub
+
+DrawInventorySkins_Error:
+
+    Call RegistrarError(Err.Number, Err.Description, "engine.DrawInventorysComercio", Erl)
+    Resume Next
+
 End Sub
 
 Public Sub DrawInventoryUserComercio()
@@ -3078,9 +3120,13 @@ Public Sub InitializeInventory()
     Set frmBancoCuenta.InvBankUsuCuenta = New clsGrapchicalInventory
     Set frmBancoCuenta.InvBovedaCuenta = New clsGrapchicalInventory
     Set FrmKeyInv.InvKeys = New clsGrapchicalInventory
+    Set frmSkins.InvSkins = New clsGrapchicalInventory
+    
     Call frmMain.Inventario.Initialize(frmMain.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True, 9)
+    
     Call frmComerciar.InvComUsu.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, 0, 252, 0, 3, 3, True)
     Call frmComerciar.InvComNpc.Initialize(frmComerciar.interface, MAX_INVENTORY_SLOTS, 210, , 1, 0, 3, 3)
+    
     Call frmComerciarUsu.InvUser.Initialize(frmComerciarUsu.picInv, MAX_INVENTORY_SLOTS, , , 0, 0, 3, 3, True)
     Call frmComerciarUsu.InvUserSell.Initialize(frmComerciarUsu.picInvUserSell, 6, , , 0, 0, 3, 3, True)
     Call frmComerciarUsu.InvOtherSell.Initialize(frmComerciarUsu.picInvOtherSell, 6, , , 0, 0, 3, 3, True)
@@ -3096,6 +3142,9 @@ Public Sub InitializeInventory()
     Call frmCrafteo.InvCraftUser.Initialize(frmCrafteo.PicInven, MAX_INVENTORY_SLOTS, 210, , 250, 0, 3, 3, True)
     Call frmCrafteo.InvCraftItems.Initialize(frmCrafteo.PicInven, MAX_SLOTS_CRAFTEO, 175, , 25, 180, 3, 3, True)
     Call frmCrafteo.InvCraftCatalyst.Initialize(frmCrafteo.PicInven, 1, 35, 35, 100, 90, 3, 3, True)
+
+    Call frmSkins.InvSkins.Initialize(frmSkins.interface, MAX_SKINSINVENTORY_SLOTS, 210, 0, 0, 0, 3, 3, False, , True)
+
     Exit Sub
 Initialize_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Initialize", Erl)

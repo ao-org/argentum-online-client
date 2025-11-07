@@ -57,7 +57,7 @@ Type Effect_Type
     DesyY As Byte
 End Type
 
-Public Const NO_INDEX = -1         '< Índice no válido.
+Public Const NO_INDEX = -1         '< índice no válido.
 Public Effect()     As Effect_Type
 'Destruccion de items
 Public DestItemSlot As Byte
@@ -232,6 +232,10 @@ Public Type NpcDatas
     PuedeInvocar As Byte
     NoMapInfo As Byte
     ElementalTags As Long
+    NpcType As Integer
+    NroItems As Integer
+    Obj() As Integer
+    Comercia As Integer
 End Type
 
 Public Type HechizoDatas
@@ -1316,9 +1320,11 @@ Public Sub CargarLst()
     On Error GoTo CargarLst_Err
     #If PYMMO = 0 Or DEBUGGING = 1 Then
         Dim server() As String
-        server = Split(ServerIndex, ":")
-        FrmLogear.txtIp.text = server(0)
-        FrmLogear.txtPort.text = server(1)
+        If Len(ServerIndex) > 0 Then
+            server = Split(ServerIndex, ":")
+            FrmLogear.txtIp.text = server(0)
+            FrmLogear.txtPort.text = server(1)
+        End If
     #Else
         FrmLogear.txtIp.text = "45.235.98.188"
         FrmLogear.txtPort.text = "6501"
