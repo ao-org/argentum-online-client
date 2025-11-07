@@ -617,12 +617,12 @@ Sub DoPasosFx(ByVal charindex As Integer)
             End If
             Dim steps_vol As Long
             Dim steps_pan As Long
-            steps_vol = ao20audio.ComputeCharVolumeSteps(.Pos)
+            steps_vol = ao20audio.ComputeVolumeAtPos(eFxSteps, .Pos)
             steps_pan = ao20audio.ComputeCharFxPan(.Pos)
             Dim SndIndex As Integer: SndIndex = Pasos(TerrenoDePaso).wav(StepIndex)
             Dim SndLabel As String: SndLabel = "pasos" & charindex & "_" & StepIndex
             Call ao20audio.StopWav(SndIndex, SndLabel)
-            Call ao20audio.PlayStep(SndIndex, False, steps_vol, steps_pan, SndLabel)
+            Call ao20audio.PlayFx(Pasos(TerrenoDePaso).wav(StepIndex), eFxSteps, False, steps_vol, steps_pan, "pasos" & charindex & "_" & StepIndex)
         End If
     End With
     Exit Sub
@@ -638,11 +638,11 @@ Sub DoPasosInvi(ByVal Grh As Long, ByVal Grh2 As Long, ByVal distancia As Byte, 
     If Grh > 0 Then
         FileNum = GrhData(Grh).FileNum
         TerrenoDePaso = GetTerrenoDePaso(FileNum, Grh2)
-        Dim steps_vol As Long
-        Dim steps_pan As Long
-        steps_vol = ao20audio.ComputeCharVolumeStepsByDistance(distancia)
-        steps_pan = ao20audio.ComputeCharFxPanByDistance(distancia, balance)
-        Call ao20audio.PlayStep(Pasos(TerrenoDePaso).wav(IIf(step, 1, 2)), False, steps_vol, steps_pan)
+        Dim steps_vol2 As Long
+        Dim steps_pan2 As Long
+        steps_vol2 = ao20audio.ComputeVolumeByDistance(eFxSteps, distancia)
+        steps_pan2 = ao20audio.ComputeCharFxPanByDistance(distancia, balance)
+        Call ao20audio.PlayFx(Pasos(TerrenoDePaso).wav(IIf(step, 1, 2)), eFxSteps, False, steps_vol2, steps_pan2)
     End If
     Exit Sub
 DoPasosInvi_Err:

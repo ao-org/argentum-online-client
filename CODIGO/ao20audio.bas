@@ -126,15 +126,31 @@ Public Function PlayWav(ByVal id As String, _
         PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, min(CurFxVolume, volume), pan, label)
     End If
 End Function
-Public Function PlayStep(ByVal id As String, _
-                        Optional ByVal looping As Boolean = False, _
-                        Optional ByVal volume As Long = 0, _
-                        Optional ByVal pan As Long = 0, _
-                        Optional ByVal label As String = "") As Long
-    PlayStep = -1
-    If AudioEnabled And FxStepsEnabled And Not AudioEngine Is Nothing Then
-        PlayStep = ao20audio.AudioEngine.PlayWav(id, looping, min(CurStepsVolume, volume), pan, label)
-    End If
+Public Function PlayFx(ByVal id As String, _
+                       ByVal category As eFxCategory, _
+                       Optional ByVal looping As Boolean = False, _
+                       Optional ByVal volume As Long = 0, _
+                       Optional ByVal pan As Long = 0, _
+                       Optional ByVal label As String = "") As Long
+    PlayFx = -1
+    If AudioEngine Is Nothing Or AudioEnabled = 0 Then Exit Function
+
+    Dim effVol As Long
+    Select Case category
+        Case eFxSteps
+            If FxStepsEnabled = 0 Then Exit Function
+            effVol = min(CurStepsVolume, volume)
+
+        Case eFxAmbient
+            If AmbientEnabled = 0 Then Exit Function
+            effVol = min(CurAmbientVolume, volume)
+
+        Case Else
+            If FxEnabled = 0 Then Exit Function
+            effVol = min(CurFxVolume, volume)
+    End Select
+
+    PlayFx = AudioEngine.PlayWav(id, looping, effVol, pan, label)
 End Function
 
 Public Function StopMP3() As Long
@@ -204,7 +220,7 @@ Public Function ComputeCharFxVolume(ByRef Pos As Position) As Long
     On Error GoTo ComputeCharFxVolumenErr:
     Dim total_distance As Integer
     total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
-    ComputeCharFxVolume = ComputeCharFxVolumeByDistance(total_distance)
+    ComputeCharFxVolume = ComputeVolumeByDistance(eFxGeneral, total_distance)
     Exit Function
 ComputeCharFxVolumenErr:
     Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxVolume", Erl)
@@ -259,44 +275,34 @@ ComputeCharFxPanByDistance_err:
     Call RegistrarError(Err.Number, Err.Description, "clsSoundEngine.Calculate_Pan_By_Distance", Erl)
     Resume Next
 End Function
-
-Public Function ComputeCharFxVolumeByDistance(ByVal distance As Byte) As Long
-    On Error GoTo ComputeCharFxVolumeByDistance_err:
+Public Function ComputeVolumeByDistance(ByVal category As eFxCategory, ByVal distance As Integer) As Long
+    On Error GoTo ComputeVolumeByDistance_err
     distance = Abs(distance)
+
+    Dim base As Long
+    Select Case category
+        Case eFxSteps:   base = VolSteps
+        Case eFxAmbient: base = VolAmbient
+        Case Else:       base = VolFX
+    End Select
+
     If distance < 20 Then
-        ComputeCharFxVolumeByDistance = VolFX - distance * 120
-        If ComputeCharFxVolumeByDistance < -4000 Then ComputeCharFxVolumeByDistance = -4000
+        ComputeVolumeByDistance = base - distance * 120
+        If ComputeVolumeByDistance < -4000 Then ComputeVolumeByDistance = -4000
     Else
-        ComputeCharFxVolumeByDistance = -4000
+        ComputeVolumeByDistance = -4000
     End If
     Exit Function
-ComputeCharFxVolumeByDistance_err:
-    Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxVolumeByDistance", Erl)
-    Resume Next
+ComputeVolumeByDistance_err:
+    Call RegistrarError(Err.Number, Err.Description, "ComputeVolumeByDistance", Erl)
 End Function
 
-Public Function ComputeCharVolumeStepsByDistance(ByVal distance As Byte) As Long
-    On Error GoTo ComputeCharVolumeStepsByDistance_err:
-    distance = Abs(distance)
-    If distance < 20 Then
-        ComputeCharVolumeStepsByDistance = VolSteps - distance * 120
-        If ComputeCharVolumeStepsByDistance < -4000 Then ComputeCharVolumeStepsByDistance = -4000
-    Else
-        ComputeCharVolumeStepsByDistance = -4000
-    End If
-    Exit Function
-ComputeCharVolumeStepsByDistance_err:
-    Call RegistrarError(Err.Number, Err.Description, "ComputeCharVolumeStepsByDistance", Erl)
-    Resume Next
-End Function
-
-Public Function ComputeCharVolumeSteps(ByRef Pos As Position) As Long
-    On Error GoTo ComputeCharVolumeStepsErr:
+Public Function ComputeVolumeAtPos(ByVal category As eFxCategory, ByRef Pos As Position) As Long
+    On Error GoTo ComputeVolumeAtPos_err
     Dim total_distance As Integer
     total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
-    ComputeCharVolumeSteps = ComputeCharVolumeStepsByDistance(total_distance)
+    ComputeVolumeAtPos = ComputeVolumeByDistance(category, total_distance)
     Exit Function
-ComputeCharVolumeStepsErr:
-    Call RegistrarError(Err.Number, Err.Description, "ComputeCharVolumeSteps", Erl)
-    Resume Next
+ComputeVolumeAtPos_err:
+    Call RegistrarError(Err.Number, Err.Description, "ComputeVolumeAtPos", Erl)
 End Function

@@ -39,6 +39,12 @@ Public Const NO_ARMOR    As Byte = 2
 Public Const NO_SHIELD   As Byte = 2
 Public Const NO_BACKPACK As Byte = 2
 
+Public Enum eFxCategory
+    eFxGeneral = 0
+    eFxSteps = 1
+    eFxAmbient = 2
+End Enum
+
 Public Enum tMacroButton
     Inventario = 1
     Hechizos = 2
