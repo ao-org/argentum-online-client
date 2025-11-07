@@ -5586,10 +5586,154 @@ Public Sub HandleShopInit()
         ObjShop(i).ObjNum = Reader.ReadInt32
         ObjShop(i).Valor = Reader.ReadInt32
         ObjShop(i).Name = Reader.ReadString8
+        Dim objTypeDebug As Long
+        Dim ropajeDebug As Long
+        If ObjShop(i).ObjNum >= LBound(ObjData) And ObjShop(i).ObjNum <= UBound(ObjData) Then
+            objTypeDebug = ObjData(ObjShop(i).ObjNum).ObjType
+            ObjShop(i).RequiereObjeto = ObjData(ObjShop(i).ObjNum).RequiereObjeto
+        End If
+        ropajeDebug = GetObjRopajeHumano(ObjShop(i).ObjNum)
+        Debug.Print "[ShopInit] ObjNum=" & ObjShop(i).ObjNum & _
+                    " ObjType=" & objTypeDebug & _
+                    " Name=""" & ObjShop(i).Name & """" & _
+                    " RopajeHumano=" & ropajeDebug & _
+                    " RequiereObjeto=" & ObjData(ObjShop(i).ObjNum).RequiereObjeto
         Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )", i - 1)
     Next i
     frmShopAO20.Show , GetGameplayForm()
+    Call frmShopAO20.ResetShopPreview
 End Sub
+
+Public Function GetObjRopajeHumano(ByVal objNum As Long) As Long
+    On Error GoTo GetObjRopajeHumano_Err
+    If objNum < LBound(ObjData) Or objNum > UBound(ObjData) Then Exit Function
+    GetObjRopajeHumano = ObjData(objNum).RopajeHumano
+    If GetObjRopajeHumano <> 0 Then Exit Function
+
+    GetObjRopajeHumano = FetchRopajeHumanoFromIndex(objNum)
+    If GetObjRopajeHumano <> 0 Then
+        ObjData(objNum).RopajeHumano = GetObjRopajeHumano
+        Exit Function
+    End If
+
+    GetObjRopajeHumano = ParseRopajeHumanoDescriptor(ObjData(objNum).info)
+    If GetObjRopajeHumano <> 0 Then Exit Function
+    GetObjRopajeHumano = ParseRopajeHumanoDescriptor(ObjData(objNum).Texto)
+    If GetObjRopajeHumano <> 0 Then Exit Function
+    GetObjRopajeHumano = ParseRopajeHumanoDescriptor(ObjData(objNum).en_texto)
+    Exit Function
+
+GetObjRopajeHumano_Err:
+    GetObjRopajeHumano = 0
+End Function
+
+Private Function FetchRopajeHumanoFromIndex(ByVal objNum As Long) As Long
+    On Error GoTo FetchRopajeHumanoFromIndex_Err
+    If ObjIndexData Is Nothing Then Exit Function
+    Dim rawValue As String
+    rawValue = ObjIndexData.GetValue("OBJ" & objNum, "RopajeHumano")
+    If LenB(rawValue) = 0 Then Exit Function
+    FetchRopajeHumanoFromIndex = val(rawValue)
+    If FetchRopajeHumanoFromIndex <> 0 Then
+        Debug.Print "[ShopRopaje] ObjNum=" & objNum & _
+                    " RopajeHumanoRaw=""" & rawValue & """" & _
+                    " Parsed=" & FetchRopajeHumanoFromIndex
+    End If
+    Exit Function
+
+FetchRopajeHumanoFromIndex_Err:
+    Debug.Print "[ShopRopaje] FetchRopajeHumanoFromIndex error " & Err.Number & " - " & Err.Description
+End Function
+
+Private Function ParseRopajeHumanoDescriptor(ByVal descriptor As String) As Long
+    On Error GoTo ParseRopajeHumanoDescriptor_Err
+    If LenB(descriptor) = 0 Then Exit Function
+    Dim searchStart As Long
+    Dim tokenPos As Long
+    Dim tokenLength As Long
+    searchStart = 1
+    Do
+        tokenPos = FindNextRopajeHumanoToken(descriptor, searchStart, tokenLength)
+        If tokenPos = 0 Then Exit Do
+        ParseRopajeHumanoDescriptor = ExtractNumberAfterToken(descriptor, tokenPos + tokenLength)
+        If ParseRopajeHumanoDescriptor <> 0 Then Exit Function
+        searchStart = tokenPos + tokenLength
+    Loop
+    Exit Function
+
+ParseRopajeHumanoDescriptor_Err:
+    ParseRopajeHumanoDescriptor = 0
+End Function
+
+Private Function FindNextRopajeHumanoToken(ByVal descriptor As String, _
+                                           ByVal startPos As Long, _
+                                           ByRef tokenLength As Long) As Long
+    Dim descriptorLower As String
+    Dim candidatePos As Long
+    Dim bestPos As Long
+    descriptorLower = LCase$(descriptor)
+    bestPos = 0
+    tokenLength = 0
+
+    candidatePos = InStr(startPos, descriptorLower, "ropajehumano", vbBinaryCompare)
+    If candidatePos <> 0 Then
+        bestPos = candidatePos
+        tokenLength = Len("ropajehumano")
+    End If
+
+    candidatePos = InStr(startPos, descriptorLower, "ropaje humano", vbBinaryCompare)
+    If candidatePos <> 0 Then
+        If bestPos = 0 Or candidatePos < bestPos Then
+            bestPos = candidatePos
+            tokenLength = Len("ropaje humano")
+        End If
+    End If
+
+    candidatePos = InStr(startPos, descriptorLower, "ropaje_humano", vbBinaryCompare)
+    If candidatePos <> 0 Then
+        If bestPos = 0 Or candidatePos < bestPos Then
+            bestPos = candidatePos
+            tokenLength = Len("ropaje_humano")
+        End If
+    End If
+
+    candidatePos = InStr(startPos, descriptorLower, "ropaje-humano", vbBinaryCompare)
+    If candidatePos <> 0 Then
+        If bestPos = 0 Or candidatePos < bestPos Then
+            bestPos = candidatePos
+            tokenLength = Len("ropaje-humano")
+        End If
+    End If
+
+    FindNextRopajeHumanoToken = bestPos
+End Function
+
+Private Function ExtractNumberAfterToken(ByVal source As String, ByVal startPos As Long) As Long
+    Dim pos As Long
+    Dim descriptorLength As Long
+    descriptorLength = Len(source)
+    pos = startPos
+    Do While pos <= descriptorLength
+        Dim ch As String * 1
+        ch = Mid$(source, pos, 1)
+        Select Case ch
+            Case "0" To "9"
+                Exit Do
+            Case " ", vbTab, "=", ":", "-", "_", "(", ")", "[", "]", "{", "}", ".", ","
+                pos = pos + 1
+            Case Else
+                Dim code As Integer
+                code = Asc(ch)
+                If (code >= Asc("A") And code <= Asc("Z")) Or _
+                   (code >= Asc("a") And code <= Asc("z")) Then
+                    Exit Function
+                End If
+                pos = pos + 1
+        End Select
+    Loop
+    If pos > descriptorLength Then Exit Function
+    ExtractNumberAfterToken = Val(Mid$(source, pos))
+End Function
 
 Public Sub HandleUpdateShopClienteCredits()
     credits_shopAO20 = Reader.ReadInt32

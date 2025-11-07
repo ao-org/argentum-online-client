@@ -17,6 +17,8 @@ Attribute VB_Name = "Recursos"
 '
 Option Explicit
 
+Public ObjIndexData As clsIniManager
+
 ' *********************************************************
 ' FUENTES
 ' *********************************************************
@@ -1223,6 +1225,7 @@ Public Sub CargarIndicesOBJ()
     Dim Npc     As Integer
     Dim Hechizo As Integer
     Dim i       As Integer
+    Dim ropajeHumanoRaw As String
     langPrefix = GetLanguagePrefix(language)
     Dim prefix_filename As String
     prefix_filename = langPrefix & "_localindex.dat"
@@ -1238,6 +1241,7 @@ Public Sub CargarIndicesOBJ()
     Dim Leer As New clsIniManager
     Debug.Assert FileExist(ObjFile, vbNormal)
     Call Leer.Initialize(ObjFile)
+    Set ObjIndexData = Leer
     NumOBJs = val(Leer.GetValue("INIT", "NumObjs"))
     NumNpcs = val(Leer.GetValue("INIT", "NumNpcs"))
     NumHechizos = val(Leer.GetValue("INIT", "NumeroHechizo"))
@@ -1271,6 +1275,14 @@ Public Sub CargarIndicesOBJ()
         ObjData(Obj).MinHit = val(Leer.GetValue("OBJ" & Obj, "MinHit"))
         ObjData(Obj).MaxHit = val(Leer.GetValue("OBJ" & Obj, "MaxHit"))
         ObjData(Obj).ObjType = val(Leer.GetValue("OBJ" & Obj, "ObjType"))
+        ObjData(Obj).RequiereObjeto = val(Leer.GetValue("OBJ" & Obj, "RequiereObjeto"))
+        ropajeHumanoRaw = Leer.GetValue("OBJ" & Obj, "RopajeHumano")
+        ObjData(Obj).RopajeHumano = val(ropajeHumanoRaw)
+        If ObjData(Obj).ObjType = 39 Then
+            Debug.Print "[ObjLoad] ObjNum=" & Obj & _
+                        " RopajeHumanoRaw=""" & ropajeHumanoRaw & """" & _
+                        " Parsed=" & ObjData(Obj).RopajeHumano
+        End If
         ObjData(Obj).Cooldown = val(Leer.GetValue("OBJ" & Obj, "CD"))
         ObjData(Obj).CDType = val(Leer.GetValue("OBJ" & Obj, "CDType"))
         ObjData(Obj).CreaGRH = Leer.GetValue("OBJ" & Obj, "CreaGRH")
