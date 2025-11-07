@@ -59,6 +59,8 @@ Sub SaveConfig()
     Call SaveSetting("VIDEO", "PantallaCompleta", IIf(PantallaCompleta, 1, 0))
     Call SaveSetting("VIDEO", "InfoItemsEnRender", IIf(InfoItemsEnRender, 1, 0))
     Call SaveSetting("VIDEO", "Aceleracion", ModoAceleracion)
+    Call SaveSetting("VIDEO", "TexHighWaterMark", TexHighWaterMark)
+    Call SaveSetting("VIDEO", "NumTexRelease", NumTexRelease)
     Call SaveSetting("OPCIONES", "SensibilidadMouse", SensibilidadMouse)
     Call SaveSetting("OPCIONES", "DialogosClanes", IIf(DialogosClanes.Activo, 1, 0))
     Call SaveSetting("OPCIONES", "EquipmentIndicatorRedColor", RED_SHADER)
@@ -120,7 +122,8 @@ Sub LoadConfig()
     '   – Lower values free fewer textures (less reload overhead)
     '     but risk higher memory usage.
     '------------------------------------------------------------------------------
-    NumTexRelease = max(1, min(val(GetSetting("VIDEO", "NumTexRelease")), 250))
+    'defaults to 25 in DeffaultSettings.ini
+    NumTexRelease = max(25, min(val(GetSetting("VIDEO", "NumTexRelease")), 250))
     '------------------------------------------------------------------------------
     ' Configuration: VIDEO.TexHighWaterMark
     '
@@ -128,20 +131,19 @@ Sub LoadConfig()
     ' current total texture usage (in MB) is at or above this threshold. If usage
     ' is below, no eager release occurs.
     '
-    ' Effective value (clamped 200…600 MB):
-    '   TexHighWaterMark = max(200, min(GetSetting("VIDEO", "TexHighWaterMark"), 600))
     '
     '   • Reads the INI setting [VIDEO] TexHighWaterMark (in megabytes)
     '   • Ensures the high-water mark is at least 200 MB
-    '   • Caps the high-water mark at 600 MB to avoid overly late eviction
-    '
+    '   • Caps the high-water mark at 2048 MB to avoid overly late eviction
     ' Tuning:
     '   – A lower threshold triggers eviction more often, keeping VRAM tighter
     '     at the cost of potential stutter.
     '   – A higher threshold delays eviction, reducing stutter but increasing
     '     peak memory usage.
     '------------------------------------------------------------------------------
-    TexHighWaterMark = max(200, min(val(GetSetting("VIDEO", "TexHighWaterMark")), 800))
+    'defaults to 512 in DeffaultSettings.ini
+    TexHighWaterMark = max(200, min(val(GetSetting("VIDEO", "TexHighWaterMark")), 2048))
+    
     Dim value As String
     value = GetSetting("VIDEO", "MostrarRespiracion")
     MostrarRespiracion = IIf(LenB(value) > 0, val(value), True)

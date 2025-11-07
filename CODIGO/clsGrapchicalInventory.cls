@@ -39,6 +39,9 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 Private isInventory            As Boolean ' Para separar al inventario del main, de los otros
+
+Private isSkinsInventory       As Boolean ' Para separar al inventario de skins, de los otros
+
 Dim InvMaxSlots                As Integer
 Dim InvWidth                   As Integer
 Dim InvHeight                  As Integer
@@ -102,7 +105,7 @@ Dim HEIGHT_MAIN_INVENTORY As Integer
 #Else   'Argument list varies!!!
     Public Sub Initialize(ByRef InvPic As PictureBox, ByVal MaxSlots As Integer, _
                         Optional ByVal Width As Integer = 0, Optional ByVal Height As Integer = 0, Optional ByVal OffsetX As Integer = 0, Optional ByVal OffsetY As Integer = 0, _
-                        Optional ByVal SpaceX As Integer = 0, Optional ByVal SpaceY As Integer = 0, Optional thisInventory As Boolean = False, Optional MIDSPACE As Byte = 0)
+                        Optional ByVal SpaceX As Integer = 0, Optional ByVal SpaceY As Integer = 0, Optional thisInventory As Boolean = False, Optional MIDSPACE As Byte = 0, Optional ByVal bIsSkinsInventory As Boolean = False)
 #End If
 
     'Sets the reference to the picture box on which to render the inventory
@@ -110,6 +113,11 @@ Dim HEIGHT_MAIN_INVENTORY As Integer
     Set InventoryWindow = InvPic
     
     isInventory = thisInventory
+    isSkinsInventory = bIsSkinsInventory
+    
+    If isSkinsInventory Then
+        isInventory = False ' Por las dudas.
+    End If
     
     If Width = 0 Then Width = InvPic.ScaleWidth
     If Height = 0 Then Height = InvPic.ScaleHeight
@@ -245,7 +253,10 @@ End Property
 Public Property Get ObjIndex(ByVal Slot As Byte) As Integer
     'Retrieves the selected item's object index
     On Error GoTo OBJIndex_Err
-    ObjIndex = UserInventory(Slot).ObjIndex
+    ObjIndex = 0
+    If Slot >= LBound(UserInventory) And Slot <= UBound(UserInventory) Then
+            ObjIndex = UserInventory(Slot).ObjIndex
+    End If
     Exit Property
 OBJIndex_Err:
     Call RegistrarError(Err.Number, Err.Description, "clsGrapchicalInventory.OBJIndex", Erl)
@@ -474,11 +485,11 @@ Public Sub DrawInventory()
     Dim CORNER_Y(3)                           As Integer
     Dim color(3)                              As RGBA
     CORNER_X(0) = 23
-    CORNER_Y(0) = 0   ' top right
+    CORNER_Y(0) = 0            ' top right
     CORNER_X(1) = 0
-    CORNER_Y(1) = 0   ' top left
+    CORNER_Y(1) = 0            ' top left
     CORNER_X(2) = 23
-    CORNER_Y(2) = 21  ' bottom right
+    CORNER_Y(2) = 21           ' bottom right
     CORNER_X(3) = 0
     CORNER_Y(3) = 21  ' bottom left
     InvNeedsRedraw = False
@@ -499,6 +510,8 @@ Public Sub DrawInventory()
                 'Slot Default
                 Call Draw_GrhIndex(GRH_INVENTORYSLOT, x, y)
             End If
+        Else
+            Call Draw_GrhIndex(GRH_INVENTORYSLOT_EXTRA, x, y)
         End If
         If InvSelectedItem = i Then
             Call Engine_Draw_Box(x + SELECTION_BOX_X, y + SELECTION_BOX_Y, SELECTION_BOX_W, SELECTION_BOX_H, RGBA_From_Comp(100, 100, 100, 100))

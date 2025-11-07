@@ -18,9 +18,12 @@ Attribute VB_Name = "Mod_General"
 Option Explicit
 Private Declare Function SetDllDirectory Lib "kernel32" Alias "SetDllDirectoryA" (ByVal path As String) As Long
 Private Declare Function svb_init_steam Lib "steam_vb.dll" (ByVal appid As Long) As Long
+Private Declare Function svb_install_minidump_handler Lib "steam_vb.dll" (ByVal appid As Long, ByVal version As String, ByVal description As String, ByVal flags As Long) As Long
 Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 Private Declare Function svb_retlong Lib "steam_vb.dll" (ByVal Number As Long) As Long
 Public Declare Function svb_unlock_achivement Lib "steam_vb.dll" (ByVal Name As String) As Long
+
+Public bSkins As Boolean
 
 Private Type Position
     x As Integer
@@ -813,6 +816,15 @@ Sub Main()
             Dim steam_init_result As Long
             steam_init_result = svb_init_steam(1956740)
             frmDebug.add_text_tracebox "Init Steam " & steam_init_result
+
+            If steam_init_result <> 0 Then
+                Dim version As String
+                Dim minidump_result As Long
+
+                version = App.Major & "." & App.Minor & "." & App.Revision
+                minidump_result = svb_install_minidump_handler(1956740, version, "Argentum Online crash handler", 0)
+                frmDebug.add_text_tracebox "Minidump handler " & minidump_result
+            End If
         #End If
         If Not RunningInVB Then
             If FindPreviousInstance Then
