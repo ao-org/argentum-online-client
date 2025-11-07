@@ -127,9 +127,9 @@ Public COLOR_EMPTY                  As RGBA
 Public COLOR_WHITE(3)               As RGBA
 Public COLOR_RED(3)                 As RGBA
 Public COLOR_GREEN(3)               As RGBA
-Public R                            As Byte
+Public r                            As Byte
 Public G                            As Byte
-Public B                            As Byte
+Public b                            As Byte
 Public textcolorAsistente(3)        As RGBA
 
 Public Sub InitEngineSprites()
@@ -321,7 +321,7 @@ Engine_BeginScene_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Engine_BeginScene", Erl)
 End Sub
 
-Public Sub Engine_EndScene(ByRef DestRect As Rect, Optional ByVal hWnd As Long = 0)
+Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWnd As Long = 0)
     On Error GoTo ErrorHandlerDD:
     If DirectDevice.TestCooperativeLevel <> D3D_OK Then
         Exit Sub
@@ -847,10 +847,10 @@ Public Function compute_vector_director(ByVal x1 As Long, ByVal y1 As Long, ByVa
     compute_vector_director.y = y2 - y1
 End Function
 
-Public Function IntLerp(A As Integer, B As Integer, Factor As Single)
+Public Function IntLerp(a As Integer, b As Integer, Factor As Single)
     Dim InvFactor As Single
     InvFactor = 1 - Factor
-    IntLerp = A * InvFactor + B * Factor
+    IntLerp = a * InvFactor + b * Factor
 End Function
 
 Public Function calcular_direccion(ByRef dir_vector As Position) As Long
@@ -917,14 +917,14 @@ Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Inte
         mascota.Heading = calcular_direccion(dir_vector)
         mascota.last_time = GetTickCount()
     End If
-    If mascota.color(0).A < 255 Then
+    If mascota.color(0).a < 255 Then
         Dim temp_alpha As Single
-        temp_alpha = mascota.color(0).A + 1 * timerElapsedTime / 5
+        temp_alpha = mascota.color(0).a + 1 * timerElapsedTime / 5
         If temp_alpha > 255 Then temp_alpha = 255
-        mascota.color(0).A = temp_alpha
-        mascota.color(1).A = temp_alpha
-        mascota.color(2).A = temp_alpha
-        mascota.color(3).A = temp_alpha
+        mascota.color(0).a = temp_alpha
+        mascota.color(1).a = temp_alpha
+        mascota.color(2).a = temp_alpha
+        mascota.color(3).a = temp_alpha
     End If
     Call Draw_Grh(mascota.Body(mascota.Heading), mascota.PosX + Cos(angle / 2) * 5 + 150, mascota.PosY + Sin(angle) * 5 + 150, 0, isAnimated, mascota.color)
     If mascota.Fx.started > 0 Then
@@ -948,8 +948,8 @@ Private Sub Device_Box_Textured_Render_Advance(ByVal GrhIndex As Long, _
                                                Optional ByVal angle As Single)
     On Error GoTo Device_Box_Textured_Render_Advance_Err
     'Copies the Textures allowing resizing
-    Static src_rect            As Rect
-    Static dest_rect           As Rect
+    Static src_rect            As RECT
+    Static dest_rect           As RECT
     Static temp_verts(3)       As TYPE_VERTEX
     Static d3dTextures         As D3D8Textures
     Static light_value(0 To 3) As RGBA
@@ -1141,8 +1141,8 @@ Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, _
                                       Optional ByVal angle As Single)
     On Error GoTo Device_Box_Textured_Render_Err
     'Just copies the Textures
-    Static src_rect      As Rect
-    Static dest_rect     As Rect
+    Static src_rect      As RECT
+    Static dest_rect     As RECT
     Static temp_verts(3) As TYPE_VERTEX
     Static d3dTextures   As D3D8Textures
     If GrhIndex = 0 Then Exit Sub
@@ -1232,9 +1232,9 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
                             .text = vbNullString
                         Else
                             If DeltaTime > 900 Then
-                                Call RGBAList(temp_array, .color.R, .color.G, .color.B, .color.A * (1300 - DeltaTime) * 0.0025)
+                                Call RGBAList(temp_array, .color.r, .color.G, .color.b, .color.a * (1300 - DeltaTime) * 0.0025)
                             Else
-                                Call RGBAList(temp_array, .color.R, .color.G, .color.B, .color.A)
+                                Call RGBAList(temp_array, .color.r, .color.G, .color.b, .color.a)
                             End If
                             Engine_Text_Render_Efect charindex, .text, PixelOffsetX + 14 - Int(Engine_Text_Width(.text, True) * 0.5), PixelOffsetY + charlist( _
                                     charindex).Body.HeadOffset.y - Engine_Text_Height(.text, True) - DeltaTime * 0.025, temp_array, 1, True
@@ -1473,15 +1473,15 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call RGBAList(color, 255, 255, 255, 100)
                     If .priv = 0 Then
                         Select Case .status
-                            Case 0: Call SetRGBA(NameColor(0), ColoresPJ(23).R, ColoresPJ(23).G, ColoresPJ(23).B)  ' Criminal
-                            Case 1: Call SetRGBA(NameColor(0), ColoresPJ(20).R, ColoresPJ(20).G, ColoresPJ(20).B)  ' Ciudadano
-                            Case 2: Call SetRGBA(NameColor(0), ColoresPJ(24).R, ColoresPJ(24).G, ColoresPJ(24).B)  ' Caos
-                            Case 3: Call SetRGBA(NameColor(0), ColoresPJ(21).R, ColoresPJ(21).G, ColoresPJ(21).B)  ' Armada
-                            Case 4: Call SetRGBA(NameColor(0), ColoresPJ(25).R, ColoresPJ(25).G, ColoresPJ(25).B)  ' Concilio
-                            Case 5: Call SetRGBA(NameColor(0), ColoresPJ(22).R, ColoresPJ(22).G, ColoresPJ(22).B)  ' Consejo
+                            Case 0: Call SetRGBA(NameColor(0), ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)  ' Criminal
+                            Case 1: Call SetRGBA(NameColor(0), ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)  ' Ciudadano
+                            Case 2: Call SetRGBA(NameColor(0), ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)  ' Caos
+                            Case 3: Call SetRGBA(NameColor(0), ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)  ' Armada
+                            Case 4: Call SetRGBA(NameColor(0), ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)  ' Concilio
+                            Case 5: Call SetRGBA(NameColor(0), ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)  ' Consejo
                         End Select
                     Else
-                        Call SetRGBA(NameColor(0), ColoresPJ(.priv).R, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                        Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                     End If
                     Call LerpRGBA(NameColor(0), NameColor(0), RGBA_From_Comp(0, 0, 0), 0.5)
                     Call RGBA_ToList(NameColor, NameColor(0))
@@ -1499,15 +1499,15 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         MostrarNombre = True
                         If .priv = 0 Then
                             Select Case .status
-                                Case 0: Call SetRGBA(NameColor(0), ColoresPJ(23).R, ColoresPJ(23).G, ColoresPJ(23).B)
-                                Case 1: Call SetRGBA(NameColor(0), ColoresPJ(20).R, ColoresPJ(20).G, ColoresPJ(20).B)
-                                Case 2: Call SetRGBA(NameColor(0), ColoresPJ(24).R, ColoresPJ(24).G, ColoresPJ(24).B)
-                                Case 3: Call SetRGBA(NameColor(0), ColoresPJ(21).R, ColoresPJ(21).G, ColoresPJ(21).B)
-                                Case 4: Call SetRGBA(NameColor(0), ColoresPJ(25).R, ColoresPJ(25).G, ColoresPJ(25).B)
-                                Case 5: Call SetRGBA(NameColor(0), ColoresPJ(22).R, ColoresPJ(22).G, ColoresPJ(22).B)
+                                Case 0: Call SetRGBA(NameColor(0), ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
+                                Case 1: Call SetRGBA(NameColor(0), ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
+                                Case 2: Call SetRGBA(NameColor(0), ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
+                                Case 3: Call SetRGBA(NameColor(0), ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
+                                Case 4: Call SetRGBA(NameColor(0), ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
+                                Case 5: Call SetRGBA(NameColor(0), ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
                             End Select
                         Else
-                            Call SetRGBA(NameColor(0), ColoresPJ(.priv).R, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                            Call SetRGBA(NameColor(0), ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                         End If
                         Call LerpRGBA(NameColor(0), NameColor(0), RGBA_From_Comp(0, 0, 0), 0.5)
                         Call RGBA_ToList(NameColor, NameColor(0))
@@ -1542,22 +1542,22 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     MostrarNombre = True
                     If .priv = 0 Then
                         Select Case .status
-                            Case 0: Call RGBAList(NameColor, ColoresPJ(23).R, ColoresPJ(23).G, ColoresPJ(23).B): Call RGBAList(colorCorazon, ColoresPJ(23).R, ColoresPJ(23).G, _
-                                    ColoresPJ(23).B)
-                            Case 1: Call RGBAList(NameColor, ColoresPJ(20).R, ColoresPJ(20).G, ColoresPJ(20).B): Call RGBAList(colorCorazon, ColoresPJ(20).R, ColoresPJ(20).G, _
-                                    ColoresPJ(20).B)
-                            Case 2: Call RGBAList(NameColor, ColoresPJ(24).R, ColoresPJ(24).G, ColoresPJ(24).B): Call RGBAList(colorCorazon, ColoresPJ(24).R, ColoresPJ(24).G, _
-                                    ColoresPJ(24).B)
-                            Case 3: Call RGBAList(NameColor, ColoresPJ(21).R, ColoresPJ(21).G, ColoresPJ(21).B): Call RGBAList(colorCorazon, ColoresPJ(21).R, ColoresPJ(21).G, _
-                                    ColoresPJ(21).B)
-                            Case 4: Call RGBAList(NameColor, ColoresPJ(25).R, ColoresPJ(25).G, ColoresPJ(25).B): Call RGBAList(colorCorazon, ColoresPJ(25).R, ColoresPJ(25).G, _
-                                    ColoresPJ(25).B)
-                            Case 5: Call RGBAList(NameColor, ColoresPJ(22).R, ColoresPJ(22).G, ColoresPJ(22).B): Call RGBAList(colorCorazon, ColoresPJ(22).R, ColoresPJ(22).G, _
-                                    ColoresPJ(22).B)
+                            Case 0: Call RGBAList(NameColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b): Call RGBAList(colorCorazon, ColoresPJ(23).r, ColoresPJ(23).G, _
+                                    ColoresPJ(23).b)
+                            Case 1: Call RGBAList(NameColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b): Call RGBAList(colorCorazon, ColoresPJ(20).r, ColoresPJ(20).G, _
+                                    ColoresPJ(20).b)
+                            Case 2: Call RGBAList(NameColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b): Call RGBAList(colorCorazon, ColoresPJ(24).r, ColoresPJ(24).G, _
+                                    ColoresPJ(24).b)
+                            Case 3: Call RGBAList(NameColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b): Call RGBAList(colorCorazon, ColoresPJ(21).r, ColoresPJ(21).G, _
+                                    ColoresPJ(21).b)
+                            Case 4: Call RGBAList(NameColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b): Call RGBAList(colorCorazon, ColoresPJ(25).r, ColoresPJ(25).G, _
+                                    ColoresPJ(25).b)
+                            Case 5: Call RGBAList(NameColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b): Call RGBAList(colorCorazon, ColoresPJ(22).r, ColoresPJ(22).G, _
+                                    ColoresPJ(22).b)
                         End Select
                     Else
-                        Call RGBAList(NameColor, ColoresPJ(.priv).R, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
-                        Call RGBAList(colorCorazon, ColoresPJ(.priv).R, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                        Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
+                        Call RGBAList(colorCorazon, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                     End If
                     If .group_index > 0 Then
                         If charlist(charindex).group_index = charlist(UserCharIndex).group_index Then
@@ -1705,36 +1705,36 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 'Nick
                 line = Left$(.nombre, Pos - 2)
                 Dim Factor As Double
-                Factor = MapData(x, y).light_value(0).R / 255
+                Factor = MapData(x, y).light_value(0).r / 255
                 If .Navegando Then
                     If .priv = 0 Then
                         Select Case .status
-                            Case 0: Call RGBAList(NameColor, ColoresPJ(23).R, ColoresPJ(23).G, ColoresPJ(23).B)
-                            Case 1: Call RGBAList(NameColor, ColoresPJ(20).R, ColoresPJ(20).G, ColoresPJ(20).B)
-                            Case 2: Call RGBAList(NameColor, ColoresPJ(24).R, ColoresPJ(24).G, ColoresPJ(24).B)
-                            Case 3: Call RGBAList(NameColor, ColoresPJ(21).R, ColoresPJ(21).G, ColoresPJ(21).B)
-                            Case 4: Call RGBAList(NameColor, ColoresPJ(25).R, ColoresPJ(25).G, ColoresPJ(25).B)
-                            Case 5: Call RGBAList(NameColor, ColoresPJ(22).R, ColoresPJ(22).G, ColoresPJ(22).B)
+                            Case 0: Call RGBAList(NameColor, ColoresPJ(23).r, ColoresPJ(23).G, ColoresPJ(23).b)
+                            Case 1: Call RGBAList(NameColor, ColoresPJ(20).r, ColoresPJ(20).G, ColoresPJ(20).b)
+                            Case 2: Call RGBAList(NameColor, ColoresPJ(24).r, ColoresPJ(24).G, ColoresPJ(24).b)
+                            Case 3: Call RGBAList(NameColor, ColoresPJ(21).r, ColoresPJ(21).G, ColoresPJ(21).b)
+                            Case 4: Call RGBAList(NameColor, ColoresPJ(25).r, ColoresPJ(25).G, ColoresPJ(25).b)
+                            Case 5: Call RGBAList(NameColor, ColoresPJ(22).r, ColoresPJ(22).G, ColoresPJ(22).b)
                         End Select
                     Else
-                        Call RGBAList(NameColor, ColoresPJ(.priv).R, ColoresPJ(.priv).G, ColoresPJ(.priv).B)
+                        Call RGBAList(NameColor, ColoresPJ(.priv).r, ColoresPJ(.priv).G, ColoresPJ(.priv).b)
                     End If
                 Else
-                    NameColor(0).R = NameColor(0).R * Factor
+                    NameColor(0).r = NameColor(0).r * Factor
                     NameColor(0).G = NameColor(0).G * Factor
-                    NameColor(0).B = NameColor(0).B * Factor
-                    NameColor(1).R = NameColor(1).R * Factor
+                    NameColor(0).b = NameColor(0).b * Factor
+                    NameColor(1).r = NameColor(1).r * Factor
                     NameColor(1).G = NameColor(1).G * Factor
-                    NameColor(1).B = NameColor(1).B * Factor
-                    NameColor(2).R = NameColor(2).R * Factor
+                    NameColor(1).b = NameColor(1).b * Factor
+                    NameColor(2).r = NameColor(2).r * Factor
                     NameColor(2).G = NameColor(2).G * Factor
-                    NameColor(2).B = NameColor(2).B * Factor
-                    NameColor(3).R = NameColor(3).R * Factor
+                    NameColor(2).b = NameColor(2).b * Factor
+                    NameColor(3).r = NameColor(3).r * Factor
                     NameColor(3).G = NameColor(3).G * Factor
-                    NameColor(3).B = NameColor(3).B * Factor
+                    NameColor(3).b = NameColor(3).b * Factor
                 End If
                 If .Team > 0 Then
-                    Call RGBAList(NameColor, TeamColors(.Team).R, TeamColors(.Team).G, TeamColors(.Team).B, TeamColors(.Team).A)
+                    Call RGBAList(NameColor, TeamColors(.Team).r, TeamColors(.Team).G, TeamColors(.Team).b, TeamColors(.Team).a)
                 End If
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - _
                         Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
@@ -1775,7 +1775,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             ElseIf Nombres And .Team > 0 Then
                 line = JsonLanguage.Item("MENSAJE_544") & .Team & ">"
-                Call RGBAList(NameColor, TeamColors(.Team).R, TeamColors(.Team).G, TeamColors(.Team).B, TeamColors(.Team).A)
+                Call RGBAList(NameColor, TeamColors(.Team).r, TeamColors(.Team).G, TeamColors(.Team).b, TeamColors(.Team).a)
                 Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 30 + OffsetYname - _
                         Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
             End If
@@ -2073,12 +2073,12 @@ End Function
 
 Private Function VectorToRGBA(vec As D3DVECTOR, fHeight As Single) As Long
     On Error GoTo VectorToRGBA_Err
-    Dim R As Integer, G As Integer, B As Integer, A As Integer
-    R = 127 * vec.x + 128
+    Dim r As Integer, G As Integer, b As Integer, a As Integer
+    r = 127 * vec.x + 128
     G = 127 * vec.y + 128
-    B = 127 * vec.z + 128
-    A = 255 * fHeight
-    VectorToRGBA = D3DColorARGB(A, R, G, B)
+    b = 127 * vec.z + 128
+    a = 255 * fHeight
+    VectorToRGBA = D3DColorARGB(a, r, G, b)
     Exit Function
 VectorToRGBA_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.VectorToRGBA", Erl)
@@ -2089,7 +2089,7 @@ Public Sub DrawMainInventory()
     On Error GoTo DrawMainInventory_Err
     ' Sólo dibujamos cuando es necesario
     'If Not frmMain.Inventario.NeedsRedraw Then Exit Sub
-    Dim InvRect As Rect
+    Dim InvRect As RECT
     InvRect.Left = 0
     InvRect.Top = 0
     InvRect.Right = frmMain.picInv.ScaleWidth
@@ -2114,7 +2114,7 @@ Public Sub DrawInterfaceComerciar()
     On Error GoTo DrawInterfaceComerciar_Err
     ' Sólo dibujamos cuando es necesario
     If Not frmComerciar.InvComNpc.NeedsRedraw And Not frmComerciar.InvComUsu.NeedsRedraw Then Exit Sub
-    Dim InvRect As Rect
+    Dim InvRect As RECT
     InvRect.Left = 0
     InvRect.Top = 0
     InvRect.Right = frmComerciar.interface.ScaleWidth
@@ -2184,7 +2184,7 @@ Public Sub DrawInterfaceBovedaCuenta()
     On Error GoTo DrawInterfaceBoveda_Err
     ' Sólo dibujamos cuando es necesario
     If Not frmBancoCuenta.InvBovedaCuenta.NeedsRedraw And Not frmBancoCuenta.InvBankUsuCuenta.NeedsRedraw Then Exit Sub
-    Dim InvRect As Rect
+    Dim InvRect As RECT
     InvRect.Left = 0
     InvRect.Top = 0
     InvRect.Right = frmBancoCuenta.interface.ScaleWidth
@@ -2246,7 +2246,7 @@ Public Sub DrawInterfaceBoveda()
     On Error GoTo DrawInterfaceBoveda_Err
     ' Sólo dibujamos cuando es necesario
     If Not frmBancoObj.InvBoveda.NeedsRedraw And Not frmBancoObj.InvBankUsu.NeedsRedraw Then Exit Sub
-    Dim InvRect As Rect
+    Dim InvRect As RECT
     InvRect.Left = 0
     InvRect.Top = 0
     InvRect.Right = frmBancoObj.interface.ScaleWidth
@@ -2308,7 +2308,7 @@ Public Sub DrawInterfaceKeys()
     On Error GoTo DrawInterfaceKeys_Err
     ' Sólo dibujamos cuando es necesario
     If Not FrmKeyInv.InvKeys.NeedsRedraw Then Exit Sub
-    Dim InvRect As Rect
+    Dim InvRect As RECT
     InvRect.Left = 0
     InvRect.Top = 0
     InvRect.Right = FrmKeyInv.interface.ScaleWidth
@@ -2333,7 +2333,7 @@ Public Sub DrawInventoryComercio()
     On Error GoTo DrawInventorysComercio_Err
     ' Sólo dibujamos cuando es necesario
     If Not frmComerciarUsu.InvUser.NeedsRedraw Then Exit Sub
-    Dim InvRect As Rect
+    Dim InvRect As RECT
     InvRect.Left = 0
     InvRect.Top = 0
     InvRect.Right = frmComerciarUsu.picInv.ScaleWidth
@@ -2391,7 +2391,7 @@ Public Sub DrawInventoryUserComercio()
     On Error GoTo DrawInventoryUserComercio_Err
     ' Sólo dibujamos cuando es necesario
     If Not frmComerciarUsu.InvUserSell.NeedsRedraw Then Exit Sub
-    Dim InvRect As Rect
+    Dim InvRect As RECT
     InvRect.Left = 0
     InvRect.Top = 0
     InvRect.Right = frmComerciarUsu.picInvUserSell.ScaleWidth
@@ -2414,7 +2414,7 @@ Public Sub DrawInventoryOtherComercio()
     On Error GoTo DrawInventoryOtherComercio_Err
     ' Sólo dibujamos cuando es necesario
     If Not frmComerciarUsu.InvOtherSell.NeedsRedraw Then Exit Sub
-    Dim InvRect As Rect
+    Dim InvRect As RECT
     InvRect.Left = 0
     InvRect.Top = 0
     InvRect.Right = frmComerciarUsu.picInvOtherSell.ScaleWidth
@@ -2437,7 +2437,7 @@ Public Sub DrawInterfaceCrafting()
     On Error GoTo DrawInterfaceBoveda_Err
     ' Sólo dibujamos cuando es necesario
     If Not frmCrafteo.InvCraftUser.NeedsRedraw And Not frmCrafteo.InvCraftItems.NeedsRedraw And Not frmCrafteo.InvCraftCatalyst.NeedsRedraw Then Exit Sub
-    Dim InvRect As Rect
+    Dim InvRect As RECT
     InvRect.Left = 0
     InvRect.Top = 0
     InvRect.Right = frmCrafteo.PicInven.ScaleWidth
@@ -3583,7 +3583,7 @@ End Sub
 Public Sub Engine_Draw_Box(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, ByRef color As RGBA)
     On Error GoTo Engine_Draw_Box_Err
     If Not OverlapRect(RenderCullingRect, x, y, Width, Height) Then Exit Sub
-    Call RGBAList(temp_rgb, color.R, color.G, color.B, color.A)
+    Call RGBAList(temp_rgb, color.r, color.G, color.b, color.a)
     Call SpriteBatch.SetTexture(Nothing)
     Call SpriteBatch.SetAlpha(False)
     Call SpriteBatch.Draw(x, y, Width, Height, temp_rgb())
@@ -3595,7 +3595,7 @@ End Sub
 
 Public Sub Engine_Draw_Load(ByVal x As Integer, ByVal y As Integer, ByVal Width As Integer, ByVal Height As Integer, color As RGBA, angle As Single)
     On Error GoTo Engine_Draw_Load_Err
-    Call RGBAList(temp_rgb, color.R, color.G, color.B, color.A)
+    Call RGBAList(temp_rgb, color.r, color.G, color.b, color.a)
     If angle >= 360 Then angle = 0
     Call SpriteBatch.SetTexture(Nothing)
     Call SpriteBatch.SetAlpha(False)

@@ -42,10 +42,12 @@ Implements IUIComponent
 Private m_X     As Long, m_Y As Long
 Private m_Text  As String
 Private m_Color As Long
+Private m_Focus As Boolean
 
 Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal color As Long)
     m_Text = text: m_X = x: m_Y = y
     m_Color = color
+    m_Focus = False
 End Sub
 
 ' Allow external positioning
@@ -60,10 +62,14 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Call UIRenderer.RenderText(m_Text, rc.Left, rc.Top, m_Color, 1, 128)
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
-    ' no-op
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
+    hit = False
 End Sub
 
-Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Integer, ByVal shiftState As Integer)
-    ' no-op
+Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
+    ' no-op for now
+End Sub
+
+Private Sub IUIComponent_SetFocus(ByVal val As Boolean)
+    m_Focus = val
 End Sub

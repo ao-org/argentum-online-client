@@ -30,8 +30,10 @@ Option Explicit
 Public Const UI_COLOR_WHITE As Long = &HFFFFFF     ' &HFFFFFFFF
 Public Const UI_COLOR_BLACK As Long = &H0        ' 0xFF000000
 Public Const UI_COLOR_BLUE   As Long = &HFF0000   ' 0xFFFF0000
-Public Const UI_COLOR_GREEN As Long = &HFF00FF   ' 0xFF00FF00
+Public Const UI_COLOR_GREEN As Long = &HFF00     ' 0xFF00FF00
 Public Const UI_COLOR_RED  As Long = &HFF       ' 0xFF0000FF
+Public Const UI_COLOR_GOLD  As Long = &HFFFFFF              ' 0xFF0000FF
+Public Const UI_COLOR_GRAY  As Long = &HFFFF00              ' 0xFF0000FF
 Public Const UI_MAX_QUADS As Long = 2000
 Public g_connectScreen      As clsUIConnectScreen
 ' Virtual-Key codes
@@ -71,7 +73,7 @@ Private Sub preload_ui_textures()
     ' Preload all UI textures you will use (ids are examples)
     Dim ids()
     Dim w As Long: Dim h As Long
-    ids = Array(14, 21)     ' <- put your real atlas/skin ids here
+    ids = Array(14, 21, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 43)     ' <- put your real atlas/skin ids here
 
     Dim i As Long, tex As Direct3DTexture8
     For i = LBound(ids) To UBound(ids)

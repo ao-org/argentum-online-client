@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "clsUIButton"
+Attribute VB_Name = "clsUICheckbox"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -51,9 +51,9 @@ Private m_PrevDown  As Boolean
 Private m_Clicked   As Boolean
 Private m_Focus As Boolean
 
-Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
+Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
     m_Text = text: m_X = x: m_Y = y
-    m_W = w: m_H = h
+    m_W = 15: m_H = 15
     m_ColorFill = clrFill
     m_HoverColor = clrHover
     m_ColorText = clrText
@@ -89,15 +89,31 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     cols(1) = clr
     cols(2) = clr
     cols(3) = clr
-    UIRenderer.AddQuad m_X, m_Y, m_W, m_H, cols
+'    UIRenderer.AddQuad m_X, m_Y, m_W, m_H, cols
+    Dim cbTexture As Direct3DTexture8
+    Dim texW As Long: Dim texH As Long
+    If m_Clicked Then
+        Set cbTexture = UITextures.GetTexture(43, texW, texH)
+    Else
+        Set cbTexture = UITextures.GetTexture(39, texW, texH)
+    End If
+    If Not cbTexture Is Nothing Then
+        UIRenderer.AddTexturedQuad _
+            m_X, m_Y, m_W, m_H, _
+        cbTexture, _
+        0!, 0!, 1!, 1!, _
+        UI_COLOR_WHITE, 255
+    Else
+    ' Fallback to solid white if texture missing
+        Dim cols2(3) As Long
+        cols2(0) = UI_COLOR_WHITE
+        cols2(1) = UI_COLOR_WHITE
+        cols2(2) = UI_COLOR_WHITE
+        cols2(3) = UI_COLOR_WHITE
+        UIRenderer.AddQuad m_X, m_Y, m_W, m_H, cols2, 190
+    End If
     Dim rc As RECT
-    rc.Left = m_X: rc.Top = m_Y
-    Dim RECT As RECT
-    Dim startX As Integer
-    Dim startY As Integer
-    startX = m_X + (m_W - (Len(m_Text) * 7)) / 2
-    startY = m_Y + (m_H - 12) / 2
-    rc.Left = startX: rc.Top = startY
+    rc.Left = m_X + 20: rc.Top = m_Y
     rc.Right = m_X + m_W: rc.Bottom = m_Y + m_H
     Call UIRenderer.RenderText(m_Text, rc.Left, rc.Top, m_ColorText, 1, 255)
 End Sub
@@ -106,9 +122,14 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
     m_IsHover = (mouseX >= m_X And mouseX <= m_X + m_W And mouseY >= m_Y And mouseY <= m_Y + m_H)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then
-        m_Clicked = True
         hit = True
         m_Focus = True
+        If m_Clicked Then
+            m_Clicked = False
+        Else
+            m_Clicked = True
+        End If
+        m_PrevDown = down
     End If
     m_PrevDown = down
 End Sub
