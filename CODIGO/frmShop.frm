@@ -61,9 +61,8 @@ Begin VB.Form frmShopAO20
       Top             =   5160
       Width           =   495
    End
-   Begin VB.PictureBox picUserPreview
+   Begin VB.PictureBox picUserPreview 
       Appearance      =   0  'Flat
-      AutoRedraw      =   0   'False
       BackColor       =   &H000B0B0B&
       BorderStyle     =   0  'None
       ClipControls    =   0   'False
@@ -102,15 +101,15 @@ Begin VB.Form frmShopAO20
       Caption         =   "Una vez realizada la transacción, reloguee su personaje por seguridad"
       ForeColor       =   &H000000FF&
       Height          =   735
-      Left            =   4095
+      Left            =   360
       TabIndex        =   4
-      Top             =   5160
-      Width           =   1815
+      Top             =   5640
+      Visible         =   0   'False
+      Width           =   3255
    End
    Begin VB.Label lblRequiredInfo 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   ""
       ForeColor       =   &H0000FFFF&
       Height          =   735
       Left            =   3960
@@ -232,28 +231,28 @@ Private Sub lstItemShopFilter_Click()
     Dim Grh          As Long
     Dim i            As Long
     Dim obj_name     As String
-    Dim objNum       As Long
-    Dim objType      As Long
-    Dim ropajeHumano As Long
+    Dim ObjNum       As Long
+    Dim ObjType      As Long
+    Dim RopajeHumano As Long
     Dim requiredObjNum As Long
     Dim appliedOverride As Boolean
     obj_name = Split(lstItemShopFilter.text, " (")(0)
     For i = 1 To UBound(ObjShop)
         If obj_name = ObjShop(i).Name Then
-            objNum = ObjShop(i).ObjNum
-            If objNum >= LBound(ObjData) And objNum <= UBound(ObjData) Then
-                Grh = ObjData(objNum).GrhIndex
-                objType = ObjData(objNum).ObjType
-                requiredObjNum = ObjData(objNum).RequiereObjeto
+            ObjNum = ObjShop(i).ObjNum
+            If ObjNum >= LBound(ObjData) And ObjNum <= UBound(ObjData) Then
+                Grh = ObjData(ObjNum).GrhIndex
+                ObjType = ObjData(ObjNum).ObjType
+                requiredObjNum = ObjData(ObjNum).RequiereObjeto
             End If
-            ropajeHumano = GetObjRopajeHumano(objNum)
-            Debug.Print "[ShopSelect] ObjNum=" & objNum & _
-                        " ObjType=" & objType & _
+            RopajeHumano = GetObjRopajeHumano(ObjNum)
+            Debug.Print "[ShopSelect] ObjNum=" & ObjNum & _
+                        " ObjType=" & ObjType & _
                         " Name=""" & ObjShop(i).Name & """" & _
-                        " RopajeHumano=" & ropajeHumano & _
+                        " RopajeHumano=" & RopajeHumano & _
                         " RequiereObjeto=" & requiredObjNum
-            If objType = 39 Then
-                appliedOverride = ApplyPreviewBodyOverride(ropajeHumano)
+            If ObjType = 39 Then
+                appliedOverride = ApplyPreviewBodyOverride(RopajeHumano)
             End If
             Exit For
         End If
