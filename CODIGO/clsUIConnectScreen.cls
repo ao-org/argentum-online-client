@@ -38,25 +38,44 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-Private Const WINDOW_WIDTH    As Long = 400
+Private Const WINDOW_WIDTH    As Long = 500
 Private Const WINDOW_HEIGHT   As Long = 300
 Private Const WINDOW_OFFSET_Y As Long = 150  ' adjust this value to move window lower
 Private m_UIMgr               As clsUIManager
 Private m_lblUser             As clsUILabel
 Private m_lblPass             As clsUILabel
+Private m_cbOk          As clsUICheckbox
 Private m_btnConnect          As clsUIButton
+Private m_inputboxUser          As clsUIInputbox
+Private m_inputboxPass          As clsUIInputbox
+Private m_boxInfo          As clsUIBoxInfo
+Private m_haracinOk          As Boolean
+
  
 Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager: m_UIMgr.Init
     Set m_lblUser = New clsUILabel
-    m_lblUser.Init "Username:", 0, 0, UI_COLOR_RED
+    m_lblUser.Init "Username:", 0, 0, UI_COLOR_GOLD
     m_UIMgr.AddComponent m_lblUser
     Set m_lblPass = New clsUILabel
-    m_lblPass.Init "Password:", 0, 0, UI_COLOR_BLUE
+    m_lblPass.Init "Password:", 0, 0, UI_COLOR_GOLD
     m_UIMgr.AddComponent m_lblPass
     Set m_btnConnect = New clsUIButton
-    m_btnConnect.Init "Connect", 0, 0, 100, 30, &HFF0000, &HFF606060, UI_COLOR_RED
+    m_btnConnect.Init "Show Info", 0, 0, 100, 30, UI_COLOR_GOLD, &HFF606060, UI_COLOR_BLACK
     m_UIMgr.AddComponent m_btnConnect
+    Set m_inputboxUser = New clsUIInputbox
+    m_inputboxUser.Init "", 0, 0, 200, 20, &HFFFFFF, &HFFFFFF, UI_COLOR_BLACK, False
+    m_UIMgr.AddComponent m_inputboxUser
+    Set m_inputboxPass = New clsUIInputbox
+    m_inputboxPass.Init "", 0, 0, 200, 20, &HFFFFFF, &HFFFFFF, UI_COLOR_BLACK, True
+    m_UIMgr.AddComponent m_inputboxPass
+    Set m_cbOk = New clsUICheckbox
+    m_cbOk.Init "IA", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE
+    m_UIMgr.AddComponent m_cbOk
+    Set m_boxInfo = New clsUIBoxInfo
+    m_boxInfo.Init "HORACIO es un Atosigador de fines del siglo XX, aun activo en 2025. Se caracteriza por hostigar varios recursos a la vez y romper sober_anamente las pelotas ...", 0, 0, 250, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK
+    m_UIMgr.AddComponent m_boxInfo
+    m_haracinOk = False
 End Sub
 
 
@@ -78,36 +97,60 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         Dim m_texPanelBg As Direct3DTexture8
         Dim m_texPanelBorder As Direct3DTexture8
         Dim texW As Long: Dim texH As Long
-        Set m_texPanelBg = UITextures.GetTexture(14, texW, texH)  ' fetch or load from manager cache
-        Set m_texPanelBorder = UITextures.GetTexture(21, texW, texH)  ' fetch or load from manager cache
+        Set m_texPanelBg = UITextures.GetTexture(30, texW, texH)  ' fetch or load from manager cache
 
-
-        If Not m_texPanelBg Is Nothing Then
-            ' Draw the full texture (UV 0..1) scaled to your window rectangle.
-            ' colorARGB is a tint; keep it white so only Alpha affects it.
-             
-             UIRenderer.AddTexturedQuad _
-                wx, wy, WINDOW_WIDTH, WINDOW_HEIGHT, _
-                m_texPanelBg, _
+        
+        Dim i As Long, texPanel As Direct3DTexture8
+        Dim x As Long, y As Long, w As Long, h As Long, b As Long
+        b = 60
+        For i = 30 To 38
+            Select Case i
+                Case 30
+                    x = wx: y = wy: w = WINDOW_WIDTH: h = WINDOW_HEIGHT
+                Case 31
+                    x = wx: y = wy: w = b: h = b
+                Case 32
+                    x = wx + b: y = wy: w = WINDOW_WIDTH - b * 2: h = b
+                Case 33
+                    x = wx + WINDOW_WIDTH - b: y = wy: w = b: h = b
+                Case 34
+                    x = wx + WINDOW_WIDTH - b: y = wy + b: w = b: h = WINDOW_HEIGHT - b * 2
+                Case 35
+                    x = wx + WINDOW_WIDTH - b: y = wy + WINDOW_HEIGHT - b: w = b: h = b
+                Case 36
+                    x = wx + b: y = wy + WINDOW_HEIGHT - b: w = WINDOW_WIDTH - b * 2: h = b
+                Case 37
+                    x = wx: y = wy + WINDOW_HEIGHT - b: w = b: h = b
+                Case 38
+                    x = wx: y = wy + b: w = b: h = WINDOW_HEIGHT - b * 2
+            End Select
+            Set texPanel = UITextures.GetTexture(i, texW, texH)
+            If Not texPanel Is Nothing Then
+                UIRenderer.AddTexturedQuad _
+                    x, y, w, h, _
+                texPanel, _
                 0!, 0!, 1!, 1!, _
                 UI_COLOR_WHITE, 255
-
-
-
-        Else
+            Else
             ' Fallback to solid white if texture missing
-            Dim cols(3) As Long
-            cols(0) = UI_COLOR_WHITE
-            cols(1) = UI_COLOR_WHITE
-            cols(2) = UI_COLOR_WHITE
-            cols(3) = UI_COLOR_WHITE
-            UIRenderer.AddQuad wx, wy, WINDOW_WIDTH, WINDOW_HEIGHT, cols, 190
-        End If
-
+                Dim cols2(3) As Long
+                cols2(0) = UI_COLOR_WHITE
+                cols2(1) = UI_COLOR_WHITE
+                cols2(2) = UI_COLOR_WHITE
+                cols2(3) = UI_COLOR_WHITE
+                UIRenderer.AddQuad wx, wy, WINDOW_WIDTH, WINDOW_HEIGHT, cols2, 190
+            End If
+        Next i
+        
+        
         ' Position UI controls
-        m_lblUser.SetPosition wx + 20, wy + 40
-        m_lblPass.SetPosition wx + 20, wy + 80
-        m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + WINDOW_HEIGHT - 60
+        m_lblUser.SetPosition wx + 70, wy + 80
+        m_inputboxUser.SetPosition wx + 150, wy + 77
+        m_lblPass.SetPosition wx + 70, wy + 120
+        m_inputboxPass.SetPosition wx + 150, wy + 117
+        m_cbOk.SetPosition wx + 400, wy + 250
+        m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + WINDOW_HEIGHT - 90
+        m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy + 50, m_haracinOk
 
         ' Draw UI widgets + batched renderer
         m_UIMgr.RenderAll dev
@@ -121,11 +164,17 @@ Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseBu
     m_UIMgr.HandleMouse mouseX, mouseY, mouseButtons
 End Sub
 
-Public Sub HandleKeyboard(ByVal keyCode As Integer, ByVal shiftState As Integer)
+Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
     m_UIMgr.HandleKeyboard keyCode, shiftState
 End Sub
 
 Public Function WasConnectClicked() As Boolean
     WasConnectClicked = m_btnConnect.WasClicked
-    If WasConnectClicked Then m_btnConnect.WasClicked = False
+    If WasConnectClicked Then
+        m_btnConnect.WasClicked = False
+        m_haracinOk = True
+    End If
 End Function
+
+
+
