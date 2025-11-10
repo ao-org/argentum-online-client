@@ -556,7 +556,6 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
                 Call WriteRomperCania
                 PescandoEspecial = False
             End If
-            If EstaSiguiendo Then Exit Sub
             Call WriteWalk(Heading) 'We only walk if we are not meditating or resting
             Call Char_Move_by_Head(UserCharIndex, Heading)
             Call MoveScreen(Heading)
@@ -598,13 +597,6 @@ MoveTo_Err:
     Resume Next
 End Sub
 
-Public Function EstaSiguiendo() As Boolean
-    If CharindexSeguido > 0 Then
-        'Call AddtoRichTextBox(frmMain.RecTxt, "No puedes moverte mientras estás revisando a un usuario.", 255, 0, 0, 1)
-        EstaSiguiendo = True
-        Exit Function
-    End If
-End Function
 
 Public Sub AddMovementToKeysMovementPressedQueue()
     On Error GoTo AddMovementToKeysMovementPressedQueue_Err
