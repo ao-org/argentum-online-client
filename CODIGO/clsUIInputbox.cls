@@ -71,6 +71,9 @@ End Sub
 Public Sub SetPosition(ByVal x As Long, ByVal y As Long)
     m_X = x: m_Y = y
 End Sub
+Public Property Get Text() As String
+    Text = m_Text
+End Property
 
 Public Property Get Width() As Long
     Width = m_W
