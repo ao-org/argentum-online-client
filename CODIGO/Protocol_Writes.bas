@@ -2832,7 +2832,6 @@ End Sub
 ' @param    y The y position in the map to which to waro the character.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteWarpChar(ByVal userName As String, ByVal map As Integer, ByVal x As Byte, ByVal y As Byte)
-    If EstaSiguiendo() Then Exit Sub
     '<EhHeader>
     On Error GoTo WriteWarpChar_Err
     '</EhHeader>
@@ -2977,7 +2976,6 @@ End Sub
 ' @param    username The user to be approached.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteGoToChar(ByVal userName As String)
-    If EstaSiguiendo() Then Exit Sub
     '<EhHeader>
     On Error GoTo WriteGoToChar_Err
     '</EhHeader>

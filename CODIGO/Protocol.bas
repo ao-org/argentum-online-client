@@ -179,8 +179,6 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call HandleUserCharIndexInServer
             Case ServerPacketID.eForceCharMove
                 Call HandleForceCharMove
-            Case ServerPacketID.eForceCharMoveSiguiendo
-                Call HandleForceCharMoveSiguiendo
             Case ServerPacketID.eCharacterChange
                 Call HandleCharacterChange
             Case ServerPacketID.eObjectCreate
@@ -2397,30 +2395,6 @@ HandleForceCharMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleForceCharMove", Erl)
 End Sub
 
-''
-' Handles the ForceCharMove message.
-Private Sub HandleForceCharMoveSiguiendo()
-    On Error GoTo HandleForceCharMoveSiguiendo_Err
-    Dim direccion As Byte
-    direccion = Reader.ReadInt8()
-    Moviendose = True
-    Call MainTimer.Restart(TimersIndex.Walk)
-    'Capaz hay que eliminar el char_move_by_head
-    UserPos.x = charlist(CharindexSeguido).Pos.x
-    UserPos.y = charlist(CharindexSeguido).Pos.y
-    Call UpdateMapPos
-    If MapDat.Seguro = 1 Then
-        frmMain.Coord.ForeColor = RGB(0, 170, 0)
-    Else
-        frmMain.Coord.ForeColor = RGB(170, 0, 0)
-    End If
-    Call Char_Move_by_Head(CharindexSeguido, direccion)
-    Call MoveScreen(direccion)
-    'Call RefreshAllChars
-    Exit Sub
-HandleForceCharMoveSiguiendo_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleForceCharMoveSiguiendo", Erl)
-End Sub
 
 ' Handles the CharacterChange message.
 Private Sub HandleCharacterChange()
@@ -2924,7 +2898,6 @@ End Sub
 
 Private Sub HandleStunStart()
     On Error GoTo HandleStunStart_Err
-    If EstaSiguiendo Then Exit Sub
     Dim duration As Integer
     duration = Reader.ReadInt16()
     StunEndTime = GetTickCount() + duration
@@ -3214,7 +3187,6 @@ Private Sub HandleWorkRequestTarget()
     RadioHechizoArea = Reader.ReadInt8()
     Dim Frm As Form
     Set Frm = GetGameplayForm
-    If EstaSiguiendo Then Exit Sub
     If UsingSkillREcibido = 0 Then
         Frm.MousePointer = 0
         Call FormParser.Parse_Form(frmMain, E_NORMAL)
@@ -4356,7 +4328,6 @@ End Sub
 Private Sub HandleParalizeOK()
     'Remove packet ID
     On Error GoTo HandleParalizeOK_Err
-    If EstaSiguiendo Then Exit Sub
     UserParalizado = Not UserParalizado
     Exit Sub
 HandleParalizeOK_Err:
@@ -4366,7 +4337,6 @@ End Sub
 Private Sub HandleInmovilizadoOK()
     'Remove packet ID
     On Error GoTo HandleInmovilizadoOK_Err
-    If EstaSiguiendo Then Exit Sub
     UserInmovilizado = Not UserInmovilizado
     Exit Sub
 HandleInmovilizadoOK_Err:
