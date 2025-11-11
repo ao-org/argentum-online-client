@@ -5580,7 +5580,10 @@ Public Sub HandleShopInit()
                     " Name=""" & ObjShop(i).Name & """" & _
                     " RopajeHumano=" & ropajeDebug & _
                     " RequiereObjeto=" & ObjData(ObjShop(i).ObjNum).RequiereObjeto
-        Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )", i - 1)
+        With frmShopAO20.lstItemShopFilter
+            Call .AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )", i - 1)
+            .ItemData(.NewIndex) = i
+        End With
     Next i
     frmShopAO20.Show , GetGameplayForm()
     Call frmShopAO20.ResetShopPreview
