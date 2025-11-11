@@ -41,53 +41,51 @@ Option Explicit
 Implements IUIComponent
 ' Button component: draws a colored quad with hover and click support
 ' Requires D3DVertex UDT defined in a standard module
-Private m_X         As Long, m_Y As Long
-Private m_W         As Long, m_H As Long
-Private m_Text      As String
-Private m_ColorFill As Long, m_HoverColor As Long
-Private m_ColorText As Long
+Private m_Impl      As clsUIComponentImpl
 Private m_IsHover   As Boolean
 Private m_PrevDown  As Boolean
 Private m_Clicked   As Boolean
 Private m_Interval  As Integer
 Private m_IntervalMax  As Integer
-Private m_Render As Boolean
-Private m_Focus As Boolean
-Private m_password As Boolean
+Private m_password  As Boolean
 
 Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long, ByVal pswd As Boolean)
-    m_Text = "": m_X = x: m_Y = y
-    m_W = w: m_H = h
-    m_ColorFill = clrFill
-    m_HoverColor = clrHover
-    m_ColorText = clrText
+    If m_Impl Is Nothing Then
+        Set m_Impl = New clsUIComponentImpl
+    End If
+
+    m_Impl.InitLabel text, x, y, clrText
+    m_Impl.SetSize w, h
+    m_Impl.ColorFill = clrFill
+    m_Impl.HoverColor = clrHover
     m_Clicked = False: m_PrevDown = False: m_IsHover = False
     m_IntervalMax = 100
     m_Interval = 0
-    m_Focus = False
     m_password = pswd
 End Sub
+
 Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
-    
+    Call m_Impl.SetVisible(newState)
 End Sub
 
 Public Sub SetPosition(ByVal x As Long, ByVal y As Long)
-    m_X = x: m_Y = y
+    Call m_Impl.SetPosition(x, y)
 End Sub
 
 Public Function IUIComponent_IsVisible() As Boolean
-    IUIComponent_IsVisible = True
+    IUIComponent_IsVisible = m_Impl.IsVisible
 End Function
+
 Public Property Get Text() As String
-    Text = m_Text
+    Text = m_Impl.Text
 End Property
 
 Public Property Get Width() As Long
-    Width = m_W
+    Width = m_Impl.Width
 End Property
 
 Public Property Get Height() As Long
-    Height = m_H
+    Height = m_Impl.Height
 End Property
 
 Public Property Get WasClicked() As Boolean
@@ -98,59 +96,66 @@ Public Property Let WasClicked(ByVal val As Boolean)
     m_Clicked = val
 End Property
 
-
 Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Dim clr As Long
     Dim strAux As String
-    clr = IIf(m_IsHover, m_HoverColor, m_ColorFill)
+    clr = IIf(m_IsHover, m_Impl.HoverColor, m_Impl.ColorFill)
     Dim cols(3) As Long
     cols(0) = clr
     cols(1) = clr
     cols(2) = clr
     cols(3) = clr
-    UIRenderer.AddQuad m_X, m_Y, m_W, m_H, cols
+    UIRenderer.AddQuad m_Impl.X, m_Impl.Y, m_Impl.Width, m_Impl.Height, cols
     Dim rc As RECT
-    rc.Left = m_X: rc.Top = m_Y
+    rc.Left = m_Impl.X: rc.Top = m_Impl.Y
     Dim RECT As RECT
     Dim startX As Integer
     Dim startY As Integer
-    startX = m_X + (m_W - (Len(m_Text) * 7)) / 2
-    startY = m_Y + (m_H - 12) / 2
+    startX = m_Impl.X + (m_Impl.Width - (Len(m_Impl.Text) * 7)) / 2
+    startY = m_Impl.Y + (m_Impl.Height - 12) / 2
     rc.Left = startX: rc.Top = startY
-    rc.Right = m_X + m_W: rc.Bottom = m_Y + m_H
+    rc.Right = m_Impl.X + m_Impl.Width: rc.Bottom = m_Impl.Y + m_Impl.Height
     m_Interval = m_Interval + 1
-    strAux = m_Text
-    If m_Focus Then
+    strAux = m_Impl.Text
+    If m_Impl.Focused Then
         If (m_Interval < (m_IntervalMax / 2)) Then
-            strAux = m_Text & " I"
+            strAux = m_Impl.Text & " I"
         End If
     End If
-    Call UIRenderer.RenderText(strAux, rc.Left, rc.Top, m_ColorText, 1, 255)
+    Call UIRenderer.RenderText(strAux, rc.Left, rc.Top, m_Impl.Color, 1, 255)
     If m_Interval = m_IntervalMax Then m_Interval = 0
 End Sub
 
 Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
-    m_IsHover = (mouseX >= m_X And mouseX <= m_X + m_W And mouseY >= m_Y And mouseY <= m_Y + m_H)
+    m_IsHover = (mouseX >= m_Impl.X And mouseX <= m_Impl.X + m_Impl.Width And mouseY >= m_Impl.Y And mouseY <= m_Impl.Y + m_Impl.Height)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then
         m_Clicked = True
         hit = True
-        m_Focus = True
+        Call m_Impl.SetFocus(True)
     End If
     m_PrevDown = down
-    
+
 End Sub
 
 Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
-    If m_Focus Then
+    If m_Impl.Focused Then
         If m_password Then
-            m_Text = m_Text & "*"
+            m_Impl.Text = m_Impl.Text & "*"
         Else
-            m_Text = m_Text & ChrW(keyCode)
+            m_Impl.Text = m_Impl.Text & ChrW(keyCode)
         End If
     End If
 End Sub
 
 Private Sub IUIComponent_SetFocus(ByVal val As Boolean)
-    m_Focus = val
+    Call m_Impl.SetFocus(val)
+End Sub
+
+Private Sub Class_Initialize()
+    Set m_Impl = New clsUIComponentImpl
+End Sub
+
+Private Sub Class_Terminate()
+    Set m_Impl = Nothing
 End Sub

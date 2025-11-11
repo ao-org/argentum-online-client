@@ -38,12 +38,16 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-Private m_X     As Long
-Private m_Y     As Long
-Private m_Text  As String
-Private m_Color As Long
-Private m_Focus As Boolean
-Private m_visible As Boolean
+Private m_X        As Long
+Private m_Y        As Long
+Private m_Text     As String
+Private m_Color    As Long
+Private m_ColorFill As Long
+Private m_HoverColor As Long
+Private m_Focus    As Boolean
+Private m_visible  As Boolean
+Private m_W        As Long
+Private m_H        As Long
 
 Public Property Let visible(ByVal newState As Boolean)
     m_visible = newState
@@ -53,27 +57,117 @@ Public Property Get visible() As Boolean
     visible = m_visible
 End Property
 
-Public Property Let SetX(ByVal newCoordinate As Long)
+Public Property Let X(ByVal newCoordinate As Long)
     m_X = newCoordinate
 End Property
 
-Public Property Get GetX()
-    GetX = m_X
+Public Property Get X() As Long
+    X = m_X
 End Property
 
-Public Property Let SetY(ByVal newCoordinate As Long)
+Public Property Let Y(ByVal newCoordinate As Long)
     m_Y = newCoordinate
 End Property
 
-Public Property Get GetY()
-    GetY = m_Y
+Public Property Get Y() As Long
+    Y = m_Y
 End Property
 
+Public Property Let Text(ByVal newText As String)
+    m_Text = newText
+End Property
 
+Public Property Get Text() As String
+    Text = m_Text
+End Property
 
+Public Property Let Color(ByVal newColor As Long)
+    m_Color = newColor
+End Property
 
+Public Property Get Color() As Long
+    Color = m_Color
+End Property
 
+Public Property Let ColorFill(ByVal newColor As Long)
+    m_ColorFill = newColor
+End Property
 
+Public Property Get ColorFill() As Long
+    ColorFill = m_ColorFill
+End Property
+
+Public Property Let HoverColor(ByVal newColor As Long)
+    m_HoverColor = newColor
+End Property
+
+Public Property Get HoverColor() As Long
+    HoverColor = m_HoverColor
+End Property
+
+Public Property Let Focused(ByVal newState As Boolean)
+    m_Focus = newState
+End Property
+
+Public Property Get Focused() As Boolean
+    Focused = m_Focus
+End Property
+
+Public Sub SetPosition(ByVal newX As Long, ByVal newY As Long)
+    m_X = newX
+    m_Y = newY
+End Sub
+
+Public Sub GetPosition(ByRef currentX As Long, ByRef currentY As Long)
+    currentX = m_X
+    currentY = m_Y
+End Sub
+
+Public Property Let Width(ByVal newWidth As Long)
+    m_W = newWidth
+End Property
+
+Public Property Get Width() As Long
+    Width = m_W
+End Property
+
+Public Property Let Height(ByVal newHeight As Long)
+    m_H = newHeight
+End Property
+
+Public Property Get Height() As Long
+    Height = m_H
+End Property
+
+Public Sub SetSize(ByVal newWidth As Long, ByVal newHeight As Long)
+    m_W = newWidth
+    m_H = newHeight
+End Sub
+
+Public Sub GetSize(ByRef currentWidth As Long, ByRef currentHeight As Long)
+    currentWidth = m_W
+    currentHeight = m_H
+End Sub
+
+Public Sub InitLabel(ByVal labelText As String, ByVal newX As Long, ByVal newY As Long, ByVal labelColor As Long)
+    m_Text = labelText
+    m_X = newX
+    m_Y = newY
+    m_Color = labelColor
+    m_Focus = False
+End Sub
+
+Public Function IsVisible() As Boolean
+    IsVisible = m_visible
+End Function
+
+Public Sub SetVisible(ByVal newState As Boolean)
+    m_visible = newState
+End Sub
+
+Public Sub SetFocus(ByVal newState As Boolean)
+    m_Focus = newState
+End Sub
 
 Private Sub Class_Initialize()
     m_visible = True
