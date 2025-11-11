@@ -73,22 +73,28 @@ Public Sub SetMusicVolume(ByVal NewVolume As Long)
         Call ao20audio.AudioEngine.ApplyMusicVolume(NewVolume)
     End If
 End Sub
+Public Sub SetFxVolume(ByVal NewVolume As Long, Optional ByVal Category As eFxCategory = eFxGeneral)
+    On Error GoTo SetFxVolume_Err
 
-Public Sub SetAmbientVolume(ByVal NewVolume As Long)
-    CurAmbientVolume = NewVolume
-    If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
-        Call ao20audio.AudioEngine.ApplyAmbientVolume(NewVolume)
-    End If
+    Select Case Category
+        Case eFxGeneral
+            CurFxVolume = NewVolume
+
+        Case eFxSteps
+            CurStepsVolume = NewVolume
+
+        Case eFxAmbient
+            CurAmbientVolume = NewVolume
+            If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
+                Call ao20audio.AudioEngine.ApplyAmbientVolume(NewVolume)
+            End If
+    End Select
+    Exit Sub
+
+SetFxVolume_Err::
+    Call RegistrarError(Err.Number, Err.Description, "ao20audio.SetFxVolume", Erl)
+    Resume Next
 End Sub
-
-Public Sub SetFxVolume(ByVal NewVolume As Long)
-    CurFxVolume = NewVolume
-End Sub
-
-Public Sub SetVolumeSteps(ByVal NewVolume As Long)
-    CurStepsVolume = NewVolume
-End Sub
-
 Public Function StopAmbientAudio() As Long
     StopAmbientAudio = -1
     If AudioEnabled > 0 And Not AudioEngine Is Nothing Then
