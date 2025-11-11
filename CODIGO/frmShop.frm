@@ -204,18 +204,18 @@ End Sub
 Private Sub Image3_Click()
     'Antes de enviar al servidor hago una pre consulta de los créditos en cliente
     Dim obj_to_buy As ObjDatas
-    Dim i          As Long
-    obj_to_buy = ObjShop(Me.lstItemShopFilter.ListIndex + 1)
-    Dim obj_name As String
-    obj_name = Split(lstItemShopFilter.text, " (")(0)
-    For i = 1 To UBound(ObjShop)
-        If obj_name = ObjShop(i).Name Then
-            obj_to_buy = ObjData(ObjShop(i).ObjNum)
-            obj_to_buy.ObjNum = ObjShop(i).ObjNum
-            obj_to_buy.Valor = ObjShop(i).Valor
-            Exit For
-        End If
-    Next i
+    Dim shopIndex  As Long
+    Dim shopItem   As ObjDatas
+    shopIndex = ResolveShopIndexFromSelection(lstItemShopFilter.ListIndex)
+    If shopIndex < LBound(ObjShop) Or shopIndex > UBound(ObjShop) Then Exit Sub
+    shopItem = ObjShop(shopIndex)
+    If shopItem.ObjNum >= LBound(ObjData) And shopItem.ObjNum <= UBound(ObjData) Then
+        obj_to_buy = ObjData(shopItem.ObjNum)
+    Else
+        obj_to_buy = shopItem
+    End If
+    obj_to_buy.ObjNum = shopItem.ObjNum
+    obj_to_buy.Valor = shopItem.Valor
     If credits_shopAO20 >= obj_to_buy.Valor Then
         Call writeBuyShopItem(obj_to_buy.ObjNum)
     Else
@@ -229,40 +229,51 @@ End Sub
 
 Private Sub lstItemShopFilter_Click()
     Dim Grh          As Long
-    Dim i            As Long
-    Dim obj_name     As String
     Dim ObjNum       As Long
     Dim ObjType      As Long
     Dim RopajeHumano As Long
     Dim requiredObjNum As Long
+    Dim requiredFromObjData As Long
     Dim appliedOverride As Boolean
-    obj_name = Split(lstItemShopFilter.text, " (")(0)
-    For i = 1 To UBound(ObjShop)
-        If obj_name = ObjShop(i).Name Then
-            ObjNum = ObjShop(i).ObjNum
-            If ObjNum >= LBound(ObjData) And ObjNum <= UBound(ObjData) Then
-                Grh = ObjData(ObjNum).GrhIndex
-                ObjType = ObjData(ObjNum).ObjType
-                requiredObjNum = ObjData(ObjNum).RequiereObjeto
-            End If
-            RopajeHumano = GetObjRopajeHumano(ObjNum)
-            Debug.Print "[ShopSelect] ObjNum=" & ObjNum & _
-                        " ObjType=" & ObjType & _
-                        " Name=""" & ObjShop(i).Name & """" & _
-                        " RopajeHumano=" & RopajeHumano & _
-                        " RequiereObjeto=" & requiredObjNum
-            If ObjType = 39 Then
-                appliedOverride = ApplyPreviewBodyOverride(RopajeHumano)
-            End If
-            Exit For
+    Dim shopIndex    As Long
+    Dim shopItem     As ObjDatas
+
+    shopIndex = ResolveShopIndexFromSelection(lstItemShopFilter.ListIndex)
+    If shopIndex < LBound(ObjShop) Or shopIndex > UBound(ObjShop) Then Exit Sub
+
+    shopItem = ObjShop(shopIndex)
+    ObjNum = shopItem.ObjNum
+    requiredObjNum = shopItem.RequiereObjeto
+
+    If ObjNum >= LBound(ObjData) And ObjNum <= UBound(ObjData) Then
+        Grh = ObjData(ObjNum).GrhIndex
+        ObjType = ObjData(ObjNum).ObjType
+        requiredFromObjData = ObjData(ObjNum).RequiereObjeto
+        If requiredFromObjData > 0 Then
+            requiredObjNum = requiredFromObjData
         End If
-    Next i
+    End If
+
+    RopajeHumano = GetObjRopajeHumano(ObjNum)
+    Debug.Print "[ShopSelect] ObjNum=" & ObjNum & _
+                " ObjType=" & ObjType & _
+                " Name=""" & shopItem.Name & """" & _
+                " RopajeHumano=" & RopajeHumano & _
+                " RequiereObjeto=" & requiredObjNum
+
+    If ObjType = 39 Then
+        appliedOverride = ApplyPreviewBodyOverride(RopajeHumano)
+    End If
     If Not appliedOverride Then
         Call ClearPreviewBodyOverride
     End If
+
     Call RenderRequiredItemPreview(requiredObjNum)
     Call RenderUserPreview
-    Call Grh_Render_To_Hdc(PictureItemShop, Grh, 0, 0, False)
+    PictureItemShop.Cls
+    If Grh > 0 Then
+        Call Grh_Render_To_Hdc(PictureItemShop, Grh, 0, 0, False)
+    End If
 End Sub
 
 Public Sub ResetShopPreview()
@@ -383,12 +394,48 @@ IsValidHeadId_Err:
     IsValidHeadId = False
 End Function
 
+Private Function ResolveShopIndexFromSelection(ByVal listIndex As Long) As Long
+    On Error GoTo ResolveShopIndexFromSelection_Err
+    If listIndex < 0 Then Exit Function
+    If listIndex >= lstItemShopFilter.ListCount Then Exit Function
+
+    Dim candidate As Long
+    candidate = lstItemShopFilter.ItemData(listIndex)
+    If candidate >= LBound(ObjShop) And candidate <= UBound(ObjShop) Then
+        ResolveShopIndexFromSelection = candidate
+        Exit Function
+    End If
+
+    Dim displayText As String
+    displayText = lstItemShopFilter.List(listIndex)
+    If LenB(displayText) = 0 Then Exit Function
+
+    Dim selectedName As String
+    selectedName = Split(displayText, " (")(0)
+    selectedName = Trim$(selectedName)
+
+    Dim i As Long
+    For i = LBound(ObjShop) To UBound(ObjShop)
+        If StrComp(selectedName, Trim$(ObjShop(i).Name), vbTextCompare) = 0 Then
+            ResolveShopIndexFromSelection = i
+            Exit Function
+        End If
+    Next i
+    Exit Function
+
+ResolveShopIndexFromSelection_Err:
+    ResolveShopIndexFromSelection = 0
+End Function
+
 Private Sub txtFindObj_Change()
     lstItemShopFilter.Clear
     Dim i As Long
     For i = 1 To UBound(ObjShop)
         If InStr(1, ObjShop(i).Name, txtFindObj.text, 1) > 0 Then
-            Call frmShopAO20.lstItemShopFilter.AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )")
+            With lstItemShopFilter
+                Call .AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )")
+                .ItemData(.NewIndex) = i
+            End With
         End If
     Next i
 End Sub
