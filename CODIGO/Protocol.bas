@@ -3825,9 +3825,21 @@ Private Sub HandleMiniStats()
         .Raza = ListaRazas(.Raza)
     End With
     If LlegaronAtrib Then
-        frmStatistics.Iniciar_Labels
-        frmStatistics.Picture = LoadInterface("ventanaestadisticas_personaje.bmp")
-        frmStatistics.Show , GetGameplayForm()
+    
+        #If DXUI Then
+            frmStatistics.visible = False
+            Call Unload(frmStatistics)
+            
+        
+        #Else
+            frmStatistics.Iniciar_Labels
+            frmStatistics.Picture = LoadInterface("ventanaestadisticas_personaje.bmp")
+            frmStatistics.Show , GetGameplayForm()
+        #End If
+    
+
+        
+        
     Else
         LlegaronStats = True
     End If

@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "IUIComponent"
+Attribute VB_Name = "clsUIComponentImpl"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -38,12 +38,47 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
+Private m_X     As Long
+Private m_Y     As Long
+Private m_Text  As String
+Private m_Color As Long
+Private m_Focus As Boolean
+Private m_visible As Boolean
 
-Public Sub SetVisible(ByVal state As Boolean)
+Public Property Let visible(ByVal newState As Boolean)
+    m_visible = newState
+End Property
+
+Public Property Get visible() As Boolean
+    visible = m_visible
+End Property
+
+Public Property Let SetX(ByVal newCoordinate As Long)
+    m_X = newCoordinate
+End Property
+
+Public Property Get GetX()
+    GetX = m_X
+End Property
+
+Public Property Let SetY(ByVal newCoordinate As Long)
+    m_Y = newCoordinate
+End Property
+
+Public Property Get GetY()
+    GetY = m_Y
+End Property
+
+
+
+
+
+
+
+Private Sub Class_Initialize()
+    m_visible = True
 End Sub
-Public Function IsVisible() As Boolean
-End Function
-Public Sub render(ByVal dev As Direct3DDevice8): End Sub
-Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long): End Sub
-Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean): End Sub
-Public Sub SetFocus(ByVal val As Boolean): End Sub
+
+Private Sub Class_Terminate()
+    m_visible = False
+End Sub
