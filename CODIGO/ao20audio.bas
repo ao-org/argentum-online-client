@@ -71,35 +71,40 @@ End Sub
 
 Public Sub SetAmbientVolume(ByVal NewVolume As Long)
     CurAmbientVolume = NewVolume
+    If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
+        Call ao20audio.AudioEngine.ApplyAmbientVolume(NewVolume)
+    End If
 End Sub
 
 Public Sub SetFxVolume(ByVal NewVolume As Long)
     CurFxVolume = NewVolume
 End Sub
+
 Public Sub SetVolumeSteps(ByVal NewVolume As Long)
     CurStepsVolume = NewVolume
 End Sub
 
 Public Function StopAmbientAudio() As Long
     StopAmbientAudio = -1
-    If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
+    If AudioEnabled > 0 And Not AudioEngine Is Nothing Then
         StopAmbientAudio = ao20audio.AudioEngine.StopAmbient
     End If
 End Function
 
 Public Sub PlayAmbientAudio(ByVal UserMap As Long)
-    If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
-        Dim wav As Integer
-        If EsNoche Then
-            wav = ReadField(1, val(MapDat.ambient), Asc("-"))
-        Else
-            wav = ReadField(2, val(MapDat.ambient), Asc("-"))
-        End If
-        If wav <> 0 Then
-            Call ao20audio.AudioEngine.PlayAmbient(wav, True, CurAmbientVolume)
-        Else
-            Call StopAmbientAudio
-        End If
+    If AudioEnabled = 0 Or AmbientEnabled = 0 Or AudioEngine Is Nothing Then
+        Exit Sub
+    End If
+    Dim wav As Integer
+    If EsNoche Then
+        wav = ReadField(1, val(MapDat.ambient), Asc("-"))
+    Else
+        wav = ReadField(2, val(MapDat.ambient), Asc("-"))
+    End If
+    If wav <> 0 Then
+        Call ao20audio.AudioEngine.PlayAmbient(wav, True, CurAmbientVolume)
+    Else
+        Call StopAmbientAudio
     End If
 End Sub
 

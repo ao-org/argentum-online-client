@@ -555,18 +555,18 @@ Private cBotonCerrar As clsGraphicalButton
 Private Sub chkSteps_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo chkSteps_MouseUp_Err
     Call ao20audio.PlayWav(SND_CLICK)
-            If ao20audio.FxStepsEnabled = 1 Then
-                scrVolumeSteps.enabled = False
-                ao20audio.FxStepsEnabled = 0
-            Else
-                scrVolumeSteps.enabled = True
-                ao20audio.FxStepsEnabled = 1
-            End If
-            If ao20audio.FxStepsEnabled = 0 Then
-                chkSteps.Picture = Nothing
-            Else
-                chkSteps.Picture = LoadInterface("check-amarillo.bmp")
-            End If
+    If ao20audio.FxStepsEnabled = 1 Then
+        scrVolumeSteps.enabled = False
+        ao20audio.FxStepsEnabled = 0
+    Else
+        scrVolumeSteps.enabled = True
+        ao20audio.FxStepsEnabled = 1
+    End If
+    If ao20audio.FxStepsEnabled = 0 Then
+        chkSteps.Picture = Nothing
+    Else
+        chkSteps.Picture = LoadInterface("check-amarillo.bmp")
+    End If
     Exit Sub
 chkSteps_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkSteps_MouseUp", Erl)
@@ -597,7 +597,6 @@ Private Sub cmbVRAM_Click()
         Case Is > 2048
             NumTexRelease = 125
     End Select
-    
 End Sub
 
 Private Sub Form_Load()
@@ -619,11 +618,9 @@ Private Sub Form_Load()
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_602"))  ' Italiano
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_1"))
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_2"))
-    Call loadVramComboOptions()
+    Call loadVramComboOptions
     lbl_VRAM = JsonLanguage.Item("LABEL_VRAM_USAGE")
     lbl_AmbientLight = JsonLanguage.Item("LABEL_AMBIENT_LIGHT")
-    
-    
     cmbEquipmentStyle.ListIndex = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
     txtRed.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorRedColor", 255)
     txtGreen.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorGreenColor", 255)
@@ -926,6 +923,9 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
                 HScroll1.enabled = True
                 ao20audio.AmbientEnabled = 1
                 Call ao20audio.PlayAmbientAudio(UserMap)
+                If bRain Then
+                    Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_RAIN_IN_LOOP, SND_RAIN_OUT_LOOP))
+                End If
             End If
             If ao20audio.AmbientEnabled = 0 Then
                 chko(3).Picture = Nothing
@@ -1268,7 +1268,6 @@ Private Sub HScroll1_Change()
     On Error GoTo HScroll1_Change_Err
     VolAmbient = HScroll1.value
     Call ao20audio.SetAmbientVolume(VolAmbient)
-    Call ao20audio.PlayAmbientAudio(CurMap)
     Exit Sub
 HScroll1_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.HScroll1_Change", Erl)
@@ -1492,7 +1491,6 @@ Private Sub txtEquippedCaracter_Change()
     EQUIPMENT_CARACTER = txtEquippedCaracter.text
 End Sub
 
-
 Private Sub loadVramComboOptions()
     Dim i As Integer
     Dim Mem As Long
@@ -1506,7 +1504,6 @@ Private Sub loadVramComboOptions()
     Next i
 End Sub
 
-
 Public Function getMaxAvailablePhysicalMemoryInMb() As Long
     Dim ms As MEMORYSTATUS
     Dim totalMB As Long
@@ -1514,5 +1511,4 @@ Public Function getMaxAvailablePhysicalMemoryInMb() As Long
     Dim val As Long
     GlobalMemoryStatus ms
     getMaxAvailablePhysicalMemoryInMb = (ms.dwTotalPhys / (1024# * 1024#)) ' Convert bytes ? MB
-
 End Function
