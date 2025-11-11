@@ -156,6 +156,8 @@ Public Type ObjDatas
     MinHit As Integer
     MaxHit As Integer
     ObjType As Byte
+    RopajeHumano As Long
+    RequiereObjeto As Long
     Texto As String
     en_texto As String
     info As String

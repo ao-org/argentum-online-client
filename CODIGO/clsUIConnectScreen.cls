@@ -173,6 +173,9 @@ Public Function WasConnectClicked() As Boolean
     If WasConnectClicked Then
         m_btnConnect.WasClicked = False
         m_haracinOk = True
+        
+        Call SetActiveServer("127.0.0.1", "6501")
+        Call DoLogin(m_inputboxUser.Text, m_inputboxPass.Text, True)
     End If
 End Function
 

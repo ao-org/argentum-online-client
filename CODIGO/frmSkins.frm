@@ -142,7 +142,8 @@ Private Sub Form_Load()
     
     Set cBotonEliminarItem = New clsGraphicalButton
     Call cBotonEliminarItem.Initialize(imgDeleteItem, "boton-borrar-item-default.bmp", "boton-borrar-item-over.bmp", "boton-borrar-item-off.bmp", Me)
-    
+    Me.Left = (screen.Width - Me.Width) \ 2
+    Me.Top = (screen.Height - Me.Height) \ 2
     bSkins = True
     Call InvSkins.ReDraw
     DoEvents
