@@ -263,13 +263,13 @@ Begin VB.Form frmOpciones
       Begin VB.Label lblStepsToggle 
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
-         Caption         =   "Label1"
+         Caption         =   "Pasos"
          ForeColor       =   &H00FFFFFF&
          Height          =   195
-         Left            =   720
+         Left            =   600
          TabIndex        =   25
          Top             =   2760
-         Width           =   465
+         Width           =   420
       End
       Begin VB.Image chkSteps 
          Height          =   255
