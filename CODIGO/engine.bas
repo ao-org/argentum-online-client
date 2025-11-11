@@ -733,7 +733,11 @@ Public Sub render()
     On Error GoTo render_Err
     Rem On Error GoTo ErrorHandler:
     Dim temp_array(3) As RGBA
-    Call Engine_BeginScene
+    
+    #If DXUI = 0 Then
+        Call Engine_BeginScene
+    #End If
+    
     Call ShowNextFrame
     FrameTime = GetTickCount()
     FramesPerSecCounter = FramesPerSecCounter + 1
@@ -774,7 +778,13 @@ Public Sub render()
             simple_text_render str, 10, 10, ColorGM, 1, True
         End If
     #End If
-    Call Engine_EndScene(Render_Main_Rect)
+    
+    #If DXUI = 0 Then
+        Call Engine_EndScene(Render_Main_Rect)
+    #End If
+    
+    
+    
     'TIME_MS_MOUSE
     MouseTimeAcumulated = MouseTimeAcumulated + timerElapsedTime
     If MouseLastUpdate + TIME_MS_MOUSE <= MouseTimeAcumulated Then
@@ -1964,7 +1974,9 @@ Public Sub start()
         If GetGameplayForm().WindowState <> vbMinimized Then
             Select Case g_game_state.State()
                 Case e_state_gameplay_screen
-                    render
+                    #If DXUI = 0 Then
+                        Call render
+                    #End If
                     Check_Keys
                     Moviendose = False
                     DrawMainInventory
@@ -1985,13 +1997,17 @@ Public Sub start()
                         DrawInventoryUserComercio
                         DrawInventoryOtherComercio
                     End If
-                    
                     'Utilizo un boolean, para evitar utilizar la propiedad .visible de los formularios, ya que aparentemente instancia el form y baja la performance.
                     If bSkins Then
                         DrawInventorySkins
                         'Debug.Print "Renderizando skins"
                     End If
-
+                    #If DXUI Then
+                        Debug.Assert Not g_statisticsScreen Is Nothing
+                        If g_statisticsScreen.IsVisible() Then
+                            Call g_statisticsScreen.render(DirectDevice)
+                        End If
+                    #End If
                 Case e_state_connect_screen
                     #If DXUI Then
                         If Not frmConnect.visible Then
