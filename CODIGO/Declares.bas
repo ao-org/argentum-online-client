@@ -418,6 +418,7 @@ Public InfoItemsEnRender           As Boolean
 Public InvertirSonido              As Byte
 Public VolMusic                    As Long
 Public VolFX                       As Long
+Public VolSteps                    As Long
 Public VolAmbient                  As Long
 Public FxNavega                    As Byte
 Public ChatCombate                 As Byte

@@ -39,9 +39,16 @@ Public MusicEnabled            As Byte
 Public FxEnabled               As Byte
 Public AudioEnabled            As Byte
 Public AmbientEnabled          As Byte
+Public FxStepsEnabled          As Byte
 Private CurMusicVolume         As Long
 Private CurAmbientVolume       As Long
 Private CurFxVolume            As Long
+Private CurStepsVolume         As Long
+Public Enum eFxCategory
+    eFxGeneral = 0
+    eFxSteps = 1
+    eFxAmbient = 2
+End Enum
 
 Public Sub CreateAudioEngine(ByVal hWnd As Long, ByRef dx8 As DirectX8, ByRef renderer As clsAudioEngine)
     On Error GoTo AudioEngineInitErr:
@@ -66,35 +73,49 @@ Public Sub SetMusicVolume(ByVal NewVolume As Long)
         Call ao20audio.AudioEngine.ApplyMusicVolume(NewVolume)
     End If
 End Sub
+Public Sub SetFxVolume(ByVal NewVolume As Long, Optional ByVal Category As eFxCategory = eFxGeneral)
+    On Error GoTo SetFxVolume_Err
 
-Public Sub SetAmbientVolume(ByVal NewVolume As Long)
-    CurAmbientVolume = NewVolume
+    Select Case Category
+        Case eFxGeneral
+            CurFxVolume = NewVolume
+
+        Case eFxSteps
+            CurStepsVolume = NewVolume
+
+        Case eFxAmbient
+            CurAmbientVolume = NewVolume
+            If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
+                Call ao20audio.AudioEngine.ApplyAmbientVolume(NewVolume)
+            End If
+    End Select
+    Exit Sub
+
+SetFxVolume_Err::
+    Call RegistrarError(Err.Number, Err.Description, "ao20audio.SetFxVolume", Erl)
+    Resume Next
 End Sub
-
-Public Sub SetFxVolume(ByVal NewVolume As Long)
-    CurFxVolume = NewVolume
-End Sub
-
 Public Function StopAmbientAudio() As Long
     StopAmbientAudio = -1
-    If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
+    If AudioEnabled > 0 And Not AudioEngine Is Nothing Then
         StopAmbientAudio = ao20audio.AudioEngine.StopAmbient
     End If
 End Function
 
 Public Sub PlayAmbientAudio(ByVal UserMap As Long)
-    If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
-        Dim wav As Integer
-        If EsNoche Then
-            wav = ReadField(1, val(MapDat.ambient), Asc("-"))
-        Else
-            wav = ReadField(2, val(MapDat.ambient), Asc("-"))
-        End If
-        If wav <> 0 Then
-            Call ao20audio.AudioEngine.PlayAmbient(wav, True, CurAmbientVolume)
-        Else
-            Call StopAmbientAudio
-        End If
+    If AudioEnabled = 0 Or AmbientEnabled = 0 Or AudioEngine Is Nothing Then
+        Exit Sub
+    End If
+    Dim wav As Integer
+    If EsNoche Then
+        wav = ReadField(1, val(MapDat.ambient), Asc("-"))
+    Else
+        wav = ReadField(2, val(MapDat.ambient), Asc("-"))
+    End If
+    If wav <> 0 Then
+        Call ao20audio.AudioEngine.PlayAmbient(wav, True, CurAmbientVolume)
+    Else
+        Call StopAmbientAudio
     End If
 End Sub
 
@@ -120,6 +141,32 @@ Public Function PlayWav(ByVal id As String, _
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
         PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, min(CurFxVolume, volume), pan, label)
     End If
+End Function
+Public Function PlayFx(ByVal id As String, _
+                       Optional ByVal looping As Boolean = False, _
+                       Optional ByVal volume As Long = 0, _
+                       Optional ByVal pan As Long = 0, _
+                       Optional ByVal label As String = "", _
+                       Optional ByVal category As eFxCategory) As Long
+    PlayFx = -1
+    If AudioEngine Is Nothing Or AudioEnabled = 0 Then Exit Function
+
+    Dim effVol As Long
+    Select Case category
+        Case eFxSteps
+            If FxStepsEnabled = 0 Then Exit Function
+            effVol = min(CurStepsVolume, volume)
+
+        Case eFxAmbient
+            If AmbientEnabled = 0 Then Exit Function
+            effVol = min(CurAmbientVolume, volume)
+
+        Case Else
+            If FxEnabled = 0 Then Exit Function
+            effVol = min(CurFxVolume, volume)
+    End Select
+
+    PlayFx = AudioEngine.PlayWav(id, looping, effVol, pan, label)
 End Function
 
 Public Function StopMP3() As Long
@@ -189,7 +236,7 @@ Public Function ComputeCharFxVolume(ByRef Pos As Position) As Long
     On Error GoTo ComputeCharFxVolumenErr:
     Dim total_distance As Integer
     total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
-    ComputeCharFxVolume = ComputeCharFxVolumeByDistance(total_distance)
+    ComputeCharFxVolume = ComputeVolumeByDistance(eFxGeneral, total_distance)
     Exit Function
 ComputeCharFxVolumenErr:
     Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxVolume", Erl)
@@ -244,18 +291,34 @@ ComputeCharFxPanByDistance_err:
     Call RegistrarError(Err.Number, Err.Description, "clsSoundEngine.Calculate_Pan_By_Distance", Erl)
     Resume Next
 End Function
-
-Public Function ComputeCharFxVolumeByDistance(ByVal distance As Byte) As Long
-    On Error GoTo ComputeCharFxVolumeByDistance_err:
+Public Function ComputeVolumeByDistance(ByVal category As eFxCategory, ByVal distance As Integer) As Long
+    On Error GoTo ComputeVolumeByDistance_err
     distance = Abs(distance)
+
+    Dim base As Long
+    Select Case category
+        Case eFxSteps:   base = VolSteps
+        Case eFxAmbient: base = VolAmbient
+        Case Else:       base = VolFX
+    End Select
+
     If distance < 20 Then
-        ComputeCharFxVolumeByDistance = VolFX - distance * 120
-        If ComputeCharFxVolumeByDistance < -4000 Then ComputeCharFxVolumeByDistance = -4000
+        ComputeVolumeByDistance = base - distance * 120
+        If ComputeVolumeByDistance < -4000 Then ComputeVolumeByDistance = -4000
     Else
-        ComputeCharFxVolumeByDistance = -4000
+        ComputeVolumeByDistance = -4000
     End If
     Exit Function
-ComputeCharFxVolumeByDistance_err:
-    Call RegistrarError(Err.Number, Err.Description, "ComputeCharFxVolumeByDistance", Erl)
-    Resume Next
+ComputeVolumeByDistance_err:
+    Call RegistrarError(Err.Number, Err.Description, "ComputeVolumeByDistance", Erl)
+End Function
+
+Public Function ComputeVolumeAtPos(ByVal category As eFxCategory, ByRef Pos As Position) As Long
+    On Error GoTo ComputeVolumeAtPos_err
+    Dim total_distance As Integer
+    total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
+    ComputeVolumeAtPos = ComputeVolumeByDistance(category, total_distance)
+    Exit Function
+ComputeVolumeAtPos_err:
+    Call RegistrarError(Err.Number, Err.Description, "ComputeVolumeAtPos", Erl)
 End Function

@@ -519,6 +519,17 @@ Private Sub SetMembersToNothing()
     Set mDirectSoundEnum = Nothing
 End Sub
 
+Public Sub ApplyAmbientVolume(ByVal volume As Long)
+    Dim i As Integer
+    For i = 1 To UBound(mAudioTracks)
+        With mAudioTracks(i)
+            If Not .Buffer Is Nothing Then
+                Call .Buffer.SetVolume(volume)
+            End If
+        End With
+    Next i
+End Sub
+
 Private Sub Class_Initialize()
     SetMembersToNothing
 End Sub

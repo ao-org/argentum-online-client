@@ -216,6 +216,17 @@ Begin VB.Form frmOpciones
       Top             =   1800
       Visible         =   0   'False
       Width           =   7560
+      Begin VB.HScrollBar scrVolumeSteps 
+         Height          =   315
+         LargeChange     =   1000
+         Left            =   3960
+         Max             =   0
+         Min             =   -4000
+         SmallChange     =   2
+         TabIndex        =   21
+         Top             =   4200
+         Width           =   3375
+      End
       Begin VB.HScrollBar HScroll1 
          Height          =   315
          LargeChange     =   1000
@@ -248,6 +259,12 @@ Begin VB.Form frmOpciones
          TabIndex        =   5
          Top             =   600
          Width           =   3375
+      End
+      Begin VB.Image chkSteps 
+         Height          =   255
+         Left            =   255
+         Top             =   2715
+         Width           =   255
       End
       Begin VB.Image chko 
          Height          =   255
@@ -535,6 +552,27 @@ Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
 Private cBotonCerrar As clsGraphicalButton
 
+Private Sub chkSteps_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error GoTo chkSteps_MouseUp_Err
+    Call ao20audio.PlayWav(SND_CLICK)
+    If ao20audio.FxStepsEnabled = 1 Then
+        scrVolumeSteps.enabled = False
+        ao20audio.FxStepsEnabled = 0
+    Else
+        scrVolumeSteps.enabled = True
+        ao20audio.FxStepsEnabled = 1
+    End If
+    If ao20audio.FxStepsEnabled = 0 Then
+        chkSteps.Picture = Nothing
+    Else
+        chkSteps.Picture = LoadInterface("check-amarillo.bmp")
+    End If
+    Exit Sub
+chkSteps_MouseUp_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkSteps_MouseUp", Erl)
+    Resume Next
+End Sub
+
 Private Sub cmbVRAM_Click()
     If cmbVRAM.text = "" Then
         cmbVRAM.text = cmbVRAM.ItemData(0)
@@ -559,7 +597,6 @@ Private Sub cmbVRAM_Click()
         Case Is > 2048
             NumTexRelease = 125
     End Select
-    
 End Sub
 
 Private Sub Form_Load()
@@ -581,11 +618,9 @@ Private Sub Form_Load()
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_602"))  ' Italiano
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_1"))
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_2"))
-    Call loadVramComboOptions()
+    Call loadVramComboOptions
     lbl_VRAM = JsonLanguage.Item("LABEL_VRAM_USAGE")
     lbl_AmbientLight = JsonLanguage.Item("LABEL_AMBIENT_LIGHT")
-    
-    
     cmbEquipmentStyle.ListIndex = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
     txtRed.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorRedColor", 255)
     txtGreen.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorGreenColor", 255)
@@ -888,6 +923,9 @@ Private Sub chkO_MouseUp(Index As Integer, Button As Integer, Shift As Integer, 
                 HScroll1.enabled = True
                 ao20audio.AmbientEnabled = 1
                 Call ao20audio.PlayAmbientAudio(UserMap)
+                If bRain Then
+                    Call ao20audio.PlayWeatherAudio(IIf(bTecho, SND_RAIN_IN_LOOP, SND_RAIN_OUT_LOOP))
+                End If
             End If
             If ao20audio.AmbientEnabled = 0 Then
                 chko(3).Picture = Nothing
@@ -1188,12 +1226,18 @@ Public Sub Init()
     Else
         chkInvertir.Picture = LoadInterface("check-amarillo.bmp")
     End If
+    If ao20audio.FxStepsEnabled = 0 Then
+        chkSteps.Picture = Nothing
+    Else
+        chkSteps.Picture = LoadInterface("check-amarillo.bmp")
+    End If
     If FPSFLAG = 0 Then
         Check6.Picture = Nothing
     Else
         Check6.Picture = LoadInterface("check-amarillo.bmp")
     End If
     scrVolume.value = max(scrVolume.min, min(scrVolume.max, VolFX))
+    scrVolumeSteps.value = max(scrVolumeSteps.min, min(scrVolumeSteps.max, VolSteps))
     HScroll1.value = max(HScroll1.min, min(HScroll1.max, VolAmbient))
     scrMidi.value = max(scrMidi.min, min(scrMidi.max, VolMusic))
     Call cbBloqueoHechizos.Clear
@@ -1224,7 +1268,6 @@ Private Sub HScroll1_Change()
     On Error GoTo HScroll1_Change_Err
     VolAmbient = HScroll1.value
     Call ao20audio.SetAmbientVolume(VolAmbient)
-    Call ao20audio.PlayAmbientAudio(CurMap)
     Exit Sub
 HScroll1_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.HScroll1_Change", Erl)
@@ -1289,6 +1332,15 @@ Private Sub scrVolume_Change()
     Exit Sub
 scrVolume_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolume_Change", Erl)
+    Resume Next
+End Sub
+Private Sub scrVolumeSteps_Change()
+    On Error GoTo scrVolumeSteps_Change_Err
+    VolSteps = scrVolumeSteps.value
+    Call ao20audio.SetVolumeSteps(scrVolumeSteps.value)
+    Exit Sub
+scrVolumeSteps_Change_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolumeSteps_Change", Erl)
     Resume Next
 End Sub
 
@@ -1439,7 +1491,6 @@ Private Sub txtEquippedCaracter_Change()
     EQUIPMENT_CARACTER = txtEquippedCaracter.text
 End Sub
 
-
 Private Sub loadVramComboOptions()
     Dim i As Integer
     Dim Mem As Long
@@ -1453,7 +1504,6 @@ Private Sub loadVramComboOptions()
     Next i
 End Sub
 
-
 Public Function getMaxAvailablePhysicalMemoryInMb() As Long
     Dim ms As MEMORYSTATUS
     Dim totalMB As Long
@@ -1461,5 +1511,4 @@ Public Function getMaxAvailablePhysicalMemoryInMb() As Long
     Dim val As Long
     GlobalMemoryStatus ms
     getMaxAvailablePhysicalMemoryInMb = (ms.dwTotalPhys / (1024# * 1024#)) ' Convert bytes ? MB
-
 End Function
