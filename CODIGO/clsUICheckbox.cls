@@ -41,43 +41,40 @@ Option Explicit
 Implements IUIComponent
 ' Button component: draws a colored quad with hover and click support
 ' Requires D3DVertex UDT defined in a standard module
-Private m_X         As Long, m_Y As Long
-Private m_W         As Long, m_H As Long
-Private m_Text      As String
-Private m_ColorFill As Long, m_HoverColor As Long
-Private m_ColorText As Long
+Private m_Impl      As clsUIComponentImpl
 Private m_IsHover   As Boolean
 Private m_PrevDown  As Boolean
 Private m_Clicked   As Boolean
-Private m_Focus As Boolean
 
 Public Function IUIComponent_IsVisible() As Boolean
-    IUIComponent_IsVisible = True
+    IUIComponent_IsVisible = m_Impl.IsVisible
 End Function
 Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
-    
+    Call m_Impl.SetVisible(newState)
 End Sub
 
 Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
-    m_Text = text: m_X = x: m_Y = y
-    m_W = 15: m_H = 15
-    m_ColorFill = clrFill
-    m_HoverColor = clrHover
-    m_ColorText = clrText
+    If m_Impl Is Nothing Then
+        Set m_Impl = New clsUIComponentImpl
+    End If
+
+    m_Impl.InitLabel text, x, y, clrText
+    m_Impl.SetSize 15, 15
+    m_Impl.ColorFill = clrFill
+    m_Impl.HoverColor = clrHover
     m_Clicked = False: m_PrevDown = False: m_IsHover = False
-    m_Focus = False
 End Sub
 
 Public Sub SetPosition(ByVal x As Long, ByVal y As Long)
-    m_X = x: m_Y = y
+    Call m_Impl.SetPosition(x, y)
 End Sub
 
 Public Property Get Width() As Long
-    Width = m_W
+    Width = m_Impl.Width
 End Property
 
 Public Property Get Height() As Long
-    Height = m_H
+    Height = m_Impl.Height
 End Property
 
 Public Property Get WasClicked() As Boolean
@@ -90,7 +87,7 @@ End Property
 
 Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Dim clr As Long
-    clr = IIf(m_IsHover, m_HoverColor, m_ColorFill)
+    clr = IIf(m_IsHover, m_Impl.HoverColor, m_Impl.ColorFill)
     Dim cols(3) As Long
     cols(0) = clr
     cols(1) = clr
@@ -106,7 +103,7 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     End If
     If Not cbTexture Is Nothing Then
         UIRenderer.AddTexturedQuad _
-            m_X, m_Y, m_W, m_H, _
+            m_Impl.X, m_Impl.Y, m_Impl.Width, m_Impl.Height, _
         cbTexture, _
         0!, 0!, 1!, 1!, _
         UI_COLOR_WHITE, 255
@@ -117,20 +114,20 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
         cols2(1) = UI_COLOR_WHITE
         cols2(2) = UI_COLOR_WHITE
         cols2(3) = UI_COLOR_WHITE
-        UIRenderer.AddQuad m_X, m_Y, m_W, m_H, cols2, 190
+        UIRenderer.AddQuad m_Impl.X, m_Impl.Y, m_Impl.Width, m_Impl.Height, cols2, 190
     End If
     Dim rc As RECT
-    rc.Left = m_X + 20: rc.Top = m_Y
-    rc.Right = m_X + m_W: rc.Bottom = m_Y + m_H
-    Call UIRenderer.RenderText(m_Text, rc.Left, rc.Top, m_ColorText, 1, 255)
+    rc.Left = m_Impl.X + 20: rc.Top = m_Impl.Y
+    rc.Right = m_Impl.X + m_Impl.Width: rc.Bottom = m_Impl.Y + m_Impl.Height
+    Call UIRenderer.RenderText(m_Impl.Text, rc.Left, rc.Top, m_Impl.Color, 1, 255)
 End Sub
 
 Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
-    m_IsHover = (mouseX >= m_X And mouseX <= m_X + m_W And mouseY >= m_Y And mouseY <= m_Y + m_H)
+    m_IsHover = (mouseX >= m_Impl.X And mouseX <= m_Impl.X + m_Impl.Width And mouseY >= m_Impl.Y And mouseY <= m_Impl.Y + m_Impl.Height)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then
         hit = True
-        m_Focus = True
+        Call m_Impl.SetFocus(True)
         If m_Clicked Then
             m_Clicked = False
         Else
@@ -146,5 +143,13 @@ Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState 
 End Sub
 
 Private Sub IUIComponent_SetFocus(ByVal val As Boolean)
-    m_Focus = val
+    Call m_Impl.SetFocus(val)
+End Sub
+
+Private Sub Class_Initialize()
+    Set m_Impl = New clsUIComponentImpl
+End Sub
+
+Private Sub Class_Terminate()
+    Set m_Impl = Nothing
 End Sub

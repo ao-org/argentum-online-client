@@ -39,36 +39,46 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 Implements IUIComponent
-Private m_X     As Long, m_Y As Long
-Private m_Text  As String
-Private m_Color As Long
-Private m_Focus As Boolean
+Private m_Impl As clsUIComponentImpl
 
 Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal color As Long)
-    m_Text = text: m_X = x: m_Y = y
-    m_Color = color
-    m_Focus = False
+    If m_Impl Is Nothing Then
+        Set m_Impl = New clsUIComponentImpl
+    End If
+    Call m_Impl.InitLabel(text, x, y, color)
 End Sub
 
 Public Function IUIComponent_IsVisible() As Boolean
-    IUIComponent_IsVisible = True
+    IUIComponent_IsVisible = m_Impl.IsVisible
 End Function
 
 Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
-    
+    Call m_Impl.SetVisible(newState)
 End Sub
-
 
 ' Allow external positioning
 Public Sub SetPosition(ByVal x As Long, ByVal y As Long)
-    m_X = x: m_Y = y
+    Call m_Impl.SetPosition(x, y)
+End Sub
+
+Public Sub GetPosition(ByRef x As Long, ByRef y As Long)
+    Call m_Impl.GetPosition(x, y)
 End Sub
 
 Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
+    If m_Impl Is Nothing Then Exit Sub
+    If Not m_Impl.IsVisible Then Exit Sub
+
+    Dim posX As Long
+    Dim posY As Long
+    Call m_Impl.GetPosition(posX, posY)
+
     Dim rc As RECT
-    rc.Left = m_X: rc.Top = m_Y
-    rc.Right = m_X + 400: rc.Bottom = m_Y + 32
-    Call UIRenderer.RenderText(m_Text, rc.Left, rc.Top, m_Color, 1, 128)
+    rc.Left = posX
+    rc.Top = posY
+    rc.Right = posX + 400
+    rc.Bottom = posY + 32
+    Call UIRenderer.RenderText(m_Impl.Text, rc.Left, rc.Top, m_Impl.Color, 1, 128)
 End Sub
 
 Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
@@ -76,9 +86,49 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
 End Sub
 
 Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
-    ' no-op for now
+    ' Labels do not handle keyboard input.
 End Sub
 
 Private Sub IUIComponent_SetFocus(ByVal val As Boolean)
-    m_Focus = val
+    Call m_Impl.SetFocus(val)
+End Sub
+
+Public Property Let Text(ByVal newText As String)
+    m_Impl.Text = newText
+End Property
+
+Public Property Get Text() As String
+    Text = m_Impl.Text
+End Property
+
+Public Property Let Color(ByVal newColor As Long)
+    m_Impl.Color = newColor
+End Property
+
+Public Property Get Color() As Long
+    Color = m_Impl.Color
+End Property
+
+Public Property Let X(ByVal newX As Long)
+    m_Impl.X = newX
+End Property
+
+Public Property Get X() As Long
+    X = m_Impl.X
+End Property
+
+Public Property Let Y(ByVal newY As Long)
+    m_Impl.Y = newY
+End Property
+
+Public Property Get Y() As Long
+    Y = m_Impl.Y
+End Property
+
+Private Sub Class_Initialize()
+    Set m_Impl = New clsUIComponentImpl
+End Sub
+
+Private Sub Class_Terminate()
+    Set m_Impl = Nothing
 End Sub
