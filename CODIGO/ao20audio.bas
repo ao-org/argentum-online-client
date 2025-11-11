@@ -44,6 +44,11 @@ Private CurMusicVolume         As Long
 Private CurAmbientVolume       As Long
 Private CurFxVolume            As Long
 Private CurStepsVolume         As Long
+Public Enum eFxCategory
+    eFxGeneral = 0
+    eFxSteps = 1
+    eFxAmbient = 2
+End Enum
 
 Public Sub CreateAudioEngine(ByVal hWnd As Long, ByRef dx8 As DirectX8, ByRef renderer As clsAudioEngine)
     On Error GoTo AudioEngineInitErr:
@@ -132,11 +137,11 @@ Public Function PlayWav(ByVal id As String, _
     End If
 End Function
 Public Function PlayFx(ByVal id As String, _
-                       ByVal category As eFxCategory, _
                        Optional ByVal looping As Boolean = False, _
                        Optional ByVal volume As Long = 0, _
                        Optional ByVal pan As Long = 0, _
-                       Optional ByVal label As String = "") As Long
+                       Optional ByVal label As String = "", _
+                       Optional ByVal category As eFxCategory) As Long
     PlayFx = -1
     If AudioEngine Is Nothing Or AudioEnabled = 0 Then Exit Function
 
