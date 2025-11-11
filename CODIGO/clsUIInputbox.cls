@@ -67,10 +67,17 @@ Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w 
     m_Focus = False
     m_password = pswd
 End Sub
+Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
+    
+End Sub
 
 Public Sub SetPosition(ByVal x As Long, ByVal y As Long)
     m_X = x: m_Y = y
 End Sub
+
+Public Function IUIComponent_IsVisible() As Boolean
+    IUIComponent_IsVisible = True
+End Function
 Public Property Get Text() As String
     Text = m_Text
 End Property

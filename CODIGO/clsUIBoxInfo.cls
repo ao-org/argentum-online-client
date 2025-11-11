@@ -64,6 +64,13 @@ Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w 
     m_Focus = False
     m_Draw = False
 End Sub
+Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
+    
+End Sub
+
+Public Function IUIComponent_IsVisible() As Boolean
+    IUIComponent_IsVisible = True
+End Function
 
 Public Sub SetPosition(ByVal x As Long, ByVal y As Long, ByVal d As Boolean)
     m_X = x: m_Y = y: m_Draw = d
