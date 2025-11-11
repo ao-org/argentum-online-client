@@ -52,7 +52,15 @@ Private m_lblAgility          As clsUILabel
 Private m_lblIntelligence     As clsUILabel
 Private m_lblConstitution     As clsUILabel
 Private m_lblCharisma         As clsUILabel
-Private STATISTICS_RECT       As RECT
+Private m_UIState             As clsUIComponentImpl
+
+Public Function IsVisible() As Boolean
+    IsVisible = m_UIState.visible
+End Function
+
+Public Sub SetVisible(ByVal newState As Boolean)
+    m_UIState.visible = newState
+End Sub
 
 Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager
@@ -94,14 +102,20 @@ Public Sub render(ByVal dev As Direct3DDevice8)
     Dim sH As Long
     Dim wx As Long
     Dim wy As Long
-    sW = STATISTICS_RECT.Right - STATISTICS_RECT.Left
-    sH = STATISTICS_RECT.Bottom - STATISTICS_RECT.Top
-    wx = (sW - WINDOW_WIDTH) \ 2 + STATISTICS_RECT.Left
-    wy = (sH - WINDOW_HEIGHT) \ 2 + STATISTICS_RECT.Top + WINDOW_OFFSET_Y
+    sW = 0
+    sH = 0
+    wx = WINDOW_WIDTH
+    wy = WINDOW_HEIGHT
     Call Engine_BeginScene
+    Dim cols2(3) As Long
+    cols2(0) = UI_COLOR_WHITE
+    cols2(1) = UI_COLOR_WHITE
+    cols2(2) = UI_COLOR_WHITE
+    cols2(3) = UI_COLOR_WHITE
+    UIRenderer.AddQuad 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, cols2, 190
     Call m_UIMgr.RenderAll(dev)
-    Call UIRenderer.Draw(DirectDevice)
-    Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
+    Call UIRenderer.Draw(dev)
+    Call Engine_EndScene(Render_Main_Rect, 0)
 End Sub
 
 Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
@@ -110,4 +124,12 @@ End Sub
 
 Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
     m_UIMgr.HandleKeyboard keyCode, shiftState
+End Sub
+
+Private Sub Class_Initialize()
+    Set m_UIState = New clsUIComponentImpl
+End Sub
+
+Private Sub Class_Terminate()
+    Set m_UIState = Nothing
 End Sub

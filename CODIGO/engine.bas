@@ -1991,7 +1991,14 @@ Public Sub start()
                         DrawInventorySkins
                         'Debug.Print "Renderizando skins"
                     End If
-
+                    
+                    #If DXUI Then
+                        Debug.Assert Not g_statisticsScreen Is Nothing
+                        If g_statisticsScreen.IsVisible() Then
+                            Call g_statisticsScreen.render(DirectDevice)
+                        End If
+                    #End If
+                    
                 Case e_state_connect_screen
                     #If DXUI Then
                         If Not frmConnect.visible Then

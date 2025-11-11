@@ -51,6 +51,13 @@ Private m_PrevDown  As Boolean
 Private m_Clicked   As Boolean
 Private m_Focus As Boolean
 
+Public Function IUIComponent_IsVisible() As Boolean
+    IUIComponent_IsVisible = True
+End Function
+Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
+    
+End Sub
+
 Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
     m_Text = text: m_X = x: m_Y = y
     m_W = 15: m_H = 15

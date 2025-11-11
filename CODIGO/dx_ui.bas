@@ -36,6 +36,8 @@ Public Const UI_COLOR_GOLD  As Long = &HFFFFFF              ' 0xFF0000FF
 Public Const UI_COLOR_GRAY  As Long = &HFFFF00              ' 0xFF0000FF
 Public Const UI_MAX_QUADS As Long = 2000
 Public g_connectScreen      As clsUIConnectScreen
+Public g_statisticsScreen   As clsUIStatistics
+
 ' Virtual-Key codes
 Public Const VK_LBUTTON     As Long = &H1
 
@@ -68,6 +70,12 @@ Public Sub init_connect_screen(ByRef dev As Direct3DDevice8)
     Set g_connectScreen = New clsUIConnectScreen: g_connectScreen.Init dev
 End Sub
 
+Public Sub init_statistic_screen(ByRef dev As Direct3DDevice8)
+    Set g_statisticsScreen = New clsUIStatistics
+    Call g_statisticsScreen.Init(dev)
+End Sub
+
+
 Private Sub preload_ui_textures()
 #If DXUI Then
     ' Preload all UI textures you will use (ids are examples)
@@ -94,5 +102,7 @@ Public Sub init_dx_ui(ByRef dev As Direct3DDevice8)
             
         Call UIRenderer.Init(DirectDevice, UI_MAX_QUADS)
         Call init_connect_screen(DirectDevice)
+        Call init_statistic_screen(DirectDevice)
+        'Agregar aca init statistics ui
     #End If
 End Sub
