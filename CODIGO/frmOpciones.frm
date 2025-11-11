@@ -318,7 +318,7 @@ Begin VB.Form frmOpciones
          Height          =   315
          Left            =   5400
          Style           =   2  'Dropdown List
-         TabIndex        =   21
+         TabIndex        =   24
          Top             =   720
          Width           =   1335
       End
@@ -1267,7 +1267,7 @@ End Sub
 Private Sub HScroll1_Change()
     On Error GoTo HScroll1_Change_Err
     VolAmbient = HScroll1.value
-    Call ao20audio.SetAmbientVolume(VolAmbient)
+    Call ao20audio.SetFxVolume(VolAmbient, eFxAmbient)
     Exit Sub
 HScroll1_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.HScroll1_Change", Erl)
@@ -1337,7 +1337,7 @@ End Sub
 Private Sub scrVolumeSteps_Change()
     On Error GoTo scrVolumeSteps_Change_Err
     VolSteps = scrVolumeSteps.value
-    Call ao20audio.SetVolumeSteps(scrVolumeSteps.value)
+    Call ao20audio.SetFxVolume(scrVolumeSteps.value, eFxSteps)
     Exit Sub
 scrVolumeSteps_Change_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.scrVolumeSteps_Change", Erl)
