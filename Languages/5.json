@@ -719,6 +719,5 @@
   "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Classico",
   "MENSAJE_DESCRIPCION_GUION_INVALIDO":"I trattini non sono ammessi nella descrizione.",
   "LABEL_VRAM_USAGE":"soglia VRAM:",
-  "LABEL_AMBIENT_LIGHT" : "Luce ambientale:",
-  "LABEL_STEPS_TOGGLE" : "Passi"
+  "LABEL_AMBIENT_LIGHT" : "Luce ambientale:"
 }

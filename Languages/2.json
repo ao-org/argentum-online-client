@@ -720,6 +720,5 @@
     "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Classic",
     "MENSAJE_DESCRIPCION_GUION_INVALIDO":"Hyphens are not allowed in the description.",
     "LABEL_VRAM_USAGE":"VRAM Threshold:",
-    "LABEL_AMBIENT_LIGHT" : "Ambient Light:",
-    "LABEL_STEPS_TOGGLE" : "Steps"
+    "LABEL_AMBIENT_LIGHT" : "Ambient Light:"
 }

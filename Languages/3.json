@@ -720,6 +720,5 @@
   "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Clássico",
   "MENSAJE_DESCRIPCION_GUION_INVALIDO":"Hífens não são permitidos na descrição.",
   "LABEL_VRAM_USAGE":"Limite de VRAM:",
-  "LABEL_AMBIENT_LIGHT" : "Luz ambiente:",
-  "LABEL_STEPS_TOGGLE" : "Passos"
+  "LABEL_AMBIENT_LIGHT" : "Luz ambiente:"
 }

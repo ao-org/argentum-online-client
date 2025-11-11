@@ -721,6 +721,5 @@
     "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Clásico",
     "MENSAJE_DESCRIPCION_GUION_INVALIDO":"No se permiten guiones en la descripción.",
     "LABEL_VRAM_USAGE":"Umbral de VRAM:",
-    "LABEL_AMBIENT_LIGHT" : "Luz ambiental:",
-    "LABEL_STEPS_TOGGLE" : "Pasos"
+    "LABEL_AMBIENT_LIGHT" : "Luz ambiental:"
 }

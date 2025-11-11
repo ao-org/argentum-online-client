@@ -720,6 +720,5 @@
   "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Classique",  
   "MENSAJE_DESCRIPCION_GUION_INVALIDO":"Les traits d'union ne sont pas autorisés dans la description.",
   "LABEL_VRAM_USAGE":"seuil de VRAM:",
-  "LABEL_AMBIENT_LIGHT" : "lumière ambiante :",
-  "LABEL_STEPS_TOGGLE" : "Mesures"
+  "LABEL_AMBIENT_LIGHT" : "lumière ambiante :"
 }
