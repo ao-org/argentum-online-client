@@ -260,6 +260,17 @@ Begin VB.Form frmOpciones
          Top             =   600
          Width           =   3375
       End
+      Begin VB.Label lblStepsToggle 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Label1"
+         ForeColor       =   &H00FFFFFF&
+         Height          =   195
+         Left            =   720
+         TabIndex        =   25
+         Top             =   2760
+         Width           =   465
+      End
       Begin VB.Image chkSteps 
          Height          =   255
          Left            =   255
@@ -621,6 +632,7 @@ Private Sub Form_Load()
     Call loadVramComboOptions
     lbl_VRAM = JsonLanguage.Item("LABEL_VRAM_USAGE")
     lbl_AmbientLight = JsonLanguage.Item("LABEL_AMBIENT_LIGHT")
+    lblStepsToggle = JsonLanguage.Item("LABEL_STEPS_TOGGLE")
     cmbEquipmentStyle.ListIndex = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
     txtRed.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorRedColor", 255)
     txtGreen.text = GetSettingAsByte("OPCIONES", "EquipmentIndicatorGreenColor", 255)
