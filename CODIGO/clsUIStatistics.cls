@@ -107,12 +107,13 @@ Public Sub render(ByVal dev As Direct3DDevice8)
     wx = WINDOW_WIDTH
     wy = WINDOW_HEIGHT
     Call Engine_BeginScene
+    Call engine.render
     Dim cols2(3) As Long
     cols2(0) = UI_COLOR_WHITE
     cols2(1) = UI_COLOR_WHITE
     cols2(2) = UI_COLOR_WHITE
     cols2(3) = UI_COLOR_WHITE
-    UIRenderer.AddQuad 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, cols2, 190
+    Call UIRenderer.AddQuad(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, cols2, 190)
     Call m_UIMgr.RenderAll(dev)
     Call UIRenderer.Draw(dev)
     Call Engine_EndScene(Render_Main_Rect, 0)
