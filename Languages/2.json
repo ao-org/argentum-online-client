@@ -714,7 +714,7 @@
     "MENSAJE_ESTADO_ARMADA_QUINTA_JERARQUIA": "Champion of Light",
     "MENSAJE_ESTADO_CIUDADANO": "Citizen",
     "MENSAJE_ESTADO_CASADO" : "Married with",
-    "MENSAJE_ESTADO_PELEANDO" : "Fighting with",
+    "MENSAJE_ESTADO_PELEANDO" : "Fighting with ",
     "MENSAJE_ESTADO_MASCOTA" : "Mascot owned by",
     "MENSAJE_ESTILO_EQUIPAMIENTO_1" : "Modern",
     "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Classic",
