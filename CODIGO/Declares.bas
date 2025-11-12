@@ -207,17 +207,17 @@ End Enum
 
 Public Enum e_Class
     Mage = 1    'Mago
-    Cleric      'Clérigo
-    Warrior     'Guerrero
-    Assasin     'Asesino
-    Bard        'Bardo
-    Druid       'Druida
-    paladin     'Paladín
-    Hunter      'Cazador
-    Worker  'Trabajador
-    Pirat       'Pirata
-    Thief       'Ladron
-    Bandit      'Bandido
+    Cleric = 2     'Clérigo
+    Warrior = 3   'Guerrero
+    Assasin = 4  'Asesino
+    Bard = 5      'Bardo
+    Druid = 6     'Druida
+    paladin = 7   'Paladín
+    Hunter = 8    'Cazador
+    Worker = 9 'Trabajador
+    Pirat = 10     'Pirata
+    Thief = 11     'Ladron
+    Bandit = 12    'Bandido
 End Enum
 
 Public Enum e_Race

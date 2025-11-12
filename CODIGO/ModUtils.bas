@@ -1880,3 +1880,41 @@ SkillsNamesToTxtParser_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.SkillsNamesToTxtParser", Erl)
     Resume Next
 End Function
+
+Public Function ClassesToTxtParser(ByRef Fields() As String)
+    On Error GoTo ClassesToTxtParser_Err
+    Dim ClassNumber As Integer
+    ClassNumber = CInt(Fields(0))
+    Select Case ClassNumber
+        Case e_Class.Mage
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_MAGO"))
+        Case e_Class.Cleric
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_CLERIGO"))
+        Case e_Class.Warrior
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_GUERRERO"))
+        Case e_Class.Assasin
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_ASESINO"))
+        Case e_Class.Bard
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_BARDO"))
+        Case e_Class.Druid
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_DRUIDA"))
+        Case e_Class.paladin
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_PALADIN"))
+        Case e_Class.Hunter
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_CAZADOR"))
+        Case e_Class.Worker
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_TRABAJADOR"))
+        Case e_Class.Pirat
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_PIRATA"))
+        Case e_Class.Thief
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_LADRON"))
+        Case e_Class.Bandit
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_BANDIDO"))
+        Case Else
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CODIGO_INVALIDO"))
+    End Select
+    Exit Function
+ClassesToTxtParser_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ClassesToTxtParser", Erl)
+    Resume Next
+End Function
