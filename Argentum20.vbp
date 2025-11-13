@@ -170,6 +170,7 @@ Class=clsUIInputbox; CODIGO\clsUIInputbox.cls
 Class=clsUIStatistics; CODIGO\clsUIStatistics.cls
 ResFile32="AO20.res"
 Class=clsUIComponentImpl; CODIGO\clsUIComponentImpl.cls
+Module=debug_tools; CODIGO\debug_tools.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
