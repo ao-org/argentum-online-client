@@ -1921,3 +1921,12 @@ ClassesToTxtParser_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.ClassesToTxtParser", Erl)
     Resume Next
 End Function
+
+Public Function QuestsIndexToTxtParser(ByRef Fields() As String)
+On Error GoTo QuestsIndexToTxtParser_Err
+    Fields(0) = QuestList(Fields(0)).nombre
+    Exit Function
+QuestsIndexToTxtParser_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.QuestsIndexToTxtParser", Erl)
+    Resume Next
+End Function
