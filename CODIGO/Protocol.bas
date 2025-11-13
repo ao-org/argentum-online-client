@@ -3847,7 +3847,7 @@ Private Sub HandleLevelUp()
     On Error GoTo HandleLevelUp_Err
     SkillPoints = Reader.ReadInt16()
     #If No_Api_Steam = 0 Then
-       ' Call svb_unlock_achivement("Newbie's fate")
+       Call svb_unlock_achivement("Newbie's fate")
     #End If
     Exit Sub
 HandleLevelUp_Err:
