@@ -19,13 +19,13 @@ Option Explicit
 
 Public Type Fuente
     Tamanio As Integer
-    Caracteres(0 To 255) As Long 'indice de cada letra
+    Caracteres(0 To 11000) As Long 'indice de cada letra (ampliado para soportar caracteres extendidos)
 End Type
 
 Public font_count      As Long
 Public font_last       As Long
 Public font_list()     As D3DXFont
-Public Fuentes(1 To 6) As Fuente
+Public Fuentes(1 To 8) As Fuente
 
 Public Sub Engine_Font_Initialize()
     On Error GoTo Engine_Font_Initialize_Err
@@ -463,6 +463,248 @@ Public Sub Engine_Font_Initialize()
     Fuentes(6).Caracteres(217) = 18223
     Fuentes(6).Caracteres(241) = 18224
     Fuentes(6).Caracteres(209) = 18225
+    Fuentes(7).Tamanio = 50    ' Cardo
+    For A = 0 To 25
+        Fuentes(7).Caracteres(A + 65) = 26592 + A
+        Fuentes(7).Caracteres(A + 97) = 26618 + A
+    Next A
+    For A = 0 To 9
+        Fuentes(7).Caracteres(A + 48) = 26692 + A
+    Next A
+    Fuentes(7).Caracteres(193) = 26644
+    Fuentes(7).Caracteres(201) = 26645
+    Fuentes(7).Caracteres(205) = 26646
+    Fuentes(7).Caracteres(211) = 26647
+    Fuentes(7).Caracteres(218) = 26648
+    Fuentes(7).Caracteres(225) = 26649
+    Fuentes(7).Caracteres(233) = 26650
+    Fuentes(7).Caracteres(237) = 26651
+    Fuentes(7).Caracteres(243) = 26652
+    Fuentes(7).Caracteres(250) = 26653
+    Fuentes(7).Caracteres(192) = 26654
+    Fuentes(7).Caracteres(200) = 26655
+    Fuentes(7).Caracteres(204) = 26656
+    Fuentes(7).Caracteres(210) = 26657
+    Fuentes(7).Caracteres(217) = 26658
+    Fuentes(7).Caracteres(224) = 26659
+    Fuentes(7).Caracteres(232) = 26660
+    Fuentes(7).Caracteres(236) = 26661
+    Fuentes(7).Caracteres(242) = 26662
+    Fuentes(7).Caracteres(249) = 26663
+    Fuentes(7).Caracteres(194) = 26664
+    Fuentes(7).Caracteres(202) = 26665
+    Fuentes(7).Caracteres(206) = 26666
+    Fuentes(7).Caracteres(212) = 26667
+    Fuentes(7).Caracteres(219) = 26668
+    Fuentes(7).Caracteres(226) = 26669
+    Fuentes(7).Caracteres(234) = 26670
+    Fuentes(7).Caracteres(238) = 26671
+    Fuentes(7).Caracteres(244) = 26672
+    Fuentes(7).Caracteres(251) = 26673
+    Fuentes(7).Caracteres(196) = 26674
+    Fuentes(7).Caracteres(203) = 26675
+    Fuentes(7).Caracteres(207) = 26676
+    Fuentes(7).Caracteres(214) = 26677
+    Fuentes(7).Caracteres(220) = 26678
+    Fuentes(7).Caracteres(228) = 26679
+    Fuentes(7).Caracteres(235) = 26680
+    Fuentes(7).Caracteres(239) = 26681
+    Fuentes(7).Caracteres(246) = 26682
+    Fuentes(7).Caracteres(252) = 26683
+    Fuentes(7).Caracteres(195) = 26684
+    Fuentes(7).Caracteres(213) = 26685
+    Fuentes(7).Caracteres(227) = 26686
+    Fuentes(7).Caracteres(245) = 26687
+    Fuentes(7).Caracteres(209) = 26688
+    Fuentes(7).Caracteres(241) = 26689
+    Fuentes(7).Caracteres(199) = 26690
+    Fuentes(7).Caracteres(231) = 26691
+    Fuentes(7).Caracteres(161) = 26702
+    Fuentes(7).Caracteres(33) = 26703
+    Fuentes(7).Caracteres(191) = 26704
+    Fuentes(7).Caracteres(63) = 26705
+    Fuentes(7).Caracteres(46) = 26706
+    Fuentes(7).Caracteres(44) = 26707
+    Fuentes(7).Caracteres(59) = 26708
+    Fuentes(7).Caracteres(58) = 26709
+    Fuentes(7).Caracteres(8230) = 26710
+    Fuentes(7).Caracteres(8212) = 26711
+    Fuentes(7).Caracteres(45) = 26712
+    Fuentes(7).Caracteres(95) = 26713
+    Fuentes(7).Caracteres(40) = 26714
+    Fuentes(7).Caracteres(41) = 26715
+    Fuentes(7).Caracteres(91) = 26716
+    Fuentes(7).Caracteres(93) = 26717
+    Fuentes(7).Caracteres(123) = 26718
+    Fuentes(7).Caracteres(125) = 26719
+    Fuentes(7).Caracteres(171) = 26720
+    Fuentes(7).Caracteres(187) = 26721
+    Fuentes(7).Caracteres(34) = 26722
+    Fuentes(7).Caracteres(39) = 26723
+    Fuentes(7).Caracteres(8216) = 26724
+    Fuentes(7).Caracteres(8217) = 26725
+    Fuentes(7).Caracteres(8220) = 26726
+    Fuentes(7).Caracteres(8221) = 26727
+    Fuentes(7).Caracteres(47) = 26728
+    Fuentes(7).Caracteres(92) = 26729
+    Fuentes(7).Caracteres(124) = 26730
+    Fuentes(7).Caracteres(64) = 26731
+    Fuentes(7).Caracteres(35) = 26732
+    Fuentes(7).Caracteres(37) = 26733
+    Fuentes(7).Caracteres(38) = 26734
+    Fuentes(7).Caracteres(8432) = 26735
+    Fuentes(7).Caracteres(43) = 26736
+    Fuentes(7).Caracteres(45) = 26737
+    Fuentes(7).Caracteres(60) = 26738
+    Fuentes(7).Caracteres(62) = 26739
+    Fuentes(7).Caracteres(94) = 26740
+    Fuentes(7).Caracteres(95) = 26741
+    Fuentes(7).Caracteres(126) = 26742
+    Fuentes(7).Caracteres(180) = 26743
+    Fuentes(7).Caracteres(172) = 26744
+    Fuentes(7).Caracteres(36) = 26745
+    Fuentes(7).Caracteres(8364) = 26746
+    Fuentes(7).Caracteres(163) = 26747
+    Fuentes(7).Caracteres(162) = 26748
+    Fuentes(7).Caracteres(165) = 26749
+    Fuentes(7).Caracteres(176) = 26750
+    Fuentes(7).Caracteres(167) = 26751
+    Fuentes(7).Caracteres(182) = 26752
+    Fuentes(7).Caracteres(177) = 26753
+    Fuentes(7).Caracteres(120) = 26754
+    Fuentes(7).Caracteres(247) = 26755
+    Fuentes(7).Caracteres(8240) = 26756
+    Fuentes(7).Caracteres(8734) = 26757
+    Fuentes(7).Caracteres(8776) = 26758
+    Fuentes(7).Caracteres(8800) = 26759
+    Fuentes(7).Caracteres(8804) = 26760
+    Fuentes(7).Caracteres(8805) = 26761
+    Fuentes(7).Caracteres(8730) = 26762
+    Fuentes(7).Caracteres(8721) = 26763
+    Fuentes(7).Caracteres(916) = 26764
+    Fuentes(7).Caracteres(181) = 26765
+    Fuentes(7).Caracteres(9679) = 26766
+    Fuentes(8).Tamanio = 50    ' Cardo
+    For A = 0 To 25
+        Fuentes(8).Caracteres(A + 65) = 27510 + A
+        Fuentes(8).Caracteres(A + 97) = 27536 + A
+    Next A
+    For A = 0 To 9
+        Fuentes(8).Caracteres(A + 48) = 27610 + A
+    Next A
+    Fuentes(8).Caracteres(193) = 27562
+    Fuentes(8).Caracteres(201) = 27563
+    Fuentes(8).Caracteres(205) = 27564
+    Fuentes(8).Caracteres(211) = 27565
+    Fuentes(8).Caracteres(218) = 27566
+    Fuentes(8).Caracteres(225) = 27567
+    Fuentes(8).Caracteres(233) = 27568
+    Fuentes(8).Caracteres(237) = 27569
+    Fuentes(8).Caracteres(243) = 27570
+    Fuentes(8).Caracteres(250) = 27571
+    Fuentes(8).Caracteres(192) = 27572
+    Fuentes(8).Caracteres(200) = 27573
+    Fuentes(8).Caracteres(204) = 27574
+    Fuentes(8).Caracteres(210) = 27575
+    Fuentes(8).Caracteres(217) = 27576
+    Fuentes(8).Caracteres(224) = 27577
+    Fuentes(8).Caracteres(232) = 27578
+    Fuentes(8).Caracteres(236) = 27579
+    Fuentes(8).Caracteres(242) = 27580
+    Fuentes(8).Caracteres(249) = 27581
+    Fuentes(8).Caracteres(194) = 27582
+    Fuentes(8).Caracteres(202) = 27583
+    Fuentes(8).Caracteres(206) = 27584
+    Fuentes(8).Caracteres(212) = 27585
+    Fuentes(8).Caracteres(219) = 27586
+    Fuentes(8).Caracteres(226) = 27587
+    Fuentes(8).Caracteres(234) = 27588
+    Fuentes(8).Caracteres(238) = 27589
+    Fuentes(8).Caracteres(244) = 27590
+    Fuentes(8).Caracteres(251) = 27591
+    Fuentes(8).Caracteres(196) = 27592
+    Fuentes(8).Caracteres(203) = 27593
+    Fuentes(8).Caracteres(207) = 27594
+    Fuentes(8).Caracteres(214) = 27595
+    Fuentes(8).Caracteres(220) = 27596
+    Fuentes(8).Caracteres(228) = 27597
+    Fuentes(8).Caracteres(235) = 27598
+    Fuentes(8).Caracteres(239) = 27599
+    Fuentes(8).Caracteres(246) = 27600
+    Fuentes(8).Caracteres(252) = 27601
+    Fuentes(8).Caracteres(195) = 27602
+    Fuentes(8).Caracteres(213) = 27603
+    Fuentes(8).Caracteres(227) = 27604
+    Fuentes(8).Caracteres(245) = 27605
+    Fuentes(8).Caracteres(209) = 27606
+    Fuentes(8).Caracteres(241) = 27607
+    Fuentes(8).Caracteres(199) = 27608
+    Fuentes(8).Caracteres(231) = 27609
+    Fuentes(8).Caracteres(161) = 27620
+    Fuentes(8).Caracteres(33) = 27621
+    Fuentes(8).Caracteres(191) = 27622
+    Fuentes(8).Caracteres(63) = 27623
+    Fuentes(8).Caracteres(46) = 27624
+    Fuentes(8).Caracteres(44) = 27625
+    Fuentes(8).Caracteres(59) = 27626
+    Fuentes(8).Caracteres(58) = 27627
+    Fuentes(8).Caracteres(8230) = 27628
+    Fuentes(8).Caracteres(8212) = 27629
+    Fuentes(8).Caracteres(45) = 27630
+    Fuentes(8).Caracteres(95) = 27631
+    Fuentes(8).Caracteres(40) = 27632
+    Fuentes(8).Caracteres(41) = 27633
+    Fuentes(8).Caracteres(91) = 27634
+    Fuentes(8).Caracteres(93) = 27635
+    Fuentes(8).Caracteres(123) = 27636
+    Fuentes(8).Caracteres(125) = 27637
+    Fuentes(8).Caracteres(171) = 27638
+    Fuentes(8).Caracteres(187) = 27639
+    Fuentes(8).Caracteres(34) = 27640
+    Fuentes(8).Caracteres(39) = 27641
+    Fuentes(8).Caracteres(8216) = 27642
+    Fuentes(8).Caracteres(8217) = 27643
+    Fuentes(8).Caracteres(8220) = 27644
+    Fuentes(8).Caracteres(8221) = 27645
+    Fuentes(8).Caracteres(47) = 27646
+    Fuentes(8).Caracteres(92) = 27647
+    Fuentes(8).Caracteres(124) = 27648
+    Fuentes(8).Caracteres(64) = 27649
+    Fuentes(8).Caracteres(35) = 27650
+    Fuentes(8).Caracteres(37) = 27651
+    Fuentes(8).Caracteres(38) = 27652
+    Fuentes(8).Caracteres(8432) = 27653
+    Fuentes(8).Caracteres(43) = 27654
+    Fuentes(8).Caracteres(45) = 27655
+    Fuentes(8).Caracteres(60) = 27656
+    Fuentes(8).Caracteres(62) = 27657
+    Fuentes(8).Caracteres(94) = 27658
+    Fuentes(8).Caracteres(95) = 27659
+    Fuentes(8).Caracteres(126) = 27660
+    Fuentes(8).Caracteres(180) = 27661
+    Fuentes(8).Caracteres(172) = 27662
+    Fuentes(8).Caracteres(36) = 27663
+    Fuentes(8).Caracteres(8364) = 27664
+    Fuentes(8).Caracteres(163) = 27665
+    Fuentes(8).Caracteres(162) = 27666
+    Fuentes(8).Caracteres(165) = 27667
+    Fuentes(8).Caracteres(176) = 27668
+    Fuentes(8).Caracteres(167) = 27669
+    Fuentes(8).Caracteres(182) = 27670
+    Fuentes(8).Caracteres(177) = 27671
+    Fuentes(8).Caracteres(120) = 27672
+    Fuentes(8).Caracteres(247) = 27673
+    Fuentes(8).Caracteres(8240) = 27674
+    Fuentes(8).Caracteres(8734) = 27675
+    Fuentes(8).Caracteres(8776) = 27676
+    Fuentes(8).Caracteres(8800) = 27677
+    Fuentes(8).Caracteres(8804) = 27678
+    Fuentes(8).Caracteres(8805) = 27679
+    Fuentes(8).Caracteres(8730) = 27680
+    Fuentes(8).Caracteres(8721) = 27681
+    Fuentes(8).Caracteres(916) = 27682
+    Fuentes(8).Caracteres(181) = 27683
+    Fuentes(8).Caracteres(9679) = 27684
     Exit Sub
 Engine_Font_Initialize_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Font_Initialize", Erl)
@@ -1294,6 +1536,41 @@ Public Function Engine_Text_Width(Texto As String, Optional multi As Boolean = F
                     e = e + 1
                 Next A
             End If
+        Case Else
+            If multi = False Then
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(Fon).Caracteres(B)
+                    If graf.GrhIndex = 0 Then graf.GrhIndex = 1
+                    If B <> 32 Then
+                        Engine_Text_Width = Engine_Text_Width + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
+                    Else
+                        Engine_Text_Width = Engine_Text_Width + 4
+                    End If
+                Next A
+            Else
+                e = 0
+                f = 0
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(Fon).Caracteres(B)
+                    If B = 32 Or B = 13 Then
+                        If e >= 20 Then 'reemplazar por lo que os plazca
+                            f = f + 1
+                            e = 0
+                            d = 0
+                        Else
+                            If B = 32 Then d = d + 4
+                        End If
+                    Else
+                        If graf.GrhIndex > 12 Then
+                            d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
+                            If d > Engine_Text_Width Then Engine_Text_Width = d
+                        End If
+                    End If
+                    e = e + 1
+                Next A
+            End If
     End Select
     Exit Function
 Engine_Text_Width_Err:
@@ -1352,6 +1629,41 @@ Public Function Engine_Text_WidthCentrado(Texto As String, Optional multi As Boo
                         Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth + 10
                     Else
                         Engine_Text_WidthCentrado = Engine_Text_WidthCentrado - 15
+                    End If
+                Next A
+            Else
+                e = 0
+                f = 0
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(Fon).Caracteres(B)
+                    If B = 32 Or B = 13 Then
+                        If e >= 20 Then 'reemplazar por lo que os plazca
+                            f = f + 1
+                            e = 0
+                            d = 0
+                        Else
+                            If B = 32 Then d = d + 4
+                        End If
+                    Else
+                        If graf.GrhIndex > 12 Then
+                            d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
+                            If d > Engine_Text_WidthCentrado Then Engine_Text_WidthCentrado = d
+                        End If
+                    End If
+                    e = e + 1
+                Next A
+            End If
+        Case Else
+            If multi = False Then
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(Fon).Caracteres(B)
+                    If graf.GrhIndex = 0 Then graf.GrhIndex = 1
+                    If B <> 32 Then
+                        Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
+                    Else
+                        Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + 4
                     End If
                 Next A
             Else
