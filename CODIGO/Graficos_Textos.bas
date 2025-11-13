@@ -1536,6 +1536,41 @@ Public Function Engine_Text_Width(Texto As String, Optional multi As Boolean = F
                     e = e + 1
                 Next A
             End If
+        Case Else
+            If multi = False Then
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(Fon).Caracteres(B)
+                    If graf.GrhIndex = 0 Then graf.GrhIndex = 1
+                    If B <> 32 Then
+                        Engine_Text_Width = Engine_Text_Width + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
+                    Else
+                        Engine_Text_Width = Engine_Text_Width + 4
+                    End If
+                Next A
+            Else
+                e = 0
+                f = 0
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(Fon).Caracteres(B)
+                    If B = 32 Or B = 13 Then
+                        If e >= 20 Then 'reemplazar por lo que os plazca
+                            f = f + 1
+                            e = 0
+                            d = 0
+                        Else
+                            If B = 32 Then d = d + 4
+                        End If
+                    Else
+                        If graf.GrhIndex > 12 Then
+                            d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
+                            If d > Engine_Text_Width Then Engine_Text_Width = d
+                        End If
+                    End If
+                    e = e + 1
+                Next A
+            End If
     End Select
     Exit Function
 Engine_Text_Width_Err:
@@ -1594,6 +1629,41 @@ Public Function Engine_Text_WidthCentrado(Texto As String, Optional multi As Boo
                         Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + GrhData(GrhData(graf.GrhIndex + 1).Frames(1)).pixelWidth + 10
                     Else
                         Engine_Text_WidthCentrado = Engine_Text_WidthCentrado - 15
+                    End If
+                Next A
+            Else
+                e = 0
+                f = 0
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(Fon).Caracteres(B)
+                    If B = 32 Or B = 13 Then
+                        If e >= 20 Then 'reemplazar por lo que os plazca
+                            f = f + 1
+                            e = 0
+                            d = 0
+                        Else
+                            If B = 32 Then d = d + 4
+                        End If
+                    Else
+                        If graf.GrhIndex > 12 Then
+                            d = d + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
+                            If d > Engine_Text_WidthCentrado Then Engine_Text_WidthCentrado = d
+                        End If
+                    End If
+                    e = e + 1
+                Next A
+            End If
+        Case Else
+            If multi = False Then
+                For A = 1 To Len(Texto)
+                    B = Asc(mid(Texto, A, 1))
+                    graf.GrhIndex = Fuentes(Fon).Caracteres(B)
+                    If graf.GrhIndex = 0 Then graf.GrhIndex = 1
+                    If B <> 32 Then
+                        Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + GrhData(GrhData(graf.GrhIndex).Frames(1)).pixelWidth '+ 1
+                    Else
+                        Engine_Text_WidthCentrado = Engine_Text_WidthCentrado + 4
                     End If
                 Next A
             Else

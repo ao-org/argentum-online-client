@@ -1238,7 +1238,7 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
         temp_array(2) = D3DColorARGB(CInt(map_letter_a), 179, 95, 0)
         temp_array(3) = D3DColorARGB(CInt(map_letter_a), 179, 95, 0)
         Grh_Render letter_grh, 250, 300, temp_array()
-        Engine_Text_RenderGrande letter_text, 360 - Engine_Text_Width(letter_text, False, 4) / 2, 1, temp_array, 5, False, , CInt(map_letter_a)
+        Engine_Text_RenderGrande letter_text, 360 - Engine_Text_Width(letter_text, False, 8) / 2, 1, temp_array, 8, False, , CInt(map_letter_a)
 
     End If
 
