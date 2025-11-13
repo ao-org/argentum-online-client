@@ -2673,6 +2673,7 @@ Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal P
     #If DXUI = 0 Then
         Call Engine_BeginScene
     #End If
+    
     Select Case UserMap
         Case 1 ' ulla 45-43
             TileX = 45
@@ -2746,6 +2747,19 @@ Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal P
         Call Engine_Draw_Box(0, 0, D3DWindow.BackBufferWidth, D3DWindow.BackBufferHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
+    
+    #If DEBUGGING = 1 Then
+            ColorGM(0) = RGBA_From_Comp(248, 107, 3)
+            ColorGM(1) = ColorGM(0)
+            ColorGM(2) = ColorGM(0)
+            ColorGM(3) = ColorGM(0)
+            Dim str As String
+            str = debug_tools.BuildFlags
+            simple_text_render str, 10, 20, ColorGM, 1, True
+    #End If
+
+    
+    
     #If DXUI = 0 Then
         Call Engine_EndScene(Render_Connect_Rect, frmConnect.render.hWnd)
     #End If
