@@ -731,5 +731,15 @@
     "LABEL_CHATMODE_YELL": "Gritar",
     "COMBO_LIGHTMODE_0":"Luz horaria",
     "COMBO_LIGHTMODE_1":"Día",
-    "COMBO_LIGHTMODE_2":"Noche"
+    "COMBO_LIGHTMODE_2":"Noche",
+    "LBL_OPEN_MAP" : "Abrir mapa",
+    "LBL_RESURRECTION_SAFELOCK" : "Seguro de resurrección",
+    "LBL_TOGGLE_SOUND" : "Activar/desactivar sonido",
+    "LBL_QUEST_MENU" : "Menú de misiones",
+    "LBL_GROUP_MENU" : "Menú de grupo",
+    "LBL_TOGGLE_MUSIC" : "Activar/desactivar música",
+    "COMBO_ACTION_KEY_0":"Lanzar Hechizo / Inspeccionar",
+    "COMBO_ACTION_KEY_1":"Interactuar",
+    "COMBO_ACTION_KEY_2":"Atacar",
+    "COMBO_ACTION_KEY_3":"Mensaje directo"
 }

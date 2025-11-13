@@ -730,5 +730,15 @@
   "LABEL_CHATMODE_YELL": "Crier",
   "COMBO_LIGHTMODE_0":"Lumière horaire",
   "COMBO_LIGHTMODE_1":"Jour",
-  "COMBO_LIGHTMODE_2":"Soirée"
+  "COMBO_LIGHTMODE_2":"Soirée",
+  "LBL_OPEN_MAP" : "Ouvrir la carte",
+  "LBL_RESURRECTION_SAFELOCK" : "assurance résurrection",
+  "LBL_TOGGLE_SOUND" : "Activer/désactiver le son",
+  "LBL_QUEST_MENU" : "Menu des missions",
+  "LBL_GROUP_MENU" : "Menu de groupe",
+  "LBL_TOGGLE_MUSIC" : "Activer/désactiver la musique",
+  "COMBO_ACTION_KEY_0":"lancer un sort / Inspecter",
+  "COMBO_ACTION_KEY_1":"Interagir",
+  "COMBO_ACTION_KEY_2":"attaque",
+  "COMBO_ACTION_KEY_3":"Message direct"
 }

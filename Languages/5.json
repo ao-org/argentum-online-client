@@ -730,6 +730,15 @@
   "LABEL_CHATMODE_YELL": "Gridare",
   "COMBO_LIGHTMODE_0":"Luce oraria",
   "COMBO_LIGHTMODE_1":"Giorno",
-  "COMBO_LIGHTMODE_2":"Sera"
-
+  "COMBO_LIGHTMODE_2":"Sera",
+  "LBL_OPEN_MAP" : "Apri la mappa",
+  "LBL_RESURRECTION_SAFELOCK" : "Assicurazione sulla resurrezione",
+  "LBL_TOGGLE_SOUND" : "Attiva/disattiva l'audio",
+  "LBL_QUEST_MENU" : "Menù missione",
+  "LBL_GROUP_MENU" : "Menù di gruppo",
+  "LBL_TOGGLE_MUSIC" : "Attiva/disattiva la musica",
+  "COMBO_ACTION_KEY_0":"Lanciare incantesimoo / Ispezionare",
+  "COMBO_ACTION_KEY_1":"Interagire",
+  "COMBO_ACTION_KEY_2":"Attacco",
+  "COMBO_ACTION_KEY_3":"Messaggio diretto"
 }

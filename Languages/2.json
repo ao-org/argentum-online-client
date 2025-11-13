@@ -730,5 +730,15 @@
     "LABEL_CHATMODE_YELL": "Yell",
     "COMBO_LIGHTMODE_0":"Hourly light",
     "COMBO_LIGHTMODE_1":"Day",
-    "COMBO_LIGHTMODE_2":"Night"
+    "COMBO_LIGHTMODE_2":"Night",
+    "LBL_OPEN_MAP" : "Open map",
+    "LBL_RESURRECTION_SAFELOCK" : "Resurrection safe",
+    "LBL_TOGGLE_SOUND" : "Toggle sound",
+    "LBL_QUEST_MENU" : "Quest menu",
+    "LBL_GROUP_MENU" : "Group menu",
+    "LBL_TOGGLE_MUSIC" : "Toggle music",
+    "COMBO_ACTION_KEY_0":"Cast Spell / Inspect",
+    "COMBO_ACTION_KEY_1":"Interact",
+    "COMBO_ACTION_KEY_2":"Attack",
+    "COMBO_ACTION_KEY_3":"Direct message"
 }

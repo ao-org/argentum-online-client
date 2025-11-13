@@ -730,5 +730,15 @@
   "LABEL_CHATMODE_YELL": "Gritar",
   "COMBO_LIGHTMODE_0":"Luz horária",
   "COMBO_LIGHTMODE_1":"Dia",
-  "COMBO_LIGHTMODE_2":"Noite"
+  "COMBO_LIGHTMODE_2":"Noite",
+  "LBL_OPEN_MAP" : "Abrir mapa",
+  "LBL_RESURRECTION_SAFELOCK" : "Seguro de ressurreição",
+  "LBL_TOGGLE_SOUND" : "Ativar/desativar som",
+  "LBL_QUEST_MENU" : "menu de missão",
+  "LBL_GROUP_MENU" : "Menú de grupo",
+  "LBL_TOGGLE_MUSIC" : "Ativar/desativar a música",
+  "COMBO_ACTION_KEY_0":"Lançar feitiço / Inspeção",
+  "COMBO_ACTION_KEY_1":"Interagir",
+  "COMBO_ACTION_KEY_2":"Ataque",
+  "COMBO_ACTION_KEY_3":"Mensagem direta"
 }
