@@ -720,5 +720,12 @@
   "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Clássico",
   "MENSAJE_DESCRIPCION_GUION_INVALIDO":"Hífens não são permitidos na descrição.",
   "LABEL_VRAM_USAGE":"Limite de VRAM:",
-  "LABEL_AMBIENT_LIGHT" : "Luz ambiente:"
+  "LABEL_AMBIENT_LIGHT" : "Luz ambiente:",
+  "LABEL_CHATMODE_NORMAL" : "Normal",
+  "LABEL_CHATMODE_GLOBAL": "Global",
+  "LABEL_CHATMODE_PRIVATE": "Privado",
+  "LABEL_CHATMODE_GROUP": "Conjunto",
+  "LABEL_CHATMODE_CLAN": "Clã",
+  "LABEL_CHATMODE_FACTION": "Facção",
+  "LABEL_CHATMODE_YELL": "Gritar"
 }

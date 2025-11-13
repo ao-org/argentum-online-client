@@ -720,5 +720,12 @@
   "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Classico",
   "MENSAJE_DESCRIPCION_GUION_INVALIDO":"I trattini non sono ammessi nella descrizione.",
   "LABEL_VRAM_USAGE":"soglia VRAM:",
-  "LABEL_AMBIENT_LIGHT" : "Luce ambientale:"
+  "LABEL_AMBIENT_LIGHT" : "Luce ambientale:",
+  "LABEL_CHATMODE_NORMAL" : "Normal",
+  "LABEL_CHATMODE_GLOBAL": "Globale",
+  "LABEL_CHATMODE_PRIVATE": "Privato",
+  "LABEL_CHATMODE_GROUP": "Grappolo",
+  "LABEL_CHATMODE_CLAN": "Clan",
+  "LABEL_CHATMODE_FACTION": "Fazione",
+  "LABEL_CHATMODE_YELL": "Gridare"
 }

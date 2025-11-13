@@ -720,5 +720,12 @@
   "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Classique",  
   "MENSAJE_DESCRIPCION_GUION_INVALIDO":"Les traits d'union ne sont pas autorisés dans la description.",
   "LABEL_VRAM_USAGE":"seuil de VRAM:",
-  "LABEL_AMBIENT_LIGHT" : "lumière ambiante :"
+  "LABEL_AMBIENT_LIGHT" : "lumière ambiante :",
+  "LABEL_CHATMODE_NORMAL" : "Normal",
+  "LABEL_CHATMODE_GLOBAL": "Mondial",
+  "LABEL_CHATMODE_PRIVATE": "Privé",
+  "LABEL_CHATMODE_GROUP": "Grappe",
+  "LABEL_CHATMODE_CLAN": "Clan",
+  "LABEL_CHATMODE_FACTION": "Faction",
+  "LABEL_CHATMODE_YELL": "Crier"
 }

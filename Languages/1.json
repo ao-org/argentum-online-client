@@ -721,5 +721,12 @@
     "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Clásico",
     "MENSAJE_DESCRIPCION_GUION_INVALIDO":"No se permiten guiones en la descripción.",
     "LABEL_VRAM_USAGE":"Umbral de VRAM:",
-    "LABEL_AMBIENT_LIGHT" : "Luz ambiental:"
+    "LABEL_AMBIENT_LIGHT" : "Luz ambiental:",
+    "LABEL_CHATMODE_NORMAL" : "Normal",
+    "LABEL_CHATMODE_GLOBAL": "Global",
+    "LABEL_CHATMODE_PRIVATE": "Privado",
+    "LABEL_CHATMODE_GROUP": "Grupo",
+    "LABEL_CHATMODE_CLAN": "Clan",
+    "LABEL_CHATMODE_FACTION": "Facción",
+    "LABEL_CHATMODE_YELL": "Gritar"
 }

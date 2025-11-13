@@ -720,5 +720,12 @@
     "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Classic",
     "MENSAJE_DESCRIPCION_GUION_INVALIDO":"Hyphens are not allowed in the description.",
     "LABEL_VRAM_USAGE":"VRAM Threshold:",
-    "LABEL_AMBIENT_LIGHT" : "Ambient Light:"
+    "LABEL_AMBIENT_LIGHT" : "Ambient Light:",
+    "LABEL_CHATMODE_NORMAL" : "Normal",
+    "LABEL_CHATMODE_GLOBAL": "Global",
+    "LABEL_CHATMODE_PRIVATE": "Private",
+    "LABEL_CHATMODE_GROUP": "Group",
+    "LABEL_CHATMODE_CLAN": "Guild",
+    "LABEL_CHATMODE_FACTION": "Faction",
+    "LABEL_CHATMODE_YELL": "Yell"
 }
