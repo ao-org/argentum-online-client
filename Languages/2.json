@@ -715,7 +715,7 @@
     "MENSAJE_ESTADO_CIUDADANO": "Citizen",
     "MENSAJE_ESTADO_CASADO" : "Married with",
     "MENSAJE_ESTADO_PELEANDO" : "Fighting with ",
-    "MENSAJE_ESTADO_MASCOTA" : "Mascot owned by",
+    "MENSAJE_ESTADO_MASCOTA" : "Pet owned by",
     "MENSAJE_ESTILO_EQUIPAMIENTO_1" : "Modern",
     "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Classic",
     "MENSAJE_DESCRIPCION_GUION_INVALIDO":"Hyphens are not allowed in the description.",
