@@ -19,13 +19,29 @@ Option Explicit
 
 Public Type Fuente
     Tamanio As Integer
-    Caracteres(0 To 255) As Long 'indice de cada letra
+    Caracteres(0 To 11000) As Long 'indice de cada letra (ampliado para soportar caracteres extendidos)
 End Type
 
 Public font_count      As Long
 Public font_last       As Long
 Public font_list()     As D3DXFont
-Public Fuentes(1 To 6) As Fuente
+Public Fuentes(1 To 8) As Fuente
+
+Private Sub MapSequentialCharacters(ByVal fontIndex As Long, ByVal startChar As Long, ByVal endChar As Long, ByVal startGrhIndex As Long)
+    Dim charCode As Long
+    For charCode = startChar To endChar
+        Fuentes(fontIndex).Caracteres(charCode) = startGrhIndex + (charCode - startChar)
+    Next charCode
+End Sub
+
+Private Sub MapCharacters(ByVal fontIndex As Long, ParamArray entries() As Variant)
+    Dim i As Long
+    If UBound(entries) < LBound(entries) Then Exit Sub
+    If ((UBound(entries) - LBound(entries) + 1) Mod 2) <> 0 Then Exit Sub
+    For i = LBound(entries) To UBound(entries) Step 2
+        Fuentes(fontIndex).Caracteres(entries(i)) = entries(i + 1)
+    Next i
+End Sub
 
 Public Sub Engine_Font_Initialize()
     On Error GoTo Engine_Font_Initialize_Err
@@ -463,6 +479,254 @@ Public Sub Engine_Font_Initialize()
     Fuentes(6).Caracteres(217) = 18223
     Fuentes(6).Caracteres(241) = 18224
     Fuentes(6).Caracteres(209) = 18225
+    Fuentes(7).Tamanio = 50    ' Cardo
+    MapSequentialCharacters 7, 65, 90, 26592
+    MapSequentialCharacters 7, 97, 122, 26618
+    MapSequentialCharacters 7, 48, 57, 26692
+    MapCharacters 7, _
+                  193, 26644, _
+                  201, 26645, _
+                  205, 26646, _
+                  211, 26647, _
+                  218, 26648, _
+                  225, 26649, _
+                  233, 26650, _
+                  237, 26651, _
+                  243, 26652, _
+                  250, 26653
+    MapCharacters 7, _
+                  192, 26654, _
+                  200, 26655, _
+                  204, 26656, _
+                  210, 26657, _
+                  217, 26658, _
+                  224, 26659, _
+                  232, 26660, _
+                  236, 26661, _
+                  242, 26662, _
+                  249, 26663
+    MapCharacters 7, _
+                  194, 26664, _
+                  202, 26665, _
+                  206, 26666, _
+                  212, 26667, _
+                  219, 26668, _
+                  226, 26669, _
+                  234, 26670, _
+                  238, 26671, _
+                  244, 26672, _
+                  251, 26673
+    MapCharacters 7, _
+                  196, 26674, _
+                  203, 26675, _
+                  207, 26676, _
+                  214, 26677, _
+                  220, 26678, _
+                  228, 26679, _
+                  235, 26680, _
+                  239, 26681, _
+                  246, 26682, _
+                  252, 26683
+    MapCharacters 7, _
+                  195, 26684, _
+                  213, 26685, _
+                  227, 26686, _
+                  245, 26687, _
+                  209, 26688, _
+                  241, 26689, _
+                  199, 26690, _
+                  231, 26691
+    MapCharacters 7, _
+                  161, 26702, _
+                  33, 26703, _
+                  191, 26704, _
+                  63, 26705, _
+                  46, 26706, _
+                  44, 26707, _
+                  59, 26708, _
+                  58, 26709, _
+                  8230, 26710, _
+                  8212, 26711
+    MapCharacters 7, _
+                  40, 26714, _
+                  41, 26715, _
+                  91, 26716, _
+                  93, 26717, _
+                  123, 26718, _
+                  125, 26719, _
+                  171, 26720, _
+                  187, 26721, _
+                  34, 26722, _
+                  39, 26723, _
+                  8216, 26724, _
+                  8217, 26725, _
+                  8220, 26726, _
+                  8221, 26727
+    MapCharacters 7, _
+                  47, 26728, _
+                  92, 26729, _
+                  124, 26730, _
+                  64, 26731, _
+                  35, 26732, _
+                  37, 26733, _
+                  38, 26734, _
+                  8432, 26735, _
+                  43, 26736, _
+                  45, 26737, _
+                  60, 26738, _
+                  62, 26739, _
+                  94, 26740, _
+                  95, 26741, _
+                  126, 26742, _
+                  180, 26743, _
+                  172, 26744
+    MapCharacters 7, _
+                  36, 26745, _
+                  8364, 26746, _
+                  163, 26747, _
+                  162, 26748, _
+                  165, 26749, _
+                  176, 26750, _
+                  167, 26751, _
+                  182, 26752, _
+                  177, 26753, _
+                  120, 26754, _
+                  247, 26755, _
+                  8240, 26756, _
+                  8734, 26757, _
+                  8776, 26758, _
+                  8800, 26759, _
+                  8804, 26760, _
+                  8805, 26761, _
+                  8730, 26762, _
+                  8721, 26763, _
+                  916, 26764, _
+                  181, 26765, _
+                  9679, 26766
+    Fuentes(8).Tamanio = 50    ' Cardo
+    MapSequentialCharacters 8, 65, 90, 27510
+    MapSequentialCharacters 8, 97, 122, 27536
+    MapSequentialCharacters 8, 48, 57, 27610
+    MapCharacters 8, _
+                  193, 27562, _
+                  201, 27563, _
+                  205, 27564, _
+                  211, 27565, _
+                  218, 27566, _
+                  225, 27567, _
+                  233, 27568, _
+                  237, 27569, _
+                  243, 27570, _
+                  250, 27571
+    MapCharacters 8, _
+                  192, 27572, _
+                  200, 27573, _
+                  204, 27574, _
+                  210, 27575, _
+                  217, 27576, _
+                  224, 27577, _
+                  232, 27578, _
+                  236, 27579, _
+                  242, 27580, _
+                  249, 27581
+    MapCharacters 8, _
+                  194, 27582, _
+                  202, 27583, _
+                  206, 27584, _
+                  212, 27585, _
+                  219, 27586, _
+                  226, 27587, _
+                  234, 27588, _
+                  238, 27589, _
+                  244, 27590, _
+                  251, 27591
+    MapCharacters 8, _
+                  196, 27592, _
+                  203, 27593, _
+                  207, 27594, _
+                  214, 27595, _
+                  220, 27596, _
+                  228, 27597, _
+                  235, 27598, _
+                  239, 27599, _
+                  246, 27600, _
+                  252, 27601
+    MapCharacters 8, _
+                  195, 27602, _
+                  213, 27603, _
+                  227, 27604, _
+                  245, 27605, _
+                  209, 27606, _
+                  241, 27607, _
+                  199, 27608, _
+                  231, 27609
+    MapCharacters 8, _
+                  161, 27620, _
+                  33, 27621, _
+                  191, 27622, _
+                  63, 27623, _
+                  46, 27624, _
+                  44, 27625, _
+                  59, 27626, _
+                  58, 27627, _
+                  8230, 27628, _
+                  8212, 27629
+    MapCharacters 8, _
+                  40, 27632, _
+                  41, 27633, _
+                  91, 27634, _
+                  93, 27635, _
+                  123, 27636, _
+                  125, 27637, _
+                  171, 27638, _
+                  187, 27639, _
+                  34, 27640, _
+                  39, 27641, _
+                  8216, 27642, _
+                  8217, 27643, _
+                  8220, 27644, _
+                  8221, 27645
+    MapCharacters 8, _
+                  47, 27646, _
+                  92, 27647, _
+                  124, 27648, _
+                  64, 27649, _
+                  35, 27650, _
+                  37, 27651, _
+                  38, 27652, _
+                  8432, 27653, _
+                  43, 27654, _
+                  45, 27655, _
+                  60, 27656, _
+                  62, 27657, _
+                  94, 27658, _
+                  95, 27659, _
+                  126, 27660, _
+                  180, 27661, _
+                  172, 27662
+    MapCharacters 8, _
+                  36, 27663, _
+                  8364, 27664, _
+                  163, 27665, _
+                  162, 27666, _
+                  165, 27667, _
+                  176, 27668, _
+                  167, 27669, _
+                  182, 27670, _
+                  177, 27671, _
+                  120, 27672, _
+                  247, 27673, _
+                  8240, 27674, _
+                  8734, 27675, _
+                  8776, 27676, _
+                  8800, 27677, _
+                  8804, 27678, _
+                  8805, 27679, _
+                  8730, 27680, _
+                  8721, 27681, _
+                  916, 27682, _
+                  181, 27683, _
+                  9679, 27684
     Exit Sub
 Engine_Font_Initialize_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Font_Initialize", Erl)
