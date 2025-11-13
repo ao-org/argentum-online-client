@@ -27,22 +27,6 @@ Public font_last       As Long
 Public font_list()     As D3DXFont
 Public Fuentes(1 To 8) As Fuente
 
-Private Sub MapSequentialCharacters(ByVal fontIndex As Long, ByVal startChar As Long, ByVal endChar As Long, ByVal startGrhIndex As Long)
-    Dim charCode As Long
-    For charCode = startChar To endChar
-        Fuentes(fontIndex).Caracteres(charCode) = startGrhIndex + (charCode - startChar)
-    Next charCode
-End Sub
-
-Private Sub MapCharacters(ByVal fontIndex As Long, ParamArray entries() As Variant)
-    Dim i As Long
-    If UBound(entries) < LBound(entries) Then Exit Sub
-    If ((UBound(entries) - LBound(entries) + 1) Mod 2) <> 0 Then Exit Sub
-    For i = LBound(entries) To UBound(entries) Step 2
-        Fuentes(fontIndex).Caracteres(entries(i)) = entries(i + 1)
-    Next i
-End Sub
-
 Public Sub Engine_Font_Initialize()
     On Error GoTo Engine_Font_Initialize_Err
     Dim A As Integer
@@ -480,253 +464,247 @@ Public Sub Engine_Font_Initialize()
     Fuentes(6).Caracteres(241) = 18224
     Fuentes(6).Caracteres(209) = 18225
     Fuentes(7).Tamanio = 50    ' Cardo
-    MapSequentialCharacters 7, 65, 90, 26592
-    MapSequentialCharacters 7, 97, 122, 26618
-    MapSequentialCharacters 7, 48, 57, 26692
-    MapCharacters 7, _
-                  193, 26644, _
-                  201, 26645, _
-                  205, 26646, _
-                  211, 26647, _
-                  218, 26648, _
-                  225, 26649, _
-                  233, 26650, _
-                  237, 26651, _
-                  243, 26652, _
-                  250, 26653
-    MapCharacters 7, _
-                  192, 26654, _
-                  200, 26655, _
-                  204, 26656, _
-                  210, 26657, _
-                  217, 26658, _
-                  224, 26659, _
-                  232, 26660, _
-                  236, 26661, _
-                  242, 26662, _
-                  249, 26663
-    MapCharacters 7, _
-                  194, 26664, _
-                  202, 26665, _
-                  206, 26666, _
-                  212, 26667, _
-                  219, 26668, _
-                  226, 26669, _
-                  234, 26670, _
-                  238, 26671, _
-                  244, 26672, _
-                  251, 26673
-    MapCharacters 7, _
-                  196, 26674, _
-                  203, 26675, _
-                  207, 26676, _
-                  214, 26677, _
-                  220, 26678, _
-                  228, 26679, _
-                  235, 26680, _
-                  239, 26681, _
-                  246, 26682, _
-                  252, 26683
-    MapCharacters 7, _
-                  195, 26684, _
-                  213, 26685, _
-                  227, 26686, _
-                  245, 26687, _
-                  209, 26688, _
-                  241, 26689, _
-                  199, 26690, _
-                  231, 26691
-    MapCharacters 7, _
-                  161, 26702, _
-                  33, 26703, _
-                  191, 26704, _
-                  63, 26705, _
-                  46, 26706, _
-                  44, 26707, _
-                  59, 26708, _
-                  58, 26709, _
-                  8230, 26710, _
-                  8212, 26711
-    MapCharacters 7, _
-                  40, 26714, _
-                  41, 26715, _
-                  91, 26716, _
-                  93, 26717, _
-                  123, 26718, _
-                  125, 26719, _
-                  171, 26720, _
-                  187, 26721, _
-                  34, 26722, _
-                  39, 26723, _
-                  8216, 26724, _
-                  8217, 26725, _
-                  8220, 26726, _
-                  8221, 26727
-    MapCharacters 7, _
-                  47, 26728, _
-                  92, 26729, _
-                  124, 26730, _
-                  64, 26731, _
-                  35, 26732, _
-                  37, 26733, _
-                  38, 26734, _
-                  8432, 26735, _
-                  43, 26736, _
-                  45, 26737, _
-                  60, 26738, _
-                  62, 26739, _
-                  94, 26740, _
-                  95, 26741, _
-                  126, 26742, _
-                  180, 26743, _
-                  172, 26744
-    MapCharacters 7, _
-                  36, 26745, _
-                  8364, 26746, _
-                  163, 26747, _
-                  162, 26748, _
-                  165, 26749, _
-                  176, 26750, _
-                  167, 26751, _
-                  182, 26752, _
-                  177, 26753, _
-                  120, 26754, _
-                  247, 26755, _
-                  8240, 26756, _
-                  8734, 26757, _
-                  8776, 26758, _
-                  8800, 26759, _
-                  8804, 26760, _
-                  8805, 26761, _
-                  8730, 26762, _
-                  8721, 26763, _
-                  916, 26764, _
-                  181, 26765, _
-                  9679, 26766
+    For A = 0 To 25
+        Fuentes(7).Caracteres(A + 65) = 26592 + A
+        Fuentes(7).Caracteres(A + 97) = 26618 + A
+    Next A
+    For A = 0 To 9
+        Fuentes(7).Caracteres(A + 48) = 26692 + A
+    Next A
+    Fuentes(7).Caracteres(193) = 26644
+    Fuentes(7).Caracteres(201) = 26645
+    Fuentes(7).Caracteres(205) = 26646
+    Fuentes(7).Caracteres(211) = 26647
+    Fuentes(7).Caracteres(218) = 26648
+    Fuentes(7).Caracteres(225) = 26649
+    Fuentes(7).Caracteres(233) = 26650
+    Fuentes(7).Caracteres(237) = 26651
+    Fuentes(7).Caracteres(243) = 26652
+    Fuentes(7).Caracteres(250) = 26653
+    Fuentes(7).Caracteres(192) = 26654
+    Fuentes(7).Caracteres(200) = 26655
+    Fuentes(7).Caracteres(204) = 26656
+    Fuentes(7).Caracteres(210) = 26657
+    Fuentes(7).Caracteres(217) = 26658
+    Fuentes(7).Caracteres(224) = 26659
+    Fuentes(7).Caracteres(232) = 26660
+    Fuentes(7).Caracteres(236) = 26661
+    Fuentes(7).Caracteres(242) = 26662
+    Fuentes(7).Caracteres(249) = 26663
+    Fuentes(7).Caracteres(194) = 26664
+    Fuentes(7).Caracteres(202) = 26665
+    Fuentes(7).Caracteres(206) = 26666
+    Fuentes(7).Caracteres(212) = 26667
+    Fuentes(7).Caracteres(219) = 26668
+    Fuentes(7).Caracteres(226) = 26669
+    Fuentes(7).Caracteres(234) = 26670
+    Fuentes(7).Caracteres(238) = 26671
+    Fuentes(7).Caracteres(244) = 26672
+    Fuentes(7).Caracteres(251) = 26673
+    Fuentes(7).Caracteres(196) = 26674
+    Fuentes(7).Caracteres(203) = 26675
+    Fuentes(7).Caracteres(207) = 26676
+    Fuentes(7).Caracteres(214) = 26677
+    Fuentes(7).Caracteres(220) = 26678
+    Fuentes(7).Caracteres(228) = 26679
+    Fuentes(7).Caracteres(235) = 26680
+    Fuentes(7).Caracteres(239) = 26681
+    Fuentes(7).Caracteres(246) = 26682
+    Fuentes(7).Caracteres(252) = 26683
+    Fuentes(7).Caracteres(195) = 26684
+    Fuentes(7).Caracteres(213) = 26685
+    Fuentes(7).Caracteres(227) = 26686
+    Fuentes(7).Caracteres(245) = 26687
+    Fuentes(7).Caracteres(209) = 26688
+    Fuentes(7).Caracteres(241) = 26689
+    Fuentes(7).Caracteres(199) = 26690
+    Fuentes(7).Caracteres(231) = 26691
+    Fuentes(7).Caracteres(161) = 26702
+    Fuentes(7).Caracteres(33) = 26703
+    Fuentes(7).Caracteres(191) = 26704
+    Fuentes(7).Caracteres(63) = 26705
+    Fuentes(7).Caracteres(46) = 26706
+    Fuentes(7).Caracteres(44) = 26707
+    Fuentes(7).Caracteres(59) = 26708
+    Fuentes(7).Caracteres(58) = 26709
+    Fuentes(7).Caracteres(8230) = 26710
+    Fuentes(7).Caracteres(8212) = 26711
+    Fuentes(7).Caracteres(45) = 26712
+    Fuentes(7).Caracteres(95) = 26713
+    Fuentes(7).Caracteres(40) = 26714
+    Fuentes(7).Caracteres(41) = 26715
+    Fuentes(7).Caracteres(91) = 26716
+    Fuentes(7).Caracteres(93) = 26717
+    Fuentes(7).Caracteres(123) = 26718
+    Fuentes(7).Caracteres(125) = 26719
+    Fuentes(7).Caracteres(171) = 26720
+    Fuentes(7).Caracteres(187) = 26721
+    Fuentes(7).Caracteres(34) = 26722
+    Fuentes(7).Caracteres(39) = 26723
+    Fuentes(7).Caracteres(8216) = 26724
+    Fuentes(7).Caracteres(8217) = 26725
+    Fuentes(7).Caracteres(8220) = 26726
+    Fuentes(7).Caracteres(8221) = 26727
+    Fuentes(7).Caracteres(47) = 26728
+    Fuentes(7).Caracteres(92) = 26729
+    Fuentes(7).Caracteres(124) = 26730
+    Fuentes(7).Caracteres(64) = 26731
+    Fuentes(7).Caracteres(35) = 26732
+    Fuentes(7).Caracteres(37) = 26733
+    Fuentes(7).Caracteres(38) = 26734
+    Fuentes(7).Caracteres(8432) = 26735
+    Fuentes(7).Caracteres(43) = 26736
+    Fuentes(7).Caracteres(45) = 26737
+    Fuentes(7).Caracteres(60) = 26738
+    Fuentes(7).Caracteres(62) = 26739
+    Fuentes(7).Caracteres(94) = 26740
+    Fuentes(7).Caracteres(95) = 26741
+    Fuentes(7).Caracteres(126) = 26742
+    Fuentes(7).Caracteres(180) = 26743
+    Fuentes(7).Caracteres(172) = 26744
+    Fuentes(7).Caracteres(36) = 26745
+    Fuentes(7).Caracteres(8364) = 26746
+    Fuentes(7).Caracteres(163) = 26747
+    Fuentes(7).Caracteres(162) = 26748
+    Fuentes(7).Caracteres(165) = 26749
+    Fuentes(7).Caracteres(176) = 26750
+    Fuentes(7).Caracteres(167) = 26751
+    Fuentes(7).Caracteres(182) = 26752
+    Fuentes(7).Caracteres(177) = 26753
+    Fuentes(7).Caracteres(120) = 26754
+    Fuentes(7).Caracteres(247) = 26755
+    Fuentes(7).Caracteres(8240) = 26756
+    Fuentes(7).Caracteres(8734) = 26757
+    Fuentes(7).Caracteres(8776) = 26758
+    Fuentes(7).Caracteres(8800) = 26759
+    Fuentes(7).Caracteres(8804) = 26760
+    Fuentes(7).Caracteres(8805) = 26761
+    Fuentes(7).Caracteres(8730) = 26762
+    Fuentes(7).Caracteres(8721) = 26763
+    Fuentes(7).Caracteres(916) = 26764
+    Fuentes(7).Caracteres(181) = 26765
+    Fuentes(7).Caracteres(9679) = 26766
     Fuentes(8).Tamanio = 50    ' Cardo
-    MapSequentialCharacters 8, 65, 90, 27510
-    MapSequentialCharacters 8, 97, 122, 27536
-    MapSequentialCharacters 8, 48, 57, 27610
-    MapCharacters 8, _
-                  193, 27562, _
-                  201, 27563, _
-                  205, 27564, _
-                  211, 27565, _
-                  218, 27566, _
-                  225, 27567, _
-                  233, 27568, _
-                  237, 27569, _
-                  243, 27570, _
-                  250, 27571
-    MapCharacters 8, _
-                  192, 27572, _
-                  200, 27573, _
-                  204, 27574, _
-                  210, 27575, _
-                  217, 27576, _
-                  224, 27577, _
-                  232, 27578, _
-                  236, 27579, _
-                  242, 27580, _
-                  249, 27581
-    MapCharacters 8, _
-                  194, 27582, _
-                  202, 27583, _
-                  206, 27584, _
-                  212, 27585, _
-                  219, 27586, _
-                  226, 27587, _
-                  234, 27588, _
-                  238, 27589, _
-                  244, 27590, _
-                  251, 27591
-    MapCharacters 8, _
-                  196, 27592, _
-                  203, 27593, _
-                  207, 27594, _
-                  214, 27595, _
-                  220, 27596, _
-                  228, 27597, _
-                  235, 27598, _
-                  239, 27599, _
-                  246, 27600, _
-                  252, 27601
-    MapCharacters 8, _
-                  195, 27602, _
-                  213, 27603, _
-                  227, 27604, _
-                  245, 27605, _
-                  209, 27606, _
-                  241, 27607, _
-                  199, 27608, _
-                  231, 27609
-    MapCharacters 8, _
-                  161, 27620, _
-                  33, 27621, _
-                  191, 27622, _
-                  63, 27623, _
-                  46, 27624, _
-                  44, 27625, _
-                  59, 27626, _
-                  58, 27627, _
-                  8230, 27628, _
-                  8212, 27629
-    MapCharacters 8, _
-                  40, 27632, _
-                  41, 27633, _
-                  91, 27634, _
-                  93, 27635, _
-                  123, 27636, _
-                  125, 27637, _
-                  171, 27638, _
-                  187, 27639, _
-                  34, 27640, _
-                  39, 27641, _
-                  8216, 27642, _
-                  8217, 27643, _
-                  8220, 27644, _
-                  8221, 27645
-    MapCharacters 8, _
-                  47, 27646, _
-                  92, 27647, _
-                  124, 27648, _
-                  64, 27649, _
-                  35, 27650, _
-                  37, 27651, _
-                  38, 27652, _
-                  8432, 27653, _
-                  43, 27654, _
-                  45, 27655, _
-                  60, 27656, _
-                  62, 27657, _
-                  94, 27658, _
-                  95, 27659, _
-                  126, 27660, _
-                  180, 27661, _
-                  172, 27662
-    MapCharacters 8, _
-                  36, 27663, _
-                  8364, 27664, _
-                  163, 27665, _
-                  162, 27666, _
-                  165, 27667, _
-                  176, 27668, _
-                  167, 27669, _
-                  182, 27670, _
-                  177, 27671, _
-                  120, 27672, _
-                  247, 27673, _
-                  8240, 27674, _
-                  8734, 27675, _
-                  8776, 27676, _
-                  8800, 27677, _
-                  8804, 27678, _
-                  8805, 27679, _
-                  8730, 27680, _
-                  8721, 27681, _
-                  916, 27682, _
-                  181, 27683, _
-                  9679, 27684
+    For A = 0 To 25
+        Fuentes(8).Caracteres(A + 65) = 27510 + A
+        Fuentes(8).Caracteres(A + 97) = 27536 + A
+    Next A
+    For A = 0 To 9
+        Fuentes(8).Caracteres(A + 48) = 27610 + A
+    Next A
+    Fuentes(8).Caracteres(193) = 27562
+    Fuentes(8).Caracteres(201) = 27563
+    Fuentes(8).Caracteres(205) = 27564
+    Fuentes(8).Caracteres(211) = 27565
+    Fuentes(8).Caracteres(218) = 27566
+    Fuentes(8).Caracteres(225) = 27567
+    Fuentes(8).Caracteres(233) = 27568
+    Fuentes(8).Caracteres(237) = 27569
+    Fuentes(8).Caracteres(243) = 27570
+    Fuentes(8).Caracteres(250) = 27571
+    Fuentes(8).Caracteres(192) = 27572
+    Fuentes(8).Caracteres(200) = 27573
+    Fuentes(8).Caracteres(204) = 27574
+    Fuentes(8).Caracteres(210) = 27575
+    Fuentes(8).Caracteres(217) = 27576
+    Fuentes(8).Caracteres(224) = 27577
+    Fuentes(8).Caracteres(232) = 27578
+    Fuentes(8).Caracteres(236) = 27579
+    Fuentes(8).Caracteres(242) = 27580
+    Fuentes(8).Caracteres(249) = 27581
+    Fuentes(8).Caracteres(194) = 27582
+    Fuentes(8).Caracteres(202) = 27583
+    Fuentes(8).Caracteres(206) = 27584
+    Fuentes(8).Caracteres(212) = 27585
+    Fuentes(8).Caracteres(219) = 27586
+    Fuentes(8).Caracteres(226) = 27587
+    Fuentes(8).Caracteres(234) = 27588
+    Fuentes(8).Caracteres(238) = 27589
+    Fuentes(8).Caracteres(244) = 27590
+    Fuentes(8).Caracteres(251) = 27591
+    Fuentes(8).Caracteres(196) = 27592
+    Fuentes(8).Caracteres(203) = 27593
+    Fuentes(8).Caracteres(207) = 27594
+    Fuentes(8).Caracteres(214) = 27595
+    Fuentes(8).Caracteres(220) = 27596
+    Fuentes(8).Caracteres(228) = 27597
+    Fuentes(8).Caracteres(235) = 27598
+    Fuentes(8).Caracteres(239) = 27599
+    Fuentes(8).Caracteres(246) = 27600
+    Fuentes(8).Caracteres(252) = 27601
+    Fuentes(8).Caracteres(195) = 27602
+    Fuentes(8).Caracteres(213) = 27603
+    Fuentes(8).Caracteres(227) = 27604
+    Fuentes(8).Caracteres(245) = 27605
+    Fuentes(8).Caracteres(209) = 27606
+    Fuentes(8).Caracteres(241) = 27607
+    Fuentes(8).Caracteres(199) = 27608
+    Fuentes(8).Caracteres(231) = 27609
+    Fuentes(8).Caracteres(161) = 27620
+    Fuentes(8).Caracteres(33) = 27621
+    Fuentes(8).Caracteres(191) = 27622
+    Fuentes(8).Caracteres(63) = 27623
+    Fuentes(8).Caracteres(46) = 27624
+    Fuentes(8).Caracteres(44) = 27625
+    Fuentes(8).Caracteres(59) = 27626
+    Fuentes(8).Caracteres(58) = 27627
+    Fuentes(8).Caracteres(8230) = 27628
+    Fuentes(8).Caracteres(8212) = 27629
+    Fuentes(8).Caracteres(45) = 27630
+    Fuentes(8).Caracteres(95) = 27631
+    Fuentes(8).Caracteres(40) = 27632
+    Fuentes(8).Caracteres(41) = 27633
+    Fuentes(8).Caracteres(91) = 27634
+    Fuentes(8).Caracteres(93) = 27635
+    Fuentes(8).Caracteres(123) = 27636
+    Fuentes(8).Caracteres(125) = 27637
+    Fuentes(8).Caracteres(171) = 27638
+    Fuentes(8).Caracteres(187) = 27639
+    Fuentes(8).Caracteres(34) = 27640
+    Fuentes(8).Caracteres(39) = 27641
+    Fuentes(8).Caracteres(8216) = 27642
+    Fuentes(8).Caracteres(8217) = 27643
+    Fuentes(8).Caracteres(8220) = 27644
+    Fuentes(8).Caracteres(8221) = 27645
+    Fuentes(8).Caracteres(47) = 27646
+    Fuentes(8).Caracteres(92) = 27647
+    Fuentes(8).Caracteres(124) = 27648
+    Fuentes(8).Caracteres(64) = 27649
+    Fuentes(8).Caracteres(35) = 27650
+    Fuentes(8).Caracteres(37) = 27651
+    Fuentes(8).Caracteres(38) = 27652
+    Fuentes(8).Caracteres(8432) = 27653
+    Fuentes(8).Caracteres(43) = 27654
+    Fuentes(8).Caracteres(45) = 27655
+    Fuentes(8).Caracteres(60) = 27656
+    Fuentes(8).Caracteres(62) = 27657
+    Fuentes(8).Caracteres(94) = 27658
+    Fuentes(8).Caracteres(95) = 27659
+    Fuentes(8).Caracteres(126) = 27660
+    Fuentes(8).Caracteres(180) = 27661
+    Fuentes(8).Caracteres(172) = 27662
+    Fuentes(8).Caracteres(36) = 27663
+    Fuentes(8).Caracteres(8364) = 27664
+    Fuentes(8).Caracteres(163) = 27665
+    Fuentes(8).Caracteres(162) = 27666
+    Fuentes(8).Caracteres(165) = 27667
+    Fuentes(8).Caracteres(176) = 27668
+    Fuentes(8).Caracteres(167) = 27669
+    Fuentes(8).Caracteres(182) = 27670
+    Fuentes(8).Caracteres(177) = 27671
+    Fuentes(8).Caracteres(120) = 27672
+    Fuentes(8).Caracteres(247) = 27673
+    Fuentes(8).Caracteres(8240) = 27674
+    Fuentes(8).Caracteres(8734) = 27675
+    Fuentes(8).Caracteres(8776) = 27676
+    Fuentes(8).Caracteres(8800) = 27677
+    Fuentes(8).Caracteres(8804) = 27678
+    Fuentes(8).Caracteres(8805) = 27679
+    Fuentes(8).Caracteres(8730) = 27680
+    Fuentes(8).Caracteres(8721) = 27681
+    Fuentes(8).Caracteres(916) = 27682
+    Fuentes(8).Caracteres(181) = 27683
+    Fuentes(8).Caracteres(9679) = 27684
     Exit Sub
 Engine_Font_Initialize_Err:
     Call RegistrarError(Err.Number, Err.Description, "Graficos_Textos.Engine_Font_Initialize", Erl)
