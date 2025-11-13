@@ -5557,38 +5557,63 @@ End Sub
 Public Sub HandleShopPjsInit()
     frmShopPjsAO20.Show , GetGameplayForm()
 End Sub
-
 Public Sub HandleShopInit()
-    Dim cant_obj_shop As Long, i As Long
+    On Error GoTo HandleShopInit_Err
+    Dim cant_obj_shop As Long, i As Long, J As Long
+    Dim tmp As ObjDatas
     cant_obj_shop = Reader.ReadInt16
     credits_shopAO20 = Reader.ReadInt32
     frmShopAO20.lblCredits.Caption = credits_shopAO20
     ReDim ObjShop(1 To cant_obj_shop) As ObjDatas
+
+    ' Leer todos los objetos
     For i = 1 To cant_obj_shop
         ObjShop(i).ObjNum = Reader.ReadInt32
         ObjShop(i).Valor = Reader.ReadInt32
         ObjShop(i).Name = Reader.ReadString8
-        Dim objTypeDebug As Long
-        Dim ropajeDebug As Long
-        If ObjShop(i).ObjNum >= LBound(ObjData) And ObjShop(i).ObjNum <= UBound(ObjData) Then
-            objTypeDebug = ObjData(ObjShop(i).ObjNum).ObjType
-            ObjShop(i).RequiereObjeto = ObjData(ObjShop(i).ObjNum).RequiereObjeto
-        End If
-        ropajeDebug = GetObjRopajeHumano(ObjShop(i).ObjNum)
-        Debug.Print "[ShopInit] ObjNum=" & ObjShop(i).ObjNum & _
-                    " ObjType=" & objTypeDebug & _
-                    " Name=""" & ObjShop(i).Name & """" & _
-                    " RopajeHumano=" & ropajeDebug & _
-                    " RequiereObjeto=" & ObjData(ObjShop(i).ObjNum).RequiereObjeto
+    Next i
+
+    ' Ordenar por ObjType y luego por Name (alfabético)
+    For i = 1 To cant_obj_shop - 1
+        For J = i + 1 To cant_obj_shop
+    
+            Dim typeI As Long
+            Dim typeJ As Long
+    
+            typeI = ObjData(ObjShop(i).ObjNum).ObjType
+            typeJ = ObjData(ObjShop(J).ObjNum).ObjType
+    
+            ' Si el ObjType es mayor, intercambiar
+            If typeI > typeJ Then
+                tmp = ObjShop(i)
+                ObjShop(i) = ObjShop(J)
+                ObjShop(J) = tmp
+    
+            ' Si el ObjType es igual, ordenar por Name
+            ElseIf typeI = typeJ Then
+                If StrComp(ObjShop(i).Name, ObjShop(J).Name, vbTextCompare) > 0 Then
+                    tmp = ObjShop(i)
+                    ObjShop(i) = ObjShop(J)
+                    ObjShop(J) = tmp
+                End If
+            End If
+        Next J
+    Next i
+
+    ' Agregar al ListBox ya ordenado
+    For i = 1 To cant_obj_shop
         With frmShopAO20.lstItemShopFilter
-            Call .AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )", i - 1)
+            .AddItem ObjShop(i).Name
             .ItemData(.NewIndex) = i
         End With
     Next i
-    frmShopAO20.Show , GetGameplayForm()
-    Call frmShopAO20.ResetShopPreview
-End Sub
 
+    frmShopAO20.Show , GetGameplayForm()
+    frmShopAO20.ResetShopPreview
+    Exit Sub
+HandleShopInit_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShopInit", Erl)
+End Sub
 Public Function GetObjRopajeHumano(ByVal objNum As Long) As Long
     On Error GoTo GetObjRopajeHumano_Err
     If objNum < LBound(ObjData) Or objNum > UBound(ObjData) Then Exit Function
