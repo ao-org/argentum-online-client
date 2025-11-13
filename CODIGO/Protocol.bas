@@ -1656,13 +1656,6 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             chat = QuestList(ReadField(2, chat, Asc("*"))).DescFinal
             copiar = False
             duracion = 20
-        Case "QUESTNEXT"
-            chat = QuestList(ReadField(2, chat, Asc("*"))).NextQuest
-            copiar = False
-            duracion = 20
-            If LenB(chat) = 0 Then
-                chat = "Ya has completado esa misión para mí."
-            End If
         Case "NOCONSOLA" ' El chat no sale en la consola
             chat = ReadField(2, chat, Asc("*"))
             copiar = False
