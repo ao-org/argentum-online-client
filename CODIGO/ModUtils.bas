@@ -1930,3 +1930,39 @@ QuestsIndexToTxtParser_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.QuestsIndexToTxtParser", Erl)
     Resume Next
 End Function
+
+Public Function RaceToTxtParser(ByRef Fields() As String)
+    On Error GoTo RaceToTxtParser_Err
+    Dim RaceNumber As Integer
+    Dim FinalStr   As String
+    If IsNumeric(Fields(0)) Then
+        RaceNumber = CInt(Fields(0))
+    Else
+        RaceNumber = CInt(Fields(1))
+    End If
+    Select Case RaceNumber
+        Case e_Race.Human
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_RAZA_HUMANO"))
+        Case e_Race.Elf
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_RAZA_ELFO"))
+        Case e_Race.DrowElf
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_RAZA_ELFO_OSCURO"))
+        Case e_Race.Gnome
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_RAZA_GNOMO"))
+        Case e_Race.Dwarf
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_RAZA_ENANO"))
+        Case e_Race.Orc
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_RAZA_ORCO"))
+        Case Else
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_CODIGO_INVALIDO"))
+    End Select
+    If IsNumeric(Fields(0)) Then
+        Fields(0) = FinalStr
+    Else
+        Fields(1) = FinalStr
+    End If
+    Exit Function
+RaceToTxtParser_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.RaceToTxtParser", Erl)
+    Resume Next
+End Function

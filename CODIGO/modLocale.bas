@@ -52,11 +52,13 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
     If bytHeader = 1426 Then
         Call ClassesToTxtParser(Fields)
     End If
-    
     If bytHeader = 1264 Then
         Call QuestsIndexToTxtParser(Fields)
     End If
-    
+    If bytHeader = 1988 Then
+        Call ClassesToTxtParser(Fields)
+        Call RaceToTxtParser(Fields)
+    End If
     ' En reversa para evitar pisar campos mayores a 10
     For i = UBound(Fields) To 0 Step -1
         strLocale = Replace(strLocale, "¬" & (i + 1), Fields(i))

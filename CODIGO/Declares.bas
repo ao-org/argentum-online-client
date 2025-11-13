@@ -222,11 +222,11 @@ End Enum
 
 Public Enum e_Race
     Human = 1
-    Elf
-    DrowElf
-    Gnome
-    Dwarf
-    Orc
+    Elf = 2
+    DrowElf = 3
+    Gnome = 4
+    Dwarf = 5
+    Orc = 6
 End Enum
 
 Public Type tPaso
