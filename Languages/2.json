@@ -727,5 +727,8 @@
     "LABEL_CHATMODE_GROUP": "Group",
     "LABEL_CHATMODE_CLAN": "Guild",
     "LABEL_CHATMODE_FACTION": "Faction",
-    "LABEL_CHATMODE_YELL": "Yell"
+    "LABEL_CHATMODE_YELL": "Yell",
+    "COMBO_LIGHTMODE_0":"Hourly light",
+    "COMBO_LIGHTMODE_1":"Day",
+    "COMBO_LIGHTMODE_2":"Night"
 }

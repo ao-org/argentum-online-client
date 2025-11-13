@@ -727,5 +727,9 @@
   "LABEL_CHATMODE_GROUP": "Grappolo",
   "LABEL_CHATMODE_CLAN": "Clan",
   "LABEL_CHATMODE_FACTION": "Fazione",
-  "LABEL_CHATMODE_YELL": "Gridare"
+  "LABEL_CHATMODE_YELL": "Gridare",
+  "COMBO_LIGHTMODE_0":"Luce oraria",
+  "COMBO_LIGHTMODE_1":"Giorno",
+  "COMBO_LIGHTMODE_2":"Sera"
+
 }

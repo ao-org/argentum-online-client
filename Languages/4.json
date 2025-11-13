@@ -727,5 +727,8 @@
   "LABEL_CHATMODE_GROUP": "Grappe",
   "LABEL_CHATMODE_CLAN": "Clan",
   "LABEL_CHATMODE_FACTION": "Faction",
-  "LABEL_CHATMODE_YELL": "Crier"
+  "LABEL_CHATMODE_YELL": "Crier",
+  "COMBO_LIGHTMODE_0":"Lumière horaire",
+  "COMBO_LIGHTMODE_1":"Jour",
+  "COMBO_LIGHTMODE_2":"Soirée"
 }

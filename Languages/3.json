@@ -727,5 +727,8 @@
   "LABEL_CHATMODE_GROUP": "Conjunto",
   "LABEL_CHATMODE_CLAN": "Clã",
   "LABEL_CHATMODE_FACTION": "Facção",
-  "LABEL_CHATMODE_YELL": "Gritar"
+  "LABEL_CHATMODE_YELL": "Gritar",
+  "COMBO_LIGHTMODE_0":"Luz horária",
+  "COMBO_LIGHTMODE_1":"Dia",
+  "COMBO_LIGHTMODE_2":"Noite"
 }
