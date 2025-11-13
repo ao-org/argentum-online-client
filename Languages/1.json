@@ -741,5 +741,7 @@
     "COMBO_ACTION_KEY_0":"Lanzar Hechizo / Inspeccionar",
     "COMBO_ACTION_KEY_1":"Interactuar",
     "COMBO_ACTION_KEY_2":"Atacar",
-    "COMBO_ACTION_KEY_3":"Mensaje directo"
+    "COMBO_ACTION_KEY_3":"Mensaje directo",
+    "COMBO_ALIGNMENT_NEUTRAL" : "Neutral",
+    "COMBO_ALIGNMENT_ALL" : "Todos"
 }

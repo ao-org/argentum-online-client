@@ -740,5 +740,7 @@
   "COMBO_ACTION_KEY_0":"Lanciare incantesimoo / Ispezionare",
   "COMBO_ACTION_KEY_1":"Interagire",
   "COMBO_ACTION_KEY_2":"Attacco",
-  "COMBO_ACTION_KEY_3":"Messaggio diretto"
+  "COMBO_ACTION_KEY_3":"Messaggio diretto",
+  "COMBO_ALIGNMENT_NEUTRAL" : "Neutro",
+  "COMBO_ALIGNMENT_ALL" : "Tutto"
 }

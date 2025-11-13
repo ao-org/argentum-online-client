@@ -1625,7 +1625,7 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             Dim MsgID    As Integer
             Dim extraStr As String
             MsgID = val(ReadField(1, text, Asc("*")))             ' 2082
-            extraStr = ReadField(2, text, Asc("*"))               ' "Nombre¬OtroValor"
+            extraStr = ReadField(2, Text, Asc("*"))               ' "Nombre¬OtroValor"
             chat = Locale_Parse_ServerMessage(MsgID, extraStr)
             copiar = False
             duracion = 20
@@ -2921,7 +2921,7 @@ End Sub
 Private Sub HandleGuildList()
     On Error GoTo errhandler
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildList.GuildsList.Clear
     Dim guildsStr As String
     guildsStr = Reader.ReadString8()
     If Len(guildsStr) > 0 Then
@@ -2937,13 +2937,13 @@ Private Sub HandleGuildList()
         Next i
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            Call frmGuildList.GuildsList.AddItem(ClanesList(i).nombre)
             'End If
         Next i
     End If
     COLOR_AZUL = RGB(0, 0, 0)
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
-    Call frmGuildAdm.Show(vbModeless, GetGameplayForm())
+    Call Establecer_Borde(frmGuildList.GuildsList, frmGuildList, COLOR_AZUL, 0, 0)
+    Call frmGuildList.Show(vbModeless, GetGameplayForm())
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildList", Erl)
@@ -3847,7 +3847,7 @@ Private Sub HandleLevelUp()
     On Error GoTo HandleLevelUp_Err
     SkillPoints = Reader.ReadInt16()
     #If No_Api_Steam = 0 Then
-        Call svb_unlock_achivement("Newbie's fate")
+       ' Call svb_unlock_achivement("Newbie's fate")
     #End If
     Exit Sub
 HandleLevelUp_Err:

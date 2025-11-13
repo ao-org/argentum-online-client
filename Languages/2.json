@@ -740,5 +740,7 @@
     "COMBO_ACTION_KEY_0":"Cast Spell / Inspect",
     "COMBO_ACTION_KEY_1":"Interact",
     "COMBO_ACTION_KEY_2":"Attack",
-    "COMBO_ACTION_KEY_3":"Direct message"
+    "COMBO_ACTION_KEY_3":"Direct message",
+    "COMBO_ALIGNMENT_NEUTRAL" : "Neutral",
+    "COMBO_ALIGNMENT_ALL" : "All"
 }

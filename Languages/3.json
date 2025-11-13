@@ -740,5 +740,7 @@
   "COMBO_ACTION_KEY_0":"Lançar feitiço / Inspeção",
   "COMBO_ACTION_KEY_1":"Interagir",
   "COMBO_ACTION_KEY_2":"Ataque",
-  "COMBO_ACTION_KEY_3":"Mensagem direta"
+  "COMBO_ACTION_KEY_3":"Mensagem direta",
+  "COMBO_ALIGNMENT_NEUTRAL" : "Neutro",
+  "COMBO_ALIGNMENT_ALL" : "Todos"
 }

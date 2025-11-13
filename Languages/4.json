@@ -740,5 +740,7 @@
   "COMBO_ACTION_KEY_0":"lancer un sort / Inspecter",
   "COMBO_ACTION_KEY_1":"Interagir",
   "COMBO_ACTION_KEY_2":"attaque",
-  "COMBO_ACTION_KEY_3":"Message direct"
+  "COMBO_ACTION_KEY_3":"Message direct",
+  "COMBO_ALIGNMENT_NEUTRAL" : "Neutre",
+  "COMBO_ALIGNMENT_ALL" : "Tous"
 }
