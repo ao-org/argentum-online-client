@@ -658,10 +658,10 @@ Private Function Validar() As Boolean
     Dim i        As Integer
     For i = 0 To txtPPT.text * 2 - 1
         If LenB(Jugador(i).text) = 0 Then
-            Error.Caption = "Complete todos los jugadores."
+            Error.Caption = JsonLanguage.Item("CHALLENGE_ERROR_INSUFICCIENT_PLAYERS")
             Exit Function
         ElseIf Not ValidarNombre(Jugador(i).text, ErrorStr) Then
-            Error.Caption = "Nombre inválido: """ & Jugador(i).text & """"
+            Error.Caption = JsonLanguage.Item("CHALLENGE_ERROR_INVALID_NAME") & " " & "'" & Jugador(i).Text & "'"
             Exit Function
         End If
     Next
@@ -669,14 +669,14 @@ Private Function Validar() As Boolean
     For i = 0 To txtPPT.text * 2 - 2
         For J = i + 1 To txtPPT.text * 2 - 1
             If Jugador(i).text = Jugador(J).text Then
-                Error.Caption = "¡No puede haber jugadores repetidos!"
+                Error.Caption = JsonLanguage.Item("CHALLENGE_ERROR_REPEATED_PLAYERS")
                 Exit Function
             End If
         Next
     Next
     If PocionesRojas Then
         If val(txtPociones.text) < 0 Or val(txtPociones.text) > 10000000 Then
-            Error.Caption = "¡No puedes apostar mas de 10.000.000 de monedas de oro!"
+            Error.Caption = JsonLanguage.Item("CHALLENGE_ERROR_TOO_MUCH_GOLD")
             Exit Function
         End If
     End If

@@ -742,5 +742,9 @@
   "COMBO_ACTION_KEY_2":"Attacco",
   "COMBO_ACTION_KEY_3":"Messaggio diretto",
   "COMBO_ALIGNMENT_NEUTRAL" : "Neutro",
-  "COMBO_ALIGNMENT_ALL" : "Tutto"
+  "COMBO_ALIGNMENT_ALL" : "Tutto",
+  "CHALLENGE_ERROR_INSUFICCIENT_PLAYERS" : "Completa tutti i giocatori necessari",
+  "CHALLENGE_ERROR_REPEATED_PLAYERS" : "I giocatori non possono essere ripetuti",
+  "CHALLENGE_ERROR_TOO_MUCH_GOLD" : "Non puoi scommettere più di 10.000.000 di monete d'oro",
+  "CHALLENGE_ERROR_INVALID_NAME" : "Nome del giocatore non valido:"
 }
