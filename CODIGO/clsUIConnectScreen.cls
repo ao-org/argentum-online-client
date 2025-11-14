@@ -58,7 +58,7 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_lblTitle
     Set m_btnConnect = New clsUIButton
-    m_btnConnect.Init "Show Info", 0, 0, 100, 30, UI_COLOR_GOLD, &HFF606060, UI_COLOR_BLACK
+    m_btnConnect.Init "Show Info", 0, 0, 100, 30, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_btnConnect
     Set m_inputboxUser = New clsUIInputbox
     m_inputboxUser.Init "", 0, 0, 200, 20, &HFFFFFF, &HFFFFFF, UI_COLOR_BLACK, False

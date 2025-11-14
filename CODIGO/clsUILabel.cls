@@ -78,11 +78,11 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     rc.Top = posY
     rc.Right = posX + 400
     rc.Bottom = posY + 32
-    Call UIRenderer.RenderText(m_Impl.Text, rc.Left, rc.Top, m_Impl.Color, 1, 128)
+    Call UIRenderer.RenderText(m_Impl.text, rc.Left, rc.Top, m_Impl.color, 1, 255)
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
-    hit = False
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
+    Hit = False
 End Sub
 
 Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
@@ -93,36 +93,36 @@ Private Sub IUIComponent_SetFocus(ByVal val As Boolean)
     Call m_Impl.SetFocus(val)
 End Sub
 
-Public Property Let Text(ByVal newText As String)
-    m_Impl.Text = newText
+Public Property Let text(ByVal newText As String)
+    m_Impl.text = newText
 End Property
 
-Public Property Get Text() As String
-    Text = m_Impl.Text
+Public Property Get text() As String
+    text = m_Impl.text
 End Property
 
-Public Property Let Color(ByVal newColor As Long)
-    m_Impl.Color = newColor
+Public Property Let color(ByVal newColor As Long)
+    m_Impl.color = newColor
 End Property
 
-Public Property Get Color() As Long
-    Color = m_Impl.Color
+Public Property Get color() As Long
+    color = m_Impl.color
 End Property
 
-Public Property Let X(ByVal newX As Long)
-    m_Impl.X = newX
+Public Property Let x(ByVal newX As Long)
+    m_Impl.x = newX
 End Property
 
-Public Property Get X() As Long
-    X = m_Impl.X
+Public Property Get x() As Long
+    x = m_Impl.x
 End Property
 
-Public Property Let Y(ByVal newY As Long)
-    m_Impl.Y = newY
+Public Property Let y(ByVal newY As Long)
+    m_Impl.y = newY
 End Property
 
-Public Property Get Y() As Long
-    Y = m_Impl.Y
+Public Property Get y() As Long
+    y = m_Impl.y
 End Property
 
 Private Sub Class_Initialize()
