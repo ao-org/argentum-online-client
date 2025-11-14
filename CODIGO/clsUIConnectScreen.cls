@@ -38,11 +38,11 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-Private Const WINDOW_WIDTH    As Long = 500
+Private Const WINDOW_WIDTH    As Long = 300
 Private Const WINDOW_HEIGHT   As Long = 300
-Private Const WINDOW_OFFSET_Y As Long = 150  ' adjust this value to move window lower
+Private Const WINDOW_OFFSET_Y As Long = 100  ' adjust this value to move window lower
 Private m_UIMgr               As clsUIManager
-Private m_lblUser             As clsUILabel
+Private m_lblTitle             As clsUILabel
 Private m_lblPass             As clsUILabel
 Private m_cbOk          As clsUICheckbox
 Private m_btnConnect          As clsUIButton
@@ -54,23 +54,20 @@ Private m_haracinOk          As Boolean
  
 Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager: m_UIMgr.Init
-    Set m_lblUser = New clsUILabel
-    m_lblUser.Init "Username:", 0, 0, UI_COLOR_GOLD
-    m_UIMgr.AddComponent m_lblUser
-    Set m_lblPass = New clsUILabel
-    m_lblPass.Init "Password:", 0, 0, UI_COLOR_GOLD
-    m_UIMgr.AddComponent m_lblPass
+    Set m_lblTitle = New clsUILabel
+    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE
+    m_UIMgr.AddComponent m_lblTitle
     Set m_btnConnect = New clsUIButton
-    m_btnConnect.Init "Show Info", 0, 0, 100, 30, UI_COLOR_GOLD, &HFF606060, UI_COLOR_BLACK
+    m_btnConnect.Init "Conectar", 0, 0, 100, 30, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_btnConnect
     Set m_inputboxUser = New clsUIInputbox
-    m_inputboxUser.Init "", 0, 0, 200, 20, &HFFFFFF, &HFFFFFF, UI_COLOR_BLACK, False
+    m_inputboxUser.Init "email", 0, 0, 200, 30, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, False
     m_UIMgr.AddComponent m_inputboxUser
     Set m_inputboxPass = New clsUIInputbox
-    m_inputboxPass.Init "", 0, 0, 200, 20, &HFFFFFF, &HFFFFFF, UI_COLOR_BLACK, True
+    m_inputboxPass.Init "clave", 0, 0, 200, 30, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, True
     m_UIMgr.AddComponent m_inputboxPass
     Set m_cbOk = New clsUICheckbox
-    m_cbOk.Init "IA", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE
+    m_cbOk.Init "Recordarme", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_cbOk
     Set m_boxInfo = New clsUIBoxInfo
     m_boxInfo.Init "HORACIO es un Atosigador de fines del siglo XX, aun activo en 2025. Se caracteriza por hostigar varios recursos a la vez y romper sober_anamente las pelotas ...", 0, 0, 250, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK
@@ -102,7 +99,7 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         
         Dim i As Long, texPanel As Direct3DTexture8
         Dim x As Long, y As Long, w As Long, h As Long, b As Long
-        b = 60
+        b = 20
         For i = 30 To 38
             Select Case i
                 Case 30
@@ -144,11 +141,10 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         
         
         ' Position UI controls
-        m_lblUser.SetPosition wx + 70, wy + 80
-        m_inputboxUser.SetPosition wx + 150, wy + 77
-        m_lblPass.SetPosition wx + 70, wy + 120
-        m_inputboxPass.SetPosition wx + 150, wy + 117
-        m_cbOk.SetPosition wx + 400, wy + 250
+        m_lblTitle.SetPosition wx + 120, wy + 40
+        m_inputboxUser.SetPosition wx + 48, wy + 77
+        m_inputboxPass.SetPosition wx + 48, wy + 117
+        m_cbOk.SetPosition wx + 48, wy + 160
         m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + WINDOW_HEIGHT - 90
         m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy + 50, m_haracinOk
 
@@ -164,8 +160,8 @@ Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseBu
     m_UIMgr.HandleMouse mouseX, mouseY, mouseButtons
 End Sub
 
-Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
-    m_UIMgr.HandleKeyboard keyCode, shiftState
+Public Sub HandleKeyboard(ByVal KeyCode As Long, ByVal shiftState As Long)
+    m_UIMgr.HandleKeyboard KeyCode, shiftState
 End Sub
 
 Public Function WasConnectClicked() As Boolean
