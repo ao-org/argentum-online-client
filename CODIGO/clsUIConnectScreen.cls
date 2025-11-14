@@ -38,11 +38,11 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-Private Const WINDOW_WIDTH    As Long = 500
+Private Const WINDOW_WIDTH    As Long = 300
 Private Const WINDOW_HEIGHT   As Long = 300
-Private Const WINDOW_OFFSET_Y As Long = 150  ' adjust this value to move window lower
+Private Const WINDOW_OFFSET_Y As Long = 100  ' adjust this value to move window lower
 Private m_UIMgr               As clsUIManager
-Private m_lblUser             As clsUILabel
+Private m_lblTitle             As clsUILabel
 Private m_lblPass             As clsUILabel
 Private m_cbOk          As clsUICheckbox
 Private m_btnConnect          As clsUIButton
@@ -54,12 +54,9 @@ Private m_haracinOk          As Boolean
  
 Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager: m_UIMgr.Init
-    Set m_lblUser = New clsUILabel
-    m_lblUser.Init "Username:", 0, 0, UI_COLOR_GOLD
-    m_UIMgr.AddComponent m_lblUser
-    Set m_lblPass = New clsUILabel
-    m_lblPass.Init "Password:", 0, 0, UI_COLOR_GOLD
-    m_UIMgr.AddComponent m_lblPass
+    Set m_lblTitle = New clsUILabel
+    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_GOLD
+    m_UIMgr.AddComponent m_lblTitle
     Set m_btnConnect = New clsUIButton
     m_btnConnect.Init "Show Info", 0, 0, 100, 30, UI_COLOR_GOLD, &HFF606060, UI_COLOR_BLACK
     m_UIMgr.AddComponent m_btnConnect
@@ -102,7 +99,7 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         
         Dim i As Long, texPanel As Direct3DTexture8
         Dim x As Long, y As Long, w As Long, h As Long, b As Long
-        b = 60
+        b = 20
         For i = 30 To 38
             Select Case i
                 Case 30
@@ -144,11 +141,10 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         
         
         ' Position UI controls
-        m_lblUser.SetPosition wx + 70, wy + 80
-        m_inputboxUser.SetPosition wx + 150, wy + 77
-        m_lblPass.SetPosition wx + 70, wy + 120
-        m_inputboxPass.SetPosition wx + 150, wy + 117
-        m_cbOk.SetPosition wx + 400, wy + 250
+        m_lblTitle.SetPosition wx + 120, wy + 40
+        m_inputboxUser.SetPosition wx + 48, wy + 77
+        m_inputboxPass.SetPosition wx + 48, wy + 117
+        m_cbOk.SetPosition wx + 48, wy + 150
         m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + WINDOW_HEIGHT - 90
         m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy + 50, m_haracinOk
 
