@@ -720,5 +720,6 @@
   "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Classique",  
   "MENSAJE_DESCRIPCION_GUION_INVALIDO":"Les traits d'union ne sont pas autorisés dans la description.",
   "LABEL_VRAM_USAGE":"seuil de VRAM:",
-  "LABEL_AMBIENT_LIGHT" : "lumière ambiante :"
+  "LABEL_AMBIENT_LIGHT" : "lumière ambiante :",
+  "SEGURO_LEGIONARIO_DESHABILITADO_TEMPORALMENTE" : "L'assurance de la faction légionnaire est temporairement désactivée."
 }
