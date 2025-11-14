@@ -292,7 +292,6 @@ Begin VB.Form FrmQuests
    Begin VB.Label titulo 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "¡No tenes misiones!"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -445,6 +444,9 @@ End Sub
 
 Public Sub ListView1_Click()
     On Error GoTo ListView1_Click_Err
+    If ListView1.SelectedItem Is Nothing Then
+        Exit Sub
+    End If
     If ListView1.SelectedItem.SubItems(2) <> "" Then
         If ListView1.SelectedItem.SubItems(3) = 0 Then
             Call DibujarNPC(PlayerView, NpcData(ListView1.SelectedItem.SubItems(2)).Head, NpcData(ListView1.SelectedItem.SubItems(2)).Body, 3)

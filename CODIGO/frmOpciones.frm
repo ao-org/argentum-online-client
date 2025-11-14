@@ -630,6 +630,10 @@ Private Sub Form_Load()
     txtCoordinateY.text = GetSetting("OPCIONES", "EquipmentIndicatorCoordinateY")
     txtEquippedCaracter.text = GetSetting("OPCIONES", "EquipmentIndicatorCaracter")
     selected_light = GetSetting("VIDEO", "LuzGlobal")
+    Call cboLuces.Clear
+    Call cboLuces.AddItem(JsonLanguage.Item("COMBO_LIGHTMODE_0"))
+    Call cboLuces.AddItem(JsonLanguage.Item("COMBO_LIGHTMODE_1"))
+    Call cboLuces.AddItem(JsonLanguage.Item("COMBO_LIGHTMODE_2"))
     If LenB(selected_light) = 0 Then selected_light = 0
     cboLuces.ListIndex = selected_light
     BtnSolapa(0).Picture = LoadInterface("boton-jugabilidad-default.bmp")

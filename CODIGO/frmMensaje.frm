@@ -191,6 +191,13 @@ Private Sub Form_Load()
     Call Form_RemoveTitleBar(Me)
     Me.Height = 3190
     Me.Width = 4380
+    mnuNormal.Caption = JsonLanguage.Item("LABEL_CHATMODE_NORMAL")
+    mnuGritar.Caption = JsonLanguage.Item("LABEL_CHATMODE_YELL")
+    mnuPrivado.Caption = JsonLanguage.Item("LABEL_CHATMODE_PRIVATE")
+    mnuClan.Caption = JsonLanguage.Item("LABEL_CHATMODE_CLAN")
+    mnuGMs.Caption = JsonLanguage.Item("LABEL_CHATMODE_GROUP")
+    mnuGlobal.Caption = JsonLanguage.Item("LABEL_CHATMODE_GLOBAL")
+    mnuFaction.Caption = JsonLanguage.Item("LABEL_CHATMODE_FACTION")
     Call loadButtons
     Exit Sub
 Form_Load_Err:
