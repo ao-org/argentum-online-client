@@ -1934,7 +1934,8 @@ imgInventario_MouseMove_Err:
 End Sub
 
 Private Sub ImgLegionarySecure_Click()
-    Call WriteLegionarySecure
+    'Call WriteLegionarySecure
+    Call ShowConsoleMsg(JsonLanguage.Item("SEGURO_LEGIONARIO_DESHABILITADO_TEMPORALMENTE"), FONTTYPE_INFOIAO)
 End Sub
 
 Private Sub imgManual_Click()
