@@ -55,7 +55,7 @@ Private m_haracinOk          As Boolean
 Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager: m_UIMgr.Init
     Set m_lblTitle = New clsUILabel
-    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_GOLD
+    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_lblTitle
     Set m_btnConnect = New clsUIButton
     m_btnConnect.Init "Show Info", 0, 0, 100, 30, UI_COLOR_GOLD, &HFF606060, UI_COLOR_BLACK
@@ -67,7 +67,7 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     m_inputboxPass.Init "", 0, 0, 200, 20, &HFFFFFF, &HFFFFFF, UI_COLOR_BLACK, True
     m_UIMgr.AddComponent m_inputboxPass
     Set m_cbOk = New clsUICheckbox
-    m_cbOk.Init "IA", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE
+    m_cbOk.Init "Recordarme", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_cbOk
     Set m_boxInfo = New clsUIBoxInfo
     m_boxInfo.Init "HORACIO es un Atosigador de fines del siglo XX, aun activo en 2025. Se caracteriza por hostigar varios recursos a la vez y romper sober_anamente las pelotas ...", 0, 0, 250, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK
@@ -144,7 +144,7 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         m_lblTitle.SetPosition wx + 120, wy + 40
         m_inputboxUser.SetPosition wx + 48, wy + 77
         m_inputboxPass.SetPosition wx + 48, wy + 117
-        m_cbOk.SetPosition wx + 48, wy + 150
+        m_cbOk.SetPosition wx + 48, wy + 160
         m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + WINDOW_HEIGHT - 90
         m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy + 50, m_haracinOk
 
@@ -171,7 +171,7 @@ Public Function WasConnectClicked() As Boolean
         m_haracinOk = True
         
         Call SetActiveServer("127.0.0.1", "6501")
-        Call DoLogin(m_inputboxUser.Text, m_inputboxPass.Text, True)
+        Call DoLogin(m_inputboxUser.text, m_inputboxPass.text, True)
     End If
 End Function
 
