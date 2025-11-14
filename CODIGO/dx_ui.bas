@@ -81,7 +81,7 @@ Private Sub preload_ui_textures()
     ' Preload all UI textures you will use (ids are examples)
     Dim ids()
     Dim w As Long: Dim h As Long
-    ids = Array(14, 21, 13030, 13031, 13032, 13033, 13034, 13035, 13036, 13037, 13038, 13039, 13043)     ' <- put your real atlas/skin ids here
+    ids = Array(14, 21, 13000, 13001, 13002, 13030, 13031, 13032, 13033, 13034, 13035, 13036, 13037, 13038, 13039, 13043)     ' <- put your real atlas/skin ids here
 
     Dim i As Long, tex As Direct3DTexture8
     For i = LBound(ids) To UBound(ids)

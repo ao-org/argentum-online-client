@@ -61,10 +61,10 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     m_btnConnect.Init "Show Info", 0, 0, 100, 30, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_btnConnect
     Set m_inputboxUser = New clsUIInputbox
-    m_inputboxUser.Init "", 0, 0, 200, 20, &HFFFFFF, &HFFFFFF, UI_COLOR_BLACK, False
+    m_inputboxUser.Init "email...", 0, 0, 200, 20, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, False
     m_UIMgr.AddComponent m_inputboxUser
     Set m_inputboxPass = New clsUIInputbox
-    m_inputboxPass.Init "", 0, 0, 200, 20, &HFFFFFF, &HFFFFFF, UI_COLOR_BLACK, True
+    m_inputboxPass.Init "clave...", 0, 0, 200, 20, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, True
     m_UIMgr.AddComponent m_inputboxPass
     Set m_cbOk = New clsUICheckbox
     m_cbOk.Init "Recordarme", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE

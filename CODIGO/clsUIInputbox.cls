@@ -76,8 +76,8 @@ Public Function IUIComponent_IsVisible() As Boolean
     IUIComponent_IsVisible = m_Impl.IsVisible
 End Function
 
-Public Property Get Text() As String
-    Text = m_Impl.Text
+Public Property Get text() As String
+    text = m_Impl.text
 End Property
 
 Public Property Get Width() As Long
@@ -105,33 +105,72 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     cols(1) = clr
     cols(2) = clr
     cols(3) = clr
-    UIRenderer.AddQuad m_Impl.X, m_Impl.Y, m_Impl.Width, m_Impl.Height, cols
+'    UIRenderer.AddQuad m_Impl.x, m_Impl.y, m_Impl.Width, m_Impl.Height, cols
+Dim cbTextureL As Direct3DTexture8
+    Dim cbTextureC As Direct3DTexture8
+    Dim cbTextureR As Direct3DTexture8
+    Dim texW As Long: Dim texH As Long: Dim b As Integer
+    b = 5
+    If (m_IsHover) Then
+        Set cbTextureL = UITextures.GetTexture(13006, texW, texH)
+        Set cbTextureC = UITextures.GetTexture(13007, texW, texH)
+        Set cbTextureR = UITextures.GetTexture(13008, texW, texH)
+    Else
+        Set cbTextureL = UITextures.GetTexture(13000, texW, texH)
+        Set cbTextureC = UITextures.GetTexture(13001, texW, texH)
+        Set cbTextureR = UITextures.GetTexture(13002, texW, texH)
+    End If
+    If Not cbTextureL Is Nothing And Not cbTextureC Is Nothing And Not cbTextureR Is Nothing Then
+        UIRenderer.AddTexturedQuad _
+            m_Impl.x, m_Impl.y, b, m_Impl.Height, _
+        cbTextureL, _
+        0!, 0!, 1!, 1!, _
+        UI_COLOR_WHITE, 255
+        UIRenderer.AddTexturedQuad _
+            m_Impl.x + b, m_Impl.y, m_Impl.Width - b, m_Impl.Height, _
+        cbTextureC, _
+        0!, 0!, 1!, 1!, _
+        UI_COLOR_WHITE, 255
+        UIRenderer.AddTexturedQuad _
+            m_Impl.x + m_Impl.Width - b, m_Impl.y, b, m_Impl.Height, _
+        cbTextureR, _
+        0!, 0!, 1!, 1!, _
+        UI_COLOR_WHITE, 255
+    Else
+    ' Fallback to solid white if texture missing
+        Dim cols2(3) As Long
+        cols2(0) = UI_COLOR_WHITE
+        cols2(1) = UI_COLOR_WHITE
+        cols2(2) = UI_COLOR_WHITE
+        cols2(3) = UI_COLOR_WHITE
+        UIRenderer.AddQuad m_Impl.x, m_Impl.y, m_Impl.Width, m_Impl.Height, cols2, 190
+    End If
     Dim rc As RECT
-    rc.Left = m_Impl.X: rc.Top = m_Impl.Y
+    rc.Left = m_Impl.x: rc.Top = m_Impl.y
     Dim RECT As RECT
     Dim startX As Integer
     Dim startY As Integer
-    startX = m_Impl.X + (m_Impl.Width - (Len(m_Impl.Text) * 7)) / 2
-    startY = m_Impl.Y + (m_Impl.Height - 12) / 2
+    startX = m_Impl.x + (m_Impl.Width - (Len(m_Impl.text) * 7)) / 2
+    startY = m_Impl.y + (m_Impl.Height - 12) / 2
     rc.Left = startX: rc.Top = startY
-    rc.Right = m_Impl.X + m_Impl.Width: rc.Bottom = m_Impl.Y + m_Impl.Height
+    rc.Right = m_Impl.x + m_Impl.Width: rc.Bottom = m_Impl.y + m_Impl.Height
     m_Interval = m_Interval + 1
-    strAux = m_Impl.Text
+    strAux = m_Impl.text
     If m_Impl.Focused Then
         If (m_Interval < (m_IntervalMax / 2)) Then
-            strAux = m_Impl.Text & " I"
+            strAux = m_Impl.text & " I"
         End If
     End If
-    Call UIRenderer.RenderText(strAux, rc.Left, rc.Top, m_Impl.Color, 1, 255)
+    Call UIRenderer.RenderText(strAux, rc.Left, rc.Top, m_Impl.color, 1, 255)
     If m_Interval = m_IntervalMax Then m_Interval = 0
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
-    m_IsHover = (mouseX >= m_Impl.X And mouseX <= m_Impl.X + m_Impl.Width And mouseY >= m_Impl.Y And mouseY <= m_Impl.Y + m_Impl.Height)
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
+    m_IsHover = (mouseX >= m_Impl.x And mouseX <= m_Impl.x + m_Impl.Width And mouseY >= m_Impl.y And mouseY <= m_Impl.y + m_Impl.Height)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then
         m_Clicked = True
-        hit = True
+        Hit = True
         Call m_Impl.SetFocus(True)
     End If
     m_PrevDown = down
@@ -141,9 +180,9 @@ End Sub
 Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
     If m_Impl.Focused Then
         If m_password Then
-            m_Impl.Text = m_Impl.Text & "*"
+            m_Impl.text = m_Impl.text & "*"
         Else
-            m_Impl.Text = m_Impl.Text & ChrW(keyCode)
+            m_Impl.text = m_Impl.text & ChrW(keyCode)
         End If
     End If
 End Sub
