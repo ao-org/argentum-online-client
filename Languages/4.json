@@ -747,4 +747,5 @@
   "CHALLENGE_ERROR_REPEATED_PLAYERS" : "Les joueurs ne peuvent pas être joués deux fois.",
   "CHALLENGE_ERROR_TOO_MUCH_GOLD" : "Vous ne pouvez pas miser plus de 10 000 000 de pièces d'or",
   "CHALLENGE_ERROR_INVALID_NAME" : "Nom de joueur invalide:"
+  "SEGURO_LEGIONARIO_DESHABILITADO_TEMPORALMENTE" : "L'assurance de la faction légionnaire est temporairement désactivée."
 }

@@ -748,4 +748,5 @@
     "CHALLENGE_ERROR_REPEATED_PLAYERS" : "No se permiten jugadores repetidos",
     "CHALLENGE_ERROR_TOO_MUCH_GOLD" : "No se permite apostar mas de 10.000.000 monedas de oro",
     "CHALLENGE_ERROR_INVALID_NAME" : "Nombre del jugador inválido:"
+	"SEGURO_LEGIONARIO_DESHABILITADO_TEMPORALMENTE" : "El seguro de facción Legionaria se encuentra deshabilitado temporalmente."
 }
