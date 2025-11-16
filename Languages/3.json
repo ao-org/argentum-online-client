@@ -720,5 +720,6 @@
   "MENSAJE_ESTILO_EQUIPAMIENTO_2" : "Clássico",
   "MENSAJE_DESCRIPCION_GUION_INVALIDO":"Hífens não são permitidos na descrição.",
   "LABEL_VRAM_USAGE":"Limite de VRAM:",
-  "LABEL_AMBIENT_LIGHT" : "Luz ambiente:"
+  "LABEL_AMBIENT_LIGHT" : "Luz ambiente:",
+  "SEGURO_LEGIONARIO_DESHABILITADO_TEMPORALMENTE" : "O seguro da facção Legionária está temporariamente desativado."
 }
