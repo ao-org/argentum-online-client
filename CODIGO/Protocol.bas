@@ -1332,7 +1332,7 @@ Private Sub HandleUpdateHP()
     Call frmMain.UpdateHpBar
     'Is the user alive??
     If UserStats.MinHp = 0 Then
-        #If No_Api_Steam = 0 Then
+        #If DEBUGGING = 0 Then
             Call svb_unlock_achivement("Memento Mori")
         #End If
         UserStats.estado = 1
@@ -1501,7 +1501,7 @@ Private Sub HandleNPCHitUser()
         Case bTorso
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_TORSO") & DañoStr, 255, 0, 0, True, False, False)
     End Select
-    #If No_Api_Steam = 0 Then
+    #If DEBUGGING = 0 Then
         Call svb_unlock_achivement("Small victory")
     #End If
     Exit Sub
@@ -3147,7 +3147,7 @@ Private Sub HandleUpdateUserStats()
     UserStats.GLD = Reader.ReadInt32()
     UserStats.OroPorNivel = Reader.ReadInt32()
     UserStats.Lvl = Reader.ReadInt8()
-    #If No_Api_Steam = 0 Then
+    #If DEBUGGING = 0 Then
         Select Case UserStats.Lvl:
             Case 10
                 Call svb_unlock_achivement("Adventurer")
@@ -3853,7 +3853,7 @@ End Sub
 Private Sub HandleLevelUp()
     On Error GoTo HandleLevelUp_Err
     SkillPoints = Reader.ReadInt16()
-    #If No_Api_Steam = 0 Then
+    #If DEBUGGING = 0 Then
         Call svb_unlock_achivement("Newbie's fate")
     #End If
     Exit Sub
