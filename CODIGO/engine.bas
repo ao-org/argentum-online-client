@@ -2045,7 +2045,7 @@ Public Sub start()
         End If
         DoEvents
         Call modNetwork.Poll
-        #If No_Api_Steam = 0 Then
+        #If DEBUGGING = 0 Then
             Call svb_run_callbacks
         #End If
         Call UpdateAntiCheat

@@ -103,14 +103,6 @@ Private Declare Function CreateProcessA _
                                 lpProcessInformation As Any) As Long
 Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
 Private Declare Function ShellExecuteExA Lib "shell32.dll" (pExecInfo As SHELLEXECUTEINFO) As Long
-Public Declare Function DefSubclassProc Lib "comctl32.dll" Alias "#413" (ByVal hWnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
-Private Declare Function SetWindowSubclass _
-                Lib "comctl32.dll" _
-                Alias "#410" (ByVal hWnd As Long, _
-                              ByVal pfnSubclass As Long, _
-                              ByVal uIdSubclass As Long, _
-                              Optional ByVal dwRefData As Long) As Long
-Private Declare Function RemoveWindowSubclass Lib "comctl32.dll" Alias "#412" (ByVal hWnd As Long, ByVal pfnSubclass As Long, ByVal uIdSubclass As Long) As Long
 Public Declare Function SendMessageW Lib "user32" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
 
 Public Function FARPROC(pfn As Long) As Long
@@ -125,19 +117,6 @@ Function LoWord(DWord As Long) As Integer
     CopyMemory LoWord, DWord, 2
 End Function
 
-Public Function Subclass(hWnd As Long, lpfn As Long) As Long
-    #If DISABLE_SUBCLASSING = 0 Then
-        Subclass = SetWindowSubclass(hWnd, lpfn, 0)
-    #End If
-End Function
-
-Public Function UnSubclass(hWnd As Long, lpfn As Long) As Long
-    'Only needed if you want to stop the subclassing code and keep the program running.
-    'Otherwise, the WndProc function should call this on WM_DESTROY
-    #If DISABLE_SUBCLASSING = 0 Then
-        UnSubclass = RemoveWindowSubclass(hWnd, lpfn, 0)
-    #End If
-End Function
 
 'Purpose     :  Synchronously runs a DOS command line and returns the captured screen output.
 'Inputs      :  sCommandLine                The DOS command line to run.
