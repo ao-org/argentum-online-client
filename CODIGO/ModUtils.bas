@@ -1780,10 +1780,10 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String, ByVal bytHeader A
     Dim NpcIndex             As String
     Dim ParalisisTime        As String
     Dim InmovilizedTime      As String
-    
-    NpcName = NpcData(Fields(0)).Name
+    Dim TmpNpcIndex as Integer
+    TmpNpcIndex = Fields(0)
+    NpcName = NpcData(TmpNpcIndex)
     Fields(0) = NpcName
-    
     NpcElementalTags = CLng(Fields(1))
     NpcStatuses = Fields(2)
     SplitNpcStatus = Split(NpcStatuses, "-")
