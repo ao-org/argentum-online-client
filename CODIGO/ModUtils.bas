@@ -1780,7 +1780,10 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String, ByVal bytHeader A
     Dim NpcIndex             As String
     Dim ParalisisTime        As String
     Dim InmovilizedTime      As String
-    NpcName = Fields(0)
+    Dim TmpNpcIndex as Integer
+    TmpNpcIndex = Fields(0)
+    NpcName = NpcData(TmpNpcIndex).Name
+    Fields(0) = NpcName
     NpcElementalTags = CLng(Fields(1))
     NpcStatuses = Fields(2)
     SplitNpcStatus = Split(NpcStatuses, "-")
@@ -1878,5 +1881,88 @@ On Error GoTo SkillsNamesToTxtParser_Err
     Exit Function
 SkillsNamesToTxtParser_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.SkillsNamesToTxtParser", Erl)
+    Resume Next
+End Function
+
+Public Function ClassesToTxtParser(ByRef Fields() As String)
+    On Error GoTo ClassesToTxtParser_Err
+    Dim ClassNumber As Integer
+    ClassNumber = CInt(Fields(0))
+    Select Case ClassNumber
+        Case e_Class.Mage
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_MAGO"))
+        Case e_Class.Cleric
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_CLERIGO"))
+        Case e_Class.Warrior
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_GUERRERO"))
+        Case e_Class.Assasin
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_ASESINO"))
+        Case e_Class.Bard
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_BARDO"))
+        Case e_Class.Druid
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_DRUIDA"))
+        Case e_Class.paladin
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_PALADIN"))
+        Case e_Class.Hunter
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_CAZADOR"))
+        Case e_Class.Worker
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_TRABAJADOR"))
+        Case e_Class.Pirat
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_PIRATA"))
+        Case e_Class.Thief
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_LADRON"))
+        Case e_Class.Bandit
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_BANDIDO"))
+        Case Else
+            Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CODIGO_INVALIDO"))
+    End Select
+    Exit Function
+ClassesToTxtParser_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ClassesToTxtParser", Erl)
+    Resume Next
+End Function
+
+Public Function QuestsIndexToTxtParser(ByRef Fields() As String)
+On Error GoTo QuestsIndexToTxtParser_Err
+    Fields(0) = QuestList(Fields(0)).nombre
+    Exit Function
+QuestsIndexToTxtParser_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.QuestsIndexToTxtParser", Erl)
+    Resume Next
+End Function
+
+Public Function RaceToTxtParser(ByRef Fields() As String)
+    On Error GoTo RaceToTxtParser_Err
+    Dim RaceNumber As Integer
+    Dim FinalStr   As String
+    If IsNumeric(Fields(0)) Then
+        RaceNumber = CInt(Fields(0))
+    Else
+        RaceNumber = CInt(Fields(1))
+    End If
+    Select Case RaceNumber
+        Case e_Race.Human
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_RAZA_HUMANO"))
+        Case e_Race.Elf
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_RAZA_ELFO"))
+        Case e_Race.DrowElf
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_RAZA_ELFO_OSCURO"))
+        Case e_Race.Gnome
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_RAZA_GNOMO"))
+        Case e_Race.Dwarf
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_RAZA_ENANO"))
+        Case e_Race.Orc
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_RAZA_ORCO"))
+        Case Else
+            FinalStr = CStr(JsonLanguage.Item("MENSAJE_CODIGO_INVALIDO"))
+    End Select
+    If IsNumeric(Fields(0)) Then
+        Fields(0) = FinalStr
+    Else
+        Fields(1) = FinalStr
+    End If
+    Exit Function
+RaceToTxtParser_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.RaceToTxtParser", Erl)
     Resume Next
 End Function

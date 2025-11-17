@@ -435,7 +435,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3217,7 +3216,7 @@ Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single,
     If frmCantidad.visible Then Unload frmCantidad
     If FrmGrupo.visible Then Unload FrmGrupo
     If FrmGmAyuda.visible Then Unload FrmGmAyuda
-    If frmGuildAdm.visible Then Unload frmGuildAdm
+    If frmGuildList.visible Then Unload frmGuildList
     If frmHerrero.visible Then Unload frmHerrero
     If FrmSastre.visible Then Unload FrmSastre
     If frmAlqui.visible Then Unload frmAlqui
