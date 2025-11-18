@@ -272,7 +272,7 @@ Begin VB.Form frmCustomKeys
       Height          =   315
       ItemData        =   "frmCustomKeys.frx":0000
       Left            =   4080
-      List            =   "frmCustomKeys.frx":0010
+      List            =   "frmCustomKeys.frx":0002
       Style           =   2  'Dropdown List
       TabIndex        =   48
       Top             =   3840
@@ -280,9 +280,9 @@ Begin VB.Form frmCustomKeys
    End
    Begin VB.ComboBox AccionList1 
       Height          =   315
-      ItemData        =   "frmCustomKeys.frx":005E
+      ItemData        =   "frmCustomKeys.frx":0004
       Left            =   4080
-      List            =   "frmCustomKeys.frx":006E
+      List            =   "frmCustomKeys.frx":0006
       Style           =   2  'Dropdown List
       TabIndex        =   45
       Top             =   2640
@@ -290,9 +290,9 @@ Begin VB.Form frmCustomKeys
    End
    Begin VB.ComboBox AccionList2 
       Height          =   315
-      ItemData        =   "frmCustomKeys.frx":00BC
+      ItemData        =   "frmCustomKeys.frx":0008
       Left            =   4080
-      List            =   "frmCustomKeys.frx":00CC
+      List            =   "frmCustomKeys.frx":000A
       Style           =   2  'Dropdown List
       TabIndex        =   44
       Top             =   3240
@@ -1275,8 +1275,23 @@ End Sub
 
 Private Sub Form_Load()
     On Error GoTo Form_Load_Err
-    Call CargaConfigEnForm
     Call FormParser.Parse_Form(Me)
+    AccionList1.Clear
+    AccionList2.Clear
+    AccionList3.Clear
+    AccionList1.AddItem (JsonLanguage.Item("COMBO_ACTION_KEY_0"))
+    AccionList1.AddItem (JsonLanguage.Item("COMBO_ACTION_KEY_1"))
+    AccionList1.AddItem (JsonLanguage.Item("COMBO_ACTION_KEY_2"))
+    AccionList1.AddItem (JsonLanguage.Item("COMBO_ACTION_KEY_3"))
+    AccionList2.AddItem (JsonLanguage.Item("COMBO_ACTION_KEY_0"))
+    AccionList2.AddItem (JsonLanguage.Item("COMBO_ACTION_KEY_1"))
+    AccionList2.AddItem (JsonLanguage.Item("COMBO_ACTION_KEY_2"))
+    AccionList2.AddItem (JsonLanguage.Item("COMBO_ACTION_KEY_3"))
+    AccionList3.AddItem (JsonLanguage.Item("COMBO_ACTION_KEY_0"))
+    AccionList3.AddItem (JsonLanguage.Item("COMBO_ACTION_KEY_1"))
+    AccionList3.AddItem (JsonLanguage.Item("COMBO_ACTION_KEY_2"))
+    AccionList3.AddItem (JsonLanguage.Item("COMBO_ACTION_KEY_3"))
+    Call CargaConfigEnForm
     lblSalirDel(0).Caption = JsonLanguage.Item("MENSAJE_507") ' Seguro de grupo
     lblSalirDel(1).Caption = JsonLanguage.Item("MENSAJE_508") ' Robar
     lblSalirDel(2).Caption = JsonLanguage.Item("MENSAJE_509") ' Actualizar Posición
@@ -1300,6 +1315,12 @@ Private Sub Form_Load()
     lblSalirDel(20).Caption = JsonLanguage.Item("MENSAJE_527") ' Meditar
     lblSalirDel(21).Caption = JsonLanguage.Item("MENSAJE_528") ' Domar
     lblSalirDel(22).Caption = JsonLanguage.Item("MENSAJE_529") ' Enviar texto
+    lblSalirDel(23).Caption = JsonLanguage.Item("LBL_OPEN_MAP")
+    lblSalirDel(24).Caption = JsonLanguage.Item("LBL_RESURRECTION_SAFELOCK")
+    lblSalirDel(25).Caption = JsonLanguage.Item("LBL_QUEST_MENU")
+    lblSalirDel(26).Caption = JsonLanguage.Item("LBL_GROUP_MENU")
+    lblSalirDel(27).Caption = JsonLanguage.Item("LBL_TOGGLE_SOUND")
+    lblSalirDel(28).Caption = JsonLanguage.Item("LBL_TOGGLE_MUSIC")
     lblSalirDel(31).Caption = JsonLanguage.Item("MENSAJE_530") ' Acción Click 3
     lblSalirDel(32).Caption = JsonLanguage.Item("MENSAJE_531") ' Configuración rapida:
     lblSalirDel(33).Caption = JsonLanguage.Item("MENSAJE_532") ' Acción Click 1

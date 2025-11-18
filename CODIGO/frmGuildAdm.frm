@@ -1,5 +1,5 @@
 VERSION 5.00
-Begin VB.Form frmGuildAdm 
+Begin VB.Form frmGuildList 
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Lista de clanes registrados"
@@ -56,7 +56,7 @@ Begin VB.Form frmGuildAdm
       Top             =   2160
       Width           =   4080
    End
-   Begin VB.ComboBox Combo1 
+   Begin VB.ComboBox cmbAlignment 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       BeginProperty Font 
@@ -72,7 +72,7 @@ Begin VB.Form frmGuildAdm
       Height          =   285
       ItemData        =   "frmGuildAdm.frx":0004
       Left            =   2280
-      List            =   "frmGuildAdm.frx":001A
+      List            =   "frmGuildAdm.frx":0006
       Style           =   2  'Dropdown List
       TabIndex        =   0
       Top             =   1600
@@ -106,7 +106,7 @@ Begin VB.Form frmGuildAdm
       Width           =   450
    End
 End
-Attribute VB_Name = "frmGuildAdm"
+Attribute VB_Name = "frmGuildList"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -135,34 +135,34 @@ Private cBotonBuscar     As clsGraphicalButton
 Private Sub cmdBuscar_Click()
     On Error GoTo Image1_Click_Err
     Dim i As Long
-    frmGuildAdm.guildslist.Clear
+    frmGuildList.GuildsList.Clear
     If Not ListaClanes Then Exit Sub
-    If Len(Filtro.text) <> 0 Then
+    If Len(Filtro.Text) <> 0 Then
         For i = 0 To UBound(ClanesList)
-            If Combo1.ListIndex < 5 Then
-                If ClanesList(i).Alineacion = Combo1.ListIndex Then
-                    If InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.text)) <> 0 Then
-                        Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            If cmbAlignment.ListIndex < 5 Then
+                If ClanesList(i).Alineacion = cmbAlignment.ListIndex Then
+                    If InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.Text)) <> 0 Then
+                        Call frmGuildList.GuildsList.AddItem(ClanesList(i).nombre)
                     End If
                 End If
-            ElseIf InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.text)) <> 0 Then
-                Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            ElseIf InStr(1, UCase$(ClanesList(i).nombre), UCase$(Filtro.Text)) <> 0 Then
+                Call frmGuildList.GuildsList.AddItem(ClanesList(i).nombre)
             End If
         Next i
     Else
         For i = 0 To UBound(ClanesList)
-            If Combo1.ListIndex < 5 Then
-                If ClanesList(i).Alineacion = Combo1.ListIndex Then
-                    Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            If cmbAlignment.ListIndex < 5 Then
+                If ClanesList(i).Alineacion = cmbAlignment.ListIndex Then
+                    Call frmGuildList.GuildsList.AddItem(ClanesList(i).nombre)
                 End If
             Else
-                Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+                Call frmGuildList.GuildsList.AddItem(ClanesList(i).nombre)
             End If
         Next i
     End If
     Exit Sub
 Image1_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmGuildAdm.Image1_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildList.Image1_Click", Erl)
     Resume Next
 End Sub
 
@@ -181,7 +181,7 @@ Private Sub cmdFundarClan_Click()
     Call WriteQuieroFundarClan
     Exit Sub
 cmdFundarClan_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmGuildAdm.cmdFundarClan_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildList.cmdFundarClan_Click", Erl)
     Resume Next
 End Sub
 
@@ -190,10 +190,16 @@ Private Sub Form_Load()
     Call FormParser.Parse_Form(Me)
     Me.Picture = LoadInterface("ventanaclanes.bmp")
     Call loadButtons
-    Combo1.ListIndex = 5
+    Call cmbAlignment.AddItem(JsonLanguage.Item("COMBO_ALIGNMENT_NEUTRAL"))
+    Call cmbAlignment.AddItem(JsonLanguage.Item("MENSAJE_ESTADO_ARMADA"))
+    Call cmbAlignment.AddItem(JsonLanguage.Item("MENSAJE_ESTADO_CAOS"))
+    Call cmbAlignment.AddItem(JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO"))
+    Call cmbAlignment.AddItem(JsonLanguage.Item("MENSAJE_ESTADO_CRIMINAL"))
+    Call cmbAlignment.AddItem(JsonLanguage.Item("COMBO_ALIGNMENT_ALL"))
+    cmbAlignment.ListIndex = 5
     Exit Sub
 Form_Load_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmGuildAdm.Form_Load", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildList.Form_Load", Erl)
     Resume Next
 End Sub
 
@@ -209,12 +215,12 @@ End Sub
 Private Sub Image3_Click()
     On Error GoTo Image3_Click_Err
     'Si nos encontramos con un guild con nombre vacío algo sospechoso está pasando, x las dudas no hacemos nada.
-    If Len(guildslist.List(guildslist.ListIndex)) = 0 Then Exit Sub
+    If Len(GuildsList.List(GuildsList.ListIndex)) = 0 Then Exit Sub
     frmGuildBrief.EsLeader = False
-    Call WriteGuildRequestDetails(guildslist.List(guildslist.ListIndex))
+    Call WriteGuildRequestDetails(GuildsList.List(GuildsList.ListIndex))
     Exit Sub
 Image3_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmGuildAdm.Image3_Click", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "frmGuildList.Image3_Click", Erl)
     Resume Next
 End Sub
 

@@ -435,7 +435,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1934,7 +1933,8 @@ imgInventario_MouseMove_Err:
 End Sub
 
 Private Sub ImgLegionarySecure_Click()
-    Call WriteLegionarySecure
+    'Call WriteLegionarySecure
+    Call ShowConsoleMsg(JsonLanguage.Item("SEGURO_LEGIONARIO_DESHABILITADO_TEMPORALMENTE"), FONTTYPE_INFOIAO)
 End Sub
 
 Private Sub imgManual_Click()
@@ -2102,7 +2102,7 @@ End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
     On Error GoTo Form_Unload_Err
-    #If No_Api_Steam = 0 Then
+    #If DEBUGGING = 0 Then
         Call svb_shutdown_steam
     #End If
     Call DisableURLDetect
@@ -3201,7 +3201,7 @@ Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single,
     If frmCantidad.visible Then Unload frmCantidad
     If FrmGrupo.visible Then Unload FrmGrupo
     If FrmGmAyuda.visible Then Unload FrmGmAyuda
-    If frmGuildAdm.visible Then Unload frmGuildAdm
+    If frmGuildList.visible Then Unload frmGuildList
     If frmHerrero.visible Then Unload frmHerrero
     If FrmSastre.visible Then Unload FrmSastre
     If frmAlqui.visible Then Unload frmAlqui

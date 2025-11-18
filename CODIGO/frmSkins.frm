@@ -105,10 +105,8 @@ Attribute InvSkins.VB_VarHelpID = -1
 Private Sub cmdCerrar_Click()
     ' Oculta el formulario
     'Call frmSkins.WalletSkins
-    
     bSkins = False
     Unload Me
-    
 End Sub
 
 Private Sub Form_Activate()
@@ -116,62 +114,44 @@ Private Sub Form_Activate()
 End Sub
 
 Private Sub Form_Initialize()
-    
     bSkins = True
-
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-    
     If KeyAscii = 27 Then
         Unload Me
     End If
-    
 End Sub
 
 Private Sub Form_Load()
-
-    ' Parsea la interfaz del formulario (diseño)
-   On Error GoTo Form_Load_Error
-
+    On Error GoTo Form_Load_Error
     Call FormParser.Parse_Form(Me)
     ' Aplica transparencia al formulario (valor 240 de opacidad)
     Call Aplicar_Transparencia(Me.hWnd, 240)
     ' Carga la imagen de fondo del formulario desde archivo
     frmSkins.Picture = LoadInterface("ventanaskins.bmp")
-    
     Set cBotonEliminarItem = New clsGraphicalButton
     Call cBotonEliminarItem.Initialize(imgDeleteItem, "boton-borrar-item-default.bmp", "boton-borrar-item-over.bmp", "boton-borrar-item-off.bmp", Me)
     Me.Left = (screen.Width - Me.Width) \ 2
     Me.Top = (screen.Height - Me.Height) \ 2
     bSkins = True
+    lblItemData.Caption = ""
     Call InvSkins.ReDraw
-    DoEvents
     Exit Sub
-    
-
-   On Error GoTo 0
-   Exit Sub
-
 Form_Load_Error:
-
     Call RegistrarError(Err.Number, Err.Description, "frmSkins.Form_Load", Erl())
-    
 End Sub
 
 ' Permite mover el formulario arrastrándolo con el mouse
 Private Sub Form_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
-    
     If Button = vbLeftButton Then
         Call ReleaseCapture
         Call SendMessage(Me.hWnd, WM_SYSCOMMAND, MOUSE_MOVE, 0&)
     End If
-
 End Sub
 
 ' Método público para ocultar el formulario
 Public Sub WalletSkins()
-    
     On Error GoTo WalletSkins_Err
     Exit Sub
 WalletSkins_Err:
@@ -189,16 +169,12 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub SkinEquip(ByVal eSkinType As eObjType)
-
-Static lastItem                 As Long
-
-Dim canEquip                    As Boolean
-
+    Static lastItem As Long
+    Dim canEquip    As Boolean
     If (Me.InvSkins.SelectedItem > 0) And (Me.InvSkins.SelectedItem < MAX_SKINSINVENTORY_SLOTS + 1) Then
         lastItem = Me.InvSkins.SelectedItem
         Call WriteEquipItem(Me.InvSkins.SelectedItem, True, eSkinType)
     End If
-    
 End Sub
 
 Private Sub imgDeleteItem_Click()
@@ -225,7 +201,7 @@ End Sub
 
 Private Sub interface_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     If InvSkins.SelectedItem > 0 Then
-        Me.lblItemData.Caption = InvSkins.GetInfo(InvSkins.ObjIndex(InvSkins.SelectedItem))
+        Me.lblItemData.Caption = ObjData(InvSkins.ObjIndex(InvSkins.SelectedItem)).Texto
     End If
 End Sub
 

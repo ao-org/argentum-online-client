@@ -1332,7 +1332,7 @@ Private Sub HandleUpdateHP()
     Call frmMain.UpdateHpBar
     'Is the user alive??
     If UserStats.MinHp = 0 Then
-        #If No_Api_Steam = 0 Then
+        #If DEBUGGING = 0 Then
             Call svb_unlock_achivement("Memento Mori")
         #End If
         UserStats.estado = 1
@@ -1501,7 +1501,7 @@ Private Sub HandleNPCHitUser()
         Case bTorso
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_TORSO") & DañoStr, 255, 0, 0, True, False, False)
     End Select
-    #If No_Api_Steam = 0 Then
+    #If DEBUGGING = 0 Then
         Call svb_unlock_achivement("Small victory")
     #End If
     Exit Sub
@@ -1625,7 +1625,7 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             Dim MsgID    As Integer
             Dim extraStr As String
             MsgID = val(ReadField(1, text, Asc("*")))             ' 2082
-            extraStr = ReadField(2, text, Asc("*"))               ' "Nombre¬OtroValor"
+            extraStr = ReadField(2, Text, Asc("*"))               ' "Nombre¬OtroValor"
             chat = Locale_Parse_ServerMessage(MsgID, extraStr)
             copiar = False
             duracion = 20
@@ -1656,13 +1656,6 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             chat = QuestList(ReadField(2, chat, Asc("*"))).DescFinal
             copiar = False
             duracion = 20
-        Case "QUESTNEXT"
-            chat = QuestList(ReadField(2, chat, Asc("*"))).NextQuest
-            copiar = False
-            duracion = 20
-            If LenB(chat) = 0 Then
-                chat = "Ya has completado esa misión para mí."
-            End If
         Case "NOCONSOLA" ' El chat no sale en la consola
             chat = ReadField(2, chat, Asc("*"))
             copiar = False
@@ -2928,7 +2921,7 @@ End Sub
 Private Sub HandleGuildList()
     On Error GoTo errhandler
     'Clear guild's list
-    frmGuildAdm.guildslist.Clear
+    frmGuildList.GuildsList.Clear
     Dim guildsStr As String
     guildsStr = Reader.ReadString8()
     If Len(guildsStr) > 0 Then
@@ -2944,13 +2937,13 @@ Private Sub HandleGuildList()
         Next i
         For i = 0 To UBound(guilds())
             'If ClanesList(i).Alineacion = 0 Then
-            Call frmGuildAdm.guildslist.AddItem(ClanesList(i).nombre)
+            Call frmGuildList.GuildsList.AddItem(ClanesList(i).nombre)
             'End If
         Next i
     End If
     COLOR_AZUL = RGB(0, 0, 0)
-    Call Establecer_Borde(frmGuildAdm.guildslist, frmGuildAdm, COLOR_AZUL, 0, 0)
-    Call frmGuildAdm.Show(vbModeless, GetGameplayForm())
+    Call Establecer_Borde(frmGuildList.GuildsList, frmGuildList, COLOR_AZUL, 0, 0)
+    Call frmGuildList.Show(vbModeless, GetGameplayForm())
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleGuildList", Erl)
@@ -3147,7 +3140,7 @@ Private Sub HandleUpdateUserStats()
     UserStats.GLD = Reader.ReadInt32()
     UserStats.OroPorNivel = Reader.ReadInt32()
     UserStats.Lvl = Reader.ReadInt8()
-    #If No_Api_Steam = 0 Then
+    #If DEBUGGING = 0 Then
         Select Case UserStats.Lvl:
             Case 10
                 Call svb_unlock_achivement("Adventurer")
@@ -3853,7 +3846,7 @@ End Sub
 Private Sub HandleLevelUp()
     On Error GoTo HandleLevelUp_Err
     SkillPoints = Reader.ReadInt16()
-    #If No_Api_Steam = 0 Then
+    #If DEBUGGING = 0 Then
         Call svb_unlock_achivement("Newbie's fate")
     #End If
     Exit Sub
@@ -5114,7 +5107,7 @@ Public Sub HandleQuestListSend()
         tmpStr = Reader.ReadString8
         'Agregamos los items
         For i = 1 To tmpByte
-            FrmQuests.lstQuests.AddItem ReadField(i, tmpStr, 59)
+            FrmQuests.lstQuests.AddItem ReadField(i, QuestList(tmpStr).nombre, 59)
         Next i
     End If
     'Mostramos el formulario
@@ -5557,38 +5550,63 @@ End Sub
 Public Sub HandleShopPjsInit()
     frmShopPjsAO20.Show , GetGameplayForm()
 End Sub
-
 Public Sub HandleShopInit()
-    Dim cant_obj_shop As Long, i As Long
+    On Error GoTo HandleShopInit_Err
+    Dim cant_obj_shop As Long, i As Long, J As Long
+    Dim tmp As ObjDatas
     cant_obj_shop = Reader.ReadInt16
     credits_shopAO20 = Reader.ReadInt32
     frmShopAO20.lblCredits.Caption = credits_shopAO20
     ReDim ObjShop(1 To cant_obj_shop) As ObjDatas
+
+    ' Leer todos los objetos
     For i = 1 To cant_obj_shop
         ObjShop(i).ObjNum = Reader.ReadInt32
         ObjShop(i).Valor = Reader.ReadInt32
         ObjShop(i).Name = Reader.ReadString8
-        Dim objTypeDebug As Long
-        Dim ropajeDebug As Long
-        If ObjShop(i).ObjNum >= LBound(ObjData) And ObjShop(i).ObjNum <= UBound(ObjData) Then
-            objTypeDebug = ObjData(ObjShop(i).ObjNum).ObjType
-            ObjShop(i).RequiereObjeto = ObjData(ObjShop(i).ObjNum).RequiereObjeto
-        End If
-        ropajeDebug = GetObjRopajeHumano(ObjShop(i).ObjNum)
-        Debug.Print "[ShopInit] ObjNum=" & ObjShop(i).ObjNum & _
-                    " ObjType=" & objTypeDebug & _
-                    " Name=""" & ObjShop(i).Name & """" & _
-                    " RopajeHumano=" & ropajeDebug & _
-                    " RequiereObjeto=" & ObjData(ObjShop(i).ObjNum).RequiereObjeto
+    Next i
+
+    ' Ordenar por ObjType y luego por Name (alfabético)
+    For i = 1 To cant_obj_shop - 1
+        For J = i + 1 To cant_obj_shop
+    
+            Dim typeI As Long
+            Dim typeJ As Long
+    
+            typeI = ObjData(ObjShop(i).ObjNum).ObjType
+            typeJ = ObjData(ObjShop(J).ObjNum).ObjType
+    
+            ' Si el ObjType es mayor, intercambiar
+            If typeI > typeJ Then
+                tmp = ObjShop(i)
+                ObjShop(i) = ObjShop(J)
+                ObjShop(J) = tmp
+    
+            ' Si el ObjType es igual, ordenar por Name
+            ElseIf typeI = typeJ Then
+                If StrComp(ObjShop(i).Name, ObjShop(J).Name, vbTextCompare) > 0 Then
+                    tmp = ObjShop(i)
+                    ObjShop(i) = ObjShop(J)
+                    ObjShop(J) = tmp
+                End If
+            End If
+        Next J
+    Next i
+
+    ' Agregar al ListBox ya ordenado
+    For i = 1 To cant_obj_shop
         With frmShopAO20.lstItemShopFilter
-            Call .AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )", i - 1)
+            .AddItem ObjShop(i).Name
             .ItemData(.NewIndex) = i
         End With
     Next i
-    frmShopAO20.Show , GetGameplayForm()
-    Call frmShopAO20.ResetShopPreview
-End Sub
 
+    frmShopAO20.Show , GetGameplayForm()
+    frmShopAO20.ResetShopPreview
+    Exit Sub
+HandleShopInit_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShopInit", Erl)
+End Sub
 Public Function GetObjRopajeHumano(ByVal objNum As Long) As Long
     On Error GoTo GetObjRopajeHumano_Err
     If objNum < LBound(ObjData) Or objNum > UBound(ObjData) Then Exit Function

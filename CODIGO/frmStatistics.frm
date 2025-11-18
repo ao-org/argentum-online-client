@@ -434,19 +434,19 @@ Public Sub Iniciar_Labels()
     Next
     Select Case UserEstadisticas.Alineacion
         Case 0
-            Label6(9).Caption = "Criminal"
+            Label6(9).Caption = JsonLanguage.Item("MENSAJE_ESTADO_CRIMINAL")
             Label6(9).ForeColor = RGB(255, 0, 0)
         Case 1
-            Label6(9).Caption = "Ciudadano"
+            Label6(9).Caption = JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO")
             Label6(9).ForeColor = RGB(0, 128, 255)
         Case 2
-            Label6(9).Caption = "Caos"
+            Label6(9).Caption = JsonLanguage.Item("MENSAJE_ESTADO_CAOS")
             Label6(9).ForeColor = RGB(128, 0, 0)
         Case 3
-            Label6(9).Caption = "Imperial"
+            Label6(9).Caption = JsonLanguage.Item("MENSAJE_ESTADO_ARMADA")
             Label6(9).ForeColor = RGB(33, 133, 132)
         Case Else
-            Label6(9).Caption = "Desconocido"
+            Label6(9).Caption = JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO")
     End Select
     With UserEstadisticas
         Label6(0).Caption = .CriminalesMatados 'Colocado

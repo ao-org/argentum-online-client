@@ -18,8 +18,8 @@ Begin VB.Form frmShopAO20
       Appearance      =   0  'Flat
       BackColor       =   &H80000001&
       ForeColor       =   &H80000000&
-      Height          =   3150
-      Left            =   360
+      Height          =   3540
+      Left            =   405
       TabIndex        =   5
       Top             =   2400
       Width           =   3255
@@ -28,8 +28,8 @@ Begin VB.Form frmShopAO20
       Appearance      =   0  'Flat
       BackColor       =   &H80000001&
       ForeColor       =   &H80000000&
-      Height          =   3150
-      Left            =   360
+      Height          =   3540
+      Left            =   405
       TabIndex        =   3
       Top             =   2400
       Visible         =   0   'False
@@ -94,6 +94,25 @@ Begin VB.Form frmShopAO20
       TabIndex        =   0
       Top             =   1620
       Width           =   2415
+   End
+   Begin VB.Label lblValue 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   -1  'True
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000080FF&
+      Height          =   495
+      Left            =   4410
+      TabIndex        =   9
+      Top             =   2625
+      Width           =   1215
    End
    Begin VB.Label Label1 
       Alignment       =   2  'Center
@@ -197,6 +216,10 @@ Private Sub Form_Activate()
     Call RenderUserPreview
 End Sub
 
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    Call MoverForm(Me.hWnd)
+End Sub
+
 Private Sub Image2_Click()
     Unload Me
 End Sub
@@ -253,6 +276,7 @@ Private Sub lstItemShopFilter_Click()
             requiredObjNum = requiredFromObjData
         End If
     End If
+    lblValue.Caption = JsonLanguage.Item("MENSAJE_VALOR") & ObjData(ObjNum).Valor
 
     RopajeHumano = GetObjRopajeHumano(ObjNum)
     Debug.Print "[ShopSelect] ObjNum=" & ObjNum & _
@@ -433,7 +457,7 @@ Private Sub txtFindObj_Change()
     For i = 1 To UBound(ObjShop)
         If InStr(1, ObjShop(i).Name, txtFindObj.text, 1) > 0 Then
             With lstItemShopFilter
-                Call .AddItem(ObjShop(i).Name & " ( " & JsonLanguage.Item("MENSAJE_VALOR") & ObjShop(i).Valor & " )")
+                Call .AddItem(ObjShop(i).Name)
                 .ItemData(.NewIndex) = i
             End With
         End If

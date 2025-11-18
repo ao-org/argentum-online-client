@@ -770,6 +770,9 @@ End Sub
 
 Sub Main()
     On Error GoTo Main_Err
+    debug_tools.Init
+    frmDebug.add_text_tracebox debug_tools.BuildFlags
+    
     Call parse_cmd_line_args
     'Must be at the top to make sure te resources password is loaded before we attempt to load anything
     'TODO: Remove the PASSWORD, it's useless and slow and remove the call to DoCrypt_Data bytArr, Passwd
@@ -804,7 +807,7 @@ Sub Main()
     Call InitCommonControls
     #If DEBUGGING = 0 Or ENABLE_ANTICHEAT = 1 Then
         SetDllDirectory App.path
-        #If No_Api_Steam = 0 Then
+        #If DEBUGGING = 0 Then
             Dim steam_init_result As Long
             steam_init_result = svb_init_steam(1956740)
             frmDebug.add_text_tracebox "Init Steam " & steam_init_result

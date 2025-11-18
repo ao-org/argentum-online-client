@@ -19,6 +19,16 @@ Begin VB.Form frmMapaGrande
    ScaleWidth      =   771
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
+   Begin VB.TextBox txtSearchMap 
+      Alignment       =   2  'Center
+      BackColor       =   &H00000000&
+      ForeColor       =   &H00FFFFFF&
+      Height          =   375
+      Left            =   9330
+      TabIndex        =   16
+      Top             =   465
+      Width           =   615
+   End
    Begin VB.PictureBox PlayerView 
       Appearance      =   0  'Flat
       BackColor       =   &H000A0A0A&
@@ -223,6 +233,21 @@ Begin VB.Form frmMapaGrande
       Interval        =   240
       Left            =   120
       Top             =   120
+   End
+   Begin VB.Shape Shape3 
+      BorderColor     =   &H000000C0&
+      FillColor       =   &H0000FFFF&
+      Height          =   405
+      Left            =   0
+      Top             =   0
+      Visible         =   0   'False
+      Width           =   405
+   End
+   Begin VB.Image cmdSearch 
+      Height          =   375
+      Left            =   9960
+      Top             =   450
+      Width           =   375
    End
    Begin VB.Label Label9 
       Alignment       =   2  'Center
@@ -497,6 +522,7 @@ Private Sub Form_Load()
     lblMapInfo(0).ForeColor = RGB(235, 164, 14)
     Call FormParser.Parse_Form(Me)
     Call Aplicar_Transparencia(Me.hWnd, 240)
+    cmdSearch.Picture = LoadInterface("boton-buscar-default.bmp")
     ' picMap.Picture = LoadInterface("mapa.bmp")
     Exit Sub
 Form_Load_Err:
@@ -567,16 +593,9 @@ End Sub
 
 Private Sub Image2_Click()
     On Error GoTo Image2_Click_Err
-    If WorldActual = 1 Then
-        WorldActual = 2
-        Image2.Picture = LoadInterface("check-amarillo.bmp")
-    Else
-        WorldActual = 1
-        Image2.Picture = Nothing
-    End If
-    ActualizarPosicionMapa
-    picMap.Picture = LoadInterface("mapa" & WorldActual & ".bmp")
-    Exit Sub
+    
+    Call ToggleDungeonView
+    
 Image2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Image2_Click", Erl)
     Resume Next
@@ -839,6 +858,7 @@ End Sub
 
 Public Sub CalcularPosicionMAPA()
     On Error GoTo CalcularPosicionMAPA_Err
+    Call CargarDatosMapa(UserMap)
     frmMapaGrande.lblMapInfo(0) = MapDat.map_name & "(" & UserMap & ")"
     If NameMaps(ResourceMap).desc <> "" Then
         frmMapaGrande.Label1.Caption = NameMaps(ResourceMap).desc
@@ -881,7 +901,6 @@ Public Sub CalcularPosicionMAPA()
             frmMapaGrande.Image2.Picture = Nothing
         End If
     End If
-    Call CargarDatosMapa(ResourceMap)
     Exit Sub
 CalcularPosicionMAPA_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.CalcularPosicionMAPA", Erl)
@@ -1040,4 +1059,100 @@ End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
     tmrPreview.enabled = False
+End Sub
+Private Sub cmdSearch_Click()
+
+On Error GoTo cmdSearch_Click_Err
+    Dim numMap As Integer
+    Dim world As Byte
+    Dim gridID As Long
+    numMap = val(txtSearchMap.Text)
+    If numMap <= 0 Then
+        txtSearchMap = ""
+        Exit Sub
+    End If
+
+    If SearchMap(numMap, world, gridID) Then
+        
+        'Si el mapa buscado pertenece a un world distinto, cambiar world
+        If world <> WorldActual Then
+            Call frmMapaGrande.ToggleDungeonView
+        Else
+            frmMapaGrande.picMap.Picture = LoadInterface("mapa" & world & ".bmp")
+        End If
+
+        ' Calcular coordenadas dentro del mundo
+        Dim x As Long, y As Long
+        x = (gridID - 1) Mod MAPAS_ANCHO
+        y = Int((gridID - 1) / MAPAS_ANCHO)
+
+        ' Mover cuadrado
+        frmMapaGrande.lblAllies.Left = x * TILE_SIZE
+        frmMapaGrande.lblAllies.Top = y * TILE_SIZE
+        frmMapaGrande.lblAllies.visible = True
+
+        ' Cargar datos del mapa buscado (MapDat.map_name se actualiza acá)
+        Call CargarDatosMapa(numMap)
+        ' Mostrar info
+        frmMapaGrande.lblMapInfo(0).Caption = MapDat.map_name & " (" & numMap & ")"
+        
+        txtSearchMap = ""
+        Call PreviewNPC_Clear
+    End If
+    Exit Sub
+cmdSearch_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.cmdSearch_Click", Erl)
+    Resume Next
+End Sub
+Public Function SearchMap(ByVal numMapa As Integer, _
+                           ByRef worldOut As Byte, _
+                           ByRef gridIDOut As Long) As Boolean
+On Error GoTo SearchMap_Err
+    Dim J As Byte
+    Dim i As Long
+
+    For J = 1 To TotalWorlds
+        For i = 1 To Mundo(J).Ancho * Mundo(J).Alto
+            If Mundo(J).MapIndice(i) = numMapa Then
+                worldOut = J
+                gridIDOut = i
+                SearchMap = True
+                Exit Function
+            End If
+        Next i
+    Next J
+
+    SearchMap = False
+    Exit Function
+SearchMap_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.SearchMap", Erl)
+    Resume Next
+End Function
+
+Public Sub ToggleDungeonView()
+On Error GoTo ToggleDungeonView_Err
+    If WorldActual = 1 Then
+        WorldActual = 2
+        Image2.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        WorldActual = 1
+        Image2.Picture = Nothing
+    End If
+    ActualizarPosicionMapa
+    picMap.Picture = LoadInterface("mapa" & WorldActual & ".bmp")
+    Exit Sub
+ToggleDungeonView_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.ToggleDungeonView", Erl)
+    Resume Next
+End Sub
+Private Sub txtSearchMap_KeyPress(KeyAscii As Integer)
+On Error GoTo txtSearchMap_KeyPress_Err
+    ' Permitir solo números y backspace
+    If (KeyAscii < 48 Or KeyAscii > 57) And KeyAscii <> vbKeyBack Then
+        KeyAscii = 0
+    End If
+    Exit Sub
+txtSearchMap_KeyPress_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.txtSearchMap_KeyPress", Erl)
+    Resume Next
 End Sub
