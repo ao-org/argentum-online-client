@@ -3109,83 +3109,68 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     On Error GoTo renderer_MouseUp_Err
     clicX = x
     clicY = y
-    If Button = vbLeftButton Then
-        If HandleMouseInput(x, y) Then
-        ElseIf HandleHotkeyArrowInput(x, y) Then
-        ElseIf Pregunta Then
-            If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
-                If PreguntaLocal Then
-                    Select Case PreguntaNUM
-                        Case 1
-                            Pregunta = False
-                            DestItemSlot = 0
-                            DestItemCant = 0
-                            PreguntaLocal = False
-                        Case 2 ' Denunciar
-                            Pregunta = False
-                            PreguntaLocal = False
-                    End Select
-                Else
-                    Call WriteResponderPregunta(False)
-                    Pregunta = False
-                End If
-                Exit Sub
-            ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then
-                If PreguntaLocal Then
-                    Select Case PreguntaNUM
-                        Case 1 '¿Destruir item?
-                            Call WriteDrop(DestItemSlot, DestItemCant)
-                            Pregunta = False
-                            PreguntaLocal = False
-                        Case 2 ' Denunciar
-                            Call WriteDenounce(targetName)
-                            Pregunta = False
-                            PreguntaLocal = False
-                    End Select
-                Else
-                    Call WriteResponderPregunta(True)
-                    Pregunta = False
-                End If
-                Exit Sub
-            End If
-        End If
-    ElseIf Button = vbRightButton Then
-        If gDragState.active Then
-            Call OnDragEnd
-            gDragState.active = False
-        End If
-        Dim charindex As Integer
-        charindex = MapData(tX, tY).charindex
-        If charindex = 0 Then
-            charindex = MapData(tX, tY + 1).charindex
-        End If
-        If charindex <> 0 And charindex <> UserCharIndex Then
-            Dim Frm As Form
-            Call WriteLeftClick(tX, tY)
-            TargetX = tX
-            TargetY = tY
-            If charlist(charindex).EsMascota Then
-                Set Frm = MenuNPC
-            ElseIf Not charlist(charindex).EsNpc Then
-                targetName = charlist(charindex).nombre
-                If charlist(UserCharIndex).priv > 0 And Shift = 0 Then
-                    Set Frm = MenuGM
-                Else
-                    Set Frm = MenuUser
+    
+    Dim MouseAction As e_MouseAction
+    Select Case Button
+        Case vbLeftButton:  MouseAction = ACCION1
+        Case vbRightButton: MouseAction = ACCION2
+        Case vbMiddleButton: MouseAction = ACCION3
+        Case Else: Exit Sub
+    End Select
+    
+    Select Case MouseAction
+    
+        Case e_MouseAction.eThrowOrLook
+            If HandleMouseInput(x, y) Then
+            ElseIf HandleHotkeyArrowInput(x, y) Then
+            ElseIf Pregunta Then
+                If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
+                    If PreguntaLocal Then
+                        Select Case PreguntaNUM
+                            Case 1
+                                Pregunta = False
+                                DestItemSlot = 0
+                                DestItemCant = 0
+                                PreguntaLocal = False
+                            Case 2 ' Denunciar
+                                Pregunta = False
+                                PreguntaLocal = False
+                        End Select
+                    Else
+                        Call WriteResponderPregunta(False)
+                        Pregunta = False
+                    End If
+                    Exit Sub
+                ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then
+                    If PreguntaLocal Then
+                        Select Case PreguntaNUM
+                            Case 1 '¿Destruir item?
+                                Call WriteDrop(DestItemSlot, DestItemCant)
+                                Pregunta = False
+                                PreguntaLocal = False
+                            Case 2 ' Denunciar
+                                Call WriteDenounce(targetName)
+                                Pregunta = False
+                                PreguntaLocal = False
+                        End Select
+                    Else
+                        Call WriteResponderPregunta(True)
+                        Pregunta = False
+                    End If
+                    Exit Sub
                 End If
             End If
-            If Not Frm Is Nothing Then
-                Call Frm.Show
-                Frm.Left = Me.Left + (renderer.Left + x + 1) * screen.TwipsPerPixelX
-                If (renderer.Top + y) * screen.TwipsPerPixelY + Frm.Height > Me.Height Then
-                    Frm.Top = Me.Top + (renderer.Top + y) * screen.TwipsPerPixelY - Frm.Height
-                Else
-                    Frm.Top = Me.Top + (renderer.Top + y) * screen.TwipsPerPixelY
-                End If
-                Set Frm = Nothing
+            
+        Case e_MouseAction.eInteract
+            If gDragState.active Then
+                Call OnDragEnd
+                gDragState.active = False
             End If
-        End If
-    End If
+            Dim dummyRect As RECT
+            dummyRect.Left = renderer.Left
+            dummyRect.Top = renderer.Top
+            Call ShowInteractionMenu(Me.Top, Me.Left, Me.Height, x, y, dummyRect)
+    End Select
     Exit Sub
 renderer_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.renderer_MouseUp", Erl)
