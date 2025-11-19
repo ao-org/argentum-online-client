@@ -39,7 +39,7 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 Private Const WINDOW_WIDTH    As Long = 300
-Private Const WINDOW_HEIGHT   As Long = 300
+Private Const WINDOW_HEIGHT   As Long = 380
 Private Const WINDOW_OFFSET_Y As Long = 100  ' adjust this value to move window lower
 Private m_UIMgr               As clsUIManager
 Private m_lblTitle             As clsUILabel
@@ -58,13 +58,13 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_lblTitle
     Set m_btnConnect = New clsUIButton
-    m_btnConnect.Init "Conectar", 0, 0, 100, 30, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+    m_btnConnect.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_btnConnect
     Set m_inputboxUser = New clsUIInputbox
-    m_inputboxUser.Init "email", 0, 0, 200, 30, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, False
+    m_inputboxUser.Init "Email", 0, 0, 240, 40, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, False
     m_UIMgr.AddComponent m_inputboxUser
     Set m_inputboxPass = New clsUIInputbox
-    m_inputboxPass.Init "clave", 0, 0, 200, 30, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, True
+    m_inputboxPass.Init "Clave", 0, 0, 240, 40, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, True
     m_UIMgr.AddComponent m_inputboxPass
     Set m_cbOk = New clsUICheckbox
     m_cbOk.Init "Recordarme", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE
@@ -141,11 +141,12 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         
         
         ' Position UI controls
-        m_lblTitle.SetPosition wx + 120, wy + 40
-        m_inputboxUser.SetPosition wx + 48, wy + 77
-        m_inputboxPass.SetPosition wx + 48, wy + 117
-        m_cbOk.SetPosition wx + 48, wy + 160
-        m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + WINDOW_HEIGHT - 90
+        
+        m_lblTitle.SetPosition wx + 45, wy + 10
+        m_inputboxUser.SetPosition wx + 30, wy + 100
+        m_inputboxPass.SetPosition wx + 30, wy + 150
+        m_cbOk.SetPosition wx + 30, wy + 200
+        m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + 235
         m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy + 50, m_haracinOk
 
         ' Draw UI widgets + batched renderer
@@ -160,8 +161,8 @@ Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseBu
     m_UIMgr.HandleMouse mouseX, mouseY, mouseButtons
 End Sub
 
-Public Sub HandleKeyboard(ByVal KeyCode As Long, ByVal shiftState As Long)
-    m_UIMgr.HandleKeyboard KeyCode, shiftState
+Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
+    m_UIMgr.HandleKeyboard keyCode, shiftState
 End Sub
 
 Public Function WasConnectClicked() As Boolean
