@@ -87,14 +87,14 @@ Public Property Let WasClicked(ByVal val As Boolean)
 End Property
 
 Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
-    Dim cbTextureL As Direct3DTexture8
+    Dim imgTexture As Direct3DTexture8
     Dim texW As Long: Dim texH As Long: Dim b As Integer
 
-    Set cbTexture = UITextures.GetTexture(13018, texW, texH)
-    If Not cbTexture Is Nothing Then
+    Set imgTexture = UITextures.GetTexture(13018, texW, texH)
+    If Not imgTexture Is Nothing Then
         UIRenderer.AddTexturedQuad _
             m_Impl.x, m_Impl.y, m_Impl.Width, m_Impl.Height, _
-        cbTextureL, _
+        imgTexture, _
         0!, 0!, 1!, 1!, _
         UI_COLOR_WHITE, 255
     Else
