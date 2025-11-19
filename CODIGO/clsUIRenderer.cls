@@ -479,7 +479,7 @@ Public Sub RenderText(Texto As String, _
                       ByVal color As Long, _
                       Optional ByVal font_index As Integer = 1, _
                       Optional ByVal alpha As Byte = 255, _
-                      Optional ByVal Scale As Single = 1!)
+                      Optional ByVal rescale As Single = 1!)
    
  
  On Error GoTo RenderText_Err
@@ -493,9 +493,9 @@ Public Sub RenderText(Texto As String, _
     Dim vbColor As Long
     vbColor = NormalizeTextColor(color)
 
-    Dim effectiveScale As Single
-    effectiveScale = Scale
-    If effectiveScale <= 0! Then effectiveScale = 1!
+    Dim effectiveRescale As Single
+    effectiveRescale = rescale
+    If effectiveRescale <= 0! Then effectiveRescale = 1!
 
     Dim advanceX As Long
     Dim charsOnLine As Long
@@ -504,11 +504,11 @@ Public Sub RenderText(Texto As String, _
     Const WRAP_THRESHOLD As Long = 33
 
     Dim spaceWidth As Long
-    spaceWidth = CLng(2 * effectiveScale)
+    spaceWidth = CLng(2 * effectiveRescale)
     If spaceWidth < 1 Then spaceWidth = 1
 
     Dim lineHeight As Long
-    lineHeight = CLng(14 * effectiveScale)
+    lineHeight = CLng(14 * effectiveRescale)
     If lineHeight < 1 Then lineHeight = 1
 
     advanceX = 0
@@ -536,7 +536,7 @@ Public Sub RenderText(Texto As String, _
                 Dim glyphIdx As Long
                 glyphIdx = graf.GrhIndex
 
-                AddGlyphQuad glyphIdx, x + advanceX, y + lineIndex * lineHeight, vbColor, AlphaValue, effectiveScale
+                AddGlyphQuad glyphIdx, x + advanceX, y + lineIndex * lineHeight, vbColor, AlphaValue, effectiveRescale
 
                 If GrhData(glyphIdx).NumFrames > 0 Then
                     glyphIdx = GrhData(glyphIdx).Frames(1)
@@ -550,7 +550,7 @@ Public Sub RenderText(Texto As String, _
                         glyphAdvance = glyphAdvance - 1
                     End If
 
-                    glyphAdvance = CLng(glyphAdvance * effectiveScale)
+                    glyphAdvance = CLng(glyphAdvance * effectiveRescale)
                     If glyphAdvance < 1 Then glyphAdvance = 1
 
                     advanceX = advanceX + glyphAdvance
