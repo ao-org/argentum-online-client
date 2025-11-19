@@ -393,7 +393,7 @@ Private Function NormalizeTextColor(ByVal inputColor As Long) As Long
     End If
 End Function
 
-Private Sub AddGlyphQuad(ByVal glyphIndex As Long, ByVal drawX As Long, ByVal drawY As Long, ByVal vbColor As Long, ByVal alphaVal As Byte, ByVal scale As Single)
+Private Sub AddGlyphQuad(ByVal glyphIndex As Long, ByVal drawX As Long, ByVal drawY As Long, ByVal vbColor As Long, ByVal alphaVal As Byte, ByVal rescale As Single)
     If glyphIndex <= 0 Then Exit Sub
 
     Dim finalIndex As Long
@@ -412,10 +412,14 @@ Private Sub AddGlyphQuad(ByVal glyphIndex As Long, ByVal drawX As Long, ByVal dr
     glyphWidth = GrhData(finalIndex).pixelWidth + 1
     glyphHeight = GrhData(finalIndex).pixelHeight + 1
 
+    Dim effectiveRescale As Single
+    effectiveRescale = rescale
+    If effectiveRescale <= 0! Then effectiveRescale = 1!
+
     Dim scaledWidth As Long
     Dim scaledHeight As Long
-    scaledWidth = CLng(glyphWidth * scale)
-    scaledHeight = CLng(glyphHeight * scale)
+    scaledWidth = CLng(glyphWidth * effectiveRescale)
+    scaledHeight = CLng(glyphHeight * effectiveRescale)
 
     If scaledWidth < 1 Then scaledWidth = 1
     If scaledHeight < 1 Then scaledHeight = 1
