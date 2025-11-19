@@ -43,6 +43,7 @@ Private Const WINDOW_HEIGHT   As Long = 380
 Private Const WINDOW_OFFSET_Y As Long = 100  ' adjust this value to move window lower
 Private m_UIMgr               As clsUIManager
 Private m_lblTitle             As clsUILabel
+Private m_imgSeparatorH       As clsUIImage
 Private m_lblPass             As clsUILabel
 Private m_cbOk          As clsUICheckbox
 Private m_btnConnect          As clsUIButton
@@ -57,6 +58,9 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_lblTitle = New clsUILabel
     m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_lblTitle
+'    Set m_imgSeparatorH = New clsUIImage
+'    m_imgSeparatorH.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+'    m_UIMgr.AddComponent m_imgSeparatorH
     Set m_btnConnect = New clsUIButton
     m_btnConnect.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_btnConnect
@@ -103,7 +107,7 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         For i = 30 To 38
             Select Case i
                 Case 30
-                    x = wx: y = wy: w = WINDOW_WIDTH: h = WINDOW_HEIGHT
+                    x = wx + b: y = wy + b: w = WINDOW_WIDTH - b: h = WINDOW_HEIGHT - b
                 Case 31
                     x = wx: y = wy: w = b: h = b
                 Case 32
@@ -143,6 +147,7 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         ' Position UI controls
         
         m_lblTitle.SetPosition wx + 45, wy + 10
+'        m_imgSeparator.SetPosition wx + 45, wy + 90
         m_inputboxUser.SetPosition wx + 30, wy + 100
         m_inputboxPass.SetPosition wx + 30, wy + 150
         m_cbOk.SetPosition wx + 30, wy + 200
