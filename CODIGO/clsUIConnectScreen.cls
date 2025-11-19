@@ -39,11 +39,12 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 Private Const WINDOW_WIDTH    As Long = 300
-Private Const WINDOW_HEIGHT   As Long = 380
+Private Const WINDOW_HEIGHT   As Long = 360
 Private Const WINDOW_OFFSET_Y As Long = 100  ' adjust this value to move window lower
 Private m_UIMgr               As clsUIManager
 Private m_lblTitle             As clsUILabel
-Private m_imgSeparatorH       As clsUIImage
+Private m_imgSeparatorH1       As clsUIImage
+Private m_imgSeparatorH2       As clsUIImage
 Private m_lblPass             As clsUILabel
 Private m_cbOk          As clsUICheckbox
 Private m_btnConnect          As clsUIButton
@@ -51,6 +52,8 @@ Private m_inputboxUser          As clsUIInputbox
 Private m_inputboxPass          As clsUIInputbox
 Private m_boxInfo          As clsUIBoxInfo
 Private m_haracinOk          As Boolean
+Private m_lblNewAccount             As clsUILabel
+Private m_lblForgotPass             As clsUILabel
 
  
 Public Sub Init(ByVal dev As Direct3DDevice8)
@@ -58,9 +61,9 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_lblTitle = New clsUILabel
     m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_lblTitle
-'    Set m_imgSeparatorH = New clsUIImage
-'    m_imgSeparatorH.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
-'    m_UIMgr.AddComponent m_imgSeparatorH
+    Set m_imgSeparatorH1 = New clsUIImage
+    m_imgSeparatorH1.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+    m_UIMgr.AddComponent m_imgSeparatorH1
     Set m_btnConnect = New clsUIButton
     m_btnConnect.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_btnConnect
@@ -76,6 +79,15 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_boxInfo = New clsUIBoxInfo
     m_boxInfo.Init "HORACIO es un Atosigador de fines del siglo XX, aun activo en 2025. Se caracteriza por hostigar varios recursos a la vez y romper sober_anamente las pelotas ...", 0, 0, 250, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK
     m_UIMgr.AddComponent m_boxInfo
+    Set m_imgSeparatorH2 = New clsUIImage
+    m_imgSeparatorH2.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+    m_UIMgr.AddComponent m_imgSeparatorH2
+'    Set m_lblNewAccount = New clsUILabel
+'    m_lblNewAccount.Init "Crear cuenta", 0, 0, UI_COLOR_GOLD
+'    m_UIMgr.AddComponent m_lblNewAccount
+'    Set m_lblForgotPass = New clsUILabel
+'    m_lblForgotPass.Init "Olvide mi contraseña", 0, 0, UI_COLOR_GOLD
+'    m_UIMgr.AddComponent m_lblForgotPass
     m_haracinOk = False
 End Sub
 
@@ -107,7 +119,7 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         For i = 30 To 38
             Select Case i
                 Case 30
-                    x = wx + b: y = wy + b: w = WINDOW_WIDTH - b: h = WINDOW_HEIGHT - b
+                    x = wx + b: y = wy + b: w = WINDOW_WIDTH - (2 * b): h = WINDOW_HEIGHT - (2 * b)
                 Case 31
                     x = wx: y = wy: w = b: h = b
                 Case 32
@@ -147,11 +159,14 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         ' Position UI controls
         
         m_lblTitle.SetPosition wx + 45, wy + 10
-'        m_imgSeparator.SetPosition wx + 45, wy + 90
+        m_imgSeparatorH1.SetPosition wx + 30, wy + 80
         m_inputboxUser.SetPosition wx + 30, wy + 100
         m_inputboxPass.SetPosition wx + 30, wy + 150
         m_cbOk.SetPosition wx + 30, wy + 200
         m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + 235
+        m_imgSeparatorH2.SetPosition wx + 30, wy + 290
+'        m_lblNewAccount.SetPosition wx + 30, wy + 320
+'        m_lblForgotPass.SetPosition wx + 100, wy + 320
         m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy + 50, m_haracinOk
 
         ' Draw UI widgets + batched renderer
