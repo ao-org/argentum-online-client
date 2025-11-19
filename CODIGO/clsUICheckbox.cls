@@ -59,7 +59,7 @@ Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal cl
     End If
 
     m_Impl.InitLabel text, x, y, clrText
-    m_Impl.SetSize 15, 15
+    m_Impl.SetSize 30, 30
     m_Impl.ColorFill = clrFill
     m_Impl.HoverColor = clrHover
     m_Clicked = False: m_PrevDown = False: m_IsHover = False
@@ -103,7 +103,7 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     End If
     If Not cbTexture Is Nothing Then
         UIRenderer.AddTexturedQuad _
-            m_Impl.X, m_Impl.Y, m_Impl.Width, m_Impl.Height, _
+            m_Impl.x, m_Impl.y, m_Impl.Width, m_Impl.Height, _
         cbTexture, _
         0!, 0!, 1!, 1!, _
         UI_COLOR_WHITE, 255
@@ -114,19 +114,19 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
         cols2(1) = UI_COLOR_WHITE
         cols2(2) = UI_COLOR_WHITE
         cols2(3) = UI_COLOR_WHITE
-        UIRenderer.AddQuad m_Impl.X, m_Impl.Y, m_Impl.Width, m_Impl.Height, cols2, 190
+        UIRenderer.AddQuad m_Impl.x, m_Impl.y, m_Impl.Width, m_Impl.Height, cols2, 190
     End If
     Dim rc As RECT
-    rc.Left = m_Impl.X + 20: rc.Top = m_Impl.Y
-    rc.Right = m_Impl.X + m_Impl.Width: rc.Bottom = m_Impl.Y + m_Impl.Height
-    Call UIRenderer.RenderText(m_Impl.Text, rc.Left, rc.Top, m_Impl.Color, 1, 255)
+    rc.Left = m_Impl.x + 35: rc.Top = m_Impl.y + 6
+    rc.Right = m_Impl.x + m_Impl.Width: rc.Bottom = m_Impl.y + m_Impl.Height
+    Call UIRenderer.RenderText(m_Impl.text, rc.Left, rc.Top, m_Impl.color, 1, 255)
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
-    m_IsHover = (mouseX >= m_Impl.X And mouseX <= m_Impl.X + m_Impl.Width And mouseY >= m_Impl.Y And mouseY <= m_Impl.Y + m_Impl.Height)
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
+    m_IsHover = (mouseX >= m_Impl.x And mouseX <= m_Impl.x + m_Impl.Width And mouseY >= m_Impl.y And mouseY <= m_Impl.y + m_Impl.Height)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then
-        hit = True
+        Hit = True
         Call m_Impl.SetFocus(True)
         If m_Clicked Then
             m_Clicked = False
