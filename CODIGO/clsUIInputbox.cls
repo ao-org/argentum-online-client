@@ -51,6 +51,7 @@ Private m_password  As Boolean
 Private m_EmptyText As String
 Private m_TextW As Integer
 Private m_TextH As Integer
+Private m_MarginLeft As Integer
 
 Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long, ByVal pswd As Boolean)
     If m_Impl Is Nothing Then
@@ -67,7 +68,7 @@ Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal w 
     m_password = pswd
     m_TextW = 7
     m_TextH = 12
-    
+    m_MarginLeft = 10
 End Sub
 
 Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
@@ -118,15 +119,10 @@ Dim cbTextureL As Direct3DTexture8
     Dim cbTextureR As Direct3DTexture8
     Dim texW As Long: Dim texH As Long: Dim b As Integer
     b = 5
-    If (m_IsHover) Then
-        Set cbTextureL = UITextures.GetTexture(13006, texW, texH)
-        Set cbTextureC = UITextures.GetTexture(13007, texW, texH)
-        Set cbTextureR = UITextures.GetTexture(13008, texW, texH)
-    Else
-        Set cbTextureL = UITextures.GetTexture(13000, texW, texH)
-        Set cbTextureC = UITextures.GetTexture(13001, texW, texH)
-        Set cbTextureR = UITextures.GetTexture(13002, texW, texH)
-    End If
+    Set cbTextureL = UITextures.GetTexture(13019, texW, texH)
+    Set cbTextureC = UITextures.GetTexture(13020, texW, texH)
+    Set cbTextureR = UITextures.GetTexture(13021, texW, texH)
+
     If Not cbTextureL Is Nothing And Not cbTextureC Is Nothing And Not cbTextureR Is Nothing Then
         UIRenderer.AddTexturedQuad _
             m_Impl.x, m_Impl.y, b, m_Impl.Height, _
@@ -157,7 +153,8 @@ Dim cbTextureL As Direct3DTexture8
     Dim RECT As RECT
     Dim StartX As Integer
     Dim StartY As Integer
-    StartX = m_Impl.x + (m_Impl.Width - (Len(m_Impl.Text) * m_TextW)) / 2
+'    StartX = m_Impl.x + (m_Impl.Width - (Len(m_Impl.Text) * m_TextW)) / 2
+    StartX = m_Impl.x + m_MarginLeft
     StartY = m_Impl.y + (m_Impl.Height - m_TextH) / 2
     colorTextAux = 255
     m_Interval = m_Interval + 1
@@ -174,7 +171,7 @@ Dim cbTextureL As Direct3DTexture8
     Else
         If m_Impl.Text = "" Then
             strAux = m_EmptyText
-            StartX = m_Impl.x + (m_Impl.Width - (Len(m_EmptyText) * m_TextW)) / 2
+'            StartX = m_Impl.x + (m_Impl.Width - (Len(m_EmptyText) * m_TextW)) / 2
             colorTextAux = 120
         Else
             strAux = m_Impl.Text
