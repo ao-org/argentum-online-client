@@ -393,7 +393,7 @@ Private Function NormalizeTextColor(ByVal inputColor As Long) As Long
     End If
 End Function
 
-Private Sub AddGlyphQuad(ByVal glyphIndex As Long, ByVal drawX As Long, ByVal drawY As Long, ByVal vbColor As Long, ByVal alphaVal As Byte)
+Private Sub AddGlyphQuad(ByVal glyphIndex As Long, ByVal drawX As Long, ByVal drawY As Long, ByVal vbColor As Long, ByVal alphaVal As Byte, ByVal scale As Single)
     If glyphIndex <= 0 Then Exit Sub
 
     Dim finalIndex As Long
@@ -412,6 +412,14 @@ Private Sub AddGlyphQuad(ByVal glyphIndex As Long, ByVal drawX As Long, ByVal dr
     glyphWidth = GrhData(finalIndex).pixelWidth + 1
     glyphHeight = GrhData(finalIndex).pixelHeight + 1
 
+    Dim scaledWidth As Long
+    Dim scaledHeight As Long
+    scaledWidth = CLng(glyphWidth * scale)
+    scaledHeight = CLng(glyphHeight * scale)
+
+    If scaledWidth < 1 Then scaledWidth = 1
+    If scaledHeight < 1 Then scaledHeight = 1
+
     Dim cols(3) As Long
     cols(0) = vbColor
     cols(1) = vbColor
@@ -423,7 +431,7 @@ Private Sub AddGlyphQuad(ByVal glyphIndex As Long, ByVal drawX As Long, ByVal dr
     startCmd = cmdCount
     startVert = vertexCount
 
-    AddQuad drawX, drawY, glyphWidth, glyphHeight, cols, alphaVal
+    AddQuad drawX, drawY, scaledWidth, scaledHeight, cols, alphaVal
 
     If cmdCount <= startCmd Then Exit Sub
 
@@ -470,7 +478,8 @@ Public Sub RenderText(Texto As String, _
                       ByVal y As Integer, _
                       ByVal color As Long, _
                       Optional ByVal font_index As Integer = 1, _
-                      Optional ByVal alpha As Byte = 255)
+                      Optional ByVal alpha As Byte = 255, _
+                      Optional ByVal Scale As Single = 1!)
    
  
  On Error GoTo RenderText_Err
@@ -484,11 +493,23 @@ Public Sub RenderText(Texto As String, _
     Dim vbColor As Long
     vbColor = NormalizeTextColor(color)
 
+    Dim effectiveScale As Single
+    effectiveScale = Scale
+    If effectiveScale <= 0! Then effectiveScale = 1!
+
     Dim advanceX As Long
     Dim charsOnLine As Long
     Dim lineIndex As Long
     Dim idx As Long
     Const WRAP_THRESHOLD As Long = 33
+
+    Dim spaceWidth As Long
+    spaceWidth = CLng(2 * effectiveScale)
+    If spaceWidth < 1 Then spaceWidth = 1
+
+    Dim lineHeight As Long
+    lineHeight = CLng(14 * effectiveScale)
+    If lineHeight < 1 Then lineHeight = 1
 
     advanceX = 0
     For idx = 1 To Len(Texto)
@@ -508,25 +529,31 @@ Public Sub RenderText(Texto As String, _
                     advanceX = 0
                     charsOnLine = 0
                 Else
-                    advanceX = advanceX + 2
+                    advanceX = advanceX + spaceWidth
                     charsOnLine = charsOnLine + 1
                 End If
             ElseIf graf.GrhIndex > 12 Then
                 Dim glyphIdx As Long
                 glyphIdx = graf.GrhIndex
 
-                AddGlyphQuad glyphIdx, x + advanceX, y + lineIndex * 14, vbColor, AlphaValue
+                AddGlyphQuad glyphIdx, x + advanceX, y + lineIndex * lineHeight, vbColor, AlphaValue, effectiveScale
 
                 If GrhData(glyphIdx).NumFrames > 0 Then
                     glyphIdx = GrhData(glyphIdx).Frames(1)
                 End If
 
                 If glyphIdx > 0 Then
+                    Dim glyphAdvance As Long
+                    glyphAdvance = GrhData(glyphIdx).pixelWidth
+
                     If font_index = 4 Then
-                        advanceX = advanceX + GrhData(glyphIdx).pixelWidth - 1
-                    Else
-                        advanceX = advanceX + GrhData(glyphIdx).pixelWidth
+                        glyphAdvance = glyphAdvance - 1
                     End If
+
+                    glyphAdvance = CLng(glyphAdvance * effectiveScale)
+                    If glyphAdvance < 1 Then glyphAdvance = 1
+
+                    advanceX = advanceX + glyphAdvance
                 End If
 
                 charsOnLine = charsOnLine + 1
