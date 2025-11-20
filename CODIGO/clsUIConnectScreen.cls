@@ -59,7 +59,7 @@ Private m_lblForgotPass             As clsUILabel
 Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager: m_UIMgr.Init
     Set m_lblTitle = New clsUILabel
-    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE
+    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8
     m_UIMgr.AddComponent m_lblTitle
     Set m_imgSeparatorH1 = New clsUIImage
     m_imgSeparatorH1.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
@@ -82,12 +82,12 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_imgSeparatorH2 = New clsUIImage
     m_imgSeparatorH2.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_imgSeparatorH2
-'    Set m_lblNewAccount = New clsUILabel
-'    m_lblNewAccount.Init "Crear cuenta", 0, 0, UI_COLOR_GOLD
-'    m_UIMgr.AddComponent m_lblNewAccount
-'    Set m_lblForgotPass = New clsUILabel
-'    m_lblForgotPass.Init "Olvide mi contraseña", 0, 0, UI_COLOR_GOLD
-'    m_UIMgr.AddComponent m_lblForgotPass
+    Set m_lblNewAccount = New clsUILabel
+    m_lblNewAccount.Init "Crear cuenta", 0, 0, UI_COLOR_WHITE, 100, 1, 1
+    m_UIMgr.AddComponent m_lblNewAccount
+    Set m_lblForgotPass = New clsUILabel
+    m_lblForgotPass.Init "Olvide mi contraseña", 0, 0, UI_COLOR_WHITE, 100, 1, 1
+    m_UIMgr.AddComponent m_lblForgotPass
     m_haracinOk = False
 End Sub
 
@@ -158,15 +158,15 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         
         ' Position UI controls
         
-        m_lblTitle.SetPosition wx + 45, wy + 10
+        m_lblTitle.SetPosition wx + 80, wy + 30
         m_imgSeparatorH1.SetPosition wx + 30, wy + 80
         m_inputboxUser.SetPosition wx + 30, wy + 100
         m_inputboxPass.SetPosition wx + 30, wy + 150
         m_cbOk.SetPosition wx + 30, wy + 200
         m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + 235
         m_imgSeparatorH2.SetPosition wx + 30, wy + 290
-'        m_lblNewAccount.SetPosition wx + 30, wy + 320
-'        m_lblForgotPass.SetPosition wx + 100, wy + 320
+        m_lblNewAccount.SetPosition wx + 30, wy + 320
+        m_lblForgotPass.SetPosition wx + 150, wy + 320
         m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy + 50, m_haracinOk
 
         ' Draw UI widgets + batched renderer
