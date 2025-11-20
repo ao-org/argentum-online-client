@@ -746,6 +746,7 @@
     "CHALLENGE_ERROR_INSUFICCIENT_PLAYERS" : "Complete all the players needed",
     "CHALLENGE_ERROR_REPEATED_PLAYERS" : "Players can't be repeated",
     "CHALLENGE_ERROR_TOO_MUCH_GOLD" : "You can't bet more than 10.000.000 gold coins",
-    "CHALLENGE_ERROR_INVALID_NAME" : "Invalid player name:"
-	"SEGURO_LEGIONARIO_DESHABILITADO_TEMPORALMENTE" : "The Legionary faction insurance is temporarily disabled."
+    "CHALLENGE_ERROR_INVALID_NAME" : "Invalid player name:",
+	"SEGURO_LEGIONARIO_DESHABILITADO_TEMPORALMENTE" : "The Legionary faction insurance is temporarily disabled.",
+    "MENSAJE_TOKEN_SESION_INVALIDO" : "Invalid session token."
 }

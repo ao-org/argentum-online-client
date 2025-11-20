@@ -30,7 +30,8 @@ Public Enum e_state
     RequestDeleteChar
     ConfirmDeleteChar
     RequestVerificationCode
-    RequestTransferCharacter
+    RequestTransferChar
+    ConfirmTransferChar
 End Enum
 
 Public Enum e_operation
@@ -43,6 +44,7 @@ Public Enum e_operation
     ConfirmDeleteChar
     RequestVerificationCode
     transfercharacter
+    ConfirmTransferChar
 End Enum
 
 Public Type t_CreateAccountInfo
@@ -61,6 +63,7 @@ Public encrypted_session_token               As String
 Public decrypted_session_token               As String
 Public authenticated_decrypted_session_token As String
 Public delete_char_validate_code             As String
+Public transfer_char_validate_code           As String
 
 Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
     If Connected Then
@@ -86,8 +89,10 @@ Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
                     Call SendConfirmDeleteChar
                 Case e_state.RequestVerificationCode
                     Call SendRequestVerificationCode
-                Case e_state.RequestTransferCharacter
+                Case e_state.RequestTransferChar
                     Call SendRequestTransferCharacter
+                Case e_state.ConfirmTransferChar
+                    Call SendConfirmTransferCharacter
             End Select
         End If
         Exit Sub
@@ -111,8 +116,10 @@ Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
             Call HandleConfirmDeleteChar(BytesTotal)
         Case e_state.RequestVerificationCode
             Call HandleRequestVerificationCode(BytesTotal)
-        Case e_state.RequestTransferCharacter
+        Case e_state.RequestTransferChar
             Call HandleTransferCharRequest(BytesTotal)
+        Case e_state.ConfirmTransferChar
+            Call HandleConfirmTransferChar(BytesTotal)
     End Select
 End Sub
 
@@ -449,7 +456,7 @@ Public Sub SendRequestTransferCharacter()
     transfer_request(4) = LoByte(packet_size)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, transfer_request, len_json, 5)
     Call frmConnect.AuthSocket.SendData(transfer_request)
-    Auth_state = e_state.RequestTransferCharacter
+    Auth_state = e_state.RequestTransferChar
 End Sub
 
 Public Sub SendSignUpRequest()
@@ -500,11 +507,9 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
     frmConnect.AuthSocket.PeekData data, vbByte, BytesTotal
     frmConnect.AuthSocket.GetData data, vbByte, 2
     If data(0) = &H20 And data(1) = &H26 Then
-        Call DebugPrint("TRANSFER_CHARACTER_OKAY", 0, 255, 0, True)
-        Call DisplayError(JsonLanguage.Item("MENSAJE_TRANSFERENCIA_REALIZADA"), "TRANSFER_CHARACTER_OKAY")
-        Call EraseCharFromPjList(TransferCharname)
+        Auth_state = e_state.ConfirmTransferChar
         frmConnect.AuthSocket.GetData data, vbByte, 2
-        Auth_state = e_state.Idle
+        Call frmTransferChar2FA.Show
     Else
         Call DebugPrint("TRANSFER CHAR ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
@@ -521,7 +526,7 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
                 Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "invalid-request")
             Case 54
                 Call DisplayError(JsonLanguage.Item("MENSAJE_NUEVO_DUENO_NO_EXISTE"), "newowner-not-exist")
-            Case 55
+            Case 56
                 Call DisplayError(JsonLanguage.Item("MENSAJE_NO_ES_PATREON"), "not-patreon")
             Case 57
                 Call DisplayError(JsonLanguage.Item("MENSAJE_CREDITOS_INSUFICIENTES"), "not-enough-credits")
@@ -722,6 +727,40 @@ Public Sub HandleConfirmDeleteChar(ByVal BytesTotal As Long)
         End Select
     End If
 End Sub
+
+Public Sub HandleConfirmTransferChar(ByVal BytesTotal As Long)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("HandleConfirmTransferChar", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Dim data() As Byte
+    frmConnect.AuthSocket.PeekData data, vbByte, BytesTotal
+    frmConnect.AuthSocket.GetData data, vbByte, 2
+    If data(0) = &H20 And data(1) = &H29 Then
+        Call DebugPrint("DELETE-CHAR-OK", 0, 255, 0, True)
+        Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(data), 255, 255, 255)
+        frmConnect.AuthSocket.GetData data, vbByte, 2
+        Auth_state = e_state.Idle
+        Call DisplayError(JsonLanguage.Item("MENSAJE_TRANSFERENCIA_REALIZADA"), "TRANSFER_CHARACTER_OKAY")
+        Call EraseCharFromPjList(TransferCharname)
+    Else
+        Call DebugPrint("ERROR", 255, 0, 0, True)
+        frmConnect.AuthSocket.GetData data, vbByte, 4
+        Select Case MakeInt(data(3), data(2))
+            Case 68
+                Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "invalid-transfer-char-request")
+            Case 67
+                Call DisplayError(JsonLanguage.Item("MENSAJE_CODIGO_INVALIDO"), "invalid-transfer-code")
+            Case 49
+                Call DisplayError(JsonLanguage.Item("MENSAJE_TOKEN_SESION_INVALIDO"), "session-token-invalid")
+            Case 23
+                Call DisplayError(JsonLanguage.Item("MENSAJEBOX_INTENTAR_MAS_TARDE"), "retry-later")
+            Case Else
+                Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO") & ": " & AO20CryptoSysWrapper.ByteArrayToHex(data), "")
+        End Select
+        Auth_state = e_state.Idle
+    End If
+End Sub
+
 
 Public Sub PCListRequest()
     Dim userName               As String
@@ -1128,6 +1167,42 @@ Private Sub FillAccountData(ByVal data As String)
     End If
     Call LoadCharacterSelectionScreen
 End Sub
+
+Public Function SendConfirmTransferCharacter()
+    Dim JSON                   As String
+    Dim len_encrypted_username As Integer
+    Dim transfer_request()     As Byte
+    Dim packet_size            As Integer
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("SendConfirmTransferCharacter", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Dim old_owner_str As String
+    old_owner_str = CuentaEmail
+    JSON = ""
+    JSON = "{ "
+    JSON = JSON & "  ""currentOwner"": """ & old_owner_str & """ , "
+    JSON = JSON & "  ""pc"": """ & TransferCharname & """ , "
+    JSON = JSON & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
+    JSON = JSON & "  ""newOwner"": """ & TransferCharNewOwner & """ , "
+    JSON = JSON & "  ""code"": """ & transfer_char_validate_code & """"
+    JSON = JSON & " }"
+    Dim encrypted_json()   As Byte
+    Dim encrypted_json_b64 As String
+    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), JSON)
+    Call Str2ByteArr(encrypted_json_b64, encrypted_json)
+    Dim len_json As Integer
+    len_json = Len(encrypted_json_b64)
+    ReDim transfer_request(1 To (2 + 2 + len_json))
+    packet_size = UBound(transfer_request)
+    transfer_request(1) = &H20
+    transfer_request(2) = &H28
+    'Siguientes 2 bytes indican tamaño total del paquete
+    transfer_request(3) = hiByte(packet_size)
+    transfer_request(4) = LoByte(packet_size)
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, transfer_request, len_json, 5)
+    Call frmConnect.AuthSocket.SendData(transfer_request)
+    Auth_state = e_state.ConfirmTransferChar
+End Function
 
 Public Function estaInmovilizado(ByRef arr() As Byte) As String
     Dim A As String, B As String
