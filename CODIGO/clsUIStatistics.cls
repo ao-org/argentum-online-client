@@ -66,34 +66,34 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager
     Call m_UIMgr.Init
     Set m_lblClass = New clsUILabel
-    Call m_lblClass.Init("Class", 100, 100, UI_COLOR_WHITE)
+    Call m_lblClass.Init("Class", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
     Call m_UIMgr.AddComponent(m_lblClass)
     Set m_lblRace = New clsUILabel
-    Call m_lblRace.Init("Race", 100, 100, UI_COLOR_WHITE)
+    Call m_lblRace.Init("Race", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
     Call m_UIMgr.AddComponent(m_lblRace)
     Set m_lblGender = New clsUILabel
-    Call m_lblGender.Init("Gender", 100, 100, UI_COLOR_WHITE)
+    Call m_lblGender.Init("Gender", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
     Call m_UIMgr.AddComponent(m_lblGender)
     Set m_lblStatus = New clsUILabel
-    Call m_lblStatus.Init("Status", 100, 100, UI_COLOR_WHITE)
+    Call m_lblStatus.Init("Status", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
     Call m_UIMgr.AddComponent(m_lblStatus)
     Set m_lblJailTime = New clsUILabel
-    Call m_lblJailTime.Init("JailTime", 100, 100, UI_COLOR_WHITE)
+    Call m_lblJailTime.Init("JailTime", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
     Call m_UIMgr.AddComponent(m_lblJailTime)
     Set m_lblStrength = New clsUILabel
-    Call m_lblStrength.Init("Strength", 100, 100, UI_COLOR_WHITE)
+    Call m_lblStrength.Init("Strength", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
     Call m_UIMgr.AddComponent(m_lblStrength)
     Set m_lblAgility = New clsUILabel
-    Call m_lblAgility.Init("Agility", 100, 100, UI_COLOR_WHITE)
+    Call m_lblAgility.Init("Agility", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
     Call m_UIMgr.AddComponent(m_lblAgility)
     Set m_lblIntelligence = New clsUILabel
-    Call m_lblIntelligence.Init("Intelligence", 100, 100, UI_COLOR_WHITE)
+    Call m_lblIntelligence.Init("Intelligence", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
     Call m_UIMgr.AddComponent(m_lblIntelligence)
     Set m_lblConstitution = New clsUILabel
-    Call m_lblConstitution.Init("Constitution", 100, 100, UI_COLOR_WHITE)
+    Call m_lblConstitution.Init("Constitution", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
     Call m_UIMgr.AddComponent(m_lblConstitution)
     Set m_lblCharisma = New clsUILabel
-    Call m_lblCharisma.Init("CHarisma", 100, 100, UI_COLOR_WHITE)
+    Call m_lblCharisma.Init("CHarisma", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
     Call m_UIMgr.AddComponent(m_lblCharisma)
 End Sub
 
