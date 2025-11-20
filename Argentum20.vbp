@@ -41,6 +41,7 @@ Form=CODIGO\frmOpciones.frm
 Form=CODIGO\frmComerciarUsu.frm
 Form=CODIGO\frmBancoObj.frm
 Form=CODIGO\frmCambiaMotd.frm
+Form=CODIGO\frmTransferChar2FA.frm
 Class=clsGrapchicalInventory; CODIGO\clsGrapchicalInventory.cls
 Class=clsGuildDlg; CODIGO\clsGuildDlg.cls
 Module=ModAreas; CODIGO\ModAreas.bas

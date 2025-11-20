@@ -510,11 +510,6 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
         Auth_state = e_state.ConfirmTransferChar
         frmConnect.AuthSocket.GetData data, vbByte, 2
         Call frmTransferChar2FA.Show
-        'Call DebugPrint("TRANSFER_CHARACTER_OKAY", 0, 255, 0, True)
-        'Call DisplayError(JsonLanguage.Item("MENSAJE_TRANSFERENCIA_REALIZADA"), "TRANSFER_CHARACTER_OKAY")
-        'Call EraseCharFromPjList(TransferCharname)
-        'frmConnect.AuthSocket.GetData data, vbByte, 2
-        'Auth_state = e_state.Idle
     Else
         Call DebugPrint("TRANSFER CHAR ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
