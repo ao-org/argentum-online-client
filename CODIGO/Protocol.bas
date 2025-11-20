@@ -5107,7 +5107,9 @@ Public Sub HandleQuestListSend()
         tmpStr = Reader.ReadString8
         'Agregamos los items
         For i = 1 To tmpByte
-            FrmQuests.lstQuests.AddItem ReadField(i, QuestList(tmpStr).nombre, 59)
+            Dim questIndex As String
+            questIndex = Split(tmpStr, ";")(i - 1)
+            FrmQuests.lstQuests.AddItem ReadField(i, QuestList(questIndex).nombre, 59)
         Next i
     End If
     'Mostramos el formulario
