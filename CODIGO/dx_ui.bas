@@ -36,7 +36,7 @@ Public Const UI_COLOR_GOLD  As Long = &HFFFFFF              ' 0xFF0000FF
 Public Const UI_COLOR_GRAY  As Long = &HFFFF00              ' 0xFF0000FF
 Public Const UI_MAX_QUADS As Long = 2000
 Public g_connectScreen      As clsUIConnectScreen
-Public g_statisticsScreen   As clsUIStatistics
+Public g_GameplayScreen   As clsGameplayScreen
 
 ' Virtual-Key codes
 Public Const VK_LBUTTON     As Long = &H1
@@ -71,8 +71,8 @@ Public Sub init_connect_screen(ByRef dev As Direct3DDevice8)
 End Sub
 
 Public Sub init_statistic_screen(ByRef dev As Direct3DDevice8)
-    Set g_statisticsScreen = New clsUIStatistics
-    Call g_statisticsScreen.Init(dev)
+    Set g_GameplayScreen = New clsGameplayScreen
+    Call g_GameplayScreen.Init(dev)
 End Sub
 
 
