@@ -2003,9 +2003,9 @@ Public Sub start()
                         'Debug.Print "Renderizando skins"
                     End If
                     #If DXUI Then
-                        Debug.Assert Not g_statisticsScreen Is Nothing
-                        If g_statisticsScreen.IsVisible() Then
-                            Call g_statisticsScreen.render(DirectDevice)
+                        Debug.Assert Not g_GameplayScreen Is Nothing
+                        If g_GameplayScreen.IsVisible() Then
+                            Call g_GameplayScreen.render(DirectDevice)
                         End If
                     #End If
                 Case e_state_connect_screen
