@@ -192,7 +192,7 @@ Private Sub Engine_InitExtras()
     Call IniciarMeteorologia
     Call CargarLucesGlobales
     ' Fuentes graficas.
-    Call Engine_Font_Initialize
+    Call Fonts.LoadFonts
     'Call Font_Create("Tahoma", 8, True, 0)
     'Call Font_Create("Verdana", 8, False, 0)
     'Call Font_Create("Verdana", 11, True, False)
@@ -1931,7 +1931,7 @@ End Function
 #If REMOTE_CLOSE = 1 Then
 Public Sub bot_main_loop()
 On Error GoTo Start_Err
-    Call LoadFonts
+    Call Fonts.LoadFonts
     prgRun = True
     InitiateShutdownProcess = False
     Dim countdown As Integer

@@ -844,7 +844,7 @@ Sub Main()
     Call InitializeInventory
     Call Init_TileEngine
     Call CargarRecursos
-    Call LoadFonts
+    Call Recursos.LoadFonts
     Call initMascotaTutorial
     Call LoadProjectiles
     Call LoadBuffResources
