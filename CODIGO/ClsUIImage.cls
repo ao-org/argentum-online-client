@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "clsUIButton"
+Attribute VB_Name = "clsUIImage"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -43,16 +43,15 @@ Implements IUIComponent
 ' Requires D3DVertex UDT defined in a standard module
 Private m_Impl      As clsUIComponentImpl
 Private m_IsHover   As Boolean
-Private m_WasHover   As Boolean
 Private m_PrevDown  As Boolean
 Private m_Clicked   As Boolean
 
-Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
+Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
     If m_Impl Is Nothing Then
         Set m_Impl = New clsUIComponentImpl
     End If
 
-    m_Impl.InitLabel text, x, y, clrText
+    m_Impl.InitLabel Text, x, y, clrText
     m_Impl.SetSize w, h
     m_Impl.ColorFill = clrFill
     m_Impl.HoverColor = clrHover
@@ -87,43 +86,15 @@ Public Property Let WasClicked(ByVal val As Boolean)
     m_Clicked = val
 End Property
 
-Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
-    Dim clr As Long
-    clr = IIf(m_IsHover, m_Impl.HoverColor, m_Impl.ColorFill)
-    Dim cols(3) As Long
-    cols(0) = clr
-    cols(1) = clr
-    cols(2) = clr
-    cols(3) = clr
-'    UIRenderer.AddQuad m_Impl.x, m_Impl.y, m_Impl.Width, m_Impl.Height, cols
-    Dim cbTextureL As Direct3DTexture8
-    Dim cbTextureC As Direct3DTexture8
-    Dim cbTextureR As Direct3DTexture8
+Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
+    Dim imgTexture As Direct3DTexture8
     Dim texW As Long: Dim texH As Long: Dim b As Integer
-    b = 5
-    If (m_IsHover) Then
-        Set cbTextureL = UITextures.GetTexture(13015, texW, texH)
-        Set cbTextureC = UITextures.GetTexture(13016, texW, texH)
-        Set cbTextureR = UITextures.GetTexture(13017, texW, texH)
-    Else
-        Set cbTextureL = UITextures.GetTexture(13009, texW, texH)
-        Set cbTextureC = UITextures.GetTexture(13010, texW, texH)
-        Set cbTextureR = UITextures.GetTexture(13011, texW, texH)
-    End If
-    If Not cbTextureL Is Nothing And Not cbTextureC Is Nothing And Not cbTextureR Is Nothing Then
+
+    Set imgTexture = UITextures.GetTexture(13018, texW, texH)
+    If Not imgTexture Is Nothing Then
         UIRenderer.AddTexturedQuad _
-            m_Impl.x, m_Impl.y, b, m_Impl.Height, _
-        cbTextureL, _
-        0!, 0!, 1!, 1!, _
-        UI_COLOR_WHITE, 255
-        UIRenderer.AddTexturedQuad _
-            m_Impl.x + b, m_Impl.y, m_Impl.Width - b, m_Impl.Height, _
-        cbTextureC, _
-        0!, 0!, 1!, 1!, _
-        UI_COLOR_WHITE, 255
-        UIRenderer.AddTexturedQuad _
-            m_Impl.x + m_Impl.Width - b, m_Impl.y, b, m_Impl.Height, _
-        cbTextureR, _
+            m_Impl.x, m_Impl.y, m_Impl.Width, m_Impl.Height, _
+        imgTexture, _
         0!, 0!, 1!, 1!, _
         UI_COLOR_WHITE, 255
     Else
@@ -135,34 +106,15 @@ Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
         cols2(3) = UI_COLOR_WHITE
         UIRenderer.AddQuad m_Impl.x, m_Impl.y, m_Impl.Width, m_Impl.Height, cols2, 190
     End If
-    Dim rc As RECT
-    rc.Left = m_Impl.x: rc.Top = m_Impl.y
-    Dim RECT As RECT
-    Dim startX As Integer
-    Dim startY As Integer
-    startX = m_Impl.x + (m_Impl.Width - (Len(m_Impl.text) * 7)) / 2
-    startY = m_Impl.y + (m_Impl.Height - 12) / 2
-    rc.Left = startX: rc.Top = startY
-    rc.Right = m_Impl.x + m_Impl.Width: rc.Bottom = m_Impl.y + m_Impl.Height
-    Call UIRenderer.RenderText(m_Impl.text, rc.Left, rc.Top, m_Impl.color, 1, 255)
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
     m_IsHover = (mouseX >= m_Impl.x And mouseX <= m_Impl.x + m_Impl.Width And mouseY >= m_Impl.y And mouseY <= m_Impl.y + m_Impl.Height)
     Dim down As Boolean: down = (mouseButtons <> 0)
-    If m_IsHover And Not m_WasHover Then
-        m_WasHover = True
-        Call ao20audio.PlayWav(SND_CLICK_OVER)
-    Else
-        If Not m_IsHover Then
-            m_WasHover = False
-        End If
-    End If
     If down And Not m_PrevDown And m_IsHover Then
         m_Clicked = True
-        Hit = True
+        hit = True
         Call m_Impl.SetFocus(True)
-        Call ao20audio.PlayWav(SND_CLICK)
     End If
     m_PrevDown = down
 End Sub
@@ -182,3 +134,5 @@ End Sub
 Private Sub Class_Terminate()
     Set m_Impl = Nothing
 End Sub
+
+

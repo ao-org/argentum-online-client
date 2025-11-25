@@ -40,12 +40,18 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IUIComponent
 Private m_Impl As clsUIComponentImpl
+Private m_Opacity As Integer
+Private m_Size As Single
+Private m_FontIndex As Integer
 
-Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal color As Long)
+Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal Color As Long, ByVal opacity As Integer, ByVal size As Single, fontIndex)
     If m_Impl Is Nothing Then
         Set m_Impl = New clsUIComponentImpl
     End If
-    Call m_Impl.InitLabel(text, x, y, color)
+    Call m_Impl.InitLabel(Text, x, y, Color)
+    m_Opacity = opacity
+    m_Size = size
+    m_FontIndex = fontIndex
 End Sub
 
 Public Function IUIComponent_IsVisible() As Boolean
@@ -65,20 +71,20 @@ Public Sub GetPosition(ByRef x As Long, ByRef y As Long)
     Call m_Impl.GetPosition(x, y)
 End Sub
 
-Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
+Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     If m_Impl Is Nothing Then Exit Sub
     If Not m_Impl.IsVisible Then Exit Sub
 
-    Dim posX As Long
-    Dim posY As Long
-    Call m_Impl.GetPosition(posX, posY)
+    Dim PosX As Long
+    Dim PosY As Long
+    Call m_Impl.GetPosition(PosX, PosY)
 
     Dim rc As RECT
-    rc.Left = posX
-    rc.Top = posY
-    rc.Right = posX + 400
-    rc.Bottom = posY + 32
-    Call UIRenderer.RenderText(m_Impl.text, rc.Left, rc.Top, m_Impl.color, 1, 255)
+    rc.Left = PosX
+    rc.Top = PosY
+    rc.Right = PosX + 400
+    rc.Bottom = PosY + 32
+    Call UIRenderer.RenderText(m_Impl.Text, rc.Left, rc.Top, m_Impl.Color, m_FontIndex, m_Opacity, m_Size)
 End Sub
 
 Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
@@ -93,20 +99,20 @@ Private Sub IUIComponent_SetFocus(ByVal val As Boolean)
     Call m_Impl.SetFocus(val)
 End Sub
 
-Public Property Let text(ByVal newText As String)
-    m_Impl.text = newText
+Public Property Let Text(ByVal newText As String)
+    m_Impl.Text = newText
 End Property
 
-Public Property Get text() As String
-    text = m_Impl.text
+Public Property Get Text() As String
+    Text = m_Impl.Text
 End Property
 
-Public Property Let color(ByVal newColor As Long)
-    m_Impl.color = newColor
+Public Property Let Color(ByVal newColor As Long)
+    m_Impl.Color = newColor
 End Property
 
-Public Property Get color() As Long
-    color = m_Impl.color
+Public Property Get Color() As Long
+    Color = m_Impl.Color
 End Property
 
 Public Property Let x(ByVal newX As Long)
