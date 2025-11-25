@@ -100,6 +100,10 @@ Public Property Let WasClicked(ByVal val As Boolean)
     m_Clicked = val
 End Property
 
+Public Property Let Text(ByVal str As String)
+    m_Impl.Text = str
+End Property
+
 Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     If Not m_Draw Then Exit Sub
     Dim clr As Long
