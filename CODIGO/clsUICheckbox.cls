@@ -137,6 +137,7 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
             m_Clicked = True
         End If
         m_PrevDown = down
+        Call ao20audio.PlayWav(SND_CLICK)
     End If
     m_PrevDown = down
 End Sub
