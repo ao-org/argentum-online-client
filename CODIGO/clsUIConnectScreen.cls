@@ -77,7 +77,7 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     m_cbOk.Init "Recordarme", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_cbOk
     Set m_boxInfo = New clsUIBoxInfo
-    m_boxInfo.Init "HORACIO es un Atosigador de fines del siglo XX, aun activo en 2025. Se caracteriza por hostigar varios recursos a la vez y romper sober_anamente las pelotas ...", 0, 0, 250, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK
+    m_boxInfo.Init "HORACIO es un Atosigador de fines delvarioer sober_anamente las pelotas ...", 0, 0, 500, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK
     m_UIMgr.AddComponent m_boxInfo
     Set m_imgSeparatorH2 = New clsUIImage
     m_imgSeparatorH2.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
@@ -116,25 +116,25 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         Dim i As Long, texPanel As Direct3DTexture8
         Dim x As Long, y As Long, w As Long, h As Long, b As Long
         b = 20
-        For i = 30 To 38
+        For i = 13030 To 13038
             Select Case i
-                Case 30
+                Case 13030
                     x = wx + b: y = wy + b: w = WINDOW_WIDTH - (2 * b): h = WINDOW_HEIGHT - (2 * b)
-                Case 31
+                Case 13031
                     x = wx: y = wy: w = b: h = b
-                Case 32
+                Case 13032
                     x = wx + b: y = wy: w = WINDOW_WIDTH - b * 2: h = b
-                Case 33
+                Case 13033
                     x = wx + WINDOW_WIDTH - b: y = wy: w = b: h = b
-                Case 34
+                Case 13034
                     x = wx + WINDOW_WIDTH - b: y = wy + b: w = b: h = WINDOW_HEIGHT - b * 2
-                Case 35
+                Case 13035
                     x = wx + WINDOW_WIDTH - b: y = wy + WINDOW_HEIGHT - b: w = b: h = b
-                Case 36
+                Case 13036
                     x = wx + b: y = wy + WINDOW_HEIGHT - b: w = WINDOW_WIDTH - b * 2: h = b
-                Case 37
+                Case 13037
                     x = wx: y = wy + WINDOW_HEIGHT - b: w = b: h = b
-                Case 38
+                Case 13038
                     x = wx: y = wy + b: w = b: h = WINDOW_HEIGHT - b * 2
             End Select
             Set texPanel = UITextures.GetTexture(i, texW, texH)
@@ -167,7 +167,7 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         m_imgSeparatorH2.SetPosition wx + 30, wy + 290
         m_lblNewAccount.SetPosition wx + 30, wy + 320
         m_lblForgotPass.SetPosition wx + 150, wy + 320
-        m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy + 50, m_haracinOk
+        m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy, m_haracinOk
 
         ' Draw UI widgets + batched renderer
         m_UIMgr.RenderAll dev

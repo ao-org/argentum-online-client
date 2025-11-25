@@ -48,18 +48,28 @@ Private m_Clicked   As Boolean
 Private m_marginLeft As Integer
 Private m_marginTop As Integer
 Private m_Draw   As Boolean
+Private m_lblTitle  As clsUILabel
+Private m_btnOk  As clsUIButton
 
 Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
     If m_Impl Is Nothing Then
         Set m_Impl = New clsUIComponentImpl
     End If
-
+    
+    Set m_lblTitle = New clsUILabel
+    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8
+    
+    Set m_btnOk = New clsUIButton
+    m_btnOk.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+    
     m_Impl.InitLabel text, x, y, clrText
     m_Impl.SetSize w, h
     m_Impl.ColorFill = clrFill
     m_Impl.HoverColor = clrHover
     m_Clicked = False: m_PrevDown = False: m_IsHover = False
     m_Draw = False
+    m_MarginLeft = 10
+    m_MarginTop = 5
 End Sub
 Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
     Call m_Impl.SetVisible(newState)
@@ -104,26 +114,68 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     gliphPerRow = (m_Impl.Width / gliphW) - 2
     gliphPerCol = m_Impl.Height / gliphH
 
-    Dim cols(3) As Long
-    cols(0) = clr
-    cols(1) = clr
-    cols(2) = clr
-    cols(3) = clr
+    Dim m_texPanelBg As Direct3DTexture8
+        Dim m_texPanelBorder As Direct3DTexture8
+        Dim texW As Long: Dim texH As Long, Top As Long
+        Set m_texPanelBg = UITextures.GetTexture(30, texW, texH)  ' fetch or load from manager cache
 
-    Dim cols2(3) As Long
-    cols2(0) = m_Impl.HoverColor
-    cols2(1) = m_Impl.HoverColor
-    cols2(2) = m_Impl.HoverColor
-    cols2(3) = m_Impl.HoverColor
-
-    UIRenderer.AddQuad m_Impl.X, m_Impl.Y, m_Impl.Width, m_Impl.Height, cols2
-'    UIRenderer.AddQuad m_X + m_W - 15, m_Y, 15, 15, cols
-    Dim i As Long
+        Dim sW As Long, sH As Long, wx As Long, wy As Long
+        sW = m_Impl.Width
+        sH = m_Impl.Height
+        Top = 50
+        wx = m_Impl.x
+        wy = m_Impl.y
+        
+        Dim i As Long, texPanel As Direct3DTexture8
+        Dim x As Long, y As Long, w As Long, h As Long, b As Long
+        b = 10
+        For i = 13044 To 13052
+            Select Case i
+                Case 13044
+                    x = wx + b: y = wy + b: w = sW - (2 * b): h = sH - (2 * b)
+                Case 13045
+                    x = wx: y = wy: w = b: h = b
+                Case 13046
+                    x = wx + b: y = wy: w = sW - b * 2: h = b
+                Case 13047
+                    x = wx + sW - b: y = wy: w = b: h = b
+                Case 13048
+                    x = wx + sW - b: y = wy + b: w = b: h = sH - b * 2
+                Case 13049
+                    x = wx + sW - b: y = wy + sH - b: w = b: h = b
+                Case 13050
+                    x = wx + b: y = wy + sH - b: w = sW - b * 2: h = b
+                Case 13051
+                    x = wx: y = wy + sH - b: w = b: h = b
+                Case 13052
+                    x = wx: y = wy + b: w = b: h = sH - b * 2
+            End Select
+            Set texPanel = UITextures.GetTexture(i, texW, texH)
+            If Not texPanel Is Nothing Then
+                UIRenderer.AddTexturedQuad _
+                    x, y, w, h, _
+                texPanel, _
+                0!, 0!, 1!, 1!, _
+                UI_COLOR_WHITE, 255
+            Else
+            ' Fallback to solid white if texture missing
+                Dim cols2(3) As Long
+                cols2(0) = UI_COLOR_WHITE
+                cols2(1) = UI_COLOR_WHITE
+                cols2(2) = UI_COLOR_WHITE
+                cols2(3) = UI_COLOR_WHITE
+                UIRenderer.AddQuad wx, wy, sW, sH, cols2, 190
+            End If
+        Next i
+    m_lblTitle.SetPosition wx + 80, wy + 30
+    m_lblTitle.IUIComponent_Render dev
     Dim strTextAux As String
     For i = 0 To gliphPerRow
         strTextAux = mid(m_Impl.Text, i * gliphPerRow + 1, gliphPerRow)
-        Call UIRenderer.RenderText(strTextAux, m_Impl.X + 10, m_Impl.Y + (gliphH * i) + 15, m_Impl.Color, 1, 255)
+        Call UIRenderer.RenderText(strTextAux, wx + m_MarginLeft, wy + (gliphH * i) + m_MarginTop, m_Impl.Color, 1, 255)
     Next i
+    m_btnOk.SetPosition wx + (sW - m_btnOk.Width) \ 2, wy + sH - 30
+    m_btnOk.IUIComponent_Render dev
 End Sub
 
 Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)

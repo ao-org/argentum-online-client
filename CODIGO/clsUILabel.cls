@@ -71,7 +71,7 @@ Public Sub GetPosition(ByRef x As Long, ByRef y As Long)
     Call m_Impl.GetPosition(x, y)
 End Sub
 
-Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
+Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     If m_Impl Is Nothing Then Exit Sub
     If Not m_Impl.IsVisible Then Exit Sub
 

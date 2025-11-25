@@ -43,6 +43,7 @@ Implements IUIComponent
 ' Requires D3DVertex UDT defined in a standard module
 Private m_Impl      As clsUIComponentImpl
 Private m_IsHover   As Boolean
+Private m_WasHover   As Boolean
 Private m_PrevDown  As Boolean
 Private m_Clicked   As Boolean
 
@@ -86,7 +87,7 @@ Public Property Let WasClicked(ByVal val As Boolean)
     m_Clicked = val
 End Property
 
-Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
+Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Dim clr As Long
     clr = IIf(m_IsHover, m_Impl.HoverColor, m_Impl.ColorFill)
     Dim cols(3) As Long
@@ -149,10 +150,19 @@ End Sub
 Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
     m_IsHover = (mouseX >= m_Impl.x And mouseX <= m_Impl.x + m_Impl.Width And mouseY >= m_Impl.y And mouseY <= m_Impl.y + m_Impl.Height)
     Dim down As Boolean: down = (mouseButtons <> 0)
+    If m_IsHover And Not m_WasHover Then
+        m_WasHover = True
+        Call ao20audio.PlayWav(SND_CLICK_OVER)
+    Else
+        If Not m_IsHover Then
+            m_WasHover = False
+        End If
+    End If
     If down And Not m_PrevDown And m_IsHover Then
         m_Clicked = True
         Hit = True
         Call m_Impl.SetFocus(True)
+        Call ao20audio.PlayWav(SND_CLICK)
     End If
     m_PrevDown = down
 End Sub

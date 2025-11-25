@@ -173,6 +173,7 @@ Class=clsGameplayScreen; CODIGO\clsGameplayScreen.cls
 ResFile32="AO20.res"
 Class=clsUIComponentImpl; CODIGO\clsUIComponentImpl.cls
 Module=debug_tools; CODIGO\debug_tools.bas
+Class=clsUIImage; CODIGO\ClsUIImage.cls
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
