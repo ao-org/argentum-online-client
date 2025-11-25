@@ -60,7 +60,7 @@ Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w 
     m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8
     
     Set m_btnOk = New clsUIButton
-    m_btnOk.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+    m_btnOk.Init "OK", 0, 0, 50, 30, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
     
     m_Impl.InitLabel text, x, y, clrText
     m_Impl.SetSize w, h
@@ -68,8 +68,8 @@ Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w 
     m_Impl.HoverColor = clrHover
     m_Clicked = False: m_PrevDown = False: m_IsHover = False
     m_Draw = False
-    m_MarginLeft = 10
-    m_MarginTop = 5
+    m_MarginLeft = 30
+    m_marginTop = 40
 End Sub
 Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
     Call m_Impl.SetVisible(newState)
@@ -100,8 +100,12 @@ Public Property Let WasClicked(ByVal val As Boolean)
     m_Clicked = val
 End Property
 
-Public Property Let Text(ByVal str As String)
+Public Property Let Message(ByVal str As String)
     m_Impl.Text = str
+End Property
+
+Public Property Let Title(ByVal str As String)
+    m_lblTitle.Text = str
 End Property
 
 Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
@@ -171,14 +175,14 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
                 UIRenderer.AddQuad wx, wy, sW, sH, cols2, 190
             End If
         Next i
-    m_lblTitle.SetPosition wx + 80, wy + 30
+    m_lblTitle.SetPosition wx + 5, wy + 5
     m_lblTitle.IUIComponent_Render dev
     Dim strTextAux As String
     For i = 0 To gliphPerRow
         strTextAux = mid(m_Impl.Text, i * gliphPerRow + 1, gliphPerRow)
         Call UIRenderer.RenderText(strTextAux, wx + m_MarginLeft, wy + (gliphH * i) + m_MarginTop, m_Impl.Color, 1, 255)
     Next i
-    m_btnOk.SetPosition wx + (sW - m_btnOk.Width) \ 2, wy + sH - 30
+    m_btnOk.SetPosition wx + (sW - m_btnOk.Width) \ 2, wy + Me.Height - 40
     m_btnOk.IUIComponent_Render dev
 End Sub
 
@@ -191,6 +195,7 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
         Call m_Impl.SetFocus(True)
     End If
     m_PrevDown = down
+    m_btnOk.IUIComponent_HandleMouse mouseX, mouseY, mouseButtons, hit
 End Sub
 
 Private Sub IUIComponent_HandleKeyboard(ByVal KeyCode As Long, ByVal shiftState As Long)

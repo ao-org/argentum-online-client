@@ -147,7 +147,7 @@ Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Call UIRenderer.RenderText(m_Impl.text, rc.Left, rc.Top, m_Impl.color, 1, 255)
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
+Public Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
     m_IsHover = (mouseX >= m_Impl.x And mouseX <= m_Impl.x + m_Impl.Width And mouseY >= m_Impl.y And mouseY <= m_Impl.y + m_Impl.Height)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If m_IsHover And Not m_WasHover Then

@@ -389,7 +389,7 @@ Function CheckUserDataLoged() As Boolean
     On Error GoTo CheckUserDataLoged_Err
     If CuentaEmail = "" Or Not CheckMailString(CuentaEmail) Then
         #If DXUI Then
-            g_connectScreen.ShowMessageBox JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO")
+            g_connectScreen.ShowMessageBox "Error", JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO")
         #Else
             Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO"), False, False)
         #End If

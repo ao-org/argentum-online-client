@@ -196,9 +196,10 @@ Public Function WasConnectClicked() As Boolean
     End If
 End Function
 
-Public Sub ShowMessageBox(ByVal msg As String)
+Public Sub ShowMessageBox(ByVal Title, ByVal Message As String)
     m_boxInfo.IUIComponent_SetVisible True
-    m_boxInfo.Text = msg
+    m_boxInfo.Message = Message
+    m_boxInfo.Title = Title
 End Sub
 
 
