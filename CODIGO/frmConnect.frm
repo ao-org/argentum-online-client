@@ -275,7 +275,9 @@ Private Sub AuthSocket_Connect()
             Case e_operation.RequestVerificationCode
                 Auth_state = e_state.RequestVerificationCode
             Case e_operation.transfercharacter
-                Auth_state = e_state.RequestTransferCharacter
+                Auth_state = e_state.RequestTransferChar
+            Case e_operation.ConfirmTransferChar
+                Auth_state = e_state.ConfirmTransferChar
         End Select
     End If
 End Sub

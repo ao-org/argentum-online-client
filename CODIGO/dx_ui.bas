@@ -36,7 +36,7 @@ Public Const UI_COLOR_GOLD  As Long = &HFFFFFF              ' 0xFF0000FF
 Public Const UI_COLOR_GRAY  As Long = &HFFFF00              ' 0xFF0000FF
 Public Const UI_MAX_QUADS As Long = 2000
 Public g_connectScreen      As clsUIConnectScreen
-Public g_statisticsScreen   As clsUIStatistics
+Public g_GameplayScreen   As clsGameplayScreen
 
 ' Virtual-Key codes
 Public Const VK_LBUTTON     As Long = &H1
@@ -71,8 +71,8 @@ Public Sub init_connect_screen(ByRef dev As Direct3DDevice8)
 End Sub
 
 Public Sub init_statistic_screen(ByRef dev As Direct3DDevice8)
-    Set g_statisticsScreen = New clsUIStatistics
-    Call g_statisticsScreen.Init(dev)
+    Set g_GameplayScreen = New clsGameplayScreen
+    Call g_GameplayScreen.Init(dev)
 End Sub
 
 
@@ -81,7 +81,7 @@ Private Sub preload_ui_textures()
     ' Preload all UI textures you will use (ids are examples)
     Dim ids()
     Dim w As Long: Dim h As Long
-    ids = Array(14, 21, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 43)     ' <- put your real atlas/skin ids here
+    ids = Array(14, 21, 13000, 13001, 13002, 13030, 13031, 13032, 13033, 13034, 13035, 13036, 13037, 13038, 13039, 13043, 13044, 13045, 13046, 13047, 13048, 13049, 13050, 13051, 13052)     ' <- put your real atlas/skin ids here
 
     Dim i As Long, tex As Direct3DTexture8
     For i = LBound(ids) To UBound(ids)
@@ -106,3 +106,80 @@ Public Sub init_dx_ui(ByRef dev As Direct3DDevice8)
         'Agregar aca init statistics ui
     #End If
 End Sub
+
+Public Function KeyCodeToChar(ByVal KeyCode As Integer, ByVal Shift As Integer) As String
+    ' Handles typical alphanumeric and punctuation keys
+    Dim ch As String
+
+    Select Case KeyCode
+        Case vbKeyA To vbKeyZ
+            If (Shift And vbShiftMask) <> 0 Then
+                ch = Chr$(KeyCode)
+            Else
+                ch = LCase$(Chr$(KeyCode))
+            End If
+
+        Case vbKey0 To vbKey9
+            If (Shift And vbShiftMask) <> 0 Then
+                ' Handle shifted numbers (e.g. !@#$%)
+                Select Case KeyCode
+                    Case vbKey1: ch = "!"
+                    Case vbKey2: ch = "@"
+                    Case vbKey3: ch = "#"
+                    Case vbKey4: ch = "$"
+                    Case vbKey5: ch = "%"
+                    Case vbKey6: ch = "^"
+                    Case vbKey7: ch = "&"
+                    Case vbKey8: ch = "*"
+                    Case vbKey9: ch = "("
+                    Case vbKey0: ch = ")"
+                End Select
+            Else
+                ch = Chr$(KeyCode)
+            End If
+
+        Case vbKeySpace
+            ch = " "
+
+        Case vbKeyBack
+            ch = "{BACK}"
+
+        Case vbKeyReturn
+            ch = "{ENTER}"
+
+        Case vbKeyTab
+            ch = "{TAB}"
+
+        Case vbKeyDelete
+            ch = "{DEL}"
+
+        Case vbKeyLeft
+            ch = "{LEFT}"
+        Case vbKeyRight
+            ch = "{RIGHT}"
+
+        Case vbKeyUp
+            ch = "{UP}"
+
+        Case vbKeyDown
+            ch = "{DOWN}"
+
+        Case "190"
+            If (Shift And vbShiftMask) <> 0 Then ch = ">" Else ch = "."
+
+'        Case vbKeyComma
+'            If (Shift And vbShiftMask) <> 0 Then ch = "<" Else ch = ","
+'
+'        Case vbKeyMinus
+'            If (Shift And vbShiftMask) <> 0 Then ch = "_" Else ch = "-"
+'
+'        Case vbKeyEqual
+'            If (Shift And vbShiftMask) <> 0 Then ch = "+" Else ch = "="
+
+        Case Else
+            ' ignore function keys, control, etc.
+            ch = vbNullString
+    End Select
+
+    KeyCodeToChar = ch
+End Function

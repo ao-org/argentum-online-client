@@ -416,7 +416,7 @@
   "MENSAJE_ATRIBUTO_CONSTITUCION": "Constitution",
   "MENSAJE_ATRIBUTO_CARISMA": "Charisme",
   "MENSAJE_NIVEL_CLASE": "Niveau ",
-  "MENSAJE_BENEFICIOS_MAX_MIEMBROS": "Nombre maximal de membres : 5",
+  "MENSAJE_BENEFICIOS_MAX_MIEMBROS": "Nombre maximal de membres : ",
   "MENSAJE_PEDIR_AYUDA": "Demander de l'aide (G)",
   "MENSAJE_SEGURO_CLAN": "Assurance de clan",
   "MENSAJE_MAX_MIEMBROS_8": "Nombre maximal de membres : 8",
@@ -746,6 +746,7 @@
   "CHALLENGE_ERROR_INSUFICCIENT_PLAYERS" : "Complétez tous les joueurs nécessaires",
   "CHALLENGE_ERROR_REPEATED_PLAYERS" : "Les joueurs ne peuvent pas être joués deux fois.",
   "CHALLENGE_ERROR_TOO_MUCH_GOLD" : "Vous ne pouvez pas miser plus de 10 000 000 de pièces d'or",
-  "CHALLENGE_ERROR_INVALID_NAME" : "Nom de joueur invalide:"
-  "SEGURO_LEGIONARIO_DESHABILITADO_TEMPORALMENTE" : "L'assurance de la faction légionnaire est temporairement désactivée."
+  "CHALLENGE_ERROR_INVALID_NAME" : "Nom de joueur invalide:",
+  "SEGURO_LEGIONARIO_DESHABILITADO_TEMPORALMENTE" : "L'assurance de la faction légionnaire est temporairement désactivée.",
+  "MENSAJE_TOKEN_SESION_INVALIDO" : "Jeton de session invalide."
 }

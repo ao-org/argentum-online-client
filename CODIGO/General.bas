@@ -332,7 +332,7 @@ Public Sub RefreshAllChars()
     For loopC = 1 To LastChar
         If charlist(loopC).active = 1 Then
             If charlist(loopC).Invisible Then
-                If Not ((charlist(UserCharIndex).clan_nivel < 6 Or charlist(loopC).clan_index = 0 Or charlist(loopC).clan_index <> charlist(UserCharIndex).clan_index) And Not _
+                If Not ((charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(loopC).clan_index = 0 Or charlist(loopC).clan_index <> charlist(UserCharIndex).clan_index) And Not _
                         charlist(loopC).Navegando) And Not (General_Distance_Get(charlist(loopC).Pos.x, charlist(loopC).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And _
                         charlist(loopC).dialog_life = 0 And charlist(loopC).FxCount = 0 And charlist(loopC).particle_count = 0) Then
                     MapData(charlist(loopC).Pos.x, charlist(loopC).Pos.y).charindex = loopC
@@ -388,7 +388,12 @@ Function CheckUserDataLoged() As Boolean
     'Validamos los datos del user
     On Error GoTo CheckUserDataLoged_Err
     If CuentaEmail = "" Or Not CheckMailString(CuentaEmail) Then
-        Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO"), False, False)
+        #If DXUI Then
+            g_connectScreen.ShowMessageBox "Error", JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO")
+        #Else
+            Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_EMAIL_INVALIDO"), False, False)
+        #End If
+
         Exit Function
     End If
     If CuentaPassword = "" Then
@@ -563,7 +568,7 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
             Dim i As Integer
             For i = 1 To LastChar
                 If charlist(i).Invisible And Not EsGM And Not charlist(i).Meditating Then
-                    If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < 6 Or charlist(i).clan_index = 0 Or charlist( _
+                    If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(i).clan_index = 0 Or charlist( _
                             i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
                         If General_Distance_Get(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist( _
                                 i).FxCount = 0 And charlist(i).particle_count = 0 Then
@@ -844,7 +849,7 @@ Sub Main()
     Call InitializeInventory
     Call Init_TileEngine
     Call CargarRecursos
-    Call LoadFonts
+    Call Recursos.LoadFonts
     Call initMascotaTutorial
     Call LoadProjectiles
     Call LoadBuffResources

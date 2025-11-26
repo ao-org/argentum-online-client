@@ -192,7 +192,7 @@ Private Sub Engine_InitExtras()
     Call IniciarMeteorologia
     Call CargarLucesGlobales
     ' Fuentes graficas.
-    Call Engine_Font_Initialize
+    Call Fonts.LoadFonts
     'Call Font_Create("Tahoma", 8, True, 0)
     'Call Font_Create("Verdana", 8, False, 0)
     'Call Font_Create("Verdana", 11, True, False)
@@ -1321,8 +1321,8 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         verVidaClan = False
         If .clan_index > 0 Then
             If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .Muerto = 0 Then
-                If .clan_nivel >= 6 Then dibujaMiembroClan = True
-                If .clan_nivel >= 5 Then verVidaClan = True
+                If .clan_nivel >= cfgGuildLevelSeeInvisible Then dibujaMiembroClan = True
+                If .clan_nivel >= cfgGuildLevelShowHPBar Then verVidaClan = True
             End If
         End If
         If .Moving Then
@@ -1931,7 +1931,7 @@ End Function
 #If REMOTE_CLOSE = 1 Then
 Public Sub bot_main_loop()
 On Error GoTo Start_Err
-    Call LoadFonts
+    Call Fonts.LoadFonts
     prgRun = True
     InitiateShutdownProcess = False
     Dim countdown As Integer
@@ -2003,9 +2003,9 @@ Public Sub start()
                         'Debug.Print "Renderizando skins"
                     End If
                     #If DXUI Then
-                        Debug.Assert Not g_statisticsScreen Is Nothing
-                        If g_statisticsScreen.IsVisible() Then
-                            Call g_statisticsScreen.render(DirectDevice)
+                        Debug.Assert Not g_GameplayScreen Is Nothing
+                        If g_GameplayScreen.IsVisible() Then
+                            Call g_GameplayScreen.render(DirectDevice)
                         End If
                     #End If
                 Case e_state_connect_screen

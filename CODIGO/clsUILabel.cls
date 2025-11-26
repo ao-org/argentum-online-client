@@ -40,12 +40,18 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements IUIComponent
 Private m_Impl As clsUIComponentImpl
+Private m_Opacity As Integer
+Private m_Size As Single
+Private m_FontIndex As Integer
 
-Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal color As Long)
+Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal Color As Long, ByVal opacity As Integer, ByVal size As Single, fontIndex)
     If m_Impl Is Nothing Then
         Set m_Impl = New clsUIComponentImpl
     End If
-    Call m_Impl.InitLabel(text, x, y, color)
+    Call m_Impl.InitLabel(Text, x, y, Color)
+    m_Opacity = opacity
+    m_Size = size
+    m_FontIndex = fontIndex
 End Sub
 
 Public Function IUIComponent_IsVisible() As Boolean
@@ -65,24 +71,24 @@ Public Sub GetPosition(ByRef x As Long, ByRef y As Long)
     Call m_Impl.GetPosition(x, y)
 End Sub
 
-Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
+Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     If m_Impl Is Nothing Then Exit Sub
     If Not m_Impl.IsVisible Then Exit Sub
 
-    Dim posX As Long
-    Dim posY As Long
-    Call m_Impl.GetPosition(posX, posY)
+    Dim PosX As Long
+    Dim PosY As Long
+    Call m_Impl.GetPosition(PosX, PosY)
 
     Dim rc As RECT
-    rc.Left = posX
-    rc.Top = posY
-    rc.Right = posX + 400
-    rc.Bottom = posY + 32
-    Call UIRenderer.RenderText(m_Impl.Text, rc.Left, rc.Top, m_Impl.Color, 1, 128)
+    rc.Left = PosX
+    rc.Top = PosY
+    rc.Right = PosX + 400
+    rc.Bottom = PosY + 32
+    Call UIRenderer.RenderText(m_Impl.Text, rc.Left, rc.Top, m_Impl.Color, m_FontIndex, m_Opacity, m_Size)
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
-    hit = False
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
+    Hit = False
 End Sub
 
 Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
@@ -109,20 +115,20 @@ Public Property Get Color() As Long
     Color = m_Impl.Color
 End Property
 
-Public Property Let X(ByVal newX As Long)
-    m_Impl.X = newX
+Public Property Let x(ByVal newX As Long)
+    m_Impl.x = newX
 End Property
 
-Public Property Get X() As Long
-    X = m_Impl.X
+Public Property Get x() As Long
+    x = m_Impl.x
 End Property
 
-Public Property Let Y(ByVal newY As Long)
-    m_Impl.Y = newY
+Public Property Let y(ByVal newY As Long)
+    m_Impl.y = newY
 End Property
 
-Public Property Get Y() As Long
-    Y = m_Impl.Y
+Public Property Get y() As Long
+    y = m_Impl.y
 End Property
 
 Private Sub Class_Initialize()

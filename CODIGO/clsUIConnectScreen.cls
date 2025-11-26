@@ -38,11 +38,13 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-Private Const WINDOW_WIDTH    As Long = 500
-Private Const WINDOW_HEIGHT   As Long = 300
-Private Const WINDOW_OFFSET_Y As Long = 150  ' adjust this value to move window lower
+Private Const WINDOW_WIDTH    As Long = 300
+Private Const WINDOW_HEIGHT   As Long = 360
+Private Const WINDOW_OFFSET_Y As Long = 100  ' adjust this value to move window lower
 Private m_UIMgr               As clsUIManager
-Private m_lblUser             As clsUILabel
+Private m_lblTitle             As clsUILabel
+Private m_imgSeparatorH1       As clsUIImage
+Private m_imgSeparatorH2       As clsUIImage
 Private m_lblPass             As clsUILabel
 Private m_cbOk          As clsUICheckbox
 Private m_btnConnect          As clsUIButton
@@ -50,31 +52,42 @@ Private m_inputboxUser          As clsUIInputbox
 Private m_inputboxPass          As clsUIInputbox
 Private m_boxInfo          As clsUIBoxInfo
 Private m_haracinOk          As Boolean
+Private m_lblNewAccount             As clsUILabel
+Private m_lblForgotPass             As clsUILabel
 
  
 Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager: m_UIMgr.Init
-    Set m_lblUser = New clsUILabel
-    m_lblUser.Init "Username:", 0, 0, UI_COLOR_GOLD
-    m_UIMgr.AddComponent m_lblUser
-    Set m_lblPass = New clsUILabel
-    m_lblPass.Init "Password:", 0, 0, UI_COLOR_GOLD
-    m_UIMgr.AddComponent m_lblPass
+    Set m_lblTitle = New clsUILabel
+    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8
+    m_UIMgr.AddComponent m_lblTitle
+    Set m_imgSeparatorH1 = New clsUIImage
+    m_imgSeparatorH1.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+    m_UIMgr.AddComponent m_imgSeparatorH1
     Set m_btnConnect = New clsUIButton
-    m_btnConnect.Init "Show Info", 0, 0, 100, 30, UI_COLOR_GOLD, &HFF606060, UI_COLOR_BLACK
+    m_btnConnect.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_btnConnect
     Set m_inputboxUser = New clsUIInputbox
-    m_inputboxUser.Init "", 0, 0, 200, 20, &HFFFFFF, &HFFFFFF, UI_COLOR_BLACK, False
+    m_inputboxUser.Init "Email", 0, 0, 240, 40, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, False
     m_UIMgr.AddComponent m_inputboxUser
     Set m_inputboxPass = New clsUIInputbox
-    m_inputboxPass.Init "", 0, 0, 200, 20, &HFFFFFF, &HFFFFFF, UI_COLOR_BLACK, True
+    m_inputboxPass.Init "Clave", 0, 0, 240, 40, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, True
     m_UIMgr.AddComponent m_inputboxPass
     Set m_cbOk = New clsUICheckbox
-    m_cbOk.Init "IA", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE
+    m_cbOk.Init "Recordarme", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_cbOk
     Set m_boxInfo = New clsUIBoxInfo
-    m_boxInfo.Init "HORACIO es un Atosigador de fines del siglo XX, aun activo en 2025. Se caracteriza por hostigar varios recursos a la vez y romper sober_anamente las pelotas ...", 0, 0, 250, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK
+    m_boxInfo.Init "HORACIO es un Atosigador de fines delvarioer sober_anamente las pelotas ...", 0, 0, 500, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK
     m_UIMgr.AddComponent m_boxInfo
+    Set m_imgSeparatorH2 = New clsUIImage
+    m_imgSeparatorH2.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+    m_UIMgr.AddComponent m_imgSeparatorH2
+    Set m_lblNewAccount = New clsUILabel
+    m_lblNewAccount.Init "Crear cuenta", 0, 0, UI_COLOR_WHITE, 100, 1, 1
+    m_UIMgr.AddComponent m_lblNewAccount
+    Set m_lblForgotPass = New clsUILabel
+    m_lblForgotPass.Init "Olvide mi contraseña", 0, 0, UI_COLOR_WHITE, 100, 1, 1
+    m_UIMgr.AddComponent m_lblForgotPass
     m_haracinOk = False
 End Sub
 
@@ -102,26 +115,26 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         
         Dim i As Long, texPanel As Direct3DTexture8
         Dim x As Long, y As Long, w As Long, h As Long, b As Long
-        b = 60
-        For i = 30 To 38
+        b = 20
+        For i = 13030 To 13038
             Select Case i
-                Case 30
-                    x = wx: y = wy: w = WINDOW_WIDTH: h = WINDOW_HEIGHT
-                Case 31
+                Case 13030
+                    x = wx + b: y = wy + b: w = WINDOW_WIDTH - (2 * b): h = WINDOW_HEIGHT - (2 * b)
+                Case 13031
                     x = wx: y = wy: w = b: h = b
-                Case 32
+                Case 13032
                     x = wx + b: y = wy: w = WINDOW_WIDTH - b * 2: h = b
-                Case 33
+                Case 13033
                     x = wx + WINDOW_WIDTH - b: y = wy: w = b: h = b
-                Case 34
+                Case 13034
                     x = wx + WINDOW_WIDTH - b: y = wy + b: w = b: h = WINDOW_HEIGHT - b * 2
-                Case 35
+                Case 13035
                     x = wx + WINDOW_WIDTH - b: y = wy + WINDOW_HEIGHT - b: w = b: h = b
-                Case 36
+                Case 13036
                     x = wx + b: y = wy + WINDOW_HEIGHT - b: w = WINDOW_WIDTH - b * 2: h = b
-                Case 37
+                Case 13037
                     x = wx: y = wy + WINDOW_HEIGHT - b: w = b: h = b
-                Case 38
+                Case 13038
                     x = wx: y = wy + b: w = b: h = WINDOW_HEIGHT - b * 2
             End Select
             Set texPanel = UITextures.GetTexture(i, texW, texH)
@@ -144,13 +157,17 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         
         
         ' Position UI controls
-        m_lblUser.SetPosition wx + 70, wy + 80
-        m_inputboxUser.SetPosition wx + 150, wy + 77
-        m_lblPass.SetPosition wx + 70, wy + 120
-        m_inputboxPass.SetPosition wx + 150, wy + 117
-        m_cbOk.SetPosition wx + 400, wy + 250
-        m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + WINDOW_HEIGHT - 90
-        m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy + 50, m_haracinOk
+        
+        m_lblTitle.SetPosition wx + 80, wy + 30
+        m_imgSeparatorH1.SetPosition wx + 30, wy + 80
+        m_inputboxUser.SetPosition wx + 30, wy + 100
+        m_inputboxPass.SetPosition wx + 30, wy + 150
+        m_cbOk.SetPosition wx + 30, wy + 200
+        m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + 235
+        m_imgSeparatorH2.SetPosition wx + 30, wy + 290
+        m_lblNewAccount.SetPosition wx + 30, wy + 320
+        m_lblForgotPass.SetPosition wx + 150, wy + 320
+        m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy, m_haracinOk
 
         ' Draw UI widgets + batched renderer
         m_UIMgr.RenderAll dev
@@ -179,5 +196,10 @@ Public Function WasConnectClicked() As Boolean
     End If
 End Function
 
+Public Sub ShowMessageBox(ByVal Title, ByVal Message As String)
+    m_boxInfo.IUIComponent_SetVisible True
+    m_boxInfo.Message = Message
+    m_boxInfo.Title = Title
+End Sub
 
 

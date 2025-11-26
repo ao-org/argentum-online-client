@@ -45,6 +45,8 @@ Private m_Impl      As clsUIComponentImpl
 Private m_IsHover   As Boolean
 Private m_PrevDown  As Boolean
 Private m_Clicked   As Boolean
+Private m_MarginLeft   As Integer
+Private m_MarginTop   As Integer
 
 Public Function IUIComponent_IsVisible() As Boolean
     IUIComponent_IsVisible = m_Impl.IsVisible
@@ -53,13 +55,14 @@ Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
     Call m_Impl.SetVisible(newState)
 End Sub
 
-Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
+Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
     If m_Impl Is Nothing Then
         Set m_Impl = New clsUIComponentImpl
     End If
-
-    m_Impl.InitLabel text, x, y, clrText
-    m_Impl.SetSize 15, 15
+    m_MarginLeft = 35
+    m_MarginTop = 5
+    m_Impl.InitLabel Text, x, y, clrText
+    m_Impl.SetSize 25, 25
     m_Impl.ColorFill = clrFill
     m_Impl.HoverColor = clrHover
     m_Clicked = False: m_PrevDown = False: m_IsHover = False
@@ -103,7 +106,7 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     End If
     If Not cbTexture Is Nothing Then
         UIRenderer.AddTexturedQuad _
-            m_Impl.X, m_Impl.Y, m_Impl.Width, m_Impl.Height, _
+            m_Impl.x, m_Impl.y, m_Impl.Width, m_Impl.Height, _
         cbTexture, _
         0!, 0!, 1!, 1!, _
         UI_COLOR_WHITE, 255
@@ -114,19 +117,19 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
         cols2(1) = UI_COLOR_WHITE
         cols2(2) = UI_COLOR_WHITE
         cols2(3) = UI_COLOR_WHITE
-        UIRenderer.AddQuad m_Impl.X, m_Impl.Y, m_Impl.Width, m_Impl.Height, cols2, 190
+        UIRenderer.AddQuad m_Impl.x, m_Impl.y, m_Impl.Width, m_Impl.Height, cols2, 190
     End If
     Dim rc As RECT
-    rc.Left = m_Impl.X + 20: rc.Top = m_Impl.Y
-    rc.Right = m_Impl.X + m_Impl.Width: rc.Bottom = m_Impl.Y + m_Impl.Height
+    rc.Left = m_Impl.x + m_MarginLeft: rc.Top = m_Impl.y + 6
+    rc.Right = m_Impl.x + m_Impl.Width: rc.Bottom = m_Impl.y + m_Impl.Height
     Call UIRenderer.RenderText(m_Impl.Text, rc.Left, rc.Top, m_Impl.Color, 1, 255)
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
-    m_IsHover = (mouseX >= m_Impl.X And mouseX <= m_Impl.X + m_Impl.Width And mouseY >= m_Impl.Y And mouseY <= m_Impl.Y + m_Impl.Height)
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
+    m_IsHover = (mouseX >= m_Impl.x And mouseX <= m_Impl.x + m_Impl.Width And mouseY >= m_Impl.y And mouseY <= m_Impl.y + m_Impl.Height)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then
-        hit = True
+        Hit = True
         Call m_Impl.SetFocus(True)
         If m_Clicked Then
             m_Clicked = False
@@ -134,6 +137,7 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
             m_Clicked = True
         End If
         m_PrevDown = down
+        Call ao20audio.PlayWav(SND_CLICK)
     End If
     m_PrevDown = down
 End Sub
