@@ -261,50 +261,31 @@ Public Sub HandleGameplayAreaMouseUp(ByVal Button As Integer, _
                                      ByRef GameplayArea As Rect)
     clicX = x
     clicY = y
-    If Button = vbLeftButton Then
-        If HandleMouseInput(x, y) Then
-        ElseIf Pregunta Then
-            If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
-                Call HandleQuestionResponse(False)
-                Exit Sub
-            ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then
-                Call HandleQuestionResponse(True)
-                Exit Sub
-            End If
-        End If
-    ElseIf Button = vbRightButton Then
-        Dim charindex As Integer
-        charindex = MapData(tX, tY).charindex
-        If charindex = 0 Then
-            charindex = MapData(tX, tY + 1).charindex
-        End If
-        If charindex <> 0 And charindex <> UserCharIndex Then
-            Dim Frm As Form
-            Call WriteLeftClick(tX, tY)
-            TargetX = tX
-            TargetY = tY
-            If charlist(charindex).EsMascota Then
-                Set Frm = MenuNPC
-            ElseIf Not charlist(charindex).EsNpc Then
-                targetName = charlist(charindex).nombre
-                If charlist(UserCharIndex).priv > 0 And Shift = 0 Then
-                    Set Frm = MenuGM
-                Else
-                    Set Frm = MenuUser
+    
+    Dim MouseAction As e_MouseAction
+    Select Case Button
+        Case vbLeftButton:  MouseAction = ACCION1
+        Case vbRightButton: MouseAction = ACCION2
+        Case vbMiddleButton: MouseAction = ACCION3
+        Case Else: Exit Sub
+    End Select
+    
+    Select Case MouseAction
+    
+        Case e_MouseAction.eThrowOrLook
+            If HandleMouseInput(x, y) Then
+            ElseIf Pregunta Then
+                If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
+                    Call HandleQuestionResponse(False)
+                    Exit Sub
+                ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then
+                    Call HandleQuestionResponse(True)
+                    Exit Sub
                 End If
             End If
-            If Not Frm Is Nothing Then
-                Call Frm.Show
-                Frm.Left = FormLeft + (GameplayArea.Left + x + 1) * screen.TwipsPerPixelX
-                If (GameplayArea.Top + y) * screen.TwipsPerPixelY + Frm.Height > FormHeight Then
-                    Frm.Top = FormTop + (GameplayArea.Top + y) * screen.TwipsPerPixelY - Frm.Height
-                Else
-                    Frm.Top = FormTop + (GameplayArea.Top + y) * screen.TwipsPerPixelY
-                End If
-                Set Frm = Nothing
-            End If
-        End If
-    End If
+        Case e_MouseAction.eInteract
+            Call ShowInteractionMenu(FormTop, FormLeft, FormHeight, x, y, GameplayArea)
+    End Select
 End Sub
 
 Public Sub HandleChatMsg(ByVal InputText As String)
@@ -664,3 +645,49 @@ Public Sub ClearHotkeys()
         HotkeyList(i).Type = Unknown
     Next i
 End Sub
+
+Public Sub ShowInteractionMenu(ByVal FormTop As Long, _
+                                ByVal FormLeft As Long, _
+                                ByVal FormHeight As Long, _
+                                ByVal x As Integer, _
+                                ByVal y As Integer, _
+                                ByRef GameplayArea As RECT)
+    On Error GoTo ShowInteractionMenu_Err
+    Dim charindex As Integer
+    charindex = MapData(tX, tY).charindex
+    If charindex = 0 Then charindex = MapData(tX, tY + 1).charindex
+    If charindex = 0 Or charindex = UserCharIndex Then Exit Sub
+
+    Dim Frm As Form
+    Call WriteLeftClick(tX, tY)
+    TargetX = tX
+    TargetY = tY
+
+    If charlist(charindex).EsMascota Then
+        Set Frm = MenuNPC
+    ElseIf Not charlist(charindex).EsNpc Then
+        targetName = charlist(charindex).nombre
+        If charlist(UserCharIndex).priv > 0 And Shift = 0 Then
+            Set Frm = MenuGM
+        Else
+            Set Frm = MenuUser
+        End If
+    End If
+
+    If Not Frm Is Nothing Then
+        Frm.Show
+        Frm.Left = FormLeft + (GameplayArea.Left + x + 1) * screen.TwipsPerPixelX
+        If (GameplayArea.Top + y) * screen.TwipsPerPixelY + Frm.Height > FormHeight Then
+            Frm.Top = FormTop + (GameplayArea.Top + y) * screen.TwipsPerPixelY - Frm.Height
+        Else
+            Frm.Top = FormTop + (GameplayArea.Top + y) * screen.TwipsPerPixelY
+        End If
+        Set Frm = Nothing
+    End If
+    Exit Sub
+ShowInteractionMenu_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModGameplayUi.ShowInteractionMenu", Erl)
+    Resume Next
+End Sub
+
+
