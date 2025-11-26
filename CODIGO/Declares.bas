@@ -39,6 +39,14 @@ Public Const NO_ARMOR    As Byte = 2
 Public Const NO_SHIELD   As Byte = 2
 Public Const NO_BACKPACK As Byte = 2
 
+'Cfg clanes
+Public cfgGuildLevelCallSupport As Byte
+Public cfgGuildLevelSeeInvisible As Byte
+Public cfgGuildLevelSafe As Byte
+Public cfgGuildLevelShowHPBar As Byte
+Public cfgMaxGuildLevel As Byte
+Public cfgGuildMembersByLevel(1 To 7) As Byte
+
 Public Enum tMacroButton
     Inventario = 1
     Hechizos = 2

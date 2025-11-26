@@ -206,6 +206,7 @@ Public Enum ServerPacketID
     eAccountCharacterList
 #End If
     eChangeSkinSlot
+    eGuildConfig
     eMaxPacket
     [PacketCount]
 End Enum
