@@ -77,7 +77,7 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     m_cbOk.Init "Recordarme", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE
     m_UIMgr.AddComponent m_cbOk
     Set m_boxInfo = New clsUIBoxInfo
-    m_boxInfo.Init "HORACIO es un Atosigador de fines delvarioer sober_anamente las pelotas ...", 0, 0, 500, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK
+    m_boxInfo.Init "HORACIO es un Atosigador de fines delvarioer sober_anamente las pelotas ...", 0, 0, 400, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK
     m_UIMgr.AddComponent m_boxInfo
     Set m_imgSeparatorH2 = New clsUIImage
     m_imgSeparatorH2.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
@@ -196,10 +196,10 @@ Public Function WasConnectClicked() As Boolean
     End If
 End Function
 
-Public Sub ShowMessageBox(ByVal Title, ByVal Message As String)
+Public Sub ShowMessageBox(ByVal title, ByVal message As String)
     m_boxInfo.IUIComponent_SetVisible True
-    m_boxInfo.Message = Message
-    m_boxInfo.Title = Title
+    m_boxInfo.message = message
+    m_boxInfo.title = title
 End Sub
 
 

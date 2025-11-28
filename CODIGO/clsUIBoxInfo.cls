@@ -11,6 +11,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+
 ' Argentum 20 Game Client
 '
 '    Copyright (C) 2025 Noland Studios LTD
@@ -45,13 +46,13 @@ Private m_Impl      As clsUIComponentImpl
 Private m_IsHover   As Boolean
 Private m_PrevDown  As Boolean
 Private m_Clicked   As Boolean
-Private m_marginLeft As Integer
-Private m_marginTop As Integer
+Private m_MarginLeft As Integer
+Private m_MarginTop As Integer
 Private m_Draw   As Boolean
 Private m_lblTitle  As clsUILabel
 Private m_btnOk  As clsUIButton
 
-Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
+Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
     If m_Impl Is Nothing Then
         Set m_Impl = New clsUIComponentImpl
     End If
@@ -60,16 +61,16 @@ Public Sub Init(ByVal text As String, ByVal x As Long, ByVal y As Long, ByVal w 
     m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8
     
     Set m_btnOk = New clsUIButton
-    m_btnOk.Init "OK", 0, 0, 50, 30, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+    m_btnOk.Init "OK", 0, 0, 150, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
     
-    m_Impl.InitLabel text, x, y, clrText
+    m_Impl.InitLabel Text, x, y, clrText
     m_Impl.SetSize w, h
     m_Impl.ColorFill = clrFill
     m_Impl.HoverColor = clrHover
     m_Clicked = False: m_PrevDown = False: m_IsHover = False
     m_Draw = False
     m_MarginLeft = 30
-    m_marginTop = 40
+    m_MarginTop = 40
 End Sub
 Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
     Call m_Impl.SetVisible(newState)
@@ -100,11 +101,11 @@ Public Property Let WasClicked(ByVal val As Boolean)
     m_Clicked = val
 End Property
 
-Public Property Let Message(ByVal str As String)
+Public Property Let message(ByVal str As String)
     m_Impl.Text = str
 End Property
 
-Public Property Let Title(ByVal str As String)
+Public Property Let title(ByVal str As String)
     m_lblTitle.Text = str
 End Property
 
@@ -117,7 +118,7 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Dim gliphH As Integer
     Dim gliphPerRow As Integer
     Dim gliphPerCol As Integer
-    gliphW = 7
+    gliphW = 12
     gliphH = 12
     gliphPerRow = (m_Impl.Width / gliphW) - 2
     gliphPerCol = m_Impl.Height / gliphH
@@ -175,19 +176,20 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
                 UIRenderer.AddQuad wx, wy, sW, sH, cols2, 190
             End If
         Next i
-    m_lblTitle.SetPosition wx + 5, wy + 5
+    m_lblTitle.SetPosition wx + (sW - (Len(m_lblTitle.Text) * gliphW)) / 2, wy + 15
     m_lblTitle.IUIComponent_Render dev
     Dim strTextAux As String
-    For i = 0 To gliphPerRow
-        strTextAux = mid(m_Impl.Text, i * gliphPerRow + 1, gliphPerRow)
-        Call UIRenderer.RenderText(strTextAux, wx + m_MarginLeft, wy + (gliphH * i) + m_MarginTop, m_Impl.Color, 1, 255)
-    Next i
-    m_btnOk.SetPosition wx + (sW - m_btnOk.Width) \ 2, wy + Me.Height - 40
+'    For i = 0 To gliphPerRow
+'        strTextAux = mid(m_Impl.Text, i * gliphPerRow + 1, gliphPerRow)
+'        Call UIRenderer.RenderText(m_Impl.Text, wx + (sW - (Len(strTextAux) * 10)) / 2, wy + (gliphH * i) + 50, m_Impl.Color, 8, 255, 0.5)
+'    Next i
+    Call UIRenderer.RenderText(m_Impl.Text, wx + (sW - (Len(m_Impl.Text) * 5)) / 2, wy + 50, m_Impl.Color, 8, 255, 0.5)
+    m_btnOk.SetPosition wx + (sW - m_btnOk.Width) / 2, wy + Me.Height - 55
     m_btnOk.IUIComponent_Render dev
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
-    m_IsHover = (mouseX >= m_Impl.X And mouseX <= m_Impl.X + m_Impl.Width And mouseY >= m_Impl.Y And mouseY <= m_Impl.Y + m_Impl.Height)
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
+    m_IsHover = (mouseX >= m_Impl.x And mouseX <= m_Impl.x + m_Impl.Width And mouseY >= m_Impl.y And mouseY <= m_Impl.y + m_Impl.Height)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then
         m_Clicked = True
@@ -198,7 +200,7 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
     m_btnOk.IUIComponent_HandleMouse mouseX, mouseY, mouseButtons, hit
 End Sub
 
-Private Sub IUIComponent_HandleKeyboard(ByVal KeyCode As Long, ByVal shiftState As Long)
+Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
     ' no-op for now
 End Sub
 
