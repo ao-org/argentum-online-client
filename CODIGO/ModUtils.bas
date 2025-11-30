@@ -238,6 +238,7 @@ Public Type NpcDatas
     NroItems As Integer
     Obj() As Integer
     Comercia As Integer
+    level As Integer
 End Type
 
 Public Type HechizoDatas
@@ -1793,6 +1794,7 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String, ByVal bytHeader A
     If NpcIndex <> "" Then
         extraInfo = extraInfo & " NpcIndex: " & NpcIndex
     End If
+    extraInfo = extraInfo & " " & "[" & JsonLanguage.Item("MENSAJE_NIVEL") & ":" & NpcData(TmpNpcIndex).level & "]"
     If NpcStatusMask > 0 Then
         If IsSet(NpcStatusMask, e_NpcInfoMask.AlmostDead) Then
             extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_CASIMUERTO") & "]"
