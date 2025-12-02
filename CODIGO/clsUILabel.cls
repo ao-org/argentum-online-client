@@ -43,8 +43,9 @@ Private m_Impl As clsUIComponentImpl
 Private m_Opacity As Integer
 Private m_Size As Single
 Private m_FontIndex As Integer
+Private m_Action  As Boolean
 
-Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal Color As Long, ByVal opacity As Integer, ByVal size As Single, fontIndex)
+Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal Color As Long, ByVal opacity As Integer, ByVal size As Single, FontIndex, ByVal act As Integer)
     If m_Impl Is Nothing Then
         Set m_Impl = New clsUIComponentImpl
     End If
@@ -52,6 +53,7 @@ Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal Co
     m_Opacity = opacity
     m_Size = size
     m_FontIndex = fontIndex
+    m_Action = act
 End Sub
 
 Public Function IUIComponent_IsVisible() As Boolean
@@ -87,8 +89,8 @@ Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Call UIRenderer.RenderText(m_Impl.Text, rc.Left, rc.Top, m_Impl.Color, m_FontIndex, m_Opacity, m_Size)
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
-    Hit = False
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef act As Integer)
+    act = 0
 End Sub
 
 Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)

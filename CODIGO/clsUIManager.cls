@@ -58,33 +58,39 @@ Public Sub RenderAll(ByVal dev As Direct3DDevice8)
     ' Render each component
     Dim comp As IUIComponent
     For Each comp In Components
-        comp.render dev
+        If comp.IsVisible Then
+            comp.render dev
+        End If
     Next
 End Sub
 
 
 Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
-    Dim Hit As Boolean
+    Dim act As Integer
     Dim comp As IUIComponent
     Dim Index As Integer
     Index = 1
     Dim compFocused As IUIComponent
     For Each comp In Components
-        Hit = False
-        comp.HandleMouse mouseX, mouseY, mouseButtons, Hit
-        If Hit And (compFocusedIndex <> Index) Then
-            If (compFocusedIndex <> 0) Then
-                Components.Item(compFocusedIndex).SetFocus (False)
+        If comp.IsVisible Then
+            comp.HandleMouse mouseX, mouseY, mouseButtons, act
+            g_connectScreen.ProcessAction act
+            If (act <> 0) And (compFocusedIndex <> Index) Then
+                If (compFocusedIndex <> 0) Then
+                    Components.Item(compFocusedIndex).SetFocus (False)
+                End If
+                compFocusedIndex = Index
             End If
-            compFocusedIndex = Index
+            Index = Index + 1
         End If
-        Index = Index + 1
     Next
 End Sub
 
 Public Sub HandleKeyboard(ByVal KeyCode As Long, ByVal shiftState As Long)
     Dim comp As IUIComponent
     For Each comp In Components
-        comp.HandleKeyboard KeyCode, shiftState
+        If comp.IsVisible Then
+            comp.HandleKeyboard keyCode, shiftState
+        End If
     Next
 End Sub

@@ -42,6 +42,8 @@ Private Const WINDOW_WIDTH    As Long = 300
 Private Const WINDOW_HEIGHT   As Long = 360
 Private Const WINDOW_OFFSET_Y As Long = 100  ' adjust this value to move window lower
 Private m_UIMgr               As clsUIManager
+
+' Ventna Connect
 Private m_lblTitle             As clsUILabel
 Private m_imgSeparatorH1       As clsUIImage
 Private m_imgSeparatorH2       As clsUIImage
@@ -51,44 +53,68 @@ Private m_btnConnect          As clsUIButton
 Private m_inputboxUser          As clsUIInputbox
 Private m_inputboxPass          As clsUIInputbox
 Private m_boxInfo          As clsUIBoxInfo
-Private m_haracinOk          As Boolean
+Private m_Action          As Boolean
 Private m_lblNewAccount             As clsUILabel
 Private m_lblForgotPass             As clsUILabel
 
+' Ventana Crear Cuenta
+Private m_lblTitle2             As clsUILabel
+Private m_btnCreateAccount          As clsUIButton
  
 Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager: m_UIMgr.Init
+    
+    ' """"""""""""   VENTANA CONNECT   """""""""""""
     Set m_lblTitle = New clsUILabel
-    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8
+    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8, 0
     m_UIMgr.AddComponent m_lblTitle
     Set m_imgSeparatorH1 = New clsUIImage
-    m_imgSeparatorH1.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+    m_imgSeparatorH1.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
     m_UIMgr.AddComponent m_imgSeparatorH1
-    Set m_btnConnect = New clsUIButton
-    m_btnConnect.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
-    m_UIMgr.AddComponent m_btnConnect
     Set m_inputboxUser = New clsUIInputbox
-    m_inputboxUser.Init "Email", 0, 0, 240, 40, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, False
+    m_inputboxUser.Init "Email", 0, 0, 240, 40, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, False, 0
     m_UIMgr.AddComponent m_inputboxUser
     Set m_inputboxPass = New clsUIInputbox
-    m_inputboxPass.Init "Clave", 0, 0, 240, 40, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, True
+    m_inputboxPass.Init "Clave", 0, 0, 240, 40, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, True, 0
     m_UIMgr.AddComponent m_inputboxPass
     Set m_cbOk = New clsUICheckbox
-    m_cbOk.Init "Recordarme", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE
+    m_cbOk.Init "Recordarme", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE, 0
     m_UIMgr.AddComponent m_cbOk
     Set m_boxInfo = New clsUIBoxInfo
-    m_boxInfo.Init "HORACIO es un Atosigador de fines delvarioer sober_anamente las pelotas ...", 0, 0, 400, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK
+    m_boxInfo.Init "Default text...", 0, 0, 400, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK, 4
     m_UIMgr.AddComponent m_boxInfo
     Set m_imgSeparatorH2 = New clsUIImage
-    m_imgSeparatorH2.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+    m_imgSeparatorH2.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
     m_UIMgr.AddComponent m_imgSeparatorH2
+    Set m_btnConnect = New clsUIButton
+    m_btnConnect.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 3
+    m_UIMgr.AddComponent m_btnConnect
     Set m_lblNewAccount = New clsUILabel
-    m_lblNewAccount.Init "Crear cuenta", 0, 0, UI_COLOR_WHITE, 100, 1, 1
+    m_lblNewAccount.Init "Crear cuenta", 0, 0, UI_COLOR_WHITE, 100, 1, 1, 0
     m_UIMgr.AddComponent m_lblNewAccount
     Set m_lblForgotPass = New clsUILabel
-    m_lblForgotPass.Init "Olvide mi contraseña", 0, 0, UI_COLOR_WHITE, 100, 1, 1
+    m_lblForgotPass.Init "Olvide mi contraseña", 0, 0, UI_COLOR_WHITE, 100, 1, 1, 0
     m_UIMgr.AddComponent m_lblForgotPass
-    m_haracinOk = False
+'    m_Action = False
+    
+    ' """"""""""""   VENTANA CONNECT   """""""""""""
+    Set m_lblTitle2 = New clsUILabel
+    m_lblTitle2.Init "Crear Cuenta", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8, 0
+    m_UIMgr.AddComponent m_lblTitle2
+'    Set m_imgSeparatorH3 = New clsUIImage
+'    m_imgSeparatorH3.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+'    m_UIMgr.AddComponent m_imgSeparatorH3
+    
+    
+    
+    
+'    Set m_imgSeparatorH4 = New clsUIImage
+'    m_imgSeparatorH4.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
+'    m_UIMgr.AddComponent m_imgSeparatorH4
+    Set m_btnCreateAccount = New clsUIButton
+    m_btnCreateAccount.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
+    m_UIMgr.AddComponent m_btnCreateAccount
+    
 End Sub
 
 
@@ -167,7 +193,7 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         m_imgSeparatorH2.SetPosition wx + 30, wy + 290
         m_lblNewAccount.SetPosition wx + 30, wy + 320
         m_lblForgotPass.SetPosition wx + 150, wy + 320
-        m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy, m_haracinOk
+        m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy, m_Action
 
         ' Draw UI widgets + batched renderer
         m_UIMgr.RenderAll dev
@@ -186,14 +212,14 @@ Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
 End Sub
 
 Public Function WasConnectClicked() As Boolean
-    WasConnectClicked = m_btnConnect.WasClicked
-    If WasConnectClicked Then
-        m_btnConnect.WasClicked = False
-        m_haracinOk = True
-        
-        Call SetActiveServer("127.0.0.1", "6501")
-        Call DoLogin(m_inputboxUser.Text, m_inputboxPass.Text, True)
-    End If
+'    WasConnectClicked = m_btnConnect.WasClicked
+'    If WasConnectClicked Then
+'        m_btnConnect.WasClicked = False
+'        m_Action = True
+'
+'        Call SetActiveServer("127.0.0.1", "6501")
+'        Call DoLogin(m_inputboxUser.Text, m_inputboxPass.Text, True)
+'    End If
 End Function
 
 Public Sub ShowMessageBox(ByVal title, ByVal message As String)
@@ -202,4 +228,24 @@ Public Sub ShowMessageBox(ByVal title, ByVal message As String)
     m_boxInfo.title = title
 End Sub
 
-
+Public Sub ProcessAction(ByVal connectId As Integer)
+    Select Case connectId
+        Case 1
+            m_lblTitle.IUIComponent_SetVisible True
+            m_inputboxUser.IUIComponent_SetVisible True
+            m_inputboxPass.IUIComponent_SetVisible True
+            m_cbOk.IUIComponent_SetVisible True
+            m_btnConnect.IUIComponent_SetVisible True
+            m_UIMgr.AddComponent m_btnConnect
+            m_lblNewAccount.IUIComponent_SetVisible True
+            m_lblForgotPass.IUIComponent_SetVisible True
+        Case 2
+            m_btnConnect.IUIComponent_SetVisible True
+            m_lblTitle2.IUIComponent_SetVisible True
+        Case 3
+            m_boxInfo.IUIComponent_SetVisible True
+        Case 4
+            m_boxInfo.IUIComponent_SetVisible False
+            
+    End Select
+End Sub

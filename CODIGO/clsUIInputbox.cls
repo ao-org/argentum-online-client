@@ -52,8 +52,9 @@ Private m_EmptyText As String
 Private m_TextW As Integer
 Private m_TextH As Integer
 Private m_MarginLeft As Integer
+Private m_Action   As Integer
 
-Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long, ByVal pswd As Boolean)
+Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long, ByVal pswd As Boolean, ByVal act As Integer)
     If m_Impl Is Nothing Then
         Set m_Impl = New clsUIComponentImpl
     End If
@@ -69,6 +70,7 @@ Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal w 
     m_TextW = 7
     m_TextH = 12
     m_MarginLeft = 10
+    m_Action = act
 End Sub
 
 Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
@@ -183,12 +185,12 @@ Dim cbTextureL As Direct3DTexture8
     If m_Interval = m_IntervalMax Then m_Interval = 0
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef act As Integer)
     m_IsHover = (mouseX >= m_Impl.x And mouseX <= m_Impl.x + m_Impl.Width And mouseY >= m_Impl.y And mouseY <= m_Impl.y + m_Impl.Height)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then
         m_Clicked = True
-        Hit = True
+        act = 0
         Call m_Impl.SetFocus(True)
     End If
     m_PrevDown = down

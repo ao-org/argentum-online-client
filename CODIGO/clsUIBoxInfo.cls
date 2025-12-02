@@ -51,18 +51,20 @@ Private m_MarginTop As Integer
 Private m_Draw   As Boolean
 Private m_lblTitle  As clsUILabel
 Private m_btnOk  As clsUIButton
+Private m_Action  As Integer
 
-Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
+
+Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal w As Long, ByVal h As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long, ByVal act As Integer)
     If m_Impl Is Nothing Then
         Set m_Impl = New clsUIComponentImpl
     End If
     
     Set m_lblTitle = New clsUILabel
-    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8
+    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8, 0
     
     Set m_btnOk = New clsUIButton
-    m_btnOk.Init "OK", 0, 0, 150, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
-    
+    m_btnOk.Init "OK", 0, 0, 150, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 4
+    m_Impl.SetVisible False
     m_Impl.InitLabel Text, x, y, clrText
     m_Impl.SetSize w, h
     m_Impl.ColorFill = clrFill
@@ -71,6 +73,7 @@ Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal w 
     m_Draw = False
     m_MarginLeft = 30
     m_MarginTop = 40
+    m_Action = act
 End Sub
 Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
     Call m_Impl.SetVisible(newState)
@@ -110,7 +113,6 @@ Public Property Let title(ByVal str As String)
 End Property
 
 Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
-    If Not m_Draw Then Exit Sub
     Dim clr As Long
     clr = IIf(m_IsHover, m_Impl.HoverColor, m_Impl.ColorFill)
 
@@ -188,16 +190,17 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     m_btnOk.IUIComponent_Render dev
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef hit As Boolean)
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef act As Integer)
     m_IsHover = (mouseX >= m_Impl.x And mouseX <= m_Impl.x + m_Impl.Width And mouseY >= m_Impl.y And mouseY <= m_Impl.y + m_Impl.Height)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then
         m_Clicked = True
-'        Hit = True
+        act = m_Action
+        
         Call m_Impl.SetFocus(True)
     End If
     m_PrevDown = down
-    m_btnOk.IUIComponent_HandleMouse mouseX, mouseY, mouseButtons, hit
+    m_btnOk.IUIComponent_HandleMouse mouseX, mouseY, mouseButtons, act
 End Sub
 
 Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
