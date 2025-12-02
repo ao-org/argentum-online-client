@@ -1321,8 +1321,8 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         verVidaClan = False
         If .clan_index > 0 Then
             If .clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .Muerto = 0 Then
-                If .clan_nivel >= 6 Then dibujaMiembroClan = True
-                If .clan_nivel >= 5 Then verVidaClan = True
+                If .clan_nivel >= cfgGuildLevelSeeInvisible Then dibujaMiembroClan = True
+                If .clan_nivel >= cfgGuildLevelShowHPBar Then verVidaClan = True
             End If
         End If
         If .Moving Then

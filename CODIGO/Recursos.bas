@@ -1372,6 +1372,7 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).ElementalTags = val(Leer.GetValue("npc" & Npc, "ElementalTags"))
         NpcData(Npc).NpcType = val(Leer.GetValue("npc" & Npc, "NpcType"))
         NpcData(Npc).Comercia = val(Leer.GetValue("npc" & Npc, "Comercia"))
+        NpcData(Npc).level = val(Leer.GetValue("npc" & Npc, "Nivel"))
         
         aux = val(Leer.GetValue("npc" & Npc, "NumQuiza"))
         If aux = 0 Then
