@@ -61,6 +61,10 @@ Private m_lblForgotPass             As clsUILabel
 Private m_lblTitle2             As clsUILabel
 Private m_btnCreateAccount          As clsUIButton
 Private m_btnCloseCA          As clsUIButton
+Private Const BUTTON_CONNECT_CLICKED As Integer = 1
+Private Const BUTTON_CREATE_ACCOUNT_CLICKED As Integer = 2
+Private Const BUTTON_SHOW_MSG_BOX_CLICKED As Integer = 3
+Private Const BUTTON_MSG_BOX_OK_CLICKED As Integer = 4
  
 Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager: m_UIMgr.Init
@@ -82,19 +86,19 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     m_cbOk.Init "Recordarme", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE, 0
     m_UIMgr.AddComponent m_cbOk
     Set m_boxInfo = New clsUIBoxInfo
-    m_boxInfo.Init "Default text...", 0, 0, 400, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK, 4
+    m_boxInfo.Init "Default text...", 0, 0, 400, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK, BUTTON_MSG_BOX_OK_CLICKED
     m_UIMgr.AddComponent m_boxInfo
     Set m_imgSeparatorH2 = New clsUIImage
     m_imgSeparatorH2.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
     m_UIMgr.AddComponent m_imgSeparatorH2
     Set m_btnConnect = New clsUIButton
-    m_btnConnect.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 3
+    m_btnConnect.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, BUTTON_SHOW_MSG_BOX_CLICKED
     m_UIMgr.AddComponent m_btnConnect
     Set m_lblNewAccount = New clsUILabel
-    m_lblNewAccount.Init "Crear cuenta", 0, 0, UI_COLOR_WHITE, 100, 1, 1, 2
+    m_lblNewAccount.Init "Crear cuenta", 0, 0, UI_COLOR_WHITE, 100, 1, 1, BUTTON_CREATE_ACCOUNT_CLICKED
     m_UIMgr.AddComponent m_lblNewAccount
     Set m_lblForgotPass = New clsUILabel
-    m_lblForgotPass.Init "Olvide mi contraseña", 0, 0, UI_COLOR_WHITE, 100, 1, 1, 2
+    m_lblForgotPass.Init "Olvide mi contraseña", 0, 0, UI_COLOR_WHITE, 100, 1, 1, BUTTON_CREATE_ACCOUNT_CLICKED
     m_UIMgr.AddComponent m_lblForgotPass
 '    m_Action = False
     
@@ -208,7 +212,9 @@ End Sub
 
 
 Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
-    m_UIMgr.HandleMouse mouseX, mouseY, mouseButtons
+    Dim act As Integer
+    m_UIMgr.HandleMouse mouseX, mouseY, mouseButtons, act
+    ProcessAction act
 End Sub
 
 Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)

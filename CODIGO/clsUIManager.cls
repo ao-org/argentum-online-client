@@ -65,8 +65,8 @@ Public Sub RenderAll(ByVal dev As Direct3DDevice8)
 End Sub
 
 
-Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
-    Dim act As Integer
+Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef act As Integer)
+'    Dim act As Integer
     Dim comp As IUIComponent
     Dim Index As Integer
     Index = 1
@@ -74,7 +74,7 @@ Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseBu
     For Each comp In Components
         If comp.IsVisible Then
             comp.HandleMouse mouseX, mouseY, mouseButtons, act
-            g_connectScreen.ProcessAction act
+'            g_connectScreen.ProcessAction act
             If (act <> 0) And (compFocusedIndex <> Index) Then
                 If (compFocusedIndex <> 0) Then
                     Components.Item(compFocusedIndex).SetFocus (False)
