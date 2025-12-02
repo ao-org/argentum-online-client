@@ -66,38 +66,38 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager
     Call m_UIMgr.Init
     Set m_lblClass = New clsUILabel
-    Call m_lblClass.Init("Class", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
+    Call m_lblClass.Init("Class", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1, 0)
     Call m_UIMgr.AddComponent(m_lblClass)
     Set m_lblRace = New clsUILabel
-    Call m_lblRace.Init("Race", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
+    Call m_lblRace.Init("Race", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1, 0)
     Call m_UIMgr.AddComponent(m_lblRace)
     Set m_lblGender = New clsUILabel
-    Call m_lblGender.Init("Gender", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
+    Call m_lblGender.Init("Gender", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1, 0)
     Call m_UIMgr.AddComponent(m_lblGender)
     Set m_lblStatus = New clsUILabel
-    Call m_lblStatus.Init("Status", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
+    Call m_lblStatus.Init("Status", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1, 0)
     Call m_UIMgr.AddComponent(m_lblStatus)
     Set m_lblJailTime = New clsUILabel
-    Call m_lblJailTime.Init("JailTime", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
+    Call m_lblJailTime.Init("JailTime", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1, 0)
     Call m_UIMgr.AddComponent(m_lblJailTime)
     Set m_lblStrength = New clsUILabel
-    Call m_lblStrength.Init("Strength", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
+    Call m_lblStrength.Init("Strength", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1, 0)
     Call m_UIMgr.AddComponent(m_lblStrength)
     Set m_lblAgility = New clsUILabel
-    Call m_lblAgility.Init("Agility", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
+    Call m_lblAgility.Init("Agility", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1, 0)
     Call m_UIMgr.AddComponent(m_lblAgility)
     Set m_lblIntelligence = New clsUILabel
-    Call m_lblIntelligence.Init("Intelligence", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
+    Call m_lblIntelligence.Init("Intelligence", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1, 0)
     Call m_UIMgr.AddComponent(m_lblIntelligence)
     Set m_lblConstitution = New clsUILabel
-    Call m_lblConstitution.Init("Constitution", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
+    Call m_lblConstitution.Init("Constitution", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1, 0)
     Call m_UIMgr.AddComponent(m_lblConstitution)
     Set m_lblCharisma = New clsUILabel
-    Call m_lblCharisma.Init("CHarisma", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1)
+    Call m_lblCharisma.Init("CHarisma", 100, 100, UI_COLOR_WHITE, 255, 0.5, 1, 0)
     Call m_UIMgr.AddComponent(m_lblCharisma)
 End Sub
 
-Public Sub render(ByVal dev As Direct3DDevice8)
+Private Sub render_ui(ByVal dev As Direct3DDevice8)
     Dim sW As Long
     Dim sH As Long
     Dim wx As Long
@@ -106,8 +106,7 @@ Public Sub render(ByVal dev As Direct3DDevice8)
     sH = 0
     wx = WINDOW_WIDTH
     wy = WINDOW_HEIGHT
-    Call Engine_BeginScene
-    Call engine.render
+    
     Dim cols2(3) As Long
     cols2(0) = UI_COLOR_WHITE
     cols2(1) = UI_COLOR_WHITE
@@ -116,11 +115,20 @@ Public Sub render(ByVal dev As Direct3DDevice8)
     Call UIRenderer.AddQuad(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, cols2, 190)
     Call m_UIMgr.RenderAll(dev)
     Call UIRenderer.Draw(dev)
+End Sub
+
+
+
+Public Sub render(ByVal dev As Direct3DDevice8)
+    Call Engine_BeginScene
+            Call engine.render
+            'Call render_ui
     Call Engine_EndScene(Render_Main_Rect, 0)
 End Sub
 
 Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
-    m_UIMgr.HandleMouse mouseX, mouseY, mouseButtons
+    Dim actionID As Integer
+    m_UIMgr.HandleMouse mouseX, mouseY, mouseButtons, actionID
 End Sub
 
 Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
