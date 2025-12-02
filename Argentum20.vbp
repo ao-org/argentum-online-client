@@ -193,7 +193,7 @@ VersionCompanyName="Argentum Online"
 VersionLegalCopyright="Argentum Online"
 VersionLegalTrademarks="Argentum Online"
 VersionProductName="Argentum Online by Noland Studios"
-CondComp="Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DXUI = 0"
+CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 0 : DXUI = 0"
 CompilationType=0
 OptimizationType=2
 FavorPentiumPro(tm)=0

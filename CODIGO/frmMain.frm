@@ -2102,7 +2102,7 @@ End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
     On Error GoTo Form_Unload_Err
-    #If DEBUGGING = 0 Then
+    #If No_Api_Steam = 0 Then
         Call svb_shutdown_steam
     #End If
     Call DisableURLDetect

@@ -33,6 +33,21 @@ End Sub
 
 Public Function GetBuildFlags() As String
     Dim s As String
+
+    '--- UsarWrench
+    #If UsarWrench = 1 Then
+        s = s & "UsarWrench=1; "
+    #Else
+        s = s & "UsarWrench=0; "
+    #End If
+
+    '--- AntiExternos
+    #If AntiExternos = 1 Then
+        s = s & "AntiExternos=1; "
+    #Else
+        s = s & "AntiExternos=0; "
+    #End If
+
     '--- Compresion
     #If Compresion = 1 Then
         s = s & "Compresion=1; "
@@ -66,6 +81,20 @@ Public Function GetBuildFlags() As String
         s = s & "ENABLE_ANTICHEAT=1; "
     #Else
         s = s & "ENABLE_ANTICHEAT=0; "
+    #End If
+
+    '--- DISABLE_SUBCLASSING
+    #If DISABLE_SUBCLASSING = 1 Then
+        s = s & "DISABLE_SUBCLASSING=1; "
+    #Else
+        s = s & "DISABLE_SUBCLASSING=0; "
+    #End If
+
+    '--- No_Api_Steam
+    #If No_Api_Steam = 1 Then
+        s = s & "No_Api_Steam=1; "
+    #Else
+        s = s & "No_Api_Steam=0; "
     #End If
 
     '--- DXUI
