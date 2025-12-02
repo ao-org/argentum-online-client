@@ -748,5 +748,9 @@
   "CHALLENGE_ERROR_TOO_MUCH_GOLD" : "Você não pode apostar mais de 10.000.000 moedas de ouro",
   "CHALLENGE_ERROR_INVALID_NAME" : "Nome de jogador inválido:",
   "SEGURO_LEGIONARIO_DESHABILITADO_TEMPORALMENTE" : "O seguro da facção Legionária está temporariamente desativado.",
-  "MENSAJE_TOKEN_SESION_INVALIDO" : "Token de sessão inválido."
+  "MENSAJE_TOKEN_SESION_INVALIDO" : "Token de sessão inválido.",
+  "MSG_NEWOWNER_DOESNT_EXIST": "O novo proprietário não existe..",
+  "MSG_NEWOWNER_IS_NOT_PATREON": "O novo proprietário não é membro do Patreon..",
+  "MSG_OWNER_IS_NOT_PATREON": "O proprietário não é membro do Patreon.",
+  "MSG_OWNER_NOT_ENOUGH_CREDITS": "O proprietário não possui créditos suficientes."
 }
