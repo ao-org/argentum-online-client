@@ -47,6 +47,8 @@ Private m_PrevDown  As Boolean
 Private m_Clicked   As Boolean
 Private m_MarginLeft   As Integer
 Private m_MarginTop   As Integer
+Private m_Action   As Integer
+
 
 Public Function IUIComponent_IsVisible() As Boolean
     IUIComponent_IsVisible = m_Impl.IsVisible
@@ -55,7 +57,7 @@ Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
     Call m_Impl.SetVisible(newState)
 End Sub
 
-Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long)
+Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long, ByVal act As Integer)
     If m_Impl Is Nothing Then
         Set m_Impl = New clsUIComponentImpl
     End If
@@ -66,6 +68,7 @@ Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal cl
     m_Impl.ColorFill = clrFill
     m_Impl.HoverColor = clrHover
     m_Clicked = False: m_PrevDown = False: m_IsHover = False
+    m_Action = act
 End Sub
 
 Public Sub SetPosition(ByVal x As Long, ByVal y As Long)
@@ -125,11 +128,11 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Call UIRenderer.RenderText(m_Impl.Text, rc.Left, rc.Top, m_Impl.Color, 1, 255)
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef act As Integer)
     m_IsHover = (mouseX >= m_Impl.x And mouseX <= m_Impl.x + m_Impl.Width And mouseY >= m_Impl.y And mouseY <= m_Impl.y + m_Impl.Height)
     Dim down As Boolean: down = (mouseButtons <> 0)
     If down And Not m_PrevDown And m_IsHover Then
-        Hit = True
+        act = 0
         Call m_Impl.SetFocus(True)
         If m_Clicked Then
             m_Clicked = False

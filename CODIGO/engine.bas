@@ -1976,6 +1976,12 @@ Public Sub start()
                 Case e_state_gameplay_screen
                     #If DXUI = 0 Then
                         Call render
+                    #Else
+
+                        Debug.Assert Not g_GameplayScreen Is Nothing
+                        If g_GameplayScreen.IsVisible() Then
+                            Call g_GameplayScreen.render(DirectDevice)
+                        End If
                     #End If
                     Check_Keys
                     Moviendose = False
@@ -2002,12 +2008,6 @@ Public Sub start()
                         DrawInventorySkins
                         'Debug.Print "Renderizando skins"
                     End If
-                    #If DXUI Then
-                        Debug.Assert Not g_GameplayScreen Is Nothing
-                        If g_GameplayScreen.IsVisible() Then
-                            Call g_GameplayScreen.render(DirectDevice)
-                        End If
-                    #End If
                 Case e_state_connect_screen
                     #If DXUI Then
                         If Not frmConnect.visible Then
@@ -2021,11 +2021,6 @@ Public Sub start()
                         g_MouseButtons = GetAsyncKeyState(VK_LBUTTON) And &H8000 ' left button state
                         ' Pass movement and clicks to UI
                         g_connectScreen.HandleMouse g_MouseX, g_MouseY, g_MouseButtons
-                        If g_connectScreen.WasConnectClicked Then
-                            Debug.Print "g_connectScreen.WasConnectClicked"
-                            'Call SetActiveServer(txtIp.text, txtPort.text)
-                            'Call DoLogin(NameTxt.text, PasswordTxt.text, chkRecordar.Tag = "1")
-                        End If
                     #Else
                         If Not frmConnect.visible Then
                             Call ShowLogin

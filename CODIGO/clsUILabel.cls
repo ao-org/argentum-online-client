@@ -43,15 +43,22 @@ Private m_Impl As clsUIComponentImpl
 Private m_Opacity As Integer
 Private m_Size As Single
 Private m_FontIndex As Integer
+Private m_Action  As Integer
+Private m_IsHover   As Boolean
+Private m_WasHover   As Boolean
+Private m_PrevDown  As Boolean
+Private m_Clicked   As Boolean
 
-Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal Color As Long, ByVal opacity As Integer, ByVal size As Single, fontIndex)
+Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal Color As Long, ByVal opacity As Integer, ByVal size As Single, FontIndex, ByVal act As Integer)
     If m_Impl Is Nothing Then
         Set m_Impl = New clsUIComponentImpl
     End If
     Call m_Impl.InitLabel(Text, x, y, Color)
     m_Opacity = opacity
     m_Size = size
+    m_Impl.SetSize 100, 20
     m_FontIndex = fontIndex
+    m_Action = act
 End Sub
 
 Public Function IUIComponent_IsVisible() As Boolean
@@ -87,8 +94,23 @@ Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Call UIRenderer.RenderText(m_Impl.Text, rc.Left, rc.Top, m_Impl.Color, m_FontIndex, m_Opacity, m_Size)
 End Sub
 
-Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef Hit As Boolean)
-    Hit = False
+Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef act As Integer)
+    m_IsHover = (mouseX >= m_Impl.x And mouseX <= m_Impl.x + m_Impl.Width And mouseY >= m_Impl.y And mouseY <= m_Impl.y + m_Impl.Height)
+    Dim down As Boolean: down = (mouseButtons <> 0)
+    If m_IsHover And Not m_WasHover Then
+        m_WasHover = True
+    Else
+        If Not m_IsHover Then
+            m_WasHover = False
+        End If
+    End If
+    If down And Not m_PrevDown And m_IsHover Then
+        m_Clicked = True
+        act = m_Action
+        Call m_Impl.SetFocus(True)
+        Call ao20audio.PlayWav(SND_CLICK)
+    End If
+    m_PrevDown = down
 End Sub
 
 Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
