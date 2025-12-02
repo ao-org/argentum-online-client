@@ -97,7 +97,7 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     Call m_UIMgr.AddComponent(m_lblCharisma)
 End Sub
 
-Public Sub render(ByVal dev As Direct3DDevice8)
+Private Sub render_ui(ByVal dev As Direct3DDevice8)
     Dim sW As Long
     Dim sH As Long
     Dim wx As Long
@@ -106,8 +106,7 @@ Public Sub render(ByVal dev As Direct3DDevice8)
     sH = 0
     wx = WINDOW_WIDTH
     wy = WINDOW_HEIGHT
-    Call Engine_BeginScene
-    Call engine.render
+    
     Dim cols2(3) As Long
     cols2(0) = UI_COLOR_WHITE
     cols2(1) = UI_COLOR_WHITE
@@ -116,11 +115,20 @@ Public Sub render(ByVal dev As Direct3DDevice8)
     Call UIRenderer.AddQuad(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, cols2, 190)
     Call m_UIMgr.RenderAll(dev)
     Call UIRenderer.Draw(dev)
+End Sub
+
+
+
+Public Sub render(ByVal dev As Direct3DDevice8)
+    Call Engine_BeginScene
+            Call engine.render
+            'Call render_ui
     Call Engine_EndScene(Render_Main_Rect, 0)
 End Sub
 
 Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
-    m_UIMgr.HandleMouse mouseX, mouseY, mouseButtons
+    Dim actionID As Integer
+    m_UIMgr.HandleMouse mouseX, mouseY, mouseButtons, actionID
 End Sub
 
 Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)

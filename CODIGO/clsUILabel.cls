@@ -99,7 +99,6 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
     Dim down As Boolean: down = (mouseButtons <> 0)
     If m_IsHover And Not m_WasHover Then
         m_WasHover = True
-        Call ao20audio.PlayWav(SND_CLICK_OVER)
     Else
         If Not m_IsHover Then
             m_WasHover = False
