@@ -60,11 +60,12 @@ Private m_lblForgotPass             As clsUILabel
 ' Ventana Crear Cuenta
 Private m_lblTitle2             As clsUILabel
 Private m_btnCreateAccount          As clsUIButton
+Private m_btnCloseCA          As clsUIButton
  
 Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager: m_UIMgr.Init
     
-    ' """"""""""""   VENTANA CONNECT   """""""""""""
+    ' """"""""""""   CONNECT PANEL   """""""""""""
     Set m_lblTitle = New clsUILabel
     m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8, 0
     m_UIMgr.AddComponent m_lblTitle
@@ -90,29 +91,25 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     m_btnConnect.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 3
     m_UIMgr.AddComponent m_btnConnect
     Set m_lblNewAccount = New clsUILabel
-    m_lblNewAccount.Init "Crear cuenta", 0, 0, UI_COLOR_WHITE, 100, 1, 1, 0
+    m_lblNewAccount.Init "Crear cuenta", 0, 0, UI_COLOR_WHITE, 100, 1, 1, 2
     m_UIMgr.AddComponent m_lblNewAccount
     Set m_lblForgotPass = New clsUILabel
-    m_lblForgotPass.Init "Olvide mi contraseña", 0, 0, UI_COLOR_WHITE, 100, 1, 1, 0
+    m_lblForgotPass.Init "Olvide mi contraseña", 0, 0, UI_COLOR_WHITE, 100, 1, 1, 2
     m_UIMgr.AddComponent m_lblForgotPass
 '    m_Action = False
     
-    ' """"""""""""   VENTANA CONNECT   """""""""""""
+    ' """"""""""""   CREATE ACCOUNT PANEL   """""""""""""
     Set m_lblTitle2 = New clsUILabel
     m_lblTitle2.Init "Crear Cuenta", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8, 0
+    m_lblTitle2.IUIComponent_SetVisible False
     m_UIMgr.AddComponent m_lblTitle2
-'    Set m_imgSeparatorH3 = New clsUIImage
-'    m_imgSeparatorH3.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
-'    m_UIMgr.AddComponent m_imgSeparatorH3
-    
-    
-    
-    
-'    Set m_imgSeparatorH4 = New clsUIImage
-'    m_imgSeparatorH4.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE
-'    m_UIMgr.AddComponent m_imgSeparatorH4
+    Set m_btnCloseCA = New clsUIButton
+    m_btnCloseCA.Init "X", 0, 0, 20, 20, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 1
+    m_btnCloseCA.IUIComponent_SetVisible False
+    m_UIMgr.AddComponent m_btnCloseCA
     Set m_btnCreateAccount = New clsUIButton
-    m_btnCreateAccount.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
+    m_btnCreateAccount.Init "Crear", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
+    m_btnCreateAccount.IUIComponent_SetVisible False
     m_UIMgr.AddComponent m_btnCreateAccount
     
 End Sub
@@ -182,7 +179,7 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         Next i
         
         
-        ' Position UI controls
+        ' Position UI Coonection Panel controls
         
         m_lblTitle.SetPosition wx + 80, wy + 30
         m_imgSeparatorH1.SetPosition wx + 30, wy + 80
@@ -194,6 +191,13 @@ Public Sub render(ByVal dev As Direct3DDevice8)
         m_lblNewAccount.SetPosition wx + 30, wy + 320
         m_lblForgotPass.SetPosition wx + 150, wy + 320
         m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy, m_Action
+
+
+        ' Position UI Create user panel controls
+        m_lblTitle2.SetPosition wx + 80, wy + 30
+        m_btnCloseCA.SetPosition wx + WINDOW_WIDTH - 35, wy + 15
+        m_btnCreateAccount.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + 235
+
 
         ' Draw UI widgets + batched renderer
         m_UIMgr.RenderAll dev
@@ -228,20 +232,32 @@ Public Sub ShowMessageBox(ByVal title, ByVal message As String)
     m_boxInfo.title = title
 End Sub
 
-Public Sub ProcessAction(ByVal connectId As Integer)
-    Select Case connectId
+Public Sub ProcessAction(ByVal actionId As Integer)
+    Select Case actionId
         Case 1
             m_lblTitle.IUIComponent_SetVisible True
             m_inputboxUser.IUIComponent_SetVisible True
             m_inputboxPass.IUIComponent_SetVisible True
             m_cbOk.IUIComponent_SetVisible True
             m_btnConnect.IUIComponent_SetVisible True
-            m_UIMgr.AddComponent m_btnConnect
             m_lblNewAccount.IUIComponent_SetVisible True
             m_lblForgotPass.IUIComponent_SetVisible True
+            
+            m_btnCreateAccount.IUIComponent_SetVisible False
+            m_lblTitle2.IUIComponent_SetVisible False
+            m_btnCloseCA.IUIComponent_SetVisible False
         Case 2
-            m_btnConnect.IUIComponent_SetVisible True
+            m_lblTitle.IUIComponent_SetVisible False
+            m_inputboxUser.IUIComponent_SetVisible False
+            m_inputboxPass.IUIComponent_SetVisible False
+            m_btnConnect.IUIComponent_SetVisible False
+            m_cbOk.IUIComponent_SetVisible False
+            m_lblNewAccount.IUIComponent_SetVisible False
+            m_lblForgotPass.IUIComponent_SetVisible False
+        
+            m_btnCreateAccount.IUIComponent_SetVisible True
             m_lblTitle2.IUIComponent_SetVisible True
+            m_btnCloseCA.IUIComponent_SetVisible True
         Case 3
             m_boxInfo.IUIComponent_SetVisible True
         Case 4
