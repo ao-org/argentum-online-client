@@ -3677,7 +3677,9 @@ Public Sub UpdateHpBar()
         frmMain.Hpshp.Width = UserStats.MinHp / FullSize * 216
         frmMain.HpBar.Caption = CurrentHp & " / " & UserStats.MaxHp
         frmMain.shieldBar.Left = frmMain.Hpshp.Left + frmMain.Hpshp.Width
-        frmMain.shieldBar.Width = UserStats.HpShield / FullSize * 216
+        If UserStats.HpShield > 0 Then
+            frmMain.shieldBar.Width = UserStats.HpShield / FullSize * 216
+        End If
     Else
         frmMain.Hpshp.Width = 0
         frmMain.shieldBar.Width = 0

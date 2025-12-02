@@ -625,7 +625,11 @@ Private Sub HandleVelocidadToggle()
     If UserCharIndex = 0 Then Exit Sub
     charlist(UserCharIndex).Speeding = Speeding
     Call ApplySpeedingToChar(UserCharIndex)
-    Call MainTimer.SetInterval(TimersIndex.Walk, gIntervals.Walk / charlist(UserCharIndex).Speeding)
+    If charlist(UserCharIndex).Speeding > 0 Then
+        Call MainTimer.SetInterval(TimersIndex.Walk, gIntervals.Walk / charlist(UserCharIndex).Speeding)
+    Else
+        Call MainTimer.SetInterval(TimersIndex.Walk, gIntervals.Walk / 0.0000001)
+    End If
     Exit Sub
 HandleVelocidadToggle_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleVelocidadToggle", Erl)
