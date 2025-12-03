@@ -628,7 +628,7 @@ Private Sub HandleVelocidadToggle()
     If charlist(UserCharIndex).Speeding > 0 Then
         Call MainTimer.SetInterval(TimersIndex.Walk, gIntervals.Walk / charlist(UserCharIndex).Speeding)
     Else
-        Call MainTimer.SetInterval(TimersIndex.Walk, gIntervals.Walk / 0.0000001)
+        Call MainTimer.SetInterval(TimersIndex.Walk, gIntervals.Walk / LOWEST_WALK_INTERVAL)
     End If
     Exit Sub
 HandleVelocidadToggle_Err:
