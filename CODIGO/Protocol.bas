@@ -475,6 +475,8 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call HandleChangeSkinSlot
             Case ServerPacketID.eGuildConfig
                 Call HandleGuildConfig
+            Case ServerPacketID.eShowPickUpObj
+                Call HandleShowPickUpObj
                 #If PYMMO = 0 Then
                 Case ServerPacketID.eAccountCharacterList
                     Call HandleAccountCharacterList
@@ -6033,6 +6035,15 @@ Public Sub HandleGuildConfig()
     For i = 1 To cfgMaxGuildLevel
         cfgGuildMembersByLevel(i) = Reader.ReadInt8()
     Next i
+End Sub
+Public Sub HandleShowPickUpObj()
+    Dim Amount As Integer
+    Dim ObjIndex As Integer
+    Dim txt As String
+    ObjIndex = Reader.ReadInt16
+    Amount = Reader.ReadInt16
+    txt = "+" & Amount & " " & ObjData(ObjIndex).Name
+    Call AddPickUpEffect(txt)
 End Sub
 
 #If PYMMO = 0 Then
