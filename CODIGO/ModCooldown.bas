@@ -23,6 +23,7 @@ Public Sub InitializeEffectArrays()
     ReDim BuffList.EffectList(ACTIVE_EFFECT_LIST_SIZE) As t_ActiveEffect
     ReDim DeBuffList.EffectList(ACTIVE_EFFECT_LIST_SIZE) As t_ActiveEffect
     ReDim CDList.EffectList(ACTIVE_EFFECT_LIST_SIZE) As t_ActiveEffect
+    ReDim PickUpFX(1 To MAX_PICKUP_OBJ_TEXT)
 End Sub
 
 Private Sub DrawEffectCd(ByVal x As Integer, ByVal y As Integer, ByRef Effect As t_ActiveEffect, ByVal CurrTime As Long, ByRef colors() As RGBA)

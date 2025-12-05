@@ -80,6 +80,20 @@ Private Type dialog
     Sube As Byte
 End Type
 
+Public Type FloatingPickupText
+    Text As String
+    x As Long
+    y As Long
+    Color(3) As RGBA
+    startTime As Long
+    riseDuration As Long
+    holdDuration As Long
+    risePixels As Long
+    active As Boolean
+End Type
+
+Public PickUpFX() As FloatingPickupText
+
 Public scroll_dialog_pixels_per_frame As Single
 ''
 ' Array if dialogs, sorted by the charIndex.
@@ -131,6 +145,9 @@ Public r                            As Byte
 Public G                            As Byte
 Public b                            As Byte
 Public textcolorAsistente(3)        As RGBA
+Public ShowPickUpObjText As String
+Public ShowPickUpObjTime As Long
+Public Const MAX_PICKUP_OBJ_TEXT As Integer = 5
 
 Public Sub InitEngineSprites()
     Call InitGrh(StarGrh, GrhStar, 1)
@@ -762,6 +779,7 @@ Public Sub render()
             Call Engine_Text_Render(JsonLanguage.Item("MENSAJE_542") & CLng(DrogaCounter) & "s", PosX, PosY, temp_array, 1, True, 0, 160)
         End If
     End If
+    Call RenderPickUpObjText
     If FadeInAlpha > 0 Then
         Call Engine_Draw_Box(0, 0, frmMain.renderer.ScaleWidth, frmMain.renderer.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
@@ -3711,3 +3729,78 @@ Public Sub InitGrhPreserve(ByRef Grh As Grh, ByVal GrhIndex As Long, Optional By
     End If
     Call InitGrh(Grh, GrhIndex, keepStarted, Loops)
 End Sub
+Public Sub RenderPickUpObjText()
+    On Error GoTo RenderPickUpObjText_Err
+    
+    Dim i As Integer
+    For i = 1 To MAX_PICKUP_OBJ_TEXT
+        If PickUpFX(i).active Then
+            Dim Elapsed As Long
+            Elapsed = GetTickCount - PickUpFX(i).startTime
+            Dim totalDuration As Long
+            totalDuration = PickUpFX(i).riseDuration + PickUpFX(i).holdDuration
+
+            If Elapsed >= totalDuration Then
+                PickUpFX(i).active = False
+                GoTo ContinueLoop
+            End If
+
+            Dim finalY As Long
+            If Elapsed <= PickUpFX(i).riseDuration Then
+                Dim p As Single
+                p = Elapsed / PickUpFX(i).riseDuration
+                p = 1 - (1 - p) ^ 3
+                finalY = PickUpFX(i).y + (PickUpFX(i).risePixels * p)
+            Else
+                finalY = PickUpFX(i).y + PickUpFX(i).risePixels
+            End If
+            Call Engine_Text_Render(PickUpFX(i).Text, PickUpFX(i).x, finalY, PickUpFX(i).Color, 1, True, 0, 255)
+        End If
+
+ContinueLoop:
+    Next i
+    Exit Sub
+RenderPickUpObjText_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.RenderPickUpObjText", Erl)
+    Resume Next
+End Sub
+Public Sub AddPickUpEffect(ByVal txt As String)
+    On Error GoTo AddPickUpEffect_Err
+    Dim i As Integer
+    ' Buscar slot libre
+    For i = 1 To MAX_PICKUP_OBJ_TEXT
+        If Not PickUpFX(i).active Then Exit For
+    Next
+
+    ' Si no hay lugar -> reemplazar el más viejo
+    If i > MAX_PICKUP_OBJ_TEXT Then
+        Dim oldest As Long: oldest = &H7FFFFFFF
+        Dim oldestIndex As Integer: oldestIndex = 1
+        Dim J As Integer
+        For J = 1 To MAX_PICKUP_OBJ_TEXT
+            If PickUpFX(J).startTime < oldest Then
+                oldest = PickUpFX(J).startTime
+                oldestIndex = J
+            End If
+        Next J
+        i = oldestIndex
+    End If
+
+    ' Inicializar efecto
+    With PickUpFX(i)
+        .Text = txt
+        .x = 570 + gameplay_render_offset.x
+        .y = 590 + gameplay_render_offset.y - ((i - 1) * 13)
+        Call RGBAList(.Color, 180, 180, 180)
+        .startTime = GetTickCount
+        .riseDuration = 900
+        .holdDuration = 2300
+        .risePixels = -16
+        .active = True
+    End With
+    Exit Sub
+AddPickUpEffect_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.AddPickUpEffect", Erl)
+    Resume Next
+End Sub
+
