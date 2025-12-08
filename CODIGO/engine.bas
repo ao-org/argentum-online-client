@@ -2025,7 +2025,7 @@ Public Sub start()
                         If Not frmConnect.visible Then
                             Call ShowLogin
                         End If
-                        RenderConnectRandomScroll
+                        RenderConnectCircularScroll
                     #End If
                 Case e_state_account_screen
                     rendercuenta 42, 43, 0, 0
@@ -2663,37 +2663,36 @@ Renderizar_Aura_Err:
     Resume Next
 End Sub
 
-Public Sub RenderConnectRandomScroll()
+Public Sub RenderConnectCircularScroll()
     Const BaseTileX As Integer = 57
     Const BaseTileY As Integer = 45
-    Const ScrollLimit As Integer = 4
-    Const FramesPerUpdate As Integer = 20
+    Const CircleRadiusTiles As Double = 2
+    Const AngularSpeedPerSecond As Double = 0.75
+    Const TwoPi As Double = 6.28318530717959
 
-    Static OffsetX As Integer
-    Static OffsetY As Integer
-    Static FrameCounter As Integer
-    Static RandomInitialized As Boolean
+    Static Angle As Double
 
-    If Not RandomInitialized Then
-        Randomize
-        RandomInitialized = True
+    Angle = Angle + AngularSpeedPerSecond * timerTicksPerFrame
+    If Angle >= TwoPi Then
+        Angle = Angle - TwoPi * Int(Angle / TwoPi)
     End If
 
-    FrameCounter = FrameCounter + 1
+    Dim CenterTileX As Double
+    Dim CenterTileY As Double
+    CenterTileX = BaseTileX + Cos(Angle) * CircleRadiusTiles
+    CenterTileY = BaseTileY + Sin(Angle) * CircleRadiusTiles
 
-    If FrameCounter >= FramesPerUpdate Then
-        OffsetX = OffsetX + (Int(Rnd * 3) - 1)
-        OffsetY = OffsetY + (Int(Rnd * 3) - 1)
+    Dim TileX As Integer
+    Dim TileY As Integer
+    TileX = Int(CenterTileX)
+    TileY = Int(CenterTileY)
 
-        If OffsetX > ScrollLimit Then OffsetX = ScrollLimit
-        If OffsetX < -ScrollLimit Then OffsetX = -ScrollLimit
-        If OffsetY > ScrollLimit Then OffsetY = ScrollLimit
-        If OffsetY < -ScrollLimit Then OffsetY = -ScrollLimit
+    Dim PixelOffsetX As Integer
+    Dim PixelOffsetY As Integer
+    PixelOffsetX = CInt((CenterTileX - TileX) * TilePixelWidth)
+    PixelOffsetY = CInt((CenterTileY - TileY) * TilePixelHeight)
 
-        FrameCounter = 0
-    End If
-
-    RenderConnect BaseTileX + OffsetX, BaseTileY + OffsetY, 0, 0
+    RenderConnect TileX, TileY, PixelOffsetX, PixelOffsetY
 End Sub
 
 Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
