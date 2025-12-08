@@ -4474,12 +4474,14 @@ End Sub
 '
 ' @param    npcIndex The index of the NPC to be created.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteCreateNPC(ByVal NpcIndex As Integer)
+Public Sub WriteCreateNPC(ByVal NpcIndex As Integer, Optional ByVal Quantity As Integer = 1, Optional ByVal SpreadMode As Byte = 1)
     '<EhHeader>
     On Error GoTo WriteCreateNPC_Err
     '</EhHeader>
     Call Writer.WriteInt16(ClientPacketID.eCreateNPC)
     Call Writer.WriteInt16(NpcIndex)
+    Call Writer.WriteInt16(Quantity)
+    Call Writer.WriteInt(SpreadMode)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
@@ -4494,12 +4496,14 @@ End Sub
 '
 ' @param    npcIndex The index of the NPC to be created.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteCreateNPCWithRespawn(ByVal NpcIndex As Integer)
+Public Sub WriteCreateNPC(ByVal NpcIndex As Integer, Optional ByVal Quantity As Integer = 1, Optional ByVal SpreadMode As Byte = 1)
     '<EhHeader>
     On Error GoTo WriteCreateNPCWithRespawn_Err
     '</EhHeader>
     Call Writer.WriteInt16(ClientPacketID.eCreateNPCWithRespawn)
     Call Writer.WriteInt16(NpcIndex)
+    Call Writer.WriteInt16(Quantity)
+    Call Writer.WriteInt(SpreadMode)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub

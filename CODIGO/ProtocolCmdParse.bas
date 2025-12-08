@@ -474,7 +474,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If notNullArguments Then
                     If CantidadArgumentos >= 4 Then
                         If ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) And ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(3), _
-                                eNumber_Types.ent_Byte) Then
+                           eNumber_Types.ent_Byte) Then
                             Call WriteWarpChar(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3))
                         Else
                             'No es numerico
@@ -925,7 +925,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     tempStr = Split(ArgumentosRaw, "@")
                     If notNullArguments And CantidadArgumentos > 4 And tempStr(1) <> vbNullString Then
                         If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(2), _
-                                eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(3), eNumber_Types.ent_Byte) Then
+                           eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(3), eNumber_Types.ent_Byte) Then
                             Call WriteTeleportCreate(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3), tempStr(1))
                         Else
                             'No es numerico
@@ -984,7 +984,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         End If
                     ElseIf CantidadArgumentos = 4 Then
                         If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) And ValidNumber(ArgumentosAll(2), _
-                                eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(3), eNumber_Types.ent_Byte) Then
+                           eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(3), eNumber_Types.ent_Byte) Then
                             Call WriteForceWAVEToMap(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3))
                         Else
                             'No es numerico
@@ -1231,24 +1231,58 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
             Case "/ACC"
                 If notNullArguments Then
-                    If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
-                        Call WriteCreateNPC(ArgumentosAll(0))
-                    Else
-                        'No es numerico
+                    If Not ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NPC_INCORRECTO_UTILICE"))
+                        Exit Sub
                     End If
+                    If CantidadArgumentos > 1 Then
+                        If Not ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NPC_CANTIDAD_INVALIDA"))
+                            Exit Sub
+                        End If
+                    Else
+                        ReDim Preserve ArgumentosAll(0 To 1) As String
+                        ArgumentosAll(1) = "1"
+                    End If
+                    If CantidadArgumentos > 2 Then
+                        If Not ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Integer) Then
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NPC_SEPARACION_INVALIDA"))
+                            Exit Sub
+                        End If
+                    Else
+                        ReDim Preserve ArgumentosAll(0 To 2) As String
+                        ArgumentosAll(2) = "1"
+                    End If
+                    Call WriteCreateNPC(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2))
                 Else
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                 End If
             Case "/RACC"
                 If notNullArguments Then
-                    If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
-                        Call WriteCreateNPCWithRespawn(ArgumentosAll(0))
-                    Else
-                        'No es numerico
+                    If Not ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) Then
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NPC_INCORRECTO_UTILICE"))
+                        Exit Sub
                     End If
+                    If CantidadArgumentos > 1 Then
+                        If Not ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NPC_CANTIDAD_INVALIDA"))
+                            Exit Sub
+                        End If
+                    Else
+                        ReDim Preserve ArgumentosAll(0 To 1) As String
+                        ArgumentosAll(1) = "1"
+                    End If
+                    If CantidadArgumentos > 2 Then
+                        If Not ValidNumber(ArgumentosAll(2), eNumber_Types.ent_Integer) Then
+                            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NPC_SEPARACION_INVALIDA"))
+                            Exit Sub
+                        End If
+                    Else
+                        ReDim Preserve ArgumentosAll(0 To 2) As String
+                        ArgumentosAll(2) = "1"
+                    End If
+                    Call WriteCreateNPCWithRespawn(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2))
                 Else
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
@@ -1398,7 +1432,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/CHATCOLOR"
                 If notNullArguments And CantidadArgumentos >= 3 Then
                     If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(2), _
-                            eNumber_Types.ent_Byte) Then
+                       eNumber_Types.ent_Byte) Then
                         Call WriteChatColor(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2))
                     Else
                         'No es numerico
