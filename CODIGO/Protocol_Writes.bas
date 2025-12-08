@@ -4496,7 +4496,7 @@ End Sub
 '
 ' @param    npcIndex The index of the NPC to be created.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteCreateNPC(ByVal NpcIndex As Integer, Optional ByVal Quantity As Integer = 1, Optional ByVal SpreadMode As Byte = 1)
+Public Sub WriteCreateNPCWithRespawn(ByVal NpcIndex As Integer, Optional ByVal Quantity As Integer = 1, Optional ByVal SpreadMode As Byte = 1)
     '<EhHeader>
     On Error GoTo WriteCreateNPCWithRespawn_Err
     '</EhHeader>

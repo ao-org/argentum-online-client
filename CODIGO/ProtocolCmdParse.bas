@@ -1236,7 +1236,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Exit Sub
                     End If
                     If CantidadArgumentos > 1 Then
-                        If Not ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
+                        If Not ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Or ArgumentosAll(1) > 50 Then
                             Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NPC_CANTIDAD_INVALIDA"))
                             Exit Sub
                         End If
@@ -1265,7 +1265,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                         Exit Sub
                     End If
                     If CantidadArgumentos > 1 Then
-                        If Not ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
+                        If Not ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Or ArgumentosAll(1) > 50 Then
                             Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_NPC_CANTIDAD_INVALIDA"))
                             Exit Sub
                         End If
