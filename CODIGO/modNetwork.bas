@@ -60,6 +60,16 @@ Public Sub Connect(ByVal Address As String, ByVal Service As String)
     Call Client.Connect(Address, Service)
 End Sub
 
+Public Sub Reconnect(ByVal Address As String, ByVal Service As String)
+    frmDebug.add_text_tracebox "Connecting to World Server : " & Address & ":" & Service
+    If (Address = vbNullString Or Service = vbNullString) Then
+        Exit Sub
+    End If
+    Call Protocol_Writes.Initialize
+    Call Client.Connect(Address, Service)
+End Sub
+
+
 Public Sub Disconnect()
     If Not Client Is Nothing Then
         Call Client.Close(True)
@@ -83,19 +93,6 @@ Public Sub send(ByVal Buffer As Network.Writer)
     Call Buffer.Clear
 End Sub
 
-Public Sub RetryWithAnotherIp()
-    Call Disconnect
-    Call AddFailedIp(IPdelServidor, PuertoDelServidor)
-    If FailedListSize = ServerIpCount Then
-        Unload frmConnecting
-        Exit Sub
-    Else
-        Do While IsFailedString(IPdelServidor, PuertoDelServidor)
-            Call SetDefaultServer
-        Loop
-    End If
-    Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
-End Sub
 
 #If PYMMO = 1 Then
     Private Sub OnClientConnect()

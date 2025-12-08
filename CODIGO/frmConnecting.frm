@@ -15,12 +15,6 @@ Begin VB.Form frmConnecting
    ScaleWidth      =   3151.636
    ShowInTaskbar   =   0   'False
    StartUpPosition =   1  'CenterOwner
-   Begin VB.Timer Timeout 
-      Enabled         =   0   'False
-      Interval        =   350
-      Left            =   0
-      Top             =   0
-   End
    Begin VB.Label ConnectionLabel 
       BackStyle       =   0  'Transparent
       Caption         =   "Conectando al servidor"
@@ -59,7 +53,6 @@ Private Sub Form_Load()
     RetryCount = 0
     Me.Picture = LoadInterface("Marco.bmp", False)
     TimerProgress = 0
-    Timeout.enabled = True
     Call loadButtons
     Call UpdateConnectionText
     Exit Sub
@@ -71,16 +64,6 @@ End Sub
 Private Sub loadButtons()
     Set cCancelButton = New clsGraphicalButton
     Call cCancelButton.Initialize(cmdCancel, "boton-cancelar-default.bmp", "boton-cancelar-over.bmp", "boton-cancelar-off.bmp", Me)
-End Sub
-
-Private Sub Timeout_Timer()
-    #If DIRECT_PLAY = 0 Then
-        Call UpdateConnectionText
-        TimerProgress = TimerProgress + 1
-        If TimerProgress Mod 20 = 19 Then
-            Call RetryWithAnotherIp
-        End If
-    #End If
 End Sub
 
 Private Sub UpdateConnectionText()
