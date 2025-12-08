@@ -2025,7 +2025,7 @@ Public Sub start()
                         If Not frmConnect.visible Then
                             Call ShowLogin
                         End If
-                        RenderConnect 57, 45, 0, 0
+                        RenderConnectRandomScroll
                     #End If
                 Case e_state_account_screen
                     rendercuenta 42, 43, 0, 0
@@ -2661,6 +2661,39 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
 Renderizar_Aura_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.Renderizar_Aura", Erl)
     Resume Next
+End Sub
+
+Public Sub RenderConnectRandomScroll()
+    Const BaseTileX As Integer = 57
+    Const BaseTileY As Integer = 45
+    Const ScrollLimit As Integer = 4
+    Const FramesPerUpdate As Integer = 20
+
+    Static OffsetX As Integer
+    Static OffsetY As Integer
+    Static FrameCounter As Integer
+    Static RandomInitialized As Boolean
+
+    If Not RandomInitialized Then
+        Randomize
+        RandomInitialized = True
+    End If
+
+    FrameCounter = FrameCounter + 1
+
+    If FrameCounter >= FramesPerUpdate Then
+        OffsetX = OffsetX + (Int(Rnd * 3) - 1)
+        OffsetY = OffsetY + (Int(Rnd * 3) - 1)
+
+        If OffsetX > ScrollLimit Then OffsetX = ScrollLimit
+        If OffsetX < -ScrollLimit Then OffsetX = -ScrollLimit
+        If OffsetY > ScrollLimit Then OffsetY = ScrollLimit
+        If OffsetY < -ScrollLimit Then OffsetY = -ScrollLimit
+
+        FrameCounter = 0
+    End If
+
+    RenderConnect BaseTileX + OffsetX, BaseTileY + OffsetY, 0, 0
 End Sub
 
 Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
