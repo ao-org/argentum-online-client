@@ -294,7 +294,37 @@ Private Sub AuthSocket_Error(ByVal Number As Integer, _
                              ByVal HelpContext As Long, _
                              CancelDisplay As Boolean)
     #If REMOTE_CLOSE = 0 Then
-        Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_SERVIDOR_OFFLINE"), False, SessionOpened)
+        
+        frmDebug.add_text_tracebox "AuthSocket_Error Number:" & Number & " Desc: " & Description
+        
+        Select Case Number
+        
+            Case 10060: ' Connect timeout
+                
+                    Dim nextIndex As Integer
+                    nextIndex = GetNextLoginServer(CurrentLoginServerIndex)
+                    
+                    ' No servers or only one server (would loop to the same)
+                    If nextIndex = -1 Or nextIndex = CurrentLoginServerIndex Then
+                        Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_SERVIDOR_OFFLINE"), False, SessionOpened)
+                        frmDebug.add_text_tracebox "No hay más Login Servers para reintentar."
+                        Exit Sub
+                    End If
+                    
+                    ' Switch to next login server
+                    CurrentLoginServerIndex = nextIndex
+                    IPdelServidorLogin = LoginServerIP(CurrentLoginServerIndex)
+                    PuertoDelServidorLogin = LoginServerPort(CurrentLoginServerIndex)
+                    
+                    frmDebug.add_text_tracebox "Reintentando con Login Server #" & CurrentLoginServerIndex & _
+                                               " -> " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
+                    
+                
+                    
+                    Call connectToLoginServer
+                
+        End Select
+        
     #Else
         frmDebug.add_text_tracebox "SERVIDOR OFFLINE"
     #End If
