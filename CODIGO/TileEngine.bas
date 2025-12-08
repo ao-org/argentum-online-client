@@ -642,7 +642,7 @@ Sub DoPasosInvi(ByVal Grh As Long, ByVal Grh2 As Long, ByVal distancia As Byte, 
         Dim steps_pan2 As Long
         steps_vol2 = ao20audio.ComputeVolumeByDistance(eFxSteps, distancia)
         steps_pan2 = ao20audio.ComputeCharFxPanByDistance(distancia, balance)
-        Call ao20audio.PlayFx(Pasos(TerrenoDePaso).wav(IIf(step, 1, 2)), False, steps_vol2, steps_pan2, eFxSteps)
+        Call ao20audio.PlayFx(Pasos(TerrenoDePaso).wav(IIf(step, 1, 2)), False, steps_vol2, steps_pan2, , eFxSteps)
     End If
     Exit Sub
 DoPasosInvi_Err:
