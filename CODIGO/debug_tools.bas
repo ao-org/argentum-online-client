@@ -34,20 +34,6 @@ End Sub
 Public Function GetBuildFlags() As String
     Dim s As String
 
-    '--- UsarWrench
-    #If UsarWrench = 1 Then
-        s = s & "UsarWrench=1; "
-    #Else
-        s = s & "UsarWrench=0; "
-    #End If
-
-    '--- AntiExternos
-    #If AntiExternos = 1 Then
-        s = s & "AntiExternos=1; "
-    #Else
-        s = s & "AntiExternos=0; "
-    #End If
-
     '--- Compresion
     #If Compresion = 1 Then
         s = s & "Compresion=1; "
