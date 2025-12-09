@@ -237,6 +237,9 @@ Public Enum e_Race
     Orc = 6
 End Enum
 
+Public Const LOWEST_WALK_INTERVAL As Single = 0.0000001
+Public Const BAR_SIZE_MULTIPLIER As Byte = 216
+
 Public Type tPaso
     CantPasos As Byte
     wav() As Integer
