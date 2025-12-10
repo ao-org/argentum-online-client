@@ -2242,7 +2242,9 @@ Private Sub HandleCharacterCreate()
         .Team = Reader.ReadInt8()
         .banderaIndex = Reader.ReadInt8()
         .AnimAtaque1 = Reader.ReadInt16()
-        
+        .BodyOnLand = Reader.ReadInt16()
+        .BodyOnWater = Reader.ReadInt16()
+        .AnimAtaque2 = Reader.ReadInt16()
         If Backpack > 0 Then
             .Backpack = BodyData(Backpack)
             .tmpBackPack = Backpack

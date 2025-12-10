@@ -279,6 +279,9 @@ Public Type Char
     TranslationStartTime As Long
     TranslationTime As Long
     DontBlockTile As Boolean
+    BodyOnLand As Integer
+    BodyOnWater As Integer
+    AnimAtaque2 As Integer
 End Type
 
 'Info de un objeto
