@@ -750,11 +750,9 @@ Public Sub render()
     On Error GoTo render_Err
     Rem On Error GoTo ErrorHandler:
     Dim temp_array(3) As RGBA
-    
     #If DXUI = 0 Then
         Call Engine_BeginScene
     #End If
-    
     Call ShowNextFrame
     FrameTime = GetTickCount()
     FramesPerSecCounter = FramesPerSecCounter + 1
@@ -796,13 +794,17 @@ Public Sub render()
             simple_text_render str, 10, 10, ColorGM, 1, True
         End If
     #End If
-    
+    If frmMain.JailTimeLeft > 0 Then
+        Dim OrangeColor(3) As RGBA
+        OrangeColor(0) = RGBA_From_Comp(248, 107, 3)
+        OrangeColor(1) = OrangeColor(0)
+        OrangeColor(2) = OrangeColor(0)
+        OrangeColor(3) = OrangeColor(0)
+        Call simple_text_render("Tiempo restante (m):" & frmMain.JailTimeLeft & " " & "Razón:" & frmMain.JailReason, 10, 30, OrangeColor, 1, False)
+    End If
     #If DXUI = 0 Then
         Call Engine_EndScene(Render_Main_Rect)
     #End If
-    
-    
-    
     'TIME_MS_MOUSE
     MouseTimeAcumulated = MouseTimeAcumulated + timerElapsedTime
     If MouseLastUpdate + TIME_MS_MOUSE <= MouseTimeAcumulated Then

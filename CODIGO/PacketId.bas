@@ -208,6 +208,7 @@ Public Enum ServerPacketID
     eChangeSkinSlot
     eGuildConfig
     eShowPickUpObj
+    eJailTimeAndPenaltyReason
     eMaxPacket
     [PacketCount]
 End Enum
