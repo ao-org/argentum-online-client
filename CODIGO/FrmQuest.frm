@@ -338,6 +338,7 @@ Private Sub Form_Load()
     picture1.BackColor = RGB(19, 14, 11)
     Me.Picture = LoadInterface("ventanadetallemision.bmp")
     lblRepetible.Caption = JsonLanguage.Item("MENSAJE_MISION_REPETIBLE")
+    ListView2.ColumnHeaders.Add , , "typeReward", 0
     Call Aplicar_Transparencia(Me.hWnd, 240)
     Exit Sub
 Form_Load_Err:
@@ -451,13 +452,18 @@ Public Sub ListView1_Click()
         If ListView1.SelectedItem.SubItems(3) = 0 Then
             Call DibujarNPC(PlayerView, NpcData(ListView1.SelectedItem.SubItems(2)).Head, NpcData(ListView1.SelectedItem.SubItems(2)).Body, 3)
             npclbl.Caption = NpcData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
-        Else
+        ElseIf ListView1.SelectedItem.SubItems(3) = 1 Then
             Dim x As Long
             Dim y As Long
             x = (PlayerView.ScaleWidth - GrhData(ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex).pixelWidth) / 2
             y = (PlayerView.ScaleHeight - GrhData(ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex).pixelHeight) / 2
             Call Grh_Render_To_Hdc(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False, RGB(11, 11, 11))
             npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
+        Else
+            x = (PlayerView.ScaleWidth - GrhData(HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex).pixelWidth) / 2
+            y = (PlayerView.ScaleHeight - GrhData(HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex).pixelHeight) / 2
+            Call Grh_Render_To_Hdc(PlayerView, HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex, x, y, False, RGB(11, 11, 11))
+            npclbl.Caption = HechizoData(ListView1.SelectedItem.SubItems(2)).nombre & " (" & ListView1.SelectedItem.SubItems(1) & ")"
         End If
     End If
     Exit Sub
@@ -468,12 +474,29 @@ End Sub
 
 Public Sub ListView2_Click()
     On Error GoTo ListView2_Click_Err
-    If ListView2.SelectedItem.SubItems(2) <> "" Then
-        Call Grh_Render_To_Hdc(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(11, 11, 11))
-        picture1.visible = True
-        objetolbl.Caption = ObjData(ListView2.SelectedItem.SubItems(2)).Name & vbCrLf & " (" & ListView2.SelectedItem.SubItems(1) & ")"
+
+    If ListView2.SelectedItem Is Nothing Then Exit Sub
+
+    Dim typeReward As String
+    Dim idx As Integer
+    Dim cant As Integer
+
+    typeReward = ListView2.SelectedItem.SubItems(4)
+    idx = CInt(ListView2.SelectedItem.SubItems(2))
+    cant = CInt(ListView2.SelectedItem.SubItems(1))
+
+    picture1.visible = True
+
+    If typeReward = "typeObj" Then
+        Call Grh_Render_To_Hdc(picture1, ObjData(idx).GrhIndex, 0, 0, False, RGB(11, 11, 11))
+        objetolbl.Caption = ObjData(idx).Name & vbCrLf & "(" & cant & ")"
+    ElseIf typeReward = "typeSpell" Then
+        Call Grh_Render_To_Hdc(picture1, HechizoData(idx).IconoIndex, 0, 0, False, RGB(11, 11, 11))
+        objetolbl.Caption = HechizoData(idx).nombre & vbCrLf & "(" & cant & ")"
     End If
+
     Exit Sub
+
 ListView2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmQuests.ListView2_Click", Erl)
     Resume Next

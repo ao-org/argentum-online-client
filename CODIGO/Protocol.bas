@@ -4900,10 +4900,11 @@ Private Sub HandleQuestDetails()
     Dim QuestIndex     As Integer
     Dim LevelRequerido As Byte
     Dim QuestRequerida As Integer
+    Dim subelemento As ListItem
+    Dim cantidadobjs As Integer
+    Dim obindex As Integer
     FrmQuests.ListView2.ListItems.Clear
     FrmQuests.ListView1.ListItems.Clear
-    FrmQuestInfo.ListView2.ListItems.Clear
-    FrmQuestInfo.ListView1.ListItems.Clear
     FrmQuests.ListView1.ColumnHeaders(2).Width = 780 'Agrando el ancho de la columna para que entre la cantidad de npcs correctamente
     FrmQuests.PlayerView.BackColor = RGB(11, 11, 11)
     FrmQuests.picture1.BackColor = RGB(19, 14, 11)
@@ -4911,185 +4912,112 @@ Private Sub HandleQuestDetails()
     FrmQuests.picture1.Refresh
     FrmQuests.npclbl.Caption = ""
     FrmQuests.objetolbl.Caption = ""
-    'Nos fijamos si se trata de una quest empezada, para poder leer los NPCs que se han matado.
-    QuestEmpezada = IIf(Reader.ReadInt8, True, False)
-    If Not QuestEmpezada Then
-        QuestIndex = Reader.ReadInt16
-        FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
-        'tmpStr = "Mision: " & .ReadString8 & vbCrLf
-        LevelRequerido = Reader.ReadInt8
-        QuestRequerida = Reader.ReadInt16
-        If QuestRequerida <> 0 Then
-            FrmQuestInfo.Text1.text = ""
-            Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & JsonLanguage.Item( _
-                    "MENSAJE_QUEST_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(QuestRequerida).RequiredQuest, 128, _
-                    128, 128)
-        Else
-            FrmQuestInfo.Text1.text = ""
-            Call AddtoRichTextBox(FrmQuestInfo.Text1, QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & JsonLanguage.Item( _
-                    "MENSAJE_QUEST_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf, 128, 128, 128)
-        End If
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then 'Hay NPCs
-            If tmpByte > 5 Then
-                FrmQuestInfo.ListView1.FlatScrollBar = False
-                FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1550
-            Else
-                FrmQuestInfo.ListView1.FlatScrollBar = True
-                FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1800
-            End If
-            For i = 1 To tmpByte
-                cantidadnpc = Reader.ReadInt16
-                NpcIndex = Reader.ReadInt16
-                ' tmpStr = tmpStr & "*) Matar " & .ReadInt16 & " " & .ReadString8 & "."
-                If QuestEmpezada Then
-                    tmpStr = tmpStr & " (Has matado " & Reader.ReadInt16 & ")" & vbCrLf
-                Else
-                    tmpStr = tmpStr & vbCrLf
-                    Dim subelemento As ListItem
-                    Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , NpcData(NpcIndex).Name)
-                    subelemento.SubItems(1) = cantidadnpc
-                    subelemento.SubItems(2) = NpcIndex
-                    subelemento.SubItems(3) = 0
-                End If
-            Next i
-        End If
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then 'Hay OBJs
-            For i = 1 To tmpByte
-                cantidadobj = Reader.ReadInt16
-                ObjIndex = Reader.ReadInt16
-                AmountHave = Reader.ReadInt16
-                Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , ObjData(ObjIndex).Name)
-                subelemento.SubItems(1) = AmountHave & "/" & cantidadobj
-                subelemento.SubItems(2) = ObjIndex
-                subelemento.SubItems(3) = 1
-            Next i
-        End If
-        tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_RECOMPENSAS") & vbCrLf
-        'tmpStr = tmpStr & "*) Oro: " & .ReadInt32 & " monedas de oro." & vbCrLf
-        'tmpStr = tmpStr & "*) Experiencia: " & .ReadInt32 & " puntos de experiencia." & vbCrLf
-        Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
-        subelemento.SubItems(1) = BeautifyBigNumber(Reader.ReadInt32)
-        subelemento.SubItems(2) = 12
-        subelemento.SubItems(3) = 0
-        Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Experiencia")
-        subelemento.SubItems(1) = BeautifyBigNumber(Reader.ReadInt32)
-        subelemento.SubItems(2) = 608
-        subelemento.SubItems(3) = 1
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then
-            For i = 1 To tmpByte
-                'tmpStr = tmpStr & "*) " & .ReadInt16 & " " & .ReadInt16 & vbCrLf
-                Dim cantidadobjs As Integer
-                Dim obindex      As Integer
-                cantidadobjs = Reader.ReadInt16
-                obindex = Reader.ReadInt16
-                Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , ObjData(obindex).Name)
-                subelemento.SubItems(1) = cantidadobjs
-                subelemento.SubItems(2) = obindex
-                subelemento.SubItems(3) = 1
-            Next i
-        End If
-    Else
-        QuestIndex = Reader.ReadInt16
-        FrmQuests.titulo.Caption = QuestList(QuestIndex).nombre
-        FrmQuests.lblRepetible.visible = QuestList(QuestIndex).Repetible = 1
-        LevelRequerido = Reader.ReadInt8
-        QuestRequerida = Reader.ReadInt16
-        FrmQuests.detalle.text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & JsonLanguage.Item( _
-                "MENSAJE_QUEST_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf
-        If QuestRequerida <> 0 Then
-            FrmQuests.detalle.text = FrmQuests.detalle.text & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(QuestRequerida).nombre
-        End If
-        tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_OBJETIVOS") & vbCrLf
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then 'Hay NPCs
-            For i = 1 To tmpByte
-                cantidadnpc = Reader.ReadInt16
-                NpcIndex = Reader.ReadInt16
-                Dim matados As Integer
-                matados = Reader.ReadInt16
-                Set subelemento = FrmQuests.ListView1.ListItems.Add(, , NpcData(NpcIndex).Name)
-                Dim cantok As Integer
-                cantok = cantidadnpc - matados
-                If cantok > 0 Then
-                    subelemento.SubItems(1) = matados & "/" & cantidadnpc
-                Else
-                    subelemento.SubItems(1) = "OK"
-                End If
-                ' subelemento.SubItems(1) = cantidadnpc - matados
-                subelemento.SubItems(2) = NpcIndex
-                subelemento.SubItems(3) = 0
-                'End If
-            Next i
-        End If
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then 'Hay OBJs
-            For i = 1 To tmpByte
-                cantidadobj = Reader.ReadInt16
-                ObjIndex = Reader.ReadInt16
-                AmountHave = Reader.ReadInt16
-                Set subelemento = FrmQuests.ListView1.ListItems.Add(, , ObjData(ObjIndex).Name)
-                subelemento.SubItems(1) = AmountHave & "/" & cantidadobj
-                subelemento.SubItems(2) = ObjIndex
-                subelemento.SubItems(3) = 1
-            Next i
-        End If
-        Dim RequiredSkill, RequiredValue As Byte
-        RequiredSkill = Reader.ReadInt8
-        RequiredValue = Reader.ReadInt8
-        If RequiredSkill > 0 Then
-            FrmQuests.detalle.text = FrmQuests.detalle.text & SkillsNames(RequiredSkill) & ": " & RequiredValue
-        End If
-        tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_RECOMPENSAS") & vbCrLf
-        Dim tmplong As Long
-        tmplong = Reader.ReadInt32
-        If tmplong <> 0 Then
-            Set subelemento = FrmQuests.ListView2.ListItems.Add(, , "Oro")
-            subelemento.SubItems(1) = BeautifyBigNumber(tmplong)
-            subelemento.SubItems(2) = 12
-            subelemento.SubItems(3) = 0
-        End If
-        tmplong = Reader.ReadInt32
-        If tmplong <> 0 Then
-            Set subelemento = FrmQuests.ListView2.ListItems.Add(, , "Experiencia")
-            subelemento.SubItems(1) = BeautifyBigNumber(tmplong)
-            subelemento.SubItems(2) = 608
-            subelemento.SubItems(3) = 1
-        End If
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then
-            For i = 1 To tmpByte
-                cantidadobjs = Reader.ReadInt16
-                obindex = Reader.ReadInt16
-                Set subelemento = FrmQuests.ListView2.ListItems.Add(, , ObjData(obindex).Name)
-                subelemento.SubItems(1) = cantidadobjs
-                subelemento.SubItems(2) = obindex
-                subelemento.SubItems(3) = 1
-            Next i
-        End If
-        tmpByte = Reader.ReadInt8 'skills
+    
+    QuestIndex = Reader.ReadInt16
+    FrmQuests.titulo.Caption = QuestList(QuestIndex).nombre
+    FrmQuests.lblRepetible.visible = QuestList(QuestIndex).Repetible = 1
+    LevelRequerido = Reader.ReadInt8
+    QuestRequerida = Reader.ReadInt16
+    FrmQuests.detalle.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & JsonLanguage.Item( _
+            "MENSAJE_QUEST_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf
+    If QuestRequerida <> 0 Then
+        FrmQuests.detalle.Text = FrmQuests.detalle.Text & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(QuestRequerida).nombre
+    End If
+    tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_OBJETIVOS") & vbCrLf
+    tmpByte = Reader.ReadInt8
+    If tmpByte Then 'Hay NPCs
         For i = 1 To tmpByte
-            obindex = Reader.ReadInt16
-            Set subelemento = FrmQuests.ListView2.ListItems.Add(, , HechizoData(obindex).nombre)
-            subelemento.SubItems(1) = 1
-            subelemento.SubItems(2) = obindex
+            cantidadnpc = Reader.ReadInt16
+            NpcIndex = Reader.ReadInt16
+            Dim matados As Integer
+            matados = Reader.ReadInt16
+            Set subelemento = FrmQuests.ListView1.ListItems.Add(, , NpcData(NpcIndex).Name)
+            Dim cantok As Integer
+            cantok = cantidadnpc - matados
+            If cantok > 0 Then
+                subelemento.SubItems(1) = matados & "/" & cantidadnpc
+            Else
+                subelemento.SubItems(1) = "OK"
+            End If
+            ' subelemento.SubItems(1) = cantidadnpc - matados
+            subelemento.SubItems(2) = NpcIndex
+            subelemento.SubItems(3) = 0
+            'End If
+        Next i
+    End If
+    tmpByte = Reader.ReadInt8
+    If tmpByte Then 'Hay OBJs
+        For i = 1 To tmpByte
+            cantidadobj = Reader.ReadInt16
+            ObjIndex = Reader.ReadInt16
+            AmountHave = Reader.ReadInt16
+            Set subelemento = FrmQuests.ListView1.ListItems.Add(, , ObjData(ObjIndex).Name)
+            subelemento.SubItems(1) = AmountHave & "/" & cantidadobj
+            subelemento.SubItems(2) = ObjIndex
             subelemento.SubItems(3) = 1
         Next i
     End If
-    'Determinamos que formulario se muestra, según si recibimos la información y la quest está empezada o no.
-    If QuestEmpezada Then
-        FrmQuests.txtInfo.text = tmpStr
-        Call FrmQuests.ListView1_Click
-        Call FrmQuests.ListView2_Click
-        Call FrmQuests.lstQuests.SetFocus
-    Else
-        FrmQuestInfo.Show vbModeless, GetGameplayForm()
-        FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
-        Call FrmQuestInfo.ListView1_Click
-        Call FrmQuestInfo.ListView2_Click
+    tmpByte = Reader.ReadInt8 'Hay Spells
+    If tmpByte Then
+        For i = 1 To tmpByte
+                ObjIndex = Reader.ReadInt16
+                AmountHave = Reader.ReadInt16
+                Set subelemento = FrmQuests.ListView1.ListItems.Add(, , HechizoData(ObjIndex).nombre)
+                subelemento.SubItems(1) = AmountHave & "/" & cantidadobj
+                subelemento.SubItems(2) = ObjIndex
+                subelemento.SubItems(3) = 2
+        Next i
     End If
+    
+    Dim RequiredSkill, RequiredValue As Byte
+    RequiredSkill = Reader.ReadInt8
+    RequiredValue = Reader.ReadInt8
+    If RequiredSkill > 0 Then
+        FrmQuests.detalle.Text = FrmQuests.detalle.Text & SkillsNames(RequiredSkill) & ": " & RequiredValue
+    End If
+    tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_RECOMPENSAS") & vbCrLf
+    Dim tmplong As Long
+    tmplong = Reader.ReadInt32
+    If tmplong <> 0 Then
+        Set subelemento = FrmQuests.ListView2.ListItems.Add(, , "Oro")
+        subelemento.SubItems(1) = BeautifyBigNumber(tmplong)
+        subelemento.SubItems(2) = 12
+        subelemento.SubItems(3) = 0
+    End If
+    tmplong = Reader.ReadInt32
+    If tmplong <> 0 Then
+        Set subelemento = FrmQuests.ListView2.ListItems.Add(, , "Experiencia")
+        subelemento.SubItems(1) = BeautifyBigNumber(tmplong)
+        subelemento.SubItems(2) = 608
+        subelemento.SubItems(3) = 1
+    End If
+    tmpByte = Reader.ReadInt8 'reward objs
+    If tmpByte Then
+        For i = 1 To tmpByte
+            cantidadobjs = Reader.ReadInt16
+            obindex = Reader.ReadInt16
+            Set subelemento = FrmQuests.ListView2.ListItems.Add(, , ObjData(obindex).Name)
+            subelemento.SubItems(1) = cantidadobjs
+            subelemento.SubItems(2) = obindex
+            subelemento.SubItems(3) = 1
+            subelemento.SubItems(4) = "typeObj"
+        Next i
+    End If
+    tmpByte = Reader.ReadInt8 'reward spells
+    For i = 1 To tmpByte
+        obindex = Reader.ReadInt16
+        Set subelemento = FrmQuests.ListView2.ListItems.Add(, , HechizoData(obindex).nombre)
+        subelemento.SubItems(1) = 1
+        subelemento.SubItems(2) = obindex
+        subelemento.SubItems(3) = 1
+        subelemento.SubItems(4) = "typeSpell"
+    Next i
+    
+    FrmQuests.txtInfo.Text = tmpStr
+    Call FrmQuests.ListView1_Click
+    Call FrmQuests.ListView2_Click
+    Call FrmQuests.lstQuests.SetFocus
+
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestDetails", Erl)
