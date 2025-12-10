@@ -1483,6 +1483,8 @@ Public ShowPercentage              As Boolean
 Public bmoving                     As Boolean
 Public dx                          As Integer
 Public dy                          As Integer
+Public JailTimeLeft                As Long
+Public JailReason                  As String
 Private Const IntervaloEntreClicks As Long = 50
 Dim TempTick                       As Long
 Private iClickTick                 As Long

@@ -477,6 +477,8 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call HandleGuildConfig
             Case ServerPacketID.eShowPickUpObj
                 Call HandleShowPickUpObj
+            Case ServerPacketID.eJailTimeAndPenaltyReason
+                Call HandleJailTimeAndPenaltyReason
                 #If PYMMO = 0 Then
                 Case ServerPacketID.eAccountCharacterList
                     Call HandleAccountCharacterList
@@ -6044,6 +6046,14 @@ Public Sub HandleShowPickUpObj()
     Call AddPickUpEffect(txt)
 End Sub
 
+Public Sub HandleJailTimeAndPenaltyReason()
+    Dim JailReason As String
+    Dim JailTimeLeft As Long
+    JailTimeLeft = Reader.ReadInt32()
+    JailReason = Reader.ReadString16()
+    frmMain.JailTimeLeft = JailTimeLeft
+    frmMain.JailReason = JailReason
+End Sub
 #If PYMMO = 0 Then
     Public Sub HandleAccountCharacterList()
         CantidadDePersonajesEnCuenta = Reader.ReadInt
