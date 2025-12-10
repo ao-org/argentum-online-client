@@ -819,6 +819,8 @@ Sub ShowNextFrame()
     On Error GoTo ShowNextFrame_Err
     Static OffsetCounterX As Single
     Static OffsetCounterY As Single
+    Debug.Assert UserCharIndex > 0
+    If UserCharIndex = 0 Then Exit Sub
     If charlist(UserCharIndex).TranslationActive Then
         With charlist(UserCharIndex)
             Dim ElapsedTime        As Long

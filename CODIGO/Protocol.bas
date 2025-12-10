@@ -624,6 +624,7 @@ Private Sub HandleVelocidadToggle()
     On Error GoTo HandleVelocidadToggle_Err
     Dim Speeding As Single
     Speeding = Reader.ReadReal32()
+    Debug.Assert UserCharIndex > 0
     If UserCharIndex = 0 Then Exit Sub
     charlist(UserCharIndex).Speeding = Speeding
     Call ApplySpeedingToChar(UserCharIndex)
