@@ -610,7 +610,7 @@ Private Sub Image3_Click()
         Referencias = False
     Else
         Referencias = True
-        picMap.Picture = LoadInterface("mapa_referencias.bmp")
+        picMap.Picture = LoadInterface("mapa" & WorldActual & "_referencias.bmp")
         Image3.Picture = LoadInterface("check-amarillo.bmp")
     End If
     Exit Sub
@@ -1131,15 +1131,24 @@ End Function
 
 Public Sub ToggleDungeonView()
 On Error GoTo ToggleDungeonView_Err
-    If WorldActual = 1 Then
+    If WorldActual = 1 And Referencias = False Then
         WorldActual = 2
         Image2.Picture = LoadInterface("check-amarillo.bmp")
-    Else
+        picMap.Picture = LoadInterface("mapa" & WorldActual & ".bmp")
+    ElseIf WorldActual = 2 And Referencias = False Then
         WorldActual = 1
         Image2.Picture = Nothing
+        picMap.Picture = LoadInterface("mapa" & WorldActual & ".bmp")
+    ElseIf WorldActual = 1 And Referencias = True Then
+        WorldActual = 2
+        Image2.Picture = LoadInterface("check-amarillo.bmp")
+        picMap.Picture = LoadInterface("mapa" & WorldActual & "_referencias.bmp")
+    ElseIf WorldActual = 2 And Referencias = True Then
+        WorldActual = 1
+        Image2.Picture = Nothing
+        picMap.Picture = LoadInterface("mapa" & WorldActual & "_referencias.bmp")
     End If
     ActualizarPosicionMapa
-    picMap.Picture = LoadInterface("mapa" & WorldActual & ".bmp")
     Exit Sub
 ToggleDungeonView_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.ToggleDungeonView", Erl)
