@@ -27,7 +27,56 @@ Attribute VB_Exposed = False
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 Option Base 0
 Option Explicit
+Private Const TreeIndicesFile As String = "\\..\\Recursos\\init\\EsArbol.ini"
+Private Const TreeIndicesSection As String = "ARBOL"
+Private Const TreeIndicesKey As String = "Indices"
 Private ValidTreeIndices() As Variant
+
+Private Function ReadFullIniValue(ByVal filePath As String, ByVal section As String, ByVal key As String) As String
+    On Error GoTo ReadFullIniValue_Err
+
+    Dim fileNum As Integer
+    Dim currentSection As String
+    Dim line As String
+    Dim separatorPos As Long
+
+    fileNum = FreeFile
+    Open filePath For Input As #fileNum
+
+    Do While Not EOF(fileNum)
+        Line Input #fileNum, line
+        line = Trim$(line)
+
+        If LenB(line) = 0 Or Left$(line, 1) = ";" Then
+            GoTo ContinueLoop
+        End If
+
+        If Left$(line, 1) = "[" And Right$(line, 1) = "]" Then
+            currentSection = Mid$(line, 2, Len(line) - 2)
+        ElseIf StrComp(currentSection, section, vbTextCompare) = 0 Then
+            separatorPos = InStr(1, line, "=", vbTextCompare)
+
+            If separatorPos > 0 Then
+                If StrComp(Trim$(Left$(line, separatorPos - 1)), key, vbTextCompare) = 0 Then
+                    ReadFullIniValue = Mid$(line, separatorPos + 1)
+                    Exit Do
+                End If
+            End If
+        End If
+
+ContinueLoop:
+    Loop
+
+ReadFullIniValue_Exit:
+    On Error Resume Next
+    Close #fileNum
+    Exit Function
+
+ReadFullIniValue_Err:
+    ReadFullIniValue = vbNullString
+    Call RegistrarError(Err.Number, Err.Description, "clsTileEngineHelper.ReadFullIniValue", Erl)
+    Resume ReadFullIniValue_Exit
+End Function
 
 Function IsIndexTree(ByVal GrhIndex As Long) As Boolean
     On Error Resume Next
@@ -42,6 +91,49 @@ Function IsIndexTree(ByVal GrhIndex As Long) As Boolean
 End Function
 
 Private Sub Class_Initialize()
+    If Not LoadTreeIndicesFromIni Then
+        LoadDefaultTreeIndices
+    End If
+End Sub
+
+Private Function LoadTreeIndicesFromIni() As Boolean
+    On Error GoTo LoadTreeIndicesFromIni_Err
+    Dim rawList As String
+    Dim parts() As String
+    Dim treeIndex As String
+    Dim i As Long
+    Dim currentIndex As Long
+
+    rawList = ReadFullIniValue(App.path & TreeIndicesFile, TreeIndicesSection, TreeIndicesKey)
+    If LenB(rawList) = 0 Then Exit Function
+
+    parts = Split(rawList, ",")
+    If UBound(parts) < LBound(parts) Then Exit Function
+
+    ReDim ValidTreeIndices(0 To 0) As Variant
+    currentIndex = 0
+
+    For i = LBound(parts) To UBound(parts)
+        treeIndex = Trim$(parts(i))
+        If treeIndex <> vbNullString Then
+            If currentIndex > 0 Then
+                ReDim Preserve ValidTreeIndices(0 To currentIndex) As Variant
+            End If
+
+            ValidTreeIndices(currentIndex) = CLng(treeIndex)
+            currentIndex = currentIndex + 1
+        End If
+    Next i
+
+    LoadTreeIndicesFromIni = (currentIndex > 0)
+    Exit Function
+LoadTreeIndicesFromIni_Err:
+    Call RegistrarError(Err.Number, Err.Description, "clsTileEngineHelper.LoadTreeIndicesFromIni", Erl)
+    LoadTreeIndicesFromIni = False
+    Resume Next
+End Function
+
+Private Sub LoadDefaultTreeIndices()
     ValidTreeIndices = Array(643, 644, 647, 735, 1121, 2931, 11903, 11904, 11905, 14775, 11906, 70885, 70884, 71042, 71041, 15698, 14504, 14505, 15697, 15510, 12581, 12582, _
             12583, 12584, 12585, 12586, 12164, 12165, 12166, 12167, 12168, 12169, 12170, 12171, 12172, 12173, 12174, 12175, 12176, 12177, 12178, 12179, 32142, 32143, 32144, _
             32145, 32146, 32147, 32148, 32149, 32150, 32151, 32152, 32154, 55626, 55627, 55628, 55629, 55630, 55631, 55632, 55633, 55634, 55635, 55636, 55637, 55638, 55639, _
