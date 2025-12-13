@@ -1868,6 +1868,15 @@ WritePetFollow_Err:
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePetFollow", Erl)
     '</EhFooter>
 End Sub
+Public Sub WritePetFollowAll()
+    On Error GoTo WritePetFollowAll_Err
+    Call Writer.WriteInt16(ClientPacketID.ePetFollowAll)
+    Call modNetwork.send(Writer)
+    Exit Sub
+WritePetFollowAll_Err:
+    Call Writer.Clear
+    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePetFollowAll", Erl)
+End Sub
 
 ''
 ' Writes the "PetLeave" message to the outgoing data buffer.
