@@ -635,7 +635,8 @@ Sub Check_Keys()
     On Error GoTo Check_Keys_Err
     Static lastMovement As Long
     Dim direccion       As E_Heading
-    'Debug.Assert UserCharIndex > 0
+    Debug.Assert UserCharIndex > 0
+    If UserCharIndex = 0 Then Exit Sub
     direccion = charlist(UserCharIndex).Heading
     If Not Application.IsAppActive() Then Exit Sub
     If Not pausa And g_game_state.State = e_state_gameplay_screen And Not frmComerciarUsu.visible And Not frmBancoObj.visible And Not frmOpciones.visible And Not _
