@@ -752,5 +752,6 @@
   "MSG_NEWOWNER_DOESNT_EXIST": "O novo proprietário não existe..",
   "MSG_NEWOWNER_IS_NOT_PATREON": "O novo proprietário não é membro do Patreon..",
   "MSG_OWNER_IS_NOT_PATREON": "O proprietário não é membro do Patreon.",
-  "MSG_OWNER_NOT_ENOUGH_CREDITS": "O proprietário não possui créditos suficientes."
+  "MSG_OWNER_NOT_ENOUGH_CREDITS": "O proprietário não possui créditos suficientes.",
+  "MENSAJE_CLAN_NIVEL_MAXIMO": "Nível máximo!"
 }
