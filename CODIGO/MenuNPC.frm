@@ -3,14 +3,14 @@ Begin VB.Form MenuNPC
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   1485
+   ClientHeight    =   1845
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   1950
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   99
+   ScaleHeight     =   123
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   130
    ShowInTaskbar   =   0   'False
@@ -19,6 +19,27 @@ Begin VB.Form MenuNPC
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
       Caption         =   "LIBERAR TODOS"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   300
+      Index           =   4
+      Left            =   0
+      TabIndex        =   4
+      Top             =   1530
+      Width           =   1950
+   End
+   Begin VB.Label OpcionLbl 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "LIBERAR"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -53,7 +74,7 @@ Begin VB.Form MenuNPC
    Begin VB.Label OpcionLbl 
       Alignment       =   2  'Center
       BackStyle       =   0  'Transparent
-      Caption         =   "LIBERAR"
+      Caption         =   "ACOMPAÑAR TODOS"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -158,6 +179,7 @@ Private Sub Form_Load()
     OpcionLbl(1).Caption = JsonLanguage.Item("FORM_OPCION_6")
     OpcionLbl(2).Caption = JsonLanguage.Item("FORM_OPCION_7")
     OpcionLbl(3).Caption = JsonLanguage.Item("FORM_OPCION_8")
+    OpcionLbl(4).Caption = JsonLanguage.Item("FORM_OPCION_25")
     Over = -1
 End Sub
 
@@ -168,8 +190,10 @@ Private Sub OpcionImg_Click(Index As Integer)
         Case 1
             Call ParseUserCommand("/ACOMPAÑAR")
         Case 2
-            Call ParseUserCommand("/LIBERAR")
+            Call ParseUserCommand("/ACOMPAÑARTODOS")
         Case 3
+            Call ParseUserCommand("/LIBERAR")
+        Case 4
             Call ParseUserCommand("/LIBERARTODOS")
     End Select
     Unload Me
