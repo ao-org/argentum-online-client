@@ -989,8 +989,21 @@ Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As e
     Exit Sub
 WriteWorkLeftClick_Err:
     Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteWorkLeftClick", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol_Writes.Protocol_Writes.WriteWorkLeftClick", Erl)
     '</EhFooter>
+End Sub
+
+Public Sub WriteStartAutomatedAction(ByVal x As Byte, ByVal y As Byte, ByVal skill As eSkill)
+    On Error GoTo WriteStartAutomatedAction_Err
+    Call Writer.WriteInt16(ClientPacketID.eStartAutomatedAction)
+    Call Writer.WriteInt8(x)
+    Call Writer.WriteInt8(y)
+    Call Writer.WriteInt8(skill)
+    Call modNetwork.send(Writer)
+    Exit Sub
+WriteStartAutomatedAction_Err:
+    Call Writer.Clear
+    Call RegistrarError(Err.Number, Err.Description, "Protocol_Writes.WriteStartAutomatedAction", Erl)
 End Sub
 
 ''
@@ -1854,6 +1867,15 @@ WritePetFollow_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePetFollow", Erl)
     '</EhFooter>
+End Sub
+Public Sub WritePetFollowAll()
+    On Error GoTo WritePetFollowAll_Err
+    Call Writer.WriteInt16(ClientPacketID.ePetFollowAll)
+    Call modNetwork.send(Writer)
+    Exit Sub
+WritePetFollowAll_Err:
+    Call Writer.Clear
+    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePetFollowAll", Erl)
 End Sub
 
 ''

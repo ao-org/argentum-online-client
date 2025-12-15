@@ -750,6 +750,14 @@ Public Sub HandleConfirmTransferChar(ByVal BytesTotal As Long)
                 Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "invalid-transfer-char-request")
             Case 67
                 Call DisplayError(JsonLanguage.Item("MENSAJE_CODIGO_INVALIDO"), "invalid-transfer-code")
+            Case 57
+                Call DisplayError(JsonLanguage.Item("MSG_OWNER_NOT_ENOUGH_CREDITS"), "owner-not-enough-credits")
+            Case 56
+                Call DisplayError(JsonLanguage.Item("MSG_OWNER_IS_NOT_PATREON"), "owner-not-patreon")
+            Case 55
+                Call DisplayError(JsonLanguage.Item("MSG_NEWOWNER_IS_NOT_PATREON"), "new-owner-is-not-patreon")
+            Case 54
+                Call DisplayError(JsonLanguage.Item("MSG_NEWOWNER_DOESNT_EXIST"), "new-owner-doesnt-exists")
             Case 49
                 Call DisplayError(JsonLanguage.Item("MENSAJE_TOKEN_SESION_INVALIDO"), "session-token-invalid")
             Case 23

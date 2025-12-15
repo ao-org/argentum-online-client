@@ -77,7 +77,7 @@ Begin VB.Form frmGuildLeader
       Caption         =   "12"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -88,8 +88,8 @@ Begin VB.Form frmGuildLeader
       Height          =   240
       Left            =   870
       TabIndex        =   9
-      Top             =   1575
-      Width           =   195
+      Top             =   1590
+      Width           =   210
    End
    Begin VB.Label expcount 
       Alignment       =   2  'Center
@@ -118,7 +118,7 @@ Begin VB.Form frmGuildLeader
       Caption         =   "25"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -176,7 +176,7 @@ Begin VB.Form frmGuildLeader
       Caption         =   "12"
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   12
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -188,14 +188,14 @@ Begin VB.Form frmGuildLeader
       Left            =   2100
       TabIndex        =   4
       Top             =   2310
-      Width           =   195
+      Width           =   210
    End
    Begin VB.Label beneficios 
       BackStyle       =   0  'Transparent
       Caption         =   "No atacarse / Chat de clan / Pedir ayuda (K)  / Verse Invisible / Marca de clan / Verse vida."
       BeginProperty Font 
          Name            =   "Arial"
-         Size            =   9
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False

@@ -564,8 +564,8 @@
   "FORM_OPCION_4": "DENUNCIARE",
   "FORM_OPCION_5": "FERMO",
   "FORM_OPCION_6": "ACCOMPAGNARE",
-  "FORM_OPCION_7": "LIBERARE",
-  "FORM_OPCION_8": "LIBERARE TUTTI",
+  "FORM_OPCION_7": "ACCOMPAGNARE TUTTI",
+  "FORM_OPCION_8": "LIBERARE",
   "FORM_OPCION_9": "SOMMA",
   "FORM_OPCION_10": "CONSULTA",
   "FORM_OPCION_11": "INFO",
@@ -582,6 +582,7 @@
   "FORM_OPCION_22": "VIGILANTE",
   "FORM_OPCION_23": "PRIGIONE",
   "FORM_OPCION_24": "BAN",
+  "FORM_OPCION_25": "LIBERARE TUTTI",
   "DAMAGE": "Danno: ",
   "DEFENSE": "Difesa: ",
   "EMPTY_LABEL": "(Vuoto)",
@@ -748,5 +749,10 @@
   "CHALLENGE_ERROR_TOO_MUCH_GOLD" : "Non puoi scommettere più di 10.000.000 di monete d'oro",
   "CHALLENGE_ERROR_INVALID_NAME" : "Nome del giocatore non valido:",
   "SEGURO_LEGIONARIO_DESHABILITADO_TEMPORALMENTE" : "L'assicurazione della fazione dei Legionari è temporaneamente disattivata.",
-  "MENSAJE_TOKEN_SESION_INVALIDO" : "Token di sessione non valido."
+  "MENSAJE_TOKEN_SESION_INVALIDO" : "Token di sessione non valido.",
+  "MSG_NEWOWNER_DOESNT_EXIST": "Il nuovo proprietario non esiste.",
+  "MSG_NEWOWNER_IS_NOT_PATREON": "Il nuovo proprietario non è un membro di Patreon",
+  "MSG_OWNER_IS_NOT_PATREON": "Il proprietario non è un membro di Patreon.",
+  "MSG_OWNER_NOT_ENOUGH_CREDITS": "Il proprietario non ha abbastanza crediti.",
+  "MENSAJE_CLAN_NIVEL_MAXIMO": "Livello massimo!"
 }
