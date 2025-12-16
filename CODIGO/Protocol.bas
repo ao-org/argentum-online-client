@@ -4964,7 +4964,7 @@ Private Sub HandleQuestDetails()
                 ObjIndex = Reader.ReadInt16
                 AmountHave = Reader.ReadInt16
                 Set subelemento = FrmQuests.ListView1.ListItems.Add(, , HechizoData(ObjIndex).nombre)
-                subelemento.SubItems(1) = AmountHave & "/" & cantidadobj
+                subelemento.SubItems(1) = AmountHave & "/" & 1
                 subelemento.SubItems(2) = ObjIndex
                 subelemento.SubItems(3) = 2
         Next i
