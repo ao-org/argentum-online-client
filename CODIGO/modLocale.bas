@@ -64,6 +64,9 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
         Call ObjIndexToLocalizedName(Fields, 2)
     End If
     
+    If bytHeader = 2128 Then
+        Call ObjIndexToLocalizedName(Fields, 2)
+    End If
     ' En reversa para evitar pisar campos mayores a 10
     For i = UBound(Fields) To 0 Step -1
         strLocale = Replace(strLocale, "¬" & (i + 1), Fields(i))
