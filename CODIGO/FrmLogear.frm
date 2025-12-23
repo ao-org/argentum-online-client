@@ -319,6 +319,7 @@ Private Sub cmdIngresar_Click()
     Call SetActiveServer(txtIp.text, txtPort.text)
     Call FormParser.Parse_Form(Me, E_WAIT)
     Call DoLogin(NameTxt.text, PasswordTxt.text, chkRecordar.Tag = "1")
+    Call Discord_Update("", JsonLanguage.Item("MSG_LOGIN_SCREEN"), "argentumonlinelogo512", "https://discord.com/invite/hvaA8eMm43", "argentumlogocircle", "Jugando Argentum Online")
     Exit Sub
 cmdIngresar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.cmdIngresar_Click", Erl)

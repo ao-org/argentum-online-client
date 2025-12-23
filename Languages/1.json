@@ -756,11 +756,12 @@
     "MSG_OWNER_IS_NOT_PATREON": "El propietario actual no es un usuario Patreon.",
     "MSG_OWNER_NOT_ENOUGH_CREDITS": "El propietario actual no tiene créditos suficientes.",
 	"MENSAJE_CLAN_NIVEL_MAXIMO": "¡Nivel Máximo!",
-    "MSG_LOGIN_SCREEN" : "En Pantalla de selección de personaje",
+    "MSG_ACCOUNT_SCREEN" : "Seleccionando cuenta...",
+    "MSG_LOGIN_SCREEN" : "Eligiendo personaje...",
     "MSG_GULFAS_JOKE1" : "Alabando a Gulfas",
     "MSG_GULFAS_JOKE2" : "Hablando con Gulfas",
     "MSG_GULFAS_JOKE3" : "Decepcionando a Gulfas",
     "MSG_GULFAS_JOKE4" : "Insultando a Gulfas",
     "MSG_GULFAS_JOKE5" : "Retando a Gulfas",
-    "MSG_GULFAS_JOKE6" : "Burlándose de Gulfas"
+    "MSG_GULFAS_JOKE6" : "Mofandose de Gulfas"
 }
