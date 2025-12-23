@@ -2063,6 +2063,9 @@ Public Sub start()
         #If No_Api_Steam = 0 Then
             Call svb_run_callbacks
         #End If
+        If UserCharIndex <> 0 Then
+            Call Discord_Update(charlist(UserCharIndex).clan, frmMain.lblLvl & " " & frmMain.lblPorcLvl, , , , "Jugando Argentum Online")
+        End If
         Call UpdateAntiCheat
     Loop
     EngineRun = False

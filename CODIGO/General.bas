@@ -834,6 +834,13 @@ Sub Main()
             End If
         End If
     #End If
+    If Not Discord_Initialize(DISCORD_API_ID) Then
+        Debug.Print Discord_GetLastError()
+    Else
+        If Discord_IsConnected Then
+            Call Discord_SetStartTime
+        End If
+    End If
     Call initPacketControl
     Call SetNpcsRenderText
     Call cargarTutoriales

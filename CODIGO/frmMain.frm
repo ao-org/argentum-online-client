@@ -2105,6 +2105,7 @@ Private Sub Form_Unload(Cancel As Integer)
     #If No_Api_Steam = 0 Then
         Call svb_shutdown_steam
     #End If
+    Call Discord_Shutdown
     Call DisableURLDetect
     Exit Sub
 Form_Unload_Err:
