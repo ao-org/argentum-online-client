@@ -1,4 +1,5 @@
 Attribute VB_Name = "modDiscord"
+Attribute VB_Name = "modDiscord"
 '*****************************************************************************
 ' Discord Rich Presence Module for Visual Basic 6
 '
@@ -10,7 +11,8 @@ Attribute VB_Name = "modDiscord"
 '   2. Add this module to your VB6 project
 '   3. Call Discord_Initialize with your Application ID
 '   4. Call Discord_Update to update presence
-'   5. Call Discord_Shutdown when closing your application
+'   5. Setup a Timer (100-250ms interval) to call Discord_RunCallbacks
+'   6. Call Discord_Shutdown when closing your application
 '
 '*****************************************************************************
 
@@ -20,9 +22,9 @@ Option Explicit
 ' Make sure the DLL is in the same folder as your EXE or in System32
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 Public Const DISCORD_API_ID As String = "1452879113827127377"
-' Initialize Discord Rich Presence connection
-' Returns: 1 on success, 0 on failure
 
+' Initialize Discord Rich Presence connection
+' Returns:  1 on success, 0 on failure
 Public Declare Function InitializeDiscord Lib "DiscordRichPresenceVB6.dll" _
     (ByVal appId As String) As Long
 
@@ -38,12 +40,11 @@ Public Declare Function UpdatePresence Lib "DiscordRichPresenceVB6.dll" _
      ByVal smallImageText As String) As Long
 
 ' Set timestamp for elapsed time display
-' startTime: Unix timestamp in seconds (use 0 to clear)
-' Note: VB6 Long can hold timestamps up to year 2038. For dates beyond,
-'       the C++ DLL internally uses long long (int64)
+' startTime:  Unix timestamp in seconds (use 0 to clear)
+' FIXED: Changed from Currency to Double for better compatibility
 ' Returns: 1 on success, 0 on failure
 Public Declare Function SetTimestamp Lib "DiscordRichPresenceVB6.dll" _
-    (ByVal startTime As Currency) As Long
+    (ByVal startTime As Double) As Long
 
 ' Set party size information (current/max players)
 ' Returns: 1 on success, 0 on failure
@@ -63,8 +64,13 @@ Public Declare Sub ShutdownDiscord Lib "DiscordRichPresenceVB6.dll" ()
 ' Returns: 1 if initialized, 0 if not
 Public Declare Function IsDiscordInitialized Lib "DiscordRichPresenceVB6.dll" () As Long
 
+' *** NEW:  Run Discord callbacks - MUST be called regularly (e.g., via Timer) ***
+' Call this every 100-250ms to keep Discord connection alive and process events
+' Returns: 1 on success, 0 on failure
+Public Declare Function RunCallbacks Lib "DiscordRichPresenceVB6.dll" () As Long
+
 ' Get last error message
-' Returns: Pointer to error message string
+' Returns:  Pointer to error message string
 Public Declare Function GetLastError Lib "DiscordRichPresenceVB6.dll" () As Long
 
 '*****************************************************************************
@@ -72,11 +78,21 @@ Public Declare Function GetLastError Lib "DiscordRichPresenceVB6.dll" () As Long
 '*****************************************************************************
 
 ' Initialize Discord with your Application ID
-' Get your Application ID from: https://discord.com/developers/applications
+' Get your Application ID from:  https://discord.com/developers/applications
 Public Function Discord_Initialize(ByVal appId As String) As Boolean
     Dim Result As Long
     Result = InitializeDiscord(appId)
     Discord_Initialize = (Result = 1)
+End Function
+
+' *** NEW: Run Discord Callbacks ***
+' IMPORTANT: Call this regularly (every 100-250ms) via a Timer control
+' Example: In Form_Load, set Timer1.Interval = 150
+'          In Timer1_Timer event, call Discord_RunCallbacks
+Public Function Discord_RunCallbacks() As Boolean
+    Dim Result As Long
+    Result = RunCallbacks()
+    Discord_RunCallbacks = (Result = 1)
 End Function
 
 ' Update Discord Rich Presence
@@ -96,11 +112,12 @@ End Function
 
 ' Set elapsed time (time since game started)
 ' Pass current time to start the timer
+' FIXED: Now uses proper timestamp conversion
 Public Function Discord_SetStartTime() As Boolean
     Dim Result As Long
-    Dim startTime As Currency
+    Dim startTime As Double
     
-    ' Get current Unix timestamp (VB6 Long is sufficient until year 2038)
+    ' Get current Unix timestamp
     startTime = GetUnixTimestamp()
     Result = SetTimestamp(startTime)
     Discord_SetStartTime = (Result = 1)
@@ -140,23 +157,15 @@ Public Function Discord_IsConnected() As Boolean
 End Function
 
 ' Get current Unix timestamp (seconds since 1970-01-01)
-' Note: Returns Long which works until year 2038
-' For timestamps beyond 2038, the C++ DLL uses int64 internally
-Private Function GetUnixTimestamp() As Long
+' FIXED: Now returns Double for better precision
+Private Function GetUnixTimestamp() As Double
     Dim dateOffset As Date
     Dim secondsSince1970 As Double
     
     dateOffset = DateSerial(1970, 1, 1)
     secondsSince1970 = DateDiff("s", dateOffset, Now)
     
-    ' Ensure we don't overflow Long (max ~2.1 billion)
-    If secondsSince1970 > 2147483647# Then
-        GetUnixTimestamp = 2147483647
-    ElseIf secondsSince1970 < 0 Then
-        GetUnixTimestamp = 0
-    Else
-        GetUnixTimestamp = CLng(secondsSince1970)
-    End If
+    GetUnixTimestamp = secondsSince1970
 End Function
 
 ' Get last error message (advanced usage)
@@ -201,10 +210,11 @@ End Function
 Public Function CharStatusToString(ByVal status As Byte) As String
     Select Case status
         Case 0: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_CRIMINAL")
-        Case 1: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO") ' Ciudadano
+        Case 1: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO")  ' Ciudadano
         Case 2: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_CAOS")  ' Caos
         Case 3: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_ARMADA")  ' Armada
         Case 4: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_CONSEJO_CAOS")  ' Concilio
-        Case 5: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_CONSEJO_REAL")  ' Consejo
+        Case 5: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_CONSEJO_REAL")   ' Consejo
     End Select
 End Function
+
