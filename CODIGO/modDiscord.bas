@@ -23,13 +23,13 @@ Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination
 Public Const DISCORD_API_ID As String = "1385553291391271024"
 
 ' Initialize Discord Rich Presence connection
-' Returns:  1 on success, 0 on failure
+' Returns:   1 on success, 0 on failure
 Public Declare Function InitializeDiscord Lib "DiscordRichPresenceVB6.dll" _
     (ByVal appId As String) As Long
 
 ' Update Discord Rich Presence with detailed information
 ' All parameters are optional (pass vbNullString or empty string to omit)
-' Returns: 1 on success, 0 on failure
+' Returns:  1 on success, 0 on failure
 Public Declare Function UpdatePresence Lib "DiscordRichPresenceVB6.dll" _
     (ByVal state As String, _
      ByVal details As String, _
@@ -39,11 +39,10 @@ Public Declare Function UpdatePresence Lib "DiscordRichPresenceVB6.dll" _
      ByVal smallImageText As String) As Long
 
 ' Set timestamp for elapsed time display
-' startTime:  Unix timestamp in seconds (use 0 to clear)
-' FIXED: Changed from Currency to Double for better compatibility
+' startTime:   Unix timestamp in seconds (use 0 to clear)
 ' Returns: 1 on success, 0 on failure
 Public Declare Function SetTimestamp Lib "DiscordRichPresenceVB6.dll" _
-    (ByVal startTime As Double) As Long
+    (ByVal startTime As Currency) As Long
 
 ' Set party size information (current/max players)
 ' Returns: 1 on success, 0 on failure
@@ -60,16 +59,16 @@ Public Declare Function ClearPresence Lib "DiscordRichPresenceVB6.dll" () As Lon
 Public Declare Sub ShutdownDiscord Lib "DiscordRichPresenceVB6.dll" ()
 
 ' Check if Discord is initialized
-' Returns: 1 if initialized, 0 if not
+' Returns:  1 if initialized, 0 if not
 Public Declare Function IsDiscordInitialized Lib "DiscordRichPresenceVB6.dll" () As Long
 
-' *** NEW:  Run Discord callbacks - MUST be called regularly (e.g., via Timer) ***
+' *** NEW:   Run Discord callbacks - MUST be called regularly (e.g., via Timer) ***
 ' Call this every 100-250ms to keep Discord connection alive and process events
 ' Returns: 1 on success, 0 on failure
 Public Declare Function RunCallbacks Lib "DiscordRichPresenceVB6.dll" () As Long
 
 ' Get last error message
-' Returns:  Pointer to error message string
+' Returns:   Pointer to error message string
 Public Declare Function GetLastError Lib "DiscordRichPresenceVB6.dll" () As Long
 
 '*****************************************************************************
@@ -77,14 +76,14 @@ Public Declare Function GetLastError Lib "DiscordRichPresenceVB6.dll" () As Long
 '*****************************************************************************
 
 ' Initialize Discord with your Application ID
-' Get your Application ID from:  https://discord.com/developers/applications
+' Get your Application ID from:   https://discord.com/developers/applications
 Public Function Discord_Initialize(ByVal appId As String) As Boolean
     Dim Result As Long
     Result = InitializeDiscord(appId)
     Discord_Initialize = (Result = 1)
 End Function
 
-' *** NEW: Run Discord Callbacks ***
+' *** NEW:  Run Discord Callbacks ***
 ' IMPORTANT: Call this regularly (every 100-250ms) via a Timer control
 ' Example: In Form_Load, set Timer1.Interval = 150
 '          In Timer1_Timer event, call Discord_RunCallbacks
@@ -94,8 +93,9 @@ Public Function Discord_RunCallbacks() As Boolean
     Discord_RunCallbacks = (Result = 1)
 End Function
 
-' Update Discord Rich Presence
+' Update Discord Rich Presence (TEXT/IMAGES ONLY - does NOT affect timestamp)
 ' All parameters are optional - pass empty string to omit
+' Note: This function does NOT update or reset the timestamp
 Public Function Discord_Update( _
     Optional ByVal state As String = "", _
     Optional ByVal details As String = "", _
@@ -110,17 +110,25 @@ Public Function Discord_Update( _
 End Function
 
 ' Set elapsed time (time since game started)
-' Pass current time to start the timer
+' This starts the "elapsed" timer from NOW
 Public Function Discord_SetStartTime() As Boolean
     Dim Result As Long
-    Dim startTime As Long
+    Dim startTime As Currency
     
     startTime = GetUnixTimestamp()
     Result = SetTimestamp(startTime)
     Discord_SetStartTime = (Result = 1)
 End Function
 
-' Clear the timestamp
+' Set a specific timestamp (advanced usage)
+' Pass a Unix timestamp in seconds
+Public Function Discord_SetTimestamp(ByVal unixTimestamp As Currency) As Boolean
+    Dim Result As Long
+    Result = SetTimestamp(unixTimestamp)
+    Discord_SetTimestamp = (Result = 1)
+End Function
+
+' Clear the timestamp (removes the timer from Discord)
 Public Function Discord_ClearTime() As Boolean
     Dim Result As Long
     Result = SetTimestamp(0)
@@ -134,7 +142,7 @@ Public Function Discord_SetParty(ByVal current As Long, ByVal max As Long) As Bo
     Discord_SetParty = (Result = 1)
 End Function
 
-' Clear Discord presence
+' Clear Discord presence (removes ALL information including timestamp)
 Public Function Discord_Clear() As Boolean
     Dim Result As Long
     Result = ClearPresence()
@@ -207,7 +215,7 @@ End Function
 Public Function CharStatusToString(ByVal status As Byte) As String
     Select Case status
         Case 0: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_CRIMINAL")
-        Case 1: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO")  ' Ciudadano
+        Case 1: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO")   ' Ciudadano
         Case 2: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_CAOS")  ' Caos
         Case 3: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_ARMADA")  ' Armada
         Case 4: CharStatusToString = JsonLanguage.Item("MENSAJE_ESTADO_CONSEJO_CAOS")  ' Concilio

@@ -778,7 +778,6 @@ Public Sub HandleDisconnect()
     For i = 1 To MAX_SKINSINVENTORY_SLOTS
         Call frmSkins.InvSkins.ClearSlot(i)
     Next i
-    
     Call frmCrafteo.InvCraftCatalyst.ClearSlot(1)
     UserInvUnlocked = 0
     Alocados = 0
@@ -847,6 +846,7 @@ Public Sub HandleDisconnect()
             Call General_Set_Connect
         End If
     #End If
+    Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), "argentumonlinelogo512", "https://discord.com/invite/hvaA8eMm43", "argentumlogocircle", "Jugando Argentum Online")
     Exit Sub
 HandleDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDisconnect", Erl)

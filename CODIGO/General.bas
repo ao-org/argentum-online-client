@@ -837,7 +837,6 @@ Sub Main()
     Else
         If Discord_IsConnected Then
             Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), "argentumonlinelogo512", "https://discord.com/invite/hvaA8eMm43", "argentumlogocircle", "Jugando Argentum Online")
-            Call Discord_SetStartTime
         End If
     End If
     Call initPacketControl

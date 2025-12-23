@@ -2058,13 +2058,13 @@ Public Sub start()
             #End If
             Call frmMain.Inventario.ReDraw
         End If
+        Call Discord_RunCallbacks
         DoEvents
         Call modNetwork.Poll
         #If No_Api_Steam = 0 Then
             Call svb_run_callbacks
         #End If
         Call UpdateAntiCheat
-        Call Discord_RunCallbacks
     Loop
     EngineRun = False
     Call CloseClient
