@@ -3728,6 +3728,9 @@ Public Sub UpdateStatsLayout()
     End If
     frmMain.lblLvl.Caption = ListaClases(UserStats.Clase) & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & UserStats.Lvl
     Call frmMain.UpdateGoldState
+    If UserCharIndex > 0 Then
+        Call Discord_Update(charlist(UserCharIndex).clan, CStr(frmMain.lblLvl) & " " & CStr(frmMain.lblPorcLvl), , , , "Jugando Argentum Online")
+    End If
 End Sub
 
 Public Sub UnlockInvslot(ByVal UserInvLevel As Integer)

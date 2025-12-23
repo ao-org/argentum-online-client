@@ -839,6 +839,7 @@ Sub Main()
     Else
         If Discord_IsConnected Then
             Call Discord_SetStartTime
+            Call Discord_Update("Acariciando a gulfas", "Conectando personaje", , , , "Jugando Argentum Online")
         End If
     End If
     Call initPacketControl

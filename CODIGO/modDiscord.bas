@@ -1,5 +1,4 @@
 Attribute VB_Name = "modDiscord"
-Attribute VB_Name = "modDiscord"
 '*****************************************************************************
 ' Discord Rich Presence Module for Visual Basic 6
 '
