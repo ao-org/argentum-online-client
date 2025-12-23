@@ -20,7 +20,7 @@ Option Explicit
 ' API Declarations for DiscordRichPresenceVB6.dll
 ' Make sure the DLL is in the same folder as your EXE or in System32
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
-Public Const DISCORD_API_ID As String = "1452879113827127377"
+Public Const DISCORD_API_ID As String = "1385553291391271024"
 
 ' Initialize Discord Rich Presence connection
 ' Returns:  1 on success, 0 on failure
@@ -111,12 +111,10 @@ End Function
 
 ' Set elapsed time (time since game started)
 ' Pass current time to start the timer
-' FIXED: Now uses proper timestamp conversion
 Public Function Discord_SetStartTime() As Boolean
     Dim Result As Long
-    Dim startTime As Double
+    Dim startTime As Long
     
-    ' Get current Unix timestamp
     startTime = GetUnixTimestamp()
     Result = SetTimestamp(startTime)
     Discord_SetStartTime = (Result = 1)

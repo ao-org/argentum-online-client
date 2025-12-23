@@ -435,6 +435,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3729,7 +3730,12 @@ Public Sub UpdateStatsLayout()
     frmMain.lblLvl.Caption = ListaClases(UserStats.Clase) & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & UserStats.Lvl
     Call frmMain.UpdateGoldState
     If UserCharIndex > 0 Then
-        Call Discord_Update(charlist(UserCharIndex).clan, CStr(frmMain.lblLvl) & " " & CStr(frmMain.lblPorcLvl), , , , "Jugando Argentum Online")
+        Call Discord_Update(IIf(charlist(UserCharIndex).clan <> vbNullString, JsonLanguage.Item("LABEL_CHATMODE_CLAN") & ": " & charlist(UserCharIndex).clan, "-"), _
+           charlist(UserCharIndex).nombre & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & " " & UserStats.Lvl & " " & "(" & lblPorcLvl.Caption & ")", _
+           "argentumonlinelogo512", _
+           "https://discord.com/invite/hvaA8eMm43", _
+           "argentumlogocircle", _
+           "Jugando Argentum Online")
     End If
 End Sub
 

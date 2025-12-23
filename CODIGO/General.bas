@@ -817,11 +817,9 @@ Sub Main()
             Dim steam_init_result As Long
             steam_init_result = svb_init_steam(1956740)
             frmDebug.add_text_tracebox "Init Steam " & steam_init_result
-
             If steam_init_result <> 0 Then
-                Dim version As String
+                Dim version         As String
                 Dim minidump_result As Long
-
                 version = App.Major & "." & App.Minor & "." & App.Revision
                 minidump_result = svb_install_minidump_handler(1956740, version, "Argentum Online crash handler", 0)
                 frmDebug.add_text_tracebox "Minidump handler " & minidump_result
@@ -839,7 +837,7 @@ Sub Main()
     Else
         If Discord_IsConnected Then
             Call Discord_SetStartTime
-            Call Discord_Update("Acariciando a gulfas", "Conectando personaje", , , , "Jugando Argentum Online")
+            Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_LOGIN_SCREEN"), "argentumonlinelogo512", "https://discord.com/invite/hvaA8eMm43", "argentumlogocircle", "Jugando Argentum Online")
         End If
     End If
     Call initPacketControl
