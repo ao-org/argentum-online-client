@@ -496,7 +496,6 @@ Public TransferCharNewOwner As String
 Public CuentaPassword       As String
 Public CuentaEmail          As String
 Public CharacterRemote      As String
-Public NamePj(1 To 8)       As String
 Public ValidationCode       As String
 'Objetos públicos
 Public DialogosClanes       As clsGuildDlg
