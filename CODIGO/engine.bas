@@ -2058,7 +2058,9 @@ Public Sub start()
             #End If
             Call frmMain.Inventario.ReDraw
         End If
-        Call Discord_RunCallbacks
+        #If No_Api_Discord = 0 Then
+            Call Discord_RunCallbacks
+        #End If
         DoEvents
         Call modNetwork.Poll
         #If No_Api_Steam = 0 Then

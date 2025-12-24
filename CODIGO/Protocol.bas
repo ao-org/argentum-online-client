@@ -846,7 +846,9 @@ Public Sub HandleDisconnect()
             Call General_Set_Connect
         End If
     #End If
-    Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), "argentumonlinelogo512", "https://discord.com/invite/hvaA8eMm43", "argentumlogocircle", "Jugando Argentum Online")
+    #If No_Api_Discord = 0 Then
+        Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), "argentumonlinelogo512", "https://discord.com/invite/hvaA8eMm43", "argentumlogocircle", "Jugando Argentum Online")
+    #End If
     Exit Sub
 HandleDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleDisconnect", Erl)
@@ -1630,7 +1632,7 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             Dim MsgID    As Integer
             Dim extraStr As String
             MsgID = val(ReadField(1, text, Asc("*")))             ' 2082
-            extraStr = ReadField(2, Text, Asc("*"))               ' "Nombre¬OtroValor"
+            extraStr = ReadField(2, text, Asc("*"))               ' "Nombre¬OtroValor"
             chat = Locale_Parse_ServerMessage(MsgID, extraStr)
             copiar = False
             duracion = 20

@@ -435,7 +435,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2106,7 +2105,9 @@ Private Sub Form_Unload(Cancel As Integer)
     #If No_Api_Steam = 0 Then
         Call svb_shutdown_steam
     #End If
-    Call Discord_Shutdown
+    #If No_Api_Discord = 0 Then
+        Call Discord_Shutdown
+    #End If
     Call DisableURLDetect
     Exit Sub
 Form_Unload_Err:
@@ -3729,14 +3730,16 @@ Public Sub UpdateStatsLayout()
     End If
     frmMain.lblLvl.Caption = ListaClases(UserStats.Clase) & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & UserStats.Lvl
     Call frmMain.UpdateGoldState
-    If UserCharIndex > 0 Then
-        Call Discord_Update(IIf(charlist(UserCharIndex).clan <> vbNullString, JsonLanguage.Item("LABEL_CHATMODE_CLAN") & ": " & charlist(UserCharIndex).clan, "-"), _
-           charlist(UserCharIndex).nombre & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & " " & UserStats.Lvl & " " & "(" & lblPorcLvl.Caption & ")" & " - " & CharStatusToString(charlist(UserCharIndex).status), _
-           "argentumonlinelogo512", _
-           "https://discord.com/invite/hvaA8eMm43", _
-           "argentumlogocircle", _
-           "Jugando Argentum Online")
-    End If
+    #If No_Api_Discord = 0 Then
+        If UserCharIndex > 0 Then
+            Call Discord_Update(IIf(charlist(UserCharIndex).clan <> vbNullString, JsonLanguage.Item("LABEL_CHATMODE_CLAN") & ": " & charlist(UserCharIndex).clan, "-"), _
+               charlist(UserCharIndex).nombre & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & " " & UserStats.Lvl & " " & "(" & lblPorcLvl.Caption & ")" & " - " & CharStatusToString(charlist(UserCharIndex).status), _
+               "argentumonlinelogo512", _
+               "https://discord.com/invite/hvaA8eMm43", _
+               "argentumlogocircle", _
+               "Jugando Argentum Online")
+        End If
+    #End If
 End Sub
 
 Public Sub UnlockInvslot(ByVal UserInvLevel As Integer)

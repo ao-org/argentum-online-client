@@ -14,7 +14,7 @@ Attribute VB_Name = "modDiscord"
 '   6. Call Discord_Shutdown when closing your application
 '
 '*****************************************************************************
-
+#If No_Api_Discord = 0 Then
 Option Explicit
 
 ' API Declarations for DiscordRichPresenceVB6.dll
@@ -223,3 +223,4 @@ Public Function CharStatusToString(ByVal status As Byte) As String
     End Select
 End Function
 
+#End If
