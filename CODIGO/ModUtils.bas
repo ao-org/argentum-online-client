@@ -1970,3 +1970,29 @@ RaceToTxtParser_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.RaceToTxtParser", Erl)
     Resume Next
 End Function
+
+Public Function ObjIndexToLocalizedName(ByRef Fields() As String, ByVal ArrIndex)
+    On Error GoTo ObjIndexToLocalizedName_Err
+    Dim TmpObjIndex As Integer
+    Dim ObjName As String
+    TmpObjIndex = Fields(ArrIndex)
+    ObjName = ObjData(TmpObjIndex).Name
+    Fields(ArrIndex) = ObjName
+    Exit Function
+ObjIndexToLocalizedName_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ObjIndexToLocalizedName", Erl)
+    Resume Next
+End Function
+
+Public Function NpcIndexToLocalizedName(ByRef Fields() As String, ByVal ArrIndex)
+    On Error GoTo NpcIndexToLocalizedName_Err
+    Dim TmpNpcIndex As Integer
+    Dim NpcName As String
+    TmpNpcIndex = Fields(ArrIndex)
+    NpcName = NpcData(TmpNpcIndex).Name
+    Fields(ArrIndex) = NpcName
+    Exit Function
+NpcIndexToLocalizedName_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.NpcIndexToLocalizedName", Erl)
+    Resume Next
+End Function
