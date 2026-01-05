@@ -1700,6 +1700,12 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
     If IsSet(StatusMask2, e_InfoTxts2.ChaosFifthHierarchy) Then
         FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_QUINTA_JERARQUIA") & ">"
     End If
+    If IsSet(StatusMask2, e_InfoTxts2.ChaosSixthHierarchy) Then
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_SEXTA_JERARQUIA") & ">"
+    End If
+    If IsSet(StatusMask2, e_InfoTxts2.ChaosSeventhHierarchy) Then
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_SEPTIMA_JERARQUIA") & ">"
+    End If
     If IsSet(StatusMask2, e_InfoTxts2.Criminal) Then
         FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CRIMINAL") & ">"
     End If
@@ -1723,6 +1729,12 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
     End If
     If IsSet(StatusMask2, e_InfoTxts2.ArmyFifthHierarchy) Then
         FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_QUINTA_JERARQUIA") & ">"
+    End If
+    If IsSet(StatusMask2, e_InfoTxts2.ArmySixthHierarchy) Then
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_SEXTA_JERARQUIA") & ">"
+    End If
+    If IsSet(StatusMask2, e_InfoTxts2.ArmySeventhHierarchy) Then
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_SEPTIMA_JERARQUIA") & ">"
     End If
     If IsSet(StatusMask2, e_InfoTxts2.Citizen) Then
         FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO") & ">"
