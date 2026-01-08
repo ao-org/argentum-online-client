@@ -983,6 +983,76 @@ Begin VB.Form frmMain
       Top             =   2280
       Width           =   11040
    End
+   Begin VB.Image btnExpRemaining 
+      Height          =   225
+      Left            =   13605
+      ToolTipText     =   "Exp restante"
+      Top             =   1245
+      Width           =   255
+   End
+   Begin VB.Image btnExp2 
+      Height          =   225
+      Left            =   13350
+      ToolTipText     =   "% 4 decimales"
+      Top             =   1245
+      Width           =   255
+   End
+   Begin VB.Image btnExp 
+      Height          =   225
+      Left            =   13095
+      ToolTipText     =   "% 2 decimales"
+      Top             =   1245
+      Width           =   255
+   End
+   Begin VB.Image btnTotalExp 
+      Height          =   225
+      Left            =   12825
+      ToolTipText     =   "Exp total"
+      Top             =   1245
+      Width           =   255
+   End
+   Begin VB.Label expRemaining 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "Restante:99999"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   11580
+      TabIndex        =   45
+      Top             =   1545
+      Visible         =   0   'False
+      Width           =   3540
+   End
+   Begin VB.Label lblPorcLvl2 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "33.3333%"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   11580
+      TabIndex        =   44
+      Top             =   1545
+      Visible         =   0   'False
+      Width           =   3540
+   End
    Begin VB.Image imgMAO 
       Height          =   315
       Left            =   13500
@@ -1211,10 +1281,10 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   495
-      Left            =   11400
+      Left            =   11280
       TabIndex        =   13
-      Top             =   600
-      Width           =   3945
+      Top             =   525
+      Width           =   4065
    End
    Begin VB.Label lblPorcLvl 
       Alignment       =   2  'Center
@@ -1374,7 +1444,7 @@ Begin VB.Form frmMain
       Height          =   270
       Left            =   12480
       TabIndex        =   12
-      Top             =   1080
+      Top             =   975
       Width           =   1785
    End
    Begin VB.Label exp 
@@ -1508,7 +1578,10 @@ Private cBotonEliminarItem As clsGraphicalButton
 Private cBotonAjustes      As clsGraphicalButton
 Private cBotonManual       As clsGraphicalButton
 Private cBotonMAO          As clsGraphicalButton
-
+Private cBotonTotalExp     As clsGraphicalButton
+Private cBotonExpRemaining As clsGraphicalButton
+Private cBotonPercentageTwoDecimals As clsGraphicalButton
+Private cBotonPercentageFourDecimals As clsGraphicalButton
 Private Sub btnInvisible_Click()
     On Error GoTo btnInvisible_Click_Err
     Call ParseUserCommand("/INVISIBLE")
@@ -1524,10 +1597,18 @@ Private Sub loadButtons()
     Set cBotonAjustes = New clsGraphicalButton
     Set cBotonManual = New clsGraphicalButton
     Set cBotonMAO = New clsGraphicalButton
+    Set cBotonTotalExp = New clsGraphicalButton
+    Set cBotonExpRemaining = New clsGraphicalButton
+    Set cBotonPercentageTwoDecimals = New clsGraphicalButton
+    Set cBotonPercentageFourDecimals = New clsGraphicalButton
     Call cBotonEliminarItem.Initialize(imgDeleteItem, "boton-borrar-item-default.bmp", "boton-borrar-item-over.bmp", "boton-borrar-item-off.bmp", Me)
     Call cBotonAjustes.Initialize(OpcionesBoton, "boton-ajustes-default.bmp", "boton-ajustes-over.bmp", "boton-ajustes-off.bmp", Me)
     Call cBotonManual.Initialize(imgManual, "boton-manual-default.bmp", "boton-manual-over.bmp", "boton-manual-off.bmp", Me)
     Call cBotonMAO.Initialize(imgMAO, "boton-mao-default.bmp", "boton-mao-over.bmp", "boton-mao-off.bmp", Me)
+    Call cBotonTotalExp.Initialize(btnTotalExp, "boton-exptotal-default.bmp", "boton-exptotal-over.bmp", "boton-exptotal-off.bmp", Me)
+    Call cBotonExpRemaining.Initialize(btnExpRemaining, "boton-exprestante-default.bmp", "boton-exprestante-over.bmp", "boton-exprestante-off.bmp", Me)
+    Call cBotonPercentageTwoDecimals.Initialize(btnExp, "boton-expdosdecimales-default.bmp", "boton-expdosdecimales-over.bmp", "boton-expdosdecimales-off.bmp", Me)
+    Call cBotonPercentageFourDecimals.Initialize(btnExp2, "boton-expcuatrodecimales-default.bmp", "boton-expcuatrodecimales-over.bmp", "es_boton-expcuatrodecimales-off.bmp", Me)
 End Sub
 
 Private Sub btnSpawn_Click()
@@ -1537,6 +1618,55 @@ Private Sub btnSpawn_Click()
     Exit Sub
 btnSpawn_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.btnSpawn_Click", Erl)
+    Resume Next
+End Sub
+Private Sub btnExpRemaining_Click()
+    On Error GoTo btnExpRemaining_Click_Err
+    frmMain.lblPorcLvl.visible = False
+    frmMain.lblPorcLvl2.visible = False
+    frmMain.exp.visible = False
+    frmMain.expRemaining.visible = True
+    Exit Sub
+    
+btnExpRemaining_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnExpRemaining_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub btnExp2_Click()
+    On Error GoTo btnExp2_Click_Err
+    frmMain.lblPorcLvl.visible = False
+    frmMain.expRemaining.visible = False
+    frmMain.exp.visible = False
+    frmMain.lblPorcLvl2.visible = True
+    Exit Sub
+    
+btnExp2_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnExp2_Click", Erl)
+    Resume Next
+End Sub
+Private Sub btnExp_Click()
+On Error GoTo btnExp_Click_Err
+    frmMain.lblPorcLvl2.visible = False
+    frmMain.expRemaining.visible = False
+    frmMain.exp.visible = False
+    frmMain.lblPorcLvl.visible = True
+    Exit Sub
+    
+btnExp_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnExp_Click", Erl)
+    Resume Next
+End Sub
+Private Sub btnTotalExp_Click()
+    On Error GoTo btnTotalExp_Click_Err
+    frmMain.lblPorcLvl.visible = False
+    frmMain.lblPorcLvl2.visible = False
+    frmMain.expRemaining.visible = False
+    frmMain.exp.visible = True
+    Exit Sub
+    
+btnTotalExp_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnTotalExp_Click", Erl)
     Resume Next
 End Sub
 
@@ -1895,14 +2025,6 @@ exp_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.exp_Click", Erl)
     Resume Next
 End Sub
-
-Private Sub exp_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If Not ShowPercentage Then
-        lblPorcLvl.visible = True
-        exp.visible = False
-    End If
-End Sub
-
 Private Sub Form_Activate()
     renderer.Refresh
     On Error GoTo Form_Activate_Err
@@ -2441,14 +2563,6 @@ End Sub
 Private Sub Label1_Click()
     frmBancoCuenta.Show , frmMain
 End Sub
-
-Private Sub lblPorcLvl_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    If ShowPercentage Then
-        lblPorcLvl.visible = False
-        exp.visible = True
-    End If
-End Sub
-
 Private Sub LlamaDeclan_Timer()
     On Error GoTo LlamaDeclan_Timer_Err
     frmMapaGrande.llamadadeclan.visible = False
@@ -2706,17 +2820,6 @@ Label7_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Label7_Click", Erl)
     Resume Next
 End Sub
-
-Private Sub lblPorcLvl_Click()
-    On Error GoTo lblPorcLvl_Click_Err
-    'Call WriteScrollInfo
-    ShowPercentage = Not ShowPercentage
-    Exit Sub
-lblPorcLvl_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.lblPorcLvl_Click", Erl)
-    Resume Next
-End Sub
-
 Private Sub MacroLadder_Timer()
     On Error GoTo MacroLadder_Timer_Err
     If pausa Then Exit Sub
@@ -3496,13 +3599,6 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
         cmdLlavero.Picture = Nothing
         cmdLlavero.Tag = "0"
     End If
-    If ShowPercentage Then
-        lblPorcLvl.visible = True
-        exp.visible = False
-    Else
-        lblPorcLvl.visible = False
-        exp.visible = True
-    End If
     If Retar.Tag = "1" Then
         Retar.Picture = Nothing
         Retar.Tag = "0"
@@ -3694,15 +3790,7 @@ Public Sub UpdateHpBar()
 End Sub
 
 Public Sub UpdateStatsLayout()
-    If UserStats.PasarNivel > 0 Then
-        frmMain.lblPorcLvl.Caption = Round(UserStats.exp * (100 / UserStats.PasarNivel), 2) & "%"
-        frmMain.exp.Caption = PonerPuntos(UserStats.exp) & "/" & PonerPuntos(UserStats.PasarNivel)
-        frmMain.EXPBAR.Width = UserStats.exp / UserStats.PasarNivel * 235
-    Else
-        frmMain.EXPBAR.Width = 235
-        frmMain.lblPorcLvl.Caption = "¡Nivel máximo!" 'nivel maximo
-        frmMain.exp.Caption = "¡Nivel máximo!"
-    End If
+    Call frmMain.UpdateExpBar
     Call frmMain.UpdateHpBar
     If UserStats.maxman > 0 Then
         frmMain.MANShp.Width = UserStats.minman / UserStats.maxman * 216
@@ -3781,13 +3869,17 @@ End Sub
 
 Public Sub UpdateExpBar()
     If UserStats.PasarNivel > 0 Then
-        EXPBAR.Width = UserStats.exp / UserStats.PasarNivel * 235
-        lblPorcLvl.Caption = Round(UserStats.exp * (100 / UserStats.PasarNivel), 2) & "%"
-        exp.Caption = PonerPuntos(UserStats.exp) & "/" & PonerPuntos(UserStats.PasarNivel)
+        frmMain.lblPorcLvl.Caption = Round(UserStats.exp * (100 / UserStats.PasarNivel), 2) & "%"
+        frmMain.lblPorcLvl2.Caption = Round(UserStats.exp * (100 / UserStats.PasarNivel), 4) & "%"
+        frmMain.exp.Caption = PonerPuntos(UserStats.exp) & "/" & PonerPuntos(UserStats.PasarNivel)
+        frmMain.expRemaining.Caption = JsonLanguage.Item("MENSAJE_EXPERIENCIA_RESTANTE") & PonerPuntos(UserStats.PasarNivel - UserStats.exp)
+        frmMain.EXPBAR.Width = UserStats.exp / UserStats.PasarNivel * 235
     Else
-        EXPBAR.Width = 235
-        lblPorcLvl.Caption = "¡Nivel máximo!"
-        exp.Caption = "¡Nivel máximo!"
+        frmMain.EXPBAR.Width = 235
+        frmMain.lblPorcLvl.Caption = JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO") '"¡Nivel Máximo!"
+        frmMain.exp.Caption = JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO")
+        frmMain.lblPorcLvl2.Caption = JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO")
+        frmMain.expRemaining.Caption = JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO")
     End If
 End Sub
 
