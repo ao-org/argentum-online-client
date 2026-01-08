@@ -986,28 +986,24 @@ Begin VB.Form frmMain
    Begin VB.Image btnExpRemaining 
       Height          =   225
       Left            =   13605
-      ToolTipText     =   "Exp restante"
       Top             =   1245
       Width           =   255
    End
    Begin VB.Image btnExp2 
       Height          =   225
       Left            =   13350
-      ToolTipText     =   "% 4 decimales"
       Top             =   1245
       Width           =   255
    End
    Begin VB.Image btnExp 
       Height          =   225
       Left            =   13095
-      ToolTipText     =   "% 2 decimales"
       Top             =   1245
       Width           =   255
    End
    Begin VB.Image btnTotalExp 
       Height          =   225
       Left            =   12825
-      ToolTipText     =   "Exp total"
       Top             =   1245
       Width           =   255
    End
@@ -1608,7 +1604,7 @@ Private Sub loadButtons()
     Call cBotonTotalExp.Initialize(btnTotalExp, "boton-exptotal-default.bmp", "boton-exptotal-over.bmp", "boton-exptotal-off.bmp", Me)
     Call cBotonExpRemaining.Initialize(btnExpRemaining, "boton-exprestante-default.bmp", "boton-exprestante-over.bmp", "boton-exprestante-off.bmp", Me)
     Call cBotonPercentageTwoDecimals.Initialize(btnExp, "boton-expdosdecimales-default.bmp", "boton-expdosdecimales-over.bmp", "boton-expdosdecimales-off.bmp", Me)
-    Call cBotonPercentageFourDecimals.Initialize(btnExp2, "boton-expcuatrodecimales-default.bmp", "boton-expcuatrodecimales-over.bmp", "es_boton-expcuatrodecimales-off.bmp", Me)
+    Call cBotonPercentageFourDecimals.Initialize(btnExp2, "boton-expcuatrodecimales-default.bmp", "boton-expcuatrodecimales-over.bmp", "boton-expcuatrodecimales-off.bmp", Me)
 End Sub
 
 Private Sub btnSpawn_Click()
@@ -3513,6 +3509,10 @@ Private Sub Form_Load()
     Set hlst = New clsGraphicalList
     Call hlst.Initialize(Me.picHechiz, RGB(200, 190, 190))
     loadButtons
+    frmMain.btnExp.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_PORCENTAJE")
+    frmMain.btnTotalExp.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_TOTAL")
+    frmMain.btnExp2.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_PORCENTAJE2")
+    frmMain.btnExpRemaining.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_RESTANTE")
     Exit Sub
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Load", Erl)

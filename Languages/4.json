@@ -760,5 +760,9 @@
   "MSG_OWNER_NOT_ENOUGH_CREDITS": "Le propriétaire ne dispose pas de suffisamment de crédits.",
   "MENSAJE_CLAN_NIVEL_MAXIMO": "Niveau maximum!",
   "MENSAJE_EXPERIENCIA_RESTANTE": "Restant: ",
-  "MENSAJE_NIVEL_MAXIMO": "Niveau maximum!"
+  "MENSAJE_NIVEL_MAXIMO": "Niveau maximum!",
+	"TOOLTIP_EXP_RESTANTE": "Expérience restante",
+	"TOOLTIP_EXP_TOTAL": "Expérience totale",
+	"TOOLTIP_EXP_PORCENTAJE": "% avec 2 décimales",
+	"TOOLTIP_EXP_PORCENTAJE2": "% avec 4 décimales"
 }
