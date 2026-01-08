@@ -758,5 +758,11 @@
   "MSG_NEWOWNER_IS_NOT_PATREON": "O novo proprietário não é membro do Patreon..",
   "MSG_OWNER_IS_NOT_PATREON": "O proprietário não é membro do Patreon.",
   "MSG_OWNER_NOT_ENOUGH_CREDITS": "O proprietário não possui créditos suficientes.",
-  "MENSAJE_CLAN_NIVEL_MAXIMO": "Nível máximo!"
+  "MENSAJE_CLAN_NIVEL_MAXIMO": "Nível máximo!",
+  "MENSAJE_EXPERIENCIA_RESTANTE": "Restante: ",
+  "MENSAJE_NIVEL_MAXIMO": "¡Nível máximo!",
+  "TOOLTIP_EXP_RESTANTE": "Experiência restante",
+  "TOOLTIP_EXP_TOTAL": "Experiência total",
+  "TOOLTIP_EXP_PORCENTAJE": "% com 2 casas decimais",
+  "TOOLTIP_EXP_PORCENTAJE2": "% com 4 casas decimais"
 }
