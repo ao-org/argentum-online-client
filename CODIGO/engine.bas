@@ -1303,18 +1303,20 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     Dim terrainHeight    As Integer
     With charlist(charindex)
         If .Heading = 0 Then Exit Sub
+        'amphibian npcs shield
+        If .BodyOnWater > 0 Then
+            If MapData(.Pos.x, .Pos.y).Trigger = 8 Then
+                    If .Body.BodyIndex <> .BodyOnWater And .Body.BodyIndex <> .AnimAtaque2 Then
+                        .Body = BodyData(.BodyOnWater)
+                    End If
+                Else
+                    If .Body.BodyIndex <> .BodyOnLand And .Body.BodyIndex <> .AnimAtaque1 Then
+                        .Body = BodyData(.BodyOnLand)
+                    End If
+            End If
+        End If
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
         If Not .Moving And Not .TranslationActive And .Idle And .scrollDirectionX = 0 And .scrollDirectionY = 0 And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
-            If .BodyOnLand > 0 Then
-                If MapData(x, y).Trigger = 0 Then
-                    .Body = BodyData(.BodyOnLand)
-                End If
-            End If
-            If .BodyOnWater > 0 Then
-                If MapData(x, y).Trigger = 8 Then
-                    .Body = BodyData(.BodyOnWater)
-                End If
-            End If
             If .Body.AnimateOnIdle = 0 Then
                 ' Quieto SIN animación: congelar la serie de walk en frame estético
                 .Body.Walk(.Heading).Loops = 0
