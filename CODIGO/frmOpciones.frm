@@ -1436,6 +1436,7 @@ Public Sub ToggleExperienceButtons()
             frmMain.btnTotalExp.visible = False
             frmMain.expRemaining.visible = False
             frmMain.lblPorcLvl.visible = False
+            frmMain.lblPorcLvl2.visible = False
             frmMain.exp.visible = True
             frmMain.NombrePJ.Top = 45
             frmMain.lblLvl.Top = 75
