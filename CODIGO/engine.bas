@@ -1306,13 +1306,13 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         'amphibian npcs shield
         If .BodyOnWater > 0 Then
             If MapData(.Pos.x, .Pos.y).Trigger = 8 Then
-                    If .Body.BodyIndex <> .BodyOnWater And .Body.BodyIndex <> .AnimAtaque2 Then
-                        .Body = BodyData(.BodyOnWater)
-                    End If
-                Else
-                    If .Body.BodyIndex <> .BodyOnLand And .Body.BodyIndex <> .AnimAtaque1 Then
-                        .Body = BodyData(.BodyOnLand)
-                    End If
+                If .Body.BodyIndex <> .BodyOnWater And .Body.BodyIndex <> .AnimAtaque2 Then
+                    .Body = BodyData(.BodyOnWater)
+                End If
+            Else
+                If .Body.BodyIndex <> .BodyOnLand And .Body.BodyIndex <> .AnimAtaque1 Then
+                    .Body = BodyData(.BodyOnLand)
+                End If
             End If
         End If
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
