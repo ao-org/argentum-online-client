@@ -3036,18 +3036,23 @@ Private Sub HandleCharAtaca()
     Dim VictimIndex As Integer
     Dim danio       As Long
     Dim AnimAttack  As Integer
+    Dim AnimAttack2 As Integer
     NpcIndex = Reader.ReadInt16()
     VictimIndex = Reader.ReadInt16()
     danio = Reader.ReadInt32()
     AnimAttack = Reader.ReadInt16()
-    Dim oldWalk    As Grh
-    Dim keepStart  As Long
+    AnimAttack2 = Reader.ReadInt16()
+    Dim oldWalk   As Grh
+    Dim keepStart As Long
     With charlist(NpcIndex)
         If AnimAttack > 0 Then
             oldWalk = .Body.Walk(.Heading)
             .AnimatingBody = AnimAttack
+            If AnimAttack2 > 0 And MapData(.Pos.x, .Pos.y).Trigger = 8 Then
+                .AnimatingBody = AnimAttack2
+            End If
             .Idle = False
-            .Body = BodyData(AnimAttack)
+            .Body = BodyData(.AnimatingBody)
             .Body.Walk(.Heading).Loops = 0
             If oldWalk.started > 0 And .Moving Then
                 keepStart = SyncGrhPhase(oldWalk, .Body.Walk(.Heading).GrhIndex)

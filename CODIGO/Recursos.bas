@@ -1661,7 +1661,7 @@ Sub CargarCuerpos()
     Dim k          As Integer
     Dim Heading    As Byte
     Dim BodyKey    As String
-    Dim Std        As Byte
+    Dim Std        As Integer
     Dim NumCuerpos As Integer
     Dim LastGrh    As Long
     Dim AnimStart  As Long

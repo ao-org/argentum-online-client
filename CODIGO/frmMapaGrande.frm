@@ -593,9 +593,8 @@ End Sub
 
 Private Sub Image2_Click()
     On Error GoTo Image2_Click_Err
-    
     Call ToggleDungeonView
-    
+    Exit Sub
 Image2_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.Image2_Click", Erl)
     Resume Next
