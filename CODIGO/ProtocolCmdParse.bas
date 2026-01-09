@@ -138,6 +138,14 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Exit Sub
                 End If
                 Call WritePetFollow
+            Case "/ACOMPAÑARTODOS", "/ACCOMPANYALL"
+                If UserStats.estado = 1 Then 'Muerto
+                    With FontTypes(FontTypeNames.FONTTYPE_INFO)
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
+                    End With
+                    Exit Sub
+                End If
+                Call WritePetFollowAll
             Case "/LIBERAR", "/RELEASE"
                 If UserStats.estado = 1 Then 'Muerto
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)

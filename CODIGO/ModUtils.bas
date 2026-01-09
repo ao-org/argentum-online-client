@@ -1700,6 +1700,12 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
     If IsSet(StatusMask2, e_InfoTxts2.ChaosFifthHierarchy) Then
         FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_QUINTA_JERARQUIA") & ">"
     End If
+    If IsSet(StatusMask2, e_InfoTxts2.ChaosSixthHierarchy) Then
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_SEXTA_JERARQUIA") & ">"
+    End If
+    If IsSet(StatusMask2, e_InfoTxts2.ChaosSeventhHierarchy) Then
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CAOS_SEPTIMA_JERARQUIA") & ">"
+    End If
     If IsSet(StatusMask2, e_InfoTxts2.Criminal) Then
         FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CRIMINAL") & ">"
     End If
@@ -1723,6 +1729,12 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
     End If
     If IsSet(StatusMask2, e_InfoTxts2.ArmyFifthHierarchy) Then
         FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_QUINTA_JERARQUIA") & ">"
+    End If
+    If IsSet(StatusMask2, e_InfoTxts2.ArmySixthHierarchy) Then
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_SEXTA_JERARQUIA") & ">"
+    End If
+    If IsSet(StatusMask2, e_InfoTxts2.ArmySeventhHierarchy) Then
+        FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_ARMADA_SEPTIMA_JERARQUIA") & ">"
     End If
     If IsSet(StatusMask2, e_InfoTxts2.Citizen) Then
         FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO") & ">"
@@ -1794,7 +1806,9 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String, ByVal bytHeader A
     If NpcIndex <> "" Then
         extraInfo = extraInfo & " NpcIndex: " & NpcIndex
     End If
-    extraInfo = extraInfo & " " & "[" & JsonLanguage.Item("MENSAJE_NIVEL") & ":" & NpcData(TmpNpcIndex).level & "]"
+    If NpcData(TmpNpcIndex).level > 0 Then
+        extraInfo = extraInfo & " " & "[" & JsonLanguage.Item("MENSAJE_NIVEL") & ":" & NpcData(TmpNpcIndex).level & "]"
+    End If
     If NpcStatusMask > 0 Then
         If IsSet(NpcStatusMask, e_NpcInfoMask.AlmostDead) Then
             extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_CASIMUERTO") & "]"
@@ -1966,5 +1980,31 @@ Public Function RaceToTxtParser(ByRef Fields() As String)
     Exit Function
 RaceToTxtParser_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.RaceToTxtParser", Erl)
+    Resume Next
+End Function
+
+Public Function ObjIndexToLocalizedName(ByRef Fields() As String, ByVal ArrIndex)
+    On Error GoTo ObjIndexToLocalizedName_Err
+    Dim TmpObjIndex As Integer
+    Dim ObjName As String
+    TmpObjIndex = Fields(ArrIndex)
+    ObjName = ObjData(TmpObjIndex).Name
+    Fields(ArrIndex) = ObjName
+    Exit Function
+ObjIndexToLocalizedName_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.ObjIndexToLocalizedName", Erl)
+    Resume Next
+End Function
+
+Public Function NpcIndexToLocalizedName(ByRef Fields() As String, ByVal ArrIndex)
+    On Error GoTo NpcIndexToLocalizedName_Err
+    Dim TmpNpcIndex As Integer
+    Dim NpcName As String
+    TmpNpcIndex = Fields(ArrIndex)
+    NpcName = NpcData(TmpNpcIndex).Name
+    Fields(ArrIndex) = NpcName
+    Exit Function
+NpcIndexToLocalizedName_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.NpcIndexToLocalizedName", Erl)
     Resume Next
 End Function

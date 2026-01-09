@@ -206,11 +206,15 @@ Public Enum e_InfoTxts2
     ArmyThirdHierarchy = 256
     ArmyFourthHierarchy = 512
     ArmyFifthHierarchy = 1024
-    ChaosFirstHierarchy = 2048
-    ChaosSecondHierarchy = 4096
-    ChaosThirdHierarchy = 8192
-    ChaosFourthHierarchy = 16384
-    ChaosFifthHierarchy = 32768
+    ArmySixthHierarchy = 2048
+    ArmySeventhHierarchy = 4096
+    ChaosFirstHierarchy = 8192
+    ChaosSecondHierarchy = 16384
+    ChaosThirdHierarchy = 32768
+    ChaosFourthHierarchy = 65536
+    ChaosFifthHierarchy = 131072
+    ChaosSixthHierarchy = 262144
+    ChaosSeventhHierarchy = 524288
 End Enum
 
 Public Enum e_Class
