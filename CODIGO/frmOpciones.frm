@@ -331,6 +331,12 @@ Begin VB.Form frmOpciones
          Top             =   1080
          Width           =   1575
       End
+      Begin VB.Image chkBtnExpBar 
+         Height          =   255
+         Left            =   270
+         Top             =   3465
+         Width           =   255
+      End
       Begin VB.Label lbl_AmbientLight 
          AutoSize        =   -1  'True
          BackStyle       =   0  'Transparent
@@ -1240,6 +1246,11 @@ Public Sub Init()
     Else
         Check6.Picture = LoadInterface("check-amarillo.bmp")
     End If
+    If ButtonsExpBar = 1 Then
+        chkBtnExpBar.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        chkBtnExpBar.Picture = Nothing
+    End If
     scrVolume.value = max(scrVolume.min, min(scrVolume.max, VolFX))
     scrVolumeSteps.value = max(scrVolumeSteps.min, min(scrVolumeSteps.max, VolSteps))
     HScroll1.value = max(HScroll1.min, min(HScroll1.max, VolAmbient))
@@ -1295,6 +1306,22 @@ Private Sub num_comp_inv_Click()
         NumerosCompletosInventario = 0
         num_comp_inv.Picture = Nothing
     End If
+End Sub
+Private Sub chkBtnExpBar_Click()
+    On Error GoTo chkBtnExpBar_Click_Err
+    If ButtonsExpBar = 0 Then
+        ButtonsExpBar = 1
+        chkBtnExpBar.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        ButtonsExpBar = 0
+        chkBtnExpBar.Picture = Nothing
+    End If
+
+    Call ToggleExperienceButtons
+    Exit Sub
+chkBtnExpBar_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkBtnExpBar_Click", Erl)
+    Resume Next
 End Sub
 
 Private Sub Respiracion_Click()
@@ -1389,6 +1416,35 @@ Public Sub ToggleMusic()
     Exit Sub
 toggleMusic_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleMusic", Erl)
+    Resume Next
+End Sub
+Public Sub ToggleExperienceButtons()
+    On Error GoTo ToggleExperienceButtons_Err
+    
+    Select Case ButtonsExpBar
+        Case 1
+            frmMain.btnExp.visible = True
+            frmMain.btnExp2.visible = True
+            frmMain.btnExpRemaining.visible = True
+            frmMain.btnTotalExp.visible = True
+            frmMain.NombrePJ.Top = 35
+            frmMain.lblLvl.Top = 65
+        Case 0
+            frmMain.btnExp.visible = False
+            frmMain.btnExp2.visible = False
+            frmMain.btnExpRemaining.visible = False
+            frmMain.btnTotalExp.visible = False
+            frmMain.expRemaining.visible = False
+            frmMain.lblPorcLvl.visible = False
+            frmMain.exp.visible = True
+            frmMain.NombrePJ.Top = 45
+            frmMain.lblLvl.Top = 75
+        Case Else
+            Exit Sub
+    End Select
+    Exit Sub
+ToggleExperienceButtons_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleExperienceButtons", Erl)
     Resume Next
 End Sub
 
