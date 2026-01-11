@@ -559,6 +559,7 @@ Private Sub HandleLogged()
     frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
     frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
     frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-on.bmp")
+    Call frmOpciones.ToggleExperienceButtons
     SeguroParty = True
     SeguroClanX = True
     SeguroResuX = True

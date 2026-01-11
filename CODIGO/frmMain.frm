@@ -989,12 +989,6 @@ Begin VB.Form frmMain
       Top             =   1245
       Width           =   255
    End
-   Begin VB.Image btnExp2 
-      Height          =   225
-      Left            =   13350
-      Top             =   1245
-      Width           =   255
-   End
    Begin VB.Image btnExp 
       Height          =   225
       Left            =   13095
@@ -1469,6 +1463,12 @@ Begin VB.Form frmMain
       Top             =   1548
       Width           =   2832
    End
+   Begin VB.Image btnExp2 
+      Height          =   225
+      Left            =   13350
+      Top             =   1245
+      Width           =   255
+   End
    Begin VB.Menu mnuObj 
       Caption         =   "Objeto"
       Visible         =   0   'False
@@ -1545,7 +1545,6 @@ End Type
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 Public MouseBoton                  As Long
 Public MouseShift                  As Long
-Public ShowPercentage              As Boolean
 Public bmoving                     As Boolean
 Public dx                          As Integer
 Public dy                          As Integer
@@ -1618,10 +1617,8 @@ btnSpawn_Click_Err:
 End Sub
 Private Sub btnExpRemaining_Click()
     On Error GoTo btnExpRemaining_Click_Err
-    frmMain.lblPorcLvl.visible = False
-    frmMain.lblPorcLvl2.visible = False
-    frmMain.exp.visible = False
-    frmMain.expRemaining.visible = True
+    
+    Call ChangeExperienceDisplayMode(btnExpRemaining)
     Exit Sub
     
 btnExpRemaining_Click_Err:
@@ -1631,10 +1628,8 @@ End Sub
 
 Private Sub btnExp2_Click()
     On Error GoTo btnExp2_Click_Err
-    frmMain.lblPorcLvl.visible = False
-    frmMain.expRemaining.visible = False
-    frmMain.exp.visible = False
-    frmMain.lblPorcLvl2.visible = True
+    
+    Call ChangeExperienceDisplayMode(btnExp2)
     Exit Sub
     
 btnExp2_Click_Err:
@@ -1643,10 +1638,8 @@ btnExp2_Click_Err:
 End Sub
 Private Sub btnExp_Click()
 On Error GoTo btnExp_Click_Err
-    frmMain.lblPorcLvl2.visible = False
-    frmMain.expRemaining.visible = False
-    frmMain.exp.visible = False
-    frmMain.lblPorcLvl.visible = True
+
+    Call ChangeExperienceDisplayMode(btnExp)
     Exit Sub
     
 btnExp_Click_Err:
@@ -1655,10 +1648,8 @@ btnExp_Click_Err:
 End Sub
 Private Sub btnTotalExp_Click()
     On Error GoTo btnTotalExp_Click_Err
-    frmMain.lblPorcLvl.visible = False
-    frmMain.lblPorcLvl2.visible = False
-    frmMain.expRemaining.visible = False
-    frmMain.exp.visible = True
+    
+    Call ChangeExperienceDisplayMode(btnTotalExp)
     Exit Sub
     
 btnTotalExp_Click_Err:
@@ -1946,13 +1937,6 @@ Efecto_Timer_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Efecto_Timer", Erl)
     Resume Next
 End Sub
-
-Private Sub hlst_Click()
-End Sub
-
-Private Sub Image1_Click()
-End Sub
-
 Private Sub ImgEstadisticas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     TempTick = GetTickCount And &H7FFFFFFF
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then Exit Sub
@@ -2010,16 +1994,6 @@ End Sub
 Private Sub Evento_Timer()
     InvasionActual = 0
     Evento.enabled = False
-End Sub
-
-Private Sub exp_Click()
-    On Error GoTo exp_Click_Err
-    'Call WriteScrollInfo
-    ShowPercentage = Not ShowPercentage
-    Exit Sub
-exp_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.exp_Click", Erl)
-    Resume Next
 End Sub
 Private Sub Form_Activate()
     renderer.Refresh
@@ -2082,6 +2056,27 @@ Private Sub imgMAO_Click()
     Exit Sub
 imgMAO_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.imgMAO_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub lblPorcLvl_Click()
+    On Error GoTo lblPorcLvl_Click_Err
+    If ButtonsExpBar <> 0 Then Exit Sub
+    frmMain.lblPorcLvl.visible = False
+    frmMain.exp.visible = True
+    Exit Sub
+lblPorcLvl_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.lblPorcLvl_Click", Erl)
+    Resume Next
+End Sub
+Private Sub exp_Click()
+    On Error GoTo exp_Click_Err
+    If ButtonsExpBar <> 0 Then Exit Sub
+    frmMain.exp.visible = False
+    frmMain.lblPorcLvl.visible = True
+    Exit Sub
+exp_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.exp_Click", Erl)
     Resume Next
 End Sub
 
@@ -2892,10 +2887,6 @@ DesactivarMacroTrabajo_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.DesactivarMacroTrabajo", Erl)
     Resume Next
 End Sub
-
-Private Sub MenuOpciones_Click()
-End Sub
-
 Private Sub manabar_Click()
     On Error GoTo manabar_Click_Err
     Call RequestMeditate
@@ -3509,10 +3500,7 @@ Private Sub Form_Load()
     Set hlst = New clsGraphicalList
     Call hlst.Initialize(Me.picHechiz, RGB(200, 190, 190))
     loadButtons
-    frmMain.btnExp.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_PORCENTAJE")
-    frmMain.btnTotalExp.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_TOTAL")
-    frmMain.btnExp2.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_PORCENTAJE2")
-    frmMain.btnExpRemaining.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_RESTANTE")
+    InitToolTipText
     Exit Sub
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Load", Erl)
@@ -3920,3 +3908,50 @@ Public Function HandleHotkeyArrowInput(ByVal x As Integer, ByVal y As Integer) A
     End If
     HandleHotkeyArrowInput = False
 End Function
+
+Private Sub ChangeExperienceDisplayMode(ByVal btn As Image)
+    On Error GoTo ChangeExperienceDisplayMode_Err
+    Select Case btn.Name
+        Case "btnExpRemaining"
+            frmMain.lblPorcLvl.visible = False
+            frmMain.lblPorcLvl2.visible = False
+            frmMain.exp.visible = False
+            frmMain.expRemaining.visible = True
+
+        Case "btnTotalExp"
+            frmMain.lblPorcLvl.visible = False
+            frmMain.lblPorcLvl2.visible = False
+            frmMain.expRemaining.visible = False
+            frmMain.exp.visible = True
+            
+        Case "btnExp"
+            frmMain.lblPorcLvl2.visible = False
+            frmMain.expRemaining.visible = False
+            frmMain.exp.visible = False
+            frmMain.lblPorcLvl.visible = True
+
+        Case "btnExp2"
+            frmMain.lblPorcLvl.visible = False
+            frmMain.expRemaining.visible = False
+            frmMain.exp.visible = False
+            frmMain.lblPorcLvl2.visible = True
+    End Select
+    Exit Sub
+    
+ChangeExperienceDisplayMode_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.ChangeExperienceDisplayMode", Erl)
+    Resume Next
+End Sub
+Private Sub InitToolTipText()
+    On Error GoTo InitToolTipText_Err
+    
+    frmMain.btnExp.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_PORCENTAJE")
+    frmMain.btnTotalExp.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_TOTAL")
+    frmMain.btnExp2.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_PORCENTAJE2")
+    frmMain.btnExpRemaining.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_RESTANTE")
+    Exit Sub
+    
+InitToolTipText_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.InitToolTipText", Erl)
+    Resume Next
+End Sub
