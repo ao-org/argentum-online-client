@@ -766,5 +766,11 @@
   "MSG_GULFAS_JOKE3": "Deludere i Gulfas",
   "MSG_GULFAS_JOKE4": "Insultare i Gulfas",
   "MSG_GULFAS_JOKE5": "Sfidare i Gulfas",
-  "MSG_GULFAS_JOKE6": "Prendere in giro i Gulfas"
+  "MSG_GULFAS_JOKE6": "Prendere in giro i Gulfas",
+  "MENSAJE_EXPERIENCIA_RESTANTE": "Rimanente: ",
+  "MENSAJE_NIVEL_MAXIMO": "Livello massimo!",
+	"TOOLTIP_EXP_RESTANTE": "Esperienza rimanente",
+	"TOOLTIP_EXP_TOTAL": "Esperienza totale",
+	"TOOLTIP_EXP_PORCENTAJE": "% con 2 decimali",
+	"TOOLTIP_EXP_PORCENTAJE2": "% con 4 decimali"
 }

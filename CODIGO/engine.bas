@@ -1127,7 +1127,9 @@ Public Sub Batch_Textured_Box_Shadow(ByVal x As Long, _
                                      ByVal sX As Integer, _
                                      ByVal sY As Integer, _
                                      ByVal tex As Long, _
-                                     ByRef color() As RGBA)
+                                     ByRef Color() As RGBA, _
+                                     Optional ByVal OffsetX As Integer, _
+                                     Optional ByVal OffsetY As Integer)
     On Error GoTo Batch_Textured_Box_Shadow_Err
     Dim Texture      As Direct3DTexture8
     Dim TextureWidth As Long, TextureHeight As Long
@@ -1136,7 +1138,7 @@ Public Sub Batch_Textured_Box_Shadow(ByVal x As Long, _
         Call .SetTexture(Texture)
         Call .SetAlpha(False)
         If TextureWidth <> 0 And TextureHeight <> 0 Then
-            Call .DrawShadow(x, y, Width, Height, color, (sX + 0.25) / TextureWidth, (sY + 0.25) / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight)
+            Call .DrawShadow(x, y, Width, Height, Color, (sX + 0.25) / TextureWidth, (sY + 0.25) / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, OffsetX, OffsetY)
         Else
             Call .DrawShadow(x, y, TextureWidth, TextureHeight, color)
         End If
@@ -1699,7 +1701,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 ' Si no, solo dibujamos body
             Else
                 If Not .Invisible Then
-                    Call Draw_Sombra(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, False, x, y)
+                    Call Draw_Sombra(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, False, x, y, , .Body.ShadowOffset.x, .Body.ShadowOffset.y)
                 End If
                 Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, color, False, x, y)
             End If

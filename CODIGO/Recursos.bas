@@ -1661,7 +1661,7 @@ Sub CargarCuerpos()
     Dim k          As Integer
     Dim Heading    As Byte
     Dim BodyKey    As String
-    Dim Std        As Byte
+    Dim Std        As Integer
     Dim NumCuerpos As Integer
     Dim LastGrh    As Long
     Dim AnimStart  As Long
@@ -1690,6 +1690,8 @@ Sub CargarCuerpos()
             .BodyOffset.y = val(Loader.GetValue(BodyKey, "BodyOffsetY"))
             .HeadOffset.x = val(Loader.GetValue(BodyKey, "HeadOffsetX")) + .BodyOffset.x
             .HeadOffset.y = val(Loader.GetValue(BodyKey, "HeadOffsetY")) + .BodyOffset.y
+            .ShadowOffset.x = val(Loader.GetValue(BodyKey, "ShadowOffsetX"))
+            .ShadowOffset.y = val(Loader.GetValue(BodyKey, "ShadowOffsetY"))
             .BodyIndex = i
             .IdleBody = val(Loader.GetValue(BodyKey, "IdleBody"))
             .AnimateOnIdle = val(Loader.GetValue(BodyKey, "AnimateOnIdle"))
