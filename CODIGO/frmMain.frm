@@ -3732,7 +3732,7 @@ Public Sub UpdateStatsLayout()
     Call frmMain.UpdateGoldState
     #If No_Api_Discord = 0 Then
         If UserCharIndex > 0 Then
-            Call Discord_Update(IIf(charlist(UserCharIndex).clan <> vbNullString, JsonLanguage.Item("LABEL_CHATMODE_CLAN") & ": " & charlist(UserCharIndex).clan, "-"), _
+            Call Discord_Update(IIf(charlist(UserCharIndex).clan <> vbNullString, JsonLanguage.Item("LABEL_CHATMODE_CLAN") & ": " & charlist(UserCharIndex).clan, JsonLanguage.Item("LABEL_CHATMODE_CLAN") & ": -"), _
                charlist(UserCharIndex).nombre & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & " " & UserStats.Lvl & " " & "(" & lblPorcLvl.Caption & ")" & " - " & CharStatusToString(charlist(UserCharIndex).status), _
                "argentumonlinelogo512", _
                "Argentum Online", _
