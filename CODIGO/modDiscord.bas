@@ -17,6 +17,7 @@ Attribute VB_Name = "modDiscord"
 #If No_Api_Discord = 0 Then
 Option Explicit
 
+Public Discord_Timer As Long
 ' API Declarations for DiscordRichPresenceVB6.dll
 ' Make sure the DLL is in the same folder as your EXE or in System32
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)

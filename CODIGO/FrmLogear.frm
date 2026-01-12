@@ -320,7 +320,7 @@ Private Sub cmdIngresar_Click()
     Call FormParser.Parse_Form(Me, E_WAIT)
     Call DoLogin(NameTxt.text, PasswordTxt.text, chkRecordar.Tag = "1")
     #If No_Api_Discord = 0 Then
-        Call Discord_Update("...", JsonLanguage.Item("MSG_LOGIN_SCREEN"), "argentumonlinelogo512", "https://discord.com/invite/hvaA8eMm43", "argentumlogocircle", "Jugando Argentum Online")
+        Call Discord_Update("...", JsonLanguage.Item("MSG_LOGIN_SCREEN"), "argentumonlinelogo512", "Argentum Online", "argentumlogocircle", "Jugando Argentum Online")
     #End If
     Exit Sub
 cmdIngresar_Click_Err:

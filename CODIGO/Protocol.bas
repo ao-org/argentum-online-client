@@ -847,7 +847,7 @@ Public Sub HandleDisconnect()
         End If
     #End If
     #If No_Api_Discord = 0 Then
-        Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), "argentumonlinelogo512", "https://discord.com/invite/hvaA8eMm43", "argentumlogocircle", "Jugando Argentum Online")
+        Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), "argentumonlinelogo512", "Argentum Online", "argentumlogocircle", "Jugando Argentum Online")
     #End If
     Exit Sub
 HandleDisconnect_Err:
