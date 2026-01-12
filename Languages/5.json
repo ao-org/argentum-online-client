@@ -758,5 +758,13 @@
   "MSG_NEWOWNER_IS_NOT_PATREON": "Il nuovo proprietario non è un membro di Patreon",
   "MSG_OWNER_IS_NOT_PATREON": "Il proprietario non è un membro di Patreon.",
   "MSG_OWNER_NOT_ENOUGH_CREDITS": "Il proprietario non ha abbastanza crediti.",
-  "MENSAJE_CLAN_NIVEL_MAXIMO": "Livello massimo!"
+  "MENSAJE_CLAN_NIVEL_MAXIMO": "Livello massimo!",
+  "MSG_ACCOUNT_SCREEN": "Selezione account...",
+  "MSG_LOGIN_SCREEN": "Nella schermata di selezione del personaggio",
+  "MSG_GULFAS_JOKE1": "Elogi ai Gulfas",
+  "MSG_GULFAS_JOKE2": "Parlare con i Gulfas",
+  "MSG_GULFAS_JOKE3": "Deludere i Gulfas",
+  "MSG_GULFAS_JOKE4": "Insultare i Gulfas",
+  "MSG_GULFAS_JOKE5": "Sfidare i Gulfas",
+  "MSG_GULFAS_JOKE6": "Prendere in giro i Gulfas"
 }
