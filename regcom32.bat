@@ -19,4 +19,7 @@ REGSVR32 /s %SystemRoot%\System32\MSINET.OCX
 copy "%mypath%\RICHTX32.OCX" %SystemRoot%\System32
 REGSVR32 /s %SystemRoot%\System32\RICHTX32.OCX
 
+copy "%mypath%\DX8VB.DLL" %SystemRoot%\System32
+REGSVR32 /s %SystemRoot%\System32\DX8VB.DLL
+
 PAUSE
