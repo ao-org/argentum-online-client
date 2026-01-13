@@ -175,7 +175,7 @@
   "MENSAJE_TITULO_INFORMACION": "Information",
   "MENSAJE_NO_TIENES_MISION": "Vous n'avez aucune mission !",
   "MENSAJE_SELECCIONAR_MISION": "Vous devez d'abord sélectionner une mission !",
-  "MENSAJE_ABANDONAR_MISION": "Êtes-vous sûr de vouloir abandonner la mission ?",
+  "MENSAJE_ABANDONAR_MISION": "Êtes-vous sûr de vouloir abandonner la mission ? Tous les objets liés à la mission seront supprimés.",
   "MENSAJE_TITULO_ADVERTENCIA": "Avertissement",
   "MENSAJE_ERROR_MOTOR_GRAFICO": "Une erreur s'est produite lors du démarrage du moteur graphique.",
   "MENSAJE_SUGERENCIA_DRIVERS": "Assurez-vous d'avoir les pilotes graphiques mis à jour et la bibliothèque DX8VB.dll enregistrée correctement.",
