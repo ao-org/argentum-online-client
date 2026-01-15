@@ -545,6 +545,33 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If EsGM Then
                     Call WriteGoToChar(ArgumentosRaw)
                 End If
+            Case "/MODGLOBALQUEST"
+                If Not EsGM Then
+                    Exit Sub
+                End If
+                If notNullArguments Then
+                    If Not IsNumeric(ArgumentosAll(0)) Then
+                        Exit Sub
+                    End If
+                    If Not IsNull(ArgumentosAll(1)) Then
+                        Exit Sub
+                    End If
+                    If Not IsNull(ArgumentosAll(2)) Then
+                        Exit Sub
+                    End If
+                    If Not IsNull(ArgumentosAll(3)) Then
+                        Exit Sub
+                    End If
+                    If Not IsNumeric(ArgumentosAll(4)) Then
+                        Exit Sub
+                    End If
+                    If Not IsNumeric(ArgumentosAll(5)) Then
+                        Exit Sub
+                    End If
+                    Call WriteModifyGlobalQuest(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3), ArgumentosAll(4), ArgumentosAll(5))
+                Else
+                    Exit Sub
+                End If
             Case "/GO"
                 If EsGM Then
                     If ValidNumber(ArgumentosRaw, eNumber_Types.ent_Integer) Then

@@ -5898,3 +5898,23 @@ WriteAntiCheatMessage_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAntiCheatMessage", Erl)
 End Sub
+
+Public Sub WriteModifyGlobalQuest(ByVal GlobalQuestIndex As Integer, _
+                                  ByRef newStartDate As String, _
+                                  ByRef newEndDate As String, _
+                                  ByRef newName As String, _
+                                  ByVal newObjIndex As Integer, _
+                                  ByVal newGatheringThreshold As Long)
+    On Error GoTo WriteModifyGlobalQuest_Err:
+    Call Writer.WriteInt16(GlobalQuestIndex)
+    Call Writer.WriteString16(newStartDate)
+    Call Writer.WriteString16(newEndDate)
+    Call Writer.WriteString16(newName)
+    Call Writer.WriteInt16(newObjIndex)
+    Call Writer.WriteInt32(newGatheringThreshold)
+    Call modNetwork.send(Writer)
+    Exit Sub
+WriteModifyGlobalQuest_Err:
+    Call Writer.Clear
+    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteModifyGlobalQuest", Erl)
+End Sub
