@@ -553,13 +553,13 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     If Not IsNumeric(ArgumentosAll(0)) Then
                         Exit Sub
                     End If
-                    If Not IsNull(ArgumentosAll(1)) Then
+                    If IsNull(ArgumentosAll(1)) Then
                         Exit Sub
                     End If
-                    If Not IsNull(ArgumentosAll(2)) Then
+                    If IsNull(ArgumentosAll(2)) Then
                         Exit Sub
                     End If
-                    If Not IsNull(ArgumentosAll(3)) Then
+                    If IsNull(ArgumentosAll(3)) Then
                         Exit Sub
                     End If
                     If Not IsNumeric(ArgumentosAll(4)) Then

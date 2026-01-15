@@ -5906,6 +5906,7 @@ Public Sub WriteModifyGlobalQuest(ByVal GlobalQuestIndex As Integer, _
                                   ByVal newObjIndex As Integer, _
                                   ByVal newGatheringThreshold As Long)
     On Error GoTo WriteModifyGlobalQuest_Err:
+    Call Writer.WriteInt16(ClientPacketID.eModifyGlobalQuest)
     Call Writer.WriteInt16(GlobalQuestIndex)
     Call Writer.WriteString16(newStartDate)
     Call Writer.WriteString16(newEndDate)

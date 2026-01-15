@@ -526,6 +526,7 @@ Public Enum ClientPacketID
     eUseHKeySlot
     eAntiCheatMessage
     eRequestLobbyList
+    eModifyGlobalQuest
     #If PYMMO = 0 Then
         eCreateAccount
         eLoginAccount
