@@ -339,6 +339,7 @@ Engine_BeginScene_Err:
 End Sub
 
 Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWnd As Long = 0)
+    On Error GoTo Engine_EndScene_Err
     If DirectDevice.TestCooperativeLevel <> D3D_OK Then
         Exit Sub
     End If
@@ -346,6 +347,8 @@ Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWnd As Long =
     Call DirectDevice.EndScene
     Call DirectDevice.Present(DestRect, ByVal 0, hWnd, ByVal 0)
     Exit Sub
+Engine_EndScene_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_EndScene", Erl)
 End Sub
 
 Public Sub Engine_Deinit()

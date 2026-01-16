@@ -213,4 +213,4 @@ MaxNumberOfThreads=1
 DebugStartupOption=0
 
 [MS Transaction Server]
-AutoRefresh=1AutoRefresh=1
+AutoRefresh=1

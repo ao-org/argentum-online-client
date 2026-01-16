@@ -3810,10 +3810,10 @@ Public Sub UpdateStatsLayout()
         If UserCharIndex > 0 Then
             Call Discord_Update(IIf(charlist(UserCharIndex).clan <> vbNullString, JsonLanguage.Item("LABEL_CHATMODE_CLAN") & ": " & charlist(UserCharIndex).clan, JsonLanguage.Item("LABEL_CHATMODE_CLAN") & ": -"), _
                charlist(UserCharIndex).nombre & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & " " & UserStats.Lvl & " " & "(" & lblPorcLvl.Caption & ")" & " - " & CharStatusToString(charlist(UserCharIndex).status), _
-               "argentumonlinelogo512", _
-               "Argentum Online", _
-               "argentumlogocircle", _
-               "Jugando Argentum Online")
+               DISCORD_ARGENTUM_ONLINE_LOGO, _
+               DISCORD_TITLE, _
+               DISCORD_CIRCLE_MINIATURE, _
+               DISCORD_PLAYING_STRING)
         End If
     #End If
 End Sub
