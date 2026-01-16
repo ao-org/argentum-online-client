@@ -73,9 +73,9 @@ Public Declare Function RunCallbacks Lib "DiscordRichPresenceVB6.dll" () As Long
 Public Declare Function GetLastError Lib "DiscordRichPresenceVB6.dll" () As Long
 
 
-Public Const DISCORD_ARGENTUM_ONLINE_LOGO As String = "DISCORD_ARGENTUM_ONLINE_LOGO"
+Public Const DISCORD_ARGENTUM_ONLINE_LOGO As String = "argentumonlinelogo512"
 Public Const DISCORD_TITLE As String = "Argentum Online"
-Public Const DISCORD_CIRCLE_MINIATURE As String = DISCORD_CIRCLE_MINIATURE
+Public Const DISCORD_CIRCLE_MINIATURE As String = "argentumlogocircle"
 Public Const DISCORD_PLAYING_STRING As String = "Jugando a Argentum Online"
 
 '*****************************************************************************
