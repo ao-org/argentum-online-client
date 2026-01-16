@@ -511,14 +511,16 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
         objetolbl.Caption = ""
         lblRepetible.visible = QuestList(QuestIndex).Repetible = 1
         With QuestList(QuestIndex)
+            Dim finalDesc As String
             Dim requisitos As String
-            requisitos = .desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf
+            finalDesc = .desc
+            requisitos = ""
             ' Si tiene clase requerida
             If .RequiredClass <> 0 And RequiredClass <= 12 Then
                 requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(.RequiredClass) & vbCrLf
             End If
             ' Si tiene nivel requerido
-            If .RequiredLevel <> 0 Then
+            If .RequiredLevel > 1 Then
                 requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & .RequiredLevel & vbCrLf
             End If
             ' Si hay límite de nivel
@@ -533,9 +535,13 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
             If .RequiredSkill.SkillType > 0 Then
                 requisitos = requisitos & vbCrLf & SkillsNames(.RequiredSkill.SkillType) & ": " & .RequiredSkill.RequiredValue & vbCrLf
             End If
+            ' Si hay requisitos, agregamos el título
+            If Len(requisitos) > 0 Then
+                finalDesc = finalDesc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & requisitos
+            End If
             ' Limpiamos y mostramos los requisitos
             FrmQuestInfo.Text1.text = ""
-            Call AddtoRichTextBox(Text1, requisitos, 128, 128, 128)
+            Call AddtoRichTextBox(Text1, finalDesc, 128, 128, 128)
         End With
         If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
             If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
