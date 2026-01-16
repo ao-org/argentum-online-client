@@ -764,5 +764,7 @@
 	"TOOLTIP_EXP_RESTANTE": "Expérience restante",
 	"TOOLTIP_EXP_TOTAL": "Expérience totale",
 	"TOOLTIP_EXP_PORCENTAJE": "% avec 2 décimales",
-	"TOOLTIP_EXP_PORCENTAJE2": "% avec 4 décimales"
+	"TOOLTIP_EXP_PORCENTAJE2": "% avec 4 décimales",
+	"MENSAJEBOX_LIBERAR_MASCOTA": "Souhaitez-vous libérer le familier ?",
+	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Souhaitez-vous libérer tous les familiers ?"
 }
