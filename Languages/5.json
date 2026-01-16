@@ -764,5 +764,7 @@
 	"TOOLTIP_EXP_RESTANTE": "Esperienza rimanente",
 	"TOOLTIP_EXP_TOTAL": "Esperienza totale",
 	"TOOLTIP_EXP_PORCENTAJE": "% con 2 decimali",
-	"TOOLTIP_EXP_PORCENTAJE2": "% con 4 decimali"
+	"TOOLTIP_EXP_PORCENTAJE2": "% con 4 decimali",
+	"MENSAJEBOX_LIBERAR_MASCOTA": "Vuoi liberare la mascotte?",
+	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Vuoi liberare tutte le mascotte?"
 }

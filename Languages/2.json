@@ -764,5 +764,7 @@
 	"TOOLTIP_EXP_RESTANTE": "Remaining Experience",
 	"TOOLTIP_EXP_TOTAL": "Total Experience",
 	"TOOLTIP_EXP_PORCENTAJE": "% with 2 decimals",
-	"TOOLTIP_EXP_PORCENTAJE2": "% with 4 decimals"
+	"TOOLTIP_EXP_PORCENTAJE2": "% with 4 decimals",
+	"MENSAJEBOX_LIBERAR_MASCOTA": "Do you want to release the pet?",
+	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Do you want to release all the pets?"
 }
