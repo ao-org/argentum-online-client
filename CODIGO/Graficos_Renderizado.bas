@@ -1277,6 +1277,9 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
     With charlist(charindex)
 
         If .Heading = 0 Then Exit Sub
+        Dim posX As Byte
+        Dim posY As Byte
+        PosGet .PosEnc, charindex, posX, posY
     
         If .Moving Then
 
@@ -1351,7 +1354,7 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
  
         If .EsNpc Then
             If Len(.nombre) > 0 Then
-                If Abs(TX - .Pos.x) < 1 And (Abs(TY - .Pos.y)) < 1 Then
+                If Abs(TX - posX) < 1 And (Abs(TY - posY)) < 1 Then
 
                     Dim colornpcs(3) As Long
 

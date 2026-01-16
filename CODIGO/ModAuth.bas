@@ -823,6 +823,7 @@ Public Sub HandleOpenSession(ByVal BytesTotal As Long)
     public_key = mid(decrypted_session_token, 1, 16)
     frmDebug.add_text_tracebox "Public key:" & CStr(public_key)
     Str2ByteArr decrypted_session_token, public_key, 16
+    PosCrypto_InitFromSessionToken decrypted_session_token
     SessionOpened = True
     encrypted_session_token = cnvStringFromHexStr(cnvToHex(encrypted_token))
 End Sub

@@ -916,8 +916,11 @@ Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Inte
     Dim target_x As Long
     Dim target_y As Long
     'target_charindex in pixels on render:
-    target_x = (frmMain.renderer.ScaleWidth / 2) - ((UserPos.x - AddtoUserPos.x) - charlist(charindex).Pos.x) * 32 + charlist(charindex).MoveOffsetX
-    target_y = (frmMain.renderer.ScaleHeight / 2) - ((UserPos.y - AddtoUserPos.y) - charlist(charindex).Pos.y) * 32 + charlist(charindex).MoveOffsetY
+    Dim posX As Byte
+    Dim posY As Byte
+    PosGet charlist(charindex).PosEnc, charindex, posX, posY
+    target_x = (frmMain.renderer.ScaleWidth / 2) - ((UserPos.x - AddtoUserPos.x) - posX) * 32 + charlist(charindex).MoveOffsetX
+    target_y = (frmMain.renderer.ScaleHeight / 2) - ((UserPos.y - AddtoUserPos.y) - posY) * 32 + charlist(charindex).MoveOffsetY
     Dim dir_vector As Position
     Dim dist       As Long
     Dim dist_x     As Long
@@ -1305,6 +1308,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     Dim terrainHeight    As Integer
     With charlist(charindex)
         If .Heading = 0 Then Exit Sub
+        Dim posX As Byte
+        Dim posY As Byte
+        PosGet .PosEnc, charindex, posX, posY
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
         If Not .Moving And Not .TranslationActive And .Idle And .scrollDirectionX = 0 And .scrollDirectionY = 0 And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
             If .Body.AnimateOnIdle = 0 Then
@@ -1554,7 +1560,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call Copy_RGBAList(color, MapData(x, y).light_value)
                 End If
                 If .EsNpc Then
-                    If Abs(tX - .Pos.x) < 1 And tY - .Pos.y < 1 And .Pos.y - tY < 2 Then
+                    If Abs(tX - posX) < 1 And tY - posY < 1 And posY - tY < 2 Then
                         MostrarNombre = True
                         Call RGBAList(NameColor, 210, 105, 30)
                         Call InitGrh(TempGrh, 839)
@@ -1718,11 +1724,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, color, False, x, y)
             End If
             'Draw name over head
-            Nombres = Not MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).zone.OcultarNombre
+            Nombres = Not MapData(posX, posY).zone.OcultarNombre
             If UserCharIndex > 0 Then
                 With charlist(UserCharIndex)
                     Dim new_music As Integer
-                    new_music = MapData(.Pos.x, .Pos.y).zone.Musica
+                    Dim userPosX As Byte
+                    Dim userPosY As Byte
+                    PosGet .PosEnc, UserCharIndex, userPosX, userPosY
+                    new_music = MapData(userPosX, userPosY).zone.Musica
                     If new_music > 0 Then
                         Call ao20audio.PlayMidi(new_music, True)
                     Else
@@ -3374,7 +3383,13 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                     If .DestinoChar <> 0 Then
                         Call General_Char_Particle_Create(.End_Effect, .DestinoChar, .End_Loops)
                         If EstaPCarea(.DestinoChar) Then
-                            Call ao20audio.PlayWav(.wav, False, ao20audio.ComputeCharFxVolume(charlist(.DestinoChar).Pos), ao20audio.ComputeCharFxPan(charlist(.DestinoChar).Pos))
+                            Dim posX As Byte
+                            Dim posY As Byte
+                            Dim tempPos As Position
+                            PosGet charlist(.DestinoChar).PosEnc, .DestinoChar, posX, posY
+                            tempPos.x = posX
+                            tempPos.y = posY
+                            Call ao20audio.PlayWav(.wav, False, ao20audio.ComputeCharFxVolume(tempPos), ao20audio.ComputeCharFxPan(tempPos))
                         End If
                         .Slot_Used = False
                         Exit Sub
@@ -3395,7 +3410,13 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 End If
                 If (.FxEnd_Effect > 0) And .DestinoChar <> 0 Then
                     If EstaPCarea(.DestinoChar) Then
-                        Call ao20audio.PlayWav(.wav, False, ao20audio.ComputeCharFxVolume(charlist(.DestinoChar).Pos), ao20audio.ComputeCharFxPan(charlist(.DestinoChar).Pos))
+                        Dim posX As Byte
+                        Dim posY As Byte
+                        Dim tempPos As Position
+                        PosGet charlist(.DestinoChar).PosEnc, .DestinoChar, posX, posY
+                        tempPos.x = posX
+                        tempPos.y = posY
+                        Call ao20audio.PlayWav(.wav, False, ao20audio.ComputeCharFxVolume(tempPos), ao20audio.ComputeCharFxPan(tempPos))
                     End If
                     Call SetCharacterFx(.DestinoChar, .FxEnd_Effect, .End_Loops)
                     .Slot_Used = False

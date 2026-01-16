@@ -1135,7 +1135,13 @@ Private Sub HandleCharSwing()
                     0, 0))
         End If
         If EstaPCarea(charindex) Then
-            Call ao20audio.PlayWav(2, False, ao20audio.ComputeCharFxVolume(.Pos), ao20audio.ComputeCharFxPan(.Pos))
+            Dim posX As Byte
+            Dim posY As Byte
+            Dim tempPos As Position
+            PosGet .PosEnc, charindex, posX, posY
+            tempPos.x = posX
+            tempPos.y = posY
+            Call ao20audio.PlayWav(2, False, ao20audio.ComputeCharFxVolume(tempPos), ao20audio.ComputeCharFxPan(tempPos))
         End If
     End With
     Exit Sub
@@ -1420,7 +1426,8 @@ Private Sub HandlePosUpdate()
     UserPos.y = Reader.ReadInt8()
     'Set char
     MapData(UserPos.x, UserPos.y).charindex = UserCharIndex
-    charlist(UserCharIndex).Pos = UserPos
+    PosSet charlist(UserCharIndex).PosEnc, UserCharIndex, UserPos.x, UserPos.y
+    PosMaybeRotate
     'Are we under a roof?
     UpdatePlayerRoof
     'Update pos label and minimap
@@ -1449,7 +1456,8 @@ Private Sub HandlePosUpdateUserChar()
     End If
     'Set char
     MapData(UserPos.x, UserPos.y).charindex = charindex
-    charlist(charindex).Pos = UserPos
+    PosSet charlist(charindex).PosEnc, charindex, UserPos.x, UserPos.y
+    PosMaybeRotate
     'Are we under a roof?
     UpdatePlayerRoof
     Call RefreshAllChars
@@ -1471,15 +1479,18 @@ Private Sub HandlePosUpdateChar()
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
     If charindex = 0 Then Exit Sub
-    If charlist(charindex).Pos.x > 0 And charlist(charindex).Pos.y > 0 Then
-        If MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = charindex Then
-            MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+    Dim posX As Byte
+    Dim posY As Byte
+    PosGet charlist(charindex).PosEnc, charindex, posX, posY
+    If posX > 0 And posY > 0 Then
+        If MapData(posX, posY).charindex = charindex Then
+            MapData(posX, posY).charindex = 0
         End If
         MapData(x, y).charindex = charindex
-        charlist(charindex).Pos.x = x
-        charlist(charindex).Pos.y = y
+        PosSet charlist(charindex).PosEnc, charindex, x, y
         charlist(charindex).MoveOffsetX = 0
         charlist(charindex).MoveOffsetY = 0
+        PosMaybeRotate
     End If
     Exit Sub
 HandlePosUpdateChar_Err:
@@ -1609,9 +1620,12 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
     If x + y > 0 Then
         With charlist(charindex)
             If .Invisible And charindex <> UserCharIndex Then
-                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
-                .Pos.x = x
-                .Pos.y = y
+                Dim posX As Byte
+                Dim posY As Byte
+                PosGet .PosEnc, charindex, posX, posY
+                If MapData(posX, posY).charindex = charindex Then MapData(posX, posY).charindex = 0
+                PosSet .PosEnc, charindex, x, y
+                PosMaybeRotate
                 MapData(x, y).charindex = charindex
             End If
         End With
@@ -1811,8 +1825,11 @@ Private Sub HandleTextCharDrop()
     If charindex = 0 Then Exit Sub
     Dim x As Integer, y As Integer, OffsetX As Integer, OffsetY As Integer
     With charlist(charindex)
-        x = .Pos.x
-        y = .Pos.y
+        Dim posX As Byte
+        Dim posY As Byte
+        PosGet .PosEnc, charindex, posX, posY
+        x = posX
+        y = posY
         OffsetX = .MoveOffsetX + .Body.HeadOffset.x
         OffsetY = .MoveOffsetY + .Body.HeadOffset.y
     End With
@@ -2150,7 +2167,11 @@ Private Sub HandleUserCharIndexInServer()
     On Error GoTo HandleUserCharIndexInServer_Err
     UserCharIndex = Reader.ReadInt16()
     'frmdebug.add_text_tracebox "UserCharIndex " & UserCharIndex
-    UserPos = charlist(UserCharIndex).Pos
+    Dim posX As Byte
+    Dim posY As Byte
+    PosGet charlist(UserCharIndex).PosEnc, UserCharIndex, posX, posY
+    UserPos.x = posX
+    UserPos.y = posY
     'Are we under a roof?
     UpdatePlayerRoof
     lastMove = FrameTime
@@ -2262,10 +2283,13 @@ Private Sub HandleCharacterCreate()
             Backpack = NO_BACKPACK
             Head = 0
         End If
-        If (.Pos.x <> 0 And .Pos.y <> 0) Then
-            If MapData(.Pos.x, .Pos.y).charindex = charindex Then
+        Dim posX As Byte
+        Dim posY As Byte
+        PosGet .PosEnc, charindex, posX, posY
+        If (posX <> 0 And posY <> 0) Then
+            If MapData(posX, posY).charindex = charindex Then
                 'Erase the old character from map
-                MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+                MapData(posX, posY).charindex = 0
             End If
         End If
         If privs <> 0 Then
@@ -2276,6 +2300,7 @@ Private Sub HandleCharacterCreate()
         End If
         .Muerto = (Body = CASPER_BODY_IDLE)
         Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, Shield, helmet, Cart, Backpack, ParticulaFx, appear)
+        PosMaybeRotate
         If .Navegando = False Or UserNadandoTrajeCaucho = True Then
             If .Body.AnimateOnIdle = 0 Then
                 .Body.Walk(.Heading).started = 0
@@ -2743,8 +2768,11 @@ Private Sub HandlePlayWaveStep()
     Call DoPasosInvi(Grh, Grh2, distance, balance, step)
     With charlist(charindex)
         ' Esta invisible, lo sacamos del mapa para que no tosquee
-        If MapData(.Pos.x, .Pos.y).charindex = charindex Then
-            MapData(.Pos.x, .Pos.y).charindex = 0
+        Dim posX As Byte
+        Dim posY As Byte
+        PosGet .PosEnc, charindex, posX, posY
+        If MapData(posX, posY).charindex = charindex Then
+            MapData(posX, posY).charindex = 0
         End If
     End With
     Exit Sub
@@ -3014,9 +3042,12 @@ Private Sub HandleCreateFX()
     If x + y > 0 Then
         With charlist(charindex)
             If .Invisible And charindex <> UserCharIndex Then
-                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
-                .Pos.x = x
-                .Pos.y = y
+                Dim posX As Byte
+                Dim posY As Byte
+                PosGet .PosEnc, charindex, posX, posY
+                If MapData(posX, posY).charindex = charindex Then MapData(posX, posY).charindex = 0
+                PosSet .PosEnc, charindex, x, y
+                PosMaybeRotate
                 MapData(x, y).charindex = charindex
             End If
         End With
@@ -3075,7 +3106,13 @@ Private Sub HandleCharAtaca()
     'renderizo sangre si está sin montar ni navegar
     If danio > 0 And charlist(VictimIndex).Navegando = 0 Then Call SetCharacterFx(VictimIndex, 14, 0)
     If charlist(UserCharIndex).Muerto = False And EstaPCarea(NpcIndex) Then
-        Call ao20audio.PlayWav(CStr(IIf(danio = -1, 2, 10)), False, ao20audio.ComputeCharFxVolume(charlist(NpcIndex).Pos), ao20audio.ComputeCharFxPan(charlist(NpcIndex).Pos))
+        Dim posX As Byte
+        Dim posY As Byte
+        Dim tempPos As Position
+        PosGet charlist(NpcIndex).PosEnc, NpcIndex, posX, posY
+        tempPos.x = posX
+        tempPos.y = posY
+        Call ao20audio.PlayWav(CStr(IIf(danio = -1, 2, 10)), False, ao20audio.ComputeCharFxVolume(tempPos), ao20audio.ComputeCharFxPan(tempPos))
     End If
     Exit Sub
 HandleCharAtaca_Err:
@@ -3896,6 +3933,9 @@ Private Sub HandleSetInvisible()
     If x + y > 0 Then
         With charlist(charindex)
             If charindex <> UserCharIndex Then
+                Dim posX As Byte
+                Dim posY As Byte
+                PosGet .PosEnc, charindex, posX, posY
                 If .Invisible Then
                     If Not IsCharVisible(charindex) And General_Distance_Get(x, y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS Then
                         If .clan_index > 0 Then
@@ -3906,14 +3946,14 @@ Private Sub HandleSetInvisible()
                             End If
                         End If
                         If .Meditating Then Exit Sub
-                        If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+                        If MapData(posX, posY).charindex = charindex Then MapData(posX, posY).charindex = 0
                         .MoveOffsetX = 0
                         .MoveOffsetY = 0
                     End If
                 Else
-                    If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
-                    .Pos.x = x
-                    .Pos.y = y
+                    If MapData(posX, posY).charindex = charindex Then MapData(posX, posY).charindex = 0
+                    PosSet .PosEnc, charindex, x, y
+                    PosMaybeRotate
                     MapData(x, y).charindex = charindex
                     If Abs(.MoveOffsetX) > 32 Or Abs(.MoveOffsetY) > 32 Or (.MoveOffsetX <> 0 And .MoveOffsetY <> 0) Then
                         .MoveOffsetX = 0
@@ -3940,9 +3980,12 @@ Private Sub HandleMeditateToggle()
     If x + y > 0 Then
         With charlist(charindex)
             If .Invisible And charindex <> UserCharIndex Then
-                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
-                .Pos.x = x
-                .Pos.y = y
+                Dim posX As Byte
+                Dim posY As Byte
+                PosGet .PosEnc, charindex, posX, posY
+                If MapData(posX, posY).charindex = charindex Then MapData(posX, posY).charindex = 0
+                PosSet .PosEnc, charindex, x, y
+                PosMaybeRotate
                 MapData(x, y).charindex = charindex
             End If
         End With
@@ -3966,7 +4009,13 @@ Private Sub HandleMeditateToggle()
             Call StartFx(.ActiveAnimation, Fx, -1)
             ' Play sound only in PC area
             If EstaPCarea(charindex) Then
-                Call ao20audio.PlayWav(SND_MEDITATE, True, ao20audio.ComputeCharFxVolume(.Pos), ao20audio.ComputeCharFxPan(.Pos), "meditate" & CStr(charindex))
+                Dim posX As Byte
+                Dim posY As Byte
+                Dim tempPos As Position
+                PosGet .PosEnc, charindex, posX, posY
+                tempPos.x = posX
+                tempPos.y = posY
+                Call ao20audio.PlayWav(SND_MEDITATE, True, ao20audio.ComputeCharFxVolume(tempPos), ao20audio.ComputeCharFxPan(tempPos), "meditate" & CStr(charindex))
             End If
         Else
             Call ao20audio.StopWav(SND_MEDITATE, "meditate" & CStr(charindex))
@@ -4685,9 +4734,12 @@ Private Sub HandleParticleFX()
     If x + y > 0 Then
         With charlist(charindex)
             If .Invisible And charindex <> UserCharIndex Then
-                If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
-                .Pos.x = x
-                .Pos.y = y
+                Dim posX As Byte
+                Dim posY As Byte
+                PosGet .PosEnc, charindex, posX, posY
+                If MapData(posX, posY).charindex = charindex Then MapData(posX, posY).charindex = 0
+                PosSet .PosEnc, charindex, x, y
+                PosMaybeRotate
                 MapData(x, y).charindex = charindex
             End If
         End With
@@ -4731,9 +4783,12 @@ Private Sub HandleParticleFXWithDestino()
     If x + y > 0 Then
         With charlist(receptor)
             If .Invisible And receptor <> UserCharIndex Then
-                If MapData(.Pos.x, .Pos.y).charindex = receptor Then MapData(.Pos.x, .Pos.y).charindex = 0
-                .Pos.x = x
-                .Pos.y = y
+                Dim posX As Byte
+                Dim posY As Byte
+                PosGet .PosEnc, receptor, posX, posY
+                If MapData(posX, posY).charindex = receptor Then MapData(posX, posY).charindex = 0
+                PosSet .PosEnc, receptor, x, y
+                PosMaybeRotate
                 MapData(x, y).charindex = receptor
             End If
         End With

@@ -55,6 +55,7 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .TimerM = 128
         .TimerI = 128
         .TimerIAct = False
+        PosSet .PosEnc, charindex, 0, 0
         .dialog = vbNullString
         .group_index = 0
         .clan_index = 0
@@ -84,10 +85,13 @@ Public Sub EraseChar(ByVal charindex As Integer, Optional ByVal notCancelMe As B
     If charlist(charindex).active = 0 Then Exit Sub
     If charindex = UserCharIndex And Not notCancelMe Then Exit Sub
     Dim i As Integer
+    Dim posX As Byte
+    Dim posY As Byte
+    PosGet charlist(charindex).PosEnc, charindex, posX, posY
     For i = LBound(Effect) To UBound(Effect)
         If Effect(i).DestinoChar = charindex Then
-            Effect(i).DestX = charlist(charindex).Pos.x
-            Effect(i).DesyY = charlist(charindex).Pos.y
+            Effect(i).DestX = posX
+            Effect(i).DesyY = posY
             Effect(i).DestinoChar = 0
         End If
     Next i
@@ -99,7 +103,7 @@ Public Sub EraseChar(ByVal charindex As Integer, Optional ByVal notCancelMe As B
             If LastChar = 0 Then Exit Do
         Loop
     End If
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+    MapData(posX, posY).charindex = 0
     'Remove char's dialog
     If (Not Dialogos Is Nothing) Then
         Call Dialogos.RemoveDialog(charindex)
@@ -162,8 +166,7 @@ Sub MakeChar(ByVal charindex As Integer, _
             UserPos.y = y
         End If
         'Update position
-        .Pos.x = x ' - .scrollDirectionX
-        .Pos.y = y ' - .scrollDirectionY
+        PosSet .PosEnc, charindex, CByte(x), CByte(y)
         'Make active
         .active = 1
         .AlphaPJ = 255
@@ -200,8 +203,11 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
     Dim nX   As Integer
     Dim nY   As Integer
     With charlist(charindex)
-        x = .Pos.x
-        y = .Pos.y
+        Dim posX As Byte
+        Dim posY As Byte
+        PosGet .PosEnc, charindex, posX, posY
+        x = posX
+        y = posY
         ' Dirección a mover
         Select Case nHeading
             Case E_Heading.NORTH: addy = -1
@@ -212,8 +218,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         nX = x + addx
         nY = y + addy
         MapData(nX, nY).charindex = charindex
-        .Pos.x = nX
-        .Pos.y = nY
+        PosSet .PosEnc, charindex, CByte(nX), CByte(nY)
         If MapData(x, y).charindex = charindex Then
             MapData(x, y).charindex = 0
         End If
@@ -292,15 +297,17 @@ Public Sub TranslateCharacterToPos(ByVal charindex As Integer, ByVal NewX As Int
     Dim TileX, TileY As Integer
     Dim DiffX, DiffY As Integer
     With charlist(charindex)
-        TileX = .Pos.x
-        TileY = .Pos.y
+        Dim posX As Byte
+        Dim posY As Byte
+        PosGet .PosEnc, charindex, posX, posY
+        TileX = posX
+        TileY = posY
         If Not InMapBounds(TileX, TileY) Then Exit Sub
         Debug.Assert MapData(TileX, TileY).charindex = charindex
         MapData(TileX, TileY).charindex = 0
         DiffX = NewX - TileX
         DiffY = NewY - TileY
-        .Pos.x = NewX
-        .Pos.y = NewY
+        PosSet .PosEnc, charindex, CByte(NewX), CByte(NewY)
         MapData(NewX, NewY).charindex = charindex
         .MoveOffsetX = -1 * (TilePixelWidth * DiffX)
         .MoveOffsetY = -1 * (TilePixelHeight * DiffY)
@@ -331,8 +338,11 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
     Dim addy     As Integer
     Dim nHeading As E_Heading
     With charlist(charindex)
-        x = .Pos.x
-        y = .Pos.y
+        Dim posX As Byte
+        Dim posY As Byte
+        PosGet .PosEnc, charindex, posX, posY
+        x = posX
+        y = posY
         If Not InMapBounds(x, y) Then Exit Sub
         MapData(x, y).charindex = 0
         addx = nX - x
@@ -351,8 +361,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         End If
         MapData(nX, nY).charindex = charindex
         If nHeading = 0 Then Exit Sub
-        .Pos.x = nX
-        .Pos.y = nY
+        PosSet .PosEnc, charindex, CByte(nX), CByte(nY)
         .MoveOffsetX = -1 * (TilePixelWidth * addx)
         .MoveOffsetY = -1 * (TilePixelHeight * addy)
         ' === Guardar heading anterior ANTES de cambiarlo ===
@@ -471,9 +480,10 @@ End Sub
 
 Public Function EstaPCarea(ByVal charindex As Integer) As Boolean
     On Error GoTo EstaPCarea_Err
-    With charlist(charindex).Pos
-        EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
-    End With
+    Dim posX As Byte
+    Dim posY As Byte
+    PosGet charlist(charindex).PosEnc, charindex, posX, posY
+    EstaPCarea = posX > UserPos.x - MinXBorder And posX < UserPos.x + MinXBorder And posY > UserPos.y - MinYBorder And posY < UserPos.y + MinYBorder
     Exit Function
 EstaPCarea_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.EstaPCarea", Erl)
@@ -657,7 +667,10 @@ Public Function Get_PixelY_Of_Char(ByVal char_index As Integer) As Integer
     On Error GoTo Get_PixelY_Of_Char_Err
     'Make sure it's a legal char_index
     If Char_Check(char_index) Then
-        Get_PixelY_Of_Char = (charlist(char_index).Pos.y - 2 - UserPos.y) * 32 + frmMain.renderer.ScaleWidth / 2
+        Dim posX As Byte
+        Dim posY As Byte
+        PosGet charlist(char_index).PosEnc, char_index, posX, posY
+        Get_PixelY_Of_Char = (posY - 2 - UserPos.y) * 32 + frmMain.renderer.ScaleWidth / 2
         Get_PixelY_Of_Char = Get_PixelY_Of_Char - 16 + gameplay_render_offset.y
     End If
     Exit Function
@@ -670,7 +683,10 @@ Public Function Get_Pixelx_Of_Char(ByVal char_index As Integer) As Integer
     On Error GoTo Get_Pixelx_Of_Char_Err
     'Make sure it's a legal char_index
     If Char_Check(char_index) Then
-        Get_Pixelx_Of_Char = (charlist(char_index).Pos.x - UserPos.x) * 32 + frmMain.renderer.ScaleWidth / 2
+        Dim posX As Byte
+        Dim posY As Byte
+        PosGet charlist(char_index).PosEnc, char_index, posX, posY
+        Get_Pixelx_Of_Char = (posX - UserPos.x) * 32 + frmMain.renderer.ScaleWidth / 2
         Get_Pixelx_Of_Char = Get_Pixelx_Of_Char + gameplay_render_offset.x
     End If
     Exit Function

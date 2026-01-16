@@ -84,8 +84,11 @@ Sub RenderScreen(ByVal center_x As Integer, _
         MaxY = MaxY + 5
     End If
     If MapData(UserPos.x, UserPos.y).charindex = 0 And UserCharIndex > 0 Then
-        UserPos.x = charlist(UserCharIndex).Pos.x
-        UserPos.y = charlist(UserCharIndex).Pos.y
+        Dim posX As Byte
+        Dim posY As Byte
+        PosGet charlist(UserCharIndex).PosEnc, UserCharIndex, posX, posY
+        UserPos.x = posX
+        UserPos.y = posY
         MapData(UserPos.x, UserPos.y).charindex = UserCharIndex
     End If
     ' Map border checks

@@ -331,14 +331,17 @@ Public Sub RefreshAllChars()
     Dim loopC As Long
     For loopC = 1 To LastChar
         If charlist(loopC).active = 1 Then
+            Dim posX As Byte
+            Dim posY As Byte
+            PosGet charlist(loopC).PosEnc, loopC, posX, posY
             If charlist(loopC).Invisible Then
                 If Not ((charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(loopC).clan_index = 0 Or charlist(loopC).clan_index <> charlist(UserCharIndex).clan_index) And Not _
-                        charlist(loopC).Navegando) And Not (General_Distance_Get(charlist(loopC).Pos.x, charlist(loopC).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And _
+                        charlist(loopC).Navegando) And Not (General_Distance_Get(posX, posY, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And _
                         charlist(loopC).dialog_life = 0 And charlist(loopC).FxCount = 0 And charlist(loopC).particle_count = 0) Then
-                    MapData(charlist(loopC).Pos.x, charlist(loopC).Pos.y).charindex = loopC
+                    MapData(posX, posY).charindex = loopC
                 End If
             Else
-                MapData(charlist(loopC).Pos.x, charlist(loopC).Pos.y).charindex = loopC
+                MapData(posX, posY).charindex = loopC
             End If
         End If
     Next loopC
@@ -568,11 +571,14 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
             Dim i As Integer
             For i = 1 To LastChar
                 If charlist(i).Invisible And Not EsGM And Not charlist(i).Meditating Then
-                    If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(i).clan_index = 0 Or charlist( _
+                    Dim posX As Byte
+                    Dim posY As Byte
+                    PosGet charlist(i).PosEnc, i, posX, posY
+                    If MapData(posX, posY).charindex = i And (charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(i).clan_index = 0 Or charlist( _
                             i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
-                        If General_Distance_Get(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist( _
+                        If General_Distance_Get(posX, posY, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist( _
                                 i).FxCount = 0 And charlist(i).particle_count = 0 Then
-                            MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = 0
+                            MapData(posX, posY).charindex = 0
                         End If
                     End If
                 End If

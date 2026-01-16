@@ -423,7 +423,10 @@ Engine_Text_Render_Cartel_Err:
 End Sub
 
 Public Sub checkTutorial()
-    If charlist(UserCharIndex).Pos.x > 10 And charlist(UserCharIndex).Pos.y > 10 And charlist(UserCharIndex).Pos.x < 80 And charlist(UserCharIndex).Pos.y < 80 Then
+    Dim posX As Byte
+    Dim posY As Byte
+    PosGet charlist(UserCharIndex).PosEnc, UserCharIndex, posX, posY
+    If posX > 10 And posY > 10 And posX < 80 And posY < 80 Then
         If Not mascota.visible Then
             Call RGBAList(mascota_text_color, 211, 153, 94, 255)
             mascota.dialog = JsonLanguage.Item("MENSAJE_GUIA_ENTRENAMIENTO")

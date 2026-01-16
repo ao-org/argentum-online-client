@@ -1341,17 +1341,20 @@ End Sub
 Public Sub CrearFantasma(ByVal charindex As Integer)
     On Error GoTo CrearFantasma_Err
     If charlist(charindex).Body.Walk(charlist(charindex).Heading).GrhIndex = 0 Then Exit Sub
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Body.GrhIndex = charlist(charindex).Body.Walk(charlist(charindex).Heading).GrhIndex
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Head.GrhIndex = charlist(charindex).Head.Head(charlist(charindex).Heading).GrhIndex
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Arma.GrhIndex = charlist(charindex).Arma.WeaponWalk(charlist(charindex).Heading).GrhIndex
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Casco.GrhIndex = charlist(charindex).Casco.Head(charlist(charindex).Heading).GrhIndex
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Escudo.GrhIndex = charlist(charindex).Escudo.ShieldWalk(charlist(charindex).Heading).GrhIndex
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Body_Aura = charlist(charindex).Body_Aura
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.AlphaB = 255
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Activo = True
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.OffX = charlist(charindex).Body.HeadOffset.x
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Offy = charlist(charindex).Body.HeadOffset.y
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).CharFantasma.Heading = charlist(charindex).Heading
+    Dim posX As Byte
+    Dim posY As Byte
+    PosGet charlist(charindex).PosEnc, charindex, posX, posY
+    MapData(posX, posY).CharFantasma.Body.GrhIndex = charlist(charindex).Body.Walk(charlist(charindex).Heading).GrhIndex
+    MapData(posX, posY).CharFantasma.Head.GrhIndex = charlist(charindex).Head.Head(charlist(charindex).Heading).GrhIndex
+    MapData(posX, posY).CharFantasma.Arma.GrhIndex = charlist(charindex).Arma.WeaponWalk(charlist(charindex).Heading).GrhIndex
+    MapData(posX, posY).CharFantasma.Casco.GrhIndex = charlist(charindex).Casco.Head(charlist(charindex).Heading).GrhIndex
+    MapData(posX, posY).CharFantasma.Escudo.GrhIndex = charlist(charindex).Escudo.ShieldWalk(charlist(charindex).Heading).GrhIndex
+    MapData(posX, posY).CharFantasma.Body_Aura = charlist(charindex).Body_Aura
+    MapData(posX, posY).CharFantasma.AlphaB = 255
+    MapData(posX, posY).CharFantasma.Activo = True
+    MapData(posX, posY).CharFantasma.OffX = charlist(charindex).Body.HeadOffset.x
+    MapData(posX, posY).CharFantasma.Offy = charlist(charindex).Body.HeadOffset.y
+    MapData(posX, posY).CharFantasma.Heading = charlist(charindex).Heading
     Exit Sub
 CrearFantasma_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.CrearFantasma", Erl)

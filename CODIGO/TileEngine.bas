@@ -89,7 +89,7 @@ Public Type WorldPos
     y As Integer
 End Type
 
-'Contiene info acerca de donde se puede encontrar un grh tamaño y animacion
+'Contiene info acerca de donde se puede encontrar un grh tamaÃ±o y animacion
 Public Type GrhData
     sX As Integer
     sY As Integer
@@ -199,9 +199,7 @@ Public Type Char
     EsEnano As Boolean
     active As Byte
     Heading As E_Heading
-    Pos As Position
-    NowPosX As Integer
-    NowPosY As Integer
+    PosEnc As tPosEnc
     IHead As Integer
     iBody As Integer
     Body As BodyData
@@ -375,25 +373,25 @@ Public EngineRun              As Boolean
 Public fps                    As Long
 Public FramesPerSecCounter    As Long
 Private fpsLastCheck          As Long
-'Tamaño del la vista en Tiles
+'TamaÃ±o del la vista en Tiles
 Public WindowTileWidth        As Integer
 Public WindowTileHeight       As Integer
 Public HalfWindowTileWidth    As Integer
 Public HalfWindowTileHeight   As Integer
-'Tamaño del connect
+'TamaÃ±o del connect
 Public HalfConnectTileWidth   As Integer
 Public HalfConnectTileHeight  As Integer
 'Offset del desde 0,0 del main view
 Public MainViewTop            As Integer
 Public MainViewLeft           As Integer
 'Cuantos tiles el engine mete en el BUFFER cuando
-'dibuja el mapa. Ojo un tamaño muy grande puede
+'dibuja el mapa. Ojo un tamaÃ±o muy grande puede
 'volver el engine muy lento
 Public TileBufferSizeX        As Integer
 Public TileBufferSizeY        As Integer
 Public TileBufferPixelOffsetX As Integer
 Public TileBufferPixelOffsetY As Integer
-'Tamaño de los tiles en pixels
+'TamaÃ±o de los tiles en pixels
 Public Const TilePixelHeight  As Integer = 32
 Public Const TilePixelWidth   As Integer = 32
 'Number of pixels the engine scrolls per frame. MUST divide evenly into pixels per tile
@@ -417,7 +415,7 @@ Public MainViewWidth          As Integer
 Public MainViewHeight         As Integer
 Public MouseTileX             As Byte
 Public MouseTileY             As Byte
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Graficos¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿GraficosÂ¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?
 Public GrhData()              As GrhData 'Guarda todos los grh
 Public BodyData()             As BodyData
 Public HeadData()             As HeadData
@@ -427,17 +425,17 @@ Public ComposedFxData()       As tComposedAnimation
 Public WeaponAnimData()       As WeaponAnimData
 Public ShieldAnimData()       As ShieldAnimData
 Public CascoAnimData()        As HeadData
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Mapa?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?
+'Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿Mapa?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?
 Public MapData()              As MapBlock ' Mapa
 Public MapInfo                As MapInfo ' Info acerca del mapa en uso
 Public Zonas()                As MapZone
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
-Public bRain                  As Boolean 'está raineando?
-Public bNieve                 As Boolean 'está nevando?
+'Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?
+Public bRain                  As Boolean 'estÃ¡ raineando?
+Public bNieve                 As Boolean 'estÃ¡ nevando?
 Public bNiebla                As Boolean 'Hay niebla?
 Public bTecho                 As Boolean 'hay techo?
-Public lastMove               As Long ' Tiempo de último paso
+Public lastMove               As Long ' Tiempo de Ãºltimo paso
 Public brstTick               As Long
 Private iFrameIndex           As Byte  'Frame actual de la LL
 Private llTick                As Long  'Contador
@@ -449,7 +447,7 @@ Private Type size
     cy As Long
 End Type
 
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?Â¿?
 Private Declare Function BitBlt _
                 Lib "gdi32" (ByVal hDestDC As Long, _
                              ByVal x As Long, _
@@ -464,7 +462,7 @@ Private Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObj
 Private Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hdc As Long) As Long
 Private Declare Function DeleteDC Lib "gdi32" (ByVal hdc As Long) As Long
 Private Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
-'Added by Juan Martín Sotuyo Dodero
+'Added by Juan MartÃ­n Sotuyo Dodero
 Private Declare Function StretchBlt _
                 Lib "gdi32" (ByVal hDestDC As Long, _
                              ByVal x As Long, _
@@ -587,9 +585,10 @@ End Sub
 
 Private Function EstaPCarea(ByVal charindex As Integer) As Boolean
     On Error GoTo EstaPCarea_Err
-    With charlist(charindex).Pos
-        EstaPCarea = .x > UserPos.x - MinXBorder And .x < UserPos.x + MinXBorder And .y > UserPos.y - MinYBorder And .y < UserPos.y + MinYBorder
-    End With
+    Dim posX As Byte
+    Dim posY As Byte
+    PosGet charlist(charindex).PosEnc, charindex, posX, posY
+    EstaPCarea = posX > UserPos.x - MinXBorder And posX < UserPos.x + MinXBorder And posY > UserPos.y - MinYBorder And posY < UserPos.y + MinYBorder
     Exit Function
 EstaPCarea_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.EstaPCarea", Erl)
@@ -602,24 +601,32 @@ Sub DoPasosFx(ByVal charindex As Integer)
         ' Mascots don't make noise
         If .EsMascota Then Exit Sub
         If EstaPCarea(charindex) And Not .Muerto And .priv <= charlist(UserCharIndex).priv And charlist(UserCharIndex).Muerto = False Then
+            Dim posX As Byte
+            Dim posY As Byte
+            PosGet .PosEnc, charindex, posX, posY
             .Pie = Not .Pie
             Dim StepIndex     As Byte: StepIndex = IIf(.Pie, 1, 2)
             Dim TerrenoDePaso As Byte
             If .Navegando Then
                 TerrenoDePaso = CONST_AGUA
-            ElseIf MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
-                Dim FileNum As Long: FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
-                TerrenoDePaso = GetTerrenoDePaso(FileNum, MapData(.Pos.x, .Pos.y).Graphic(2).GrhIndex)
+            Else
+                If MapData(posX, posY).Graphic(1).GrhIndex > 0 Then
+                    Dim FileNum As Long: FileNum = GrhData(MapData(posX, posY).Graphic(1).GrhIndex).FileNum
+                    TerrenoDePaso = GetTerrenoDePaso(FileNum, MapData(posX, posY).Graphic(2).GrhIndex)
+                Else
+                    TerrenoDePaso = CONST_PISO
+                End If
                 If .Speeding > 1.2 And TerrenoDePaso = CONST_PISO Then
                     TerrenoDePaso = CONST_CABALLO
                 End If
-            Else
-                TerrenoDePaso = CONST_PISO
             End If
             Dim steps_vol As Long
             Dim steps_pan As Long
-            steps_vol = ao20audio.ComputeVolumeAtPos(eFxSteps, .Pos)
-            steps_pan = ao20audio.ComputeCharFxPan(.Pos)
+            Dim tempPos As Position
+            tempPos.x = posX
+            tempPos.y = posY
+            steps_vol = ao20audio.ComputeVolumeAtPos(eFxSteps, tempPos)
+            steps_pan = ao20audio.ComputeCharFxPan(tempPos)
             Dim SndIndex As Integer: SndIndex = Pasos(TerrenoDePaso).wav(StepIndex)
             Dim SndLabel As String: SndLabel = "pasos" & charindex & "_" & StepIndex
             Call ao20audio.StopWav(SndIndex, SndLabel)
@@ -821,7 +828,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     If x < MinXBorder Or x > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
         Exit Function
     End If
-    '¿Hay un personaje?
+    'Â¿Hay un personaje?
     If MapData(x, y).charindex > 0 Then
         With charlist(MapData(x, y).charindex)
             If Not (.Muerto Or (.Invisible And .priv > charlist(UserCharIndex).priv) Or .DontBlockTile) Then
@@ -966,8 +973,11 @@ End Sub
 Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal GrhIndex As Long) As Boolean
     On Error GoTo HayUserAbajo_Err
     If GrhIndex > 0 Then
-        HayUserAbajo = charlist(UserCharIndex).Pos.x >= x - (GrhData(GrhIndex).TileWidth \ 2) And charlist(UserCharIndex).Pos.x <= x + (GrhData(GrhIndex).TileWidth \ 2) And _
-                charlist(UserCharIndex).Pos.y >= y - (GrhData(GrhIndex).TileHeight - 1) And charlist(UserCharIndex).Pos.y <= y
+        Dim posX As Byte
+        Dim posY As Byte
+        PosGet charlist(UserCharIndex).PosEnc, UserCharIndex, posX, posY
+        HayUserAbajo = posX >= x - (GrhData(GrhIndex).TileWidth \ 2) And posX <= x + (GrhData(GrhIndex).TileWidth \ 2) And _
+                posY >= y - (GrhData(GrhIndex).TileHeight - 1) And posY <= y
     End If
     Exit Function
 HayUserAbajo_Err:
