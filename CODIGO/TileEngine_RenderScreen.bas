@@ -679,6 +679,13 @@ End Sub
 
 Private Sub RenderScreen_NombreMapa()
     On Error GoTo RenderScreen_NombreMapa_Err
+    If ShowNameMapInRender = 0 Then
+        map_letter_fadestatus = 0
+        map_letter_a = 0
+        map_letter_grh_next = 0
+        Exit Sub
+    End If
+
     If map_letter_fadestatus > 0 Then
         If map_letter_fadestatus = 1 Then
             map_letter_a = map_letter_a + (timerTicksPerFrame * 3.5)
