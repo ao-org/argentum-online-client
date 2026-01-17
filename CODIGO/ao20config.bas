@@ -65,6 +65,7 @@ Sub SaveConfig()
     Call SaveSetting("VIDEO", "TexHighWaterMark", TexHighWaterMark)
     Call SaveSetting("VIDEO", "NumTexRelease", NumTexRelease)
     Call SaveSetting("VIDEO", "ButtonsExpBar", IIf(ButtonsExpBar, 1, 0))
+    Call SaveSetting("VIDEO", "ShowNameMapInRender", IIf(ShowNameMapInRender, 1, 0))
     Call SaveSetting("OPCIONES", "SensibilidadMouse", SensibilidadMouse)
     Call SaveSetting("OPCIONES", "DialogosClanes", IIf(DialogosClanes.Activo, 1, 0))
     Call SaveSetting("OPCIONES", "EquipmentIndicatorRedColor", RED_SHADER)
@@ -111,6 +112,7 @@ Sub LoadConfig()
     ModoAceleracion = GetSetting("VIDEO", "Aceleracion")
     DisableDungeonLighting = val(GetSetting("VIDEO", "DisableDungeonLighting"))
     ButtonsExpBar = GetSettingAsByte("VIDEO", "ButtonsExpBar", 1)
+    ShowNameMapInRender = GetSettingAsByte("VIDEO", "ShowNameMapInRender", 1)
     '------------------------------------------------------------------------------
     ' Configuration: VIDEO.NumTexRelease
     '

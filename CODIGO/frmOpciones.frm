@@ -331,6 +331,12 @@ Begin VB.Form frmOpciones
          Top             =   1080
          Width           =   1575
       End
+      Begin VB.Image chkShowNameMapInRender 
+         Height          =   255
+         Left            =   270
+         Top             =   3840
+         Width           =   255
+      End
       Begin VB.Image chkBtnExpBar 
          Height          =   255
          Left            =   270
@@ -1251,6 +1257,11 @@ Public Sub Init()
     Else
         chkBtnExpBar.Picture = Nothing
     End If
+        If ShowNameMapInRender = 1 Then
+        chkShowNameMapInRender.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        chkShowNameMapInRender.Picture = Nothing
+    End If
     scrVolume.value = max(scrVolume.min, min(scrVolume.max, VolFX))
     scrVolumeSteps.value = max(scrVolumeSteps.min, min(scrVolumeSteps.max, VolSteps))
     HScroll1.value = max(HScroll1.min, min(HScroll1.max, VolAmbient))
@@ -1321,6 +1332,20 @@ Private Sub chkBtnExpBar_Click()
     Exit Sub
 chkBtnExpBar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkBtnExpBar_Click", Erl)
+    Resume Next
+End Sub
+Private Sub chkShowNameMapInRender_Click()
+    On Error GoTo chkShowNameMapInRender_Click_Err
+    If ShowNameMapInRender = 0 Then
+        ShowNameMapInRender = 1
+        chkShowNameMapInRender.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        ShowNameMapInRender = 0
+        chkShowNameMapInRender.Picture = Nothing
+    End If
+    Exit Sub
+chkShowNameMapInRender_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkShowNameMapInRender_Click", Erl)
     Resume Next
 End Sub
 
