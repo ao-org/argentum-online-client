@@ -175,7 +175,7 @@
     "MENSAJE_TITULO_INFORMACION": "Information",
     "MENSAJE_NO_TIENES_MISION": "You don't have any mission!",
     "MENSAJE_SELECCIONAR_MISION": "You must select a mission first!",
-    "MENSAJE_ABANDONAR_MISION": "Are you sure you want to abandon the mission?",
+    "MENSAJE_ABANDONAR_MISION": "Are you sure you want to abandon the mission? All items related to the mission will be deleted.",
     "MENSAJE_TITULO_ADVERTENCIA": "Warning",
     "MENSAJE_ERROR_MOTOR_GRAFICO": "An error occurred while starting the graphics engine.",
     "MENSAJE_SUGERENCIA_DRIVERS": "Make sure your graphics drivers are updated and the DX8VB.dll library is registered correctly.",
@@ -772,5 +772,7 @@
 	"TOOLTIP_EXP_RESTANTE": "Remaining Experience",
 	"TOOLTIP_EXP_TOTAL": "Total Experience",
 	"TOOLTIP_EXP_PORCENTAJE": "% with 2 decimals",
-	"TOOLTIP_EXP_PORCENTAJE2": "% with 4 decimals"
+	"TOOLTIP_EXP_PORCENTAJE2": "% with 4 decimals",
+	"MENSAJEBOX_LIBERAR_MASCOTA": "Do you want to release the pet?",
+	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Do you want to release all the pets?"
 }

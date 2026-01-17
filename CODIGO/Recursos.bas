@@ -1739,16 +1739,27 @@ Sub CargarCuerpos()
                 With GrhData(LastGrh)
                     .NumFrames = MoldesBodies(Std).DirCount(J)
                     .speed = .NumFrames * AnimSpeed
-                    ReDim .Frames(1 To MoldesBodies(Std).DirCount(J))
-                    For k = 1 To MoldesBodies(Std).DirCount(J)
-                        .Frames(k) = AnimStart + k - 1
-                    Next
-                    .pixelWidth = GrhData(.Frames(1)).pixelWidth
-                    .pixelHeight = GrhData(.Frames(1)).pixelHeight
-                    .TileWidth = GrhData(.Frames(1)).TileWidth
-                    .TileHeight = GrhData(.Frames(1)).TileHeight
+                    Dim dircount As Integer: dircount = MoldesBodies(Std).dircount(J)
+                    If .NumFrames > 0 Then
+                        ReDim .Frames(1 To .NumFrames)
+                        For k = 1 To MoldesBodies(Std).dircount(J)
+                            .Frames(k) = AnimStart + k - 1
+                        Next
+                        .pixelWidth = GrhData(.Frames(1)).pixelWidth
+                        .pixelHeight = GrhData(.Frames(1)).pixelHeight
+                        .TileWidth = GrhData(.Frames(1)).TileWidth
+                        .TileHeight = GrhData(.Frames(1)).TileHeight
+                    End If
+                        
                 End With
+                
                 InitGrh BodyData(i).Walk(Heading), LastGrh, 0
+                If GrhData(LastGrh).NumFrames < 1 Then
+                    Debug.Assert False
+                    frmDebug.add_text_tracebox "Moldes.ini is broken for Body=" & i
+                    Exit For
+                End If
+                        
                 LastGrh = LastGrh + 1
             Next
         End If
