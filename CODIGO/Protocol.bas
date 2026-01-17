@@ -779,7 +779,6 @@ Public Sub HandleDisconnect()
     For i = 1 To MAX_SKINSINVENTORY_SLOTS
         Call frmSkins.InvSkins.ClearSlot(i)
     Next i
-    
     Call frmCrafteo.InvCraftCatalyst.ClearSlot(1)
     UserInvUnlocked = 0
     Alocados = 0
@@ -847,6 +846,9 @@ Public Sub HandleDisconnect()
         If prgRun Then
             Call General_Set_Connect
         End If
+    #End If
+    #If No_Api_Discord = 0 Then
+        Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), DISCORD_ARGENTUM_ONLINE_LOGO, DISCORD_TITLE, DISCORD_CIRCLE_MINIATURE, DISCORD_PLAYING_STRING)
     #End If
     Exit Sub
 HandleDisconnect_Err:
@@ -1631,7 +1633,7 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             Dim MsgID    As Integer
             Dim extraStr As String
             MsgID = val(ReadField(1, text, Asc("*")))             ' 2082
-            extraStr = ReadField(2, Text, Asc("*"))               ' "Nombre¬OtroValor"
+            extraStr = ReadField(2, text, Asc("*"))               ' "Nombre¬OtroValor"
             chat = Locale_Parse_ServerMessage(MsgID, extraStr)
             copiar = False
             duracion = 20
