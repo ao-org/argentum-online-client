@@ -29,7 +29,7 @@ Private MouseTimeAcumulated As Long
 Private Const MainWindowWidth = 1024
 Private Const MainWindowHeight = 1024
 Public Const BytesPerPixel = 4
-Public Declare Function timeGetTime Lib "winmm.dll" () As Long
+Private Declare Function timeGetTime Lib "winmm.dll" () As Long
 Public FrameNum           As Long
 'Mascotas:
 Public LastOffset2X       As Double
@@ -339,7 +339,7 @@ Engine_BeginScene_Err:
 End Sub
 
 Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWnd As Long = 0)
-    On Error GoTo Engine_EndScene_Err
+    On Error GoTo ErrorHandlerDD:
     If DirectDevice.TestCooperativeLevel <> D3D_OK Then
         Exit Sub
     End If
@@ -347,8 +347,17 @@ Public Sub Engine_EndScene(ByRef DestRect As RECT, Optional ByVal hWnd As Long =
     Call DirectDevice.EndScene
     Call DirectDevice.Present(DestRect, ByVal 0, hWnd, ByVal 0)
     Exit Sub
-Engine_EndScene_Err:
-    Call RegistrarError(Err.Number, Err.Description, "engine.Engine_EndScene", Erl)
+ErrorHandlerDD:
+    'If DirectDevice.TestCooperativeLevel = D3DERR_DEVICENOTRESET Then
+    '
+    '    Call Engine_Init
+    '
+    '    prgRun = True
+    '    pausa = False
+    '    QueRender = 0
+    '    lFrameTimer = 0
+    '    FramesPerSecCounter = 0'
+    'End If
 End Sub
 
 Public Sub Engine_Deinit()
@@ -2057,12 +2066,6 @@ Public Sub start()
             Call svb_run_callbacks
         #End If
         Call UpdateAntiCheat
-        #If No_Api_Discord = 0 Then
-            If Discord_IsConnected And timeGetTime() - Discord_Timer >= 100 Then
-                Call Discord_RunCallbacks
-                Discord_Timer = timeGetTime()
-            End If
-        #End If
     Loop
     EngineRun = False
     Call CloseClient

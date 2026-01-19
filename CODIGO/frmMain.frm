@@ -2218,9 +2218,6 @@ Private Sub Form_Unload(Cancel As Integer)
     #If No_Api_Steam = 0 Then
         Call svb_shutdown_steam
     #End If
-    #If No_Api_Discord = 0 Then
-        Call Discord_Shutdown
-    #End If
     Call DisableURLDetect
     Exit Sub
 Form_Unload_Err:
@@ -3806,16 +3803,6 @@ Public Sub UpdateStatsLayout()
     End If
     frmMain.lblLvl.Caption = ListaClases(UserStats.Clase) & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & UserStats.Lvl
     Call frmMain.UpdateGoldState
-    #If No_Api_Discord = 0 Then
-        If UserCharIndex > 0 Then
-            Call Discord_Update(IIf(charlist(UserCharIndex).clan <> vbNullString, JsonLanguage.Item("LABEL_CHATMODE_CLAN") & ": " & charlist(UserCharIndex).clan, JsonLanguage.Item("LABEL_CHATMODE_CLAN") & ": -"), _
-               charlist(UserCharIndex).nombre & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & " " & UserStats.Lvl & " " & "(" & lblPorcLvl.Caption & ")" & " - " & CharStatusToString(charlist(UserCharIndex).status), _
-               DISCORD_ARGENTUM_ONLINE_LOGO, _
-               DISCORD_TITLE, _
-               DISCORD_CIRCLE_MINIATURE, _
-               DISCORD_PLAYING_STRING)
-        End If
-    #End If
 End Sub
 
 Public Sub UnlockInvslot(ByVal UserInvLevel As Integer)
