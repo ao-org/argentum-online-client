@@ -319,9 +319,6 @@ Private Sub cmdIngresar_Click()
     Call SetActiveServer(txtIp.text, txtPort.text)
     Call FormParser.Parse_Form(Me, E_WAIT)
     Call DoLogin(NameTxt.text, PasswordTxt.text, chkRecordar.Tag = "1")
-    #If No_Api_Discord = 0 Then
-        Call Discord_Update("...", JsonLanguage.Item("MSG_LOGIN_SCREEN"), DISCORD_ARGENTUM_ONLINE_LOGO, DISCORD_TITLE, DISCORD_CIRCLE_MINIATURE, DISCORD_PLAYING_STRING)
-    #End If
     Exit Sub
 cmdIngresar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.cmdIngresar_Click", Erl)
