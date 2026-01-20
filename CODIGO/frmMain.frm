@@ -3214,7 +3214,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
             If HandleMouseInput(x, y) Then
             ElseIf HandleHotkeyArrowInput(x, y) Then
             ElseIf Pregunta Then
-                If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
+                If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then ' NO
                     If PreguntaLocal Then
                         Select Case PreguntaNUM
                             Case 1
@@ -3225,13 +3225,19 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
                             Case 2 ' Denunciar
                                 Pregunta = False
                                 PreguntaLocal = False
+                            Case 3 'Liberar mascotas
+                                Pregunta = False
+                                PreguntaLocal = False
+                            Case 4 'Liberar TODAS las mascotas
+                                Pregunta = False
+                                PreguntaLocal = False
                         End Select
                     Else
                         Call WriteResponderPregunta(False)
                         Pregunta = False
                     End If
                     Exit Sub
-                ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then
+                ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then 'SI
                     If PreguntaLocal Then
                         Select Case PreguntaNUM
                             Case 1 '¿Destruir item?
@@ -3240,6 +3246,14 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
                                 PreguntaLocal = False
                             Case 2 ' Denunciar
                                 Call WriteDenounce(targetName)
+                                Pregunta = False
+                                PreguntaLocal = False
+                            Case 3 'Liberar mascotas
+                                Call ParseUserCommand("/LIBERAR")
+                                Pregunta = False
+                                PreguntaLocal = False
+                            Case 4 'Liberar TODAS las mascotas
+                                Call ParseUserCommand("/LIBERARTODOS")
                                 Pregunta = False
                                 PreguntaLocal = False
                         End Select
