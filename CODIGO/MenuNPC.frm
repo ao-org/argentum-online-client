@@ -192,11 +192,21 @@ Private Sub OpcionImg_Click(Index As Integer)
         Case 2
             Call ParseUserCommand("/ACOMPAÑARTODOS")
         Case 3
-            If MsgBox(JsonLanguage.Item("MENSAJEBOX_LIBERAR_MASCOTA"), vbYesNo) = vbYes Then
+            If ConfirmPetRelease = 1 Then
+                PreguntaScreen = JsonLanguage.Item("MENSAJEBOX_LIBERAR_MASCOTA")
+                Pregunta = True
+                PreguntaLocal = True
+                PreguntaNUM = 3
+            Else
                 Call ParseUserCommand("/LIBERAR")
             End If
         Case 4
-            If MsgBox(JsonLanguage.Item("MENSAJEBOX_LIBERAR_TODAS_MASCOTA"), vbYesNo) = vbYes Then
+            If ConfirmPetRelease = 1 Then
+                PreguntaScreen = JsonLanguage.Item("MENSAJEBOX_LIBERAR_TODAS_MASCOTA")
+                Pregunta = True
+                PreguntaLocal = True
+                PreguntaNUM = 4
+            Else
                 Call ParseUserCommand("/LIBERARTODOS")
             End If
     End Select

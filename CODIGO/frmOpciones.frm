@@ -303,9 +303,9 @@ Begin VB.Form frmOpciones
    End
    Begin VB.PictureBox PanelVideo 
       BorderStyle     =   0  'None
-      Height          =   4965
+      Height          =   4845
       Left            =   240
-      ScaleHeight     =   331
+      ScaleHeight     =   323
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   504
       TabIndex        =   3
@@ -330,6 +330,12 @@ Begin VB.Form frmOpciones
          TabIndex        =   10
          Top             =   1080
          Width           =   1575
+      End
+      Begin VB.Image chkConfirmPetRelease 
+         Height          =   255
+         Left            =   270
+         Top             =   4215
+         Width           =   255
       End
       Begin VB.Image chkShowNameMapInRender 
          Height          =   255
@@ -563,6 +569,21 @@ Private Const HWND_NOTOPMOST = -2
 Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
 Private cBotonCerrar As clsGraphicalButton
+
+Private Sub chkConfirmPetRelease_Click()
+    On Error GoTo chkConfirmPetRelease_Click_Err
+    If ConfirmPetRelease = 0 Then
+        ConfirmPetRelease = 1
+        chkConfirmPetRelease.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        ConfirmPetRelease = 0
+        chkConfirmPetRelease.Picture = Nothing
+    End If
+    Exit Sub
+chkConfirmPetRelease_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkConfirmPetRelease_Click", Erl)
+    Resume Next
+End Sub
 
 Private Sub chkSteps_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo chkSteps_MouseUp_Err
@@ -1257,10 +1278,15 @@ Public Sub Init()
     Else
         chkBtnExpBar.Picture = Nothing
     End If
-        If ShowNameMapInRender = 1 Then
+    If ShowNameMapInRender = 1 Then
         chkShowNameMapInRender.Picture = LoadInterface("check-amarillo.bmp")
     Else
         chkShowNameMapInRender.Picture = Nothing
+    End If
+    If ConfirmPetRelease = 1 Then
+        chkConfirmPetRelease.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        chkConfirmPetRelease.Picture = Nothing
     End If
     scrVolume.value = max(scrVolume.min, min(scrVolume.max, VolFX))
     scrVolumeSteps.value = max(scrVolumeSteps.min, min(scrVolumeSteps.max, VolSteps))
