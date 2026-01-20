@@ -1373,6 +1373,10 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).NpcType = val(Leer.GetValue("npc" & Npc, "NpcType"))
         NpcData(Npc).Comercia = val(Leer.GetValue("npc" & Npc, "Comercia"))
         NpcData(Npc).level = val(Leer.GetValue("npc" & Npc, "Nivel"))
+        NpcData(Npc).WaterAttackAnimation = val(Leer.GetValue("npc" & Npc, "Ataque2"))
+        NpcData(Npc).LandAttackAnimation = val(Leer.GetValue("npc" & Npc, "Ataque1"))
+        NpcData(Npc).BodyOnWater = val(Leer.GetValue("npc" & Npc, "BodyOnWater"))
+        NpcData(Npc).BodyOnLand = val(Leer.GetValue("npc" & Npc, "BodyOnLand"))
         
         aux = val(Leer.GetValue("npc" & Npc, "NumQuiza"))
         If aux = 0 Then

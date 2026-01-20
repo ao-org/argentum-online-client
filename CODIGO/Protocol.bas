@@ -565,7 +565,6 @@ Private Sub HandleLogged()
     LegionarySecureX = True
     Call ResetAllCd
     Call SetConnected
-    g_game_state.State = e_state_gameplay_screen
     Exit Sub
 HandleLogged_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLogged", Erl)
@@ -2159,6 +2158,7 @@ Private Sub HandleUserCharIndexInServer()
         frmMain.Coord.ForeColor = RGB(170, 0, 0)
     End If
     Call UpdateMapPos
+    g_game_state.state = e_state_gameplay_screen
     Exit Sub
 HandleUserCharIndexInServer_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCharIndexInServer", Erl)
@@ -2184,6 +2184,7 @@ Private Sub HandleCharacterCreate()
     Dim ParticulaFx   As Byte
     Dim appear        As Byte
     Dim group_index   As Integer
+    Dim NpcNum        As Integer
     charindex = Reader.ReadInt16()
     Body = Reader.ReadInt16()
     Head = Reader.ReadInt16()
@@ -2244,10 +2245,11 @@ Private Sub HandleCharacterCreate()
         .tipoUsuario = Reader.ReadInt8()
         .Team = Reader.ReadInt8()
         .banderaIndex = Reader.ReadInt8()
-        .AnimAtaque1 = Reader.ReadInt16()
-        .BodyOnLand = Reader.ReadInt16()
-        .BodyOnWater = Reader.ReadInt16()
-        .AnimAtaque2 = Reader.ReadInt16()
+         NpcNum = Reader.ReadInt16
+        .AnimAtaque1 = NpcData(NpcNum).LandAttackAnimation
+        .BodyOnLand = NpcData(NpcNum).Body
+        .BodyOnWater = NpcData(NpcNum).BodyOnWater
+        .AnimAtaque2 = NpcData(NpcNum).WaterAttackAnimation
         If Backpack > 0 Then
             .Backpack = BodyData(Backpack)
             .tmpBackPack = Backpack
@@ -3037,11 +3039,13 @@ Private Sub HandleCharAtaca()
     Dim danio       As Long
     Dim AnimAttack  As Integer
     Dim AnimAttack2 As Integer
+    Dim NpcNumber As Integer
     NpcIndex = Reader.ReadInt16()
     VictimIndex = Reader.ReadInt16()
     danio = Reader.ReadInt32()
-    AnimAttack = Reader.ReadInt16()
-    AnimAttack2 = Reader.ReadInt16()
+    NpcNumber = Reader.ReadInt16()
+    AnimAttack = NpcData(NpcNumber).LandAttackAnimation
+    AnimAttack2 = NpcData(NpcNumber).WaterAttackAnimation
     Dim oldWalk   As Grh
     Dim keepStart As Long
     With charlist(NpcIndex)
