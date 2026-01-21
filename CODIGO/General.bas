@@ -785,6 +785,7 @@ Sub Main()
     'Moving forward use only dycryptosys API Decompress_Data_B bytArr, InfoHead.lngFileSizeUncompressed
     Call CheckResources
     #If REMOTE_CLOSE Then
+        Call Recursos.LoadFonts
         Call DoLogin("", "", False)
         Call bot_main_loop
         End

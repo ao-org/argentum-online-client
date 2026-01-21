@@ -56,8 +56,8 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call SaveStringInFile("Authenticated with server OK", "remote_debug.txt")
             Case ServerPacketID.elogged
                 frmDebug.add_text_tracebox "Logged"
-                Dim dummy As Boolean
-                dummy = Reader.ReadBool
+                Dim res As Boolean
+                res = Reader.ReadBool
                 Call SaveStringInFile("Logged with character " & CharacterRemote, "remote_debug.txt")
                 InitiateShutdownProcess = True
                 ShutdownProcessTimer.start
