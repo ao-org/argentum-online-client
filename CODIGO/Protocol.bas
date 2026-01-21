@@ -4865,7 +4865,7 @@ Private Sub HandleBindKeys()
     If ChatGlobal = 1 Then
         frmMain.globalIcon.Picture = LoadInterface("globalapretado.bmp")
     Else
-        frmMain.CombateIcon.Picture = LoadInterface("global.bmp")
+        frmMain.globalIcon.Picture = LoadInterface("global.bmp")
     End If
     Exit Sub
 HandleBindKeys_Err:

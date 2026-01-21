@@ -68,6 +68,8 @@ Sub SaveConfig()
     Call SaveSetting("VIDEO", "ShowNameMapInRender", IIf(ShowNameMapInRender, 1, 0))
     Call SaveSetting("VIDEO", "ConfirmPetRelease", IIf(ConfirmPetRelease, 1, 0))
     Call SaveSetting("VIDEO", "ShowNothingInterestingMessage", IIf(ShowNothingInterestingMessage, 1, 0))
+    Call SaveSetting("VIDEO", "ChatCombate", IIf(ChatCombate, 1, 0))
+    Call SaveSetting("VIDEO", "ChatGlobal", IIf(ChatGlobal, 1, 0))
     Call SaveSetting("OPCIONES", "SensibilidadMouse", SensibilidadMouse)
     Call SaveSetting("OPCIONES", "DialogosClanes", IIf(DialogosClanes.Activo, 1, 0))
     Call SaveSetting("OPCIONES", "EquipmentIndicatorRedColor", RED_SHADER)
@@ -117,6 +119,8 @@ Sub LoadConfig()
     ShowNameMapInRender = GetSettingAsByte("VIDEO", "ShowNameMapInRender", 1)
     ConfirmPetRelease = GetSettingAsByte("VIDEO", "ConfirmPetRelease", 1)
     ShowNothingInterestingMessage = GetSettingAsByte("VIDEO", "ShowNothingInterestingMessage", 0)
+    ChatCombate = GetSettingAsByte("VIDEO", "ChatCombate", 1)
+    ChatGlobal = GetSettingAsByte("VIDEO", "ChatGlobal", 1)
     '------------------------------------------------------------------------------
     ' Configuration: VIDEO.NumTexRelease
     '
