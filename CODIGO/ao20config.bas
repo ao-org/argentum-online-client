@@ -67,6 +67,7 @@ Sub SaveConfig()
     Call SaveSetting("VIDEO", "ButtonsExpBar", IIf(ButtonsExpBar, 1, 0))
     Call SaveSetting("VIDEO", "ShowNameMapInRender", IIf(ShowNameMapInRender, 1, 0))
     Call SaveSetting("VIDEO", "ConfirmPetRelease", IIf(ConfirmPetRelease, 1, 0))
+    Call SaveSetting("VIDEO", "ShowNothingInterestingMessage", IIf(ShowNothingInterestingMessage, 1, 0))
     Call SaveSetting("OPCIONES", "SensibilidadMouse", SensibilidadMouse)
     Call SaveSetting("OPCIONES", "DialogosClanes", IIf(DialogosClanes.Activo, 1, 0))
     Call SaveSetting("OPCIONES", "EquipmentIndicatorRedColor", RED_SHADER)
@@ -115,6 +116,7 @@ Sub LoadConfig()
     ButtonsExpBar = GetSettingAsByte("VIDEO", "ButtonsExpBar", 1)
     ShowNameMapInRender = GetSettingAsByte("VIDEO", "ShowNameMapInRender", 1)
     ConfirmPetRelease = GetSettingAsByte("VIDEO", "ConfirmPetRelease", 1)
+    ShowNothingInterestingMessage = GetSettingAsByte("VIDEO", "ShowNothingInterestingMessage", 0)
     '------------------------------------------------------------------------------
     ' Configuration: VIDEO.NumTexRelease
     '
