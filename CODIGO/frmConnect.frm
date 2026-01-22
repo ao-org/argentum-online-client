@@ -326,8 +326,9 @@ Private Sub AuthSocket_Error(ByVal Number As Integer, _
         End Select
         
     #Else
-        frmDebug.add_text_tracbox "SERVIDOR OFFLINE"
+        frmDebug.add_text_tracebox "SERVIDOR OFFLINE"
         Call SaveStringInFile("AuthSocket_Error: " & Description, "remote_debug.txt")
+        prgRun = False
     #End If
 End Sub
 
