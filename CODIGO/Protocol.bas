@@ -3039,7 +3039,7 @@ Private Sub HandleCharAtaca()
     Dim danio       As Long
     Dim AnimAttack  As Integer
     Dim AnimAttack2 As Integer
-    Dim NpcNumber As Integer
+    Dim NPCNumber   As Integer
     NpcIndex = Reader.ReadInt16()
     VictimIndex = Reader.ReadInt16()
     danio = Reader.ReadInt32()
@@ -3049,12 +3049,39 @@ Private Sub HandleCharAtaca()
     Dim oldWalk   As Grh
     Dim keepStart As Long
     With charlist(NpcIndex)
+    
         If AnimAttack > 0 Then
             oldWalk = .Body.Walk(.Heading)
             .AnimatingBody = AnimAttack
-            If AnimAttack2 > 0 And MapData(.Pos.x, .Pos.y).Trigger = 8 Then
-                .AnimatingBody = AnimAttack2
+            .Idle = False
+            .Body = BodyData(.AnimatingBody)
+            .Body.Walk(.Heading).Loops = 0
+            If oldWalk.started > 0 And .Moving Then
+                keepStart = SyncGrhPhase(oldWalk, .Body.Walk(.Heading).GrhIndex)
+            Else
+                keepStart = FrameTime
             End If
+            .Body.Walk(.Heading).started = keepStart
+            If Not .MovArmaEscudo Then
+                If .Arma.WeaponWalk(.Heading).GrhIndex <> 0 Then
+                    .Arma.WeaponWalk(.Heading).Loops = 0
+                    .Arma.WeaponWalk(.Heading).started = .Body.Walk(.Heading).started
+                End If
+                If .Escudo.ShieldWalk(.Heading).GrhIndex <> 0 Then
+                    .Escudo.ShieldWalk(.Heading).Loops = 0
+                    .Escudo.ShieldWalk(.Heading).started = .Body.Walk(.Heading).started
+                End If
+            End If
+        Else
+            If Not .Moving Then
+                .MovArmaEscudo = True
+                .Arma.WeaponWalk(.Heading).started = FrameTime
+                .Arma.WeaponWalk(.Heading).Loops = 0
+            End If
+        End If
+        If AnimAttack2 > 0 And MapData(.Pos.x, .Pos.y).Trigger = 8 Then
+            oldWalk = .Body.Walk(.Heading)
+            .AnimatingBody = AnimAttack2
             .Idle = False
             .Body = BodyData(.AnimatingBody)
             .Body.Walk(.Heading).Loops = 0
