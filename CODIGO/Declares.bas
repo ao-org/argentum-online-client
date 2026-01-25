@@ -430,6 +430,7 @@ Public InfoItemsEnRender           As Boolean
 Public ButtonsExpBar               As Byte
 Public ShowNameMapInRender         As Byte
 Public ConfirmPetRelease           As Byte
+Public ShowNothingInterestingMessage As Byte
 Public InvertirSonido              As Byte
 Public VolMusic                    As Long
 Public VolFX                       As Long

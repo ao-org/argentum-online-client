@@ -319,7 +319,7 @@ Begin VB.Form frmOpciones
          Left            =   5400
          Style           =   2  'Dropdown List
          TabIndex        =   24
-         Top             =   720
+         Top             =   1500
          Width           =   1335
       End
       Begin VB.ComboBox cboLuces 
@@ -328,8 +328,14 @@ Begin VB.Form frmOpciones
          Left            =   5400
          List            =   "frmOpciones.frx":016B
          TabIndex        =   10
-         Top             =   1080
+         Top             =   1860
          Width           =   1575
+      End
+      Begin VB.Image chkShowNothingInterestingMessage 
+         Height          =   255
+         Left            =   3870
+         Top             =   690
+         Width           =   255
       End
       Begin VB.Image chkConfirmPetRelease 
          Height          =   255
@@ -357,7 +363,7 @@ Begin VB.Form frmOpciones
          Height          =   195
          Left            =   4320
          TabIndex        =   23
-         Top             =   1080
+         Top             =   1860
          Width           =   1155
       End
       Begin VB.Label lbl_VRAM 
@@ -367,7 +373,7 @@ Begin VB.Form frmOpciones
          Height          =   255
          Left            =   4080
          TabIndex        =   22
-         Top             =   720
+         Top             =   1500
          Width           =   1335
       End
       Begin VB.Image num_comp_inv 
@@ -582,6 +588,22 @@ Private Sub chkConfirmPetRelease_Click()
     Exit Sub
 chkConfirmPetRelease_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkConfirmPetRelease_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub chkShowNothingInterestingMessage_Click()
+On Error GoTo chkShowNothingInterestingMessage_Click_Err
+    If ShowNothingInterestingMessage = 0 Then
+        ShowNothingInterestingMessage = 1
+        chkShowNothingInterestingMessage.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        ShowNothingInterestingMessage = 0
+        chkShowNothingInterestingMessage.Picture = Nothing
+    End If
+    Call WriteMacroPos
+    Exit Sub
+chkShowNothingInterestingMessage_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkShowNothingInterestingMessage_Click", Erl)
     Resume Next
 End Sub
 
@@ -1287,6 +1309,11 @@ Public Sub Init()
         chkConfirmPetRelease.Picture = LoadInterface("check-amarillo.bmp")
     Else
         chkConfirmPetRelease.Picture = Nothing
+    End If
+    If ShowNothingInterestingMessage = 1 Then
+        chkShowNothingInterestingMessage.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        chkShowNothingInterestingMessage.Picture = Nothing
     End If
     scrVolume.value = max(scrVolume.min, min(scrVolume.max, VolFX))
     scrVolumeSteps.value = max(scrVolumeSteps.min, min(scrVolumeSteps.max, VolSteps))

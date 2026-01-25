@@ -560,6 +560,7 @@ Private Sub HandleLogged()
     frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
     frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-on.bmp")
     Call frmOpciones.ToggleExperienceButtons
+    Call WriteMacroPos
     SeguroParty = True
     SeguroClanX = True
     SeguroResuX = True
@@ -4864,7 +4865,7 @@ Private Sub HandleBindKeys()
     If ChatGlobal = 1 Then
         frmMain.globalIcon.Picture = LoadInterface("globalapretado.bmp")
     Else
-        frmMain.CombateIcon.Picture = LoadInterface("global.bmp")
+        frmMain.globalIcon.Picture = LoadInterface("global.bmp")
     End If
     Exit Sub
 HandleBindKeys_Err:

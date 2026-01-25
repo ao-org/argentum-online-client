@@ -2611,6 +2611,7 @@ Public Sub WriteMacroPos()
     Call Writer.WriteInt16(ClientPacketID.eMacroPossent)
     Call Writer.WriteInt8(ChatCombate)
     Call Writer.WriteInt8(ChatGlobal)
+    Call Writer.WriteInt8(ShowNothingInterestingMessage)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
