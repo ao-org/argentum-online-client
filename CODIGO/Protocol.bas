@@ -2416,6 +2416,7 @@ Private Sub HandleCharacterChange()
         Dim hadMovArmaEscudo As Boolean: hadMovArmaEscudo = .MovArmaEscudo
         Dim keepStartIdle    As Long
         Dim newGi            As Long
+        Dim idleBodyIndex    As Integer
         ' ============================================
         ' Body
         TempInt = Reader.ReadInt16()
@@ -2490,7 +2491,6 @@ Private Sub HandleCharacterChange()
                     .Body.Walk(.Heading).started = 0
                 Else
                     ' Idle con anim: prefer amphibian idle body
-                    Dim idleBodyIndex As Integer
                     idleBodyIndex = GetAmphibianIdleBody(charlist(charindex))
                     If idleBodyIndex > 0 Then
                         newGi = BodyData(idleBodyIndex).Walk(.Heading).GrhIndex

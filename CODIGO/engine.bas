@@ -1301,6 +1301,8 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     Dim MostrarNombre    As Boolean
     Dim TempGrh          As Grh
     Dim terrainHeight    As Integer
+    Dim idleBodyIndex    As Integer
+    Dim postIdleBody     As Integer
     With charlist(charindex)
         If .Heading = 0 Then Exit Sub
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
@@ -1384,7 +1386,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             If .Body.Walk(.Heading).started = 0 Then
                 .AnimatingBody = 0
                 .Idle = True
-                Dim idleBodyIndex As Integer
                 idleBodyIndex = GetAmphibianIdleBody(charlist(charindex))
                 .Body = BodyData(idleBodyIndex)
                 If .Body.AnimateOnIdle <> 0 Then
@@ -1421,7 +1422,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         .Arma.WeaponWalk(.Heading).started = 0
                         .Escudo.ShieldWalk(.Heading).started = 0
                     End If
-                    Dim idleBodyIndex As Integer
                     idleBodyIndex = GetAmphibianIdleBody(charlist(charindex))
                     If idleBodyIndex > 0 And idleBodyIndex <> .Body.BodyIndex Then
                         .Body = BodyData(idleBodyIndex)
@@ -1433,7 +1433,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         End If
         ' --- Safety net: re-apply body selection before autostart ---
         If .AnimatingBody = 0 Then
-            Dim postIdleBody As Integer
             postIdleBody = GetAmphibianIdleBody(charlist(charindex))
             If postIdleBody > 0 And postIdleBody <> .Body.BodyIndex Then
                 .Body = BodyData(postIdleBody)
