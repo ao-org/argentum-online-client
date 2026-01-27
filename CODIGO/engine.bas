@@ -637,7 +637,7 @@ Public Sub Draw_GrhFX(ByRef Grh As Grh, _
             If num > 1 Then
                 ' Unificado: SIN 0.5
                 Elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
-                ' Tu contador de animación (con clamp a >= 0)
+                ' Tu contador de animaciï¿½n (con clamp a >= 0)
                 If Grh.AnimacionContador > 0 Then
                     Grh.AnimacionContador = Grh.AnimacionContador - Elapsed
                     If Grh.AnimacionContador < 0 Then Grh.AnimacionContador = 0
@@ -912,7 +912,7 @@ Public Function calcular_direccion(ByRef dir_vector As Position) As Long
 End Function
 
 Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, ByVal PixelOffsetY As Integer)
-    'calculo el pixel en el que está cada usuario y
+    'calculo el pixel en el que estï¿½ cada usuario y
     Dim target_x As Long
     Dim target_y As Long
     'target_charindex in pixels on render:
@@ -934,7 +934,7 @@ Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Inte
     'If (RandomNumber(1, 70) = 1) Then direccion = Not direccion
     angle = angle + RandomNumber(2, 10) * IIf(direccion, 1, -1) / 1500 * timerElapsedTime
     If dist_x > 40 Then
-        mascota.PosX = mascota.PosX + (dir_vector.x / (frmMain.renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleración.
+        mascota.PosX = mascota.PosX + (dir_vector.x / (frmMain.renderer.ScaleWidth / 2)) * timerElapsedTime / 1000 * dist * 3  ' 256 como constante no le da aceleraciï¿½n.
         isAnimated = 1
     End If
     mascota.PosX = mascota.PosX - LastOffset2X
@@ -1308,7 +1308,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
         If Not .Moving And Not .TranslationActive And .Idle And .scrollDirectionX = 0 And .scrollDirectionY = 0 And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
             If .Body.AnimateOnIdle = 0 Then
-                ' Quieto SIN animación: congelar la serie de walk en frame estético
+                ' Quieto SIN animaciï¿½n: congelar la serie de walk en frame estï¿½tico
                 .Body.Walk(.Heading).Loops = 0
                 .Body.Walk(.Heading).started = 0
                 If Not .MovArmaEscudo Then
@@ -1316,17 +1316,17 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     .Escudo.ShieldWalk(.Heading).started = 0
                 End If
             Else
-                ' Quieto CON animación: disparar (o preservar) idle una sola vez
+                ' Quieto CON animaciï¿½n: disparar (o preservar) idle una sola vez
                 If .Body.Walk(.Heading).started = 0 Or .Body.Walk(.Heading).Loops <> INFINITE_LOOPS Then
                     Call SetCharIdle(charlist(charindex), True)
                 End If
             End If
             If .Backpack.AnimateOnIdle = 0 And .Backpack.IdleBody = 0 Then
-                ' Quieto SIN animación: congelar la serie de walk en frame estético
+                ' Quieto SIN animaciï¿½n: congelar la serie de walk en frame estï¿½tico
                 .Backpack.Walk(.Heading).Loops = 0
                 .Backpack.Walk(.Heading).started = 0
             Else
-                ' Quieto CON animación: disparar (o preservar) idle una sola vez
+                ' Quieto CON animaciï¿½n: disparar (o preservar) idle una sola vez
                 If .Backpack.Walk(.Heading).started = 0 Or .Backpack.Walk(.Heading).Loops <> INFINITE_LOOPS Then
                     Call SetCharIdle(charlist(charindex), False)
                 End If
@@ -1368,7 +1368,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             If .scrollDirectionX = 0 And .scrollDirectionY = 0 Then
                 .Moving = False
-                .Idle = True                 ' marcar intención de idle (el guard de arriba decide animación/estético)
+                .Idle = True                 ' marcar intenciï¿½n de idle (el guard de arriba decide animaciï¿½n/estï¿½tico)
             End If
         ElseIf .TranslationActive Then
             Dim ElapsedTime        As Long
@@ -1385,23 +1385,22 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         ElseIf .AnimatingBody Then
             If .Body.Walk(.Heading).started = 0 Then
                 .AnimatingBody = 0
-                ' Volver a estado Idle inmediatamente
                 .Idle = True
-                If .iBody Then
-                    .Body = BodyData(.iBody)
+                Dim idleBodyIndex As Integer
+                idleBodyIndex = GetAmphibianIdleBody(charlist(charindex))
+                .Body = BodyData(idleBodyIndex)
+                If .Body.AnimateOnIdle <> 0 Then
+                    .Body.Walk(.Heading).Loops = INFINITE_LOOPS
                     .Body.Walk(.Heading).started = FrameTime
                 Else
-                    .Body = BodyData(0)
-                End If
-                .Body.Walk(.Heading).Loops = -1
-                If .Idle Or .Navegando Then
-                    .Body.Walk(.Heading).started = FrameTime
+                    .Body.Walk(.Heading).Loops = 0
+                    .Body.Walk(.Heading).started = 0
                 End If
             End If
         ElseIf Not .Idle Then
             If .Muerto Then
                 If charindex <> UserCharIndex Then
-                    ' Si no somos nosotros, esperamos un intervalo antes de poner la animación idle para evitar saltos
+                    ' Si no somos nosotros, esperamos un intervalo antes de poner la animaciï¿½n idle para evitar saltos
                     If FrameTime - .LastStep > TIME_CASPER_IDLE Then
                         .Body = BodyData(CASPER_BODY_IDLE)
                         .Body.Walk(.Heading).started = FrameTime
@@ -1414,7 +1413,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             Else
                 'Stop animations
-                If .Navegando = False Or UserNadandoTrajeCaucho = True Then
+                If (.Navegando = False) Or .EsNpc Or UserNadandoTrajeCaucho = True Then
                     If .Body.AnimateOnIdle = 0 Then
                         .Body.Walk(.Heading).started = 0
                     ElseIf .Body.Walk(.Heading).started = 0 Then
@@ -1424,22 +1423,24 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         .Arma.WeaponWalk(.Heading).started = 0
                         .Escudo.ShieldWalk(.Heading).started = 0
                     End If
-                    If .Body.IdleBody > 0 Then
-                        .Body = BodyData(.Body.IdleBody)
+                    Dim idleBodyIndex As Integer
+                    idleBodyIndex = GetAmphibianIdleBody(charlist(charindex))
+                    If idleBodyIndex > 0 And idleBodyIndex <> .Body.BodyIndex Then
+                        .Body = BodyData(idleBodyIndex)
                         .Body.Walk(.Heading).started = FrameTime
                     End If
                 End If
             End If
             .Idle = True
         End If
-        ' --- AUTOSTART WALK ANIMATION SI ESTÁ MOVIÉNDOSE ---
+        ' --- AUTOSTART WALK ANIMATION SI ESTï¿½ MOVIï¿½NDOSE ---
         If (.Moving Or .TranslationActive) Then
             ' Cuerpo: si no estaba animando, arrancar y loop infinito
             If .Body.Walk(.Heading).started = 0 Then
                 .Body.Walk(.Heading).started = FrameTime
                 .Body.Walk(.Heading).Loops = INFINITE_LOOPS
             End If
-            ' Arma/Escudo: en fase con el cuerpo si no venían animando
+            ' Arma/Escudo: en fase con el cuerpo si no venï¿½an animando
             If .Arma.WeaponWalk(.Heading).GrhIndex <> 0 Then
                 If .Arma.WeaponWalk(.Heading).started = 0 Then
                     .Arma.WeaponWalk(.Heading).started = .Body.Walk(.Heading).started
@@ -1455,6 +1456,14 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             If .Backpack.Walk(.Heading).started = 0 Then
                 .Backpack.Walk(.Heading).started = FrameTime
                 .Body.Walk(.Heading).Loops = INFINITE_LOOPS
+            End If
+        End If
+        ' Safety net: re-apply amphibian body selection before autostart
+        If .AnimatingBody = 0 Then
+            Dim postIdleBody As Integer
+            postIdleBody = GetAmphibianIdleBody(charlist(charindex))
+            If postIdleBody > 0 And postIdleBody <> .Body.BodyIndex Then
+                .Body = BodyData(postIdleBody)
             End If
         End If
         ' --- FIN AUTOSTART ---
@@ -1845,7 +1854,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 charlist(charindex).MaxBarTime = 0
             End If
         End If
-        ' Meditación
+        ' Meditaciï¿½n
         If .ActiveAnimation.PlaybackState <> Stopped Then
             Call UpdateAnimation(.ActiveAnimation)
             Call Draw_Animation(.ActiveAnimation, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 4 + .Body.BodyOffset.y, 1, color)
@@ -1877,6 +1886,96 @@ Char_Render_Err:
     Resume Next
 End Sub
 
+Public Function GetAmphibianIdleBody(ByRef c As Char) As Integer
+    On Error Resume Next
+    ' Amphibian NPC on shallow water trigger (8) -> prefer water idle
+    If c.EsNpc Then
+        If MapData(c.Pos.x, c.Pos.y).Trigger = 8 And c.bodyOnWater > 0 Then
+            Dim waterIdle As Integer
+            waterIdle = BodyData(c.bodyOnWater).IdleBody
+            If waterIdle > 0 Then
+                GetAmphibianIdleBody = waterIdle
+                Exit Function
+            Else
+                ' No idle configured on water body -> stay on water walking body
+                GetAmphibianIdleBody = c.bodyOnWater
+                Exit Function
+            End If
+        End If
+    End If
+    ' Default: use current body's IdleBody if any
+    If c.Body.IdleBody > 0 Then
+        GetAmphibianIdleBody = c.Body.IdleBody
+        Exit Function
+    End If
+    ' Fallback
+    GetAmphibianIdleBody = c.Body.BodyIndex
+End Function
+
+Public Sub ApplyAmphibianNpcBodies(ByRef c As Char)
+    On Error Resume Next
+    ' Never override during attack animation
+    If c.AnimatingBody > 0 Or c.Muerto Then Exit Sub
+    Dim onShallowWater As Boolean
+    onShallowWater = (MapData(c.Pos.x, c.Pos.y).Trigger = 8)
+    If c.EsNpc And onShallowWater And c.bodyOnWater > 0 Then
+        If c.Moving Or c.TranslationActive Then
+            If c.Body.BodyIndex <> c.bodyOnWater Then
+                Dim oldWalk As Grh: oldWalk = c.Body.Walk(c.Heading)
+                c.Body = BodyData(c.bodyOnWater)
+                c.Body.Walk(c.Heading).Loops = INFINITE_LOOPS
+                c.Body.Walk(c.Heading).started = IIf(oldWalk.started > 0, _
+                    SyncGrhPhase(oldWalk, c.Body.Walk(c.Heading).GrhIndex), FrameTime)
+            Else
+                c.Body.Walk(c.Heading).Loops = INFINITE_LOOPS
+                If c.Body.Walk(c.Heading).started = 0 Then c.Body.Walk(c.Heading).started = FrameTime
+            End If
+        Else
+            Dim waterIdle As Integer: waterIdle = BodyData(c.bodyOnWater).IdleBody
+            If waterIdle > 0 Then
+                Dim prevWalk As Grh: prevWalk = c.Body.Walk(c.Heading)
+                c.Body = BodyData(waterIdle)
+                c.Body.Walk(c.Heading).Loops = INFINITE_LOOPS
+                c.Body.Walk(c.Heading).started = IIf(prevWalk.started > 0, _
+                    SyncGrhPhase(prevWalk, c.Body.Walk(c.Heading).GrhIndex), FrameTime)
+            Else
+                If c.Body.AnimateOnIdle <> 0 Then
+                    c.Body.Walk(c.Heading).Loops = INFINITE_LOOPS
+                    If c.Body.Walk(c.Heading).started = 0 Then c.Body.Walk(c.Heading).started = FrameTime
+                Else
+                    c.Body.Walk(c.Heading).Loops = 0
+                    c.Body.Walk(c.Heading).started = 0
+                End If
+            End If
+        End If
+    Else
+        ' Land or non-amphibian: keep base body consistent
+        If c.iBody > 0 And c.Body.BodyIndex <> c.iBody Then
+            Dim prev As Grh: prev = c.Body.Walk(c.Heading)
+            c.Body = BodyData(c.iBody)
+            If c.Moving Or c.TranslationActive Then
+                c.Body.Walk(c.Heading).Loops = INFINITE_LOOPS
+                c.Body.Walk(c.Heading).started = IIf(prev.started > 0, _
+                    SyncGrhPhase(prev, c.Body.Walk(c.Heading).GrhIndex), FrameTime)
+            Else
+                If c.Body.AnimateOnIdle = 0 Then
+                    c.Body.Walk(c.Heading).Loops = 0
+                    c.Body.Walk(c.Heading).started = 0
+                ElseIf c.Body.Walk(c.Heading).started = 0 Then
+                    c.Body.Walk(c.Heading).Loops = INFINITE_LOOPS
+                    c.Body.Walk(c.Heading).started = IIf(prev.started > 0, _
+                        SyncGrhPhase(prev, c.Body.Walk(c.Heading).GrhIndex), FrameTime)
+                End If
+            End If
+        Else
+            If c.Moving Or c.TranslationActive Then
+                c.Body.Walk(c.Heading).Loops = INFINITE_LOOPS
+                If c.Body.Walk(c.Heading).started = 0 Then c.Body.Walk(c.Heading).started = FrameTime
+            End If
+        End If
+    End If
+End Sub
+
 Public Sub SetCharIdle(ByRef c As Char, Optional ByVal force As Boolean = True)
     Dim keepStarted As Long
     ' Pone anim de quieto. Si AnimateOnIdle=0, NO anima (frame fijo).
@@ -1884,7 +1983,11 @@ Public Sub SetCharIdle(ByRef c As Char, Optional ByVal force As Boolean = True)
         If .Muerto Then
             .Body = BodyData(CASPER_BODY_IDLE)
         Else
-            If .Body.IdleBody > 0 Then
+            Dim idleBodyIndex As Integer
+            idleBodyIndex = GetAmphibianIdleBody(c)
+            If idleBodyIndex > 0 Then
+                .Body = BodyData(idleBodyIndex)
+            ElseIf .Body.IdleBody > 0 Then
                 .Body = BodyData(.Body.IdleBody)
             End If
             If .Backpack.IdleBody > 0 Then
@@ -1896,7 +1999,7 @@ Public Sub SetCharIdle(ByRef c As Char, Optional ByVal force As Boolean = True)
             .Escudo.ShieldWalk(.Heading).started = 0
         End If
         If .Backpack.AnimateOnIdle = 0 Then
-            ' Parado sin animación
+            ' Parado sin animaciï¿½n
             .Backpack.Walk(.Heading).Loops = 0
             .Backpack.Walk(.Heading).started = 0
         Else
@@ -2120,7 +2223,7 @@ End Function
 
 Public Sub DrawMainInventory()
     On Error GoTo DrawMainInventory_Err
-    ' Sólo dibujamos cuando es necesario
+    ' Sï¿½lo dibujamos cuando es necesario
     'If Not frmMain.Inventario.NeedsRedraw Then Exit Sub
     Dim InvRect As RECT
     InvRect.Left = 0
@@ -2145,7 +2248,7 @@ End Sub
 
 Public Sub DrawInterfaceComerciar()
     On Error GoTo DrawInterfaceComerciar_Err
-    ' Sólo dibujamos cuando es necesario
+    ' Sï¿½lo dibujamos cuando es necesario
     If Not frmComerciar.InvComNpc.NeedsRedraw And Not frmComerciar.InvComUsu.NeedsRedraw Then Exit Sub
     Dim InvRect As RECT
     InvRect.Left = 0
@@ -2161,19 +2264,19 @@ Public Sub DrawInterfaceComerciar()
     Call frmComerciar.InvComNpc.DrawInventory
     ' Dibujamos items del usuario
     Call frmComerciar.InvComUsu.DrawInventory
-    ' Dibujamos "ambos" items arrastrados (aunque sólo puede estar uno activo a la vez)
+    ' Dibujamos "ambos" items arrastrados (aunque sï¿½lo puede estar uno activo a la vez)
     Call frmComerciar.InvComNpc.DrawDraggedItem
     Call frmComerciar.InvComUsu.DrawDraggedItem
-    ' Me fijo qué inventario está seleccionado
+    ' Me fijo quï¿½ inventario estï¿½ seleccionado
     Dim CurrentInventory As clsGrapchicalInventory
     Dim cantidad         As Integer
     If frmComerciar.InvComNpc.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComNpc
-        ' Al comprar, calculamos el valor según la cantidad exacta que ingresó
+        ' Al comprar, calculamos el valor segï¿½n la cantidad exacta que ingresï¿½
         cantidad = val(frmComerciar.cantidad.text)
     ElseIf frmComerciar.InvComUsu.SelectedItem > 0 Then
         Set CurrentInventory = frmComerciar.InvComUsu
-        ' Al vender, calculamos el valor según el min(cantidad_ingresada, cantidad_items)
+        ' Al vender, calculamos el valor segï¿½n el min(cantidad_ingresada, cantidad_items)
         cantidad = min(val(frmComerciar.cantidad.text), CurrentInventory.Amount(CurrentInventory.SelectedItem))
     End If
     ' Si hay alguno seleccionado
@@ -2215,7 +2318,7 @@ End Sub
 
 Public Sub DrawInterfaceBovedaCuenta()
     On Error GoTo DrawInterfaceBoveda_Err
-    ' Sólo dibujamos cuando es necesario
+    ' Sï¿½lo dibujamos cuando es necesario
     If Not frmBancoCuenta.InvBovedaCuenta.NeedsRedraw And Not frmBancoCuenta.InvBankUsuCuenta.NeedsRedraw Then Exit Sub
     Dim InvRect As RECT
     InvRect.Left = 0
@@ -2225,16 +2328,16 @@ Public Sub DrawInterfaceBovedaCuenta()
     RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
-    ' Dibujamos el fondo de la bóveda
+    ' Dibujamos el fondo de la bï¿½veda
     Call Draw_GrhIndex(838, 0, 0)
-    ' Dibujamos items de la bóveda
+    ' Dibujamos items de la bï¿½veda
     Call frmBancoCuenta.InvBovedaCuenta.DrawInventory
     ' Dibujamos items del usuario
     Call frmBancoCuenta.InvBankUsuCuenta.DrawInventory
-    ' Dibujamos "ambos" items arrastrados (aunque sólo puede estar uno activo a la vez)
+    ' Dibujamos "ambos" items arrastrados (aunque sï¿½lo puede estar uno activo a la vez)
     Call frmBancoCuenta.InvBovedaCuenta.DrawDraggedItem
     Call frmBancoCuenta.InvBankUsuCuenta.DrawDraggedItem
-    ' Me fijo qué inventario está seleccionado
+    ' Me fijo quï¿½ inventario estï¿½ seleccionado
     Dim CurrentInventory As clsGrapchicalInventory
     If frmBancoCuenta.InvBovedaCuenta.SelectedItem > 0 Then
         Set CurrentInventory = frmBancoCuenta.InvBovedaCuenta
@@ -2277,7 +2380,7 @@ End Sub
 
 Public Sub DrawInterfaceBoveda()
     On Error GoTo DrawInterfaceBoveda_Err
-    ' Sólo dibujamos cuando es necesario
+    ' Sï¿½lo dibujamos cuando es necesario
     If Not frmBancoObj.InvBoveda.NeedsRedraw And Not frmBancoObj.InvBankUsu.NeedsRedraw Then Exit Sub
     Dim InvRect As RECT
     InvRect.Left = 0
@@ -2287,16 +2390,16 @@ Public Sub DrawInterfaceBoveda()
     RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
-    ' Dibujamos el fondo de la bóveda
+    ' Dibujamos el fondo de la bï¿½veda
     Call Draw_GrhIndex(838, 0, 0)
-    ' Dibujamos items de la bóveda
+    ' Dibujamos items de la bï¿½veda
     Call frmBancoObj.InvBoveda.DrawInventory
     ' Dibujamos items del usuario
     Call frmBancoObj.InvBankUsu.DrawInventory
-    ' Dibujamos "ambos" items arrastrados (aunque sólo puede estar uno activo a la vez)
+    ' Dibujamos "ambos" items arrastrados (aunque sï¿½lo puede estar uno activo a la vez)
     Call frmBancoObj.InvBoveda.DrawDraggedItem
     Call frmBancoObj.InvBankUsu.DrawDraggedItem
-    ' Me fijo qué inventario está seleccionado
+    ' Me fijo quï¿½ inventario estï¿½ seleccionado
     Dim CurrentInventory As clsGrapchicalInventory
     If frmBancoObj.InvBoveda.SelectedItem > 0 Then
         Set CurrentInventory = frmBancoObj.InvBoveda
@@ -2339,7 +2442,7 @@ End Sub
 
 Public Sub DrawInterfaceKeys()
     On Error GoTo DrawInterfaceKeys_Err
-    ' Sólo dibujamos cuando es necesario
+    ' Sï¿½lo dibujamos cuando es necesario
     If Not FrmKeyInv.InvKeys.NeedsRedraw Then Exit Sub
     Dim InvRect As RECT
     InvRect.Left = 0
@@ -2349,7 +2452,7 @@ Public Sub DrawInterfaceKeys()
     RenderCullingRect = InvRect
     ' Comenzamos la escena
     Call Engine_BeginScene
-    ' Dibujamos el fondo de la bóveda
+    ' Dibujamos el fondo de la bï¿½veda
     'Call Draw_GrhIndex(838, 0, 0)
     ' Dibujamos llaves
     Call FrmKeyInv.InvKeys.DrawInventory
@@ -2364,7 +2467,7 @@ End Sub
 
 Public Sub DrawInventoryComercio()
     On Error GoTo DrawInventorysComercio_Err
-    ' Sólo dibujamos cuando es necesario
+    ' Sï¿½lo dibujamos cuando es necesario
     If Not frmComerciarUsu.InvUser.NeedsRedraw Then Exit Sub
     Dim InvRect As RECT
     InvRect.Left = 0
@@ -2389,7 +2492,7 @@ Public Sub DrawInventorySkins()
 
 Dim InvRect                     As RECT
 
-    ' Sólo dibujamos cuando es necesario
+    ' Sï¿½lo dibujamos cuando es necesario
     On Error GoTo DrawInventorySkins_Error
 
     If Not frmSkins.InvSkins.NeedsRedraw Then Exit Sub
@@ -2422,7 +2525,7 @@ End Sub
 
 Public Sub DrawInventoryUserComercio()
     On Error GoTo DrawInventoryUserComercio_Err
-    ' Sólo dibujamos cuando es necesario
+    ' Sï¿½lo dibujamos cuando es necesario
     If Not frmComerciarUsu.InvUserSell.NeedsRedraw Then Exit Sub
     Dim InvRect As RECT
     InvRect.Left = 0
@@ -2445,7 +2548,7 @@ End Sub
 
 Public Sub DrawInventoryOtherComercio()
     On Error GoTo DrawInventoryOtherComercio_Err
-    ' Sólo dibujamos cuando es necesario
+    ' Sï¿½lo dibujamos cuando es necesario
     If Not frmComerciarUsu.InvOtherSell.NeedsRedraw Then Exit Sub
     Dim InvRect As RECT
     InvRect.Left = 0
@@ -2468,7 +2571,7 @@ End Sub
 
 Public Sub DrawInterfaceCrafting()
     On Error GoTo DrawInterfaceBoveda_Err
-    ' Sólo dibujamos cuando es necesario
+    ' Sï¿½lo dibujamos cuando es necesario
     If Not frmCrafteo.InvCraftUser.NeedsRedraw And Not frmCrafteo.InvCraftItems.NeedsRedraw And Not frmCrafteo.InvCraftCatalyst.NeedsRedraw Then Exit Sub
     Dim InvRect As RECT
     InvRect.Left = 0
@@ -2494,7 +2597,7 @@ Public Sub DrawInterfaceCrafting()
     Else
         Call Draw_GrhIndex(frmCrafteo.TipoGrhIndex, 100, 15)
     End If
-    ' Dibujamos los items arrastrados (aunque sólo puede estar uno activo a la vez)
+    ' Dibujamos los items arrastrados (aunque sï¿½lo puede estar uno activo a la vez)
     Call frmCrafteo.InvCraftUser.DrawDraggedItem
     Call frmCrafteo.InvCraftItems.DrawDraggedItem
     Call frmCrafteo.InvCraftCatalyst.DrawDraggedItem
@@ -2547,7 +2650,7 @@ Public Sub Grh_Render_Advance(ByRef Grh As Grh, _
         End If
     End If
     If Not OverlapRect(RenderCullingRect, screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight) Then Exit Sub
-    ' Dibujar con escala Width/Height y el ángulo del Grh
+    ' Dibujar con escala Width/Height y el ï¿½ngulo del Grh
     Call Batch_Textured_Box_Advance(screen_x, screen_y, GrhData(grh_index).pixelWidth, GrhData(grh_index).pixelHeight, GrhData(grh_index).sX, GrhData(grh_index).sY, GrhData( _
             grh_index).FileNum, Width, Height, rgb_list, alpha_blend, Grh.angle)
     Exit Sub
@@ -2889,7 +2992,7 @@ Public Sub RenderUICrearPJ()
     Call renderAttributesColors(atributeValue, 305 + OffX, 473 + Offy) ' Atributo Inteligencia
     atributeValue = val(frmCrearPersonaje.lbConstitucion.Caption) + val(frmCrearPersonaje.modConstitucion.Caption)
     Engine_Text_Render JsonLanguage.Item("MENSAJE_567"), 185 + OffX, 500 + Offy, COLOR_WHITE, , True
-    Call renderAttributesColors(atributeValue, 305 + OffX, 503 + Offy) ' Atributo Constitución
+    Call renderAttributesColors(atributeValue, 305 + OffX, 503 + Offy) ' Atributo Constituciï¿½n
     atributeValue = val(frmCrearPersonaje.lbCarisma.Caption) + val(frmCrearPersonaje.modCarisma.Caption)
     Engine_Text_Render JsonLanguage.Item("MENSAJE_568"), 185 + OffX, 530 + Offy, COLOR_WHITE, , True
     Call renderAttributesColors(atributeValue, 305 + OffX, 533 + Offy) ' Atributo Carisma
@@ -3203,7 +3306,7 @@ Public Sub Terminate_Index(ByVal effect_Index As Integer)
     '
     ' @ Destruye un indice del array
     Dim clear_Index As Effect_Type
-    'Si es un slot válido
+    'Si es un slot vï¿½lido
     If (effect_Index <> 0) And (effect_Index <= UBound(Effect())) Then
         Effect(effect_Index) = clear_Index
     End If
@@ -3238,7 +3341,7 @@ Public Function Effect_Begin(ByVal Fx_Index As Integer, _
             .ViajeChar = Emisor
             .DestinoChar = receptor
             .wav = wav
-            'Explosión?
+            'Explosiï¿½n?
             If (explosion_FX_Index <> 0) And (Fx = 0) Then
                 .End_Effect = explosion_FX_Index
                 .End_Loops = explosion_FX_Loops
@@ -3286,7 +3389,7 @@ Public Function Effect_BeginXY(ByVal Fx_Index As Integer, _
             .DestX = DestinoX
             .DesyY = Destinoy
             .wav = wav
-            'Explosión?
+            'Explosiï¿½n?
             If (explosion_FX_Index <> 0) And (Fx = 0) Then
                 .End_Effect = explosion_FX_Index
                 .End_Loops = explosion_FX_Loops
@@ -3351,16 +3454,16 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 .Viaje_Y = Get_PixelY_Of_XY(.DesyY) - 32
             End If
         End If
-        'Actualiza el ángulo.
+        'Actualiza el ï¿½ngulo.
         target_Angle = Engine_GetAngle(.Now_X, .Now_Y, CInt(.Viaje_X), CInt(.Viaje_Y))
-        'Actualiza la posición del efecto.
+        'Actualiza la posiciï¿½n del efecto.
         .Now_X = (.Now_X + Sin(target_Angle * DegreeToRadian) * .ViajeSpeed * timerTicksPerFrame * 9)
         .Now_Y = (.Now_Y - Cos(target_Angle * DegreeToRadian) * .ViajeSpeed * timerTicksPerFrame * 9)
-        'Si hay posición dibuja.
+        'Si hay posiciï¿½n dibuja.
         If (.Now_X <> 0) And (.Now_Y <> 0) Then
             ' Call DDrawTransGrhtoSurface(.FX_Grh, .Now_X, .Now_Y, 1, 1)
             Call Particle_Group_Render(spell_particle, .Now_X, .Now_Y)
-            'Check si terminó.
+            'Check si terminï¿½.
             ' If (.FX_Grh.Started = 0) Then .Fx_Index = 0: .Slot_Used = False
             If Abs(CInt(.Viaje_X) - CInt(.Now_X)) < 5 Then
                 .Now_X = .Viaje_X
@@ -3369,7 +3472,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
                 .Now_Y = .Viaje_Y
             End If
             If (.Now_X = .Viaje_X) And (.Now_Y = .Viaje_Y) Then
-                'Inicializa la explosión : p
+                'Inicializa la explosiï¿½n : p
                 If (.End_Effect <> 0) And .DestinoChar <> 0 Then
                     If .DestinoChar <> 0 Then
                         Call General_Char_Particle_Create(.End_Effect, .DestinoChar, .End_Loops)
@@ -3477,10 +3580,10 @@ End Function
 Public Function GetFreeIndex() As Integer
     On Error GoTo GetFreeIndex_Err
     '
-    ' @ Devuelve un índice para un nuevo FX.
+    ' @ Devuelve un ï¿½ndice para un nuevo FX.
     Dim i As Long
     For i = 1 To UBound(Effect())
-        'No está usado.
+        'No estï¿½ usado.
         If Not Effect(i).Slot_Used Then
             GetFreeIndex = CInt(i)
             Exit Function
@@ -3776,7 +3879,7 @@ Public Sub AddPickUpEffect(ByVal txt As String)
         If Not PickUpFX(i).active Then Exit For
     Next
 
-    ' Si no hay lugar -> reemplazar el más viejo
+    ' Si no hay lugar -> reemplazar el mï¿½s viejo
     If i > MAX_PICKUP_OBJ_TEXT Then
         Dim oldest As Long: oldest = &H7FFFFFFF
         Dim oldestIndex As Integer: oldestIndex = 1
