@@ -41,6 +41,7 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .CreandoCant = 0
         .Moving = False
         .Muerto = False
+        .bodyOnWater = 0
         ' frmdebug.add_text_tracebox "ResetCharInfo " & .nombre
         .nombre = vbNullString
         .Pie = False
