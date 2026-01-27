@@ -1890,7 +1890,7 @@ Public Function GetAmphibianIdleBody(ByRef c As Char) As Integer
     On Error Resume Next
     ' Amphibian NPC on shallow water trigger (8) -> prefer water idle
     If c.EsNpc Then
-        If MapData(c.Pos.x, c.Pos.y).Trigger = 8 And c.bodyOnWater > 0 Then
+        If MapData(c.Pos.x, c.Pos.y).Trigger = eTrigger.DETALLEAGUA And c.bodyOnWater > 0 Then
             Dim waterIdle As Integer
             waterIdle = BodyData(c.bodyOnWater).IdleBody
             If waterIdle > 0 Then
@@ -1917,7 +1917,7 @@ Public Sub ApplyAmphibianNpcBodies(ByRef c As Char)
     ' Never override during attack animation
     If c.AnimatingBody > 0 Or c.Muerto Then Exit Sub
     Dim onShallowWater As Boolean
-    onShallowWater = (MapData(c.Pos.x, c.Pos.y).Trigger = 8)
+    onShallowWater = (MapData(c.Pos.x, c.Pos.y).Trigger = eTrigger.DETALLEAGUA)
     If c.EsNpc And onShallowWater And c.bodyOnWater > 0 Then
         If c.Moving Or c.TranslationActive Then
             If c.Body.BodyIndex <> c.bodyOnWater Then

@@ -256,7 +256,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
             If .Muerto Then
                 .Body = BodyData(CASPER_BODY)
             Else
-                If .EsNpc And MapData(.Pos.x, .Pos.y).Trigger = 8 And .bodyOnWater > 0 Then
+                If .EsNpc And MapData(.Pos.x, .Pos.y).Trigger = eTrigger.DETALLEAGUA And .bodyOnWater > 0 Then
                     If .Body.BodyIndex <> .bodyOnWater Then
                         .Body = BodyData(.bodyOnWater)
                         .AnimatingBody = 0
