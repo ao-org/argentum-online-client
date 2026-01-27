@@ -372,8 +372,14 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
             If .Muerto Then
                 .Body = BodyData(CASPER_BODY)
             Else
+            
                 If .Body.BodyIndex <> .iBody Then
                     .Body = BodyData(.iBody)
+                    .AnimatingBody = 0
+                End If
+                
+                If .BodyOnWater > 0 And MapData(.Pos.x, .Pos.y).Trigger = 8 Then
+                    .Body = BodyData(.BodyOnWater)
                     .AnimatingBody = 0
                 End If
             End If

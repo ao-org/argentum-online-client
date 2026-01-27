@@ -222,6 +222,10 @@ Public Type NpcDatas
     Name As String
     desc As String
     Body As Integer
+    BodyOnLand As Integer
+    BodyOnWater As Integer
+    LandAttackAnimation As Integer
+    WaterAttackAnimation As Integer
     Hp As Long
     exp As Long
     oro As Long
