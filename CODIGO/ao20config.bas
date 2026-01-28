@@ -179,6 +179,7 @@ Sub LoadConfig()
     X_OFFSET = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateX")))
     Y_OFFSET = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateY")))
     EQUIPMENT_CARACTER = GetSetting("OPCIONES", "EquipmentIndicatorCaracter")
+    CenteredMinimap = GetSetting("OPCIONES", "CenteredMinimap")
     'Init
     #If PYMMO = 0 Or DEBUGGING = 1 Then
         ServerIndex = GetSetting("INIT", "ServerIndex")

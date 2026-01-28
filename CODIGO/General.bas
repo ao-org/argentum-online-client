@@ -1327,7 +1327,11 @@ Public Function LoadMinimap(ByVal map As Integer) As IPicture
     #If Compresion = 1 Then
         Set LoadMinimap = General_Load_Minimap_From_Resource_Ex("mapa" & map & ".bmp", ResourcesPassword)
     #Else
-        Set LoadMinimap = LoadPicture(App.path & "/../Recursos/Minimapas/Mapa" & map & ".bmp")
+        If CenteredMinimap = 0 Then
+            Set LoadMinimap = LoadPicture(App.path & "/../Recursos/Minimapas/Mapa" & map & ".bmp")
+        Else
+            Set LoadMinimap = LoadPicture(App.path & "/../Recursos/interface/Mundo/mapa1_100x100.bmp")
+        End If
     #End If
     Exit Function
 errhandler:
