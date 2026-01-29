@@ -312,12 +312,6 @@ Begin VB.Form frmOpciones
       Top             =   1800
       Visible         =   0   'False
       Width           =   7560
-      Begin VB.Image chkCenteredMiniMap 
-         Height          =   255
-         Left            =   3870
-         Top             =   690
-         Width           =   255
-      End
       Begin VB.ComboBox cmbVRAM 
          BackColor       =   &H80000008&
          ForeColor       =   &H80000005&
@@ -683,8 +677,6 @@ Private Sub Form_Load()
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_1"))
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_2"))
     Call loadVramComboOptions
-    chkCenteredMinimap.value = IIf(GetSettingAsByte("OPCIONES", "CenteredMinimap", 1) = 1, vbChecked, vbUnchecked)
-    txtCenteredMinimapZoom.Text = (val(GetSetting("OPCIONES", "CenteredMinimapZoom")))
     lbl_VRAM = JsonLanguage.Item("LABEL_VRAM_USAGE")
     lbl_AmbientLight = JsonLanguage.Item("LABEL_AMBIENT_LIGHT")
     cmbEquipmentStyle.ListIndex = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
