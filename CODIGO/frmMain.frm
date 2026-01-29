@@ -3762,7 +3762,7 @@ Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVa
     Else
         personaje(Jugador).Left = 49
         personaje(Jugador).Top = 49
-        Call RenderMinimapCentered(UserMap, x, y)
+        Call RenderMinimapCentered(UserMap, x, y, CenteredMinimapZoom, CenteredMinimapZoom)
     End If
 End Sub
 

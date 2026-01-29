@@ -45,6 +45,7 @@ Private CurAmbientVolume       As Long
 Private CurFxVolume            As Long
 Private CurStepsVolume         As Long
 Public CenteredMinimap         As Byte
+Public CenteredMinimapZoom     As Integer
 Public Enum eFxCategory
     eFxGeneral = 0
     eFxSteps = 1

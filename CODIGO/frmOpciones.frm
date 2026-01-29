@@ -312,6 +312,14 @@ Begin VB.Form frmOpciones
       Top             =   1800
       Visible         =   0   'False
       Width           =   7560
+      Begin VB.TextBox txtCenteredMinimapZoom 
+         Height          =   285
+         Left            =   5880
+         TabIndex        =   27
+         Text            =   "Zoom"
+         Top             =   1560
+         Width           =   735
+      End
       Begin VB.CheckBox chkCenteredMinimap 
          Height          =   255
          Left            =   5520
@@ -680,6 +688,7 @@ Private Sub Form_Load()
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_2"))
     Call loadVramComboOptions
     chkCenteredMinimap.value = IIf(GetSettingAsByte("OPCIONES", "CenteredMinimap", 1) = 1, vbChecked, vbUnchecked)
+    txtCenteredMinimapZoom.Text = (val(GetSetting("OPCIONES", "CenteredMinimapZoom")))
     lbl_VRAM = JsonLanguage.Item("LABEL_VRAM_USAGE")
     lbl_AmbientLight = JsonLanguage.Item("LABEL_AMBIENT_LIGHT")
     cmbEquipmentStyle.ListIndex = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
@@ -1526,6 +1535,27 @@ Public Sub ToggleExperienceButtons()
 ToggleExperienceButtons_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleExperienceButtons", Erl)
     Resume Next
+End Sub
+
+Private Sub txtCenteredMinimapZoom_Change()
+    If txtCenteredMinimapZoom.Text = "" Then
+        txtCenteredMinimapZoom.Text = "0"
+    End If
+    If Not IsNumeric(txtRed.Text) Then
+        txtCenteredMinimapZoom.Text = "0"
+    End If
+    If val(txtCenteredMinimapZoom.Text) > 100 Then
+        txtCenteredMinimapZoom.Text = "100"
+    End If
+    If val(txtCenteredMinimapZoom.Text) < 0 Then
+        txtCenteredMinimapZoom.Text = "0"
+    End If
+    If txtCenteredMinimapZoom.Text = "-" Then
+        txtCenteredMinimapZoom.Text = "0"
+    End If
+    txtCenteredMinimapZoom = CInt(txtCenteredMinimapZoom.Text)
+    CenteredMinimapZoom = CInt(txtCenteredMinimapZoom.Text) - 50
+    Call RenderMinimapCentered(UserMap, UserPos.x, UserPos.y, CenteredMinimapZoom, CenteredMinimapZoom)
 End Sub
 
 Private Sub txtRed_Change()
