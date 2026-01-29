@@ -1329,8 +1329,6 @@ Public Function LoadMinimap(ByVal map As Integer) As IPicture
     #Else
         If CenteredMinimap = 0 Then
             Set LoadMinimap = LoadPicture(App.path & "/../Recursos/Minimapas/Mapa" & map & ".bmp")
-        Else
-            Set LoadMinimap = LoadPicture(App.path & "/../Recursos/interface/Mundo/mapa1_200x200.bmp")
         End If
     #End If
     Exit Function
