@@ -312,6 +312,21 @@ Begin VB.Form frmOpciones
       Top             =   1800
       Visible         =   0   'False
       Width           =   7560
+      Begin VB.TextBox txtCenteredMinimapZoom 
+         Height          =   285
+         Left            =   5880
+         TabIndex        =   27
+         Text            =   "Zoom"
+         Top             =   1560
+         Width           =   735
+      End
+      Begin VB.CheckBox chkCenteredMinimap 
+         Height          =   255
+         Left            =   5520
+         TabIndex        =   26
+         Top             =   1560
+         Width           =   255
+      End
       Begin VB.ComboBox cmbVRAM 
          BackColor       =   &H80000008&
          ForeColor       =   &H80000005&
@@ -331,15 +346,12 @@ Begin VB.Form frmOpciones
          Top             =   2160
          Width           =   1575
       End
-<<<<<<< Updated upstream
-=======
       Begin VB.Image chkCenteredMiniMap 
          Height          =   255
          Left            =   3870
          Top             =   690
          Width           =   255
       End
->>>>>>> Stashed changes
       Begin VB.Image chkConfirmPetRelease 
          Height          =   255
          Left            =   270
@@ -579,8 +591,6 @@ Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
 Private cBotonCerrar As clsGraphicalButton
 
-<<<<<<< Updated upstream
-=======
 Private Sub chkCenteredMinimap_Click()
     On Error GoTo chkCenteredMiniMap_Click_Err
     If CenteredMinimap = 0 Then
@@ -600,7 +610,6 @@ chkCenteredMiniMap_Click_Err:
     Resume Next
 End Sub
 
->>>>>>> Stashed changes
 Private Sub chkConfirmPetRelease_Click()
     On Error GoTo chkConfirmPetRelease_Click_Err
     If ConfirmPetRelease = 0 Then
@@ -683,6 +692,8 @@ Private Sub Form_Load()
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_1"))
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_2"))
     Call loadVramComboOptions
+    chkCenteredMinimap.value = IIf(GetSettingAsByte("OPCIONES", "CenteredMinimap", 1) = 1, vbChecked, vbUnchecked)
+    txtCenteredMinimapZoom.Text = (val(GetSetting("OPCIONES", "CenteredMinimapZoom")))
     lbl_VRAM = JsonLanguage.Item("LABEL_VRAM_USAGE")
     lbl_AmbientLight = JsonLanguage.Item("LABEL_AMBIENT_LIGHT")
     cmbEquipmentStyle.ListIndex = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
@@ -1535,9 +1546,6 @@ ToggleExperienceButtons_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleExperienceButtons", Erl)
     Resume Next
 End Sub
-<<<<<<< Updated upstream
-
-=======
 Public Sub ToggleMiniMapZoomButtons()
     On Error GoTo ToggleMiniMapZoomButtons_Err
     
@@ -1556,7 +1564,6 @@ ToggleMiniMapZoomButtons_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleMiniMapZoomButtons", Erl)
     Resume Next
 End Sub
->>>>>>> Stashed changes
 Private Sub txtRed_Change()
     If txtRed.text = "" Then
         txtRed.text = "0"

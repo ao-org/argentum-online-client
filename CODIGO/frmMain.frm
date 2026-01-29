@@ -3552,6 +3552,10 @@ Private Sub Form_Load()
     Me.Caption = App.title
     Set hlst = New clsGraphicalList
     Call hlst.Initialize(Me.picHechiz, RGB(200, 190, 190))
+    If CenteredMinimap > 0 Then
+        Me.MiniMap.AutoRedraw = True
+        Me.MiniMap.ScaleMode = vbPixels
+    End If
     loadButtons
     InitToolTipText
     Exit Sub
@@ -3791,8 +3795,14 @@ Public Sub ShowStats()
 End Sub
 
 Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVal y As Integer)
-    personaje(Jugador).Left = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - personaje(Jugador).Width \ 2 - 1
-    personaje(Jugador).Top = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
+    If CenteredMinimap = 0 Then
+        personaje(Jugador).Left = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - personaje(Jugador).Width \ 2 - 1
+        personaje(Jugador).Top = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
+    Else
+        personaje(Jugador).Left = 49
+        personaje(Jugador).Top = 49
+        Call RenderMinimapCentered(UserMap, x, y, CenteredMinimapZoom, CenteredMinimapZoom)
+    End If
 End Sub
 
 Private Sub imgDeleteItem_Click()
