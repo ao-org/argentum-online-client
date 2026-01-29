@@ -1210,7 +1210,14 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     Static worldBitmap As StdPicture
     If (lastWorld <> worldNum) Or (worldBitmap Is Nothing) Then
         ' If you have per-world images, pick by worldNum. Using world 1 for now.
-        Set worldBitmap = LoadPicture(App.path & "/../Recursos/interface/Mundo/mapa1_200x200.bmp")
+        Select Case worldNum
+            Case 1
+                Set worldBitmap = LoadPicture(App.path & "/../Recursos/interface/Mundo/mapa1_200x200.bmp")
+            Case 2
+                Set worldBitmap = LoadPicture(App.path & "/../Recursos/interface/Mundo/mapa2_200x200.bmp")
+            Case Else
+                Set worldBitmap = Nothing
+        End Select
         lastWorld = worldNum
     End If
     If (worldBitmap Is Nothing) Then Exit Sub
