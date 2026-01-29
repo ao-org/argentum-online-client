@@ -3751,18 +3751,72 @@ Public Sub ShowStats()
     panelinferior_Click 0
 End Sub
 
-' Assuming you have:
-' - picMinimap: PictureBox control to display the minimap (100x100)
-' - LoadedMinimap: Picture object with your 1896x2196 bitmap
-' - PlayerX, PlayerY: Player's position in the world (in pixels)
-
-Private Sub RenderMinimap(ByVal x As Integer, ByVal y As Integer)
-    Call frmMain.MiniMap.Cls
-    frmMain.MiniMap.ScaleMode = vbPixels
-    frmMain.MiniMap.AutoRedraw = True
-    frmMain.MiniMap.Width = 100
-    frmMain.MiniMap.Height = 100
-    Call frmMain.MiniMap.PaintPicture(frmMain.MiniMap.Picture, 0, 0, 100, 100, x + 1000 - 66, y + 2600 - 28, 120, 120)
+Private Sub RenderMinimap(ByVal currentMap As Integer, ByVal tileX As Integer, ByVal tileY As Integer)
+    On Error GoTo RenderMinimap_Err
+    
+    Dim i As Integer
+    Dim J As Byte
+    Dim idmap As Integer
+    Dim worldNum As Byte
+    Dim mapGridX As Long, mapGridY As Long
+    Dim sourceX As Long, sourceY As Long
+    
+    Const MINIMAP_SIZE As Integer = 100
+    Const TILE_SIZE As Integer = 200  ' Adjust this to match your TILE_SIZE constant
+    
+    ' Find which world and grid position the current map is in
+    For J = 1 To TotalWorlds
+        For i = 1 To Mundo(J).Ancho * Mundo(J).Alto
+            If Mundo(J).MapIndice(i) = currentMap Then
+                idmap = i
+                worldNum = J
+                Exit For
+            End If
+        Next i
+        If idmap > 0 Then Exit For
+    Next J
+    
+    ' If map not found in any world, exit
+    If idmap = 0 Then Exit Sub
+    
+    ' Calculate the map's grid position (same logic as your existing code)
+    mapGridX = (idmap - 1) Mod Mundo(worldNum).Ancho
+    mapGridY = Int((idmap - 1) / Mundo(worldNum).Ancho)
+    
+    ' Calculate the pixel position on the large bitmap
+    ' This matches your ActualizarPosicion logic
+    sourceX = mapGridX * TILE_SIZE + (tileX * TILE_SIZE / 100) - (MINIMAP_SIZE \ 2)
+    sourceY = mapGridY * TILE_SIZE + (tileY * TILE_SIZE / 100) - (MINIMAP_SIZE \ 2)
+    
+    ' Get the correct world bitmap dimensions
+    Dim bitmapWidth As Long, bitmapHeight As Long
+    bitmapWidth = Mundo(worldNum).Ancho * TILE_SIZE
+    bitmapHeight = Mundo(worldNum).Alto * TILE_SIZE
+    
+    ' Clamp to bitmap boundaries
+    If sourceX < 0 Then sourceX = 0
+    If sourceY < 0 Then sourceY = 0
+    If sourceX > bitmapWidth - MINIMAP_SIZE Then sourceX = bitmapWidth - MINIMAP_SIZE
+    If sourceY > bitmapHeight - MINIMAP_SIZE Then sourceY = bitmapHeight - MINIMAP_SIZE
+    
+    ' Load the correct world bitmap (if not already loaded or if world changed)
+    Static lastWorld As Byte
+    If lastWorld <> worldNum Then
+        frmMain.MiniMap.Picture = LoadInterface("mapa" & worldNum & ".bmp")
+        lastWorld = worldNum
+    End If
+    
+    ' Render the minimap
+    frmMain.MiniMap.Cls
+    frmMain.MiniMap.PaintPicture frmMain.MiniMap.Picture, _
+        0, 0, MINIMAP_SIZE, MINIMAP_SIZE, _
+        sourceX, sourceY, MINIMAP_SIZE, MINIMAP_SIZE
+    frmMain.MiniMap.Refresh
+    
+    Exit Sub
+    
+RenderMinimap_Err:
+    Call RegistrarError(Err.Number, Err.Description, "YourModule.RenderMinimap", Erl)
 End Sub
 
 
@@ -3774,7 +3828,7 @@ Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVa
     Else
         personaje(Jugador).Left = 49
         personaje(Jugador).Top = 49
-        Call RenderMinimap(x, y)
+        Call RenderMinimap(UserMap, x, y)
     End If
 End Sub
 
