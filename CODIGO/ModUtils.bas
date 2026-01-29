@@ -1142,6 +1142,12 @@ End Function
 Public Sub DibujarMiniMapa()
     On Error GoTo DibujarMiniMapa_Err
     frmMain.MiniMap.Picture = LoadMinimap(ResourceMap)
+    If CenteredMinimap > 0 Then
+        frmMain.MiniMap.ScaleMode = vbPixels
+        frmMain.MiniMap.AutoRedraw = True
+        frmMain.MiniMap.Width = 100
+        frmMain.MiniMap.Height = 100
+    End If
     'Pintamos los NPCs en Minimapa:
     If ListNPCMapData(ResourceMap).NpcCount > 0 Then
         Dim i As Long
