@@ -1141,14 +1141,12 @@ End Function
 
 Public Sub DibujarMiniMapa()
     On Error GoTo DibujarMiniMapa_Err
-    
     If CenteredMinimap = 0 Then
         ' Old system: load individual 100x100 map images
         frmMain.MiniMap.Picture = LoadMinimap(ResourceMap)
     End If
-    
     ' Paint NPCs on minimap
-    If ListNPCMapData(ResourceMap).NpcCount > 0 Then
+    If ListNPCMapData(ResourceMap).NpcCount > 0 And CenteredMinimap = 0 Then
         Dim i As Long
         For i = 1 To MAX_QUESTNPCS_VISIBLE
             Dim PosX As Long
@@ -1246,8 +1244,6 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
         Set worldBitmap = LoadPicture(App.path & "/../Recursos/interface/Mundo/mapa1_200x200.bmp")
         lastWorld = worldNum
     End If
-    ' Set AutoRedraw to prevent flashing
-    frmMain.MiniMap.AutoRedraw = True
     ' Clear and render the cropped portion
     frmMain.MiniMap.Cls
     ' Ensure all parameters are Long type
