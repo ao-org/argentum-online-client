@@ -983,6 +983,18 @@ Begin VB.Form frmMain
       Top             =   2280
       Width           =   11040
    End
+   Begin VB.Image btnZoomIn 
+      Height          =   195
+      Left            =   11175
+      Top             =   1050
+      Width           =   195
+   End
+   Begin VB.Image btnZoomOut 
+      Height          =   195
+      Left            =   11175
+      Top             =   1470
+      Width           =   195
+   End
    Begin VB.Image btnExpRemaining 
       Height          =   225
       Left            =   13605
@@ -1577,6 +1589,8 @@ Private cBotonTotalExp     As clsGraphicalButton
 Private cBotonExpRemaining As clsGraphicalButton
 Private cBotonPercentageTwoDecimals As clsGraphicalButton
 Private cBotonPercentageFourDecimals As clsGraphicalButton
+Private cBotonZoomIn       As clsGraphicalButton
+Private cBotonZoomOut      As clsGraphicalButton
 Private Sub btnInvisible_Click()
     On Error GoTo btnInvisible_Click_Err
     Call ParseUserCommand("/INVISIBLE")
@@ -1596,6 +1610,8 @@ Private Sub loadButtons()
     Set cBotonExpRemaining = New clsGraphicalButton
     Set cBotonPercentageTwoDecimals = New clsGraphicalButton
     Set cBotonPercentageFourDecimals = New clsGraphicalButton
+    Set cBotonZoomIn = New clsGraphicalButton
+    Set cBotonZoomOut = New clsGraphicalButton
     Call cBotonEliminarItem.Initialize(imgDeleteItem, "boton-borrar-item-default.bmp", "boton-borrar-item-over.bmp", "boton-borrar-item-off.bmp", Me)
     Call cBotonAjustes.Initialize(OpcionesBoton, "boton-ajustes-default.bmp", "boton-ajustes-over.bmp", "boton-ajustes-off.bmp", Me)
     Call cBotonManual.Initialize(imgManual, "boton-manual-default.bmp", "boton-manual-over.bmp", "boton-manual-off.bmp", Me)
@@ -1604,6 +1620,8 @@ Private Sub loadButtons()
     Call cBotonExpRemaining.Initialize(btnExpRemaining, "boton-exprestante-default.bmp", "boton-exprestante-over.bmp", "boton-exprestante-off.bmp", Me)
     Call cBotonPercentageTwoDecimals.Initialize(btnExp, "boton-expdosdecimales-default.bmp", "boton-expdosdecimales-over.bmp", "boton-expdosdecimales-off.bmp", Me)
     Call cBotonPercentageFourDecimals.Initialize(btnExp2, "boton-expcuatrodecimales-default.bmp", "boton-expcuatrodecimales-over.bmp", "boton-expcuatrodecimales-off.bmp", Me)
+    Call cBotonZoomIn.Initialize(btnZoomIn, "boton-zoomin-default.bmp", "boton-zoomin-over.bmp", "boton-zoomin-off.bmp", Me)
+    Call cBotonZoomOut.Initialize(btnZoomOut, "boton-zoomout-default.bmp", "boton-zoomout-over.bmp", "boton-zoomout-off.bmp", Me)
 End Sub
 
 Private Sub btnSpawn_Click()
@@ -1654,6 +1672,27 @@ Private Sub btnTotalExp_Click()
     
 btnTotalExp_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.btnTotalExp_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub btnZoomIn_Click()
+    On Error GoTo btnZoomIn_Click_Err
+    
+    ApplyMinimapZoom -20
+    Exit Sub
+    
+btnZoomIn_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnZoomIn_Click", Erl)
+    Resume Next
+End Sub
+Private Sub btnZoomOut_Click()
+    On Error GoTo btnZoomOut_Click_Err
+    
+    ApplyMinimapZoom 20
+    Exit Sub
+    
+btnZoomOut_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnZoomOut_Click", Erl)
     Resume Next
 End Sub
 
@@ -3979,3 +4018,24 @@ InitToolTipText_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.InitToolTipText", Erl)
     Resume Next
 End Sub
+Private Sub ApplyMinimapZoom(ByVal Delta As Integer)
+    On Error GoTo ApplyMinimapZoom_Err
+    Dim NewZoom As Integer
+
+    NewZoom = CenteredMinimapZoom + Delta
+
+    If NewZoom > 50 Then NewZoom = 50
+    If NewZoom < -50 Then NewZoom = -50
+
+    If NewZoom = CenteredMinimapZoom Then Exit Sub
+
+    CenteredMinimapZoom = NewZoom
+
+    Call RenderMinimapCentered(UserMap, UserPos.X, UserPos.Y, CenteredMinimapZoom, CenteredMinimapZoom)
+    Exit Sub
+    
+ApplyMinimapZoom_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.ApplyMinimapZoom", Erl)
+    Resume Next
+End Sub
+
