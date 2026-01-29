@@ -312,19 +312,10 @@ Begin VB.Form frmOpciones
       Top             =   1800
       Visible         =   0   'False
       Width           =   7560
-      Begin VB.TextBox txtCenteredMinimapZoom 
-         Height          =   285
-         Left            =   5880
-         TabIndex        =   27
-         Text            =   "Zoom"
-         Top             =   1560
-         Width           =   735
-      End
-      Begin VB.CheckBox chkCenteredMinimap 
+      Begin VB.Image chkCenteredMiniMap 
          Height          =   255
-         Left            =   5520
-         TabIndex        =   26
-         Top             =   1560
+         Left            =   3870
+         Top             =   690
          Width           =   255
       End
       Begin VB.ComboBox cmbVRAM 
