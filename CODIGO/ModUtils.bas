@@ -1182,17 +1182,13 @@ DibujarMiniMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.DibujarMiniMapa", Erl)
 End Sub
 
-' New function for centered minimap rendering
 Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Integer, ByVal tileY As Integer)
     On Error GoTo RenderMinimap_Err
-    Dim i              As Integer
-    Dim J              As Byte
-    Dim idmap          As Integer
-    Dim worldNum       As Byte
-    Dim mapGridX       As Long, mapGridY As Long
-    Dim sourceX        As Long, sourceY As Long
-    Dim tempX          As Single, tempY As Single  ' Temporary variables for calculation
-    Const MINIMAP_SIZE As Integer = 100
+    Dim i        As Integer
+    Dim J        As Byte
+    Dim idmap    As Integer
+    Dim worldNum As Byte
+    Dim mapGridX As Long, mapGridY As Long
     ' Find which world and grid position the current map is in
     worldNum = 0
     idmap = 0
@@ -1206,45 +1202,74 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
         Next i
         If idmap > 0 Then Exit For
     Next J
-    ' If map not found in any world, exit
     If idmap = 0 Then Exit Sub
-    ' Calculate EXACT tile size for this world's bitmap
-    Dim tileSizeX   As Single, tileSizeY As Single
-    Dim bitmapWidth As Long, bitmapHeight As Long
-    bitmapWidth = 3796
-    bitmapHeight = 4396
-    tileSizeX = bitmapWidth / Mundo(worldNum).Ancho
-    tileSizeY = bitmapHeight / Mundo(worldNum).Alto
-    ' Calculate the map's grid position
-    mapGridX = (idmap - 1) Mod Mundo(worldNum).Ancho
-    mapGridY = Int((idmap - 1) / Mundo(worldNum).Ancho)
-    ' Calculate the pixel position on the large bitmap (center on player)
-    ' Use temporary Single variables for calculation, then convert to Long
-    tempX = (mapGridX * tileSizeX) + (tileX * tileSizeX / 100) - (MINIMAP_SIZE / 2)
-    tempY = (mapGridY * tileSizeY) + (tileY * tileSizeY / 100) - (MINIMAP_SIZE / 2)
-    ' Convert to Long for PaintPicture
-    sourceX = CLng(tempX)
-    sourceY = CLng(tempY)
-    ' Clamp to bitmap boundaries
-    If sourceX < 0 Then sourceX = 0
-    If sourceY < 0 Then sourceY = 0
-    If sourceX > bitmapWidth - MINIMAP_SIZE Then sourceX = bitmapWidth - MINIMAP_SIZE
-    If sourceY > bitmapHeight - MINIMAP_SIZE Then sourceY = bitmapHeight - MINIMAP_SIZE
-    ' Load the world bitmap into static variable (prevents reloading)
+    ' Ensure destination units are pixels
+    frmMain.MiniMap.ScaleMode = vbPixels
+    ' Load/cached world bitmap
     Static lastWorld   As Byte
     Static worldBitmap As StdPicture
-    If lastWorld <> worldNum Or worldBitmap Is Nothing Then
+    If (lastWorld <> worldNum) Or (worldBitmap Is Nothing) Then
+        ' If you have per-world images, pick by worldNum. Using world 1 for now.
         Set worldBitmap = LoadPicture(App.path & "/../Recursos/interface/Mundo/mapa1_200x200.bmp")
         lastWorld = worldNum
     End If
-    ' Clear and render the cropped portion
+    If (worldBitmap Is Nothing) Then Exit Sub
+    ' Convert HIMETRIC to pixels for the actual bitmap size
+    Dim bmpPxW As Long, bmpPxH As Long
+    bmpPxW = frmMain.MiniMap.ScaleX(worldBitmap.Width, vbHimetric, vbPixels)
+    bmpPxH = frmMain.MiniMap.ScaleY(worldBitmap.Height, vbHimetric, vbPixels)
+    ' You said this is 3796 x 4396, this conversion should match that.
+    ' Grid of maps in the world image (these are 100x100 according to your data)
+    Dim mapCellsX As Long, mapCellsY As Long
+    mapCellsX = Mundo(worldNum).Ancho   ' 100
+    mapCellsY = Mundo(worldNum).Alto    ' 100
+    ' Size of one map cell in pixels on the world image
+    Dim mapCellPxW As Double, mapCellPxH As Double
+    mapCellPxW = CDbl(bmpPxW) / CDbl(mapCellsX)
+    mapCellPxH = CDbl(bmpPxH) / CDbl(mapCellsY)
+    ' Current map's grid coordinates on the world image
+    mapGridX = (idmap - 1) Mod mapCellsX
+    mapGridY = Int((idmap - 1) / mapCellsX)
+    ' Usable tile ranges inside a map (you provided these)
+    Const MIN_TILE_X As Long = 14
+    Const MAX_TILE_X As Long = 87
+    Const MIN_TILE_Y As Long = 11
+    Const MAX_TILE_Y As Long = 90
+    Dim tileCountX   As Long, tileCountY As Long
+    tileCountX = (MAX_TILE_X - MIN_TILE_X + 1) ' 74 tiles
+    tileCountY = (MAX_TILE_Y - MIN_TILE_Y + 1) ' 80 tiles
+    ' Clamp incoming tile to valid range, just in case
+    If tileX < MIN_TILE_X Then tileX = MIN_TILE_X
+    If tileX > MAX_TILE_X Then tileX = MAX_TILE_X
+    If tileY < MIN_TILE_Y Then tileY = MIN_TILE_Y
+    If tileY > MAX_TILE_Y Then tileY = MAX_TILE_Y
+    ' Fractional position of the player inside the map cell, using tile center
+    Dim fracX As Double, fracY As Double
+    fracX = (CDbl(tileX - MIN_TILE_X) + 0.5) / CDbl(tileCountX)
+    fracY = (CDbl(tileY - MIN_TILE_Y) + 0.5) / CDbl(tileCountY)
+    ' Player pixel center on the world image
+    Dim centerPxX As Double, centerPxY As Double
+    centerPxX = (CDbl(mapGridX) + fracX) * mapCellPxW
+    centerPxY = (CDbl(mapGridY) + fracY) * mapCellPxH
+    ' Viewport size in pixels (use the control's current size)
+    Dim viewW As Long, viewH As Long
+    viewW = frmMain.MiniMap.ScaleWidth
+    viewH = frmMain.MiniMap.ScaleHeight
+    ' Source top-left so that the player is centered
+    Dim srcX As Long, srcY As Long
+    srcX = CLng(centerPxX - (viewW / 2#))
+    srcY = CLng(centerPxY - (viewH / 2#))
+    ' Clamp to bitmap bounds
+    If srcX < 0 Then srcX = 0
+    If srcY < 0 Then srcY = 0
+    If srcX > (bmpPxW - viewW) Then srcX = bmpPxW - viewW
+    If srcY > (bmpPxH - viewH) Then srcY = bmpPxH - viewH
+    ' Draw
     frmMain.MiniMap.Cls
-    ' Ensure all parameters are Long type
-    frmMain.MiniMap.PaintPicture worldBitmap, 0, 0, MINIMAP_SIZE, MINIMAP_SIZE, sourceX, sourceY, MINIMAP_SIZE, MINIMAP_SIZE
-    ' DON'T call Refresh here - let DibujarMiniMapa do it after drawing NPCs
+    frmMain.MiniMap.PaintPicture worldBitmap, 0, 0, viewW, viewH, srcX, srcY, viewW, viewH
     Exit Sub
 RenderMinimap_Err:
-    Call RegistrarError(Err.Number, Err.Description, "YourModule.RenderMinimapCentered", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "ModUtils.RenderMinimapCentered", Erl)
 End Sub
 
 Rem Encripta una cadena de caracteres.
