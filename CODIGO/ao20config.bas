@@ -76,6 +76,7 @@ Sub SaveConfig()
     Call SaveSetting("OPCIONES", "EquipmentIndicatorCoordinateX", X_OFFSET)
     Call SaveSetting("OPCIONES", "EquipmentIndicatorCoordinateY", Y_OFFSET)
     Call SaveSetting("OPCIONES", "EquipmentIndicatorCaracter", EQUIPMENT_CARACTER)
+    Call SaveSetting("OPCIONES", "CenteredMinimap", CenteredMinimap)
     Exit Sub
 SaveConfig_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.SaveConfig", Erl)
@@ -179,7 +180,7 @@ Sub LoadConfig()
     X_OFFSET = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateX")))
     Y_OFFSET = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateY")))
     EQUIPMENT_CARACTER = GetSetting("OPCIONES", "EquipmentIndicatorCaracter")
-    CenteredMinimap = GetSetting("OPCIONES", "CenteredMinimap")
+    CenteredMinimap = GetSettingAsByte("OPCIONES", "CenteredMinimap", 1)
     'Init
     #If PYMMO = 0 Or DEBUGGING = 1 Then
         ServerIndex = GetSetting("INIT", "ServerIndex")

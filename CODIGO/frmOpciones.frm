@@ -312,6 +312,13 @@ Begin VB.Form frmOpciones
       Top             =   1800
       Visible         =   0   'False
       Width           =   7560
+      Begin VB.CheckBox chkCenteredMinimap 
+         Height          =   255
+         Left            =   5520
+         TabIndex        =   26
+         Top             =   1560
+         Width           =   255
+      End
       Begin VB.ComboBox cmbVRAM 
          BackColor       =   &H80000008&
          ForeColor       =   &H80000005&
@@ -330,6 +337,17 @@ Begin VB.Form frmOpciones
          TabIndex        =   10
          Top             =   1080
          Width           =   1575
+      End
+      Begin VB.Label lblCenteredMinimap 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Minimapa Centrado"
+         ForeColor       =   &H00FFFFFF&
+         Height          =   195
+         Left            =   3960
+         TabIndex        =   25
+         Top             =   1560
+         Width           =   1380
       End
       Begin VB.Image chkConfirmPetRelease 
          Height          =   255
@@ -570,6 +588,15 @@ Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
 Private cBotonCerrar As clsGraphicalButton
 
+Private Sub chkCenteredMinimap_Click()
+    If chkCenteredMinimap.value = vbChecked Then
+        CenteredMinimap = 1
+    Else
+        CenteredMinimap = 0
+        Call DibujarMiniMapa
+    End If
+End Sub
+
 Private Sub chkConfirmPetRelease_Click()
     On Error GoTo chkConfirmPetRelease_Click_Err
     If ConfirmPetRelease = 0 Then
@@ -652,6 +679,7 @@ Private Sub Form_Load()
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_1"))
     Call cmbEquipmentStyle.AddItem(JsonLanguage.Item("MENSAJE_ESTILO_EQUIPAMIENTO_2"))
     Call loadVramComboOptions
+    chkCenteredMinimap.value = IIf(GetSettingAsByte("OPCIONES", "CenteredMinimap", 1) = 1, vbChecked, vbUnchecked)
     lbl_VRAM = JsonLanguage.Item("LABEL_VRAM_USAGE")
     lbl_AmbientLight = JsonLanguage.Item("LABEL_AMBIENT_LIGHT")
     cmbEquipmentStyle.ListIndex = GetSettingAsByte("OPCIONES", "EquipmentIndicator", 0)
