@@ -1184,25 +1184,20 @@ DibujarMiniMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.DibujarMiniMapa", Erl)
 End Sub
 
-
 ' New function for centered minimap rendering
 Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Integer, ByVal tileY As Integer)
     On Error GoTo RenderMinimap_Err
-    
-    Dim i As Integer
-    Dim J As Byte
-    Dim idmap As Integer
-    Dim worldNum As Byte
-    Dim mapGridX As Long, mapGridY As Long
-    Dim sourceX As Long, sourceY As Long
-    Dim tempX As Single, tempY As Single  ' Temporary variables for calculation
-    
+    Dim i              As Integer
+    Dim J              As Byte
+    Dim idmap          As Integer
+    Dim worldNum       As Byte
+    Dim mapGridX       As Long, mapGridY As Long
+    Dim sourceX        As Long, sourceY As Long
+    Dim tempX          As Single, tempY As Single  ' Temporary variables for calculation
     Const MINIMAP_SIZE As Integer = 100
-    
     ' Find which world and grid position the current map is in
     worldNum = 0
     idmap = 0
-    
     For J = 1 To TotalWorlds
         For i = 1 To Mundo(J).Ancho * Mundo(J).Alto
             If Mundo(J).MapIndice(i) = currentMap Then
@@ -1213,14 +1208,11 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
         Next i
         If idmap > 0 Then Exit For
     Next J
-    
     ' If map not found in any world, exit
     If idmap = 0 Then Exit Sub
-    
     ' Calculate EXACT tile size for this world's bitmap
-    Dim tileSizeX As Single, tileSizeY As Single
+    Dim tileSizeX   As Single, tileSizeY As Single
     Dim bitmapWidth As Long, bitmapHeight As Long
-    
     ' Get bitmap dimensions based on world
     If worldNum = 1 Then
         bitmapWidth = 3796
@@ -1230,53 +1222,38 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
         bitmapWidth = 3796
         bitmapHeight = 4396
     End If
-    
     tileSizeX = bitmapWidth / Mundo(worldNum).Ancho
     tileSizeY = bitmapHeight / Mundo(worldNum).Alto
-    
     ' Calculate the map's grid position
     mapGridX = (idmap - 1) Mod Mundo(worldNum).Ancho
     mapGridY = Int((idmap - 1) / Mundo(worldNum).Ancho)
-    
     ' Calculate the pixel position on the large bitmap (center on player)
     ' Use temporary Single variables for calculation, then convert to Long
     tempX = (mapGridX * tileSizeX) + (tileX * tileSizeX / 100) - (MINIMAP_SIZE / 2)
     tempY = (mapGridY * tileSizeY) + (tileY * tileSizeY / 100) - (MINIMAP_SIZE / 2)
-    
     ' Convert to Long for PaintPicture
     sourceX = CLng(tempX)
     sourceY = CLng(tempY)
-    
     ' Clamp to bitmap boundaries
     If sourceX < 0 Then sourceX = 0
     If sourceY < 0 Then sourceY = 0
     If sourceX > bitmapWidth - MINIMAP_SIZE Then sourceX = bitmapWidth - MINIMAP_SIZE
     If sourceY > bitmapHeight - MINIMAP_SIZE Then sourceY = bitmapHeight - MINIMAP_SIZE
-    
     ' Load the world bitmap into static variable (prevents reloading)
-    Static lastWorld As Byte
+    Static lastWorld   As Byte
     Static worldBitmap As StdPicture
-    
     If lastWorld <> worldNum Or worldBitmap Is Nothing Then
         Set worldBitmap = LoadPicture(App.path & "/../Recursos/interface/Mundo/mapa1_200x200.bmp")
         lastWorld = worldNum
     End If
-    
     ' Set AutoRedraw to prevent flashing
     frmMain.MiniMap.AutoRedraw = True
-    
     ' Clear and render the cropped portion
     frmMain.MiniMap.Cls
-    
     ' Ensure all parameters are Long type
-    frmMain.MiniMap.PaintPicture worldBitmap, _
-        CLng(0), CLng(0), CLng(MINIMAP_SIZE), CLng(MINIMAP_SIZE), _
-        sourceX, sourceY, CLng(MINIMAP_SIZE), CLng(MINIMAP_SIZE)
-    
+    frmMain.MiniMap.PaintPicture worldBitmap, CLng(0), CLng(0), CLng(MINIMAP_SIZE), CLng(MINIMAP_SIZE), sourceX, sourceY, CLng(MINIMAP_SIZE), CLng(MINIMAP_SIZE)
     ' DON'T call Refresh here - let DibujarMiniMapa do it after drawing NPCs
-    
     Exit Sub
-    
 RenderMinimap_Err:
     Call RegistrarError(Err.Number, Err.Description, "YourModule.RenderMinimapCentered", Erl)
 End Sub
