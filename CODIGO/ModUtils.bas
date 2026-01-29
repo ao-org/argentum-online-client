@@ -1211,15 +1211,8 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     ' Calculate EXACT tile size for this world's bitmap
     Dim tileSizeX   As Single, tileSizeY As Single
     Dim bitmapWidth As Long, bitmapHeight As Long
-    ' Get bitmap dimensions based on world
-    If worldNum = 1 Then
-        bitmapWidth = 3796
-        bitmapHeight = 4396
-    Else
-        ' Adjust for other worlds if different sizes
-        bitmapWidth = 3796
-        bitmapHeight = 4396
-    End If
+    bitmapWidth = 3796
+    bitmapHeight = 4396
     tileSizeX = bitmapWidth / Mundo(worldNum).Ancho
     tileSizeY = bitmapHeight / Mundo(worldNum).Alto
     ' Calculate the map's grid position
@@ -1247,7 +1240,7 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     ' Clear and render the cropped portion
     frmMain.MiniMap.Cls
     ' Ensure all parameters are Long type
-    frmMain.MiniMap.PaintPicture worldBitmap, CLng(0), CLng(0), CLng(MINIMAP_SIZE), CLng(MINIMAP_SIZE), sourceX, sourceY, CLng(MINIMAP_SIZE), CLng(MINIMAP_SIZE)
+    frmMain.MiniMap.PaintPicture worldBitmap, 0, 0, MINIMAP_SIZE, MINIMAP_SIZE, sourceX, sourceY, MINIMAP_SIZE, MINIMAP_SIZE
     ' DON'T call Refresh here - let DibujarMiniMapa do it after drawing NPCs
     Exit Sub
 RenderMinimap_Err:
