@@ -560,6 +560,7 @@ Private Sub HandleLogged()
     frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
     frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-on.bmp")
     Call frmOpciones.ToggleExperienceButtons
+    Call frmOpciones.ToggleMiniMapZoomButtons
     SeguroParty = True
     SeguroClanX = True
     SeguroResuX = True
