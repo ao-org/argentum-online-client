@@ -24,11 +24,12 @@ Public map_letter_grh_next    As Long
 Public map_letter_a           As Single
 Public map_letter_fadestatus  As Byte
 Public gameplay_render_offset As Vector2
-Public Const hotkey_render_posX = 200
-Public Const hotkey_render_posY = 40
-Public Const hotkey_arrow_posx = 200 + 36 * 5 - 5
+Public Const hotkey_render_posX = 192
+Public Const hotkey_render_posY = 42
+Public Const hotkey_arrow_posx = 200 + 36 * 5 - 22
 Public Const hotkey_arrow_posy = 10
-
+Public Const GRH_HOTKEY_ARROW_HIDE = 19204
+Public Const GRH_HOTKEY_ARROW_SHOW = 19205
 Sub RenderScreen(ByVal center_x As Integer, _
                  ByVal center_y As Integer, _
                  ByVal PixelOffsetX As Integer, _
@@ -531,12 +532,12 @@ Sub RenderScreen(ByVal center_x As Integer, _
         ArrowPos.x = hotkey_arrow_posx
         ArrowPos.y = frmMain.renderer.Height - hotkey_arrow_posy
         If HideHotkeys Then
-            Call DrawSingleGrh(HideArrowGrh, ArrowPos, 1, 270, color)
+            Call Draw_GrhIndex(GRH_HOTKEY_ARROW_SHOW, ArrowPos.x, ArrowPos.y)
         Else
             For i = 0 To 9
                 Call DrawHotkey(i, i * 36 + hotkey_render_posX, frmMain.renderer.Height - hotkey_render_posY)
             Next
-            Call DrawSingleGrh(HideArrowGrh, ArrowPos, 1, 90, color)
+            Call Draw_GrhIndex(GRH_HOTKEY_ARROW_HIDE, ArrowPos.x, ArrowPos.y)
             If gDragState.active Then
                 Call Draw_GrhColor(gDragState.Grh, gDragState.PosX - 16 - frmMain.renderer.Left, gDragState.PosY - frmMain.renderer.Top - 16, color)
             End If
