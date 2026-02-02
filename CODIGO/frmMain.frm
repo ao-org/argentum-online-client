@@ -3964,7 +3964,7 @@ Public Sub OnDragEnd()
 End Sub
 
 Public Function HandleHotkeyArrowInput(ByVal x As Integer, ByVal y As Integer) As Boolean
-    If x > hotkey_arrow_posx And x < hotkey_arrow_posx + 10 And y > renderer.Height - hotkey_arrow_posy And y < renderer.Height Then
+    If x > hotkey_arrow_posx And x < hotkey_arrow_posx + 26 And y > renderer.Height - hotkey_arrow_posy And y < renderer.Height Then
         HandleHotkeyArrowInput = True
         HideHotkeys = Not HideHotkeys
         Call SaveHideHotkeys
