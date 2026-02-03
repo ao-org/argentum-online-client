@@ -232,6 +232,10 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         oldHeading = .Heading
         .scrollDirectionX = addx
         .scrollDirectionY = addy
+        If .BodyOnWater > 0 And IsAmphibianOverWater(charindex) Then
+            .Body = BodyData(.BodyOnWater)
+            .AnimatingBody = 0
+        End If
         .Idle = False
         ' --- Si cambia de dirección mientras ya está moviéndose, preservamos fase
         If .Moving And (newHeading <> oldHeading) Then
@@ -248,6 +252,9 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
             If .Escudo.ShieldWalk(newHeading).started = 0 Then .Escudo.ShieldWalk(newHeading).started = .Body.Walk(newHeading).started
             .Arma.WeaponWalk(newHeading).Loops = INFINITE_LOOPS
             .Escudo.ShieldWalk(newHeading).Loops = INFINITE_LOOPS
+            If .BodyOnWater > 0 And IsAmphibianOverWater(charindex) Then
+                .Body = BodyData(.BodyOnWater)
+            End If
         End If
         ' Actualizamos el heading al final para usar el nuevo set arriba
         .Heading = newHeading
@@ -371,17 +378,19 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         .scrollDirectionY = Sgn(addy)
         .LastStep = FrameTime
         .Idle = False
+        If .BodyOnWater > 0 And IsAmphibianOverWater(charindex) Then
+            .Body = BodyData(.BodyOnWater)
+            .AnimatingBody = 0
+        End If
         If Not .Moving Then
             ' --- Empezó a moverse recién ahora ---
             If .Muerto Then
                 .Body = BodyData(CASPER_BODY)
             Else
-            
                 If .Body.BodyIndex <> .iBody Then
                     .Body = BodyData(.iBody)
                     .AnimatingBody = 0
                 End If
-                
                 If .BodyOnWater > 0 And IsAmphibianOverWater(charIndex) Then
                     .Body = BodyData(.BodyOnWater)
                     .AnimatingBody = 0
