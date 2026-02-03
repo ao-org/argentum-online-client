@@ -1305,7 +1305,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         If .Heading = 0 Then Exit Sub
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
         If Not .Moving And Not .TranslationActive And .Idle And .scrollDirectionX = 0 And .scrollDirectionY = 0 And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
-                If .BodyOnWater > 0 And MapData(.Pos.x, .Pos.y).Trigger = 8 Then
+                If .BodyOnWater > 0 And IsAmphibianOverWater(charIndex) Then
                     .Body = BodyData(.BodyOnWater)
                 End If
             If .Body.AnimateOnIdle = 0 Then

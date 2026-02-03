@@ -3079,7 +3079,7 @@ Private Sub HandleCharAtaca()
                 .Arma.WeaponWalk(.Heading).Loops = 0
             End If
         End If
-        If AnimAttack2 > 0 And MapData(.Pos.x, .Pos.y).Trigger = 8 Then
+        If AnimAttack2 > 0 And IsAmphibianOverWater(charIndex) Then
             oldWalk = .Body.Walk(.Heading)
             .AnimatingBody = AnimAttack2
             .Idle = False

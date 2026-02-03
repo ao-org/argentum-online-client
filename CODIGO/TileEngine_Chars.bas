@@ -259,7 +259,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
                     .Body = BodyData(.iBody)
                     .AnimatingBody = 0
                 End If
-                If .BodyOnWater > 0 And MapData(.Pos.x, .Pos.y).Trigger = 8 Then
+                If .BodyOnWater > 0 And IsAmphibianOverWater(charIndex) Then
                     .Body = BodyData(.BodyOnWater)
                     .AnimatingBody = 0
                 End If
@@ -382,7 +382,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
                     .AnimatingBody = 0
                 End If
                 
-                If .BodyOnWater > 0 And MapData(.Pos.x, .Pos.y).Trigger = 8 Then
+                If .BodyOnWater > 0 And IsAmphibianOverWater(charIndex) Then
                     .Body = BodyData(.BodyOnWater)
                     .AnimatingBody = 0
                 End If
@@ -400,6 +400,10 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         ElseIf .Heading <> oldHeading Then
             ' --- Ya venía moviéndose y cambió de dirección: preservar fase ---
             Dim keepStart As Long
+                If .BodyOnWater > 0 And IsAmphibianOverWater(charIndex) Then
+                    .Body = BodyData(.BodyOnWater)
+                    .AnimatingBody = 0
+                End If
             keepStart = SyncGrhPhase(.Body.Walk(oldHeading), .Body.Walk(.Heading).GrhIndex)
             If keepStart > 0 Then
                 .Body.Walk(.Heading).started = keepStart
@@ -722,4 +726,10 @@ Public Function SyncGrhPhase(ByRef Grh As Grh, ByVal newGrhIndex As Long) As Lon
     Elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
     phase = Elapsed Mod oldNum
     SyncGrhPhase = FrameTime - (phase * Grh.speed)
+End Function
+
+Public Function IsAmphibianOverWater(ByVal charIndex As Integer) As Boolean
+    With charlist(charIndex)
+        IsAmphibianOverWater = MapData(.Pos.x, .Pos.y).Trigger = 8 Or HayAgua(.Pos.x, .Pos.y) Or MapData(.Pos.x, .Pos.y).Trigger = 11
+    End With
 End Function
