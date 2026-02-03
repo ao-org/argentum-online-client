@@ -259,6 +259,10 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
                     .Body = BodyData(.iBody)
                     .AnimatingBody = 0
                 End If
+                If .BodyOnWater > 0 And MapData(.Pos.x, .Pos.y).Trigger = 8 Then
+                    .Body = BodyData(.BodyOnWater)
+                    .AnimatingBody = 0
+                End If
                 If .Backpack.BodyIndex <> .tmpBackPack Then
                     .Backpack = BodyData(.tmpBackPack)
                 End If
