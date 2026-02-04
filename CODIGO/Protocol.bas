@@ -2248,6 +2248,7 @@ Private Sub HandleCharacterCreate()
          NpcNum = Reader.ReadInt16
         .AnimAtaque1 = NpcData(NpcNum).LandAttackAnimation
         .BodyOnLand = NpcData(NpcNum).Body
+        .BodyIdle = NpcData(NpcNum).BodyIdle
         .BodyOnWaterIdle = NpcData(NpcNum).BodyOnWaterIdle
         .BodyOnWater = NpcData(NpcNum).BodyOnWater
         .AnimAtaque2 = NpcData(NpcNum).WaterAttackAnimation
@@ -2436,11 +2437,11 @@ Private Sub HandleCharacterChange()
                     End If
                 Else
                     If .Idle Then
-                        .Body = BodyData(TempInt)
-                        .iBody = TempInt
+                        .Body = BodyData(.BodyIdle)
+                        .iBody = .BodyIdle
                     Else
-                        .Body = BodyData(TempInt)
-                        .iBody = TempInt
+                        .Body = BodyData(.BodyOnLand)
+                        .iBody = .BodyOnLand
                     End If
                 End If
             Else

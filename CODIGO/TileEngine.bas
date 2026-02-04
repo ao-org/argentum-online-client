@@ -280,6 +280,7 @@ Public Type Char
     TranslationTime As Long
     DontBlockTile As Boolean
     BodyOnLand As Integer
+    BodyIdle As Integer
     BodyOnWater As Integer
     BodyOnWaterIdle As Integer
     AnimAtaque2 As Integer

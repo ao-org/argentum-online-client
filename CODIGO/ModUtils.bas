@@ -223,6 +223,7 @@ Public Type NpcDatas
     desc As String
     Body As Integer
     BodyOnLand As Integer
+    BodyIdle As Integer
     BodyOnWater As Integer
     BodyOnWaterIdle As Integer
     LandAttackAnimation As Integer
