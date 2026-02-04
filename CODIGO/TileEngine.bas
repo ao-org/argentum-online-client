@@ -281,6 +281,7 @@ Public Type Char
     DontBlockTile As Boolean
     BodyOnLand As Integer
     BodyOnWater As Integer
+    BodyOnWaterIdle As Integer
     AnimAtaque2 As Integer
 End Type
 

@@ -2248,6 +2248,7 @@ Private Sub HandleCharacterCreate()
          NpcNum = Reader.ReadInt16
         .AnimAtaque1 = NpcData(NpcNum).LandAttackAnimation
         .BodyOnLand = NpcData(NpcNum).Body
+        .BodyOnWaterIdle = NpcData(NpcNum).BodyOnWaterIdle
         .BodyOnWater = NpcData(NpcNum).BodyOnWater
         .AnimAtaque2 = NpcData(NpcNum).WaterAttackAnimation
         If Backpack > 0 Then
@@ -2397,10 +2398,8 @@ HandleForceCharMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleForceCharMove", Erl)
 End Sub
 
-
 ' Handles the CharacterChange message.
 Private Sub HandleCharacterChange()
-    
     On Error GoTo HandleCharacterChange_Err
     Dim charindex As Integer
     Dim TempInt   As Integer
@@ -2416,15 +2415,36 @@ Private Sub HandleCharacterChange()
         Dim hadMovArmaEscudo As Boolean: hadMovArmaEscudo = .MovArmaEscudo
         Dim keepStartIdle    As Long
         Dim newGi            As Long
+        Dim flags            As Byte
         ' ============================================
-        ' Body
+        flags = Reader.ReadInt8()
+        .Idle = (flags And &O1)
+        .Navegando = (flags And &O2)
         TempInt = Reader.ReadInt16()
         If TempInt < LBound(BodyData()) Or TempInt > UBound(BodyData()) Then
             .Body = BodyData(0)
             .iBody = 0
         Else
-            .Body = BodyData(TempInt)
-            .iBody = TempInt
+            If .EsNpc Then
+                If IsAmphibianOverWater(charindex) Then
+                    If .Idle Then
+                        .Body = BodyData(.BodyOnWaterIdle)
+                        .iBody = .BodyOnWaterIdle
+                    Else
+                        '.Body = BodyData(.BodyOnWater)
+                        '.iBody = .BodyOnWater
+                    End If
+                Else
+                    If .Idle Then
+                        
+                    Else
+                        .Body = BodyData(.BodyOnLand)
+                        .iBody = .BodyOnLand
+                    End If
+                End If
+            Else
+                'no es npc
+            End If
         End If
         ' Head
         headIndex = Reader.ReadInt16()
@@ -2467,11 +2487,6 @@ Private Sub HandleCharacterChange()
         Call StartFx(.ActiveAnimation, Fx)
         .Meditating = (Fx <> 0)
         Reader.ReadInt16 ' Ignore loops
-        ' Flags
-        Dim flags As Byte
-        flags = Reader.ReadInt8()
-        .Idle = (flags And &O1)
-        .Navegando = (flags And &O2)
         'exception for dwarven exoesqueleton
         If .iBody = DwarvenExoesqueletonBody Then
             .Head = HeadData(0)
