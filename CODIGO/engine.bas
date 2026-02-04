@@ -1305,9 +1305,6 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         If .Heading = 0 Then Exit Sub
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
         If Not .Moving And Not .TranslationActive And .Idle And .scrollDirectionX = 0 And .scrollDirectionY = 0 And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
-            If .BodyOnWater > 0 And IsAmphibianOverWater(charindex) Then
-                .Body = BodyData(.BodyOnWater)
-            End If
             If .Body.AnimateOnIdle = 0 Then
                 ' Quieto SIN animación: congelar la serie de walk en frame estético
                 .Body.Walk(.Heading).Loops = 0
@@ -1390,7 +1387,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 .Idle = True
                 If .iBody Then
                 .Body = BodyData(.iBody)
-                    If .BodyOnWater > 0 And IsAmphibianOverWater(charindex) Then
+                    If IsAmphibianOverWater(charindex) Then
                         .Body = BodyData(.BodyOnWater)
                      End If
                 .Body.Walk(.Heading).started = FrameTime

@@ -2431,19 +2431,21 @@ Private Sub HandleCharacterChange()
                         .Body = BodyData(.BodyOnWaterIdle)
                         .iBody = .BodyOnWaterIdle
                     Else
-                        '.Body = BodyData(.BodyOnWater)
-                        '.iBody = .BodyOnWater
+                        .Body = BodyData(.BodyOnWater)
+                        .iBody = .BodyOnWater
                     End If
                 Else
                     If .Idle Then
-                        
+                        .Body = BodyData(TempInt)
+                        .iBody = TempInt
                     Else
-                        .Body = BodyData(.BodyOnLand)
-                        .iBody = .BodyOnLand
+                        .Body = BodyData(TempInt)
+                        .iBody = TempInt
                     End If
                 End If
             Else
-                'no es npc
+                .Body = BodyData(TempInt)
+                .iBody = TempInt
             End If
         End If
         ' Head

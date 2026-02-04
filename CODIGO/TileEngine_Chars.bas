@@ -232,7 +232,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         oldHeading = .Heading
         .scrollDirectionX = addx
         .scrollDirectionY = addy
-        If .BodyOnWater > 0 And IsAmphibianOverWater(charindex) Then
+        If IsAmphibianOverWater(charindex) Then
             .Body = BodyData(.BodyOnWater)
             .AnimatingBody = 0
         End If
@@ -252,7 +252,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
             If .Escudo.ShieldWalk(newHeading).started = 0 Then .Escudo.ShieldWalk(newHeading).started = .Body.Walk(newHeading).started
             .Arma.WeaponWalk(newHeading).Loops = INFINITE_LOOPS
             .Escudo.ShieldWalk(newHeading).Loops = INFINITE_LOOPS
-            If .BodyOnWater > 0 And IsAmphibianOverWater(charindex) Then
+            If IsAmphibianOverWater(charindex) Then
                 .Body = BodyData(.BodyOnWater)
             End If
         End If
@@ -266,7 +266,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
                     .Body = BodyData(.iBody)
                     .AnimatingBody = 0
                 End If
-                If .BodyOnWater > 0 And IsAmphibianOverWater(charIndex) Then
+                If IsAmphibianOverWater(charindex) Then
                     .Body = BodyData(.BodyOnWater)
                     .AnimatingBody = 0
                 End If
@@ -378,7 +378,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         .scrollDirectionY = Sgn(addy)
         .LastStep = FrameTime
         .Idle = False
-        If .BodyOnWater > 0 And IsAmphibianOverWater(charindex) Then
+        If IsAmphibianOverWater(charindex) Then
             .Body = BodyData(.BodyOnWater)
             .AnimatingBody = 0
         End If
@@ -391,7 +391,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
                     .Body = BodyData(.iBody)
                     .AnimatingBody = 0
                 End If
-                If .BodyOnWater > 0 And IsAmphibianOverWater(charIndex) Then
+                If IsAmphibianOverWater(charindex) Then
                     .Body = BodyData(.BodyOnWater)
                     .AnimatingBody = 0
                 End If
@@ -409,7 +409,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         ElseIf .Heading <> oldHeading Then
             ' --- Ya venía moviéndose y cambió de dirección: preservar fase ---
             Dim keepStart As Long
-                If .BodyOnWater > 0 And IsAmphibianOverWater(charIndex) Then
+                If IsAmphibianOverWater(charindex) Then
                     .Body = BodyData(.BodyOnWater)
                     .AnimatingBody = 0
                 End If
@@ -739,6 +739,6 @@ End Function
 
 Public Function IsAmphibianOverWater(ByVal charIndex As Integer) As Boolean
     With charlist(charIndex)
-        IsAmphibianOverWater = MapData(.Pos.x, .Pos.y).Trigger = 8 Or HayAgua(.Pos.x, .Pos.y) Or MapData(.Pos.x, .Pos.y).Trigger = 11
+        IsAmphibianOverWater = (MapData(.Pos.x, .Pos.y).Trigger = 8 Or HayAgua(.Pos.x, .Pos.y) Or MapData(.Pos.x, .Pos.y).Trigger = 11) And charlist(charindex).BodyOnWater > 0
     End With
 End Function

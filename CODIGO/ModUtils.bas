@@ -244,6 +244,7 @@ Public Type NpcDatas
     Obj() As Integer
     Comercia As Integer
     level As Integer
+    Amphibian As Boolean
 End Type
 
 Public Type HechizoDatas
