@@ -2245,13 +2245,13 @@ Private Sub HandleCharacterCreate()
         .tipoUsuario = Reader.ReadInt8()
         .Team = Reader.ReadInt8()
         .banderaIndex = Reader.ReadInt8()
-         NpcNum = Reader.ReadInt16
-        .AnimAtaque1 = NpcData(NpcNum).LandAttackAnimation
-        .BodyOnLand = NpcData(NpcNum).Body
-        .BodyIdle = NpcData(NpcNum).BodyIdle
-        .BodyOnWaterIdle = NpcData(NpcNum).BodyOnWaterIdle
-        .BodyOnWater = NpcData(NpcNum).BodyOnWater
-        .AnimAtaque2 = NpcData(NpcNum).WaterAttackAnimation
+        .NpcNumber = Reader.ReadInt16()
+        .AnimAtaque1 = NpcData(.NpcNumber).LandAttackAnimation
+        .BodyOnLand = NpcData(.NpcNumber).Body
+        .BodyIdle = NpcData(.NpcNumber).BodyIdle
+        .BodyOnWaterIdle = NpcData(.NpcNumber).BodyOnWaterIdle
+        .BodyOnWater = NpcData(.NpcNumber).BodyOnWater
+        .AnimAtaque2 = NpcData(.NpcNumber).WaterAttackAnimation
         If Backpack > 0 Then
             .Backpack = BodyData(Backpack)
             .tmpBackPack = Backpack
@@ -2437,8 +2437,13 @@ Private Sub HandleCharacterChange()
                     End If
                 Else
                     If .Idle Then
-                        .Body = BodyData(.BodyIdle)
-                        .iBody = .BodyIdle
+                        If .BodyOnLand > 0 Then
+                            .Body = BodyData(.BodyOnLand)
+                            .iBody = .BodyOnLand
+                        Else
+                            .Body = BodyData(TempInt)
+                            .iBody = TempInt
+                        End If
                     Else
                         .Body = BodyData(.BodyOnLand)
                         .iBody = .BodyOnLand
@@ -3057,17 +3062,14 @@ Private Sub HandleCharAtaca()
     Dim danio       As Long
     Dim AnimAttack  As Integer
     Dim AnimAttack2 As Integer
-    Dim NPCNumber   As Integer
     NpcIndex = Reader.ReadInt16()
     VictimIndex = Reader.ReadInt16()
     danio = Reader.ReadInt32()
-    NpcNumber = Reader.ReadInt16()
-    AnimAttack = NpcData(NpcNumber).LandAttackAnimation
-    AnimAttack2 = NpcData(NpcNumber).WaterAttackAnimation
     Dim oldWalk   As Grh
     Dim keepStart As Long
     With charlist(NpcIndex)
-    
+        AnimAttack = NpcData(.NpcNumber).LandAttackAnimation
+        AnimAttack2 = NpcData(.NpcNumber).WaterAttackAnimation
         If AnimAttack > 0 Then
             oldWalk = .Body.Walk(.Heading)
             .AnimatingBody = AnimAttack
@@ -5962,22 +5964,18 @@ HandleReportLobbyList_Err:
 End Sub
 
 Private Sub HandleChangeSkinSlot()
-
-Dim Slot                        As Byte
-Dim ObjIndex                    As Integer
-Dim GrhIndex                    As Long
-Dim Amount                      As Integer
-Dim Equipped                    As Boolean
-Dim Name                        As String
-Dim ObjType                     As Byte
-
+    Dim Slot     As Byte
+    Dim ObjIndex As Integer
+    Dim GrhIndex As Long
+    Dim Amount   As Integer
+    Dim Equipped As Boolean
+    Dim Name     As String
+    Dim ObjType  As Byte
     On Error GoTo HandleChangeSkinSlot_Error
-
     With Reader
         Slot = .ReadInt8
         ObjIndex = .ReadInt16
         Equipped = .ReadBool
-        
         GrhIndex = .ReadInt32
         ObjType = .ReadInt8
         Name = .ReadString8
@@ -5999,15 +5997,12 @@ Dim ObjType                     As Byte
         Call Load(frmSkins)
         Call frmSkins.InvSkins.SetItem(Slot, ObjIndex, 1, CByte(Equipped), GrhIndex, ObjType, 0, 0, 0, 0, Name, 0, 0)
     End With
-
     On Error GoTo 0
     Exit Sub
-
 HandleChangeSkinSlot_Error:
-
     Call LogError("Error " & Err.Number & " (" & Err.Description & ") en el procedimiento HandleChangeSkinSlot del módulo Módulo Protocol en la línea: " & Erl())
-
 End Sub
+
 Public Sub HandleGuildConfig()
     cfgGuildLevelCallSupport = Reader.ReadInt8
     cfgGuildLevelSeeInvisible = Reader.ReadInt8
@@ -6019,10 +6014,11 @@ Public Sub HandleGuildConfig()
         cfgGuildMembersByLevel(i) = Reader.ReadInt8()
     Next i
 End Sub
+
 Public Sub HandleShowPickUpObj()
-    Dim Amount As Integer
+    Dim Amount   As Integer
     Dim ObjIndex As Integer
-    Dim txt As String
+    Dim txt      As String
     ObjIndex = Reader.ReadInt16
     Amount = Reader.ReadInt16
     txt = "+" & Amount & " " & ObjData(ObjIndex).Name

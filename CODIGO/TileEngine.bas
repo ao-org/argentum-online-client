@@ -274,6 +274,7 @@ Public Type Char
     tipoUsuario As eTipoUsuario
     Team As Byte
     banderaIndex As Byte
+    NpcNumber As Integer
     AnimAtaque1 As Integer
     TranslationActive As Boolean
     TranslationStartTime As Long

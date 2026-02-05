@@ -1377,7 +1377,7 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).LandAttackAnimation = val(Leer.GetValue("npc" & Npc, "Ataque1"))
         NpcData(Npc).BodyOnWater = val(Leer.GetValue("npc" & Npc, "BodyOnWater"))
         NpcData(Npc).BodyOnWaterIdle = val(Leer.GetValue("npc" & Npc, "BodyOnWaterIdle"))
-        NpcData(Npc).BodyOnLand = val(Leer.GetValue("npc" & Npc, "BodyOnLand"))
+        NpcData(Npc).BodyOnLand = val(Leer.GetValue("npc" & Npc, "Body"))
         NpcData(Npc).BodyIdle = val(Leer.GetValue("npc" & Npc, "BodyIdle"))
         NpcData(Npc).Amphibian = val(Leer.GetValue("npc" & Npc, "Amphibian")) > 0
         
