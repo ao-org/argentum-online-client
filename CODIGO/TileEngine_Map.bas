@@ -206,7 +206,9 @@ Public Sub Draw_Sombra(ByRef Grh As Grh, _
                        Optional ByVal alpha As Boolean, _
                        Optional ByVal map_x As Byte = 1, _
                        Optional ByVal map_y As Byte = 1, _
-                       Optional ByVal angle As Single)
+                       Optional ByVal angle As Single, _
+                       Optional ByVal ShadowOffsetX = 0, _
+                       Optional ByVal ShadowOffsetY = 0)
     On Error GoTo Draw_Sombra_Err
     If Grh.GrhIndex = 0 Or Grh.GrhIndex > MaxGrh Then Exit Sub
     Dim CurrentFrame As Integer
@@ -239,7 +241,7 @@ Public Sub Draw_Sombra(ByRef Grh As Grh, _
     End If
     If Not OverlapRect(RenderCullingRect, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight) Then Exit Sub
     Call Batch_Textured_Box_Shadow(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, _
-            GrhData(CurrentGrhIndex).FileNum, MapData(map_x, map_y).light_value)
+            GrhData(CurrentGrhIndex).FileNum, MapData(map_x, map_y).light_value, ShadowOffsetX, ShadowOffsetY)
     Exit Sub
 Draw_Sombra_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.Draw_Sombra", Erl)

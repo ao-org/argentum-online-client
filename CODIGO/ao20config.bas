@@ -64,6 +64,9 @@ Sub SaveConfig()
     Call SaveSetting("VIDEO", "Aceleracion", ModoAceleracion)
     Call SaveSetting("VIDEO", "TexHighWaterMark", TexHighWaterMark)
     Call SaveSetting("VIDEO", "NumTexRelease", NumTexRelease)
+    Call SaveSetting("VIDEO", "ButtonsExpBar", IIf(ButtonsExpBar, 1, 0))
+    Call SaveSetting("VIDEO", "ShowNameMapInRender", IIf(ShowNameMapInRender, 1, 0))
+    Call SaveSetting("VIDEO", "ConfirmPetRelease", IIf(ConfirmPetRelease, 1, 0))
     Call SaveSetting("OPCIONES", "SensibilidadMouse", SensibilidadMouse)
     Call SaveSetting("OPCIONES", "DialogosClanes", IIf(DialogosClanes.Activo, 1, 0))
     Call SaveSetting("OPCIONES", "EquipmentIndicatorRedColor", RED_SHADER)
@@ -73,6 +76,8 @@ Sub SaveConfig()
     Call SaveSetting("OPCIONES", "EquipmentIndicatorCoordinateX", X_OFFSET)
     Call SaveSetting("OPCIONES", "EquipmentIndicatorCoordinateY", Y_OFFSET)
     Call SaveSetting("OPCIONES", "EquipmentIndicatorCaracter", EQUIPMENT_CARACTER)
+    Call SaveSetting("OPCIONES", "CenteredMinimap", CenteredMinimap)
+    Call SaveSetting("OPCIONES", "CenteredMinimapZoom", CenteredMinimapZoom)
     Exit Sub
 SaveConfig_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.SaveConfig", Erl)
@@ -109,6 +114,9 @@ Sub LoadConfig()
     InfoItemsEnRender = val(GetSetting("VIDEO", "InfoItemsEnRender"))
     ModoAceleracion = GetSetting("VIDEO", "Aceleracion")
     DisableDungeonLighting = val(GetSetting("VIDEO", "DisableDungeonLighting"))
+    ButtonsExpBar = GetSettingAsByte("VIDEO", "ButtonsExpBar", 1)
+    ShowNameMapInRender = GetSettingAsByte("VIDEO", "ShowNameMapInRender", 1)
+    ConfirmPetRelease = GetSettingAsByte("VIDEO", "ConfirmPetRelease", 1)
     '------------------------------------------------------------------------------
     ' Configuration: VIDEO.NumTexRelease
     '
@@ -173,6 +181,8 @@ Sub LoadConfig()
     X_OFFSET = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateX")))
     Y_OFFSET = CInt(val(GetSetting("OPCIONES", "EquipmentIndicatorCoordinateY")))
     EQUIPMENT_CARACTER = GetSetting("OPCIONES", "EquipmentIndicatorCaracter")
+    CenteredMinimap = GetSettingAsByte("OPCIONES", "CenteredMinimap", 1)
+    CenteredMinimapZoom = CInt(val(GetSetting("OPCIONES", "CenteredMinimapZoom")))
     'Init
     #If PYMMO = 0 Or DEBUGGING = 1 Then
         ServerIndex = GetSetting("INIT", "ServerIndex")

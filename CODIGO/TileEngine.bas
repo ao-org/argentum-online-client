@@ -130,6 +130,7 @@ Public Type BodyData
     Walk(E_Heading.NORTH To E_Heading.WEST) As Grh
     HeadOffset As Position
     BodyOffset As Position
+    ShadowOffset As Position
     BodyIndex As Integer
     IdleBody As Integer
     AnimateOnIdle As Integer

@@ -983,15 +983,21 @@ Begin VB.Form frmMain
       Top             =   2280
       Width           =   11040
    End
+   Begin VB.Image btnZoomIn 
+      Height          =   195
+      Left            =   11175
+      Top             =   1050
+      Width           =   195
+   End
+   Begin VB.Image btnZoomOut 
+      Height          =   195
+      Left            =   11175
+      Top             =   1470
+      Width           =   195
+   End
    Begin VB.Image btnExpRemaining 
       Height          =   225
       Left            =   13605
-      Top             =   1245
-      Width           =   255
-   End
-   Begin VB.Image btnExp2 
-      Height          =   225
-      Left            =   13350
       Top             =   1245
       Width           =   255
    End
@@ -1469,6 +1475,12 @@ Begin VB.Form frmMain
       Top             =   1548
       Width           =   2832
    End
+   Begin VB.Image btnExp2 
+      Height          =   225
+      Left            =   13350
+      Top             =   1245
+      Width           =   255
+   End
    Begin VB.Menu mnuObj 
       Caption         =   "Objeto"
       Visible         =   0   'False
@@ -1545,7 +1557,6 @@ End Type
 Private Declare Function ReleaseCapture Lib "user32" () As Long
 Public MouseBoton                  As Long
 Public MouseShift                  As Long
-Public ShowPercentage              As Boolean
 Public bmoving                     As Boolean
 Public dx                          As Integer
 Public dy                          As Integer
@@ -1578,6 +1589,8 @@ Private cBotonTotalExp     As clsGraphicalButton
 Private cBotonExpRemaining As clsGraphicalButton
 Private cBotonPercentageTwoDecimals As clsGraphicalButton
 Private cBotonPercentageFourDecimals As clsGraphicalButton
+Private cBotonZoomIn       As clsGraphicalButton
+Private cBotonZoomOut      As clsGraphicalButton
 Private Sub btnInvisible_Click()
     On Error GoTo btnInvisible_Click_Err
     Call ParseUserCommand("/INVISIBLE")
@@ -1597,6 +1610,8 @@ Private Sub loadButtons()
     Set cBotonExpRemaining = New clsGraphicalButton
     Set cBotonPercentageTwoDecimals = New clsGraphicalButton
     Set cBotonPercentageFourDecimals = New clsGraphicalButton
+    Set cBotonZoomIn = New clsGraphicalButton
+    Set cBotonZoomOut = New clsGraphicalButton
     Call cBotonEliminarItem.Initialize(imgDeleteItem, "boton-borrar-item-default.bmp", "boton-borrar-item-over.bmp", "boton-borrar-item-off.bmp", Me)
     Call cBotonAjustes.Initialize(OpcionesBoton, "boton-ajustes-default.bmp", "boton-ajustes-over.bmp", "boton-ajustes-off.bmp", Me)
     Call cBotonManual.Initialize(imgManual, "boton-manual-default.bmp", "boton-manual-over.bmp", "boton-manual-off.bmp", Me)
@@ -1605,6 +1620,8 @@ Private Sub loadButtons()
     Call cBotonExpRemaining.Initialize(btnExpRemaining, "boton-exprestante-default.bmp", "boton-exprestante-over.bmp", "boton-exprestante-off.bmp", Me)
     Call cBotonPercentageTwoDecimals.Initialize(btnExp, "boton-expdosdecimales-default.bmp", "boton-expdosdecimales-over.bmp", "boton-expdosdecimales-off.bmp", Me)
     Call cBotonPercentageFourDecimals.Initialize(btnExp2, "boton-expcuatrodecimales-default.bmp", "boton-expcuatrodecimales-over.bmp", "boton-expcuatrodecimales-off.bmp", Me)
+    Call cBotonZoomIn.Initialize(btnZoomIn, "boton-zoomin-default.bmp", "boton-zoomin-over.bmp", "boton-zoomin-off.bmp", Me)
+    Call cBotonZoomOut.Initialize(btnZoomOut, "boton-zoomout-default.bmp", "boton-zoomout-over.bmp", "boton-zoomout-off.bmp", Me)
 End Sub
 
 Private Sub btnSpawn_Click()
@@ -1618,10 +1635,8 @@ btnSpawn_Click_Err:
 End Sub
 Private Sub btnExpRemaining_Click()
     On Error GoTo btnExpRemaining_Click_Err
-    frmMain.lblPorcLvl.visible = False
-    frmMain.lblPorcLvl2.visible = False
-    frmMain.exp.visible = False
-    frmMain.expRemaining.visible = True
+    
+    Call ChangeExperienceDisplayMode(btnExpRemaining)
     Exit Sub
     
 btnExpRemaining_Click_Err:
@@ -1631,10 +1646,8 @@ End Sub
 
 Private Sub btnExp2_Click()
     On Error GoTo btnExp2_Click_Err
-    frmMain.lblPorcLvl.visible = False
-    frmMain.expRemaining.visible = False
-    frmMain.exp.visible = False
-    frmMain.lblPorcLvl2.visible = True
+    
+    Call ChangeExperienceDisplayMode(btnExp2)
     Exit Sub
     
 btnExp2_Click_Err:
@@ -1643,10 +1656,8 @@ btnExp2_Click_Err:
 End Sub
 Private Sub btnExp_Click()
 On Error GoTo btnExp_Click_Err
-    frmMain.lblPorcLvl2.visible = False
-    frmMain.expRemaining.visible = False
-    frmMain.exp.visible = False
-    frmMain.lblPorcLvl.visible = True
+
+    Call ChangeExperienceDisplayMode(btnExp)
     Exit Sub
     
 btnExp_Click_Err:
@@ -1655,14 +1666,33 @@ btnExp_Click_Err:
 End Sub
 Private Sub btnTotalExp_Click()
     On Error GoTo btnTotalExp_Click_Err
-    frmMain.lblPorcLvl.visible = False
-    frmMain.lblPorcLvl2.visible = False
-    frmMain.expRemaining.visible = False
-    frmMain.exp.visible = True
+    
+    Call ChangeExperienceDisplayMode(btnTotalExp)
     Exit Sub
     
 btnTotalExp_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.btnTotalExp_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub btnZoomIn_Click()
+    On Error GoTo btnZoomIn_Click_Err
+    
+    ApplyMinimapZoom -20
+    Exit Sub
+    
+btnZoomIn_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnZoomIn_Click", Erl)
+    Resume Next
+End Sub
+Private Sub btnZoomOut_Click()
+    On Error GoTo btnZoomOut_Click_Err
+    
+    ApplyMinimapZoom 20
+    Exit Sub
+    
+btnZoomOut_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnZoomOut_Click", Erl)
     Resume Next
 End Sub
 
@@ -1946,13 +1976,6 @@ Efecto_Timer_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Efecto_Timer", Erl)
     Resume Next
 End Sub
-
-Private Sub hlst_Click()
-End Sub
-
-Private Sub Image1_Click()
-End Sub
-
 Private Sub ImgEstadisticas_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     TempTick = GetTickCount And &H7FFFFFFF
     If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 Then Exit Sub
@@ -2010,16 +2033,6 @@ End Sub
 Private Sub Evento_Timer()
     InvasionActual = 0
     Evento.enabled = False
-End Sub
-
-Private Sub exp_Click()
-    On Error GoTo exp_Click_Err
-    'Call WriteScrollInfo
-    ShowPercentage = Not ShowPercentage
-    Exit Sub
-exp_Click_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMain.exp_Click", Erl)
-    Resume Next
 End Sub
 Private Sub Form_Activate()
     renderer.Refresh
@@ -2082,6 +2095,27 @@ Private Sub imgMAO_Click()
     Exit Sub
 imgMAO_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.imgMAO_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub lblPorcLvl_Click()
+    On Error GoTo lblPorcLvl_Click_Err
+    If ButtonsExpBar <> 0 Then Exit Sub
+    frmMain.lblPorcLvl.visible = False
+    frmMain.exp.visible = True
+    Exit Sub
+lblPorcLvl_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.lblPorcLvl_Click", Erl)
+    Resume Next
+End Sub
+Private Sub exp_Click()
+    On Error GoTo exp_Click_Err
+    If ButtonsExpBar <> 0 Then Exit Sub
+    frmMain.exp.visible = False
+    frmMain.lblPorcLvl.visible = True
+    Exit Sub
+exp_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.exp_Click", Erl)
     Resume Next
 End Sub
 
@@ -2892,10 +2926,6 @@ DesactivarMacroTrabajo_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.DesactivarMacroTrabajo", Erl)
     Resume Next
 End Sub
-
-Private Sub MenuOpciones_Click()
-End Sub
-
 Private Sub manabar_Click()
     On Error GoTo manabar_Click_Err
     Call RequestMeditate
@@ -3223,7 +3253,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
             If HandleMouseInput(x, y) Then
             ElseIf HandleHotkeyArrowInput(x, y) Then
             ElseIf Pregunta Then
-                If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
+                If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then ' NO
                     If PreguntaLocal Then
                         Select Case PreguntaNUM
                             Case 1
@@ -3234,13 +3264,19 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
                             Case 2 ' Denunciar
                                 Pregunta = False
                                 PreguntaLocal = False
+                            Case 3 'Liberar mascotas
+                                Pregunta = False
+                                PreguntaLocal = False
+                            Case 4 'Liberar TODAS las mascotas
+                                Pregunta = False
+                                PreguntaLocal = False
                         End Select
                     Else
                         Call WriteResponderPregunta(False)
                         Pregunta = False
                     End If
                     Exit Sub
-                ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then
+                ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then 'SI
                     If PreguntaLocal Then
                         Select Case PreguntaNUM
                             Case 1 '¿Destruir item?
@@ -3249,6 +3285,14 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
                                 PreguntaLocal = False
                             Case 2 ' Denunciar
                                 Call WriteDenounce(targetName)
+                                Pregunta = False
+                                PreguntaLocal = False
+                            Case 3 'Liberar mascotas
+                                Call ParseUserCommand("/LIBERAR")
+                                Pregunta = False
+                                PreguntaLocal = False
+                            Case 4 'Liberar TODAS las mascotas
+                                Call ParseUserCommand("/LIBERARTODOS")
                                 Pregunta = False
                                 PreguntaLocal = False
                         End Select
@@ -3508,11 +3552,12 @@ Private Sub Form_Load()
     Me.Caption = App.title
     Set hlst = New clsGraphicalList
     Call hlst.Initialize(Me.picHechiz, RGB(200, 190, 190))
+    If CenteredMinimap > 0 Then
+        Me.MiniMap.AutoRedraw = True
+        Me.MiniMap.ScaleMode = vbPixels
+    End If
     loadButtons
-    frmMain.btnExp.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_PORCENTAJE")
-    frmMain.btnTotalExp.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_TOTAL")
-    frmMain.btnExp2.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_PORCENTAJE2")
-    frmMain.btnExpRemaining.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_RESTANTE")
+    InitToolTipText
     Exit Sub
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Load", Erl)
@@ -3750,8 +3795,14 @@ Public Sub ShowStats()
 End Sub
 
 Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVal y As Integer)
-    personaje(Jugador).Left = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - personaje(Jugador).Width \ 2 - 1
-    personaje(Jugador).Top = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
+    If CenteredMinimap = 0 Then
+        personaje(Jugador).Left = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - personaje(Jugador).Width \ 2 - 1
+        personaje(Jugador).Top = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
+    Else
+        personaje(Jugador).Left = 49
+        personaje(Jugador).Top = 49
+        Call RenderMinimapCentered(UserMap, x, y, CenteredMinimapZoom, CenteredMinimapZoom)
+    End If
 End Sub
 
 Private Sub imgDeleteItem_Click()
@@ -3913,10 +3964,78 @@ Public Sub OnDragEnd()
 End Sub
 
 Public Function HandleHotkeyArrowInput(ByVal x As Integer, ByVal y As Integer) As Boolean
-    If x > hotkey_arrow_posx And x < hotkey_arrow_posx + 10 And y > renderer.Height - hotkey_arrow_posy And y < renderer.Height Then
+    If x > hotkey_arrow_posx And x < hotkey_arrow_posx + 26 And y > renderer.Height - hotkey_arrow_posy And y < renderer.Height Then
         HandleHotkeyArrowInput = True
         HideHotkeys = Not HideHotkeys
         Call SaveHideHotkeys
     End If
     HandleHotkeyArrowInput = False
 End Function
+
+Private Sub ChangeExperienceDisplayMode(ByVal btn As Image)
+    On Error GoTo ChangeExperienceDisplayMode_Err
+    Select Case btn.Name
+        Case "btnExpRemaining"
+            frmMain.lblPorcLvl.visible = False
+            frmMain.lblPorcLvl2.visible = False
+            frmMain.exp.visible = False
+            frmMain.expRemaining.visible = True
+
+        Case "btnTotalExp"
+            frmMain.lblPorcLvl.visible = False
+            frmMain.lblPorcLvl2.visible = False
+            frmMain.expRemaining.visible = False
+            frmMain.exp.visible = True
+            
+        Case "btnExp"
+            frmMain.lblPorcLvl2.visible = False
+            frmMain.expRemaining.visible = False
+            frmMain.exp.visible = False
+            frmMain.lblPorcLvl.visible = True
+
+        Case "btnExp2"
+            frmMain.lblPorcLvl.visible = False
+            frmMain.expRemaining.visible = False
+            frmMain.exp.visible = False
+            frmMain.lblPorcLvl2.visible = True
+    End Select
+    Exit Sub
+    
+ChangeExperienceDisplayMode_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.ChangeExperienceDisplayMode", Erl)
+    Resume Next
+End Sub
+Private Sub InitToolTipText()
+    On Error GoTo InitToolTipText_Err
+    
+    frmMain.btnExp.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_PORCENTAJE")
+    frmMain.btnTotalExp.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_TOTAL")
+    frmMain.btnExp2.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_PORCENTAJE2")
+    frmMain.btnExpRemaining.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_RESTANTE")
+    Exit Sub
+    
+InitToolTipText_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.InitToolTipText", Erl)
+    Resume Next
+End Sub
+Private Sub ApplyMinimapZoom(ByVal Delta As Integer)
+    On Error GoTo ApplyMinimapZoom_Err
+    Dim NewZoom As Integer
+
+    NewZoom = CenteredMinimapZoom + Delta
+
+    If NewZoom > 50 Then NewZoom = 50
+    If NewZoom < -50 Then NewZoom = -50
+
+    If NewZoom = CenteredMinimapZoom Then Exit Sub
+
+    CenteredMinimapZoom = NewZoom
+
+    Call RenderMinimapCentered(UserMap, UserPos.X, UserPos.Y, CenteredMinimapZoom, CenteredMinimapZoom)
+    Exit Sub
+    
+ApplyMinimapZoom_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.ApplyMinimapZoom", Erl)
+    Resume Next
+End Sub
+

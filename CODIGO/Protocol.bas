@@ -56,8 +56,8 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call SaveStringInFile("Authenticated with server OK", "remote_debug.txt")
             Case ServerPacketID.elogged
                 frmDebug.add_text_tracebox "Logged"
-                Dim dummy As Boolean
-                dummy = Reader.ReadBool
+                Dim res As Boolean
+                res = Reader.ReadBool
                 Call SaveStringInFile("Logged with character " & CharacterRemote, "remote_debug.txt")
                 InitiateShutdownProcess = True
                 ShutdownProcessTimer.start
@@ -559,6 +559,8 @@ Private Sub HandleLogged()
     frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
     frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
     frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-on.bmp")
+    Call frmOpciones.ToggleExperienceButtons
+    Call frmOpciones.ToggleMiniMapZoomButtons
     SeguroParty = True
     SeguroClanX = True
     SeguroResuX = True
@@ -4964,11 +4966,14 @@ Private Sub HandleQuestDetails()
     Dim ObjIndex       As Integer
     Dim AmountHave     As Integer
     Dim QuestIndex     As Integer
-    Dim LevelRequerido As Byte
-    Dim QuestRequerida As Integer
+    Dim RequiredLevel As Byte
+    Dim LimitLevel As Byte
+    Dim RequiredClass As Byte
+    Dim RequiredQuest As Integer
     Dim subelemento As ListItem
     Dim cantidadobjs As Integer
     Dim obindex As Integer
+    Dim requirements As String
     FrmQuests.ListView2.ListItems.Clear
     FrmQuests.ListView1.ListItems.Clear
     FrmQuests.ListView1.ColumnHeaders(2).Width = 780 'Agrando el ancho de la columna para que entre la cantidad de npcs correctamente
@@ -4978,16 +4983,27 @@ Private Sub HandleQuestDetails()
     FrmQuests.picture1.Refresh
     FrmQuests.npclbl.Caption = ""
     FrmQuests.objetolbl.Caption = ""
+    requirements = ""
     
     QuestIndex = Reader.ReadInt16
     FrmQuests.titulo.Caption = QuestList(QuestIndex).nombre
     FrmQuests.lblRepetible.visible = QuestList(QuestIndex).Repetible = 1
-    LevelRequerido = Reader.ReadInt8
-    QuestRequerida = Reader.ReadInt16
-    FrmQuests.detalle.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & JsonLanguage.Item( _
-            "MENSAJE_QUEST_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf
-    If QuestRequerida <> 0 Then
-        FrmQuests.detalle.Text = FrmQuests.detalle.Text & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(QuestRequerida).nombre
+    RequiredLevel = Reader.ReadInt8
+    LimitLevel = Reader.ReadInt8
+    RequiredClass = Reader.ReadInt8
+    RequiredQuest = Reader.ReadInt16
+    FrmQuests.detalle.Text = QuestList(QuestIndex).desc
+    If RequiredLevel > 1 Then
+        requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & RequiredLevel & vbCrLf
+    End If
+    If LimitLevel <> 0 Then
+        requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_MAXIMO") & LimitLevel & vbCrLf
+    End If
+    If RequiredClass <> 0 And RequiredClass <= 12 Then
+        requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(RequiredClass) & vbCrLf
+    End If
+    If RequiredQuest <> 0 Then
+        requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(RequiredQuest).nombre & vbCrLf
     End If
     tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_OBJETIVOS") & vbCrLf
     tmpByte = Reader.ReadInt8
@@ -5039,7 +5055,7 @@ Private Sub HandleQuestDetails()
     RequiredSkill = Reader.ReadInt8
     RequiredValue = Reader.ReadInt8
     If RequiredSkill > 0 Then
-        FrmQuests.detalle.Text = FrmQuests.detalle.Text & SkillsNames(RequiredSkill) & ": " & RequiredValue
+        requirements = requirements & SkillsNames(RequiredSkill) & ": " & RequiredValue & vbCrLf
     End If
     tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_RECOMPENSAS") & vbCrLf
     Dim tmplong As Long
@@ -5078,6 +5094,10 @@ Private Sub HandleQuestDetails()
         subelemento.SubItems(3) = 1
         subelemento.SubItems(4) = "typeSpell"
     Next i
+    
+    If Len(requirements) > 0 Then
+        FrmQuests.detalle.Text = FrmQuests.detalle.Text & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & requirements
+    End If
     
     FrmQuests.txtInfo.Text = tmpStr
     Call FrmQuests.ListView1_Click

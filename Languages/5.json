@@ -175,7 +175,7 @@
   "MENSAJE_TITULO_INFORMACION": "Informazioni",
   "MENSAJE_NO_TIENES_MISION": "Non hai nessuna missione!",
   "MENSAJE_SELECCIONAR_MISION": "Prima devi selezionare una missione!",
-  "MENSAJE_ABANDONAR_MISION": "Sei sicuro di voler abbandonare la missione?",
+  "MENSAJE_ABANDONAR_MISION": "Sei sicuro di voler abbandonare la missione? Tutti gli oggetti relativi alla missione verranno eliminati.",
   "MENSAJE_TITULO_ADVERTENCIA": "Avvertimento",
   "MENSAJE_ERROR_MOTOR_GRAFICO": "Si è verificato un errore durante l'avvio del motore grafico.",
   "MENSAJE_SUGERENCIA_DRIVERS": "Assicurati di avere i driver grafici aggiornati e la libreria DX8VB.dll registrata correttamente.",
@@ -764,5 +764,7 @@
 	"TOOLTIP_EXP_RESTANTE": "Esperienza rimanente",
 	"TOOLTIP_EXP_TOTAL": "Esperienza totale",
 	"TOOLTIP_EXP_PORCENTAJE": "% con 2 decimali",
-	"TOOLTIP_EXP_PORCENTAJE2": "% con 4 decimali"
+	"TOOLTIP_EXP_PORCENTAJE2": "% con 4 decimali",
+	"MENSAJEBOX_LIBERAR_MASCOTA": "Vuoi liberare la mascotte?",
+	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Vuoi liberare tutte le mascotte?"
 }
