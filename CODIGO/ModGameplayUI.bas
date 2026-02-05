@@ -161,8 +161,7 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
                             End If
                         End If
                     End If
-                    If (UsingSkill = eSkill.Alquimia Or UsingSkill = eSkill.MeltMinerals Or _
-                       UsingSkill = eSkill.TargetableItem) Then
+                    If (UsingSkill = eSkill.Alquimia Or UsingSkill = eSkill.TargetableItem) Then
                         If MainTimer.Check(TimersIndex.CastSpell) Then
                             Call WriteWorkLeftClick(tX, tY, UsingSkill)
                             Call FormParser.Parse_Form(GetGameplayForm)
@@ -171,10 +170,9 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
                             End If
                         End If
                     Else
-                        If UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or UsingSkill = eSkill.Pescar Then
+                        If UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Smelting Then
                             Call WriteStartAutomatedAction(tX, tY, UsingSkill)
                         End If
-                        
                     End If
                     If SendSkill Then
                         If UsingSkill = eSkill.magia Then

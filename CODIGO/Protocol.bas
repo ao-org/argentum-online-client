@@ -3204,7 +3204,7 @@ Private Sub HandleWorkRequestTarget()
         Case Robar
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_ROBAR"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
-        Case eSkill.MeltMinerals
+        Case eSkill.Smelting
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_FUNDIRMETAL"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case Proyectiles
