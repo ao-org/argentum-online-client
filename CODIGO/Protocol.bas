@@ -2196,7 +2196,6 @@ Private Sub HandleCharacterCreate()
     helmet = Reader.ReadInt16()
     Cart = Reader.ReadInt16()
     Backpack = Reader.ReadInt16()
-    
     With charlist(charindex)
         Dim loopC, Fx As Integer
         Fx = Reader.ReadInt16
@@ -2257,7 +2256,6 @@ Private Sub HandleCharacterCreate()
             .tmpBackPack = Backpack
             .HasBackpack = True
         End If
-        
         'dwarven exoesqueleton exception
         If .Body.BodyIndex = DwarvenExoesqueletonBody Then
             weapon = NO_WEAPON
@@ -2281,6 +2279,15 @@ Private Sub HandleCharacterCreate()
         End If
         .Muerto = (Body = CASPER_BODY_IDLE)
         Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, Shield, helmet, Cart, Backpack, ParticulaFx, appear)
+        If .BodyOnWater > 0 And IsAmphibianOverWater(charindex) Then
+            If .Idle Then
+                .Body = BodyData(.BodyOnWater)
+                .iBody = .BodyOnWater
+            Else
+                .Body = BodyData(.BodyOnWaterIdle)
+                .iBody = .BodyOnWaterIdle
+            End If
+        End If
         If .Navegando = False Or UserNadandoTrajeCaucho = True Then
             If .Body.AnimateOnIdle = 0 Then
                 .Body.Walk(.Heading).started = 0
