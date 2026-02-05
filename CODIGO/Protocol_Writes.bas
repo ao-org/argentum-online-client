@@ -4498,50 +4498,6 @@ WriteCreateNPCWithRespawn_Err:
 End Sub
 
 ''
-' Writes the "ImperialArmour" message to the outgoing data buffer.
-'
-' @param    armourIndex The index of imperial armour to be altered.
-' @param    objectIndex The index of the new object to be set as the imperial armour.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteImperialArmour(ByVal armourIndex As Byte, ByVal objectIndex As Integer)
-    '<EhHeader>
-    On Error GoTo WriteImperialArmour_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eImperialArmour)
-    Call Writer.WriteInt8(armourIndex)
-    Call Writer.WriteInt16(objectIndex)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteImperialArmour_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteImperialArmour", Erl)
-    '</EhFooter>
-End Sub
-
-''
-' Writes the "ChaosArmour" message to the outgoing data buffer.
-'
-' @param    armourIndex The index of chaos armour to be altered.
-' @param    objectIndex The index of the new object to be set as the chaos armour.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteChaosArmour(ByVal armourIndex As Byte, ByVal objectIndex As Integer)
-    '<EhHeader>
-    On Error GoTo WriteChaosArmour_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eChaosArmour)
-    Call Writer.WriteInt8(armourIndex)
-    Call Writer.WriteInt16(objectIndex)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteChaosArmour_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChaosArmour", Erl)
-    '</EhFooter>
-End Sub
-
-''
 ' Writes the "NavigateToggle" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
@@ -4593,26 +4549,6 @@ Public Sub WriteParticipar(ByVal RoomId As Integer, ByVal Password As String)
 WriteParticipar_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteParticipar", Erl)
-    '</EhFooter>
-End Sub
-
-''
-' Writes the "TurnCriminal" message to the outgoing data buffer.
-'
-' @param    username The name of the user to turn into criminal.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteTurnCriminal(ByVal userName As String)
-    '<EhHeader>
-    On Error GoTo WriteTurnCriminal_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eTurnCriminal)
-    Call Writer.WriteString8(userName)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteTurnCriminal_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTurnCriminal", Erl)
     '</EhFooter>
 End Sub
 

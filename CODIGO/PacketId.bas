@@ -399,12 +399,9 @@ Public Enum ClientPacketID
     eSystemMessage           '/SMSG
     eCreateNPC               '/ACC
     eCreateNPCWithRespawn    '/RACC
-    eImperialArmour          '/AI1 - 4
-    eChaosArmour             '/AC1 - 4
     eNavigateToggle          '/NAVE
     eServerOpenToUsersToggle '/HABILITAR
     eParticipar              '/PARTICIPAR
-    eTurnCriminal            '/CONDEN
     eResetFactions           '/RAJAR
     eRemoveCharFromGuild     '/RAJARCLAN
     eAlterName               '/ANAME

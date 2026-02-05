@@ -1252,30 +1252,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                 End If
-            Case "/AI" ' ELIMINAR
-                If notNullArguments And CantidadArgumentos >= 2 Then
-                    If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
-                        Call WriteImperialArmour(ArgumentosAll(0), ArgumentosAll(1))
-                    Else
-                        'No es numerico
-                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
-                    End If
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
-                End If
-            Case "/AC" ' ELIMINAR
-                If notNullArguments And CantidadArgumentos >= 2 Then
-                    If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Integer) Then
-                        Call WriteChaosArmour(ArgumentosAll(0), ArgumentosAll(1))
-                    Else
-                        'No es numerico
-                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))
-                    End If
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
-                End If
             Case "/NAVE"
                 Call WriteNavigateToggle
             Case "/HABILITAR", "/ENABLE"
@@ -1287,13 +1263,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call WriteParticipar(ArgumentosAll(0), "")
                 Else
                     Call WriteParticipar(ArgumentosAll(0), ArgumentosAll(1))
-                End If
-            Case "/CONDEN"
-                If notNullArguments Then
-                    Call WriteTurnCriminal(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                 End If
             Case "/RAJAR"
                 If notNullArguments Then
