@@ -437,6 +437,8 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
                     Call WriteEquipItem(Slot)
                 End If
             End If
+        Case eObjType.otMinerales
+            Call WriteUseItem(Slot)
         Case eObjType.OtDonador
             If Not Equipped Then
                 Call WriteEquipItem(Slot)
@@ -562,11 +564,6 @@ Public Sub RequestSkills()
     LlegaronSkills = True
     Call WriteRequestSkills
 End Sub
-
-Public Function IsUsableItem(ByRef ItemData As ObjDatas) As Boolean
-    IsUsableItem = ItemData.ObjType = eObjType.otWeapon Or ItemData.ObjType = eObjType.otPociones Or ItemData.ObjType = eObjType.OtHerramientas Or ItemData.ObjType = _
-            eObjType.otInstrumentos Or ItemData.ObjType = eObjType.OtCofre
-End Function
 
 Public Sub EquipSelectedItem()
     If frmMain.Inventario.IsItemSelected Then Call WriteEquipItem(frmMain.Inventario.SelectedItem)
