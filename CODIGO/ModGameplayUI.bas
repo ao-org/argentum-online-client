@@ -161,7 +161,7 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
                             End If
                         End If
                     End If
-                    If (UsingSkill = eSkill.Alquimia Or UsingSkill = FundirMetal Or _
+                    If (UsingSkill = eSkill.Alquimia Or UsingSkill = eSkill.MeltMinerals Or _
                        UsingSkill = eSkill.TargetableItem) Then
                         If MainTimer.Check(TimersIndex.CastSpell) Then
                             Call WriteWorkLeftClick(tX, tY, UsingSkill)

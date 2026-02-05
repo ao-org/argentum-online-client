@@ -2885,7 +2885,7 @@ Private Sub macrotrabajo_Timer()
         DesactivarMacroTrabajo
         Exit Sub
     End If
-    If UsingSkill = FundirMetal Or (UsingSkill = eSkill.Herreria And Not frmHerrero.visible) Then
+    If UsingSkill = eSkill.MeltMinerals Or (UsingSkill = eSkill.Herreria And Not frmHerrero.visible) Then
         Call WriteWorkLeftClick(TargetXMacro, TargetYMacro, UsingSkill)
         UsingSkill = 0
     End If
