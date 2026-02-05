@@ -275,11 +275,17 @@ Public Type Char
     tipoUsuario As eTipoUsuario
     Team As Byte
     banderaIndex As Byte
+    NpcNumber As Integer
     AnimAtaque1 As Integer
     TranslationActive As Boolean
     TranslationStartTime As Long
     TranslationTime As Long
     DontBlockTile As Boolean
+    BodyOnLand As Integer
+    BodyIdle As Integer
+    BodyOnWater As Integer
+    BodyOnWaterIdle As Integer
+    AnimAtaque2 As Integer
 End Type
 
 'Info de un objeto

@@ -567,7 +567,6 @@ Private Sub HandleLogged()
     LegionarySecureX = True
     Call ResetAllCd
     Call SetConnected
-    g_game_state.State = e_state_gameplay_screen
     Exit Sub
 HandleLogged_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLogged", Erl)
@@ -2161,6 +2160,7 @@ Private Sub HandleUserCharIndexInServer()
         frmMain.Coord.ForeColor = RGB(170, 0, 0)
     End If
     Call UpdateMapPos
+    g_game_state.state = e_state_gameplay_screen
     Exit Sub
 HandleUserCharIndexInServer_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCharIndexInServer", Erl)
@@ -2186,6 +2186,7 @@ Private Sub HandleCharacterCreate()
     Dim ParticulaFx   As Byte
     Dim appear        As Byte
     Dim group_index   As Integer
+    Dim NpcNum        As Integer
     charindex = Reader.ReadInt16()
     Body = Reader.ReadInt16()
     Head = Reader.ReadInt16()
@@ -2197,7 +2198,6 @@ Private Sub HandleCharacterCreate()
     helmet = Reader.ReadInt16()
     Cart = Reader.ReadInt16()
     Backpack = Reader.ReadInt16()
-    
     With charlist(charindex)
         Dim loopC, Fx As Integer
         Fx = Reader.ReadInt16
@@ -2246,14 +2246,18 @@ Private Sub HandleCharacterCreate()
         .tipoUsuario = Reader.ReadInt8()
         .Team = Reader.ReadInt8()
         .banderaIndex = Reader.ReadInt8()
-        .AnimAtaque1 = Reader.ReadInt16()
-        
+        .NpcNumber = Reader.ReadInt16()
+        .AnimAtaque1 = NpcData(.NpcNumber).LandAttackAnimation
+        .BodyOnLand = NpcData(.NpcNumber).Body
+        .BodyIdle = NpcData(.NpcNumber).BodyIdle
+        .BodyOnWaterIdle = NpcData(.NpcNumber).BodyOnWaterIdle
+        .BodyOnWater = NpcData(.NpcNumber).BodyOnWater
+        .AnimAtaque2 = NpcData(.NpcNumber).WaterAttackAnimation
         If Backpack > 0 Then
             .Backpack = BodyData(Backpack)
             .tmpBackPack = Backpack
             .HasBackpack = True
         End If
-        
         'dwarven exoesqueleton exception
         If .Body.BodyIndex = DwarvenExoesqueletonBody Then
             weapon = NO_WEAPON
@@ -2277,6 +2281,15 @@ Private Sub HandleCharacterCreate()
         End If
         .Muerto = (Body = CASPER_BODY_IDLE)
         Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, Shield, helmet, Cart, Backpack, ParticulaFx, appear)
+        If .BodyOnWater > 0 And IsAmphibianOverWater(charindex) Then
+            If .Idle Then
+                .Body = BodyData(.BodyOnWater)
+                .iBody = .BodyOnWater
+            Else
+                .Body = BodyData(.BodyOnWaterIdle)
+                .iBody = .BodyOnWaterIdle
+            End If
+        End If
         If .Navegando = False Or UserNadandoTrajeCaucho = True Then
             If .Body.AnimateOnIdle = 0 Then
                 .Body.Walk(.Heading).started = 0
@@ -2395,10 +2408,8 @@ HandleForceCharMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleForceCharMove", Erl)
 End Sub
 
-
 ' Handles the CharacterChange message.
 Private Sub HandleCharacterChange()
-    
     On Error GoTo HandleCharacterChange_Err
     Dim charindex As Integer
     Dim TempInt   As Integer
@@ -2414,15 +2425,43 @@ Private Sub HandleCharacterChange()
         Dim hadMovArmaEscudo As Boolean: hadMovArmaEscudo = .MovArmaEscudo
         Dim keepStartIdle    As Long
         Dim newGi            As Long
+        Dim flags            As Byte
         ' ============================================
-        ' Body
+        flags = Reader.ReadInt8()
+        .Idle = (flags And &O1)
+        .Navegando = (flags And &O2)
         TempInt = Reader.ReadInt16()
         If TempInt < LBound(BodyData()) Or TempInt > UBound(BodyData()) Then
             .Body = BodyData(0)
             .iBody = 0
         Else
-            .Body = BodyData(TempInt)
-            .iBody = TempInt
+            If .EsNpc Then
+                If IsAmphibianOverWater(charindex) Then
+                    If .Idle Then
+                        .Body = BodyData(.BodyOnWaterIdle)
+                        .iBody = .BodyOnWaterIdle
+                    Else
+                        .Body = BodyData(.BodyOnWater)
+                        .iBody = .BodyOnWater
+                    End If
+                Else
+                    If .Idle Then
+                        If .BodyOnLand > 0 Then
+                            .Body = BodyData(.BodyOnLand)
+                            .iBody = .BodyOnLand
+                        Else
+                            .Body = BodyData(TempInt)
+                            .iBody = TempInt
+                        End If
+                    Else
+                        .Body = BodyData(.BodyOnLand)
+                        .iBody = .BodyOnLand
+                    End If
+                End If
+            Else
+                .Body = BodyData(TempInt)
+                .iBody = TempInt
+            End If
         End If
         ' Head
         headIndex = Reader.ReadInt16()
@@ -2465,11 +2504,6 @@ Private Sub HandleCharacterChange()
         Call StartFx(.ActiveAnimation, Fx)
         .Meditating = (Fx <> 0)
         Reader.ReadInt16 ' Ignore loops
-        ' Flags
-        Dim flags As Byte
-        flags = Reader.ReadInt8()
-        .Idle = (flags And &O1)
-        .Navegando = (flags And &O2)
         'exception for dwarven exoesqueleton
         If .iBody = DwarvenExoesqueletonBody Then
             .Head = HeadData(0)
@@ -3036,18 +3070,49 @@ Private Sub HandleCharAtaca()
     Dim VictimIndex As Integer
     Dim danio       As Long
     Dim AnimAttack  As Integer
+    Dim AnimAttack2 As Integer
     NpcIndex = Reader.ReadInt16()
     VictimIndex = Reader.ReadInt16()
     danio = Reader.ReadInt32()
-    AnimAttack = Reader.ReadInt16()
-    Dim oldWalk    As Grh
-    Dim keepStart  As Long
+    Dim oldWalk   As Grh
+    Dim keepStart As Long
     With charlist(NpcIndex)
+        AnimAttack = NpcData(.NpcNumber).LandAttackAnimation
+        AnimAttack2 = NpcData(.NpcNumber).WaterAttackAnimation
         If AnimAttack > 0 Then
             oldWalk = .Body.Walk(.Heading)
             .AnimatingBody = AnimAttack
             .Idle = False
-            .Body = BodyData(AnimAttack)
+            .Body = BodyData(.AnimatingBody)
+            .Body.Walk(.Heading).Loops = 0
+            If oldWalk.started > 0 And .Moving Then
+                keepStart = SyncGrhPhase(oldWalk, .Body.Walk(.Heading).GrhIndex)
+            Else
+                keepStart = FrameTime
+            End If
+            .Body.Walk(.Heading).started = keepStart
+            If Not .MovArmaEscudo Then
+                If .Arma.WeaponWalk(.Heading).GrhIndex <> 0 Then
+                    .Arma.WeaponWalk(.Heading).Loops = 0
+                    .Arma.WeaponWalk(.Heading).started = .Body.Walk(.Heading).started
+                End If
+                If .Escudo.ShieldWalk(.Heading).GrhIndex <> 0 Then
+                    .Escudo.ShieldWalk(.Heading).Loops = 0
+                    .Escudo.ShieldWalk(.Heading).started = .Body.Walk(.Heading).started
+                End If
+            End If
+        Else
+            If Not .Moving Then
+                .MovArmaEscudo = True
+                .Arma.WeaponWalk(.Heading).started = FrameTime
+                .Arma.WeaponWalk(.Heading).Loops = 0
+            End If
+        End If
+        If AnimAttack2 > 0 And IsAmphibianOverWater(NpcIndex) Then
+            oldWalk = .Body.Walk(.Heading)
+            .AnimatingBody = AnimAttack2
+            .Idle = False
+            .Body = BodyData(.AnimatingBody)
             .Body.Walk(.Heading).Loops = 0
             If oldWalk.started > 0 And .Moving Then
                 keepStart = SyncGrhPhase(oldWalk, .Body.Walk(.Heading).GrhIndex)
@@ -5926,22 +5991,18 @@ HandleReportLobbyList_Err:
 End Sub
 
 Private Sub HandleChangeSkinSlot()
-
-Dim Slot                        As Byte
-Dim ObjIndex                    As Integer
-Dim GrhIndex                    As Long
-Dim Amount                      As Integer
-Dim Equipped                    As Boolean
-Dim Name                        As String
-Dim ObjType                     As Byte
-
+    Dim Slot     As Byte
+    Dim ObjIndex As Integer
+    Dim GrhIndex As Long
+    Dim Amount   As Integer
+    Dim Equipped As Boolean
+    Dim Name     As String
+    Dim ObjType  As Byte
     On Error GoTo HandleChangeSkinSlot_Error
-
     With Reader
         Slot = .ReadInt8
         ObjIndex = .ReadInt16
         Equipped = .ReadBool
-        
         GrhIndex = .ReadInt32
         ObjType = .ReadInt8
         Name = .ReadString8
@@ -5963,15 +6024,12 @@ Dim ObjType                     As Byte
         Call Load(frmSkins)
         Call frmSkins.InvSkins.SetItem(Slot, ObjIndex, 1, CByte(Equipped), GrhIndex, ObjType, 0, 0, 0, 0, Name, 0, 0)
     End With
-
     On Error GoTo 0
     Exit Sub
-
 HandleChangeSkinSlot_Error:
-
     Call LogError("Error " & Err.Number & " (" & Err.Description & ") en el procedimiento HandleChangeSkinSlot del módulo Módulo Protocol en la línea: " & Erl())
-
 End Sub
+
 Public Sub HandleGuildConfig()
     cfgGuildLevelCallSupport = Reader.ReadInt8
     cfgGuildLevelSeeInvisible = Reader.ReadInt8
@@ -5983,10 +6041,11 @@ Public Sub HandleGuildConfig()
         cfgGuildMembersByLevel(i) = Reader.ReadInt8()
     Next i
 End Sub
+
 Public Sub HandleShowPickUpObj()
-    Dim Amount As Integer
+    Dim Amount   As Integer
     Dim ObjIndex As Integer
-    Dim txt As String
+    Dim txt      As String
     ObjIndex = Reader.ReadInt16
     Amount = Reader.ReadInt16
     txt = "+" & Amount & " " & ObjData(ObjIndex).Name
