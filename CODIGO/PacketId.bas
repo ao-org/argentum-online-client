@@ -512,7 +512,6 @@ Public Enum ClientPacketID
     eUseItemU
     eRepeatMacro
     eBuyShopItem
-    ePerdonFaccion              '/PERDONFACCION NAME
     eStartEvent           '/EVENTO CAPTURA/LOBBY
     eCancelarEvento          '/CANCELAREVENTO
     eNotifyInventarioHechizos

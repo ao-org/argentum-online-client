@@ -3365,22 +3365,6 @@ WriteReviveChar_Err:
     '</EhFooter>
 End Sub
 
-
-Public Sub WritePerdonFaccion(ByVal userName As String)
-    '<EhHeader>
-    On Error GoTo WritePerdonFaccion_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.ePerdonFaccion)
-    Call Writer.WriteString8(userName)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WritePerdonFaccion_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePerdonFaccion", Erl)
-    '</EhFooter>
-End Sub
-
 ''
 ' Writes the "OnlineGM" message to the outgoing data buffer.
 '
