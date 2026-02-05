@@ -229,8 +229,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Exit Sub
                 End If
                 Call WriteBankStart
-            Case "/ENLISTAR", "/ENLIST"
-                Call WriteEnlist
             Case "/INFORMACION", "/INFORMATION"
                 Call WriteInformation
             Case "/RECOMPENSA", "/REWARD"

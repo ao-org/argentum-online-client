@@ -269,7 +269,6 @@ Public Enum ClientPacketID
     eRequestStats            '/EST
     eCommerceStart           '/COMERCIAR
     eBankStart               '/BOVEDA
-    eEnlist                  '/ENLISTAR
     eInformation             '/INFORMACION
     eReward                  '/RECOMPENSA
     eRequestMOTD             '/MOTD

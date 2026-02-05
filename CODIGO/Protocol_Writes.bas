@@ -2130,24 +2130,6 @@ WriteBankStart_Err:
 End Sub
 
 ''
-' Writes the "Enlist" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteEnlist()
-    '<EhHeader>
-    On Error GoTo WriteEnlist_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eEnlist)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteEnlist_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEnlist", Erl)
-    '</EhFooter>
-End Sub
-
-''
 ' Writes the "Information" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
