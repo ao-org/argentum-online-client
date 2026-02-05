@@ -1264,13 +1264,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Else
                     Call WriteParticipar(ArgumentosAll(0), ArgumentosAll(1))
                 End If
-            Case "/RAJAR"
-                If notNullArguments Then
-                    Call WriteResetFactions(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
-                End If
             Case "/RAJARCLAN", "/SLIT"
                 If notNullArguments Then
                     Call WriteRemoveCharFromGuild(ArgumentosRaw)

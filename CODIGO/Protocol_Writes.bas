@@ -4553,26 +4553,6 @@ WriteParticipar_Err:
 End Sub
 
 ''
-' Writes the "ResetFactions" message to the outgoing data buffer.
-'
-' @param    username The name of the user who will be removed from any faction.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteResetFactions(ByVal userName As String)
-    '<EhHeader>
-    On Error GoTo WriteResetFactions_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eResetFactions)
-    Call Writer.WriteString8(userName)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteResetFactions_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResetFactions", Erl)
-    '</EhFooter>
-End Sub
-
-''
 ' Writes the "RemoveCharFromGuild" message to the outgoing data buffer.
 '
 ' @param    username The name of the user who will be removed from any guild.

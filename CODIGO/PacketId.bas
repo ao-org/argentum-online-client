@@ -402,7 +402,6 @@ Public Enum ClientPacketID
     eNavigateToggle          '/NAVE
     eServerOpenToUsersToggle '/HABILITAR
     eParticipar              '/PARTICIPAR
-    eResetFactions           '/RAJAR
     eRemoveCharFromGuild     '/RAJARCLAN
     eAlterName               '/ANAME
     eDoBackUp                '/DOBACKUP
