@@ -1218,9 +1218,9 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     If (lastWorld <> worldNum) Or (worldBitmap Is Nothing) Then
         Select Case worldNum
             Case 1
-                Set worldBitmap = LoadInterface("/mapa1_200x200.bmp", False)
+                Set worldBitmap = LoadInterface("mapa1_200x200.bmp", False)
             Case 2
-                Set worldBitmap = LoadInterface("/mapa2_200x200.bmp", False)
+                Set worldBitmap = LoadInterface("mapa2_200x200.bmp", False)
             Case Else
                 Set worldBitmap = Nothing
         End Select
