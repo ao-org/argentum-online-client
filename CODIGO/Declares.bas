@@ -724,7 +724,7 @@ Public Enum eSkill
     Tacticas = 3
     Armas = 4
     Meditar = 5
-    Apuñalar = 6
+    ShortWeapons = 6
     Ocultarse = 7
     Supervivencia = 8
     Comerciar = 9
