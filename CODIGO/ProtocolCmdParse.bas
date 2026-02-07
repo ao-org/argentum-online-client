@@ -653,6 +653,8 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/MOD"
                 If notNullArguments And CantidadArgumentos >= 3 Then
                     Select Case UCase$(ArgumentosAll(1))
+                        Case "ALIAS"
+                            tmpInt = eEditOptions.eo_Alias
                         Case "BODY", "CUERPO"
                             tmpInt = eEditOptions.eo_Body
                         Case "ARMA"
