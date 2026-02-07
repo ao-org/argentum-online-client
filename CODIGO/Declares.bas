@@ -1049,6 +1049,7 @@ Public Enum eEditOptions
     eo_Desc
     eo_Intervalo
     eo_Hogar
+    eo_Alias
 End Enum
 
 ''
