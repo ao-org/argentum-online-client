@@ -724,7 +724,7 @@ Public Enum eSkill
     Tacticas = 3
     Armas = 4
     Meditar = 5
-    Apuñalar = 6
+    ShortWeapons = 6
     Ocultarse = 7
     Supervivencia = 8
     Comerciar = 9
@@ -744,6 +744,7 @@ Public Enum eSkill
     Sastreria = 23
     Domar = 24
     TargetableItem = 25
+    Smelting = 26
     Grupo = 90
     MarcaDeClan = 91
     MarcaDeGM = 92
@@ -823,7 +824,6 @@ Public Enum eObjType
     otCualquiera = 1000
 End Enum
 
-Public Const FundirMetal As Integer = 88
 'Inventario
 Type Slot
     ObjIndex As Integer

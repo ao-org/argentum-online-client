@@ -222,6 +222,12 @@ Public Type NpcDatas
     Name As String
     desc As String
     Body As Integer
+    BodyOnLand As Integer
+    BodyIdle As Integer
+    BodyOnWater As Integer
+    BodyOnWaterIdle As Integer
+    LandAttackAnimation As Integer
+    WaterAttackAnimation As Integer
     Hp As Long
     exp As Long
     oro As Long
@@ -239,6 +245,7 @@ Public Type NpcDatas
     Obj() As Integer
     Comercia As Integer
     level As Integer
+    Amphibian As Boolean
 End Type
 
 Public Type HechizoDatas
@@ -1211,9 +1218,9 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     If (lastWorld <> worldNum) Or (worldBitmap Is Nothing) Then
         Select Case worldNum
             Case 1
-                Set worldBitmap = LoadPicture(App.path & "/../Recursos/interface/Mundo/mapa1_200x200.bmp")
+                Set worldBitmap = LoadInterface("mapa1_200x200.bmp", False)
             Case 2
-                Set worldBitmap = LoadPicture(App.path & "/../Recursos/interface/Mundo/mapa2_200x200.bmp")
+                Set worldBitmap = LoadInterface("mapa2_200x200.bmp", False)
             Case Else
                 Set worldBitmap = Nothing
         End Select
