@@ -269,7 +269,6 @@ Public Enum ClientPacketID
     eRequestStats            '/EST
     eCommerceStart           '/COMERCIAR
     eBankStart               '/BOVEDA
-    eEnlist                  '/ENLISTAR
     eInformation             '/INFORMACION
     eReward                  '/RECOMPENSA
     eRequestMOTD             '/MOTD
@@ -400,13 +399,9 @@ Public Enum ClientPacketID
     eSystemMessage           '/SMSG
     eCreateNPC               '/ACC
     eCreateNPCWithRespawn    '/RACC
-    eImperialArmour          '/AI1 - 4
-    eChaosArmour             '/AC1 - 4
     eNavigateToggle          '/NAVE
     eServerOpenToUsersToggle '/HABILITAR
     eParticipar              '/PARTICIPAR
-    eTurnCriminal            '/CONDEN
-    eResetFactions           '/RAJAR
     eRemoveCharFromGuild     '/RAJARCLAN
     eAlterName               '/ANAME
     eDoBackUp                '/DOBACKUP
@@ -512,7 +507,6 @@ Public Enum ClientPacketID
     eUseItemU
     eRepeatMacro
     eBuyShopItem
-    ePerdonFaccion              '/PERDONFACCION NAME
     eStartEvent           '/EVENTO CAPTURA/LOBBY
     eCancelarEvento          '/CANCELAREVENTO
     eNotifyInventarioHechizos
