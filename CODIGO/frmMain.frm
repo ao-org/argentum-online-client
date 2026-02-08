@@ -3456,6 +3456,7 @@ End Sub
 
 Private Sub ShowFPS_Timer()
     On Error GoTo ShowFPS_Timer_Err
+    If FPSFLAG = 0 Then Exit Sub
     fps.Caption = "FPS: " & engine.fps
     Exit Sub
 ShowFPS_Timer_Err:
