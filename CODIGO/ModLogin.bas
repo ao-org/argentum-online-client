@@ -421,7 +421,7 @@ End Sub
 Public Sub LoginCharacter(ByVal Name As String)
     On Error GoTo LogearPersonaje_Err
     userName = Name
-    If Connected Then
+    If Connected And FPSFLAG = 1 Then
         frmMain.ShowFPS.enabled = True
     End If
     #If PYMMO = 0 Then

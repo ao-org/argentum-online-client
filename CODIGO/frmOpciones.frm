@@ -1134,10 +1134,12 @@ Private Sub chkFps_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         FPSFLAG = 0
         frmMain.fps.visible = False
         chkFps.Picture = Nothing
+        frmMain.ShowFPS.enabled = False
     Else
         FPSFLAG = 1
         frmMain.fps.visible = True
         chkFps.Picture = LoadInterface("check-amarillo.bmp")
+        frmMain.ShowFPS.enabled = True
     End If
     Exit Sub
 chkFps_MouseUp_Err:

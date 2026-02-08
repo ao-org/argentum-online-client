@@ -515,7 +515,7 @@ Private Sub HandleConnected()
             Debug.Assert values(i) = i
         Next i
     #End If
-    #If REMOTE_CLOSE = 0 Then
+    #If REMOTE_CLOSE = 0 And FPSFLAG = 1 Then
         frmMain.ShowFPS.enabled = True
     #End If
     #If DIRECT_PLAY = 0 Then
