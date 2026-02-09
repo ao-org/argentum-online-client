@@ -24,9 +24,9 @@ Public map_letter_grh_next    As Long
 Public map_letter_a           As Single
 Public map_letter_fadestatus  As Byte
 Public gameplay_render_offset As Vector2
-Public Const hotkey_render_posX = 192
-Public Const hotkey_render_posY = 42
-Public Const hotkey_arrow_posx = 200 + 36 * 5 - 22
+Public Const hotkey_render_posX = 189
+Public Const hotkey_render_posY = 43
+Public Const hotkey_arrow_posx = 200 + 36 * 5 - 26
 Public Const hotkey_arrow_posy = 10
 Public Const GRH_HOTKEY_ARROW_HIDE = 19204
 Public Const GRH_HOTKEY_ARROW_SHOW = 19205
