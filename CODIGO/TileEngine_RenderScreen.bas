@@ -729,5 +729,9 @@ Private Sub DrawHotkey(ByVal HkIndex As Integer, ByVal PosX As Integer, ByVal Po
             Call Draw_GrhIndex(HechizoData(HotkeyList(HkIndex).Index).IconoIndex, PosX, PosY)
         End If
     End If
-    Call Engine_Text_Render(HkIndex + 1, PosX + 12, PosY, COLOR_WHITE, 1, True)
+    If HkIndex = 9 Then
+        Call Engine_Text_Render("0", PosX + 12, PosY + 26, COLOR_WHITE, 1, True)
+    Else
+        Call Engine_Text_Render(HkIndex + 1, PosX + 12, PosY + 26, COLOR_WHITE, 1, True)
+    End If
 End Sub
