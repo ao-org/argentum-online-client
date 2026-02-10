@@ -590,7 +590,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@")
                     If UBound(tmpArr) = 2 Then
-                        If ValidNumber(tmpArr(2), eNumber_Types.ent_Integer) Then
+                        If ValidNumber(tmpArr(2), eNumber_Types.ent_Long) Then
                             Call WriteJail(tmpArr(0), tmpArr(1), tmpArr(2))
                         Else
                             'No es numerico
