@@ -2447,10 +2447,15 @@ Private Sub HandleCharacterChange()
                 Else
                     If .Idle Then
                         If .BodyOnLand > 0 Then
-                            .Body = BodyData(.BodyOnLand)
-                            .iBody = .BodyOnLand
+                            If .BodyIdle > 0 Then
+                                .Body = BodyData(.BodyIdle)
+                                .iBody = .BodyOnLand
+                            Else
+                                .Body = BodyData(TempInt)
+                                .iBody = TempInt
+                            End If
                         Else
-                            .Body = BodyData(TempInt)
+                            .Body = BodyData(.BodyOnLand)
                             .iBody = TempInt
                         End If
                     Else
