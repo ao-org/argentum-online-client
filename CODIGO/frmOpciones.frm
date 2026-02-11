@@ -412,7 +412,7 @@ Begin VB.Form frmOpciones
          Top             =   1095
          Width           =   255
       End
-      Begin VB.Image Check6 
+      Begin VB.Image chkFps 
          Height          =   255
          Left            =   270
          Top             =   690
@@ -1128,21 +1128,22 @@ Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     '  End If
 End Sub
 
-Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    On Error GoTo Check6_MouseUp_Err
+Private Sub chkFps_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error GoTo chkFps_MouseUp_Err
     If FPSFLAG = 1 Then
         FPSFLAG = 0
+        frmMain.fps.visible = False
+        chkFps.Picture = Nothing
+        frmMain.ShowFPS.enabled = False
     Else
         FPSFLAG = 1
-    End If
-    If FPSFLAG = 0 Then
-        Check6.Picture = Nothing
-    Else
-        Check6.Picture = LoadInterface("check-amarillo.bmp")
+        frmMain.fps.visible = True
+        chkFps.Picture = LoadInterface("check-amarillo.bmp")
+        frmMain.ShowFPS.enabled = True
     End If
     Exit Sub
-Check6_MouseUp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check6_MouseUp", Erl)
+chkFps_MouseUp_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkFps_MouseUp", Erl)
     Resume Next
 End Sub
 
@@ -1293,10 +1294,10 @@ Public Sub Init()
     Else
         chkSteps.Picture = LoadInterface("check-amarillo.bmp")
     End If
-    If FPSFLAG = 0 Then
-        Check6.Picture = Nothing
+    If FPSFLAG = 1 Then
+        chkFps.Picture = LoadInterface("check-amarillo.bmp")
     Else
-        Check6.Picture = LoadInterface("check-amarillo.bmp")
+        chkFps.Picture = Nothing
     End If
     If ButtonsExpBar = 1 Then
         chkBtnExpBar.Picture = LoadInterface("check-amarillo.bmp")
