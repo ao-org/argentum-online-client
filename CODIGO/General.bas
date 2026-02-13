@@ -639,9 +639,7 @@ Sub Check_Keys()
     If UserCharIndex = 0 Then Exit Sub
     direccion = charlist(UserCharIndex).Heading
     If Not Application.IsAppActive() Then Exit Sub
-    If Not pausa And g_game_state.State = e_state_gameplay_screen And Not frmComerciarUsu.visible And Not frmBancoObj.visible And Not frmOpciones.visible And Not _
-            frmComerciar.visible And Not frmGoliath.visible And Not frmEstadisticas.visible And Not frmStatistics.visible And Not frmAlqui.visible And Not frmCarp.visible And _
-            Not frmHerrero.visible And Not FrmGrupo.visible And Not FrmSastre.visible And Not FrmGmAyuda.visible And Not frmCrafteo.visible And Not IsGameDialogOpen Then
+    If Not pausa And g_game_state.state = e_state_gameplay_screen Then
         If IsInputFocus() And PermitirMoverse = 0 Then Exit Sub
         If Not UserMoving Then
             Call AddMovementToKeysMovementPressedQueue
