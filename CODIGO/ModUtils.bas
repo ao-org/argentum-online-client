@@ -358,6 +358,7 @@ Public RecordarCuenta                     As Boolean
 Public CuentaRecordada                    As CuentasGuardadas
 Public CantidadDePersonajesEnCuenta       As Byte
 Type UserCuentaPJS
+    id As Long
     nombre As String
     Nivel As Byte
     Mapa As Integer

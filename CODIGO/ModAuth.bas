@@ -1087,20 +1087,27 @@ Private Sub EraseCharFromPjList(ByVal nick As String)
     CantidadDePersonajesEnCuenta = CantidadDePersonajesEnCuenta - 1
 End Sub
 
+
 Private Sub FillAccountData(ByVal data As String)
-    On Error Resume Next
+    On Error GoTo FillAccountData_Err
+
     Dim i As Long
+    Dim ii As Byte
+    Dim maxToLoad As Long
+
+    ' Count characters by counting '('
     CantidadDePersonajesEnCuenta = 0
     For i = 1 To Len(data)
-        If mid(data, i, 1) = "(" Then
+        If mid$(data, i, 1) = "(" Then
             CantidadDePersonajesEnCuenta = CantidadDePersonajesEnCuenta + 1
         End If
     Next i
-    Dim ii As Byte
-    'name, head_id, class_id, body_id, pos_map, pos_x, pos_y, level, status, helmet_id, shield_id, weapon_id, guild_index, is_dead, is_sailing
+
+    ' Reset slots
     For ii = 1 To MAX_PERSONAJES_EN_CUENTA
-        Pjs(ii).nombre = ""
-        Pjs(ii).Head = 0 ' si is_sailing o muerto, cabeza en 0
+        Pjs(ii).id = 0
+        Pjs(ii).nombre = vbNullString
+        Pjs(ii).Head = 0
         Pjs(ii).Clase = 0
         Pjs(ii).Body = 0
         Pjs(ii).Mapa = 0
@@ -1111,41 +1118,69 @@ Private Sub FillAccountData(ByVal data As String)
         Pjs(ii).Casco = 0
         Pjs(ii).Escudo = 0
         Pjs(ii).Arma = 0
-        Pjs(ii).ClanName = ""
-        Pjs(ii).NameMapa = ""
+        Pjs(ii).ClanName = vbNullString
+        Pjs(ii).NameMapa = vbNullString
+        Pjs(ii).priv = 0
     Next ii
-    For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+
+    maxToLoad = min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+
+    ' Parse each tuple
+    For ii = 1 To maxToLoad
         Dim character As String
+        Dim rawName As String
+
         character = ReadField(ii, data, Asc(")"))
-        character = Replace(character, "(", "")
-        character = Replace(character, "[", "")
-        character = Replace(character, "]", "")
-        character = Replace(character, "'", "")
-        If mid(character, 1, 1) = "," Then
-            character = mid(character, 2)
+
+        ' Normalize tuple formatting: "(...)" / "[...]" / quotes, leading comma, etc.
+        character = Replace$(character, "(", vbNullString)
+        character = Replace$(character, ")", vbNullString)
+        character = Replace$(character, "[", vbNullString)
+        character = Replace$(character, "]", vbNullString)
+        character = Replace$(character, "'", vbNullString)
+
+        If Len(character) > 0 Then
+            If mid$(character, 1, 1) = "," Then
+                character = mid$(character, 2)
+            End If
+            If mid$(character, 1, 1) = " " Then
+                character = mid$(character, 2)
+            End If
         End If
-        Dim Name As String
-        Name = ReadField(1, character, Asc(","))
-        If mid(Name, 1, 1) = " " Then
-            Name = Replace(Name, " ", "", 1, 1)
+
+        ' NEW: id is field(1), name is field(2)
+        Pjs(ii).id = CLng(val(ReadField(1, character, Asc(","))))
+
+        rawName = ReadField(2, character, Asc(","))
+        If Len(rawName) > 0 And mid$(rawName, 1, 1) = " " Then
+            rawName = mid$(rawName, 2)
         End If
-        Pjs(ii).nombre = Name
-        Pjs(ii).Body = val(ReadField(4, character, Asc(",")))
-        Pjs(ii).Head = IIf(Pjs(ii).Body = 829 Or Pjs(ii).Body = 1269 Or Pjs(ii).Body = 1267 Or Pjs(ii).Body = 1265, 0, val(ReadField(2, character, Asc(","))))
-        Pjs(ii).Clase = val(ReadField(3, character, Asc(",")))
-        Pjs(ii).Mapa = val(ReadField(5, character, Asc(",")))
-        Pjs(ii).PosX = val(ReadField(6, character, Asc(",")))
-        Pjs(ii).PosY = val(ReadField(7, character, Asc(",")))
-        Pjs(ii).Nivel = val(ReadField(8, character, Asc(",")))
-        Pjs(ii).Criminal = val(ReadField(9, character, Asc(",")))
-        Pjs(ii).Casco = val(ReadField(10, character, Asc(",")))
-        Pjs(ii).Escudo = val(ReadField(11, character, Asc(",")))
-        Pjs(ii).Arma = val(ReadField(12, character, Asc(",")))
-        Pjs(ii).ClanName = "" ' "<" & "pepito" & ">"
-        ' Pjs(ii).NameMapa = Pjs(ii).mapa
+        Pjs(ii).nombre = rawName
+
+        ' Shifted fields (+1)
+        Pjs(ii).Body = val(ReadField(5, character, Asc(",")))
+        Pjs(ii).Head = val(ReadField(3, character, Asc(",")))
+        Pjs(ii).Clase = val(ReadField(4, character, Asc(",")))
+        Pjs(ii).Mapa = val(ReadField(6, character, Asc(",")))
+        Pjs(ii).PosX = val(ReadField(7, character, Asc(",")))
+        Pjs(ii).PosY = val(ReadField(8, character, Asc(",")))
+        Pjs(ii).Nivel = val(ReadField(9, character, Asc(",")))
+        Pjs(ii).Criminal = val(ReadField(10, character, Asc(",")))
+        Pjs(ii).Casco = val(ReadField(11, character, Asc(",")))
+        Pjs(ii).Escudo = val(ReadField(12, character, Asc(",")))
+        Pjs(ii).Arma = val(ReadField(13, character, Asc(",")))
+
+        ' If sailing or dead (based on Body) head must be 0
+        If (Pjs(ii).Body = 829) Or (Pjs(ii).Body = 1269) Or (Pjs(ii).Body = 1267) Or (Pjs(ii).Body = 1265) Then
+            Pjs(ii).Head = 0
+        End If
+
+        Pjs(ii).ClanName = vbNullString
         ' Pjs(ii).NameMapa = NameMaps(Pjs(ii).Mapa).Name
     Next ii
-    For i = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+
+    ' Colors + priv
+    For i = 1 To maxToLoad
         Select Case Pjs(i).Criminal
             Case 0 'Criminal
                 Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(23).R, ColoresPJ(23).G, ColoresPJ(23).B)
@@ -1159,22 +1194,32 @@ Private Sub FillAccountData(ByVal data As String)
                 Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(25).R, ColoresPJ(25).G, ColoresPJ(25).B)
             Case 5 'Consejo
                 Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(22).R, ColoresPJ(22).G, ColoresPJ(22).B)
-            Case Else
         End Select
+
         Pjs(i).priv = 0
     Next i
+
     AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA
-    If CantidadDePersonajesEnCuenta > 0 Then
+
+    If maxToLoad > 0 Then
         PJSeleccionado = 1
         LastPJSeleccionado = 1
+
         If Pjs(1).Mapa <> 0 Then
             Call SwitchMap(Pjs(1).Mapa)
             RenderCuenta_PosX = Pjs(1).PosX
             RenderCuenta_PosY = Pjs(1).PosY
         End If
     End If
+
     Call LoadCharacterSelectionScreen
+    Exit Sub
+
+FillAccountData_Err:
+    ' Keep it quiet but debuggable (replace with your logger if you have one)
+    ' Debug.Print "FillAccountData error: " & Err.Number & " - " & Err.Description
 End Sub
+
 
 Public Function SendConfirmTransferCharacter()
     Dim JSON                   As String
