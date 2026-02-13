@@ -232,6 +232,10 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         oldHeading = .Heading
         .scrollDirectionX = addx
         .scrollDirectionY = addy
+        If IsAmphibianOverWater(charindex) Then
+            .Body = BodyData(.BodyOnWater)
+            .AnimatingBody = 0
+        End If
         .Idle = False
         ' --- Si cambia de dirección mientras ya está moviéndose, preservamos fase
         If .Moving And (newHeading <> oldHeading) Then
@@ -248,15 +252,26 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
             If .Escudo.ShieldWalk(newHeading).started = 0 Then .Escudo.ShieldWalk(newHeading).started = .Body.Walk(newHeading).started
             .Arma.WeaponWalk(newHeading).Loops = INFINITE_LOOPS
             .Escudo.ShieldWalk(newHeading).Loops = INFINITE_LOOPS
+            If IsAmphibianOverWater(charindex) Then
+                .Body = BodyData(.BodyOnWater)
+            End If
         End If
         ' Actualizamos el heading al final para usar el nuevo set arriba
         .Heading = newHeading
         If Not .Moving Then
             If .Muerto Then
-                .Body = BodyData(CASPER_BODY)
+                If Not .Navegando Then
+                    .Body = BodyData(CASPER_BODY)
+                Else
+                    .Body = BodyData(CASPER_BODY_NAVIGATING)
+                End If
             Else
                 If .Body.BodyIndex <> .iBody Then
                     .Body = BodyData(.iBody)
+                    .AnimatingBody = 0
+                End If
+                If IsAmphibianOverWater(charindex) Then
+                    .Body = BodyData(.BodyOnWater)
                     .AnimatingBody = 0
                 End If
                 If .Backpack.BodyIndex <> .tmpBackPack Then
@@ -367,13 +382,25 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         .scrollDirectionY = Sgn(addy)
         .LastStep = FrameTime
         .Idle = False
+        If IsAmphibianOverWater(charindex) Then
+            .Body = BodyData(.BodyOnWater)
+            .AnimatingBody = 0
+        End If
         If Not .Moving Then
             ' --- Empezó a moverse recién ahora ---
             If .Muerto Then
-                .Body = BodyData(CASPER_BODY)
+                If Not .Navegando Then
+                    .Body = BodyData(CASPER_BODY)
+                Else
+                    .Body = BodyData(CASPER_BODY_NAVIGATING)
+                End If
             Else
                 If .Body.BodyIndex <> .iBody Then
                     .Body = BodyData(.iBody)
+                    .AnimatingBody = 0
+                End If
+                If IsAmphibianOverWater(charindex) Then
+                    .Body = BodyData(.BodyOnWater)
                     .AnimatingBody = 0
                 End If
             End If
@@ -390,6 +417,10 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         ElseIf .Heading <> oldHeading Then
             ' --- Ya venía moviéndose y cambió de dirección: preservar fase ---
             Dim keepStart As Long
+                If IsAmphibianOverWater(charindex) Then
+                    .Body = BodyData(.BodyOnWater)
+                    .AnimatingBody = 0
+                End If
             keepStart = SyncGrhPhase(.Body.Walk(oldHeading), .Body.Walk(.Heading).GrhIndex)
             If keepStart > 0 Then
                 .Body.Walk(.Heading).started = keepStart
@@ -712,4 +743,10 @@ Public Function SyncGrhPhase(ByRef Grh As Grh, ByVal newGrhIndex As Long) As Lon
     Elapsed = Fix((FrameTime - Grh.started) / Grh.speed)
     phase = Elapsed Mod oldNum
     SyncGrhPhase = FrameTime - (phase * Grh.speed)
+End Function
+
+Public Function IsAmphibianOverWater(ByVal charIndex As Integer) As Boolean
+    With charlist(charIndex)
+        IsAmphibianOverWater = (MapData(.Pos.x, .Pos.y).Trigger = 8 Or HayAgua(.Pos.x, .Pos.y) Or MapData(.Pos.x, .Pos.y).Trigger = 11) And charlist(charindex).BodyOnWater > 0
+    End With
 End Function

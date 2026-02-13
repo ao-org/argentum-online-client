@@ -327,6 +327,8 @@ Private Sub AuthSocket_Error(ByVal Number As Integer, _
         
     #Else
         frmDebug.add_text_tracebox "SERVIDOR OFFLINE"
+        Call SaveStringInFile("AuthSocket_Error: " & Description, "remote_debug.txt")
+        prgRun = False
     #End If
 End Sub
 
@@ -504,7 +506,7 @@ End Sub
                     If frmCrearPersonaje.CheckData() Then
                         UserPassword = CuentaPassword
                         StopCreandoCuenta = True
-                        If Connected Then
+                        If Connected And FPSFLAG = 1 Then
                             frmMain.ShowFPS.enabled = True
                         End If
                         EstadoLogin = E_MODO.CrearNuevoPj
@@ -811,7 +813,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                     UserPassword = CuentaPassword
                     StopCreandoCuenta = True
 
-                    If Connected Then
+                    If Connected And FPSFLAG = 1 Then
                         frmMain.ShowFPS.enabled = True
                     End If
           

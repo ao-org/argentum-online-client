@@ -1139,7 +1139,9 @@ Public Sub Batch_Textured_Box_Shadow(ByVal x As Long, _
                                      ByVal sX As Integer, _
                                      ByVal sY As Integer, _
                                      ByVal tex As Long, _
-                                     ByRef color() As RGBA)
+                                     ByRef Color() As RGBA, _
+                                     Optional ByVal OffsetX As Integer, _
+                                     Optional ByVal OffsetY As Integer)
     On Error GoTo Batch_Textured_Box_Shadow_Err
     Dim Texture      As Direct3DTexture8
     Dim TextureWidth As Long, TextureHeight As Long
@@ -1148,7 +1150,7 @@ Public Sub Batch_Textured_Box_Shadow(ByVal x As Long, _
         Call .SetTexture(Texture)
         Call .SetAlpha(False)
         If TextureWidth <> 0 And TextureHeight <> 0 Then
-            Call .DrawShadow(x, y, Width, Height, color, (sX + 0.25) / TextureWidth, (sY + 0.25) / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight)
+            Call .DrawShadow(x, y, Width, Height, Color, (sX + 0.25) / TextureWidth, (sY + 0.25) / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, OffsetX, OffsetY)
         Else
             Call .DrawShadow(x, y, TextureWidth, TextureHeight, color)
         End If
@@ -1386,8 +1388,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 ' Volver a estado Idle inmediatamente
                 .Idle = True
                 If .iBody Then
-                    .Body = BodyData(.iBody)
-                    .Body.Walk(.Heading).started = FrameTime
+                .Body = BodyData(.iBody)
+                    If IsAmphibianOverWater(charindex) Then
+                        .Body = BodyData(.BodyOnWater)
+                     End If
+                .Body.Walk(.Heading).started = FrameTime
                 Else
                     .Body = BodyData(0)
                 End If
@@ -1401,12 +1406,20 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If charindex <> UserCharIndex Then
                     ' Si no somos nosotros, esperamos un intervalo antes de poner la animación idle para evitar saltos
                     If FrameTime - .LastStep > TIME_CASPER_IDLE Then
-                        .Body = BodyData(CASPER_BODY_IDLE)
+                        If Not .Navegando Then
+                            .Body = BodyData(CASPER_BODY_IDLE)
+                        Else
+                            .Body = BodyData(CASPER_BODY_NAVIGATING)
+                        End If
                         .Body.Walk(.Heading).started = FrameTime
                         .Idle = True
                     End If
                 Else
-                    .Body = BodyData(CASPER_BODY_IDLE)
+                    If Not .Navegando Then
+                        .Body = BodyData(CASPER_BODY_IDLE)
+                    Else
+                        .Body = BodyData(CASPER_BODY_NAVIGATING)
+                    End If
                     .Body.Walk(.Heading).started = FrameTime
                     .Idle = True
                 End If
@@ -1711,9 +1724,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 ' Si no, solo dibujamos body
             Else
                 If Not .Invisible Then
-                    Call Draw_Sombra(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, False, x, y)
+                    Call Draw_Sombra(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, False, x, y, , .Body.ShadowOffset.x, .Body.ShadowOffset.y)
                 End If
-                Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, color, False, x, y)
+                Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, Color, False, x, y)
             End If
             'Draw name over head
             Nombres = Not MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).zone.OcultarNombre
@@ -1880,7 +1893,11 @@ Public Sub SetCharIdle(ByRef c As Char, Optional ByVal force As Boolean = True)
     ' Pone anim de quieto. Si AnimateOnIdle=0, NO anima (frame fijo).
     With c
         If .Muerto Then
-            .Body = BodyData(CASPER_BODY_IDLE)
+            If Not .Navegando Then
+                .Body = BodyData(CASPER_BODY_IDLE)
+            Else
+                .Body = BodyData(CASPER_BODY_NAVIGATING)
+            End If
         Else
             If .Body.IdleBody > 0 Then
                 .Body = BodyData(.Body.IdleBody)
@@ -2058,9 +2075,6 @@ Public Sub start()
             #End If
             Call frmMain.Inventario.ReDraw
         End If
-        #If No_Api_Discord = 0 Then
-            Call Discord_RunCallbacks
-        #End If
         DoEvents
         Call modNetwork.Poll
         #If No_Api_Steam = 0 Then

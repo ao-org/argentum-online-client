@@ -785,6 +785,7 @@ Sub Main()
     'Moving forward use only dycryptosys API Decompress_Data_B bytArr, InfoHead.lngFileSizeUncompressed
     Call CheckResources
     #If REMOTE_CLOSE Then
+        Call Recursos.LoadFonts
         Call DoLogin("", "", False)
         Call bot_main_loop
         End
@@ -817,9 +818,11 @@ Sub Main()
             Dim steam_init_result As Long
             steam_init_result = svb_init_steam(1956740)
             frmDebug.add_text_tracebox "Init Steam " & steam_init_result
+
             If steam_init_result <> 0 Then
-                Dim version         As String
+                Dim version As String
                 Dim minidump_result As Long
+
                 version = App.Major & "." & App.Minor & "." & App.Revision
                 minidump_result = svb_install_minidump_handler(1956740, version, "Argentum Online crash handler", 0)
                 frmDebug.add_text_tracebox "Minidump handler " & minidump_result
@@ -832,17 +835,6 @@ Sub Main()
             End If
         End If
     #End If
-    
-    #If No_Api_Discord = 0 Then
-        If Not Discord_Initialize(DISCORD_API_ID) Then
-            Debug.Print Discord_GetLastError()
-        Else
-            If Discord_IsConnected Then
-                Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), "argentumonlinelogo512", "https://discord.com/invite/hvaA8eMm43", "argentumlogocircle", "Jugando Argentum Online")
-            End If
-        End If
-    #End If
-    
     Call initPacketControl
     Call SetNpcsRenderText
     Call cargarTutoriales
@@ -1077,7 +1069,7 @@ Private Sub InicializarNombres()
     SkillsNames(eSkill.Tacticas) = JsonLanguage.Item("MENSAJE_SKILL_TACTICAS")
     SkillsNames(eSkill.Armas) = JsonLanguage.Item("MENSAJE_SKILL_ARMAS")
     SkillsNames(eSkill.Meditar) = JsonLanguage.Item("MENSAJE_SKILL_MEDITAR")
-    SkillsNames(eSkill.Apuñalar) = JsonLanguage.Item("MENSAJE_SKILL_APUÑALAR")
+    SkillsNames(eSkill.ShortWeapons) = JsonLanguage.Item("MENSAJE_SKILL_APUÑALAR")
     SkillsNames(eSkill.Ocultarse) = JsonLanguage.Item("MENSAJE_SKILL_OCULTARSE")
     SkillsNames(eSkill.Supervivencia) = JsonLanguage.Item("MENSAJE_SKILL_SUPERVIVENCIA")
     SkillsNames(eSkill.Comerciar) = JsonLanguage.Item("MENSAJE_SKILL_COMERCIAR")
@@ -1101,7 +1093,7 @@ Private Sub InicializarNombres()
     SkillsDesc(eSkill.Tacticas) = JsonLanguage.Item("MENSAJE_SKILL_DESC_TACTICAS")
     SkillsDesc(eSkill.Armas) = JsonLanguage.Item("MENSAJE_SKILL_DESC_ARMAS")
     SkillsDesc(eSkill.Meditar) = JsonLanguage.Item("MENSAJE_SKILL_DESC_MEDITAR")
-    SkillsDesc(eSkill.Apuñalar) = JsonLanguage.Item("MENSAJE_SKILL_DESC_APUÑALAR")
+    SkillsDesc(eSkill.ShortWeapons) = JsonLanguage.Item("MENSAJE_SKILL_DESC_APUÑALAR")
     SkillsDesc(eSkill.Ocultarse) = JsonLanguage.Item("MENSAJE_SKILL_DESC_OCULTARSE")
     SkillsDesc(eSkill.Supervivencia) = JsonLanguage.Item("MENSAJE_SKILL_DESC_SUPERVIVENCIA")
     SkillsDesc(eSkill.Comerciar) = JsonLanguage.Item("MENSAJE_SKILL_DESC_COMERCIAR")

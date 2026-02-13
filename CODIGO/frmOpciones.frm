@@ -303,9 +303,9 @@ Begin VB.Form frmOpciones
    End
    Begin VB.PictureBox PanelVideo 
       BorderStyle     =   0  'None
-      Height          =   4965
+      Height          =   4845
       Left            =   240
-      ScaleHeight     =   331
+      ScaleHeight     =   323
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   504
       TabIndex        =   3
@@ -319,7 +319,7 @@ Begin VB.Form frmOpciones
          Left            =   5400
          Style           =   2  'Dropdown List
          TabIndex        =   24
-         Top             =   720
+         Top             =   1440
          Width           =   1335
       End
       Begin VB.ComboBox cboLuces 
@@ -328,8 +328,32 @@ Begin VB.Form frmOpciones
          Left            =   5400
          List            =   "frmOpciones.frx":016B
          TabIndex        =   10
-         Top             =   1080
+         Top             =   2160
          Width           =   1575
+      End
+      Begin VB.Image chkCenteredMiniMap 
+         Height          =   255
+         Left            =   3870
+         Top             =   690
+         Width           =   255
+      End
+      Begin VB.Image chkConfirmPetRelease 
+         Height          =   255
+         Left            =   270
+         Top             =   4215
+         Width           =   255
+      End
+      Begin VB.Image chkShowNameMapInRender 
+         Height          =   255
+         Left            =   270
+         Top             =   3840
+         Width           =   255
+      End
+      Begin VB.Image chkBtnExpBar 
+         Height          =   255
+         Left            =   270
+         Top             =   3465
+         Width           =   255
       End
       Begin VB.Label lbl_AmbientLight 
          AutoSize        =   -1  'True
@@ -339,7 +363,7 @@ Begin VB.Form frmOpciones
          Height          =   195
          Left            =   4320
          TabIndex        =   23
-         Top             =   1080
+         Top             =   2160
          Width           =   1155
       End
       Begin VB.Label lbl_VRAM 
@@ -349,7 +373,7 @@ Begin VB.Form frmOpciones
          Height          =   255
          Left            =   4080
          TabIndex        =   22
-         Top             =   720
+         Top             =   1440
          Width           =   1335
       End
       Begin VB.Image num_comp_inv 
@@ -388,7 +412,7 @@ Begin VB.Form frmOpciones
          Top             =   1095
          Width           =   255
       End
-      Begin VB.Image Check6 
+      Begin VB.Image chkFps 
          Height          =   255
          Left            =   270
          Top             =   690
@@ -551,6 +575,40 @@ Private Const HWND_NOTOPMOST = -2
 Private Const SWP_NOMOVE = &H2
 Private Const SWP_NOSIZE = &H1
 Private cBotonCerrar As clsGraphicalButton
+
+Private Sub chkCenteredMinimap_Click()
+    On Error GoTo chkCenteredMiniMap_Click_Err
+    If CenteredMinimap = 0 Then
+        CenteredMinimap = 1
+        Call DibujarMiniMapa
+        chkCenteredMiniMap.Picture = LoadInterface("check-amarillo.bmp")
+        Call RenderMinimapCentered(UserMap, UserPos.x, UserPos.y, CenteredMinimapZoom, CenteredMinimapZoom)
+    Else
+        CenteredMinimap = 0
+        Call DibujarMiniMapa
+        chkCenteredMiniMap.Picture = Nothing
+    End If
+    Call ToggleMiniMapZoomButtons
+    Exit Sub
+chkCenteredMiniMap_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkCenteredMiniMap_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub chkConfirmPetRelease_Click()
+    On Error GoTo chkConfirmPetRelease_Click_Err
+    If ConfirmPetRelease = 0 Then
+        ConfirmPetRelease = 1
+        chkConfirmPetRelease.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        ConfirmPetRelease = 0
+        chkConfirmPetRelease.Picture = Nothing
+    End If
+    Exit Sub
+chkConfirmPetRelease_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkConfirmPetRelease_Click", Erl)
+    Resume Next
+End Sub
 
 Private Sub chkSteps_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo chkSteps_MouseUp_Err
@@ -1070,21 +1128,22 @@ Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     '  End If
 End Sub
 
-Private Sub Check6_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    On Error GoTo Check6_MouseUp_Err
+Private Sub chkFps_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error GoTo chkFps_MouseUp_Err
     If FPSFLAG = 1 Then
         FPSFLAG = 0
+        frmMain.fps.visible = False
+        chkFps.Picture = Nothing
+        frmMain.ShowFPS.enabled = False
     Else
         FPSFLAG = 1
-    End If
-    If FPSFLAG = 0 Then
-        Check6.Picture = Nothing
-    Else
-        Check6.Picture = LoadInterface("check-amarillo.bmp")
+        frmMain.fps.visible = True
+        chkFps.Picture = LoadInterface("check-amarillo.bmp")
+        frmMain.ShowFPS.enabled = True
     End If
     Exit Sub
-Check6_MouseUp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.Check6_MouseUp", Erl)
+chkFps_MouseUp_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkFps_MouseUp", Erl)
     Resume Next
 End Sub
 
@@ -1235,10 +1294,30 @@ Public Sub Init()
     Else
         chkSteps.Picture = LoadInterface("check-amarillo.bmp")
     End If
-    If FPSFLAG = 0 Then
-        Check6.Picture = Nothing
+    If FPSFLAG = 1 Then
+        chkFps.Picture = LoadInterface("check-amarillo.bmp")
     Else
-        Check6.Picture = LoadInterface("check-amarillo.bmp")
+        chkFps.Picture = Nothing
+    End If
+    If ButtonsExpBar = 1 Then
+        chkBtnExpBar.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        chkBtnExpBar.Picture = Nothing
+    End If
+    If ShowNameMapInRender = 1 Then
+        chkShowNameMapInRender.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        chkShowNameMapInRender.Picture = Nothing
+    End If
+    If ConfirmPetRelease = 1 Then
+        chkConfirmPetRelease.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        chkConfirmPetRelease.Picture = Nothing
+    End If
+    If CenteredMinimap = 1 Then
+        chkCenteredMiniMap.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        chkCenteredMiniMap.Picture = Nothing
     End If
     scrVolume.value = max(scrVolume.min, min(scrVolume.max, VolFX))
     scrVolumeSteps.value = max(scrVolumeSteps.min, min(scrVolumeSteps.max, VolSteps))
@@ -1295,6 +1374,36 @@ Private Sub num_comp_inv_Click()
         NumerosCompletosInventario = 0
         num_comp_inv.Picture = Nothing
     End If
+End Sub
+Private Sub chkBtnExpBar_Click()
+    On Error GoTo chkBtnExpBar_Click_Err
+    If ButtonsExpBar = 0 Then
+        ButtonsExpBar = 1
+        chkBtnExpBar.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        ButtonsExpBar = 0
+        chkBtnExpBar.Picture = Nothing
+    End If
+
+    Call ToggleExperienceButtons
+    Exit Sub
+chkBtnExpBar_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkBtnExpBar_Click", Erl)
+    Resume Next
+End Sub
+Private Sub chkShowNameMapInRender_Click()
+    On Error GoTo chkShowNameMapInRender_Click_Err
+    If ShowNameMapInRender = 0 Then
+        ShowNameMapInRender = 1
+        chkShowNameMapInRender.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        ShowNameMapInRender = 0
+        chkShowNameMapInRender.Picture = Nothing
+    End If
+    Exit Sub
+chkShowNameMapInRender_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkShowNameMapInRender_Click", Erl)
+    Resume Next
 End Sub
 
 Private Sub Respiracion_Click()
@@ -1391,7 +1500,54 @@ toggleMusic_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleMusic", Erl)
     Resume Next
 End Sub
-
+Public Sub ToggleExperienceButtons()
+    On Error GoTo ToggleExperienceButtons_Err
+    
+    Select Case ButtonsExpBar
+        Case 1
+            frmMain.btnExp.visible = True
+            frmMain.btnExp2.visible = True
+            frmMain.btnExpRemaining.visible = True
+            frmMain.btnTotalExp.visible = True
+            frmMain.NombrePJ.Top = 35
+            frmMain.lblLvl.Top = 65
+        Case 0
+            frmMain.btnExp.visible = False
+            frmMain.btnExp2.visible = False
+            frmMain.btnExpRemaining.visible = False
+            frmMain.btnTotalExp.visible = False
+            frmMain.expRemaining.visible = False
+            frmMain.lblPorcLvl.visible = False
+            frmMain.lblPorcLvl2.visible = False
+            frmMain.exp.visible = True
+            frmMain.NombrePJ.Top = 45
+            frmMain.lblLvl.Top = 75
+        Case Else
+            Exit Sub
+    End Select
+    Exit Sub
+ToggleExperienceButtons_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleExperienceButtons", Erl)
+    Resume Next
+End Sub
+Public Sub ToggleMiniMapZoomButtons()
+    On Error GoTo ToggleMiniMapZoomButtons_Err
+    
+    Select Case CenteredMinimap
+        Case 1
+            frmMain.btnZoomIn.visible = True
+            frmMain.btnZoomOut.visible = True
+        Case 0
+            frmMain.btnZoomIn.visible = False
+            frmMain.btnZoomOut.visible = False
+        Case Else
+            Exit Sub
+    End Select
+    Exit Sub
+ToggleMiniMapZoomButtons_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.ToggleMiniMapZoomButtons", Erl)
+    Resume Next
+End Sub
 Private Sub txtRed_Change()
     If txtRed.text = "" Then
         txtRed.text = "0"

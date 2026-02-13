@@ -56,8 +56,8 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call SaveStringInFile("Authenticated with server OK", "remote_debug.txt")
             Case ServerPacketID.elogged
                 frmDebug.add_text_tracebox "Logged"
-                Dim dummy As Boolean
-                dummy = Reader.ReadBool
+                Dim res As Boolean
+                res = Reader.ReadBool
                 Call SaveStringInFile("Logged with character " & CharacterRemote, "remote_debug.txt")
                 InitiateShutdownProcess = True
                 ShutdownProcessTimer.start
@@ -515,7 +515,7 @@ Private Sub HandleConnected()
             Debug.Assert values(i) = i
         Next i
     #End If
-    #If REMOTE_CLOSE = 0 Then
+    #If REMOTE_CLOSE = 0 And FPSFLAG = 1 Then
         frmMain.ShowFPS.enabled = True
     #End If
     #If DIRECT_PLAY = 0 Then
@@ -559,13 +559,14 @@ Private Sub HandleLogged()
     frmMain.ImgSegClan = LoadInterface("boton-seguro-clan-on.bmp")
     frmMain.ImgSegResu = LoadInterface("boton-fantasma-on.bmp")
     frmMain.ImgLegionarySecure = LoadInterface("boton-demonio-on.bmp")
+    Call frmOpciones.ToggleExperienceButtons
+    Call frmOpciones.ToggleMiniMapZoomButtons
     SeguroParty = True
     SeguroClanX = True
     SeguroResuX = True
     LegionarySecureX = True
     Call ResetAllCd
     Call SetConnected
-    g_game_state.State = e_state_gameplay_screen
     Exit Sub
 HandleLogged_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleLogged", Erl)
@@ -782,6 +783,7 @@ Public Sub HandleDisconnect()
     For i = 1 To MAX_SKINSINVENTORY_SLOTS
         Call frmSkins.InvSkins.ClearSlot(i)
     Next i
+    
     Call frmCrafteo.InvCraftCatalyst.ClearSlot(1)
     UserInvUnlocked = 0
     Alocados = 0
@@ -849,9 +851,6 @@ Public Sub HandleDisconnect()
         If prgRun Then
             Call General_Set_Connect
         End If
-    #End If
-    #If No_Api_Discord = 0 Then
-        Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), "argentumonlinelogo512", "https://discord.com/invite/hvaA8eMm43", "argentumlogocircle", "Jugando Argentum Online")
     #End If
     Exit Sub
 HandleDisconnect_Err:
@@ -1636,7 +1635,7 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             Dim MsgID    As Integer
             Dim extraStr As String
             MsgID = val(ReadField(1, text, Asc("*")))             ' 2082
-            extraStr = ReadField(2, text, Asc("*"))               ' "Nombre¬OtroValor"
+            extraStr = ReadField(2, Text, Asc("*"))               ' "Nombre¬OtroValor"
             chat = Locale_Parse_ServerMessage(MsgID, extraStr)
             copiar = False
             duracion = 20
@@ -2165,6 +2164,7 @@ Private Sub HandleUserCharIndexInServer()
         frmMain.Coord.ForeColor = RGB(170, 0, 0)
     End If
     Call UpdateMapPos
+    g_game_state.state = e_state_gameplay_screen
     Exit Sub
 HandleUserCharIndexInServer_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserCharIndexInServer", Erl)
@@ -2190,6 +2190,7 @@ Private Sub HandleCharacterCreate()
     Dim ParticulaFx   As Byte
     Dim appear        As Byte
     Dim group_index   As Integer
+    Dim NpcNum        As Integer
     charindex = Reader.ReadInt16()
     Body = Reader.ReadInt16()
     Head = Reader.ReadInt16()
@@ -2201,7 +2202,6 @@ Private Sub HandleCharacterCreate()
     helmet = Reader.ReadInt16()
     Cart = Reader.ReadInt16()
     Backpack = Reader.ReadInt16()
-    
     With charlist(charindex)
         Dim loopC, Fx As Integer
         Fx = Reader.ReadInt16
@@ -2250,14 +2250,18 @@ Private Sub HandleCharacterCreate()
         .tipoUsuario = Reader.ReadInt8()
         .Team = Reader.ReadInt8()
         .banderaIndex = Reader.ReadInt8()
-        .AnimAtaque1 = Reader.ReadInt16()
-        
+        .NpcNumber = Reader.ReadInt16()
+        .AnimAtaque1 = NpcData(.NpcNumber).LandAttackAnimation
+        .BodyOnLand = NpcData(.NpcNumber).Body
+        .BodyIdle = NpcData(.NpcNumber).BodyIdle
+        .BodyOnWaterIdle = NpcData(.NpcNumber).BodyOnWaterIdle
+        .BodyOnWater = NpcData(.NpcNumber).BodyOnWater
+        .AnimAtaque2 = NpcData(.NpcNumber).WaterAttackAnimation
         If Backpack > 0 Then
             .Backpack = BodyData(Backpack)
             .tmpBackPack = Backpack
             .HasBackpack = True
         End If
-        
         'dwarven exoesqueleton exception
         If .Body.BodyIndex = DwarvenExoesqueletonBody Then
             weapon = NO_WEAPON
@@ -2279,8 +2283,17 @@ Private Sub HandleCharacterCreate()
         Else
             .priv = 0
         End If
-        .Muerto = (Body = CASPER_BODY_IDLE)
+        .Muerto = (Body = CASPER_BODY_IDLE Or Body = CASPER_BODY_NAVIGATING)
         Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, Shield, helmet, Cart, Backpack, ParticulaFx, appear)
+        If .BodyOnWater > 0 And IsAmphibianOverWater(charindex) Then
+            If .Idle Then
+                .Body = BodyData(.BodyOnWater)
+                .iBody = .BodyOnWater
+            Else
+                .Body = BodyData(.BodyOnWaterIdle)
+                .iBody = .BodyOnWaterIdle
+            End If
+        End If
         If .Navegando = False Or UserNadandoTrajeCaucho = True Then
             If .Body.AnimateOnIdle = 0 Then
                 .Body.Walk(.Heading).started = 0
@@ -2399,10 +2412,8 @@ HandleForceCharMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleForceCharMove", Erl)
 End Sub
 
-
 ' Handles the CharacterChange message.
 Private Sub HandleCharacterChange()
-    
     On Error GoTo HandleCharacterChange_Err
     Dim charindex As Integer
     Dim TempInt   As Integer
@@ -2418,15 +2429,48 @@ Private Sub HandleCharacterChange()
         Dim hadMovArmaEscudo As Boolean: hadMovArmaEscudo = .MovArmaEscudo
         Dim keepStartIdle    As Long
         Dim newGi            As Long
+        Dim flags            As Byte
         ' ============================================
-        ' Body
+        flags = Reader.ReadInt8()
+        .Idle = (flags And &O1)
+        .Navegando = (flags And &O2)
         TempInt = Reader.ReadInt16()
         If TempInt < LBound(BodyData()) Or TempInt > UBound(BodyData()) Then
             .Body = BodyData(0)
             .iBody = 0
         Else
-            .Body = BodyData(TempInt)
-            .iBody = TempInt
+            If .EsNpc Then
+                If IsAmphibianOverWater(charindex) Then
+                    If .Idle Then
+                        .Body = BodyData(.BodyOnWaterIdle)
+                        .iBody = .BodyOnWaterIdle
+                    Else
+                        .Body = BodyData(.BodyOnWater)
+                        .iBody = .BodyOnWater
+                    End If
+                Else
+                    If .Idle Then
+                        If .BodyOnLand > 0 Then
+                            If .BodyIdle > 0 Then
+                                .Body = BodyData(.BodyIdle)
+                                .iBody = .BodyOnLand
+                            Else
+                                .Body = BodyData(TempInt)
+                                .iBody = TempInt
+                            End If
+                        Else
+                            .Body = BodyData(.BodyOnLand)
+                            .iBody = TempInt
+                        End If
+                    Else
+                        .Body = BodyData(.BodyOnLand)
+                        .iBody = .BodyOnLand
+                    End If
+                End If
+            Else
+                .Body = BodyData(TempInt)
+                .iBody = TempInt
+            End If
         End If
         ' Head
         headIndex = Reader.ReadInt16()
@@ -2437,7 +2481,7 @@ Private Sub HandleCharacterChange()
             .Head = HeadData(headIndex)
             .IHead = headIndex
         End If
-        .Muerto = (.iBody = CASPER_BODY_IDLE)
+        .Muerto = (.iBody = CASPER_BODY_IDLE Or .iBody = CASPER_BODY_NAVIGATING)
         ' Heading nuevo
         .Heading = Reader.ReadInt8()
         ' Arma / Escudo / Casco
@@ -2469,11 +2513,6 @@ Private Sub HandleCharacterChange()
         Call StartFx(.ActiveAnimation, Fx)
         .Meditating = (Fx <> 0)
         Reader.ReadInt16 ' Ignore loops
-        ' Flags
-        Dim flags As Byte
-        flags = Reader.ReadInt8()
-        .Idle = (flags And &O1)
-        .Navegando = (flags And &O2)
         'exception for dwarven exoesqueleton
         If .iBody = DwarvenExoesqueletonBody Then
             .Head = HeadData(0)
@@ -3040,18 +3079,49 @@ Private Sub HandleCharAtaca()
     Dim VictimIndex As Integer
     Dim danio       As Long
     Dim AnimAttack  As Integer
+    Dim AnimAttack2 As Integer
     NpcIndex = Reader.ReadInt16()
     VictimIndex = Reader.ReadInt16()
     danio = Reader.ReadInt32()
-    AnimAttack = Reader.ReadInt16()
-    Dim oldWalk    As Grh
-    Dim keepStart  As Long
+    Dim oldWalk   As Grh
+    Dim keepStart As Long
     With charlist(NpcIndex)
+        AnimAttack = NpcData(.NpcNumber).LandAttackAnimation
+        AnimAttack2 = NpcData(.NpcNumber).WaterAttackAnimation
         If AnimAttack > 0 Then
             oldWalk = .Body.Walk(.Heading)
             .AnimatingBody = AnimAttack
             .Idle = False
-            .Body = BodyData(AnimAttack)
+            .Body = BodyData(.AnimatingBody)
+            .Body.Walk(.Heading).Loops = 0
+            If oldWalk.started > 0 And .Moving Then
+                keepStart = SyncGrhPhase(oldWalk, .Body.Walk(.Heading).GrhIndex)
+            Else
+                keepStart = FrameTime
+            End If
+            .Body.Walk(.Heading).started = keepStart
+            If Not .MovArmaEscudo Then
+                If .Arma.WeaponWalk(.Heading).GrhIndex <> 0 Then
+                    .Arma.WeaponWalk(.Heading).Loops = 0
+                    .Arma.WeaponWalk(.Heading).started = .Body.Walk(.Heading).started
+                End If
+                If .Escudo.ShieldWalk(.Heading).GrhIndex <> 0 Then
+                    .Escudo.ShieldWalk(.Heading).Loops = 0
+                    .Escudo.ShieldWalk(.Heading).started = .Body.Walk(.Heading).started
+                End If
+            End If
+        Else
+            If Not .Moving Then
+                .MovArmaEscudo = True
+                .Arma.WeaponWalk(.Heading).started = FrameTime
+                .Arma.WeaponWalk(.Heading).Loops = 0
+            End If
+        End If
+        If AnimAttack2 > 0 And IsAmphibianOverWater(NpcIndex) Then
+            oldWalk = .Body.Walk(.Heading)
+            .AnimatingBody = AnimAttack2
+            .Idle = False
+            .Body = BodyData(.AnimatingBody)
             .Body.Walk(.Heading).Loops = 0
             If oldWalk.started > 0 And .Moving Then
                 keepStart = SyncGrhPhase(oldWalk, .Body.Walk(.Heading).GrhIndex)
@@ -3208,7 +3278,7 @@ Private Sub HandleWorkRequestTarget()
         Case Robar
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_ROBAR"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
-        Case FundirMetal
+        Case eSkill.Smelting
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_FUNDIRMETAL"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case Proyectiles
@@ -4905,11 +4975,14 @@ Private Sub HandleQuestDetails()
     Dim ObjIndex       As Integer
     Dim AmountHave     As Integer
     Dim QuestIndex     As Integer
-    Dim LevelRequerido As Byte
-    Dim QuestRequerida As Integer
+    Dim RequiredLevel As Byte
+    Dim LimitLevel As Byte
+    Dim RequiredClass As Byte
+    Dim RequiredQuest As Integer
     Dim subelemento As ListItem
     Dim cantidadobjs As Integer
     Dim obindex As Integer
+    Dim requirements As String
     FrmQuests.ListView2.ListItems.Clear
     FrmQuests.ListView1.ListItems.Clear
     FrmQuests.ListView1.ColumnHeaders(2).Width = 780 'Agrando el ancho de la columna para que entre la cantidad de npcs correctamente
@@ -4919,16 +4992,27 @@ Private Sub HandleQuestDetails()
     FrmQuests.picture1.Refresh
     FrmQuests.npclbl.Caption = ""
     FrmQuests.objetolbl.Caption = ""
+    requirements = ""
     
     QuestIndex = Reader.ReadInt16
     FrmQuests.titulo.Caption = QuestList(QuestIndex).nombre
     FrmQuests.lblRepetible.visible = QuestList(QuestIndex).Repetible = 1
-    LevelRequerido = Reader.ReadInt8
-    QuestRequerida = Reader.ReadInt16
-    FrmQuests.detalle.Text = QuestList(QuestIndex).desc & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & JsonLanguage.Item( _
-            "MENSAJE_QUEST_NIVEL_REQUERIDO") & LevelRequerido & vbCrLf
-    If QuestRequerida <> 0 Then
-        FrmQuests.detalle.Text = FrmQuests.detalle.Text & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(QuestRequerida).nombre
+    RequiredLevel = Reader.ReadInt8
+    LimitLevel = Reader.ReadInt8
+    RequiredClass = Reader.ReadInt8
+    RequiredQuest = Reader.ReadInt16
+    FrmQuests.detalle.Text = QuestList(QuestIndex).desc
+    If RequiredLevel > 1 Then
+        requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & RequiredLevel & vbCrLf
+    End If
+    If LimitLevel <> 0 Then
+        requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_MAXIMO") & LimitLevel & vbCrLf
+    End If
+    If RequiredClass <> 0 And RequiredClass <= 12 Then
+        requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(RequiredClass) & vbCrLf
+    End If
+    If RequiredQuest <> 0 Then
+        requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(RequiredQuest).nombre & vbCrLf
     End If
     tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_OBJETIVOS") & vbCrLf
     tmpByte = Reader.ReadInt8
@@ -4980,7 +5064,7 @@ Private Sub HandleQuestDetails()
     RequiredSkill = Reader.ReadInt8
     RequiredValue = Reader.ReadInt8
     If RequiredSkill > 0 Then
-        FrmQuests.detalle.Text = FrmQuests.detalle.Text & SkillsNames(RequiredSkill) & ": " & RequiredValue
+        requirements = requirements & SkillsNames(RequiredSkill) & ": " & RequiredValue & vbCrLf
     End If
     tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_RECOMPENSAS") & vbCrLf
     Dim tmplong As Long
@@ -5019,6 +5103,10 @@ Private Sub HandleQuestDetails()
         subelemento.SubItems(3) = 1
         subelemento.SubItems(4) = "typeSpell"
     Next i
+    
+    If Len(requirements) > 0 Then
+        FrmQuests.detalle.Text = FrmQuests.detalle.Text & vbCrLf & vbCrLf & JsonLanguage.Item("MENSAJE_QUEST_REQUISITOS") & vbCrLf & requirements
+    End If
     
     FrmQuests.txtInfo.Text = tmpStr
     Call FrmQuests.ListView1_Click
@@ -5912,22 +6000,18 @@ HandleReportLobbyList_Err:
 End Sub
 
 Private Sub HandleChangeSkinSlot()
-
-Dim Slot                        As Byte
-Dim ObjIndex                    As Integer
-Dim GrhIndex                    As Long
-Dim Amount                      As Integer
-Dim Equipped                    As Boolean
-Dim Name                        As String
-Dim ObjType                     As Byte
-
+    Dim Slot     As Byte
+    Dim ObjIndex As Integer
+    Dim GrhIndex As Long
+    Dim Amount   As Integer
+    Dim Equipped As Boolean
+    Dim Name     As String
+    Dim ObjType  As Byte
     On Error GoTo HandleChangeSkinSlot_Error
-
     With Reader
         Slot = .ReadInt8
         ObjIndex = .ReadInt16
         Equipped = .ReadBool
-        
         GrhIndex = .ReadInt32
         ObjType = .ReadInt8
         Name = .ReadString8
@@ -5949,15 +6033,12 @@ Dim ObjType                     As Byte
         Call Load(frmSkins)
         Call frmSkins.InvSkins.SetItem(Slot, ObjIndex, 1, CByte(Equipped), GrhIndex, ObjType, 0, 0, 0, 0, Name, 0, 0)
     End With
-
     On Error GoTo 0
     Exit Sub
-
 HandleChangeSkinSlot_Error:
-
     Call LogError("Error " & Err.Number & " (" & Err.Description & ") en el procedimiento HandleChangeSkinSlot del módulo Módulo Protocol en la línea: " & Erl())
-
 End Sub
+
 Public Sub HandleGuildConfig()
     cfgGuildLevelCallSupport = Reader.ReadInt8
     cfgGuildLevelSeeInvisible = Reader.ReadInt8
@@ -5969,10 +6050,11 @@ Public Sub HandleGuildConfig()
         cfgGuildMembersByLevel(i) = Reader.ReadInt8()
     Next i
 End Sub
+
 Public Sub HandleShowPickUpObj()
-    Dim Amount As Integer
+    Dim Amount   As Integer
     Dim ObjIndex As Integer
-    Dim txt As String
+    Dim txt      As String
     ObjIndex = Reader.ReadInt16
     Amount = Reader.ReadInt16
     txt = "+" & Amount & " " & ObjData(ObjIndex).Name

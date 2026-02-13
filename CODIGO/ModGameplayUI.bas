@@ -161,8 +161,7 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
                             End If
                         End If
                     End If
-                    If (UsingSkill = eSkill.Alquimia Or UsingSkill = FundirMetal Or _
-                       UsingSkill = eSkill.TargetableItem) Then
+                    If (UsingSkill = eSkill.Alquimia Or UsingSkill = eSkill.TargetableItem) Then
                         If MainTimer.Check(TimersIndex.CastSpell) Then
                             Call WriteWorkLeftClick(tX, tY, UsingSkill)
                             Call FormParser.Parse_Form(GetGameplayForm)
@@ -171,10 +170,9 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
                             End If
                         End If
                     Else
-                        If UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or UsingSkill = eSkill.Pescar Then
+                        If UsingSkill = eSkill.Talar Or UsingSkill = eSkill.Mineria Or UsingSkill = eSkill.Pescar Or UsingSkill = eSkill.Smelting Then
                             Call WriteStartAutomatedAction(tX, tY, UsingSkill)
                         End If
-                        
                     End If
                     If SendSkill Then
                         If UsingSkill = eSkill.magia Then
@@ -439,6 +437,8 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
                     Call WriteEquipItem(Slot)
                 End If
             End If
+        Case eObjType.otMinerales
+            Call WriteUseItem(Slot)
         Case eObjType.OtDonador
             If Not Equipped Then
                 Call WriteEquipItem(Slot)
@@ -564,11 +564,6 @@ Public Sub RequestSkills()
     LlegaronSkills = True
     Call WriteRequestSkills
 End Sub
-
-Public Function IsUsableItem(ByRef ItemData As ObjDatas) As Boolean
-    IsUsableItem = ItemData.ObjType = eObjType.otWeapon Or ItemData.ObjType = eObjType.otPociones Or ItemData.ObjType = eObjType.OtHerramientas Or ItemData.ObjType = _
-            eObjType.otInstrumentos Or ItemData.ObjType = eObjType.OtCofre
-End Function
 
 Public Sub EquipSelectedItem()
     If frmMain.Inventario.IsItemSelected Then Call WriteEquipItem(frmMain.Inventario.SelectedItem)

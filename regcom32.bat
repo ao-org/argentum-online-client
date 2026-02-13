@@ -19,8 +19,4 @@ REGSVR32 /s %SystemRoot%\System32\MSINET.OCX
 copy "%mypath%\RICHTX32.OCX" %SystemRoot%\System32
 REGSVR32 /s %SystemRoot%\System32\RICHTX32.OCX
 
-copy "%mypath%\DiscordRichPresenceVB6.dll" %SystemRoot%\System32
-REGSVR32 /s %SystemRoot%\System32\DiscordRichPresenceVB6.dll
-
-copy "%mypath%\discord_game_sdk.dll" %SystemRoot%\System32
-REGSVR32 /s %SystemRoot%\System32\discord_game_sdk.dll
+PAUSE

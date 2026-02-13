@@ -206,11 +206,15 @@ Public Enum e_InfoTxts2
     ArmyThirdHierarchy = 256
     ArmyFourthHierarchy = 512
     ArmyFifthHierarchy = 1024
-    ChaosFirstHierarchy = 2048
-    ChaosSecondHierarchy = 4096
-    ChaosThirdHierarchy = 8192
-    ChaosFourthHierarchy = 16384
-    ChaosFifthHierarchy = 32768
+    ArmySixthHierarchy = 2048
+    ArmySeventhHierarchy = 4096
+    ChaosFirstHierarchy = 8192
+    ChaosSecondHierarchy = 16384
+    ChaosThirdHierarchy = 32768
+    ChaosFourthHierarchy = 65536
+    ChaosFifthHierarchy = 131072
+    ChaosSixthHierarchy = 262144
+    ChaosSeventhHierarchy = 524288
 End Enum
 
 Public Enum e_Class
@@ -426,6 +430,9 @@ Public CopiarDialogoAConsola       As Byte
 Public ScrollArrastrar             As Byte
 Public LastScroll                  As Byte
 Public InfoItemsEnRender           As Boolean
+Public ButtonsExpBar               As Byte
+Public ShowNameMapInRender         As Byte
+Public ConfirmPetRelease           As Byte
 Public InvertirSonido              As Byte
 Public VolMusic                    As Long
 Public VolFX                       As Long
@@ -499,6 +506,7 @@ Public TransferCharNewOwner As String
 Public CuentaPassword       As String
 Public CuentaEmail          As String
 Public CharacterRemote      As String
+Public NamePj(1 To 8)       As String
 Public ValidationCode       As String
 'Objetos públicos
 Public DialogosClanes       As clsGuildDlg
@@ -557,6 +565,7 @@ Public Const INT_SENTRPU      As Integer = 2000
 Public MacroBltIndex          As Integer
 Public Const CASPER_BODY      As Integer = 830
 Public Const CASPER_BODY_IDLE As Integer = 829
+Public Const CASPER_BODY_NAVIGATING As Integer = 87
 Public Const TIME_CASPER_IDLE As Long = 300
 Public Const NUMATRIBUTES     As Byte = 5
 'Musica
@@ -719,7 +728,7 @@ Public Enum eSkill
     Tacticas = 3
     Armas = 4
     Meditar = 5
-    Apuñalar = 6
+    ShortWeapons = 6
     Ocultarse = 7
     Supervivencia = 8
     Comerciar = 9
@@ -739,6 +748,7 @@ Public Enum eSkill
     Sastreria = 23
     Domar = 24
     TargetableItem = 25
+    Smelting = 26
     Grupo = 90
     MarcaDeClan = 91
     MarcaDeGM = 92
@@ -818,7 +828,6 @@ Public Enum eObjType
     otCualquiera = 1000
 End Enum
 
-Public Const FundirMetal As Integer = 88
 'Inventario
 Type Slot
     ObjIndex As Integer
@@ -1044,6 +1053,7 @@ Public Enum eEditOptions
     eo_Desc
     eo_Intervalo
     eo_Hogar
+    eo_Alias
 End Enum
 
 ''

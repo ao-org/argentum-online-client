@@ -421,7 +421,7 @@ End Sub
 Public Sub LoginCharacter(ByVal Name As String)
     On Error GoTo LogearPersonaje_Err
     userName = Name
-    If Connected Then
+    If Connected And FPSFLAG = 1 Then
         frmMain.ShowFPS.enabled = True
     End If
     #If PYMMO = 0 Then
@@ -431,7 +431,12 @@ Public Sub LoginCharacter(ByVal Name As String)
         Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
         ModAuth.LoginOperation = e_operation.Authenticate
         Call LoginOrConnect(E_MODO.Normal)
-        frmConnecting.Show False, frmConnect
+        
+        #If REMOTE_CLOSE = 0 Then
+            frmConnecting.Show False, frmConnect
+        #Else
+            Call SaveStringInFile("LoginCharacter: " & Name, "remote_debug.txt")
+        #End If
     #End If
     Exit Sub
 LogearPersonaje_Err:

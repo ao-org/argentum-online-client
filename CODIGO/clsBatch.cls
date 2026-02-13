@@ -309,7 +309,9 @@ Friend Sub DrawShadow(ByVal x As Long, _
                       Optional ByVal Tx1 As Single = 0, _
                       Optional ByVal Ty1 As Single = 0, _
                       Optional ByVal Tx2 As Single = 1, _
-                      Optional ByVal Ty2 As Single = 1)
+                      Optional ByVal Ty2 As Single = 1, _
+                      Optional ByVal OffsetX As Integer = 0, _
+                      Optional ByVal OffsetY As Integer = 0)
     On Error GoTo DrawShadow_Err
     Dim color(3) As RGBA
     Dim i        As Integer
@@ -318,12 +320,20 @@ Friend Sub DrawShadow(ByVal x As Long, _
     Next
     Dim dx As Single, dy As Single
     For i = 0 To 3
-        Select Case i
-            Case 0: dx = x: dy = y - 1
-            Case 1: dx = x + 1: dy = y
-            Case 2: dx = x: dy = y + 1
-            Case 3: dx = x - 1: dy = y
-        End Select
+    Select Case i
+        Case 0
+            dx = x + OffsetX
+            dy = y - 1 + OffsetY
+        Case 1
+            dx = x + 1 + OffsetX
+            dy = y + OffsetY
+        Case 2
+            dx = x + OffsetX
+            dy = y + 1 + OffsetY
+        Case 3
+            dx = x - 1 + OffsetX
+            dy = y + OffsetY
+    End Select
         m_Data(m_Position).x = dx
         m_Data(m_Position).y = dy + Height - 2
         m_Data(m_Position).z = 0

@@ -272,6 +272,9 @@ Public Sub CargarRecursos()
     Call CargarColores
     Call CargarCrafteo
     Call InitEngineSprites
+    If CenteredMinimap <> 0 Then
+        Call RenderMinimapCentered(1, 50, 50, CenteredMinimapZoom, CenteredMinimapZoom)
+    End If
     Exit Sub
 CargarRecursos_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarRecursos", Erl)
@@ -1373,6 +1376,13 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).NpcType = val(Leer.GetValue("npc" & Npc, "NpcType"))
         NpcData(Npc).Comercia = val(Leer.GetValue("npc" & Npc, "Comercia"))
         NpcData(Npc).level = val(Leer.GetValue("npc" & Npc, "Nivel"))
+        NpcData(Npc).WaterAttackAnimation = val(Leer.GetValue("npc" & Npc, "Ataque2"))
+        NpcData(Npc).LandAttackAnimation = val(Leer.GetValue("npc" & Npc, "Ataque1"))
+        NpcData(Npc).BodyOnWater = val(Leer.GetValue("npc" & Npc, "BodyOnWater"))
+        NpcData(Npc).BodyOnWaterIdle = val(Leer.GetValue("npc" & Npc, "BodyOnWaterIdle"))
+        NpcData(Npc).BodyOnLand = val(Leer.GetValue("npc" & Npc, "Body"))
+        NpcData(Npc).BodyIdle = val(Leer.GetValue("npc" & Npc, "BodyIdle"))
+        NpcData(Npc).Amphibian = val(Leer.GetValue("npc" & Npc, "Amphibian")) > 0
         
         aux = val(Leer.GetValue("npc" & Npc, "NumQuiza"))
         If aux = 0 Then
@@ -1661,7 +1671,7 @@ Sub CargarCuerpos()
     Dim k          As Integer
     Dim Heading    As Byte
     Dim BodyKey    As String
-    Dim Std        As Byte
+    Dim Std        As Integer
     Dim NumCuerpos As Integer
     Dim LastGrh    As Long
     Dim AnimStart  As Long
@@ -1690,6 +1700,8 @@ Sub CargarCuerpos()
             .BodyOffset.y = val(Loader.GetValue(BodyKey, "BodyOffsetY"))
             .HeadOffset.x = val(Loader.GetValue(BodyKey, "HeadOffsetX")) + .BodyOffset.x
             .HeadOffset.y = val(Loader.GetValue(BodyKey, "HeadOffsetY")) + .BodyOffset.y
+            .ShadowOffset.x = val(Loader.GetValue(BodyKey, "ShadowOffsetX"))
+            .ShadowOffset.y = val(Loader.GetValue(BodyKey, "ShadowOffsetY"))
             .BodyIndex = i
             .IdleBody = val(Loader.GetValue(BodyKey, "IdleBody"))
             .AnimateOnIdle = val(Loader.GetValue(BodyKey, "AnimateOnIdle"))
@@ -1737,16 +1749,27 @@ Sub CargarCuerpos()
                 With GrhData(LastGrh)
                     .NumFrames = MoldesBodies(Std).DirCount(J)
                     .speed = .NumFrames * AnimSpeed
-                    ReDim .Frames(1 To MoldesBodies(Std).DirCount(J))
-                    For k = 1 To MoldesBodies(Std).DirCount(J)
-                        .Frames(k) = AnimStart + k - 1
-                    Next
-                    .pixelWidth = GrhData(.Frames(1)).pixelWidth
-                    .pixelHeight = GrhData(.Frames(1)).pixelHeight
-                    .TileWidth = GrhData(.Frames(1)).TileWidth
-                    .TileHeight = GrhData(.Frames(1)).TileHeight
+                    Dim dircount As Integer: dircount = MoldesBodies(Std).dircount(J)
+                    If .NumFrames > 0 Then
+                        ReDim .Frames(1 To .NumFrames)
+                        For k = 1 To MoldesBodies(Std).dircount(J)
+                            .Frames(k) = AnimStart + k - 1
+                        Next
+                        .pixelWidth = GrhData(.Frames(1)).pixelWidth
+                        .pixelHeight = GrhData(.Frames(1)).pixelHeight
+                        .TileWidth = GrhData(.Frames(1)).TileWidth
+                        .TileHeight = GrhData(.Frames(1)).TileHeight
+                    End If
+                        
                 End With
+                
                 InitGrh BodyData(i).Walk(Heading), LastGrh, 0
+                If GrhData(LastGrh).NumFrames < 1 Then
+                    Debug.Assert False
+                    frmDebug.add_text_tracebox "Moldes.ini is broken for Body=" & i
+                    Exit For
+                End If
+                        
                 LastGrh = LastGrh + 1
             Next
         End If

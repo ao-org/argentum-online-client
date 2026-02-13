@@ -2130,24 +2130,6 @@ WriteBankStart_Err:
 End Sub
 
 ''
-' Writes the "Enlist" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteEnlist()
-    '<EhHeader>
-    On Error GoTo WriteEnlist_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eEnlist)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteEnlist_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteEnlist", Erl)
-    '</EhFooter>
-End Sub
-
-''
 ' Writes the "Information" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
@@ -3109,14 +3091,14 @@ End Sub
 ' @param    reason The reason for which to send him to jail.
 ' @param    time The time (in minutes) the user will have to spend there.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteJail(ByVal userName As String, ByVal reason As String, ByVal Time As Integer)
+Public Sub WriteJail(ByVal userName As String, ByVal reason As String, ByVal Time As Long)
     '<EhHeader>
     On Error GoTo WriteJail_Err
     '</EhHeader>
     Call Writer.WriteInt16(ClientPacketID.eJail)
     Call Writer.WriteString8(userName)
     Call Writer.WriteString8(reason)
-    Call Writer.WriteInt16(Time)
+    Call Writer.WriteInt32(Time)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
@@ -3362,22 +3344,6 @@ Public Sub WriteReviveChar(ByVal userName As String)
 WriteReviveChar_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteReviveChar", Erl)
-    '</EhFooter>
-End Sub
-
-
-Public Sub WritePerdonFaccion(ByVal userName As String)
-    '<EhHeader>
-    On Error GoTo WritePerdonFaccion_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.ePerdonFaccion)
-    Call Writer.WriteString8(userName)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WritePerdonFaccion_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WritePerdonFaccion", Erl)
     '</EhFooter>
 End Sub
 
@@ -4532,50 +4498,6 @@ WriteCreateNPCWithRespawn_Err:
 End Sub
 
 ''
-' Writes the "ImperialArmour" message to the outgoing data buffer.
-'
-' @param    armourIndex The index of imperial armour to be altered.
-' @param    objectIndex The index of the new object to be set as the imperial armour.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteImperialArmour(ByVal armourIndex As Byte, ByVal objectIndex As Integer)
-    '<EhHeader>
-    On Error GoTo WriteImperialArmour_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eImperialArmour)
-    Call Writer.WriteInt8(armourIndex)
-    Call Writer.WriteInt16(objectIndex)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteImperialArmour_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteImperialArmour", Erl)
-    '</EhFooter>
-End Sub
-
-''
-' Writes the "ChaosArmour" message to the outgoing data buffer.
-'
-' @param    armourIndex The index of chaos armour to be altered.
-' @param    objectIndex The index of the new object to be set as the chaos armour.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteChaosArmour(ByVal armourIndex As Byte, ByVal objectIndex As Integer)
-    '<EhHeader>
-    On Error GoTo WriteChaosArmour_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eChaosArmour)
-    Call Writer.WriteInt8(armourIndex)
-    Call Writer.WriteInt16(objectIndex)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteChaosArmour_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteChaosArmour", Erl)
-    '</EhFooter>
-End Sub
-
-''
 ' Writes the "NavigateToggle" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
@@ -4627,46 +4549,6 @@ Public Sub WriteParticipar(ByVal RoomId As Integer, ByVal Password As String)
 WriteParticipar_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteParticipar", Erl)
-    '</EhFooter>
-End Sub
-
-''
-' Writes the "TurnCriminal" message to the outgoing data buffer.
-'
-' @param    username The name of the user to turn into criminal.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteTurnCriminal(ByVal userName As String)
-    '<EhHeader>
-    On Error GoTo WriteTurnCriminal_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eTurnCriminal)
-    Call Writer.WriteString8(userName)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteTurnCriminal_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTurnCriminal", Erl)
-    '</EhFooter>
-End Sub
-
-''
-' Writes the "ResetFactions" message to the outgoing data buffer.
-'
-' @param    username The name of the user who will be removed from any faction.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteResetFactions(ByVal userName As String)
-    '<EhHeader>
-    On Error GoTo WriteResetFactions_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eResetFactions)
-    Call Writer.WriteString8(userName)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteResetFactions_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteResetFactions", Erl)
     '</EhFooter>
 End Sub
 
