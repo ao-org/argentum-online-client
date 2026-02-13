@@ -1406,12 +1406,20 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 If charindex <> UserCharIndex Then
                     ' Si no somos nosotros, esperamos un intervalo antes de poner la animación idle para evitar saltos
                     If FrameTime - .LastStep > TIME_CASPER_IDLE Then
-                        .Body = BodyData(CASPER_BODY_IDLE)
+                        If Not .Navegando Then
+                            .Body = BodyData(CASPER_BODY_IDLE)
+                        Else
+                            .Body = BodyData(CASPER_BODY_NAVIGATING)
+                        End If
                         .Body.Walk(.Heading).started = FrameTime
                         .Idle = True
                     End If
                 Else
-                    .Body = BodyData(CASPER_BODY_IDLE)
+                    If Not .Navegando Then
+                        .Body = BodyData(CASPER_BODY_IDLE)
+                    Else
+                        .Body = BodyData(CASPER_BODY_NAVIGATING)
+                    End If
                     .Body.Walk(.Heading).started = FrameTime
                     .Idle = True
                 End If
@@ -1885,7 +1893,11 @@ Public Sub SetCharIdle(ByRef c As Char, Optional ByVal force As Boolean = True)
     ' Pone anim de quieto. Si AnimateOnIdle=0, NO anima (frame fijo).
     With c
         If .Muerto Then
-            .Body = BodyData(CASPER_BODY_IDLE)
+            If Not .Navegando Then
+                .Body = BodyData(CASPER_BODY_IDLE)
+            Else
+                .Body = BodyData(CASPER_BODY_NAVIGATING)
+            End If
         Else
             If .Body.IdleBody > 0 Then
                 .Body = BodyData(.Body.IdleBody)

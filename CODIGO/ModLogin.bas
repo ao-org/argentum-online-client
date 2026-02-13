@@ -454,7 +454,8 @@ Public Sub LoginCharacter(ByVal Name As String)
     On Error GoTo LogearPersonaje_Err
     userName = Name
     If Connected Then
-        frmMain.ShowFPS.enabled = True
+        frmMain.ShowFPS.enabled = (FPSFLAG = 1)
+        frmMain.fps.visible = (FPSFLAG = 1)
     End If
     #If PYMMO = 0 Then
         Call Protocol_Writes.WriteLoginExistingChar

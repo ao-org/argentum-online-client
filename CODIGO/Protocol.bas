@@ -515,7 +515,7 @@ Private Sub HandleConnected()
             Debug.Assert values(i) = i
         Next i
     #End If
-    #If REMOTE_CLOSE = 0 Then
+    #If REMOTE_CLOSE = 0 And FPSFLAG = 1 Then
         frmMain.ShowFPS.enabled = True
     #End If
     #If DIRECT_PLAY = 0 Then
@@ -2279,7 +2279,7 @@ Private Sub HandleCharacterCreate()
         Else
             .priv = 0
         End If
-        .Muerto = (Body = CASPER_BODY_IDLE)
+        .Muerto = (Body = CASPER_BODY_IDLE Or Body = CASPER_BODY_NAVIGATING)
         Call MakeChar(charindex, Body, Head, Heading, x, y, weapon, Shield, helmet, Cart, Backpack, ParticulaFx, appear)
         If .BodyOnWater > 0 And IsAmphibianOverWater(charindex) Then
             If .Idle Then
@@ -2477,7 +2477,7 @@ Private Sub HandleCharacterChange()
             .Head = HeadData(headIndex)
             .IHead = headIndex
         End If
-        .Muerto = (.iBody = CASPER_BODY_IDLE)
+        .Muerto = (.iBody = CASPER_BODY_IDLE Or .iBody = CASPER_BODY_NAVIGATING)
         ' Heading nuevo
         .Heading = Reader.ReadInt8()
         ' Arma / Escudo / Casco
