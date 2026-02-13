@@ -1662,12 +1662,13 @@ End Sub
 '
 ' @param    username The name of the kicked player.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteGuildKickMember(ByVal userName As String)
+Public Sub WriteGuildKickMember(ByVal userName As String, ByVal CharacterId As Long)
     '<EhHeader>
     On Error GoTo WriteGuildKickMember_Err
     '</EhHeader>
     Call Writer.WriteInt16(ClientPacketID.eGuildKickMember)
     Call Writer.WriteString8(userName)
+    Call Writer.WriteInt32(CharacterId)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
@@ -1702,12 +1703,13 @@ End Sub
 '
 ' @param    username The user whose info is requested.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteGuildMemberInfo(ByVal userName As String)
+Public Sub WriteGuildMemberInfo(ByVal userName As String, ByVal CharacterId As Long)
     '<EhHeader>
     On Error GoTo WriteGuildMemberInfo_Err
     '</EhHeader>
     Call Writer.WriteInt16(ClientPacketID.eGuildMemberInfo)
     Call Writer.WriteString8(userName)
+    Call Writer.WriteInt32(CharacterId)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
