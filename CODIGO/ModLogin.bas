@@ -418,7 +418,39 @@ Public Sub RequestNewPassword(ByVal Email As String, ByVal newPassword As String
     Call connectToLoginServer
 End Sub
 
+Public Function GetSelectedCharIDFromName(ByVal CharName As String) As Long
+    On Error GoTo GetSelectedCharIDFromName_Err
+    
+    Dim i As Long
+    Dim normalizedInput As String
+    Dim normalizedStored As String
+    
+    GetSelectedCharIDFromName = 0
+    
+    normalizedInput = UCase$(Trim$(CharName))
+    
+    If Len(normalizedInput) = 0 Then Exit Function
+    
+    For i = 1 To CantidadDePersonajesEnCuenta
+        normalizedStored = UCase$(Trim$(Pjs(i).nombre))
+        
+        If normalizedStored = normalizedInput Then
+            GetSelectedCharIDFromName = Pjs(i).id
+            Exit Function
+        End If
+    Next i
+    
+    Exit Function
+
+GetSelectedCharIDFromName_Err:
+    GetSelectedCharIDFromName = 0
+End Function
+
+
 Public Sub LoginCharacter(ByVal Name As String)
+
+    Debug.Assert GetSelectedCharIDFromName(Name) > 0
+
     On Error GoTo LogearPersonaje_Err
     userName = Name
     If Connected Then
