@@ -46,31 +46,48 @@ Public Sub Clear()
 End Sub
 
 #If PYMMO = 1 Then
-    ''
-    ' Writes the "LoginExistingChar" message to the outgoing data buffer.
-    '
-    ' @remarks  The data is not actually sent until the buffer is properly flushed.
-    Public Sub WriteLoginExistingChar()
-        '<EhHeader>
-        On Error GoTo WriteLoginExistingChar_Err
-        '</EhHeader>
-        Call Writer.WriteInt16(ClientPacketID.eLoginExistingChar)
-        Call Writer.WriteString8(encrypted_session_token)
-        Dim encrypted_username_b64 As String
-        encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), userName)
-        Call Writer.WriteString8(encrypted_username_b64)
-        Call Writer.WriteInt8(App.Major)
-        Call Writer.WriteInt8(App.Minor)
-        Call Writer.WriteInt8(App.Revision)
-        Call Writer.WriteString8(CheckMD5)
-        Call modNetwork.send(Writer)
-        '<EhFooter>
+''
+' Writes the "LoginExistingChar" message to the outgoing data buffer.
+'
+' Format (PYMMO=1):
+'   Int16  packetId
+'   String8 encrypted_session_token
+'   Int32  char_id
+'   Int8   app_major
+'   Int8   app_minor
+'   Int8   app_revision
+'   String8 md5
+'
+Public Sub WriteLoginExistingChar()
+    On Error GoTo WriteLoginExistingChar_Err
+
+    Dim char_id As Long
+    char_id = GetSelectedCharIDFromName(userName)
+    Debug.Assert char_id > 0
+
+    If char_id <= 0 Then
+        frmDebug.add_text_tracebox "WriteLoginExistingChar: Character ID not found."
         Exit Sub
+    End If
+
+    Call Writer.WriteInt16(ClientPacketID.eLoginExistingChar)
+    Call Writer.WriteString8(encrypted_session_token)
+
+    Call Writer.WriteInt32(char_id)
+    Call Writer.WriteInt8(App.Major)
+    Call Writer.WriteInt8(App.Minor)
+    Call Writer.WriteInt8(App.Revision)
+    Call Writer.WriteString8(CheckMD5)
+
+    Call modNetwork.send(Writer)
+    Exit Sub
+
 WriteLoginExistingChar_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLoginExistingChar", Erl)
-        '</EhFooter>
-    End Sub
+    Call Writer.Clear
+    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLoginExistingChar", Erl)
+End Sub
+
+
 
 ''
 ' Writes the "LoginNewChar" message to the outgoing data buffer.
