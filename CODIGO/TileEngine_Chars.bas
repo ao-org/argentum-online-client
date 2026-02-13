@@ -260,7 +260,11 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         .Heading = newHeading
         If Not .Moving Then
             If .Muerto Then
-                .Body = BodyData(CASPER_BODY)
+                If Not .Navegando Then
+                    .Body = BodyData(CASPER_BODY)
+                Else
+                    .Body = BodyData(CASPER_BODY_NAVIGATING)
+                End If
             Else
                 If .Body.BodyIndex <> .iBody Then
                     .Body = BodyData(.iBody)
@@ -385,7 +389,11 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         If Not .Moving Then
             ' --- Empezó a moverse recién ahora ---
             If .Muerto Then
-                .Body = BodyData(CASPER_BODY)
+                If Not .Navegando Then
+                    .Body = BodyData(CASPER_BODY)
+                Else
+                    .Body = BodyData(CASPER_BODY_NAVIGATING)
+                End If
             Else
                 If .Body.BodyIndex <> .iBody Then
                     .Body = BodyData(.iBody)
