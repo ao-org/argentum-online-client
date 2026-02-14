@@ -6062,6 +6062,7 @@ End Sub
         CantidadDePersonajesEnCuenta = Reader.ReadInt
         Dim ii As Byte
         For ii = 1 To MAX_PERSONAJES_EN_CUENTA
+            Pjs(ii).id = 0
             Pjs(ii).nombre = ""
             Pjs(ii).Head = 0 ' si is_sailing o muerto, cabeza en 0
             Pjs(ii).Clase = 0
@@ -6079,6 +6080,7 @@ End Sub
             Pjs(ii).Backpack = 0
         Next ii
         For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+            Pjs(ii).id = Reader.ReadInt
             Pjs(ii).nombre = Reader.ReadString8
             Pjs(ii).Body = Reader.ReadInt
             Pjs(ii).Head = Reader.ReadInt

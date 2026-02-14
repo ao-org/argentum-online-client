@@ -157,21 +157,19 @@ End Sub
 Public Sub WriteDeleteCharacter()
 End Sub
 
-''
-' Writes the "LoginExistingChar" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteLoginExistingChar()
-        '<EhHeader>
-        On Error GoTo WriteLoginExistingChar_Err
-        
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.eLoginExistingChar)
 
-104     Call Writer.WriteString8(userName)
-            
-120     Call modNetwork.send(Writer)
-        '<EhFooter>
+Public Sub WriteLoginExistingChar()
+        Dim char_id As Long
+        char_id = GetSelectedCharIDFromName(userName)
+        Debug.Assert char_id > 0
+        If char_id <= 0 Then
+            frmDebug.add_text_tracebox "WriteLoginExistingChar: Character ID not found."
+            Exit Sub
+        End If
+        Call Writer.WriteInt16(ClientPacketID.eLoginExistingChar)
+        Call Writer.WriteInt32(char_id)
+        Call Writer.WriteString8(userName)
+        Call modNetwork.send(Writer)
         Exit Sub
 
 WriteLoginExistingChar_Err:
