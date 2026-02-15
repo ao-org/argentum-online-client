@@ -842,7 +842,6 @@ Sub Main()
     Call Load(frmConnect)
     Call Load(FrmLogear)
     Windows_Temp_Dir = General_Get_Temp_Dir
-    Call SetDefaultServer
     Call ComprobarEstado
     Call CargarLst
     Call InicializarNombres
@@ -898,20 +897,7 @@ Com_Err:
     Resume Next
 End Sub
 
-Public Function SetDefaultServer()
-    On Error GoTo SetDefaultServer_Err
-    #If PYMMO = 1 And Developer = 1 Then
-        IPdelServidorLogin = "127.0.0.1"
-        PuertoDelServidorLogin = 4000
-        IPdelServidor = IPdelServidorLogin
-        PuertoDelServidor = 7667
-    #Else
-        Call SetActiveEnvironment("Production")
-    #End If
-    Exit Function
-SetDefaultServer_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Mod_General.WriteVar", Erl)
-End Function
+
 
 Public Function randomMap() As Integer
     Select Case RandomNumber(1, 8)

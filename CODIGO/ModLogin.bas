@@ -77,22 +77,23 @@ Public Sub SetActiveServer(ByVal IP As String, ByVal port As String)
         Call SaveSetting("INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
     #End If
     
-    #If PYMMO = 1 Then
-        'DEVELOPER mode is used to connect to localhost
-        #If Developer = 1 Then
-            IPdelServidorLogin = "127.0.0.1"
-            PuertoDelServidorLogin = 4000
-            IPdelServidor = IPdelServidorLogin
-            PuertoDelServidor = 6501
-        #Else
-            #If DEBUGGING = 0 Then
-                'When not in DEVELOPER mode we read the ip and port from the list
-                Call SetDefaultServer
-            #Else
-                'Staging, set the ip and port for pymmo
-                IPdelServidorLogin = "45.235.98.188"
-                PuertoDelServidorLogin = 6500 '6502 Is also usable, there are 2 login servers in Staging and Prod
-            #End If
+    'DEVELOPER mode is used to connect to localhost
+    #If Developer = 1 Then
+        IPdelServidorLogin = "127.0.0.1"
+        PuertoDelServidorLogin = 4000
+        IPdelServidor = IPdelServidorLogin
+        PuertoDelServidor = 6501
+    #Else
+        #If PYMMO = 1 Then
+                #If DEBUGGING = 0 Then
+                    'When not in DEVELOPER mode we read the ip and port from the list
+                    Call SetActiveEnvironment("Production")
+                #Else
+                    'Staging, set the ip and port for pymmo
+                    IPdelServidorLogin = "45.235.98.192"
+                    IPdelServidor = IPdelServidorLogin
+                    PuertoDelServidorLogin = 6500
+                #End If
         #End If
     #End If
     
@@ -449,6 +450,7 @@ End Function
 
 Public Sub LoginCharacter(ByVal Name As String)
 
+    
     Debug.Assert GetSelectedCharIDFromName(Name) > 0
 
     On Error GoTo LogearPersonaje_Err
