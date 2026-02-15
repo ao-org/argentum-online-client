@@ -1441,24 +1441,6 @@ ResetearUserMacro_Err:
     Resume Next
 End Sub
 
-Public Sub CargarLst()
-    On Error GoTo CargarLst_Err
-    #If PYMMO = 0 Or DEBUGGING = 1 Then
-        Dim server() As String
-        If Len(ServerIndex) > 0 Then
-            server = Split(ServerIndex, ":")
-            FrmLogear.txtIp.text = server(0)
-            FrmLogear.txtPort.text = server(1)
-        End If
-    #Else
-        FrmLogear.txtIp.text = "45.235.98.188"
-        FrmLogear.txtPort.text = "6501"
-    #End If
-    Exit Sub
-CargarLst_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.CargarLst", Erl)
-    Resume Next
-End Sub
 
 Public Sub CrearFantasma(ByVal charindex As Integer)
     On Error GoTo CrearFantasma_Err
@@ -1492,7 +1474,6 @@ End Sub
 
 Public Sub ComprobarEstado()
     On Error GoTo ComprobarEstado_Err
-    Call CargarLst
     Exit Sub
 ComprobarEstado_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.ComprobarEstado", Erl)

@@ -842,8 +842,6 @@ Sub Main()
     Call Load(frmConnect)
     Call Load(FrmLogear)
     Windows_Temp_Dir = General_Get_Temp_Dir
-    Call ComprobarEstado
-    Call CargarLst
     Call InicializarNombres
     Call InitializeInventory
     Call Init_TileEngine

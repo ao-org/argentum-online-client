@@ -69,20 +69,21 @@ DoLogin_Err:
     Resume Next
 End Sub
 
+
 Public Sub SetActiveServer(ByVal IP As String, ByVal port As String)
-    ServerIndex = IP & ":" & port
-    IPdelServidor = IP
-    PuertoDelServidor = port
-    #If PYMMO = 0 Or DEBUGGING = 1 Then
-        Call SaveSetting("INIT", "ServerIndex", IPdelServidor & ":" & PuertoDelServidor)
-    #End If
     
     'DEVELOPER mode is used to connect to localhost
     #If Developer = 1 Then
         IPdelServidorLogin = "127.0.0.1"
         PuertoDelServidorLogin = 4000
         IPdelServidor = IPdelServidorLogin
-        PuertoDelServidor = 6501
+        PuertoDelServidor = 7667
+        If IPdelServidor <> IP Then
+            IPdelServidor = IP
+        End If
+        If PuertoDelServidor <> port Then
+            PuertoDelServidor = port
+        End If
     #Else
         #If PYMMO = 1 Then
                 #If DEBUGGING = 0 Then
