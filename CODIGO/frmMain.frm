@@ -3821,10 +3821,12 @@ Public Sub UpdateHpBar()
         Dim FullSize As Long
         CurrentHp = UserStats.MinHp + UserStats.HpShield
         FullSize = max(UserStats.MinHp + UserStats.HpShield, UserStats.MaxHp)
-        frmMain.Hpshp.Width = UserStats.MinHp / FullSize * 216
+        frmMain.Hpshp.Width = UserStats.MinHp / FullSize * BAR_SIZE_MULTIPLIER
         frmMain.HpBar.Caption = CurrentHp & " / " & UserStats.MaxHp
         frmMain.shieldBar.Left = frmMain.Hpshp.Left + frmMain.Hpshp.Width
-        frmMain.shieldBar.Width = UserStats.HpShield / FullSize * 216
+        If UserStats.HpShield > 0 Then
+            frmMain.shieldBar.Width = UserStats.HpShield / FullSize * BAR_SIZE_MULTIPLIER
+        End If
     Else
         frmMain.Hpshp.Width = 0
         frmMain.shieldBar.Width = 0
