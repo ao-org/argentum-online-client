@@ -94,6 +94,7 @@ Public Sub SetActiveServer(ByVal IP As String, ByVal port As String)
                     IPdelServidorLogin = "45.235.98.192"
                     IPdelServidor = IPdelServidorLogin
                     PuertoDelServidorLogin = 6500
+                    PuertoDelServidor = 6501
                 #End If
         #End If
     #End If
