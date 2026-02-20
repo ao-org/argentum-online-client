@@ -3239,7 +3239,7 @@ Public Sub CadenaChat(ByVal chat As String)
         End If
     End If
     ' Divide la cadena en partes utilizando "AntiCheat> El usuario" como separador
-    partes = Split(Cadena, "AntiCheat--> El usuario")
+    partes = Split(Cadena, "Control de macro---> El usuario")
     ' Verifica si hay al menos dos partes en la matriz resultante
     If UBound(partes) >= 1 Then
         ' La segunda parte (índice 1) contiene el nombre y otros caracteres
@@ -3253,7 +3253,7 @@ Public Sub CadenaChat(ByVal chat As String)
             nombre = Trim(nombre)
             ' Verificar si la cadena contiene ciertos textos utilizando Select Case
             Select Case True
-                Case InStr(Cadena, "COORDENADAS.") > 0
+                Case InStr(Cadena, "Macro de Cordenadas") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Cordenadas", "MacroCoordenadas.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                     If frmPanelgm.chkCoordenadas.value = 1 Then Call WriteCerraCliente(nombre)
@@ -3261,11 +3261,11 @@ Public Sub CadenaChat(ByVal chat As String)
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de click", "MacroDeClick.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                     If frmPanelgm.chkClicks.value = 1 Then Call WriteCerraCliente(nombre)
-                Case InStr(Cadena, "INASISTIDO.") > 0
+                Case InStr(Cadena, "Macro Inasistido") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro Inasistido", "MacroInasistido.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                     If frmPanelgm.chkInasistido.value = 1 Then Call WriteCerraCliente(nombre)
-                Case InStr(Cadena, "CARTELEO.") > 0
+                Case InStr(Cadena, "Macro de Carteleo") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Carteleo", "MacroCarteleo.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                     If frmPanelgm.chkCarteleo.value = 1 Then Call WriteCerraCliente(nombre)
