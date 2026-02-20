@@ -766,5 +766,6 @@
 	"TOOLTIP_EXP_PORCENTAJE": "% con 2 decimali",
 	"TOOLTIP_EXP_PORCENTAJE2": "% con 4 decimali",
 	"MENSAJEBOX_LIBERAR_MASCOTA": "Vuoi liberare la mascotte?",
-	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Vuoi liberare tutte le mascotte?"
+	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Vuoi liberare tutte le mascotte?",
+	"MENSAJE_SUPER_PEZ": "Oh! Credo di avere un grande pesce all'amo. Per catturarlo, premi il tasto P quando l'indicatore è nella zona verde."
 }
