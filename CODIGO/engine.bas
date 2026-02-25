@@ -2780,7 +2780,7 @@ Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal P
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
     
-    #If DEBUGGING = 1 Then
+    #If Developer = 1 Then
             ColorGM(0) = RGBA_From_Comp(248, 107, 3)
             ColorGM(1) = ColorGM(0)
             ColorGM(2) = ColorGM(0)
