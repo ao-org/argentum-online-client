@@ -749,7 +749,7 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
                         Set subelemento = listdrop.ListItems.Add(, , ObjData(objIdx).Name)
                         subelemento.SubItems(1) = CStr(ObjData(objIdx).GrhIndex)
                         lblPercentageDrop.visible = True
-                        lblPercentageDrop.Caption = Round(1 / NpcData(ListView1.SelectedItem.SubItems(2)).QuizaProb * 100, 4) & "%"
+                        lblPercentageDrop.Caption = Round((1 / NpcData(ListView1.SelectedItem.SubItems(2)).QuizaProb * 100) / .NumQuiza, 4) & "%"
                     End If
                 Next i
             End If
