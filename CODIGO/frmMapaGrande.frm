@@ -234,6 +234,27 @@ Begin VB.Form frmMapaGrande
       Left            =   120
       Top             =   120
    End
+   Begin VB.Label lblPercentageDrop 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "100%"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   210
+      Left            =   8730
+      TabIndex        =   17
+      Top             =   9570
+      Width           =   420
+   End
    Begin VB.Shape Shape3 
       BorderColor     =   &H000000C0&
       FillColor       =   &H0000FFFF&
@@ -638,7 +659,6 @@ End Sub
 
 Private Sub listdrop_Click()
     On Error GoTo listdrop_Click_Err
-    'Picture1.Refresh
     picture1.BackColor = vbBlack
     picture1.Refresh
     'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
@@ -698,6 +718,7 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
     picture1.Refresh
     PlayerView.Cls
     listdrop.ListItems.Clear
+    lblPercentageDrop.Caption = vbNullString
     
     ' --- Activar preview animado ---
     PreviewNPC_Setup_ByIndex npcIdx
@@ -727,6 +748,8 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
                     If objIdx > 0 Then
                         Set subelemento = listdrop.ListItems.Add(, , ObjData(objIdx).Name)
                         subelemento.SubItems(1) = CStr(ObjData(objIdx).GrhIndex)
+                        lblPercentageDrop.visible = True
+                        lblPercentageDrop.Caption = Round(1 / NpcData(ListView1.SelectedItem.SubItems(2)).QuizaProb * 100, 4) & "%"
                     End If
                 Next i
             End If
@@ -738,6 +761,8 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
                     If objIdx > 0 Then
                         Set subelemento = listdrop.ListItems.Add(, , ObjData(objIdx).Name)
                         subelemento.SubItems(1) = CStr(ObjData(objIdx).GrhIndex)
+                        lblPercentageDrop.visible = True
+                        lblPercentageDrop.Caption = "100%"
                     End If
                 Next i
             End If
@@ -767,6 +792,7 @@ Private Sub PreviewNPC_Clear()
     Label4.Caption = vbNullString
     Label5.Caption = vbNullString
     Label9.Caption = vbNullString
+    lblPercentageDrop.Caption = vbNullString
     listdrop.ListItems.Clear
 End Sub
 

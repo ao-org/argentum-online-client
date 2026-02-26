@@ -1383,6 +1383,7 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).BodyOnLand = val(Leer.GetValue("npc" & Npc, "Body"))
         NpcData(Npc).BodyIdle = val(Leer.GetValue("npc" & Npc, "BodyIdle"))
         NpcData(Npc).Amphibian = val(Leer.GetValue("npc" & Npc, "Amphibian")) > 0
+        NpcData(Npc).QuizaProb = val(Leer.GetValue("npc" & Npc, "QuizaProb"))
         
         aux = val(Leer.GetValue("npc" & Npc, "NumQuiza"))
         If aux = 0 Then

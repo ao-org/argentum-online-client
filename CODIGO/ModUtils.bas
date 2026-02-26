@@ -246,6 +246,7 @@ Public Type NpcDatas
     Comercia As Integer
     level As Integer
     Amphibian As Boolean
+    QuizaProb As Integer
 End Type
 
 Public Type HechizoDatas
