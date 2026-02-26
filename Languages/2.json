@@ -766,5 +766,6 @@
 	"TOOLTIP_EXP_PORCENTAJE": "% with 2 decimals",
 	"TOOLTIP_EXP_PORCENTAJE2": "% with 4 decimals",
 	"MENSAJEBOX_LIBERAR_MASCOTA": "Do you want to release the pet?",
-	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Do you want to release all the pets?"
+	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Do you want to release all the pets?",
+	"MENSAJE_SUPER_PEZ": "Oh! I think I have a big fish on the line. To catch it, press the P key when the marker is in the green zone."
 }
