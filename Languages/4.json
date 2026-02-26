@@ -766,5 +766,6 @@
 	"TOOLTIP_EXP_PORCENTAJE": "% avec 2 décimales",
 	"TOOLTIP_EXP_PORCENTAJE2": "% avec 4 décimales",
 	"MENSAJEBOX_LIBERAR_MASCOTA": "Souhaitez-vous libérer le familier ?",
-	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Souhaitez-vous libérer tous les familiers ?"
+	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Souhaitez-vous libérer tous les familiers ?",
+	"MENSAJE_SUPER_PEZ": "Oh ! Je crois que j'ai un gros poisson à l'hameçon. Pour l'attraper, appuyez sur la touche P lorsque le marqueur est dans la zone verte."
 }

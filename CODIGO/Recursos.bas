@@ -717,7 +717,14 @@ Sub CargarDatosMapa(ByVal map As Integer)
                     If NpcData(NPCs(i).NpcIndex).NoMapInfo = 1 Then
                         GoTo cont
                     End If
-                    NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
+                    If NpcData(NPCs(i).NpcIndex).DisabledInBattleServer = 1 Then
+                        #If BATTLESERVER = 1 Then
+                            GoTo cont
+                        #End If
+                        NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
+                    Else
+                        NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
+                    End If
 cont:
                 Next i
                 For c = 1 To UBound(NpcWorlds)
@@ -1382,6 +1389,7 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).BodyOnWaterIdle = val(Leer.GetValue("npc" & Npc, "BodyOnWaterIdle"))
         NpcData(Npc).BodyOnLand = val(Leer.GetValue("npc" & Npc, "Body"))
         NpcData(Npc).BodyIdle = val(Leer.GetValue("npc" & Npc, "BodyIdle"))
+        NpcData(Npc).DisabledInBattleServer = val(Leer.GetValue("npc" & Npc, "DisabledInBattleServer"))
         NpcData(Npc).Amphibian = val(Leer.GetValue("npc" & Npc, "Amphibian")) > 0
         NpcData(Npc).QuizaProb = val(Leer.GetValue("npc" & Npc, "QuizaProb"))
         

@@ -247,6 +247,7 @@ Public Type NpcDatas
     level As Integer
     Amphibian As Boolean
     QuizaProb As Integer
+    DisabledInBattleServer As Integer
 End Type
 
 Public Type HechizoDatas

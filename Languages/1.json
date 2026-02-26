@@ -767,5 +767,6 @@
 	"TOOLTIP_EXP_PORCENTAJE": "% con 2 decimales",
 	"TOOLTIP_EXP_PORCENTAJE2": "% con 4 decimales",
 	"MENSAJEBOX_LIBERAR_MASCOTA": "¿Deseas liberar la mascota?",
-	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "¿Deseas liberar todas las mascotas?"
+	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "¿Deseas liberar todas las mascotas?",
+	"MENSAJE_SUPER_PEZ": "¡Oh! Creo que tengo un gran pez en mi línea. Para capturarlo presiona la tecla P cuando el marcador esté en la zona verde."
 }
