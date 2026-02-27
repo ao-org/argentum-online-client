@@ -749,7 +749,7 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
                         Set subelemento = listdrop.ListItems.Add(, , ObjData(objIdx).Name)
                         subelemento.SubItems(1) = CStr(ObjData(objIdx).GrhIndex)
                         lblPercentageDrop.visible = True
-                        lblPercentageDrop.Caption = Round((1 / NpcData(ListView1.SelectedItem.SubItems(2)).QuizaProb * 100) / .NumQuiza, 4) & "%"
+                        lblPercentageDrop.Caption = GetNpcDropPercentage(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaProb, .NumQuiza) & "%"
                     End If
                 Next i
             End If
@@ -1190,3 +1190,21 @@ txtSearchMap_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.txtSearchMap_KeyPress", Erl)
     Resume Next
 End Sub
+Private Function GetNpcDropPercentage(ByVal QuizaProb As Integer, ByVal NumQuiza As Integer) As Double
+On Error GoTo GetNpcDropPercentage_Err
+    If QuizaProb <= 0 Then
+        GetNpcDropPercentage = 0
+        Exit Function
+    End If
+    
+    If NumQuiza <= 0 Then
+        GetNpcDropPercentage = 0
+        Exit Function
+    End If
+    
+    GetNpcDropPercentage = Round((1 / QuizaProb * 100) / NumQuiza, 4)
+    Exit Function
+GetNpcDropPercentage_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.GetNpcDropPercentage", Erl)
+    Resume Next
+End Function
