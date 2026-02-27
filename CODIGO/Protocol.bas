@@ -3067,23 +3067,72 @@ HandleCreateFX_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCreateFX", Erl)
 End Sub
 
-''
-' Handles the CharAtaca message.
 Private Sub HandleCharAtaca()
     On Error GoTo HandleCharAtaca_Err
+
     Dim NpcIndex    As Integer
     Dim VictimIndex As Integer
     Dim danio       As Long
     Dim AnimAttack  As Integer
     Dim AnimAttack2 As Integer
+    Dim oldWalk     As Grh
+    Dim keepStart   As Long
+
     NpcIndex = Reader.ReadInt16()
     VictimIndex = Reader.ReadInt16()
     danio = Reader.ReadInt32()
-    Dim oldWalk   As Grh
-    Dim keepStart As Long
+
+    ' --- Guardrails: indices de charlist ---
+    If NpcIndex < LBound(charlist) Or NpcIndex > UBound(charlist) Then
+        Call RegistrarError(9, "NpcIndex fuera de rango: " & NpcIndex, "Protocol.HandleCharAtaca", Erl)
+        Exit Sub
+    End If
+
+    If VictimIndex < LBound(charlist) Or VictimIndex > UBound(charlist) Then
+        Call RegistrarError(9, "VictimIndex fuera de rango: " & VictimIndex, "Protocol.HandleCharAtaca", Erl)
+        Exit Sub
+    End If
+
+    ' Si UserCharIndex puede ser 0/no seteado:
+    If UserCharIndex < LBound(charlist) Or UserCharIndex > UBound(charlist) Then
+        Call RegistrarError(9, "UserCharIndex fuera de rango: " & UserCharIndex, "Protocol.HandleCharAtaca", Erl)
+        Exit Sub
+    End If
+
     With charlist(NpcIndex)
+
+        ' --- Guardrails: heading ---
+        ' Ajustá estos bounds a tu enum real (muchos AO usan 1..4).
+        If .Heading < 1 Or .Heading > 4 Then
+            Call RegistrarError(9, "Heading invalido: " & .Heading & " (NpcIndex=" & NpcIndex & ")", "Protocol.HandleCharAtaca", Erl)
+            Exit Sub
+        End If
+
+        ' --- Guardrails: npc number y npcdata ---
+        If .NpcNumber < LBound(NpcData) Or .NpcNumber > UBound(NpcData) Then
+            Call RegistrarError(9, "NpcNumber fuera de rango: " & .NpcNumber & " (NpcIndex=" & NpcIndex & ")", "Protocol.HandleCharAtaca", Erl)
+            Exit Sub
+        End If
+
         AnimAttack = NpcData(.NpcNumber).LandAttackAnimation
         AnimAttack2 = NpcData(.NpcNumber).WaterAttackAnimation
+
+        ' --- Guardrails: body ids (BodyData) ---
+        If AnimAttack > 0 Then
+            If AnimAttack < LBound(BodyData) Or AnimAttack > UBound(BodyData) Then
+                Call RegistrarError(9, "LandAttackAnimation fuera de rango: " & AnimAttack & " (NpcNumber=" & .NpcNumber & ")", "Protocol.HandleCharAtaca", Erl)
+                AnimAttack = 0
+            End If
+        End If
+
+        If AnimAttack2 > 0 Then
+            If AnimAttack2 < LBound(BodyData) Or AnimAttack2 > UBound(BodyData) Then
+                Call RegistrarError(9, "WaterAttackAnimation fuera de rango: " & AnimAttack2 & " (NpcNumber=" & .NpcNumber & ")", "Protocol.HandleCharAtaca", Erl)
+                AnimAttack2 = 0
+            End If
+        End If
+
+        ' --- resto de tu lógica igual ---
         If AnimAttack > 0 Then
             oldWalk = .Body.Walk(.Heading)
             .AnimatingBody = AnimAttack
@@ -3142,13 +3191,26 @@ Private Sub HandleCharAtaca()
                 .Arma.WeaponWalk(.Heading).Loops = 0
             End If
         End If
+
     End With
-    'renderizo sangre si está sin montar ni navegar
-    If danio > 0 And charlist(VictimIndex).Navegando = 0 Then Call SetCharacterFx(VictimIndex, 14, 0)
-    If charlist(UserCharIndex).Muerto = False And EstaPCarea(NpcIndex) Then
-        Call ao20audio.PlayWav(CStr(IIf(danio = -1, 2, 10)), False, ao20audio.ComputeCharFxVolume(charlist(NpcIndex).Pos), ao20audio.ComputeCharFxPan(charlist(NpcIndex).Pos))
+
+    ' --- Guardrails: victim access ---
+    If danio > 0 Then
+        If charlist(VictimIndex).Navegando = 0 Then
+            Call SetCharacterFx(VictimIndex, 14, 0)
+        End If
     End If
+
+    If charlist(UserCharIndex).Muerto = False Then
+        If EstaPCarea(NpcIndex) Then
+            Call ao20audio.PlayWav(CStr(IIf(danio = -1, 2, 10)), False, _
+                ao20audio.ComputeCharFxVolume(charlist(NpcIndex).Pos), _
+                ao20audio.ComputeCharFxPan(charlist(NpcIndex).Pos))
+        End If
+    End If
+
     Exit Sub
+
 HandleCharAtaca_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharAtaca", Erl)
 End Sub
