@@ -626,6 +626,7 @@ End Sub
                                 Exit Sub
                             End If
                         End If
+                        ModAuth.LoginOperation = e_operation.RenameCharacter
                         Call connectToLoginServer
                 End Select
                 SelectedCharIndex = PJSeleccionado
