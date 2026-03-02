@@ -782,7 +782,7 @@ Public Sub HandleConfirmRenameCharacter(ByVal BytesTotal As Long)
     Dim data() As Byte
     frmConnect.AuthSocket.PeekData data, vbByte, BytesTotal
     frmConnect.AuthSocket.GetData data, vbByte, 2
-    If data(0) = &H20 And data(1) = &H29 Then
+    If data(0) = &H20 And data(1) = &H32 Then
         Call DebugPrint("RENAME_PC_REQUEST_OKAY", 0, 255, 0, True)
         Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(data), 255, 255, 255)
         frmConnect.AuthSocket.GetData data, vbByte, 2
@@ -791,9 +791,17 @@ Public Sub HandleConfirmRenameCharacter(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
-            Case 68
-                Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "RENAME_PC_REQUEST_ERROR")
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
+            Case 69
+                Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "MSG_ALIAS_INVALID")
+            Case 70
+                Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "MSG_ALIAS_ALREADY_TAKEN")
+            Case 56
+                Call DisplayError(JsonLanguage.Item("MENSAJE_NO_ES_PATREON"), "MENSAJE_NO_ES_PATREON")
+            Case 57
+                Call DisplayError(JsonLanguage.Item("MSG_OWNER_NOT_ENOUGH_CREDITS"), "MSG_OWNER_NOT_ENOUGH_CREDITS")
             Case Else
                 Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO") & ": " & AO20CryptoSysWrapper.ByteArrayToHex(data), "")
         End Select
@@ -1320,9 +1328,9 @@ Public Function SendRenameCharacter()
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     JSON = ""
     JSON = "{ "
-    JSON = JSON & "  ""token"": """ & SessionOpened & """ , "
-    JSON = JSON & "  ""pc_id"": """ & RenameCharacterName & """ , "
-    JSON = JSON & "  ""alias"": """ & RenameNewCharacterName & """ , "
+    JSON = JSON & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
+    JSON = JSON & "  ""pc_id"": """ & GetSelectedCharIDFromName(RenameCharacterName) & """ , "
+    JSON = JSON & "  ""alias"": """ & RenameNewCharacterName & """"
     JSON = JSON & " }"
     Dim encrypted_json()   As Byte
     Dim encrypted_json_b64 As String

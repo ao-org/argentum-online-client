@@ -528,6 +528,9 @@ End Sub
                 If (x > 980 And x < 1000) And (y > 675 And y < 708) Then
                     character_screen_action = e_action_transfer_character
                 End If
+                If (x > 960 And x < 980) And (y > 675 And y < 708) Then
+                    character_screen_action = e_action_rename_character
+                End If
                 If (x > 19 And x < 48) And (y > 21 And y < 45) Then
                     character_screen_action = e_action_logout_account
                 End If
@@ -614,12 +617,15 @@ End Sub
                     Case e_action_rename_character
                         If SelectedCharIndex = 0 Then Exit Sub
                         RenameCharacterName = Pjs(SelectedCharIndex).nombre
-                        If MsgBox(JsonLanguage.Item("MENSAJEBOX_BORRAR_PERSONAJE") & DeleteUser & JsonLanguage.Item("MENSAJEBOX_DE_LA_CUENTA")) Then
-                            RenameNewCharacterName = InputBox("Enter the new character alias", "Input")
-                            ModAuth.LoginOperation = e_operation.RenameCharacter
+                        If MsgBox(JsonLanguage.Item("MENSAJEBOX_RENOMBRAR_PERSONAJE") & " " & RenameCharacterName) = vbOK Then
+                            RenameNewCharacterName = InputBox(JsonLanguage.Item("MENSAJEBOX_RENOMBRAR_PERSONAJE_NUEVO_NOMBRE"))
+                            If RenameNewCharacterName <> vbNullString Then
+                                ModAuth.LoginOperation = e_operation.RenameCharacter
+                            Else
+                                Exit Sub
+                            End If
                             Call connectToLoginServer
                         End If
-                        frmDeleteChar.Show , frmConnect
                 End Select
                 SelectedCharIndex = PJSeleccionado
                 If PJSeleccionado = 0 Then Exit Sub
