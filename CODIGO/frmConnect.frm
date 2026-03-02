@@ -278,6 +278,8 @@ Private Sub AuthSocket_Connect()
                 Auth_state = e_state.RequestTransferChar
             Case e_operation.ConfirmTransferChar
                 Auth_state = e_state.ConfirmTransferChar
+            Case e_operation.RenameCharacter
+                Auth_state = e_state.RenameCharacter
         End Select
     End If
 End Sub
@@ -609,6 +611,15 @@ End Sub
                             Call ao20audio.PlayWav(SND_CLICK)
                             Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
                         End If
+                    Case e_action_rename_character
+                        If SelectedCharIndex = 0 Then Exit Sub
+                        RenameCharacterName = Pjs(SelectedCharIndex).nombre
+                        If MsgBox(JsonLanguage.Item("MENSAJEBOX_BORRAR_PERSONAJE") & DeleteUser & JsonLanguage.Item("MENSAJEBOX_DE_LA_CUENTA")) Then
+                            RenameNewCharacterName = InputBox("Enter the new character alias", "Input")
+                            ModAuth.LoginOperation = e_operation.RenameCharacter
+                            Call connectToLoginServer
+                        End If
+                        frmDeleteChar.Show , frmConnect
                 End Select
                 SelectedCharIndex = PJSeleccionado
                 If PJSeleccionado = 0 Then Exit Sub

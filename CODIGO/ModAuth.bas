@@ -32,6 +32,7 @@ Public Enum e_state
     RequestVerificationCode
     RequestTransferChar
     ConfirmTransferChar
+    RenameCharacter
 End Enum
 
 Public Enum e_operation
@@ -45,6 +46,7 @@ Public Enum e_operation
     RequestVerificationCode
     transfercharacter
     ConfirmTransferChar
+    RenameCharacter
 End Enum
 
 Public Type t_CreateAccountInfo
@@ -93,6 +95,8 @@ Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
                     Call SendRequestTransferCharacter
                 Case e_state.ConfirmTransferChar
                     Call SendConfirmTransferCharacter
+                Case e_state.RenameCharacter
+                    Call SendRenameCharacter
             End Select
         End If
         Exit Sub
@@ -120,6 +124,8 @@ Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
             Call HandleTransferCharRequest(BytesTotal)
         Case e_state.ConfirmTransferChar
             Call HandleConfirmTransferChar(BytesTotal)
+        Case e_state.RenameCharacter
+            Call HandleConfirmRenameCharacter(BytesTotal)
     End Select
 End Sub
 
@@ -769,6 +775,31 @@ Public Sub HandleConfirmTransferChar(ByVal BytesTotal As Long)
     End If
 End Sub
 
+Public Sub HandleConfirmRenameCharacter(ByVal BytesTotal As Long)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("HandleConfirmRenameCharacter", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Dim data() As Byte
+    frmConnect.AuthSocket.PeekData data, vbByte, BytesTotal
+    frmConnect.AuthSocket.GetData data, vbByte, 2
+    If data(0) = &H20 And data(1) = &H29 Then
+        Call DebugPrint("RENAME_PC_REQUEST_OKAY", 0, 255, 0, True)
+        Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(data), 255, 255, 255)
+        frmConnect.AuthSocket.GetData data, vbByte, 2
+        Auth_state = e_state.Idle
+        Call DisplayError(JsonLanguage.Item("MENSAJE_TRANSFERENCIA_REALIZADA"), "RENAME_PC_REQUEST_OKAY")
+    Else
+        Call DebugPrint("ERROR", 255, 0, 0, True)
+        frmConnect.AuthSocket.GetData data, vbByte, 4
+        Select Case MakeInt(data(3), data(2))
+            Case 68
+                Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "RENAME_PC_REQUEST_ERROR")
+            Case Else
+                Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO") & ": " & AO20CryptoSysWrapper.ByteArrayToHex(data), "")
+        End Select
+        Auth_state = e_state.Idle
+    End If
+End Sub
 
 Public Sub PCListRequest()
     Dim userName               As String
@@ -1277,4 +1308,36 @@ Public Function estaInmovilizado(ByRef arr() As Byte) As String
         frmDebug.add_text_tracebox "Esta inmovilizado: " & B
     #End If
     estaInmovilizado = cnvHexStrFromString(B)
+End Function
+
+Public Function SendRenameCharacter()
+    Dim JSON                   As String
+    Dim len_encrypted_username As Integer
+    Dim rename_request()     As Byte
+    Dim packet_size            As Integer
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("SendRenameCharacter", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    JSON = ""
+    JSON = "{ "
+    JSON = JSON & "  ""token"": """ & SessionOpened & """ , "
+    JSON = JSON & "  ""pc_id"": """ & RenameCharacterName & """ , "
+    JSON = JSON & "  ""alias"": """ & RenameNewCharacterName & """ , "
+    JSON = JSON & " }"
+    Dim encrypted_json()   As Byte
+    Dim encrypted_json_b64 As String
+    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), JSON)
+    Call Str2ByteArr(encrypted_json_b64, encrypted_json)
+    Dim len_json As Integer
+    len_json = Len(encrypted_json_b64)
+    ReDim rename_request(1 To (2 + 2 + len_json))
+    packet_size = UBound(rename_request)
+    rename_request(1) = &H20
+    rename_request(2) = &H31
+    'Siguientes 2 bytes indican tamaño total del paquete
+    rename_request(3) = hiByte(packet_size)
+    rename_request(4) = LoByte(packet_size)
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, rename_request, len_json, 5)
+    Call frmConnect.AuthSocket.SendData(rename_request)
+    Auth_state = e_state.RenameCharacter
 End Function
