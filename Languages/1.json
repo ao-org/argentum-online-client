@@ -772,5 +772,6 @@
     "MENSAJEBOX_RENOMBRAR_PERSONAJE": "Confirmar proceso de renombrado del personaje:",
     "MENSAJEBOX_RENOMBRAR_PERSONAJE_NUEVO_NOMBRE": "Ingrese el nuevo nombre del personaje",
     "MSG_ALIAS_ALREADY_TAKEN": "El alias ya está en uso.",
-    "MSG_ALIAS_INVALID": "Alias inválido, (entre 3 y 30 caracteres alfanumericos)"
+    "MSG_ALIAS_INVALID": "Alias inválido, (entre 3 y 30 caracteres alfanumericos)",
+    "MSG_CONFIRM_EMPTY_RENAME": "¿Estás seguro que deseas eliminar el alias de tu personaje?"
 }

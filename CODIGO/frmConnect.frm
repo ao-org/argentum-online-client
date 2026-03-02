@@ -617,15 +617,16 @@ End Sub
                     Case e_action_rename_character
                         If SelectedCharIndex = 0 Then Exit Sub
                         RenameCharacterName = Pjs(SelectedCharIndex).nombre
-                        If MsgBox(JsonLanguage.Item("MENSAJEBOX_RENOMBRAR_PERSONAJE") & " " & RenameCharacterName) = vbOK Then
-                            RenameNewCharacterName = InputBox(JsonLanguage.Item("MENSAJEBOX_RENOMBRAR_PERSONAJE_NUEVO_NOMBRE"))
-                            If RenameNewCharacterName <> vbNullString Then
-                                ModAuth.LoginOperation = e_operation.RenameCharacter
-                            Else
+                        If MsgBox(JsonLanguage.Item("MENSAJEBOX_RENOMBRAR_PERSONAJE") & " " & RenameCharacterName) <> vbOK Then
+                            Exit Sub
+                        End If
+                        RenameNewCharacterName = InputBox(JsonLanguage.Item("MENSAJEBOX_RENOMBRAR_PERSONAJE_NUEVO_NOMBRE"))
+                        If RenameNewCharacterName = vbNullString Then
+                            If MsgBox(JsonLanguage.Item("MSG_CONFIRM_EMPTY_RENAME")) <> vbOK Then
                                 Exit Sub
                             End If
-                            Call connectToLoginServer
                         End If
+                        Call connectToLoginServer
                 End Select
                 SelectedCharIndex = PJSeleccionado
                 If PJSeleccionado = 0 Then Exit Sub
