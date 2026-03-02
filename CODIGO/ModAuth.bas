@@ -690,7 +690,7 @@ Public Sub SendConfirmDeleteChar()
     Dim encrypted_username_b64      As String
     Dim encrypted_validate_code()   As Byte
     Dim encrypted_validate_code_b64 As String
-    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), userName)
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), GetSelectedCharIDFromName(userName))
     encrypted_validate_code_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), validate_code)
     Call Str2ByteArr(encrypted_username_b64, encrypted_username)
     Call Str2ByteArr(encrypted_validate_code_b64, encrypted_validate_code)
