@@ -108,7 +108,8 @@ Public Type tQuest
     NextQuest As String
     DescFinal As String
     RequiredLevel As Integer
-    RequiredClass As Integer
+    RequiredClass() As Byte
+    RequiredClassesCount As Byte
     RequiredQuest As Integer
     LimitLevel As Byte
     RequiredOBJ() As Obj
