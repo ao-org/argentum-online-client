@@ -125,7 +125,7 @@ Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
         Case e_state.ConfirmTransferChar
             Call HandleConfirmTransferChar(BytesTotal)
         Case e_state.RenameCharacter
-            Call HandleConfirmRenameCharacter(BytesTotal)
+            Call HandleRenameCharacter(BytesTotal)
     End Select
 End Sub
 
@@ -237,7 +237,9 @@ Public Sub HandleRequestVerificationCode(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_ACCOUNT_NO_EXISTE"), False, False)
             Case 11
@@ -443,7 +445,7 @@ Public Sub SendRequestTransferCharacter()
     JSON = ""
     JSON = "{ "
     JSON = JSON & "  ""currentOwner"": """ & old_owner_str & """ , "
-    JSON = JSON & "  ""pc"": """ & TransferCharname & """ , "
+    JSON = JSON & "  ""pc_id"": """ & GetSelectedCharIDFromName(TransferCharname) & """ , "
     JSON = JSON & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
     JSON = JSON & "  ""newOwner"": """ & TransferCharNewOwner & """"
     JSON = JSON & " }"
@@ -519,7 +521,9 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("TRANSFER CHAR ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call DisplayError(JsonLanguage.Item("MENSAJE_CUENTA_INVALIDA"), "invalid-account")
             Case 3
@@ -532,10 +536,14 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
                 Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "invalid-request")
             Case 54
                 Call DisplayError(JsonLanguage.Item("MENSAJE_NUEVO_DUENO_NO_EXISTE"), "newowner-not-exist")
+            Case 55
+                Call DisplayError(JsonLanguage.Item("MSG_NEWOWNER_IS_NOT_PATREON"), "newowner-not-patreon")
             Case 56
                 Call DisplayError(JsonLanguage.Item("MENSAJE_NO_ES_PATREON"), "not-patreon")
             Case 57
                 Call DisplayError(JsonLanguage.Item("MENSAJE_CREDITOS_INSUFICIENTES"), "not-enough-credits")
+            Case 72
+                Call DisplayError(JsonLanguage.Item("MSG_ALIAS_PRESENT"), "alias-present")
             Case Else
                 Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO"), "unknown-error")
         End Select
@@ -564,7 +572,9 @@ Public Sub HandleSignUpRequest(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 0
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_EXISTE"), False, False)
             Case 9
@@ -608,7 +618,7 @@ Public Sub SendDeleteCharRequest()
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("SendDeleteChar", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    JSON = "{""username"": """ & CuentaEmail & """, ""pc"":""" & DeleteUser & """}"
+    JSON = "{""username"": """ & CuentaEmail & """, ""pc_id"":""" & GetSelectedCharIDFromName(DeleteUser) & """}"
     Dim encrypted_json()   As Byte
     Dim encrypted_json_b64 As String
     encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), JSON)
@@ -643,7 +653,9 @@ Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
         Call DebugPrint("DELETE_PC_REQUEST_ERROR", 255, 0, 0, True)
         frmDeleteChar.Hide
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call DisplayError(JsonLanguage.Item("MENSAJE_CUENTA_INVALIDA"), "invalid-account")
             Case 3
@@ -652,6 +664,8 @@ Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
                 Call DisplayError(JsonLanguage.Item("MENSAJE_NO_DUENO_PERSONAJE"), "invalid-character-owner")
             Case 65
                 Call DisplayError(JsonLanguage.Item("MENSAJE_PERSONAJE_BLOQUEADO_MAO"), "locked-in-mao")
+            Case 72
+                Call DisplayError(JsonLanguage.Item("MSG_ALIAS_PRESENT"), "alias-present")
             Case Else
                 Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO"), "unknown-error")
         End Select
@@ -720,7 +734,9 @@ Public Sub HandleConfirmDeleteChar(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call DisplayError(JsonLanguage.Item("MENSAJE_NOMBRE_PERSONAJE_INVALIDO"), "invalid-character-name")
             Case 3
@@ -751,7 +767,9 @@ Public Sub HandleConfirmTransferChar(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 68
                 Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "invalid-transfer-char-request")
             Case 67
@@ -768,6 +786,8 @@ Public Sub HandleConfirmTransferChar(ByVal BytesTotal As Long)
                 Call DisplayError(JsonLanguage.Item("MENSAJE_TOKEN_SESION_INVALIDO"), "session-token-invalid")
             Case 23
                 Call DisplayError(JsonLanguage.Item("MENSAJEBOX_INTENTAR_MAS_TARDE"), "retry-later")
+            Case 72
+                Call DisplayError(JsonLanguage.Item("MSG_ALIAS_PRESENT"), "alias-present")
             Case Else
                 Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO") & ": " & AO20CryptoSysWrapper.ByteArrayToHex(data), "")
         End Select
@@ -775,7 +795,7 @@ Public Sub HandleConfirmTransferChar(ByVal BytesTotal As Long)
     End If
 End Sub
 
-Public Sub HandleConfirmRenameCharacter(ByVal BytesTotal As Long)
+Public Sub HandleRenameCharacter(ByVal BytesTotal As Long)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("HandleConfirmRenameCharacter", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
@@ -795,13 +815,13 @@ Public Sub HandleConfirmRenameCharacter(ByVal BytesTotal As Long)
         ErrorNum = MakeInt(data(3), data(2))
         Select Case ErrorNum
             Case 69
-                Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "MSG_ALIAS_INVALID")
+                Call DisplayError(JsonLanguage.Item("MSG_ALIAS_INVALID"), "alias-invalid")
             Case 70
-                Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "MSG_ALIAS_ALREADY_TAKEN")
+                Call DisplayError(JsonLanguage.Item("MSG_ALIAS_ALREADY_TAKEN"), "alias-taken")
             Case 56
-                Call DisplayError(JsonLanguage.Item("MENSAJE_NO_ES_PATREON"), "MENSAJE_NO_ES_PATREON")
+                Call DisplayError(JsonLanguage.Item("MENSAJE_NO_ES_PATREON"), "not-patreon")
             Case 57
-                Call DisplayError(JsonLanguage.Item("MSG_OWNER_NOT_ENOUGH_CREDITS"), "MSG_OWNER_NOT_ENOUGH_CREDITS")
+                Call DisplayError(JsonLanguage.Item("MSG_OWNER_NOT_ENOUGH_CREDITS"), "not-enough-patreon-credits")
             Case Else
                 Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO") & ": " & AO20CryptoSysWrapper.ByteArrayToHex(data), "")
         End Select
@@ -980,7 +1000,9 @@ Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_INVALIDO"), False, False)
             Case 3
@@ -1016,7 +1038,9 @@ Public Sub HandleRequestResetPassword(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CODIGO_INVALIDO"), False, False)
             Case 3
@@ -1076,7 +1100,9 @@ Public Sub HandleValidateAccountRequest(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_INVALIDO"), False, False)
                 frmNewAccount.visible = False
@@ -1273,7 +1299,7 @@ Public Function SendConfirmTransferCharacter()
     JSON = ""
     JSON = "{ "
     JSON = JSON & "  ""currentOwner"": """ & old_owner_str & """ , "
-    JSON = JSON & "  ""pc"": """ & TransferCharname & """ , "
+    JSON = JSON & "  ""pc_id"": """ & GetSelectedCharIDFromName(TransferCharname) & """ , "
     JSON = JSON & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
     JSON = JSON & "  ""newOwner"": """ & TransferCharNewOwner & """ , "
     JSON = JSON & "  ""code"": """ & transfer_char_validate_code & """"
