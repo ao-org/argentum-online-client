@@ -63,8 +63,8 @@ Begin VB.Form frmMapaGrande
       Left            =   8520
       TabIndex        =   3
       Top             =   3900
-      Width           =   2595
-      _ExtentX        =   4577
+      Width           =   2700
+      _ExtentX        =   4763
       _ExtentY        =   1693
       View            =   3
       LabelEdit       =   1
@@ -520,6 +520,8 @@ Private Sub Form_Activate()
     If ListView1.ListItems.count > 0 Then
         Call ListView1_ItemClick(ListView1.ListItems.Item(1))
     End If
+    Referencias = False
+    Image3.Picture = Nothing
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -664,6 +666,10 @@ Private Sub listdrop_Click()
     'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
     If listdrop.ListItems.count <= 0 Then Exit Sub
     Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
+    
+    lblPercentageDrop.visible = True
+    lblPercentageDrop.Caption = listdrop.SelectedItem.Tag & "%"
+
     Exit Sub
 listdrop_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.listdrop_Click", Erl)
@@ -748,8 +754,7 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
                     If objIdx > 0 Then
                         Set subelemento = listdrop.ListItems.Add(, , ObjData(objIdx).Name)
                         subelemento.SubItems(1) = CStr(ObjData(objIdx).GrhIndex)
-                        lblPercentageDrop.visible = True
-                        lblPercentageDrop.Caption = GetNpcDropPercentage(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaProb, .NumQuiza) & "%"
+                        subelemento.Tag = GetNpcDropPercentage(.QuizaProb, .NumQuiza)
                     End If
                 Next i
             End If
@@ -761,8 +766,7 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
                     If objIdx > 0 Then
                         Set subelemento = listdrop.ListItems.Add(, , ObjData(objIdx).Name)
                         subelemento.SubItems(1) = CStr(ObjData(objIdx).GrhIndex)
-                        lblPercentageDrop.visible = True
-                        lblPercentageDrop.Caption = "100%"
+                        subelemento.Tag = 100
                     End If
                 Next i
             End If
@@ -1202,7 +1206,7 @@ On Error GoTo GetNpcDropPercentage_Err
         Exit Function
     End If
     
-    GetNpcDropPercentage = Round((1 / QuizaProb * 100) / NumQuiza, 4)
+    GetNpcDropPercentage = Round((1 / QuizaProb * 100) / NumQuiza, 2)
     Exit Function
 GetNpcDropPercentage_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.GetNpcDropPercentage", Erl)
