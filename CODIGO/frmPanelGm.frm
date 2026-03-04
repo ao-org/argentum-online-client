@@ -3208,7 +3208,7 @@ Public Sub CadenaChat(ByVal chat As String)
                             Dim TiempoActual As Single
                             TiempoActual = Timer
                             If TiempoActual - TiempoAnterior < frmPanelgm.txtSegundos Then
-                                Call WriteCerraCliente(nombre)
+                                If frmPanelgm.chkOcultar = 1 Then Call WriteCerraCliente(nombre)
                             End If
                             TiempoAnterior = TiempoActual
                         End If
