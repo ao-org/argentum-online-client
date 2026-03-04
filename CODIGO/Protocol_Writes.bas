@@ -26,6 +26,32 @@ Attribute VB_Name = "Protocol_Writes"
 '
 '
 Option Explicit
+
+Private Enum eActionRateLimitType
+    ActionTalk = 1
+    ActionAttack = 2
+    ActionCastSpell = 3
+    ActionLeftClick = 4
+    ActionUseItem = 5
+    ActionUseItemU = 6
+    ActionHideSkill = 7
+    ActionSpellTarget = 8
+    ActionHidingCommand = 9
+    ActionWalk = 10
+End Enum
+
+Private Const ACTION_RATE_LIMIT_COUNT As Long = 10
+Private Const DEFAULT_TALK_INTERVAL_MS As Long = 120
+Private Const DEFAULT_ATTACK_INTERVAL_MS As Long = 120
+Private Const DEFAULT_CASTSPELL_INTERVAL_MS As Long = 180
+Private Const DEFAULT_LEFTCLICK_INTERVAL_MS As Long = 70
+Private Const DEFAULT_USEITEM_INTERVAL_MS As Long = 100
+Private Const DEFAULT_HIDE_INTERVAL_MS As Long = 250
+Private Const TICK_MASK_MAX As Double = 2147483648#
+Private Const TICK_MASK_LIMIT As Double = 2147483647#
+
+Private nextAllowedActionTick(1 To ACTION_RATE_LIMIT_COUNT) As Long
+Private actionLimiterReady As Boolean
 #If DIRECT_PLAY = 0 Then
     Private Writer As Network.Writer
 
@@ -35,6 +61,7 @@ End Function
 
 Public Sub Initialize()
     Set Writer = New Network.Writer
+    Call ResetActionRateLimiter
 End Sub
 
 #Else
@@ -43,6 +70,105 @@ End Sub
 #End If
 Public Sub Clear()
     Call Writer.Clear
+End Sub
+
+Public Sub ResetActionRateLimiter()
+    On Error GoTo ResetActionRateLimiter_Err
+
+    Dim i As Long
+    For i = 1 To ACTION_RATE_LIMIT_COUNT
+        nextAllowedActionTick(i) = 0
+    Next i
+
+    actionLimiterReady = True
+    Exit Sub
+
+ResetActionRateLimiter_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.ResetActionRateLimiter", Erl)
+End Sub
+
+Private Sub EnsureActionRateLimiter()
+    If actionLimiterReady Then Exit Sub
+    Call ResetActionRateLimiter
+End Sub
+
+Private Function AddTicksMasked(ByVal startTick As Long, ByVal intervalMs As Long) As Long
+    Dim resultTick As Double
+    resultTick = CDbl(startTick) + CDbl(intervalMs)
+    If resultTick > TICK_MASK_LIMIT Then
+        resultTick = resultTick - TICK_MASK_MAX
+    End If
+    AddTicksMasked = CLng(resultTick)
+End Function
+
+Private Function HasReachedTick(ByVal nowTick As Long, ByVal targetTick As Long) As Boolean
+    Dim delta As Double
+    delta = CDbl(nowTick) - CDbl(targetTick)
+    If delta < -1073741824# Then
+        delta = delta + TICK_MASK_MAX
+    End If
+    HasReachedTick = (delta >= 0#)
+End Function
+
+Private Function GetActionIntervalMs(ByVal actionType As eActionRateLimitType) As Long
+    Select Case actionType
+        Case ActionAttack
+            GetActionIntervalMs = gIntervals.Hit
+        Case ActionCastSpell, ActionSpellTarget, ActionHideSkill, ActionHidingCommand
+            GetActionIntervalMs = gIntervals.Magic
+        Case ActionUseItem
+            GetActionIntervalMs = gIntervals.UseItemClick
+        Case ActionUseItemU
+            GetActionIntervalMs = gIntervals.UseItemKey
+        Case ActionTalk
+            GetActionIntervalMs = DEFAULT_TALK_INTERVAL_MS
+        Case ActionLeftClick
+            GetActionIntervalMs = DEFAULT_LEFTCLICK_INTERVAL_MS
+        Case ActionWalk
+            GetActionIntervalMs = gIntervals.Walk
+    End Select
+
+    If GetActionIntervalMs <= 0 Then
+        Select Case actionType
+            Case ActionAttack
+                GetActionIntervalMs = DEFAULT_ATTACK_INTERVAL_MS
+            Case ActionCastSpell, ActionSpellTarget
+                GetActionIntervalMs = DEFAULT_CASTSPELL_INTERVAL_MS
+            Case ActionUseItem, ActionUseItemU
+                GetActionIntervalMs = DEFAULT_USEITEM_INTERVAL_MS
+            Case ActionHideSkill, ActionHidingCommand
+                GetActionIntervalMs = DEFAULT_HIDE_INTERVAL_MS
+            Case ActionTalk
+                GetActionIntervalMs = DEFAULT_TALK_INTERVAL_MS
+            Case ActionLeftClick
+                GetActionIntervalMs = DEFAULT_LEFTCLICK_INTERVAL_MS
+            Case ActionWalk
+                GetActionIntervalMs = DEFAULT_LEFTCLICK_INTERVAL_MS
+        End Select
+    End If
+
+    If GetActionIntervalMs < 25 Then
+        GetActionIntervalMs = 25
+    End If
+End Function
+
+Private Function CanSendActionNow(ByVal actionType As eActionRateLimitType) As Boolean
+    Dim nowTick As Long
+    nowTick = GetTickCount()
+    CanSendActionNow = HasReachedTick(nowTick, nextAllowedActionTick(actionType))
+End Function
+
+Private Function ShouldQueueAction(ByVal actionType As eActionRateLimitType, ByVal bypassRateLimit As Boolean) As Boolean
+    Call EnsureActionRateLimiter
+    If bypassRateLimit Then Exit Function
+    ShouldQueueAction = Not CanSendActionNow(actionType)
+End Function
+
+Private Sub MarkActionSent(ByVal actionType As eActionRateLimitType)
+    Dim nowTick As Long
+    nowTick = GetTickCount()
+
+    nextAllowedActionTick(actionType) = AddTicksMasked(nowTick, GetActionIntervalMs(actionType))
 End Sub
 
 #If PYMMO = 1 Then
@@ -211,10 +337,14 @@ End Sub
 '
 ' @param    chat The chat text to be sent.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteTalk(ByVal chat As String)
+Public Sub WriteTalk(ByVal chat As String, Optional ByVal bypassRateLimit As Boolean = False)
     '<EhHeader>
     On Error GoTo WriteTalk_Err
     '</EhHeader>
+    If ShouldQueueAction(ActionTalk, bypassRateLimit) Then
+        Exit Sub
+    End If
+    Call MarkActionSent(ActionTalk)
     Call Writer.WriteInt16(ClientPacketID.eTalk)
     Call Writer.WriteString8(chat)
     packetCounters.TS_Talk = packetCounters.TS_Talk + 1
@@ -275,7 +405,7 @@ End Sub
 '
 ' @param    heading The direction in wich the user is moving.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteWalk(ByVal Heading As E_Heading)
+Public Sub WriteWalk(ByVal Heading As E_Heading, Optional ByVal bypassRateLimit As Boolean = False)
     '<EhHeader>
     On Error GoTo WriteWalk_Err
     '</EhHeader>
@@ -314,7 +444,7 @@ End Sub
 ' Writes the "Attack" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteAttack()
+Public Sub WriteAttack(Optional ByVal bypassRateLimit As Boolean = False)
     '<EhHeader>
     On Error GoTo WriteAttack_Err
     '</EhHeader>
@@ -649,7 +779,7 @@ End Sub
 '
 ' @param    slot Spell List slot where the spell to cast is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteCastSpell(ByVal Slot As Byte)
+Public Sub WriteCastSpell(ByVal Slot As Byte, Optional ByVal bypassRateLimit As Boolean = False)
     '<EhHeader>
     On Error GoTo WriteCastSpell_Err
     '</EhHeader>
@@ -745,10 +875,14 @@ End Sub
 ' @param    x Tile coord in the x-axis in which the user clicked.
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte, Optional ByVal bypassRateLimit As Boolean = False)
     '<EhHeader>
     On Error GoTo WriteLeftClick_Err
     '</EhHeader>
+    If ShouldQueueAction(ActionLeftClick, bypassRateLimit) Then
+        Exit Sub
+    End If
+    Call MarkActionSent(ActionLeftClick)
     Call Writer.WriteInt16(ClientPacketID.eLeftClick)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
@@ -791,10 +925,16 @@ End Sub
 '
 ' @param    skill The skill which the user attempts to use.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteWork(ByVal Skill As eSkill)
+Public Sub WriteWork(ByVal Skill As eSkill, Optional ByVal bypassRateLimit As Boolean = False)
     '<EhHeader>
     On Error GoTo WriteWork_Err
     '</EhHeader>
+    If Skill = eSkill.Ocultarse Then
+        If ShouldQueueAction(ActionHideSkill, bypassRateLimit) Then
+            Exit Sub
+        End If
+        Call MarkActionSent(ActionHideSkill)
+    End If
     Call Writer.WriteInt16(ClientPacketID.eWork)
     Call Writer.WriteInt8(Skill)
     packetCounters.TS_Work = packetCounters.TS_Work + 1
@@ -831,7 +971,7 @@ End Sub
 '
 ' @param    slot Invetory slot where the item to use is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteUseItem(ByVal Slot As Byte)
+Public Sub WriteUseItem(ByVal Slot As Byte, Optional ByVal bypassRateLimit As Boolean = False)
     'If LastUseItemTimeStamp > 0 Then
     '    If (GetTickCount - LastUseItemTimeStamp) < 100 Then Exit Sub
     'End If
@@ -858,7 +998,7 @@ End Sub
 '
 ' @param    slot Invetory slot where the item to use is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteUseItemU(ByVal Slot As Byte)
+Public Sub WriteUseItemU(ByVal Slot As Byte, Optional ByVal bypassRateLimit As Boolean = False)
     'If LastUseItemTimeStampU > 0 Then
     '    If (GetTickCount - LastUseItemTimeStampU) < 100 Then Exit Sub
     'End If
@@ -989,7 +1129,7 @@ End Sub
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @param    skill The skill which the user attempts to use.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As eSkill)
+Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As eSkill, Optional ByVal bypassRateLimit As Boolean = False)
     '<EhHeader>
     On Error GoTo WriteWorkLeftClick_Err
     '</EhHeader>
@@ -3085,7 +3225,7 @@ End Sub
 ' Writes the "Hiding" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteHiding()
+Public Sub WriteHiding(Optional ByVal bypassRateLimit As Boolean = False)
     '<EhHeader>
     On Error GoTo WriteHiding_Err
     '</EhHeader>
