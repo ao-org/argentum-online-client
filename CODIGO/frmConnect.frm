@@ -278,6 +278,8 @@ Private Sub AuthSocket_Connect()
                 Auth_state = e_state.RequestTransferChar
             Case e_operation.ConfirmTransferChar
                 Auth_state = e_state.ConfirmTransferChar
+            Case e_operation.RenameCharacter
+                Auth_state = e_state.RenameCharacter
         End Select
     End If
 End Sub
@@ -526,6 +528,9 @@ End Sub
                 If (x > 980 And x < 1000) And (y > 675 And y < 708) Then
                     character_screen_action = e_action_transfer_character
                 End If
+                If (x > 960 And x < 980) And (y > 675 And y < 708) Then
+                    character_screen_action = e_action_rename_character
+                End If
                 If (x > 19 And x < 48) And (y > 21 And y < 45) Then
                     character_screen_action = e_action_logout_account
                 End If
@@ -609,6 +614,21 @@ End Sub
                             Call ao20audio.PlayWav(SND_CLICK)
                             Call LogearPersonaje(Pjs(PJSeleccionado).nombre)
                         End If
+                    Case e_action_rename_character
+                        If SelectedCharIndex = 0 Then Exit Sub
+                        RenameCharacterName = Pjs(SelectedCharIndex).nombre
+                        If MsgBox(JsonLanguage.Item("MENSAJEBOX_RENOMBRAR_PERSONAJE") & " " & RenameCharacterName) <> vbOK Then
+                            Exit Sub
+                        End If
+                        RenameNewCharacterName = InputBox(JsonLanguage.Item("MENSAJEBOX_RENOMBRAR_PERSONAJE_NUEVO_NOMBRE"))
+                        If RenameNewCharacterName = vbNullString Then
+                            If MsgBox(JsonLanguage.Item("MSG_CONFIRM_EMPTY_RENAME")) <> vbOK Then
+                                Exit Sub
+                            End If
+                        End If
+                        ModAuth.LoginOperation = e_operation.RenameCharacter
+                        Call connectToLoginServer
+                        frmConnect.Refresh
                 End Select
                 SelectedCharIndex = PJSeleccionado
                 If PJSeleccionado = 0 Then Exit Sub

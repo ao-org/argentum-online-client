@@ -527,7 +527,7 @@ End Sub
 
 Public Sub TransferChar(ByVal Name As String, ByVal DestinationAccunt As String)
     TransferCharNewOwner = DestinationAccunt
-    TransferCharname = Name
+    TransferCharname = GetSelectedCharIDFromName(Name)
     Debug.Assert Len(TransferCharNewOwner) > 0
     Debug.Assert Len(Name) > 0
     ModAuth.LoginOperation = e_operation.transfercharacter

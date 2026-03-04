@@ -767,5 +767,11 @@
 	"TOOLTIP_EXP_PORCENTAJE2": "% with 4 decimals",
 	"MENSAJEBOX_LIBERAR_MASCOTA": "Do you want to release the pet?",
 	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Do you want to release all the pets?",
-	"MENSAJE_SUPER_PEZ": "Oh! I think I have a big fish on the line. To catch it, press the P key when the marker is in the green zone."
+	"MENSAJE_SUPER_PEZ": "Oh! I think I have a big fish on the line. To catch it, press the P key when the marker is in the green zone.",
+    "MENSAJEBOX_RENOMBRAR_PERSONAJE": "Do you want to rename your character?",
+    "MENSAJEBOX_RENOMBRAR_PERSONAJE_NUEVO_NOMBRE": "Enter the new name for your character.",
+    "MSG_ALIAS_ALREADY_TAKEN": "The alias is already in use.",
+    "MSG_ALIAS_INVALID": "Invalid alias, (between 3 and 30 alphanumeric characters)",
+    "MSG_CONFIRM_EMPTY_RENAME": "Are you sure you want to remove your character's alias?",
+    "MSG_ALIAS_PRESENT": "You cannot transfer or delete a character that has an alias. Please remove the alias before performing this action."
 }
