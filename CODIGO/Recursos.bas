@@ -729,7 +729,7 @@ cont:
                 Next i
                 For c = 1 To UBound(NpcWorlds)
                     If NpcWorlds(c) > 0 Then
-                        If (c > 399 And c < 450 Or c > 499) And NpcData(c).NoMapInfo <> 1 Then
+                        If NpcData(c).NoMapInfo <> 1 Then
                             Dim subelemento As ListItem
                             Set subelemento = frmMapaGrande.ListView1.ListItems.Add(, , NpcData(c).Name)
                             subelemento.SubItems(1) = NpcWorlds(c)
