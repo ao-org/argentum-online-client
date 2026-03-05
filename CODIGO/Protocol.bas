@@ -5035,7 +5035,8 @@ Private Sub HandleQuestDetails()
     Dim QuestIndex     As Integer
     Dim RequiredLevel As Byte
     Dim LimitLevel As Byte
-    Dim RequiredClass As Byte
+    Dim RequiredClass() As Byte
+    Dim RequiredClassesCount As Byte
     Dim RequiredQuest As Integer
     Dim subelemento As ListItem
     Dim cantidadobjs As Integer
@@ -5057,7 +5058,15 @@ Private Sub HandleQuestDetails()
     FrmQuests.lblRepetible.visible = QuestList(QuestIndex).Repetible = 1
     RequiredLevel = Reader.ReadInt8
     LimitLevel = Reader.ReadInt8
-    RequiredClass = Reader.ReadInt8
+    RequiredClassesCount = Reader.ReadInt8
+    If RequiredClassesCount > 0 Then
+        ReDim RequiredClass(1 To RequiredClassesCount)
+        For i = 1 To RequiredClassesCount
+            RequiredClass(i) = Reader.ReadInt8
+        Next i
+    Else
+        ReDim RequiredClass(Reader.ReadInt8)
+    End If
     RequiredQuest = Reader.ReadInt16
     FrmQuests.detalle.Text = QuestList(QuestIndex).desc
     If RequiredLevel > 1 Then
@@ -5066,8 +5075,10 @@ Private Sub HandleQuestDetails()
     If LimitLevel <> 0 Then
         requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_MAXIMO") & LimitLevel & vbCrLf
     End If
-    If RequiredClass <> 0 And RequiredClass <= 12 Then
-        requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(RequiredClass) & vbCrLf
+    If RequiredClassesCount > 0 And RequiredClassesCount <= 12 Then
+        For i = 1 To RequiredClassesCount
+            requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(RequiredClass(i)) & vbCrLf
+        Next i
     End If
     If RequiredQuest <> 0 Then
         requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(RequiredQuest).nombre & vbCrLf
@@ -5243,7 +5254,15 @@ Public Sub HandleNpcQuestListSend()
         FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
         QuestList(QuestIndex).RequiredLevel = Reader.ReadInt8
         QuestList(QuestIndex).RequiredQuest = Reader.ReadInt16
-        QuestList(QuestIndex).RequiredClass = Reader.ReadInt8
+        QuestList(QuestIndex).RequiredClassesCount = Reader.ReadInt8
+        If QuestList(QuestIndex).RequiredClassesCount > 0 Then
+            ReDim QuestList(QuestIndex).RequiredClass(1 To QuestList(QuestIndex).RequiredClassesCount)
+            For i = 1 To QuestList(QuestIndex).RequiredClassesCount
+                QuestList(QuestIndex).RequiredClass(i) = Reader.ReadInt8
+            Next i
+        Else
+            ReDim QuestList(QuestIndex).RequiredClass(Reader.ReadInt8)
+        End If
         QuestList(QuestIndex).LimitLevel = Reader.ReadInt8
         tmpByte = Reader.ReadInt8
         If tmpByte Then 'Hay NPCs
