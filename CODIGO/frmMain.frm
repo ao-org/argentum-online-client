@@ -1563,6 +1563,7 @@ Public dy                          As Integer
 Private Const IntervaloEntreClicks As Long = 50
 Dim TempTick                       As Long
 Private iClickTick                 As Long
+Private suppressNextLaunchClick    As Boolean
 ' Constantes para SendMessage
 Const HWND_TOPMOST = -1
 Const HWND_NOTOPMOST = -2
@@ -1728,6 +1729,8 @@ Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single
     End If
     cmdlanzar.Picture = LoadInterface("boton-lanzar-off.bmp")
     cmdlanzar.Tag = "1"
+    suppressNextLaunchClick = True
+    Call CastSelectedSpell
     Exit Sub
 cmdlanzar_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdlanzar_MouseDown", Erl)
@@ -1747,6 +1750,10 @@ Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, 
 cmdlanzar_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdlanzar_MouseUp", Erl)
     Resume Next
+End Sub
+
+Private Sub CastSelectedSpell()
+    Call UseSpell(hlst.ListIndex + 1, hlst.List(hlst.ListIndex))
 End Sub
 
 Private Sub cmdLlavero_Click()
@@ -2450,9 +2457,6 @@ imgBugReport_Click_Err:
     Resume Next
 End Sub
 
-Private Sub imgHechizos_Click()
-    Call hechizosClick
-End Sub
 
 Public Sub hechizosClick()
     On Error GoTo hechizosClick_Err
@@ -2479,6 +2483,7 @@ Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Sing
     On Error GoTo imgHechizos_MouseDown_Err
     imgHechizos.Picture = LoadInterface("boton-hechizos-off.bmp")
     imgHechizos.Tag = "2"
+    Call hechizosClick
     Exit Sub
 imgHechizos_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.imgHechizos_MouseDown", Erl)
@@ -2515,9 +2520,6 @@ Private Sub ImgHogar_MouseMove(Button As Integer, Shift As Integer, x As Single,
     End If
 End Sub
 
-Private Sub imgInventario_Click()
-    Call inventoryClick
-End Sub
 
 Public Sub inventoryClick()
     On Error GoTo inventoryClick_Err
@@ -2544,7 +2546,7 @@ Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Si
     On Error GoTo imgInventario_MouseDown_Err
     imgInventario.Picture = LoadInterface("boton-inventory-off.bmp")
     imgInventario.Tag = "2"
-    'Call Inventario.DrawInventory
+    Call inventoryClick
     Exit Sub
 imgInventario_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.imgInventario_MouseDown", Erl)
@@ -3498,9 +3500,14 @@ TimerNiebla_Timer_Err:
     Resume Next
 End Sub
 
+
 Private Sub cmdLanzar_Click()
     On Error GoTo cmdLanzar_Click_Err
-    Call UseSpell(hlst.ListIndex + 1, hlst.List(hlst.ListIndex))
+    If suppressNextLaunchClick Then
+        suppressNextLaunchClick = False
+        Exit Sub
+    End If
+    Call CastSelectedSpell
     Exit Sub
 cmdLanzar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdLanzar_Click", Erl)
