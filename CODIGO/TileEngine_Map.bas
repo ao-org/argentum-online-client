@@ -117,7 +117,7 @@ End Function
 Function HayLava(ByVal x As Integer, ByVal y As Integer) As Boolean
     On Error GoTo HayLava_Err
     With MapData(x, y).Graphic(1)
-        HayLava = (.GrhIndex >= 57400 And .GrhIndex <= 57415) Or (.GrhIndex >= 16101 And .GrhIndex <= 16116)
+        HayLava = (.GrhIndex >= 57400 And .GrhIndex <= 57415) Or (.GrhIndex >= 16101 And .GrhIndex <= 16116) Or (.GrhIndex >= 26767 And .GrhIndex <= 26782)
     End With
     Exit Function
 HayLava_Err:
