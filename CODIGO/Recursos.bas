@@ -1358,10 +1358,7 @@ Public Sub CargarIndicesOBJ()
     Dim loopC As Byte
     For Npc = 1 To NumNpcs
         DoEvents
-        If val(Leer.GetValue("npc" & Npc, "NomapInfo")) > 0 Then
-            NpcData(Npc).NoMapInfo = val(Leer.GetValue("npc" & Npc, "NoMapInfo"))
-            GoTo Continue
-        End If
+        NpcData(Npc).NoMapInfo = val(Leer.GetValue("npc" & Npc, "NoMapInfo"))
         langPrefix = GetLanguagePrefix(language)
         With NpcData(Npc)
             .Name = GetLocalizedValue(Leer, "npc" & Npc, "Name", langPrefix)
@@ -1416,7 +1413,6 @@ Public Sub CargarIndicesOBJ()
                 NpcData(Npc).Obj(loopC) = val(Leer.GetValue("npc" & Npc, "Obj" & loopC))
             Next loopC
         End If
-Continue:
     Next Npc
     langPrefix = GetLanguagePrefix(language)
     For Hechizo = 1 To NumHechizos
