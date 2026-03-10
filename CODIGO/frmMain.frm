@@ -1722,10 +1722,8 @@ End Sub
 
 Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo cmdlanzar_MouseDown_Err
-    If ModoHechizos = BloqueoLanzar Then
-        If Not MainTimer.Check(TimersIndex.AttackSpell, False) Or Not MainTimer.Check(TimersIndex.CastSpell, False) Then
-            Exit Sub
-        End If
+    If Not CanLaunchSelectedSpell() Then
+        Exit Sub
     End If
     cmdlanzar.Picture = LoadInterface("boton-lanzar-off.bmp")
     cmdlanzar.Tag = "1"
@@ -1751,6 +1749,15 @@ cmdlanzar_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdlanzar_MouseUp", Erl)
     Resume Next
 End Sub
+
+Private Function CanLaunchSelectedSpell() As Boolean
+    If ModoHechizos = BloqueoLanzar Then
+        If Not MainTimer.Check(TimersIndex.AttackSpell, False) Or Not MainTimer.Check(TimersIndex.CastSpell, False) Then
+            Exit Function
+        End If
+    End If
+    CanLaunchSelectedSpell = True
+End Function
 
 Private Sub CastSelectedSpell()
     Call UseSpell(hlst.ListIndex + 1, hlst.List(hlst.ListIndex))
@@ -3215,7 +3222,10 @@ End Sub
 
 Private Sub refuerzolanzar_Click()
     On Error GoTo refuerzolanzar_Click_Err
-    Call cmdLanzar_Click
+    If Not CanLaunchSelectedSpell() Then
+        Exit Sub
+    End If
+    Call CastSelectedSpell
     Exit Sub
 refuerzolanzar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.refuerzolanzar_Click", Erl)
@@ -3505,6 +3515,9 @@ Private Sub cmdLanzar_Click()
     On Error GoTo cmdLanzar_Click_Err
     If suppressNextLaunchClick Then
         suppressNextLaunchClick = False
+        Exit Sub
+    End If
+    If Not CanLaunchSelectedSpell() Then
         Exit Sub
     End If
     Call CastSelectedSpell
