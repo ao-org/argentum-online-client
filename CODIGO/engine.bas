@@ -1569,12 +1569,24 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         MostrarNombre = True
                         Call RGBAList(NameColor, 210, 105, 30)
                         Call InitGrh(TempGrh, 839)
+                        'Barra de vida del npc
                         If .UserMaxHp > 0 Then
                             Dim TempColor(3) As RGBA
                             Call RGBAList(TempColor, 255, 255, 255, 200)
                             Call Draw_Grh(TempGrh, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 10 + .Body.BodyOffset.y, 1, 0, TempColor, False, 0, 0, 0)
                             Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY + 37 + .Body.BodyOffset.y, .UserMinHp / .UserMaxHp * 26, 4, RGBA_From_Comp(255, _
                                     0, 0, 255)
+                        End If
+                        'Barra de tiempo de invocacion del npc
+                        If .SummonedInvocationDuration > 0 Then
+                            Dim elapsed As Long
+                            Dim percentage As Single
+                            elapsed = GetTickCount() - .SummonedInvocationBarStartTime
+                            percentage = 1 - (elapsed / .SummonedInvocationDuration)
+                            If percentage < 0 Then percentage = 0
+                            Call Draw_Grh(TempGrh, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY + 18 + .Body.BodyOffset.y, 1, 0, Color, False, 0, 0, 0)
+                            Engine_Draw_Box PixelOffsetX + 5 + .Body.BodyOffset.x, PixelOffsetY + 45 + .Body.BodyOffset.y, _
+                                            percentage * 26, 4, RGBA_From_Comp(128, 128, 128, 250)
                         End If
                     End If
                     If .simbolo <> 0 Then

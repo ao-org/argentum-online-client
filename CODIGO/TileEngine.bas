@@ -286,6 +286,8 @@ Public Type Char
     BodyOnWater As Integer
     BodyOnWaterIdle As Integer
     AnimAtaque2 As Integer
+    SummonedInvocationBarStartTime As Long
+    SummonedInvocationDuration As Long
 End Type
 
 'Info de un objeto

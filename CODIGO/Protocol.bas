@@ -477,6 +477,8 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call HandleGuildConfig
             Case ServerPacketID.eShowPickUpObj
                 Call HandleShowPickUpObj
+            Case ServerPacketID.eSummonedInvocationBarFx
+                Call HandleSummonedInvocationBarFx
                 #If PYMMO = 0 Then
                 Case ServerPacketID.eAccountCharacterList
                     Call HandleAccountCharacterList
@@ -6117,6 +6119,20 @@ Public Sub HandleShowPickUpObj()
     Amount = Reader.ReadInt16
     txt = "+" & Amount & " " & ObjData(ObjIndex).Name
     Call AddPickUpEffect(txt)
+End Sub
+Private Sub HandleSummonedInvocationBarFx()
+    On Error GoTo HandleSummonedElementalBarFx_Err
+    Dim charindex As Integer
+    Dim time As Integer
+    
+    charindex = Reader.ReadInt16()
+    time = Reader.ReadInt16()
+    
+    charlist(charindex).SummonedInvocationBarStartTime = GetTickCount()
+    charlist(charindex).SummonedInvocationDuration = CLng(time) * 1000
+    Exit Sub
+HandleSummonedElementalBarFx_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSummonedElementalBarFx", Erl)
 End Sub
 
 #If PYMMO = 0 Then
