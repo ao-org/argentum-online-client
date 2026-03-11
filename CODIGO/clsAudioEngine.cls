@@ -176,8 +176,13 @@ Public Function PlayMusic(ByVal fileName As String, Optional ByVal looping As Bo
 
     Select Case extension
         Case ".ogg"
-            frmDebug.add_text_tracebox "PlayMusic selected BASS/OGG backend"
-            PlayMusic = PlayOgg(fileName, looping, volume)
+            #If ENABLE_BASS = 1 Then
+                frmDebug.add_text_tracebox "PlayMusic selected BASS/OGG backend"
+                PlayMusic = PlayOgg(fileName, looping, volume)
+            #Else
+                frmDebug.add_text_tracebox "PlayMusic .ogg ignored because ENABLE_BASS=0"
+                PlayMusic = -1
+            #End If
         Case ".mp3"
             frmDebug.add_text_tracebox "PlayMusic selected MCI/MP3 backend"
             PlayMusic = PlayMP3(fileName, looping, volume)
@@ -318,9 +323,13 @@ Public Function Init(ByRef dx8 As DirectX8, ByVal hWnd As Long) As Long
         frmDebug.add_text_tracebox "InitSoundEngine() failed with code " & Init
         Exit Function
     End If
-    If Not InitBassAudio(hWnd) Then
-        frmDebug.add_text_tracebox "BASS backend unavailable, OGG disabled. Error: " & BassBackend_GetLastError
-    End If
+    #If ENABLE_BASS = 1 Then
+        If Not InitBassAudio(hWnd) Then
+            frmDebug.add_text_tracebox "BASS backend unavailable, OGG disabled. Error: " & BassBackend_GetLastError
+        End If
+    #Else
+        frmDebug.add_text_tracebox "BASS backend disabled by compilation define ENABLE_BASS=0"
+    #End If
     Init = 0
 End Function
 

@@ -1,6 +1,8 @@
 Attribute VB_Name = "modBass"
 Option Explicit
 
+#If ENABLE_BASS = 1 Then
+
 Private Declare Function BASS_Init Lib "bass.dll" (ByVal device As Long, ByVal freq As Long, ByVal flags As Long, ByVal win As Long, ByVal clsid As Long) As Long
 Private Declare Function BASS_Free Lib "bass.dll" () As Long
 Private Declare Function BASS_StreamCreateFile Lib "bass.dll" Alias "BASS_StreamCreateFileA" (ByVal mem As Long, ByVal strFile As String, ByVal offset As Long, ByVal length As Long, ByVal flags As Long) As Long
@@ -177,3 +179,35 @@ End Function
 Public Function BassBackend_GetLastError() As Long
     BassBackend_GetLastError = m_LastBassError
 End Function
+
+#Else
+
+Public Const BASS_ATTRIB_VOL       As Long = 2
+Public Const BASS_SAMPLE_LOOP      As Long = &H4
+
+Public Function InitBassAudio(ByVal hWndOwner As Long) As Boolean
+    InitBassAudio = False
+End Function
+
+Public Sub ShutdownBassAudio()
+End Sub
+
+Public Function BassBackend_PlayOgg(ByVal filePath As String, ByVal looping As Boolean, ByVal volume As Long) As Long
+    BassBackend_PlayOgg = -1
+End Function
+
+Public Sub BassBackend_StopMusic()
+End Sub
+
+Public Sub BassBackend_SetMusicVolume(ByVal volume As Long)
+End Sub
+
+Public Function BassBackend_IsMusicPlaying() As Boolean
+    BassBackend_IsMusicPlaying = False
+End Function
+
+Public Function BassBackend_GetLastError() As Long
+    BassBackend_GetLastError = -1
+End Function
+
+#End If
