@@ -158,10 +158,10 @@ Private Function CanSendActionNow(ByVal actionType As eActionRateLimitType) As B
     CanSendActionNow = HasReachedTick(nowTick, nextAllowedActionTick(actionType))
 End Function
 
-Private Function ShouldQueueAction(ByVal actionType As eActionRateLimitType, ByVal bypassRateLimit As Boolean) As Boolean
+Private Function ShouldBlockAction(ByVal actionType As eActionRateLimitType, ByVal bypassRateLimit As Boolean) As Boolean
     Call EnsureActionRateLimiter
     If bypassRateLimit Then Exit Function
-    ShouldQueueAction = Not CanSendActionNow(actionType)
+    ShouldBlockAction = Not CanSendActionNow(actionType)
 End Function
 
 Private Sub MarkActionSent(ByVal actionType As eActionRateLimitType)
@@ -341,7 +341,7 @@ Public Sub WriteTalk(ByVal chat As String, Optional ByVal bypassRateLimit As Boo
     '<EhHeader>
     On Error GoTo WriteTalk_Err
     '</EhHeader>
-    If ShouldQueueAction(ActionTalk, bypassRateLimit) Then
+    If ShouldBlockAction(ActionTalk, bypassRateLimit) Then
         Exit Sub
     End If
     Call MarkActionSent(ActionTalk)
@@ -405,7 +405,7 @@ End Sub
 '
 ' @param    heading The direction in wich the user is moving.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteWalk(ByVal Heading As E_Heading, Optional ByVal bypassRateLimit As Boolean = False)
+Public Sub WriteWalk(ByVal Heading As E_Heading)
     '<EhHeader>
     On Error GoTo WriteWalk_Err
     '</EhHeader>
@@ -444,7 +444,7 @@ End Sub
 ' Writes the "Attack" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteAttack(Optional ByVal bypassRateLimit As Boolean = False)
+Public Sub WriteAttack()
     '<EhHeader>
     On Error GoTo WriteAttack_Err
     '</EhHeader>
@@ -779,7 +779,7 @@ End Sub
 '
 ' @param    slot Spell List slot where the spell to cast is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteCastSpell(ByVal Slot As Byte, Optional ByVal bypassRateLimit As Boolean = False)
+Public Sub WriteCastSpell(ByVal Slot As Byte)
     '<EhHeader>
     On Error GoTo WriteCastSpell_Err
     '</EhHeader>
@@ -879,7 +879,7 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte, Optional ByVal bypas
     '<EhHeader>
     On Error GoTo WriteLeftClick_Err
     '</EhHeader>
-    If ShouldQueueAction(ActionLeftClick, bypassRateLimit) Then
+    If ShouldBlockAction(ActionLeftClick, bypassRateLimit) Then
         Exit Sub
     End If
     Call MarkActionSent(ActionLeftClick)
@@ -930,7 +930,7 @@ Public Sub WriteWork(ByVal Skill As eSkill, Optional ByVal bypassRateLimit As Bo
     On Error GoTo WriteWork_Err
     '</EhHeader>
     If Skill = eSkill.Ocultarse Then
-        If ShouldQueueAction(ActionHideSkill, bypassRateLimit) Then
+        If ShouldBlockAction(ActionHideSkill, bypassRateLimit) Then
             Exit Sub
         End If
         Call MarkActionSent(ActionHideSkill)
@@ -971,7 +971,7 @@ End Sub
 '
 ' @param    slot Invetory slot where the item to use is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteUseItem(ByVal Slot As Byte, Optional ByVal bypassRateLimit As Boolean = False)
+Public Sub WriteUseItem(ByVal Slot As Byte)
     'If LastUseItemTimeStamp > 0 Then
     '    If (GetTickCount - LastUseItemTimeStamp) < 100 Then Exit Sub
     'End If
@@ -998,7 +998,7 @@ End Sub
 '
 ' @param    slot Invetory slot where the item to use is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteUseItemU(ByVal Slot As Byte, Optional ByVal bypassRateLimit As Boolean = False)
+Public Sub WriteUseItemU(ByVal Slot As Byte)
     'If LastUseItemTimeStampU > 0 Then
     '    If (GetTickCount - LastUseItemTimeStampU) < 100 Then Exit Sub
     'End If
@@ -1129,7 +1129,7 @@ End Sub
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @param    skill The skill which the user attempts to use.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As eSkill, Optional ByVal bypassRateLimit As Boolean = False)
+Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As eSkill)
     '<EhHeader>
     On Error GoTo WriteWorkLeftClick_Err
     '</EhHeader>
@@ -3225,7 +3225,7 @@ End Sub
 ' Writes the "Hiding" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteHiding(Optional ByVal bypassRateLimit As Boolean = False)
+Public Sub WriteHiding()
     '<EhHeader>
     On Error GoTo WriteHiding_Err
     '</EhHeader>
