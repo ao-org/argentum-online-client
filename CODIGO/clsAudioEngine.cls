@@ -184,8 +184,8 @@ Public Function PlayMusic(ByVal fileName As String, Optional ByVal looping As Bo
                 PlayMusic = -1
             #End If
         Case ".mp3"
-            frmDebug.add_text_tracebox "PlayMusic selected MCI/MP3 backend"
-            PlayMusic = PlayMP3(fileName, looping, volume)
+            frmDebug.add_text_tracebox "PlayMusic MP3 backend disabled, use OGG"
+            PlayMusic = -1
         Case ".mid"
             frmDebug.add_text_tracebox "PlayMusic selected DirectMusic/MIDI backend"
             midiId = Val(Left$(fileName, Len(fileName) - 4))
@@ -206,50 +206,8 @@ Public Function StopMP3() As Long
 End Function
 
 Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
-    Dim command As String
-    Dim ret     As Long
-    If filename = "" Then
-        PlayMP3 = -1
-        Exit Function
-    End If
-
-    Call StopAllMusicBackends
-
-    Dim PathToFile As String
-    #If Compresion = 1 Then
-        If Extract_File(mp3, GetCompressedResourcesPath(), filename, Windows_Temp_Dir, ResourcesPassword, False) Then
-            ' Open the MP3 file with an alias "mp3".
-            PathToFile = Windows_Temp_Dir & filename
-        End If
-    #Else
-        PathToFile = ao20audio.GetMp3FilesPath() & filename
-    #End If
-    Debug.Assert FileExist(PathToFile, vbArchive)
-    command = "open """ & PathToFile & """ type mpegvideo alias mp3"
-    ret = mciSendString(command, vbNullString, 0, 0)
-    If ret <> 0 Then
-        PlayMP3 = ret
-        Exit Function
-    End If
-    ' If a volume value is provided, set the volume.
-    ' Note: The acceptable volume range and behavior may depend on the MCI implementation.
-    If volume <> 0 Then
-        command = "setaudio mp3 volume to " & volume
-        ret = mciSendString(command, vbNullString, 0, 0)
-    End If
-    ' Play the MP3 file; append the "repeat" flag if looping is desired.
-    command = "play mp3"
-    If looping Then
-        command = command & " repeat"
-    End If
-    ret = mciSendString(command, vbNullString, 0, 0)
-    PlayMP3 = ret
-    If PlayMP3 = 0 Then
-        mMusicBackend = mbMciMp3
-        mCurrentMusicFile = filename
-        mMusicLooping = looping
-        mMusicVolume = volume
-    End If
+    frmDebug.add_text_tracebox "PlayMP3 disabled, use PlayMusic with .ogg files"
+    PlayMP3 = -1
 End Function
 
 Public Function GetMidiTrackName(ByVal track_id As Integer) As String

@@ -1,17 +1,8 @@
-Attribute VB_Name = "modBass"
+Attribute VB_Name = "ao20audio_bass_backend"
 Option Explicit
 
 #If ENABLE_BASS = 1 Then
 
-Private Declare Function BASS_Init Lib "bass.dll" (ByVal device As Long, ByVal freq As Long, ByVal flags As Long, ByVal win As Long, ByVal clsid As Long) As Long
-Private Declare Function BASS_Free Lib "bass.dll" () As Long
-Private Declare Function BASS_StreamCreateFile Lib "bass.dll" Alias "BASS_StreamCreateFileA" (ByVal mem As Long, ByVal strFile As String, ByVal offset As Long, ByVal length As Long, ByVal flags As Long) As Long
-Private Declare Function BASS_ChannelPlay Lib "bass.dll" (ByVal handle As Long, ByVal restart As Long) As Long
-Private Declare Function BASS_ChannelStop Lib "bass.dll" (ByVal handle As Long) As Long
-Private Declare Function BASS_StreamFree Lib "bass.dll" (ByVal handle As Long) As Long
-Private Declare Function BASS_ChannelSetAttribute Lib "bass.dll" (ByVal handle As Long, ByVal attrib As Long, ByVal value As Single) As Long
-Private Declare Function BASS_ChannelIsActive Lib "bass.dll" (ByVal handle As Long) As Long
-Private Declare Function BASS_ErrorGetCode Lib "bass.dll" () As Long
 
 Public Const BASS_ATTRIB_VOL       As Long = 2
 Public Const BASS_SAMPLE_LOOP      As Long = &H4
@@ -52,6 +43,7 @@ Public Function InitBassAudio(ByVal hWndOwner As Long) As Boolean
     End If
 
     m_LastBassError = 0
+
     If BASS_Init(BASS_DEFAULT_DEVICE, BASS_DEFAULT_FREQ, BASS_INIT_DEFAULT, hWndOwner, 0) = 0 Then
         m_LastBassError = BASS_ErrorGetCode()
         frmDebug.add_text_tracebox "BASS_Init failed. Error: " & m_LastBassError
@@ -103,19 +95,19 @@ ShutdownBassAudio_Err:
     frmDebug.add_text_tracebox "ShutdownBassAudio exception: " & Err.Description
 End Sub
 
-Public Function BassBackend_PlayOgg(ByVal filePath As String, ByVal looping As Boolean, ByVal volume As Long) As Long
+Public Function BassBackend_PlayOgg(ByVal FilePath As String, ByVal looping As Boolean, ByVal volume As Long) As Long
     On Error GoTo BassBackend_PlayOgg_Err
     Dim flags As Long
 
     BassBackend_PlayOgg = 1
 
-    If LenB(filePath) = 0 Then
+    If LenB(FilePath) = 0 Then
         frmDebug.add_text_tracebox "BassBackend_PlayOgg missing path"
         Exit Function
     End If
 
-    If Not FileExist(filePath, vbArchive) Then
-        frmDebug.add_text_tracebox "BassBackend_PlayOgg file not found: " & filePath
+    If Not FileExist(FilePath, vbArchive) Then
+        frmDebug.add_text_tracebox "BassBackend_PlayOgg file not found: " & FilePath
         BassBackend_PlayOgg = 2
         Exit Function
     End If
@@ -132,10 +124,12 @@ Public Function BassBackend_PlayOgg(ByVal filePath As String, ByVal looping As B
     flags = 0
     If looping Then flags = flags Or BASS_SAMPLE_LOOP
 
-    m_CurrentMusicStream = BASS_StreamCreateFile(0, filePath, 0, 0, flags)
+    
+    m_CurrentMusicStream = BASS_StreamCreateFile(0, StrPtr(FilePath), 0, 0, flags)
+    
     If m_CurrentMusicStream = 0 Then
         m_LastBassError = BASS_ErrorGetCode()
-        frmDebug.add_text_tracebox "BASS_StreamCreateFile failed. Error: " & m_LastBassError & " Path: " & filePath
+        frmDebug.add_text_tracebox "BASS_StreamCreateFile failed. Error: " & m_LastBassError & " Path: " & FilePath
         BassBackend_PlayOgg = m_LastBassError
         Exit Function
     End If
@@ -192,7 +186,7 @@ End Function
 Public Sub ShutdownBassAudio()
 End Sub
 
-Public Function BassBackend_PlayOgg(ByVal filePath As String, ByVal looping As Boolean, ByVal volume As Long) As Long
+Public Function BassBackend_PlayOgg(ByVal FilePath As String, ByVal looping As Boolean, ByVal volume As Long) As Long
     BassBackend_PlayOgg = -1
 End Function
 

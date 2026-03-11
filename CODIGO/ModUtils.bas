@@ -644,7 +644,8 @@ Sub General_Set_Connect()
     End If
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
-    Call ao20audio.PlayMP3("31.mp3", True)
+    frmDebug.add_text_tracebox "Music connect/login: trying OGG track 31.ogg"
+    Call ao20audio.PlayMusic("31.ogg", True)
     mFadingMusicMod = 0
     CurMp3 = 1
     Call GoToLogIn
