@@ -52,6 +52,17 @@ Public Enum eFxCategory
     eFxAmbient = 2
 End Enum
 
+Public Sub PlayRandomOggSong(ByVal maxTrack As Integer, Optional ByVal looping As Boolean = True)
+    Dim track As Integer
+    Dim filename As String
+
+    track = Int(Rnd * maxTrack) + 1
+    filename = CStr(track) & ".ogg"
+
+    frmDebug.add_text_tracebox "Playing random OGG track: " & filename
+    Call ao20audio.PlayMusic(filename, looping)
+End Sub
+
 Public Sub CreateAudioEngine(ByVal hWnd As Long, ByRef dx8 As DirectX8, ByRef renderer As clsAudioEngine)
     On Error GoTo AudioEngineInitErr:
     If AudioEnabled Then
