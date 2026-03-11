@@ -43,6 +43,7 @@ Private mMusicLooping     As Boolean
 Private mMusicVolume      As Long
 Private mMusicBackend     As eMusicBackend
 Private mMusicIsActive    As Boolean
+Private mCurrentMidiId    As Integer
 
 Private Type AudioTrack
     Name As String
@@ -109,6 +110,7 @@ Private Sub ClearActiveMusicState()
     mMusicLooping = False
     mMusicBackend = mbNone
     mMusicIsActive = False
+    mCurrentMidiId = 0
     frmDebug.add_text_tracebox "Music state cleared"
 End Sub
 
@@ -543,6 +545,19 @@ Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean 
     Debug.Assert id > 0
     PlayMidi = -1
     If (id <= 0) Then Exit Function
+
+    If mMusicIsActive And mMusicBackend = mbDirectMusicMidi And mCurrentMidiId = id And mMusicLooping = looping Then
+        frmDebug.add_text_tracebox "PlayMidi same track request ignored: " & CStr(id) & ".mid"
+        Call SetMusicVolume(volume)
+        PlayMidi = 0
+        Exit Function
+    End If
+
+    If mMusicIsActive Then
+        frmDebug.add_text_tracebox "PlayMidi backend switch: " & CStr(mMusicBackend) & " -> " & CStr(mbDirectMusicMidi)
+        Call StopAllMusicBackends
+    End If
+
     Dim id_as_str As String: id_as_str = str(id)
     With mMidiTrack(1)
         If .Name <> id_as_str Or .directMusicSegment Is Nothing Then
@@ -557,6 +572,8 @@ Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean 
         .directMusicPerformance.SetMasterVolume volume
     End With
     PlayMidi = 0
+    mCurrentMidiId = id
+    Call SetActiveMusicState(Trim$(id_as_str) & ".mid", mbDirectMusicMidi, looping, volume)
     frmDebug.add_text_tracebox "PlayMidi started: " & Trim$(id_as_str) & ".mid"
     Exit Function
 PlayMidi_Error_Handl:
