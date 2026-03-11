@@ -34,9 +34,8 @@ Private mBuffer(0 To 9999) As DirectSoundSecondaryBuffer8
 
 Private Enum eMusicBackend
     mbNone = 0
-    mbMciMp3 = 1
-    mbBassOgg = 2
-    mbDirectMusicMidi = 3
+    mbBassOgg = 1
+    mbDirectMusicMidi = 2
 End Enum
 
 Private mCurrentMusicFile As String
@@ -62,13 +61,6 @@ Private Type MidiTrack
 End Type
 
 Private mMidiTrack(1 To 3) As MidiTrack
-' Declare the mciSendString API function from winmm.dll.
-Private Declare Function mciSendString _
-                Lib "winmm.dll" _
-                Alias "mciSendStringA" (ByVal lpstrCommand As String, _
-                                        ByVal lpstrReturnString As String, _
-                                        ByVal uReturnLength As Long, _
-                                        ByVal hwndCallback As Long) As Long
 
 Private Function GetFileExtension(ByVal fileName As String) As String
     Dim dotPos As Long
@@ -83,8 +75,6 @@ Private Function ResolveOggFilePath(ByVal fileName As String, ByRef resolvedPath
 
     #If Compresion = 1 Then
         If Extract_File(ogg, GetCompressedResourcesPath(), fileName, Windows_Temp_Dir, ResourcesPassword, False) Then
-            resolvedPath = Windows_Temp_Dir & fileName
-        ElseIf Extract_File(mp3, GetCompressedResourcesPath(), fileName, Windows_Temp_Dir, ResourcesPassword, False) Then
             resolvedPath = Windows_Temp_Dir & fileName
         End If
     #Else
@@ -113,7 +103,8 @@ Private Function PlayOgg(ByVal fileName As String, Optional ByVal looping As Boo
         mCurrentMusicFile = fileName
         mMusicLooping = looping
         mMusicVolume = volume
-        frmDebug.add_text_tracebox "PlayOgg backend selected for " & fileName
+        frmDebug.add_text_tracebox "PlayOgg started: " & fileName
+        frmDebug.add_text_tracebox "Music backend selected: BASS/OGG"
     Else
         frmDebug.add_text_tracebox "PlayOgg failed. Error: " & PlayOgg
     End If
@@ -122,10 +113,9 @@ End Function
 Private Sub StopAllMusicBackends()
     On Error Resume Next
 
-    Call BassBackend_StopMusic
+    frmDebug.add_text_tracebox "StopAllMusicBackends begin. Current backend: " & CStr(mMusicBackend)
 
-    mciSendString "stop mp3", vbNullString, 0, 0
-    mciSendString "close mp3", vbNullString, 0, 0
+    Call BassBackend_StopMusic
 
     Dim i As Integer
     For i = 1 To UBound(mMidiTrack)
@@ -136,6 +126,8 @@ Private Sub StopAllMusicBackends()
             End If
         End With
     Next i
+
+    frmDebug.add_text_tracebox "StopAllMusicBackends complete"
 End Sub
 
 Public Function StopMusic() As Long
@@ -153,8 +145,6 @@ Public Sub SetMusicVolume(ByVal volume As Long)
     Select Case mMusicBackend
         Case mbBassOgg
             Call BassBackend_SetMusicVolume(volume)
-        Case mbMciMp3
-            mciSendString "setaudio mp3 volume to " & volume, vbNullString, 0, 0
         Case mbDirectMusicMidi
             Dim i As Integer
             For i = 1 To UBound(mMidiTrack)
@@ -183,31 +173,17 @@ Public Function PlayMusic(ByVal fileName As String, Optional ByVal looping As Bo
                 frmDebug.add_text_tracebox "PlayMusic .ogg ignored because ENABLE_BASS=0"
                 PlayMusic = -1
             #End If
-        Case ".mp3"
-            frmDebug.add_text_tracebox "PlayMusic MP3 backend disabled, use OGG"
-            PlayMusic = -1
         Case ".mid"
             frmDebug.add_text_tracebox "PlayMusic selected DirectMusic/MIDI backend"
             midiId = Val(Left$(fileName, Len(fileName) - 4))
             If midiId > 0 Then
                 PlayMusic = PlayMidi(midiId, looping, volume)
+            Else
+                frmDebug.add_text_tracebox "PlayMusic invalid MIDI filename: " & fileName
             End If
         Case Else
-            frmDebug.add_text_tracebox "PlayMusic unknown extension for " & fileName
+            frmDebug.add_text_tracebox "PlayMusic unknown extension: " & fileName
     End Select
-End Function
-
-Public Function StopMP3() As Long
-    StopMP3 = -1
-    mciSendString "stop mp3", vbNullString, 0, 0
-    mciSendString "close mp3", vbNullString, 0, 0
-    If mMusicBackend = mbMciMp3 Then mMusicBackend = mbNone
-    StopMP3 = 1
-End Function
-
-Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
-    frmDebug.add_text_tracebox "PlayMP3 disabled, use PlayMusic with .ogg files"
-    PlayMP3 = -1
 End Function
 
 Public Function GetMidiTrackName(ByVal track_id As Integer) As String
@@ -530,6 +506,8 @@ Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean 
     End With
     PlayMidi = 0
     mMusicBackend = mbDirectMusicMidi
+    frmDebug.add_text_tracebox "PlayMidi started: " & Trim$(id_as_str) & ".mid"
+    frmDebug.add_text_tracebox "Music backend selected: DirectMusic/MIDI"
     mCurrentMusicFile = Trim$(id_as_str) & ".mid"
     mMusicLooping = looping
     mMusicVolume = volume
