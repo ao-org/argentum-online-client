@@ -91,11 +91,13 @@ Public Enum resource_file_type
     interface
     Maps
     Patch
+    ogg
 End Enum
 
 Private Const GRAPHIC_PATH   As String = "\Graficos\"
 Private Const MIDI_PATH      As String = "\Midi\"
 Private Const MP3_PATH       As String = "\Mp3\"
+Private Const OGG_PATH       As String = "\Ogg\"
 Private Const WAV_PATH       As String = "\Wav\"
 Private Const INTERFACE_PATH As String = "\Interface\"
 Private Const SCRIPT_PATH    As String = "\Init\"
@@ -156,6 +158,13 @@ Public Function Extract_All_Files(ByVal file_type As resource_file_type, _
                 SourceFilePath = resource_path & "\MP3"
             End If
             OutputFilePath = resource_path & MP3_PATH
+        Case ogg
+            If UseOutputFolder Then
+                SourceFilePath = resource_path & OUTPUT_PATH & "OGG"
+            Else
+                SourceFilePath = resource_path & "\OGG"
+            End If
+            OutputFilePath = resource_path & OGG_PATH
         Case wav
             If UseOutputFolder Then
                 SourceFilePath = resource_path & OUTPUT_PATH & "Sounds"
@@ -520,6 +529,12 @@ Public Function Extract_File(ByVal file_type As resource_file_type, _
                 SourceFilePath = resource_path & OUTPUT_PATH & "MP3"
             Else
                 SourceFilePath = resource_path & "\MP3"
+            End If
+        Case ogg
+            If UseOutputFolder Then
+                SourceFilePath = resource_path & OUTPUT_PATH & "OGG"
+            Else
+                SourceFilePath = resource_path & "\OGG"
             End If
         Case wav
             If UseOutputFolder Then

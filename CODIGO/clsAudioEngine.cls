@@ -32,6 +32,18 @@ Private mDirectSound       As DirectSound8
 Private mDirectSoundEnum   As DirectSoundEnum8
 Private mBuffer(0 To 9999) As DirectSoundSecondaryBuffer8
 
+Private Enum eMusicBackend
+    mbNone = 0
+    mbMciMp3 = 1
+    mbBassOgg = 2
+    mbDirectMusicMidi = 3
+End Enum
+
+Private mCurrentMusicFile As String
+Private mMusicLooping     As Boolean
+Private mMusicVolume      As Long
+Private mMusicBackend     As eMusicBackend
+
 Private Type AudioTrack
     Name As String
     label As String
@@ -58,12 +70,138 @@ Private Declare Function mciSendString _
                                         ByVal uReturnLength As Long, _
                                         ByVal hwndCallback As Long) As Long
 
+Private Function GetFileExtension(ByVal fileName As String) As String
+    Dim dotPos As Long
+    dotPos = InStrRev(fileName, ".")
+    If dotPos <= 0 Then Exit Function
+    GetFileExtension = LCase$(Mid$(fileName, dotPos))
+End Function
+
+Private Function ResolveOggFilePath(ByVal fileName As String, ByRef resolvedPath As String) As Boolean
+    resolvedPath = ""
+    If LenB(fileName) = 0 Then Exit Function
+
+    #If Compresion = 1 Then
+        If Extract_File(ogg, GetCompressedResourcesPath(), fileName, Windows_Temp_Dir, ResourcesPassword, False) Then
+            resolvedPath = Windows_Temp_Dir & fileName
+        ElseIf Extract_File(mp3, GetCompressedResourcesPath(), fileName, Windows_Temp_Dir, ResourcesPassword, False) Then
+            resolvedPath = Windows_Temp_Dir & fileName
+        End If
+    #Else
+        resolvedPath = ao20audio.GetOggFilesPath() & fileName
+    #End If
+
+    ResolveOggFilePath = FileExist(resolvedPath, vbArchive)
+End Function
+
+Private Function PlayOgg(ByVal fileName As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
+    Dim pathToFile As String
+
+    PlayOgg = -1
+    If LenB(fileName) = 0 Then Exit Function
+
+    If Not ResolveOggFilePath(fileName, pathToFile) Then
+        frmDebug.add_text_tracebox "PlayOgg missing file: " & fileName
+        Exit Function
+    End If
+
+    Call StopAllMusicBackends
+
+    PlayOgg = BassBackend_PlayOgg(pathToFile, looping, volume)
+    If PlayOgg = 0 Then
+        mMusicBackend = mbBassOgg
+        mCurrentMusicFile = fileName
+        mMusicLooping = looping
+        mMusicVolume = volume
+        frmDebug.add_text_tracebox "PlayOgg backend selected for " & fileName
+    Else
+        frmDebug.add_text_tracebox "PlayOgg failed. Error: " & PlayOgg
+    End If
+End Function
+
+Private Sub StopAllMusicBackends()
+    On Error Resume Next
+
+    Call BassBackend_StopMusic
+
+    mciSendString "stop mp3", vbNullString, 0, 0
+    mciSendString "close mp3", vbNullString, 0, 0
+
+    Dim i As Integer
+    For i = 1 To UBound(mMidiTrack)
+        With mMidiTrack(i)
+            If Not .directMusicSegmentState Is Nothing Then
+                .directMusicPerformance.StopEx .directMusicSegment, 0, 0
+                Set .directMusicSegmentState = Nothing
+            End If
+        End With
+    Next i
+End Sub
+
+Public Function StopMusic() As Long
+    StopMusic = 0
+    Call StopAllMusicBackends
+    mCurrentMusicFile = ""
+    mMusicLooping = False
+    mMusicVolume = 0
+    mMusicBackend = mbNone
+End Function
+
+Public Sub SetMusicVolume(ByVal volume As Long)
+    mMusicVolume = volume
+
+    Select Case mMusicBackend
+        Case mbBassOgg
+            Call BassBackend_SetMusicVolume(volume)
+        Case mbMciMp3
+            mciSendString "setaudio mp3 volume to " & volume, vbNullString, 0, 0
+        Case mbDirectMusicMidi
+            Dim i As Integer
+            For i = 1 To UBound(mMidiTrack)
+                With mMidiTrack(i)
+                    If Not .directMusicSegmentState Is Nothing Then
+                        .directMusicPerformance.SetMasterVolume volume
+                    End If
+                End With
+            Next i
+    End Select
+End Sub
+
+Public Function PlayMusic(ByVal fileName As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
+    Dim extension As String
+    Dim midiId As Integer
+
+    PlayMusic = -1
+    extension = GetFileExtension(fileName)
+
+    Select Case extension
+        Case ".ogg"
+            #If ENABLE_BASS = 1 Then
+                frmDebug.add_text_tracebox "PlayMusic selected BASS/OGG backend"
+                PlayMusic = PlayOgg(fileName, looping, volume)
+            #Else
+                frmDebug.add_text_tracebox "PlayMusic .ogg ignored because ENABLE_BASS=0"
+                PlayMusic = -1
+            #End If
+        Case ".mp3"
+            frmDebug.add_text_tracebox "PlayMusic selected MCI/MP3 backend"
+            PlayMusic = PlayMP3(fileName, looping, volume)
+        Case ".mid"
+            frmDebug.add_text_tracebox "PlayMusic selected DirectMusic/MIDI backend"
+            midiId = Val(Left$(fileName, Len(fileName) - 4))
+            If midiId > 0 Then
+                PlayMusic = PlayMidi(midiId, looping, volume)
+            End If
+        Case Else
+            frmDebug.add_text_tracebox "PlayMusic unknown extension for " & fileName
+    End Select
+End Function
+
 Public Function StopMP3() As Long
     StopMP3 = -1
-    ' Stop playback of the MP3 file.
     mciSendString "stop mp3", vbNullString, 0, 0
-    ' Close the MP3 file to release resources.
     mciSendString "close mp3", vbNullString, 0, 0
+    If mMusicBackend = mbMciMp3 Then mMusicBackend = mbNone
     StopMP3 = 1
 End Function
 
@@ -71,12 +209,12 @@ Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Bool
     Dim command As String
     Dim ret     As Long
     If filename = "" Then
-        PlayMP3 = -1   ' Error: file not found.
+        PlayMP3 = -1
         Exit Function
     End If
-    ' Stop and close any currently playing MP3.
-    mciSendString "stop mp3", vbNullString, 0, 0
-    mciSendString "close mp3", vbNullString, 0, 0
+
+    Call StopAllMusicBackends
+
     Dim PathToFile As String
     #If Compresion = 1 Then
         If Extract_File(mp3, GetCompressedResourcesPath(), filename, Windows_Temp_Dir, ResourcesPassword, False) Then
@@ -106,6 +244,12 @@ Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Bool
     End If
     ret = mciSendString(command, vbNullString, 0, 0)
     PlayMP3 = ret
+    If PlayMP3 = 0 Then
+        mMusicBackend = mbMciMp3
+        mCurrentMusicFile = filename
+        mMusicLooping = looping
+        mMusicVolume = volume
+    End If
 End Function
 
 Public Function GetMidiTrackName(ByVal track_id As Integer) As String
@@ -179,6 +323,13 @@ Public Function Init(ByRef dx8 As DirectX8, ByVal hWnd As Long) As Long
         frmDebug.add_text_tracebox "InitSoundEngine() failed with code " & Init
         Exit Function
     End If
+    #If ENABLE_BASS = 1 Then
+        If Not InitBassAudio(hWnd) Then
+            frmDebug.add_text_tracebox "BASS backend unavailable, OGG disabled. Error: " & BassBackend_GetLastError
+        End If
+    #Else
+        frmDebug.add_text_tracebox "BASS backend disabled by compilation define ENABLE_BASS=0"
+    #End If
     Init = 0
 End Function
 
@@ -400,14 +551,7 @@ Public Function RemoveFirstThreeIfUnderscore(ByVal s As String) As String
 End Function
 
 Public Sub ApplyMusicVolume(ByVal volume As Long)
-    Dim i As Integer
-    For i = 1 To UBound(mMidiTrack)
-        With mMidiTrack(i)
-            If Not .directMusicSegmentState Is Nothing Then
-                .directMusicPerformance.SetMasterVolume volume
-            End If
-        End With
-    Next i
+    Call SetMusicVolume(volume)
 End Sub
 
 Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
@@ -416,6 +560,7 @@ Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean 
     PlayMidi = -1
     If (id <= 0) Then Exit Function
     Dim id_as_str As String: id_as_str = str(id)
+    Call StopAllMusicBackends
     With mMidiTrack(1)
         If .Name <> id_as_str Then
             .Name = id_as_str
@@ -426,6 +571,10 @@ Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean 
         End If
     End With
     PlayMidi = 0
+    mMusicBackend = mbDirectMusicMidi
+    mCurrentMusicFile = Trim$(id_as_str) & ".mid"
+    mMusicLooping = looping
+    mMusicVolume = volume
     Exit Function
 PlayMidi_Error_Handl:
 End Function
@@ -482,13 +631,9 @@ Public Sub StopAllPlayback()
             End If
         End With
     Next i
+    Call StopAllMusicBackends
     For i = 1 To UBound(mMidiTrack)
-        With mMidiTrack(i)
-            .Name = -1
-            If Not .directMusicSegmentState Is Nothing Then
-                .directMusicPerformance.StopEx .directMusicSegment, 0, 0
-            End If
-        End With
+        mMidiTrack(i).Name = -1
     Next i
 End Sub
 
@@ -537,8 +682,9 @@ End Sub
 Private Sub Class_Terminate()
     On Error Resume Next
     Err.Clear
-    StopMP3
+    StopMusic
     StopAllPlayback
+    ShutdownBassAudio
     Dim i As Integer
     For i = 1 To UBound(mMidiTrack)
         With mMidiTrack(i)
