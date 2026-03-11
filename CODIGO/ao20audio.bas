@@ -171,6 +171,20 @@ Public Function PlayFx(ByVal id As String, _
     PlayFx = AudioEngine.PlayWav(id, looping, effVol, pan, label)
 End Function
 
+Public Function PlayMusic(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
+    PlayMusic = -1
+    If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
+        PlayMusic = ao20audio.AudioEngine.PlayMusic(filename, looping, min(CurMusicVolume, volume))
+    End If
+End Function
+
+Public Function StopMusic() As Long
+    StopMusic = -1
+    If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
+        StopMusic = ao20audio.AudioEngine.StopMusic
+    End If
+End Function
+
 Public Function StopMP3() As Long
     StopMP3 = -1
     If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
@@ -224,6 +238,10 @@ End Function
 
 Public Function GetMp3FilesPath() As String
     GetMp3FilesPath = App.path & "\..\Recursos\MP3\"
+End Function
+
+Public Function GetOggFilesPath() As String
+    GetOggFilesPath = App.path & "\..\Recursos\OGG\"
 End Function
 
 Public Function GetMidiFilesPath() As String

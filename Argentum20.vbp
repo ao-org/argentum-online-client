@@ -143,6 +143,7 @@ Module=ModGameplayUI; CODIGO\ModGameplayUI.bas
 Module=PacketId; CODIGO\PacketId.bas
 Class=clsAudioEngine; CODIGO\clsAudioEngine.cls
 Module=ao20audio; CODIGO\ao20audio.bas
+Module=modBass; CODIGO\modBass.bas
 Module=ao20config; CODIGO\ao20config.bas
 Form=CODIGO\frmCreateBattleground.frm
 Form=CODIGO\frmLobbyBattleground.frm
