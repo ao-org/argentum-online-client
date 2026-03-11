@@ -42,6 +42,8 @@ Private mCurrentMusicFile As String
 Private mMusicLooping     As Boolean
 Private mMusicVolume      As Long
 Private mMusicBackend     As eMusicBackend
+Private mMusicIsActive    As Boolean
+Private mCurrentMidiId    As Integer
 
 Private Type AudioTrack
     Name As String
@@ -95,19 +97,52 @@ Private Function PlayOgg(ByVal fileName As String, Optional ByVal looping As Boo
         Exit Function
     End If
 
-    Call StopAllMusicBackends
-
     PlayOgg = BassBackend_PlayOgg(pathToFile, looping, volume)
     If PlayOgg = 0 Then
-        mMusicBackend = mbBassOgg
-        mCurrentMusicFile = fileName
-        mMusicLooping = looping
-        mMusicVolume = volume
         frmDebug.add_text_tracebox "PlayOgg started: " & fileName
-        frmDebug.add_text_tracebox "Music backend selected: BASS/OGG"
     Else
         frmDebug.add_text_tracebox "PlayOgg failed. Error: " & PlayOgg
     End If
+End Function
+
+Private Sub ClearActiveMusicState()
+    mCurrentMusicFile = ""
+    mMusicLooping = False
+    mMusicBackend = mbNone
+    mMusicIsActive = False
+    mCurrentMidiId = 0
+    frmDebug.add_text_tracebox "Music state cleared"
+End Sub
+
+Private Sub SetActiveMusicState(ByVal fileName As String, ByVal backend As eMusicBackend, ByVal looping As Boolean, ByVal volume As Long)
+    mCurrentMusicFile = fileName
+    mMusicBackend = backend
+    mMusicLooping = looping
+    mMusicVolume = volume
+    mMusicIsActive = True
+End Sub
+
+Private Function IsSameMusicRequest(ByVal fileName As String, ByVal backend As eMusicBackend, ByVal looping As Boolean) As Boolean
+    IsSameMusicRequest = mMusicIsActive And (mMusicBackend = backend) And (StrComp(mCurrentMusicFile, fileName, vbTextCompare) = 0) And (mMusicLooping = looping)
+End Function
+
+Private Function DetermineMusicBackendFromFile(ByVal fileName As String, ByRef midiId As Integer) As eMusicBackend
+    Dim extension As String
+
+    midiId = 0
+    extension = GetFileExtension(fileName)
+
+    Select Case extension
+        Case ".ogg"
+            DetermineMusicBackendFromFile = mbBassOgg
+        Case ".mid"
+            midiId = Val(Left$(fileName, Len(fileName) - 4))
+            If midiId > 0 Then
+                DetermineMusicBackendFromFile = mbDirectMusicMidi
+            End If
+        Case Else
+            DetermineMusicBackendFromFile = mbNone
+    End Select
 End Function
 
 Private Sub StopAllMusicBackends()
@@ -127,16 +162,13 @@ Private Sub StopAllMusicBackends()
         End With
     Next i
 
+    Call ClearActiveMusicState
     frmDebug.add_text_tracebox "StopAllMusicBackends complete"
 End Sub
 
 Public Function StopMusic() As Long
     StopMusic = 0
     Call StopAllMusicBackends
-    mCurrentMusicFile = ""
-    mMusicLooping = False
-    mMusicVolume = 0
-    mMusicBackend = mbNone
 End Function
 
 Public Sub SetMusicVolume(ByVal volume As Long)
@@ -158,32 +190,52 @@ Public Sub SetMusicVolume(ByVal volume As Long)
 End Sub
 
 Public Function PlayMusic(ByVal fileName As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
-    Dim extension As String
+    Dim backend As eMusicBackend
     Dim midiId As Integer
 
     PlayMusic = -1
-    extension = GetFileExtension(fileName)
+    If LenB(fileName) = 0 Then
+        frmDebug.add_text_tracebox "PlayMusic invalid request: empty filename"
+        Exit Function
+    End If
 
-    Select Case extension
-        Case ".ogg"
+    backend = DetermineMusicBackendFromFile(fileName, midiId)
+    If backend = mbNone Then
+        frmDebug.add_text_tracebox "PlayMusic unknown extension or invalid request: " & fileName
+        Exit Function
+    End If
+
+    If IsSameMusicRequest(fileName, backend, looping) Then
+        frmDebug.add_text_tracebox "PlayMusic same track request ignored: " & fileName
+        Call SetMusicVolume(volume)
+        PlayMusic = 0
+        Exit Function
+    End If
+
+    If mMusicIsActive Then
+        frmDebug.add_text_tracebox "PlayMusic backend switch: " & CStr(mMusicBackend) & " -> " & CStr(backend)
+    End If
+    Call StopAllMusicBackends
+
+    Select Case backend
+        Case mbBassOgg
             #If ENABLE_BASS = 1 Then
-                frmDebug.add_text_tracebox "PlayMusic selected BASS/OGG backend"
+                frmDebug.add_text_tracebox "PlayMusic selected backend: BASS/OGG"
                 PlayMusic = PlayOgg(fileName, looping, volume)
             #Else
                 frmDebug.add_text_tracebox "PlayMusic .ogg ignored because ENABLE_BASS=0"
                 PlayMusic = -1
             #End If
-        Case ".mid"
-            frmDebug.add_text_tracebox "PlayMusic selected DirectMusic/MIDI backend"
-            midiId = Val(Left$(fileName, Len(fileName) - 4))
-            If midiId > 0 Then
-                PlayMusic = PlayMidi(midiId, looping, volume)
-            Else
-                frmDebug.add_text_tracebox "PlayMusic invalid MIDI filename: " & fileName
-            End If
-        Case Else
-            frmDebug.add_text_tracebox "PlayMusic unknown extension: " & fileName
+        Case mbDirectMusicMidi
+            frmDebug.add_text_tracebox "PlayMusic selected backend: DirectMusic/MIDI"
+            PlayMusic = PlayMidi(midiId, looping, volume)
     End Select
+
+    If PlayMusic = 0 Then
+        Call SetActiveMusicState(fileName, backend, looping, volume)
+    Else
+        frmDebug.add_text_tracebox "PlayMusic start failed: " & fileName
+    End If
 End Function
 
 Public Function GetMidiTrackName(ByVal track_id As Integer) As String
@@ -493,26 +545,39 @@ Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean 
     Debug.Assert id > 0
     PlayMidi = -1
     If (id <= 0) Then Exit Function
+
+    If mMusicIsActive And mMusicBackend = mbDirectMusicMidi And mCurrentMidiId = id And mMusicLooping = looping Then
+        frmDebug.add_text_tracebox "PlayMidi same track request ignored: " & CStr(id) & ".mid"
+        Call SetMusicVolume(volume)
+        PlayMidi = 0
+        Exit Function
+    End If
+
+    If mMusicIsActive Then
+        frmDebug.add_text_tracebox "PlayMidi backend switch: " & CStr(mMusicBackend) & " -> " & CStr(mbDirectMusicMidi)
+        Call StopAllMusicBackends
+    End If
+
     Dim id_as_str As String: id_as_str = str(id)
-    Call StopAllMusicBackends
     With mMidiTrack(1)
-        If .Name <> id_as_str Then
+        If .Name <> id_as_str Or .directMusicSegment Is Nothing Then
             .Name = id_as_str
             Call LoadMidi(mMidiTrack(1), id)
-            .directMusicPerformance.StopEx .directMusicSegment, 0, 0
-            Set .directMusicSegmentState = .directMusicPerformance.PlaySegmentEx(.directMusicSegment, 0, 0, Nothing, .directMusicPath)
-            .directMusicPerformance.SetMasterVolume volume
         End If
+
+        If .directMusicSegment Is Nothing Then Exit Function
+
+        .directMusicPerformance.StopEx .directMusicSegment, 0, 0
+        Set .directMusicSegmentState = .directMusicPerformance.PlaySegmentEx(.directMusicSegment, 0, 0, Nothing, .directMusicPath)
+        .directMusicPerformance.SetMasterVolume volume
     End With
     PlayMidi = 0
-    mMusicBackend = mbDirectMusicMidi
+    mCurrentMidiId = id
+    Call SetActiveMusicState(Trim$(id_as_str) & ".mid", mbDirectMusicMidi, looping, volume)
     frmDebug.add_text_tracebox "PlayMidi started: " & Trim$(id_as_str) & ".mid"
-    frmDebug.add_text_tracebox "Music backend selected: DirectMusic/MIDI"
-    mCurrentMusicFile = Trim$(id_as_str) & ".mid"
-    mMusicLooping = looping
-    mMusicVolume = volume
     Exit Function
 PlayMidi_Error_Handl:
+    frmDebug.add_text_tracebox "PlayMidi failed for id: " & CStr(id)
 End Function
 
 Public Function StopAllWavsMatchingLabel(ByVal label As String) As Long

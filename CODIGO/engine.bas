@@ -1730,17 +1730,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             'Draw name over head
             Nombres = Not MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).zone.OcultarNombre
-            If UserCharIndex > 0 Then
-                With charlist(UserCharIndex)
-                    Dim new_music As Integer
-                    new_music = MapData(.Pos.x, .Pos.y).zone.Musica
-                    If new_music > 0 Then
-                        Call ao20audio.PlayMidi(new_music, True)
-                    Else
-                        Call ao20audio.PlayMidi(MapDat.music_numberLow, True)
-                    End If
-                End With
-            End If
+          
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
                 Pos = InStr(.nombre, "<")
                 If Pos = 0 Then Pos = InStr(.nombre, "[")
