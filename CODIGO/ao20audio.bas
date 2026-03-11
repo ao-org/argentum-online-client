@@ -185,19 +185,7 @@ Public Function StopMusic() As Long
     End If
 End Function
 
-Public Function StopMP3() As Long
-    StopMP3 = -1
-    If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
-        StopMP3 = ao20audio.AudioEngine.StopMP3
-    End If
-End Function
 
-Public Function PlayMP3(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
-    PlayMP3 = -1
-    If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then
-        PlayMP3 = ao20audio.AudioEngine.PlayMP3(filename, looping, min(CurMusicVolume, volume))
-    End If
-End Function
 
 Public Function StopWav(ByVal id As String, Optional ByVal label As String = "") As Long
     StopWav = -1
@@ -234,10 +222,6 @@ End Function
 
 Public Function GetWavFilesPath() As String
     GetWavFilesPath = App.path & "\..\Recursos\WAV\"
-End Function
-
-Public Function GetMp3FilesPath() As String
-    GetMp3FilesPath = App.path & "\..\Recursos\MP3\"
 End Function
 
 Public Function GetOggFilesPath() As String
