@@ -1760,7 +1760,16 @@ Private Function CanLaunchSelectedSpell() As Boolean
 End Function
 
 Private Sub CastSelectedSpell()
-    Call UseSpell(hlst.ListIndex + 1, hlst.List(hlst.ListIndex))
+    Dim idx As Integer
+    
+    idx = hlst.ListIndex
+    
+    ' Ensure there is a valid selection before using it
+    If idx < 0 Or idx >= hlst.ListCount Then
+        Exit Sub
+    End If
+    
+    Call UseSpell(idx + 1, hlst.List(idx))
 End Sub
 
 Private Sub cmdLlavero_Click()
@@ -2488,9 +2497,11 @@ End Sub
 
 Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo imgHechizos_MouseDown_Err
-    imgHechizos.Picture = LoadInterface("boton-hechizos-off.bmp")
-    imgHechizos.Tag = "2"
-    Call hechizosClick
+    If Button = vbLeftButton Then
+        imgHechizos.Picture = LoadInterface("boton-hechizos-off.bmp")
+        imgHechizos.Tag = "2"
+        Call hechizosClick
+    End If
     Exit Sub
 imgHechizos_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.imgHechizos_MouseDown", Erl)
