@@ -46,20 +46,22 @@ Sub SwitchMap(ByVal map As Integer, Optional ByVal NewResourceMap As Integer = 0
     If isLogged Then Call NameMapa(ResourceMap)
     map_letter_a = 0
     CurMap = map
+    
+    
     If ao20audio.MusicEnabled Then
-        If MapDat.music_numberLow > 0 Then
-            If ao20audio.GetCurrentMidiName(1) <> str(MapDat.music_numberLow) Then
-                'NextMusic = MapDat.music_numberLow
+            If UserCharIndex > 0 Then
+                With charlist(UserCharIndex)
+                    Dim new_music As Integer
+                    new_music = MapData(.Pos.x, .Pos.y).zone.Musica
+                    If new_music > 0 Then
+                        Call ao20audio.PlayMidi(new_music, True)
+                    Else
+                        Call ao20audio.PlayMidi(MapDat.music_numberLow, True)
+                    End If
+                End With
             End If
-        Else
-            If MapDat.music_numberHi > 0 Then
-                If ao20audio.GetCurrentMidiName(1) <> str(MapDat.music_numberHi) Then
-                    '                    NextMusic = MapDat.music_numberHi
-                End If
-                Call ao20audio.PlayMidi(MapDat.music_numberHi, 0, 0)
-            End If
-        End If
     End If
+    
     Dim HaveAudio As Boolean
     If bRain Then
         If MapDat.LLUVIA = 1 Then
