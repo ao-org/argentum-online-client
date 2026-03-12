@@ -5064,8 +5064,6 @@ Private Sub HandleQuestDetails()
         For i = 1 To RequiredClassesCount
             RequiredClass(i) = Reader.ReadInt8
         Next i
-    Else
-        ReDim RequiredClass(Reader.ReadInt8)
     End If
     RequiredQuest = Reader.ReadInt16
     FrmQuests.detalle.Text = QuestList(QuestIndex).desc
@@ -5260,8 +5258,6 @@ Public Sub HandleNpcQuestListSend()
             For i = 1 To QuestList(QuestIndex).RequiredClassesCount
                 QuestList(QuestIndex).RequiredClass(i) = Reader.ReadInt8
             Next i
-        Else
-            ReDim QuestList(QuestIndex).RequiredClass(Reader.ReadInt8)
         End If
         QuestList(QuestIndex).LimitLevel = Reader.ReadInt8
         tmpByte = Reader.ReadInt8
