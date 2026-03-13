@@ -1722,6 +1722,7 @@ End Sub
 
 Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo cmdlanzar_MouseDown_Err
+    If Button <> vbLeftButton Then Exit Sub
     If Not CanLaunchSelectedSpell() Then
         Exit Sub
     End If
@@ -2562,6 +2563,7 @@ End Sub
 
 Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo imgInventario_MouseDown_Err
+    If Button <> vbLeftButton Then Exit Sub
     imgInventario.Picture = LoadInterface("boton-inventory-off.bmp")
     imgInventario.Tag = "2"
     Call inventoryClick
