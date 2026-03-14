@@ -692,12 +692,19 @@ Public Function PlayWav(ByVal prefix_sound_id As String, _
     #If ENABLE_BASS = 1 Then
         oggPath = ResolveOggSfxPath(prefix_sound_id)
         If LenB(oggPath) > 0 Then
-            frmDebug.add_text_tracebox "PlayWav using OGG sample: " & prefix_sound_id
+            #If Developer = 1 Then
+                frmDebug.add_text_tracebox "PlayWav using OGG sample: " & prefix_sound_id
+            #End If
             PlayWav = PlayCompressedSfx(prefix_sound_id, oggPath, looping, volume, pan)
             If PlayWav = 0 Then Exit Function
-            frmDebug.add_text_tracebox "PlayWav OGG failed, fallback to WAV: " & prefix_sound_id
+            #If Developer = 1 Then
+                frmDebug.add_text_tracebox "PlayWav OGG failed, fallback to WAV: " & prefix_sound_id
+            #End If
         Else
-            frmDebug.add_text_tracebox "PlayWav fallback to WAV: " & prefix_sound_id
+            #If Developer = 1 Then
+                frmDebug.add_text_tracebox "PlayWav fallback to WAV: " & prefix_sound_id
+            #End If
+            
         End If
     #End If
 
