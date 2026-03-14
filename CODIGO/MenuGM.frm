@@ -570,7 +570,7 @@ Private Sub OpcionImg_Click(Index As Integer)
             Randomize
             idx = Int((15 * Rnd) + 1)
             MensajeSeleccionado = Replace(mensajes(idx), "¬1", targetName)
-            Call ParseUserCommand("/MENSAJEINFORMACION " & targetName & "@" & MensajeSeleccionado)
+            Call ParseUserCommand("/MENSAJEANTIMACRO " & targetName & "@" & MensajeSeleccionado)
             ' agregar que el mensaje lo pueda leer yo tambien
             Call AddtoRichTextBox(frmMain.RecTxt, "MENSAJE A " & targetName & ": " & MensajeSeleccionado, 0, 255, 255, True)
         Case 14
