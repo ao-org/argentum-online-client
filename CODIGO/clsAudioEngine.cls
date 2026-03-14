@@ -53,6 +53,15 @@ End Type
 
 Private mAudioTracks(1 To 30) As AudioTrack
 
+Private Type tCompressedSfx
+    Name As String
+    FullPath As String
+    SampleHandle As Long
+End Type
+
+Private mCompressedSfx() As tCompressedSfx
+Private mCompressedSfxCount As Integer
+
 Private Type MidiTrack
     Name As String
     directMusicLoader As DirectMusicLoader8
@@ -385,6 +394,193 @@ CreateWavBufferFromFile_Err:
     Resume Next
 End Function
 
+Private Function ResolveOggSfxPath(ByVal Name As String) As String
+    Dim fileNameWithExtension As String
+
+    ResolveOggSfxPath = ""
+    If LenB(Name) = 0 Then Exit Function
+
+    fileNameWithExtension = Name & ".ogg"
+
+    #If Compresion = 1 Then
+        If Extract_File(ogg, GetCompressedResourcesPath(), fileNameWithExtension, Windows_Temp_Dir, ResourcesPassword, False) Then
+            ResolveOggSfxPath = Windows_Temp_Dir & fileNameWithExtension
+        End If
+    #Else
+        ResolveOggSfxPath = ao20audio.GetOggFilesPath() & fileNameWithExtension
+    #End If
+
+    If Not FileExist(ResolveOggSfxPath, vbArchive) Then
+        ResolveOggSfxPath = ""
+    End If
+End Function
+
+Private Function ConvertFxVolumeToBass(ByVal volume As Long) As Single
+    Dim bassVolume As Single
+
+    If volume <= 0 Then
+        bassVolume = (10000 + volume) / 10000
+    ElseIf volume <= 1000 Then
+        bassVolume = volume / 1000
+    ElseIf volume <= 10000 Then
+        bassVolume = volume / 10000
+    Else
+        bassVolume = 1
+    End If
+
+    If bassVolume < 0 Then bassVolume = 0
+    If bassVolume > 1 Then bassVolume = 1
+
+    ConvertFxVolumeToBass = bassVolume
+End Function
+
+Private Function ConvertFxPanToBass(ByVal pan As Long) As Single
+    Dim bassPan As Single
+
+    If pan <= -10000 Then
+        bassPan = -1
+    ElseIf pan >= 10000 Then
+        bassPan = 1
+    Else
+        bassPan = pan / 10000
+    End If
+
+    If bassPan < -1 Then bassPan = -1
+    If bassPan > 1 Then bassPan = 1
+
+    ConvertFxPanToBass = bassPan
+End Function
+
+Private Function FindCompressedSfxIndex(ByVal Name As String, ByVal fullPath As String) As Integer
+    Dim i As Integer
+
+    FindCompressedSfxIndex = -1
+    If mCompressedSfxCount <= 0 Then Exit Function
+
+    For i = 1 To mCompressedSfxCount
+        If (StrComp(mCompressedSfx(i).Name, Name, vbTextCompare) = 0) Or _
+           (StrComp(mCompressedSfx(i).FullPath, fullPath, vbTextCompare) = 0) Then
+            FindCompressedSfxIndex = i
+            Exit Function
+        End If
+    Next i
+End Function
+
+Private Function GetCompressedSfxSample(ByVal Name As String, ByVal fullPath As String) As Long
+    On Error GoTo GetCompressedSfxSample_Error
+    Dim sampleHandle As Long
+    Dim i As Integer
+
+    GetCompressedSfxSample = 0
+    If LenB(Name) = 0 Or LenB(fullPath) = 0 Then Exit Function
+
+    i = FindCompressedSfxIndex(Name, fullPath)
+    If i > 0 Then
+        If mCompressedSfx(i).SampleHandle <> 0 Then
+            GetCompressedSfxSample = mCompressedSfx(i).SampleHandle
+            frmDebug.add_text_tracebox "PlayWav OGG cache hit: " & Name
+            Exit Function
+        End If
+    End If
+
+    sampleHandle = BASS_SampleLoad(0, StrPtr(fullPath), 0, 0, 8, BASS_SAMPLE_OVER_VOL)
+    If sampleHandle = 0 Then
+        frmDebug.add_text_tracebox "PlayWav OGG sample load failed: " & Name & " Error: " & BASS_ErrorGetCode()
+        Exit Function
+    End If
+
+    If i <= 0 Then
+        mCompressedSfxCount = mCompressedSfxCount + 1
+        If mCompressedSfxCount = 1 Then
+            ReDim mCompressedSfx(1 To 1)
+        Else
+            ReDim Preserve mCompressedSfx(1 To mCompressedSfxCount)
+        End If
+        i = mCompressedSfxCount
+    End If
+
+    mCompressedSfx(i).Name = Name
+    mCompressedSfx(i).FullPath = fullPath
+    mCompressedSfx(i).SampleHandle = sampleHandle
+
+    frmDebug.add_text_tracebox "PlayWav OGG sample cached: " & Name
+    GetCompressedSfxSample = sampleHandle
+    Exit Function
+
+GetCompressedSfxSample_Error:
+    frmDebug.add_text_tracebox "GetCompressedSfxSample exception: " & Err.Description
+End Function
+
+Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As String, ByVal looping As Boolean, ByVal volume As Long, Optional ByVal pan As Long = 0) As Long
+    On Error GoTo PlayCompressedSfx_Error
+    Dim sampleHandle As Long
+    Dim channelHandle As Long
+    Dim flags As Long
+
+    PlayCompressedSfx = -1
+
+    If Not InitBassAudio(0) Then
+        PlayCompressedSfx = BassBackend_GetLastError
+        If PlayCompressedSfx = 0 Then PlayCompressedSfx = -1
+        Exit Function
+    End If
+
+    sampleHandle = GetCompressedSfxSample(Name, fullPath)
+    If sampleHandle = 0 Then
+        PlayCompressedSfx = BASS_ErrorGetCode()
+        If PlayCompressedSfx = 0 Then PlayCompressedSfx = -1
+        Exit Function
+    End If
+
+    channelHandle = BASS_SampleGetChannel(sampleHandle, BASS_SAMCHAN_NEW)
+    If channelHandle = 0 Then
+        PlayCompressedSfx = BASS_ErrorGetCode()
+        frmDebug.add_text_tracebox "PlayWav OGG sample channel failed: " & Name & " Error: " & PlayCompressedSfx
+        Exit Function
+    End If
+
+    flags = IIf(looping, BASS_SAMPLE_LOOP, 0)
+    Call BASS_ChannelFlags(channelHandle, flags, BASS_SAMPLE_LOOP)
+    Call BASS_ChannelSetAttribute(channelHandle, BASS_ATTRIB_VOL, ConvertFxVolumeToBass(volume))
+    Call BASS_ChannelSetAttribute(channelHandle, BASS_ATTRIB_PAN, ConvertFxPanToBass(pan))
+
+    If BASS_ChannelPlay(channelHandle, 1) = 0 Then
+        PlayCompressedSfx = BASS_ErrorGetCode()
+        frmDebug.add_text_tracebox "PlayWav OGG play failed: " & Name & " Error: " & PlayCompressedSfx
+        Exit Function
+    End If
+
+    PlayCompressedSfx = 0
+    Exit Function
+
+PlayCompressedSfx_Error:
+    frmDebug.add_text_tracebox "PlayCompressedSfx exception: " & Err.Description
+End Function
+
+Private Sub FreeCompressedSfxCache()
+    On Error GoTo FreeCompressedSfxCache_Error
+    Dim i As Integer
+
+    If mCompressedSfxCount <= 0 Then Exit Sub
+
+    For i = 1 To mCompressedSfxCount
+        If mCompressedSfx(i).SampleHandle <> 0 Then
+            Call BASS_SampleFree(mCompressedSfx(i).SampleHandle)
+            mCompressedSfx(i).SampleHandle = 0
+        End If
+        mCompressedSfx(i).Name = ""
+        mCompressedSfx(i).FullPath = ""
+    Next i
+
+    Erase mCompressedSfx
+    mCompressedSfxCount = 0
+    frmDebug.add_text_tracebox "Compressed OGG SFX cache cleared"
+    Exit Sub
+
+FreeCompressedSfxCache_Error:
+    frmDebug.add_text_tracebox "FreeCompressedSfxCache exception: " & Err.Description
+End Sub
+
 Private Function StartPlaying(ByRef Buffer As DirectSoundSecondaryBuffer8, ByVal flags As CONST_DSBPLAYFLAGS, ByVal volume As Long, ByVal pan As Long) As Long
     On Error GoTo ErrorHandler
     StartPlaying = False
@@ -491,7 +687,27 @@ Public Function PlayWav(ByVal prefix_sound_id As String, _
                         Optional ByVal pan As Long = 0, _
                         Optional ByVal label As String = "") As Long
     On Error GoTo PlayWav_Error_Handl
+    Dim oggPath As String
     Dim sound_id As Integer
+    #If ENABLE_BASS = 1 Then
+        oggPath = ResolveOggSfxPath(prefix_sound_id)
+        If LenB(oggPath) > 0 Then
+            #If Developer = 1 Then
+                frmDebug.add_text_tracebox "PlayWav using OGG sample: " & prefix_sound_id
+            #End If
+            PlayWav = PlayCompressedSfx(prefix_sound_id, oggPath, looping, volume, pan)
+            If PlayWav = 0 Then Exit Function
+            #If Developer = 1 Then
+                frmDebug.add_text_tracebox "PlayWav OGG failed, fallback to WAV: " & prefix_sound_id
+            #End If
+        Else
+            #If Developer = 1 Then
+                frmDebug.add_text_tracebox "PlayWav fallback to WAV: " & prefix_sound_id
+            #End If
+            
+        End If
+    #End If
+
     sound_id = RemoveFirstThreeIfUnderscore(prefix_sound_id)
     Debug.Assert sound_id > 0
     PlayWav = -1
@@ -663,6 +879,8 @@ Private Sub SetMembersToNothing()
     Set mDirectX = Nothing
     Set mDirectSound = Nothing
     Set mDirectSoundEnum = Nothing
+    Erase mCompressedSfx
+    mCompressedSfxCount = 0
 End Sub
 
 Public Sub ApplyAmbientVolume(ByVal volume As Long)
@@ -685,6 +903,7 @@ Private Sub Class_Terminate()
     Err.Clear
     StopMusic
     StopAllPlayback
+    FreeCompressedSfxCache
     ShutdownBassAudio
     Dim i As Integer
     For i = 1 To UBound(mMidiTrack)

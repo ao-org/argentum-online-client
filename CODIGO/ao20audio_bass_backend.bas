@@ -4,8 +4,6 @@ Option Explicit
 #If ENABLE_BASS = 1 Then
 
 
-Public Const BASS_ATTRIB_VOL       As Long = 2
-Public Const BASS_SAMPLE_LOOP      As Long = &H4
 Private Const BASS_INIT_DEFAULT    As Long = 0
 Private Const BASS_DEFAULT_DEVICE  As Long = -1
 Private Const BASS_DEFAULT_FREQ    As Long = 44100
@@ -175,9 +173,6 @@ Public Function BassBackend_GetLastError() As Long
 End Function
 
 #Else
-
-Public Const BASS_ATTRIB_VOL       As Long = 2
-Public Const BASS_SAMPLE_LOOP      As Long = &H4
 
 Public Function InitBassAudio(ByVal hWndOwner As Long) As Boolean
     InitBassAudio = False

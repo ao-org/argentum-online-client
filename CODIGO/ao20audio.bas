@@ -57,7 +57,7 @@ Public Sub PlayRandomOggSong(ByVal maxTrack As Integer, Optional ByVal looping A
     Dim filename As String
 
     track = Int(Rnd * maxTrack) + 1
-    filename = CStr(track) & ".ogg"
+    filename = "ost_" & CStr(track) & ".ogg"
 
     frmDebug.add_text_tracebox "Playing random OGG track: " & filename
     Call ao20audio.PlayMusic(filename, looping)
