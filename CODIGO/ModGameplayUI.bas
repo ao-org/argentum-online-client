@@ -86,7 +86,6 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
         If Not Comerciando Then
             If MouseShift = 0 Then
                 If UsingSkill = 0 Or frmMain.MacroLadder.enabled Then
-                    Call CountPacketIterations(packetControl(ClientPacketID.eLeftClick), 150)
                     Call WriteLeftClick(tX, tY)
                 Else
                     Dim SendSkill As Boolean

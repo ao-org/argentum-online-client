@@ -41,12 +41,12 @@ Private Enum eActionRateLimitType
 End Enum
 
 Private Const ACTION_RATE_LIMIT_COUNT As Long = 10
-Private Const DEFAULT_TALK_INTERVAL_MS As Long = 120
+Private Const DEFAULT_TALK_INTERVAL_MS As Long = 900
 Private Const DEFAULT_ATTACK_INTERVAL_MS As Long = 120
 Private Const DEFAULT_CASTSPELL_INTERVAL_MS As Long = 180
-Private Const DEFAULT_LEFTCLICK_INTERVAL_MS As Long = 70
+Private Const DEFAULT_LEFTCLICK_INTERVAL_MS As Long = 80
 Private Const DEFAULT_USEITEM_INTERVAL_MS As Long = 100
-Private Const DEFAULT_HIDE_INTERVAL_MS As Long = 250
+Private Const DEFAULT_HIDE_INTERVAL_MS As Long = 150
 Private Const TICK_MASK_MAX As Double = 2147483648#
 Private Const TICK_MASK_LIMIT As Double = 2147483647#
 
@@ -162,6 +162,10 @@ Private Function ShouldBlockAction(ByVal actionType As eActionRateLimitType, ByV
     Call EnsureActionRateLimiter
     If bypassRateLimit Then Exit Function
     ShouldBlockAction = Not CanSendActionNow(actionType)
+End Function
+
+Private Function ShouldRateLimitTalk(ByVal chat As String) As Boolean
+    ShouldRateLimitTalk = (LenB(Trim$(chat)) = 0)
 End Function
 
 Private Sub MarkActionSent(ByVal actionType As eActionRateLimitType)
@@ -341,10 +345,12 @@ Public Sub WriteTalk(ByVal chat As String, Optional ByVal bypassRateLimit As Boo
     '<EhHeader>
     On Error GoTo WriteTalk_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionTalk, bypassRateLimit) Then
-        Exit Sub
+    If ShouldRateLimitTalk(chat) Then
+        If ShouldBlockAction(ActionTalk, bypassRateLimit) Then
+            Exit Sub
+        End If
+        Call MarkActionSent(ActionTalk)
     End If
-    Call MarkActionSent(ActionTalk)
     Call Writer.WriteInt16(ClientPacketID.eTalk)
     Call Writer.WriteString8(chat)
     packetCounters.TS_Talk = packetCounters.TS_Talk + 1
@@ -904,10 +910,14 @@ End Sub
 ' @param    x Tile coord in the x-axis in which the user clicked.
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
+Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte, Optional ByVal bypassRateLimit As Boolean = False)
     '<EhHeader>
     On Error GoTo WriteDoubleClick_Err
     '</EhHeader>
+    If ShouldBlockAction(ActionLeftClick, bypassRateLimit) Then
+        Exit Sub
+    End If
+    Call MarkActionSent(ActionLeftClick)
     Call Writer.WriteInt16(ClientPacketID.eDoubleClick)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)

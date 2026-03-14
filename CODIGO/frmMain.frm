@@ -3409,9 +3409,6 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
         stxtbuffer = ""
         SendTxt.text = ""
         KeyCode = 0
-        Dim tiempoTranscurridoCartel As Double
-        tiempoTranscurridoCartel = GetTickCount - StartOpenChatTime
-        Call computeLastElapsedTimeChat(tiempoTranscurridoCartel)
         SendTxt.visible = False
     End If
     Exit Sub
