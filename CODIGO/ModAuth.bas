@@ -169,15 +169,15 @@ Public Sub SendAccountLoginRequest()
     login_request(1) = &HDE
     login_request(2) = &HAD
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
-    login_request(5) = hiByte(len_username)
-    login_request(6) = LoByte(len_username)
+    login_request(5) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(6) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     offset_login_request = 7 + UBound(encrypted_username)
-    login_request(offset_login_request + 1) = hiByte(len_password)
-    login_request(offset_login_request + 2) = LoByte(len_password)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_password)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_password)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_password, login_request, len_password, offset_login_request + 3)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.RequestAccountLogin
@@ -203,15 +203,15 @@ Public Sub SendRequestVerificationCode()
     login_request(1) = &HDA
     login_request(2) = &HAB
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
-    login_request(5) = hiByte(len_username)
-    login_request(6) = LoByte(len_username)
+    login_request(5) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(6) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     offset_login_request = 7 + UBound(encrypted_username)
-    login_request(offset_login_request + 1) = hiByte(len_username)
-    login_request(offset_login_request + 2) = LoByte(len_username)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, offset_login_request + 3)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.RequestVerificationCode
@@ -266,15 +266,15 @@ Public Sub SendRequestForgotPassword()
     login_request(1) = &HCB
     login_request(2) = &HCB
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
-    login_request(5) = hiByte(len_username)
-    login_request(6) = LoByte(len_username)
+    login_request(5) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(6) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     offset_login_request = 7 + UBound(encrypted_username)
-    login_request(offset_login_request + 1) = hiByte(len_username)
-    login_request(offset_login_request + 2) = LoByte(len_username)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, offset_login_request + 3)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.RequestForgotPassword
@@ -310,15 +310,15 @@ Public Sub SendValidateAccount()
     login_request(1) = &HBA
     login_request(2) = &HAD
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
-    login_request(5) = hiByte(len_username)
-    login_request(6) = LoByte(len_username)
+    login_request(5) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(6) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     offset_login_request = 7 + UBound(encrypted_username)
-    login_request(offset_login_request + 1) = hiByte(len_validate_code)
-    login_request(offset_login_request + 2) = LoByte(len_validate_code)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_validate_code)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_validate_code)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_validate_code, login_request, len_validate_code, offset_login_request + 3)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.RequestValidateAccount
@@ -364,19 +364,19 @@ Public Sub SendRequestResetPassword()
     login_request(1) = &HFB
     login_request(2) = &HFB
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
-    login_request(5) = hiByte(len_username)
-    login_request(6) = LoByte(len_username)
+    login_request(5) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(6) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     offset_login_request = 7 + UBound(encrypted_username)
-    login_request(offset_login_request + 1) = hiByte(len_password)
-    login_request(offset_login_request + 2) = LoByte(len_password)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_password)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_password)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_password, login_request, len_password, offset_login_request + 3)
     offset_login_request = offset_login_request + 3 + UBound(encrypted_password)
-    login_request(offset_login_request + 1) = hiByte(len_validate_code)
-    login_request(offset_login_request + 2) = LoByte(len_validate_code)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_validate_code)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_validate_code)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_validate_code, login_request, len_validate_code, offset_login_request + 3)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.RequestResetPassword
@@ -393,8 +393,8 @@ Public Sub LogOutRequest()
     logout_request(1) = &H1
     logout_request(2) = &H1
     'Siguientes 2 bytes indican tamaño total del paquete
-    logout_request(3) = hiByte(packet_size)
-    logout_request(4) = LoByte(packet_size)
+    logout_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    logout_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Dim encrypted_session_token_byte() As Byte
     Call Str2ByteArr(encrypted_session_token, encrypted_session_token_byte)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_session_token_byte, logout_request, Len(encrypted_session_token), 5)
@@ -452,8 +452,8 @@ Public Sub SendRequestTransferCharacter()
     transfer_request(1) = &H20
     transfer_request(2) = &H25
     'Siguientes 2 bytes indican tamaño total del paquete
-    transfer_request(3) = hiByte(packet_size)
-    transfer_request(4) = LoByte(packet_size)
+    transfer_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    transfer_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, transfer_request, len_json, 5)
     Call frmConnect.AuthSocket.SendData(transfer_request)
     Auth_state = e_state.RequestTransferChar
@@ -492,8 +492,8 @@ Public Sub SendSignUpRequest()
     login_request(1) = &HBE
     login_request(2) = &HEF
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, login_request, len_json, 5)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.RequestSignUp
@@ -614,8 +614,8 @@ Public Sub SendDeleteCharRequest()
     delete_char_request(1) = &H1
     delete_char_request(2) = &H5
     'Siguientes 2 bytes indican tamaño total del paquete
-    delete_char_request(3) = hiByte(packet_size)
-    delete_char_request(4) = LoByte(packet_size)
+    delete_char_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    delete_char_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, delete_char_request, len_json, 5)
     Call frmConnect.AuthSocket.SendData(delete_char_request)
     Auth_state = e_state.RequestDeleteChar
@@ -683,15 +683,15 @@ Public Sub SendConfirmDeleteChar()
     login_request(1) = &H1
     login_request(2) = &H8
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
-    login_request(5) = hiByte(len_username)
-    login_request(6) = LoByte(len_username)
+    login_request(5) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(6) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     offset_login_request = 7 + UBound(encrypted_username)
-    login_request(offset_login_request + 1) = hiByte(len_validate_code)
-    login_request(offset_login_request + 2) = LoByte(len_validate_code)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_validate_code)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_validate_code)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_validate_code, login_request, len_validate_code, offset_login_request + 3)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.ConfirmDeleteChar
@@ -790,8 +790,8 @@ Public Sub PCListRequest()
     charList_request(1) = &H1
     charList_request(2) = &H2
     'Siguientes 2 bytes indican tamaño total del paquete
-    charList_request(3) = hiByte(packet_size)
-    charList_request(4) = LoByte(packet_size)
+    charList_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    charList_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, charList_request, len_username, 5)
     Call frmConnect.AuthSocket.SendData(charList_request)
     Auth_state = e_state.RequestCharList
@@ -1250,8 +1250,8 @@ Public Function SendConfirmTransferCharacter()
     transfer_request(1) = &H20
     transfer_request(2) = &H28
     'Siguientes 2 bytes indican tamaño total del paquete
-    transfer_request(3) = hiByte(packet_size)
-    transfer_request(4) = LoByte(packet_size)
+    transfer_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    transfer_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, transfer_request, len_json, 5)
     Call frmConnect.AuthSocket.SendData(transfer_request)
     Auth_state = e_state.ConfirmTransferChar
