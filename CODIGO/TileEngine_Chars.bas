@@ -99,7 +99,7 @@ Public Sub EraseChar(ByVal charindex As Integer, Optional ByVal notCancelMe As B
             If LastChar = 0 Then Exit Do
         Loop
     End If
-    MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).charindex = 0
+    Call ClearCharFromMap(charindex)
     'Remove char's dialog
     If (Not Dialogos Is Nothing) Then
         Call Dialogos.RemoveDialog(charindex)
@@ -111,6 +111,72 @@ Public Sub EraseChar(ByVal charindex As Integer, Optional ByVal notCancelMe As B
 EraseChar_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.EraseChar", Erl)
     Resume Next
+End Sub
+
+Private Sub ClearCharFromMap(ByVal charindex As Integer)
+    On Error GoTo ClearCharFromMap_Err
+    
+    With charlist(charindex)
+        If .IsMultiTile Then
+            Dim tileX As Integer, tileY As Integer
+            Dim mapX As Integer, mapY As Integer
+            For tileX = 0 To .TileWidth - 1
+                For tileY = 0 To .TileHeight - 1
+                    mapX = .BaseTileX + tileX
+                    mapY = .BaseTileY + tileY
+                    If InMapBounds(mapX, mapY) Then
+                        If MapData(mapX, mapY).charindex = charindex Then
+                            MapData(mapX, mapY).charindex = 0
+                            MapData(mapX, mapY).IsCharReferenceTile = False
+                        End If
+                    End If
+                Next tileY
+            Next tileX
+        Else
+            If InMapBounds(.Pos.x, .Pos.y) Then
+                If MapData(.Pos.x, .Pos.y).charindex = charindex Then
+                    MapData(.Pos.x, .Pos.y).charindex = 0
+                End If
+            End If
+        End If
+    End With
+    
+    Exit Sub
+ClearCharFromMap_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.ClearCharFromMap", Erl)
+End Sub
+
+Private Sub PlaceCharOnMap(ByVal charindex As Integer)
+    On Error GoTo PlaceCharOnMap_Err
+    
+    With charlist(charindex)
+        If .IsMultiTile Then
+            Dim tileX As Integer, tileY As Integer
+            Dim mapX As Integer, mapY As Integer
+            For tileX = 0 To .TileWidth - 1
+                For tileY = 0 To .TileHeight - 1
+                    mapX = .BaseTileX + tileX
+                    mapY = .BaseTileY + tileY
+                    If InMapBounds(mapX, mapY) Then
+                        MapData(mapX, mapY).charindex = charindex
+                        If tileX = 0 And tileY = 0 Then
+                            MapData(mapX, mapY).IsCharReferenceTile = False
+                        Else
+                            MapData(mapX, mapY).IsCharReferenceTile = True
+                        End If
+                    End If
+                Next tileY
+            Next tileX
+        Else
+            If InMapBounds(.Pos.x, .Pos.y) Then
+                MapData(.Pos.x, .Pos.y).charindex = charindex
+            End If
+        End If
+    End With
+    
+    Exit Sub
+PlaceCharOnMap_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.PlaceCharOnMap", Erl)
 End Sub
 
 Sub MakeChar(ByVal charindex As Integer, _
@@ -202,7 +268,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
     With charlist(charindex)
         x = .Pos.x
         y = .Pos.y
-        ' Dirección a mover
+        ' Direcciï¿½n a mover
         Select Case nHeading
             Case E_Heading.NORTH: addy = -1
             Case E_Heading.EAST:  addx = 1
@@ -211,13 +277,15 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         End Select
         nX = x + addx
         nY = y + addy
-        MapData(nX, nY).charindex = charindex
+        Call ClearCharFromMap(charindex)
         .Pos.x = nX
         .Pos.y = nY
-        If MapData(x, y).charindex = charindex Then
-            MapData(x, y).charindex = 0
+        If .IsMultiTile Then
+            .BaseTileX = nX
+            .BaseTileY = nY
         End If
-        ' ---- Usar tamaño de tile configurable (antes 32 fijo)
+        Call PlaceCharOnMap(charindex)
+        ' ---- Usar tamaï¿½o de tile configurable (antes 32 fijo)
         .MoveOffsetX = -1 * (TilePixelWidth * addx)
         .MoveOffsetY = -1 * (TilePixelHeight * addy)
         ' Forzar heading en escalera
@@ -237,7 +305,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
             .AnimatingBody = 0
         End If
         .Idle = False
-        ' --- Si cambia de dirección mientras ya está moviéndose, preservamos fase
+        ' --- Si cambia de direcciï¿½n mientras ya estï¿½ moviï¿½ndose, preservamos fase
         If .Moving And (newHeading <> oldHeading) Then
             ' BODY
             If .Body.Walk(oldHeading).started > 0 Then
@@ -387,7 +455,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
             .AnimatingBody = 0
         End If
         If Not .Moving Then
-            ' --- Empezó a moverse recién ahora ---
+            ' --- Empezï¿½ a moverse reciï¿½n ahora ---
             If .Muerto Then
                 If Not .Navegando Then
                     .Body = BodyData(CASPER_BODY)
@@ -415,7 +483,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
             .MovArmaEscudo = False
             .Moving = True
         ElseIf .Heading <> oldHeading Then
-            ' --- Ya venía moviéndose y cambió de dirección: preservar fase ---
+            ' --- Ya venï¿½a moviï¿½ndose y cambiï¿½ de direcciï¿½n: preservar fase ---
             Dim keepStart As Long
                 If IsAmphibianOverWater(charindex) Then
                     .Body = BodyData(.BodyOnWater)
@@ -424,7 +492,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
             keepStart = SyncGrhPhase(.Body.Walk(oldHeading), .Body.Walk(.Heading).GrhIndex)
             If keepStart > 0 Then
                 .Body.Walk(.Heading).started = keepStart
-                ' Si necesitás acompasar arma/escudo, descomentá:
+                ' Si necesitï¿½s acompasar arma/escudo, descomentï¿½:
                 'If .Arma.WeaponWalk(.Heading).started = 0 Then .Arma.WeaponWalk(.Heading).started = keepStart
                 'If .Escudo.ShieldWalk(.Heading).started = 0 Then .Escudo.ShieldWalk(.Heading).started = keepStart
             End If
@@ -463,7 +531,7 @@ Public Sub ApplySpeedingToChar(ByVal charindex As Integer)
                     base = total
                 End If
                 If base <= 0 Then base = 1
-                spd = CLng(base / rate) ' a mayor rate => frames más rápidos
+                spd = CLng(base / rate) ' a mayor rate => frames mï¿½s rï¿½pidos
                 If spd < 40 Then spd = 40   ' clamps opcionales
                 If spd > 220 Then spd = 220
                 .Body.Walk(h).speed = spd
