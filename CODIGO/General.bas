@@ -1445,16 +1445,16 @@ Public Function IntentarObtenerPezEspecial()
             Call AddtoRichTextBox(frmMain.RecTxt, "¡Fallaste! Esperá " & esperaSegundos & " segundos para el próximo intento.", 255, 130, 130, 1, 0)
         End If
 
-        If ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados >= 5 Or ContadorIntentosPescaEspecial_Acertados >= 3 Then
-            PescandoEspecial = False
-            Call WriteFinalizarPescaEspecial
-        ElseIf ContadorIntentosPescaEspecial_Acertados >= 3 Then
-            PescandoEspecial = False
-            Call WriteFinalizarPescaEspecial
-        ElseIf ContadorIntentosPescaEspecial_Fallados >= 3 Then
+        If ContadorIntentosPescaEspecial_Fallados >= 3 Then
             PescandoEspecial = False
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
             Call WriteRomperCania
+        ElseIf ContadorIntentosPescaEspecial_Acertados >= 3 Then
+            PescandoEspecial = False
+            Call WriteFinalizarPescaEspecial
+        ElseIf ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados >= 5 Then
+            PescandoEspecial = False
+            Call WriteFinalizarPescaEspecial
         End If
     End If
 End Function
