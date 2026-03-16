@@ -583,20 +583,32 @@ Sub RenderScreen(ByVal center_x As Integer, _
                 Call Draw_Grh(Grh, 394 + (i * 10) + gameplay_render_offset.x, 573 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
             End If
         Next i
-        If PosicionBarra <= 0 Then
-            DireccionBarra = 1
-            PuedeIntentar = True
-        ElseIf PosicionBarra > 199 Then
-            DireccionBarra = -1
-            PuedeIntentar = True
+        If GetTickCount() >= ProximoIntentoPezEspecial Then
+            If TiempoEsperaIntentoPescaEspecialMs > 0 Then
+                PosicionBarra = RandomNumber(0, BarWidth)
+                If RandomNumber(0, 1) = 0 Then
+                    DireccionBarra = -1
+                Else
+                    DireccionBarra = 1
+                End If
+                TiempoEsperaIntentoPescaEspecialMs = 0
+            End If
+
+            If PosicionBarra <= 0 Then
+                DireccionBarra = 1
+                PuedeIntentar = True
+            ElseIf PosicionBarra > 199 Then
+                DireccionBarra = -1
+                PuedeIntentar = True
+            End If
+            If PosicionBarra < 0 Then
+                PosicionBarra = 0
+            ElseIf PosicionBarra > 199 Then
+                PosicionBarra = 199
+            End If
+            '90 - 111 es incluido (saca el pecesito)
+            PosicionBarra = PosicionBarra + (DireccionBarra * VelocidadBarra * timerElapsedTime * 0.2)
         End If
-        If PosicionBarra < 0 Then
-            PosicionBarra = 0
-        ElseIf PosicionBarra > 199 Then
-            PosicionBarra = 199
-        End If
-        '90 - 111 es incluido (saca el pecesito)
-        PosicionBarra = PosicionBarra + (DireccionBarra * VelocidadBarra * timerElapsedTime * 0.2)
         If (GetTickCount() - startTimePezEspecial) >= 20000 Then
             PescandoEspecial = False
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)

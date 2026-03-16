@@ -46,6 +46,8 @@ Public ContadorIntentosPescaEspecial_Acertados As Long
 Public ContadorIntentosPescaEspecial_Fallados  As Long
 Public startTimePezEspecial                    As Long
 Public LastTimePezEspecial                     As Long
+Public ProximoIntentoPezEspecial               As Long
+Public TiempoEsperaIntentoPescaEspecialMs      As Long
 Public DireccionBarra                          As Single
 Public Const VelocidadBarra                    As Single = 1
 Public Const GRH_BARRA_PESCA                   As Long = 60666

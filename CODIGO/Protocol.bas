@@ -5615,6 +5615,8 @@ End Sub
 
 Public Sub HandlePelearConPezEspecial()
     On Error GoTo errhandler
+    If frmMain.macrotrabajo.enabled Then frmMain.DesactivarMacroTrabajo
+    If UserMacro.Activado Then Call ResetearUserMacro
     PosicionBarra = 1
     DireccionBarra = 1
     Dim i As Integer
@@ -5625,6 +5627,8 @@ Public Sub HandlePelearConPezEspecial()
     Call ao20audio.PlayWav(55)
     ContadorIntentosPescaEspecial_Fallados = 0
     ContadorIntentosPescaEspecial_Acertados = 0
+    TiempoEsperaIntentoPescaEspecialMs = 0
+    ProximoIntentoPezEspecial = 0
     startTimePezEspecial = GetTickCount()
     Call Char_Dialog_Set(UserCharIndex, JsonLanguage.Item("MENSAJE_SUPER_PEZ"), &H1FFFF, 200, 130)
     Exit Sub

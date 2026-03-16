@@ -1414,6 +1414,12 @@ End Function
 
 Public Function IntentarObtenerPezEspecial()
     Dim acierto As Byte
+    Dim tiempoActual As Long
+    Dim esperaSegundos As String
+    tiempoActual = GetTickCount()
+    If tiempoActual < ProximoIntentoPezEspecial Then
+        Exit Function
+    End If
     frmDebug.add_text_tracebox "Aciertos: " & ContadorIntentosPescaEspecial_Acertados & "Posicion barra : " & PosicionBarra
     'El + y -10 es por inputLag (Margen de error)
     If PuedeIntentar Then
@@ -1424,12 +1430,21 @@ Public Function IntentarObtenerPezEspecial()
             ContadorIntentosPescaEspecial_Fallados = ContadorIntentosPescaEspecial_Fallados + 1
             acierto = 2
         End If
+
+        TiempoEsperaIntentoPescaEspecialMs = RandomNumber(2000, 10000)
+        ProximoIntentoPezEspecial = tiempoActual + TiempoEsperaIntentoPescaEspecialMs
+        startTimePezEspecial = startTimePezEspecial + TiempoEsperaIntentoPescaEspecialMs
+        esperaSegundos = Format$(TiempoEsperaIntentoPescaEspecialMs / 1000, "0.0")
+
         PuedeIntentar = False
         If acierto = 1 Then
             intentosPesca(ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados) = 1
+            Call AddtoRichTextBox(frmMain.RecTxt, "¡Acierto! Esperá " & esperaSegundos & " segundos para el próximo intento.", 80, 255, 80, 1, 0)
         ElseIf acierto = 2 Then
             intentosPesca(ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados) = 2
+            Call AddtoRichTextBox(frmMain.RecTxt, "¡Fallaste! Esperá " & esperaSegundos & " segundos para el próximo intento.", 255, 130, 130, 1, 0)
         End If
+
         If ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados >= 5 Or ContadorIntentosPescaEspecial_Acertados >= 3 Then
             PescandoEspecial = False
             Call WriteFinalizarPescaEspecial

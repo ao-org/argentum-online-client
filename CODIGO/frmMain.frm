@@ -2902,6 +2902,7 @@ End Sub
 Private Sub macrotrabajo_Timer()
     On Error GoTo macrotrabajo_Timer_Err
     If pausa Then Exit Sub
+    If PescandoEspecial Then Exit Sub
     'Macros are disabled if not using Argentum!
     If Not Application.IsAppActive() Then
         DesactivarMacroTrabajo
