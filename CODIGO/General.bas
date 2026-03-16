@@ -1432,7 +1432,6 @@ Public Function IntentarObtenerPezEspecial()
 
         TiempoEsperaIntentoPescaEspecialMs = RandomNumber(2000, 10000)
         ProximoIntentoPezEspecial = tiempoActual + TiempoEsperaIntentoPescaEspecialMs
-        startTimePezEspecial = startTimePezEspecial + TiempoEsperaIntentoPescaEspecialMs
 
         PuedeIntentar = False
         If acierto = 1 Then
