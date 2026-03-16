@@ -567,7 +567,7 @@ Sub RenderScreen(ByVal center_x As Integer, _
     End If
     Call RenderScreen_NombreMapa
     If PescandoEspecial Then
-        If (GetTickCount() - startTimePezEspecial) >= 20000 Then
+        If (GetTickCount() - startTimePezEspecial) >= 60000 Then
             PescandoEspecial = False
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
             Call WriteRomperCania
