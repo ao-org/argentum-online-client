@@ -567,8 +567,13 @@ Sub RenderScreen(ByVal center_x As Integer, _
     End If
     Call RenderScreen_NombreMapa
     If PescandoEspecial Then
-        Call RGBAList(ColorBarraPesca, 255, 255, 255)
-        Dim Grh As Grh
+        If (GetTickCount() - startTimePezEspecial) >= 20000 Then
+            PescandoEspecial = False
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
+            Call WriteRomperCania
+        Else
+            Call RGBAList(ColorBarraPesca, 255, 255, 255)
+            Dim Grh As Grh
         Grh.GrhIndex = GRH_BARRA_PESCA
         Call Draw_Grh(Grh, 239 + gameplay_render_offset.x, 550 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
         Grh.GrhIndex = GRH_CURSOR_PESCA
@@ -609,10 +614,6 @@ Sub RenderScreen(ByVal center_x As Integer, _
             '90 - 111 es incluido (saca el pecesito)
             PosicionBarra = PosicionBarra + (DireccionBarra * VelocidadBarra * timerElapsedTime * 0.2)
         End If
-        If (GetTickCount() - startTimePezEspecial) >= 20000 Then
-            PescandoEspecial = False
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
-            Call WriteRomperCania
         End If
     End If
     If cartel_visible Then Call RenderScreen_Cartel

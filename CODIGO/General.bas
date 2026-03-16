@@ -1416,12 +1416,6 @@ Public Function IntentarObtenerPezEspecial()
     Dim acierto As Byte
     Dim tiempoActual As Long
     tiempoActual = GetTickCount()
-    If (tiempoActual - startTimePezEspecial) >= 20000 Then
-        PescandoEspecial = False
-        Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
-        Call WriteRomperCania
-        Exit Function
-    End If
     If tiempoActual < ProximoIntentoPezEspecial Then
         Exit Function
     End If
