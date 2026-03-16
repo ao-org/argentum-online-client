@@ -1415,6 +1415,7 @@ End Function
 Public Function IntentarObtenerPezEspecial()
     Dim acierto As Byte
     Dim tiempoActual As Long
+    Dim totalIntentos As Long
     tiempoActual = GetTickCount()
     If tiempoActual < ProximoIntentoPezEspecial Then
         Exit Function
@@ -1442,16 +1443,22 @@ Public Function IntentarObtenerPezEspecial()
             ' Call AddtoRichTextBox(frmMain.RecTxt, "¡Fallaste!", 255, 130, 130, 1, 0)
         End If
 
-        If ContadorIntentosPescaEspecial_Fallados >= 3 Then
+        totalIntentos = ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados
+        If ContadorIntentosPescaEspecial_Acertados >= 3 Then
+            PescandoEspecial = False
+            Call WriteFinalizarPescaEspecial
+        ElseIf ContadorIntentosPescaEspecial_Fallados >= 3 Then
             PescandoEspecial = False
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
             Call WriteRomperCania
-        ElseIf ContadorIntentosPescaEspecial_Acertados >= 3 Then
+        ElseIf totalIntentos >= 5 Then
             PescandoEspecial = False
-            Call WriteFinalizarPescaEspecial
-        ElseIf ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados >= 5 Then
-            PescandoEspecial = False
-            Call WriteFinalizarPescaEspecial
+            If ContadorIntentosPescaEspecial_Acertados > ContadorIntentosPescaEspecial_Fallados Then
+                Call WriteFinalizarPescaEspecial
+            Else
+                Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
+                Call WriteRomperCania
+            End If
         End If
     End If
 End Function
