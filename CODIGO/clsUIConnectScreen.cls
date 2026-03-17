@@ -52,16 +52,26 @@ Private m_cbOk                  As clsUICheckbox
 Private m_btnConnect            As clsUIButton
 Private m_inputboxUser          As clsUIInputbox
 Private m_inputboxPass          As clsUIInputbox
-Private m_boxInfo               As clsUIBoxInfo
+Private m_boxInfo               As clsUIMsgBox
 Private m_Action                As Boolean
 Private m_lblNewAccount         As clsUILabel
 Private m_lblForgotPass         As clsUILabel
+
+Private m_frameConnect          As clsUIFrame
 
 ' Ventana Crear Cuenta
 Private m_lblTitle2             As clsUILabel
 Private m_btnCreateAccount      As clsUIButton
 Private m_btnCloseCA            As clsUIButton
+Private m_imgSeparatorH3        As clsUIImage
+Private m_imgSeparatorH4        As clsUIImage
+Private m_inputboxName          As clsUIInputbox
+Private m_inputboxLastName      As clsUIInputbox
+Private m_inputboxEmail          As clsUIInputbox
+Private m_inputboxCCPass      As clsUIInputbox
+Private m_lblCreateAcctNext     As clsUILabel
 
+Private m_frameCreateUser       As clsUIFrame
 
 
 Private Const EVENT_ID_NOP                                      As Integer = 0
@@ -69,40 +79,27 @@ Private Const EVENT_ID_CREATE_ACCOUNT_BUTTON_CLOSE_CLICKED      As Integer = 1
 Private Const EVENT_ID_BUTTON_CREATE_ACCOUNT_CLICKED            As Integer = 2
 Private Const EVENT_ID_CONNECT_BUTTON_CLICKED                   As Integer = 3
 Private Const EVENT_ID_BUTTON_MSG_BOX_OK_CLICKED                As Integer = 4
+Private Const EVENT_ID_CREATE_ACCOUNT_NEXT_CLICKED              As Integer = 5
+Private Const EVENT_ID_CREATE_ACCOUNT_BACK_CLICKED              As Integer = 6
 
 
 
 Private Sub ProcessAction(ByVal actionID As Integer)
     Select Case actionID
         Case EVENT_ID_CREATE_ACCOUNT_BUTTON_CLOSE_CLICKED
-            m_lblTitle.IUIComponent_SetVisible True
-            m_inputboxUser.IUIComponent_SetVisible True
-            m_inputboxPass.IUIComponent_SetVisible True
-            m_cbOk.IUIComponent_SetVisible True
-            m_btnConnect.IUIComponent_SetVisible True
-            m_lblNewAccount.IUIComponent_SetVisible True
-            m_lblForgotPass.IUIComponent_SetVisible True
-            
-            m_btnCreateAccount.IUIComponent_SetVisible False
-            m_lblTitle2.IUIComponent_SetVisible False
-            m_btnCloseCA.IUIComponent_SetVisible False
+            m_frameCreateUser.IUIComponent_SetVisible False
         Case EVENT_ID_BUTTON_CREATE_ACCOUNT_CLICKED
-            m_lblTitle.IUIComponent_SetVisible False
-            m_inputboxUser.IUIComponent_SetVisible False
-            m_inputboxPass.IUIComponent_SetVisible False
-            m_btnConnect.IUIComponent_SetVisible False
-            m_cbOk.IUIComponent_SetVisible False
-            m_lblNewAccount.IUIComponent_SetVisible False
-            m_lblForgotPass.IUIComponent_SetVisible False
-        
-            m_btnCreateAccount.IUIComponent_SetVisible True
-            m_lblTitle2.IUIComponent_SetVisible True
-            m_btnCloseCA.IUIComponent_SetVisible True
+             m_frameCreateUser.IUIComponent_SetVisible True
+             m_frameCreateUser.ChangeState 1
         Case EVENT_ID_CONNECT_BUTTON_CLICKED
             'Call SetActiveServer("127.0.0.1", "6501")
             Call DoLogin(m_inputboxUser.text, m_inputboxPass.text, True)
         Case EVENT_ID_BUTTON_MSG_BOX_OK_CLICKED
-            m_boxInfo.IUIComponent_SetVisible False
+            m_frameCreateUser.ChangeState 1
+        Case EVENT_ID_CREATE_ACCOUNT_NEXT_CLICKED
+            m_frameCreateUser.ChangeState 2
+        Case EVENT_ID_CREATE_ACCOUNT_BACK_CLICKED
+            m_frameCreateUser.ChangeState 1
         Case Else
             Debug.Assert False ' must not happen!
     End Select
@@ -112,51 +109,98 @@ End Sub
 Public Sub Init(ByVal dev As Direct3DDevice8)
     Set m_UIMgr = New clsUIManager: m_UIMgr.Init
     
-    ' """"""""""""   CONNECT PANEL   """""""""""""
+    Dim sW As Long, sH As Long, wx As Long, wy As Long
+    sW = Render_Connect_Rect.Right - Render_Connect_Rect.Left
+    sH = Render_Connect_Rect.Bottom - Render_Connect_Rect.Top
+    wx = (sW - WINDOW_WIDTH) \ 2 + Render_Connect_Rect.Left
+    wy = (sH - WINDOW_HEIGHT) \ 2 + Render_Connect_Rect.Top + WINDOW_OFFSET_Y
+    
+    ' """"""""""""   CONNECT FRAME   """""""""""""
+    Set m_frameConnect = New clsUIFrame
+    m_frameConnect.Init wx, wy, 300, 360
     Set m_lblTitle = New clsUILabel
-    m_lblTitle.Init "INGRESAR", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8, 0
-    m_UIMgr.AddComponent m_lblTitle
+    m_lblTitle.Init "INGRESAR", 0.3, 0.05, UI_COLOR_WHITE, 255, 0.5, 8, 0
+    m_frameConnect.AddUIElement m_lblTitle
     Set m_imgSeparatorH1 = New clsUIImage
-    m_imgSeparatorH1.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
-    m_UIMgr.AddComponent m_imgSeparatorH1
+    m_imgSeparatorH1.Init "", 0.1, 0.15, 0.8, 0.01, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
+    m_frameConnect.AddUIElement m_imgSeparatorH1
     Set m_inputboxUser = New clsUIInputbox
-    m_inputboxUser.Init "Email", 0, 0, 240, 40, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, False, 0
-    m_UIMgr.AddComponent m_inputboxUser
+    m_inputboxUser.Init "Email", 0.1, 0.22, 0.8, 0.1, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, False, 0
+    m_frameConnect.AddUIElement m_inputboxUser
     Set m_inputboxPass = New clsUIInputbox
-    m_inputboxPass.Init "Clave", 0, 0, 240, 40, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, True, 0
-    m_UIMgr.AddComponent m_inputboxPass
+    m_inputboxPass.Init "Clave", 0.1, 0.38, 0.8, 0.1, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, True, 0
+    m_frameConnect.AddUIElement m_inputboxPass
     Set m_cbOk = New clsUICheckbox
-    m_cbOk.Init "Recordarme", 50, 200, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE, 0
-    m_UIMgr.AddComponent m_cbOk
-    Set m_boxInfo = New clsUIBoxInfo
+    m_cbOk.Init "Recordarme", 0.1, 0.55, 0.1, 0.07, &HFFFFFF, &HFFFF00, UI_COLOR_WHITE, 0
+    m_frameConnect.AddUIElement m_cbOk
+    Set m_boxInfo = New clsUIMsgBox
     m_boxInfo.Init "Default text...", 0, 0, 400, 150, &HFFFF00, &HFFFFFF, UI_COLOR_BLACK, EVENT_ID_BUTTON_MSG_BOX_OK_CLICKED
-    m_UIMgr.AddComponent m_boxInfo
+    m_frameConnect.AddUIElement m_boxInfo
     Set m_imgSeparatorH2 = New clsUIImage
-    m_imgSeparatorH2.Init "", 0, 0, 240, 5, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
-    m_UIMgr.AddComponent m_imgSeparatorH2
+    m_imgSeparatorH2.Init "", 0.1, 0.65, 0.85, 0.01, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
+    m_frameConnect.AddUIElement m_imgSeparatorH2
     Set m_btnConnect = New clsUIButton
-    m_btnConnect.Init "Conectar", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, EVENT_ID_CONNECT_BUTTON_CLICKED
-    m_UIMgr.AddComponent m_btnConnect
+    m_btnConnect.Init "Conectar", 0.1, 0.73, 0.8, 0.13, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, EVENT_ID_CONNECT_BUTTON_CLICKED
+    m_frameConnect.AddUIElement m_btnConnect
     Set m_lblNewAccount = New clsUILabel
-    m_lblNewAccount.Init "Crear cuenta", 0, 0, UI_COLOR_WHITE, 100, 1, 1, EVENT_ID_BUTTON_CREATE_ACCOUNT_CLICKED
-    m_UIMgr.AddComponent m_lblNewAccount
+    m_lblNewAccount.Init "Crear cuenta", 0.1, 0.9, UI_COLOR_WHITE, 100, 1, 1, EVENT_ID_BUTTON_CREATE_ACCOUNT_CLICKED
+    m_frameConnect.AddUIElement m_lblNewAccount
     Set m_lblForgotPass = New clsUILabel
-    m_lblForgotPass.Init "Olvide mi contraseña", 0, 0, UI_COLOR_WHITE, 100, 1, 1, EVENT_ID_BUTTON_CREATE_ACCOUNT_CLICKED
-    m_UIMgr.AddComponent m_lblForgotPass
+    m_lblForgotPass.Init "Olvide mi contraseña", 0.5, 0.9, UI_COLOR_WHITE, 100, 1, 1, EVENT_ID_BUTTON_CREATE_ACCOUNT_CLICKED
+    m_frameConnect.AddUIElement m_lblForgotPass
+    m_UIMgr.AddComponent m_frameConnect
     
     ' """"""""""""   CREATE ACCOUNT PANEL   """""""""""""
+    Set m_frameCreateUser = New clsUIFrame
+    m_frameCreateUser.Init 50, 50, 300, 300
+    m_frameCreateUser.IUIComponent_SetVisible False
     Set m_lblTitle2 = New clsUILabel
-    m_lblTitle2.Init "Crear Cuenta", 0, 0, UI_COLOR_WHITE, 255, 0.5, 8, 0
+    m_lblTitle2.Init "Crear Cuenta", 0.3, 0.08, UI_COLOR_WHITE, 255, 0.5, 8, 0
     m_lblTitle2.IUIComponent_SetVisible False
-    m_UIMgr.AddComponent m_lblTitle2
+    m_frameCreateUser.AddUIElement m_lblTitle2
+    ' H LINE
+    Set m_imgSeparatorH3 = New clsUIImage
+    m_imgSeparatorH3.IUIComponent_SetVisible False
+    m_imgSeparatorH3.Init "", 0.1, 0.23, 0.8, 0.01, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
+    m_frameCreateUser.AddUIElement m_imgSeparatorH3
+    ' INPUTBOX
+    Set m_inputboxName = New clsUIInputbox
+    m_inputboxName.Init "Nombre", 0.1, 0.28, 0.8, 0.1, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, False, 0
+    m_frameCreateUser.AddUIElement m_inputboxName
+    Set m_inputboxLastName = New clsUIInputbox
+    m_inputboxLastName.Init "Apellido", 0.1, 0.46, 0.8, 0.1, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, True, 0
+    m_frameCreateUser.AddUIElement m_inputboxLastName
+    ' INPUTBOX 2
+    Set m_inputboxName = New clsUIInputbox
+    m_inputboxName.Init "Email", 0.1, 0.28, 0.8, 0.1, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, False, 0
+    m_inputboxName.IUIComponent_SetVisible False
+    m_frameCreateUser.AddUIElement m_inputboxName
+    Set m_inputboxLastName = New clsUIInputbox
+    m_inputboxLastName.Init "Clave", 0.1, 0.46, 0.8, 0.1, &HFFFFFF, &HFFFFFF, UI_COLOR_GOLD, True, 0
+    m_inputboxLastName.IUIComponent_SetVisible False
+    m_frameCreateUser.AddUIElement m_inputboxLastName
+    ' H LINE
+    Set m_imgSeparatorH4 = New clsUIImage
+    m_imgSeparatorH4.IUIComponent_SetVisible False
+    m_imgSeparatorH4.Init "", 0.1, 0.63, 0.8, 0.01, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
+    m_frameCreateUser.AddUIElement m_imgSeparatorH4
+    ' Next Button
+    Set m_lblCreateAcctNext = New clsUILabel
+    m_lblCreateAcctNext.Init ">>", 0.8, 0.65, UI_COLOR_WHITE, 100, 2, 1, EVENT_ID_CREATE_ACCOUNT_NEXT_CLICKED
+    m_frameCreateUser.AddUIElement m_lblCreateAcctNext
+    ' Back Button
+    Set m_lblCreateAcctNext = New clsUILabel
+    m_lblCreateAcctNext.Init "<<", 0.1, 0.65, UI_COLOR_WHITE, 100, 2, 1, EVENT_ID_CREATE_ACCOUNT_BACK_CLICKED
+    m_frameCreateUser.AddUIElement m_lblCreateAcctNext
     Set m_btnCloseCA = New clsUIButton
-    m_btnCloseCA.Init "X", 0, 0, 20, 20, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, EVENT_ID_CREATE_ACCOUNT_BUTTON_CLOSE_CLICKED
+    m_btnCloseCA.Init "X", 0.9, 0.02, 0.08, 0.08, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, EVENT_ID_CREATE_ACCOUNT_BUTTON_CLOSE_CLICKED
     m_btnCloseCA.IUIComponent_SetVisible False
-    m_UIMgr.AddComponent m_btnCloseCA
+    m_frameCreateUser.AddUIElement m_btnCloseCA
     Set m_btnCreateAccount = New clsUIButton
-    m_btnCreateAccount.Init "Crear", 0, 0, 240, 40, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
+    m_btnCreateAccount.Init "Crear", 0.1, 0.8, 0.8, 0.1, UI_COLOR_GOLD, &HFF606060, UI_COLOR_WHITE, 0
     m_btnCreateAccount.IUIComponent_SetVisible False
-    m_UIMgr.AddComponent m_btnCreateAccount
+    m_frameCreateUser.AddUIElement m_btnCreateAccount
+    m_UIMgr.AddComponent m_frameCreateUser
     
 End Sub
 
@@ -164,88 +208,13 @@ End Sub
 
 
 Public Sub render(ByVal dev As Direct3DDevice8)
-    Dim sW As Long, sH As Long, wx As Long, wy As Long
-    sW = Render_Connect_Rect.Right - Render_Connect_Rect.Left
-    sH = Render_Connect_Rect.Bottom - Render_Connect_Rect.Top
-    wx = (sW - WINDOW_WIDTH) \ 2 + Render_Connect_Rect.Left
-    wy = (sH - WINDOW_HEIGHT) \ 2 + Render_Connect_Rect.Top + WINDOW_OFFSET_Y
 
     Call Engine_BeginScene
 
         ' World/background
         RenderConnect 57, 45, 0, 0
 
-        ' --- UI: textured window background ---
-        Dim m_texPanelBg As Direct3DTexture8
-        Dim m_texPanelBorder As Direct3DTexture8
-        Dim texW As Long: Dim texH As Long
-        Set m_texPanelBg = UITextures.GetTexture(30, texW, texH)  ' fetch or load from manager cache
 
-        
-        Dim i As Long, texPanel As Direct3DTexture8
-        Dim x As Long, y As Long, w As Long, h As Long, b As Long
-        b = 20
-        For i = 13030 To 13038
-            Select Case i
-                Case 13030
-                    x = wx + b: y = wy + b: w = WINDOW_WIDTH - (2 * b): h = WINDOW_HEIGHT - (2 * b)
-                Case 13031
-                    x = wx: y = wy: w = b: h = b
-                Case 13032
-                    x = wx + b: y = wy: w = WINDOW_WIDTH - b * 2: h = b
-                Case 13033
-                    x = wx + WINDOW_WIDTH - b: y = wy: w = b: h = b
-                Case 13034
-                    x = wx + WINDOW_WIDTH - b: y = wy + b: w = b: h = WINDOW_HEIGHT - b * 2
-                Case 13035
-                    x = wx + WINDOW_WIDTH - b: y = wy + WINDOW_HEIGHT - b: w = b: h = b
-                Case 13036
-                    x = wx + b: y = wy + WINDOW_HEIGHT - b: w = WINDOW_WIDTH - b * 2: h = b
-                Case 13037
-                    x = wx: y = wy + WINDOW_HEIGHT - b: w = b: h = b
-                Case 13038
-                    x = wx: y = wy + b: w = b: h = WINDOW_HEIGHT - b * 2
-            End Select
-            Set texPanel = UITextures.GetTexture(i, texW, texH)
-            If Not texPanel Is Nothing Then
-                UIRenderer.AddTexturedQuad _
-                    x, y, w, h, _
-                texPanel, _
-                0!, 0!, 1!, 1!, _
-                UI_COLOR_WHITE, 255
-            Else
-            ' Fallback to solid white if texture missing
-                Dim cols2(3) As Long
-                cols2(0) = UI_COLOR_WHITE
-                cols2(1) = UI_COLOR_WHITE
-                cols2(2) = UI_COLOR_WHITE
-                cols2(3) = UI_COLOR_WHITE
-                UIRenderer.AddQuad wx, wy, WINDOW_WIDTH, WINDOW_HEIGHT, cols2, 190
-            End If
-        Next i
-        
-        
-        ' Position UI Coonection Panel controls
-        
-        m_lblTitle.SetPosition wx + 80, wy + 30
-        m_imgSeparatorH1.SetPosition wx + 30, wy + 80
-        m_inputboxUser.SetPosition wx + 30, wy + 100
-        m_inputboxPass.SetPosition wx + 30, wy + 150
-        m_cbOk.SetPosition wx + 30, wy + 200
-        m_btnConnect.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + 235
-        m_imgSeparatorH2.SetPosition wx + 30, wy + 290
-        m_lblNewAccount.SetPosition wx + 30, wy + 320
-        m_lblForgotPass.SetPosition wx + 150, wy + 320
-        m_boxInfo.SetPosition wx + (WINDOW_WIDTH - m_boxInfo.Width) \ 2, wy, m_Action
-
-
-        ' Position UI Create user panel controls
-        m_lblTitle2.SetPosition wx + 80, wy + 30
-        m_btnCloseCA.SetPosition wx + WINDOW_WIDTH - 35, wy + 15
-        m_btnCreateAccount.SetPosition wx + (WINDOW_WIDTH - m_btnConnect.Width) \ 2, wy + 235
-
-
-        ' Draw UI widgets + batched renderer
         m_UIMgr.RenderAll dev
         UIRenderer.Draw DirectDevice
 
@@ -256,7 +225,9 @@ End Sub
 Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long)
     Dim actionID As Integer
     m_UIMgr.HandleMouse mouseX, mouseY, mouseButtons, actionID
-    If actionID <> EVENT_ID_NOP Then ProcessAction actionID
+    If actionID <> EVENT_ID_NOP Then
+        ProcessAction actionID
+    End If
 End Sub
 
 Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
