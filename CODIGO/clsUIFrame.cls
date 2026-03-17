@@ -76,7 +76,7 @@ Public Function GetUIElement(ByVal id As Integer) As IUIComponent
     Index = 1
     Dim comp As IUIComponent
     For Each comp In m_elements
-        If i = Index Then
+        If id = Index Then
             GetUIElement comp
         End If
     Next
@@ -135,11 +135,11 @@ Public Sub IUIComponent_SetSize(ByVal w As Long, ByVal h As Long)
 End Sub
 
 Public Function IUIComponent_GetPerPosX() As Single
-    GetPerPosX = m_per_posX
+    IUIComponent_GetPerPosX = m_Impl.PerX
 End Function
 
 Public Function IUIComponent_GetPerPosY() As Single
-    GetPerPosY = m_per_posY
+    IUIComponent_GetPerPosY = m_Impl.PerY
 End Function
 
 Public Function IUIComponent_GetPerW() As Single
@@ -147,7 +147,7 @@ Public Function IUIComponent_GetPerW() As Single
 End Function
 
 Public Function IUIComponent_GetPerH() As Single
-    IUIComponent_GGetPerH = m_Impl.PerH
+    IUIComponent_GetPerH = m_Impl.PerH
 End Function
 
 Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)

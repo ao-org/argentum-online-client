@@ -57,4 +57,3 @@ Public Function GetPerW() As Single
 End Function
 Public Function GetPerH() As Single
 End Function
-End Function
