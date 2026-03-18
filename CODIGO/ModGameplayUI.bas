@@ -201,9 +201,8 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
     ElseIf MouseAction = e_MouseAction.eAttack Then
         If UserDescansar Or UserMeditar Then Exit Sub
         If MainTimer.Check(TimersIndex.CastAttack, False) Then
-            If MainTimer.Check(TimersIndex.Attack) Then
+            If WriteAttack() Then
                 Call MainTimer.Restart(TimersIndex.AttackSpell)
-                Call WriteAttack
             End If
         End If
     ElseIf MouseAction = e_MouseAction.eWhisper Then
@@ -393,8 +392,6 @@ Public Function IsItemSelected() As Boolean
 End Function
 
 Public Sub UseItemKey()
-    If Not MainTimer.Check(TimersIndex.AttackUse, False) Then Exit Sub
-    Call CountPacketIterations(packetControl(ClientPacketID.eUseItemU), 100)
     If frmMain.Inventario.IsItemSelected Then
         Call WriteUseItemU(frmMain.Inventario.SelectedItem)
     End If
@@ -443,7 +440,6 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
                 Call WriteEquipItem(Slot)
             End If
         Case Else
-            Call CountPacketIterations(packetControl(ClientPacketID.eUseItem), 180)
             Call WriteUseItem(Slot)
     End Select
 End Sub
@@ -688,5 +684,3 @@ ShowInteractionMenu_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModGameplayUi.ShowInteractionMenu", Erl)
     Resume Next
 End Sub
-
-

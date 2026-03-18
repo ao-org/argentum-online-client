@@ -1211,6 +1211,11 @@ Private Sub HandleIntervals()
     gIntervals.UseItemKey = Reader.ReadInt32()
     gIntervals.UseItemClick = Reader.ReadInt32()
     gIntervals.DropItem = Reader.ReadInt32()
+    If Reader.GetAvailable() >= 4 Then
+        gIntervals.Hide = Reader.ReadInt32()
+    Else
+        gIntervals.Hide = 500
+    End If
     'Set the intervals of timers
     Call MainTimer.SetInterval(TimersIndex.Attack, gIntervals.Hit)
     Call MainTimer.SetInterval(TimersIndex.UseItemWithU, gIntervals.UseItemKey)

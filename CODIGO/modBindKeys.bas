@@ -208,15 +208,10 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
                 End With
                 Exit Function
             End If
-            If UserDescansar Then Exit Function
-            If frmMain.Inventario.IsItemOnCd(frmMain.Inventario.GetActiveWeaponSlot) Then Exit Function
+            If UserDescansar Or UserMeditar Then Exit Function
             If MainTimer.Check(TimersIndex.CastAttack, False) Then
-                If MainTimer.Check(TimersIndex.Attack) Then
+                If WriteAttack() Then
                     Call MainTimer.Restart(TimersIndex.AttackSpell)
-                    Call MainTimer.Restart(TimersIndex.AttackUse)
-                    Set cooldown_ataque = New clsCooldown
-                    Call cooldown_ataque.Cooldown_Initialize(gIntervals.Hit, 36602)
-                    Call WriteAttack
                 End If
             End If
         Case BindKeys(2).KeyCode
