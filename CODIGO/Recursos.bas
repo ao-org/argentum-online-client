@@ -729,7 +729,7 @@ cont:
                 Next i
                 For c = 1 To UBound(NpcWorlds)
                     If NpcWorlds(c) > 0 Then
-                        If (c > 399 And c < 450 Or c > 499) And NpcData(c).NoMapInfo <> 1 Then
+                        If NpcData(c).NoMapInfo <> 1 Then
                             Dim subelemento As ListItem
                             Set subelemento = frmMapaGrande.ListView1.ListItems.Add(, , NpcData(c).Name)
                             subelemento.SubItems(1) = NpcWorlds(c)
@@ -1358,10 +1358,7 @@ Public Sub CargarIndicesOBJ()
     Dim loopC As Byte
     For Npc = 1 To NumNpcs
         DoEvents
-        If val(Leer.GetValue("npc" & Npc, "NomapInfo")) > 0 Then
-            NpcData(Npc).NoMapInfo = val(Leer.GetValue("npc" & Npc, "NoMapInfo"))
-            GoTo Continue
-        End If
+        NpcData(Npc).NoMapInfo = val(Leer.GetValue("npc" & Npc, "NoMapInfo"))
         langPrefix = GetLanguagePrefix(language)
         With NpcData(Npc)
             .Name = GetLocalizedValue(Leer, "npc" & Npc, "Name", langPrefix)
@@ -1416,7 +1413,6 @@ Public Sub CargarIndicesOBJ()
                 NpcData(Npc).Obj(loopC) = val(Leer.GetValue("npc" & Npc, "Obj" & loopC))
             Next loopC
         End If
-Continue:
     Next Npc
     langPrefix = GetLanguagePrefix(language)
     For Hechizo = 1 To NumHechizos

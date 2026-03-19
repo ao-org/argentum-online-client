@@ -507,7 +507,7 @@ Public NamePj(1 To 8)       As String
 Public ValidationCode       As String
 'Objetos públicos
 Public DialogosClanes       As clsGuildDlg
-Public CurMp3               As Byte
+
 Public Const Mp3_Dir = "\..\Recursos\Mp3\"
 
 'Opciones Clasicas
