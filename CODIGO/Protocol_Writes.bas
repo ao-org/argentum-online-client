@@ -39,13 +39,12 @@ Private Enum eActionRateLimitType
 End Enum
 
 Private Const ACTION_RATE_LIMIT_COUNT As Long = 8
-Private Const DEFAULT_TALK_INTERVAL_MS As Long = 800
-Private Const DEFAULT_ATTACK_INTERVAL_MS As Long = 120
-Private Const DEFAULT_LEFTCLICK_INTERVAL_MS As Long = 80
-Private Const DEFAULT_USEITEM_INTERVAL_MS As Long = 100
-Private Const DEFAULT_WORKLEFTCLICK_INTERVAL_MS As Long = 200
-Private Const DEFAULT_HIDE_INTERVAL_MS As Long = 500
-Private Const DEFAULT_WALK_INTERVAL_MS As Long = 210
+' Server PacketRatePolicy values are not exposed to the client yet.
+' Keep these as client-side mirrors until the server sends them explicitly.
+Private Const PACKET_POLICY_TALK_LIMIT_MS As Long = 800
+Private Const PACKET_POLICY_LEFTCLICK_LIMIT_MS As Long = 80
+' Hide comes from intervalo.ini server-side; keep 500 as fallback until eIntervals includes it.
+Private Const FALLBACK_HIDE_INTERVAL_MS As Long = 500
 
 Private lastActionSentTick(1 To ACTION_RATE_LIMIT_COUNT) As Long
 Private actionLimiterReady As Boolean
@@ -105,12 +104,8 @@ End Function
 Private Function GetWalkIntervalMs() As Long
     GetWalkIntervalMs = gIntervals.Walk
 
-    If GetWalkIntervalMs <= 0 Then
-        GetWalkIntervalMs = DEFAULT_WALK_INTERVAL_MS
-    End If
-
     If UserCharIndex > 0 Then
-        If charlist(UserCharIndex).Speeding > 0 Then
+        If GetWalkIntervalMs > 0 And charlist(UserCharIndex).Speeding > 0 Then
             GetWalkIntervalMs = CLng(CDbl(GetWalkIntervalMs) / CDbl(charlist(UserCharIndex).Speeding))
         End If
     End If
@@ -129,34 +124,22 @@ Private Function GetActionIntervalMs(ByVal actionType As eActionRateLimitType) A
         Case ActionWorkLeftClick
             GetActionIntervalMs = gIntervals.Magic
         Case ActionTalk
-            GetActionIntervalMs = DEFAULT_TALK_INTERVAL_MS
+            GetActionIntervalMs = PACKET_POLICY_TALK_LIMIT_MS
         Case ActionLeftClick
-            GetActionIntervalMs = DEFAULT_LEFTCLICK_INTERVAL_MS
+            GetActionIntervalMs = PACKET_POLICY_LEFTCLICK_LIMIT_MS
         Case ActionWalk
             GetActionIntervalMs = GetWalkIntervalMs()
     End Select
 
     If GetActionIntervalMs <= 0 Then
         Select Case actionType
-            Case ActionAttack
-                GetActionIntervalMs = DEFAULT_ATTACK_INTERVAL_MS
-            Case ActionUseItem, ActionUseItemU
-                GetActionIntervalMs = DEFAULT_USEITEM_INTERVAL_MS
             Case ActionHideSkill
-                GetActionIntervalMs = DEFAULT_HIDE_INTERVAL_MS
-            Case ActionWorkLeftClick
-                GetActionIntervalMs = DEFAULT_WORKLEFTCLICK_INTERVAL_MS
+                GetActionIntervalMs = FALLBACK_HIDE_INTERVAL_MS
             Case ActionTalk
-                GetActionIntervalMs = DEFAULT_TALK_INTERVAL_MS
+                GetActionIntervalMs = PACKET_POLICY_TALK_LIMIT_MS
             Case ActionLeftClick
-                GetActionIntervalMs = DEFAULT_LEFTCLICK_INTERVAL_MS
-            Case ActionWalk
-                GetActionIntervalMs = DEFAULT_WALK_INTERVAL_MS
+                GetActionIntervalMs = PACKET_POLICY_LEFTCLICK_LIMIT_MS
         End Select
-    End If
-
-    If GetActionIntervalMs < 25 Then
-        GetActionIntervalMs = 25
     End If
 End Function
 
@@ -175,11 +158,20 @@ Private Function ShouldBlockAction(ByVal actionType As eActionRateLimitType, ByV
 End Function
 
 Private Function ShouldRateLimitTalk(ByVal chat As String) As Boolean
-    ShouldRateLimitTalk = (LenB(Trim$(chat)) = 0)
+    ShouldRateLimitTalk = (LenB(chat) > 0)
 End Function
 
 Private Sub MarkActionSent(ByVal actionType As eActionRateLimitType)
     lastActionSentTick(actionType) = GetCurrentActionTick()
+End Sub
+
+Private Sub StartAttackCooldownVisual()
+    Dim attackIntervalMs As Long
+
+    attackIntervalMs = GetActionIntervalMs(ActionAttack)
+    If attackIntervalMs <= 0 Then Exit Sub
+
+    Call cooldown_ataque.Cooldown_Initialize(attackIntervalMs, 0)
 End Sub
 
 #If PYMMO = 1 Then
@@ -476,6 +468,7 @@ Public Function WriteAttack(Optional ByVal bypassRateLimit As Boolean = False) A
     Call Writer.WriteInt32(packetCounters.TS_Attack)
     Call modNetwork.send(Writer)
     Call MarkActionSent(ActionAttack)
+    Call StartAttackCooldownVisual
     WriteAttack = True
     '<EhFooter>
     Exit Function
