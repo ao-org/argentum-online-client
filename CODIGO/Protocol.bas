@@ -692,7 +692,7 @@ Public Sub HandleDisconnect()
     'frmMain.lblrefuerzolanzar.Visible = False
     frmMain.cmdMoverHechi(0).visible = False
     frmMain.cmdMoverHechi(1).visible = False
-    QuePestaï¿½aInferior = 0
+    QuePestañaInferior = 0
     frmMain.stabar.visible = True
     frmMain.HpBar.visible = True
     frmMain.manabar.visible = True
