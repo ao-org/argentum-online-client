@@ -1214,6 +1214,7 @@ Private Sub HandleIntervals()
     gIntervals.Hide = Reader.ReadInt32()
     gIntervals.Talk = Reader.ReadInt32()
     gIntervals.LeftClick = Reader.ReadInt32()
+    gIntervals.Meditate = Reader.ReadInt32()
     'Set the intervals of timers
     Call MainTimer.SetInterval(TimersIndex.Attack, gIntervals.Hit)
     Call MainTimer.SetInterval(TimersIndex.Arrows, gIntervals.Bow)

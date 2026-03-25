@@ -36,6 +36,7 @@ Private Enum eActionRateLimitType
     ActionHideSkill = 6
     ActionWorkLeftClick = 7
     ActionWalk = 8
+    ActionMeditate = 9
     [LastAction]
 End Enum
 Private lastActionSentTick(1 To eActionRateLimitType.LastAction - 1) As Long
@@ -121,6 +122,8 @@ Private Function GetActionIntervalMs(ByVal actionType As eActionRateLimitType) A
             GetActionIntervalMs = gIntervals.LeftClick
         Case ActionWalk
             GetActionIntervalMs = GetWalkIntervalMs()
+        Case ActionMeditate
+            GetActionIntervalMs = gIntervals.Meditate
     End Select
 End Function
 
@@ -2130,8 +2133,10 @@ Public Sub WriteMeditate()
     On Error GoTo WriteMeditate_Err
     '</EhHeader>
     If UserMoving Then Exit Sub
+    If ShouldBlockAction(ActionMeditate) Then Exit Sub
     Call Writer.WriteInt16(ClientPacketID.eMeditate)
     Call modNetwork.send(Writer)
+    Call MarkActionSent(ActionMeditate)
     '<EhFooter>
     Exit Sub
 WriteMeditate_Err:

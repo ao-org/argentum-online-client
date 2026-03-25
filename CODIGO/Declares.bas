@@ -558,6 +558,7 @@ Public Type t_Intervals
     Hide As Long
     Talk As Long
     LeftClick As Long
+    Meditate As Long
 End Type
 
 Public gIntervals             As t_Intervals
