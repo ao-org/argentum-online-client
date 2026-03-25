@@ -39,12 +39,6 @@ Private Enum eActionRateLimitType
 End Enum
 
 Private Const ACTION_RATE_LIMIT_COUNT As Long = 8
-' Server PacketRatePolicy values are not exposed to the client yet.
-' Keep these as client-side mirrors until the server sends them explicitly.
-Private Const PACKET_POLICY_TALK_LIMIT_MS As Long = 800
-Private Const PACKET_POLICY_LEFTCLICK_LIMIT_MS As Long = 80
-' Hide comes from intervalo.ini server-side; keep 500 as fallback until eIntervals includes it.
-Private Const FALLBACK_HIDE_INTERVAL_MS As Long = 500
 
 Private lastActionSentTick(1 To ACTION_RATE_LIMIT_COUNT) As Long
 Private actionLimiterReady As Boolean
@@ -124,9 +118,9 @@ Private Function GetActionIntervalMs(ByVal actionType As eActionRateLimitType) A
         Case ActionWorkLeftClick
             GetActionIntervalMs = gIntervals.Magic
         Case ActionTalk
-            GetActionIntervalMs = PACKET_POLICY_TALK_LIMIT_MS
+            GetActionIntervalMs = gIntervals.Talk
         Case ActionLeftClick
-            GetActionIntervalMs = PACKET_POLICY_LEFTCLICK_LIMIT_MS
+            GetActionIntervalMs = gIntervals.LeftClick
         Case ActionWalk
             GetActionIntervalMs = GetWalkIntervalMs()
     End Select
@@ -136,11 +130,10 @@ Private Function CanSendActionNow(ByVal actionType As eActionRateLimitType, ByVa
     CanSendActionNow = HasReachedTick(nowTick, lastActionSentTick(actionType), GetActionIntervalMs(actionType))
 End Function
 
-Private Function ShouldBlockAction(ByVal actionType As eActionRateLimitType, ByVal bypassRateLimit As Boolean) As Boolean
+Private Function ShouldBlockAction(ByVal actionType As eActionRateLimitType) As Boolean
     Dim nowTick As Long
 
     Call EnsureActionRateLimiter
-    If bypassRateLimit Then Exit Function
 
     nowTick = GetCurrentActionTick()
     ShouldBlockAction = Not CanSendActionNow(actionType, nowTick)
@@ -329,12 +322,12 @@ End Sub
 '
 ' @param    chat The chat text to be sent.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteTalk(ByVal chat As String, Optional ByVal bypassRateLimit As Boolean = False)
+Public Sub WriteTalk(ByVal chat As String)
     '<EhHeader>
     On Error GoTo WriteTalk_Err
     '</EhHeader>
     If ShouldRateLimitTalk(chat) Then
-        If ShouldBlockAction(ActionTalk, bypassRateLimit) Then
+        If ShouldBlockAction(ActionTalk) Then
             Exit Sub
         End If
     End If
@@ -401,11 +394,11 @@ End Sub
 '
 ' @param    heading The direction in wich the user is moving.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Function WriteWalk(ByVal Heading As E_Heading, Optional ByVal bypassRateLimit As Boolean = False) As Boolean
+Public Function WriteWalk(ByVal Heading As E_Heading) As Boolean
     '<EhHeader>
     On Error GoTo WriteWalk_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionWalk, bypassRateLimit) Then
+    If ShouldBlockAction(ActionWalk) Then
         Exit Function
     End If
     Call Writer.WriteInt16(ClientPacketID.eWalk)
@@ -445,11 +438,11 @@ End Sub
 ' Writes the "Attack" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Function WriteAttack(Optional ByVal bypassRateLimit As Boolean = False) As Boolean
+Public Function WriteAttack() As Boolean
     '<EhHeader>
     On Error GoTo WriteAttack_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionAttack, bypassRateLimit) Then
+    If ShouldBlockAction(ActionAttack) Then
         Exit Function
     End If
     Call Writer.WriteInt16(ClientPacketID.eAttack)
@@ -882,11 +875,11 @@ End Sub
 ' @param    x Tile coord in the x-axis in which the user clicked.
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte, Optional ByVal bypassRateLimit As Boolean = False)
+Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
     '<EhHeader>
     On Error GoTo WriteLeftClick_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionLeftClick, bypassRateLimit) Then
+    If ShouldBlockAction(ActionLeftClick) Then
         Exit Sub
     End If
     Call Writer.WriteInt16(ClientPacketID.eLeftClick)
@@ -911,11 +904,11 @@ End Sub
 ' @param    x Tile coord in the x-axis in which the user clicked.
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte, Optional ByVal bypassRateLimit As Boolean = False)
+Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
     '<EhHeader>
     On Error GoTo WriteDoubleClick_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionLeftClick, bypassRateLimit) Then
+    If ShouldBlockAction(ActionLeftClick) Then
         Exit Sub
     End If
     Call Writer.WriteInt16(ClientPacketID.eDoubleClick)
@@ -936,12 +929,12 @@ End Sub
 '
 ' @param    skill The skill which the user attempts to use.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteWork(ByVal Skill As eSkill, Optional ByVal bypassRateLimit As Boolean = False)
+Public Sub WriteWork(ByVal Skill As eSkill)
     '<EhHeader>
     On Error GoTo WriteWork_Err
     '</EhHeader>
     If Skill = eSkill.Ocultarse Then
-        If ShouldBlockAction(ActionHideSkill, bypassRateLimit) Then
+        If ShouldBlockAction(ActionHideSkill) Then
             Exit Sub
         End If
     End If
@@ -984,11 +977,11 @@ End Sub
 '
 ' @param    slot Invetory slot where the item to use is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Function WriteUseItem(ByVal Slot As Byte, Optional ByVal bypassRateLimit As Boolean = False) As Boolean
+Public Function WriteUseItem(ByVal Slot As Byte) As Boolean
     '<EhHeader>
     On Error GoTo WriteUseItem_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionUseItem, bypassRateLimit) Then
+    If ShouldBlockAction(ActionUseItem) Then
         Exit Function
     End If
     Call Writer.WriteInt16(ClientPacketID.eUseItem)
@@ -1012,11 +1005,11 @@ End Function
 '
 ' @param    slot Invetory slot where the item to use is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Function WriteUseItemU(ByVal Slot As Byte, Optional ByVal bypassRateLimit As Boolean = False) As Boolean
+Public Function WriteUseItemU(ByVal Slot As Byte) As Boolean
     '<EhHeader>
     On Error GoTo WriteUseItemU_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionUseItemU, bypassRateLimit) Then
+    If ShouldBlockAction(ActionUseItemU) Then
         Exit Function
     End If
     Call Writer.WriteInt16(ClientPacketID.eUseItemU)
@@ -1144,12 +1137,12 @@ End Sub
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @param    skill The skill which the user attempts to use.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Function WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As eSkill, Optional ByVal bypassRateLimit As Boolean = False) As Boolean
+Public Function WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As eSkill) As Boolean
     '<EhHeader>
     On Error GoTo WriteWorkLeftClick_Err
     '</EhHeader>
     If Skill = eSkill.magia Then
-        If ShouldBlockAction(ActionWorkLeftClick, bypassRateLimit) Then
+        If ShouldBlockAction(ActionWorkLeftClick) Then
             Exit Function
         End If
     End If

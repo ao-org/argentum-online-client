@@ -556,6 +556,8 @@ Public Type t_Intervals
     MagicHit As Long
     HitUseItem As Long
     Hide As Long
+    Talk As Long
+    LeftClick As Long
 End Type
 
 Public gIntervals             As t_Intervals
