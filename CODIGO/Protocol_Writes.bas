@@ -96,9 +96,8 @@ End Function
 
 Private Function GetWalkIntervalMs() As Long
     GetWalkIntervalMs = gIntervals.Walk
-
     If UserCharIndex > 0 Then
-        If GetWalkIntervalMs > 0 And charlist(UserCharIndex).Speeding > 0 Then
+        If charlist(UserCharIndex).Speeding > 0 Then
             GetWalkIntervalMs = CLng(CDbl(GetWalkIntervalMs) / CDbl(charlist(UserCharIndex).Speeding))
         End If
     End If
