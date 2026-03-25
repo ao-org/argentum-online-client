@@ -130,17 +130,6 @@ Private Function GetActionIntervalMs(ByVal actionType As eActionRateLimitType) A
         Case ActionWalk
             GetActionIntervalMs = GetWalkIntervalMs()
     End Select
-
-    If GetActionIntervalMs <= 0 Then
-        Select Case actionType
-            Case ActionHideSkill
-                GetActionIntervalMs = FALLBACK_HIDE_INTERVAL_MS
-            Case ActionTalk
-                GetActionIntervalMs = PACKET_POLICY_TALK_LIMIT_MS
-            Case ActionLeftClick
-                GetActionIntervalMs = PACKET_POLICY_LEFTCLICK_LIMIT_MS
-        End Select
-    End If
 End Function
 
 Private Function CanSendActionNow(ByVal actionType As eActionRateLimitType, ByVal nowTick As Long) As Boolean
