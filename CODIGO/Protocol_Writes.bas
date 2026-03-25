@@ -38,10 +38,7 @@ Private Enum eActionRateLimitType
     ActionWalk = 8
     [LastAction]
 End Enum
-
-Private Const ACTION_RATE_LIMIT_COUNT As Long = eActionRateLimitType.LastAction - 1
-
-Private lastActionSentTick(1 To ACTION_RATE_LIMIT_COUNT) As Long
+Private lastActionSentTick(1 To eActionRateLimitType.LastAction - 1) As Long
 Private actionLimiterReady As Boolean
 #If DIRECT_PLAY = 0 Then
     Private Writer As Network.Writer
@@ -67,7 +64,7 @@ Public Sub ResetActionRateLimiter()
     On Error GoTo ResetActionRateLimiter_Err
 
     Dim i As Long
-    For i = 1 To ACTION_RATE_LIMIT_COUNT
+    For i = 1 To UBound(lastActionSentTick)
         lastActionSentTick(i) = 0
     Next i
 
