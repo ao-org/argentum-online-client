@@ -36,9 +36,10 @@ Private Enum eActionRateLimitType
     ActionHideSkill = 6
     ActionWorkLeftClick = 7
     ActionWalk = 8
+    [LastAction]
 End Enum
 
-Private Const ACTION_RATE_LIMIT_COUNT As Long = 8
+Private Const ACTION_RATE_LIMIT_COUNT As Long = eActionRateLimitType.LastAction - 1
 
 Private lastActionSentTick(1 To ACTION_RATE_LIMIT_COUNT) As Long
 Private actionLimiterReady As Boolean
