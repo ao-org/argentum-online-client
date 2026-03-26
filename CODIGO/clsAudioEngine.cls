@@ -489,7 +489,7 @@ Private Function GetCompressedSfxSample(ByVal Name As String, ByVal fullPath As 
         End If
     End If
 
-    sampleHandle = BASS_SampleLoad(0, StrPtr(fullPath), 0, 0, 8, BASS_SAMPLE_OVER_VOL)
+    sampleHandle = BASS_SampleLoad(0, StrPtr(fullPath), 0, 0, 32, BASS_UNICODE Or BASS_SAMPLE_OVER_POS)
     If sampleHandle = 0 Then
         #If DEBUG_AUDIO = 1 Then
             frmDebug.add_text_tracebox "PlayWav OGG sample load failed: " & Name & " Error: " & BASS_ErrorGetCode()
@@ -542,11 +542,13 @@ Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As Strin
         Exit Function
     End If
 
-    channelHandle = BASS_SampleGetChannel(sampleHandle, BASS_SAMCHAN_NEW)
+    
+    channelHandle = BASS_SampleGetChannel(sampleHandle, 0)
     If channelHandle = 0 Then
         PlayCompressedSfx = BASS_ErrorGetCode()
         #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayWav OGG sample channel failed: " & Name & " Error: " & PlayCompressedSfx
+            frmDebug.add_text_tracebox "PlayWav OGG sample channel failed: " & Name & " Error: " & BASS_ErrorGetCode()
+
         #End If
         Exit Function
     End If
