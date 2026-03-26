@@ -12,6 +12,22 @@ Attribute VB_Name = "modBass"
 '       BASS_SampleLoad and BASS_StreamCreateFile functions.
 
 ' NOTE: Use the VBStrFromAnsiPtr function to convert "char *" to VB "String".
+'
+' Project usage notes (Argentum client):
+' - This module is primarily raw BASS 2.4 declares/constants imported from
+'   Un4seen's VB module. Higher-level project behavior lives in
+'   ao20audio_bass_backend.bas and clsAudioEngine.cls.
+' - Music OGG path uses BASS streams (BASS_StreamCreateFile + channel control)
+'   because the client keeps one active long-running music track.
+' - Compressed SFX path uses BASS samples (BASS_SampleLoad /
+'   BASS_SampleGetChannel) so a cached sample can play concurrently on multiple
+'   channels, matching expected overlapping SFX behavior.
+' - Initialization/lifetime convention in this project:
+'     * Init once via InitBassAudio (wrapper module)
+'     * Reuse handles for playback
+'     * Release stream/sample handles explicitly, then call BASS_Free at
+'       shutdown.
+' - Keep policy decisions out of this declare module; add them in wrapper code.
 
 Global Const BASSVERSION = &H204    'API version
 Global Const BASSVERSIONTEXT = "2.4"
