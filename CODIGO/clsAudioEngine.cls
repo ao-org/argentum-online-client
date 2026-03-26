@@ -102,16 +102,20 @@ Private Function PlayOgg(ByVal fileName As String, Optional ByVal looping As Boo
     If LenB(fileName) = 0 Then Exit Function
 
     If Not ResolveOggFilePath(fileName, pathToFile) Then
-        frmDebug.add_text_tracebox "PlayOgg missing file: " & fileName
+        #If DEBUG_AUDIO = 1 Then
+            frmDebug.add_text_tracebox "PlayOgg missing file: " & filename
+        #End If
         Exit Function
     End If
 
     PlayOgg = BassBackend_PlayOgg(pathToFile, looping, volume)
+    #If DEBUG_AUDIO = 1 Then
     If PlayOgg = 0 Then
         frmDebug.add_text_tracebox "PlayOgg started: " & fileName
     Else
         frmDebug.add_text_tracebox "PlayOgg failed. Error: " & PlayOgg
     End If
+    #End If
 End Function
 
 Private Sub ClearActiveMusicState()
@@ -478,14 +482,18 @@ Private Function GetCompressedSfxSample(ByVal Name As String, ByVal fullPath As 
     If i > 0 Then
         If mCompressedSfx(i).SampleHandle <> 0 Then
             GetCompressedSfxSample = mCompressedSfx(i).SampleHandle
-            frmDebug.add_text_tracebox "PlayWav OGG cache hit: " & Name
+            #If DEBUG_AUDIO = 1 Then
+                frmDebug.add_text_tracebox "PlayWav OGG cache hit: " & Name
+            #End If
             Exit Function
         End If
     End If
 
     sampleHandle = BASS_SampleLoad(0, StrPtr(fullPath), 0, 0, 8, BASS_SAMPLE_OVER_VOL)
     If sampleHandle = 0 Then
-        frmDebug.add_text_tracebox "PlayWav OGG sample load failed: " & Name & " Error: " & BASS_ErrorGetCode()
+        #If DEBUG_AUDIO = 1 Then
+            frmDebug.add_text_tracebox "PlayWav OGG sample load failed: " & Name & " Error: " & BASS_ErrorGetCode()
+        #End If
         Exit Function
     End If
 
@@ -503,7 +511,9 @@ Private Function GetCompressedSfxSample(ByVal Name As String, ByVal fullPath As 
     mCompressedSfx(i).FullPath = fullPath
     mCompressedSfx(i).SampleHandle = sampleHandle
 
-    frmDebug.add_text_tracebox "PlayWav OGG sample cached: " & Name
+    #If DEBUG_AUDIO = 1 Then
+        frmDebug.add_text_tracebox "PlayWav OGG sample cached: " & Name
+    #End If
     GetCompressedSfxSample = sampleHandle
     Exit Function
 
@@ -535,7 +545,9 @@ Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As Strin
     channelHandle = BASS_SampleGetChannel(sampleHandle, BASS_SAMCHAN_NEW)
     If channelHandle = 0 Then
         PlayCompressedSfx = BASS_ErrorGetCode()
-        frmDebug.add_text_tracebox "PlayWav OGG sample channel failed: " & Name & " Error: " & PlayCompressedSfx
+        #If DEBUG_AUDIO = 1 Then
+            frmDebug.add_text_tracebox "PlayWav OGG sample channel failed: " & Name & " Error: " & PlayCompressedSfx
+        #End If
         Exit Function
     End If
 
@@ -546,7 +558,9 @@ Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As Strin
 
     If BASS_ChannelPlay(channelHandle, 1) = 0 Then
         PlayCompressedSfx = BASS_ErrorGetCode()
-        frmDebug.add_text_tracebox "PlayWav OGG play failed: " & Name & " Error: " & PlayCompressedSfx
+        #If DEBUG_AUDIO = 1 Then
+            frmDebug.add_text_tracebox "PlayWav OGG play failed: " & Name & " Error: " & PlayCompressedSfx
+        #End If
         Exit Function
     End If
 
@@ -574,7 +588,9 @@ Private Sub FreeCompressedSfxCache()
 
     Erase mCompressedSfx
     mCompressedSfxCount = 0
-    frmDebug.add_text_tracebox "Compressed OGG SFX cache cleared"
+    #If DEBUG_AUDIO = 1 Then
+        frmDebug.add_text_tracebox "Compressed OGG SFX cache cleared"
+    #End If
     Exit Sub
 
 FreeCompressedSfxCache_Error:
@@ -670,7 +686,9 @@ Public Function PlayAmbient(ByVal id As Integer, Optional ByVal looping As Boole
     End If
     Dim tid As Integer
     tid = UBound(mAudioTracks)
-    frmDebug.add_text_tracebox "PlayAmbient, track " & tid & " id: " & id
+    #If DEBUG_AUDIO = 1 Then
+        frmDebug.add_text_tracebox "PlayAmbient, track " & tid & " id: " & id
+    #End If
     With mAudioTracks(tid)
         .Name = id
         Set .Buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(id))
@@ -692,16 +710,16 @@ Public Function PlayWav(ByVal prefix_sound_id As String, _
     #If ENABLE_BASS = 1 Then
         oggPath = ResolveOggSfxPath(prefix_sound_id)
         If LenB(oggPath) > 0 Then
-            #If Developer = 1 Then
+            #If DEBUG_AUDIO = 1 Then
                 frmDebug.add_text_tracebox "PlayWav using OGG sample: " & prefix_sound_id
             #End If
             PlayWav = PlayCompressedSfx(prefix_sound_id, oggPath, looping, volume, pan)
             If PlayWav = 0 Then Exit Function
-            #If Developer = 1 Then
+            #If DEBUG_AUDIO = 1 Then
                 frmDebug.add_text_tracebox "PlayWav OGG failed, fallback to WAV: " & prefix_sound_id
             #End If
         Else
-            #If Developer = 1 Then
+            #If DEBUG_AUDIO = 1 Then
                 frmDebug.add_text_tracebox "PlayWav fallback to WAV: " & prefix_sound_id
             #End If
             
