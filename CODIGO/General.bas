@@ -1416,14 +1416,14 @@ Public Function IntentarObtenerPezEspecial()
     Dim acierto As Byte
     Dim tiempoActual As Long
     Dim totalIntentos As Long
-    tiempoActual = GetTickCount()
+    TiempoActual = GetTickCountRaw()
     If tiempoActual < ProximoIntentoPezEspecial Then
         Exit Function
     End If
     frmDebug.add_text_tracebox "Aciertos: " & ContadorIntentosPescaEspecial_Acertados & "Posicion barra : " & PosicionBarra
     'El + y -10 es por inputLag (Margen de error)
     If PuedeIntentar Then
-        If PosicionBarra >= (90 - 15) And PosicionBarra <= (111 + 15) Then
+        If PosicionBarra >= (90 - 10) And PosicionBarra <= (111 + 10) Then
             ContadorIntentosPescaEspecial_Acertados = ContadorIntentosPescaEspecial_Acertados + 1
             acierto = 1
         Else

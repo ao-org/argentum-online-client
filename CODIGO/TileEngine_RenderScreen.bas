@@ -588,10 +588,10 @@ Sub RenderScreen(ByVal center_x As Integer, _
                 Call Draw_Grh(Grh, 394 + (i * 10) + gameplay_render_offset.x, 573 + gameplay_render_offset.y, 0, 0, ColorBarraPesca())
             End If
         Next i
-        If GetTickCount() >= ProximoIntentoPezEspecial Then
+        If GetTickCountRaw() >= ProximoIntentoPezEspecial Then
             If TiempoEsperaIntentoPescaEspecialMs > 0 Then
                 PosicionBarra = RandomNumber(0, BarWidth)
-                If RandomNumber(0, 1) = 0 Then
+                If RandomNumber(-10, 10) < 0 Then
                     DireccionBarra = -1
                 Else
                     DireccionBarra = 1
