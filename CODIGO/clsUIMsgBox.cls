@@ -6,7 +6,7 @@ BEGIN
   DataSourceBehavior  = 0  'vbNone
   MTSTransactionMode  = 0  'NotAnMTSObject
 END
-Attribute VB_Name = "clsUIBoxInfo"
+Attribute VB_Name = "clsUIMsgBox"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
@@ -83,10 +83,34 @@ Public Function IUIComponent_IsVisible() As Boolean
     IUIComponent_IsVisible = m_Impl.IsVisible
 End Function
 
-Public Sub SetPosition(ByVal x As Long, ByVal y As Long, ByVal d As Boolean)
+'Public Sub SetPosition(ByVal x As Long, ByVal y As Long, ByVal d As Boolean)
+'    Call m_Impl.SetPosition(x, y)
+'    m_Draw = d
+'End Sub
+
+Public Sub IUIComponent_SetPosition(ByVal x As Long, ByVal y As Long)
     Call m_Impl.SetPosition(x, y)
-    m_Draw = d
 End Sub
+
+Public Sub IUIComponent_SetSize(ByVal w As Long, ByVal h As Long)
+    Call m_Impl.SetSize(w, h)
+End Sub
+
+Public Function IUIComponent_GetPerPosX() As Single
+    IUIComponent_GetPerPosX = m_Impl.PerX
+End Function
+
+Public Function IUIComponent_GetPerPosY() As Single
+    IUIComponent_GetPerPosY = m_Impl.PerY
+End Function
+
+Public Function IUIComponent_GetPerW() As Single
+    IUIComponent_GetPerW = m_Impl.PerW
+End Function
+
+Public Function IUIComponent_GetPerH() As Single
+    IUIComponent_GetPerH = m_Impl.PerH
+End Function
 
 Public Property Get Width() As Long
     Width = m_Impl.Width
@@ -178,7 +202,7 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
                 UIRenderer.AddQuad wx, wy, sW, sH, cols2, 190
             End If
         Next i
-    m_lblTitle.SetPosition wx + (sW - (Len(m_lblTitle.Text) * gliphW)) / 2, wy + 15
+    m_lblTitle.IUIComponent_SetPosition wx + (sW - (Len(m_lblTitle.Text) * gliphW)) / 2, wy + 15
     m_lblTitle.IUIComponent_Render dev
     Dim strTextAux As String
 '    For i = 0 To gliphPerRow
@@ -186,7 +210,7 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
 '        Call UIRenderer.RenderText(m_Impl.Text, wx + (sW - (Len(strTextAux) * 10)) / 2, wy + (gliphH * i) + 50, m_Impl.Color, 8, 255, 0.5)
 '    Next i
     Call UIRenderer.RenderText(m_Impl.Text, wx + (sW - (Len(m_Impl.Text) * 5)) / 2, wy + 50, m_Impl.Color, 8, 255, 0.5)
-    m_btnOk.SetPosition wx + (sW - m_btnOk.Width) / 2, wy + Me.Height - 55
+    m_btnOk.IUIComponent_SetPosition wx + (sW - m_btnOk.Width) / 2, wy + Me.Height - 55
     m_btnOk.IUIComponent_Render dev
 End Sub
 

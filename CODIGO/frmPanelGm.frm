@@ -1992,8 +1992,6 @@ Private Sub cmdAccion_Click(Index As Integer)
             End If
         Case 13 '/nick2ip NICK 0.12.1
             Call WriteNickToIP(nick)
-        Case 14 '/Lastip NICK 0.12.1
-            Call WriteLastIP(nick)
         Case 15 '/IrCerca NICK 0.12.1
             If LenB(nick) <> 0 Then Call WriteGoNearby(nick)
         Case 17 '/BANIP IP 0.12.1
