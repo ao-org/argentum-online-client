@@ -3,6 +3,14 @@ Option Explicit
 
 #If ENABLE_BASS = 1 Then
 
+' Wrapper around raw BASS declares used by this project for MUSIC streams.
+' Scope intentionally limited to music lifecycle:
+' - initialize/free BASS device
+' - manage one active music stream handle
+' - apply runtime music volume
+'
+' Compressed SFX sample logic is handled in clsAudioEngine (PlayWav path)
+' because it needs cache + per-request channel spawning behavior.
 
 Private Const BASS_INIT_DEFAULT    As Long = 0
 Private Const BASS_DEFAULT_DEVICE  As Long = -1
@@ -117,6 +125,8 @@ Public Function BassBackend_PlayOgg(ByVal FilePath As String, ByVal looping As B
         Exit Function
     End If
 
+    ' Music path keeps a single active stream by design.
+    ' Starting a new track always releases the prior stream first.
     Call BassBackend_StopMusic
 
     flags = 0

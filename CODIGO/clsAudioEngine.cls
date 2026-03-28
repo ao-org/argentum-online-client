@@ -27,6 +27,34 @@ Attribute VB_Exposed = False
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 Option Base 0
 Option Explicit
+
+' ============================================================================
+' clsAudioEngine is the runtime audio orchestrator for the legacy VB6 client.
+'
+' Main entry points:
+' - PlayMusic: music dispatcher. Chooses backend by extension (.ogg -> BASS
+'   stream, .mid -> DirectMusic), suppresses same-track restarts, and switches
+'   backend safely when needed.
+' - PlayMidi: explicit MIDI entry point kept for legacy call sites. Still
+'   routed through DirectMusic and still applies restart suppression semantics.
+' - PlayWav: SFX entry point used by existing gameplay code. It now prefers
+'   "<name>.ogg" via BASS samples and falls back to legacy "<name>.wav"
+'   DirectSound playback if needed.
+' - PlayAmbient: ambient/weather path. Currently remains on the legacy WAV /
+'   DirectSound route.
+' - StopMusic / SetMusicVolume: backend-aware controls that operate on whichever
+'   music backend is currently active.
+'
+' Why the split exists:
+' - Music OGG is decoded as a BASS stream (single long track, efficient
+'   sequential playback/looping/volume updates).
+' - SFX OGG uses BASS samples (preloaded/reused assets that can spawn multiple
+'   overlapping channels to match legacy WAV overlap behavior).
+' - MIDI remains on DirectMusic for compatibility with existing MIDI assets and
+'   callers that still request MIDI by id.
+' - WAV/DirectSound remains as compatibility/fallback for assets not yet moved
+'   to OGG and for ambient behavior that still uses the legacy path.
+' ============================================================================
 Private mDirectX           As DirectX8
 Private mDirectSound       As DirectSound8
 Private mDirectSoundEnum   As DirectSoundEnum8
@@ -73,6 +101,11 @@ End Type
 
 Private mMidiTrack(1 To 3) As MidiTrack
 
+' Determines music backend strictly from file extension.
+' PlayMusic uses this as the single backend-selection rule:
+'   *.ogg -> BASS music stream
+'   *.mid -> DirectMusic MIDI (numeric id inferred from filename)
+' Anything else is treated as unsupported music request.
 Private Function GetFileExtension(ByVal fileName As String) As String
     Dim dotPos As Long
     dotPos = InStrRev(fileName, ".")
@@ -102,18 +135,26 @@ Private Function PlayOgg(ByVal fileName As String, Optional ByVal looping As Boo
     If LenB(fileName) = 0 Then Exit Function
 
     If Not ResolveOggFilePath(fileName, pathToFile) Then
-        frmDebug.add_text_tracebox "PlayOgg missing file: " & fileName
+        #If DEBUG_AUDIO = 1 Then
+            frmDebug.add_text_tracebox "PlayOgg missing file: " & filename
+        #End If
         Exit Function
     End If
 
     PlayOgg = BassBackend_PlayOgg(pathToFile, looping, volume)
+    #If DEBUG_AUDIO = 1 Then
     If PlayOgg = 0 Then
         frmDebug.add_text_tracebox "PlayOgg started: " & fileName
     Else
         frmDebug.add_text_tracebox "PlayOgg failed. Error: " & PlayOgg
     End If
+    #End If
 End Function
 
+' Active music state tracks what is currently playing across both music
+' backends. This enables idempotent behavior (ignore duplicate requests) and
+' consistent backend-aware volume/stop handling.
+' NOTE: we only commit this state after a backend actually starts playback.
 Private Sub ClearActiveMusicState()
     mCurrentMusicFile = ""
     mMusicLooping = False
@@ -131,6 +172,10 @@ Private Sub SetActiveMusicState(ByVal fileName As String, ByVal backend As eMusi
     mMusicIsActive = True
 End Sub
 
+' Internal helpers used by PlayMusic/PlayMidi:
+' - IsSameMusicRequest: detects idempotent requests for the same active track.
+' - Set/ClearActiveMusicState: maintain authoritative cross-backend state.
+' - DetermineMusicBackendFromFile: central extension-to-backend policy.
 Private Function IsSameMusicRequest(ByVal fileName As String, ByVal backend As eMusicBackend, ByVal looping As Boolean) As Boolean
     IsSameMusicRequest = mMusicIsActive And (mMusicBackend = backend) And (StrComp(mCurrentMusicFile, fileName, vbTextCompare) = 0) And (mMusicLooping = looping)
 End Function
@@ -154,6 +199,8 @@ Private Function DetermineMusicBackendFromFile(ByVal fileName As String, ByRef m
     End Select
 End Function
 
+' Stops all music-capable backends to guarantee a clean handoff when switching
+' from OGG->MIDI or MIDI->OGG. This intentionally does not affect SFX.
 Private Sub StopAllMusicBackends()
     On Error Resume Next
 
@@ -198,6 +245,17 @@ Public Sub SetMusicVolume(ByVal volume As Long)
     End Select
 End Sub
 
+' PlayMusic is the preferred music entry point.
+' Backend decision is extension-driven:
+'   - .ogg: BASS stream path (preferred for compressed music)
+'   - .mid: DirectMusic path (legacy compatibility, still supported)
+'
+' Same-track requests are treated as idempotent: if the same active file with
+' same looping mode is requested again, playback is not restarted and only
+' volume is updated.
+'
+' Important: active music state is written only after successful start. This
+' prevents stale "currently playing" metadata when backend startup fails.
 Public Function PlayMusic(ByVal fileName As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
     Dim backend As eMusicBackend
     Dim midiId As Integer
@@ -355,6 +413,9 @@ Error_Handl:
     frmDebug.add_text_tracebox "error al cargar musica"
 End Function
 
+' Legacy WAV loader used by DirectSound fallback (and ambient). This remains
+' intentionally available so callers can continue using PlayWav while assets
+' are migrated incrementally to OGG.
 Private Function CreateWavBufferFromFile(ByVal file_name As String, ByRef new_buffer As DirectSoundSecondaryBuffer8, Optional ByVal Extraido As Boolean = False) As Boolean
     On Error GoTo CreateWavBufferFromFile_Err
     CreateWavBufferFromFile = False
@@ -394,6 +455,8 @@ CreateWavBufferFromFile_Err:
     Resume Next
 End Function
 
+' Resolves "<name>.ogg" for SFX requests. PlayWav uses this to implement
+' OGG-first behavior without changing existing call sites.
 Private Function ResolveOggSfxPath(ByVal Name As String) As String
     Dim fileNameWithExtension As String
 
@@ -466,6 +529,11 @@ Private Function FindCompressedSfxIndex(ByVal Name As String, ByVal fullPath As 
     Next i
 End Function
 
+' Compressed SFX cache:
+' - Keyed by logical name/path.
+' - Stores BASS sample handles (not streams) so decoded sample data can be
+'   reused across repeated plays.
+' - Designed for short SFX where low-latency replay and overlap matter.
 Private Function GetCompressedSfxSample(ByVal Name As String, ByVal fullPath As String) As Long
     On Error GoTo GetCompressedSfxSample_Error
     Dim sampleHandle As Long
@@ -478,14 +546,18 @@ Private Function GetCompressedSfxSample(ByVal Name As String, ByVal fullPath As 
     If i > 0 Then
         If mCompressedSfx(i).SampleHandle <> 0 Then
             GetCompressedSfxSample = mCompressedSfx(i).SampleHandle
-            frmDebug.add_text_tracebox "PlayWav OGG cache hit: " & Name
+            #If DEBUG_AUDIO = 1 Then
+                frmDebug.add_text_tracebox "PlayWav OGG cache hit: " & Name
+            #End If
             Exit Function
         End If
     End If
 
-    sampleHandle = BASS_SampleLoad(0, StrPtr(fullPath), 0, 0, 8, BASS_SAMPLE_OVER_VOL)
+    sampleHandle = BASS_SampleLoad(0, StrPtr(fullPath), 0, 0, 32, BASS_UNICODE Or BASS_SAMPLE_OVER_POS)
     If sampleHandle = 0 Then
-        frmDebug.add_text_tracebox "PlayWav OGG sample load failed: " & Name & " Error: " & BASS_ErrorGetCode()
+        #If DEBUG_AUDIO = 1 Then
+            frmDebug.add_text_tracebox "PlayWav OGG sample load failed: " & Name & " Error: " & BASS_ErrorGetCode()
+        #End If
         Exit Function
     End If
 
@@ -503,7 +575,9 @@ Private Function GetCompressedSfxSample(ByVal Name As String, ByVal fullPath As 
     mCompressedSfx(i).FullPath = fullPath
     mCompressedSfx(i).SampleHandle = sampleHandle
 
-    frmDebug.add_text_tracebox "PlayWav OGG sample cached: " & Name
+    #If DEBUG_AUDIO = 1 Then
+        frmDebug.add_text_tracebox "PlayWav OGG sample cached: " & Name
+    #End If
     GetCompressedSfxSample = sampleHandle
     Exit Function
 
@@ -511,6 +585,13 @@ GetCompressedSfxSample_Error:
     frmDebug.add_text_tracebox "GetCompressedSfxSample exception: " & Err.Description
 End Function
 
+' Compressed SFX playback uses BASS samples + per-play channels.
+' Why samples instead of streams for SFX:
+' - A sample can spawn multiple channels concurrently.
+' - This preserves legacy expectation that the same effect may overlap itself
+'   (eg. repeated hits/steps) without cutting previous playback.
+' - Music keeps using a dedicated stream because only one active music track is
+'   expected at a time.
 Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As String, ByVal looping As Boolean, ByVal volume As Long, Optional ByVal pan As Long = 0) As Long
     On Error GoTo PlayCompressedSfx_Error
     Dim sampleHandle As Long
@@ -532,10 +613,14 @@ Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As Strin
         Exit Function
     End If
 
-    channelHandle = BASS_SampleGetChannel(sampleHandle, BASS_SAMCHAN_NEW)
+    
+    channelHandle = BASS_SampleGetChannel(sampleHandle, 0)
     If channelHandle = 0 Then
         PlayCompressedSfx = BASS_ErrorGetCode()
-        frmDebug.add_text_tracebox "PlayWav OGG sample channel failed: " & Name & " Error: " & PlayCompressedSfx
+        #If DEBUG_AUDIO = 1 Then
+            frmDebug.add_text_tracebox "PlayWav OGG sample channel failed: " & Name & " Error: " & BASS_ErrorGetCode()
+
+        #End If
         Exit Function
     End If
 
@@ -546,7 +631,9 @@ Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As Strin
 
     If BASS_ChannelPlay(channelHandle, 1) = 0 Then
         PlayCompressedSfx = BASS_ErrorGetCode()
-        frmDebug.add_text_tracebox "PlayWav OGG play failed: " & Name & " Error: " & PlayCompressedSfx
+        #If DEBUG_AUDIO = 1 Then
+            frmDebug.add_text_tracebox "PlayWav OGG play failed: " & Name & " Error: " & PlayCompressedSfx
+        #End If
         Exit Function
     End If
 
@@ -557,6 +644,8 @@ PlayCompressedSfx_Error:
     frmDebug.add_text_tracebox "PlayCompressedSfx exception: " & Err.Description
 End Function
 
+' Cached compressed SFX are long-lived for runtime reuse and explicitly freed
+' during shutdown/termination.
 Private Sub FreeCompressedSfxCache()
     On Error GoTo FreeCompressedSfxCache_Error
     Dim i As Integer
@@ -574,7 +663,9 @@ Private Sub FreeCompressedSfxCache()
 
     Erase mCompressedSfx
     mCompressedSfxCount = 0
-    frmDebug.add_text_tracebox "Compressed OGG SFX cache cleared"
+    #If DEBUG_AUDIO = 1 Then
+        frmDebug.add_text_tracebox "Compressed OGG SFX cache cleared"
+    #End If
     Exit Sub
 
 FreeCompressedSfxCache_Error:
@@ -658,6 +749,8 @@ Public Function PlayAmbient(ByVal id As Integer, Optional ByVal looping As Boole
     On Error GoTo PlayAmbient_Error_Handl
     Debug.Assert id > 0
     PlayAmbient = -1
+    ' Ambient currently remains on legacy DirectSound/WAV buffers.
+    ' Convention: the last audio track slot is reserved for ambient playback.
     If (id <= 0) Then Exit Function
     If mBuffer(id) Is Nothing Then
         Dim i As Integer
@@ -670,7 +763,9 @@ Public Function PlayAmbient(ByVal id As Integer, Optional ByVal looping As Boole
     End If
     Dim tid As Integer
     tid = UBound(mAudioTracks)
-    frmDebug.add_text_tracebox "PlayAmbient, track " & tid & " id: " & id
+    #If DEBUG_AUDIO = 1 Then
+        frmDebug.add_text_tracebox "PlayAmbient, track " & tid & " id: " & id
+    #End If
     With mAudioTracks(tid)
         .Name = id
         Set .Buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(id))
@@ -681,6 +776,13 @@ Public Function PlayAmbient(ByVal id As Integer, Optional ByVal looping As Boole
 PlayAmbient_Error_Handl:
 End Function
 
+' PlayWav is the compatibility SFX entry point used by existing callers.
+' Current policy:
+' 1) Try "<id>.ogg" through the compressed BASS-sample path.
+' 2) If OGG cannot be resolved/played, fall back to legacy WAV/DirectSound.
+'
+' This enables gradual asset migration to OGG without changing call sites.
+' Legacy WAV fallback remains required while some assets are still WAV-only.
 Public Function PlayWav(ByVal prefix_sound_id As String, _
                         Optional ByVal looping As Boolean = False, _
                         Optional ByVal volume As Long = 0, _
@@ -692,16 +794,16 @@ Public Function PlayWav(ByVal prefix_sound_id As String, _
     #If ENABLE_BASS = 1 Then
         oggPath = ResolveOggSfxPath(prefix_sound_id)
         If LenB(oggPath) > 0 Then
-            #If Developer = 1 Then
+            #If DEBUG_AUDIO = 1 Then
                 frmDebug.add_text_tracebox "PlayWav using OGG sample: " & prefix_sound_id
             #End If
             PlayWav = PlayCompressedSfx(prefix_sound_id, oggPath, looping, volume, pan)
             If PlayWav = 0 Then Exit Function
-            #If Developer = 1 Then
+            #If DEBUG_AUDIO = 1 Then
                 frmDebug.add_text_tracebox "PlayWav OGG failed, fallback to WAV: " & prefix_sound_id
             #End If
         Else
-            #If Developer = 1 Then
+            #If DEBUG_AUDIO = 1 Then
                 frmDebug.add_text_tracebox "PlayWav fallback to WAV: " & prefix_sound_id
             #End If
             
@@ -762,6 +864,8 @@ Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean 
     PlayMidi = -1
     If (id <= 0) Then Exit Function
 
+    ' Some legacy code paths still call PlayMidi directly.
+    ' Keep it idempotent (same-track + same-loop request does not restart).
     If mMusicIsActive And mMusicBackend = mbDirectMusicMidi And mCurrentMidiId = id And mMusicLooping = looping Then
         frmDebug.add_text_tracebox "PlayMidi same track request ignored: " & CStr(id) & ".mid"
         Call SetMusicVolume(volume)
@@ -903,6 +1007,10 @@ Private Sub Class_Terminate()
     Err.Clear
     StopMusic
     StopAllPlayback
+    ' Shutdown order:
+    ' - stop active playback first
+    ' - free long-lived compressed SFX sample cache
+    ' - finally release BASS device/backend state
     FreeCompressedSfxCache
     ShutdownBassAudio
     Dim i As Integer
