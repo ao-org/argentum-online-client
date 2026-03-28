@@ -327,7 +327,7 @@ Public Sub WriteTalk(ByVal chat As String)
     On Error GoTo WriteTalk_Err
     '</EhHeader>
     If ShouldRateLimitTalk(chat) Then
-        If ShouldBlockAction(ActionTalk) Then
+        If ShouldBlockAction(eActionRateLimitType.ActionTalk) Then
             Exit Sub
         End If
     End If
@@ -398,7 +398,7 @@ Public Function WriteWalk(ByVal Heading As E_Heading) As Boolean
     '<EhHeader>
     On Error GoTo WriteWalk_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionWalk) Then
+    If ShouldBlockAction(eActionRateLimitType.ActionWalk) Then
         Exit Function
     End If
     Call Writer.WriteInt16(ClientPacketID.eWalk)
@@ -442,7 +442,7 @@ Public Function WriteAttack() As Boolean
     '<EhHeader>
     On Error GoTo WriteAttack_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionAttack) Then
+    If ShouldBlockAction(eActionRateLimitType.ActionAttack) Then
         Exit Function
     End If
     Call Writer.WriteInt16(ClientPacketID.eAttack)
@@ -879,7 +879,7 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
     '<EhHeader>
     On Error GoTo WriteLeftClick_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionLeftClick) Then
+    If ShouldBlockAction(eActionRateLimitType.ActionLeftClick) Then
         Exit Sub
     End If
     Call Writer.WriteInt16(ClientPacketID.eLeftClick)
@@ -908,7 +908,7 @@ Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
     '<EhHeader>
     On Error GoTo WriteDoubleClick_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionLeftClick) Then
+    If ShouldBlockAction(eActionRateLimitType.ActionLeftClick) Then
         Exit Sub
     End If
     Call Writer.WriteInt16(ClientPacketID.eDoubleClick)
@@ -934,7 +934,7 @@ Public Sub WriteWork(ByVal Skill As eSkill)
     On Error GoTo WriteWork_Err
     '</EhHeader>
     If Skill = eSkill.Ocultarse Then
-        If ShouldBlockAction(ActionHideSkill) Then
+        If ShouldBlockAction(eActionRateLimitType.ActionHideSkill) Then
             Exit Sub
         End If
     End If
@@ -981,7 +981,7 @@ Public Function WriteUseItem(ByVal Slot As Byte) As Boolean
     '<EhHeader>
     On Error GoTo WriteUseItem_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionUseItem) Then
+    If ShouldBlockAction(eActionRateLimitType.ActionUseItem) Then
         Exit Function
     End If
     Call Writer.WriteInt16(ClientPacketID.eUseItem)
@@ -1009,7 +1009,7 @@ Public Function WriteUseItemU(ByVal Slot As Byte) As Boolean
     '<EhHeader>
     On Error GoTo WriteUseItemU_Err
     '</EhHeader>
-    If ShouldBlockAction(ActionUseItemU) Then
+    If ShouldBlockAction(eActionRateLimitType.ActionUseItemU) Then
         Exit Function
     End If
     Call Writer.WriteInt16(ClientPacketID.eUseItemU)
@@ -1142,7 +1142,7 @@ Public Function WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill
     On Error GoTo WriteWorkLeftClick_Err
     '</EhHeader>
     If Skill = eSkill.magia Then
-        If ShouldBlockAction(ActionWorkLeftClick) Then
+        If ShouldBlockAction(eActionRateLimitType.ActionWorkLeftClick) Then
             Exit Function
         End If
     End If
@@ -2132,7 +2132,7 @@ Public Sub WriteMeditate()
     On Error GoTo WriteMeditate_Err
     '</EhHeader>
     If UserMoving Then Exit Sub
-    If ShouldBlockAction(ActionMeditate) Then Exit Sub
+    If ShouldBlockAction(eActionRateLimitType.ActionMeditate) Then Exit Sub
     Call Writer.WriteInt16(ClientPacketID.eMeditate)
     Call modNetwork.send(Writer)
     Call MarkActionSent(ActionMeditate)
