@@ -3442,25 +3442,6 @@ SendTxt_KeyUp_Err:
     Resume Next
 End Sub
 
-Private Sub computeLastElapsedTimeChat(ByVal tiempoTranscurridoCartel As Double)
-    Dim i As Long
-    For i = 2 To 6
-        LastElapsedTimeChat(i - 1) = LastElapsedTimeChat(i)
-    Next i
-    LastElapsedTimeChat(6) = tiempoTranscurridoCartel
-    'Calculo el mínimo y máximo de mis carteleos
-    Dim min As Double, max As Double
-    min = LastElapsedTimeChat(6)
-    max = LastElapsedTimeChat(6)
-    For i = 1 To 6
-        If LastElapsedTimeChat(i) > max Then max = LastElapsedTimeChat(i)
-        If LastElapsedTimeChat(i) < min Then min = LastElapsedTimeChat(i)
-    Next i
-    If (max - min) > 0 And (max - min) < 12 Then
-        Call WriteLogMacroClickHechizo(tMacro.borrarCartel)
-    End If
-End Sub
-
 Private Sub SendTxtCmsg_KeyPress(KeyAscii As Integer)
     If KeyAscii = BindKeys(e_KeyAction.eSendText).KeyCode Then
         KeyAscii = 0

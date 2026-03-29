@@ -395,12 +395,7 @@ End Sub
 ' @param    heading The direction in wich the user is moving.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Function WriteWalk(ByVal Heading As E_Heading) As Boolean
-    '<EhHeader>
     On Error GoTo WriteWalk_Err
-    '</EhHeader>
-    If ShouldBlockAction(eActionRateLimitType.ActionWalk) Then
-        Exit Function
-    End If
     Call Writer.WriteInt16(ClientPacketID.eWalk)
     Call Writer.WriteInt8(Heading)
     packetCounters.TS_Walk = packetCounters.TS_Walk + 1
@@ -408,12 +403,10 @@ Public Function WriteWalk(ByVal Heading As E_Heading) As Boolean
     Call modNetwork.send(Writer)
     Call MarkActionSent(ActionWalk)
     WriteWalk = True
-    '<EhFooter>
     Exit Function
 WriteWalk_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteWalk", Erl)
-    '</EhFooter>
 End Function
 
 ''
