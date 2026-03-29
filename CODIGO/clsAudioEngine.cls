@@ -479,22 +479,24 @@ Private Function ResolveOggSfxPath(ByVal Name As String) As String
 End Function
 
 Private Function ConvertFxVolumeToBass(ByVal volume As Long) As Single
-    Dim bassVolume As Single
+    Dim gain As Double
 
-    If volume <= 0 Then
-        bassVolume = (10000 + volume) / 10000
-    ElseIf volume <= 1000 Then
-        bassVolume = volume / 1000
-    ElseIf volume <= 10000 Then
-        bassVolume = volume / 10000
-    Else
-        bassVolume = 1
+    If volume >= 0 Then
+        ConvertFxVolumeToBass = 1!
+        Exit Function
     End If
 
-    If bassVolume < 0 Then bassVolume = 0
-    If bassVolume > 1 Then bassVolume = 1
+    If volume <= -10000 Then
+        ConvertFxVolumeToBass = 0!
+        Exit Function
+    End If
 
-    ConvertFxVolumeToBass = bassVolume
+    gain = 10 ^ (volume / 2000#)
+
+    If gain < 0# Then gain = 0#
+    If gain > 1# Then gain = 1#
+
+    ConvertFxVolumeToBass = CSng(gain)
 End Function
 
 Private Function ConvertFxPanToBass(ByVal pan As Long) As Single
