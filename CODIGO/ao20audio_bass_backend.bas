@@ -22,22 +22,24 @@ Private m_CurrentMusicStream As Long
 Private m_LastBassError      As Long
 
 Private Function ConvertMusicVolumeToBass(ByVal volume As Long) As Single
-    Dim bassVolume As Single
+    Dim gain As Double
 
-    If volume <= 0 Then
-        bassVolume = (10000 + volume) / 10000
-    ElseIf volume <= 1000 Then
-        bassVolume = volume / 1000
-    ElseIf volume <= 10000 Then
-        bassVolume = volume / 10000
-    Else
-        bassVolume = 1
+    If volume >= 0 Then
+        ConvertMusicVolumeToBass = 1!
+        Exit Function
     End If
 
-    If bassVolume < 0 Then bassVolume = 0
-    If bassVolume > 1 Then bassVolume = 1
+    If volume <= -10000 Then
+        ConvertMusicVolumeToBass = 0!
+        Exit Function
+    End If
 
-    ConvertMusicVolumeToBass = bassVolume
+    gain = 10 ^ (volume / 2000#)
+
+    If gain < 0# Then gain = 0#
+    If gain > 1# Then gain = 1#
+
+    ConvertMusicVolumeToBass = CSng(gain)
 End Function
 
 Public Function InitBassAudio(ByVal hWndOwner As Long) As Boolean
