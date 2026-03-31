@@ -3144,6 +3144,7 @@ Public Sub CadenaChat(ByVal chat As String)
     Dim Cadena        As String
     Dim partes()      As String
     Dim nombre        As String
+    Dim nombreObjetivo As String
     Dim PosicionBarra As Integer
     ' La cadena original
     Cadena = chat
@@ -3272,6 +3273,23 @@ Public Sub CadenaChat(ByVal chat As String)
             End Select
             If frmPanelgm.chkAutoName.value = 1 Then frmPanelgm.cboListaUsus.text = nombre
             If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+        End If
+    End If
+
+    ' Captura avisos de hechizos para autocompletar el usuario atacante y/o objetivo
+    If InStr(Cadena, "El usuario ") > 0 And InStr(Cadena, " esta lanzando hechizos al Usuario ") > 0 Then
+        partes = Split(Cadena, "El usuario ")
+        If UBound(partes) >= 1 Then
+            nombre = Split(partes(1), " esta lanzando hechizos al Usuario ")(0)
+            nombre = Trim(nombre)
+
+            nombreObjetivo = Split(partes(1), " esta lanzando hechizos al Usuario ")(1)
+            nombreObjetivo = Split(nombreObjetivo, " (")(0)
+            nombreObjetivo = Trim(nombreObjetivo)
+
+            If frmPanelgm.chkAutoName.value = 1 Then
+                If Len(nombre) > 0 Then frmPanelgm.cboListaUsus.text = nombre
+            End If
         End If
     End If
 End Sub
