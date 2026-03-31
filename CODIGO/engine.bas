@@ -784,7 +784,7 @@ Public Sub render()
         Call Engine_Draw_Box(0, 0, frmMain.renderer.ScaleWidth, frmMain.renderer.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
-    #If DEBUGGING = 1 Then
+    #If Developer = 1 Then
         If Not SurfaceDB Is Nothing Then
             Dim ColorGM(3) As RGBA
             ColorGM(0) = RGBA_From_Comp(248, 107, 3)
