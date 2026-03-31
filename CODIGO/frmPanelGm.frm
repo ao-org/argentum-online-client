@@ -3280,15 +3280,18 @@ Public Sub CadenaChat(ByVal chat As String)
     If InStr(Cadena, "El usuario ") > 0 And InStr(Cadena, " esta lanzando hechizos al Usuario ") > 0 Then
         partes = Split(Cadena, "El usuario ")
         If UBound(partes) >= 1 Then
-            nombre = Split(partes(1), " esta lanzando hechizos al Usuario ")(0)
-            nombre = Trim(nombre)
+            Dim partesHechizo() As String
+            partesHechizo = Split(partes(1), " esta lanzando hechizos al Usuario ")
 
-            nombreObjetivo = Split(partes(1), " esta lanzando hechizos al Usuario ")(1)
-            nombreObjetivo = Split(nombreObjetivo, " (")(0)
-            nombreObjetivo = Trim(nombreObjetivo)
+            If UBound(partesHechizo) >= 1 Then
+                nombre = Trim(partesHechizo(0))
 
-            If frmPanelgm.chkAutoName.value = 1 Then
-                If Len(nombre) > 0 Then frmPanelgm.cboListaUsus.text = nombre
+                nombreObjetivo = Split(partesHechizo(1), " (")(0)
+                nombreObjetivo = Trim(nombreObjetivo)
+
+                If frmPanelgm.chkAutoName.value = 1 Then
+                    If Len(nombre) > 0 Then frmPanelgm.cboListaUsus.text = nombre
+                End If
             End If
         End If
     End If
