@@ -182,6 +182,34 @@ Public Function PlayFx(ByVal id As String, _
     PlayFx = AudioEngine.PlayWav(id, looping, effVol, pan, label)
 End Function
 
+Public Sub PlayFxUniqueByLabel(ByVal sndIndex As Integer, _
+                               ByVal looping As Boolean, _
+                               ByVal volume As Long, _
+                               ByVal pan As Long, _
+                               ByVal label As String, _
+                               Optional ByVal category As eFxCategory)
+    ' Mirrors PlayFx category gates/volume caps but dispatches to the
+    ' label-unique engine path (start-or-update instead of always-start).
+    If AudioEngine Is Nothing Or AudioEnabled = 0 Then Exit Sub
+
+    Dim effVol As Long
+    Select Case category
+        Case eFxSteps
+            If FxStepsEnabled = 0 Then Exit Sub
+            effVol = min(CurStepsVolume, volume)
+
+        Case eFxAmbient
+            If AmbientEnabled = 0 Then Exit Sub
+            effVol = min(CurAmbientVolume, volume)
+
+        Case Else
+            If FxEnabled = 0 Then Exit Sub
+            effVol = min(CurFxVolume, volume)
+    End Select
+
+    Call AudioEngine.PlayFxUniqueByLabel(sndIndex, looping, effVol, pan, label, category)
+End Sub
+
 Public Function PlayMusic(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
     PlayMusic = -1
     If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then

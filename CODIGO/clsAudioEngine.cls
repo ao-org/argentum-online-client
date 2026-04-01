@@ -814,6 +814,92 @@ Private Function FindTrackByName(ByVal Name As String, Optional ByVal label As S
     FindTrackByName = -1
 End Function
 
+' Returns the DirectSound track slot currently playing under the given label.
+' Why this exists:
+' - Long/looping FX (eg. sailing) should update in place instead of restart.
+' - DirectSound and BASS are tracked separately, so each backend has its own lookup.
+' Returns:
+' - Track index (1..UBound(mAudioTracks)) when a matching active WAV track exists.
+' - 0 when no active match exists.
+Private Function FindActiveWavTrackByLabel(ByVal label As String) As Integer
+    Dim i As Integer
+
+    FindActiveWavTrackByLabel = 0
+    If LenB(label) = 0 Then Exit Function
+
+    ' Label uniqueness is used for long/looping effects.
+    ' We only consider currently-playing tracks to avoid reviving stale entries.
+    For i = 1 To UBound(mAudioTracks)
+        With mAudioTracks(i)
+            If Not .Buffer Is Nothing Then
+                Dim sf As CONST_DSBSTATUSFLAGS: sf = .Buffer.GetStatus
+                If StrComp(.label, label, vbTextCompare) = 0 And (DSBSTATUS_PLAYING And sf) = DSBSTATUS_PLAYING Then
+                    FindActiveWavTrackByLabel = i
+                    Exit Function
+                End If
+            End If
+        End With
+    Next i
+End Function
+
+' Returns the active BASS channel handle currently playing under the given label.
+' Why this exists:
+' - Compressed SFX channels are not stored in mAudioTracks (DirectSound path).
+' - We need backend-specific lookup to support label-based update semantics.
+' Returns:
+' - BASS channel handle when a matching active compressed channel exists.
+' - 0 when no active match exists.
+Private Function FindActiveCompressedChannelHandleByLabel(ByVal label As String) As Long
+    Dim i As Integer
+
+    FindActiveCompressedChannelHandleByLabel = 0
+    If LenB(label) = 0 Then Exit Function
+
+    ' Compressed (OGG/BASS) channels are tracked separately from DirectSound.
+    ' Prune dead handles first so lookups only match active channels.
+    Call CleanupDeadCompressedChannels
+    For i = 1 To mActiveCompressedChannelsCount
+        With mActiveCompressedChannels(i)
+            If .Handle <> 0 And StrComp(.label, label, vbTextCompare) = 0 Then
+                FindActiveCompressedChannelHandleByLabel = .Handle
+                Exit Function
+            End If
+        End With
+    Next i
+End Function
+
+' Unified label lookup across both FX backends.
+' Resolution order:
+' 1) DirectSound WAV track index
+' 2) BASS compressed channel handle
+' Returns:
+' - DirectSound track index OR BASS handle OR 0 when label is not active.
+' Note:
+' - Callers that need backend-specific operations should still use the backend-
+'   specific helpers after this high-level existence probe.
+Private Function FindActiveFxByLabel(ByVal label As String) As Long
+    Dim wavTrackIndex As Integer
+    Dim channelHandle As Long
+
+    FindActiveFxByLabel = 0
+    If LenB(label) = 0 Then Exit Function
+
+    ' Unified lookup helper:
+    '  - returns DirectSound track index when WAV path is active
+    '  - returns BASS channel handle when compressed path is active
+    '  - returns 0 when label has no active playback
+    wavTrackIndex = FindActiveWavTrackByLabel(label)
+    If wavTrackIndex > 0 Then
+        FindActiveFxByLabel = wavTrackIndex
+        Exit Function
+    End If
+
+    channelHandle = FindActiveCompressedChannelHandleByLabel(label)
+    If channelHandle <> 0 Then
+        FindActiveFxByLabel = channelHandle
+    End If
+End Function
+
 Private Function GetFreeWavTrack() As Integer
     Dim i As Integer
     For i = 1 To UBound(mAudioTracks) - 1
@@ -941,6 +1027,68 @@ Public Function PlayWav(ByVal prefix_sound_id As String, _
 PlayWav_Error_Handl:
 End Function
 
+' Play-or-update helper for labeled FX.
+' Behavior:
+' - If label is active, updates volume/pan on the active instance (no restart).
+' - If label is not active, starts playback normally and registers that label.
+' Backend support:
+' - DirectSound WAV tracks and BASS compressed channels.
+' Notes:
+' - This is intentionally different from PlayFx/PlayWav default overlap behavior.
+' - category is accepted for API parity; effective category gating is applied
+'   by ao20audio.PlayFxUniqueByLabel before calling this method.
+Public Sub PlayFxUniqueByLabel(ByVal sndIndex As Integer, ByVal looping As Boolean, ByVal volume As Long, ByVal pan As Long, ByVal label As String, ByVal category As eFxCategory)
+    On Error GoTo PlayFxUniqueByLabel_Error
+    Dim wavTrackIndex As Integer
+    Dim channelHandle As Long
+
+    ' Safety fallback: without label this behaves as regular play.
+    ' (category is consumed by ao20audio facade before calling this method)
+    If LenB(label) = 0 Then
+        Call PlayWav(CStr(sndIndex), looping, volume, pan, label)
+        Exit Sub
+    End If
+
+    wavTrackIndex = FindActiveWavTrackByLabel(label)
+    If wavTrackIndex > 0 Then
+        ' DirectSound instance exists for this label: update spatial params only.
+        ' Do not restart to keep long loops seamless.
+        With mAudioTracks(wavTrackIndex)
+            If Not .Buffer Is Nothing Then
+                .Buffer.SetVolume volume
+                .Buffer.SetPan pan
+                #If DEBUG_AUDIO = 1 Then
+                    frmDebug.add_text_tracebox "PlayFxUnique update: " & label
+                #End If
+            End If
+        End With
+        Exit Sub
+    End If
+
+    channelHandle = FindActiveCompressedChannelHandleByLabel(label)
+    If channelHandle <> 0 Then
+        ' BASS compressed instance exists for this label: update runtime attributes.
+        ' Do not restart to avoid overlap/retrigger artifacts.
+        Call BASS_ChannelSetAttribute(channelHandle, BASS_ATTRIB_VOL, ConvertFxVolumeToBass(volume))
+        Call BASS_ChannelSetAttribute(channelHandle, BASS_ATTRIB_PAN, ConvertFxPanToBass(pan))
+        #If DEBUG_AUDIO = 1 Then
+            frmDebug.add_text_tracebox "PlayFxUnique update: " & label
+        #End If
+        Exit Sub
+    End If
+
+    ' Label is not active in either backend: start a fresh instance and register
+    ' label through PlayWav/PlayCompressedSfx normal tracking path.
+    #If DEBUG_AUDIO = 1 Then
+        frmDebug.add_text_tracebox "PlayFxUnique start: " & label
+    #End If
+    Call PlayWav(CStr(sndIndex), looping, volume, pan, label)
+    Exit Sub
+
+PlayFxUniqueByLabel_Error:
+    frmDebug.add_text_tracebox "PlayFxUniqueByLabel exception: " & Err.Description
+End Sub
+
 Public Function RemoveFirstThreeIfUnderscore(ByVal s As String) As String
     ' Check for underscore anywhere in the string
     If InStr(s, "_") > 0 Then
@@ -1016,6 +1164,9 @@ Public Function StopAllWavsMatchingLabel(ByVal label As String) As Long
                 If (label = .label) And (DSBSTATUS_PLAYING And sf) = DSBSTATUS_PLAYING And (DSBSTATUS_LOOPING And sf) = DSBSTATUS_LOOPING Then
                     .Buffer.Stop
                     .Buffer.SetCurrentPosition 0
+                    #If DEBUG_AUDIO = 1 Then
+                        frmDebug.add_text_tracebox "PlayFxUnique stop: " & label
+                    #End If
                     Exit Function
                 End If
             End If
@@ -1029,6 +1180,7 @@ Public Function StopAllWavsMatchingLabel(ByVal label As String) As Long
                 If .Handle <> 0 Then
                     Call BASS_ChannelStop(.Handle)
                     #If DEBUG_AUDIO = 1 Then
+                        frmDebug.add_text_tracebox "PlayFxUnique stop: " & label
                         frmDebug.add_text_tracebox "PlayWav OGG channel stopped by label: " & .Name & " label: " & .label
                     #End If
                 End If

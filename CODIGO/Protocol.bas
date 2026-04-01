@@ -2340,6 +2340,8 @@ Private Sub HandleCharacterRemove()
     Call EraseChar(charindex, fueWarp)
     Call RefreshAllChars
     Call ao20audio.StopAllWavsMatchingLabel("meditate" & CStr(charindex))
+    ' Stop any active sailing loop for removed characters.
+    Call ao20audio.StopAllWavsMatchingLabel("sailing_" & CStr(charindex))
     Exit Sub
 HandleCharacterRemove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterRemove", Erl)
@@ -2426,10 +2428,15 @@ Private Sub HandleCharacterChange()
         Dim keepStartIdle    As Long
         Dim newGi            As Long
         Dim flags            As Byte
+        Dim wasNavegando     As Boolean: wasNavegando = .Navegando
         ' ============================================
         flags = Reader.ReadInt8()
         .Idle = (flags And &O1)
         .Navegando = (flags And &O2)
+        ' Navigation ended: stop the persistent sailing loop label.
+        If wasNavegando And Not .Navegando Then
+            Call ao20audio.StopAllWavsMatchingLabel("sailing_" & CStr(charindex))
+        End If
         TempInt = Reader.ReadInt16()
         If TempInt < LBound(BodyData()) Or TempInt > UBound(BodyData()) Then
             .Body = BodyData(0)
