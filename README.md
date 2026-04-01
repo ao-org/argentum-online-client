@@ -4,7 +4,6 @@ Please consider supporting our work on [Patreon](https://www.patreon.com/nolands
 
 ## 🐲 Argentum Online Client 🧙‍♂️
 
-
 Welcome to the source code repository for the Argentum Online Client. To fully utilize this client, you will need the corresponding server and assets:
 
 - **Server:** [Argentum Online Server](https://github.com/ao-org/argentum-online-server)
