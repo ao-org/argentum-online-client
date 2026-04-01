@@ -621,7 +621,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
                 ' while moving instead of restarting on each tile step.
                 Dim sailingLabel As String
                 sailingLabel = "sailing_" & charindex
-                Call ao20audio.PlayFxUniqueByLabel(Pasos(CONST_AGUA).wav(1), True, steps_vol, steps_pan, sailingLabel, eFxSteps)
+                Call ao20audio.PlayFxUniqueByLabel(Pasos(CONST_AGUA).wav(1), False, steps_vol, steps_pan, sailingLabel, eFxSteps)
                 Exit Sub
             ElseIf MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
                 Dim FileNum As Long: FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
