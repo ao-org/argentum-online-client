@@ -5221,20 +5221,22 @@ Public Sub HandleQuestListSend()
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestListSend", Erl)
 End Sub
-
-
 Public Sub HandleNpcQuestListSend()
     On Error GoTo errhandler
 
-    Dim tmpByte        As Byte
-    Dim i              As Integer
-    Dim J              As Byte
-    Dim QuestIndex     As Integer
-    Dim estado         As Byte
-    Dim CantidadQuest  As Byte
-    Dim Repetible      As Boolean
-    Dim subelemento    As ListItem
-    Dim requiredClass  As Byte
+    Dim tmpByte            As Byte
+    Dim requiredNpcCount   As Byte
+    Dim requiredObjCount   As Byte
+    Dim requiredSpellCount As Byte
+    Dim rewardObjCount     As Byte
+    Dim i                  As Integer
+    Dim J                  As Byte
+    Dim QuestIndex         As Integer
+    Dim estado             As Byte
+    Dim CantidadQuest      As Byte
+    Dim Repetible          As Boolean
+    Dim subelemento        As ListItem
+    Dim RequiredClassCount As Byte
 
     FrmQuestInfo.ListView2.ListItems.Clear
     FrmQuestInfo.ListView1.ListItems.Clear
@@ -5254,30 +5256,32 @@ Public Sub HandleNpcQuestListSend()
         QuestList(QuestIndex).RequiredLevel = Reader.ReadInt8
         QuestList(QuestIndex).RequiredQuest = Reader.ReadInt16
 
-        ' El servidor actual envia una sola clase requerida (Byte), no un array.
-        requiredClass = Reader.ReadInt8
-        If requiredClass > 0 Then
-            QuestList(QuestIndex).RequiredClassesCount = 1
-            ReDim QuestList(QuestIndex).requiredClass(1 To 1)
-            QuestList(QuestIndex).requiredClass(1) = requiredClass
+        RequiredClassCount = Reader.ReadInt8
+        QuestList(QuestIndex).RequiredClassesCount = RequiredClassCount
+
+        If RequiredClassCount > 0 Then
+            ReDim QuestList(QuestIndex).RequiredClass(1 To RequiredClassCount)
+            For i = 1 To RequiredClassCount
+                QuestList(QuestIndex).RequiredClass(i) = Reader.ReadInt8
+            Next i
         Else
-            QuestList(QuestIndex).RequiredClassesCount = 0
             ReDim QuestList(QuestIndex).requiredClass(0)
         End If
 
         QuestList(QuestIndex).LimitLevel = Reader.ReadInt8
 
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then
-            If tmpByte > 5 Then
+        requiredNpcCount = Reader.ReadInt8
+        If requiredNpcCount > 0 Then
+            If requiredNpcCount > 5 Then
                 FrmQuestInfo.ListView1.FlatScrollBar = False
                 FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1550
             Else
                 FrmQuestInfo.ListView1.FlatScrollBar = True
                 FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1800
             End If
-            ReDim QuestList(QuestIndex).RequiredNPC(1 To tmpByte)
-            For i = 1 To tmpByte
+
+            ReDim QuestList(QuestIndex).RequiredNPC(1 To requiredNpcCount)
+            For i = 1 To requiredNpcCount
                 QuestList(QuestIndex).RequiredNPC(i).Amount = Reader.ReadInt16
                 QuestList(QuestIndex).RequiredNPC(i).NpcIndex = Reader.ReadInt16
             Next i
@@ -5285,10 +5289,10 @@ Public Sub HandleNpcQuestListSend()
             ReDim QuestList(QuestIndex).RequiredNPC(0)
         End If
 
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then
-            ReDim QuestList(QuestIndex).RequiredOBJ(1 To tmpByte)
-            For i = 1 To tmpByte
+        requiredObjCount = Reader.ReadInt8
+        If requiredObjCount > 0 Then
+            ReDim QuestList(QuestIndex).RequiredOBJ(1 To requiredObjCount)
+            For i = 1 To requiredObjCount
                 QuestList(QuestIndex).RequiredOBJ(i).Amount = Reader.ReadInt16
                 QuestList(QuestIndex).RequiredOBJ(i).ObjIndex = Reader.ReadInt16
             Next i
@@ -5296,23 +5300,26 @@ Public Sub HandleNpcQuestListSend()
             ReDim QuestList(QuestIndex).RequiredOBJ(0)
         End If
 
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then
-            ReDim QuestList(QuestIndex).RequiredSpellList(1 To tmpByte)
-            For i = 1 To tmpByte
+        requiredSpellCount = Reader.ReadInt8
+        If requiredSpellCount > 0 Then
+            ReDim QuestList(QuestIndex).RequiredSpellList(1 To requiredSpellCount)
+            For i = 1 To requiredSpellCount
                 QuestList(QuestIndex).RequiredSpellList(i) = Reader.ReadInt16
             Next i
         Else
             ReDim QuestList(QuestIndex).RequiredSpellList(0)
         End If
+
         QuestList(QuestIndex).RequiredSkill.SkillType = Reader.ReadInt8
         QuestList(QuestIndex).RequiredSkill.RequiredValue = Reader.ReadInt8
+
         QuestList(QuestIndex).RewardGLD = Reader.ReadInt32
         QuestList(QuestIndex).RewardEXP = Reader.ReadInt32
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then
-            ReDim QuestList(QuestIndex).RewardOBJ(1 To tmpByte)
-            For i = 1 To tmpByte
+
+        rewardObjCount = Reader.ReadInt8
+        If rewardObjCount > 0 Then
+            ReDim QuestList(QuestIndex).RewardOBJ(1 To rewardObjCount)
+            For i = 1 To rewardObjCount
                 QuestList(QuestIndex).RewardOBJ(i).Amount = Reader.ReadInt16
                 QuestList(QuestIndex).RewardOBJ(i).ObjIndex = Reader.ReadInt16
             Next i
@@ -5320,6 +5327,8 @@ Public Sub HandleNpcQuestListSend()
             ReDim QuestList(QuestIndex).RewardOBJ(0)
         End If
 
+        ' Server writes RewardSpellCount + RewardSpellList().
+        ' In this client type those are stored in RewardSkillCount + RewardSkill().
         QuestList(QuestIndex).RewardSkillCount = Reader.ReadInt8
         If QuestList(QuestIndex).RewardSkillCount > 0 Then
             ReDim QuestList(QuestIndex).RewardSkill(1 To QuestList(QuestIndex).RewardSkillCount)
