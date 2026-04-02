@@ -795,10 +795,6 @@ Sub Main()
     Call Frmcarga.Show
     Set FormParser = New clsCursor
     Call FormParser.Init
-    If Not ValidateResources Then
-        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_RECURSOS_INVALIDOS"), vbApplicationModal + vbInformation + vbOKOnly, JsonLanguage.Item("MENSAJEBOX_TITULO_RECURSOS_INVALIDOS"))
-        End
-    End If
     If PantallaCompleta Then
         Call Resolution.SetResolution
     End If

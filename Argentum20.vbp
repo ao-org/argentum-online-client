@@ -146,7 +146,6 @@ Module=ao20audio; CODIGO\ao20audio.bas
 Module=ao20config; CODIGO\ao20config.bas
 Form=CODIGO\frmCreateBattleground.frm
 Form=CODIGO\frmLobbyBattleground.frm
-Module=ModValidateResources; CODIGO\ModValidateResources.bas
 Module=ModLanguage; CODIGO\ModLanguage.bas
 Module=JSON; CODIGO\VBJson\JSON.bas
 Class=clsTileEngineHelper; CODIGO\clsTileEngineHelper.cls
