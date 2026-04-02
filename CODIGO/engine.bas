@@ -1732,11 +1732,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Nombres = Not MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).zone.OcultarNombre
           
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
-                Pos = InStr(.nombre, "<")
-                If Pos = 0 Then Pos = InStr(.nombre, "[")
-                If Pos = 0 Then Pos = Len(.nombre) + 2
-                'Nick
-                line = Left$(.nombre, Pos - 2)
+                If .alias <> vbNullString Then
+                    line = .alias
+                Else
+                    line = .nombre
+                End If
                 Dim Factor As Double
                 Factor = MapData(x, y).light_value(0).r / 255
                 If .Navegando Then

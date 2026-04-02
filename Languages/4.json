@@ -767,5 +767,11 @@
 	"TOOLTIP_EXP_PORCENTAJE2": "% avec 4 décimales",
 	"MENSAJEBOX_LIBERAR_MASCOTA": "Souhaitez-vous libérer le familier ?",
 	"MENSAJEBOX_LIBERAR_TODAS_MASCOTA": "Souhaitez-vous libérer tous les familiers ?",
-	"MENSAJE_SUPER_PEZ": "Oh ! Je crois que j'ai un gros poisson à l'hameçon. Pour l'attraper, appuyez sur la touche P lorsque le marqueur est dans la zone verte."
+	"MENSAJE_SUPER_PEZ": "Oh ! Je crois que j'ai un gros poisson à l'hameçon. Pour l'attraper, appuyez sur la touche P lorsque le marqueur est dans la zone verte.",
+  "MENSAJEBOX_RENOMBRAR_PERSONAJE": "Confirmer le processus de renommage du personnage :",
+  "MENSAJEBOX_RENOMBRAR_PERSONAJE_NUEVO_NOMBRE": "Entrez le nouveau nom du personnage",
+  "MSG_ALIAS_ALREADY_TAKEN": "L'alias est déjà utilisé.",
+  "MSG_ALIAS_INVALID": "Alias invalide, (entre 3 et 30 caractères alphanumériques)",
+  "MSG_CONFIRM_EMPTY_RENAME": "Êtes-vous sûr de vouloir supprimer l'alias de votre personnage ?",
+  "MSG_ALIAS_PRESENT": "Vous ne pouvez pas transférer ou supprimer un personnage qui a un alias. Veuillez supprimer l'alias avant de réaliser cette action."
 }
