@@ -83,6 +83,8 @@ Public Sub EraseChar(ByVal charindex As Integer, Optional ByVal notCancelMe As B
     If charindex = 0 Then Exit Sub
     If charlist(charindex).active = 0 Then Exit Sub
     If charindex = UserCharIndex And Not notCancelMe Then Exit Sub
+    ' Defensive cleanup: if char is erased while sailing, stop loop.
+    Call ao20audio.StopAllWavsMatchingLabel("sailing_" & CStr(charindex))
     Dim i As Integer
     For i = LBound(Effect) To UBound(Effect)
         If Effect(i).DestinoChar = charindex Then

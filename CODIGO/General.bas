@@ -554,29 +554,30 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
             If UserMacro.Activado Then
                 Call ResetearUserMacro
             End If
-            Moviendose = True
-            Call MainTimer.Restart(TimersIndex.Walk)
             If PescandoEspecial Then
                 Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
                 Call WriteRomperCania
                 PescandoEspecial = False
             End If
-            Call WriteWalk(Heading) 'We only walk if we are not meditating or resting
-            Call Char_Move_by_Head(UserCharIndex, Heading)
-            Call MoveScreen(Heading)
-            Call checkTutorial
-            Dim i As Integer
-            For i = 1 To LastChar
-                If charlist(i).Invisible And Not EsGM And Not charlist(i).Meditating Then
-                    If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(i).clan_index = 0 Or charlist( _
-                            i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
-                        If General_Distance_Get(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist( _
-                                i).FxCount = 0 And charlist(i).particle_count = 0 Then
-                            MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = 0
+            If WriteWalk(Heading) Then 'We only walk if we are not meditating or resting
+                Moviendose = True
+                Call MainTimer.Restart(TimersIndex.Walk)
+                Call Char_Move_by_Head(UserCharIndex, Heading)
+                Call MoveScreen(Heading)
+                Call checkTutorial
+                Dim i As Integer
+                For i = 1 To LastChar
+                    If charlist(i).Invisible And Not EsGM And Not charlist(i).Meditating Then
+                        If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(i).clan_index = 0 Or charlist( _
+                                i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
+                            If General_Distance_Get(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist( _
+                                    i).FxCount = 0 And charlist(i).particle_count = 0 Then
+                                MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = 0
+                            End If
                         End If
                     End If
-                End If
-            Next i
+                Next i
+            End If
         Else
             If Not UserAvisado Then
                 If UserDescansar Then

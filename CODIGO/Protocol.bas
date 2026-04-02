@@ -2372,6 +2372,8 @@ Private Sub HandleCharacterRemove()
     Call EraseChar(charindex, fueWarp)
     Call RefreshAllChars
     Call ao20audio.StopAllWavsMatchingLabel("meditate" & CStr(charindex))
+    ' Stop any active sailing loop for removed characters.
+    Call ao20audio.StopAllWavsMatchingLabel("sailing_" & CStr(charindex))
     Exit Sub
 HandleCharacterRemove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterRemove", Erl)
@@ -2458,10 +2460,15 @@ Private Sub HandleCharacterChange()
         Dim keepStartIdle    As Long
         Dim newGi            As Long
         Dim flags            As Byte
+        Dim wasNavegando     As Boolean: wasNavegando = .Navegando
         ' ============================================
         flags = Reader.ReadInt8()
         .Idle = (flags And &O1)
         .Navegando = (flags And &O2)
+        ' Navigation ended: stop the persistent sailing loop label.
+        If wasNavegando And Not .Navegando Then
+            Call ao20audio.StopAllWavsMatchingLabel("sailing_" & CStr(charindex))
+        End If
         TempInt = Reader.ReadInt16()
         If TempInt < LBound(BodyData()) Or TempInt > UBound(BodyData()) Then
             .Body = BodyData(0)
@@ -5253,103 +5260,126 @@ Public Sub HandleQuestListSend()
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestListSend", Erl)
 End Sub
-
 Public Sub HandleNpcQuestListSend()
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    'Recibe y maneja el paquete QuestListSend del servidor.
-    'Last modified: 31/01/2010 by Amraphen
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     On Error GoTo errhandler
-    Dim tmpStr         As String
-    Dim tmpByte        As Byte
-    Dim QuestEmpezada  As Boolean
-    Dim i              As Integer
-    Dim J              As Byte
-    Dim cantidadnpc    As Integer
-    Dim NpcIndex       As Integer
-    Dim cantidadobj    As Integer
-    Dim ObjIndex       As Integer
-    Dim QuestIndex     As Integer
-    Dim estado         As Byte
-    Dim LevelRequerido As Byte
-    Dim QuestRequerida As Integer
-    Dim CantidadQuest  As Byte
-    Dim Repetible      As Boolean
-    Dim subelemento    As ListItem
+
+    Dim tmpByte            As Byte
+    Dim requiredNpcCount   As Byte
+    Dim requiredObjCount   As Byte
+    Dim requiredSpellCount As Byte
+    Dim rewardObjCount     As Byte
+    Dim i                  As Integer
+    Dim J                  As Byte
+    Dim QuestIndex         As Integer
+    Dim estado             As Byte
+    Dim CantidadQuest      As Byte
+    Dim Repetible          As Boolean
+    Dim subelemento        As ListItem
+    Dim RequiredClassCount As Byte
+
     FrmQuestInfo.ListView2.ListItems.Clear
     FrmQuestInfo.ListView1.ListItems.Clear
+    FrmQuestInfo.ListViewQuest.ListItems.Clear
+
     CantidadQuest = Reader.ReadInt8
+
     For J = 1 To CantidadQuest
         QuestIndex = Reader.ReadInt16
+
+        If QuestIndex < LBound(QuestList) Or QuestIndex > UBound(QuestList) Then
+            GoTo errhandler
+        End If
+
         FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
+
         QuestList(QuestIndex).RequiredLevel = Reader.ReadInt8
         QuestList(QuestIndex).RequiredQuest = Reader.ReadInt16
-        QuestList(QuestIndex).RequiredClassesCount = Reader.ReadInt8
-        If QuestList(QuestIndex).RequiredClassesCount > 0 Then
-            ReDim QuestList(QuestIndex).RequiredClass(1 To QuestList(QuestIndex).RequiredClassesCount)
-            For i = 1 To QuestList(QuestIndex).RequiredClassesCount
+
+        RequiredClassCount = Reader.ReadInt8
+        QuestList(QuestIndex).RequiredClassesCount = RequiredClassCount
+
+        If RequiredClassCount > 0 Then
+            ReDim QuestList(QuestIndex).RequiredClass(1 To RequiredClassCount)
+            For i = 1 To RequiredClassCount
                 QuestList(QuestIndex).RequiredClass(i) = Reader.ReadInt8
             Next i
+        Else
+            ReDim QuestList(QuestIndex).requiredClass(0)
         End If
+
         QuestList(QuestIndex).LimitLevel = Reader.ReadInt8
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then 'Hay NPCs
-            If tmpByte > 5 Then
+
+        requiredNpcCount = Reader.ReadInt8
+        If requiredNpcCount > 0 Then
+            If requiredNpcCount > 5 Then
                 FrmQuestInfo.ListView1.FlatScrollBar = False
                 FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1550
             Else
                 FrmQuestInfo.ListView1.FlatScrollBar = True
                 FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1800
             End If
-            ReDim QuestList(QuestIndex).RequiredNPC(1 To tmpByte)
-            For i = 1 To tmpByte
+
+            ReDim QuestList(QuestIndex).RequiredNPC(1 To requiredNpcCount)
+            For i = 1 To requiredNpcCount
                 QuestList(QuestIndex).RequiredNPC(i).Amount = Reader.ReadInt16
                 QuestList(QuestIndex).RequiredNPC(i).NpcIndex = Reader.ReadInt16
             Next i
         Else
             ReDim QuestList(QuestIndex).RequiredNPC(0)
         End If
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then 'Hay OBJs
-            ReDim QuestList(QuestIndex).RequiredOBJ(1 To tmpByte)
-            For i = 1 To tmpByte
+
+        requiredObjCount = Reader.ReadInt8
+        If requiredObjCount > 0 Then
+            ReDim QuestList(QuestIndex).RequiredOBJ(1 To requiredObjCount)
+            For i = 1 To requiredObjCount
                 QuestList(QuestIndex).RequiredOBJ(i).Amount = Reader.ReadInt16
                 QuestList(QuestIndex).RequiredOBJ(i).ObjIndex = Reader.ReadInt16
             Next i
         Else
             ReDim QuestList(QuestIndex).RequiredOBJ(0)
         End If
-        tmpByte = Reader.ReadInt8 ' required spells
-        If tmpByte Then
-            ReDim QuestList(QuestIndex).RequiredSpellList(1 To tmpByte)
-            For i = 1 To tmpByte
+
+        requiredSpellCount = Reader.ReadInt8
+        If requiredSpellCount > 0 Then
+            ReDim QuestList(QuestIndex).RequiredSpellList(1 To requiredSpellCount)
+            For i = 1 To requiredSpellCount
                 QuestList(QuestIndex).RequiredSpellList(i) = Reader.ReadInt16
             Next i
         Else
             ReDim QuestList(QuestIndex).RequiredSpellList(0)
         End If
+
         QuestList(QuestIndex).RequiredSkill.SkillType = Reader.ReadInt8
         QuestList(QuestIndex).RequiredSkill.RequiredValue = Reader.ReadInt8
+
         QuestList(QuestIndex).RewardGLD = Reader.ReadInt32
         QuestList(QuestIndex).RewardEXP = Reader.ReadInt32
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then
-            ReDim QuestList(QuestIndex).RewardOBJ(1 To tmpByte)
-            For i = 1 To tmpByte
+
+        rewardObjCount = Reader.ReadInt8
+        If rewardObjCount > 0 Then
+            ReDim QuestList(QuestIndex).RewardOBJ(1 To rewardObjCount)
+            For i = 1 To rewardObjCount
                 QuestList(QuestIndex).RewardOBJ(i).Amount = Reader.ReadInt16
                 QuestList(QuestIndex).RewardOBJ(i).ObjIndex = Reader.ReadInt16
             Next i
         Else
             ReDim QuestList(QuestIndex).RewardOBJ(0)
         End If
+
+        ' Server writes RewardSpellCount + RewardSpellList().
+        ' In this client type those are stored in RewardSkillCount + RewardSkill().
         QuestList(QuestIndex).RewardSkillCount = Reader.ReadInt8
         If QuestList(QuestIndex).RewardSkillCount > 0 Then
             ReDim QuestList(QuestIndex).RewardSkill(1 To QuestList(QuestIndex).RewardSkillCount)
             For i = 1 To QuestList(QuestIndex).RewardSkillCount
                 QuestList(QuestIndex).RewardSkill(i) = Reader.ReadInt16
             Next i
+        Else
+            ReDim QuestList(QuestIndex).RewardSkill(0)
         End If
+
         estado = Reader.ReadInt8
+
         Repetible = QuestList(QuestIndex).Repetible = 1
         Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre & IIf(Repetible, " (R)", ""))
         subelemento.SubItems(2) = QuestIndex
@@ -5377,9 +5407,10 @@ Public Sub HandleNpcQuestListSend()
                 subelemento.ForeColor = RGB(255, 10, 10)
                 subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
         End Select
+
         FrmQuestInfo.ListViewQuest.Refresh
     Next J
-    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest está empezada o no.
+
     FrmQuestInfo.Show vbModeless, GetGameplayForm()
     FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
     Call FrmQuestInfo.ShowQuest(1)

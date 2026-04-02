@@ -558,6 +558,10 @@ Public Type t_Intervals
     HitMagic As Long
     MagicHit As Long
     HitUseItem As Long
+    Hide As Long
+    Talk As Long
+    LeftClick As Long
+    Meditate As Long
 End Type
 
 Public gIntervals             As t_Intervals

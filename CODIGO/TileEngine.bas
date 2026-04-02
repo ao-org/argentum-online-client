@@ -612,8 +612,18 @@ Sub DoPasosFx(ByVal charindex As Integer)
             .Pie = Not .Pie
             Dim StepIndex     As Byte: StepIndex = IIf(.Pie, 1, 2)
             Dim TerrenoDePaso As Byte
+            Dim steps_vol As Long
+            Dim steps_pan As Long
+            steps_vol = ao20audio.ComputeVolumeAtPos(eFxSteps, .Pos)
+            steps_pan = ao20audio.ComputeCharFxPan(.Pos)
             If .Navegando Then
-                TerrenoDePaso = CONST_AGUA
+                ' Navigation/sailing is a long looped SFX.
+                ' Use a stable per-character label so we update pan/volume
+                ' while moving instead of restarting on each tile step.
+                Dim sailingLabel As String
+                sailingLabel = "sailing_" & charindex
+                Call ao20audio.PlayFxUniqueByLabel(Pasos(CONST_AGUA).wav(1), False, steps_vol, steps_pan, sailingLabel, eFxSteps)
+                Exit Sub
             ElseIf MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
                 Dim FileNum As Long: FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
                 TerrenoDePaso = GetTerrenoDePaso(FileNum, MapData(.Pos.x, .Pos.y).Graphic(2).GrhIndex)
@@ -623,10 +633,6 @@ Sub DoPasosFx(ByVal charindex As Integer)
             Else
                 TerrenoDePaso = CONST_PISO
             End If
-            Dim steps_vol As Long
-            Dim steps_pan As Long
-            steps_vol = ao20audio.ComputeVolumeAtPos(eFxSteps, .Pos)
-            steps_pan = ao20audio.ComputeCharFxPan(.Pos)
             Dim SndIndex As Integer: SndIndex = Pasos(TerrenoDePaso).wav(StepIndex)
             Dim SndLabel As String: SndLabel = "pasos" & charindex & "_" & StepIndex
             Call ao20audio.StopWav(SndIndex, SndLabel)
