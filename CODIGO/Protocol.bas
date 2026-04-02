@@ -2206,13 +2206,40 @@ Private Sub HandleCharacterCreate()
         .Meditating = Fx <> 0
         Dim NombreYClan As String
         NombreYClan = Reader.ReadString8()   '
-        Dim Pos As Integer
-        Pos = InStr(NombreYClan, "<")
-        If Pos = 0 Then Pos = InStr(NombreYClan, "[")
-        If Pos = 0 Then Pos = Len(NombreYClan) + 2
-        .nombre = Left$(NombreYClan, Pos - 2)
-        .clan = mid$(NombreYClan, Pos)
-        .alias = mid$(NombreYClan, Pos + 2)
+        Dim posAlias As Integer
+        Dim posClan As Integer
+        Dim posAliasEnd As Integer
+        
+        ' Find positions of delimiters
+        posAlias = InStr(NombreYClan, "{")
+        posAliasEnd = InStr(NombreYClan, "}")
+        posClan = InStr(NombreYClan, "<")
+        
+        ' Extract name (everything before the alias)
+        If posAlias > 0 Then
+            .nombre = Trim$(Left$(NombreYClan, posAlias - 1))
+        Else
+            .nombre = NombreYClan
+        End If
+        
+        ' Extract alias (between { and })
+        If posAlias > 0 And posAliasEnd > 0 Then
+            .alias = mid$(NombreYClan, posAlias + 1, posAliasEnd - posAlias - 1)
+        Else
+            .alias = vbNullString
+        End If
+        
+        ' Extract clan (between < and >) or special status (between [ and ])
+        If posClan > 0 Then
+            ' Has clan: <ClanName>
+            .clan = mid$(NombreYClan, posClan + 1, InStr(NombreYClan, ">") - posClan - 1)
+        ElseIf InStr(NombreYClan, "[CONSULTA]") > 0 Then
+            ' Has special status
+            .clan = vbNullString
+            ' You might want a separate .consulta flag here
+        Else
+            .clan = vbNullString
+        End If
         .status = Reader.ReadInt8()
         privs = Reader.ReadInt8()
         ParticulaFx = Reader.ReadInt8()
