@@ -549,6 +549,7 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
             ' Limpiamos y mostramos los requisitos
             FrmQuestInfo.Text1.text = ""
             Call AddtoRichTextBox(Text1, finalDesc, 128, 128, 128)
+            Call PlayQuestDescAudio(QuestIndex)
         End With
         If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
             If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
@@ -624,6 +625,7 @@ Private Sub lstQuests_Click()
     FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
     FrmQuestInfo.Text1.text = ""
     Call AddtoRichTextBox(Text1, GetQuestDescForUI(QuestIndex) & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf, 128, 128, 128)
+    Call PlayQuestDescAudio(QuestIndex)
     'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
     'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
     If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
