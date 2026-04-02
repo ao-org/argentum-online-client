@@ -1369,8 +1369,8 @@ Public Function SendRenameCharacter()
     rename_request(1) = &H20
     rename_request(2) = &H31
     'Siguientes 2 bytes indican tamaño total del paquete
-    rename_request(3) = hiByte(packet_size)
-    rename_request(4) = LoByte(packet_size)
+    rename_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    rename_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, rename_request, len_json, 5)
     Call frmConnect.AuthSocket.SendData(rename_request)
     Auth_state = e_state.RenameCharacter

@@ -2212,6 +2212,7 @@ Private Sub HandleCharacterCreate()
         If Pos = 0 Then Pos = Len(NombreYClan) + 2
         .nombre = Left$(NombreYClan, Pos - 2)
         .clan = mid$(NombreYClan, Pos)
+        .alias = mid$(NombreYClan, Pos + 2)
         .status = Reader.ReadInt8()
         privs = Reader.ReadInt8()
         ParticulaFx = Reader.ReadInt8()

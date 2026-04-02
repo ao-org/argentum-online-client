@@ -249,6 +249,7 @@ Public Type Char
     status As Byte
     nombre As String
     clan As String
+    alias As String
     scrollDirectionX As Integer
     scrollDirectionY As Integer
     Moving As Boolean
