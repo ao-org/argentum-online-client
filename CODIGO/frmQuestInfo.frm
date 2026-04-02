@@ -514,7 +514,7 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
         With QuestList(QuestIndex)
             Dim finalDesc As String
             Dim requisitos As String
-            finalDesc = .desc
+            finalDesc = GetQuestDescForUI(QuestIndex)
             requisitos = ""
             ' Si tiene clase requerida
             If .RequiredClassesCount > 0 Then
@@ -623,7 +623,7 @@ Private Sub lstQuests_Click()
     FrmQuestInfo.ListView1.ListItems.Clear
     FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
     FrmQuestInfo.Text1.text = ""
-    Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf, 128, 128, 128)
+    Call AddtoRichTextBox(Text1, GetQuestDescForUI(QuestIndex) & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf, 128, 128, 128)
     'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
     'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
     If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs

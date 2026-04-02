@@ -16,6 +16,13 @@ Attribute VB_Name = "ModUtils"
 '
 '
 Option Explicit
+
+Private Declare Function SystemParametersInfo _
+                Lib "user32" _
+                Alias "SystemParametersInfoA" (ByVal uAction As Long, _
+                                               ByVal uParam As Long, _
+                                               ByRef lpvParam As Any, _
+                                               ByVal fuWinIni As Long) As Long
 Public StopCreandoCuenta    As Boolean
 Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
@@ -105,6 +112,7 @@ End Type
 Public Type tQuest
     nombre As String
     desc As String
+    DescAudio As String
     NextQuest As String
     DescFinal As String
     RequiredLevel As Integer
@@ -302,12 +310,7 @@ Type Macro
 End Type
 
 Public MouseS As Long
-Private Declare Function SystemParametersInfo _
-                Lib "user32" _
-                Alias "SystemParametersInfoA" (ByVal uAction As Long, _
-                                               ByVal uParam As Long, _
-                                               ByRef lpvParam As Any, _
-                                               ByVal fuWinIni As Long) As Long
+                                               
 Private Const SPI_SETMOUSESPEED = 113
 Private Const SPI_GETMOUSESPEED = 112
 Public Declare Function SwapMouseButton Lib "user32" (ByVal bSwap As Long) As Long
@@ -1408,7 +1411,9 @@ End Function
 
 Public Function General_Get_Mouse_Speed() As Long
     On Error GoTo General_Get_Mouse_Speed_Err
-    SystemParametersInfo SPI_GETMOUSESPEED, 0, General_Get_Mouse_Speed, 0
+    Dim lngSpeed As Long
+    Call SystemParametersInfo(SPI_GETMOUSESPEED, 0, VarPtr(lngSpeed), 0)
+    General_Get_Mouse_Speed = lngSpeed
     Exit Function
 General_Get_Mouse_Speed_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Get_Mouse_Speed", Erl)
@@ -1417,7 +1422,7 @@ End Function
  
 Public Sub General_Set_Mouse_Speed(ByVal lngSpeed As Long)
     On Error GoTo General_Set_Mouse_Speed_Err
-    SystemParametersInfo SPI_SETMOUSESPEED, 0, ByVal lngSpeed, 0
+    Call SystemParametersInfo(SPI_SETMOUSESPEED, 0, lngSpeed, 0)
     Exit Sub
 General_Set_Mouse_Speed_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.General_Set_Mouse_Speed", Erl)
@@ -2116,4 +2121,13 @@ Public Function NpcIndexToLocalizedName(ByRef Fields() As String, ByVal ArrIndex
 NpcIndexToLocalizedName_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.NpcIndexToLocalizedName", Erl)
     Resume Next
+End Function
+Public Function GetQuestDescForUI(ByVal QuestIndex As Integer) As String
+    If QuestIndex < LBound(QuestList) Or QuestIndex > UBound(QuestList) Then Exit Function
+
+    If LenB(QuestList(QuestIndex).DescAudio) > 0 Then
+        GetQuestDescForUI = QuestList(QuestIndex).DescAudio
+    Else
+        GetQuestDescForUI = QuestList(QuestIndex).desc
+    End If
 End Function

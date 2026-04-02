@@ -5073,7 +5073,7 @@ Private Sub HandleQuestDetails()
         Next i
     End If
     RequiredQuest = Reader.ReadInt16
-    FrmQuests.detalle.Text = QuestList(QuestIndex).desc
+    FrmQuests.detalle.Text = GetQuestDescForUI(QuestIndex)
     If RequiredLevel > 1 Then
         requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & RequiredLevel & vbCrLf
     End If
