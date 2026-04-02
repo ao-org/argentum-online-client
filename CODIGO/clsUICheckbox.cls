@@ -57,23 +57,27 @@ Public Sub IUIComponent_SetVisible(ByVal newState As Boolean)
     Call m_Impl.SetVisible(newState)
 End Sub
 
-Public Sub Init(ByVal Text As String, ByVal x As Long, ByVal y As Long, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long, ByVal act As Integer)
+Public Sub Init(ByVal Text As String, ByVal x As Single, ByVal y As Single, ByVal w As Single, ByVal h As Single, ByVal clrFill As Long, ByVal clrHover As Long, ByVal clrText As Long, ByVal act As Integer)
     If m_Impl Is Nothing Then
         Set m_Impl = New clsUIComponentImpl
     End If
+    m_Impl.PerX = x
+    m_Impl.PerY = y
+    m_Impl.PerW = w
+    m_Impl.PerH = h
     m_MarginLeft = 35
     m_MarginTop = 5
     m_Impl.InitLabel Text, x, y, clrText
-    m_Impl.SetSize 25, 25
+'    m_Impl.SetSize 25, 25
     m_Impl.ColorFill = clrFill
     m_Impl.HoverColor = clrHover
     m_Clicked = False: m_PrevDown = False: m_IsHover = False
     m_Action = act
 End Sub
 
-Public Sub SetPosition(ByVal x As Long, ByVal y As Long)
-    Call m_Impl.SetPosition(x, y)
-End Sub
+'Public Sub SetPosition(ByVal x As Long, ByVal y As Long)
+'    Call m_Impl.SetPosition(x, y)
+'End Sub
 
 Public Property Get Width() As Long
     Width = m_Impl.Width
@@ -90,6 +94,30 @@ End Property
 Public Property Let WasClicked(ByVal val As Boolean)
     m_Clicked = val
 End Property
+
+Public Sub IUIComponent_SetPosition(ByVal x As Long, ByVal y As Long)
+    Call m_Impl.SetPosition(x, y)
+End Sub
+
+Public Sub IUIComponent_SetSize(ByVal w As Long, ByVal h As Long)
+    Call m_Impl.SetSize(w, h)
+End Sub
+
+Public Function IUIComponent_GetPerPosX() As Single
+    IUIComponent_GetPerPosX = m_Impl.PerX
+End Function
+
+Public Function IUIComponent_GetPerPosY() As Single
+    IUIComponent_GetPerPosY = m_Impl.PerY
+End Function
+
+Public Function IUIComponent_GetPerW() As Single
+    IUIComponent_GetPerW = m_Impl.PerW
+End Function
+
+Public Function IUIComponent_GetPerH() As Single
+    IUIComponent_GetPerH = m_Impl.PerH
+End Function
 
 Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     Dim clr As Long

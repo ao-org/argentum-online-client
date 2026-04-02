@@ -1563,6 +1563,7 @@ Public dy                          As Integer
 Private Const IntervaloEntreClicks As Long = 50
 Dim TempTick                       As Long
 Private iClickTick                 As Long
+Private suppressNextLaunchClick    As Boolean
 ' Constantes para SendMessage
 Const HWND_TOPMOST = -1
 Const HWND_NOTOPMOST = -2
@@ -1721,13 +1722,14 @@ End Sub
 
 Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo cmdlanzar_MouseDown_Err
-    If ModoHechizos = BloqueoLanzar Then
-        If Not MainTimer.Check(TimersIndex.AttackSpell, False) Or Not MainTimer.Check(TimersIndex.CastSpell, False) Then
-            Exit Sub
-        End If
+    If Button <> vbLeftButton Then Exit Sub
+    If Not CanLaunchSelectedSpell() Then
+        Exit Sub
     End If
     cmdlanzar.Picture = LoadInterface("boton-lanzar-off.bmp")
     cmdlanzar.Tag = "1"
+    suppressNextLaunchClick = True
+    Call CastSelectedSpell
     Exit Sub
 cmdlanzar_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdlanzar_MouseDown", Erl)
@@ -1747,6 +1749,28 @@ Private Sub cmdlanzar_MouseUp(Button As Integer, Shift As Integer, x As Single, 
 cmdlanzar_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdlanzar_MouseUp", Erl)
     Resume Next
+End Sub
+
+Private Function CanLaunchSelectedSpell() As Boolean
+    If ModoHechizos = BloqueoLanzar Then
+        If Not MainTimer.Check(TimersIndex.AttackSpell, False) Or Not MainTimer.Check(TimersIndex.CastSpell, False) Then
+            Exit Function
+        End If
+    End If
+    CanLaunchSelectedSpell = True
+End Function
+
+Private Sub CastSelectedSpell()
+    Dim idx As Integer
+    
+    idx = hlst.ListIndex
+    
+    ' Ensure there is a valid selection before using it
+    If idx < 0 Or idx >= hlst.ListCount Then
+        Exit Sub
+    End If
+    
+    Call UseSpell(idx + 1, hlst.List(idx))
 End Sub
 
 Private Sub cmdLlavero_Click()
@@ -2450,9 +2474,6 @@ imgBugReport_Click_Err:
     Resume Next
 End Sub
 
-Private Sub imgHechizos_Click()
-    Call hechizosClick
-End Sub
 
 Public Sub hechizosClick()
     On Error GoTo hechizosClick_Err
@@ -2477,8 +2498,11 @@ End Sub
 
 Private Sub imgHechizos_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo imgHechizos_MouseDown_Err
-    imgHechizos.Picture = LoadInterface("boton-hechizos-off.bmp")
-    imgHechizos.Tag = "2"
+    If Button = vbLeftButton Then
+        imgHechizos.Picture = LoadInterface("boton-hechizos-off.bmp")
+        imgHechizos.Tag = "2"
+        Call hechizosClick
+    End If
     Exit Sub
 imgHechizos_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.imgHechizos_MouseDown", Erl)
@@ -2515,9 +2539,6 @@ Private Sub ImgHogar_MouseMove(Button As Integer, Shift As Integer, x As Single,
     End If
 End Sub
 
-Private Sub imgInventario_Click()
-    Call inventoryClick
-End Sub
 
 Public Sub inventoryClick()
     On Error GoTo inventoryClick_Err
@@ -2542,9 +2563,10 @@ End Sub
 
 Private Sub imgInventario_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo imgInventario_MouseDown_Err
+    If Button <> vbLeftButton Then Exit Sub
     imgInventario.Picture = LoadInterface("boton-inventory-off.bmp")
     imgInventario.Tag = "2"
-    'Call Inventario.DrawInventory
+    Call inventoryClick
     Exit Sub
 imgInventario_MouseDown_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.imgInventario_MouseDown", Erl)
@@ -3213,7 +3235,10 @@ End Sub
 
 Private Sub refuerzolanzar_Click()
     On Error GoTo refuerzolanzar_Click_Err
-    Call cmdLanzar_Click
+    If Not CanLaunchSelectedSpell() Then
+        Exit Sub
+    End If
+    Call CastSelectedSpell
     Exit Sub
 refuerzolanzar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.refuerzolanzar_Click", Erl)
@@ -3409,34 +3434,12 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
         stxtbuffer = ""
         SendTxt.text = ""
         KeyCode = 0
-        Dim tiempoTranscurridoCartel As Double
-        tiempoTranscurridoCartel = GetTickCount - StartOpenChatTime
-        Call computeLastElapsedTimeChat(tiempoTranscurridoCartel)
         SendTxt.visible = False
     End If
     Exit Sub
 SendTxt_KeyUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.SendTxt_KeyUp", Erl)
     Resume Next
-End Sub
-
-Private Sub computeLastElapsedTimeChat(ByVal tiempoTranscurridoCartel As Double)
-    Dim i As Long
-    For i = 2 To 6
-        LastElapsedTimeChat(i - 1) = LastElapsedTimeChat(i)
-    Next i
-    LastElapsedTimeChat(6) = tiempoTranscurridoCartel
-    'Calculo el mínimo y máximo de mis carteleos
-    Dim min As Double, max As Double
-    min = LastElapsedTimeChat(6)
-    max = LastElapsedTimeChat(6)
-    For i = 1 To 6
-        If LastElapsedTimeChat(i) > max Then max = LastElapsedTimeChat(i)
-        If LastElapsedTimeChat(i) < min Then min = LastElapsedTimeChat(i)
-    Next i
-    If (max - min) > 0 And (max - min) < 12 Then
-        Call WriteLogMacroClickHechizo(tMacro.borrarCartel)
-    End If
 End Sub
 
 Private Sub SendTxtCmsg_KeyPress(KeyAscii As Integer)
@@ -3498,9 +3501,17 @@ TimerNiebla_Timer_Err:
     Resume Next
 End Sub
 
+
 Private Sub cmdLanzar_Click()
     On Error GoTo cmdLanzar_Click_Err
-    Call UseSpell(hlst.ListIndex + 1, hlst.List(hlst.ListIndex))
+    If suppressNextLaunchClick Then
+        suppressNextLaunchClick = False
+        Exit Sub
+    End If
+    If Not CanLaunchSelectedSpell() Then
+        Exit Sub
+    End If
+    Call CastSelectedSpell
     Exit Sub
 cmdLanzar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.cmdLanzar_Click", Erl)

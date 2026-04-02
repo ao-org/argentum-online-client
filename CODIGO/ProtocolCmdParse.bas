@@ -1227,13 +1227,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteKillNPCNoRespawn
             Case "/MASSKILL"
                 Call WriteKillAllNearbyNPCs
-            Case "/LASTIP"
-                If notNullArguments Then
-                    Call WriteLastIP(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
-                End If
             Case "/MOTDCAMBIA"
                 Call WriteChangeMOTD
             Case "/SMSG"

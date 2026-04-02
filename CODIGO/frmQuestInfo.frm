@@ -498,6 +498,7 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
     If ListViewQuest.SelectedItem Is Nothing Then Exit Sub
     If Len(ListViewQuest.SelectedItem.SubItems(2)) <> 0 Then
         Dim QuestIndex As Integer
+        Dim i As Integer
         QuestIndex = ListViewQuest.SelectedItem.SubItems(2)
         FrmQuestInfo.ListView2.ListItems.Clear
         FrmQuestInfo.ListView1.ListItems.Clear
@@ -516,8 +517,14 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
             finalDesc = .desc
             requisitos = ""
             ' Si tiene clase requerida
-            If .RequiredClass <> 0 And RequiredClass <= 12 Then
-                requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(.RequiredClass) & vbCrLf
+            If .RequiredClassesCount > 0 Then
+                For i = 1 To .RequiredClassesCount
+                    If .requiredClass(i) >= LBound(ListaClases) And .requiredClass(i) <= UBound(ListaClases) Then
+                        requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(.requiredClass(i)) & vbCrLf
+                    ElseIf .requiredClass(i) > 0 Then
+                        requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & "ID " & .requiredClass(i) & vbCrLf
+                    End If
+                Next i
             End If
             ' Si tiene nivel requerido
             If .RequiredLevel > 1 Then

@@ -507,7 +507,7 @@ Public NamePj(1 To 8)       As String
 Public ValidationCode       As String
 'Objetos públicos
 Public DialogosClanes       As clsGuildDlg
-Public CurMp3               As Byte
+
 Public Const Mp3_Dir = "\..\Recursos\Mp3\"
 
 'Opciones Clasicas
@@ -555,6 +555,10 @@ Public Type t_Intervals
     HitMagic As Long
     MagicHit As Long
     HitUseItem As Long
+    Hide As Long
+    Talk As Long
+    LeftClick As Long
+    Meditate As Long
 End Type
 
 Public gIntervals             As t_Intervals

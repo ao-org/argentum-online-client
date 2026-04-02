@@ -784,7 +784,7 @@ Public Sub render()
         Call Engine_Draw_Box(0, 0, frmMain.renderer.ScaleWidth, frmMain.renderer.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
-    #If DEBUGGING = 1 Then
+    #If Developer = 1 Then
         If Not SurfaceDB Is Nothing Then
             Dim ColorGM(3) As RGBA
             ColorGM(0) = RGBA_From_Comp(248, 107, 3)
@@ -1730,17 +1730,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             'Draw name over head
             Nombres = Not MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).zone.OcultarNombre
-            If UserCharIndex > 0 Then
-                With charlist(UserCharIndex)
-                    Dim new_music As Integer
-                    new_music = MapData(.Pos.x, .Pos.y).zone.Musica
-                    If new_music > 0 Then
-                        Call ao20audio.PlayMidi(new_music, True)
-                    Else
-                        Call ao20audio.PlayMidi(MapDat.music_numberLow, True)
-                    End If
-                End With
-            End If
+          
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
                 Pos = InStr(.nombre, "<")
                 If Pos = 0 Then Pos = InStr(.nombre, "[")
