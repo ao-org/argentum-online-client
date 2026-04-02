@@ -2137,8 +2137,8 @@ Public Sub PlayQuestDescAudio(ByVal QuestIndex As Integer)
     If LenB(audioFile) = 0 Then Exit Sub
 
     If InStrRev(audioFile, ".") = 0 Then
-        audioFile = audioFile & ".ogg"
+        audioFile = audioFile
     End If
 
-    Call ao20audio.PlayMusic(audioFile, False)
+    Call ao20audio.PlayWav(audioFile, False)
 End Sub
