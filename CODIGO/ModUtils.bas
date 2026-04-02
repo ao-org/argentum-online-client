@@ -1632,6 +1632,7 @@ End Function
 Public Function UserInTileToTxtParser(ByRef Fields() As String)
     On Error GoTo UserInTileToTxtParser_Err
     Dim targetName          As String
+    Dim targetAlias         As String
     Dim targetDescription   As String
     Dim guildName           As String
     Dim Spouse              As String
@@ -1646,6 +1647,8 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
     Dim i As Byte
     i = LBound(SplitServerFields)
     targetName = SplitServerFields(i)
+    i = i + 1
+    targetAlias = SplitServerFields(i)
     i = i + 1
     targetDescription = SplitServerFields(i)
     i = i + 1
@@ -1849,6 +1852,9 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
         FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO") & ">"
     End If
     Fields(0) = targetName & " "
+    If targetAlias <> "" Then
+        Fields(0) = Fields(0) & "<Alias:" & targetAlias & ">" & " "
+    End If
     If targetDescription <> "" Then
         Fields(0) = Fields(0) & "<" & targetDescription & ">" & " "
     End If
