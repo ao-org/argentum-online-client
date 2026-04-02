@@ -2219,7 +2219,11 @@ Private Sub HandleCharacterCreate()
         If posAlias > 0 Then
             .nombre = Trim$(Left$(NombreYClan, posAlias - 1))
         Else
-            .nombre = NombreYClan
+            If posClan = 0 Then
+                .nombre = NombreYClan
+            Else
+                .nombre = Trim$(Left$(NombreYClan, posClan - 1))
+            End If
         End If
         
         ' Extract alias (between { and })
@@ -2232,7 +2236,7 @@ Private Sub HandleCharacterCreate()
         ' Extract clan (between < and >) or special status (between [ and ])
         If posClan > 0 Then
             ' Has clan: <ClanName>
-            .clan = mid$(NombreYClan, posClan + 1, InStr(NombreYClan, ">") - posClan - 1)
+            .clan = "<" & mid$(NombreYClan, posClan + 1, InStr(NombreYClan, ">") - posClan - 1) & ">"
         ElseIf InStr(NombreYClan, "[CONSULTA]") > 0 Then
             ' Has special status
             .clan = vbNullString
