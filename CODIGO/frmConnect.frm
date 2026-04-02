@@ -379,7 +379,7 @@ Form_Load_Err:
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-    Call ao20audio.StopMP3
+    Call ao20audio.StopMusic
 End Sub
 
 Private Sub render_DblClick()

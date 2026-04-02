@@ -167,13 +167,16 @@ Class=clsUIRenderer; CODIGO\clsUIRenderer.cls
 Module=modWorldTime; CODIGO\modWorldTime.bas
 Module=modElapsedTime; CODIGO\modElapsedTime.bas
 Class=clsUICheckbox; CODIGO\clsUICheckbox.cls
-Class=clsUIBoxInfo; CODIGO\clsUIBoxInfo.cls
 Class=clsUIInputbox; CODIGO\clsUIInputbox.cls
 Class=clsGameplayScreen; CODIGO\clsGameplayScreen.cls
-ResFile32="AO20.res"
 Class=clsUIComponentImpl; CODIGO\clsUIComponentImpl.cls
 Module=debug_tools; CODIGO\debug_tools.bas
 Class=clsUIImage; CODIGO\ClsUIImage.cls
+Module=ao20audio_bass_backend; CODIGO\ao20audio_bass_backend.bas
+Module=modBass; CODIGO\bass.bas
+ResFile32="AO20.res"
+Class=clsUIFrame; CODIGO\clsUIFrame.cls
+Class=clsUIMsgBox; CODIGO\clsUIMsgBox.cls
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
@@ -185,7 +188,7 @@ HelpContextID="0"
 CompatibleMode="0"
 MajorVer=5
 MinorVer=6
-RevisionVer=22
+RevisionVer=31
 AutoIncrementVer=0
 ServerSupportFiles=0
 VersionComments="https://www.argentumonline.com.ar/"
@@ -193,8 +196,8 @@ VersionCompanyName="Argentum Online"
 VersionLegalCopyright="Argentum Online"
 VersionLegalTrademarks="Argentum Online"
 VersionProductName="Argentum Online by Noland Studios"
-CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 0 : DXUI = 0"
-CondComp="Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 0 : DXUI = 0"
+CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 0 : DXUI = 0 : ENABLE_BASS = 0"
+CondComp="Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 0 : DXUI = 0 : ENABLE_BASS = 0"
 CompilationType=0
 OptimizationType=2
 FavorPentiumPro(tm)=0

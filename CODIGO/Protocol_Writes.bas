@@ -4394,25 +4394,6 @@ WriteKillAllNearbyNPCs_Err:
     '</EhFooter>
 End Sub
 
-''
-' Writes the "LastIP" message to the outgoing data buffer.
-'
-' @param    username The user whose last IPs are requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteLastIP(ByVal userName As String)
-    '<EhHeader>
-    On Error GoTo WriteLastIP_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eLastIP)
-    Call Writer.WriteString8(userName)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteLastIP_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLastIP", Erl)
-    '</EhFooter>
-End Sub
 
 ''
 ' Writes the "ChangeMOTD" message to the outgoing data buffer.

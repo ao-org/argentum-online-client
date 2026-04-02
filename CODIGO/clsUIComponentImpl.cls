@@ -48,6 +48,10 @@ Private m_Focus    As Boolean
 Private m_visible  As Boolean
 Private m_W        As Long
 Private m_H        As Long
+Private m_per_posX As Single
+Private m_per_posY As Single
+Private m_per_Width As Single
+Private m_per_Heigth As Single
 
 Public Property Let visible(ByVal newState As Boolean)
     m_visible = newState
@@ -63,6 +67,38 @@ End Property
 
 Public Property Get X() As Long
     X = m_X
+End Property
+
+Public Property Get PerX() As Single
+    PerX = m_per_posX
+End Property
+
+Public Property Get PerY() As Single
+    PerY = m_per_posY
+End Property
+
+Public Property Get PerW() As Single
+    PerW = m_per_Width
+End Property
+
+Public Property Get PerH() As Single
+    PerH = m_per_Heigth
+End Property
+
+Public Property Let PerX(ByVal newCoordinate As Single)
+    m_per_posX = newCoordinate
+End Property
+
+Public Property Let PerY(ByVal newCoordinate As Single)
+    m_per_posY = newCoordinate
+End Property
+
+Public Property Let PerW(ByVal newCoordinate As Single)
+    m_per_Width = newCoordinate
+End Property
+
+Public Property Let PerH(ByVal newCoordinate As Single)
+    m_per_Heigth = newCoordinate
 End Property
 
 Public Property Let Y(ByVal newCoordinate As Long)
