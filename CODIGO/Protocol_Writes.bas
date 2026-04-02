@@ -3347,6 +3347,17 @@ WriteMensajeUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMensajeUser", Erl)
     '</EhFooter>
 End Sub
+Public Sub WriteAntiMacroMessage(ByVal userName As String, ByVal mensaje As String)
+    On Error GoTo WriteAntiMacroMessage_Err
+    Call Writer.WriteInt16(ClientPacketID.eAntiMacroMessage)
+    Call Writer.WriteString8(userName)
+    Call Writer.WriteString8(mensaje)
+    Call modNetwork.send(Writer)
+    Exit Sub
+WriteAntiMacroMessage_Err:
+    Call Writer.Clear
+    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAntiMacroMessage", Erl)
+End Sub
 
 ''
 ' Writes the "EditChar" message to the outgoing data buffer.
