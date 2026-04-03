@@ -114,6 +114,7 @@ Public Type tQuest
     nombre As String
     desc As String
     DescAudio As String
+    DescFinalAudio As String
     NextQuest As String
     DescFinal As String
     RequiredLevel As Integer
@@ -2141,6 +2142,23 @@ Public Sub PlayQuestDescAudio(ByVal QuestIndex As Integer)
     Call StopQuestDescAudio
 
     audioFile = Trim$(QuestList(QuestIndex).DescAudio)
+    If LenB(audioFile) = 0 Then Exit Sub
+
+    If InStrRev(audioFile, ".") = 0 Then
+        audioFile = audioFile
+    End If
+
+    Call ao20audio.PlayWav(audioFile, False, 0, 0, QUEST_DESC_AUDIO_LABEL)
+End Sub
+
+Public Sub PlayQuestFinalDescAudio(ByVal QuestIndex As Integer)
+    Dim audioFile As String
+
+    If QuestIndex < LBound(QuestList) Or QuestIndex > UBound(QuestList) Then Exit Sub
+
+    Call StopQuestDescAudio
+
+    audioFile = Trim$(QuestList(QuestIndex).DescFinalAudio)
     If LenB(audioFile) = 0 Then Exit Sub
 
     If InStrRev(audioFile, ".") = 0 Then
