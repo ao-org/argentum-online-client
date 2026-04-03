@@ -1659,7 +1659,10 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             copiar = False
             duracion = 20
         Case "QUESTFIN"
-            chat = QuestList(ReadField(2, chat, Asc("*"))).DescFinal
+            Dim questFinishedIndex As Integer
+            questFinishedIndex = val(ReadField(2, chat, Asc("*")))
+            chat = QuestList(questFinishedIndex).DescFinal
+            Call PlayQuestFinalAudio(questFinishedIndex)
             copiar = False
             duracion = 20
         Case "NOCONSOLA" ' El chat no sale en la consola
@@ -6027,10 +6030,18 @@ Public Sub HandleObjQuestListSend()
             subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
     End Select
     FrmQuestInfo.ListViewQuest.Refresh
-    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest está empezada o no.
-    FrmQuestInfo.Show vbModeless, GetGameplayForm()
-    FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
-    Call FrmQuestInfo.ShowQuest(1)
+
+    If estado = 2 Then
+        If LenB(QuestList(QuestIndex).DescFinal) > 0 Then
+            Call Char_Dialog_Set(UserCharIndex, QuestList(QuestIndex).DescFinal, &H1FFFF, 20, 30)
+        End If
+        Call PlayQuestFinalAudio(QuestIndex)
+    Else
+        'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest está empezada o no.
+        FrmQuestInfo.Show vbModeless, GetGameplayForm()
+        FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
+        Call FrmQuestInfo.ShowQuest(1)
+    End If
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
