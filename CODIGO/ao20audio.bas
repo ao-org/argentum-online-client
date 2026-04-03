@@ -217,6 +217,19 @@ Public Function PlayMusic(ByVal filename As String, Optional ByVal looping As Bo
     End If
 End Function
 
+
+Public Sub PauseAllAudio()
+    If AudioEnabled And Not AudioEngine Is Nothing Then
+        Call AudioEngine.PauseAllAudio
+    End If
+End Sub
+
+Public Sub ResumeAllAudio()
+    If AudioEnabled And Not AudioEngine Is Nothing Then
+        Call AudioEngine.ResumeAllAudio
+    End If
+End Sub
+
 Public Function StopMusic() As Long
     StopMusic = -1
     If AudioEnabled And MusicEnabled And Not AudioEngine Is Nothing Then

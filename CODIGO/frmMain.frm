@@ -1592,6 +1592,7 @@ Private cBotonPercentageTwoDecimals As clsGraphicalButton
 Private cBotonPercentageFourDecimals As clsGraphicalButton
 Private cBotonZoomIn       As clsGraphicalButton
 Private cBotonZoomOut      As clsGraphicalButton
+Private mMainFormHasFocus   As Boolean
 Private Sub btnInvisible_Click()
     On Error GoTo btnInvisible_Click_Err
     Call ParseUserCommand("/INVISIBLE")
@@ -2061,9 +2062,45 @@ End Sub
 Private Sub Form_Activate()
     renderer.Refresh
     On Error GoTo Form_Activate_Err
+    mMainFormHasFocus = True
+    Call UpdateAudioFocusState
     Exit Sub
 Form_Activate_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Activate", Erl)
+    Resume Next
+End Sub
+
+Private Sub Form_Deactivate()
+    On Error GoTo Form_Deactivate_Err
+    mMainFormHasFocus = False
+    Call UpdateAudioFocusState
+    Exit Sub
+Form_Deactivate_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Deactivate", Erl)
+    Resume Next
+End Sub
+
+Private Sub Form_Resize()
+    On Error GoTo Form_Resize_Err
+    Call UpdateAudioFocusState
+    Exit Sub
+Form_Resize_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Resize", Erl)
+    Resume Next
+End Sub
+
+Private Sub UpdateAudioFocusState()
+    On Error GoTo UpdateAudioFocusState_Err
+
+    If Me.WindowState = vbMinimized Or Not mMainFormHasFocus Then
+        Call ao20audio.PauseAllAudio
+    Else
+        Call ao20audio.ResumeAllAudio
+    End If
+
+    Exit Sub
+UpdateAudioFocusState_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.UpdateAudioFocusState", Erl)
     Resume Next
 End Sub
 
@@ -2282,6 +2319,7 @@ Private Sub Form_Unload(Cancel As Integer)
         Call svb_shutdown_steam
     #End If
     Call DisableURLDetect
+    Call ao20audio.PauseAllAudio
     Exit Sub
 Form_Unload_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Unload", Erl)
@@ -3569,6 +3607,8 @@ Private Sub Form_Load()
     End If
     loadButtons
     InitToolTipText
+    mMainFormHasFocus = True
+    Call UpdateAudioFocusState
     Exit Sub
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.Form_Load", Erl)
