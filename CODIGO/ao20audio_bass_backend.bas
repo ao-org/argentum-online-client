@@ -175,6 +175,11 @@ BassBackend_SetMusicVolume_Err:
     frmDebug.add_text_tracebox "BassBackend_SetMusicVolume exception: " & Err.Description
 End Sub
 
+
+Public Function BassBackend_IsInitialized() As Boolean
+    BassBackend_IsInitialized = m_BassInitialized
+End Function
+
 Public Function BassBackend_IsMusicPlaying() As Boolean
     If m_CurrentMusicStream = 0 Then Exit Function
     BassBackend_IsMusicPlaying = (BASS_ChannelIsActive(m_CurrentMusicStream) = BASS_ACTIVE_PLAYING)
@@ -202,6 +207,11 @@ End Sub
 
 Public Sub BassBackend_SetMusicVolume(ByVal volume As Long)
 End Sub
+
+
+Public Function BassBackend_IsInitialized() As Boolean
+    BassBackend_IsInitialized = False
+End Function
 
 Public Function BassBackend_IsMusicPlaying() As Boolean
     BassBackend_IsMusicPlaying = False
