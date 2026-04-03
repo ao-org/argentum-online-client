@@ -488,6 +488,21 @@ Private Function ResolveOggSfxPath(ByVal Name As String) As String
     End If
 End Function
 
+Private Function GetLocalizedOggSfxName(ByVal baseName As String) As String
+    Dim localizedFileName As String
+
+    GetLocalizedOggSfxName = ""
+    If LenB(baseName) = 0 Then Exit Function
+    If language = e_language.Spanish Then Exit Function
+
+    localizedFileName = GetLocalizedFilename(language, baseName & ".ogg")
+    If LenB(localizedFileName) = 0 Then Exit Function
+
+    If LCase$(Right$(localizedFileName, 4)) = ".ogg" Then
+        GetLocalizedOggSfxName = Left$(localizedFileName, Len(localizedFileName) - 4)
+    End If
+End Function
+
 Private Function ConvertFxVolumeToBass(ByVal volume As Long) As Single
     Dim gain As Double
 
@@ -979,8 +994,24 @@ Public Function PlayWav(ByVal prefix_sound_id As String, _
                         Optional ByVal label As String = "") As Long
     On Error GoTo PlayWav_Error_Handl
     Dim oggPath As String
+    Dim localizedPrefixSoundId As String
     Dim sound_id As Integer
     #If ENABLE_BASS = 1 Then
+        localizedPrefixSoundId = GetLocalizedOggSfxName(prefix_sound_id)
+        If LenB(localizedPrefixSoundId) > 0 Then
+            oggPath = ResolveOggSfxPath(localizedPrefixSoundId)
+            If LenB(oggPath) > 0 Then
+                #If DEBUG_AUDIO = 1 Then
+                    frmDebug.add_text_tracebox "PlayWav using localized OGG sample: " & localizedPrefixSoundId
+                #End If
+                PlayWav = PlayCompressedSfx(localizedPrefixSoundId, oggPath, looping, volume, pan, label)
+                If PlayWav = 0 Then Exit Function
+                #If DEBUG_AUDIO = 1 Then
+                    frmDebug.add_text_tracebox "PlayWav localized OGG failed, trying default: " & prefix_sound_id
+                #End If
+            End If
+        End If
+
         oggPath = ResolveOggSfxPath(prefix_sound_id)
         If LenB(oggPath) > 0 Then
             #If DEBUG_AUDIO = 1 Then

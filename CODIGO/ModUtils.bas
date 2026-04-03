@@ -26,6 +26,7 @@ Private Declare Function SystemParametersInfo _
 Public StopCreandoCuenta    As Boolean
 Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
+Public Const QUEST_DESC_AUDIO_LABEL As String = "quest_desc_audio"
 'Nueva seguridad
 Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
@@ -2128,10 +2129,16 @@ Public Function GetQuestDescForUI(ByVal QuestIndex As Integer) As String
     GetQuestDescForUI = QuestList(QuestIndex).desc
 End Function
 
+Public Sub StopQuestDescAudio()
+    Call ao20audio.StopAllWavsMatchingLabel(QUEST_DESC_AUDIO_LABEL)
+End Sub
+
 Public Sub PlayQuestDescAudio(ByVal QuestIndex As Integer)
     Dim audioFile As String
 
     If QuestIndex < LBound(QuestList) Or QuestIndex > UBound(QuestList) Then Exit Sub
+
+    Call StopQuestDescAudio
 
     audioFile = Trim$(QuestList(QuestIndex).DescAudio)
     If LenB(audioFile) = 0 Then Exit Sub
@@ -2140,5 +2147,5 @@ Public Sub PlayQuestDescAudio(ByVal QuestIndex As Integer)
         audioFile = audioFile
     End If
 
-    Call ao20audio.PlayWav(audioFile, False)
+    Call ao20audio.PlayWav(audioFile, False, 0, 0, QUEST_DESC_AUDIO_LABEL)
 End Sub
