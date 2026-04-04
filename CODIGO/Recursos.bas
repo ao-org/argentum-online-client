@@ -1445,7 +1445,6 @@ Public Sub CargarIndicesOBJ()
         QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
         QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
         QuestList(Hechizo).DescAudio = Leer.GetValue("QUEST" & Hechizo, "DESCAUDIO")
-        If LenB(QuestList(Hechizo).DescAudio) = 0 Then QuestList(Hechizo).DescAudio = QuestList(Hechizo).desc
         QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
         QuestList(Hechizo).NextQuest = val(Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST"))
         QuestList(Hechizo).RequiredLevel = val(Leer.GetValue("QUEST" & Hechizo, "RequiredLevel"))
