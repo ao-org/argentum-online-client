@@ -2130,6 +2130,7 @@ Public Function GetQuestDescForUI(ByVal QuestIndex As Integer) As String
     GetQuestDescForUI = QuestList(QuestIndex).desc
 End Function
 
+
 Public Sub StopQuestDescAudio()
     Call ao20audio.StopAllWavsMatchingLabel(QUEST_DESC_AUDIO_LABEL)
 End Sub
@@ -2138,6 +2139,7 @@ Public Sub PlayQuestDescAudio(ByVal QuestIndex As Integer)
     Dim audioFile As String
 
     If QuestIndex < LBound(QuestList) Or QuestIndex > UBound(QuestList) Then Exit Sub
+
 
     Call StopQuestDescAudio
 
@@ -2166,4 +2168,5 @@ Public Sub PlayQuestFinalDescAudio(ByVal QuestIndex As Integer)
     End If
 
     Call ao20audio.PlayWav(audioFile, False, 0, 0, QUEST_DESC_AUDIO_LABEL)
+
 End Sub
