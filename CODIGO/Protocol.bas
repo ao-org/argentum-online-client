@@ -5106,6 +5106,7 @@ Private Sub HandleQuestDetails()
     End If
     RequiredQuest = Reader.ReadInt16
     FrmQuests.detalle.Text = GetQuestDescForUI(QuestIndex)
+    Call PlayQuestDescAudio(QuestIndex)
     If RequiredLevel > 1 Then
         requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & RequiredLevel & vbCrLf
     End If

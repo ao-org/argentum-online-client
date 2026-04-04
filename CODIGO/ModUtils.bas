@@ -2131,9 +2131,20 @@ End Function
 Public Function GetQuestDescForUI(ByVal QuestIndex As Integer) As String
     If QuestIndex < LBound(QuestList) Or QuestIndex > UBound(QuestList) Then Exit Function
 
-    If LenB(QuestList(QuestIndex).DescAudio) > 0 Then
-        GetQuestDescForUI = QuestList(QuestIndex).DescAudio
-    Else
-        GetQuestDescForUI = QuestList(QuestIndex).desc
-    End If
+    GetQuestDescForUI = QuestList(QuestIndex).desc
 End Function
+
+Public Sub PlayQuestDescAudio(ByVal QuestIndex As Integer)
+    Dim audioFile As String
+
+    If QuestIndex < LBound(QuestList) Or QuestIndex > UBound(QuestList) Then Exit Sub
+
+    audioFile = Trim$(QuestList(QuestIndex).DescAudio)
+    If LenB(audioFile) = 0 Then Exit Sub
+
+    If InStrRev(audioFile, ".") = 0 Then
+        audioFile = audioFile
+    End If
+
+    Call ao20audio.PlayWav(audioFile, False)
+End Sub
