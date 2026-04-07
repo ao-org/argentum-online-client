@@ -51,6 +51,7 @@ Public Enum eFxCategory
     eFxSteps = 1
     eFxAmbient = 2
 End Enum
+Public Const QUEST_DESC_AUDIO_LABEL As String = "quest_desc_audio"
 
 Public Sub PlayRandomOggSong(ByVal maxTrack As Integer, Optional ByVal looping As Boolean = True)
     Dim track As Integer

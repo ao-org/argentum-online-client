@@ -1659,7 +1659,10 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             copiar = False
             duracion = 20
         Case "QUESTFIN"
-            chat = QuestList(ReadField(2, chat, Asc("*"))).DescFinal
+            Dim questIndex As Integer
+            questIndex = val(ReadField(2, chat, Asc("*")))
+            chat = QuestList(questIndex).DescFinal
+            Call PlayQuestFinalDescAudio(questIndex)
             copiar = False
             duracion = 20
         Case "NOCONSOLA" ' El chat no sale en la consola
@@ -5105,7 +5108,8 @@ Private Sub HandleQuestDetails()
         Next i
     End If
     RequiredQuest = Reader.ReadInt16
-    FrmQuests.detalle.Text = QuestList(QuestIndex).desc
+    FrmQuests.detalle.Text = GetQuestDescForUI(questIndex)
+    Call PlayQuestDescAudio(questIndex)
     If RequiredLevel > 1 Then
         requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & RequiredLevel & vbCrLf
     End If
