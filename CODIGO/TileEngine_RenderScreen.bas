@@ -423,10 +423,12 @@ Sub RenderScreen(ByVal center_x As Integer, _
     End If
     If TieneAntorcha Then
         Dim randX As Double, randY As Double
-        If GetTickCount - (10 * Rnd + 50) >= DeltaAntorcha Then
+        Dim curTick As Long
+        curTick = GetTickCount()
+        If curTick >= DeltaAntorcha Then
             randX = RandomNumber(-8, 0)
             randY = RandomNumber(-8, 0)
-            DeltaAntorcha = GetTickCount
+            DeltaAntorcha = curTick + CLng(10 * Rnd + 50)
         End If
         Call Draw_GrhIndex(63333, randX, randY)
     End If
