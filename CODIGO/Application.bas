@@ -62,5 +62,8 @@ Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByV
             vbNewLine & "Fecha y Hora: " & Date$ & "-" & Time$ & vbNewLine
     Exit Sub
 RegistrarError_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ES.RegistrarError", Erl)
+    ' Do NOT call RegistrarError recursively here; that would cause infinite recursion
+    ' if the log file is unavailable (e.g. disk full). Swallow the secondary error silently.
+    On Error Resume Next
+    frmDebug.add_text_tracebox "RegistrarError failed: " & Err.Number & " - " & Err.Description
 End Sub
