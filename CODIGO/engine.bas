@@ -3355,7 +3355,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
         .Now_Moved = GetTickCount()
         'Controla el intervalo de vuelo
         If (.Last_Move + 10) < .Now_Moved Then
-            .Last_Move = GetTickCount()
+            .Last_Move = .Now_Moved
             'Si tiene char de destino.
             If (.DestinoChar <> 0) Then
                 'Actualiza la pos de destino.
