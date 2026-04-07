@@ -115,7 +115,7 @@ Public Type PARAFORMAT2
     wAlignment As Integer
     cTabCount As Integer
     lTabStops(0 To MAX_TAB_STOPS - 1) As Long
-    ' Desde aquï¿½ lo aï¿½adido por PARAFORMAT2
+    ' Desde aca lo agregado por PARAFORMAT2
     dySpaceBefore As Long '/* Vertical spacing before para */
     dySpaceAfter As Long '/* Vertical spacing after para */
     dyLineSpacing As Long '/* Line spacing depending on Rule */
@@ -316,7 +316,7 @@ Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, O
     End With
     Dim ret As Long
     ret = SendMessage(rtbTarget.hWnd, EM_SETPARAFORMAT, 0&, Para)
-    If ret = 0 Then frmDebug.add_text_tracebox "Error al setear el espaciado entre lï¿½neas del RichTextBox."
+    If ret = 0 Then frmDebug.add_text_tracebox "Error al setear el espaciado entre lineas del RichTextBox."
 End Sub
 
 Public Sub RefreshAllChars()
@@ -350,7 +350,7 @@ Function AsciiValidos(ByVal cad As String) As Boolean
     cad = LCase$(cad)
     For i = 1 To Len(cad)
         car = Asc(mid$(cad, i, 1))
-        If ((car < 97 Or car > 122) Or car = Asc("ï¿½")) And (car <> 255) And (car <> 32) Then
+        If ((car < 97 Or car > 122) Or car = Asc("º")) And (car <> 255) And (car <> 32) Then
             Exit Function
         End If
     Next i
@@ -952,11 +952,6 @@ GetVarOrDefault_Err:
     Resume Next
 End Function
 
-'[CODE 002]:MatuX
-'
-'  Funciï¿½n para chequear el email
-'
-'  Corregida por Maraxus para que reconozca como vï¿½lidas casillas con puntos antes de la arroba y evitar un chequeo innecesario
 Public Function CheckMailString(ByVal sString As String) As Boolean
     On Error GoTo errHnd
     Dim lPos As Long
@@ -965,9 +960,9 @@ Public Function CheckMailString(ByVal sString As String) As Boolean
     '1er test: Busca un simbolo @
     lPos = InStr(sString, "@")
     If (lPos <> 0) Then
-        '2do test: Busca un simbolo . despuï¿½s de @ + 1
+        '2do test: Busca un simbolo . despues de @ + 1
         If Not (InStr(lPos, sString, ".", vbBinaryCompare) > lPos + 1) Then Exit Function
-        '3er test: Recorre todos los caracteres y los valï¿½da
+        '3er test: Recorre todos los caracteres y los valida
         For lX = 0 To Len(sString) - 1
             If Not (lX = (lPos - 1)) Then   'No chequeamos la '@'
                 iAsc = Asc(mid$(sString, (lX + 1), 1))
