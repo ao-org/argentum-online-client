@@ -993,69 +993,63 @@ Public Function PlayWav(ByVal prefix_sound_id As String, _
                         Optional ByVal pan As Long = 0, _
                         Optional ByVal label As String = "") As Long
     On Error GoTo PlayWav_Error_Handl
-    Dim oggPath As String
-    Dim localizedPrefixSoundId As String
-    Dim sound_id As Integer
-    #If ENABLE_BASS = 1 Then
-        localizedPrefixSoundId = GetLocalizedOggSfxName(prefix_sound_id)
-        If LenB(localizedPrefixSoundId) > 0 Then
-            oggPath = ResolveOggSfxPath(localizedPrefixSoundId)
-            If LenB(oggPath) > 0 Then
-                #If DEBUG_AUDIO = 1 Then
-                    frmDebug.add_text_tracebox "PlayWav using localized OGG sample: " & localizedPrefixSoundId
-                #End If
-                PlayWav = PlayCompressedSfx(localizedPrefixSoundId, oggPath, looping, volume, pan, label)
-                If PlayWav = 0 Then Exit Function
-                #If DEBUG_AUDIO = 1 Then
-                    frmDebug.add_text_tracebox "PlayWav localized OGG failed, trying default: " & prefix_sound_id
-                #End If
-            End If
-        End If
 
+    Dim oggPath As String
+    Dim sound_id As Integer
+    Dim tid As Integer
+
+    PlayWav = -1
+
+    #If ENABLE_BASS = 1 Then
         oggPath = ResolveOggSfxPath(prefix_sound_id)
+        
+        'Print oggPath
         If LenB(oggPath) > 0 Then
             #If DEBUG_AUDIO = 1 Then
                 frmDebug.add_text_tracebox "PlayWav using OGG sample: " & prefix_sound_id
             #End If
+
             PlayWav = PlayCompressedSfx(prefix_sound_id, oggPath, looping, volume, pan, label)
             If PlayWav = 0 Then Exit Function
+
             #If DEBUG_AUDIO = 1 Then
                 frmDebug.add_text_tracebox "PlayWav OGG failed, fallback to WAV: " & prefix_sound_id
             #End If
         Else
             #If DEBUG_AUDIO = 1 Then
-                frmDebug.add_text_tracebox "PlayWav fallback to WAV: " & prefix_sound_id
+                frmDebug.add_text_tracebox "PlayWav OGG not found, fallback to WAV: " & prefix_sound_id
             #End If
-            
         End If
     #End If
 
     sound_id = RemoveFirstThreeIfUnderscore(prefix_sound_id)
     Debug.Assert sound_id > 0
-    PlayWav = -1
-    If (sound_id <= 0) Then Exit Function
+    If sound_id <= 0 Then Exit Function
+
     If mBuffer(sound_id) Is Nothing Then
-        Dim i As Integer
         Call CreateWavBufferFromFile(prefix_sound_id, mBuffer(sound_id))
         Debug.Assert Not mBuffer(sound_id) Is Nothing
+
         If mBuffer(sound_id) Is Nothing Then
-            PlayWav = -1
             Exit Function
         End If
     End If
-    Dim tid As Integer
+
     tid = GetFreeWavTrack()
-    If (tid > -1) Then
-        With mAudioTracks(tid)
-            .Name = sound_id
-            .label = label
-            Set .Buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(sound_id))
-            Call StartPlaying(.Buffer, IIf(looping, DSBPLAY_LOOPING, DSBPLAY_DEFAULT), volume, pan)
-        End With
-        PlayWav = 0
-    End If
+    If tid <= -1 Then Exit Function
+
+    With mAudioTracks(tid)
+        .name = sound_id
+        .label = label
+        Set .buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(sound_id))
+        Call StartPlaying(.buffer, IIf(looping, DSBPLAY_LOOPING, DSBPLAY_DEFAULT), volume, pan)
+    End With
+
+    PlayWav = 0
     Exit Function
+
 PlayWav_Error_Handl:
+    PlayWav = -1
 End Function
 
 ' Play-or-update helper for labeled FX.
