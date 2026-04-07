@@ -528,6 +528,12 @@ End Sub
 
 Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
     On Error GoTo MoveTo_Err
+    
+    ' Validate UserPos coordinates early
+    If UserPos.x < 1 Or UserPos.x > 100 Or UserPos.y < 1 Or UserPos.y > 100 Then
+        Exit Sub ' Invalid user position, abort
+    End If
+    
     If Dumb Then
         If RandomNumber(1, 100) < 50 Then
             Dim newHeading As E_Heading
@@ -537,18 +543,56 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
             Heading = newHeading
         End If
     End If
+    
     Dim LegalOk As Boolean
+    Dim targetX As Integer
+    Dim targetY As Integer
+    
     If cartel Then cartel = False
+    
+    ' Calculate target coordinates and check bounds
     Select Case Heading
         Case E_Heading.NORTH
-            LegalOk = LegalPos(UserPos.x, UserPos.y - 1, Heading)
+            targetX = UserPos.x
+            targetY = UserPos.y - 1
+            ' Check map boundaries before calling LegalPos
+            If targetY < 1 Then
+                LegalOk = False
+            Else
+                LegalOk = LegalPos(targetX, targetY, Heading)
+            End If
+            
         Case E_Heading.EAST
-            LegalOk = LegalPos(UserPos.x + 1, UserPos.y, Heading)
+            targetX = UserPos.x + 1
+            targetY = UserPos.y
+            ' Check map boundaries (assuming map width is 100)
+            If targetX > 100 Then
+                LegalOk = False
+            Else
+                LegalOk = LegalPos(targetX, targetY, Heading)
+            End If
+            
         Case E_Heading.south
-            LegalOk = LegalPos(UserPos.x, UserPos.y + 1, Heading)
+            targetX = UserPos.x
+            targetY = UserPos.y + 1
+            ' Check map boundaries (assuming map height is 100)
+            If targetY > 100 Then
+                LegalOk = False
+            Else
+                LegalOk = LegalPos(targetX, targetY, Heading)
+            End If
+            
         Case E_Heading.WEST
-            LegalOk = LegalPos(UserPos.x - 1, UserPos.y, Heading)
+            targetX = UserPos.x - 1
+            targetY = UserPos.y
+            ' Check map boundaries
+            If targetX < 1 Then
+                LegalOk = False
+            Else
+                LegalOk = LegalPos(targetX, targetY, Heading)
+            End If
     End Select
+    
     If LegalOk And CanMove() Then
         If Not UserDescansar Then
             If UserMacro.Activado Then
@@ -562,21 +606,42 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
             If WriteWalk(Heading) Then 'We only walk if we are not meditating or resting
                 Moviendose = True
                 Call MainTimer.Restart(TimersIndex.Walk)
-                Call Char_Move_by_Head(UserCharIndex, Heading)
-                Call MoveScreen(Heading)
-                Call checkTutorial
-                Dim i As Integer
-                For i = 1 To LastChar
-                    If charlist(i).Invisible And Not EsGM And Not charlist(i).Meditating Then
-                        If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(i).clan_index = 0 Or charlist( _
-                                i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
-                            If General_Distance_Get(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist( _
-                                    i).FxCount = 0 And charlist(i).particle_count = 0 Then
-                                MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = 0
+                
+                ' Validate UserCharIndex before use
+                If UserCharIndex > 0 And UserCharIndex <= UBound(charlist) Then
+                    Call Char_Move_by_Head(UserCharIndex, Heading)
+                    Call MoveScreen(Heading)
+                    Call checkTutorial
+                    
+                    Dim i As Integer
+                    For i = 1 To LastChar
+                        ' Validate array bounds for charlist
+                        If i > UBound(charlist) Then Exit For
+                        
+                        ' Check if char exists and is valid
+                        If charlist(i).Invisible And Not EsGM And Not charlist(i).Meditating Then
+                            ' Validate position before accessing MapData
+                            If charlist(i).pos.x >= 1 And charlist(i).pos.x <= 100 And _
+                               charlist(i).pos.y >= 1 And charlist(i).pos.y <= 100 Then
+                                
+                                If MapData(charlist(i).pos.x, charlist(i).pos.y).charindex = i And _
+                                   (charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or _
+                                    charlist(i).clan_index = 0 Or _
+                                    charlist(i).clan_index <> charlist(UserCharIndex).clan_index) And _
+                                   Not charlist(i).Navegando Then
+                                    
+                                    If General_Distance_Get(charlist(i).pos.x, charlist(i).pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And _
+                                       charlist(i).dialog_life = 0 And _
+                                       charlist(i).FxCount = 0 And _
+                                       charlist(i).particle_count = 0 Then
+                                        
+                                        MapData(charlist(i).pos.x, charlist(i).pos.y).charindex = 0
+                                    End If
+                                End If
                             End If
                         End If
-                    End If
-                Next i
+                    Next i
+                End If
             End If
         Else
             If Not UserAvisado Then
@@ -587,17 +652,21 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
             End If
         End If
     Else
-        If charlist(UserCharIndex).Heading <> Heading Then
-            If IntervaloPermiteHeading(True) Then
-                Call WriteChangeHeading(Heading)
+        ' Validate UserCharIndex before accessing charlist
+        If UserCharIndex > 0 And UserCharIndex <= UBound(charlist) Then
+            If charlist(UserCharIndex).Heading <> Heading Then
+                If IntervaloPermiteHeading(True) Then
+                    Call WriteChangeHeading(Heading)
+                End If
             End If
         End If
     End If
+    
     Call UpdateMapPos
     ' Update 3D sounds!
-    ' Call Audio.MoveListener(UserPos.x, UserPos.y)
     If frmMain.macrotrabajo.enabled Then frmMain.DesactivarMacroTrabajo
     Exit Sub
+    
 MoveTo_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.MoveTo", Erl)
     Resume Next
