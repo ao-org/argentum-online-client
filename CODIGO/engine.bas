@@ -951,9 +951,9 @@ Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Inte
         isAnimated = 1
     End If
     mascota.PosY = mascota.PosY - LastOffset2Y
-    If GetTickCount() - mascota.last_time >= 200 Then
+    If FrameTime - mascota.last_time >= 200 Then
         mascota.Heading = calcular_direccion(dir_vector)
-        mascota.last_time = GetTickCount()
+        mascota.last_time = FrameTime
     End If
     If mascota.color(0).a < 255 Then
         Dim temp_alpha As Single
@@ -1243,7 +1243,7 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
         PixelOffsetY = PixelOffsetY + .MoveOffsetY
         'screen_x = Convert_Tile_To_View_X(PixelOffsetX) + MoveOffsetX
         '*** Start Dialogs ***
-        If .dialog <> "" Then
+        If LenB(.dialog) <> 0 Then
             'Figure out screen position
             Dim temp_array(3) As RGBA
             Dim PixelY        As Integer
@@ -1739,7 +1739,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             'Draw name over head
             Nombres = Not MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).zone.OcultarNombre
           
-            If Nombres And Len(.nombre) > 0 And MostrarNombre Then
+            If Nombres And LenB(.nombre) <> 0 And MostrarNombre Then
                 If .alias <> vbNullString Then
                     line = .alias
                 Else
@@ -1828,7 +1828,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             Next i
         End If
-        If Nombres And Len(.nombre) > 0 And MostrarNombre And .tipoUsuario > 0 Then
+        If Nombres And LenB(.nombre) <> 0 And MostrarNombre And .tipoUsuario > 0 Then
             Select Case .tipoUsuario
                 Case eTipoUsuario.aventurero
                     Call RGBAList(color, 0, 255, 0, IIf(.Invisible, 120, 255))
@@ -3355,7 +3355,7 @@ Public Sub Effect_Render_Slot(ByVal effect_Index As Integer)
         .Now_Moved = GetTickCount()
         'Controla el intervalo de vuelo
         If (.Last_Move + 10) < .Now_Moved Then
-            .Last_Move = GetTickCount()
+            .Last_Move = .Now_Moved
             'Si tiene char de destino.
             If (.DestinoChar <> 0) Then
                 'Actualiza la pos de destino.
