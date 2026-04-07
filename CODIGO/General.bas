@@ -1316,11 +1316,11 @@ End Function
 Public Function Tilde(ByRef data As String) As String
     On Error GoTo Tilde_Err
     Tilde = UCase$(data)
-    Tilde = Replace$(Tilde, "ï¿½", "A")
-    Tilde = Replace$(Tilde, "ï¿½", "E")
-    Tilde = Replace$(Tilde, "ï¿½", "I")
-    Tilde = Replace$(Tilde, "ï¿½", "O")
-    Tilde = Replace$(Tilde, "ï¿½", "U")
+    Tilde = Replace$(Tilde, "Á", "A")
+    Tilde = Replace$(Tilde, "É", "E")
+    Tilde = Replace$(Tilde, "Í", "I")
+    Tilde = Replace$(Tilde, "Ó", "O")
+    Tilde = Replace$(Tilde, "Ú", "U")
     Exit Function
 Tilde_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.Tilde", Erl)
