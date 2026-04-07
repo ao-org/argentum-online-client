@@ -1243,7 +1243,7 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
         PixelOffsetY = PixelOffsetY + .MoveOffsetY
         'screen_x = Convert_Tile_To_View_X(PixelOffsetX) + MoveOffsetX
         '*** Start Dialogs ***
-        If .dialog <> "" Then
+        If LenB(.dialog) <> 0 Then
             'Figure out screen position
             Dim temp_array(3) As RGBA
             Dim PixelY        As Integer
@@ -1739,7 +1739,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             'Draw name over head
             Nombres = Not MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).zone.OcultarNombre
           
-            If Nombres And Len(.nombre) > 0 And MostrarNombre Then
+            If Nombres And LenB(.nombre) <> 0 And MostrarNombre Then
                 If .alias <> vbNullString Then
                     line = .alias
                 Else
@@ -1828,7 +1828,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             Next i
         End If
-        If Nombres And Len(.nombre) > 0 And MostrarNombre And .tipoUsuario > 0 Then
+        If Nombres And LenB(.nombre) <> 0 And MostrarNombre And .tipoUsuario > 0 Then
             Select Case .tipoUsuario
                 Case eTipoUsuario.aventurero
                     Call RGBAList(color, 0, 255, 0, IIf(.Invisible, 120, 255))
