@@ -364,6 +364,15 @@ Form_Load_Err:
     Resume Next
 End Sub
 
+Private Sub Form_Unload(Cancel As Integer)
+    On Error GoTo Form_Unload_Err
+    Call StopQuestDescAudio
+    Exit Sub
+Form_Unload_Err:
+    Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Form_Unload", Erl)
+    Resume Next
+End Sub
+
 Private Sub Form_KeyPress(KeyAscii As Integer)
     On Error GoTo Form_KeyPress_Err
     If (KeyAscii = 27) Then

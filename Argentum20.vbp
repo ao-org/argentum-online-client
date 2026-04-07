@@ -7,7 +7,7 @@ Reference=*\G{B691E011-1797-432E-907A-4D8C69339129}#6.1#0#..\..\..\..\Program Fi
 Reference=*\G{E1211242-8E94-11D1-8808-00C04FC2C603}#1.0#0#DX8VB.DLL#DirectX 8 for Visual Basic Type Library
 Object={48E59290-9880-11CF-9754-00AA00C00908}#1.0#0; MSINET.OCX
 Object={3B7C8863-D78F-101B-B9B5-04021C009402}#1.2#0; RICHTX32.OCX
-Object={831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0; MSCOMCTL.OCX
+Object={831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0; mscomctl.ocx
 Object={248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0; MSWINSCK.OCX
 Form=CODIGO\frmComerciar.frm
 Form=CODIGO\frmConnect.frm
@@ -174,9 +174,9 @@ Module=debug_tools; CODIGO\debug_tools.bas
 Class=clsUIImage; CODIGO\ClsUIImage.cls
 Module=ao20audio_bass_backend; CODIGO\ao20audio_bass_backend.bas
 Module=modBass; CODIGO\bass.bas
-ResFile32="AO20.res"
 Class=clsUIFrame; CODIGO\clsUIFrame.cls
 Class=clsUIMsgBox; CODIGO\clsUIMsgBox.cls
+ResFile32="AO20.res"
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
@@ -196,7 +196,6 @@ VersionCompanyName="Argentum Online"
 VersionLegalCopyright="Argentum Online"
 VersionLegalTrademarks="Argentum Online"
 VersionProductName="Argentum Online by Noland Studios"
-CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 0 : DXUI = 0 : ENABLE_BASS = 0"
 CondComp="Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 0 : DXUI = 0 : ENABLE_BASS = 0"
 CompilationType=0
 OptimizationType=2

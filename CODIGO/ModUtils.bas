@@ -26,6 +26,7 @@ Private Declare Function SystemParametersInfo _
 Public StopCreandoCuenta    As Boolean
 Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
+Public Const QUEST_DESC_AUDIO_LABEL As String = "quest_desc_audio"
 'Nueva seguridad
 Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
@@ -113,6 +114,7 @@ Public Type tQuest
     nombre As String
     desc As String
     DescAudio As String
+    DescFinalAudio As String
     NextQuest As String
     DescFinal As String
     RequiredLevel As Integer
@@ -2134,17 +2136,124 @@ Public Function GetQuestDescForUI(ByVal QuestIndex As Integer) As String
     GetQuestDescForUI = QuestList(QuestIndex).desc
 End Function
 
+
+Public Sub StopQuestDescAudio()
+    Call ao20audio.StopAllWavsMatchingLabel(QUEST_DESC_AUDIO_LABEL)
+End Sub
+
+'------------------------------------------------------------------------------
+' ResolveLocalizedAudioId
+'
+' Resolves a quest audio identifier to a localized version when available.
+'
+' BEHAVIOR:
+' - If `baseName` is already prefixed (e.g. "en_xxx", "es_xxx"), it is returned as-is.
+' - Otherwise, attempts to resolve a localized file using GetLocalizedFilename:
+'       baseName + ".ogg" ? localized file (e.g. "en_baseName.ogg")
+' - If a localized file exists, returns the id WITHOUT extension.
+' - If no localized version is found, falls back to the original baseName.
+'
+' NOTES:
+' - This function does NOT verify file existence directly; it relies on
+'   GetLocalizedFilename.
+' - Returned value is suitable for PlayWav (no extension, may include prefix).
+'
+' DESIGN:
+' - Localization is handled at the call site (quest audio), not inside PlayWav.
+' - Prevents double-prefixing (e.g. "en_en_xxx").
+'------------------------------------------------------------------------------
+Private Function ResolveLocalizedAudioId(ByVal baseName As String) As String
+    Dim localizedFileName As String
+
+    ResolveLocalizedAudioId = ""
+
+    If LenB(baseName) = 0 Then Exit Function
+
+    ' If already prefixed (e.g. "en_", "es_"), do nothing
+    If InStr(1, baseName, "_") = 3 Then
+        ResolveLocalizedAudioId = baseName
+        Exit Function
+    End If
+
+    ' Try to resolve localized filename
+    localizedFileName = GetLocalizedFilename(language, baseName & ".ogg")
+
+    If LenB(localizedFileName) > 0 Then
+        If LCase$(Right$(localizedFileName, 4)) = ".ogg" Then
+            ResolveLocalizedAudioId = Left$(localizedFileName, Len(localizedFileName) - 4)
+            Exit Function
+        End If
+    End If
+
+    ' Fallback to original
+    ResolveLocalizedAudioId = baseName
+End Function
+
+'------------------------------------------------------------------------------
+' PlayQuestDescAudio
+'
+' Plays the voiceover audio for a quest description.
+'
+' BEHAVIOR:
+' - Stops any currently playing quest description audio (same label).
+' - Reads DescAudio from QuestList.
+' - Resolves localized version of the audio id (if applicable).
+' - Plays the sound using PlayWav with QUEST_DESC_AUDIO_LABEL.
+'
+' NOTES:
+' - DescAudio may be either:
+'     * already localized (e.g. "en_123") ? used as-is
+'     * base id (e.g. "quest_intro") ? localized here
+'
+' - Audio is grouped using QUEST_DESC_AUDIO_LABEL so it can be stopped/replaced.
+'
+' DESIGN:
+' - Localization is explicitly handled here to keep PlayWav generic and predictable.
+'------------------------------------------------------------------------------
 Public Sub PlayQuestDescAudio(ByVal QuestIndex As Integer)
     Dim audioFile As String
 
     If QuestIndex < LBound(QuestList) Or QuestIndex > UBound(QuestList) Then Exit Sub
 
+    Call StopQuestDescAudio
+
     audioFile = Trim$(QuestList(QuestIndex).DescAudio)
     If LenB(audioFile) = 0 Then Exit Sub
 
-    If InStrRev(audioFile, ".") = 0 Then
-        audioFile = audioFile
-    End If
+    audioFile = ResolveLocalizedAudioId(audioFile)
 
-    Call ao20audio.PlayWav(audioFile, False)
+    Call ao20audio.PlayWav(audioFile, False, 0, 0, QUEST_DESC_AUDIO_LABEL)
+End Sub
+
+'------------------------------------------------------------------------------
+' PlayQuestFinalDescAudio
+'
+' Plays the voiceover audio for a quest final/completion description.
+'
+' BEHAVIOR:
+' - Stops any currently playing quest description audio (same label).
+' - Reads DescFinalAudio from QuestList.
+' - Resolves localized version of the audio id (if applicable).
+' - Plays the sound using PlayWav with QUEST_DESC_AUDIO_LABEL.
+'
+' NOTES:
+' - Same localization rules as PlayQuestDescAudio apply.
+' - Shares label with quest description audio to ensure only one voiceover plays.
+'
+' DESIGN:
+' - Keeps localization logic at the call site rather than inside PlayWav.
+'------------------------------------------------------------------------------
+Public Sub PlayQuestFinalDescAudio(ByVal QuestIndex As Integer)
+    Dim audioFile As String
+
+    If QuestIndex < LBound(QuestList) Or QuestIndex > UBound(QuestList) Then Exit Sub
+
+    Call StopQuestDescAudio
+
+    audioFile = Trim$(QuestList(QuestIndex).DescFinalAudio)
+    If LenB(audioFile) = 0 Then Exit Sub
+
+    audioFile = ResolveLocalizedAudioId(audioFile)
+
+    Call ao20audio.PlayWav(audioFile, False, 0, 0, QUEST_DESC_AUDIO_LABEL)
 End Sub

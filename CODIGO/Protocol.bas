@@ -1659,7 +1659,10 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             copiar = False
             duracion = 20
         Case "QUESTFIN"
-            chat = QuestList(ReadField(2, chat, Asc("*"))).DescFinal
+            Dim questIndex As Integer
+            questIndex = val(ReadField(2, chat, Asc("*")))
+            chat = QuestList(questIndex).DescFinal
+            Call PlayQuestFinalDescAudio(questIndex)
             copiar = False
             duracion = 20
         Case "NOCONSOLA" ' El chat no sale en la consola

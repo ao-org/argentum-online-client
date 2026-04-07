@@ -75,34 +75,34 @@ Private mCurrentMidiId    As Integer
 Private mAudioSuspended   As Boolean
 
 Private Type AudioTrack
-    Name As String
+    name As String
     label As String
-    Buffer As DirectSoundSecondaryBuffer8
+    buffer As DirectSoundSecondaryBuffer8
 End Type
 
 Private mAudioTracks(1 To 30) As AudioTrack
 
 Private Type tCompressedSfx
-    Name As String
-    FullPath As String
-    SampleHandle As Long
+    name As String
+    fullPath As String
+    sampleHandle As Long
 End Type
 
 Private mCompressedSfx() As tCompressedSfx
 Private mCompressedSfxCount As Integer
 
 Private Type tActiveCompressedChannel
-    Handle As Long
-    Name As String
+    handle As Long
+    name As String
     label As String
-    Looping As Boolean
+    looping As Boolean
 End Type
 
 Private mActiveCompressedChannels() As tActiveCompressedChannel
 Private mActiveCompressedChannelsCount As Integer
 
 Private Type MidiTrack
-    Name As String
+    name As String
     directMusicLoader As DirectMusicLoader8
     directMusicPerformance As DirectMusicPerformance8
     directMusicSegment As DirectMusicSegment8
@@ -117,45 +117,45 @@ Private mMidiTrack(1 To 3) As MidiTrack
 '   *.ogg -> BASS music stream
 '   *.mid -> DirectMusic MIDI (numeric id inferred from filename)
 ' Anything else is treated as unsupported music request.
-Private Function GetFileExtension(ByVal fileName As String) As String
+Private Function GetFileExtension(ByVal filename As String) As String
     Dim dotPos As Long
-    dotPos = InStrRev(fileName, ".")
+    dotPos = InStrRev(filename, ".")
     If dotPos <= 0 Then Exit Function
-    GetFileExtension = LCase$(Mid$(fileName, dotPos))
+    GetFileExtension = LCase$(mid$(filename, dotPos))
 End Function
 
-Private Function ResolveOggFilePath(ByVal fileName As String, ByRef resolvedPath As String) As Boolean
+Private Function ResolveOggFilePath(ByVal filename As String, ByRef resolvedPath As String) As Boolean
     resolvedPath = ""
-    If LenB(fileName) = 0 Then Exit Function
+    If LenB(filename) = 0 Then Exit Function
 
     #If Compresion = 1 Then
-        If Extract_File(ogg, GetCompressedResourcesPath(), fileName, Windows_Temp_Dir, ResourcesPassword, False) Then
-            resolvedPath = Windows_Temp_Dir & fileName
+        If Extract_File(ogg, GetCompressedResourcesPath(), filename, Windows_Temp_Dir, ResourcesPassword, False) Then
+            resolvedPath = Windows_Temp_Dir & filename
         End If
     #Else
-        resolvedPath = ao20audio.GetOggFilesPath() & fileName
+        resolvedPath = ao20audio.GetOggFilesPath() & filename
     #End If
 
     ResolveOggFilePath = FileExist(resolvedPath, vbArchive)
 End Function
 
-Private Function PlayOgg(ByVal fileName As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
-    Dim pathToFile As String
+Private Function PlayOgg(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
+    Dim PathToFile As String
 
     PlayOgg = -1
-    If LenB(fileName) = 0 Then Exit Function
+    If LenB(filename) = 0 Then Exit Function
 
-    If Not ResolveOggFilePath(fileName, pathToFile) Then
+    If Not ResolveOggFilePath(filename, PathToFile) Then
         #If DEBUG_AUDIO = 1 Then
             frmDebug.add_text_tracebox "PlayOgg missing file: " & filename
         #End If
         Exit Function
     End If
 
-    PlayOgg = BassBackend_PlayOgg(pathToFile, looping, volume)
+    PlayOgg = BassBackend_PlayOgg(PathToFile, looping, volume)
     #If DEBUG_AUDIO = 1 Then
     If PlayOgg = 0 Then
-        frmDebug.add_text_tracebox "PlayOgg started: " & fileName
+        frmDebug.add_text_tracebox "PlayOgg started: " & filename
     Else
         frmDebug.add_text_tracebox "PlayOgg failed. Error: " & PlayOgg
     End If
@@ -175,8 +175,8 @@ Private Sub ClearActiveMusicState()
     frmDebug.add_text_tracebox "Music state cleared"
 End Sub
 
-Private Sub SetActiveMusicState(ByVal fileName As String, ByVal backend As eMusicBackend, ByVal looping As Boolean, ByVal volume As Long)
-    mCurrentMusicFile = fileName
+Private Sub SetActiveMusicState(ByVal filename As String, ByVal backend As eMusicBackend, ByVal looping As Boolean, ByVal volume As Long)
+    mCurrentMusicFile = filename
     mMusicBackend = backend
     mMusicLooping = looping
     mMusicVolume = volume
@@ -187,21 +187,21 @@ End Sub
 ' - IsSameMusicRequest: detects idempotent requests for the same active track.
 ' - Set/ClearActiveMusicState: maintain authoritative cross-backend state.
 ' - DetermineMusicBackendFromFile: central extension-to-backend policy.
-Private Function IsSameMusicRequest(ByVal fileName As String, ByVal backend As eMusicBackend, ByVal looping As Boolean) As Boolean
-    IsSameMusicRequest = mMusicIsActive And (mMusicBackend = backend) And (StrComp(mCurrentMusicFile, fileName, vbTextCompare) = 0) And (mMusicLooping = looping)
+Private Function IsSameMusicRequest(ByVal filename As String, ByVal backend As eMusicBackend, ByVal looping As Boolean) As Boolean
+    IsSameMusicRequest = mMusicIsActive And (mMusicBackend = backend) And (StrComp(mCurrentMusicFile, filename, vbTextCompare) = 0) And (mMusicLooping = looping)
 End Function
 
-Private Function DetermineMusicBackendFromFile(ByVal fileName As String, ByRef midiId As Integer) As eMusicBackend
+Private Function DetermineMusicBackendFromFile(ByVal filename As String, ByRef midiId As Integer) As eMusicBackend
     Dim extension As String
 
     midiId = 0
-    extension = GetFileExtension(fileName)
+    extension = GetFileExtension(filename)
 
     Select Case extension
         Case ".ogg"
             DetermineMusicBackendFromFile = mbBassOgg
         Case ".mid"
-            midiId = Val(Left$(fileName, Len(fileName) - 4))
+            midiId = val(Left$(filename, Len(filename) - 4))
             If midiId > 0 Then
                 DetermineMusicBackendFromFile = mbDirectMusicMidi
             End If
@@ -267,12 +267,12 @@ End Sub
 '
 ' Important: active music state is written only after successful start. This
 ' prevents stale "currently playing" metadata when backend startup fails.
-Public Function PlayMusic(ByVal fileName As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
+Public Function PlayMusic(ByVal filename As String, Optional ByVal looping As Boolean = False, Optional ByVal volume As Long = 0) As Long
     Dim backend As eMusicBackend
     Dim midiId As Integer
 
     PlayMusic = -1
-    If LenB(fileName) = 0 Then
+    If LenB(filename) = 0 Then
         frmDebug.add_text_tracebox "PlayMusic invalid request: empty filename"
         Exit Function
     End If
@@ -285,14 +285,14 @@ Public Function PlayMusic(ByVal fileName As String, Optional ByVal looping As Bo
         Exit Function
     End If
 
-    backend = DetermineMusicBackendFromFile(fileName, midiId)
+    backend = DetermineMusicBackendFromFile(filename, midiId)
     If backend = mbNone Then
-        frmDebug.add_text_tracebox "PlayMusic unknown extension or invalid request: " & fileName
+        frmDebug.add_text_tracebox "PlayMusic unknown extension or invalid request: " & filename
         Exit Function
     End If
 
-    If IsSameMusicRequest(fileName, backend, looping) Then
-        frmDebug.add_text_tracebox "PlayMusic same track request ignored: " & fileName
+    If IsSameMusicRequest(filename, backend, looping) Then
+        frmDebug.add_text_tracebox "PlayMusic same track request ignored: " & filename
         Call SetMusicVolume(volume)
         PlayMusic = 0
         Exit Function
@@ -307,7 +307,7 @@ Public Function PlayMusic(ByVal fileName As String, Optional ByVal looping As Bo
         Case mbBassOgg
             #If ENABLE_BASS = 1 Then
                 frmDebug.add_text_tracebox "PlayMusic selected backend: BASS/OGG"
-                PlayMusic = PlayOgg(fileName, looping, volume)
+                PlayMusic = PlayOgg(filename, looping, volume)
             #Else
                 frmDebug.add_text_tracebox "PlayMusic .ogg ignored because ENABLE_BASS=0"
                 PlayMusic = -1
@@ -318,9 +318,9 @@ Public Function PlayMusic(ByVal fileName As String, Optional ByVal looping As Bo
     End Select
 
     If PlayMusic = 0 Then
-        Call SetActiveMusicState(fileName, backend, looping, volume)
+        Call SetActiveMusicState(filename, backend, looping, volume)
     Else
-        frmDebug.add_text_tracebox "PlayMusic start failed: " & fileName
+        frmDebug.add_text_tracebox "PlayMusic start failed: " & filename
     End If
 End Function
 
@@ -395,7 +395,7 @@ End Sub
 Public Function GetMidiTrackName(ByVal track_id As Integer) As String
     Debug.Assert track_id < UBound(mMidiTrack)
     If track_id < UBound(mMidiTrack) Then
-        GetMidiTrackName = mMidiTrack(track_id).Name
+        GetMidiTrackName = mMidiTrack(track_id).name
     End If
     GetMidiTrackName = ""
 End Function
@@ -544,13 +544,13 @@ End Function
 
 ' Resolves "<name>.ogg" for SFX requests. PlayWav uses this to implement
 ' OGG-first behavior without changing existing call sites.
-Private Function ResolveOggSfxPath(ByVal Name As String) As String
+Private Function ResolveOggSfxPath(ByVal name As String) As String
     Dim fileNameWithExtension As String
 
     ResolveOggSfxPath = ""
-    If LenB(Name) = 0 Then Exit Function
+    If LenB(name) = 0 Then Exit Function
 
-    fileNameWithExtension = Name & ".ogg"
+    fileNameWithExtension = name & ".ogg"
 
     #If Compresion = 1 Then
         If Extract_File(ogg, GetCompressedResourcesPath(), fileNameWithExtension, Windows_Temp_Dir, ResourcesPassword, False) Then
@@ -562,6 +562,21 @@ Private Function ResolveOggSfxPath(ByVal Name As String) As String
 
     If Not FileExist(ResolveOggSfxPath, vbArchive) Then
         ResolveOggSfxPath = ""
+    End If
+End Function
+
+Private Function GetLocalizedOggSfxName(ByVal baseName As String) As String
+    Dim localizedFileName As String
+
+    GetLocalizedOggSfxName = ""
+    If LenB(baseName) = 0 Then Exit Function
+    If language = e_language.Spanish Then Exit Function
+
+    localizedFileName = GetLocalizedFilename(language, baseName & ".ogg")
+    If LenB(localizedFileName) = 0 Then Exit Function
+
+    If LCase$(Right$(localizedFileName, 4)) = ".ogg" Then
+        GetLocalizedOggSfxName = Left$(localizedFileName, Len(localizedFileName) - 4)
     End If
 End Function
 
@@ -603,15 +618,15 @@ Private Function ConvertFxPanToBass(ByVal pan As Long) As Single
     ConvertFxPanToBass = bassPan
 End Function
 
-Private Function FindCompressedSfxIndex(ByVal Name As String, ByVal fullPath As String) As Integer
+Private Function FindCompressedSfxIndex(ByVal name As String, ByVal fullPath As String) As Integer
     Dim i As Integer
 
     FindCompressedSfxIndex = -1
     If mCompressedSfxCount <= 0 Then Exit Function
 
     For i = 1 To mCompressedSfxCount
-        If (StrComp(mCompressedSfx(i).Name, Name, vbTextCompare) = 0) Or _
-           (StrComp(mCompressedSfx(i).FullPath, fullPath, vbTextCompare) = 0) Then
+        If (StrComp(mCompressedSfx(i).name, name, vbTextCompare) = 0) Or _
+           (StrComp(mCompressedSfx(i).fullPath, fullPath, vbTextCompare) = 0) Then
             FindCompressedSfxIndex = i
             Exit Function
         End If
@@ -623,20 +638,20 @@ End Function
 ' - Stores BASS sample handles (not streams) so decoded sample data can be
 '   reused across repeated plays.
 ' - Designed for short SFX where low-latency replay and overlap matter.
-Private Function GetCompressedSfxSample(ByVal Name As String, ByVal fullPath As String) As Long
+Private Function GetCompressedSfxSample(ByVal name As String, ByVal fullPath As String) As Long
     On Error GoTo GetCompressedSfxSample_Error
     Dim sampleHandle As Long
     Dim i As Integer
 
     GetCompressedSfxSample = 0
-    If LenB(Name) = 0 Or LenB(fullPath) = 0 Then Exit Function
+    If LenB(name) = 0 Or LenB(fullPath) = 0 Then Exit Function
 
-    i = FindCompressedSfxIndex(Name, fullPath)
+    i = FindCompressedSfxIndex(name, fullPath)
     If i > 0 Then
-        If mCompressedSfx(i).SampleHandle <> 0 Then
-            GetCompressedSfxSample = mCompressedSfx(i).SampleHandle
+        If mCompressedSfx(i).sampleHandle <> 0 Then
+            GetCompressedSfxSample = mCompressedSfx(i).sampleHandle
             #If DEBUG_AUDIO = 1 Then
-                frmDebug.add_text_tracebox "PlayWav OGG cache hit: " & Name
+                frmDebug.add_text_tracebox "PlayWav OGG cache hit: " & name
             #End If
             Exit Function
         End If
@@ -645,7 +660,7 @@ Private Function GetCompressedSfxSample(ByVal Name As String, ByVal fullPath As 
     sampleHandle = BASS_SampleLoad(0, StrPtr(fullPath), 0, 0, 32, BASS_UNICODE Or BASS_SAMPLE_OVER_POS)
     If sampleHandle = 0 Then
         #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayWav OGG sample load failed: " & Name & " Error: " & BASS_ErrorGetCode()
+            frmDebug.add_text_tracebox "PlayWav OGG sample load failed: " & name & " Error: " & BASS_ErrorGetCode()
         #End If
         Exit Function
     End If
@@ -660,12 +675,12 @@ Private Function GetCompressedSfxSample(ByVal Name As String, ByVal fullPath As 
         i = mCompressedSfxCount
     End If
 
-    mCompressedSfx(i).Name = Name
-    mCompressedSfx(i).FullPath = fullPath
-    mCompressedSfx(i).SampleHandle = sampleHandle
+    mCompressedSfx(i).name = name
+    mCompressedSfx(i).fullPath = fullPath
+    mCompressedSfx(i).sampleHandle = sampleHandle
 
     #If DEBUG_AUDIO = 1 Then
-        frmDebug.add_text_tracebox "PlayWav OGG sample cached: " & Name
+        frmDebug.add_text_tracebox "PlayWav OGG sample cached: " & name
     #End If
     GetCompressedSfxSample = sampleHandle
     Exit Function
@@ -684,8 +699,8 @@ Private Sub CleanupDeadCompressedChannels()
 
     writeIndex = 0
     For i = 1 To mActiveCompressedChannelsCount
-        If mActiveCompressedChannels(i).Handle <> 0 Then
-            isActive = BASS_ChannelIsActive(mActiveCompressedChannels(i).Handle)
+        If mActiveCompressedChannels(i).handle <> 0 Then
+            isActive = BASS_ChannelIsActive(mActiveCompressedChannels(i).handle)
             If isActive <> BASS_ACTIVE_STOPPED Then
                 writeIndex = writeIndex + 1
                 If writeIndex <> i Then
@@ -693,7 +708,7 @@ Private Sub CleanupDeadCompressedChannels()
                 End If
             Else
                 #If DEBUG_AUDIO = 1 Then
-                    frmDebug.add_text_tracebox "PlayWav OGG cleaned stale channel: " & mActiveCompressedChannels(i).Name
+                    frmDebug.add_text_tracebox "PlayWav OGG cleaned stale channel: " & mActiveCompressedChannels(i).name
                 #End If
             End If
         End If
@@ -712,7 +727,7 @@ CleanupDeadCompressedChannels_Error:
     frmDebug.add_text_tracebox "CleanupDeadCompressedChannels exception: " & Err.Description
 End Sub
 
-Private Sub RegisterActiveCompressedChannel(ByVal channelHandle As Long, ByVal Name As String, ByVal label As String, ByVal looping As Boolean)
+Private Sub RegisterActiveCompressedChannel(ByVal channelHandle As Long, ByVal name As String, ByVal label As String, ByVal looping As Boolean)
     On Error GoTo RegisterActiveCompressedChannel_Error
 
     If channelHandle = 0 Then Exit Sub
@@ -727,14 +742,14 @@ Private Sub RegisterActiveCompressedChannel(ByVal channelHandle As Long, ByVal N
     End If
 
     With mActiveCompressedChannels(mActiveCompressedChannelsCount)
-        .Handle = channelHandle
-        .Name = Name
+        .handle = channelHandle
+        .name = name
         .label = label
-        .Looping = looping
+        .looping = looping
     End With
 
     #If DEBUG_AUDIO = 1 Then
-        frmDebug.add_text_tracebox "PlayWav OGG channel registered: " & Name & " label: " & label & " looping: " & CStr(looping)
+        frmDebug.add_text_tracebox "PlayWav OGG channel registered: " & name & " label: " & label & " looping: " & CStr(looping)
     #End If
     Exit Sub
 
@@ -749,7 +764,7 @@ End Sub
 '   (eg. repeated hits/steps) without cutting previous playback.
 ' - Music keeps using a dedicated stream because only one active music track is
 '   expected at a time.
-Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As String, ByVal looping As Boolean, ByVal volume As Long, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
+Private Function PlayCompressedSfx(ByVal name As String, ByVal fullPath As String, ByVal looping As Boolean, ByVal volume As Long, Optional ByVal pan As Long = 0, Optional ByVal label As String = "") As Long
     On Error GoTo PlayCompressedSfx_Error
     Dim sampleHandle As Long
     Dim channelHandle As Long
@@ -763,7 +778,7 @@ Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As Strin
         Exit Function
     End If
 
-    sampleHandle = GetCompressedSfxSample(Name, fullPath)
+    sampleHandle = GetCompressedSfxSample(name, fullPath)
     If sampleHandle = 0 Then
         PlayCompressedSfx = BASS_ErrorGetCode()
         If PlayCompressedSfx = 0 Then PlayCompressedSfx = -1
@@ -775,7 +790,7 @@ Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As Strin
     If channelHandle = 0 Then
         PlayCompressedSfx = BASS_ErrorGetCode()
         #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayWav OGG sample channel failed: " & Name & " Error: " & BASS_ErrorGetCode()
+            frmDebug.add_text_tracebox "PlayWav OGG sample channel failed: " & name & " Error: " & BASS_ErrorGetCode()
 
         #End If
         Exit Function
@@ -789,12 +804,12 @@ Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As Strin
     If BASS_ChannelPlay(channelHandle, 1) = 0 Then
         PlayCompressedSfx = BASS_ErrorGetCode()
         #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayWav OGG play failed: " & Name & " Error: " & PlayCompressedSfx
+            frmDebug.add_text_tracebox "PlayWav OGG play failed: " & name & " Error: " & PlayCompressedSfx
         #End If
         Exit Function
     End If
 
-    Call RegisterActiveCompressedChannel(channelHandle, Name, label, looping)
+    Call RegisterActiveCompressedChannel(channelHandle, name, label, looping)
     PlayCompressedSfx = 0
     Exit Function
 
@@ -811,12 +826,12 @@ Private Sub FreeCompressedSfxCache()
     If mCompressedSfxCount <= 0 Then Exit Sub
 
     For i = 1 To mCompressedSfxCount
-        If mCompressedSfx(i).SampleHandle <> 0 Then
-            Call BASS_SampleFree(mCompressedSfx(i).SampleHandle)
-            mCompressedSfx(i).SampleHandle = 0
+        If mCompressedSfx(i).sampleHandle <> 0 Then
+            Call BASS_SampleFree(mCompressedSfx(i).sampleHandle)
+            mCompressedSfx(i).sampleHandle = 0
         End If
-        mCompressedSfx(i).Name = ""
-        mCompressedSfx(i).FullPath = ""
+        mCompressedSfx(i).name = ""
+        mCompressedSfx(i).fullPath = ""
     Next i
 
     Erase mCompressedSfx
@@ -839,8 +854,8 @@ Private Sub StopAllActiveCompressedChannels()
     If mActiveCompressedChannelsCount <= 0 Then Exit Sub
 
     For i = 1 To mActiveCompressedChannelsCount
-        If mActiveCompressedChannels(i).Handle <> 0 Then
-            Call BASS_ChannelStop(mActiveCompressedChannels(i).Handle)
+        If mActiveCompressedChannels(i).handle <> 0 Then
+            Call BASS_ChannelStop(mActiveCompressedChannels(i).handle)
         End If
     Next i
 
@@ -852,36 +867,36 @@ StopAllActiveCompressedChannels_Error:
     frmDebug.add_text_tracebox "StopAllActiveCompressedChannels exception: " & Err.Description
 End Sub
 
-Private Function StartPlaying(ByRef Buffer As DirectSoundSecondaryBuffer8, ByVal flags As CONST_DSBPLAYFLAGS, ByVal volume As Long, ByVal pan As Long) As Long
+Private Function StartPlaying(ByRef buffer As DirectSoundSecondaryBuffer8, ByVal flags As CONST_DSBPLAYFLAGS, ByVal volume As Long, ByVal pan As Long) As Long
     On Error GoTo ErrorHandler
     StartPlaying = False
-    Debug.Assert Not Buffer Is Nothing
-    Debug.Assert (Buffer.GetStatus And DSBSTATUS_PLAYING) = 0
+    Debug.Assert Not buffer Is Nothing
+    Debug.Assert (buffer.GetStatus And DSBSTATUS_PLAYING) = 0
     Err.Clear
-    If Buffer Is Nothing Then
+    If buffer Is Nothing Then
         StartPlaying = -1
         Exit Function
     End If
-    If Buffer.GetStatus = DSBSTATUS_PLAYING Then
+    If buffer.GetStatus = DSBSTATUS_PLAYING Then
         StartPlaying = -1
         Exit Function
     End If
-    Buffer.SetPan pan
-    Buffer.SetVolume volume
-    Buffer.Play flags
+    buffer.SetPan pan
+    buffer.SetVolume volume
+    buffer.Play flags
     StartPlaying = 0
     Exit Function
 ErrorHandler:
     StartPlaying = False
 End Function
 
-Private Function FindTrackByName(ByVal Name As String, Optional ByVal label As String = "") As Integer
+Private Function FindTrackByName(ByVal name As String, Optional ByVal label As String = "") As Integer
     Dim i As Integer
     For i = 1 To UBound(mAudioTracks)
         With mAudioTracks(i)
-            If Not .Buffer Is Nothing Then
-                Dim sf As CONST_DSBSTATUSFLAGS: sf = .Buffer.GetStatus
-                If (Name = .Name) And (label = .label) And (DSBSTATUS_PLAYING And sf) = DSBSTATUS_PLAYING Then
+            If Not .buffer Is Nothing Then
+                Dim sf As CONST_DSBSTATUSFLAGS: sf = .buffer.GetStatus
+                If (name = .name) And (label = .label) And (DSBSTATUS_PLAYING And sf) = DSBSTATUS_PLAYING Then
                     FindTrackByName = i
                     Exit Function
                 End If
@@ -908,8 +923,8 @@ Private Function FindActiveWavTrackByLabel(ByVal label As String) As Integer
     ' We only consider currently-playing tracks to avoid reviving stale entries.
     For i = 1 To UBound(mAudioTracks)
         With mAudioTracks(i)
-            If Not .Buffer Is Nothing Then
-                Dim sf As CONST_DSBSTATUSFLAGS: sf = .Buffer.GetStatus
+            If Not .buffer Is Nothing Then
+                Dim sf As CONST_DSBSTATUSFLAGS: sf = .buffer.GetStatus
                 If StrComp(.label, label, vbTextCompare) = 0 And (DSBSTATUS_PLAYING And sf) = DSBSTATUS_PLAYING Then
                     FindActiveWavTrackByLabel = i
                     Exit Function
@@ -937,8 +952,8 @@ Private Function FindActiveCompressedChannelHandleByLabel(ByVal label As String)
     Call CleanupDeadCompressedChannels
     For i = 1 To mActiveCompressedChannelsCount
         With mActiveCompressedChannels(i)
-            If .Handle <> 0 And StrComp(.label, label, vbTextCompare) = 0 Then
-                FindActiveCompressedChannelHandleByLabel = .Handle
+            If .handle <> 0 And StrComp(.label, label, vbTextCompare) = 0 Then
+                FindActiveCompressedChannelHandleByLabel = .handle
                 Exit Function
             End If
         End With
@@ -981,11 +996,11 @@ Private Function GetFreeWavTrack() As Integer
     Dim i As Integer
     For i = 1 To UBound(mAudioTracks) - 1
         With mAudioTracks(i)
-            If .Buffer Is Nothing Then
+            If .buffer Is Nothing Then
                 GetFreeWavTrack = i
                 Exit Function
             Else
-                Dim sf As CONST_DSBSTATUSFLAGS: sf = .Buffer.GetStatus
+                Dim sf As CONST_DSBSTATUSFLAGS: sf = .buffer.GetStatus
                 'frmdebug.add_text_tracebox "buffer status " & sf
                 If (DSBSTATUS_PLAYING And sf) = 0 And (DSBSTATUS_LOOPING And sf) = 0 Then
                     GetFreeWavTrack = i
@@ -1001,9 +1016,9 @@ Public Function StopAmbient() As Long
     On Error GoTo StopAmbient_Error_Handl
     StopAmbient = -1
     With mAudioTracks(UBound(mAudioTracks))
-        If Not .Buffer Is Nothing Then
-            .Buffer.Stop
-            .Buffer.SetCurrentPosition 0
+        If Not .buffer Is Nothing Then
+            .buffer.Stop
+            .buffer.SetCurrentPosition 0
         End If
     End With
     StopAmbient = 0
@@ -1042,9 +1057,9 @@ Public Function PlayAmbient(ByVal id As Integer, Optional ByVal looping As Boole
         frmDebug.add_text_tracebox "PlayAmbient, track " & tid & " id: " & id
     #End If
     With mAudioTracks(tid)
-        .Name = id
-        Set .Buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(id))
-        Call StartPlaying(.Buffer, IIf(looping, DSBPLAY_LOOPING, DSBPLAY_DEFAULT), volume, pan)
+        .name = id
+        Set .buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(id))
+        Call StartPlaying(.buffer, IIf(looping, DSBPLAY_LOOPING, DSBPLAY_DEFAULT), volume, pan)
     End With
     PlayAmbient = 0
     Exit Function
@@ -1064,6 +1079,7 @@ Public Function PlayWav(ByVal prefix_sound_id As String, _
                         Optional ByVal pan As Long = 0, _
                         Optional ByVal label As String = "") As Long
     On Error GoTo PlayWav_Error_Handl
+
     Dim oggPath As String
     Dim sound_id As Integer
 
@@ -1074,51 +1090,61 @@ Public Function PlayWav(ByVal prefix_sound_id As String, _
         PlayWav = 0
         Exit Function
     End If
+    
+    Dim tid As Integer
+
+    PlayWav = -1
+
     #If ENABLE_BASS = 1 Then
         oggPath = ResolveOggSfxPath(prefix_sound_id)
+        
+        'Print oggPath
         If LenB(oggPath) > 0 Then
             #If DEBUG_AUDIO = 1 Then
                 frmDebug.add_text_tracebox "PlayWav using OGG sample: " & prefix_sound_id
             #End If
+
             PlayWav = PlayCompressedSfx(prefix_sound_id, oggPath, looping, volume, pan, label)
             If PlayWav = 0 Then Exit Function
+
             #If DEBUG_AUDIO = 1 Then
                 frmDebug.add_text_tracebox "PlayWav OGG failed, fallback to WAV: " & prefix_sound_id
             #End If
         Else
             #If DEBUG_AUDIO = 1 Then
-                frmDebug.add_text_tracebox "PlayWav fallback to WAV: " & prefix_sound_id
+                frmDebug.add_text_tracebox "PlayWav OGG not found, fallback to WAV: " & prefix_sound_id
             #End If
-            
         End If
     #End If
 
     sound_id = RemoveFirstThreeIfUnderscore(prefix_sound_id)
     Debug.Assert sound_id > 0
-    PlayWav = -1
-    If (sound_id <= 0) Then Exit Function
+    If sound_id <= 0 Then Exit Function
+
     If mBuffer(sound_id) Is Nothing Then
-        Dim i As Integer
         Call CreateWavBufferFromFile(prefix_sound_id, mBuffer(sound_id))
         Debug.Assert Not mBuffer(sound_id) Is Nothing
+
         If mBuffer(sound_id) Is Nothing Then
-            PlayWav = -1
             Exit Function
         End If
     End If
-    Dim tid As Integer
+
     tid = GetFreeWavTrack()
-    If (tid > -1) Then
-        With mAudioTracks(tid)
-            .Name = sound_id
-            .label = label
-            Set .Buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(sound_id))
-            Call StartPlaying(.Buffer, IIf(looping, DSBPLAY_LOOPING, DSBPLAY_DEFAULT), volume, pan)
-        End With
-        PlayWav = 0
-    End If
+    If tid <= -1 Then Exit Function
+
+    With mAudioTracks(tid)
+        .name = sound_id
+        .label = label
+        Set .buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(sound_id))
+        Call StartPlaying(.buffer, IIf(looping, DSBPLAY_LOOPING, DSBPLAY_DEFAULT), volume, pan)
+    End With
+
+    PlayWav = 0
     Exit Function
+
 PlayWav_Error_Handl:
+    PlayWav = -1
 End Function
 
 ' Play-or-update helper for labeled FX.
@@ -1155,9 +1181,9 @@ Public Sub PlayFxUniqueByLabel(ByVal sndIndex As Integer, ByVal looping As Boole
         ' DirectSound instance exists for this label: update spatial params only.
         ' Do not restart to keep long loops seamless.
         With mAudioTracks(wavTrackIndex)
-            If Not .Buffer Is Nothing Then
-                .Buffer.SetVolume volume
-                .Buffer.SetPan pan
+            If Not .buffer Is Nothing Then
+                .buffer.SetVolume volume
+                .buffer.SetPan pan
                 #If DEBUG_AUDIO = 1 Then
                     frmDebug.add_text_tracebox "PlayFxUnique update: " & label
                 #End If
@@ -1240,8 +1266,8 @@ Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean 
 
     Dim id_as_str As String: id_as_str = str(id)
     With mMidiTrack(1)
-        If .Name <> id_as_str Or .directMusicSegment Is Nothing Then
-            .Name = id_as_str
+        If .name <> id_as_str Or .directMusicSegment Is Nothing Then
+            .name = id_as_str
             Call LoadMidi(mMidiTrack(1), id)
         End If
 
@@ -1268,11 +1294,11 @@ Public Function StopAllWavsMatchingLabel(ByVal label As String) As Long
     Dim i As Integer
     For i = 1 To UBound(mAudioTracks)
         With mAudioTracks(i)
-            If Not .Buffer Is Nothing Then
-                Dim sf As CONST_DSBSTATUSFLAGS: sf = .Buffer.GetStatus
+            If Not .buffer Is Nothing Then
+                Dim sf As CONST_DSBSTATUSFLAGS: sf = .buffer.GetStatus
                 If (label = .label) And (DSBSTATUS_PLAYING And sf) = DSBSTATUS_PLAYING And (DSBSTATUS_LOOPING And sf) = DSBSTATUS_LOOPING Then
-                    .Buffer.Stop
-                    .Buffer.SetCurrentPosition 0
+                    .buffer.Stop
+                    .buffer.SetCurrentPosition 0
                     #If DEBUG_AUDIO = 1 Then
                         frmDebug.add_text_tracebox "PlayFxUnique stop: " & label
                     #End If
@@ -1286,17 +1312,17 @@ Public Function StopAllWavsMatchingLabel(ByVal label As String) As Long
     For i = mActiveCompressedChannelsCount To 1 Step -1
         With mActiveCompressedChannels(i)
             If StrComp(.label, label, vbTextCompare) = 0 Then
-                If .Handle <> 0 Then
-                    Call BASS_ChannelStop(.Handle)
+                If .handle <> 0 Then
+                    Call BASS_ChannelStop(.handle)
                     #If DEBUG_AUDIO = 1 Then
                         frmDebug.add_text_tracebox "PlayFxUnique stop: " & label
-                        frmDebug.add_text_tracebox "PlayWav OGG channel stopped by label: " & .Name & " label: " & .label
+                        frmDebug.add_text_tracebox "PlayWav OGG channel stopped by label: " & .name & " label: " & .label
                     #End If
                 End If
-                .Handle = 0
-                .Name = ""
+                .handle = 0
+                .name = ""
                 .label = ""
-                .Looping = False
+                .looping = False
             End If
         End With
     Next i
@@ -1320,9 +1346,9 @@ Public Function StopWav(ByVal sound_id As Integer, Optional ByVal label As Strin
     tid = FindTrackByName(sound_id, label)
     If tid > -1 Then
         With mAudioTracks(tid)
-            If Not .Buffer Is Nothing Then
-                .Buffer.Stop
-                .Buffer.SetCurrentPosition 0
+            If Not .buffer Is Nothing Then
+                .buffer.Stop
+                .buffer.SetCurrentPosition 0
             End If
         End With
     End If
@@ -1334,20 +1360,20 @@ Public Function StopWav(ByVal sound_id As Integer, Optional ByVal label As Strin
 
     For tid = mActiveCompressedChannelsCount To 1 Step -1
         With mActiveCompressedChannels(tid)
-            channelMatched = (StrComp(.Name, soundName, vbTextCompare) = 0) Or _
-                             (StrComp(RemoveFirstThreeIfUnderscore(.Name), soundName, vbTextCompare) = 0) Or _
-                             (StrComp(.Name, targetWithPrefix, vbTextCompare) = 0)
+            channelMatched = (StrComp(.name, soundName, vbTextCompare) = 0) Or _
+                             (StrComp(RemoveFirstThreeIfUnderscore(.name), soundName, vbTextCompare) = 0) Or _
+                             (StrComp(.name, targetWithPrefix, vbTextCompare) = 0)
             If channelMatched Then
-                If .Handle <> 0 Then
-                    Call BASS_ChannelStop(.Handle)
+                If .handle <> 0 Then
+                    Call BASS_ChannelStop(.handle)
                     #If DEBUG_AUDIO = 1 Then
-                        frmDebug.add_text_tracebox "PlayWav OGG channel stopped by name: " & .Name
+                        frmDebug.add_text_tracebox "PlayWav OGG channel stopped by name: " & .name
                     #End If
                 End If
-                .Handle = 0
-                .Name = ""
+                .handle = 0
+                .name = ""
                 .label = ""
-                .Looping = False
+                .looping = False
             End If
         End With
     Next tid
@@ -1362,16 +1388,16 @@ Public Sub StopAllPlayback()
     Dim i As Integer
     For i = 1 To UBound(mAudioTracks)
         With mAudioTracks(i)
-            If Not .Buffer Is Nothing Then
-                .Buffer.Stop
-                .Buffer.SetCurrentPosition 0
+            If Not .buffer Is Nothing Then
+                .buffer.Stop
+                .buffer.SetCurrentPosition 0
             End If
         End With
     Next i
     Call StopAllActiveCompressedChannels
     Call StopAllMusicBackends
     For i = 1 To UBound(mMidiTrack)
-        mMidiTrack(i).Name = -1
+        mMidiTrack(i).name = -1
     Next i
     mAudioSuspended = False
 End Sub
@@ -1381,8 +1407,8 @@ Private Sub SetMembersToNothing()
     Dim i As Integer
     For i = 1 To UBound(mAudioTracks)
         With mAudioTracks(i)
-            If Not .Buffer Is Nothing Then
-                Set .Buffer = Nothing
+            If Not .buffer Is Nothing Then
+                Set .buffer = Nothing
             End If
         End With
     Next i
@@ -1412,8 +1438,8 @@ Public Sub ApplyAmbientVolume(ByVal volume As Long)
     Dim i As Integer
     For i = 1 To UBound(mAudioTracks)
         With mAudioTracks(i)
-            If Not .Buffer Is Nothing Then
-                Call .Buffer.SetVolume(volume)
+            If Not .buffer Is Nothing Then
+                Call .buffer.SetVolume(volume)
             End If
         End With
     Next i
