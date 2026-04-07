@@ -951,9 +951,9 @@ Public Sub Mascota_Render(ByVal charindex As Integer, ByVal PixelOffsetX As Inte
         isAnimated = 1
     End If
     mascota.PosY = mascota.PosY - LastOffset2Y
-    If GetTickCount() - mascota.last_time >= 200 Then
+    If FrameTime - mascota.last_time >= 200 Then
         mascota.Heading = calcular_direccion(dir_vector)
-        mascota.last_time = GetTickCount()
+        mascota.last_time = FrameTime
     End If
     If mascota.color(0).a < 255 Then
         Dim temp_alpha As Single
