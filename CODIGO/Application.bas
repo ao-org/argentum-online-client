@@ -64,6 +64,9 @@ Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByV
 RegistrarError_Err:
     ' Do NOT call RegistrarError recursively here; that would cause infinite recursion
     ' if the log file is unavailable (e.g. disk full). Swallow the secondary error silently.
+    Dim errNum As Long, errDesc As String
+    errNum = Err.Number
+    errDesc = Err.Description
     On Error Resume Next
-    frmDebug.add_text_tracebox "RegistrarError failed: " & Err.Number & " - " & Err.Description
+    frmDebug.add_text_tracebox "RegistrarError failed: " & errNum & " - " & errDesc
 End Sub
