@@ -209,7 +209,6 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, _
     Dim Pos      As Long
     Dim ret      As Long
     Dim bHoldBar As Boolean
-    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
     With RichTextBox
         If Len(.text) > 20000 Then
             'Get rid of first line
@@ -265,7 +264,6 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, _
     Dim Pos      As Long
     Dim ret      As Long
     Dim bHoldBar As Boolean
-    Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
     With RichTextBox
         If Len(.text) > 20000 Then
             .text = vbNullString
