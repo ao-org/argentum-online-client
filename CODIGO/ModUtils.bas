@@ -2173,6 +2173,11 @@ Private Function ResolveLocalizedAudioId(ByVal baseName As String) As String
     End If
 
     ' Try to resolve localized filename
+    If language = Spanish Then
+        ResolveLocalizedAudioId = baseName
+        Exit Function
+    End If
+    
     localizedFileName = GetLocalizedFilename(language, baseName & ".ogg")
 
     If LenB(localizedFileName) > 0 Then
