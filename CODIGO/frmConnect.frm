@@ -525,10 +525,10 @@ End Sub
                 If (x > 14 And x < 112) And (y > 675 And y < 708) Then
                     character_screen_action = e_action_delete_character
                 End If
-                If (x > 980 And x < 1000) And (y > 675 And y < 708) Then
+                If (x > 970 And x < 1020) And (y > 675 And y < 708) Then
                     character_screen_action = e_action_transfer_character
                 End If
-                If (x > 960 And x < 980) And (y > 675 And y < 708) Then
+                If (x > 930 And x < 965) And (y > 675 And y < 708) Then
                     character_screen_action = e_action_rename_character
                 End If
                 If (x > 19 And x < 48) And (y > 21 And y < 45) Then

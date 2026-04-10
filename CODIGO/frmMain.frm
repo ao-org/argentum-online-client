@@ -2092,7 +2092,7 @@ End Sub
 Private Sub UpdateAudioFocusState()
     On Error GoTo UpdateAudioFocusState_Err
 
-    If Me.WindowState = vbMinimized Or Not mMainFormHasFocus Then
+    If Me.WindowState = vbMinimized Then
         Call ao20audio.PauseAllAudio
     Else
         Call ao20audio.ResumeAllAudio

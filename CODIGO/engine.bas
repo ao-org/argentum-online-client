@@ -1830,7 +1830,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call RGBAList(color, 255, 255, 0, IIf(.Invisible, 120, 255))
             End Select
             Dim txt_width As Long
-            txt_width = Engine_Text_Width(.nombre, True)
+            If .alias <> vbNullString Then
+                txt_width = Engine_Text_Width(.alias, True)
+            Else
+                txt_width = Engine_Text_Width(.nombre, True)
+            End If
             Call Draw_Grh(StarGrh, PixelOffsetX + 1 + .Body.BodyOffset.x + (txt_width / 2) + 8, PixelOffsetY + 20 + .Body.BodyOffset.y, 1, 1, color, False, 0, 0, 0)
         End If
         'Barra de tiempo
