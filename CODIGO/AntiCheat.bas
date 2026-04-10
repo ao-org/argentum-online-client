@@ -30,7 +30,7 @@ Private Declare Sub EndSession Lib "AOACClient.dll" ()
 Public Declare Sub HandleRemoteMessage Lib "AOACClient.dll" (ByRef data As Byte, ByVal DataSize As Integer)
 Public Declare Function GetCrc32 Lib "AOACClient.dll" (ByVal path As String) As Long
 
-Public Sub InitializeAntiCheat()
+Public Sub InitializeAntiCheatTESSSTT()
     On Error GoTo InitializeAC_Err
     #If ENABLE_ANTICHEAT = 1 Then
         Dim InitResult As e_ACInitResult
