@@ -62,6 +62,37 @@ CryptoSys is used in Argentum Online to cipher sensitive data.
 
 Please note this is not free software and you will have to buy your own license to use CryptoSys
 
+### 🧪 Unit Testing
+
+The client includes a built-in unit test suite that validates core modules (Math, Bitmask, Color, MD5, Locale, ArrayList, etc.).
+
+When compiled with `UNIT_TEST = 1`, the client runs all test suites on startup, writes results to `test_results.txt`, and exits immediately.
+
+#### Compile and run tests from CLI
+
+```bash
+# Compile with tests enabled
+"C:\Program Files (x86)\Microsoft Visual Studio\VB98\VB6.EXE" /make Argentum20.vbp /d UNIT_TEST=1
+
+# Run tests (writes test_results.txt and exits)
+.\Argentum.exe
+
+# Check results
+type test_results.txt
+```
+
+The `/d UNIT_TEST=1` flag overrides the project setting at compile time — no need to edit the `.vbp` file.
+
+#### Test report format
+
+```
+=== AO20 CLIENT TEST REPORT ===
+Total: 60
+Passed: 60
+Failed: 0
+Elapsed: 0.000s
+RESULT: PASS
+```
 
 ## Audio backend (BASS)
 
