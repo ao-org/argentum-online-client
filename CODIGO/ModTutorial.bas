@@ -52,6 +52,7 @@ Private text_duration              As Long
 Private text_duration_total        As Long
 Private typing                     As Boolean
 Private Const TYPING_SOUND = 230
+Private current_typing_sound_name  As String
 Private sonido_activado     As Boolean
 Public tutorial_index       As Integer
 Public cartel_visible       As Boolean
@@ -91,6 +92,43 @@ Private Function Lng2RGBA(MyLong As Long) As Byte()
     Lng2RGBA = MyBytes
 End Function
 
+Private Function GetTutorialTypingSoundName(ByVal pageNumber As Byte) As String
+    GetTutorialTypingSoundName = "tutorial_" & CStr(tutorial_index) & "_" & CStr(pageNumber)
+End Function
+
+Private Sub RestartTypingSound(Optional ByVal pageNumber As Byte = 1)
+    Dim result As Long
+    Dim tutorialSoundName As String
+    Dim tutorialFallbackName As String
+
+    If LenB(current_typing_sound_name) = 0 Then
+        current_typing_sound_name = CStr(TYPING_SOUND)
+    End If
+
+    Call ao20audio.StopWav(current_typing_sound_name)
+    Call ao20audio.StopWav(CStr(TYPING_SOUND))
+    current_typing_sound_name = CStr(TYPING_SOUND)
+
+    If tutorial_index > 0 Then
+        tutorialSoundName = GetTutorialTypingSoundName(pageNumber)
+        tutorialFallbackName = "tutorial_" & CStr(tutorial_index)
+
+        result = ao20audio.PlayWav(tutorialSoundName)
+        If result = 0 Then
+            current_typing_sound_name = tutorialSoundName
+            Exit Sub
+        End If
+
+        result = ao20audio.PlayWav(tutorialFallbackName)
+        If result = 0 Then
+            current_typing_sound_name = tutorialFallbackName
+            Exit Sub
+        End If
+    End If
+
+    Call ao20audio.PlayWav(CStr(TYPING_SOUND))
+End Sub
+
 Public Sub nextCartel()
     If tutorial_index = 0 Then Exit Sub
     cartel_index = cartel_index + 1
@@ -99,9 +137,8 @@ Public Sub nextCartel()
         text_duration_total = text_duration
         If text_duration_total = 0 Then text_duration_total = 1
         sonido_activado = True
-        Call ao20audio.StopWav(TYPING_SOUND)
-        Call ao20audio.PlayWav(TYPING_SOUND)
         cartel_message = tutorial(tutorial_index).textos(cartel_index + 1)
+        Call RestartTypingSound(cartel_index + 1)
     Else
         Call toggleTutorialActivo(tutorial_index)
         Call cerrarCartel
@@ -113,7 +150,10 @@ Public Sub cerrarCartel()
     cartel_index = 0
     cartel_duration = 0
     If mascota.visible Then mascota.visible = False
-    Call ao20audio.StopWav(TYPING_SOUND)
+    If LenB(current_typing_sound_name) = 0 Then current_typing_sound_name = CStr(TYPING_SOUND)
+    Call ao20audio.StopWav(current_typing_sound_name)
+    Call ao20audio.StopWav(CStr(TYPING_SOUND))
+    current_typing_sound_name = CStr(TYPING_SOUND)
 End Sub
 
 Public Sub resetearCartel()
@@ -193,8 +233,7 @@ Public Sub mostrarCartel(ByVal title As String, _
         text_length = Len(cartel_message)
         text_duration = Len(cartel_message) * 16
         text_duration_total = text_duration
-        Call ao20audio.StopWav(TYPING_SOUND)
-        Call ao20audio.PlayWav(TYPING_SOUND)
+        Call RestartTypingSound(cartel_index + 1)
         If text_duration_total = 0 Then text_duration_total = 1
         sonido_activado = True
     End If
@@ -230,7 +269,8 @@ Public Sub RenderScreen_Cartel()
         Dim charCount As Integer
         charCount = (text_duration * text_length) / text_duration_total
         If charCount = 0 And sonido_activado Then
-            Call ao20audio.StopWav(TYPING_SOUND)
+            Call ao20audio.StopWav(current_typing_sound_name)
+            Call ao20audio.StopWav(CStr(TYPING_SOUND))
             sonido_activado = False
         End If
         text_message_render = Left(cartel_message, text_length - charCount)
