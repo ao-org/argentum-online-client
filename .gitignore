@@ -29,3 +29,4 @@ AOACClient.pdb
 .kiro/
 *.pdb
 test_results.txt
+vb6build.log
