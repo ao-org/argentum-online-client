@@ -105,10 +105,13 @@ End Type
 Public Type tQuest
     nombre As String
     desc As String
+    DescAudio As String
+    DescFinalAudio As String
     NextQuest As String
     DescFinal As String
     RequiredLevel As Integer
-    RequiredClass As Integer
+    RequiredClass() As Byte
+    RequiredClassesCount As Byte
     RequiredQuest As Integer
     LimitLevel As Byte
     RequiredOBJ() As Obj
@@ -246,6 +249,8 @@ Public Type NpcDatas
     Comercia As Integer
     level As Integer
     Amphibian As Boolean
+    QuizaProb As Integer
+    DisabledInBattleServer As Integer
 End Type
 
 Public Type HechizoDatas
@@ -358,6 +363,7 @@ Public RecordarCuenta                     As Boolean
 Public CuentaRecordada                    As CuentasGuardadas
 Public CantidadDePersonajesEnCuenta       As Byte
 Type UserCuentaPJS
+    id As Long
     nombre As String
     Nivel As Byte
     Mapa As Integer
@@ -641,9 +647,12 @@ Sub General_Set_Connect()
     End If
     Call Graficos_Particulas.Engine_Select_Particle_Set(203)
     ParticleLluviaDorada = Graficos_Particulas.General_Particle_Create(208, -1, -1)
-    Call ao20audio.PlayMP3("31.mp3", True)
+    
+    
+    Call PlayRandomOggSong(20)
+    
     mFadingMusicMod = 0
-    CurMp3 = 1
+    
     Call GoToLogIn
     ClickEnAsistente = 0
     If CuentaRecordada.nombre <> "" Then
@@ -1440,24 +1449,6 @@ ResetearUserMacro_Err:
     Resume Next
 End Sub
 
-Public Sub CargarLst()
-    On Error GoTo CargarLst_Err
-    #If PYMMO = 0 Or DEBUGGING = 1 Then
-        Dim server() As String
-        If Len(ServerIndex) > 0 Then
-            server = Split(ServerIndex, ":")
-            FrmLogear.txtIp.text = server(0)
-            FrmLogear.txtPort.text = server(1)
-        End If
-    #Else
-        FrmLogear.txtIp.text = "45.235.98.188"
-        FrmLogear.txtPort.text = "6501"
-    #End If
-    Exit Sub
-CargarLst_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModUtils.CargarLst", Erl)
-    Resume Next
-End Sub
 
 Public Sub CrearFantasma(ByVal charindex As Integer)
     On Error GoTo CrearFantasma_Err
@@ -1491,7 +1482,6 @@ End Sub
 
 Public Sub ComprobarEstado()
     On Error GoTo ComprobarEstado_Err
-    Call CargarLst
     Exit Sub
 ComprobarEstado_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.ComprobarEstado", Erl)
@@ -1644,6 +1634,7 @@ End Function
 Public Function UserInTileToTxtParser(ByRef Fields() As String)
     On Error GoTo UserInTileToTxtParser_Err
     Dim targetName          As String
+    Dim targetAlias         As String
     Dim targetDescription   As String
     Dim guildName           As String
     Dim Spouse              As String
@@ -1658,6 +1649,8 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
     Dim i As Byte
     i = LBound(SplitServerFields)
     targetName = SplitServerFields(i)
+    i = i + 1
+    targetAlias = SplitServerFields(i)
     i = i + 1
     targetDescription = SplitServerFields(i)
     i = i + 1
@@ -1861,6 +1854,9 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
         FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO") & ">"
     End If
     Fields(0) = targetName & " "
+    If targetAlias <> "" Then
+        Fields(0) = Fields(0) & "<Alias:" & targetAlias & ">" & " "
+    End If
     If targetDescription <> "" Then
         Fields(0) = Fields(0) & "<" & targetDescription & ">" & " "
     End If
@@ -2129,3 +2125,137 @@ NpcIndexToLocalizedName_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.NpcIndexToLocalizedName", Erl)
     Resume Next
 End Function
+
+
+Public Function GetQuestDescForUI(ByVal questIndex As Integer) As String
+    If questIndex < LBound(QuestList) Or questIndex > UBound(QuestList) Then Exit Function
+
+    GetQuestDescForUI = QuestList(questIndex).desc
+End Function
+
+
+Public Sub StopQuestDescAudio()
+    Call ao20audio.StopAllWavsMatchingLabel(QUEST_DESC_AUDIO_LABEL)
+End Sub
+
+'------------------------------------------------------------------------------
+' ResolveLocalizedAudioId
+'
+' Resolves a quest audio identifier to a localized version when available.
+'
+' BEHAVIOR:
+' - If `baseName` is already prefixed (e.g. "en_xxx", "es_xxx"), it is returned as-is.
+' - Otherwise, attempts to resolve a localized file using GetLocalizedFilename:
+'       baseName + ".ogg" ? localized file (e.g. "en_baseName.ogg")
+' - If a localized file exists, returns the id WITHOUT extension.
+' - If no localized version is found, falls back to the original baseName.
+'
+' NOTES:
+' - This function does NOT verify file existence directly; it relies on
+'   GetLocalizedFilename.
+' - Returned value is suitable for PlayWav (no extension, may include prefix).
+'
+' DESIGN:
+' - Localization is handled at the call site (quest audio), not inside PlayWav.
+' - Prevents double-prefixing (e.g. "en_en_xxx").
+'------------------------------------------------------------------------------
+Private Function ResolveLocalizedAudioId(ByVal baseName As String) As String
+    Dim localizedFileName As String
+
+    ResolveLocalizedAudioId = ""
+
+    If LenB(baseName) = 0 Then Exit Function
+
+    ' If already prefixed (e.g. "en_", "es_"), do nothing
+    If InStr(1, baseName, "_") = 3 Then
+        ResolveLocalizedAudioId = baseName
+        Exit Function
+    End If
+
+    ' Try to resolve localized filename
+    If language = Spanish Then
+        ResolveLocalizedAudioId = baseName
+        Exit Function
+    End If
+    
+    localizedFileName = GetLocalizedFilename(language, baseName & ".ogg")
+
+    If LenB(localizedFileName) > 0 Then
+        If LCase$(Right$(localizedFileName, 4)) = ".ogg" Then
+            ResolveLocalizedAudioId = Left$(localizedFileName, Len(localizedFileName) - 4)
+            Exit Function
+        End If
+    End If
+
+    ' Fallback to original
+    ResolveLocalizedAudioId = baseName
+End Function
+
+'------------------------------------------------------------------------------
+' PlayQuestDescAudio
+'
+' Plays the voiceover audio for a quest description.
+'
+' BEHAVIOR:
+' - Stops any currently playing quest description audio (same label).
+' - Reads DescAudio from QuestList.
+' - Resolves localized version of the audio id (if applicable).
+' - Plays the sound using PlayWav with QUEST_DESC_AUDIO_LABEL.
+'
+' NOTES:
+' - DescAudio may be either:
+'     * already localized (e.g. "en_123") ? used as-is
+'     * base id (e.g. "quest_intro") ? localized here
+'
+' - Audio is grouped using QUEST_DESC_AUDIO_LABEL so it can be stopped/replaced.
+'
+' DESIGN:
+' - Localization is explicitly handled here to keep PlayWav generic and predictable.
+'------------------------------------------------------------------------------
+Public Sub PlayQuestDescAudio(ByVal questIndex As Integer)
+    Dim audioFile As String
+
+    If questIndex < LBound(QuestList) Or questIndex > UBound(QuestList) Then Exit Sub
+
+    Call StopQuestDescAudio
+
+    audioFile = Trim$(QuestList(questIndex).DescAudio)
+    If LenB(audioFile) = 0 Then Exit Sub
+
+    audioFile = ResolveLocalizedAudioId(audioFile)
+
+    Call ao20audio.PlayWav(audioFile, False, 0, 0, QUEST_DESC_AUDIO_LABEL)
+End Sub
+
+'------------------------------------------------------------------------------
+' PlayQuestFinalDescAudio
+'
+' Plays the voiceover audio for a quest final/completion description.
+'
+' BEHAVIOR:
+' - Stops any currently playing quest description audio (same label).
+' - Reads DescFinalAudio from QuestList.
+' - Resolves localized version of the audio id (if applicable).
+' - Plays the sound using PlayWav with QUEST_DESC_AUDIO_LABEL.
+'
+' NOTES:
+' - Same localization rules as PlayQuestDescAudio apply.
+' - Shares label with quest description audio to ensure only one voiceover plays.
+'
+' DESIGN:
+' - Keeps localization logic at the call site rather than inside PlayWav.
+'------------------------------------------------------------------------------
+Public Sub PlayQuestFinalDescAudio(ByVal questIndex As Integer)
+    Dim audioFile As String
+
+    If questIndex < LBound(QuestList) Or questIndex > UBound(QuestList) Then Exit Sub
+
+    Call StopQuestDescAudio
+
+    audioFile = Trim$(QuestList(questIndex).DescFinalAudio)
+    If LenB(audioFile) = 0 Then Exit Sub
+
+    audioFile = ResolveLocalizedAudioId(audioFile)
+
+    Call ao20audio.PlayWav(audioFile, False, 0, 0, QUEST_DESC_AUDIO_LABEL)
+End Sub

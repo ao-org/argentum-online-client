@@ -283,14 +283,13 @@ Private Sub Form_Load()
     Call CargarCuentasGuardadas
     Call Aplicar_Transparencia(Me.hWnd, 240)
     Me.Picture = LoadInterface("ventanaconectar.bmp")
-    #If DEBUGGING = 1 Then
+    #If Developer = 1 Then
         txtPort.visible = True
         txtIp.visible = True
         lblPort.visible = True
         lblIp.visible = True
     #End If
     Me.PasswordTxt.visible = True
-    Call CargarLst
     Call loadButtons
     Call SetActiveServer(txtIp.text, txtPort.text)
     lblIp.Caption = JsonLanguage.Item("MENSAJE_SERVIDOR") ' Servidor:

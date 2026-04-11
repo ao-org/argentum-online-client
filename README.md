@@ -4,7 +4,6 @@ Please consider supporting our work on [Patreon](https://www.patreon.com/nolands
 
 ## 🐲 Argentum Online Client 🧙‍♂️
 
-
 Welcome to the source code repository for the Argentum Online Client. To fully utilize this client, you will need the corresponding server and assets:
 
 - **Server:** [Argentum Online Server](https://github.com/ao-org/argentum-online-server)
@@ -62,6 +61,50 @@ CryptoSys is used in Argentum Online to cipher sensitive data.
 - [https://www.cryptosys.net/api.html](https://www.cryptosys.net/api.html)
 
 Please note this is not free software and you will have to buy your own license to use CryptoSys
+
+
+## Audio backend (BASS)
+
+The client supports the [BASS audio library](https://www.un4seen.com/) for OGG music and compressed sound playback.
+
+BASS is a third-party library developed by Un4seen Developments.
+
+- Free for non-commercial use
+- Commercial use requires a paid licence
+- Licences are per-platform and royalty-free
+
+If you plan to distribute this client commercially, you must obtain a valid BASS licence.  
+See the official website for details: https://www.un4seen.com/
+
+### Enabling / disabling BASS
+
+BASS support is controlled via a compile-time flag in the client:
+
+```vb
+#Const ENABLE_BASS = 1
+```
+
+- Set to `1` to enable BASS
+- Set to `0` to disable BASS
+
+After changing the flag, rebuild the client.
+
+### Runtime requirements
+
+When BASS is enabled, the following file must be present at runtime:
+
+- `bass.dll`
+
+If `bass.dll` is missing, OGG audio playback will not work.
+
+### Current usage
+
+BASS is currently used for:
+
+- OGG music playback
+- Compressed OGG sound effects
+
+Legacy audio paths such as DirectSound and DirectMusic are still used for compatibility where applicable.
 
 # Repo Activity
 ![Alt](https://repobeats.axiom.co/api/embed/f8eabd20675f8abb15a92825f8c7a22a593309a7.svg "Repobeats analytics image")

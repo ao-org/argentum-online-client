@@ -650,6 +650,19 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     'Avisar que falta el parametro
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
                 End If
+            Case "/MENSAJEANTIMACRO", "/ANTIMACROMESSAGE"
+                If notNullArguments Then
+                    tmpArr = Split(ArgumentosRaw, "@", 2)
+                    If UBound(tmpArr) = 1 Then
+                        Call WriteAntiMacroMessage(tmpArr(0), tmpArr(1))
+                    Else
+                        'Faltan los parametros con el formato propio
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FORMATO_INCORRECTO_UTILICE"))
+                    End If
+                Else
+                    'Avisar que falta el parametro
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
+                End If
             Case "/MOD"
                 If notNullArguments And CantidadArgumentos >= 3 Then
                     Select Case UCase$(ArgumentosAll(1))
@@ -1214,13 +1227,6 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteKillNPCNoRespawn
             Case "/MASSKILL"
                 Call WriteKillAllNearbyNPCs
-            Case "/LASTIP"
-                If notNullArguments Then
-                    Call WriteLastIP(ArgumentosRaw)
-                Else
-                    'Avisar que falta el parametro
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
-                End If
             Case "/MOTDCAMBIA"
                 Call WriteChangeMOTD
             Case "/SMSG"

@@ -554,29 +554,30 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
             If UserMacro.Activado Then
                 Call ResetearUserMacro
             End If
-            Moviendose = True
-            Call MainTimer.Restart(TimersIndex.Walk)
             If PescandoEspecial Then
                 Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
                 Call WriteRomperCania
                 PescandoEspecial = False
             End If
-            Call WriteWalk(Heading) 'We only walk if we are not meditating or resting
-            Call Char_Move_by_Head(UserCharIndex, Heading)
-            Call MoveScreen(Heading)
-            Call checkTutorial
-            Dim i As Integer
-            For i = 1 To LastChar
-                If charlist(i).Invisible And Not EsGM And Not charlist(i).Meditating Then
-                    If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(i).clan_index = 0 Or charlist( _
-                            i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
-                        If General_Distance_Get(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist( _
-                                i).FxCount = 0 And charlist(i).particle_count = 0 Then
-                            MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = 0
+            If WriteWalk(Heading) Then 'We only walk if we are not meditating or resting
+                Moviendose = True
+                Call MainTimer.Restart(TimersIndex.Walk)
+                Call Char_Move_by_Head(UserCharIndex, Heading)
+                Call MoveScreen(Heading)
+                Call checkTutorial
+                Dim i As Integer
+                For i = 1 To LastChar
+                    If charlist(i).Invisible And Not EsGM And Not charlist(i).Meditating Then
+                        If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(i).clan_index = 0 Or charlist( _
+                                i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
+                            If General_Distance_Get(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist( _
+                                    i).FxCount = 0 And charlist(i).particle_count = 0 Then
+                                MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = 0
+                            End If
                         End If
                     End If
-                End If
-            Next i
+                Next i
+            End If
         Else
             If Not UserAvisado Then
                 If UserDescansar Then
@@ -639,9 +640,7 @@ Sub Check_Keys()
     If UserCharIndex = 0 Then Exit Sub
     direccion = charlist(UserCharIndex).Heading
     If Not Application.IsAppActive() Then Exit Sub
-    If Not pausa And g_game_state.State = e_state_gameplay_screen And Not frmComerciarUsu.visible And Not frmBancoObj.visible And Not frmOpciones.visible And Not _
-            frmComerciar.visible And Not frmGoliath.visible And Not frmEstadisticas.visible And Not frmStatistics.visible And Not frmAlqui.visible And Not frmCarp.visible And _
-            Not frmHerrero.visible And Not FrmGrupo.visible And Not FrmSastre.visible And Not FrmGmAyuda.visible And Not frmCrafteo.visible And Not IsGameDialogOpen Then
+    If Not pausa And g_game_state.state = e_state_gameplay_screen Then
         If IsInputFocus() And PermitirMoverse = 0 Then Exit Sub
         If Not UserMoving Then
             Call AddMovementToKeysMovementPressedQueue
@@ -844,9 +843,6 @@ Sub Main()
     Call Load(frmConnect)
     Call Load(FrmLogear)
     Windows_Temp_Dir = General_Get_Temp_Dir
-    Call SetDefaultServer
-    Call ComprobarEstado
-    Call CargarLst
     Call InicializarNombres
     Call InitializeInventory
     Call Init_TileEngine
@@ -900,20 +896,7 @@ Com_Err:
     Resume Next
 End Sub
 
-Public Function SetDefaultServer()
-    On Error GoTo SetDefaultServer_Err
-    #If PYMMO = 1 And Developer = 1 Then
-        IPdelServidorLogin = "127.0.0.1"
-        PuertoDelServidorLogin = 4000
-        IPdelServidor = IPdelServidorLogin
-        PuertoDelServidor = 7667
-    #Else
-        Call SetActiveEnvironment("Production")
-    #End If
-    Exit Function
-SetDefaultServer_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Mod_General.WriteVar", Erl)
-End Function
+
 
 Public Function randomMap() As Integer
     Select Case RandomNumber(1, 8)

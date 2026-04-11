@@ -25,6 +25,7 @@ Begin VB.Form FrmQuestInfo
       _ExtentY        =   5106
       _Version        =   393217
       BorderStyle     =   0
+      Enabled         =   -1  'True
       ReadOnly        =   -1  'True
       ScrollBars      =   2
       Appearance      =   0
@@ -364,6 +365,15 @@ Form_Load_Err:
     Resume Next
 End Sub
 
+Private Sub Form_Unload(Cancel As Integer)
+    On Error GoTo Form_Unload_Err
+    Call StopQuestDescAudio
+    Exit Sub
+Form_Unload_Err:
+    Call RegistrarError(Err.Number, Err.Description, "FrmQuestInfo.Form_Unload", Erl)
+    Resume Next
+End Sub
+
 Private Sub Form_KeyPress(KeyAscii As Integer)
     On Error GoTo Form_KeyPress_Err
     If (KeyAscii = 27) Then
@@ -498,6 +508,7 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
     If ListViewQuest.SelectedItem Is Nothing Then Exit Sub
     If Len(ListViewQuest.SelectedItem.SubItems(2)) <> 0 Then
         Dim QuestIndex As Integer
+        Dim i As Integer
         QuestIndex = ListViewQuest.SelectedItem.SubItems(2)
         FrmQuestInfo.ListView2.ListItems.Clear
         FrmQuestInfo.ListView1.ListItems.Clear
@@ -515,9 +526,17 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
             Dim requisitos As String
             finalDesc = .desc
             requisitos = ""
+            finalDesc = GetQuestDescForUI(questIndex)
+             
             ' Si tiene clase requerida
-            If .RequiredClass <> 0 And RequiredClass <= 12 Then
-                requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(.RequiredClass) & vbCrLf
+            If .RequiredClassesCount > 0 Then
+                For i = 1 To .RequiredClassesCount
+                    If .requiredClass(i) >= LBound(ListaClases) And .requiredClass(i) <= UBound(ListaClases) Then
+                        requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(.requiredClass(i)) & vbCrLf
+                    ElseIf .requiredClass(i) > 0 Then
+                        requisitos = requisitos & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & "ID " & .requiredClass(i) & vbCrLf
+                    End If
+                Next i
             End If
             ' Si tiene nivel requerido
             If .RequiredLevel > 1 Then
@@ -542,6 +561,7 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
             ' Limpiamos y mostramos los requisitos
             FrmQuestInfo.Text1.text = ""
             Call AddtoRichTextBox(Text1, finalDesc, 128, 128, 128)
+            Call PlayQuestDescAudio(questIndex)
         End With
         If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
             If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
@@ -616,9 +636,11 @@ Private Sub lstQuests_Click()
     FrmQuestInfo.ListView1.ListItems.Clear
     FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
     FrmQuestInfo.Text1.text = ""
-    Call AddtoRichTextBox(Text1, QuestList(QuestIndex).desc & vbCrLf & "Nivel requerido: " & QuestList(QuestIndex).RequiredLevel & vbCrLf, 128, 128, 128)
-    'tmpStr = tmpStr & "Detalles: " & .ReadASCIIString & vbCrLf
-    'tmpStr = tmpStr & "Nivel requerido: " & .ReadByte & vbCrLf
+    
+    Call AddtoRichTextBox(Text1, GetQuestDescForUI(questIndex) & vbCrLf & "Nivel requerido: " & QuestList(questIndex).RequiredLevel & vbCrLf, 128, 128, 128)
+    Call PlayQuestDescAudio(questIndex)
+    
+
     If UBound(QuestList(QuestIndex).RequiredNPC) > 0 Then 'Hay NPCs
         If UBound(QuestList(QuestIndex).RequiredNPC) > 5 Then
             FrmQuestInfo.ListView1.FlatScrollBar = False

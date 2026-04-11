@@ -47,3 +47,13 @@ Public Sub render(ByVal dev As Direct3DDevice8): End Sub
 Public Sub HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long): End Sub
 Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseButtons As Long, ByRef act As Integer): End Sub
 Public Sub SetFocus(ByVal val As Boolean): End Sub
+Public Sub SetPosition(ByVal PosX As Long, ByVal PosY As Long): End Sub
+Public Sub SetSize(ByVal w As Long, ByVal h As Long): End Sub
+Public Function GetPerPosX() As Single
+End Function
+Public Function GetPerPosY() As Single
+End Function
+Public Function GetPerW() As Single
+End Function
+Public Function GetPerH() As Single
+End Function

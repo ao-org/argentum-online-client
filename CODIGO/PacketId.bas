@@ -393,7 +393,6 @@ Public Enum ClientPacketID
     eTileBlockedToggle       '/BLOQ
     eKillNPCNoRespawn        '/MATA
     eKillAllNearbyNPCs       '/MASSKILL
-    eLastIP                  '/LASTIP
     eChangeMOTD              '/MOTDCAMBIA
     eSetMOTD                 'ZMOTD
     eSystemMessage           '/SMSG
@@ -528,6 +527,7 @@ Public Enum ClientPacketID
     eChangeSkinSlot
     eStartAutomatedAction
     ePetFollowAll
+    eAntiMacroMessage
     eMaxPacket
     [PacketCount]
 End Enum

@@ -1992,8 +1992,6 @@ Private Sub cmdAccion_Click(Index As Integer)
             End If
         Case 13 '/nick2ip NICK 0.12.1
             Call WriteNickToIP(nick)
-        Case 14 '/Lastip NICK 0.12.1
-            Call WriteLastIP(nick)
         Case 15 '/IrCerca NICK 0.12.1
             If LenB(nick) <> 0 Then Call WriteGoNearby(nick)
         Case 17 '/BANIP IP 0.12.1
@@ -3146,6 +3144,7 @@ Public Sub CadenaChat(ByVal chat As String)
     Dim Cadena        As String
     Dim partes()      As String
     Dim nombre        As String
+    Dim nombreObjetivo As String
     Dim PosicionBarra As Integer
     ' La cadena original
     Cadena = chat
@@ -3208,7 +3207,7 @@ Public Sub CadenaChat(ByVal chat As String)
                             Dim TiempoActual As Single
                             TiempoActual = Timer
                             If TiempoActual - TiempoAnterior < frmPanelgm.txtSegundos Then
-                                Call WriteCerraCliente(nombre)
+                                If frmPanelgm.chkOcultar = 1 Then Call WriteCerraCliente(nombre)
                             End If
                             TiempoAnterior = TiempoActual
                         End If
@@ -3239,7 +3238,7 @@ Public Sub CadenaChat(ByVal chat As String)
         End If
     End If
     ' Divide la cadena en partes utilizando "AntiCheat> El usuario" como separador
-    partes = Split(Cadena, "AntiCheat--> El usuario")
+    partes = Split(Cadena, "Control de macro---> El usuario")
     ' Verifica si hay al menos dos partes en la matriz resultante
     If UBound(partes) >= 1 Then
         ' La segunda parte (índice 1) contiene el nombre y otros caracteres
@@ -3253,7 +3252,7 @@ Public Sub CadenaChat(ByVal chat As String)
             nombre = Trim(nombre)
             ' Verificar si la cadena contiene ciertos textos utilizando Select Case
             Select Case True
-                Case InStr(Cadena, "COORDENADAS.") > 0
+                Case InStr(Cadena, "Macro de Cordenadas") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Cordenadas", "MacroCoordenadas.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                     If frmPanelgm.chkCoordenadas.value = 1 Then Call WriteCerraCliente(nombre)
@@ -3261,11 +3260,11 @@ Public Sub CadenaChat(ByVal chat As String)
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de click", "MacroDeClick.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                     If frmPanelgm.chkClicks.value = 1 Then Call WriteCerraCliente(nombre)
-                Case InStr(Cadena, "INASISTIDO.") > 0
+                Case InStr(Cadena, "Macro Inasistido") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro Inasistido", "MacroInasistido.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                     If frmPanelgm.chkInasistido.value = 1 Then Call WriteCerraCliente(nombre)
-                Case InStr(Cadena, "CARTELEO.") > 0
+                Case InStr(Cadena, "Macro de Carteleo") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Carteleo", "MacroCarteleo.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                     If frmPanelgm.chkCarteleo.value = 1 Then Call WriteCerraCliente(nombre)
@@ -3274,6 +3273,26 @@ Public Sub CadenaChat(ByVal chat As String)
             End Select
             If frmPanelgm.chkAutoName.value = 1 Then frmPanelgm.cboListaUsus.text = nombre
             If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+        End If
+    End If
+
+    ' Captura avisos de hechizos para autocompletar el usuario atacante y/o objetivo
+    If InStr(Cadena, "El usuario ") > 0 And InStr(Cadena, " esta lanzando hechizos al Usuario ") > 0 Then
+        partes = Split(Cadena, "El usuario ")
+        If UBound(partes) >= 1 Then
+            Dim partesHechizo() As String
+            partesHechizo = Split(partes(1), " esta lanzando hechizos al Usuario ")
+
+            If UBound(partesHechizo) >= 1 Then
+                nombre = Trim(partesHechizo(0))
+
+                nombreObjetivo = Split(partesHechizo(1), " (")(0)
+                nombreObjetivo = Trim(nombreObjetivo)
+
+                If frmPanelgm.chkAutoName.value = 1 Then
+                    If Len(nombre) > 0 Then frmPanelgm.cboListaUsus.text = nombre
+                End If
+            End If
         End If
     End If
 End Sub

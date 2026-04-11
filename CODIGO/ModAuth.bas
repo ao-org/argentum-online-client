@@ -32,6 +32,7 @@ Public Enum e_state
     RequestVerificationCode
     RequestTransferChar
     ConfirmTransferChar
+    RenameCharacter
 End Enum
 
 Public Enum e_operation
@@ -45,6 +46,7 @@ Public Enum e_operation
     RequestVerificationCode
     transfercharacter
     ConfirmTransferChar
+    RenameCharacter
 End Enum
 
 Public Type t_CreateAccountInfo
@@ -93,6 +95,8 @@ Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
                     Call SendRequestTransferCharacter
                 Case e_state.ConfirmTransferChar
                     Call SendConfirmTransferCharacter
+                Case e_state.RenameCharacter
+                    Call SendRenameCharacter
             End Select
         End If
         Exit Sub
@@ -120,6 +124,8 @@ Public Sub AuthSocket_DataArrival(ByVal BytesTotal As Long)
             Call HandleTransferCharRequest(BytesTotal)
         Case e_state.ConfirmTransferChar
             Call HandleConfirmTransferChar(BytesTotal)
+        Case e_state.RenameCharacter
+            Call HandleRenameCharacter(BytesTotal)
     End Select
 End Sub
 
@@ -169,15 +175,15 @@ Public Sub SendAccountLoginRequest()
     login_request(1) = &HDE
     login_request(2) = &HAD
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
-    login_request(5) = hiByte(len_username)
-    login_request(6) = LoByte(len_username)
+    login_request(5) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(6) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     offset_login_request = 7 + UBound(encrypted_username)
-    login_request(offset_login_request + 1) = hiByte(len_password)
-    login_request(offset_login_request + 2) = LoByte(len_password)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_password)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_password)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_password, login_request, len_password, offset_login_request + 3)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.RequestAccountLogin
@@ -203,15 +209,15 @@ Public Sub SendRequestVerificationCode()
     login_request(1) = &HDA
     login_request(2) = &HAB
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
-    login_request(5) = hiByte(len_username)
-    login_request(6) = LoByte(len_username)
+    login_request(5) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(6) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     offset_login_request = 7 + UBound(encrypted_username)
-    login_request(offset_login_request + 1) = hiByte(len_username)
-    login_request(offset_login_request + 2) = LoByte(len_username)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, offset_login_request + 3)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.RequestVerificationCode
@@ -231,7 +237,9 @@ Public Sub HandleRequestVerificationCode(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_ACCOUNT_NO_EXISTE"), False, False)
             Case 11
@@ -266,15 +274,15 @@ Public Sub SendRequestForgotPassword()
     login_request(1) = &HCB
     login_request(2) = &HCB
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
-    login_request(5) = hiByte(len_username)
-    login_request(6) = LoByte(len_username)
+    login_request(5) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(6) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     offset_login_request = 7 + UBound(encrypted_username)
-    login_request(offset_login_request + 1) = hiByte(len_username)
-    login_request(offset_login_request + 2) = LoByte(len_username)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, offset_login_request + 3)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.RequestForgotPassword
@@ -310,15 +318,15 @@ Public Sub SendValidateAccount()
     login_request(1) = &HBA
     login_request(2) = &HAD
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
-    login_request(5) = hiByte(len_username)
-    login_request(6) = LoByte(len_username)
+    login_request(5) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(6) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     offset_login_request = 7 + UBound(encrypted_username)
-    login_request(offset_login_request + 1) = hiByte(len_validate_code)
-    login_request(offset_login_request + 2) = LoByte(len_validate_code)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_validate_code)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_validate_code)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_validate_code, login_request, len_validate_code, offset_login_request + 3)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.RequestValidateAccount
@@ -364,19 +372,19 @@ Public Sub SendRequestResetPassword()
     login_request(1) = &HFB
     login_request(2) = &HFB
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
-    login_request(5) = hiByte(len_username)
-    login_request(6) = LoByte(len_username)
+    login_request(5) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(6) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     offset_login_request = 7 + UBound(encrypted_username)
-    login_request(offset_login_request + 1) = hiByte(len_password)
-    login_request(offset_login_request + 2) = LoByte(len_password)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_password)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_password)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_password, login_request, len_password, offset_login_request + 3)
     offset_login_request = offset_login_request + 3 + UBound(encrypted_password)
-    login_request(offset_login_request + 1) = hiByte(len_validate_code)
-    login_request(offset_login_request + 2) = LoByte(len_validate_code)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_validate_code)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_validate_code)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_validate_code, login_request, len_validate_code, offset_login_request + 3)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.RequestResetPassword
@@ -393,8 +401,8 @@ Public Sub LogOutRequest()
     logout_request(1) = &H1
     logout_request(2) = &H1
     'Siguientes 2 bytes indican tamaño total del paquete
-    logout_request(3) = hiByte(packet_size)
-    logout_request(4) = LoByte(packet_size)
+    logout_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    logout_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Dim encrypted_session_token_byte() As Byte
     Call Str2ByteArr(encrypted_session_token, encrypted_session_token_byte)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_session_token_byte, logout_request, Len(encrypted_session_token), 5)
@@ -437,7 +445,7 @@ Public Sub SendRequestTransferCharacter()
     JSON = ""
     JSON = "{ "
     JSON = JSON & "  ""currentOwner"": """ & old_owner_str & """ , "
-    JSON = JSON & "  ""pc"": """ & TransferCharname & """ , "
+    JSON = JSON & "  ""pc_id"": """ & GetSelectedCharIDFromName(TransferCharname) & """ , "
     JSON = JSON & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
     JSON = JSON & "  ""newOwner"": """ & TransferCharNewOwner & """"
     JSON = JSON & " }"
@@ -452,8 +460,8 @@ Public Sub SendRequestTransferCharacter()
     transfer_request(1) = &H20
     transfer_request(2) = &H25
     'Siguientes 2 bytes indican tamaño total del paquete
-    transfer_request(3) = hiByte(packet_size)
-    transfer_request(4) = LoByte(packet_size)
+    transfer_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    transfer_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, transfer_request, len_json, 5)
     Call frmConnect.AuthSocket.SendData(transfer_request)
     Auth_state = e_state.RequestTransferChar
@@ -492,8 +500,8 @@ Public Sub SendSignUpRequest()
     login_request(1) = &HBE
     login_request(2) = &HEF
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, login_request, len_json, 5)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.RequestSignUp
@@ -513,7 +521,9 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("TRANSFER CHAR ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call DisplayError(JsonLanguage.Item("MENSAJE_CUENTA_INVALIDA"), "invalid-account")
             Case 3
@@ -526,10 +536,14 @@ Public Sub HandleTransferCharRequest(ByVal BytesTotal As Long)
                 Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "invalid-request")
             Case 54
                 Call DisplayError(JsonLanguage.Item("MENSAJE_NUEVO_DUENO_NO_EXISTE"), "newowner-not-exist")
+            Case 55
+                Call DisplayError(JsonLanguage.Item("MSG_NEWOWNER_IS_NOT_PATREON"), "newowner-not-patreon")
             Case 56
                 Call DisplayError(JsonLanguage.Item("MENSAJE_NO_ES_PATREON"), "not-patreon")
             Case 57
                 Call DisplayError(JsonLanguage.Item("MENSAJE_CREDITOS_INSUFICIENTES"), "not-enough-credits")
+            Case 72
+                Call DisplayError(JsonLanguage.Item("MSG_ALIAS_PRESENT"), "alias-present")
             Case Else
                 Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO"), "unknown-error")
         End Select
@@ -558,7 +572,9 @@ Public Sub HandleSignUpRequest(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 0
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_EXISTE"), False, False)
             Case 9
@@ -602,7 +618,7 @@ Public Sub SendDeleteCharRequest()
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
     Call DebugPrint("SendDeleteChar", 255, 255, 255, True)
     Call DebugPrint("------------------------------------", 0, 255, 0, True)
-    JSON = "{""username"": """ & CuentaEmail & """, ""pc"":""" & DeleteUser & """}"
+    JSON = "{""username"": """ & CuentaEmail & """, ""pc_id"":""" & GetSelectedCharIDFromName(DeleteUser) & """}"
     Dim encrypted_json()   As Byte
     Dim encrypted_json_b64 As String
     encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), JSON)
@@ -614,8 +630,8 @@ Public Sub SendDeleteCharRequest()
     delete_char_request(1) = &H1
     delete_char_request(2) = &H5
     'Siguientes 2 bytes indican tamaño total del paquete
-    delete_char_request(3) = hiByte(packet_size)
-    delete_char_request(4) = LoByte(packet_size)
+    delete_char_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    delete_char_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, delete_char_request, len_json, 5)
     Call frmConnect.AuthSocket.SendData(delete_char_request)
     Auth_state = e_state.RequestDeleteChar
@@ -637,7 +653,9 @@ Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
         Call DebugPrint("DELETE_PC_REQUEST_ERROR", 255, 0, 0, True)
         frmDeleteChar.Hide
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call DisplayError(JsonLanguage.Item("MENSAJE_CUENTA_INVALIDA"), "invalid-account")
             Case 3
@@ -646,6 +664,8 @@ Public Sub HandleDeleteCharRequest(ByVal BytesTotal As Long)
                 Call DisplayError(JsonLanguage.Item("MENSAJE_NO_DUENO_PERSONAJE"), "invalid-character-owner")
             Case 65
                 Call DisplayError(JsonLanguage.Item("MENSAJE_PERSONAJE_BLOQUEADO_MAO"), "locked-in-mao")
+            Case 72
+                Call DisplayError(JsonLanguage.Item("MSG_ALIAS_PRESENT"), "alias-present")
             Case Else
                 Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO"), "unknown-error")
         End Select
@@ -670,7 +690,7 @@ Public Sub SendConfirmDeleteChar()
     Dim encrypted_username_b64      As String
     Dim encrypted_validate_code()   As Byte
     Dim encrypted_validate_code_b64 As String
-    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), userName)
+    encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), GetSelectedCharIDFromName(userName))
     encrypted_validate_code_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), validate_code)
     Call Str2ByteArr(encrypted_username_b64, encrypted_username)
     Call Str2ByteArr(encrypted_validate_code_b64, encrypted_validate_code)
@@ -683,15 +703,15 @@ Public Sub SendConfirmDeleteChar()
     login_request(1) = &H1
     login_request(2) = &H8
     'Siguientes 2 bytes indican tamaño total del paquete
-    login_request(3) = hiByte(packet_size)
-    login_request(4) = LoByte(packet_size)
+    login_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    login_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     'Los siguientes 2 bytes son el SIZE_ENCRYPTED_USER
-    login_request(5) = hiByte(len_username)
-    login_request(6) = LoByte(len_username)
+    login_request(5) = AO20CryptoSysWrapper.HiByte(len_username)
+    login_request(6) = AO20CryptoSysWrapper.LoByte(len_username)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, login_request, len_username, 7)
     offset_login_request = 7 + UBound(encrypted_username)
-    login_request(offset_login_request + 1) = hiByte(len_validate_code)
-    login_request(offset_login_request + 2) = LoByte(len_validate_code)
+    login_request(offset_login_request + 1) = AO20CryptoSysWrapper.HiByte(len_validate_code)
+    login_request(offset_login_request + 2) = AO20CryptoSysWrapper.LoByte(len_validate_code)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_validate_code, login_request, len_validate_code, offset_login_request + 3)
     Call frmConnect.AuthSocket.SendData(login_request)
     Auth_state = e_state.ConfirmDeleteChar
@@ -714,7 +734,9 @@ Public Sub HandleConfirmDeleteChar(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call DisplayError(JsonLanguage.Item("MENSAJE_NOMBRE_PERSONAJE_INVALIDO"), "invalid-character-name")
             Case 3
@@ -745,7 +767,9 @@ Public Sub HandleConfirmTransferChar(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 68
                 Call DisplayError(JsonLanguage.Item("MENSAJE_SOLICITUD_INVALIDA"), "invalid-transfer-char-request")
             Case 67
@@ -762,6 +786,8 @@ Public Sub HandleConfirmTransferChar(ByVal BytesTotal As Long)
                 Call DisplayError(JsonLanguage.Item("MENSAJE_TOKEN_SESION_INVALIDO"), "session-token-invalid")
             Case 23
                 Call DisplayError(JsonLanguage.Item("MENSAJEBOX_INTENTAR_MAS_TARDE"), "retry-later")
+            Case 72
+                Call DisplayError(JsonLanguage.Item("MSG_ALIAS_PRESENT"), "alias-present")
             Case Else
                 Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO") & ": " & AO20CryptoSysWrapper.ByteArrayToHex(data), "")
         End Select
@@ -769,6 +795,39 @@ Public Sub HandleConfirmTransferChar(ByVal BytesTotal As Long)
     End If
 End Sub
 
+Public Sub HandleRenameCharacter(ByVal BytesTotal As Long)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("HandleConfirmRenameCharacter", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Dim data() As Byte
+    frmConnect.AuthSocket.PeekData data, vbByte, BytesTotal
+    frmConnect.AuthSocket.GetData data, vbByte, 2
+    If data(0) = &H20 And data(1) = &H32 Then
+        Call DebugPrint("RENAME_PC_REQUEST_OKAY", 0, 255, 0, True)
+        Call DebugPrint(AO20CryptoSysWrapper.ByteArrayToHex(data), 255, 255, 255)
+        frmConnect.AuthSocket.GetData data, vbByte, 2
+        Auth_state = e_state.Idle
+        Call DisplayError(JsonLanguage.Item("MENSAJE_TRANSFERENCIA_REALIZADA"), "RENAME_PC_REQUEST_OKAY")
+    Else
+        Call DebugPrint("ERROR", 255, 0, 0, True)
+        frmConnect.AuthSocket.GetData data, vbByte, 4
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
+            Case 69
+                Call DisplayError(JsonLanguage.Item("MSG_ALIAS_INVALID"), "alias-invalid")
+            Case 70
+                Call DisplayError(JsonLanguage.Item("MSG_ALIAS_ALREADY_TAKEN"), "alias-taken")
+            Case 56
+                Call DisplayError(JsonLanguage.Item("MENSAJE_NO_ES_PATREON"), "not-patreon")
+            Case 57
+                Call DisplayError(JsonLanguage.Item("MSG_OWNER_NOT_ENOUGH_CREDITS"), "not-enough-patreon-credits")
+            Case Else
+                Call DisplayError(JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO") & ": " & AO20CryptoSysWrapper.ByteArrayToHex(data), "")
+        End Select
+        Auth_state = e_state.Idle
+    End If
+End Sub
 
 Public Sub PCListRequest()
     Dim userName               As String
@@ -790,8 +849,8 @@ Public Sub PCListRequest()
     charList_request(1) = &H1
     charList_request(2) = &H2
     'Siguientes 2 bytes indican tamaño total del paquete
-    charList_request(3) = hiByte(packet_size)
-    charList_request(4) = LoByte(packet_size)
+    charList_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    charList_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_username, charList_request, len_username, 5)
     Call frmConnect.AuthSocket.SendData(charList_request)
     Auth_state = e_state.RequestCharList
@@ -941,7 +1000,9 @@ Public Sub HandleRequestForgotPassword(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_INVALIDO"), False, False)
             Case 3
@@ -977,7 +1038,9 @@ Public Sub HandleRequestResetPassword(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CODIGO_INVALIDO"), False, False)
             Case 3
@@ -1037,7 +1100,9 @@ Public Sub HandleValidateAccountRequest(ByVal BytesTotal As Long)
     Else
         Call DebugPrint("ERROR", 255, 0, 0, True)
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        Select Case MakeInt(data(3), data(2))
+        Dim ErrorNum As Integer
+        ErrorNum = MakeInt(data(3), data(2))
+        Select Case ErrorNum
             Case 1
                 Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_INVALIDO"), False, False)
                 frmNewAccount.visible = False
@@ -1087,20 +1152,27 @@ Private Sub EraseCharFromPjList(ByVal nick As String)
     CantidadDePersonajesEnCuenta = CantidadDePersonajesEnCuenta - 1
 End Sub
 
+
 Private Sub FillAccountData(ByVal data As String)
-    On Error Resume Next
+    On Error GoTo FillAccountData_Err
+
     Dim i As Long
+    Dim ii As Byte
+    Dim maxToLoad As Long
+
+    ' Count characters by counting '('
     CantidadDePersonajesEnCuenta = 0
     For i = 1 To Len(data)
-        If mid(data, i, 1) = "(" Then
+        If mid$(data, i, 1) = "(" Then
             CantidadDePersonajesEnCuenta = CantidadDePersonajesEnCuenta + 1
         End If
     Next i
-    Dim ii As Byte
-    'name, head_id, class_id, body_id, pos_map, pos_x, pos_y, level, status, helmet_id, shield_id, weapon_id, guild_index, is_dead, is_sailing
+
+    ' Reset slots
     For ii = 1 To MAX_PERSONAJES_EN_CUENTA
-        Pjs(ii).nombre = ""
-        Pjs(ii).Head = 0 ' si is_sailing o muerto, cabeza en 0
+        Pjs(ii).id = 0
+        Pjs(ii).nombre = vbNullString
+        Pjs(ii).Head = 0
         Pjs(ii).Clase = 0
         Pjs(ii).Body = 0
         Pjs(ii).Mapa = 0
@@ -1111,41 +1183,69 @@ Private Sub FillAccountData(ByVal data As String)
         Pjs(ii).Casco = 0
         Pjs(ii).Escudo = 0
         Pjs(ii).Arma = 0
-        Pjs(ii).ClanName = ""
-        Pjs(ii).NameMapa = ""
+        Pjs(ii).ClanName = vbNullString
+        Pjs(ii).NameMapa = vbNullString
+        Pjs(ii).priv = 0
     Next ii
-    For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+
+    maxToLoad = min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+
+    ' Parse each tuple
+    For ii = 1 To maxToLoad
         Dim character As String
+        Dim rawName As String
+
         character = ReadField(ii, data, Asc(")"))
-        character = Replace(character, "(", "")
-        character = Replace(character, "[", "")
-        character = Replace(character, "]", "")
-        character = Replace(character, "'", "")
-        If mid(character, 1, 1) = "," Then
-            character = mid(character, 2)
+
+        ' Normalize tuple formatting: "(...)" / "[...]" / quotes, leading comma, etc.
+        character = Replace$(character, "(", vbNullString)
+        character = Replace$(character, ")", vbNullString)
+        character = Replace$(character, "[", vbNullString)
+        character = Replace$(character, "]", vbNullString)
+        character = Replace$(character, "'", vbNullString)
+
+        If Len(character) > 0 Then
+            If mid$(character, 1, 1) = "," Then
+                character = mid$(character, 2)
+            End If
+            If mid$(character, 1, 1) = " " Then
+                character = mid$(character, 2)
+            End If
         End If
-        Dim Name As String
-        Name = ReadField(1, character, Asc(","))
-        If mid(Name, 1, 1) = " " Then
-            Name = Replace(Name, " ", "", 1, 1)
+
+        ' NEW: id is field(1), name is field(2)
+        Pjs(ii).id = CLng(val(ReadField(1, character, Asc(","))))
+
+        rawName = ReadField(2, character, Asc(","))
+        If Len(rawName) > 0 And mid$(rawName, 1, 1) = " " Then
+            rawName = mid$(rawName, 2)
         End If
-        Pjs(ii).nombre = Name
-        Pjs(ii).Body = val(ReadField(4, character, Asc(",")))
-        Pjs(ii).Head = IIf(Pjs(ii).Body = 829 Or Pjs(ii).Body = 1269 Or Pjs(ii).Body = 1267 Or Pjs(ii).Body = 1265, 0, val(ReadField(2, character, Asc(","))))
-        Pjs(ii).Clase = val(ReadField(3, character, Asc(",")))
-        Pjs(ii).Mapa = val(ReadField(5, character, Asc(",")))
-        Pjs(ii).PosX = val(ReadField(6, character, Asc(",")))
-        Pjs(ii).PosY = val(ReadField(7, character, Asc(",")))
-        Pjs(ii).Nivel = val(ReadField(8, character, Asc(",")))
-        Pjs(ii).Criminal = val(ReadField(9, character, Asc(",")))
-        Pjs(ii).Casco = val(ReadField(10, character, Asc(",")))
-        Pjs(ii).Escudo = val(ReadField(11, character, Asc(",")))
-        Pjs(ii).Arma = val(ReadField(12, character, Asc(",")))
-        Pjs(ii).ClanName = "" ' "<" & "pepito" & ">"
-        ' Pjs(ii).NameMapa = Pjs(ii).mapa
+        Pjs(ii).nombre = rawName
+
+        ' Shifted fields (+1)
+        Pjs(ii).Body = val(ReadField(5, character, Asc(",")))
+        Pjs(ii).Head = val(ReadField(3, character, Asc(",")))
+        Pjs(ii).Clase = val(ReadField(4, character, Asc(",")))
+        Pjs(ii).Mapa = val(ReadField(6, character, Asc(",")))
+        Pjs(ii).PosX = val(ReadField(7, character, Asc(",")))
+        Pjs(ii).PosY = val(ReadField(8, character, Asc(",")))
+        Pjs(ii).Nivel = val(ReadField(9, character, Asc(",")))
+        Pjs(ii).Criminal = val(ReadField(10, character, Asc(",")))
+        Pjs(ii).Casco = val(ReadField(11, character, Asc(",")))
+        Pjs(ii).Escudo = val(ReadField(12, character, Asc(",")))
+        Pjs(ii).Arma = val(ReadField(13, character, Asc(",")))
+
+        ' If sailing or dead (based on Body) head must be 0
+        If (Pjs(ii).Body = 829) Or (Pjs(ii).Body = 1269) Or (Pjs(ii).Body = 1267) Or (Pjs(ii).Body = 1265) Then
+            Pjs(ii).Head = 0
+        End If
+
+        Pjs(ii).ClanName = vbNullString
         ' Pjs(ii).NameMapa = NameMaps(Pjs(ii).Mapa).Name
     Next ii
-    For i = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+
+    ' Colors + priv
+    For i = 1 To maxToLoad
         Select Case Pjs(i).Criminal
             Case 0 'Criminal
                 Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(23).R, ColoresPJ(23).G, ColoresPJ(23).B)
@@ -1159,22 +1259,32 @@ Private Sub FillAccountData(ByVal data As String)
                 Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(25).R, ColoresPJ(25).G, ColoresPJ(25).B)
             Case 5 'Consejo
                 Call SetRGBA(Pjs(i).LetraColor, ColoresPJ(22).R, ColoresPJ(22).G, ColoresPJ(22).B)
-            Case Else
         End Select
+
         Pjs(i).priv = 0
     Next i
+
     AlphaRenderCuenta = MAX_ALPHA_RENDER_CUENTA
-    If CantidadDePersonajesEnCuenta > 0 Then
+
+    If maxToLoad > 0 Then
         PJSeleccionado = 1
         LastPJSeleccionado = 1
+
         If Pjs(1).Mapa <> 0 Then
             Call SwitchMap(Pjs(1).Mapa)
             RenderCuenta_PosX = Pjs(1).PosX
             RenderCuenta_PosY = Pjs(1).PosY
         End If
     End If
+
     Call LoadCharacterSelectionScreen
+    Exit Sub
+
+FillAccountData_Err:
+    ' Keep it quiet but debuggable (replace with your logger if you have one)
+    ' Debug.Print "FillAccountData error: " & Err.Number & " - " & Err.Description
 End Sub
+
 
 Public Function SendConfirmTransferCharacter()
     Dim JSON                   As String
@@ -1189,7 +1299,7 @@ Public Function SendConfirmTransferCharacter()
     JSON = ""
     JSON = "{ "
     JSON = JSON & "  ""currentOwner"": """ & old_owner_str & """ , "
-    JSON = JSON & "  ""pc"": """ & TransferCharname & """ , "
+    JSON = JSON & "  ""pc_id"": """ & GetSelectedCharIDFromName(TransferCharname) & """ , "
     JSON = JSON & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
     JSON = JSON & "  ""newOwner"": """ & TransferCharNewOwner & """ , "
     JSON = JSON & "  ""code"": """ & transfer_char_validate_code & """"
@@ -1205,8 +1315,8 @@ Public Function SendConfirmTransferCharacter()
     transfer_request(1) = &H20
     transfer_request(2) = &H28
     'Siguientes 2 bytes indican tamaño total del paquete
-    transfer_request(3) = hiByte(packet_size)
-    transfer_request(4) = LoByte(packet_size)
+    transfer_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    transfer_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
     Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, transfer_request, len_json, 5)
     Call frmConnect.AuthSocket.SendData(transfer_request)
     Auth_state = e_state.ConfirmTransferChar
@@ -1232,4 +1342,36 @@ Public Function estaInmovilizado(ByRef arr() As Byte) As String
         frmDebug.add_text_tracebox "Esta inmovilizado: " & B
     #End If
     estaInmovilizado = cnvHexStrFromString(B)
+End Function
+
+Public Function SendRenameCharacter()
+    Dim JSON                   As String
+    Dim len_encrypted_username As Integer
+    Dim rename_request()     As Byte
+    Dim packet_size            As Integer
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    Call DebugPrint("SendRenameCharacter", 255, 255, 255, True)
+    Call DebugPrint("------------------------------------", 0, 255, 0, True)
+    JSON = ""
+    JSON = "{ "
+    JSON = JSON & "  ""token"": """ & authenticated_decrypted_session_token & """ , "
+    JSON = JSON & "  ""pc_id"": """ & GetSelectedCharIDFromName(RenameCharacterName) & """ , "
+    JSON = JSON & "  ""alias"": """ & RenameNewCharacterName & """"
+    JSON = JSON & " }"
+    Dim encrypted_json()   As Byte
+    Dim encrypted_json_b64 As String
+    encrypted_json_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), JSON)
+    Call Str2ByteArr(encrypted_json_b64, encrypted_json)
+    Dim len_json As Integer
+    len_json = Len(encrypted_json_b64)
+    ReDim rename_request(1 To (2 + 2 + len_json))
+    packet_size = UBound(rename_request)
+    rename_request(1) = &H20
+    rename_request(2) = &H31
+    'Siguientes 2 bytes indican tamaño total del paquete
+    rename_request(3) = AO20CryptoSysWrapper.HiByte(packet_size)
+    rename_request(4) = AO20CryptoSysWrapper.LoByte(packet_size)
+    Call AO20CryptoSysWrapper.CopyBytes(encrypted_json, rename_request, len_json, 5)
+    Call frmConnect.AuthSocket.SendData(rename_request)
+    Auth_state = e_state.RenameCharacter
 End Function

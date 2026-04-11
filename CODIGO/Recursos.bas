@@ -717,12 +717,19 @@ Sub CargarDatosMapa(ByVal map As Integer)
                     If NpcData(NPCs(i).NpcIndex).NoMapInfo = 1 Then
                         GoTo cont
                     End If
-                    NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
+                    If NpcData(NPCs(i).NpcIndex).DisabledInBattleServer = 1 Then
+                        #If BATTLESERVER = 1 Then
+                            GoTo cont
+                        #End If
+                        NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
+                    Else
+                        NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
+                    End If
 cont:
                 Next i
                 For c = 1 To UBound(NpcWorlds)
                     If NpcWorlds(c) > 0 Then
-                        If (c > 399 And c < 450 Or c > 499) And NpcData(c).NoMapInfo <> 1 Then
+                        If NpcData(c).NoMapInfo <> 1 Then
                             Dim subelemento As ListItem
                             Set subelemento = frmMapaGrande.ListView1.ListItems.Add(, , NpcData(c).Name)
                             subelemento.SubItems(1) = NpcWorlds(c)
@@ -1351,10 +1358,7 @@ Public Sub CargarIndicesOBJ()
     Dim loopC As Byte
     For Npc = 1 To NumNpcs
         DoEvents
-        If val(Leer.GetValue("npc" & Npc, "NomapInfo")) > 0 Then
-            NpcData(Npc).NoMapInfo = val(Leer.GetValue("npc" & Npc, "NoMapInfo"))
-            GoTo Continue
-        End If
+        NpcData(Npc).NoMapInfo = val(Leer.GetValue("npc" & Npc, "NoMapInfo"))
         langPrefix = GetLanguagePrefix(language)
         With NpcData(Npc)
             .Name = GetLocalizedValue(Leer, "npc" & Npc, "Name", langPrefix)
@@ -1382,7 +1386,9 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).BodyOnWaterIdle = val(Leer.GetValue("npc" & Npc, "BodyOnWaterIdle"))
         NpcData(Npc).BodyOnLand = val(Leer.GetValue("npc" & Npc, "Body"))
         NpcData(Npc).BodyIdle = val(Leer.GetValue("npc" & Npc, "BodyIdle"))
+        NpcData(Npc).DisabledInBattleServer = val(Leer.GetValue("npc" & Npc, "DisabledInBattleServer"))
         NpcData(Npc).Amphibian = val(Leer.GetValue("npc" & Npc, "Amphibian")) > 0
+        NpcData(Npc).QuizaProb = val(Leer.GetValue("npc" & Npc, "QuizaProb"))
         
         aux = val(Leer.GetValue("npc" & Npc, "NumQuiza"))
         If aux = 0 Then
@@ -1407,7 +1413,6 @@ Public Sub CargarIndicesOBJ()
                 NpcData(Npc).Obj(loopC) = val(Leer.GetValue("npc" & Npc, "Obj" & loopC))
             Next loopC
         End If
-Continue:
     Next Npc
     langPrefix = GetLanguagePrefix(language)
     For Hechizo = 1 To NumHechizos
@@ -1439,6 +1444,8 @@ Continue:
         DoEvents
         QuestList(Hechizo).nombre = Leer.GetValue("QUEST" & Hechizo, "NOMBRE")
         QuestList(Hechizo).desc = Leer.GetValue("QUEST" & Hechizo, "DESC")
+        QuestList(Hechizo).DescAudio = Leer.GetValue("QUEST" & Hechizo, "DESCAUDIO")
+        QuestList(Hechizo).DescFinalAudio = Leer.GetValue("QUEST" & Hechizo, "DESCFINALAUDIO")
         QuestList(Hechizo).DescFinal = Leer.GetValue("QUEST" & Hechizo, "DESCFINAL")
         QuestList(Hechizo).NextQuest = val(Leer.GetValue("QUEST" & Hechizo, "NEXTQUEST"))
         QuestList(Hechizo).RequiredLevel = val(Leer.GetValue("QUEST" & Hechizo, "RequiredLevel"))

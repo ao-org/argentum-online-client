@@ -26,6 +26,21 @@ Attribute VB_Name = "Protocol_Writes"
 '
 '
 Option Explicit
+
+Private Enum eActionRateLimitType
+    ActionTalk = 1
+    ActionAttack = 2
+    ActionLeftClick = 3
+    ActionUseItem = 4
+    ActionUseItemU = 5
+    ActionHideSkill = 6
+    ActionWorkLeftClick = 7
+    ActionWalk = 8
+    ActionMeditate = 9
+    [LastAction]
+End Enum
+Private lastActionSentTick(1 To eActionRateLimitType.LastAction - 1) As Long
+Private actionLimiterReady As Boolean
 #If DIRECT_PLAY = 0 Then
     Private Writer As Network.Writer
 
@@ -35,6 +50,7 @@ End Function
 
 Public Sub Initialize()
     Set Writer = New Network.Writer
+    Call ResetActionRateLimiter
 End Sub
 
 #Else
@@ -45,32 +61,144 @@ Public Sub Clear()
     Call Writer.Clear
 End Sub
 
+Public Sub ResetActionRateLimiter()
+    On Error GoTo ResetActionRateLimiter_Err
+
+    Dim i As Long
+    For i = 1 To UBound(lastActionSentTick)
+        lastActionSentTick(i) = 0
+    Next i
+
+    actionLimiterReady = True
+    Exit Sub
+
+ResetActionRateLimiter_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.ResetActionRateLimiter", Erl)
+End Sub
+
+Private Sub EnsureActionRateLimiter()
+    If actionLimiterReady Then Exit Sub
+    Call ResetActionRateLimiter
+End Sub
+
+Private Function GetCurrentActionTick() As Long
+    GetCurrentActionTick = GetTickCountRaw()
+End Function
+
+Private Function HasReachedTick(ByVal nowTick As Long, ByVal lastTick As Long, ByVal intervalMs As Long) As Boolean
+    If lastTick = 0 Or intervalMs <= 0 Then
+        HasReachedTick = True
+        Exit Function
+    End If
+
+    HasReachedTick = (TicksElapsed(lastTick, nowTick) >= CDbl(intervalMs))
+End Function
+
+Private Function GetWalkIntervalMs() As Long
+    GetWalkIntervalMs = gIntervals.Walk
+    If UserCharIndex > 0 Then
+        If charlist(UserCharIndex).Speeding > 0 Then
+            GetWalkIntervalMs = CLng(CDbl(GetWalkIntervalMs) / CDbl(charlist(UserCharIndex).Speeding))
+        End If
+    End If
+End Function
+
+Private Function GetActionIntervalMs(ByVal actionType As eActionRateLimitType) As Long
+    Select Case actionType
+        Case ActionAttack
+            GetActionIntervalMs = gIntervals.Hit
+        Case ActionUseItem
+            GetActionIntervalMs = gIntervals.UseItemClick
+        Case ActionUseItemU
+            GetActionIntervalMs = gIntervals.UseItemKey
+        Case ActionHideSkill
+            GetActionIntervalMs = gIntervals.Hide
+        Case ActionWorkLeftClick
+            GetActionIntervalMs = gIntervals.Magic
+        Case ActionTalk
+            GetActionIntervalMs = gIntervals.Talk
+        Case ActionLeftClick
+            GetActionIntervalMs = gIntervals.LeftClick
+        Case ActionWalk
+            GetActionIntervalMs = GetWalkIntervalMs()
+        Case ActionMeditate
+            GetActionIntervalMs = gIntervals.Meditate
+    End Select
+End Function
+
+Private Function CanSendActionNow(ByVal actionType As eActionRateLimitType, ByVal nowTick As Long) As Boolean
+    CanSendActionNow = HasReachedTick(nowTick, lastActionSentTick(actionType), GetActionIntervalMs(actionType))
+End Function
+
+Private Function ShouldBlockAction(ByVal actionType As eActionRateLimitType) As Boolean
+    Dim nowTick As Long
+
+    Call EnsureActionRateLimiter
+
+    nowTick = GetCurrentActionTick()
+    ShouldBlockAction = Not CanSendActionNow(actionType, nowTick)
+End Function
+
+Private Function ShouldRateLimitTalk(ByVal chat As String) As Boolean
+    ShouldRateLimitTalk = (LenB(chat) > 0)
+End Function
+
+Private Sub MarkActionSent(ByVal actionType As eActionRateLimitType)
+    lastActionSentTick(actionType) = GetCurrentActionTick()
+End Sub
+
+Private Sub StartAttackCooldownVisual()
+    Dim attackIntervalMs As Long
+
+    attackIntervalMs = GetActionIntervalMs(ActionAttack)
+    If attackIntervalMs <= 0 Then Exit Sub
+
+    Call cooldown_ataque.Cooldown_Initialize(attackIntervalMs, 0)
+End Sub
+
 #If PYMMO = 1 Then
-    ''
-    ' Writes the "LoginExistingChar" message to the outgoing data buffer.
-    '
-    ' @remarks  The data is not actually sent until the buffer is properly flushed.
-    Public Sub WriteLoginExistingChar()
-        '<EhHeader>
-        On Error GoTo WriteLoginExistingChar_Err
-        '</EhHeader>
-        Call Writer.WriteInt16(ClientPacketID.eLoginExistingChar)
-        Call Writer.WriteString8(encrypted_session_token)
-        Dim encrypted_username_b64 As String
-        encrypted_username_b64 = AO20CryptoSysWrapper.Encrypt(cnvHexStrFromBytes(public_key), userName)
-        Call Writer.WriteString8(encrypted_username_b64)
-        Call Writer.WriteInt8(App.Major)
-        Call Writer.WriteInt8(App.Minor)
-        Call Writer.WriteInt8(App.Revision)
-        Call Writer.WriteString8(CheckMD5)
-        Call modNetwork.send(Writer)
-        '<EhFooter>
+''
+' Writes the "LoginExistingChar" message to the outgoing data buffer.
+'
+' Format (PYMMO=1):
+'   Int16  packetId
+'   String8 encrypted_session_token
+'   Int32  char_id
+'   Int8   app_major
+'   Int8   app_minor
+'   Int8   app_revision
+'   String8 md5
+'
+Public Sub WriteLoginExistingChar()
+    On Error GoTo WriteLoginExistingChar_Err
+
+    Dim char_id As Long
+    char_id = GetSelectedCharIDFromName(userName)
+    Debug.Assert char_id > 0
+
+    If char_id <= 0 Then
+        frmDebug.add_text_tracebox "WriteLoginExistingChar: Character ID not found."
         Exit Sub
+    End If
+
+    Call Writer.WriteInt16(ClientPacketID.eLoginExistingChar)
+    Call Writer.WriteString8(encrypted_session_token)
+
+    Call Writer.WriteInt32(char_id)
+    Call Writer.WriteInt8(App.Major)
+    Call Writer.WriteInt8(App.Minor)
+    Call Writer.WriteInt8(App.Revision)
+    Call Writer.WriteString8(CheckMD5)
+
+    Call modNetwork.send(Writer)
+    Exit Sub
+
 WriteLoginExistingChar_Err:
-        Call Writer.Clear
-        Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLoginExistingChar", Erl)
-        '</EhFooter>
-    End Sub
+    Call Writer.Clear
+    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLoginExistingChar", Erl)
+End Sub
+
+
 
 ''
 ' Writes the "LoginNewChar" message to the outgoing data buffer.
@@ -140,21 +268,19 @@ End Sub
 Public Sub WriteDeleteCharacter()
 End Sub
 
-''
-' Writes the "LoginExistingChar" message to the outgoing data buffer.
-'
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteLoginExistingChar()
-        '<EhHeader>
-        On Error GoTo WriteLoginExistingChar_Err
-        
-        '</EhHeader>
-100     Call Writer.WriteInt16(ClientPacketID.eLoginExistingChar)
 
-104     Call Writer.WriteString8(userName)
-            
-120     Call modNetwork.send(Writer)
-        '<EhFooter>
+Public Sub WriteLoginExistingChar()
+        Dim char_id As Long
+        char_id = GetSelectedCharIDFromName(userName)
+        Debug.Assert char_id > 0
+        If char_id <= 0 Then
+            frmDebug.add_text_tracebox "WriteLoginExistingChar: Character ID not found."
+            Exit Sub
+        End If
+        Call Writer.WriteInt16(ClientPacketID.eLoginExistingChar)
+        Call Writer.WriteInt32(char_id)
+        Call Writer.WriteString8(userName)
+        Call modNetwork.send(Writer)
         Exit Sub
 
 WriteLoginExistingChar_Err:
@@ -200,11 +326,19 @@ Public Sub WriteTalk(ByVal chat As String)
     '<EhHeader>
     On Error GoTo WriteTalk_Err
     '</EhHeader>
+    If ShouldRateLimitTalk(chat) Then
+        If ShouldBlockAction(eActionRateLimitType.ActionTalk) Then
+            Exit Sub
+        End If
+    End If
     Call Writer.WriteInt16(ClientPacketID.eTalk)
     Call Writer.WriteString8(chat)
     packetCounters.TS_Talk = packetCounters.TS_Talk + 1
     Call Writer.WriteInt32(packetCounters.TS_Talk)
     Call modNetwork.send(Writer)
+    If ShouldRateLimitTalk(chat) Then
+        Call MarkActionSent(ActionTalk)
+    End If
     '<EhFooter>
     Exit Sub
 WriteTalk_Err:
@@ -260,22 +394,20 @@ End Sub
 '
 ' @param    heading The direction in wich the user is moving.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteWalk(ByVal Heading As E_Heading)
-    '<EhHeader>
+Public Function WriteWalk(ByVal Heading As E_Heading) As Boolean
     On Error GoTo WriteWalk_Err
-    '</EhHeader>
     Call Writer.WriteInt16(ClientPacketID.eWalk)
     Call Writer.WriteInt8(Heading)
     packetCounters.TS_Walk = packetCounters.TS_Walk + 1
     Call Writer.WriteInt32(packetCounters.TS_Walk)
     Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
+    Call MarkActionSent(ActionWalk)
+    WriteWalk = True
+    Exit Function
 WriteWalk_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteWalk", Erl)
-    '</EhFooter>
-End Sub
+End Function
 
 ''
 ' Writes the "RequestPositionUpdate" message to the outgoing data buffer.
@@ -299,21 +431,27 @@ End Sub
 ' Writes the "Attack" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteAttack()
+Public Function WriteAttack() As Boolean
     '<EhHeader>
     On Error GoTo WriteAttack_Err
     '</EhHeader>
+    If ShouldBlockAction(eActionRateLimitType.ActionAttack) Then
+        Exit Function
+    End If
     Call Writer.WriteInt16(ClientPacketID.eAttack)
     packetCounters.TS_Attack = packetCounters.TS_Attack + 1
     Call Writer.WriteInt32(packetCounters.TS_Attack)
     Call modNetwork.send(Writer)
+    Call MarkActionSent(ActionAttack)
+    Call StartAttackCooldownVisual
+    WriteAttack = True
     '<EhFooter>
-    Exit Sub
+    Exit Function
 WriteAttack_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAttack", Erl)
     '</EhFooter>
-End Sub
+End Function
 
 ''
 ' Writes the "PickUp" message to the outgoing data buffer.
@@ -734,6 +872,9 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
     '<EhHeader>
     On Error GoTo WriteLeftClick_Err
     '</EhHeader>
+    If ShouldBlockAction(eActionRateLimitType.ActionLeftClick) Then
+        Exit Sub
+    End If
     Call Writer.WriteInt16(ClientPacketID.eLeftClick)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
@@ -741,6 +882,7 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
     'frmdebug.add_text_tracebox packetCounters.TS_LeftClick
     Call Writer.WriteInt32(packetCounters.TS_LeftClick)
     Call modNetwork.send(Writer)
+    Call MarkActionSent(ActionLeftClick)
     '<EhFooter>
     Exit Sub
 WriteLeftClick_Err:
@@ -759,10 +901,14 @@ Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
     '<EhHeader>
     On Error GoTo WriteDoubleClick_Err
     '</EhHeader>
+    If ShouldBlockAction(eActionRateLimitType.ActionLeftClick) Then
+        Exit Sub
+    End If
     Call Writer.WriteInt16(ClientPacketID.eDoubleClick)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
     Call modNetwork.send(Writer)
+    Call MarkActionSent(ActionLeftClick)
     '<EhFooter>
     Exit Sub
 WriteDoubleClick_Err:
@@ -780,11 +926,19 @@ Public Sub WriteWork(ByVal Skill As eSkill)
     '<EhHeader>
     On Error GoTo WriteWork_Err
     '</EhHeader>
+    If Skill = eSkill.Ocultarse Then
+        If ShouldBlockAction(eActionRateLimitType.ActionHideSkill) Then
+            Exit Sub
+        End If
+    End If
     Call Writer.WriteInt16(ClientPacketID.eWork)
     Call Writer.WriteInt8(Skill)
     packetCounters.TS_Work = packetCounters.TS_Work + 1
     Call Writer.WriteInt32(packetCounters.TS_Work)
     Call modNetwork.send(Writer)
+    If Skill = eSkill.Ocultarse Then
+        Call MarkActionSent(ActionHideSkill)
+    End If
     '<EhFooter>
     Exit Sub
 WriteWork_Err:
@@ -816,53 +970,55 @@ End Sub
 '
 ' @param    slot Invetory slot where the item to use is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteUseItem(ByVal Slot As Byte)
-    'If LastUseItemTimeStamp > 0 Then
-    '    If (GetTickCount - LastUseItemTimeStamp) < 100 Then Exit Sub
-    'End If
-    'LastUseItemTimeStamp = GetTickCount
+Public Function WriteUseItem(ByVal Slot As Byte) As Boolean
     '<EhHeader>
     On Error GoTo WriteUseItem_Err
     '</EhHeader>
+    If ShouldBlockAction(eActionRateLimitType.ActionUseItem) Then
+        Exit Function
+    End If
     Call Writer.WriteInt16(ClientPacketID.eUseItem)
     Call Writer.WriteInt8(Slot)
     Call Writer.WriteInt8(ActiveInventoryTab = eInventory)
     packetCounters.TS_UseItem = packetCounters.TS_UseItem + 1
     Call Writer.WriteInt32(packetCounters.TS_UseItem)
     Call modNetwork.send(Writer)
+    Call MarkActionSent(ActionUseItem)
+    WriteUseItem = True
     '<EhFooter>
-    Exit Sub
+    Exit Function
 WriteUseItem_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUseItem", Erl)
     '</EhFooter>
-End Sub
+End Function
 
 ''
 ' Writes the "UseItem" message to the outgoing data buffer.
 '
 ' @param    slot Invetory slot where the item to use is.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteUseItemU(ByVal Slot As Byte)
-    'If LastUseItemTimeStampU > 0 Then
-    '    If (GetTickCount - LastUseItemTimeStampU) < 100 Then Exit Sub
-    'End If
-    'LastUseItemTimeStampU = GetTickCount
+Public Function WriteUseItemU(ByVal Slot As Byte) As Boolean
     '<EhHeader>
     On Error GoTo WriteUseItemU_Err
     '</EhHeader>
+    If ShouldBlockAction(eActionRateLimitType.ActionUseItemU) Then
+        Exit Function
+    End If
     Call Writer.WriteInt16(ClientPacketID.eUseItemU)
     Call Writer.WriteInt8(Slot)
     packetCounters.TS_UseItemU = packetCounters.TS_UseItemU + 1
     Call Writer.WriteInt32(packetCounters.TS_UseItemU)
     Call modNetwork.send(Writer)
+    Call MarkActionSent(ActionUseItemU)
+    WriteUseItemU = True
     '<EhFooter>
-    Exit Sub
+    Exit Function
 WriteUseItemU_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUseItemU", Erl)
     '</EhFooter>
-End Sub
+End Function
 
 ''
 ' Writes the "UseItem" message to the outgoing data buffer.
@@ -974,10 +1130,15 @@ End Sub
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @param    skill The skill which the user attempts to use.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As eSkill)
+Public Function WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As eSkill) As Boolean
     '<EhHeader>
     On Error GoTo WriteWorkLeftClick_Err
     '</EhHeader>
+    If Skill = eSkill.magia Then
+        If ShouldBlockAction(eActionRateLimitType.ActionWorkLeftClick) Then
+            Exit Function
+        End If
+    End If
     Call Writer.WriteInt16(ClientPacketID.eWorkLeftClick)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
@@ -985,13 +1146,17 @@ Public Sub WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill As e
     packetCounters.TS_WorkLeftClick = packetCounters.TS_WorkLeftClick + 1
     Call Writer.WriteInt32(packetCounters.TS_WorkLeftClick)
     Call modNetwork.send(Writer)
+    If Skill = eSkill.magia Then
+        Call MarkActionSent(ActionWorkLeftClick)
+    End If
+    WriteWorkLeftClick = True
     '<EhFooter>
-    Exit Sub
+    Exit Function
 WriteWorkLeftClick_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Protocol_Writes.Protocol_Writes.WriteWorkLeftClick", Erl)
     '</EhFooter>
-End Sub
+End Function
 
 Public Sub WriteStartAutomatedAction(ByVal x As Byte, ByVal y As Byte, ByVal skill As eSkill)
     On Error GoTo WriteStartAutomatedAction_Err
@@ -1960,8 +2125,10 @@ Public Sub WriteMeditate()
     On Error GoTo WriteMeditate_Err
     '</EhHeader>
     If UserMoving Then Exit Sub
+    If ShouldBlockAction(eActionRateLimitType.ActionMeditate) Then Exit Sub
     Call Writer.WriteInt16(ClientPacketID.eMeditate)
     Call modNetwork.send(Writer)
+    Call MarkActionSent(ActionMeditate)
     '<EhFooter>
     Exit Sub
 WriteMeditate_Err:
@@ -3180,6 +3347,17 @@ WriteMensajeUser_Err:
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteMensajeUser", Erl)
     '</EhFooter>
 End Sub
+Public Sub WriteAntiMacroMessage(ByVal userName As String, ByVal mensaje As String)
+    On Error GoTo WriteAntiMacroMessage_Err
+    Call Writer.WriteInt16(ClientPacketID.eAntiMacroMessage)
+    Call Writer.WriteString8(userName)
+    Call Writer.WriteString8(mensaje)
+    Call modNetwork.send(Writer)
+    Exit Sub
+WriteAntiMacroMessage_Err:
+    Call Writer.Clear
+    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteAntiMacroMessage", Erl)
+End Sub
 
 ''
 ' Writes the "EditChar" message to the outgoing data buffer.
@@ -4379,25 +4557,6 @@ WriteKillAllNearbyNPCs_Err:
     '</EhFooter>
 End Sub
 
-''
-' Writes the "LastIP" message to the outgoing data buffer.
-'
-' @param    username The user whose last IPs are requested.
-' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteLastIP(ByVal userName As String)
-    '<EhHeader>
-    On Error GoTo WriteLastIP_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eLastIP)
-    Call Writer.WriteString8(userName)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteLastIP_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLastIP", Erl)
-    '</EhFooter>
-End Sub
 
 ''
 ' Writes the "ChangeMOTD" message to the outgoing data buffer.

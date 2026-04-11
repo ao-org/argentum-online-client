@@ -90,6 +90,21 @@ Public Function GetBuildFlags() As String
         s = s & "DXUI=0; "
     #End If
 
+    '--- BATTLESERVER
+    #If BATTLESERVER = 1 Then
+        s = s & "BATTLESERVER =1; "
+    #Else
+        s = s & "BATTLESERVER =0; "
+    #End If
+    
+    
+    '--- ENABLE_BASS
+    #If ENABLE_BASS = 1 Then
+        s = s & "ENABLE_BASS =1; "
+    #Else
+        s = s & "ENABLE_BASS =0; "
+    #End If
+    
     GetBuildFlags = Trim$(s)
 End Function
 

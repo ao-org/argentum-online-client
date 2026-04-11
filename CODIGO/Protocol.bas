@@ -1203,25 +1203,29 @@ End Sub
 
 Private Sub HandleIntervals()
     On Error GoTo HandleIntervals_Err
-    gIntervals.Bow = Reader.ReadInt32()
-    gIntervals.Walk = Reader.ReadInt32()
     gIntervals.Hit = Reader.ReadInt32()
-    gIntervals.HitMagic = Reader.ReadInt32()
+    gIntervals.Bow = Reader.ReadInt32()
     gIntervals.Magic = Reader.ReadInt32()
-    gIntervals.MagicHit = Reader.ReadInt32()
-    gIntervals.HitUseItem = Reader.ReadInt32()
     gIntervals.ExtractWork = Reader.ReadInt32()
     gIntervals.BuildWork = Reader.ReadInt32()
+    gIntervals.Walk = Reader.ReadInt32()
+    gIntervals.DropItem = Reader.ReadInt32()
     gIntervals.UseItemKey = Reader.ReadInt32()
     gIntervals.UseItemClick = Reader.ReadInt32()
-    gIntervals.DropItem = Reader.ReadInt32()
+    gIntervals.HitMagic = Reader.ReadInt32()
+    gIntervals.MagicHit = Reader.ReadInt32()
+    gIntervals.HitUseItem = Reader.ReadInt32()
+    gIntervals.Hide = Reader.ReadInt32()
+    gIntervals.Talk = Reader.ReadInt32()
+    gIntervals.LeftClick = Reader.ReadInt32()
+    gIntervals.Meditate = Reader.ReadInt32()
     'Set the intervals of timers
     Call MainTimer.SetInterval(TimersIndex.Attack, gIntervals.Hit)
+    Call MainTimer.SetInterval(TimersIndex.Arrows, gIntervals.Bow)
+    Call MainTimer.SetInterval(TimersIndex.CastSpell, gIntervals.Magic)
     Call MainTimer.SetInterval(TimersIndex.UseItemWithU, gIntervals.UseItemKey)
     Call MainTimer.SetInterval(TimersIndex.UseItemWithDblClick, gIntervals.UseItemClick)
     Call MainTimer.SetInterval(TimersIndex.SendRPU, INT_SENTRPU)
-    Call MainTimer.SetInterval(TimersIndex.CastSpell, gIntervals.Magic)
-    Call MainTimer.SetInterval(TimersIndex.Arrows, gIntervals.Bow)
     Call MainTimer.SetInterval(TimersIndex.CastAttack, gIntervals.MagicHit)
     Call MainTimer.SetInterval(TimersIndex.AttackSpell, gIntervals.HitMagic)
     Call MainTimer.SetInterval(TimersIndex.AttackUse, gIntervals.HitUseItem)
@@ -1663,7 +1667,10 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             copiar = False
             duracion = 20
         Case "QUESTFIN"
-            chat = QuestList(ReadField(2, chat, Asc("*"))).DescFinal
+            Dim questIndex As Integer
+            questIndex = val(ReadField(2, chat, Asc("*")))
+            chat = QuestList(questIndex).DescFinal
+            Call PlayQuestFinalDescAudio(questIndex)
             copiar = False
             duracion = 20
         Case "NOCONSOLA" ' El chat no sale en la consola
@@ -2210,12 +2217,44 @@ Private Sub HandleCharacterCreate()
         .Meditating = Fx <> 0
         Dim NombreYClan As String
         NombreYClan = Reader.ReadString8()   '
-        Dim Pos As Integer
-        Pos = InStr(NombreYClan, "<")
-        If Pos = 0 Then Pos = InStr(NombreYClan, "[")
-        If Pos = 0 Then Pos = Len(NombreYClan) + 2
-        .nombre = Left$(NombreYClan, Pos - 2)
-        .clan = mid$(NombreYClan, Pos)
+        Dim posAlias As Integer
+        Dim posClan As Integer
+        Dim posAliasEnd As Integer
+        
+        ' Find positions of delimiters
+        posAlias = InStr(NombreYClan, "{")
+        posAliasEnd = InStr(NombreYClan, "}")
+        posClan = InStr(NombreYClan, "<")
+        
+        ' Extract name (everything before the alias)
+        If posAlias > 0 Then
+            .nombre = Trim$(Left$(NombreYClan, posAlias - 1))
+        Else
+            If posClan = 0 Then
+                .nombre = NombreYClan
+            Else
+                .nombre = Trim$(Left$(NombreYClan, posClan - 1))
+            End If
+        End If
+        
+        ' Extract alias (between { and })
+        If posAlias > 0 And posAliasEnd > 0 Then
+            .alias = mid$(NombreYClan, posAlias + 1, posAliasEnd - posAlias - 1)
+        Else
+            .alias = vbNullString
+        End If
+        
+        ' Extract clan (between < and >) or special status (between [ and ])
+        If posClan > 0 Then
+            ' Has clan: <ClanName>
+            .clan = "<" & mid$(NombreYClan, posClan + 1, InStr(NombreYClan, ">") - posClan - 1) & ">"
+        ElseIf InStr(NombreYClan, "[CONSULTA]") > 0 Then
+            ' Has special status
+            .clan = vbNullString
+            ' You might want a separate .consulta flag here
+        Else
+            .clan = vbNullString
+        End If
         .status = Reader.ReadInt8()
         privs = Reader.ReadInt8()
         ParticulaFx = Reader.ReadInt8()
@@ -2344,6 +2383,8 @@ Private Sub HandleCharacterRemove()
     Call EraseChar(charindex, fueWarp)
     Call RefreshAllChars
     Call ao20audio.StopAllWavsMatchingLabel("meditate" & CStr(charindex))
+    ' Stop any active sailing loop for removed characters.
+    Call ao20audio.StopAllWavsMatchingLabel("sailing_" & CStr(charindex))
     Exit Sub
 HandleCharacterRemove_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterRemove", Erl)
@@ -2430,10 +2471,15 @@ Private Sub HandleCharacterChange()
         Dim keepStartIdle    As Long
         Dim newGi            As Long
         Dim flags            As Byte
+        Dim wasNavegando     As Boolean: wasNavegando = .Navegando
         ' ============================================
         flags = Reader.ReadInt8()
         .Idle = (flags And &O1)
         .Navegando = (flags And &O2)
+        ' Navigation ended: stop the persistent sailing loop label.
+        If wasNavegando And Not .Navegando Then
+            Call ao20audio.StopAllWavsMatchingLabel("sailing_" & CStr(charindex))
+        End If
         TempInt = Reader.ReadInt16()
         If TempInt < LBound(BodyData()) Or TempInt > UBound(BodyData()) Then
             .Body = BodyData(0)
@@ -3071,23 +3117,72 @@ HandleCreateFX_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCreateFX", Erl)
 End Sub
 
-''
-' Handles the CharAtaca message.
 Private Sub HandleCharAtaca()
     On Error GoTo HandleCharAtaca_Err
+
     Dim NpcIndex    As Integer
     Dim VictimIndex As Integer
     Dim danio       As Long
     Dim AnimAttack  As Integer
     Dim AnimAttack2 As Integer
+    Dim oldWalk     As Grh
+    Dim keepStart   As Long
+
     NpcIndex = Reader.ReadInt16()
     VictimIndex = Reader.ReadInt16()
     danio = Reader.ReadInt32()
-    Dim oldWalk   As Grh
-    Dim keepStart As Long
+
+    ' --- Guardrails: indices de charlist ---
+    If NpcIndex < LBound(charlist) Or NpcIndex > UBound(charlist) Then
+        Call RegistrarError(9, "NpcIndex fuera de rango: " & NpcIndex, "Protocol.HandleCharAtaca", Erl)
+        Exit Sub
+    End If
+
+    If VictimIndex < LBound(charlist) Or VictimIndex > UBound(charlist) Then
+        Call RegistrarError(9, "VictimIndex fuera de rango: " & VictimIndex, "Protocol.HandleCharAtaca", Erl)
+        Exit Sub
+    End If
+
+    ' Si UserCharIndex puede ser 0/no seteado:
+    If UserCharIndex < LBound(charlist) Or UserCharIndex > UBound(charlist) Then
+        Call RegistrarError(9, "UserCharIndex fuera de rango: " & UserCharIndex, "Protocol.HandleCharAtaca", Erl)
+        Exit Sub
+    End If
+
     With charlist(NpcIndex)
+
+        ' --- Guardrails: heading ---
+        ' Ajustá estos bounds a tu enum real (muchos AO usan 1..4).
+        If .Heading < 1 Or .Heading > 4 Then
+            Call RegistrarError(9, "Heading invalido: " & .Heading & " (NpcIndex=" & NpcIndex & ")", "Protocol.HandleCharAtaca", Erl)
+            Exit Sub
+        End If
+
+        ' --- Guardrails: npc number y npcdata ---
+        If .NpcNumber < LBound(NpcData) Or .NpcNumber > UBound(NpcData) Then
+            Call RegistrarError(9, "NpcNumber fuera de rango: " & .NpcNumber & " (NpcIndex=" & NpcIndex & ")", "Protocol.HandleCharAtaca", Erl)
+            Exit Sub
+        End If
+
         AnimAttack = NpcData(.NpcNumber).LandAttackAnimation
         AnimAttack2 = NpcData(.NpcNumber).WaterAttackAnimation
+
+        ' --- Guardrails: body ids (BodyData) ---
+        If AnimAttack > 0 Then
+            If AnimAttack < LBound(BodyData) Or AnimAttack > UBound(BodyData) Then
+                Call RegistrarError(9, "LandAttackAnimation fuera de rango: " & AnimAttack & " (NpcNumber=" & .NpcNumber & ")", "Protocol.HandleCharAtaca", Erl)
+                AnimAttack = 0
+            End If
+        End If
+
+        If AnimAttack2 > 0 Then
+            If AnimAttack2 < LBound(BodyData) Or AnimAttack2 > UBound(BodyData) Then
+                Call RegistrarError(9, "WaterAttackAnimation fuera de rango: " & AnimAttack2 & " (NpcNumber=" & .NpcNumber & ")", "Protocol.HandleCharAtaca", Erl)
+                AnimAttack2 = 0
+            End If
+        End If
+
+        ' --- resto de tu lógica igual ---
         If AnimAttack > 0 Then
             oldWalk = .Body.Walk(.Heading)
             .AnimatingBody = AnimAttack
@@ -3146,13 +3241,26 @@ Private Sub HandleCharAtaca()
                 .Arma.WeaponWalk(.Heading).Loops = 0
             End If
         End If
+
     End With
-    'renderizo sangre si está sin montar ni navegar
-    If danio > 0 And charlist(VictimIndex).Navegando = 0 Then Call SetCharacterFx(VictimIndex, 14, 0)
-    If charlist(UserCharIndex).Muerto = False And EstaPCarea(NpcIndex) Then
-        Call ao20audio.PlayWav(CStr(IIf(danio = -1, 2, 10)), False, ao20audio.ComputeCharFxVolume(charlist(NpcIndex).Pos), ao20audio.ComputeCharFxPan(charlist(NpcIndex).Pos))
+
+    ' --- Guardrails: victim access ---
+    If danio > 0 Then
+        If charlist(VictimIndex).Navegando = 0 Then
+            Call SetCharacterFx(VictimIndex, 14, 0)
+        End If
     End If
+
+    If charlist(UserCharIndex).Muerto = False Then
+        If EstaPCarea(NpcIndex) Then
+            Call ao20audio.PlayWav(CStr(IIf(danio = -1, 2, 10)), False, _
+                ao20audio.ComputeCharFxVolume(charlist(NpcIndex).Pos), _
+                ao20audio.ComputeCharFxPan(charlist(NpcIndex).Pos))
+        End If
+    End If
+
     Exit Sub
+
 HandleCharAtaca_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharAtaca", Erl)
 End Sub
@@ -3884,7 +3992,7 @@ Private Sub HandleMiniStats()
         .CiudadanosMatados = Reader.ReadInt32()
         .CriminalesMatados = Reader.ReadInt32()
         .Alineacion = Reader.ReadInt8()
-        .NpcsMatados = Reader.ReadInt16()
+        .NpcsMatados = Reader.ReadInt32()
         .Clase = ListaClases(Reader.ReadInt8())
         .PenaCarcel = Reader.ReadInt32()
         .VecesQueMoriste = Reader.ReadInt32()
@@ -4977,7 +5085,8 @@ Private Sub HandleQuestDetails()
     Dim QuestIndex     As Integer
     Dim RequiredLevel As Byte
     Dim LimitLevel As Byte
-    Dim RequiredClass As Byte
+    Dim RequiredClass() As Byte
+    Dim RequiredClassesCount As Byte
     Dim RequiredQuest As Integer
     Dim subelemento As ListItem
     Dim cantidadobjs As Integer
@@ -4999,17 +5108,26 @@ Private Sub HandleQuestDetails()
     FrmQuests.lblRepetible.visible = QuestList(QuestIndex).Repetible = 1
     RequiredLevel = Reader.ReadInt8
     LimitLevel = Reader.ReadInt8
-    RequiredClass = Reader.ReadInt8
+    RequiredClassesCount = Reader.ReadInt8
+    If RequiredClassesCount > 0 Then
+        ReDim RequiredClass(1 To RequiredClassesCount)
+        For i = 1 To RequiredClassesCount
+            RequiredClass(i) = Reader.ReadInt8
+        Next i
+    End If
     RequiredQuest = Reader.ReadInt16
-    FrmQuests.detalle.Text = QuestList(QuestIndex).desc
+    FrmQuests.detalle.Text = GetQuestDescForUI(questIndex)
+    Call PlayQuestDescAudio(questIndex)
     If RequiredLevel > 1 Then
         requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & RequiredLevel & vbCrLf
     End If
     If LimitLevel <> 0 Then
         requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_MAXIMO") & LimitLevel & vbCrLf
     End If
-    If RequiredClass <> 0 And RequiredClass <= 12 Then
-        requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(RequiredClass) & vbCrLf
+    If RequiredClassesCount > 0 And RequiredClassesCount <= 12 Then
+        For i = 1 To RequiredClassesCount
+            requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_CLASE") & ListaClases(RequiredClass(i)) & vbCrLf
+        Next i
     End If
     If RequiredQuest <> 0 Then
         requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_REQUERIDA") & QuestList(RequiredQuest).nombre & vbCrLf
@@ -5154,97 +5272,126 @@ Public Sub HandleQuestListSend()
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleQuestListSend", Erl)
 End Sub
-
 Public Sub HandleNpcQuestListSend()
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-    'Recibe y maneja el paquete QuestListSend del servidor.
-    'Last modified: 31/01/2010 by Amraphen
-    '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     On Error GoTo errhandler
-    Dim tmpStr         As String
-    Dim tmpByte        As Byte
-    Dim QuestEmpezada  As Boolean
-    Dim i              As Integer
-    Dim J              As Byte
-    Dim cantidadnpc    As Integer
-    Dim NpcIndex       As Integer
-    Dim cantidadobj    As Integer
-    Dim ObjIndex       As Integer
-    Dim QuestIndex     As Integer
-    Dim estado         As Byte
-    Dim LevelRequerido As Byte
-    Dim QuestRequerida As Integer
-    Dim CantidadQuest  As Byte
-    Dim Repetible      As Boolean
-    Dim subelemento    As ListItem
+
+    Dim tmpByte            As Byte
+    Dim requiredNpcCount   As Byte
+    Dim requiredObjCount   As Byte
+    Dim requiredSpellCount As Byte
+    Dim rewardObjCount     As Byte
+    Dim i                  As Integer
+    Dim J                  As Byte
+    Dim QuestIndex         As Integer
+    Dim estado             As Byte
+    Dim CantidadQuest      As Byte
+    Dim Repetible          As Boolean
+    Dim subelemento        As ListItem
+    Dim RequiredClassCount As Byte
+
     FrmQuestInfo.ListView2.ListItems.Clear
     FrmQuestInfo.ListView1.ListItems.Clear
+    FrmQuestInfo.ListViewQuest.ListItems.Clear
+
     CantidadQuest = Reader.ReadInt8
+
     For J = 1 To CantidadQuest
         QuestIndex = Reader.ReadInt16
+
+        If QuestIndex < LBound(QuestList) Or QuestIndex > UBound(QuestList) Then
+            GoTo errhandler
+        End If
+
         FrmQuestInfo.titulo.Caption = QuestList(QuestIndex).nombre
+
         QuestList(QuestIndex).RequiredLevel = Reader.ReadInt8
         QuestList(QuestIndex).RequiredQuest = Reader.ReadInt16
-        QuestList(QuestIndex).RequiredClass = Reader.ReadInt8
+
+        RequiredClassCount = Reader.ReadInt8
+        QuestList(QuestIndex).RequiredClassesCount = RequiredClassCount
+
+        If RequiredClassCount > 0 Then
+            ReDim QuestList(QuestIndex).RequiredClass(1 To RequiredClassCount)
+            For i = 1 To RequiredClassCount
+                QuestList(QuestIndex).RequiredClass(i) = Reader.ReadInt8
+            Next i
+        Else
+            ReDim QuestList(QuestIndex).requiredClass(0)
+        End If
+
         QuestList(QuestIndex).LimitLevel = Reader.ReadInt8
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then 'Hay NPCs
-            If tmpByte > 5 Then
+
+        requiredNpcCount = Reader.ReadInt8
+        If requiredNpcCount > 0 Then
+            If requiredNpcCount > 5 Then
                 FrmQuestInfo.ListView1.FlatScrollBar = False
                 FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1550
             Else
                 FrmQuestInfo.ListView1.FlatScrollBar = True
                 FrmQuestInfo.ListView1.ColumnHeaders.Item(1).Width = 1800
             End If
-            ReDim QuestList(QuestIndex).RequiredNPC(1 To tmpByte)
-            For i = 1 To tmpByte
+
+            ReDim QuestList(QuestIndex).RequiredNPC(1 To requiredNpcCount)
+            For i = 1 To requiredNpcCount
                 QuestList(QuestIndex).RequiredNPC(i).Amount = Reader.ReadInt16
                 QuestList(QuestIndex).RequiredNPC(i).NpcIndex = Reader.ReadInt16
             Next i
         Else
             ReDim QuestList(QuestIndex).RequiredNPC(0)
         End If
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then 'Hay OBJs
-            ReDim QuestList(QuestIndex).RequiredOBJ(1 To tmpByte)
-            For i = 1 To tmpByte
+
+        requiredObjCount = Reader.ReadInt8
+        If requiredObjCount > 0 Then
+            ReDim QuestList(QuestIndex).RequiredOBJ(1 To requiredObjCount)
+            For i = 1 To requiredObjCount
                 QuestList(QuestIndex).RequiredOBJ(i).Amount = Reader.ReadInt16
                 QuestList(QuestIndex).RequiredOBJ(i).ObjIndex = Reader.ReadInt16
             Next i
         Else
             ReDim QuestList(QuestIndex).RequiredOBJ(0)
         End If
-        tmpByte = Reader.ReadInt8 ' required spells
-        If tmpByte Then
-            ReDim QuestList(QuestIndex).RequiredSpellList(1 To tmpByte)
-            For i = 1 To tmpByte
+
+        requiredSpellCount = Reader.ReadInt8
+        If requiredSpellCount > 0 Then
+            ReDim QuestList(QuestIndex).RequiredSpellList(1 To requiredSpellCount)
+            For i = 1 To requiredSpellCount
                 QuestList(QuestIndex).RequiredSpellList(i) = Reader.ReadInt16
             Next i
         Else
             ReDim QuestList(QuestIndex).RequiredSpellList(0)
         End If
+
         QuestList(QuestIndex).RequiredSkill.SkillType = Reader.ReadInt8
         QuestList(QuestIndex).RequiredSkill.RequiredValue = Reader.ReadInt8
+
         QuestList(QuestIndex).RewardGLD = Reader.ReadInt32
         QuestList(QuestIndex).RewardEXP = Reader.ReadInt32
-        tmpByte = Reader.ReadInt8
-        If tmpByte Then
-            ReDim QuestList(QuestIndex).RewardOBJ(1 To tmpByte)
-            For i = 1 To tmpByte
+
+        rewardObjCount = Reader.ReadInt8
+        If rewardObjCount > 0 Then
+            ReDim QuestList(QuestIndex).RewardOBJ(1 To rewardObjCount)
+            For i = 1 To rewardObjCount
                 QuestList(QuestIndex).RewardOBJ(i).Amount = Reader.ReadInt16
                 QuestList(QuestIndex).RewardOBJ(i).ObjIndex = Reader.ReadInt16
             Next i
         Else
             ReDim QuestList(QuestIndex).RewardOBJ(0)
         End If
+
+        ' Server writes RewardSpellCount + RewardSpellList().
+        ' In this client type those are stored in RewardSkillCount + RewardSkill().
         QuestList(QuestIndex).RewardSkillCount = Reader.ReadInt8
         If QuestList(QuestIndex).RewardSkillCount > 0 Then
             ReDim QuestList(QuestIndex).RewardSkill(1 To QuestList(QuestIndex).RewardSkillCount)
             For i = 1 To QuestList(QuestIndex).RewardSkillCount
                 QuestList(QuestIndex).RewardSkill(i) = Reader.ReadInt16
             Next i
+        Else
+            ReDim QuestList(QuestIndex).RewardSkill(0)
         End If
+
         estado = Reader.ReadInt8
+
         Repetible = QuestList(QuestIndex).Repetible = 1
         Set subelemento = FrmQuestInfo.ListViewQuest.ListItems.Add(, , QuestList(QuestIndex).nombre & IIf(Repetible, " (R)", ""))
         subelemento.SubItems(2) = QuestIndex
@@ -5272,9 +5419,10 @@ Public Sub HandleNpcQuestListSend()
                 subelemento.ForeColor = RGB(255, 10, 10)
                 subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
         End Select
+
         FrmQuestInfo.ListViewQuest.Refresh
     Next J
-    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest está empezada o no.
+
     FrmQuestInfo.Show vbModeless, GetGameplayForm()
     FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
     Call FrmQuestInfo.ShowQuest(1)
@@ -6066,6 +6214,7 @@ End Sub
         CantidadDePersonajesEnCuenta = Reader.ReadInt
         Dim ii As Byte
         For ii = 1 To MAX_PERSONAJES_EN_CUENTA
+            Pjs(ii).id = 0
             Pjs(ii).nombre = ""
             Pjs(ii).Head = 0 ' si is_sailing o muerto, cabeza en 0
             Pjs(ii).Clase = 0
@@ -6083,6 +6232,7 @@ End Sub
             Pjs(ii).Backpack = 0
         Next ii
         For ii = 1 To min(CantidadDePersonajesEnCuenta, MAX_PERSONAJES_EN_CUENTA)
+            Pjs(ii).id = Reader.ReadInt
             Pjs(ii).nombre = Reader.ReadString8
             Pjs(ii).Body = Reader.ReadInt
             Pjs(ii).Head = Reader.ReadInt

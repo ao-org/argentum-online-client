@@ -784,7 +784,7 @@ Public Sub render()
         Call Engine_Draw_Box(0, 0, frmMain.renderer.ScaleWidth, frmMain.renderer.ScaleHeight, RGBA_From_Comp(0, 0, 0, FadeInAlpha))
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
-    #If DEBUGGING = 1 Then
+    #If Developer = 1 Then
         If Not SurfaceDB Is Nothing Then
             Dim ColorGM(3) As RGBA
             ColorGM(0) = RGBA_From_Comp(248, 107, 3)
@@ -1730,23 +1730,13 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             End If
             'Draw name over head
             Nombres = Not MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).zone.OcultarNombre
-            If UserCharIndex > 0 Then
-                With charlist(UserCharIndex)
-                    Dim new_music As Integer
-                    new_music = MapData(.Pos.x, .Pos.y).zone.Musica
-                    If new_music > 0 Then
-                        Call ao20audio.PlayMidi(new_music, True)
-                    Else
-                        Call ao20audio.PlayMidi(MapDat.music_numberLow, True)
-                    End If
-                End With
-            End If
+          
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
-                Pos = InStr(.nombre, "<")
-                If Pos = 0 Then Pos = InStr(.nombre, "[")
-                If Pos = 0 Then Pos = Len(.nombre) + 2
-                'Nick
-                line = Left$(.nombre, Pos - 2)
+                If .alias <> vbNullString Then
+                    line = .alias
+                Else
+                    line = .nombre
+                End If
                 Dim Factor As Double
                 Factor = MapData(x, y).light_value(0).r / 255
                 If .Navegando Then
@@ -1840,7 +1830,11 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call RGBAList(color, 255, 255, 0, IIf(.Invisible, 120, 255))
             End Select
             Dim txt_width As Long
-            txt_width = Engine_Text_Width(.nombre, True)
+            If .alias <> vbNullString Then
+                txt_width = Engine_Text_Width(.alias, True)
+            Else
+                txt_width = Engine_Text_Width(.nombre, True)
+            End If
             Call Draw_Grh(StarGrh, PixelOffsetX + 1 + .Body.BodyOffset.x + (txt_width / 2) + 8, PixelOffsetY + 20 + .Body.BodyOffset.y, 1, 1, color, False, 0, 0, 0)
         End If
         'Barra de tiempo
@@ -2780,7 +2774,7 @@ Public Sub RenderConnect(ByVal TileX As Integer, ByVal TileY As Integer, ByVal P
         FadeInAlpha = FadeInAlpha - 10 * timerTicksPerFrame
     End If
     
-    #If DEBUGGING = 1 Then
+    #If Developer = 1 Then
             ColorGM(0) = RGBA_From_Comp(248, 107, 3)
             ColorGM(1) = ColorGM(0)
             ColorGM(2) = ColorGM(0)

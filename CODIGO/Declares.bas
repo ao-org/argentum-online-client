@@ -401,6 +401,7 @@ Public Enum e_connect_user_action
     e_action_login_character = 4
     e_action_close_game = 5
     e_action_transfer_character = 6
+    e_action_rename_character = 7
 End Enum
 
 Public clicX                      As Long
@@ -501,6 +502,8 @@ End Type
 Public ServersLst()         As tServerInfo
 Public EngineStats          As Boolean
 Public DeleteUser           As String
+Public RenameCharacterName  As String
+Public RenameNewCharacterName As String
 Public TransferCharname     As String
 Public TransferCharNewOwner As String
 Public CuentaPassword       As String
@@ -510,7 +513,7 @@ Public NamePj(1 To 8)       As String
 Public ValidationCode       As String
 'Objetos públicos
 Public DialogosClanes       As clsGuildDlg
-Public CurMp3               As Byte
+
 Public Const Mp3_Dir = "\..\Recursos\Mp3\"
 
 'Opciones Clasicas
@@ -558,6 +561,10 @@ Public Type t_Intervals
     HitMagic As Long
     MagicHit As Long
     HitUseItem As Long
+    Hide As Long
+    Talk As Long
+    LeftClick As Long
+    Meditate As Long
 End Type
 
 Public gIntervals             As t_Intervals
