@@ -1199,25 +1199,29 @@ End Sub
 
 Private Sub HandleIntervals()
     On Error GoTo HandleIntervals_Err
-    gIntervals.Bow = Reader.ReadInt32()
-    gIntervals.Walk = Reader.ReadInt32()
     gIntervals.Hit = Reader.ReadInt32()
-    gIntervals.HitMagic = Reader.ReadInt32()
+    gIntervals.Bow = Reader.ReadInt32()
     gIntervals.Magic = Reader.ReadInt32()
-    gIntervals.MagicHit = Reader.ReadInt32()
-    gIntervals.HitUseItem = Reader.ReadInt32()
     gIntervals.ExtractWork = Reader.ReadInt32()
     gIntervals.BuildWork = Reader.ReadInt32()
+    gIntervals.Walk = Reader.ReadInt32()
+    gIntervals.DropItem = Reader.ReadInt32()
     gIntervals.UseItemKey = Reader.ReadInt32()
     gIntervals.UseItemClick = Reader.ReadInt32()
-    gIntervals.DropItem = Reader.ReadInt32()
+    gIntervals.HitMagic = Reader.ReadInt32()
+    gIntervals.MagicHit = Reader.ReadInt32()
+    gIntervals.HitUseItem = Reader.ReadInt32()
+    gIntervals.Hide = Reader.ReadInt32()
+    gIntervals.Talk = Reader.ReadInt32()
+    gIntervals.LeftClick = Reader.ReadInt32()
+    gIntervals.Meditate = Reader.ReadInt32()
     'Set the intervals of timers
     Call MainTimer.SetInterval(TimersIndex.Attack, gIntervals.Hit)
+    Call MainTimer.SetInterval(TimersIndex.Arrows, gIntervals.Bow)
+    Call MainTimer.SetInterval(TimersIndex.CastSpell, gIntervals.Magic)
     Call MainTimer.SetInterval(TimersIndex.UseItemWithU, gIntervals.UseItemKey)
     Call MainTimer.SetInterval(TimersIndex.UseItemWithDblClick, gIntervals.UseItemClick)
     Call MainTimer.SetInterval(TimersIndex.SendRPU, INT_SENTRPU)
-    Call MainTimer.SetInterval(TimersIndex.CastSpell, gIntervals.Magic)
-    Call MainTimer.SetInterval(TimersIndex.Arrows, gIntervals.Bow)
     Call MainTimer.SetInterval(TimersIndex.CastAttack, gIntervals.MagicHit)
     Call MainTimer.SetInterval(TimersIndex.AttackSpell, gIntervals.HitMagic)
     Call MainTimer.SetInterval(TimersIndex.AttackUse, gIntervals.HitUseItem)
@@ -1659,7 +1663,10 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             copiar = False
             duracion = 20
         Case "QUESTFIN"
-            chat = QuestList(ReadField(2, chat, Asc("*"))).DescFinal
+            Dim questIndex As Integer
+            questIndex = val(ReadField(2, chat, Asc("*")))
+            chat = QuestList(questIndex).DescFinal
+            Call PlayQuestFinalDescAudio(questIndex)
             copiar = False
             duracion = 20
         Case "NOCONSOLA" ' El chat no sale en la consola
@@ -5143,7 +5150,8 @@ Private Sub HandleQuestDetails()
         Next i
     End If
     RequiredQuest = Reader.ReadInt16
-    FrmQuests.detalle.Text = QuestList(QuestIndex).desc
+    FrmQuests.detalle.Text = GetQuestDescForUI(questIndex)
+    Call PlayQuestDescAudio(questIndex)
     If RequiredLevel > 1 Then
         requirements = requirements & JsonLanguage.Item("MENSAJE_QUEST_NIVEL_REQUERIDO") & RequiredLevel & vbCrLf
     End If
