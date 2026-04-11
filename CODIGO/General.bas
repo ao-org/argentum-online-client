@@ -775,6 +775,14 @@ End Sub
 
 Sub Main()
     On Error GoTo Main_Err
+
+    #If UNIT_TEST = 1 Then
+        Call UnitTesting.Init
+        Call UnitTesting.RunAllSuites
+        Call UnitTesting.WriteResultsToFile(App.Path & "\test_results.txt")
+        End
+    #End If
+
     debug_tools.Init
     frmDebug.add_text_tracebox debug_tools.BuildFlags
     

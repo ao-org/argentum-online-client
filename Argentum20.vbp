@@ -174,6 +174,10 @@ Module=debug_tools; CODIGO\debug_tools.bas
 Class=clsUIImage; CODIGO\ClsUIImage.cls
 Module=ao20audio_bass_backend; CODIGO\ao20audio_bass_backend.bas
 Module=modBass; CODIGO\bass.bas
+Module=UnitTesting; CODIGO\UnitTesting.bas
+Module=Unit_Math; CODIGO\Unit_Math.bas
+Module=Unit_Bitmask; CODIGO\Unit_Bitmask.bas
+Module=Unit_Color; CODIGO\Unit_Color.bas
 ResFile32="AO20.res"
 Class=clsUIFrame; CODIGO\clsUIFrame.cls
 Class=clsUIMsgBox; CODIGO\clsUIMsgBox.cls
@@ -197,7 +201,7 @@ VersionLegalCopyright="Argentum Online"
 VersionLegalTrademarks="Argentum Online"
 VersionProductName="Argentum Online by Noland Studios"
 CondComp="UsarWrench = 1 : AntiExternos = 0 : Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 0 : DXUI = 0 : ENABLE_BASS = 0"
-CondComp="Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 0 : DXUI = 0 : ENABLE_BASS = 0"
+CondComp="Compresion = 0 : Developer = 1 : DEBUGGING = 1 : PYMMO = 0 : ENABLE_ANTICHEAT = 0 : DISABLE_SUBCLASSING = 1 : No_Api_Steam = 0 : DXUI = 0 : ENABLE_BASS = 0 : UNIT_TEST = 0"
 CompilationType=0
 OptimizationType=2
 FavorPentiumPro(tm)=0
