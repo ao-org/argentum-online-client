@@ -27,3 +27,5 @@ BabelUI.iobj
 BabelUI.ipdb
 AOACClient.pdb
 .kiro/
+*.pdb
+test_results.txt
