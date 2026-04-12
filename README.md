@@ -72,7 +72,7 @@ When compiled with `UNIT_TEST = 1`, the client runs all test suites on startup, 
 
 ```bash
 # Compile with tests enabled
-"C:\Program Files (x86)\Microsoft Visual Studio\VB98\VB6.EXE" /make Argentum20.vbp /d UNIT_TEST=1
+"C:\Program Files (x86)\Microsoft Visual Studio\VB98\VB6.EXE" /make Argentum20.vbp /d UNIT_TEST=1 /out "%WORKSPACE%\\vb6build.log"
 
 # Run tests (writes test_results.txt and exits)
 .\Argentum.exe

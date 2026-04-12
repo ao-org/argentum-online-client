@@ -11,7 +11,7 @@ Private FailedTestCount As Long
 Private TotalElapsed    As Double
 Private sw              As clsInstrument
 
-Private Const SUITE_COUNT As Long = 8
+Private Const SUITE_COUNT As Long = 13
 
 Public Sub Init()
     TotalTests = 0
@@ -54,6 +54,11 @@ Public Sub RunAllSuites()
             Case 6: Call Unit_MD5.test_suite_md5
             Case 7: Call Unit_MathExt.test_suite_math_ext
             Case 8: Call Unit_ArrayList.test_suite_arraylist
+            Case 9: Call Unit_Encrypt.test_suite_encrypt
+            Case 10: Call Unit_ValidNumber.test_suite_valid_number
+            Case 11: Call Unit_QuickSort.test_suite_quick_sort
+            Case 12: Call Unit_IniManager.test_suite_ini_manager
+            Case 13: Call Unit_WorldTime.test_suite_world_time
         End Select
     Next i
 End Sub
