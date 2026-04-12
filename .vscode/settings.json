@@ -13,5 +13,8 @@
     "[json]": {
         "files.encoding": "windows1252"
     },
-    "files.eol": "\r\n"
+    "files.eol": "\r\n",
+    "[markdown]": {
+        "files.encoding": "utf8"
+    }
 }
