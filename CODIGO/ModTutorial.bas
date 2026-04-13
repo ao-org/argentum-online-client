@@ -52,6 +52,8 @@ Private text_duration              As Long
 Private text_duration_total        As Long
 Private typing                     As Boolean
 Private Const TYPING_SOUND = 230
+Private Const TUTORIAL_TYPING_LABEL = "tutorial_typing"
+Private tutorial_typing_is_custom As Boolean
 Private sonido_activado     As Boolean
 Public tutorial_index       As Integer
 Public cartel_visible       As Boolean
@@ -91,6 +93,53 @@ Private Function Lng2RGBA(MyLong As Long) As Byte()
     Lng2RGBA = MyBytes
 End Function
 
+Private Function GetTutorialTypingSoundName(ByVal pageNumber As Byte) As String
+    GetTutorialTypingSoundName = "tutorial_" & CStr(tutorial_index) & "_" & CStr(pageNumber)
+End Function
+
+Private Function TryPlayTutorialTypingSound(ByVal baseSoundName As String) As Long
+    Dim localizedSoundName As String
+
+    TryPlayTutorialTypingSound = -1
+
+    If language = e_language.English Then
+        localizedSoundName = "en_" & baseSoundName
+        TryPlayTutorialTypingSound = ao20audio.PlayWav(localizedSoundName, False, 0, 0, TUTORIAL_TYPING_LABEL)
+        If TryPlayTutorialTypingSound = 0 Then Exit Function
+    End If
+
+    TryPlayTutorialTypingSound = ao20audio.PlayWav(baseSoundName, False, 0, 0, TUTORIAL_TYPING_LABEL)
+End Function
+
+Private Sub RestartTypingSound(Optional ByVal pageNumber As Byte = 1)
+    Dim result As Long
+    Dim tutorialSoundName As String
+    Dim tutorialFallbackName As String
+
+    Call ao20audio.StopAllWavsMatchingLabel(TUTORIAL_TYPING_LABEL)
+    Call ao20audio.StopWav(TYPING_SOUND)
+    tutorial_typing_is_custom = False
+
+    If tutorial_index > 0 Then
+        tutorialSoundName = GetTutorialTypingSoundName(pageNumber)
+        tutorialFallbackName = "tutorial_" & CStr(tutorial_index)
+
+        result = TryPlayTutorialTypingSound(tutorialSoundName)
+        If result = 0 Then
+            tutorial_typing_is_custom = True
+            Exit Sub
+        End If
+
+        result = TryPlayTutorialTypingSound(tutorialFallbackName)
+        If result = 0 Then
+            tutorial_typing_is_custom = True
+            Exit Sub
+        End If
+    End If
+
+    Call ao20audio.PlayWav(CStr(TYPING_SOUND))
+End Sub
+
 Public Sub nextCartel()
     If tutorial_index = 0 Then Exit Sub
     cartel_index = cartel_index + 1
@@ -99,9 +148,8 @@ Public Sub nextCartel()
         text_duration_total = text_duration
         If text_duration_total = 0 Then text_duration_total = 1
         sonido_activado = True
-        Call ao20audio.StopWav(TYPING_SOUND)
-        Call ao20audio.PlayWav(TYPING_SOUND)
         cartel_message = tutorial(tutorial_index).textos(cartel_index + 1)
+        Call RestartTypingSound(cartel_index + 1)
     Else
         Call toggleTutorialActivo(tutorial_index)
         Call cerrarCartel
@@ -113,7 +161,9 @@ Public Sub cerrarCartel()
     cartel_index = 0
     cartel_duration = 0
     If mascota.visible Then mascota.visible = False
+    Call ao20audio.StopAllWavsMatchingLabel(TUTORIAL_TYPING_LABEL)
     Call ao20audio.StopWav(TYPING_SOUND)
+    tutorial_typing_is_custom = False
 End Sub
 
 Public Sub resetearCartel()
@@ -193,8 +243,7 @@ Public Sub mostrarCartel(ByVal title As String, _
         text_length = Len(cartel_message)
         text_duration = Len(cartel_message) * 16
         text_duration_total = text_duration
-        Call ao20audio.StopWav(TYPING_SOUND)
-        Call ao20audio.PlayWav(TYPING_SOUND)
+        Call RestartTypingSound(cartel_index + 1)
         If text_duration_total = 0 Then text_duration_total = 1
         sonido_activado = True
     End If
@@ -230,7 +279,10 @@ Public Sub RenderScreen_Cartel()
         Dim charCount As Integer
         charCount = (text_duration * text_length) / text_duration_total
         If charCount = 0 And sonido_activado Then
-            Call ao20audio.StopWav(TYPING_SOUND)
+            If Not tutorial_typing_is_custom Then
+                Call ao20audio.StopAllWavsMatchingLabel(TUTORIAL_TYPING_LABEL)
+                Call ao20audio.StopWav(TYPING_SOUND)
+            End If
             sonido_activado = False
         End If
         text_message_render = Left(cartel_message, text_length - charCount)

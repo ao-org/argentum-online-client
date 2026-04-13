@@ -241,10 +241,13 @@ End Function
 
 
 Public Function StopWav(ByVal id As String, Optional ByVal label As String = "") As Long
+    Dim numericId As Integer
+
     StopWav = -1
-    If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
-        StopWav = ao20audio.AudioEngine.StopWav(id, label)
-    End If
+    If Not (AudioEnabled And FxEnabled And Not AudioEngine Is Nothing) Then Exit Function
+    numericId = CInt(Val(id))
+    If numericId <= 0 Then Exit Function
+    StopWav = ao20audio.AudioEngine.StopWav(numericId, label)
 End Function
 
 Public Function StopAllWavsMatchingLabel(ByVal label As String) As Long
