@@ -15,14 +15,15 @@ Option Explicit
 
 #If UNIT_TEST = 1 Then
 
-Public Sub test_suite_world_time()
+Public Function test_suite_world_time() As Boolean
     Call UnitTesting.RunTest("wt_init_ms_range", test_wt_init_ms_range())
     Call UnitTesting.RunTest("wt_init_clamp", test_wt_init_clamp())
     Call UnitTesting.RunTest("wt_day_len_get_set", test_wt_day_len_get_set())
     Call UnitTesting.RunTest("wt_sec_consistency", test_wt_sec_consistency())
     Call UnitTesting.RunTest("wt_handle_hora_range", test_wt_handle_hora_range())
     Call UnitTesting.RunTest("wt_prepare_hora_range", test_wt_prepare_hora_range())
-End Sub
+    test_suite_world_time = True
+End Function
 
 ' Uses 60000ms (1 min) as representative day length since WorldTime_Ms
 ' depends on GetTickCountRaw() internally — we can only verify range invariants.

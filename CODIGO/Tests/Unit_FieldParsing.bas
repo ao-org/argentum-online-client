@@ -11,7 +11,7 @@ Option Explicit
 
 #If UNIT_TEST = 1 Then
 
-Public Sub test_suite_field_parsing()
+Public Function test_suite_field_parsing() As Boolean
     Call UnitTesting.RunTest("field_read_positions", test_field_read_positions())
     Call UnitTesting.RunTest("field_read_no_delim", test_field_read_no_delim())
     Call UnitTesting.RunTest("field_read_empty_field", test_field_read_empty_field())
@@ -21,7 +21,8 @@ Public Sub test_suite_field_parsing()
     Call UnitTesting.RunTest("general_field_read_multi_char", test_general_field_read_multi_char())
     Call UnitTesting.RunTest("general_field_count_cases", test_general_field_count_cases())
     Call UnitTesting.RunTest("field_round_trip", test_field_round_trip())
-End Sub
+    test_suite_field_parsing = True
+End Function
 
 ' **Validates: Requirements 1.1**
 Private Function test_field_read_positions() As Boolean

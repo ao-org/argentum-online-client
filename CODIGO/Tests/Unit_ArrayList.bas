@@ -11,7 +11,7 @@ Option Explicit
 #If UNIT_TEST = 1 Then
 
 ' Runs all ArrayList unit tests.
-Public Sub test_suite_arraylist()
+Public Function test_suite_arraylist() As Boolean
     Call UnitTesting.RunTest("arraylist_init_clear", test_init_clear())
     Call UnitTesting.RunTest("arraylist_add_exist", test_add_exist())
     Call UnitTesting.RunTest("arraylist_remove_exist", test_remove_exist())
@@ -19,7 +19,8 @@ Public Sub test_suite_arraylist()
     Call UnitTesting.RunTest("arraylist_item_value", test_item_value())
     Call UnitTesting.RunTest("arraylist_get_last", test_get_last_item())
     Call UnitTesting.RunTest("arraylist_remove_compacts", test_remove_compacts())
-End Sub
+    test_suite_arraylist = True
+End Function
 
 ' Verifies after Initialize and Clear, all items are 0 and GetLastItem=0.
 Private Function test_init_clear() As Boolean

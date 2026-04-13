@@ -12,7 +12,7 @@ Option Explicit
 
 #If UNIT_TEST = 1 Then
 
-Public Sub test_suite_char_validation()
+Public Function test_suite_char_validation() As Boolean
     Call UnitTesting.RunTest("ascii_validos_accept_reject", test_ascii_validos_accept_reject())
     Call UnitTesting.RunTest("valid_desc_printable", test_valid_desc_printable())
     Call UnitTesting.RunTest("valid_desc_extended", test_valid_desc_extended())
@@ -24,7 +24,8 @@ Public Sub test_suite_char_validation()
     Call UnitTesting.RunTest("is_valid_email_cases", test_is_valid_email_cases())
     Call UnitTesting.RunTest("beautify_big_number", test_beautify_big_number())
     Call UnitTesting.RunTest("tilde_accents", test_tilde_accents())
-End Sub
+    test_suite_char_validation = True
+End Function
 
 ' Feature: unit-test-coverage-tier3, Property 2: AsciiValidos accepts only lowercase letters and spaces
 ' **Validates: Requirements 2.1, 2.2**

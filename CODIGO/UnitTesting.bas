@@ -43,37 +43,28 @@ Public Sub RunTestError(ByVal TestName As String, ByVal ErrorDesc As String)
 End Sub
 
 Public Function test_suite() As Boolean
-    On Error GoTo test_suite_Err
-    Call RunAllSuites
-    test_suite = (FailedTests = 0)
-    Exit Function
-test_suite_Err:
-    Call RunTestError("SUITE_FATAL", Err.Description)
-    test_suite = False
-End Function
-
-Public Sub RunAllSuites()
     Dim i As Long
     For i = 1 To SUITE_COUNT
         Select Case i
-            Case 1: Call Unit_Math.test_suite_math
-            Case 2: Call Unit_Bitmask.test_suite_bitmask
-            Case 3: Call Unit_Color.test_suite_color
-            Case 4: Call Unit_ElapsedTime.test_suite_elapsed_time
-            Case 5: Call Unit_Locale.test_suite_locale
-            Case 6: Call Unit_MD5.test_suite_md5
-            Case 7: Call Unit_MathExt.test_suite_math_ext
-            Case 8: Call Unit_ArrayList.test_suite_arraylist
-            Case 9: Call Unit_Encrypt.test_suite_encrypt
-            Case 10: Call Unit_ValidNumber.test_suite_valid_number
-            Case 11: Call Unit_QuickSort.test_suite_quick_sort
-            Case 12: Call Unit_IniManager.test_suite_ini_manager
-            Case 13: Call Unit_WorldTime.test_suite_world_time
-            Case 14: Call Unit_FieldParsing.test_suite_field_parsing
-            Case 15: Call Unit_CharValidation.test_suite_char_validation
+            Case 1: Unit_Math.test_suite_math
+            Case 2: Unit_Bitmask.test_suite_bitmask
+            Case 3: Unit_Color.test_suite_color
+            Case 4: Unit_ElapsedTime.test_suite_elapsed_time
+            Case 5: Unit_Locale.test_suite_locale
+            Case 6: Unit_MD5.test_suite_md5
+            Case 7: Unit_MathExt.test_suite_math_ext
+            Case 8: Unit_ArrayList.test_suite_arraylist
+            Case 9: Unit_Encrypt.test_suite_encrypt
+            Case 10: Unit_ValidNumber.test_suite_valid_number
+            Case 11: Unit_QuickSort.test_suite_quick_sort
+            Case 12: Unit_IniManager.test_suite_ini_manager
+            Case 13: Unit_WorldTime.test_suite_world_time
+            Case 14: Unit_FieldParsing.test_suite_field_parsing
+            Case 15: Unit_CharValidation.test_suite_char_validation
         End Select
     Next i
-End Sub
+    test_suite = (FailedTests = 0)
+End Function
 
 Public Sub WriteResultsToFile(ByVal FilePath As String)
     On Error GoTo WriteResultsToFile_Err
