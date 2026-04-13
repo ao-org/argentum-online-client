@@ -67,6 +67,8 @@ Public Enum e_tutorialIndex
     TUTORIAL_SkillPoints = 4
 End Enum
 
+Private Const TutorialsDataFile As String = "\..\Recursos\Dat\tutoriales.ini"
+
 Private enabled As Boolean
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (pDest As Any, pSrc As Any, ByVal ByteLen As Long)
 
@@ -345,23 +347,31 @@ Public Sub toggleTutorialActivo(ByVal tutorial_index As Byte)
     End With
 End Sub
 
+Private Function GetTutorialDataFilePath() As String
+    GetTutorialDataFilePath = App.path & TutorialsDataFile
+End Function
+
+Private Function GetTutorialDataSetting(ByVal section As String, ByVal keyName As String) As String
+    GetTutorialDataSetting = GetVar(GetTutorialDataFilePath(), section, keyName)
+End Function
+
 Public Sub cargarTutoriales()
     Dim CantidadTutoriales As Long
     Dim i                  As Long, J As Long
-    CantidadTutoriales = GetSetting("INITTUTORIAL", "Cantidad")
-    MostrarTutorial = GetSetting("INITTUTORIAL", "MostrarTutorial")
+    CantidadTutoriales = val(GetTutorialDataSetting("INITTUTORIAL", "Cantidad"))
+    MostrarTutorial = val(GetTutorialDataSetting("INITTUTORIAL", "MostrarTutorial"))
     If CantidadTutoriales <= 0 Then Exit Sub
     ReDim tutorial(1 To CantidadTutoriales)
     For i = 1 To CantidadTutoriales
-        tutorial(i).Grh = val(GetSetting("TUTORIAL" & i, "Grh"))
-        tutorial(i).Activo = val(GetSetting("TUTORIAL" & i, "Activo"))
-        tutorial(i).titulo = GetSetting("TUTORIAL" & i, IIf(language = e_language.English, "en_titulo", "titulo"))
+        tutorial(i).Grh = val(GetTutorialDataSetting("TUTORIAL" & i, "Grh"))
+        tutorial(i).Activo = val(GetTutorialDataSetting("TUTORIAL" & i, "Activo"))
+        tutorial(i).titulo = GetTutorialDataSetting("TUTORIAL" & i, IIf(language = e_language.English, "en_titulo", "titulo"))
         Dim CantidadTextos As Long
-        CantidadTextos = val(GetSetting("TUTORIAL" & i, "Cantidad"))
+        CantidadTextos = val(GetTutorialDataSetting("TUTORIAL" & i, "Cantidad"))
         ReDim tutorial(i).textos(1 To CantidadTextos)
         If CantidadTextos > 0 Then
             For J = 1 To CantidadTextos
-                tutorial(i).textos(J) = GetSetting("TUTORIAL" & i, IIf(language = e_language.English, "en_texto" & J, "texto" & J))
+                tutorial(i).textos(J) = GetTutorialDataSetting("TUTORIAL" & i, IIf(language = e_language.English, "en_texto" & J, "texto" & J))
             Next J
         End If
     Next i
