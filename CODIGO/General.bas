@@ -777,10 +777,17 @@ Sub Main()
     On Error GoTo Main_Err
 
     #If UNIT_TEST = 1 Then
+        On Error GoTo UnitTest_Err
         Call UnitTesting.Init
-        Call UnitTesting.RunAllSuites
+        Dim suite_passed_ok As Boolean
+        suite_passed_ok = UnitTesting.test_suite()
+UnitTest_Done:
+        On Error GoTo Main_Err
         Call UnitTesting.WriteResultsToFile(App.Path & "\test_results.txt")
         End
+UnitTest_Err:
+        Call UnitTesting.RunTestError("FATAL", Err.Description)
+        Resume UnitTest_Done
     #End If
 
     debug_tools.Init

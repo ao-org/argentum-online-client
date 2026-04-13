@@ -42,6 +42,16 @@ Public Sub RunTestError(ByVal TestName As String, ByVal ErrorDesc As String)
     FailedTestCount = FailedTestCount + 1
 End Sub
 
+Public Function test_suite() As Boolean
+    On Error GoTo test_suite_Err
+    Call RunAllSuites
+    test_suite = (FailedTests = 0)
+    Exit Function
+test_suite_Err:
+    Call RunTestError("SUITE_FATAL", Err.Description)
+    test_suite = False
+End Function
+
 Public Sub RunAllSuites()
     Dim i As Long
     For i = 1 To SUITE_COUNT
