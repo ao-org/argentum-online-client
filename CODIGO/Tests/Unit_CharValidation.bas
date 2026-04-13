@@ -141,8 +141,8 @@ End Function
 ' **Validates: Requirements 2.7**
 Private Function test_check_mail_valid_invalid() As Boolean
     On Error GoTo Fail
-    ' True for well-formed email
-    If Not CheckMailString("[email protected]") Then
+    ' True for well-formed email (only alphanumeric, dot, hyphen, underscore allowed)
+    If Not CheckMailString("user@example.com") Then
         test_check_mail_valid_invalid = False
         Exit Function
     End If
@@ -171,7 +171,7 @@ End Function
 Private Function test_is_valid_email_cases() As Boolean
     On Error GoTo Fail
     ' True for well-formed email
-    If Not isValidEmail("[email protected]") Then
+    If Not isValidEmail("user@example.com") Then
         test_is_valid_email_cases = False
         Exit Function
     End If
@@ -181,7 +181,7 @@ Private Function test_is_valid_email_cases() As Boolean
         Exit Function
     End If
     ' False for trailing dot
-    If isValidEmail("[email protected].") Then
+    If isValidEmail("user@example.") Then
         test_is_valid_email_cases = False
         Exit Function
     End If
