@@ -2951,7 +2951,7 @@ Private Sub macrotrabajo_Timer()
     End If
     'If Inventario.OBJType(Inventario.SelectedItem) = eObjType.otWeapon Then
     If Not (frmCarp.visible = True) Then
-        If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
+        If frmMain.Inventario.IsItemSelected Then Call UserItemClick(False)
     End If
     Exit Sub
 macrotrabajo_Timer_Err:
@@ -3086,7 +3086,7 @@ End Sub
 
 Private Sub mnuUsar_Click()
     On Error GoTo mnuUsar_Click_Err
-    If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
+    Call UserItemClick
     Exit Sub
 mnuUsar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.mnuUsar_Click", Erl)
