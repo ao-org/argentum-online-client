@@ -37,6 +37,7 @@ Private Enum eActionRateLimitType
     ActionWorkLeftClick = 7
     ActionWalk = 8
     ActionMeditate = 9
+    ActionProjectileWorkLeftClick = 10
     [LastAction]
 End Enum
 Private lastActionSentTick(1 To eActionRateLimitType.LastAction - 1) As Long
@@ -115,6 +116,8 @@ Private Function GetActionIntervalMs(ByVal actionType As eActionRateLimitType) A
             GetActionIntervalMs = gIntervals.Hide
         Case ActionWorkLeftClick
             GetActionIntervalMs = gIntervals.Magic
+        Case ActionProjectileWorkLeftClick
+            GetActionIntervalMs = gIntervals.Bow
         Case ActionTalk
             GetActionIntervalMs = gIntervals.Talk
         Case ActionLeftClick
@@ -1138,6 +1141,10 @@ Public Function WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill
         If ShouldBlockAction(eActionRateLimitType.ActionWorkLeftClick) Then
             Exit Function
         End If
+    ElseIf Skill = eSkill.Proyectiles Then
+        If ShouldBlockAction(eActionRateLimitType.ActionProjectileWorkLeftClick) Then
+            Exit Function
+        End If
     End If
     Call Writer.WriteInt16(ClientPacketID.eWorkLeftClick)
     Call Writer.WriteInt8(x)
@@ -1148,6 +1155,8 @@ Public Function WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill
     Call modNetwork.send(Writer)
     If Skill = eSkill.magia Then
         Call MarkActionSent(ActionWorkLeftClick)
+    ElseIf Skill = eSkill.Proyectiles Then
+        Call MarkActionSent(ActionProjectileWorkLeftClick)
     End If
     WriteWorkLeftClick = True
     '<EhFooter>

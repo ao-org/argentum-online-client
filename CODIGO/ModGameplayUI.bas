@@ -68,6 +68,7 @@ Private Function IsEquippedProjectileSlot(ByVal Slot As Integer) As Boolean
     IsEquippedProjectileSlot = (ObjData(objIndex).proyectil = 1)
 End Function
 Private Sub RequestProjectileTarget(ByVal Slot As Byte, ByVal UseItemWithU As Boolean)
+    If UsingSkill = Proyectiles Then Exit Sub
     If ModoHechizos = BloqueoLanzar Then
         If Not IsProjectileTargetReady() Then Exit Sub
     End If
