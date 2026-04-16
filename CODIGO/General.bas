@@ -1421,12 +1421,25 @@ Function BeautifyBigNumber(ByVal Number As Long) As String
     End If
 End Function
 
+Public Sub RandomizarParametrosPescaEspecial()
+    CentroZonaAciertoPesca = RandomNumber(88, 114)
+    RadioZonaAciertoPesca = RandomNumber(12, 19)
+    VelocidadFactorBarraPesca = CSng(RandomNumber(85, 126) / 100)
+End Sub
+
 Public Function IntentarObtenerPezEspecial()
     Dim acierto As Byte
+    Dim totalIntentos As Long
+    Dim tickActual As Long
+    Dim limiteInferior As Long
+    Dim limiteSuperior As Long
+    tickActual = GetTickCount()
+    If tickActual < PescaInputPauseUntil Then Exit Function
     frmDebug.add_text_tracebox "Aciertos: " & ContadorIntentosPescaEspecial_Acertados & "Posicion barra : " & PosicionBarra
-    'El + y -10 es por inputLag (Margen de error)
     If PuedeIntentar Then
-        If PosicionBarra >= (90 - 15) And PosicionBarra <= (111 + 15) Then
+        limiteInferior = CentroZonaAciertoPesca - RadioZonaAciertoPesca
+        limiteSuperior = CentroZonaAciertoPesca + RadioZonaAciertoPesca
+        If PosicionBarra >= limiteInferior And PosicionBarra <= limiteSuperior Then
             ContadorIntentosPescaEspecial_Acertados = ContadorIntentosPescaEspecial_Acertados + 1
             acierto = 1
         Else
@@ -1434,21 +1447,19 @@ Public Function IntentarObtenerPezEspecial()
             acierto = 2
         End If
         PuedeIntentar = False
-        If acierto = 1 Then
-            intentosPesca(ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados) = 1
-        ElseIf acierto = 2 Then
-            intentosPesca(ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados) = 2
+        totalIntentos = ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados
+        If totalIntentos >= 1 And totalIntentos <= MAX_INTENTOS Then
+            intentosPesca(totalIntentos) = acierto
         End If
-        If ContadorIntentosPescaEspecial_Fallados + ContadorIntentosPescaEspecial_Acertados >= 5 Or ContadorIntentosPescaEspecial_Acertados >= 3 Then
-            PescandoEspecial = False
-            Call WriteFinalizarPescaEspecial
-        ElseIf ContadorIntentosPescaEspecial_Acertados >= 3 Then
-            PescandoEspecial = False
-            Call WriteFinalizarPescaEspecial
-        ElseIf ContadorIntentosPescaEspecial_Fallados >= 3 Then
+        PescaInputPauseUntil = tickActual + RandomNumber(500, 1501)
+        PescaPendienteReanudarRandomDir = True
+        If ContadorIntentosPescaEspecial_Fallados >= 3 Then
             PescandoEspecial = False
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)
             Call WriteRomperCania
+        ElseIf totalIntentos >= MAX_INTENTOS Or ContadorIntentosPescaEspecial_Acertados >= 3 Then
+            PescandoEspecial = False
+            Call WriteFinalizarPescaEspecial
         End If
     End If
 End Function

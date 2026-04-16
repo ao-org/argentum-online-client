@@ -5697,6 +5697,10 @@ Public Sub HandlePelearConPezEspecial()
         intentosPesca(i) = 0
     Next i
     PescandoEspecial = True
+    PuedeIntentar = False
+    PescaInputPauseUntil = 0
+    PescaPendienteReanudarRandomDir = False
+    Call RandomizarParametrosPescaEspecial
     Call ao20audio.PlayWav(55)
     ContadorIntentosPescaEspecial_Fallados = 0
     ContadorIntentosPescaEspecial_Acertados = 0

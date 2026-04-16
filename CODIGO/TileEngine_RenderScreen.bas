@@ -584,19 +584,28 @@ Sub RenderScreen(ByVal center_x As Integer, _
             End If
         Next i
         If PosicionBarra <= 0 Then
+            PosicionBarra = 0
             DireccionBarra = 1
             PuedeIntentar = True
-        ElseIf PosicionBarra > 199 Then
+            Call RandomizarParametrosPescaEspecial
+        ElseIf PosicionBarra >= 199 Then
+            PosicionBarra = 199
             DireccionBarra = -1
             PuedeIntentar = True
+            Call RandomizarParametrosPescaEspecial
         End If
-        If PosicionBarra < 0 Then
-            PosicionBarra = 0
-        ElseIf PosicionBarra > 199 Then
-            PosicionBarra = 199
+        If GetTickCount() >= PescaInputPauseUntil Then
+            If PescaPendienteReanudarRandomDir Then
+                If RandomNumber(0, 2) = 0 Then
+                    DireccionBarra = -1
+                Else
+                    DireccionBarra = 1
+                End If
+                PescaPendienteReanudarRandomDir = False
+                Call RandomizarParametrosPescaEspecial
+            End If
+            PosicionBarra = PosicionBarra + (DireccionBarra * VelocidadBarra * VelocidadFactorBarraPesca * timerElapsedTime * 0.2)
         End If
-        '90 - 111 es incluido (saca el pecesito)
-        PosicionBarra = PosicionBarra + (DireccionBarra * VelocidadBarra * timerElapsedTime * 0.2)
         If (GetTickCount() - startTimePezEspecial) >= 20000 Then
             PescandoEspecial = False
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PEZ_ROMPIO_LINEA_PESCA"), 255, 0, 0, 1, 0)

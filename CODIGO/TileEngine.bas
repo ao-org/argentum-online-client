@@ -39,9 +39,14 @@ Public Const MAX_INTENTOS                      As Byte = 5
 Public intentosPesca(1 To MAX_INTENTOS)        As Byte
 Public PuedeIntentar                           As Boolean
 Public PescandoEspecial                        As Boolean
+Public PescaInputPauseUntil                    As Long
+Public PescaPendienteReanudarRandomDir         As Boolean
 Public MostrarTutorial                         As Boolean
 Public Const BarWidth                          As Long = 199
 Public PosicionBarra                           As Single
+Public CentroZonaAciertoPesca                  As Long
+Public RadioZonaAciertoPesca                   As Long
+Public VelocidadFactorBarraPesca               As Single
 Public ContadorIntentosPescaEspecial_Acertados As Long
 Public ContadorIntentosPescaEspecial_Fallados  As Long
 Public startTimePezEspecial                    As Long
