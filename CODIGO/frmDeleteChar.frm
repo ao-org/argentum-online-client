@@ -80,7 +80,7 @@ Private cBotonCerrar   As clsGraphicalButton
 
 Private Sub btnAceptar_Click()
     Me.txtDeleteCharCode.text = Trim(Me.txtDeleteCharCode.text)
-    If Me.txtDeleteCharCode.text <> "" Then
+    If LenB(Me.txtDeleteCharCode.text) <> 0 Then
         ModAuth.LoginOperation = e_operation.ConfirmDeleteChar
         Call connectToLoginServer
         delete_char_validate_code = frmDeleteChar.txtDeleteCharCode.text

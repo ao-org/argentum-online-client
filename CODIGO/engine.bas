@@ -1235,7 +1235,7 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
         PixelOffsetY = PixelOffsetY + .MoveOffsetY
         'screen_x = Convert_Tile_To_View_X(PixelOffsetX) + MoveOffsetX
         '*** Start Dialogs ***
-        If .dialog <> "" Then
+        If LenB(.dialog) <> 0 Then
             'Figure out screen position
             Dim temp_array(3) As RGBA
             Dim PixelY        As Integer

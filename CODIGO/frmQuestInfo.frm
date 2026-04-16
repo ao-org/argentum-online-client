@@ -457,7 +457,7 @@ Public Sub ListView1_Click()
     If ListView1.SelectedItem Is Nothing Then Exit Sub
     Dim x As Long
     Dim y As Long
-    If ListView1.SelectedItem.SubItems(2) <> "" Then
+    If LenB(ListView1.SelectedItem.SubItems(2)) <> 0 Then
         If ListView1.SelectedItem.SubItems(3) = 0 Then
             PlayerView.BackColor = RGB(11, 11, 11)
             Call DibujarNPC(PlayerView, NpcData(ListView1.SelectedItem.SubItems(2)).Head, NpcData(ListView1.SelectedItem.SubItems(2)).Body, 3)
@@ -485,7 +485,7 @@ Public Sub ListView2_Click()
     If ListView2.SelectedItem Is Nothing Then Exit Sub
     If ListView2.SelectedItem.SubItems(3) = 2 Then
         Call Grh_Render_To_Hdc(picture1, HechizoData(ListView2.SelectedItem.SubItems(2)).IconoIndex, 0, 0, False, RGB(19, 14, 11))
-    ElseIf ListView2.SelectedItem.SubItems(2) <> "" Then
+    ElseIf LenB(ListView2.SelectedItem.SubItems(2)) <> 0 Then
         Call Grh_Render_To_Hdc(picture1, ObjData(ListView2.SelectedItem.SubItems(2)).GrhIndex, 0, 0, False, RGB(19, 14, 11))
     End If
     If ListView2.SelectedItem.SubItems(3) = 2 Then

@@ -269,7 +269,7 @@ End Sub
 
 Private Sub btnSendValidarCuenta_Click()
     txtCodigo.text = Trim(txtCodigo.text)
-    If txtCodigo.text <> "" And txtValidateMail.text <> "" Then
+    If LenB(txtCodigo.text) <> 0 And LenB(txtValidateMail.text) <> 0 Then
         Call ValidateCode(txtValidateMail.text, txtCodigo.text)
     End If
 End Sub

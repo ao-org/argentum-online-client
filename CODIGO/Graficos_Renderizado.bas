@@ -1405,10 +1405,10 @@ Private Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, 
                 
                 If .EsEnano Then OffArma = 7
                                 
-                If .Body_Aura <> "" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                If .Arma_Aura <> "" Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                If .Otra_Aura <> "" Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
-                If .Escudo_Aura <> "" Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                If LenB(.Body_Aura) <> 0 Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                If LenB(.Arma_Aura) <> 0 Then Call Renderizar_Aura(.Arma_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                If LenB(.Otra_Aura) <> 0 Then Call Renderizar_Aura(.Otra_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
+                If LenB(.Escudo_Aura) <> 0 Then Call Renderizar_Aura(.Escudo_Aura, PixelOffsetX, PixelOffsetY + OffArma, x, y, charindex)
                                 
                 Select Case .Heading
 
@@ -1972,10 +1972,10 @@ Private Sub Char_RenderCiego(ByVal charindex As Long, ByVal PixelOffsetX As Inte
 
                 End If
                         
-                If .Body_Aura <> "" Then Call Renderizar_AuraCiego(.Body_Aura, PixelOffsetX, PixelOffsetY, x, y)
-                If .Arma_Aura <> "" Then Call Renderizar_AuraCiego(.Arma_Aura, PixelOffsetX, PixelOffsetY, x, y)
-                If .Otra_Aura <> "" Then Call Renderizar_AuraCiego(.Otra_Aura, PixelOffsetX, PixelOffsetY, x, y)
-                If .Escudo_Aura <> "" Then Call Renderizar_AuraCiego(.Escudo_Aura, PixelOffsetX, PixelOffsetY, x, y)
+                If LenB(.Body_Aura) <> 0 Then Call Renderizar_AuraCiego(.Body_Aura, PixelOffsetX, PixelOffsetY, x, y)
+                If LenB(.Arma_Aura) <> 0 Then Call Renderizar_AuraCiego(.Arma_Aura, PixelOffsetX, PixelOffsetY, x, y)
+                If LenB(.Otra_Aura) <> 0 Then Call Renderizar_AuraCiego(.Otra_Aura, PixelOffsetX, PixelOffsetY, x, y)
+                If LenB(.Escudo_Aura) <> 0 Then Call Renderizar_AuraCiego(.Escudo_Aura, PixelOffsetX, PixelOffsetY, x, y)
 
                 If .Heading = EAST Or .Heading = NORTH Then
                     If .Escudo.ShieldWalk(.Heading).GrhIndex Then Call Draw_Grh(.Escudo.ShieldWalk(.Heading), PixelOffsetX, PixelOffsetY, 1, 1, colorz, False, x, y)
@@ -2147,7 +2147,7 @@ Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integ
         'screen_x = Convert_Tile_To_View_X(PixelOffsetX) + MoveOffsetX
 
         '*** Start Dialogs ***
-        If charlist(MapData(x, y).charindex).dialog <> "" Then
+        If charlist(MapData(x, y).charindex)LenB(.dialog) <> 0 Then
 
             'Figure out screen position
             Dim temp_array(3) As Long
@@ -2177,7 +2177,7 @@ Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integ
 
         End If
         
-        If charlist(MapData(x, y).charindex).dialogEfec <> "" Then
+        If LenB(charlist(MapData(x, y).charindex).dialogEfec) <> 0 Then
 
             charlist(MapData(x, y).charindex).SubeEfecto = charlist(MapData(x, y).charindex).SubeEfecto - timerTicksPerFrame
             charlist(MapData(x, y).charindex).dialog_Efect_color.a = charlist(MapData(x, y).charindex).dialog_Efect_color.a - (timerTicksPerFrame * 8.2)
@@ -2197,7 +2197,7 @@ Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integ
 
         End If
             
-        ' If charlist(MapData(X, Y).charindex).dialogExp <> "" Then
+        ' If LenB(charlist(MapData(X, Y).charindex).dialogExp) <> 0 Then
     
         '  charlist(MapData(X, Y).charindex).SubeExp = charlist(MapData(X, Y).charindex).SubeExp + (5 * timerTicksPerFrame * Sgn(-1))
         ' If charlist(MapData(X, Y).charindex).SubeExp <= 5 Then
@@ -2212,7 +2212,7 @@ Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integ
         'Engine_Text_Render_Exp MapData(X, Y).charindex, .dialogExp, PixelOffsetX + 14 - Engine_Text_Width(.dialogExp, True) / 2, PixelOffsetY + 14 + .Body.HeadOffset.Y - Engine_Text_Height(.dialogExp, True), temp_array, 1, True
         ' End If
             
-        'If charlist(MapData(X, Y).charindex).dialogOro <> "" Then
+        'If LenB(charlist(MapData(X, Y).charindex).dialogOro) <> 0 Then
 
         '  charlist(MapData(X, Y).charindex).SubeOro = charlist(MapData(X, Y).charindex).SubeOro + (5 * timerTicksPerFrame * Sgn(-1))
                 

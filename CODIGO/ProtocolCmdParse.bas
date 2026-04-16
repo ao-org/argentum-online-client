@@ -888,7 +888,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If EsGM Then
                     Dim i As Long
                     For i = 1 To NumOBJs
-                        If ObjData(i).Name <> "" Then
+                        If LenB(ObjData(i).Name) <> 0 Then
                             Dim subelemento As ListItem
                             Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).Name)
                             subelemento.SubItems(1) = i

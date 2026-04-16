@@ -1877,7 +1877,7 @@ End Sub
 Private Sub CerrarProceso_Click()
     On Error GoTo CerrarProceso_Click_Err
     tmp = InputBox(JsonLanguage.Item("MENSAJE_INGRESAR_NOMBRE_PROCESO"), JsonLanguage.Item("MENSAJE_CERRAR_PROCESO"))
-    If tmp <> "" Then
+    If LenB(tmp) <> 0 Then
         Call ParseUserCommand("/CERRARPROCESO " & cboListaUsus.text & "@" & tmp)
     End If
     Exit Sub
@@ -2111,7 +2111,7 @@ Private Sub cmdBorrarInformes_Click()
             "MacroCoordenadas.txt", "MacroDeClick.txt", "MacroInasistido.txt", "MacroCarteleo.txt", "MacroDePaquetes.txt", "MacroTotal.txt")
     ' Verificar y eliminar cada archivo en la lista
     For i = LBound(archivos) To UBound(archivos)
-        If dir(ruta & "\" & archivos(i)) <> "" Then
+        If LenB(dir(ruta & "\" & archivos(i))) <> 0 Then
             Kill ruta & "\" & archivos(i)
         End If
     Next i

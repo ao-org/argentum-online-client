@@ -606,7 +606,7 @@ End Sub
 
 Private Sub Text1_KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then
-        If Text1.text <> "" Then Call WriteCommerceSendChatMessage(Text1.text)
+        If LenB(Text1.text) <> 0 Then Call WriteCommerceSendChatMessage(Text1.text)
         Text1.text = ""
         KeyAscii = 0
     End If

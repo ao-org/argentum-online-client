@@ -889,7 +889,7 @@ Public Sub CalcularPosicionMAPA()
     On Error GoTo CalcularPosicionMAPA_Err
     Call CargarDatosMapa(UserMap)
     frmMapaGrande.lblMapInfo(0) = MapDat.map_name & "(" & UserMap & ")"
-    If NameMaps(ResourceMap).desc <> "" Then
+    If LenB(NameMaps(ResourceMap).desc) <> 0 Then
         frmMapaGrande.Label1.Caption = NameMaps(ResourceMap).desc
     Else
         frmMapaGrande.Label1.Caption = "Sin información relevante."
