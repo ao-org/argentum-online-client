@@ -901,23 +901,20 @@ End Sub
 ' @param    y Tile coord in the y-axis in which the user clicked.
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
-    '<EhHeader>
+
     On Error GoTo WriteDoubleClick_Err
-    '</EhHeader>
-    If ShouldBlockAction(eActionRateLimitType.ActionLeftClick) Then
-        Exit Sub
-    End If
+
     Call Writer.WriteInt16(ClientPacketID.eDoubleClick)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
     Call modNetwork.send(Writer)
     Call MarkActionSent(ActionLeftClick)
-    '<EhFooter>
+
     Exit Sub
 WriteDoubleClick_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteDoubleClick", Erl)
-    '</EhFooter>
+
 End Sub
 
 ''
