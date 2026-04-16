@@ -346,9 +346,6 @@ Public Sub toggleTutorialActivo(ByVal tutorial_index As Byte)
     End With
 End Sub
 
-Private Function GetTutorialDataFilePath() As String
-    GetTutorialDataFilePath = App.path & TutorialsDataFile
-End Function
 
 Private Function GetTutorialDataSetting(ByVal section As String, ByVal keyName As String) As String
 
