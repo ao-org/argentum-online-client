@@ -4071,6 +4071,7 @@ Private Sub HandleSetInvisible()
     
     ' Validation 1: Check if charindex is within valid bounds
     If charindex < LBound(charlist) Or charindex > UBound(charlist) Then
+        Call frmDebug.add_text_tracebox("Error HandleSetInvisible, charindex = " & charindex & " invalido")
         Exit Sub
     End If
     
@@ -4083,6 +4084,7 @@ Private Sub HandleSetInvisible()
     ' Validation 2: Check if x and y are within map bounds
     If x < LBound(MapData, 1) Or x > UBound(MapData, 1) Or _
        y < LBound(MapData, 2) Or y > UBound(MapData, 2) Then
+        Call frmDebug.add_text_tracebox("Error HandleSetInvisible, charindex = " & charindex & " out of map bounds")
         Exit Sub
     End If
     
