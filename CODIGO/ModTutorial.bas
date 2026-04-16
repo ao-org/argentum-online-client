@@ -355,7 +355,6 @@ Private Function GetTutorialDataSetting(ByVal section As String, ByVal keyName A
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", TutorialsFile, Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de recurso!"
-            GoTo hErr
         End If
         GetTutorialDataSetting = GetVar(Windows_Temp_Dir & TutorialsFile, Section, keyName)
     #Else
