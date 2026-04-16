@@ -530,7 +530,8 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
     On Error GoTo MoveTo_Err
     
     ' Validate UserPos coordinates early
-    If UserPos.x < 1 Or UserPos.x > 100 Or UserPos.y < 1 Or UserPos.y > 100 Then
+    If Not InMapBounds(UserPos.x, UserPos.y) Then
+        frmDebug.add_text_tracebox ("Invalid UserPos in" & UserPos.x & " " & UserPos.y)
         Exit Sub ' Invalid user position, abort
     End If
     
