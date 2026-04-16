@@ -67,7 +67,6 @@ Public Enum e_tutorialIndex
     TUTORIAL_SkillPoints = 4
 End Enum
 
-Private Const TutorialsDataFile As String = "\..\Recursos\Dat\tutoriales.ini"
 
 Private enabled As Boolean
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (pDest As Any, pSrc As Any, ByVal ByteLen As Long)
@@ -352,7 +351,22 @@ Private Function GetTutorialDataFilePath() As String
 End Function
 
 Private Function GetTutorialDataSetting(ByVal section As String, ByVal keyName As String) As String
-    GetTutorialDataSetting = GetVar(GetTutorialDataFilePath(), section, keyName)
+
+    Const TutorialsFile As String = "tutoriales.ini"
+       
+    
+    #If Compresion = 1 Then
+        If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", TutorialsFile, Windows_Temp_Dir, ResourcesPassword, False) Then
+            Err.Description = "¡No se puede cargar el archivo de recurso!"
+            GoTo hErr
+        End If
+        GetTutorialDataSetting = GetVar(Windows_Temp_Dir & TutorialsFile, Section, keyName)
+    #Else
+       
+        GetTutorialDataSetting = GetVar(App.path & "\..\Recursos\init\" & TutorialsFile, Section, keyName)
+    #End If
+    
+    
 End Function
 
 Public Sub cargarTutoriales()
