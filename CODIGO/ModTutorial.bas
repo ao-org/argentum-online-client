@@ -59,6 +59,7 @@ Public tutorial_index       As Integer
 Public cartel_visible       As Boolean
 Private cartel_index        As Byte
 Private text_message_render As String
+Private TutorialTextBufferLen As Long
 
 Public Enum e_tutorialIndex
     TUTORIAL_Muerto = 1
@@ -347,19 +348,26 @@ Public Sub toggleTutorialActivo(ByVal tutorial_index As Byte)
 End Sub
 
 
-Private Function GetTutorialDataSetting(ByVal section As String, ByVal keyName As String) As String
+Private Function GetTutorialDataSetting(ByVal section As String, ByVal keyName As String, Optional ByVal BufferLen As Long = 0) As String
 
     Const TutorialsFile As String = "tutoriales.ini"
-       
-    
+
+    If BufferLen <= 0 Then
+        If TutorialTextBufferLen > 0 Then
+            BufferLen = TutorialTextBufferLen
+        Else
+            BufferLen = 100
+        End If
+    End If
+
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", TutorialsFile, Windows_Temp_Dir, ResourcesPassword, False) Then
             Err.Description = "¡No se puede cargar el archivo de recurso!"
         End If
-        GetTutorialDataSetting = GetVar(Windows_Temp_Dir & TutorialsFile, Section, keyName)
+        GetTutorialDataSetting = GetVar(Windows_Temp_Dir & TutorialsFile, section, keyName, BufferLen)
     #Else
        
-        GetTutorialDataSetting = GetVar(App.path & "\..\Recursos\init\" & TutorialsFile, Section, keyName)
+        GetTutorialDataSetting = GetVar(App.path & "\..\Recursos\init\" & TutorialsFile, section, keyName, BufferLen)
     #End If
     
     
@@ -368,6 +376,10 @@ End Function
 Public Sub cargarTutoriales()
     Dim CantidadTutoriales As Long
     Dim i                  As Long, J As Long
+    
+    TutorialTextBufferLen = val(GetTutorialDataSetting("INITTUTORIAL", "LargoTexto", 16))
+    If TutorialTextBufferLen <= 0 Then TutorialTextBufferLen = 100
+    
     CantidadTutoriales = val(GetTutorialDataSetting("INITTUTORIAL", "Cantidad"))
     MostrarTutorial = val(GetTutorialDataSetting("INITTUTORIAL", "MostrarTutorial"))
     If CantidadTutoriales <= 0 Then Exit Sub
