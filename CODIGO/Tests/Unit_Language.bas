@@ -52,7 +52,7 @@ Private Function test_fts_roundtrip() As Boolean
     
     ' Read back with FileToString
     Dim result As String
-    result = FileToString(tmpPath)
+    result = ModLanguage.FileToString(tmpPath)
     
     test_fts_roundtrip = (result = expected)
     
@@ -81,7 +81,7 @@ Private Function test_fts_empty() As Boolean
     
     ' Read back with FileToString
     Dim result As String
-    result = FileToString(tmpPath)
+    result = ModLanguage.FileToString(tmpPath)
     
     test_fts_empty = (result = "")
     
@@ -104,7 +104,7 @@ Private Function test_json_read(ByVal langId As Long) As Boolean
     langPath = App.path & "\Languages\" & langId & ".json"
     
     Dim content As String
-    content = FileToString(langPath)
+    content = ModLanguage.FileToString(langPath)
     
     test_json_read = (Len(content) > 0)
     Exit Function
@@ -119,7 +119,7 @@ Private Function test_json_parse(ByVal langId As Long) As Boolean
     langPath = App.path & "\Languages\" & langId & ".json"
     
     Dim content As String
-    content = FileToString(langPath)
+    content = ModLanguage.FileToString(langPath)
     
     Dim dict As Object
     Set dict = JSON.parse(content)
@@ -157,7 +157,7 @@ Private Function test_pbt_fts_roundtrip() As Boolean
         Close #f
         
         ' Read back with FileToString
-        result = FileToString(tmpPath)
+        result = ModLanguage.FileToString(tmpPath)
         
         If result <> expected Then
             ' Cleanup on failure
