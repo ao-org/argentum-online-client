@@ -653,6 +653,7 @@
   "MENSAJE_QUEST_CLASE": "Aula: ",
   "MENSAJE_SEGURO_LEGION_ACTIVADO":"Você ativou o seguro da Facção Legionária.",
   "MENSAJE_SEGURO_LEGION_DESACTIVADO":"Você desativou o seguro da Facção Legionária e agora pode atacar uma Legião.",
+  "MENSAJE_EVENTO_CONTRASEÑA":"Este evento tem senha, você deve inseri-la para poder participar.",
   "MENSAJE_EVENTO_DEATHMATCH":"Combate mortal",
   "MENSAJE_EVENTO_CAPTURA":"Capturar a bandeira",
   "MENSAJE_EVENTO_CACERIA":"Caça",
