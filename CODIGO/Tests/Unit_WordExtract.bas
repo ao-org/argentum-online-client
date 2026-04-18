@@ -5,8 +5,6 @@ Option Explicit
 ' WordExtract Test Suite
 ' Tests System.bas: HiWord and LoWord functions for extracting the high and
 ' low 16-bit words from a Long value.
-'
-' Requirements: 4.1, 4.2, 4.3, 4.4
 ' ==========================================================================
 
 #If UNIT_TEST = 1 Then
@@ -26,7 +24,7 @@ End Sub
 ' Example-based tests
 ' --------------------------------------------------------------------------
 
-' Requirement 4.1: HiWord(&H00010002) = 1
+' HiWord(&H00010002) = 1
 Private Function test_hiword_10002() As Boolean
     On Error GoTo Fail
     test_hiword_10002 = (System.HiWord(&H10002) = 1)
@@ -35,7 +33,7 @@ Fail:
     test_hiword_10002 = False
 End Function
 
-' Requirement 4.2: LoWord(&H00010002) = 2
+' LoWord(&H00010002) = 2
 Private Function test_loword_10002() As Boolean
     On Error GoTo Fail
     test_loword_10002 = (System.LoWord(&H10002) = 2)
@@ -44,7 +42,7 @@ Fail:
     test_loword_10002 = False
 End Function
 
-' Requirement 4.3: HiWord(0) = 0
+' HiWord(0) = 0
 Private Function test_hiword_zero() As Boolean
     On Error GoTo Fail
     test_hiword_zero = (System.HiWord(0) = 0)
@@ -53,7 +51,7 @@ Fail:
     test_hiword_zero = False
 End Function
 
-' Requirement 4.3: LoWord(0) = 0
+' LoWord(0) = 0
 Private Function test_loword_zero() As Boolean
     On Error GoTo Fail
     test_loword_zero = (System.LoWord(0) = 0)
@@ -67,7 +65,6 @@ End Function
 ' --------------------------------------------------------------------------
 
 ' Feature: unit-test-coverage-tier4, Property 8: HiWord/LoWord recombination
-' Validates: Requirements 4.4
 Private Function test_pbt_recombination() As Boolean
     On Error GoTo Fail
     

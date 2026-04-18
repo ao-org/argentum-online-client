@@ -25,7 +25,7 @@ Public Sub test_suite_json()
     Call UnitTesting.RunTest("json_pbt_invalid_error", test_json_pbt_invalid_error())
 End Sub
 
-' Requirement 1.1: Valid JSON object parsed into Dictionary with correct key-value pairs
+' Valid JSON object parsed into Dictionary with correct key-value pairs
 Private Function test_json_valid_object() As Boolean
     On Error GoTo Fail
     Dim jsonStr As String
@@ -48,7 +48,7 @@ Fail:
     test_json_valid_object = False
 End Function
 
-' Requirement 1.2: Valid JSON array parsed into Collection with correct elements
+' Valid JSON array parsed into Collection with correct elements
 Private Function test_json_valid_array() As Boolean
     On Error GoTo Fail
     Dim jsonStr As String
@@ -72,7 +72,7 @@ Fail:
     test_json_valid_array = False
 End Function
 
-' Requirement 1.3: Nested objects accessible via chained key lookups
+' Nested objects accessible via chained key lookups
 Private Function test_json_nested_object() As Boolean
     On Error GoTo Fail
     Dim jsonStr As String
@@ -96,7 +96,7 @@ Fail:
     test_json_nested_object = False
 End Function
 
-' Requirement 1.4: Numeric values preserved as numeric VB6 types
+' Numeric values preserved as numeric VB6 types
 Private Function test_json_numeric_value() As Boolean
     On Error GoTo Fail
     Dim jsonStr As String
@@ -119,7 +119,7 @@ Fail:
     test_json_numeric_value = False
 End Function
 
-' Requirement 1.5: Boolean literals parsed as VB6 Boolean values
+' Boolean literals parsed as VB6 Boolean values
 Private Function test_json_boolean_literals() As Boolean
     On Error GoTo Fail
     Dim jsonStr As String
@@ -140,7 +140,7 @@ Fail:
     test_json_boolean_literals = False
 End Function
 
-' Requirement 1.6: Null value handled without raising an error
+' Null value handled without raising an error
 Private Function test_json_null_handling() As Boolean
     On Error GoTo Fail
     Dim jsonStr As String
@@ -161,7 +161,7 @@ Fail:
     test_json_null_handling = False
 End Function
 
-' Requirement 1.7: Empty object "{}" returns empty Dictionary with count zero
+' Empty object "{}" returns empty Dictionary with count zero
 Private Function test_json_empty_object() As Boolean
     On Error GoTo Fail
     Dim jsonStr As String
@@ -182,7 +182,7 @@ Fail:
     test_json_empty_object = False
 End Function
 
-' Requirement 1.8: Empty array "[]" returns empty Collection with count zero
+' Empty array "[]" returns empty Collection with count zero
 Private Function test_json_empty_array() As Boolean
     On Error GoTo Fail
     Dim jsonStr As String
@@ -203,7 +203,7 @@ Fail:
     test_json_empty_array = False
 End Function
 
-' Requirement 1.9: Invalid JSON populates GetParserErrors with non-empty string
+' Invalid JSON populates GetParserErrors with non-empty string
 Private Function test_json_invalid_error() As Boolean
     On Error GoTo Fail
     Dim jsonStr As String
@@ -221,7 +221,7 @@ Fail:
     test_json_invalid_error = False
 End Function
 
-' Requirement 1.10: Empty string does not crash the parser
+' Empty string does not crash the parser
 ' The parser uses On Error Resume Next internally, so an empty string
 ' will not raise an error. We verify it doesn't crash and returns
 ' either Nothing or an empty error string (both are acceptable).
@@ -241,7 +241,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage, Property 3: JSON numeric value preservation
-' **Validates: Requirements 1.4**
 Private Function test_json_pbt_numeric_preservation() As Boolean
     On Error GoTo Fail
     
@@ -284,7 +283,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage, Property 4: JSON invalid input error reporting
-' **Validates: Requirements 1.9**
 ' Only tests strings that do NOT start with { or [ since the parser only
 ' sets m_parserrors in the Case Else branch of the top-level Select.
 ' Strings starting with { or [ enter parseObject/parseArray which may

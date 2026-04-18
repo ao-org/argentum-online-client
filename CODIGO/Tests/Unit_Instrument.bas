@@ -6,8 +6,6 @@ Option Explicit
 ' Tests clsInstrument.cls: timing via QueryPerformanceCounter
 ' Verifies ElapsedSeconds >= 0, ElapsedMilliseconds consistency,
 ' and monotonicity of successive readings.
-'
-' Requirements: 5.1, 5.2, 5.3
 ' ==========================================================================
 
 #If UNIT_TEST = 1 Then
@@ -18,7 +16,7 @@ Public Sub test_suite_instrument()
     Call UnitTesting.RunTest("inst_monotonicity", test_monotonicity())
 End Sub
 
-' Requirement 5.1: After Start, ElapsedSeconds >= 0
+' After Start, ElapsedSeconds >= 0
 Private Function test_elapsed_nonneg() As Boolean
     On Error GoTo Fail
     Dim inst As New clsInstrument
@@ -29,7 +27,7 @@ Fail:
     test_elapsed_nonneg = False
 End Function
 
-' Requirement 5.2: ElapsedMilliseconds ? ElapsedSeconds * 1000 (tolerance 1ms)
+' ElapsedMilliseconds ? ElapsedSeconds * 1000 (tolerance 1ms)
 Private Function test_ms_consistency() As Boolean
     On Error GoTo Fail
     Dim inst As New clsInstrument
@@ -46,7 +44,7 @@ Fail:
     test_ms_consistency = False
 End Function
 
-' Requirement 5.3: Second ElapsedSeconds reading >= first (monotonicity)
+' Second ElapsedSeconds reading >= first (monotonicity)
 Private Function test_monotonicity() As Boolean
     On Error GoTo Fail
     Dim inst As New clsInstrument

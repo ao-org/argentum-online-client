@@ -7,7 +7,6 @@ Option Explicit
 ' ModCooldown active effect slot tracking (AddOrUpdateEffect, RemoveEffect,
 ' FindEffectIndex, ResetAllCd).
 '
-' Requirements: 3.1, 3.2, 3.3
 ' ==========================================================================
 
 #If UNIT_TEST = 1 Then
@@ -24,7 +23,7 @@ Public Sub test_suite_cooldown()
     Call UnitTesting.RunTest("cd_pbt_init_stores_values", test_cd_pbt_init_stores_values())
 End Sub
 
-' Requirement 3.1: Cooldown_Initialize stores totalTime correctly
+' Cooldown_Initialize stores totalTime correctly
 Private Function test_cd_init_stores_total_time() As Boolean
     On Error GoTo Fail
 
@@ -37,7 +36,7 @@ Fail:
     test_cd_init_stores_total_time = False
 End Function
 
-' Requirement 3.1: Cooldown_Initialize stores iconGrh correctly
+' Cooldown_Initialize stores iconGrh correctly
 Private Function test_cd_init_stores_icon_grh() As Boolean
     On Error GoTo Fail
 
@@ -50,7 +49,7 @@ Fail:
     test_cd_init_stores_icon_grh = False
 End Function
 
-' Requirement 3.2: Cooldown_Initialize records initialTime as current tick count
+' Cooldown_Initialize records initialTime as current tick count
 Private Function test_cd_init_records_initial_time() As Boolean
     On Error GoTo Fail
 
@@ -70,7 +69,7 @@ Fail:
     test_cd_init_records_initial_time = False
 End Function
 
-' Requirement 3.3: AddOrUpdateEffect tracks active cooldown slots
+' AddOrUpdateEffect tracks active cooldown slots
 Private Function test_cd_add_effect_increments_count() As Boolean
     On Error GoTo Fail
 
@@ -108,7 +107,7 @@ Fail:
     test_cd_add_effect_increments_count = False
 End Function
 
-' Requirement 3.3: FindEffectIndex returns correct index for tracked effect
+' FindEffectIndex returns correct index for tracked effect
 Private Function test_cd_find_effect_returns_index() As Boolean
     On Error GoTo Fail
 
@@ -157,7 +156,7 @@ Fail:
     test_cd_find_effect_returns_index = False
 End Function
 
-' Requirement 3.3: RemoveEffect decrements count and removes the slot
+' RemoveEffect decrements count and removes the slot
 Private Function test_cd_remove_effect_decrements_count() As Boolean
     On Error GoTo Fail
 
@@ -211,7 +210,7 @@ Fail:
     test_cd_remove_effect_decrements_count = False
 End Function
 
-' Requirement 3.3: ResetAllCd clears all effect lists
+' ResetAllCd clears all effect lists
 Private Function test_cd_reset_all_clears_lists() As Boolean
     On Error GoTo Fail
 
@@ -264,7 +263,7 @@ Fail:
     test_cd_reset_all_clears_lists = False
 End Function
 
-' Requirement 3.3: AddOrUpdateEffect overwrites existing effect with same TypeId/id
+' AddOrUpdateEffect overwrites existing effect with same TypeId/id
 Private Function test_cd_update_effect_overwrites() As Boolean
     On Error GoTo Fail
 
@@ -315,7 +314,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage, Property 16: Cooldown initialization stores values
-' Validates: Requirements 3.1
 Private Function test_cd_pbt_init_stores_values() As Boolean
     On Error GoTo Fail
 

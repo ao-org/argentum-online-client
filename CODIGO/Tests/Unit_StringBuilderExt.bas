@@ -5,9 +5,6 @@ Option Explicit
 ' StringBuilder Extension Test Suite
 ' Tests cStringBuilder.cls: Append, AppendNL, Insert, Remove, Find, Clear,
 ' Length, Capacity, toString, TheString, HeapMinimize, and auto-expansion.
-'
-' Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 1.10,
-'               1.11, 1.12, 1.13, 1.15
 ' ==========================================================================
 
 #If UNIT_TEST = 1 Then
@@ -35,7 +32,7 @@ Public Sub test_suite_stringbuilder_ext()
     Call UnitTesting.RunTest("sb_pbt_heapminimize_preserves", test_pbt_heapminimize_preserves())
 End Sub
 
-' Requirement 1.1: New StringBuilder has Length=0 and toString=""
+' New StringBuilder has Length=0 and toString=""
 Private Function test_init_state() As Boolean
     On Error GoTo Fail
     Dim sb As New cStringBuilder
@@ -45,7 +42,7 @@ Fail:
     test_init_state = False
 End Function
 
-' Requirement 1.2: Append increments Length and toString contains appended string
+' Append increments Length and toString contains appended string
 Private Function test_append_length_and_content() As Boolean
     On Error GoTo Fail
     Dim sb As New cStringBuilder
@@ -56,7 +53,7 @@ Fail:
     test_append_length_and_content = False
 End Function
 
-' Requirement 1.3: Multiple Append produces concatenation in order
+' Multiple Append produces concatenation in order
 Private Function test_multiple_append() As Boolean
     On Error GoTo Fail
     Dim sb As New cStringBuilder
@@ -69,7 +66,7 @@ Fail:
     test_multiple_append = False
 End Function
 
-' Requirement 1.4: AppendNL appends string followed by vbCrLf
+' AppendNL appends string followed by vbCrLf
 Private Function test_append_nl() As Boolean
     On Error GoTo Fail
     Dim sb As New cStringBuilder
@@ -80,7 +77,7 @@ Fail:
     test_append_nl = False
 End Function
 
-' Requirement 1.5: Insert at valid index inserts without losing content
+' Insert at valid index inserts without losing content
 Private Function test_insert_valid() As Boolean
     On Error GoTo Fail
     Dim sb As New cStringBuilder
@@ -93,7 +90,7 @@ Fail:
     test_insert_valid = False
 End Function
 
-' Requirement 1.6: Insert out of range raises error 9
+' Insert out of range raises error 9
 Private Function test_insert_out_of_range() As Boolean
     On Error GoTo ErrExpected
     Dim sb As New cStringBuilder
@@ -106,7 +103,7 @@ ErrExpected:
     test_insert_out_of_range = (Err.Number = 9)
 End Function
 
-' Requirement 1.7: Remove valid characters, Length reduced
+' Remove valid characters, Length reduced
 Private Function test_remove_valid() As Boolean
     On Error GoTo Fail
     Dim sb As New cStringBuilder
@@ -119,7 +116,7 @@ Fail:
     test_remove_valid = False
 End Function
 
-' Requirement 1.8: Remove out of range raises error 9
+' Remove out of range raises error 9
 Private Function test_remove_out_of_range() As Boolean
     On Error GoTo ErrExpected
     Dim sb As New cStringBuilder
@@ -132,7 +129,7 @@ ErrExpected:
     test_remove_out_of_range = (Err.Number = 9)
 End Function
 
-' Requirement 1.9: Find existing string returns correct 1-based position
+' Find existing string returns correct 1-based position
 Private Function test_find_existing() As Boolean
     On Error GoTo Fail
     Dim sb As New cStringBuilder
@@ -144,7 +141,7 @@ Fail:
     test_find_existing = False
 End Function
 
-' Requirement 1.10: Find non-existing string returns 0
+' Find non-existing string returns 0
 Private Function test_find_non_existing() As Boolean
     On Error GoTo Fail
     Dim sb As New cStringBuilder
@@ -155,7 +152,7 @@ Fail:
     test_find_non_existing = False
 End Function
 
-' Requirement 1.11: Clear resets Length=0 and toString=""
+' Clear resets Length=0 and toString=""
 Private Function test_clear() As Boolean
     On Error GoTo Fail
     Dim sb As New cStringBuilder
@@ -167,7 +164,7 @@ Fail:
     test_clear = False
 End Function
 
-' Requirement 1.12: TheString assignment — toString returns same string, Length correct
+' TheString assignment — toString returns same string, Length correct
 Private Function test_thestring_assignment() As Boolean
     On Error GoTo Fail
     Dim sb As New cStringBuilder
@@ -178,7 +175,7 @@ Fail:
     test_thestring_assignment = False
 End Function
 
-' Requirement 1.13: HeapMinimize reduces Capacity, toString unchanged
+' HeapMinimize reduces Capacity, toString unchanged
 Private Function test_heap_minimize() As Boolean
     On Error GoTo Fail
     Dim sb As New cStringBuilder
@@ -204,7 +201,7 @@ Fail:
     test_heap_minimize = False
 End Function
 
-' Requirement 1.15: Append beyond ChunkSize auto-expands, toString complete
+' Append beyond ChunkSize auto-expands, toString complete
 Private Function test_append_beyond_chunksize() As Boolean
     On Error GoTo Fail
     Dim sb As New cStringBuilder
@@ -223,7 +220,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage-tier4, Property 1: Append concatenation invariant
-' Validates: Requirements 1.2, 1.3
 Private Function test_pbt_append_concat_invariant() As Boolean
     On Error GoTo Fail
 
@@ -270,7 +266,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage-tier4, Property 2: TheString/toString round-trip
-' Validates: Requirements 1.12, 1.14
 Private Function test_pbt_thestring_roundtrip() As Boolean
     On Error GoTo Fail
 
@@ -299,7 +294,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage-tier4, Property 3: HeapMinimize content preservation
-' Validates: Requirements 1.13
 Private Function test_pbt_heapminimize_preserves() As Boolean
     On Error GoTo Fail
 

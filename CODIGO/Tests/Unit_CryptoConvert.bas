@@ -5,8 +5,6 @@ Option Explicit
 ' CryptoConvert Test Suite
 ' Tests AO20CryptoSysWrapper.bas: HiByte, LoByte, MakeInt, Str2ByteArr,
 ' ByteArr2String, CopyBytes, ByteArrayToHex, ByteArrayToDecimalString.
-'
-' Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9
 ' ==========================================================================
 
 #If UNIT_TEST = 1 Then
@@ -34,7 +32,7 @@ End Sub
 ' Example-based tests
 ' --------------------------------------------------------------------------
 
-' Requirement 2.1: HiByte(256) = 1
+' HiByte(256) = 1
 Private Function test_hibyte_256() As Boolean
     On Error GoTo Fail
     test_hibyte_256 = (AO20CryptoSysWrapper.hiByte(256) = 1)
@@ -43,7 +41,7 @@ Fail:
     test_hibyte_256 = False
 End Function
 
-' Requirement 2.1: HiByte(0) = 0
+' HiByte(0) = 0
 Private Function test_hibyte_0() As Boolean
     On Error GoTo Fail
     test_hibyte_0 = (AO20CryptoSysWrapper.hiByte(0) = 0)
@@ -52,7 +50,7 @@ Fail:
     test_hibyte_0 = False
 End Function
 
-' Requirement 2.2: LoByte(258) = 2
+' LoByte(258) = 2
 Private Function test_lobyte_258() As Boolean
     On Error GoTo Fail
     test_lobyte_258 = (AO20CryptoSysWrapper.LoByte(258) = 2)
@@ -61,7 +59,7 @@ Fail:
     test_lobyte_258 = False
 End Function
 
-' Requirement 2.2: LoByte(255) = 255
+' LoByte(255) = 255
 Private Function test_lobyte_255() As Boolean
     On Error GoTo Fail
     test_lobyte_255 = (AO20CryptoSysWrapper.LoByte(255) = 255)
@@ -70,7 +68,7 @@ Fail:
     test_lobyte_255 = False
 End Function
 
-' Requirement 2.4: Str2ByteArr produces correct length and ASCII byte values
+' Str2ByteArr produces correct length and ASCII byte values
 Private Function test_str2bytearr() As Boolean
     On Error GoTo Fail
     Dim arr() As Byte
@@ -87,7 +85,7 @@ Fail:
     test_str2bytearr = False
 End Function
 
-' Requirement 2.5: ByteArr2String returns correct ASCII string
+' ByteArr2String returns correct ASCII string
 Private Function test_bytearr2string() As Boolean
     On Error GoTo Fail
     Dim arr(0 To 2) As Byte
@@ -100,7 +98,7 @@ Fail:
     test_bytearr2string = False
 End Function
 
-' Requirement 2.7: CopyBytes copies at offset, other bytes unchanged
+' CopyBytes copies at offset, other bytes unchanged
 Private Function test_copybytes() As Boolean
     On Error GoTo Fail
     Dim src(0 To 1) As Byte
@@ -126,7 +124,7 @@ Fail:
     test_copybytes = False
 End Function
 
-' Requirement 2.8: ByteArrayToHex produces hex representation
+' ByteArrayToHex produces hex representation
 ' VB6 Hex$() does not zero-pad, so &H0A becomes "A" not "0A"
 Private Function test_bytearraytohex() As Boolean
     On Error GoTo Fail
@@ -139,7 +137,7 @@ Fail:
     test_bytearraytohex = False
 End Function
 
-' Requirement 2.9: ByteArrayToDecimalString produces decimal representation
+' ByteArrayToDecimalString produces decimal representation
 Private Function test_bytearraytodecimalstring() As Boolean
     On Error GoTo Fail
     Dim arr(0 To 1) As Byte
@@ -156,7 +154,6 @@ End Function
 ' --------------------------------------------------------------------------
 
 ' Feature: unit-test-coverage-tier4, Property 4: HiByte/LoByte/MakeInt round-trip
-' Validates: Requirements 2.3
 Private Function test_pbt_makeint_roundtrip() As Boolean
     On Error GoTo Fail
     
@@ -176,7 +173,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage-tier4, Property 5: Str2ByteArr/ByteArr2String round-trip
-' Validates: Requirements 2.6
 Private Function test_pbt_str2bytearr_roundtrip() As Boolean
     On Error GoTo Fail
     
@@ -213,7 +209,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage-tier4, Property 6: CopyBytes correctness
-' Validates: Requirements 2.7
 Private Function test_pbt_copybytes_correctness() As Boolean
     On Error GoTo Fail
     
@@ -275,7 +270,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage-tier4, Property 7: Byte array to string representation
-' Validates: Requirements 2.8, 2.9
 Private Function test_pbt_byte_to_string_repr() As Boolean
     On Error GoTo Fail
     

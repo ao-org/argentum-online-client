@@ -27,9 +27,7 @@ Public Sub test_suite_net_round_trip()
     Call UnitTesting.RunTest("net_pbt_sequential_ordering", test_net_pbt_sequential_ordering())
 End Sub
 
-' Requirement 2.7: Sequential multi-type write/read preserving order
-' Also validates 2.1 (Int16), 2.2 (Int32), 2.3 (Int8), 2.4 (Real32),
-' 2.5 (Bool), 2.6 (String8) via the sequential round-trip
+' Sequential multi-type write/read preserving order
 Private Function test_net_sequential_multi_type() As Boolean
     On Error GoTo Fail
 
@@ -106,7 +104,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage, Property 1: Network serialization typed round-trip (Int16)
-' **Validates: Requirements 2.1**
 Private Function test_net_pbt_int16_round_trip() As Boolean
     On Error GoTo Fail
 
@@ -146,7 +143,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage, Property 1: Network serialization typed round-trip (Int32)
-' **Validates: Requirements 2.2**
 Private Function test_net_pbt_int32_round_trip() As Boolean
     On Error GoTo Fail
 
@@ -209,7 +205,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage, Property 1: Network serialization typed round-trip (Int8)
-' **Validates: Requirements 2.3**
 Private Function test_net_pbt_int8_round_trip() As Boolean
     On Error GoTo Fail
 
@@ -248,7 +243,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage, Property 1: Network serialization typed round-trip (Real32)
-' **Validates: Requirements 2.4**
 Private Function test_net_pbt_real32_round_trip() As Boolean
     On Error GoTo Fail
 
@@ -311,7 +305,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage, Property 1: Network serialization typed round-trip (Bool)
-' **Validates: Requirements 2.5**
 Private Function test_net_pbt_bool_round_trip() As Boolean
     On Error GoTo Fail
 
@@ -354,7 +347,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage, Property 1: Network serialization typed round-trip (String8)
-' **Validates: Requirements 2.6**
 Private Function test_net_pbt_string8_round_trip() As Boolean
     On Error GoTo Fail
 
@@ -394,7 +386,6 @@ Fail:
 End Function
 
 ' Feature: unit-test-coverage, Property 2: Network serialization sequential ordering
-' **Validates: Requirements 2.7**
 Private Function test_net_pbt_sequential_ordering() As Boolean
     On Error GoTo Fail
 

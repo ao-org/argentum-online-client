@@ -11,8 +11,6 @@ Option Explicit
 ' file paths, we test the same logic by creating a temp INI file and using
 ' GetVar (which accepts a file path) combined with CByte conversion and
 ' default-value fallback — mirroring GetSettingAsByte's exact behavior.
-'
-' Requirements: 8.1, 8.2, 8.3, 8.4, 8.5
 ' ==========================================================================
 
 #If UNIT_TEST = 1 Then
@@ -84,7 +82,7 @@ End Function
 ' Example-based tests
 ' --------------------------------------------------------------------------
 
-' Requirement 8.1: Existing key returns correct Byte value
+' Existing key returns correct Byte value
 Private Function test_existing_key() As Boolean
     On Error GoTo Fail
     Dim tmpPath As String
@@ -99,7 +97,7 @@ Fail:
     test_existing_key = False
 End Function
 
-' Requirement 8.2: Missing key returns DefaultValue
+' Missing key returns DefaultValue
 Private Function test_missing_key() As Boolean
     On Error GoTo Fail
     Dim tmpPath As String
@@ -114,7 +112,7 @@ Fail:
     test_missing_key = False
 End Function
 
-' Requirement 8.3: Non-numeric value ("abc") returns DefaultValue without error
+' Non-numeric value ("abc") returns DefaultValue without error
 Private Function test_non_numeric() As Boolean
     On Error GoTo Fail
     Dim tmpPath As String
@@ -129,7 +127,7 @@ Fail:
     test_non_numeric = False
 End Function
 
-' Requirement 8.4: Value "0" returns 0 (not confused with empty string)
+' Value "0" returns 0 (not confused with empty string)
 Private Function test_value_zero() As Boolean
     On Error GoTo Fail
     Dim tmpPath As String
@@ -144,7 +142,7 @@ Fail:
     test_value_zero = False
 End Function
 
-' Requirement 8.5: Value "255" returns 255 (max Byte boundary)
+' Value "255" returns 255 (max Byte boundary)
 Private Function test_value_255() As Boolean
     On Error GoTo Fail
     Dim tmpPath As String

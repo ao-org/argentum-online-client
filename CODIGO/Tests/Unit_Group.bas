@@ -9,8 +9,6 @@ Option Explicit
 ' Since there are no add/remove functions, tests directly manipulate the
 ' global GroupSize and GroupMembers() arrays (mirroring Protocol.bas behavior).
 ' All tests call Group.Clear at the start and end to avoid polluting state.
-'
-' Requirements: 5.1, 5.2, 5.3, 5.4
 ' ==========================================================================
 
 #If UNIT_TEST = 1 Then
@@ -24,7 +22,7 @@ Public Sub test_suite_group()
     Call UnitTesting.RunTest("grp_clear_resets_to_zero", test_grp_clear_resets_to_zero())
 End Sub
 
-' Requirement 5.1: Group starts with zero members after Clear
+' Group starts with zero members after Clear
 Private Function test_grp_starts_with_zero_members() As Boolean
     On Error GoTo Fail
     
@@ -37,7 +35,7 @@ Fail:
     test_grp_starts_with_zero_members = False
 End Function
 
-' Requirement 5.2: Adding a member increments the member count
+' Adding a member increments the member count
 Private Function test_grp_add_member_increments_count() As Boolean
     On Error GoTo Fail
     
@@ -60,7 +58,7 @@ Fail:
     test_grp_add_member_increments_count = False
 End Function
 
-' Requirement 5.2: Adding multiple members increments count correctly
+' Adding multiple members increments count correctly
 Private Function test_grp_add_multiple_members() As Boolean
     On Error GoTo Fail
     
@@ -95,7 +93,7 @@ Fail:
     test_grp_add_multiple_members = False
 End Function
 
-' Requirement 5.3: Removing a member decrements the member count
+' Removing a member decrements the member count
 Private Function test_grp_remove_member_decrements_count() As Boolean
     On Error GoTo Fail
     
@@ -134,7 +132,7 @@ Fail:
     test_grp_remove_member_decrements_count = False
 End Function
 
-' Requirement 5.4: Membership index query finds correct member
+' Membership index query finds correct member
 Private Function test_grp_membership_index_query() As Boolean
     On Error GoTo Fail
     
@@ -189,7 +187,7 @@ Fail:
     test_grp_membership_index_query = False
 End Function
 
-' Requirement 5.1: Clear resets group back to zero members
+' Clear resets group back to zero members
 Private Function test_grp_clear_resets_to_zero() As Boolean
     On Error GoTo Fail
     

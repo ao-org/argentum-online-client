@@ -7,8 +7,6 @@ Option Explicit
 ' handling, and validation of Languages/*.json files (1-5) including
 ' JSON.parse producing valid Dictionary objects.
 '
-' Requirements: 7.1, 7.2, 7.3, 7.4, 7.5
-'
 ' DISABLED: Ambiguous name "FileToString" compile error due to duplicate
 '           Public definition in ModAuth.bas and ModLanguage.bas.
 ' ==========================================================================
@@ -38,7 +36,7 @@ End Sub
 ' Example-based tests
 ' --------------------------------------------------------------------------
 
-'' Requirement 7.1: FileToString round-trip with known content
+'' FileToString round-trip with known content
 'Private Function test_fts_roundtrip() As Boolean
 '    On Error GoTo Fail
 '    Dim tmpPath As String
@@ -71,7 +69,7 @@ End Sub
 '    test_fts_roundtrip = False
 'End Function
 '
-'' Requirement 7.2: FileToString with empty file returns ""
+'' FileToString with empty file returns ""
 'Private Function test_fts_empty() As Boolean
 '    On Error GoTo Fail
 '    Dim tmpPath As String
@@ -100,7 +98,7 @@ End Sub
 '    test_fts_empty = False
 'End Function
 '
-'' Requirement 7.3: Each Languages/*.json can be read without error, content not empty
+'' Each Languages/*.json can be read without error, content not empty
 'Private Function test_json_read(ByVal langId As Long) As Boolean
 '    On Error GoTo Fail
 '    Dim langPath As String
@@ -115,7 +113,7 @@ End Sub
 '    test_json_read = False
 'End Function
 '
-'' Requirement 7.4: Each Languages/*.json parses to valid Dictionary (not Nothing)
+'' Each Languages/*.json parses to valid Dictionary (not Nothing)
 'Private Function test_json_parse(ByVal langId As Long) As Boolean
 '    On Error GoTo Fail
 '    Dim langPath As String
@@ -138,7 +136,6 @@ End Sub
 '' --------------------------------------------------------------------------
 '
 '' Feature: unit-test-coverage-tier4, Property 10: FileToString write/read round-trip
-'' Validates: Requirements 7.1
 'Private Function test_pbt_fts_roundtrip() As Boolean
 '    On Error GoTo Fail
 '    Dim tmpPath As String
