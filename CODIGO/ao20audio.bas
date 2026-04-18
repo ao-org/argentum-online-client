@@ -238,8 +238,6 @@ Public Function StopMusic() As Long
     End If
 End Function
 
-
-
 Public Function StopWav(ByVal id As String, Optional ByVal label As String = "") As Long
     StopWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
