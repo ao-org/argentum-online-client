@@ -842,6 +842,8 @@ Sub Main()
             End If
         End If
     #End If
+    
+    Windows_Temp_Dir = General_Get_Temp_Dir
     Call initPacketControl
     Call SetNpcsRenderText
     Call cargarTutoriales
@@ -850,7 +852,7 @@ Sub Main()
     SessionOpened = False
     Call Load(frmConnect)
     Call Load(FrmLogear)
-    Windows_Temp_Dir = General_Get_Temp_Dir
+    
     Call InicializarNombres
     Call InitializeInventory
     Call Init_TileEngine
