@@ -72,6 +72,8 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
         End If
     End If
     Dim MouseAction As e_MouseAction
+    Call ToggleNpcType1BodyOnClick(tX, tY)
+
     Select Case MouseButton
         Case vbLeftButton
             MouseAction = ACCION1
@@ -228,6 +230,45 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
 OnClick_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModGameplayUi.OnClick", Erl)
     Resume Next
+End Sub
+
+
+Private Sub ToggleNpcType1BodyOnClick(ByVal clickX As Byte, ByVal clickY As Byte)
+    On Error GoTo ToggleNpcType1BodyOnClick_Err
+
+    Dim charindex As Integer
+    charindex = MapData(clickX, clickY).charindex
+    If charindex = 0 And clickY < YMaxMapSize Then
+        charindex = MapData(clickX, clickY + 1).charindex
+    End If
+    If charindex = 0 Then Exit Sub
+
+    With charlist(charindex)
+        If Not .EsNpc Then Exit Sub
+        If .NPCNumber <= 0 Or .NPCNumber > UBound(NpcData) Then Exit Sub
+        If NpcData(.NPCNumber).NpcType <> 1 Then Exit Sub
+        If .BodyOnLand <= 0 Or .BodyIdle <= 0 Then Exit Sub
+
+        If .Body.Walk(.Heading).GrhIndex = BodyData(.BodyIdle).Walk(.Heading).GrhIndex Then
+            .Body = BodyData(.BodyOnLand)
+            .iBody = .BodyOnLand
+        Else
+            .Body = BodyData(.BodyIdle)
+            .iBody = .BodyIdle
+        End If
+
+        If .Body.AnimateOnIdle = 0 Then
+            .Body.Walk(.Heading).Loops = 0
+            .Body.Walk(.Heading).started = 0
+        Else
+            .Body.Walk(.Heading).Loops = 1
+            .Body.Walk(.Heading).started = FrameTime
+        End If
+    End With
+    Exit Sub
+
+ToggleNpcType1BodyOnClick_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ModGameplayUI.ToggleNpcType1BodyOnClick", Erl)
 End Sub
 
 Public Sub HandleQuestionResponse(ByVal Result As Boolean)

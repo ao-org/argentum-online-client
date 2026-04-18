@@ -1305,6 +1305,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     Dim terrainHeight    As Integer
     With charlist(charindex)
         If .Heading = 0 Then Exit Sub
+
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
         If Not .Moving And Not .TranslationActive And .Idle And .scrollDirectionX = 0 And .scrollDirectionY = 0 And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
             If .Body.AnimateOnIdle = 0 Then
@@ -1508,6 +1509,34 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
         Else
             ease = 0
         End If
+        Dim desiredNpcBody As Integer
+        desiredNpcBody = 0
+        If .EsNpc And Not .Muerto And Not .AnimatingBody And Not .Moving And Not .TranslationActive Then
+            If .NPCNumber > 0 And .NPCNumber <= UBound(NpcData) Then
+                If NpcData(.NPCNumber).NpcType = 17 And .BodyOnLand > 0 And Not IsAmphibianOverWater(charindex) Then
+                    Dim proximityRange As Integer
+                    proximityRange = 3
+
+                    desiredNpcBody = .BodyOnLand
+                    If distance(UserPos.x - AddtoUserPos.x, UserPos.y - AddtoUserPos.y, .pos.x, .pos.y) <= proximityRange And .BodyIdle > 0 Then
+                        desiredNpcBody = .BodyIdle
+                    End If
+                End If
+            End If
+        End If
+        If desiredNpcBody > 0 Then
+            If .Body.Walk(.Heading).GrhIndex <> BodyData(desiredNpcBody).Walk(.Heading).GrhIndex Then
+                .Body = BodyData(desiredNpcBody)
+                If .Body.AnimateOnIdle = 0 Then
+                    .Body.Walk(.Heading).Loops = 0
+                    .Body.Walk(.Heading).started = 0
+                Else
+                    .Body.Walk(.Heading).Loops = 1
+                    .Body.Walk(.Heading).started = FrameTime
+                End If
+            End If
+        End If
+
         If .Body.Walk(.Heading).GrhIndex Then
             If UserCiego Then
                 MostrarNombre = False
