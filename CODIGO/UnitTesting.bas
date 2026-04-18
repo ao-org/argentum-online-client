@@ -11,7 +11,7 @@ Private FailedTestCount As Long
 Private TotalElapsed    As Double
 Private sw              As clsInstrument
 
-Private Const SUITE_COUNT As Long = 17
+Private Const SUITE_COUNT As Long = 25
 
 Public Sub Init()
     TotalTests = 0
@@ -65,6 +65,14 @@ Public Sub RunAllSuites()
 #End If
             Case 16: Call Unit_Cooldown.test_suite_cooldown
             Case 17: Call Unit_Group.test_suite_group
+            Case 18: Call Unit_StringBuilderExt.test_suite_stringbuilder_ext
+            Case 19: Call Unit_CryptoConvert.test_suite_crypto_convert
+            Case 20: Call Unit_NumberFormat.test_suite_number_format
+            Case 21: Call Unit_WordExtract.test_suite_word_extract
+            Case 22: Call Unit_Instrument.test_suite_instrument
+            Case 23: Call Unit_Projectile.test_suite_projectile
+            Case 24: Call Unit_Language.test_suite_language
+            Case 25: Call Unit_Settings.test_suite_settings
         End Select
     Next i
 End Sub
