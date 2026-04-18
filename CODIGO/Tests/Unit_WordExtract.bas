@@ -29,7 +29,7 @@ End Sub
 ' Requirement 4.1: HiWord(&H00010002) = 1
 Private Function test_hiword_10002() As Boolean
     On Error GoTo Fail
-    test_hiword_10002 = (HiWord(&H10002) = 1)
+    test_hiword_10002 = (System.HiWord(&H10002) = 1)
     Exit Function
 Fail:
     test_hiword_10002 = False
@@ -38,7 +38,7 @@ End Function
 ' Requirement 4.2: LoWord(&H00010002) = 2
 Private Function test_loword_10002() As Boolean
     On Error GoTo Fail
-    test_loword_10002 = (LoWord(&H10002) = 2)
+    test_loword_10002 = (System.LoWord(&H10002) = 2)
     Exit Function
 Fail:
     test_loword_10002 = False
@@ -47,7 +47,7 @@ End Function
 ' Requirement 4.3: HiWord(0) = 0
 Private Function test_hiword_zero() As Boolean
     On Error GoTo Fail
-    test_hiword_zero = (HiWord(0) = 0)
+    test_hiword_zero = (System.HiWord(0) = 0)
     Exit Function
 Fail:
     test_hiword_zero = False
@@ -56,7 +56,7 @@ End Function
 ' Requirement 4.3: LoWord(0) = 0
 Private Function test_loword_zero() As Boolean
     On Error GoTo Fail
-    test_loword_zero = (LoWord(0) = 0)
+    test_loword_zero = (System.LoWord(0) = 0)
     Exit Function
 Fail:
     test_loword_zero = False
@@ -81,7 +81,7 @@ Private Function test_pbt_recombination() As Boolean
         ' Guard: only test non-negative Long values (0..&H7FFFFFFF)
         If n < 0 Then n = n And &H7FFFFFFF
         
-        recombined = CLng(HiWord(n)) * &H10000 + (CLng(LoWord(n)) And &HFFFF&)
+        recombined = CLng(System.HiWord(n)) * &H10000 + (CLng(System.LoWord(n)) And &HFFFF&)
         
         If recombined <> n Then
             test_pbt_recombination = False
