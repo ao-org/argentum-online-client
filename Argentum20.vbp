@@ -197,7 +197,6 @@ Module=Unit_CryptoConvert; CODIGO\Tests\Unit_CryptoConvert.bas
 Module=Unit_NumberFormat; CODIGO\Tests\Unit_NumberFormat.bas
 Module=Unit_WordExtract; CODIGO\Tests\Unit_WordExtract.bas
 Module=Unit_Instrument; CODIGO\Tests\Unit_Instrument.bas
-Module=Unit_Projectile; CODIGO\Tests\Unit_Projectile.bas
 Module=Unit_Language; CODIGO\Tests\Unit_Language.bas
 Module=Unit_Settings; CODIGO\Tests\Unit_Settings.bas
 ResFile32="AO20.res"

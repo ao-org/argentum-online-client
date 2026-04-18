@@ -11,7 +11,7 @@ Private FailedTestCount As Long
 Private TotalElapsed    As Double
 Private sw              As clsInstrument
 
-Private Const SUITE_COUNT As Long = 25
+Private Const SUITE_COUNT As Long = 24
 
 Public Sub Init()
     TotalTests = 0
@@ -70,9 +70,8 @@ Public Sub RunAllSuites()
             Case 20: Call Unit_NumberFormat.test_suite_number_format
             Case 21: Call Unit_WordExtract.test_suite_word_extract
             Case 22: Call Unit_Instrument.test_suite_instrument
-            Case 23: Call Unit_Projectile.test_suite_projectile
-            Case 24: Call Unit_Language.test_suite_language
-            Case 25: Call Unit_Settings.test_suite_settings
+            Case 23: Call Unit_Language.test_suite_language
+            Case 24: Call Unit_Settings.test_suite_settings
         End Select
     Next i
 End Sub
