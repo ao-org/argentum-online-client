@@ -80,11 +80,10 @@ function detectCodebase(rootPath: string): 'client' | 'server' {
 /*  Report output path                                                */
 /* ------------------------------------------------------------------ */
 
-function getReportPath(codebase: 'client' | 'server'): string {
-  if (codebase === 'server') {
-    return path.resolve('argentum-online-server/.kiro/specs/dead-code-audit/audit-report.md');
-  }
-  return path.resolve('argentum-online-client/.kiro/specs/dead-code-audit/audit-report.md');
+function getReportPath(codebase: 'client' | 'server', rootDir: string): string {
+  // Walk up from the --root dir to find the workspace root (parent of CODIGO/Codigo)
+  const parentDir = path.dirname(rootDir);
+  return path.join(parentDir, '.kiro', 'specs', 'dead-code-audit', 'audit-report.md');
 }
 
 /* ------------------------------------------------------------------ */
@@ -163,24 +162,32 @@ function main(): void {
 
   // 7. Detect duplicates
   console.log('Detecting duplicates...');
-  const duplicates = detectDuplicates(modules);
+  const duplicates = detectDuplicates(modules, 15);
   console.log(`  Duplicate pairs: ${duplicates.length}`);
+
+  // Cap duplicates in the report to the top 200 by line count
+  const sortedDuplicates = duplicates
+    .sort((a, b) => b.lineCount - a.lineCount)
+    .slice(0, 200);
+  if (duplicates.length > 200) {
+    console.log(`  (showing top 200 of ${duplicates.length} in report)`);
+  }
 
   // 8. Build report
   console.log('Generating report...');
-  const summary = computeSummary(allFindings, duplicates);
+  const summary = computeSummary(allFindings, sortedDuplicates);
   const report: AuditReport = {
     codebase,
     timestamp: new Date().toISOString(),
     summary,
     findings: allFindings,
-    duplicates,
+    duplicates: sortedDuplicates,
   };
 
   const reportMarkdown = generateReport(report);
 
   // 9. Write report to disk
-  const reportPath = getReportPath(codebase);
+  const reportPath = getReportPath(codebase, resolvedRoot);
   mkdirSync(path.dirname(reportPath), { recursive: true });
   writeFileSync(reportPath, reportMarkdown, 'utf-8');
   console.log(`\nReport written to: ${reportPath}`);
