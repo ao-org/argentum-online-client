@@ -30,3 +30,7 @@ AOACClient.pdb
 *.pdb
 test_results.txt
 vb6build.log
+
+# Dead code audit tool
+scripts/dead-code-audit/node_modules/
+scripts/dead-code-audit/dist/

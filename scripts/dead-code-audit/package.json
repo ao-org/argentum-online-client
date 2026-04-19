@@ -1,0 +1,18 @@
+{
+  "name": "dead-code-audit",
+  "version": "1.0.0",
+  "description": "Static analysis tool for detecting dead code in VB6 codebases",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx src/index.ts",
+    "test": "vitest --run"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "fast-check": "^4.1.1",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.1"
+  }
+}
