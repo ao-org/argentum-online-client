@@ -18,15 +18,6 @@ Attribute VB_Name = "ModCabezas"
 Option Explicit
 Public MiCabeza As Integer
 
-Private Sub DrawGrafico(Grh As Grh, ByVal x As Byte, ByVal y As Byte)
-    On Error GoTo DrawGrafico_Err
-    If Grh.GrhIndex <= 0 Then Exit Sub
-    'Call Draw_Grh_Picture(grh.GrhIndex, frmCrearPersonaje.PlayerView, -6, -13, False, 0, 1)
-    Exit Sub
-DrawGrafico_Err:
-    Call RegistrarError(Err.Number, Err.Description, "ModCabezas.DrawGrafico", Erl)
-    Resume Next
-End Sub
 
 Sub DibujarCPJ(ByVal MyHead As Long, Optional ByVal Heading As Byte = 3)
     On Error GoTo DibujarCPJ_Err

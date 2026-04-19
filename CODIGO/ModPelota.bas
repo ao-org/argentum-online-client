@@ -7,7 +7,6 @@ Attribute VB_Name = "ModPelota"
 
 Option Explicit
 Const CantidadDeFps = 15
-Public DibujarPelota As Boolean
 Public Type TPelota
     X As Integer
     Y As Integer
@@ -24,22 +23,4 @@ Public Cosa1 As TCosa
 Public Cosa2 As TCosa
 Public Pelota As TPelota
 
-Public Sub CalcularTodo()
-   ' Pelota.X = Cosa1.X
-    'Pelota.Y = Cosa1.Y
-    Pelota.DireccionX = Abs(Cosa1.X - Cosa2.X) / CantidadDeFps
-    Pelota.DireccionY = Abs(Cosa1.Y - Cosa2.Y) / CantidadDeFps
-    If Cosa1.X > Cosa2.X Then
-        Pelota.DireccionX = -Pelota.DireccionX
-    ElseIf Cosa1.X < Cosa2.X Then
-        Pelota.DireccionX = Pelota.DireccionX
-    End If
-    If Cosa1.Y > Cosa2.Y Then
-        Pelota.DireccionY = -Pelota.DireccionY
-    ElseIf Cosa1.X < Cosa2.X Then
-        Pelota.DireccionY = Pelota.DireccionY
-    End If
-    
-    Pelota.fps = 0
-End Sub
 

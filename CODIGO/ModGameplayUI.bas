@@ -253,41 +253,6 @@ Public Sub HandleQuestionResponse(ByVal Result As Boolean)
     PreguntaLocal = False
 End Sub
 
-Public Sub HandleGameplayAreaMouseUp(ByVal Button As Integer, _
-                                     ByVal x As Integer, _
-                                     ByVal y As Integer, _
-                                     ByVal FormTop As Long, _
-                                     ByVal FormLeft As Long, _
-                                     ByVal FormHeight As Long, _
-                                     ByRef GameplayArea As Rect)
-    clicX = x
-    clicY = y
-    
-    Dim MouseAction As e_MouseAction
-    Select Case Button
-        Case vbLeftButton:  MouseAction = ACCION1
-        Case vbRightButton: MouseAction = ACCION2
-        Case vbMiddleButton: MouseAction = ACCION3
-        Case Else: Exit Sub
-    End Select
-    
-    Select Case MouseAction
-    
-        Case e_MouseAction.eThrowOrLook
-            If HandleMouseInput(x, y) Then
-            ElseIf Pregunta Then
-                If x >= 419 And x <= 433 And y >= 243 And y <= 260 Then
-                    Call HandleQuestionResponse(False)
-                    Exit Sub
-                ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then
-                    Call HandleQuestionResponse(True)
-                    Exit Sub
-                End If
-            End If
-        Case e_MouseAction.eInteract
-            Call ShowInteractionMenu(FormTop, FormLeft, FormHeight, x, y, GameplayArea)
-    End Select
-End Sub
 
 Public Sub HandleChatMsg(ByVal InputText As String)
     Dim str2 As String
@@ -343,8 +308,6 @@ Public Sub HandleChatMsg(ByVal InputText As String)
     End If
 End Sub
 
-Public Sub UseSelectInvItem()
-End Sub
 
 Public Sub SetInvItem(ByVal Slot As Byte, _
                       ByVal ObjIndex As Integer, _
@@ -379,9 +342,6 @@ Public Sub SetInvItem(ByVal Slot As Byte, _
     Call frmMain.Inventario.SetItem(Slot, ObjIndex, Amount, Equipped, GrhIndex, ObjType, MaxHit, MinHit, Def, value, Name, ElementalTags, CanUse)
 End Sub
 
-Public Sub SelectItemSlot(ByVal Slot As Integer)
-    UserInventory.SelectedSlot = Slot
-End Sub
 
 Public Function GetSelectedItemSlot() As Integer
     GetSelectedItemSlot = frmMain.Inventario.SelectedItem

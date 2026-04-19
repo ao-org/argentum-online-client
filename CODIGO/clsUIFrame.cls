@@ -130,9 +130,6 @@ Public Sub IUIComponent_SetPosition(ByVal x As Long, ByVal y As Long)
     Call m_Impl.SetPosition(x, y)
 End Sub
 
-Public Sub IUIComponent_SetSize(ByVal w As Long, ByVal h As Long)
-    Call m_Impl.SetSize(w, h)
-End Sub
 
 Public Function IUIComponent_GetPerPosX() As Single
     IUIComponent_GetPerPosX = m_Impl.PerX
@@ -155,8 +152,6 @@ Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     If Not m_Impl.IsVisible Then
         Exit Sub
     End If
-    Dim m_texPanelBg As Direct3DTexture8
-    Dim m_texPanelBorder As Direct3DTexture8
     Dim texW As Long: Dim texH As Long, Top As Long
     Set m_texPanelBg = UITextures.GetTexture(30, texW, texH)  ' fetch or load from manager cache
     
@@ -213,7 +208,6 @@ Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
         End If
     Next i
     Dim comp As IUIComponent
-    Dim auxText As String
     Dim auxX As Single
     Dim auxY As Single
     Dim auxW As Single
@@ -244,13 +238,6 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
         If comp.IsVisible Then
             comp.HandleMouse mouseX, mouseY, mouseButtons, Action
             act = Action
-'            If (act <> 0) And (compFocusedIndex <> Index) Then
-'                If (compFocusedIndex <> 0) Then
-'                    Components.Item(compFocusedIndex).SetFocus (False)
-'                End If
-'                compFocusedIndex = Index
-'            End If
-'            Index = Index + 1
         End If
     Next
     
@@ -287,18 +274,7 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
     m_PrevDown = down
 End Sub
 
-Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
-    Dim comp As IUIComponent
-    For Each comp In m_elements
-        If comp.IsVisible Then
-            comp.HandleKeyboard keyCode, shiftState
-        End If
-    Next
-End Sub
 
-Private Sub IUIComponent_SetFocus(ByVal val As Boolean)
-    Call m_Impl.SetFocus(val)
-End Sub
 
 
 

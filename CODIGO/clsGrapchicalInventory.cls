@@ -48,7 +48,6 @@ Dim InvHeight                  As Integer
 Dim InvOffsetX                 As Integer
 Dim InvOffsetY                 As Integer
 Dim InvSelectedItem            As Long             'Currently selected item
-Dim TempItem                   As Long
 Dim ShowQuantities             As Boolean
 Private MAININVENTORY_MIDSPACE As Byte
 ' Slot item arrastrado (0 si no está arrastrando)
@@ -66,9 +65,7 @@ Dim UserInventory()            As Slot    'User's inventory
 Dim WithEvents InventoryWindow As PictureBox    'Placeholder where to render the inventory
 Attribute InventoryWindow.VB_VarHelpID = -1
 ' Evento disparado cuando un item se soltó
-Public Event ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
 #If ConMenuesConextuales = 1 Then
-    Dim ItemMenu As Menu    'Menu to be shown as pop up
 #End If
 ' Valores constantes que no ameritan que los reciba como parámetro
 Const ITEM_SIZE = 32 ' El ancho de los items (nunca debería cambiar
@@ -155,7 +152,6 @@ End Sub
 Public Sub SelectGold()
     On Error GoTo SelectGold_Err
     'Sets the gold as the currently selected item
-    Dim prevSelectedItem As Long
     'Store preivously selected item
     prevSelectedItem = InvSelectedItem
     'Select the gold
@@ -714,9 +710,6 @@ MostrarCantidades_Err:
     Resume Next
 End Property
 
-Public Sub UpdateSelectedItemLastUse()
-    CdTimes(ObjData(UserInventory(SelectedItem()).ObjIndex).CDType) = GetTickCount()
-End Sub
 
 Public Function IsItemOnCd(ByVal Slot As Integer) As Boolean
     If Slot < 0 Or Slot > UBound(UserInventory) Then

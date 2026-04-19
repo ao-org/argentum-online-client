@@ -46,12 +46,6 @@ Option Explicit
 ' @param CurrentTick Current Tick in which the Timer is.
 ' @param StartTick Tick in which current cicle has started.
 ' @param Run True if the timer is active.
-Private Type Timer
-    Interval As Long
-    CurrentTick As Long
-    StartTick As Long
-    Run As Boolean
-End Type
 
 ''
 ' Timer´s Index.
@@ -82,7 +76,6 @@ End Enum
 '
 Private Const CANTIDADTIMERS   As Byte = 11
 'Timers
-Dim Timer(1 To CANTIDADTIMERS) As Timer
 
 ''
 ' Sets a new intrval for a timer.
@@ -122,18 +115,6 @@ End Sub
 '
 ' @param TimerIndex Timer´s Index
 ' @remarks  Makes the Timer continue from where it had stoped.
-Public Sub Continue(ByVal TimerIndex As TimersIndex)
-    On Error GoTo Continue_Err
-    'Desc: Continue our timer from where we had stopped it.
-    If TimerIndex < 1 Or TimerIndex > CANTIDADTIMERS Then Exit Sub
-    Timer(TimerIndex).Run = True 'We allow the Timer to run.
-    'We´ll set the StartTick again
-    Timer(TimerIndex).StartTick = Timer(TimerIndex).StartTick + Timer(TimerIndex).CurrentTick
-    Exit Sub
-Continue_Err:
-    Call RegistrarError(Err.Number, Err.Description, "clsTimer.Continue", Erl)
-    Resume Next
-End Sub
 
 ''
 ' Pauses the Timer

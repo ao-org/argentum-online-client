@@ -79,13 +79,6 @@ Public Sub WorldTime_SetDayLenMs(ByVal dayLenMs As Long)
 End Sub
 
 ' Optional: quick re-anchor using a fresh server elapsed (no dayLen change)
-Public Sub WorldTime_Resync(ByVal serverElapsedMs As Long)
-    If WT_DayLenMs <= 0 Then WT_DayLenMs = 1
-    Dim elapsedNorm As Long
-    elapsedNorm = PosMod(CDbl(serverElapsedMs), WT_DayLenMs)
-    WT_BaseTick = WorldTime_NowRaw() - elapsedNorm
-    WT_Inited = True
-End Sub
 
 ' SERVER helper: compute payload (elapsed, dayLen) for the HORA packet.
 ' Returns normalized elapsed in [0 .. DayLen-1] based on current WT_BaseTick.

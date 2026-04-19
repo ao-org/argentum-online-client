@@ -29,7 +29,6 @@ Attribute VB_Exposed = False
 '
 Public totalTime   As Long
 Public initialTime As Long
-Public iconGrh     As Long
 
 Public Sub Cooldown_Initialize(ByVal duration As Long, ByVal Grh As Long)
     initialTime = GetTickCount()

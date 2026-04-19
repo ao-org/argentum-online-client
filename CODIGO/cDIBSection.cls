@@ -153,25 +153,6 @@ Public Function CopyToClipboard(Optional ByVal bAsDIB As Boolean = True) As Bool
         If (lhDC <> 0) Then
             If (bAsDIB) Then
                 MsgBox "I don't know how to put a DIB on the clipboard! Copy as bitmap instead!!!"
-                ' Create a duplicate DIBSection and copy
-                ' to the clipboard:
-                'LSet tBI = m_tBI
-                'hDibCopy = CreateDIBSection( _
-                '        lhDC, _
-                '        m_tBI, _
-                '        DIB_RGB_COLORS, _
-                '        lPtr, _
-                '        0, 0)
-                'If (hDibCopy <> 0) Then
-                '    lhBmpOld = SelectObject(lhDC, hObj)
-                '    BitBlt lhDC, 0, 0, Width, Height, m_hDC, 0, 0, vbSrcCopy
-                '    SelectObject lhDC, lhBmpOld
-                '    lFmt = CF_DIB
-                '
-                '     '....
-                'Else
-                '    hObj = 0
-                'End If
             Else
                 ' Create a compatible bitmap and copy to
                 ' the clipboard:
@@ -220,33 +201,6 @@ CreateDIB_Err:
     Resume Next
 End Function
 
-Public Function CreateFromPicture(ByRef picThis As StdPicture)
-    On Error GoTo CreateFromPicture_Err
-    Dim lhDC        As Long
-    Dim lhDCDesktop As Long
-    Dim lhBmpOld    As Long
-    Dim tBMP        As BITMAP
-    Dim lhWnd       As Long
-    GetObjectAPI picThis.Handle, Len(tBMP), tBMP
-    If (Create(tBMP.bmWidth, tBMP.bmHeight)) Then
-        lhWnd = GetDesktopWindow()
-        lhDCDesktop = GetDC(lhWnd)
-        If (lhDCDesktop <> 0) Then
-            lhDC = CreateCompatibleDC(lhDCDesktop)
-            ReleaseDC lhWnd, lhDCDesktop
-            If (lhDC <> 0) Then
-                lhBmpOld = SelectObject(lhDC, picThis.Handle)
-                LoadPictureBlt lhDC
-                SelectObject lhDC, lhBmpOld
-                DeleteDC lhDC
-            End If
-        End If
-    End If
-    Exit Function
-CreateFromPicture_Err:
-    Call RegistrarError(Err.Number, Err.Description, "cDIBSection.CreateFromPicture", Erl)
-    Resume Next
-End Function
 
 Public Function Create(ByVal lWidth As Long, ByVal lHeight As Long) As Boolean
     On Error GoTo Create_Err
@@ -356,54 +310,6 @@ DIBSectionBitsPtr_Err:
     Resume Next
 End Property
 
-Public Sub RandomiseBits(Optional ByVal bGray As Boolean = False)
-    On Error GoTo RandomiseBits_Err
-    Dim bDib() As Byte
-    Dim x      As Long, y As Long
-    Dim lC     As Long
-    Dim tSA    As SAFEARRAY2D
-    Dim xEnd   As Long
-    ' Get the bits in the from DIB section:
-    With tSA
-        .cbElements = 1
-        .cDims = 2
-        .Bounds(0).lLbound = 0
-        .Bounds(0).cElements = m_tBI.bmiHeader.biHeight
-        .Bounds(1).lLbound = 0
-        .Bounds(1).cElements = BytesPerScanLine()
-        .pvData = m_lPtr
-    End With
-    CopyMemory ByVal VarPtrArray(bDib()), VarPtr(tSA), 4
-    ' random:
-    Randomize Timer
-    xEnd = (Width - 1) * 3
-    If (bGray) Then
-        For y = 0 To m_tBI.bmiHeader.biHeight - 1
-            For x = 0 To xEnd Step 3
-                lC = Rnd * 255
-                bDib(x, y) = lC
-                bDib(x + 1, y) = lC
-                bDib(x + 2, y) = lC
-            Next x
-        Next y
-    Else
-        For x = 0 To xEnd Step 3
-            For y = 0 To m_tBI.bmiHeader.biHeight - 1
-                bDib(x, y) = 0
-                bDib(x + 1, y) = Rnd * 255
-                bDib(x + 2, y) = Rnd * 255
-            Next y
-        Next x
-    End If
-    ' Clear the temporary array descriptor
-    ' (This does not appear to be necessary, but
-    ' for safety do it anyway)
-    CopyMemory ByVal VarPtrArray(bDib), 0&, 4
-    Exit Sub
-RandomiseBits_Err:
-    Call RegistrarError(Err.Number, Err.Description, "cDIBSection.RandomiseBits", Erl)
-    Resume Next
-End Sub
 
 Public Sub ClearUp()
     On Error GoTo ClearUp_Err

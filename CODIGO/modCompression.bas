@@ -290,7 +290,6 @@ Public Function Extract_Patch(ByVal resource_path As String, ByVal file_name As 
     Dim wav_done        As Boolean
     Dim mid_done        As Boolean
     Dim mp3_done        As Boolean
-    Dim exe_done        As Boolean
     Dim gui_done        As Boolean
     Dim ind_done        As Boolean
     Dim dat_done        As Boolean

@@ -44,27 +44,7 @@ Private Type TEXTRANGE
 End Type
  
  
-Public Sub Detectar(ByVal hWndTextbox As Long, ByVal hWndOwner As Long)
-  'Don't want to subclass twice!
-  If lOldProc = 0 Then
-    'Subclass!
-    lOldProc = SetWindowLong(hWndOwner, GWL_WNDPROC, AddressOf WndProc)
-    SendMessage hWndTextbox, EM_SETEVENTMASK, 0, ByVal ENM_LINK Or SendMessage(hWndTextbox, EM_GETEVENTMASK, 0, 0)
-    SendMessage hWndTextbox, EM_AUTOURLDETECT, 1, ByVal 0
-    hWndParent = hWndOwner 'Geodar
-    hWndRTB = hWndTextbox
-  End If
-End Sub
  
-Public Sub NoDetectar()
-  If lOldProc Then
-    SendMessage hWndRTB, EM_AUTOURLDETECT, 0, ByVal 0
-    'Reset the window procedure (stop the subclassing)
-    SetWindowLong hWndParent, GWL_WNDPROC, lOldProc
-    'Set this to 0 so we can subclass again in future
-    lOldProc = 0
-  End If
-End Sub
  
 Public Function WndProc(ByVal hwnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
     Dim uHead As NMHDR 'Geodar

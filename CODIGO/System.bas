@@ -78,17 +78,11 @@ Private Type PROCESS_INFORMATION
 End Type
 
 ' Clipboard formats
-Public Const CF_TEXT        As Long = 1
-Public Const CF_UNICODETEXT As Long = 13
-Public Const CF_OEMTEXT     As Long = 7
 ' Windows API function declarations
-Public Declare Function GetClipboardData Lib "user32" (ByVal wFormat As Long) As Long
-Public Declare Function IsClipboardFormatAvailable Lib "user32" (ByVal wFormat As Long) As Long
 Public Declare Function OpenClipboard Lib "user32" (ByVal hWnd As Long) As Long
 Public Declare Function CloseClipboard Lib "user32" () As Long
 Public Declare Function GlobalLock Lib "kernel32" (ByVal hMem As Long) As Long
 Public Declare Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
-Public Declare Function lstrlenA Lib "kernel32" (ByVal lpString As Long) As Long
 Private Declare Function WaitForSingleObject Lib "kernel32" (ByVal hHandle As Long, ByVal dwMilliseconds As Long) As Long
 Private Declare Function CreateProcessA _
                 Lib "kernel32" (ByVal lpApplicationName As Long, _
@@ -103,7 +97,6 @@ Private Declare Function CreateProcessA _
                                 lpProcessInformation As Any) As Long
 Private Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
 Private Declare Function ShellExecuteExA Lib "shell32.dll" (pExecInfo As SHELLEXECUTEINFO) As Long
-Public Declare Function DefSubclassProc Lib "comctl32.dll" Alias "#413" (ByVal hWnd As Long, ByVal uMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 Private Declare Function SetWindowSubclass _
                 Lib "comctl32.dll" _
                 Alias "#410" (ByVal hWnd As Long, _
@@ -111,7 +104,6 @@ Private Declare Function SetWindowSubclass _
                               ByVal uIdSubclass As Long, _
                               Optional ByVal dwRefData As Long) As Long
 Private Declare Function RemoveWindowSubclass Lib "comctl32.dll" Alias "#412" (ByVal hWnd As Long, ByVal pfnSubclass As Long, ByVal uIdSubclass As Long) As Long
-Public Declare Function SendMessageW Lib "user32" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
 
 Public Function FARPROC(pfn As Long) As Long
     FARPROC = pfn
@@ -139,23 +131,11 @@ Public Function UnSubclass(hWnd As Long, lpfn As Long) As Long
     #End If
 End Function
 
-'Purpose     :  Synchronously runs a DOS command line and returns the captured screen output.
-'Inputs      :  sCommandLine                The DOS command line to run.
-'               [bShowWindow]               If True displays the DOS output window.
-'Outputs     :  Returns the screen output
-'Notes       :  This routine will work only with those program that send their output to
-'               the standard output device (stdout).
-'               Windows NT ONLY.
-'Revisions   :
 Function ShellExecuteCapture(sCommandLine As String, Optional bShowWindow As Boolean = False) As String
-    Const clReadBytes As Long = 256, INFINITE As Long = &HFFFFFFFF
     Const STARTF_USESHOWWINDOW = &H1, STARTF_USESTDHANDLES = &H100&
     Const SW_HIDE = 0, SW_NORMAL = 1
     Const NORMAL_PRIORITY_CLASS = &H20&
-    Const PIPE_CLIENT_END = &H0     'The handle refers to the client end of a named pipe instance. This is the default.
-    Const PIPE_SERVER_END = &H1     'The handle refers to the server end of a named pipe instance. If this value is not specified, the handle refers to the client end of a named pipe instance.
     Const PIPE_TYPE_BYTE = &H0      'The named pipe is a byte pipe. This is the default.
-    Const PIPE_TYPE_MESSAGE = &H4   'The named pipe is a message pipe. If this value is not specified, the pipe is a byte pipe
     Dim tProcInfo    As PROCESS_INFORMATION, lRetVal As Long, lSuccess As Long
     Dim tStartupInf  As STARTUPINFO
     Dim tSecurAttrib As SECURITY_ATTRIBUTES, lhwndReadPipe As Long, lhwndWritePipe As Long

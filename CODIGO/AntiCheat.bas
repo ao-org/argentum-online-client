@@ -12,15 +12,6 @@ Public Type t_AntiCheatCallbacks
     LogMessage As Long
 End Type
 
-Public Enum EOS_ELogLevel
-    EOS_LOG_Off = 0
-    EOS_LOG_Fatal = 100
-    EOS_LOG_Error = 200
-    EOS_LOG_Warning = 300
-    EOS_LOG_Info = 400
-    EOS_LOG_Verbose = 500
-    EOS_LOG_VeryVerbose = 600
-End Enum
 
 Private Declare Function InitializeAC Lib "AOACClient.dll" (ByRef Callbacks As t_AntiCheatCallbacks) As Long
 Private Declare Sub UnloadAC Lib "AOACClient.dll" ()
@@ -28,7 +19,6 @@ Private Declare Sub Update Lib "AOACClient.dll" ()
 Private Declare Sub BeginSession Lib "AOACClient.dll" (ByRef userName As String)
 Private Declare Sub EndSession Lib "AOACClient.dll" ()
 Public Declare Sub HandleRemoteMessage Lib "AOACClient.dll" (ByRef data As Byte, ByVal DataSize As Integer)
-Public Declare Function GetCrc32 Lib "AOACClient.dll" (ByVal path As String) As Long
 
 Public Sub InitializeAntiCheat()
     On Error GoTo InitializeAC_Err

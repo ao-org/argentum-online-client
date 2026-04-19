@@ -49,7 +49,6 @@ Private m_Interval  As Integer
 Private m_IntervalMax  As Integer
 Private m_password  As Boolean
 Private m_EmptyText As String
-Private m_TextW As Integer
 Private m_TextH As Integer
 Private m_MarginLeft As Integer
 Private m_Action   As Integer
@@ -89,9 +88,6 @@ Public Sub IUIComponent_SetPosition(ByVal x As Long, ByVal y As Long)
     Call m_Impl.SetPosition(x, y)
 End Sub
 
-Public Sub IUIComponent_SetSize(ByVal w As Long, ByVal h As Long)
-    Call m_Impl.SetSize(w, h)
-End Sub
 
 Public Function IUIComponent_GetPerPosX() As Single
     IUIComponent_GetPerPosX = m_Impl.PerX
@@ -225,34 +221,7 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
 
 End Sub
 
-Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
-    If m_Impl.Focused Then
-'            m_Impl.Text = m_Impl.Text & ChrW(KeyCode)
-            Dim ch As String
-            ch = KeyCodeToChar(keyCode, shiftState)
-        
-            Select Case ch
-                Case "{BACK}"
-                    If Len(m_Impl.Text) > 0 Then m_Impl.Text = Left$(m_Impl.Text, Len(m_Impl.Text) - 1)
-        
-                Case "{ENTER}"
-                    ' Optional: raise event or commit text
-        
-                Case Else
-                    If Len(ch) > 0 Then
-                        If m_password Then
-                            m_Impl.Text = m_Impl.Text & "*"
-                        Else
-                            m_Impl.Text = m_Impl.Text & ch
-                        End If
-                    End If
-            End Select
-    End If
-End Sub
 
-Private Sub IUIComponent_SetFocus(ByVal val As Boolean)
-    Call m_Impl.SetFocus(val)
-End Sub
 
 Private Sub Class_Initialize()
     Set m_Impl = New clsUIComponentImpl

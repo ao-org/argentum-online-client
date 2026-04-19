@@ -97,25 +97,6 @@ Public Sub Init(ByVal dev As Direct3DDevice8)
     Call m_UIMgr.AddComponent(m_lblCharisma)
 End Sub
 
-Private Sub render_ui(ByVal dev As Direct3DDevice8)
-    Dim sW As Long
-    Dim sH As Long
-    Dim wx As Long
-    Dim wy As Long
-    sW = 0
-    sH = 0
-    wx = WINDOW_WIDTH
-    wy = WINDOW_HEIGHT
-    
-    Dim cols2(3) As Long
-    cols2(0) = UI_COLOR_WHITE
-    cols2(1) = UI_COLOR_WHITE
-    cols2(2) = UI_COLOR_WHITE
-    cols2(3) = UI_COLOR_WHITE
-    Call UIRenderer.AddQuad(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, cols2, 190)
-    Call m_UIMgr.RenderAll(dev)
-    Call UIRenderer.Draw(dev)
-End Sub
 
 
 

@@ -79,9 +79,6 @@ Public Sub IUIComponent_SetPosition(ByVal x As Long, ByVal y As Long)
     Call m_Impl.SetPosition(x, y)
 End Sub
 
-Public Sub IUIComponent_SetSize(ByVal w As Long, ByVal h As Long)
-    Call m_Impl.SetSize(w, h)
-End Sub
 
 Public Function IUIComponent_GetPerPosX() As Single
     IUIComponent_GetPerPosX = m_Impl.PerX
@@ -148,13 +145,7 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
     m_PrevDown = down
 End Sub
 
-Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
-    ' no-op for now
-End Sub
 
-Private Sub IUIComponent_SetFocus(ByVal val As Boolean)
-    Call m_Impl.SetFocus(val)
-End Sub
 
 Private Sub Class_Initialize()
     Set m_Impl = New clsUIComponentImpl

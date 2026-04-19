@@ -41,7 +41,6 @@ Option Explicit
 ' Manages a collection of UI components and preserves render state
 Private Components As Collection
 ' Helper to save UI render states
-Private oldShader  As Long
 Private oldAlpha   As Long, oldSrc As Long, oldDest As Long
 Private compFocusedIndex As Integer
 
@@ -70,7 +69,6 @@ Public Sub HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long, ByVal mouseBu
     Dim comp As IUIComponent
     Dim Index As Integer
     Index = 1
-    Dim compFocused As IUIComponent
     For Each comp In Components
         If comp.IsVisible Then
             comp.HandleMouse mouseX, mouseY, mouseButtons, act

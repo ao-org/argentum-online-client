@@ -24,7 +24,6 @@ Public Type Fuente
     Caracteres(0 To MAX_FONT_CHARACTERS) As Long 'indice de cada letra (ampliado para soportar caracteres extendidos)
 End Type
 
-Public font_count      As Long
 Public font_last       As Long
 Public font_list()     As D3DXFont
 

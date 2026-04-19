@@ -311,7 +311,6 @@ Private Function FindKey(ByRef Node As MainNode, ByVal key As String) As Long
     'or the negation of the position were it should be if not found
     Dim min As Long
     Dim max As Long
-    Dim mid As Long
     min = 0
     max = Node.numValues - 1
     Do While min <= max
@@ -346,7 +345,6 @@ Private Function FindMain(ByVal Name As String) As Long
     'or the negation of the position were it should be if not found
     Dim min As Long
     Dim max As Long
-    Dim mid As Long
     min = 0
     max = MainNodes - 1
     Do While min <= max
@@ -493,22 +491,6 @@ errhandler:
     Resume Next
 End Property
 
-Public Sub GetPair(ByVal Main As String, ByVal Index As Long, ByRef key As String, ByRef value As String)
-    On Error GoTo errhandler
-    Dim i As Long
-    'Search for the main node
-    i = FindMain(UCase$(Main))
-    If i >= 0 Then
-        With fileData(i).values(Index)
-            key = .key
-            value = .value
-        End With
-    End If
-    Exit Sub
-errhandler:
-    Call RegistrarError(Err.Number, Err.Description, "clsIniManager.GetPair", Erl)
-    Resume Next
-End Sub
 
 Public Function GetNode(ByVal i As Long) As String
     GetNode = fileData(i).Name

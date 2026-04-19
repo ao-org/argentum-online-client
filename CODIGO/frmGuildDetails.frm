@@ -120,12 +120,6 @@ Begin VB.Form frmGuildDetails
 End
 Attribute VB_Name = "frmGuildDetails"
 Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
-Attribute VB_PredeclaredId = True
-Attribute VB_Exposed = False
-'    Argentum 20 - Game Client Program
-'    Copyright (C) 2022 - Noland Studios
-'
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU Affero General Public License as published by
 '    the Free Software Foundation, either version 3 of the License, or

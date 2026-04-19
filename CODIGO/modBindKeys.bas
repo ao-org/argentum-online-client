@@ -16,26 +16,17 @@ Attribute VB_Name = "modBindKeys"
 '
 '
 Option Explicit
-Type tBoton
-    TipoAccion As Integer
-    SendString As String
-    hlist As Integer
-    invslot As Integer
-End Type
 
 Type tBindedKey
     KeyCode As Integer
     Name As String
 End Type
 
-Public ServerIndex      As String
 Public NUMBINDS         As Integer
 Public ACCION1          As e_MouseAction
 Public ACCION2          As e_MouseAction
 Public ACCION3          As e_MouseAction
 Public BindKeys()       As tBindedKey
-Public BotonElegido     As Integer
-Public MacroTipoElegido As Byte
 
 Public Enum e_KeyAction
     eAttack = 1

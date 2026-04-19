@@ -180,10 +180,6 @@ Public Sub SetSize(ByVal newWidth As Long, ByVal newHeight As Long)
     m_H = newHeight
 End Sub
 
-Public Sub GetSize(ByRef currentWidth As Long, ByRef currentHeight As Long)
-    currentWidth = m_W
-    currentHeight = m_H
-End Sub
 
 Public Sub InitLabel(ByVal labelText As String, ByVal newX As Long, ByVal newY As Long, ByVal labelColor As Long)
     m_Text = labelText

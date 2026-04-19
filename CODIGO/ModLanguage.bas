@@ -16,11 +16,9 @@ Attribute VB_Name = "ModLanguage"
 '
 '
 Option Explicit
-Const LOCALE_USER_DEFAULT = &H400
 Private Declare Function GetUserDefaultLCID Lib "kernel32" () As Long
 Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 Private Const LOCALE_SCOUNTRY = &H6
-Private Const LOCALE_SLANGUAGE = &H2
 Private Const LOCALE_SENGLANGUAGE = &H1001
 Private Const MAX_BUF As Long = 260
 

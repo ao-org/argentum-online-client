@@ -21,7 +21,6 @@ Private Const CCFORMNAME            As Long = 32
 Private Const DM_BITSPERPEL         As Long = &H40000
 Private Const DM_PELSWIDTH          As Long = &H80000
 Private Const DM_PELSHEIGHT         As Long = &H100000
-Private Const DM_DISPLAYFREQUENCY   As Long = &H400000
 Private Const CDS_TEST              As Long = &H4
 Private Const ENUM_CURRENT_SETTINGS As Long = -1
 
@@ -56,8 +55,6 @@ End Type
 
 Private oldResHeight As Long
 Private oldResWidth  As Long
-Private oldDepth     As Integer
-Private oldFrequency As Long
 Private bResChange   As Boolean
 Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As Long, ByVal iModeNum As Long, lptypDevMode As Any) As Boolean
 Private Declare Function ChangeDisplaySettings Lib "user32" Alias "ChangeDisplaySettingsA" (lptypDevMode As Any, ByVal dwFlags As Long) As Long
@@ -67,7 +64,6 @@ Public Sub SetResolution()
     On Error GoTo SetResolution_Err
     'Changes the display resolution if needed.
     'Retrieves current settings storing display depth and frequency for proper restoration.
-    Dim lRes              As Long
     Dim MidevM            As typDevMODE
     Dim CambiarResolucion As Boolean
     lRes = EnumDisplaySettings(0, ENUM_CURRENT_SETTINGS, MidevM)
@@ -106,7 +102,6 @@ Public Sub ResetResolution()
     On Error GoTo ResetResolution_Err
     'Changes the display resolution if needed.
     'Properly restores display depth and frequency.
-    Dim lRes As Long
     If bResChange Then
         lRes = ChangeDisplaySettings(ByVal 0, 0)
         Dim gameForm As Form

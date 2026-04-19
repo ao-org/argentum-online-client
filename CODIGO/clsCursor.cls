@@ -48,7 +48,6 @@ Public Sub Parse_Form(ByRef aFrm As Form, Optional ByVal cType As CursorType = E
     ' Exit if CursoresGraficos is disabled
     If CursoresGraficos = 0 Then Exit Sub
     Dim aControl  As Control
-    Dim lngHandle As Long
     ' Determine the cursor handle based on the type
     lngHandle = GetCursorHandle(cType)
     ' Loop through each control on the form

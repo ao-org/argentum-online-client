@@ -7,7 +7,6 @@ Private Const MAX_PATH As Integer = 260
 Private Const MAX_MODULE_NAME32 As Integer = 256
 Private Const GW_HWNDFIRST = 0&
 Private Const GW_HWNDNEXT = 2&
-Private Const GW_CHILD = 5&
  
 Private Type PROCESSENTRY32
     dwSize As Long

@@ -8,7 +8,6 @@ Const HpBarStartX = 34
 Const HpBarEndX = 99
 Const HpBarStartY = 21
 Const TextStartX = 33
-Const TextEndX = 100
 Const TextStartY = 5
 Const HeadOffsetX = 0
 Const HeadOffsetY = -5

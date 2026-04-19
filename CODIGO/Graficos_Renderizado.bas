@@ -72,7 +72,6 @@ Public Sub render()
         
         If OxigenoCounter > 0 Then
 
-            Dim HR                  As Integer
 
             Dim ms                  As Integer
 
@@ -182,9 +181,7 @@ Public Sub Grh_Render_Advance(ByRef grh As grh, ByVal screen_x As Integer, ByVal
     'Last Modify Date: 11/19/2003
     'Similar to Grh_Render, but let´s you resize the Grh
     '**************************************************************
-    Dim tile_width  As Integer
 
-    Dim tile_height As Integer
 
     Dim grh_index   As Long
     
@@ -232,9 +229,7 @@ Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_
     'Modified by Juan Martín Sotuyo Dodero
     'Added centering
     '**************************************************************
-    Dim tile_width  As Integer
 
-    Dim tile_height As Integer
 
     Dim grh_index   As Long
     
@@ -255,13 +250,6 @@ Public Sub Grh_Render(ByRef grh As grh, ByVal screen_x As Integer, ByVal screen_
 
     End If
 
-    ' particle_group_list(particle_group_index).frame_counter = particle_group_list(particle_group_index).frame_counter + timer_ticks_per_frame
-    ' If particle_group_list(particle_group_index).frame_counter > particle_group_list(particle_group_index).frame_speed Then
-    '     particle_group_list(particle_group_index).frame_counter = 0
-    '      no_move = False
-    '  Else
-    '     no_move = True
-    '  End If
 
     'Figure out what frame to draw (always 1 if not animated)
     If grh.framecounter = 0 Then grh.framecounter = 1
@@ -394,9 +382,7 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
     If screenmaxY > 100 Then screenmaxY = 100
     If screenmaxX > 100 Then screenmaxX = 100
     
-    Dim PicClimaRGB(0 To 3) As Long
 
-    Dim Climapic            As grh
    
     ColorCiego(0) = D3DColorARGB(255, 15, 15, 15)
     ColorCiego(1) = ColorCiego(0)
@@ -609,19 +595,6 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
 
     'If MostrarTrofeo Then
 
-    '    Dim TrofeoRGB(0 To 3) As Long
-    '    Dim Trofeo As grh
-    '    Trofeo.FrameCounter = 1
-    '    Trofeo.grhindex = 32018
-    '    Trofeo.Started = 1
-    '    TrofeoRGB(0) = D3DColorARGB(100, 255, 0, 0)
-    '    TrofeoRGB(1) = D3DColorARGB(100, 255, 0, 0)
-    '    TrofeoRGB(2) = D3DColorARGB(100, 0, 0, 255)
-    '    TrofeoRGB(3) = D3DColorARGB(100, 0, 0, 255)
-    '  Engine_Draw_Box CInt(clicX), CInt(clicY), 190, 180, D3DColorARGB(180, 100, 100, 100)
-    '        Grh_Render Trofeo, 690, 50, TrofeoRGB, True, True, True
-    ' Call Draw_Grh(Trofeo, 690, 50, 1, 0, TrofeoRGB, False, 0, 0, 0)
-    'End If
 
     If Pregunta Then
         'PreguntaScreen = "¿Esta seguro que asen es gay? ¿Que se lo come a fede?"
@@ -680,13 +653,6 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
     'Pelota
     'If DibujarPelota Then
 
-    'If Pelota.Fps = 100 Then DibujarPelota = False: Exit Sub
-    '   Pelota.X = Pelota.X + Pelota.DireccionX
-    '   Pelota.Y = Pelota.Y + Pelota.DireccionY
-    '  Pelota.Fps = Pelota.Fps + 1
-    '     Call Particle_Group_Render(spell_particle, Pelota.X, Pelota.Y)
-    'End If
-    'Pelota
 
     'If CaminandoMacro Then
     'Call Particle_Group_Render(spell_particle, CaminarX, CaminarY)
@@ -813,9 +779,7 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
     If screenmaxY > 100 Then screenmaxY = 100
     If screenmaxX > 100 Then screenmaxX = 100
     
-    Dim PicClimaRGB(0 To 3) As Long
 
-    Dim Climapic            As grh
    
     'If minY < 1 Then minY = 1
     'If minX < 1 Then minX = 1
@@ -2205,12 +2169,6 @@ Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integ
         '  charlist(MapData(X, Y).charindex).dialogExp = ""
         'End If
                     
-        'temp_array(0) = D3DColorARGB(charlist(MapData(X, Y).charindex).SubeExp, 42, 169, 222)
-        ' temp_array(1) = temp_array(0)
-        ' temp_array(2) = temp_array(0)
-        ' temp_array(3) = temp_array(0)
-        'Engine_Text_Render_Exp MapData(X, Y).charindex, .dialogExp, PixelOffsetX + 14 - Engine_Text_Width(.dialogExp, True) / 2, PixelOffsetY + 14 + .Body.HeadOffset.Y - Engine_Text_Height(.dialogExp, True), temp_array, 1, True
-        ' End If
             
         'If charlist(MapData(X, Y).charindex).dialogOro <> "" Then
 
@@ -2312,7 +2270,6 @@ Public Sub DrawInterfaceComerciar()
         'Call Draw_GrhColor(CurrentInventory.GrhIndex(CurrentInventory.SelectedItem), 282, 251, COLOR_WHITE)
     
         ' Muestro info del item
-        Dim str As String
 
         str = " (No usa: "
         
@@ -2396,7 +2353,6 @@ Public Sub DrawInterfaceBoveda()
     If Not CurrentInventory Is Nothing Then
 
         ' Muestro info del item
-        Dim str As String
 
         str = " (No usa: "
         
@@ -2437,64 +2393,6 @@ Public Sub DrawInterfaceBoveda()
 
 End Sub
 
-Public Sub DrawMapaMundo()
-
-    On Error Resume Next
-
-    Static re          As RECT
-
-    Static rgb_list(3) As Long
-
-    re.Left = 0
-    re.Top = 0
-    re.bottom = 89
-    re.Right = 177
-    
-    frmMapaGrande.PlayerView.Height = 89
-    frmMapaGrande.PlayerView.Width = 177
-    frmMapaGrande.PlayerView.ScaleHeight = 89
-    frmMapaGrande.PlayerView.ScaleWidth = 177
-    
-    Call Engine_BeginScene
-        
-    Dim color(0 To 3) As Long
-
-    color(0) = D3DColorARGB(255, 255, 255, 255)
-    color(1) = color(0)
-    color(2) = color(0)
-    color(3) = color(0)
-        
-    Dim i    As Byte
-
-    Dim x    As Integer
-
-    Dim y    As Integer
-    
-    Dim Head As grh
-
-    Head = HeadData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Head).Head(3)
-    
-    Dim grh As grh
-
-    grh = BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).Walk(3)
-    
-    Dim tmp           As String
-
-    Dim temp_array(3) As Long 'Si le queres dar color a la letra pasa este parametro dsp xD
-
-    Engine_Draw_Box x, y, 177, 89, D3DColorARGB(255, 7, 7, 7) 'Fondo del inventario
-    
-    x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(grh.GrhIndex).pixelWidth / 2
-    y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(grh.GrhIndex).pixelHeight / 2
-    Call Draw_Grh(grh, x, y, 0, 0, color, False, 0, 0, 0)
-
-    x = frmMapaGrande.PlayerView.ScaleWidth / 2 - GrhData(Head.GrhIndex).pixelWidth / 2
-    y = frmMapaGrande.PlayerView.ScaleHeight / 2 - GrhData(Head.GrhIndex).pixelHeight + 8 + BodyData(NpcData(frmMapaGrande.ListView1.SelectedItem.SubItems(2)).Body).HeadOffset.y / 2
-    Call Draw_Grh(Head, x, y, 0, 0, color, False, 0, 0, 0)
-    
-    Call Engine_EndScene(re, frmMapaGrande.PlayerView.hwnd)
-
-End Sub
 
 Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVal y As Integer, ByVal map_x As Byte, ByVal map_y As Byte, Optional ByVal userindex As Long = 0)
 
@@ -2512,7 +2410,6 @@ Private Sub Renderizar_Aura(ByVal aura_index As String, ByVal x As Integer, ByVa
 
     Dim giro             As Single
 
-    Dim lado             As Byte
 
     Index = Val(ReadField(1, aura_index, Asc(":")))
     color = Val(ReadField(2, aura_index, Asc(":")))
@@ -3525,14 +3422,6 @@ Public Sub RenderUICrearPJ()
         Engine_Text_Render ">", 423, 428, DefaultColor, 3, True
         Engine_Text_Render "<", 293, 428, DefaultColor, 3, True
     
-        'If CPEquipado Then
-        '    Engine_Draw_Box 347, 512, 12, 12, D3DColorARGB(100, 255, 1, 1)
-        '    Engine_Text_Render_LetraChica "Equipado", 360, 512, DefaultColor, 4, False
-        '    Engine_Text_Render_LetraChica "x", 348, 512, DefaultColor, 6, False
-        'Else
-        '    Engine_Draw_Box 347, 512, 12, 12, D3DColorARGB(100, 255, 1, 1)
-        '    Engine_Text_Render_LetraChica "Equipado", 360, 512, DefaultColor, 4, False
-        'End If
     
         Dim Raza As Byte
 
@@ -3592,14 +3481,6 @@ Public Sub RenderUICrearPJ()
     'Engine_Draw_Box 147, 628, 100, 40, D3DColorARGB(80, 0, 0, 0)
     'Engine_Text_Render "< Volver", 170, 640, DefaultColor, 1, True
     
-    'Boton Crear
-    'If StopCreandoCuenta Then
-    '    Engine_Draw_Box 730, 630, 100, 40, D3DColorARGB(120, 100, 180, 100)
-    '    Engine_Text_Render "Creando...", 750, 640, DefaultColor, 1, True
-    'Else
-    '    Engine_Draw_Box 730, 630, 100, 40, D3DColorARGB(80, 0, 0, 0)
-    '    Engine_Text_Render "Crear PJ >", 750, 640, DefaultColor, 1, True
-    'End If
        
     'Engine_Text_Render "DADO", 670, 390, DefaultColor()
     Draw_GrhIndex 1123, 665, 385
@@ -3658,12 +3539,6 @@ Public Sub RenderPjsCuenta()
         temp_array(2) = Pjs(i).LetraColor
         temp_array(3) = Pjs(i).LetraColor
         
-        'Offset de la cabeza / enanos.
-        ' If (Pjs(i).Clase <> eClass.Warrior) Then
-        ' notY = 5
-        ' Else
-        Rem   notY = -5
-        ' End If
         
         'Si tiene cuerpo dibuja
         If (Pjs(i).Body <> 0) Then

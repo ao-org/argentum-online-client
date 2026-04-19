@@ -154,7 +154,6 @@ End Type
 
 'Particle system
 Public particle_group_list() As particle_group
-Public particle_group_count  As Long
 Public particle_group_last   As Long
 'Loaded Particle groups list
 Public StreamData()          As Stream
@@ -261,12 +260,6 @@ ErrorHandler:
     Particle_Group_Find = 0
 End Function
 
-Public Function Particle_Group_Edit(ByVal id As Long) As Long
-    On Error GoTo ErrorHandler:
-    particle_group_list(id).particle_count = CantPartLLuvia
-    Exit Function
-ErrorHandler:
-End Function
 
 Public Sub Particle_Group_Destroy(ByVal particle_group_index As Long)
     On Error GoTo Particle_Group_Destroy_Err
@@ -527,21 +520,6 @@ Char_Particle_Group_Make_Err:
     Resume Next
 End Sub
 
-Public Sub Particle_Incrementar(ByVal id As Integer)
-    On Error GoTo Particle_Incrementar_Err
-    If particle_group_list(id).Creando < particle_group_list(id).particle_count Then
-        particle_group_list(id).Creando = particle_group_list(id).Creando + 1
-    Else
-        particle_group_list(id).Creada = True
-    End If
-    If particle_group_list(id).char_index > 0 Then
-        charlist(particle_group_list(id).char_index).particle_count = particle_group_list(id).Creando
-    End If
-    Exit Sub
-Particle_Incrementar_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Particle_Incrementar", Erl)
-    Resume Next
-End Sub
 
 Public Sub Particle_Group_Render(ByVal particle_group_index As Long, ByVal screen_x As Integer, ByVal screen_y As Integer)
     On Error GoTo Particle_Group_Render_Err
@@ -1016,19 +994,6 @@ Char_Particle_Group_Remove_Err:
     Resume Next
 End Function
 
-Public Function Char_Particle_Group_Remove_All(ByVal char_index As Integer)
-    On Error GoTo Char_Particle_Group_Remove_All_Err
-    Dim i As Integer
-    If Char_Check(char_index) Then
-        For i = 1 To charlist(char_index).particle_count
-            If charlist(char_index).particle_group(i) <> 0 Then Call Particle_Group_Remove(charlist(char_index).particle_group(i))
-        Next i
-    End If
-    Exit Function
-Char_Particle_Group_Remove_All_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Graficos_Particulas.Char_Particle_Group_Remove_All", Erl)
-    Resume Next
-End Function
 
 Private Function Char_Particle_Group_Find(ByVal char_index As Integer, ByVal stream_type As Long) As Integer
     On Error GoTo ErrorHandler:

@@ -111,7 +111,6 @@ Private Function BinarySearch(ByVal charindex As Integer) As Integer
     'of the position were it should be if not found (for binary insertion)
     Dim min As Long
     Dim max As Long
-    Dim mid As Long
     min = 0
     max = dialogCount - 1
     Do While min <= max
@@ -145,36 +144,6 @@ End Function
 '
 ' @remarks  If there are no more free slots, and the char didn't have a previous dialog,
 '           the chat is ignored.
-Public Sub CreateDialog(ByRef chat As String, ByVal charindex As Integer, ByVal color As Long)
-    On Error GoTo CreateDialog_Err
-    'Changed life time of the dialogs to a variable amount,
-    'depending on the number of chars
-    Dim Slot As Integer
-    Dim i    As Long
-    Slot = BinarySearch(charindex)
-    If Slot < 0 Then
-        If dialogCount = MAX_DIALOGS Then Exit Sub  'Out of space! Should never happen....
-        'We need to add it. Get insertion index and move list backwards.
-        Slot = Not Slot
-        For i = dialogCount To Slot + 1 Step -1
-            dialogs(i) = dialogs(i - 1)
-        Next i
-        dialogCount = dialogCount + 1
-    End If
-    With dialogs(Slot)
-        .charindex = charindex
-        .color = color
-        .renderable = False
-        .startTime = FrameTime
-        .textLine = FormatChat(chat)
-        .lifeTime = MS_ADD_EXTRA + (MS_PER_CHAR * Len(chat))
-        .alpha = 255
-    End With
-    Exit Sub
-CreateDialog_Err:
-    Call RegistrarError(Err.Number, Err.Description, "clsDialogs.CreateDialog", Erl)
-    Resume Next
-End Sub
 
 ''
 ' Splits a text into several lines to make it comply with the MAX_LENGTH unless it's impossible (a single word longer than MAX_LENGTH).
@@ -247,24 +216,6 @@ End Function
 ' @param    x           The X coord where to start rendering.
 ' @param    y           The Y coord where to start rendering.
 ' @param    charIndex   The character whose dialog's position is being updated.
-Public Sub UpdateDialogPos(ByVal x As Integer, ByVal y As Integer, ByVal charindex As Integer)
-    On Error GoTo UpdateDialogPos_Err
-    'Updates a dialog's position.
-    Dim Slot As Integer
-    Slot = BinarySearch(charindex)
-    If Slot >= 0 Then
-        With dialogs(Slot)
-            If .alpha <> 0 Then .alpha = .alpha - 1
-            .x = x - (MAX_LENGTH \ 2) * 3
-            .y = y - (UBound(.textLine()) * 3)
-            .renderable = True
-        End With
-    End If
-    Exit Sub
-UpdateDialogPos_Err:
-    Call RegistrarError(Err.Number, Err.Description, "clsDialogs.UpdateDialogPos", Erl)
-    Resume Next
-End Sub
 
 ''
 ' Displays all renderable dialogs on screen.

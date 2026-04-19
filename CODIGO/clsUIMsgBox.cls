@@ -47,8 +47,6 @@ Private m_IsHover   As Boolean
 Private m_PrevDown  As Boolean
 Private m_Clicked   As Boolean
 Private m_MarginLeft As Integer
-Private m_MarginTop As Integer
-Private m_Draw   As Boolean
 Private m_lblTitle  As clsUILabel
 Private m_btnOk  As clsUIButton
 Private m_Action  As Integer
@@ -92,9 +90,6 @@ Public Sub IUIComponent_SetPosition(ByVal x As Long, ByVal y As Long)
     Call m_Impl.SetPosition(x, y)
 End Sub
 
-Public Sub IUIComponent_SetSize(ByVal w As Long, ByVal h As Long)
-    Call m_Impl.SetSize(w, h)
-End Sub
 
 Public Function IUIComponent_GetPerPosX() As Single
     IUIComponent_GetPerPosX = m_Impl.PerX
@@ -142,15 +137,11 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
 
     Dim gliphW As Integer
     Dim gliphH As Integer
-    Dim gliphPerRow As Integer
-    Dim gliphPerCol As Integer
     gliphW = 12
     gliphH = 12
     gliphPerRow = (m_Impl.Width / gliphW) - 2
     gliphPerCol = m_Impl.Height / gliphH
 
-    Dim m_texPanelBg As Direct3DTexture8
-        Dim m_texPanelBorder As Direct3DTexture8
         Dim texW As Long: Dim texH As Long, Top As Long
         Set m_texPanelBg = UITextures.GetTexture(30, texW, texH)  ' fetch or load from manager cache
 
@@ -204,7 +195,6 @@ Private Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
         Next i
     m_lblTitle.IUIComponent_SetPosition wx + (sW - (Len(m_lblTitle.Text) * gliphW)) / 2, wy + 15
     m_lblTitle.IUIComponent_Render dev
-    Dim strTextAux As String
 '    For i = 0 To gliphPerRow
 '        strTextAux = mid(m_Impl.Text, i * gliphPerRow + 1, gliphPerRow)
 '        Call UIRenderer.RenderText(m_Impl.Text, wx + (sW - (Len(strTextAux) * 10)) / 2, wy + (gliphH * i) + 50, m_Impl.Color, 8, 255, 0.5)
@@ -227,13 +217,7 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
     m_btnOk.IUIComponent_HandleMouse mouseX, mouseY, mouseButtons, act
 End Sub
 
-Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
-    ' no-op for now
-End Sub
 
-Private Sub IUIComponent_SetFocus(ByVal val As Boolean)
-    Call m_Impl.SetFocus(val)
-End Sub
 
 Private Sub Class_Initialize()
     Set m_Impl = New clsUIComponentImpl

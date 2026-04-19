@@ -17,7 +17,6 @@ Attribute VB_Name = "modDplayClient"
 '
 #If DIRECT_PLAY = 1 Then
     Option Explicit
-    Public Const AppGuid = "{5726CF1F-702B-4008-98BC-BF9C95F9E288}"
     Public dpc   As DirectPlay8Client
     Public dpApp As DPN_APPLICATION_DESC
 

@@ -54,9 +54,6 @@ Begin VB.Form frmCommet
    End
 End
 Attribute VB_Name = "frmCommet"
-Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
-Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 ' Argentum 20 Game Client
 '

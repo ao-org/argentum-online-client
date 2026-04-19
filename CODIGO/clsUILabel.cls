@@ -83,9 +83,6 @@ Public Sub IUIComponent_SetPosition(ByVal x As Long, ByVal y As Long)
     Call m_Impl.SetPosition(x, y)
 End Sub
 
-Public Sub IUIComponent_SetSize(ByVal w As Long, ByVal h As Long)
-'    Call m_Impl.SetSize(w, h)
-End Sub
 
 Public Function IUIComponent_GetPerPosX() As Single
     IUIComponent_GetPerPosX = m_Impl.PerX
@@ -107,9 +104,6 @@ Public Sub GetPosition(ByRef x As Long, ByRef y As Long)
     Call m_Impl.GetPosition(x, y)
 End Sub
 
-Public Sub IUIComponent_GetSize(ByVal w As Long, ByVal h As Long)
-    Call m_Impl.SetSize(w, h)
-End Sub
 
 Public Sub IUIComponent_Render(ByVal dev As Direct3DDevice8)
     If m_Impl Is Nothing Then Exit Sub
@@ -146,13 +140,7 @@ Private Sub IUIComponent_HandleMouse(ByVal mouseX As Long, ByVal mouseY As Long,
     m_PrevDown = down
 End Sub
 
-Private Sub IUIComponent_HandleKeyboard(ByVal keyCode As Long, ByVal shiftState As Long)
-    ' Labels do not handle keyboard input.
-End Sub
 
-Private Sub IUIComponent_SetFocus(ByVal val As Boolean)
-    Call m_Impl.SetFocus(val)
-End Sub
 
 Public Property Let Text(ByVal newText As String)
     m_Impl.Text = newText

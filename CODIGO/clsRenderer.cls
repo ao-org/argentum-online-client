@@ -28,23 +28,11 @@ Attribute VB_Exposed = False
 Option Base 0
 Option Explicit
 Private mDirectX        As New DirectX8
-Private mDirectD3D8     As D3DX8
 Private mDirectD3D      As Direct3D8
-Private mDirectDevice   As Direct3DDevice8
 Private mD3DPP          As D3DPRESENT_PARAMETERS
-Private mProjection     As D3DMATRIX
-Private mIdentityMatrix As D3DMATRIX
 Const ScreenWidth       As Integer = 1024
 Const ScreenHeight      As Integer = 768
 
-Private Type NEW_TYPE_VERTEX
-    x       As Single
-    y       As Single
-    z       As Single
-    color   As RGBA
-    u      As Single
-    v      As Single
-End Type
 
 Private mDisplayMode As D3DDISPLAYMODE
 

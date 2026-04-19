@@ -47,7 +47,6 @@ Private m_UIMgr               As clsUIManager
 Private m_lblTitle              As clsUILabel
 Private m_imgSeparatorH1        As clsUIImage
 Private m_imgSeparatorH2        As clsUIImage
-Private m_lblPass               As clsUILabel
 Private m_cbOk                  As clsUICheckbox
 Private m_btnConnect            As clsUIButton
 Private m_inputboxUser          As clsUIInputbox
@@ -67,8 +66,6 @@ Private m_imgSeparatorH3        As clsUIImage
 Private m_imgSeparatorH4        As clsUIImage
 Private m_inputboxName          As clsUIInputbox
 Private m_inputboxLastName      As clsUIInputbox
-Private m_inputboxEmail          As clsUIInputbox
-Private m_inputboxCCPass      As clsUIInputbox
 Private m_lblCreateAcctNext     As clsUILabel
 
 Private m_frameCreateUser       As clsUIFrame

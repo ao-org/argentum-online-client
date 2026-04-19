@@ -16,7 +16,6 @@ Attribute VB_Name = "modLocale"
 '
 '
 Option Explicit
-Private arrLocale_SMG() As String
 
 Public Type Tdestino
     CityDest As Byte

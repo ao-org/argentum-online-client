@@ -62,7 +62,6 @@ Private mD3D                 As D3DX8
 Private device               As Direct3DDevice8
 Private mTotalTextureCount   As Long              ' number of cached textures
 Private mTotalAllocatedBytes As Long              ' sum of .size
-Private mMaxEntries          As Long
 Private Const E_OUTOFMEMORY = 7
 
 '======================

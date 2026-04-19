@@ -43,11 +43,6 @@ Public Function IsFailedString(ByVal IP As String, ByVal port As String)
     Next i
 End Function
 
-Public Sub AddFailedIp(ByVal IP As String, ByVal port As String)
-    FailedIpList(FailedListSize).IP = IP
-    FailedIpList(FailedListSize).port = port
-    FailedListSize = FailedListSize + 1
-End Sub
 
 Public Sub Connect(ByVal Address As String, ByVal Service As String)
     frmDebug.add_text_tracebox "Connecting to World Server : " & Address & ":" & Service
@@ -262,7 +257,6 @@ On Error GoTo connect_error:
     Debug.Assert Err.Number = 0
     Err.Clear
     
-    Dim connect_handle As Long
     connect_handle = dpc.Connect(dpApp, HostAddr, DeviceAddr, DPNCONNECT_OKTOQUERYFORADDRESSING, ByVal 0&, 0)
     
     

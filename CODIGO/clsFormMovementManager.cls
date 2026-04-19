@@ -38,10 +38,7 @@ Attribute VB_Exposed = False
 '
 '
 Option Explicit
-Dim WithEvents Formulario As Form
 Attribute Formulario.VB_VarHelpID = -1
-Private DragX             As Single
-Private Dragy             As Single
 Public LastButtonPressed  As clsGraphicalButton
 Private LimitY            As Integer
 

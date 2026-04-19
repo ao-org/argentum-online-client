@@ -265,8 +265,6 @@ WriteLoginAccount_Err:
     '</EhFooter>
 End Sub
 
-Public Sub WriteDeleteCharacter()
-End Sub
 
 
 Public Sub WriteLoginExistingChar()
@@ -503,19 +501,6 @@ WriteSeguroClan_Err:
     '</EhFooter>
 End Sub
 
-Public Sub WriteTraerBoveda()
-    '<EhHeader>
-    On Error GoTo WriteTraerBoveda_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eTraerBoveda)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteTraerBoveda_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteTraerBoveda", Erl)
-    '</EhFooter>
-End Sub
 
 ''
 ' Writes the "PartySafeToggle" message to the outgoing data buffer.
@@ -553,19 +538,6 @@ WriteSeguroResu_Err:
     '</EhFooter>
 End Sub
 
-Public Sub WriteLegionarySecure()
-    '<EhHeader>
-    On Error GoTo WriteLegionarySecure_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eLegionarySecure)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteLegionarySecure_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteLegionarySecure", Erl)
-    '</EhFooter>
-End Sub
 
 ''
 ' Writes the "RequestGuildLeaderInfo" message to the outgoing data buffer.
@@ -675,19 +647,6 @@ End Sub
 ' Writes the "UserCommerceEnd" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteUserCommerceEnd()
-    '<EhHeader>
-    On Error GoTo WriteUserCommerceEnd_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eUserCommerceEnd)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteUserCommerceEnd_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUserCommerceEnd", Erl)
-    '</EhFooter>
-End Sub
 
 ''
 ' Writes the "BankEnd" message to the outgoing data buffer.
@@ -948,19 +907,6 @@ End Sub
 ' Writes the "UseSpellMacro" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteUseSpellMacro()
-    '<EhHeader>
-    On Error GoTo WriteUseSpellMacro_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eUseSpellMacro)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteUseSpellMacro_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteUseSpellMacro", Erl)
-    '</EhFooter>
-End Sub
 
 ''
 ' Writes the "UseItem" message to the outgoing data buffer.
@@ -5234,19 +5180,6 @@ WriteGenio_Err:
     '</EhFooter>
 End Sub
 
-Public Sub WriteQuest()
-    '<EhHeader>
-    On Error GoTo WriteQuest_Err
-    '</EhHeader>
-    Call Writer.WriteInt16(ClientPacketID.eQuest)
-    Call modNetwork.send(Writer)
-    '<EhFooter>
-    Exit Sub
-WriteQuest_Err:
-    Call Writer.Clear
-    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteQuest", Erl)
-    '</EhFooter>
-End Sub
  
 Public Sub WriteQuestDetailsRequest(ByVal QuestSlot As Byte)
     '<EhHeader>

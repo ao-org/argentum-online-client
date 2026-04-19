@@ -170,7 +170,6 @@ Public Function BinarySearch(ByVal charindex As Integer) As Integer
     'of the position were it should be if not found (for binary insertion)
     Dim min As Long
     Dim max As Long
-    Dim mid As Long
     min = 0
     max = dialogCount - 1
     Do While min <= max

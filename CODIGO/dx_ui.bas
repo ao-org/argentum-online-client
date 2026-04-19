@@ -29,11 +29,7 @@ Option Explicit
 ' Common UI color constants (opaque)
 Public Const UI_COLOR_WHITE As Long = &HFFFFFF     ' &HFFFFFFFF
 Public Const UI_COLOR_BLACK As Long = &H0        ' 0xFF000000
-Public Const UI_COLOR_BLUE   As Long = &HFF0000   ' 0xFFFF0000
-Public Const UI_COLOR_GREEN As Long = &HFF00     ' 0xFF00FF00
-Public Const UI_COLOR_RED  As Long = &HFF       ' 0xFF0000FF
 Public Const UI_COLOR_GOLD  As Long = &HFFFFFF              ' 0xFF0000FF
-Public Const UI_COLOR_GRAY  As Long = &HFFFF00              ' 0xFF0000FF
 Public Const UI_MAX_QUADS As Long = 2000
 Public g_connectScreen      As clsUIConnectScreen
 Public g_GameplayScreen   As clsGameplayScreen
@@ -167,14 +163,6 @@ Public Function KeyCodeToChar(ByVal KeyCode As Integer, ByVal Shift As Integer) 
         Case "190"
             If (Shift And vbShiftMask) <> 0 Then ch = ">" Else ch = "."
 
-'        Case vbKeyComma
-'            If (Shift And vbShiftMask) <> 0 Then ch = "<" Else ch = ","
-'
-'        Case vbKeyMinus
-'            If (Shift And vbShiftMask) <> 0 Then ch = "_" Else ch = "-"
-'
-'        Case vbKeyEqual
-'            If (Shift And vbShiftMask) <> 0 Then ch = "+" Else ch = "="
 
         Case Else
             ' ignore function keys, control, etc.

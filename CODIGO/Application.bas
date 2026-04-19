@@ -18,11 +18,6 @@ Attribute VB_Name = "Application"
 Option Explicit
 Private Declare Function GetActiveWindow Lib "user32" () As Long
 
-Private Type UltimoError
-    Componente As String
-    Contador As Byte
-    ErrorCode As Long
-End Type
 
 ''
 ' Checks if this is the active (foreground) application or not.

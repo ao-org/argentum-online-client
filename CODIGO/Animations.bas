@@ -31,7 +31,6 @@ End Type
 
 Public Sub UpdateAnimation(ByRef animationState As tAnimationPlaybackState)
     On Error GoTo UpdateAnimation_Err
-    Dim detalTime As Long
     DeltaTime = GetTickCount() - animationState.LastFrameTime
     animationState.LastFrameTime = GetTickCount()
     animationState.ElapsedTime = animationState.ElapsedTime + DeltaTime

@@ -20,10 +20,8 @@ Public Const LIGHT_TRANSITION_DURATION = 5000
 Public Const STEP_LIGHT_TRANSITION = 1 / LIGHT_TRANSITION_DURATION
 'Status
 Public Const Normal   As Byte = 0
-Public Const NUBLADO  As Byte = 1
 Public Const LLUVIA   As Byte = 2
 Public Const NIEVE    As Byte = 3
-Public Const TORMENTA As Byte = 4
 Public DayColors()    As RGBA
 Public DeathColor     As RGBA
 Public BlindColor     As RGBA
