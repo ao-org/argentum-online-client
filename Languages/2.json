@@ -1,4 +1,5 @@
 {	
+	"test": "donotmerge",
     "MENSAJE_MISION_REPETIBLE": "Repeatable mission",
 	"MENSAJE_NOMBRE_PERSONAJE_INVALIDO": "Invalid character name.",
 	"MENSAJE_TITULO_MISION": "Mission",
