@@ -47,6 +47,13 @@ Begin VB.Form frmConnect
       _ExtentY        =   1005
       _Version        =   393216
    End
+   Begin InetCtlsObjects.Inet InetTelemetry 
+      Left            =   12600
+      Top             =   6600
+      _ExtentX        =   1005
+      _ExtentY        =   1005
+      _Version        =   393216
+   End
    Begin VB.Timer Timer2 
       Enabled         =   0   'False
       Interval        =   10
@@ -1132,4 +1139,20 @@ End Sub
 
 Private Sub LogearPersonaje(ByVal nick As String)
     Call ModLogin.LoginCharacter(nick)
+End Sub
+
+Private Sub InetTelemetry_StateChanged(ByVal State As Integer)
+    On Error GoTo InetTelemetry_StateChanged_Err
+    
+    ' Log errors from telemetry HTTP requests
+    Select Case State
+        Case 11 ' icError
+            Call RegistrarError(-1, "Telemetry HTTP error: " & InetTelemetry.ResponseCode & " " & InetTelemetry.ResponseInfo, "frmConnect.InetTelemetry_StateChanged")
+    End Select
+    
+    Exit Sub
+    
+InetTelemetry_StateChanged_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmConnect.InetTelemetry_StateChanged", Erl)
+    Resume Next
 End Sub

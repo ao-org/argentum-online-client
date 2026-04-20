@@ -188,6 +188,7 @@ Module=Unit_ValidNumber; CODIGO\Tests\Unit_ValidNumber.bas
 Module=Unit_QuickSort; CODIGO\Tests\Unit_QuickSort.bas
 Module=Unit_IniManager; CODIGO\Tests\Unit_IniManager.bas
 Module=Unit_WorldTime; CODIGO\Tests\Unit_WorldTime.bas
+Module=ModTelemetry; CODIGO\ModTelemetry.bas
 ResFile32="AO20.res"
 Class=clsUIFrame; CODIGO\clsUIFrame.cls
 Class=clsUIMsgBox; CODIGO\clsUIMsgBox.cls

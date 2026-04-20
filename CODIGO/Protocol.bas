@@ -490,6 +490,10 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
     '         and (b) any packet where we had NO handler
     ' In either case, Reader.GetAvailable() > 0
     If (Reader.GetAvailable() > 0) Then
+        Dim protoErrSpan As Long
+        protoErrSpan = Telemetry_StartSpan("client.protocol_error", , "packet.id", CStr(PacketId), "extra.bytes", CStr(Reader.GetAvailable()))
+        Call Telemetry_EndSpan(protoErrSpan, OTEL_STATUS_ERROR)
+        
         Call RegistrarError(&HDEADBEEF, "Server message ID: " & PacketId & " unhandled or too many bytes; " & Reader.GetAvailable() & " extra bytes found", _
                 "Protocol.HandleIncomingData", Erl)
         Do While (Reader.GetAvailable() > 0)
@@ -566,6 +570,9 @@ Private Sub HandleLogged()
     SeguroResuX = True
     LegionarySecureX = True
     Call ResetAllCd
+    
+    Call Telemetry_EndSpan(ModAuth.m_LoginSpanHandle, OTEL_STATUS_OK, "character.name", charlist(UserCharIndex).nombre)
+    
     Call SetConnected
     Exit Sub
 HandleLogged_Err:
@@ -667,6 +674,13 @@ End Sub
 Public Sub HandleDisconnect()
     On Error GoTo HandleDisconnect_Err
     Dim i As Long
+    
+    ' End login span if still active
+    If ModAuth.m_LoginSpanHandle >= 0 Then
+        Call Telemetry_EndSpan(ModAuth.m_LoginSpanHandle, OTEL_STATUS_ERROR, "disconnect.reason", "server_disconnect")
+        ModAuth.m_LoginSpanHandle = -1
+    End If
+    
     If (Not Reader Is Nothing) Then
         FullLogout = Reader.ReadBool
     End If
@@ -1395,6 +1409,10 @@ End Sub
 
 Private Sub HandleChangeMap()
     On Error GoTo HandleChangeMap_Err
+    
+    Dim PreviousMap As Long
+    PreviousMap = UserMap
+    
     UserMap = Reader.ReadInt16()
     ResourceMap = Reader.ReadInt16()
     If frmComerciar.visible Then Unload frmComerciar
@@ -1409,7 +1427,14 @@ Private Sub HandleChangeMap()
     If frmGoliath.visible Then Unload frmGoliath
     If FrmViajes.visible Then Unload FrmViajes
     If frmCantidad.visible Then Unload frmCantidad
+    
+    Dim mapSpanHandle As Long
+    mapSpanHandle = Telemetry_StartSpan("client.map_change", , "map.previous", CStr(PreviousMap), "map.new", CStr(UserMap))
+    
     Call SwitchMap(UserMap, ResourceMap)
+    
+    Call Telemetry_EndSpan(mapSpanHandle, OTEL_STATUS_OK)
+    
     Exit Sub
 HandleChangeMap_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleChangeMap", Erl)
@@ -3767,6 +3792,12 @@ Private Sub HandleErrorMessage()
     GetRemoteError = True
     Dim str As String
     str = Reader.ReadString8()
+    
+    If ModAuth.m_LoginSpanHandle >= 0 Then
+        Call Telemetry_EndSpan(ModAuth.m_LoginSpanHandle, OTEL_STATUS_ERROR, "error.message", str)
+        ModAuth.m_LoginSpanHandle = -1
+    End If
+    
     Call MsgBox(str)
     Exit Sub
 errhandler:

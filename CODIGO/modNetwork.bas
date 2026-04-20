@@ -125,6 +125,11 @@ End Sub
 
 Private Sub OnClientClose(ByVal code As Long)
     On Error GoTo OnClientClose_Err:
+    
+    Dim netSpanHandle As Long
+    netSpanHandle = Telemetry_StartSpan("client.network_disconnect", , "disconnect.code", CStr(code))
+    Call Telemetry_EndSpan(netSpanHandle, OTEL_STATUS_ERROR)
+    
     Call Protocol_Writes.Clear
     Call ModLogin.OnClientDisconnect(code)
     Exit Sub

@@ -878,6 +878,9 @@ Sub Main()
     prgRun = True
     pausa = False
     Call Unload(Frmcarga)
+    
+    Call Telemetry_Init
+    
     Call General_Set_Connect
     Call engine.GetElapsedTime
     Call start
@@ -1139,6 +1142,9 @@ Public Sub CloseClient()
     'Frees all used resources, cleans up and leaves
     ' Allow new instances of the client to be opened
     On Error GoTo CloseClient_Err
+    
+    Call Telemetry_Shutdown
+    
     UserSaliendo = True
     Call SaveConfig
     Call UnloadAntiCheat

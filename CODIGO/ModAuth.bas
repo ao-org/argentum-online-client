@@ -17,6 +17,8 @@ Attribute VB_Name = "ModAuth"
 '
 Option Explicit
 
+Public m_LoginSpanHandle As Long ' Initialized to -1 at startup; tracks active login span
+
 Public Enum e_state
     Idle = 0
     RequestAccountLogin
@@ -155,6 +157,9 @@ Public Sub SendAccountLoginRequest()
     Dim login_request()        As Byte
     Dim packet_size            As Integer
     Dim offset_login_request   As Long
+    
+    m_LoginSpanHandle = Telemetry_StartSpan("client.login", , "account.email", CuentaEmail)
+    
     frmDebug.add_text_tracebox "SendAccountLoginRequest"
     userName = CuentaEmail
     Password = CuentaPassword

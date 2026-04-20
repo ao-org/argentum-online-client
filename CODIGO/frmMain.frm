@@ -141,6 +141,12 @@ Begin VB.Form frmMain
       Left            =   4920
       Top             =   2400
    End
+   Begin VB.Timer TelemetryFlush 
+      Enabled         =   0   'False
+      Interval        =   30000
+      Left            =   0
+      Top             =   120
+   End
    Begin VB.PictureBox panel 
       Appearance      =   0  'Flat
       AutoSize        =   -1  'True
@@ -4089,6 +4095,31 @@ Private Sub ApplyMinimapZoom(ByVal Delta As Integer)
     
 ApplyMinimapZoom_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.ApplyMinimapZoom", Erl)
+    Resume Next
+End Sub
+
+Private Sub TelemetryFlush_Timer()
+    On Error GoTo TelemetryFlush_Timer_Err
+    
+    Call Telemetry_FlushBuffer
+    
+    Exit Sub
+    
+TelemetryFlush_Timer_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.TelemetryFlush_Timer", Erl)
+    Resume Next
+End Sub
+
+Public Sub EnableTelemetryFlushTimer(ByVal IntervalMs As Long)
+    On Error GoTo EnableTelemetryFlushTimer_Err
+    
+    TelemetryFlush.Interval = IntervalMs
+    TelemetryFlush.Enabled = True
+    
+    Exit Sub
+    
+EnableTelemetryFlushTimer_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.EnableTelemetryFlushTimer", Erl)
     Resume Next
 End Sub
 

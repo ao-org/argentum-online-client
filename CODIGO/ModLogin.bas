@@ -540,6 +540,11 @@ End Sub
 Public Sub OnClientDisconnect(ByVal Error As Long)
     On Error GoTo OnClientDisconnect_Err
     
+    If ModAuth.m_LoginSpanHandle >= 0 Then
+        Call Telemetry_EndSpan(ModAuth.m_LoginSpanHandle, OTEL_STATUS_ERROR, "disconnect.reason", "client_disconnect_code_" & CStr(Error))
+        ModAuth.m_LoginSpanHandle = -1
+    End If
+    
     Const WSAETIMEDOUT       As Long = 10060
     Const WSAECONNREFUSED    As Long = 10061
     Const WSAECONNRESET      As Long = 10054
