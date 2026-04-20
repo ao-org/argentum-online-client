@@ -653,6 +653,7 @@
   "MENSAJE_QUEST_CLASE": "Classe: ",
   "MENSAJE_SEGURO_LEGION_ACTIVADO":"Vous avez activé l'assurance de la faction légionnaire.",
   "MENSAJE_SEGURO_LEGION_DESACTIVADO":"Vous avez désactivé l'assurance de la faction légionnaire, vous pouvez désormais attaquer une Légion.",
+  "MENSAJE_EVENTO_CONTRASEÑA":"Cet événement a un mot de passe, vous devez le saisir pour pouvoir participer.",
   "MENSAJE_EVENTO_DEATHMATCH":"Match à mort",
   "MENSAJE_EVENTO_CAPTURA":"Capturer le drapeau",
   "MENSAJE_EVENTO_CACERIA":"Chasse",
