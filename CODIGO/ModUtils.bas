@@ -1886,8 +1886,8 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
         Fields(1) = ""
     End If
     If LenB(FactionStatusString) <> 0 Then
-        StatusString = Replace(StatusString, "<>", "")
-        StatusString = Replace(StatusString, " ", "")
+        FactionStatusString = Replace(FactionStatusString, "<>", "")
+        FactionStatusString = Replace(FactionStatusString, " ", "")
         Fields(2) = FactionStatusString
     End If
     Exit Function
