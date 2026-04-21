@@ -849,6 +849,8 @@ UnitTest_Err:
             End If
         End If
     #End If
+    
+    Windows_Temp_Dir = General_Get_Temp_Dir
     Call initPacketControl
     Call SetNpcsRenderText
     Call cargarTutoriales
@@ -857,7 +859,7 @@ UnitTest_Err:
     SessionOpened = False
     Call Load(frmConnect)
     Call Load(FrmLogear)
-    Windows_Temp_Dir = General_Get_Temp_Dir
+    
     Call InicializarNombres
     Call InitializeInventory
     Call Init_TileEngine
@@ -944,14 +946,17 @@ WriteVar_Err:
     Resume Next
 End Sub
 
-Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String) As String
+Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String, Optional ByVal BufferLen As Long = 100) As String
     On Error GoTo GetVar_Err
     'Gets a Var from a text file
     Dim sSpaces As String ' This will hold the input that the program will retrieve
-    sSpaces = Space$(100) ' This tells the computer how long the longest string can be. If you want, you can change the number 100 to any number you wish
+    If BufferLen <= 0 Then BufferLen = 100
+    sSpaces = Space$(BufferLen)
     getprivateprofilestring Main, Var, vbNullString, sSpaces, Len(sSpaces), File
     GetVar = RTrim$(sSpaces)
-    GetVar = Left$(GetVar, Len(GetVar) - 1)
+    If Len(GetVar) > 0 Then
+        GetVar = Left$(GetVar, Len(GetVar) - 1)
+    End If
     Exit Function
 GetVar_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.GetVar", Erl)
