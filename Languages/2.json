@@ -323,6 +323,7 @@
     "MENSAJE_PAGINA_WEB":"Open the browser",
     "MENSAJE_PAGINA_WEB_YESNO":"Do you want to open the browser now?",
     "MENSAJE_LANZAMIENTO_RAPIDO": "You can't cast spells that fast.",
+    "MENSAJE_LANZAMIENTO_RAPIDO_FLECHAS": "You can't fire arrows that fast.",
     "MENSAJE_ATAQUE_RAPIDO_GOLPE": "You can't attack that quickly after a hit.",
     "MENSAJE_CREAREVENTO_USO": "Invalid value. Use /CREAREVENT  1 PARTICIPANTS MIN_LEVEL MAX_LEVEL.",
 	"MENSAJE_FALLAS": "Failed ",
