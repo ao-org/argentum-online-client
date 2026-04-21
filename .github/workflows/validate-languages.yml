@@ -1,0 +1,15 @@
+name: Validate Language Files
+
+on:
+  pull_request:
+    paths:
+      - 'Languages/*.json'
+
+jobs:
+  validate-languages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate language files have matching keys
+        run: node scripts/validate-languages.js
