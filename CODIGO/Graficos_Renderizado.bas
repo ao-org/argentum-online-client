@@ -2147,7 +2147,7 @@ Private Sub Char_TextRender(ByVal charindex As Long, ByVal PixelOffsetX As Integ
         'screen_x = Convert_Tile_To_View_X(PixelOffsetX) + MoveOffsetX
 
         '*** Start Dialogs ***
-        If charlist(MapData(x, y).charindex)LenB(.dialog) <> 0 Then
+        If LenB(charlist(MapData(x, y).charindex).dialog) <> 0 Then
 
             'Figure out screen position
             Dim temp_array(3) As Long

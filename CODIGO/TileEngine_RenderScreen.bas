@@ -430,7 +430,7 @@ Sub RenderScreen(ByVal center_x As Integer, _
         End If
         Call Draw_GrhIndex(63333, randX, randY)
     End If
-    If mascotaLenB(.dialog) <> 0 And mascota.visible Then
+    If LenB(mascota.dialog) <> 0 And mascota.visible Then
         Call Engine_Text_Render(mascota.dialog, mascota.PosX + 14 - CInt(Engine_Text_Width(mascota.dialog, True) / 2) + 150, mascota.PosY - Engine_Text_Height(mascota.dialog, _
                 True) - 25 + 150, mascota_text_color(), 1, True, , mascota.color(0).A)
     End If
