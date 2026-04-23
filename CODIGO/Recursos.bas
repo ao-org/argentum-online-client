@@ -1429,6 +1429,7 @@ Public Sub CargarIndicesOBJ()
             ' Fixed data
             .MinSkill = val(Leer.GetValue(Section, "MinSkill"))
             .StaRequerido = val(Leer.GetValue(Section, "StaRequerido"))
+            .StaPercentRequerido = val(Leer.GetValue(Section, "StaPercentRequerido"))
             .IconoIndex = val(Leer.GetValue(Section, "IconoIndex"))
             .ManaRequerido = val(Leer.GetValue(Section, "ManaRequerido"))
             .PalabrasMagicas = Leer.GetValue(Section, "PalabrasMagicas")
