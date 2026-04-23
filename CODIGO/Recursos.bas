@@ -1378,6 +1378,7 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).PuedeInvocar = val(Leer.GetValue("npc" & Npc, "PuedeInvocar"))
         NpcData(Npc).ElementalTags = val(Leer.GetValue("npc" & Npc, "ElementalTags"))
         NpcData(Npc).NpcType = val(Leer.GetValue("npc" & Npc, "NpcType"))
+        NpcData(Npc).DropCount = val(Leer.GetValue("npc" & Npc, "DropCount"))
         NpcData(Npc).Comercia = val(Leer.GetValue("npc" & Npc, "Comercia"))
         NpcData(Npc).level = val(Leer.GetValue("npc" & Npc, "Nivel"))
         NpcData(Npc).WaterAttackAnimation = val(Leer.GetValue("npc" & Npc, "Ataque2"))
@@ -1401,6 +1402,25 @@ Public Sub CargarIndicesOBJ()
                 ' frmdebug.add_text_tracebox NpcData(Npc).QuizaDropea(loopc)
             Next loopC
         End If
+        If NpcData(Npc).DropCount > 0 Then
+            ReDim NpcData(Npc).DropObj(1 To NpcData(Npc).DropCount) As Integer
+            ReDim NpcData(Npc).DropChance(1 To NpcData(Npc).DropCount) As Integer
+            ReDim NpcData(Npc).DropMinAmount(1 To NpcData(Npc).DropCount) As Integer
+            ReDim NpcData(Npc).DropMaxAmount(1 To NpcData(Npc).DropCount) As Integer
+            Dim dropValue As String
+            Dim dropParts() As String
+            For loopC = 1 To NpcData(Npc).DropCount
+                dropValue = Trim$(Leer.GetValue("npc" & Npc, "Drop" & loopC))
+                If Len(dropValue) > 0 Then
+                    dropParts = Split(dropValue, "-")
+                    If UBound(dropParts) >= 0 Then NpcData(Npc).DropObj(loopC) = Val(dropParts(0))
+                    If UBound(dropParts) >= 1 Then NpcData(Npc).DropChance(loopC) = Val(dropParts(1))
+                    If UBound(dropParts) >= 2 Then NpcData(Npc).DropMinAmount(loopC) = Val(dropParts(2))
+                    If UBound(dropParts) >= 3 Then NpcData(Npc).DropMaxAmount(loopC) = Val(dropParts(3))
+                End If
+            Next loopC
+        End If
+        If NpcData(Npc).DropCount <= 0 Then NpcData(Npc).DropCount = NpcData(Npc).NumQuiza
         
         ' Leer NroItems y sus Obj()
         aux = val(Leer.GetValue("npc" & Npc, "NROITEMS"))

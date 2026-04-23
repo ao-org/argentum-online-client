@@ -238,7 +238,12 @@ Public Type NpcDatas
     MaxHit As Integer
     Head As Integer
     NumQuiza As Byte
+    DropCount As Integer
     QuizaDropea() As Integer
+    DropObj() As Integer
+    DropChance() As Integer
+    DropMinAmount() As Integer
+    DropMaxAmount() As Integer
     ExpClan As Long
     PuedeInvocar As Byte
     NoMapInfo As Byte
