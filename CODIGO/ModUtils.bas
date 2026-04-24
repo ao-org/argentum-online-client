@@ -16,6 +16,27 @@ Attribute VB_Name = "ModUtils"
 '
 '
 Option Explicit
+' Usable tile bounds within a single map (shared by minimap rendering and dot projection)
+Public Const MINIMAP_MIN_TILE_X  As Long = 14
+Public Const MINIMAP_MAX_TILE_X  As Long = 87
+Public Const MINIMAP_MIN_TILE_Y  As Long = 11
+Public Const MINIMAP_MAX_TILE_Y  As Long = 90
+Public Const MINIMAP_TILE_COUNT_X As Long = MINIMAP_MAX_TILE_X - MINIMAP_MIN_TILE_X + 1 ' 74
+Public Const MINIMAP_TILE_COUNT_Y As Long = MINIMAP_MAX_TILE_Y - MINIMAP_MIN_TILE_Y + 1 ' 80
+
+' Last centered-minimap viewport state â€” written by RenderMinimapCentered,
+' read by SetMinimapPosition to project ally dots onto the current view.
+Public MinimapVP_SrcX     As Long   ' viewport top-left X in world-image pixels
+Public MinimapVP_SrcY     As Long   ' viewport top-left Y in world-image pixels
+Public MinimapVP_SrcW     As Long   ' viewport width  in world-image pixels
+Public MinimapVP_SrcH     As Long   ' viewport height in world-image pixels
+Public MinimapVP_DestW    As Long   ' minimap control width  in screen pixels
+Public MinimapVP_DestH    As Long   ' minimap control height in screen pixels
+Public MinimapVP_MapGridX As Long   ' player map grid column in the world image
+Public MinimapVP_MapGridY As Long   ' player map grid row    in the world image
+Public MinimapVP_CellPxW  As Double ' world-image pixel width  of one map cell
+Public MinimapVP_CellPxH  As Double ' world-image pixel height of one map cell
+
 Public StopCreandoCuenta    As Boolean
 Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
@@ -1257,21 +1278,17 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     mapGridX = (idmap - 1) Mod mapCellsX
     mapGridY = (idmap - 1) \ mapCellsX
     ' Usable tile ranges inside a map
-    Const MIN_TILE_X As Long = 14
-    Const MAX_TILE_X As Long = 87
-    Const MIN_TILE_Y As Long = 11
-    Const MAX_TILE_Y As Long = 90
     Dim tileCountX   As Long, tileCountY As Long
-    tileCountX = (MAX_TILE_X - MIN_TILE_X + 1) ' 74 tiles
-    tileCountY = (MAX_TILE_Y - MIN_TILE_Y + 1) ' 80 tiles
+    tileCountX = MINIMAP_TILE_COUNT_X ' 74 tiles
+    tileCountY = MINIMAP_TILE_COUNT_Y ' 80 tiles
     ' Clamp incoming tile to valid range, just in case
-    If tileX < MIN_TILE_X Then tileX = MIN_TILE_X
-    If tileX > MAX_TILE_X Then tileX = MAX_TILE_X
-    If tileY < MIN_TILE_Y Then tileY = MIN_TILE_Y
-    If tileY > MAX_TILE_Y Then tileY = MAX_TILE_Y
+    If tileX < MINIMAP_MIN_TILE_X Then tileX = MINIMAP_MIN_TILE_X
+    If tileX > MINIMAP_MAX_TILE_X Then tileX = MINIMAP_MAX_TILE_X
+    If tileY < MINIMAP_MIN_TILE_Y Then tileY = MINIMAP_MIN_TILE_Y
+    If tileY > MINIMAP_MAX_TILE_Y Then tileY = MINIMAP_MAX_TILE_Y
     ' Player pixel center on the world image (tile center = offset + 0.5)
-    Dim centerPxX As Long: centerPxX = CLng((mapGridX + (tileX - MIN_TILE_X + 0.5) / tileCountX) * mapCellPxW)
-    Dim centerPxY As Long: centerPxY = CLng((mapGridY + (tileY - MIN_TILE_Y + 0.5) / tileCountY) * mapCellPxH)
+    Dim centerPxX As Long: centerPxX = CLng((mapGridX + (tileX - MINIMAP_MIN_TILE_X + 0.5) / tileCountX) * mapCellPxW)
+    Dim centerPxY As Long: centerPxY = CLng((mapGridY + (tileY - MINIMAP_MIN_TILE_Y + 0.5) / tileCountY) * mapCellPxH)
     ' Destination size (control size)
     Dim destW As Long, destH As Long
     destW = frmMain.MiniMap.ScaleWidth
@@ -1302,7 +1319,17 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     If srcY > (bmpPxH - srcH) Then srcY = bmpPxH - srcH
     ' Draw: use DirectX 8 rendering instead of slow PaintPicture
     Call Minimap_Render_Cropped_To_Hdc(frmMain.MiniMap, worldFileNum, 0, 0, destW, destH, srcX, srcY, srcW, srcH, vbBlack)
-    ' Store for overlays (e.g., NPC markers) that need to map world->viewport
+    ' Store viewport state so ally dots can be projected onto the current view
+    MinimapVP_SrcX     = srcX
+    MinimapVP_SrcY     = srcY
+    MinimapVP_SrcW     = srcW
+    MinimapVP_SrcH     = srcH
+    MinimapVP_DestW    = destW
+    MinimapVP_DestH    = destH
+    MinimapVP_MapGridX = mapGridX
+    MinimapVP_MapGridY = mapGridY
+    MinimapVP_CellPxW  = mapCellPxW
+    MinimapVP_CellPxH  = mapCellPxH
     Exit Sub
 RenderMinimap_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.RenderMinimapCentered", Erl)

@@ -496,7 +496,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   408
          Left            =   1680
-         ToolTipText     =   "Seguro de resurrección"
+         ToolTipText     =   "Seguro de resurrecciï¿½n"
          Top             =   3060
          Visible         =   0   'False
          Width           =   408
@@ -505,7 +505,7 @@ Begin VB.Form frmMain
          Appearance      =   0  'Flat
          Height          =   408
          Left            =   2208
-         ToolTipText     =   "Seguro de legión"
+         ToolTipText     =   "Seguro de legiï¿½n"
          Top             =   3060
          Visible         =   0   'False
          Width           =   408
@@ -676,7 +676,7 @@ Begin VB.Form frmMain
          Height          =   240
          Left            =   3075
          TabIndex        =   30
-         ToolTipText     =   "Aumento de daño mágico"
+         ToolTipText     =   "Aumento de daï¿½o mï¿½gico"
          Top             =   3150
          Width           =   570
       End
@@ -697,7 +697,7 @@ Begin VB.Form frmMain
          Height          =   240
          Left            =   1935
          TabIndex        =   29
-         ToolTipText     =   "Resistencia mágica"
+         ToolTipText     =   "Resistencia mï¿½gica"
          Top             =   3150
          Width           =   330
       End
@@ -719,7 +719,7 @@ Begin VB.Form frmMain
          Height          =   270
          Left            =   2385
          TabIndex        =   28
-         ToolTipText     =   "Oxígeno acumulado"
+         ToolTipText     =   "Oxï¿½geno acumulado"
          Top             =   570
          Width           =   225
       End
@@ -803,7 +803,7 @@ Begin VB.Form frmMain
          Height          =   240
          Left            =   600
          TabIndex        =   24
-         ToolTipText     =   "Daño físico arma"
+         ToolTipText     =   "Daï¿½o fï¿½sico arma"
          Top             =   2700
          Width           =   480
       End
@@ -1530,10 +1530,10 @@ Attribute VB_Exposed = False
 'You can contact me at:
 'morgolock@speedy.com.ar
 '
-'Calle 3 número 983 piso 7 dto A
+'Calle 3 nï¿½mero 983 piso 7 dto A
 'La Plata - Pcia, Buenos Aires - Republica Argentina
-'Código Postal 1900
-'Pablo Ignacio Márquez
+'Cï¿½digo Postal 1900
+'Pablo Ignacio Mï¿½rquez
 'Call ParseUserCommand("/CMSG " & stxtbuffercmsg)
 Option Explicit
 Private Declare Sub svb_shutdown_steam Lib "steam_vb.dll" ()
@@ -1927,7 +1927,7 @@ End Sub
 
 Private Sub Contadores_Timer()
     On Error GoTo Contadores_Timer_Err
-    'Si el usuario está muerto, desactiva los contadores
+    'Si el usuario estï¿½ muerto, desactiva los contadores
     If UserStats.estado = 1 Then
         Contadores.enabled = False
         Exit Sub
@@ -2732,7 +2732,7 @@ End Sub
 Private Sub panelinferior_Click(Index As Integer)
     Select Case Index
         Case 1
-            QuePestañaInferior = 1
+            QuePestaï¿½aInferior = 1
             GldLbl.visible = False
             'Label6.Visible = False
             stabar.visible = False
@@ -2799,7 +2799,7 @@ Private Sub panelinferior_Click(Index As Integer)
             ImgLegionarySecure.visible = True
             panelInf.Picture = LoadInterface("ventanaprincipal_info.bmp")
         Case 0
-            QuePestañaInferior = 0
+            QuePestaï¿½aInferior = 0
             panelInf.Picture = LoadInterface("ventanaprincipal_stats.bmp")
             stabar.visible = True
             HpBar.visible = True
@@ -2846,7 +2846,7 @@ End Sub
 
 Private Sub Inventario_ItemDropped(ByVal Drag As Integer, ByVal Drop As Integer, ByVal x As Integer, ByVal y As Integer)
     On Error GoTo Inventario_ItemDropped_Err
-    ' Si soltó un item en un slot válido
+    ' Si soltï¿½ un item en un slot vï¿½lido
     If Drop > 0 Then
         If Drag <> Drop Then
             ' Muevo el item dentro del iventario
@@ -3342,7 +3342,7 @@ Private Sub renderer_MouseUp(Button As Integer, Shift As Integer, x As Single, y
                 ElseIf x >= 443 And x <= 458 And y >= 243 And y <= 260 Then 'SI
                     If PreguntaLocal Then
                         Select Case PreguntaNUM
-                            Case 1 '¿Destruir item?
+                            Case 1 'ï¿½Destruir item?
                                 Call WriteDrop(DestItemSlot, DestItemCant)
                                 Pregunta = False
                                 PreguntaLocal = False
@@ -3626,7 +3626,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y A
     If PantallaCompleta = 0 And Button = vbLeftButton Then
         If MoverVentana = 1 Then
             If Not UserMoving Then
-                ' Mover form sólo en la parte superior
+                ' Mover form sï¿½lo en la parte superior
                 If y < 30 Then MoverForm
                 'Call Auto_Drag(Me.hwnd)
             End If
@@ -3745,7 +3745,7 @@ End Sub
 
 Private Sub SendTxt_Change()
     On Error GoTo SendTxt_Change_Err
-    'impedí se inserten caractéres no imprimibles
+    'impedï¿½ se inserten caractï¿½res no imprimibles
     If Len(SendTxt.text) > 160 Then
         stxtbuffer = "Soy un cheater, avisenle a un gm"
     Else
@@ -3850,9 +3850,21 @@ Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVa
         personaje(Jugador).Left = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - personaje(Jugador).Width \ 2 - 1
         personaje(Jugador).Top = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
     Else
-        personaje(Jugador).Left = 49
-        personaje(Jugador).Top = 49
-        Call RenderMinimapCentered(UserMap, x, y, CenteredMinimapZoom, CenteredMinimapZoom)
+        If Jugador = 0 Then
+            ' Main player is always centered in the viewport
+            personaje(0).Left = MinimapVP_DestW \ 2 - personaje(0).Width \ 2
+            personaje(0).Top  = MinimapVP_DestH \ 2 - personaje(0).Height \ 2
+            Call RenderMinimapCentered(UserMap, x, y, CenteredMinimapZoom, CenteredMinimapZoom)
+        Else
+            ' Project ally tile position onto the current centered viewport.
+            ' Protocol already ensures the ally is on the same map as the player.
+            If MinimapVP_SrcW > 0 And MinimapVP_SrcH > 0 Then
+                Dim allyPxX As Long: allyPxX = CLng((MinimapVP_MapGridX + (x - MINIMAP_MIN_TILE_X + 0.5) / MINIMAP_TILE_COUNT_X) * MinimapVP_CellPxW)
+                Dim allyPxY As Long: allyPxY = CLng((MinimapVP_MapGridY + (y - MINIMAP_MIN_TILE_Y + 0.5) / MINIMAP_TILE_COUNT_Y) * MinimapVP_CellPxH)
+                personaje(Jugador).Left = CLng((allyPxX - MinimapVP_SrcX) * MinimapVP_DestW / MinimapVP_SrcW) - personaje(Jugador).Width \ 2
+                personaje(Jugador).Top  = CLng((allyPxY - MinimapVP_SrcY) * MinimapVP_DestH / MinimapVP_SrcH) - personaje(Jugador).Height \ 2
+            End If
+        End If
     End If
 End Sub
 
@@ -3882,7 +3894,7 @@ Public Sub UpdateHpBar()
         frmMain.Hpshp.Width = 0
         frmMain.shieldBar.Width = 0
     End If
-    If QuePestañaInferior = 0 Then
+    If QuePestaï¿½aInferior = 0 Then
         frmMain.Hpshp.visible = (UserStats.MinHp > 0)
         frmMain.shieldBar.visible = UserStats.HpShield > 0
     End If
@@ -3899,7 +3911,7 @@ Public Sub UpdateStatsLayout()
     If UserStats.maxman > 0 Then
         frmMain.MANShp.Width = UserStats.minman / UserStats.maxman * 216
         frmMain.manabar.Caption = UserStats.minman & " / " & UserStats.maxman
-        If QuePestañaInferior = 0 Then
+        If QuePestaï¿½aInferior = 0 Then
             frmMain.MANShp.visible = (UserStats.minman > 0)
             frmMain.manabar.visible = True
         End If
@@ -3914,7 +3926,7 @@ Public Sub UpdateStatsLayout()
         frmMain.STAShp.Width = 0
     End If
     frmMain.stabar.Caption = UserStats.MinSTA & " / " & UserStats.MaxSTA
-    If QuePestañaInferior = 0 Then
+    If QuePestaï¿½aInferior = 0 Then
         frmMain.STAShp.visible = (UserStats.MinSTA > 0)
     End If
     frmMain.lblLvl.Caption = ListaClases(UserStats.Clase) & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & UserStats.Lvl
@@ -3932,7 +3944,7 @@ Public Sub UpdateManaBar()
     If UserStats.maxman > 0 Then
         frmMain.MANShp.Width = UserStats.minman / UserStats.maxman * 216
         frmMain.manabar.Caption = UserStats.minman & " / " & UserStats.maxman
-        If QuePestañaInferior = 0 Then
+        If QuePestaï¿½aInferior = 0 Then
             frmMain.MANShp.visible = (UserStats.minman > 0)
             frmMain.manabar.visible = True
         End If
@@ -3948,7 +3960,7 @@ Public Sub UpdateFoodState()
     frmMain.COMIDAsp.Width = UserStats.MinHAM / UserStats.MaxHAM * 32
     frmMain.AGUbar.Caption = UserStats.MinAGU '& " / " & UserMaxAGU
     frmMain.hambar.Caption = UserStats.MinHAM ' & " / " & UserMaxHAM
-    If QuePestañaInferior = 0 Then
+    If QuePestaï¿½aInferior = 0 Then
         frmMain.AGUAsp.visible = (UserStats.MinAGU > 0)
         frmMain.COMIDAsp.visible = (UserStats.MinHAM > 0)
     End If
@@ -3957,7 +3969,7 @@ End Sub
 Public Sub UpdateStamina()
     frmMain.STAShp.Width = UserStats.MinSTA / UserStats.MaxSTA * 89
     frmMain.stabar.Caption = UserStats.MinSTA & " / " & UserStats.MaxSTA
-    If QuePestañaInferior = 0 Then
+    If QuePestaï¿½aInferior = 0 Then
         frmMain.STAShp.visible = (UserStats.MinSTA > 0)
     End If
 End Sub
@@ -3980,7 +3992,7 @@ Public Sub UpdateExpBar()
         frmMain.EXPBAR.Width = UserStats.exp / UserStats.PasarNivel * 235
     Else
         frmMain.EXPBAR.Width = 235
-        frmMain.lblPorcLvl.Caption = JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO") '"¡Nivel Máximo!"
+        frmMain.lblPorcLvl.Caption = JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO") '"ï¿½Nivel Mï¿½ximo!"
         frmMain.exp.Caption = JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO")
         frmMain.lblPorcLvl2.Caption = JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO")
         frmMain.expRemaining.Caption = JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO")
