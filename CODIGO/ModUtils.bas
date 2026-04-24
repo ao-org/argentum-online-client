@@ -21,10 +21,10 @@ Public Const MINIMAP_MIN_TILE_X  As Long = 14
 Public Const MINIMAP_MAX_TILE_X  As Long = 87
 Public Const MINIMAP_MIN_TILE_Y  As Long = 11
 Public Const MINIMAP_MAX_TILE_Y  As Long = 90
-Public Const MINIMAP_TILE_COUNT_X As Long = MINIMAP_MAX_TILE_X - MINIMAP_MIN_TILE_X + 1 ' 74
-Public Const MINIMAP_TILE_COUNT_Y As Long = MINIMAP_MAX_TILE_Y - MINIMAP_MIN_TILE_Y + 1 ' 80
+Public Const MINIMAP_TILE_COUNT_X As Long = 74  ' MAX_TILE_X - MIN_TILE_X + 1
+Public Const MINIMAP_TILE_COUNT_Y As Long = 80  ' MAX_TILE_Y - MIN_TILE_Y + 1
 
-' Last centered-minimap viewport state â€” written by RenderMinimapCentered,
+' Last centered-minimap viewport state -- written by RenderMinimapCentered,
 ' read by SetMinimapPosition to project ally dots onto the current view.
 Public MinimapVP_SrcX     As Long   ' viewport top-left X in world-image pixels
 Public MinimapVP_SrcY     As Long   ' viewport top-left Y in world-image pixels
@@ -1278,6 +1278,7 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     mapGridX = (idmap - 1) Mod mapCellsX
     mapGridY = (idmap - 1) \ mapCellsX
     ' Usable tile ranges inside a map
+    ' Usable tile ranges inside a map (using module-level constants)
     Dim tileCountX   As Long, tileCountY As Long
     tileCountX = MINIMAP_TILE_COUNT_X ' 74 tiles
     tileCountY = MINIMAP_TILE_COUNT_Y ' 80 tiles
