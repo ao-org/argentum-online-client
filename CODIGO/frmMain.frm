@@ -335,9 +335,10 @@ Begin VB.Form frmMain
       Width           =   1500
       Begin VB.Shape personaje 
          BackColor       =   &H00FF0000&
-         BackStyle       =   1  'Opaque
+         BackStyle       =   0  'Transparent
          BorderColor     =   &H00FF0000&
-         FillColor       =   &H00FFFFFF&
+         FillColor       =   &H00FF0000&
+         FillStyle       =   0  'Solid
          Height          =   60
          Index           =   5
          Left            =   0
@@ -348,9 +349,10 @@ Begin VB.Form frmMain
       End
       Begin VB.Shape personaje 
          BackColor       =   &H00FF00FF&
-         BackStyle       =   1  'Opaque
+         BackStyle       =   0  'Transparent
          BorderColor     =   &H00FF00FF&
-         FillColor       =   &H00FFFFFF&
+         FillColor       =   &H00FF00FF&
+         FillStyle       =   0  'Solid
          Height          =   60
          Index           =   4
          Left            =   0
@@ -361,9 +363,10 @@ Begin VB.Form frmMain
       End
       Begin VB.Shape personaje 
          BackColor       =   &H000080FF&
-         BackStyle       =   1  'Opaque
+         BackStyle       =   0  'Transparent
          BorderColor     =   &H000080FF&
-         FillColor       =   &H00FFFFFF&
+         FillColor       =   &H000080FF&
+         FillStyle       =   0  'Solid
          Height          =   60
          Index           =   3
          Left            =   0
@@ -374,9 +377,10 @@ Begin VB.Form frmMain
       End
       Begin VB.Shape personaje 
          BackColor       =   &H0000C000&
-         BackStyle       =   1  'Opaque
+         BackStyle       =   0  'Transparent
          BorderColor     =   &H0000C000&
-         FillColor       =   &H00FFFFFF&
+         FillColor       =   &H0000C000&
+         FillStyle       =   0  'Solid
          Height          =   60
          Index           =   2
          Left            =   0
@@ -387,9 +391,10 @@ Begin VB.Form frmMain
       End
       Begin VB.Shape personaje 
          BackColor       =   &H0000FFFF&
-         BackStyle       =   1  'Opaque
+         BackStyle       =   0  'Transparent
          BorderColor     =   &H0000FFFF&
-         FillColor       =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         FillStyle       =   0  'Solid
          Height          =   60
          Index           =   1
          Left            =   0
