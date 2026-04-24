@@ -1222,35 +1222,29 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
         If idmap > 0 Then Exit For
     Next J
     If idmap = 0 Then Exit Sub
+    ' Select the pre-loaded DirectX texture for this world
+    Dim textureNum As Long
+    Select Case worldNum
+        Case 1
+            textureNum = MAPA1_TEXTURE_NUM
+        Case 2
+            textureNum = MAPA2_TEXTURE_NUM
+        Case Else
+            Exit Sub
+    End Select
     ' Ensure destination units are pixels
     frmMain.MiniMap.ScaleMode = vbPixels
-    ' Load/cached world bitmap
-    Static lastWorld   As Byte
-    Static worldBitmap As StdPicture
-    If (lastWorld <> worldNum) Or (worldBitmap Is Nothing) Then
-        Select Case worldNum
-            Case 1
-                Set worldBitmap = LoadInterface("mapa1_200x200.bmp", False)
-            Case 2
-                Set worldBitmap = LoadInterface("mapa2_200x200.bmp", False)
-            Case Else
-                Set worldBitmap = Nothing
-        End Select
-        lastWorld = worldNum
-    End If
-    If (worldBitmap Is Nothing) Then Exit Sub
-    ' Convert HIMETRIC to pixels for the actual bitmap size
-    Dim bmpPxW As Long, bmpPxH As Long
-    bmpPxW = frmMain.MiniMap.ScaleX(worldBitmap.Width, vbHimetric, vbPixels)
-    bmpPxH = frmMain.MiniMap.ScaleY(worldBitmap.Height, vbHimetric, vbPixels)
+    ' Source image dimensions (mapa1_200x200.bmp / mapa2_200x200.bmp are 200x200 pixels)
+    Const BMP_W As Long = 200
+    Const BMP_H As Long = 200
     ' Grid of maps in the world image
     Dim mapCellsX As Long, mapCellsY As Long
     mapCellsX = Mundo(worldNum).Ancho   ' e.g., 100
     mapCellsY = Mundo(worldNum).Alto    ' e.g., 100
     ' Size of one map cell in pixels on the world image
     Dim mapCellPxW As Double, mapCellPxH As Double
-    mapCellPxW = CDbl(bmpPxW) / CDbl(mapCellsX)
-    mapCellPxH = CDbl(bmpPxH) / CDbl(mapCellsY)
+    mapCellPxW = CDbl(BMP_W) / CDbl(mapCellsX)
+    mapCellPxH = CDbl(BMP_H) / CDbl(mapCellsY)
     ' Current map's grid coordinates on the world image
     mapGridX = (idmap - 1) Mod mapCellsX
     mapGridY = Int((idmap - 1) / mapCellsX)
@@ -1292,8 +1286,8 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     ' Ensure positive and not exceeding bitmap
     If srcW < 16 Then srcW = 16           ' minimum crop width
     If srcH < 16 Then srcH = 16           ' minimum crop height
-    If srcW > bmpPxW Then srcW = bmpPxW
-    If srcH > bmpPxH Then srcH = bmpPxH
+    If srcW > BMP_W Then srcW = BMP_W
+    If srcH > BMP_H Then srcH = BMP_H
     ' Source top-left so that the player is centered in the source crop
     Dim srcX As Long, srcY As Long
     srcX = CLng(centerPxX - (srcW / 2#))
@@ -1301,12 +1295,10 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     ' Clamp to bitmap bounds based on source crop size
     If srcX < 0 Then srcX = 0
     If srcY < 0 Then srcY = 0
-    If srcX > (bmpPxW - srcW) Then srcX = bmpPxW - srcW
-    If srcY > (bmpPxH - srcH) Then srcY = bmpPxH - srcH
-    ' Draw: scale the selected source crop to fill the destination control
-    frmMain.MiniMap.Cls
-    frmMain.MiniMap.PaintPicture worldBitmap, 0, 0, destW, destH, srcX, srcY, srcW, srcH
-    ' Store for overlays (e.g., NPC markers) that need to map world->viewport
+    If srcX > (BMP_W - srcW) Then srcX = BMP_W - srcW
+    If srcY > (BMP_H - srcH) Then srcY = BMP_H - srcH
+    ' Render using DirectX hardware acceleration instead of GDI PaintPicture
+    Call Minimap_Render_To_Hdc(frmMain.MiniMap, textureNum, srcX, srcY, srcW, srcH, destW, destH, BMP_W, BMP_H)
     Exit Sub
 RenderMinimap_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.RenderMinimapCentered", Erl)

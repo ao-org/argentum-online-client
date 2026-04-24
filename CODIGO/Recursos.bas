@@ -272,12 +272,26 @@ Public Sub CargarRecursos()
     Call CargarColores
     Call CargarCrafteo
     Call InitEngineSprites
+    Call LoadMinimapTextures
     If CenteredMinimap <> 0 Then
         Call RenderMinimapCentered(1, 50, 50, CenteredMinimapZoom, CenteredMinimapZoom)
     End If
     Exit Sub
 CargarRecursos_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarRecursos", Erl)
+    Resume Next
+End Sub
+
+''
+' Pre-loads the world minimap BMP textures into the DirectX texture cache so
+' that RenderMinimapCentered can use hardware-accelerated rendering.
+Public Sub LoadMinimapTextures()
+    On Error GoTo LoadMinimapTextures_Err
+    Call SurfaceDB.RegisterTextureFromInterface(MAPA1_TEXTURE_NUM, "mapa1_200x200.bmp")
+    Call SurfaceDB.RegisterTextureFromInterface(MAPA2_TEXTURE_NUM, "mapa2_200x200.bmp")
+    Exit Sub
+LoadMinimapTextures_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Recursos.LoadMinimapTextures", Erl)
     Resume Next
 End Sub
 

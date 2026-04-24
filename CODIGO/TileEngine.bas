@@ -976,6 +976,70 @@ Grh_Render_To_HdcSinBorrar_Err:
     Resume Next
 End Sub
 
+''
+' Renders a cropped region of a texture (loaded via SurfaceDB) into a PictureBox
+' using DirectX hardware acceleration, scaling the source crop to fill the destination.
+'
+' TextureFileNum - texture ID registered in SurfaceDB (e.g. MAPA1_TEXTURE_NUM)
+' srcX, srcY     - top-left pixel of the source crop within the original bitmap
+' srcW, srcH     - size of the source crop in pixels (original bitmap space)
+' destW, destH   - pixel dimensions of the destination area inside pic
+' bmpW, bmpH     - original bitmap dimensions used to compute UV coordinates correctly
+'                  (must match the source image size, e.g. 200 for a 200x200 BMP)
+' ClearColor     - ARGB background colour used to clear before drawing
+Public Sub Minimap_Render_To_Hdc(ByRef pic As PictureBox, _
+                                 ByVal TextureFileNum As Long, _
+                                 ByVal srcX As Long, _
+                                 ByVal srcY As Long, _
+                                 ByVal srcW As Long, _
+                                 ByVal srcH As Long, _
+                                 ByVal destW As Long, _
+                                 ByVal destH As Long, _
+                                 Optional ByVal bmpW As Long = 200, _
+                                 Optional ByVal bmpH As Long = 200, _
+                                 Optional ByVal ClearColor As Long = &O0)
+    On Error GoTo Minimap_Render_To_Hdc_Err
+    Static PresentRect   As Rect
+    Static src_rect      As Rect
+    Static dest_rect     As Rect
+    Static temp_verts(3) As TYPE_VERTEX
+    Static d3dTextures   As D3D8Textures
+    Set d3dTextures.Texture = SurfaceDB.GetTexture(TextureFileNum, d3dTextures.texwidth, d3dTextures.texheight)
+    If d3dTextures.Texture Is Nothing Then Exit Sub
+    With PresentRect
+        .Left = 0
+        .Top = 0
+        .Right = pic.ScaleWidth
+        .Bottom = pic.ScaleHeight
+    End With
+    ' Use original bitmap dimensions (bmpW x bmpH) as the UV divisor so that
+    ' UV coordinates are computed in bitmap-pixel space.  This gives correct
+    ' results whether or not the GPU padded the texture to the next power-of-2.
+    With src_rect
+        .Left = srcX
+        .Top = srcY
+        .Right = srcX + srcW
+        .Bottom = srcY + srcH
+    End With
+    With dest_rect
+        .Left = 0
+        .Top = 0
+        .Right = destW
+        .Bottom = destH
+    End With
+    Geometry_Create_Box temp_verts(), dest_rect, src_rect, COLOR_WHITE, bmpW, bmpH, 0
+    Call DirectDevice.BeginScene
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
+    DirectDevice.SetTexture 0, d3dTextures.Texture
+    DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
+    Call DirectDevice.EndScene
+    Call DirectDevice.Present(PresentRect, ByVal 0, pic.hWnd, ByVal 0)
+    Exit Sub
+Minimap_Render_To_Hdc_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Minimap_Render_To_Hdc", Erl)
+    Resume Next
+End Sub
+
 Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal GrhIndex As Long) As Boolean
     On Error GoTo HayUserAbajo_Err
     If GrhIndex > 0 Then

@@ -68,6 +68,10 @@ End Type
 
 Public Const PI As Single = 3.14159265358979
 
+' Texture file IDs reserved for the world minimap bitmaps
+Public Const MAPA1_TEXTURE_NUM As Integer = 30001
+Public Const MAPA2_TEXTURE_NUM As Integer = 30002
+
 ' FIN - MOTOR GRAFICO
 Public Function General_Bytes_To_Megabytes(Bytes As Double) As Double
     On Error GoTo General_Bytes_To_Megabytes_Err
