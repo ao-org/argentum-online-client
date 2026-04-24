@@ -37,6 +37,24 @@ Public MinimapVP_MapGridY As Long   ' player map grid row    in the world image
 Public MinimapVP_CellPxW  As Double ' world-image pixel width  of one map cell
 Public MinimapVP_CellPxH  As Double ' world-image pixel height of one map cell
 
+' DirectX-rendered dot per slot (0=player, 1-5=allies) used when CenteredMinimap <> 0
+Public Type MinimapDotState
+    visible  As Boolean
+    screenX  As Long
+    screenY  As Long
+    dotColor As RGBA
+End Type
+Public MinimapDots(0 To 5) As MinimapDotState
+
+Public Sub InitMinimapDotColors()
+    SetRGBA MinimapDots(0).dotColor, 255, 255, 255    ' player  : white
+    SetRGBA MinimapDots(1).dotColor, 255, 255, 0      ' ally 1  : yellow
+    SetRGBA MinimapDots(2).dotColor, 0,   192, 0      ' ally 2  : green
+    SetRGBA MinimapDots(3).dotColor, 255, 128, 0      ' ally 3  : orange
+    SetRGBA MinimapDots(4).dotColor, 255, 0,   255    ' ally 4  : magenta
+    SetRGBA MinimapDots(5).dotColor, 0,   0,   255    ' ally 5  : blue
+End Sub
+
 Public StopCreandoCuenta    As Boolean
 Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
@@ -1224,6 +1242,11 @@ End Sub
 
 Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Integer, ByVal tileY As Integer, Optional ByVal viewDeltaW As Long = 0, Optional ByVal viewDeltaH As Long = 0)
     On Error GoTo RenderMinimap_Err
+    Static colorsInit As Boolean
+    If Not colorsInit Then
+        Call InitMinimapDotColors
+        colorsInit = True
+    End If
     Dim i        As Integer
     Dim J        As Byte
     Dim idmap    As Integer

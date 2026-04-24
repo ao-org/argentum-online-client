@@ -998,6 +998,11 @@ Public Sub Minimap_Render_Cropped_To_Hdc(ByRef pic As PictureBox, _
     Dim dstRect       As Rect
     Dim picRect       As Rect
     Dim temp_verts(3) As TYPE_VERTEX
+    Dim di            As Integer
+    Dim dv(3)         As TYPE_VERTEX
+    Dim cx            As Single
+    Dim cy            As Single
+    Dim dh            As Integer
     Set d3dTex.Texture = SurfaceDB.GetInterfaceTexture(TextureFileNum, "", d3dTex.texwidth, d3dTex.texheight)
     If d3dTex.Texture Is Nothing Then Exit Sub
     With picRect
@@ -1023,6 +1028,24 @@ Public Sub Minimap_Render_Cropped_To_Hdc(ByRef pic As PictureBox, _
     Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
     DirectDevice.SetTexture 0, d3dTex.Texture
     DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
+    ' Draw overlay dots (player + allies) as untextured coloured quads
+    DirectDevice.SetTexture 0, Nothing
+    DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_SELECTARG2
+    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2
+    For di = 0 To 5
+        If MinimapDots(di).visible Then
+            cx = MinimapDots(di).screenX
+            cy = MinimapDots(di).screenY
+            If di = 0 Then dh = 2 Else dh = 1
+            dv(0).x = cx - dh:     dv(0).y = cy + dh + 1: dv(0).z = 0: dv(0).color = MinimapDots(di).dotColor
+            dv(1).x = cx - dh:     dv(1).y = cy - dh:     dv(1).z = 0: dv(1).color = MinimapDots(di).dotColor
+            dv(2).x = cx + dh + 1: dv(2).y = cy + dh + 1: dv(2).z = 0: dv(2).color = MinimapDots(di).dotColor
+            dv(3).x = cx + dh + 1: dv(3).y = cy - dh:     dv(3).z = 0: dv(3).color = MinimapDots(di).dotColor
+            DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, dv(0), Len(dv(0))
+        End If
+    Next di
+    DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_MODULATE
+    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE
     Call DirectDevice.EndScene
     Call DirectDevice.Present(picRect, ByVal 0, pic.hWnd, ByVal 0)
     Exit Sub

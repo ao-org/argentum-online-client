@@ -3855,10 +3855,13 @@ Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVa
         personaje(Jugador).Left = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - personaje(Jugador).Width \ 2 - 1
         personaje(Jugador).Top = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
     Else
+        ' In centered mode all dots are rendered by DirectX; hide the VB.Shape controls.
+        personaje(Jugador).visible = False
+        MinimapDots(Jugador).visible = True
         If Jugador = 0 Then
-            ' Main player is always centered in the viewport
-            personaje(0).Left = MinimapVP_DestW \ 2 - personaje(0).Width \ 2
-            personaje(0).Top  = MinimapVP_DestH \ 2 - personaje(0).Height \ 2
+            ' Player dot is always centred in the viewport
+            MinimapDots(0).screenX = MinimapVP_DestW \ 2
+            MinimapDots(0).screenY = MinimapVP_DestH \ 2
             Call RenderMinimapCentered(UserMap, x, y, CenteredMinimapZoom, CenteredMinimapZoom)
         Else
             ' Project ally tile position onto the current centered viewport.
@@ -3866,11 +3869,16 @@ Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVa
             If MinimapVP_SrcW > 0 And MinimapVP_SrcH > 0 Then
                 Dim allyPxX As Long: allyPxX = CLng((MinimapVP_MapGridX + (x - MINIMAP_MIN_TILE_X + 0.5) / MINIMAP_TILE_COUNT_X) * MinimapVP_CellPxW)
                 Dim allyPxY As Long: allyPxY = CLng((MinimapVP_MapGridY + (y - MINIMAP_MIN_TILE_Y + 0.5) / MINIMAP_TILE_COUNT_Y) * MinimapVP_CellPxH)
-                personaje(Jugador).Left = CLng((allyPxX - MinimapVP_SrcX) * MinimapVP_DestW / MinimapVP_SrcW) - personaje(Jugador).Width \ 2
-                personaje(Jugador).Top  = CLng((allyPxY - MinimapVP_SrcY) * MinimapVP_DestH / MinimapVP_SrcH) - personaje(Jugador).Height \ 2
+                MinimapDots(Jugador).screenX = CLng((allyPxX - MinimapVP_SrcX) * MinimapVP_DestW / MinimapVP_SrcW)
+                MinimapDots(Jugador).screenY = CLng((allyPxY - MinimapVP_SrcY) * MinimapVP_DestH / MinimapVP_SrcH)
             End If
         End If
     End If
+End Sub
+
+Public Sub HideMinimapDot(ByVal Jugador As Integer)
+    personaje(Jugador).visible = False
+    MinimapDots(Jugador).visible = False
 End Sub
 
 Private Sub imgDeleteItem_Click()
