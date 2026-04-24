@@ -1251,12 +1251,11 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     mapCellsX = Mundo(worldNum).Ancho   ' e.g., 100
     mapCellsY = Mundo(worldNum).Alto    ' e.g., 100
     ' Size of one map cell in pixels on the world image
-    Dim mapCellPxW As Double, mapCellPxH As Double
-    mapCellPxW = CDbl(bmpPxW) / CDbl(mapCellsX)
-    mapCellPxH = CDbl(bmpPxH) / CDbl(mapCellsY)
+    Dim mapCellPxW As Double: mapCellPxW = bmpPxW / mapCellsX
+    Dim mapCellPxH As Double: mapCellPxH = bmpPxH / mapCellsY
     ' Current map's grid coordinates on the world image
     mapGridX = (idmap - 1) Mod mapCellsX
-    mapGridY = Int((idmap - 1) / mapCellsX)
+    mapGridY = (idmap - 1) \ mapCellsX
     ' Usable tile ranges inside a map
     Const MIN_TILE_X As Long = 14
     Const MAX_TILE_X As Long = 87
@@ -1270,14 +1269,9 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     If tileX > MAX_TILE_X Then tileX = MAX_TILE_X
     If tileY < MIN_TILE_Y Then tileY = MIN_TILE_Y
     If tileY > MAX_TILE_Y Then tileY = MAX_TILE_Y
-    ' Fractional position of the player inside the map cell, using tile center
-    Dim fracX As Double, fracY As Double
-    fracX = (CDbl(tileX - MIN_TILE_X) + 0.5) / CDbl(tileCountX)
-    fracY = (CDbl(tileY - MIN_TILE_Y) + 0.5) / CDbl(tileCountY)
-    ' Player pixel center on the world image
-    Dim centerPxX As Double, centerPxY As Double
-    centerPxX = (CDbl(mapGridX) + fracX) * mapCellPxW
-    centerPxY = (CDbl(mapGridY) + fracY) * mapCellPxH
+    ' Player pixel center on the world image (tile center = offset + 0.5)
+    Dim centerPxX As Long: centerPxX = CLng((mapGridX + (tileX - MIN_TILE_X + 0.5) / tileCountX) * mapCellPxW)
+    Dim centerPxY As Long: centerPxY = CLng((mapGridY + (tileY - MIN_TILE_Y + 0.5) / tileCountY) * mapCellPxH)
     ' Destination size (control size)
     Dim destW As Long, destH As Long
     destW = frmMain.MiniMap.ScaleWidth
@@ -1299,8 +1293,8 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     If srcH > bmpPxH Then srcH = bmpPxH
     ' Source top-left so that the player is centered in the source crop
     Dim srcX As Long, srcY As Long
-    srcX = CLng(centerPxX - (srcW / 2#))
-    srcY = CLng(centerPxY - (srcH / 2#))
+    srcX = centerPxX - srcW \ 2
+    srcY = centerPxY - srcH \ 2
     ' Clamp to bitmap bounds based on source crop size
     If srcX < 0 Then srcX = 0
     If srcY < 0 Then srcY = 0

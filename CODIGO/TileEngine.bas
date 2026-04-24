@@ -982,23 +982,23 @@ End Sub
 ' srcX/Y/Width/Height  : source crop region inside the texture (pixels)
 ' ClearColor           : ARGB colour used to clear the PictureBox before rendering
 Public Sub Minimap_Render_Cropped_To_Hdc(ByRef pic As PictureBox, _
-                                         ByVal TextureFileNum As Long, _
-                                         ByVal destX As Integer, _
-                                         ByVal destY As Integer, _
-                                         ByVal destWidth As Integer, _
-                                         ByVal destHeight As Integer, _
-                                         ByVal srcX As Single, _
-                                         ByVal srcY As Single, _
-                                         ByVal srcWidth As Single, _
-                                         ByVal srcHeight As Single, _
+                                         ByVal TextureFileNum As Integer, _
+                                         ByVal destX As Long, _
+                                         ByVal destY As Long, _
+                                         ByVal destWidth As Long, _
+                                         ByVal destHeight As Long, _
+                                         ByVal srcX As Long, _
+                                         ByVal srcY As Long, _
+                                         ByVal srcWidth As Long, _
+                                         ByVal srcHeight As Long, _
                                          Optional ByVal ClearColor As Long = &H0)
     On Error GoTo Minimap_Render_Cropped_To_Hdc_Err
     Dim d3dTex        As D3D8Textures
     Dim srcRect       As Rect
     Dim dstRect       As Rect
-    Static picRect    As Rect
+    Dim picRect       As Rect
     Dim temp_verts(3) As TYPE_VERTEX
-    Set d3dTex.Texture = SurfaceDB.GetInterfaceTexture(CInt(TextureFileNum), "", d3dTex.texwidth, d3dTex.texheight)
+    Set d3dTex.Texture = SurfaceDB.GetInterfaceTexture(TextureFileNum, "", d3dTex.texwidth, d3dTex.texheight)
     If d3dTex.Texture Is Nothing Then Exit Sub
     With picRect
         .Left = 0
@@ -1007,10 +1007,10 @@ Public Sub Minimap_Render_Cropped_To_Hdc(ByRef pic As PictureBox, _
         .Bottom = pic.ScaleHeight
     End With
     With srcRect
-        .Left = CLng(srcX)
-        .Top = CLng(srcY)
-        .Right = CLng(srcX + srcWidth)
-        .Bottom = CLng(srcY + srcHeight)
+        .Left = srcX
+        .Top = srcY
+        .Right = srcX + srcWidth
+        .Bottom = srcY + srcHeight
     End With
     With dstRect
         .Left = destX
