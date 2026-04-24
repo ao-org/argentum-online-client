@@ -11,7 +11,7 @@ Option Explicit
 
 #If UNIT_TEST = 1 Then
 
-Public Sub test_suite_math()
+Public Function test_suite_math() As Boolean
     Call UnitTesting.RunTest("math_vec_length", test_vec_length())
     Call UnitTesting.RunTest("math_vec_sq_length", test_vec_sq_length())
     Call UnitTesting.RunTest("math_normalize", test_normalize())
@@ -22,7 +22,8 @@ Public Sub test_suite_math()
     Call UnitTesting.RunTest("math_fix_angle_overflow", test_fix_angle_overflow())
     Call UnitTesting.RunTest("math_interpolate_bounds", test_interpolate_bounds())
     Call UnitTesting.RunTest("math_point_inside_rect", test_point_inside_rect())
-End Sub
+    test_suite_math = True
+End Function
 
 ' Verifies VecLength returns the Euclidean length of a vector.
 ' A (3,4) vector should have length 5.

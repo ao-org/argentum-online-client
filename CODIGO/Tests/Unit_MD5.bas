@@ -10,13 +10,14 @@ Option Explicit
 #If UNIT_TEST = 1 Then
 
 ' Runs all MD5 helper unit tests.
-Public Sub test_suite_md5()
+Public Function test_suite_md5() As Boolean
     Call UnitTesting.RunTest("md5_hex2dec_ff", test_hex2dec_ff())
     Call UnitTesting.RunTest("md5_hex2dec_zero", test_hex2dec_zero())
     Call UnitTesting.RunTest("md5_to_ascii", test_md5_to_ascii())
     Call UnitTesting.RunTest("md5_offset_identity", test_offset_identity())
     Call UnitTesting.RunTest("md5_offset_round_trip", test_offset_round_trip())
-End Sub
+    test_suite_md5 = True
+End Function
 
 ' Verifies hexHex2Dec converts "FF" to 255.
 Private Function test_hex2dec_ff() As Boolean

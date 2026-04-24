@@ -10,14 +10,15 @@ Option Explicit
 
 #If UNIT_TEST = 1 Then
 
-Public Sub test_suite_valid_number()
+Public Function test_suite_valid_number() As Boolean
     Call UnitTesting.RunTest("valid_byte_bounds", test_valid_byte_bounds())
     Call UnitTesting.RunTest("valid_integer_bounds", test_valid_integer_bounds())
     Call UnitTesting.RunTest("valid_long_bounds", test_valid_long_bounds())
     Call UnitTesting.RunTest("valid_trigger_bounds", test_valid_trigger_bounds())
     Call UnitTesting.RunTest("valid_non_numeric", test_valid_non_numeric())
     Call UnitTesting.RunTest("valid_empty_string", test_valid_empty_string())
-End Sub
+    test_suite_valid_number = True
+End Function
 
 Private Function test_valid_byte_bounds() As Boolean
     On Error GoTo Fail

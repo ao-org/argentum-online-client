@@ -11,13 +11,14 @@ Option Explicit
 #If UNIT_TEST = 1 Then
 
 ' Runs all elapsed-time-related unit tests.
-Public Sub test_suite_elapsed_time()
+Public Function test_suite_elapsed_time() As Boolean
     Call UnitTesting.RunTest("elapsed_normal", test_elapsed_normal())
     Call UnitTesting.RunTest("elapsed_wraparound", test_elapsed_wraparound())
     Call UnitTesting.RunTest("elapsed_tick_after", test_tick_after())
     Call UnitTesting.RunTest("elapsed_posmod_values", test_posmod_values())
     Call UnitTesting.RunTest("elapsed_posmod_zero_mod", test_posmod_zero_mod())
-End Sub
+    test_suite_elapsed_time = True
+End Function
 
 ' Verifies TicksElapsed returns the correct delta for a normal
 ' (non-wrapping) tick pair: TicksElapsed(100, 200) = 100.
