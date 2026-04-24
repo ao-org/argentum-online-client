@@ -42,22 +42,22 @@ Type Effect_Type
     ViajeChar  As Integer  '< CharIndex al que viaja.
     DestinoChar As Integer
     Viaje_X    As Integer   '< X hacia donde se dirije.
-    End_Effect As Integer  '< Particula De la explosión.
-    FxEnd_Effect As Integer  '< Particula De la explosión.
-    End_Loops  As Integer  '< Loops del fx de la explosión.
+    End_Effect As Integer  '< Particula De la explosiÃ³n.
+    FxEnd_Effect As Integer  '< Particula De la explosiÃ³n.
+    End_Loops  As Integer  '< Loops del fx de la explosiÃ³n.
     Viaje_Y    As Integer   '< Y hacia donde se dirije.
     ViajeSpeed As Single   '< Velocidad de viaje.
     Now_Moved  As Long     '< Tiempo del movimiento actual.
-    Last_Move  As Long     '< Tiempo del último movimiento.
-    Now_X      As Integer  '< Posición X actual
-    Now_Y      As Integer  '< Posición Y actual
-    Slot_Used  As Boolean  '< Si está usandose este slot.
+    Last_Move  As Long     '< Tiempo del Ãºltimo movimiento.
+    Now_X      As Integer  '< PosiciÃ³n X actual
+    Now_Y      As Integer  '< PosiciÃ³n Y actual
+    Slot_Used  As Boolean  '< Si estÃ¡ usandose este slot.
     wav        As Integer
     DestX As Byte
     DesyY As Byte
 End Type
 
-Public Const NO_INDEX = -1         '< índice no válido.
+Public Const NO_INDEX = -1         '< Ã­ndice no vÃ¡lido.
 Public Effect()     As Effect_Type
 'Destruccion de items
 Public DestItemSlot As Byte
@@ -237,8 +237,11 @@ Public Type NpcDatas
     MinHit As Integer
     MaxHit As Integer
     Head As Integer
-    NumQuiza As Byte
-    QuizaDropea() As Integer
+    DropCount As Integer
+    DropObj() As Integer
+    DropChance() As Integer
+    DropMinAmount() As Integer
+    DropMaxAmount() As Integer
     ExpClan As Long
     PuedeInvocar As Byte
     NoMapInfo As Byte
@@ -944,7 +947,7 @@ End Sub
 'You should have received a copy of the GNU Lesser General Public
 'License along with this library; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-'Augusto José Rando (barrin@imperiumao.com.ar)
+'Augusto JosÃ© Rando (barrin@imperiumao.com.ar)
 '   - First Relase
 Public Function IntervaloPermiteClick(Optional ByVal Actualizar As Boolean = True) As Boolean
     On Error GoTo IntervaloPermiteClick_Err
@@ -1219,29 +1222,35 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
         If idmap > 0 Then Exit For
     Next J
     If idmap = 0 Then Exit Sub
-    ' Select the pre-loaded DirectX texture for this world
-    Dim textureNum As Long
-    Select Case worldNum
-        Case 1
-            textureNum = MAPA1_TEXTURE_NUM
-        Case 2
-            textureNum = MAPA2_TEXTURE_NUM
-        Case Else
-            Exit Sub
-    End Select
     ' Ensure destination units are pixels
     frmMain.MiniMap.ScaleMode = vbPixels
-    ' Source image size (mapa1_200x200.bmp / mapa2_200x200.bmp are 200x200 pixels)
-    Const BMP_W As Long = 200
-    Const BMP_H As Long = 200
+    ' Load/cached world bitmap
+    Static lastWorld   As Byte
+    Static worldBitmap As StdPicture
+    If (lastWorld <> worldNum) Or (worldBitmap Is Nothing) Then
+        Select Case worldNum
+            Case 1
+                Set worldBitmap = LoadInterface("mapa1_200x200.bmp", False)
+            Case 2
+                Set worldBitmap = LoadInterface("mapa2_200x200.bmp", False)
+            Case Else
+                Set worldBitmap = Nothing
+        End Select
+        lastWorld = worldNum
+    End If
+    If (worldBitmap Is Nothing) Then Exit Sub
+    ' Convert HIMETRIC to pixels for the actual bitmap size
+    Dim bmpPxW As Long, bmpPxH As Long
+    bmpPxW = frmMain.MiniMap.ScaleX(worldBitmap.Width, vbHimetric, vbPixels)
+    bmpPxH = frmMain.MiniMap.ScaleY(worldBitmap.Height, vbHimetric, vbPixels)
     ' Grid of maps in the world image
     Dim mapCellsX As Long, mapCellsY As Long
     mapCellsX = Mundo(worldNum).Ancho   ' e.g., 100
     mapCellsY = Mundo(worldNum).Alto    ' e.g., 100
     ' Size of one map cell in pixels on the world image
     Dim mapCellPxW As Double, mapCellPxH As Double
-    mapCellPxW = CDbl(BMP_W) / CDbl(mapCellsX)
-    mapCellPxH = CDbl(BMP_H) / CDbl(mapCellsY)
+    mapCellPxW = CDbl(bmpPxW) / CDbl(mapCellsX)
+    mapCellPxH = CDbl(bmpPxH) / CDbl(mapCellsY)
     ' Current map's grid coordinates on the world image
     mapGridX = (idmap - 1) Mod mapCellsX
     mapGridY = Int((idmap - 1) / mapCellsX)
@@ -1283,8 +1292,8 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     ' Ensure positive and not exceeding bitmap
     If srcW < 16 Then srcW = 16           ' minimum crop width
     If srcH < 16 Then srcH = 16           ' minimum crop height
-    If srcW > BMP_W Then srcW = BMP_W
-    If srcH > BMP_H Then srcH = BMP_H
+    If srcW > bmpPxW Then srcW = bmpPxW
+    If srcH > bmpPxH Then srcH = bmpPxH
     ' Source top-left so that the player is centered in the source crop
     Dim srcX As Long, srcY As Long
     srcX = CLng(centerPxX - (srcW / 2#))
@@ -1292,14 +1301,17 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     ' Clamp to bitmap bounds based on source crop size
     If srcX < 0 Then srcX = 0
     If srcY < 0 Then srcY = 0
-    If srcX > (BMP_W - srcW) Then srcX = BMP_W - srcW
-    If srcY > (BMP_H - srcH) Then srcY = BMP_H - srcH
-    ' Render using DirectX hardware acceleration instead of GDI PaintPicture
-    Call Minimap_Render_To_Hdc(frmMain.MiniMap, textureNum, srcX, srcY, srcW, srcH, destW, destH)
+    If srcX > (bmpPxW - srcW) Then srcX = bmpPxW - srcW
+    If srcY > (bmpPxH - srcH) Then srcY = bmpPxH - srcH
+    ' Draw: scale the selected source crop to fill the destination control
+    frmMain.MiniMap.Cls
+    frmMain.MiniMap.PaintPicture worldBitmap, 0, 0, destW, destH, srcX, srcY, srcW, srcH
+    ' Store for overlays (e.g., NPC markers) that need to map world->viewport
     Exit Sub
 RenderMinimap_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.RenderMinimapCentered", Erl)
 End Sub
+
 Rem Encripta una cadena de caracteres.
 Rem S = Cadena a encriptar
 Rem P = Password
@@ -1981,7 +1993,7 @@ On Error GoTo SkillsNamesToTxtParser_Err
         Case 3:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_TACTICAS"))
         Case 4:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_ARMAS"))
         Case 5:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_MEDITAR"))
-        Case 6:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_APUÑALAR"))
+        Case 6:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_APUÃ‘ALAR"))
         Case 7:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_OCULTARSE"))
         Case 8:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_SUPERVIVENCIA"))
         Case 9:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_COMERCIAR"))
