@@ -42,22 +42,22 @@ Type Effect_Type
     ViajeChar  As Integer  '< CharIndex al que viaja.
     DestinoChar As Integer
     Viaje_X    As Integer   '< X hacia donde se dirije.
-    End_Effect As Integer  '< Particula De la explosión.
-    FxEnd_Effect As Integer  '< Particula De la explosión.
-    End_Loops  As Integer  '< Loops del fx de la explosión.
+    End_Effect As Integer  '< Particula De la explosiï¿½n.
+    FxEnd_Effect As Integer  '< Particula De la explosiï¿½n.
+    End_Loops  As Integer  '< Loops del fx de la explosiï¿½n.
     Viaje_Y    As Integer   '< Y hacia donde se dirije.
     ViajeSpeed As Single   '< Velocidad de viaje.
     Now_Moved  As Long     '< Tiempo del movimiento actual.
-    Last_Move  As Long     '< Tiempo del último movimiento.
-    Now_X      As Integer  '< Posición X actual
-    Now_Y      As Integer  '< Posición Y actual
-    Slot_Used  As Boolean  '< Si está usandose este slot.
+    Last_Move  As Long     '< Tiempo del ï¿½ltimo movimiento.
+    Now_X      As Integer  '< Posiciï¿½n X actual
+    Now_Y      As Integer  '< Posiciï¿½n Y actual
+    Slot_Used  As Boolean  '< Si estï¿½ usandose este slot.
     wav        As Integer
     DestX As Byte
     DesyY As Byte
 End Type
 
-Public Const NO_INDEX = -1         '< índice no válido.
+Public Const NO_INDEX = -1         '< ï¿½ndice no vï¿½lido.
 Public Effect()     As Effect_Type
 'Destruccion de items
 Public DestItemSlot As Byte
@@ -947,7 +947,7 @@ End Sub
 'You should have received a copy of the GNU Lesser General Public
 'License along with this library; if not, write to the Free Software
 'Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-'Augusto José Rando (barrin@imperiumao.com.ar)
+'Augusto Josï¿½ Rando (barrin@imperiumao.com.ar)
 '   - First Relase
 Public Function IntervaloPermiteClick(Optional ByVal Actualizar As Boolean = True) As Boolean
     On Error GoTo IntervaloPermiteClick_Err
@@ -1224,25 +1224,28 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     If idmap = 0 Then Exit Sub
     ' Ensure destination units are pixels
     frmMain.MiniMap.ScaleMode = vbPixels
-    ' Load/cached world bitmap
-    Static lastWorld   As Byte
-    Static worldBitmap As StdPicture
-    If (lastWorld <> worldNum) Or (worldBitmap Is Nothing) Then
+    ' Load/cached world texture into the DirectX surface manager
+    Static lastWorld    As Byte
+    Static worldFileNum As Integer
+    Static bmpPxW       As Long
+    Static bmpPxH       As Long
+    If (lastWorld <> worldNum) Or (worldFileNum = 0) Then
+        Dim minimapFile As String
         Select Case worldNum
-            Case 1
-                Set worldBitmap = LoadInterface("mapa1_200x200.bmp", False)
-            Case 2
-                Set worldBitmap = LoadInterface("mapa2_200x200.bmp", False)
-            Case Else
-                Set worldBitmap = Nothing
+            Case 1: minimapFile = "mapa1_200x200.bmp"
+            Case 2: minimapFile = "mapa2_200x200.bmp"
+            Case Else: minimapFile = ""
         End Select
+        If minimapFile = "" Then Exit Sub
+        worldFileNum = -CInt(worldNum)
+        Call SurfaceDB.GetInterfaceTexture(worldFileNum, minimapFile, bmpPxW, bmpPxH)
+        If bmpPxW = 0 Or bmpPxH = 0 Then
+            worldFileNum = 0
+            Exit Sub
+        End If
         lastWorld = worldNum
     End If
-    If (worldBitmap Is Nothing) Then Exit Sub
-    ' Convert HIMETRIC to pixels for the actual bitmap size
-    Dim bmpPxW As Long, bmpPxH As Long
-    bmpPxW = frmMain.MiniMap.ScaleX(worldBitmap.Width, vbHimetric, vbPixels)
-    bmpPxH = frmMain.MiniMap.ScaleY(worldBitmap.Height, vbHimetric, vbPixels)
+    If worldFileNum = 0 Then Exit Sub
     ' Grid of maps in the world image
     Dim mapCellsX As Long, mapCellsY As Long
     mapCellsX = Mundo(worldNum).Ancho   ' e.g., 100
@@ -1303,9 +1306,8 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     If srcY < 0 Then srcY = 0
     If srcX > (bmpPxW - srcW) Then srcX = bmpPxW - srcW
     If srcY > (bmpPxH - srcH) Then srcY = bmpPxH - srcH
-    ' Draw: scale the selected source crop to fill the destination control
-    frmMain.MiniMap.Cls
-    frmMain.MiniMap.PaintPicture worldBitmap, 0, 0, destW, destH, srcX, srcY, srcW, srcH
+    ' Draw: use DirectX 8 rendering instead of slow PaintPicture
+    Call Minimap_Render_Cropped_To_Hdc(frmMain.MiniMap, worldFileNum, 0, 0, destW, destH, srcX, srcY, srcW, srcH, vbBlack)
     ' Store for overlays (e.g., NPC markers) that need to map world->viewport
     Exit Sub
 RenderMinimap_Err:
@@ -1993,7 +1995,7 @@ On Error GoTo SkillsNamesToTxtParser_Err
         Case 3:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_TACTICAS"))
         Case 4:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_ARMAS"))
         Case 5:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_MEDITAR"))
-        Case 6:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_APUÑALAR"))
+        Case 6:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_APUï¿½ALAR"))
         Case 7:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_OCULTARSE"))
         Case 8:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_SUPERVIVENCIA"))
         Case 9:  Fields(0) = CStr(JsonLanguage.Item("MENSAJE_SKILL_COMERCIAR"))

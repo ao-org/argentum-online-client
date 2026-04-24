@@ -89,7 +89,7 @@ Public Type WorldPos
     y As Integer
 End Type
 
-'Contiene info acerca de donde se puede encontrar un grh tamaño y animacion
+'Contiene info acerca de donde se puede encontrar un grh tamaï¿½o y animacion
 Public Type GrhData
     sX As Integer
     sY As Integer
@@ -382,25 +382,25 @@ Public EngineRun              As Boolean
 Public fps                    As Long
 Public FramesPerSecCounter    As Long
 Private fpsLastCheck          As Long
-'Tamaño del la vista en Tiles
+'Tamaï¿½o del la vista en Tiles
 Public WindowTileWidth        As Integer
 Public WindowTileHeight       As Integer
 Public HalfWindowTileWidth    As Integer
 Public HalfWindowTileHeight   As Integer
-'Tamaño del connect
+'Tamaï¿½o del connect
 Public HalfConnectTileWidth   As Integer
 Public HalfConnectTileHeight  As Integer
 'Offset del desde 0,0 del main view
 Public MainViewTop            As Integer
 Public MainViewLeft           As Integer
 'Cuantos tiles el engine mete en el BUFFER cuando
-'dibuja el mapa. Ojo un tamaño muy grande puede
+'dibuja el mapa. Ojo un tamaï¿½o muy grande puede
 'volver el engine muy lento
 Public TileBufferSizeX        As Integer
 Public TileBufferSizeY        As Integer
 Public TileBufferPixelOffsetX As Integer
 Public TileBufferPixelOffsetY As Integer
-'Tamaño de los tiles en pixels
+'Tamaï¿½o de los tiles en pixels
 Public Const TilePixelHeight  As Integer = 32
 Public Const TilePixelWidth   As Integer = 32
 'Number of pixels the engine scrolls per frame. MUST divide evenly into pixels per tile
@@ -424,7 +424,7 @@ Public MainViewWidth          As Integer
 Public MainViewHeight         As Integer
 Public MouseTileX             As Byte
 Public MouseTileY             As Byte
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Graficos¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½Graficosï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?
 Public GrhData()              As GrhData 'Guarda todos los grh
 Public BodyData()             As BodyData
 Public HeadData()             As HeadData
@@ -434,17 +434,17 @@ Public ComposedFxData()       As tComposedAnimation
 Public WeaponAnimData()       As WeaponAnimData
 Public ShieldAnimData()       As ShieldAnimData
 Public CascoAnimData()        As HeadData
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿Mapa?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?
+'ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½Mapa?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?
 Public MapData()              As MapBlock ' Mapa
 Public MapInfo                As MapInfo ' Info acerca del mapa en uso
 Public Zonas()                As MapZone
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
-Public bRain                  As Boolean 'está raineando?
-Public bNieve                 As Boolean 'está nevando?
+'ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?
+Public bRain                  As Boolean 'estï¿½ raineando?
+Public bNieve                 As Boolean 'estï¿½ nevando?
 Public bNiebla                As Boolean 'Hay niebla?
 Public bTecho                 As Boolean 'hay techo?
-Public lastMove               As Long ' Tiempo de último paso
+Public lastMove               As Long ' Tiempo de ï¿½ltimo paso
 Public brstTick               As Long
 Private iFrameIndex           As Byte  'Frame actual de la LL
 Private llTick                As Long  'Contador
@@ -456,7 +456,7 @@ Private Type size
     cy As Long
 End Type
 
-'¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?¿?
+'ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?ï¿½?
 Private Declare Function BitBlt _
                 Lib "gdi32" (ByVal hDestDC As Long, _
                              ByVal x As Long, _
@@ -471,7 +471,7 @@ Private Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObj
 Private Declare Function CreateCompatibleDC Lib "gdi32" (ByVal hdc As Long) As Long
 Private Declare Function DeleteDC Lib "gdi32" (ByVal hdc As Long) As Long
 Private Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
-'Added by Juan Martín Sotuyo Dodero
+'Added by Juan Martï¿½n Sotuyo Dodero
 Private Declare Function StretchBlt _
                 Lib "gdi32" (ByVal hDestDC As Long, _
                              ByVal x As Long, _
@@ -834,7 +834,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
     If x < MinXBorder Or x > MaxXBorder Or y < MinYBorder Or y > MaxYBorder Then
         Exit Function
     End If
-    '¿Hay un personaje?
+    'ï¿½Hay un personaje?
     If MapData(x, y).charindex > 0 Then
         With charlist(MapData(x, y).charindex)
             If Not (.Muerto Or (.Invisible And .priv > charlist(UserCharIndex).priv) Or .DontBlockTile) Then
@@ -973,6 +973,61 @@ Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, _
     Exit Sub
 Grh_Render_To_HdcSinBorrar_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.Grh_Render_To_HdcSinBorrar", Erl)
+    Resume Next
+End Sub
+
+' Renders a cropped and scaled region of a texture into a PictureBox using DirectX 8.
+' TextureFileNum : key previously registered with SurfaceDB.GetInterfaceTexture (e.g. -1, -2)
+' destX/Y/Width/Height : destination rectangle in the PictureBox (pixels)
+' srcX/Y/Width/Height  : source crop region inside the texture (pixels)
+' ClearColor           : ARGB colour used to clear the PictureBox before rendering
+Public Sub Minimap_Render_Cropped_To_Hdc(ByRef pic As PictureBox, _
+                                         ByVal TextureFileNum As Long, _
+                                         ByVal destX As Integer, _
+                                         ByVal destY As Integer, _
+                                         ByVal destWidth As Integer, _
+                                         ByVal destHeight As Integer, _
+                                         ByVal srcX As Single, _
+                                         ByVal srcY As Single, _
+                                         ByVal srcWidth As Single, _
+                                         ByVal srcHeight As Single, _
+                                         Optional ByVal ClearColor As Long = &H0)
+    On Error GoTo Minimap_Render_Cropped_To_Hdc_Err
+    Dim d3dTex        As D3D8Textures
+    Dim srcRect       As Rect
+    Dim dstRect       As Rect
+    Static picRect    As Rect
+    Dim temp_verts(3) As TYPE_VERTEX
+    Set d3dTex.Texture = SurfaceDB.GetInterfaceTexture(CInt(TextureFileNum), "", d3dTex.texwidth, d3dTex.texheight)
+    If d3dTex.Texture Is Nothing Then Exit Sub
+    With picRect
+        .Left = 0
+        .Top = 0
+        .Right = pic.ScaleWidth
+        .Bottom = pic.ScaleHeight
+    End With
+    With srcRect
+        .Left = CLng(srcX)
+        .Top = CLng(srcY)
+        .Right = CLng(srcX + srcWidth)
+        .Bottom = CLng(srcY + srcHeight)
+    End With
+    With dstRect
+        .Left = destX
+        .Top = destY
+        .Right = destX + destWidth
+        .Bottom = destY + destHeight
+    End With
+    Geometry_Create_Box temp_verts(), dstRect, srcRect, COLOR_WHITE, d3dTex.texwidth, d3dTex.texheight, 0
+    Call DirectDevice.BeginScene
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
+    DirectDevice.SetTexture 0, d3dTex.Texture
+    DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
+    Call DirectDevice.EndScene
+    Call DirectDevice.Present(picRect, ByVal 0, pic.hWnd, ByVal 0)
+    Exit Sub
+Minimap_Render_Cropped_To_Hdc_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Minimap_Render_Cropped_To_Hdc", Erl)
     Resume Next
 End Sub
 
