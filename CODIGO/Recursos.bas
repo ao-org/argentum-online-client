@@ -1389,19 +1389,6 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).BodyIdle = val(Leer.GetValue("npc" & Npc, "BodyIdle"))
         NpcData(Npc).DisabledInBattleServer = val(Leer.GetValue("npc" & Npc, "DisabledInBattleServer"))
         NpcData(Npc).Amphibian = val(Leer.GetValue("npc" & Npc, "Amphibian")) > 0
-        NpcData(Npc).QuizaProb = val(Leer.GetValue("npc" & Npc, "QuizaProb"))
-        
-        aux = val(Leer.GetValue("npc" & Npc, "NumQuiza"))
-        If aux = 0 Then
-            NpcData(Npc).NumQuiza = 0
-        Else
-            NpcData(Npc).NumQuiza = val(aux)
-            ReDim NpcData(Npc).QuizaDropea(1 To NpcData(Npc).NumQuiza) As Integer
-            For loopC = 1 To NpcData(Npc).NumQuiza
-                NpcData(Npc).QuizaDropea(loopC) = val(Leer.GetValue("npc" & Npc, "QuizaDropea" & loopC))
-                ' frmdebug.add_text_tracebox NpcData(Npc).QuizaDropea(loopc)
-            Next loopC
-        End If
         If NpcData(Npc).DropCount > 0 Then
             ReDim NpcData(Npc).DropObj(1 To NpcData(Npc).DropCount) As Integer
             ReDim NpcData(Npc).DropChance(1 To NpcData(Npc).DropCount) As Integer
@@ -1420,7 +1407,6 @@ Public Sub CargarIndicesOBJ()
                 End If
             Next loopC
         End If
-        If NpcData(Npc).DropCount <= 0 Then NpcData(Npc).DropCount = NpcData(Npc).NumQuiza
         
         ' Leer NroItems y sus Obj()
         aux = val(Leer.GetValue("npc" & Npc, "NROITEMS"))

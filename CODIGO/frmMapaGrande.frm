@@ -663,7 +663,6 @@ Private Sub listdrop_Click()
     On Error GoTo listdrop_Click_Err
     picture1.BackColor = vbBlack
     picture1.Refresh
-    'Call Grh_Render_To_Hdc(Picture1, ObjData(NpcData(ListView1.SelectedItem.SubItems(2)).QuizaDropea(listdrop.SelectedItem.Index)).grhindex, 0, 0, False)
     If listdrop.ListItems.count <= 0 Then Exit Sub
     Call Grh_Render_To_Hdc(picture1, listdrop.SelectedItem.SubItems(1), 0, 0, False)
     
@@ -743,21 +742,11 @@ Private Sub ListView1_ItemClick(ByVal Item As MSComctlLib.ListItem)
         Call DibujarNPC(Me.PlayerView, .Head, .Body)
         
         ' --- Drops ---
-        If .NumQuiza > 0 Or .DropCount > 0 Or .NpcType = 0 And (.NroItems > 0 And .Comercia < 1) Then
+        If .DropCount > 0 Or .NpcType = 0 And (.NroItems > 0 And .Comercia < 1) Then
             Dim i As Integer, objIdx As Long
             Dim subelemento As ListItem
         
-            ' --- Si tiene drop por QuizaDropea ---
-            If .NumQuiza > 0 Then
-                For i = 1 To .NumQuiza
-                    objIdx = .QuizaDropea(i)
-                    If objIdx > 0 Then
-                        Set subelemento = listdrop.ListItems.Add(, , ObjData(objIdx).Name)
-                        subelemento.SubItems(1) = CStr(ObjData(objIdx).GrhIndex)
-                        subelemento.Tag = GetNpcDropPercentage(.QuizaProb, .NumQuiza)
-                    End If
-                Next i
-            ElseIf .DropCount > 0 Then
+            If .DropCount > 0 Then
                 For i = 1 To .DropCount
                     objIdx = .DropObj(i)
                     If objIdx > 0 Then
@@ -1203,19 +1192,7 @@ txtSearchMap_KeyPress_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.txtSearchMap_KeyPress", Erl)
     Resume Next
 End Sub
-Private Function GetNpcDropPercentage(ByVal QuizaProb As Integer, ByVal NumQuiza As Integer) As Double
-On Error GoTo GetNpcDropPercentage_Err
-    If QuizaProb <= 0 Or NumQuiza <= 0 Then
-        GetNpcDropPercentage = 0
-        Exit Function
-    End If
-    
-    GetNpcDropPercentage = Round((100# * NumQuiza) / QuizaProb, 2)
-    Exit Function
-GetNpcDropPercentage_Err:
-    Call RegistrarError(Err.Number, Err.Description, "frmMapaGrande.GetNpcDropPercentage", Erl)
-    Resume Next
-End Function
+
 
 Private Function GetNpcDropPercentageFromDenominator(ByVal Denominator As Integer) As Double
 On Error GoTo GetNpcDropPercentageFromDenominator_Err

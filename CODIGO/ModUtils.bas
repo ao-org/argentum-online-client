@@ -237,9 +237,7 @@ Public Type NpcDatas
     MinHit As Integer
     MaxHit As Integer
     Head As Integer
-    NumQuiza As Byte
     DropCount As Integer
-    QuizaDropea() As Integer
     DropObj() As Integer
     DropChance() As Integer
     DropMinAmount() As Integer
