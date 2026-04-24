@@ -41,7 +41,7 @@ Private Sub delete_temp_files()
     On Error GoTo 0
 End Sub
 
-Public Sub test_suite_ini_manager()
+Public Function test_suite_ini_manager() As Boolean
     Call write_temp_ini(App.path & "\" & TEMP_INI_PATH)
     
     Call UnitTesting.RunTest("ini_get_value", test_ini_get_value())
@@ -53,7 +53,8 @@ Public Sub test_suite_ini_manager()
     Call UnitTesting.RunTest("ini_dump_round_trip", test_ini_dump_round_trip())
     
     Call delete_temp_files
-End Sub
+    test_suite_ini_manager = True
+End Function
 
 Private Function test_ini_get_value() As Boolean
     On Error GoTo Fail

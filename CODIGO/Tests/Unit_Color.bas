@@ -13,7 +13,7 @@ Option Explicit
 #If UNIT_TEST = 1 Then
 
 ' Runs all color-related unit tests.
-Public Sub test_suite_color()
+Public Function test_suite_color() As Boolean
     Call UnitTesting.RunTest("color_round_trip", test_rgba_round_trip())
     Call UnitTesting.RunTest("color_from_comp", test_rgba_from_comp())
     Call UnitTesting.RunTest("color_from_comp_default_alpha", test_rgba_from_comp_default_alpha())
@@ -32,7 +32,8 @@ Public Sub test_suite_color()
     Call UnitTesting.RunTest("color_copy_rgba_list_with_alpha", test_copy_rgba_list_with_alpha())
     Call UnitTesting.RunTest("color_vbcolor_2_long", test_vbcolor_2_long())
     Call UnitTesting.RunTest("color_to_string", test_rgba_to_string())
-End Sub
+    test_suite_color = True
+End Function
 
 ' Verifies that converting an RGBA color to a Long and back
 ' preserves all four channel values (R, G, B, A) exactly.

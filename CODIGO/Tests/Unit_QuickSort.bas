@@ -10,14 +10,15 @@ Option Explicit
 
 #If UNIT_TEST = 1 Then
 
-Public Sub test_suite_quick_sort()
+Public Function test_suite_quick_sort() As Boolean
     Call UnitTesting.RunTest("sort_already_sorted", test_sort_already_sorted())
     Call UnitTesting.RunTest("sort_reverse", test_sort_reverse())
     Call UnitTesting.RunTest("sort_duplicates", test_sort_duplicates())
     Call UnitTesting.RunTest("sort_single_element", test_sort_single_element())
     Call UnitTesting.RunTest("sort_size_invariant", test_sort_size_invariant())
     Call UnitTesting.RunTest("sort_strings", test_sort_strings())
-End Sub
+    test_suite_quick_sort = True
+End Function
 
 Private Function test_sort_already_sorted() As Boolean
     On Error GoTo Fail

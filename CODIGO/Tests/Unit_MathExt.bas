@@ -10,13 +10,14 @@ Option Explicit
 #If UNIT_TEST = 1 Then
 
 ' Runs all extended math unit tests.
-Public Sub test_suite_math_ext()
+Public Function test_suite_math_ext() As Boolean
     Call UnitTesting.RunTest("mathext_angle_right", test_angle_right())
     Call UnitTesting.RunTest("mathext_angle_left", test_angle_left())
     Call UnitTesting.RunTest("mathext_angle_same", test_angle_same_point())
     Call UnitTesting.RunTest("mathext_overlap_true", test_overlap_true())
     Call UnitTesting.RunTest("mathext_overlap_false", test_overlap_false())
-End Sub
+    test_suite_math_ext = True
+End Function
 
 ' Verifies GetAngle returns approximately 0 radians when the target
 ' point is directly to the right (same Y, larger X).
