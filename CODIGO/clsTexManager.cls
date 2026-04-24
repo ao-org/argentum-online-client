@@ -30,7 +30,7 @@ Attribute VB_Exposed = False
 '    Argentum 20 - Game Client Program
 '    Copyright (C) ...
 '
-'    clsTexManager ï¿½ ad-hoc hash table version (no Scripting.Dictionary)
+'    clsTexManager ad-hoc hash table version (no Scripting.Dictionary)
 Option Explicit
 '======================
 ' Hash table parameters
@@ -294,7 +294,7 @@ Private Function LoadTexture(ByVal filename As String, ByRef Dest As Direct3DTex
     Dim bytArr() As Byte
     #If Compresion = 1 Then
         If Not Extract_File_To_Memory(Graphics, App.path & "\..\Recursos\OUTPUT\", LTrim$(filename) & ".png", bytArr, ResourcesPassword) Then
-            frmDebug.add_text_tracebox "ï¿½No se puede cargar el grafico numero " & filename & "!"
+            frmDebug.add_text_tracebox "No se puede cargar el grafico numero " & filename
             Exit Function
         End If
         Set Dest = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, _
@@ -303,7 +303,7 @@ Private Function LoadTexture(ByVal filename As String, ByRef Dest As Direct3DTex
         Dim PathToFile As String
         PathToFile = App.path & "\..\Recursos\Graficos\" & LTrim$(filename) & ".png"
         If Not FileExist(PathToFile, vbArchive) Then
-            frmDebug.add_text_tracebox "ï¿½No se puede cargar el grafico numero " & PathToFile & "!"
+            frmDebug.add_text_tracebox "No se puede cargar el grafico numero " & PathToFile
             Exit Function
         End If
         Set Dest = mD3D.CreateTextureFromFileEx(device, PathToFile, 0, 0, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, _

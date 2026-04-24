@@ -49,19 +49,16 @@ Public MinimapDots(0 To 5) As MinimapDotState
 Public Sub InitMinimapDotColors()
     SetRGBA MinimapDots(0).dotColor, 255, 255, 255    ' player  : white
     SetRGBA MinimapDots(1).dotColor, 255, 255, 0      ' ally 1  : yellow
-    SetRGBA MinimapDots(2).dotColor, 0,   192, 0      ' ally 2  : green
+    SetRGBA MinimapDots(2).dotColor, 0, 192, 0        ' ally 2  : green
     SetRGBA MinimapDots(3).dotColor, 255, 128, 0      ' ally 3  : orange
-    SetRGBA MinimapDots(4).dotColor, 255, 0,   255    ' ally 4  : magenta
-    SetRGBA MinimapDots(5).dotColor, 0,   0,   255    ' ally 5  : blue
+    SetRGBA MinimapDots(4).dotColor, 255, 0, 255      ' ally 4  : magenta
+    SetRGBA MinimapDots(5).dotColor, 0, 0, 255        ' ally 5  : blue
 End Sub
-
 Public StopCreandoCuenta    As Boolean
 Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
-'Nueva seguridad
 Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
-
 'get mac adress
 Public Type Tclan
     Alineacion As Byte
@@ -1344,16 +1341,16 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     ' Draw: use DirectX 8 rendering instead of slow PaintPicture
     Call Minimap_Render_Cropped_To_Hdc(frmMain.MiniMap, worldFileNum, 0, 0, destW, destH, srcX, srcY, srcW, srcH, vbBlack)
     ' Store viewport state so ally dots can be projected onto the current view
-    MinimapVP_SrcX     = srcX
-    MinimapVP_SrcY     = srcY
-    MinimapVP_SrcW     = srcW
-    MinimapVP_SrcH     = srcH
-    MinimapVP_DestW    = destW
-    MinimapVP_DestH    = destH
+    MinimapVP_SrcX = srcX
+    MinimapVP_SrcY = srcY
+    MinimapVP_SrcW = srcW
+    MinimapVP_SrcH = srcH
+    MinimapVP_DestW = destW
+    MinimapVP_DestH = destH
     MinimapVP_MapGridX = mapGridX
     MinimapVP_MapGridY = mapGridY
-    MinimapVP_CellPxW  = mapCellPxW
-    MinimapVP_CellPxH  = mapCellPxH
+    MinimapVP_CellPxW = mapCellPxW
+    MinimapVP_CellPxH = mapCellPxH
     Exit Sub
 RenderMinimap_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.RenderMinimapCentered", Erl)
