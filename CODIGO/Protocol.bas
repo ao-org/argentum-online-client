@@ -2949,6 +2949,14 @@ End Sub
 Private Sub HandleUpdateGroupInfo()
     On Error GoTo HandleUpdateGroupInfo_Err
     Group.GroupSize = Reader.ReadInt8
+    
+    ' Limpiar el array cuando el grupo se disuelve o tiene solo el líder
+    If Group.GroupSize <= 1 Then
+        Erase Group.GroupMembers
+        Call UpdateRenderArea
+        Exit Sub
+    End If
+    
     Dim i As Integer
     If Group.GroupSize > 1 Then
         ReDim Group.GroupMembers(Group.GroupSize) As t_GroupEntry
