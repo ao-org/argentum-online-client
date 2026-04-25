@@ -11,13 +11,14 @@ Option Explicit
 #If UNIT_TEST = 1 Then
 
 ' Runs all locale encoding unit tests.
-Public Sub test_suite_locale()
+Public Function test_suite_locale() As Boolean
     Call UnitTesting.RunTest("locale_integer_round_trip", test_integer_round_trip())
     Call UnitTesting.RunTest("locale_byte_round_trip", test_byte_round_trip())
     Call UnitTesting.RunTest("locale_long_round_trip", test_long_round_trip())
     Call UnitTesting.RunTest("locale_str_to_int_empty", test_string_to_integer_empty())
     Call UnitTesting.RunTest("locale_str_to_byte_oob", test_string_to_byte_oob())
-End Sub
+    test_suite_locale = True
+End Function
 
 ' Verifies Integer_To_String followed by String_To_Integer returns
 ' the original value for representative integers.

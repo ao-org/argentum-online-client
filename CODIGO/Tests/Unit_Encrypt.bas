@@ -10,13 +10,14 @@ Option Explicit
 
 #If UNIT_TEST = 1 Then
 
-Public Sub test_suite_encrypt()
+Public Function test_suite_encrypt() As Boolean
     Call UnitTesting.RunTest("encrypt_round_trip_short", test_encrypt_round_trip_short())
     Call UnitTesting.RunTest("encrypt_round_trip_multi", test_encrypt_round_trip_multi())
     Call UnitTesting.RunTest("encrypt_round_trip_empty", test_encrypt_round_trip_empty())
     Call UnitTesting.RunTest("encrypt_ciphertext_differs", test_encrypt_ciphertext_differs())
     Call UnitTesting.RunTest("encrypt_round_trip_mixed", test_encrypt_round_trip_mixed())
-End Sub
+    test_suite_encrypt = True
+End Function
 
 Private Function test_encrypt_round_trip_short() As Boolean
     On Error GoTo Fail

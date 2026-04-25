@@ -335,9 +335,9 @@ Begin VB.Form frmMain
       Width           =   1500
       Begin VB.Shape personaje 
          BackColor       =   &H00FF0000&
-         BackStyle       =   1  'Opaque
          BorderColor     =   &H00FF0000&
-         FillColor       =   &H00FFFFFF&
+         FillColor       =   &H00FF0000&
+         FillStyle       =   0  'Solid
          Height          =   60
          Index           =   5
          Left            =   0
@@ -348,9 +348,9 @@ Begin VB.Form frmMain
       End
       Begin VB.Shape personaje 
          BackColor       =   &H00FF00FF&
-         BackStyle       =   1  'Opaque
          BorderColor     =   &H00FF00FF&
-         FillColor       =   &H00FFFFFF&
+         FillColor       =   &H00FF00FF&
+         FillStyle       =   0  'Solid
          Height          =   60
          Index           =   4
          Left            =   0
@@ -361,9 +361,9 @@ Begin VB.Form frmMain
       End
       Begin VB.Shape personaje 
          BackColor       =   &H000080FF&
-         BackStyle       =   1  'Opaque
          BorderColor     =   &H000080FF&
-         FillColor       =   &H00FFFFFF&
+         FillColor       =   &H000080FF&
+         FillStyle       =   0  'Solid
          Height          =   60
          Index           =   3
          Left            =   0
@@ -374,9 +374,9 @@ Begin VB.Form frmMain
       End
       Begin VB.Shape personaje 
          BackColor       =   &H0000C000&
-         BackStyle       =   1  'Opaque
          BorderColor     =   &H0000C000&
-         FillColor       =   &H00FFFFFF&
+         FillColor       =   &H0000C000&
+         FillStyle       =   0  'Solid
          Height          =   60
          Index           =   2
          Left            =   0
@@ -387,9 +387,9 @@ Begin VB.Form frmMain
       End
       Begin VB.Shape personaje 
          BackColor       =   &H0000FFFF&
-         BackStyle       =   1  'Opaque
          BorderColor     =   &H0000FFFF&
-         FillColor       =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         FillStyle       =   0  'Solid
          Height          =   60
          Index           =   1
          Left            =   0
@@ -435,6 +435,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -2951,7 +2952,7 @@ Private Sub macrotrabajo_Timer()
     End If
     'If Inventario.OBJType(Inventario.SelectedItem) = eObjType.otWeapon Then
     If Not (frmCarp.visible = True) Then
-        If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
+        If frmMain.Inventario.IsItemSelected Then Call UserItemClick(False)
     End If
     Exit Sub
 macrotrabajo_Timer_Err:
@@ -3086,7 +3087,7 @@ End Sub
 
 Private Sub mnuUsar_Click()
     On Error GoTo mnuUsar_Click_Err
-    If frmMain.Inventario.IsItemSelected Then Call WriteUseItem(frmMain.Inventario.SelectedItem)
+    Call UserItemClick
     Exit Sub
 mnuUsar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.mnuUsar_Click", Erl)
@@ -3849,11 +3850,33 @@ Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVa
     If CenteredMinimap = 0 Then
         personaje(Jugador).Left = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - personaje(Jugador).Width \ 2 - 1
         personaje(Jugador).Top = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
+        personaje(Jugador).visible = True  ' <--- ADD THIS LINE
+        MinimapDots(Jugador).visible = False  ' <--- ADD THIS LINE TOO (hide DirectX dots)
     Else
-        personaje(Jugador).Left = 49
-        personaje(Jugador).Top = 49
-        Call RenderMinimapCentered(UserMap, x, y, CenteredMinimapZoom, CenteredMinimapZoom)
+        ' In centered mode all dots are rendered by DirectX; hide the VB.Shape controls.
+        personaje(Jugador).visible = False
+        MinimapDots(Jugador).visible = True
+        If Jugador = 0 Then
+            ' Player dot is always centred in the viewport
+            MinimapDots(0).screenX = MinimapVP_DestW \ 2
+            MinimapDots(0).screenY = MinimapVP_DestH \ 2
+            Call RenderMinimapCentered(UserMap, x, y, CenteredMinimapZoom, CenteredMinimapZoom)
+        Else
+            ' Project ally tile position onto the current centered viewport.
+            ' Protocol already ensures the ally is on the same map as the player.
+            If MinimapVP_SrcW > 0 And MinimapVP_SrcH > 0 Then
+                Dim allyPxX As Long: allyPxX = CLng((MinimapVP_MapGridX + (x - MINIMAP_MIN_TILE_X + 0.5) / MINIMAP_TILE_COUNT_X) * MinimapVP_CellPxW)
+                Dim allyPxY As Long: allyPxY = CLng((MinimapVP_MapGridY + (y - MINIMAP_MIN_TILE_Y + 0.5) / MINIMAP_TILE_COUNT_Y) * MinimapVP_CellPxH)
+                MinimapDots(Jugador).screenX = CLng((allyPxX - MinimapVP_SrcX) * MinimapVP_DestW / MinimapVP_SrcW)
+                MinimapDots(Jugador).screenY = CLng((allyPxY - MinimapVP_SrcY) * MinimapVP_DestH / MinimapVP_SrcH)
+            End If
+        End If
     End If
+End Sub
+
+Public Sub HideMinimapDot(ByVal Jugador As Integer)
+    personaje(Jugador).visible = False
+    MinimapDots(Jugador).visible = False
 End Sub
 
 Private Sub imgDeleteItem_Click()

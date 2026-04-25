@@ -11,7 +11,7 @@ Private FailedTestCount As Long
 Private TotalElapsed    As Double
 Private sw              As clsInstrument
 
-Private Const SUITE_COUNT As Long = 24
+Private Const SUITE_COUNT As Long = 26
 
 Public Sub Init()
     TotalTests = 0
@@ -42,7 +42,7 @@ Public Sub RunTestError(ByVal TestName As String, ByVal ErrorDesc As String)
     FailedTestCount = FailedTestCount + 1
 End Sub
 
-Public Sub RunAllSuites()
+Public Function test_suite() As Boolean
     Dim i As Long
     For i = 1 To SUITE_COUNT
         Select Case i
@@ -72,9 +72,12 @@ Public Sub RunAllSuites()
             Case 22: Call Unit_Instrument.test_suite_instrument
             Case 23: Call Unit_Language.test_suite_language
             Case 24: Call Unit_Settings.test_suite_settings
+            Case 25: Call Unit_FieldParsing.test_suite_field_parsing
+            Case 26: Call Unit_CharValidation.test_suite_char_validation
         End Select
     Next i
-End Sub
+    test_suite = (FailedTests = 0)
+End Function
 
 Public Sub WriteResultsToFile(ByVal FilePath As String)
     On Error GoTo WriteResultsToFile_Err

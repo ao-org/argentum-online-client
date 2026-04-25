@@ -11,13 +11,14 @@ Option Explicit
 
 #If UNIT_TEST = 1 Then
 
-Public Sub test_suite_bitmask()
+Public Function test_suite_bitmask() As Boolean
     Call UnitTesting.RunTest("bitmask_set", test_set_mask())
     Call UnitTesting.RunTest("bitmask_is_set", test_is_set())
     Call UnitTesting.RunTest("bitmask_unset", test_unset_mask())
     Call UnitTesting.RunTest("bitmask_reset", test_reset_mask())
     Call UnitTesting.RunTest("bitmask_multi_set_unset", test_multi_set_unset())
-End Sub
+    test_suite_bitmask = True
+End Function
 
 ' Verifies SetMask turns on the specified bit in a zeroed mask.
 Private Function test_set_mask() As Boolean
