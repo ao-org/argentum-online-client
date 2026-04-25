@@ -990,12 +990,11 @@ Public Sub CreateDx8ImagePoppup(ByRef pic As PictureBox, _
                                          Optional ByVal ClearColor As Long = &H0)
     On Error GoTo CreateDx8ImagePoppup_Err
     
-    ' Use GetInterfaceTexture to load the card image
+    ' Load the texture
     Dim Texture As Direct3DTexture8
     Dim texWidth As Long
     Dim texHeight As Long
     
-    ' Load the texture - this will handle creating it properly
     Set Texture = SurfaceDB.GetInterfaceTexture(0, TextureFileName, texWidth, texHeight)
     
     If Texture Is Nothing Then
@@ -1003,8 +1002,12 @@ Public Sub CreateDx8ImagePoppup(ByRef pic As PictureBox, _
         Exit Sub
     End If
     
-    ' Create the rectangle for the picturebox
+    ' Create rectangles
     Dim picRect As RECT
+    Dim srcRect As RECT
+    Dim dstRect As RECT
+    Dim temp_verts(3) As TYPE_VERTEX
+    
     With picRect
         .Left = 0
         .Top = 0
@@ -1012,11 +1015,30 @@ Public Sub CreateDx8ImagePoppup(ByRef pic As PictureBox, _
         .Bottom = pic.ScaleHeight
     End With
     
+    With srcRect
+        .Left = srcX
+        .Top = srcY
+        .Right = srcX + srcWidth
+        .Bottom = srcY + srcHeight
+    End With
+    
+    With dstRect
+        .Left = DestX
+        .Top = DestY
+        .Right = DestX + destWidth
+        .Bottom = DestY + destHeight
+    End With
+    
+    ' Create the vertex quad for rendering
+    Call Geometry_Create_Box(temp_verts(), dstRect, srcRect, COLOR_WHITE, texWidth, texHeight, 0)
+    
+    ' Render
     Call DirectDevice.BeginScene
     Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
     DirectDevice.SetTexture 0, Texture
     DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_MODULATE
     DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE
+    DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
     Call DirectDevice.EndScene
     Call DirectDevice.Present(picRect, ByVal 0, pic.hWnd, ByVal 0)
     

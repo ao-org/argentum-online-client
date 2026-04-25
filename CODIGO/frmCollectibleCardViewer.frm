@@ -1,39 +1,40 @@
 VERSION 5.00
 Begin VB.Form frmCollectibleCardViewer 
    Caption         =   "Form1"
-   ClientHeight    =   9045
+   ClientHeight    =   10080
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   11370
+   ClientWidth     =   6795
    LinkTopic       =   "Form1"
-   ScaleHeight     =   9045
-   ScaleWidth      =   11370
+   ScaleHeight     =   672
+   ScaleMode       =   3  'Pixel
+   ScaleWidth      =   453
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton cmdCancel 
       Caption         =   "Command2"
-      Height          =   855
-      Left            =   600
+      Height          =   615
+      Left            =   240
       TabIndex        =   2
-      Top             =   8040
-      Width           =   3375
+      Top             =   9360
+      Width           =   2535
    End
    Begin VB.CommandButton cmdAccept 
       Caption         =   "Command1"
-      Height          =   855
-      Left            =   7560
+      Height          =   615
+      Left            =   4200
       TabIndex        =   1
-      Top             =   8040
-      Width           =   3495
+      Top             =   9360
+      Width           =   2415
    End
    Begin VB.PictureBox CollectibleCardPictureBox 
-      Height          =   7815
+      Height          =   9135
       Left            =   0
-      ScaleHeight     =   517
+      ScaleHeight     =   605
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   757
+      ScaleWidth      =   451
       TabIndex        =   0
       Top             =   0
-      Width           =   11415
+      Width           =   6825
    End
 End
 Attribute VB_Name = "frmCollectibleCardViewer"
