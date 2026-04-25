@@ -97,7 +97,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
     Else
         CantidadArgumentos = 0
     End If
-    ' Sacar cartel APESTA!! (y es ilï¿½gico, estï¿½s diciendo una pausa/espacio  :rolleyes: )
+    ' Sacar cartel APESTA!! (y es ilógico, estás diciendo una pausa/espacio  :rolleyes: )
     If Comando = "" Then Comando = " "
     If Left$(Comando, 1) = "/" Then
         ' Comando normal
@@ -130,7 +130,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Exit Sub
                 End If
                 Call WritePetStand
-            Case "/ACOMPAï¿½AR", "/ACCOMPANY"
+            Case "/ACOMPAÑAR", "/ACCOMPANY"
                 If UserStats.estado = 1 Then 'Muerto
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -138,7 +138,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Exit Sub
                 End If
                 Call WritePetFollow
-            Case "/ACOMPAï¿½ARTODOS", "/ACCOMPANYALL"
+            Case "/ACOMPAÑARTODOS", "/ACCOMPANYALL"
                 If UserStats.estado = 1 Then 'Muerto
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic)
@@ -238,7 +238,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/UPTIME"
                 Call WriteUpTime
             Case "/CMSG"
-                'Ojo, no usar notNullArguments porque se usa el string Vacï¿½o para borrar cartel.
+                'Ojo, no usar notNullArguments porque se usa el string Vacío para borrar cartel.
                 If CantidadArgumentos > 0 Then
                     Call WriteGuildMessage(ArgumentosRaw)
                 Else
@@ -246,7 +246,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESCRIBA_UN_MENSAJE"))
                 End If
             Case "/GRUPO", "/CLUSTER"
-                'Ojo, no usar notNullArguments porque se usa el string Vacï¿½o para borrar cartel.
+                'Ojo, no usar notNullArguments porque se usa el string Vacío para borrar cartel.
                 If CantidadArgumentos > 0 Then
                     Call WriteGrupoMsg(ArgumentosRaw)
                 Else
@@ -408,7 +408,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
             Case "/DENUNCIAR", "/REPORT"
                 If notNullArguments Then
-                    PreguntaScreen = "ï¿½Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia."
+                    PreguntaScreen = "¿Denunciar los mensajes de " & ArgumentosRaw & "? El uso indebido del comando es motivo de advertencia."
                     Pregunta = True
                     targetName = ArgumentosRaw
                     PreguntaLocal = True
@@ -1382,7 +1382,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
             Case "/IGNORADO", "/IGNORED"
                 Call WriteIgnored
             Case "/CONSOLA"
-                'Ojo, no usar notNullArguments porque se usa el string Vacï¿½o para borrar cartel.
+                'Ojo, no usar notNullArguments porque se usa el string Vacío para borrar cartel.
                 If UserStats.estado = 1 Then 'Muerto
                     With FontTypes(FontTypeNames.FONTTYPE_INFO)
                         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO_NO"), .red, .green, .blue, .bold, .italic)
@@ -1587,10 +1587,10 @@ Private Sub StartCustomMap(ByVal mapType As Byte, ByVal Name As String, ByRef ar
             Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
-            Call ShowConsoleMsg(Replace$(JsonLanguage.Item("MENSAJE_CREAREVENTO_USO"), "ï¿½1", Name)) ' MENSAJE_CREAREVENTO_USO=Valor incorrecto. Utilice /CREAREVENTO ï¿½1 PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.
+            Call ShowConsoleMsg(Replace$(JsonLanguage.Item("MENSAJE_CREAREVENTO_USO"), "¬1", Name)) ' MENSAJE_CREAREVENTO_USO=Valor incorrecto. Utilice /CREAREVENTO ¬1 PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.
         End If
     Else
-        Call ShowConsoleMsg(Replace$(JsonLanguage.Item("MENSAJE_CREAREVENTO_USO"), "ï¿½1", Name)) ' MENSAJE_CREAREVENTO_USO=Valor incorrecto. Utilice /CREAREVENTO ï¿½1 PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.
+        Call ShowConsoleMsg(Replace$(JsonLanguage.Item("MENSAJE_CREAREVENTO_USO"), "¬1", Name)) ' MENSAJE_CREAREVENTO_USO=Valor incorrecto. Utilice /CREAREVENTO ¬1 PARTICIPANTES NIVEL_MINIMO NIVEL_MAXIMO.
     End If
 End Sub
 

@@ -115,7 +115,7 @@ Public Type PARAFORMAT2
     wAlignment As Integer
     cTabCount As Integer
     lTabStops(0 To MAX_TAB_STOPS - 1) As Long
-    ' Desde aquï¿½ lo aï¿½adido por PARAFORMAT2
+    ' Desde aquí lo añadido por PARAFORMAT2
     dySpaceBefore As Long '/* Vertical spacing before para */
     dySpaceAfter As Long '/* Vertical spacing after para */
     dyLineSpacing As Long '/* Line spacing depending on Rule */
@@ -321,7 +321,7 @@ Public Sub SelLineSpacing(rtbTarget As RichTextBox, ByVal SpacingRule As Long, O
     End With
     Dim ret As Long
     ret = SendMessage(rtbTarget.hWnd, EM_SETPARAFORMAT, 0&, Para)
-    If ret = 0 Then frmDebug.add_text_tracebox "Error al setear el espaciado entre lï¿½neas del RichTextBox."
+    If ret = 0 Then frmDebug.add_text_tracebox "Error al setear el espaciado entre líneas del RichTextBox."
 End Sub
 
 Public Sub RefreshAllChars()
@@ -355,7 +355,7 @@ Function AsciiValidos(ByVal cad As String) As Boolean
     cad = LCase$(cad)
     For i = 1 To Len(cad)
         car = Asc(mid$(cad, i, 1))
-        If ((car < 97 Or car > 122) Or car = Asc("ï¿½")) And (car <> 255) And (car <> 32) Then
+        If ((car < 97 Or car > 122) Or car = Asc("º")) And (car <> 255) And (car <> 32) Then
             Exit Function
         End If
     Next i
@@ -978,9 +978,9 @@ End Function
 
 '[CODE 002]:MatuX
 '
-'  Funciï¿½n para chequear el email
+'  Función para chequear el email
 '
-'  Corregida por Maraxus para que reconozca como vï¿½lidas casillas con puntos antes de la arroba y evitar un chequeo innecesario
+'  Corregida por Maraxus para que reconozca como válidas casillas con puntos antes de la arroba y evitar un chequeo innecesario
 Public Function CheckMailString(ByVal sString As String) As Boolean
     On Error GoTo errHnd
     Dim lPos As Long
@@ -989,9 +989,9 @@ Public Function CheckMailString(ByVal sString As String) As Boolean
     '1er test: Busca un simbolo @
     lPos = InStr(sString, "@")
     If (lPos <> 0) Then
-        '2do test: Busca un simbolo . despuï¿½s de @ + 1
+        '2do test: Busca un simbolo . después de @ + 1
         If Not (InStr(lPos, sString, ".", vbBinaryCompare) > lPos + 1) Then Exit Function
-        '3er test: Recorre todos los caracteres y los valï¿½da
+        '3er test: Recorre todos los caracteres y los valída
         For lX = 0 To Len(sString) - 1
             If Not (lX = (lPos - 1)) Then   'No chequeamos la '@'
                 iAsc = Asc(mid$(sString, (lX + 1), 1))
@@ -1004,7 +1004,7 @@ Public Function CheckMailString(ByVal sString As String) As Boolean
 errHnd:
 End Function
 
-'  Corregida por Maraxus para que reconozca como vï¿½lidas casillas con puntos antes de la arroba
+'  Corregida por Maraxus para que reconozca como válidas casillas con puntos antes de la arroba
 Private Function CMSValidateChar_(ByVal iAsc As Integer) As Boolean
     On Error GoTo CMSValidateChar__Err
     CMSValidateChar_ = (iAsc >= 48 And iAsc <= 57) Or (iAsc >= 65 And iAsc <= 90) Or (iAsc >= 97 And iAsc <= 122) Or (iAsc = 95) Or (iAsc = 45) Or (iAsc = 46)
@@ -1072,7 +1072,7 @@ Private Sub InicializarNombres()
     SkillsNames(eSkill.Tacticas) = JsonLanguage.Item("MENSAJE_SKILL_TACTICAS")
     SkillsNames(eSkill.Armas) = JsonLanguage.Item("MENSAJE_SKILL_ARMAS")
     SkillsNames(eSkill.Meditar) = JsonLanguage.Item("MENSAJE_SKILL_MEDITAR")
-    SkillsNames(eSkill.ShortWeapons) = JsonLanguage.Item("MENSAJE_SKILL_APUï¿½ALAR")
+    SkillsNames(eSkill.ShortWeapons) = JsonLanguage.Item("MENSAJE_SKILL_APUÑALAR")
     SkillsNames(eSkill.Ocultarse) = JsonLanguage.Item("MENSAJE_SKILL_OCULTARSE")
     SkillsNames(eSkill.Supervivencia) = JsonLanguage.Item("MENSAJE_SKILL_SUPERVIVENCIA")
     SkillsNames(eSkill.Comerciar) = JsonLanguage.Item("MENSAJE_SKILL_COMERCIAR")
@@ -1096,7 +1096,7 @@ Private Sub InicializarNombres()
     SkillsDesc(eSkill.Tacticas) = JsonLanguage.Item("MENSAJE_SKILL_DESC_TACTICAS")
     SkillsDesc(eSkill.Armas) = JsonLanguage.Item("MENSAJE_SKILL_DESC_ARMAS")
     SkillsDesc(eSkill.Meditar) = JsonLanguage.Item("MENSAJE_SKILL_DESC_MEDITAR")
-    SkillsDesc(eSkill.ShortWeapons) = JsonLanguage.Item("MENSAJE_SKILL_DESC_APUï¿½ALAR")
+    SkillsDesc(eSkill.ShortWeapons) = JsonLanguage.Item("MENSAJE_SKILL_DESC_APUÑALAR")
     SkillsDesc(eSkill.Ocultarse) = JsonLanguage.Item("MENSAJE_SKILL_DESC_OCULTARSE")
     SkillsDesc(eSkill.Supervivencia) = JsonLanguage.Item("MENSAJE_SKILL_DESC_SUPERVIVENCIA")
     SkillsDesc(eSkill.Comerciar) = JsonLanguage.Item("MENSAJE_SKILL_DESC_COMERCIAR")
@@ -1340,11 +1340,11 @@ End Function
 Public Function Tilde(ByRef data As String) As String
     On Error GoTo Tilde_Err
     Tilde = UCase$(data)
-    Tilde = Replace$(Tilde, "ï¿½", "A")
-    Tilde = Replace$(Tilde, "ï¿½", "E")
-    Tilde = Replace$(Tilde, "ï¿½", "I")
-    Tilde = Replace$(Tilde, "ï¿½", "O")
-    Tilde = Replace$(Tilde, "ï¿½", "U")
+    Tilde = Replace$(Tilde, "Á", "A")
+    Tilde = Replace$(Tilde, "É", "E")
+    Tilde = Replace$(Tilde, "Í", "I")
+    Tilde = Replace$(Tilde, "Ó", "O")
+    Tilde = Replace$(Tilde, "Ú", "U")
     Exit Function
 Tilde_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.Tilde", Erl)

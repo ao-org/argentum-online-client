@@ -129,7 +129,7 @@ Attribute VB_Exposed = False
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 '    This program was based on Argentum Online 0.11.6
-'    Copyright (C) 2002 Mï¿½rquez Pablo Ignacio
+'    Copyright (C) 2002 Márquez Pablo Ignacio
 '
 '    Argentum Online is based on Baronsoft's VB6 Online RPG
 '    You can contact the original creator of ORE at aaron@baronsoft.com
@@ -309,7 +309,7 @@ Private Sub AuthSocket_Error(ByVal Number As Integer, _
                     ' No servers or only one server (would loop to the same)
                     If nextIndex = -1 Or nextIndex = CurrentLoginServerIndex Then
                         Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_SERVIDOR_OFFLINE"), False, SessionOpened)
-                        frmDebug.add_text_tracebox "No hay mï¿½s Login Servers para reintentar."
+                        frmDebug.add_text_tracebox "No hay más Login Servers para reintentar."
                         Exit Sub
                     End If
                     
@@ -1034,9 +1034,9 @@ End Sub
 
 Private Sub Rotacion_boton_adelante_clase()
     ' Shugar - 27/7/24
-    ' Saco de la selecciï¿½n de clases al Ladrï¿½n y al Pirata.
-    ' Botï¿½n de la derecha: es el que aumenta el index.
-    ' Implementaciï¿½n de buffer circular, arranca en eClass.Mage
+    ' Saco de la selección de clases al Ladrón y al Pirata.
+    ' Botón de la derecha: es el que aumenta el index.
+    ' Implementación de buffer circular, arranca en eClass.Mage
     Select Case frmCrearPersonaje.lstProfesion.ListIndex
         Case eClass.Mage - 1
             frmCrearPersonaje.lstProfesion.ListIndex = eClass.Druid - 1
@@ -1063,9 +1063,9 @@ End Sub
 
 Private Sub Rotacion_boton_atras_clase()
     ' Shugar - 27/7/24
-    ' Saco de la selecciï¿½n de clases al Ladrï¿½n y al Pirata.
-    ' Botï¿½n de la izquierda: es el que disminuye el index.
-    ' Implementaciï¿½n de buffer circular, arranca en eClass.Mage
+    ' Saco de la selección de clases al Ladrón y al Pirata.
+    ' Botón de la izquierda: es el que disminuye el index.
+    ' Implementación de buffer circular, arranca en eClass.Mage
     Select Case frmCrearPersonaje.lstProfesion.ListIndex
         Case eClass.Mage - 1
             frmCrearPersonaje.lstProfesion.ListIndex = eClass.Trabajador - 1

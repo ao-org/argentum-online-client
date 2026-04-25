@@ -204,7 +204,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Case BindKeys(1).KeyCode
             If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=ï¿½Estï¿½s muerto!
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=¡Estás muerto!
                 End With
                 Exit Function
             End If
@@ -217,7 +217,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Case BindKeys(2).KeyCode
             If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=ï¿½Estï¿½s muerto!
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=¡Estás muerto!
                 End With
                 Exit Function
             End If
@@ -229,7 +229,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Case BindKeys(3).KeyCode
             If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=ï¿½Estï¿½s muerto!
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=¡Estás muerto!
                 End With
                 Exit Function
             End If
@@ -253,7 +253,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Case BindKeys(9).KeyCode
             If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=ï¿½Estï¿½s muerto!
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=¡Estás muerto!
                 End With
                 Exit Function
             End If
@@ -265,7 +265,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Case BindKeys(5).KeyCode
             If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=ï¿½Estï¿½s muerto!
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=¡Estás muerto!
                 End With
                 Exit Function
             End If
@@ -280,7 +280,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Case BindKeys(11).KeyCode
             If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=ï¿½Estï¿½s muerto!
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=¡Estás muerto!
                 End With
                 Exit Function
             End If
@@ -291,7 +291,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
             If UserStats.minman = UserStats.maxman Then Exit Function
             If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=ï¿½Estï¿½s muerto!
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=¡Estás muerto!
                 End With
                 Exit Function
             End If
@@ -301,7 +301,7 @@ Public Function Accionar(ByVal KeyCode As Integer) As Boolean
         Case BindKeys(23).KeyCode
             If UserStats.estado = 1 Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
-                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=ï¿½Estï¿½s muerto!
+                    Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=¡Estás muerto!
                 End With
             Else
                 Call WriteWork(eSkill.Domar)
@@ -356,7 +356,7 @@ End Function
 Public Sub DoHotKey(ByVal HkSlot As Byte)
     If UserStats.estado = 1 Then
         With FontTypes(FontTypeNames.FONTTYPE_INFO)
-            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=ï¿½Estï¿½s muerto!
+            Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_ESTAS_MUERTO"), .red, .green, .blue, .bold, .italic) ' MENSAJE_ESTAS_MUERTO=¡Estás muerto!
         End With
     Else
         If IsSet(FeatureToggles, eEnableHotkeys) Then
@@ -380,7 +380,7 @@ Public Sub TirarItem()
             If ObjData(frmMain.Inventario.ObjIndex(frmMain.Inventario.SelectedItem)).Destruye = 0 Then
                 Call WriteDrop(frmMain.Inventario.SelectedItem, 1)
             Else
-                PreguntaScreen = "El item se destruira al tirarlo ï¿½Esta seguro?"
+                PreguntaScreen = "El item se destruira al tirarlo ¿Esta seguro?"
                 Pregunta = True
                 DestItemSlot = frmMain.Inventario.SelectedItem
                 DestItemCant = 1

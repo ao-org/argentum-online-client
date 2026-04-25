@@ -204,7 +204,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
     With charlist(charindex)
         x = .Pos.x
         y = .Pos.y
-        ' Direcciï¿½n a mover
+        ' Dirección a mover
         Select Case nHeading
             Case E_Heading.NORTH: addy = -1
             Case E_Heading.EAST:  addx = 1
@@ -219,7 +219,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
         If MapData(x, y).charindex = charindex Then
             MapData(x, y).charindex = 0
         End If
-        ' ---- Usar tamaï¿½o de tile configurable (antes 32 fijo)
+        ' ---- Usar tamaño de tile configurable (antes 32 fijo)
         .MoveOffsetX = -1 * (TilePixelWidth * addx)
         .MoveOffsetY = -1 * (TilePixelHeight * addy)
         ' Forzar heading en escalera
@@ -239,7 +239,7 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
             .AnimatingBody = 0
         End If
         .Idle = False
-        ' --- Si cambia de direcciï¿½n mientras ya estï¿½ moviï¿½ndose, preservamos fase
+        ' --- Si cambia de dirección mientras ya está moviéndose, preservamos fase
         If .Moving And (newHeading <> oldHeading) Then
             ' BODY
             If .Body.Walk(oldHeading).started > 0 Then
@@ -389,7 +389,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
             .AnimatingBody = 0
         End If
         If Not .Moving Then
-            ' --- Empezï¿½ a moverse reciï¿½n ahora ---
+            ' --- Empezó a moverse recién ahora ---
             If .Muerto Then
                 If Not .Navegando Then
                     .Body = BodyData(CASPER_BODY)
@@ -417,7 +417,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
             .MovArmaEscudo = False
             .Moving = True
         ElseIf .Heading <> oldHeading Then
-            ' --- Ya venï¿½a moviï¿½ndose y cambiï¿½ de direcciï¿½n: preservar fase ---
+            ' --- Ya venía moviéndose y cambió de dirección: preservar fase ---
             Dim keepStart As Long
                 If IsAmphibianOverWater(charindex) Then
                     .Body = BodyData(.BodyOnWater)
@@ -426,7 +426,7 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
             keepStart = SyncGrhPhase(.Body.Walk(oldHeading), .Body.Walk(.Heading).GrhIndex)
             If keepStart > 0 Then
                 .Body.Walk(.Heading).started = keepStart
-                ' Si necesitï¿½s acompasar arma/escudo, descomentï¿½:
+                ' Si necesitás acompasar arma/escudo, descomentá:
                 'If .Arma.WeaponWalk(.Heading).started = 0 Then .Arma.WeaponWalk(.Heading).started = keepStart
                 'If .Escudo.ShieldWalk(.Heading).started = 0 Then .Escudo.ShieldWalk(.Heading).started = keepStart
             End If
@@ -465,7 +465,7 @@ Public Sub ApplySpeedingToChar(ByVal charindex As Integer)
                     base = total
                 End If
                 If base <= 0 Then base = 1
-                spd = CLng(base / rate) ' a mayor rate => frames mï¿½s rï¿½pidos
+                spd = CLng(base / rate) ' a mayor rate => frames más rápidos
                 If spd < 40 Then spd = 40   ' clamps opcionales
                 If spd > 220 Then spd = 220
                 .Body.Walk(h).speed = spd
