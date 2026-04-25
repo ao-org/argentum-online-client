@@ -713,7 +713,7 @@ End Function
 
 Function FileExist(ByVal File As String, ByVal FileType As VbFileAttribute) As Boolean
     On Error GoTo FileExist_Err
-    FileExist = (dir$(File, FileType) <> "")
+    FileExist = (LenB(dir$(File, FileType)) <> 0)
     Exit Function
 FileExist_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.FileExist", Erl)
@@ -967,7 +967,7 @@ Function GetVarOrDefault(ByVal File As String, ByVal Main As String, ByVal Var A
     On Error GoTo GetVarOrDefault_Err
     'Gets a Var from a text file and if empty returns default value
     GetVarOrDefault = GetVar(File, Main, Var)
-    If GetVarOrDefault = vbNullString Then
+    If LenB(GetVarOrDefault) = 0 Then
         GetVarOrDefault = DefaultValue
     End If
     Exit Function
@@ -1291,13 +1291,13 @@ End Function
 
 Public Function LoadInterface(filename As String, Optional Localize As Boolean = True) As IPicture
     On Error Resume Next
-    Debug.Assert ResourcesPassword <> "" ' Bad, you're trying to load the asset before loading the ResourcesPassword
+    Debug.Assert LenB(ResourcesPassword) <> 0 ' Bad, you're trying to load the asset before loading the ResourcesPassword
     Dim localizedName As String
     localizedName = filename
     If Localize Then
         localizedName = GetLocalizedFilename(language, filename)
     End If
-    If filename <> "" Then
+    If LenB(filename) <> 0 Then
         #If Compresion = 1 Then
             Set LoadInterface = General_Load_Picture_From_Resource_Ex(LCase$(localizedName), ResourcesPassword)
             If LoadInterface Is Nothing Then

@@ -2045,7 +2045,7 @@ Public Sub LoadGrhIni()
         ' Leemos la linea actual
         Line Input #FileHandle, CurrentLine
         ' Ignoramos lineas vacias
-        If CurrentLine <> vbNullString Then
+        If LenB(CurrentLine) <> 0 Then
             ' Divimos por el "="
             Fields = Split(CurrentLine, SeparadorClave)
             ' Leemos el numero de Grh (el numero a la derecha de la palabra "Grh")
@@ -2486,7 +2486,7 @@ Public Function GetLocalizedValue(ByRef Leer As Object, ByVal Section As String,
     localizedKey = LCase(langPrefix) & "_" & keyBase
     Dim value As String
     value = Leer.GetValue(Section, localizedKey)
-    If value = vbNullString Then
+    If LenB(value) = 0 Then
         value = Leer.GetValue(Section, keyBase)
     End If
     GetLocalizedValue = value

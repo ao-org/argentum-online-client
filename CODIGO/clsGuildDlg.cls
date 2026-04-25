@@ -116,7 +116,7 @@ Public Sub Draw()
     alphaOffset = DIALOG_HEIGHT * (p_CANTIDADDIALOGOS - 2)
     'If p_Dialogos(1).Texto <> vbNullString Then Call Engine_Draw_Box(0, frmMain.renderer.ScaleHeight - 105, 300, 105, RGBA_From_Comp(0, 0, 0, Alpha * 0.3))
     For i = 1 To p_CANTIDADDIALOGOS
-        If Trim$(p_Dialogos(i).Texto) <> vbNullString Then
+        If LenB(Trim$(p_Dialogos(i).Texto)) <> 0 Then
             dy = (DIALOG_HEIGHT * i - offset - alphaOffset) / alphaOffset
             y = 88 - DIALOG_HEIGHT * i + offset
             If dy < 0 Then

@@ -401,7 +401,7 @@ Private Sub cmdAceptar_Click()
                 lblDatos.Caption = JsonLanguage.Item("MENSAJE_RETIRAR_NO_TIENES_ORO")
                 Exit Sub
             End If
-            If txtName.text <> "" Then
+            If LenB(txtName.text) <> 0 Then
                 Call WriteTransFerGold(min(val(txtDatos.text), OroDep), txtName.text)
                 Unload Me
             Else

@@ -730,7 +730,7 @@ On Local Error GoTo ErrHandler
     SourceFile = FreeFile
     
     'Get all other files i nthe directory
-    While SourceFileName <> ""
+    While LenB(SourceFileName) <> 0
         FileHead.intNumFiles = FileHead.intNumFiles + 1
         
         ReDim Preserve FileNames(FileHead.intNumFiles - 1)
@@ -756,7 +756,7 @@ On Local Error GoTo ErrHandler
     GeneralPrgBar.value = 0
     
     'Destroy file if it previuosly existed
-    If Dir(OutputFilePath, vbNormal) <> "" Then
+    If LenB(Dir(OutputFilePath, vbNormal)) <> 0 Then
         Kill OutputFilePath
     End If
     

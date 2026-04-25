@@ -445,9 +445,9 @@ Public Function StringToJSON(st As String) As String
             Lower_fld = LBound(fld)
             Upper_fld = UBound(fld)
             For lFld = Lower_fld To Upper_fld Step 2
-                sFlds = (sFlds & IIf(sFlds <> "", ",", "") & """" & fld(lFld) & """:""" & toUnicode(fld(lFld + 1) & "") & """")
+                sFlds = (sFlds & IIf(LenB(sFlds) <> 0, ",", "") & """" & fld(lFld) & """:""" & toUnicode(fld(lFld + 1) & "") & """")
             Next 'fld
-            sRecs.Append IIf((Trim$(sRecs.toString) <> ""), "," & vbNewLine, "") & "{" & sFlds & "}"
+            sRecs.Append IIf((LenB(Trim$(sRecs.toString)) <> 0), "," & vbNewLine, "") & "{" & sFlds & "}"
         Next 'rec
         StringToJSON = ("( {""Records"": [" & vbNewLine & sRecs.toString & vbNewLine & "], " & """RecordCount"":""" & lRecCnt & """ } )")
     End If
@@ -470,9 +470,9 @@ Public Function RStoJSON(rs As ADODB.Recordset) As String
                 lRecCnt = lRecCnt + 1
                 sFlds = vbNullString
                 For Each fld In rs.Fields
-                    sFlds = (sFlds & IIf(sFlds <> "", ",", "") & """" & fld.Name & """:""" & toUnicode(fld.value & "") & """")
+                    sFlds = (sFlds & IIf(LenB(sFlds) <> 0, ",", "") & """" & fld.Name & """:""" & toUnicode(fld.value & "") & """")
                 Next 'fld
-                sRecs.Append IIf((Trim$(sRecs.toString) <> ""), "," & vbNewLine, "") & "{" & sFlds & "}"
+                sRecs.Append IIf((LenB(Trim$(sRecs.toString)) <> 0), "," & vbNewLine, "") & "{" & sFlds & "}"
                 rs.MoveNext
             Loop
             RStoJSON = ("( {""Records"": [" & vbNewLine & sRecs.toString & vbNewLine & "], " & """RecordCount"":""" & lRecCnt & """ } )")

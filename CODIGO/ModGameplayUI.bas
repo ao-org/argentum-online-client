@@ -350,22 +350,22 @@ Public Sub HandleChatMsg(ByVal InputText As String)
             Else
                 SendingType = 1
             End If
-            If InputText <> "" Then Call ParseUserCommand(InputText)
+            If LenB(InputText) <> 0 Then Call ParseUserCommand(InputText)
             'Shout
         ElseIf Left$(InputText, 1) = "-" Then
-            If Right$(InputText, Len(InputText) - 1) <> "" Then Call ParseUserCommand("-" & Right$(InputText, Len(InputText) - 1))
+            If LenB(Right$(InputText, Len(InputText) - 1)) <> 0 Then Call ParseUserCommand("-" & Right$(InputText, Len(InputText) - 1))
             SendingType = 2
             'Global
         ElseIf Left$(InputText, 1) = ";" Then
-            If Right$(InputText, Len(InputText) - 1) <> "" Then Call ParseUserCommand("/CONSOLA " & Right$(InputText, Len(InputText) - 1))
+            If LenB(Right$(InputText, Len(InputText) - 1)) <> 0 Then Call ParseUserCommand("/CONSOLA " & Right$(InputText, Len(InputText) - 1))
             sndPrivateTo = ""
         ElseIf Left$(InputText, 1) = "/RMSG" Then
-            If Right$(InputText, Len(InputText) - 1) <> "" Then Call ParseUserCommand("/RMSG " & Right$(InputText, Len(InputText) - 1))
+            If LenB(Right$(InputText, Len(InputText) - 1)) <> 0 Then Call ParseUserCommand("/RMSG " & Right$(InputText, Len(InputText) - 1))
             SendingType = 8
             sndPrivateTo = ""
             'Faccion
         ElseIf Left$(InputText, 1) = "/FMSG" Then
-            If Right$(InputText, Len(InputText) - 1) <> "" Then Call ParseUserCommand("/FMSG " & Right$(InputText, Len(InputText) - 1))
+            If LenB(Right$(InputText, Len(InputText) - 1)) <> 0 Then Call ParseUserCommand("/FMSG " & Right$(InputText, Len(InputText) - 1))
             SendingType = 9
             'Privado
         ElseIf Left$(InputText, 1) = "\" Then
@@ -375,10 +375,10 @@ Public Sub HandleChatMsg(ByVal InputText As String)
             mensaje = Right$(InputText, Len(str1) - Len(str2) - 1)
             sndPrivateTo = str2
             SendingType = 3
-            If str1 <> "" Then Call WriteWhisper(sndPrivateTo, mensaje)
+            If LenB(str1) <> 0 Then Call WriteWhisper(sndPrivateTo, mensaje)
             'Say
         Else
-            If InputText <> "" Then Call ParseUserCommand(InputText)
+            If LenB(InputText) <> 0 Then Call ParseUserCommand(InputText)
             SendingType = 1
             sndPrivateTo = ""
         End If
@@ -619,7 +619,7 @@ Public Sub OpenCreateObjectMenu()
     On Error GoTo createObj_Click_Err
     Dim i As Long
     For i = 1 To NumOBJs
-        If ObjData(i).Name <> "" Then
+        If LenB(ObjData(i).Name) <> 0 Then
             Dim subelemento As ListItem
             Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).Name)
             subelemento.SubItems(1) = i

@@ -3488,7 +3488,7 @@ End Sub
 
 Private Sub SendTxtCmsg_KeyUp(KeyCode As Integer, Shift As Integer)
     If KeyCode = BindKeys(e_KeyAction.eSendText).KeyCode Then
-        If SendTxtCmsg.text <> vbNullString Then Call ParseUserCommand("/CMSG " & SendTxtCmsg.text)
+        If LenB(SendTxtCmsg.text) <> 0 Then Call ParseUserCommand("/CMSG " & SendTxtCmsg.text)
         SendTxtCmsg.visible = False
         SendTxtCmsg.text = ""
         Call DialogosClanes.toggle_dialogs_visibility(False)

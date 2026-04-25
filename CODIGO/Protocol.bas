@@ -1783,7 +1783,7 @@ Private Sub HandleTextOverTile()
                 Index = 1
             Else
                 For Index = 1 To UBound(.DialogEffects)
-                    If .DialogEffects(Index).text = vbNullString Then
+                    If LenB(.DialogEffects(Index).text) = 0 Then
                         Exit For
                     End If
                 Next
@@ -1835,7 +1835,7 @@ Private Sub HandleTextCharDrop()
                 Index = 1
             Else
                 For Index = 1 To UBound(.DialogEffects)
-                    If .DialogEffects(Index).text = vbNullString Then
+                    If LenB(.DialogEffects(Index).text) = 0 Then
                         Exit For
                     End If
                 Next
@@ -2669,7 +2669,7 @@ Private Sub HandleObjectCreate()
     MapData(x, y).OBJInfo.Amount = Amount
     MapData(x, y).OBJInfo.ElementalTags = ElementalTags
     Call InitGrh(MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.GrhIndex)
-    If ObjData(ObjIndex).CreaLuz <> "" Then
+    If LenB(ObjData(ObjIndex).CreaLuz) <> 0 Then
         Call Long_2_RGBA(color, val(ReadField(2, ObjData(ObjIndex).CreaLuz, Asc(":"))))
         Rango = val(ReadField(1, ObjData(ObjIndex).CreaLuz, Asc(":")))
         MapData(x, y).luz.color = color
@@ -2713,7 +2713,7 @@ Private Sub HandleObjectDelete()
     Dim id As Long
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
-    If ObjData(MapData(x, y).OBJInfo.ObjIndex).CreaLuz <> "" Then
+    If LenB(ObjData(MapData(x, y).OBJInfo.ObjIndex).CreaLuz) <> 0 Then
         id = LucesCuadradas.Light_Find(x & y)
         LucesCuadradas.Light_Remove id
         MapData(x, y).luz.color = COLOR_EMPTY

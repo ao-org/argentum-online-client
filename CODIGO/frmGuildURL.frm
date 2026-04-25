@@ -90,7 +90,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub Command1_Click()
-    If Text1 <> "" Then _
+    If LenB(Text1) <> 0 Then _
         Call WriteGuildNewWebsite(Text1)
     
     Unload Me

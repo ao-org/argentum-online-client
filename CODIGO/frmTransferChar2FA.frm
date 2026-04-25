@@ -77,7 +77,7 @@ End Sub
 
 Private Sub btnConfirm_Click()
     Me.txt2FACode.Text = Trim(Me.txt2FACode.Text)
-    If Me.txt2FACode.Text <> "" Then
+    If LenB(Me.txt2FACode.Text) <> 0 Then
         ModAuth.LoginOperation = e_operation.ConfirmTransferChar
         Call connectToLoginServer
         transfer_char_validate_code = Me.txt2FACode.Text

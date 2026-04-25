@@ -621,7 +621,7 @@ End Sub
                             Exit Sub
                         End If
                         RenameNewCharacterName = InputBox(JsonLanguage.Item("MENSAJEBOX_RENOMBRAR_PERSONAJE_NUEVO_NOMBRE"))
-                        If RenameNewCharacterName = vbNullString Then
+                        If LenB(RenameNewCharacterName) = 0 Then
                             If MsgBox(JsonLanguage.Item("MSG_CONFIRM_EMPTY_RENAME")) <> vbOK Then
                                 Exit Sub
                             End If

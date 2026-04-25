@@ -141,7 +141,7 @@ End Function
 
 Private Function GetBind(ByRef DefaultBinds As clsIniManager, ByRef UserBinds As clsIniManager, ByVal key As String) As String
     GetBind = UserBinds.GetValue("USER", key)
-    If GetBind = vbNullString Then
+    If LenB(GetBind) = 0 Then
         GetBind = DefaultBinds.GetValue("DEFAULTS", key)
     End If
 End Function
@@ -455,7 +455,7 @@ Private Function ParseMouseAction(ByVal str As String) As e_MouseAction
 End Function
 
 Private Function ParseOldMouseAction(ByVal str As String) As e_MouseAction
-    If str = vbNullString Then
+    If LenB(str) = 0 Then
         ParseOldMouseAction = e_MouseAction.eUnknown
     End If
     Dim value As Integer

@@ -658,7 +658,7 @@ Sub General_Set_Connect()
     
     Call GoToLogIn
     ClickEnAsistente = 0
-    If CuentaRecordada.nombre <> "" Then
+    If LenB(CuentaRecordada.nombre) <> 0 Then
         Call TextoAlAsistente(JsonLanguage.Item("LOGIN_SCREEN_WELCOME_MESSAGE"), False, True)
     Else
         Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_BIENVENIDO"), False, True)
@@ -1123,7 +1123,7 @@ Public Function PonerPuntos(Numero As Long) As String
     Cifra = Right$(Cifra, Len(Cifra) - 1)
     For i = 0 To 4
         If Len(Cifra) - 3 * i >= 3 Then
-            If mid$(Cifra, Len(Cifra) - (2 + 3 * i), 3) <> "" Then
+            If LenB(mid$(Cifra, Len(Cifra) - (2 + 3 * i), 3)) <> 0 Then
                 PonerPuntos = mid$(Cifra, Len(Cifra) - (2 + 3 * i), 3) & "." & PonerPuntos
             End If
         Else
@@ -1661,9 +1661,9 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
     i = i + 1
     Spouse = SplitServerFields(i)
     i = i + 1
-    CharClass = IIf(SplitServerFields(i) <> "", SplitServerFields(i), "0")
+    CharClass = IIf(LenB(SplitServerFields(i)) <> 0, SplitServerFields(i), "0")
     i = i + 1
-    CharRace = IIf(SplitServerFields(i) <> "", SplitServerFields(i), "0")
+    CharRace = IIf(LenB(SplitServerFields(i)) <> 0, SplitServerFields(i), "0")
     i = i + 1
     level = SplitServerFields(i)
     i = i + 1
@@ -1857,40 +1857,40 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
         FactionStatusString = FactionStatusString & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO") & ">"
     End If
     Fields(0) = targetName & " "
-    If targetAlias <> "" Then
+    If LenB(targetAlias) <> 0 Then
         Fields(0) = Fields(0) & "<Alias:" & targetAlias & ">" & " "
     End If
-    If targetDescription <> "" Then
+    If LenB(targetDescription) <> 0 Then
         Fields(0) = Fields(0) & "<" & targetDescription & ">" & " "
     End If
-    If guildName <> "" Then
+    If LenB(guildName) <> 0 Then
         Fields(0) = Fields(0) & "<" & guildName & ">" & " "
     End If
-    If Spouse <> "" Then
+    If LenB(Spouse) <> 0 Then
         Fields(0) = Fields(0) & "<" & JsonLanguage.Item("MENSAJE_ESTADO_CASADO") & " " & Spouse & ">" & " "
     End If
-    If CharClass <> "" Then
+    If LenB(CharClass) <> 0 Then
         Fields(0) = Fields(0) & "<" & CharClass & "|"
     End If
-    If CharRace <> "" Then
+    If LenB(CharRace) <> 0 Then
         Fields(0) = Fields(0) & CharRace & ">" & " "
     End If
-    If level <> "" Then
+    If LenB(level) <> 0 Then
         Fields(0) = Fields(0) & "<" & JsonLanguage.Item("MENSAJE_NIVEL") & ":" & level & "> "
     End If
-    If Elo <> "" Then
+    If LenB(Elo) <> 0 Then
         Fields(0) = Fields(0) & "Elo:" & Elo & " "
     End If
-    If StatusString <> "" Then
+    If LenB(StatusString) <> 0 Then
         StatusString = Replace(StatusString, "<>", "")
         StatusString = Replace(StatusString, " ", "")
         Fields(1) = StatusString
     Else
         Fields(1) = ""
     End If
-    If FactionStatusString <> "" Then
-        StatusString = Replace(StatusString, "<>", "")
-        StatusString = Replace(StatusString, " ", "")
+    If LenB(FactionStatusString) <> 0 Then
+        FactionStatusString = Replace(FactionStatusString, "<>", "")
+        FactionStatusString = Replace(FactionStatusString, " ", "")
         Fields(2) = FactionStatusString
     End If
     Exit Function
@@ -1923,7 +1923,7 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String, ByVal bytHeader A
     NpcHpInfo = SplitNpcStatus(0)
     NpcStatusMask = CLng(SplitNpcStatus(5))
     NpcIndex = SplitNpcStatus(4)
-    If NpcIndex <> "" Then
+    If LenB(NpcIndex) <> 0 Then
         extraInfo = extraInfo & " NpcIndex: " & NpcIndex
     End If
     If NpcData(TmpNpcIndex).level > 0 Then
@@ -1948,14 +1948,14 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String, ByVal bytHeader A
         If IsSet(NpcStatusMask, e_NpcInfoMask.Paralized) Then
             extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_PARALIZADO") & "]"
             ParalisisTime = SplitNpcStatus(1)
-            If ParalisisTime <> "" Then
+            If LenB(ParalisisTime) <> 0 Then
                 extraInfo = extraInfo & "(" & ParalisisTime & "s)" & "]"
             End If
         End If
         If IsSet(NpcStatusMask, e_NpcInfoMask.Inmovilized) Then
             extraInfo = extraInfo & "[" & JsonLanguage.Item("MENSAJE_ESTADO_INMOVILIZADO") & "]"
             InmovilizedTime = SplitNpcStatus(2)
-            If InmovilizedTime <> "" Then
+            If LenB(InmovilizedTime) <> 0 Then
                 extraInfo = extraInfo & "(" & InmovilizedTime & "s)" & "]"
             End If
         End If
@@ -1967,7 +1967,7 @@ Public Function NpcInTileToTxtParser(ByRef Fields() As String, ByVal bytHeader A
         End If
     End If
     Fields(1) = ElementalTagsToTxtParser(NpcElementalTags)
-    If NpcHpInfo <> "" Then
+    If LenB(NpcHpInfo) <> 0 Then
         Fields(2) = "<" & NpcHpInfo & ">" & extraInfo
     Else
         Fields(2) = extraInfo

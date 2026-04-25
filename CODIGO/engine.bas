@@ -1235,7 +1235,7 @@ Sub Char_TextRender(ByVal charindex As Integer, ByVal PixelOffsetX As Integer, B
         PixelOffsetY = PixelOffsetY + .MoveOffsetY
         'screen_x = Convert_Tile_To_View_X(PixelOffsetX) + MoveOffsetX
         '*** Start Dialogs ***
-        If .dialog <> "" Then
+        If LenB(.dialog) <> 0 Then
             'Figure out screen position
             Dim temp_array(3) As RGBA
             Dim PixelY        As Integer
@@ -1732,7 +1732,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
             Nombres = Not MapData(charlist(charindex).Pos.x, charlist(charindex).Pos.y).zone.OcultarNombre
           
             If Nombres And Len(.nombre) > 0 And MostrarNombre Then
-                If .alias <> vbNullString Then
+                If LenB(.alias) <> 0 Then
                     line = .alias
                 Else
                     line = .nombre
@@ -1830,7 +1830,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call RGBAList(color, 255, 255, 0, IIf(.Invisible, 120, 255))
             End Select
             Dim txt_width As Long
-            If .alias <> vbNullString Then
+            If LenB(.alias) <> 0 Then
                 txt_width = Engine_Text_Width(.alias, True)
             Else
                 txt_width = Engine_Text_Width(.nombre, True)

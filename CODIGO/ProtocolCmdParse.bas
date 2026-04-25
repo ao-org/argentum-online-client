@@ -888,7 +888,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 If EsGM Then
                     Dim i As Long
                     For i = 1 To NumOBJs
-                        If ObjData(i).Name <> "" Then
+                        If LenB(ObjData(i).Name) <> 0 Then
                             Dim subelemento As ListItem
                             Set subelemento = FrmObjetos.ListView1.ListItems.Add(, , ObjData(i).Name)
                             subelemento.SubItems(1) = i
@@ -937,7 +937,7 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Dim tempStr() As String
                 If InStr(1, ArgumentosRaw, "@") Then
                     tempStr = Split(ArgumentosRaw, "@")
-                    If notNullArguments And CantidadArgumentos > 4 And tempStr(1) <> vbNullString Then
+                    If notNullArguments And CantidadArgumentos > 4 And LenB(tempStr(1)) <> 0 Then
                         If ValidNumber(ArgumentosAll(0), eNumber_Types.ent_Integer) And ValidNumber(ArgumentosAll(1), eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(2), _
                                 eNumber_Types.ent_Byte) And ValidNumber(ArgumentosAll(3), eNumber_Types.ent_Byte) Then
                             Call WriteTeleportCreate(ArgumentosAll(0), ArgumentosAll(1), ArgumentosAll(2), ArgumentosAll(3), tempStr(1))

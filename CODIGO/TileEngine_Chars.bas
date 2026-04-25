@@ -667,7 +667,7 @@ Public Sub SetCharacterDialogFx(ByVal charindex As Integer, ByVal text As String
         Dim Index As Integer
         If UBound(.DialogEffects) > 0 Then
             For Index = 1 To UBound(.DialogEffects)
-                If .DialogEffects(Index).text = vbNullString Then
+                If LenB(.DialogEffects(Index).text) = 0 Then
                     Exit For
                 End If
             Next
