@@ -1280,7 +1280,7 @@ Public Sub CargarIndicesOBJ()
             .info = GetLocalizedValue(Leer, "OBJ" & Obj, "Info", langPrefix)
             .Texto = GetLocalizedValue(Leer, "OBJ" & Obj, "Texto", langPrefix)
         End With
-        ObjData(Obj).CollectibleCardImgPathing = val(Leer.GetValue("OBJ" & Obj, "CollectibleCardImgPathing"))
+        ObjData(Obj).CollectibleCardImgPathing = Leer.GetValue("OBJ" & Obj, "CollectibleCardImgPathing")
         ObjData(Obj).MinDef = val(Leer.GetValue("OBJ" & Obj, "MinDef"))
         ObjData(Obj).MaxDef = val(Leer.GetValue("OBJ" & Obj, "MaxDef"))
         ObjData(Obj).MinHit = val(Leer.GetValue("OBJ" & Obj, "MinHit"))
