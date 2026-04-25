@@ -1191,14 +1191,17 @@ PlayFxUniqueByLabel_Error:
 End Sub
 
 Public Function RemoveFirstThreeIfUnderscore(ByVal s As String) As String
+    ' Ensure s is treated as a String
+    s = CStr(s)
+    
     ' Check for underscore anywhere in the string
-    If InStr(s, "_") > 0 Then
+    If InStr(1, s, "_", vbBinaryCompare) > 0 Then
         ' If the string is longer than 3 characters, strip off the first 3
         If Len(s) > 3 Then
             RemoveFirstThreeIfUnderscore = mid$(s, 4)
         Else
             ' If it's 3 characters or less, return an empty string
-            RemoveFirstThreeIfUnderscore = ""
+            RemoveFirstThreeIfUnderscore = vbNullString
         End If
     Else
         ' No underscore: return the original string
