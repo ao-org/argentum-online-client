@@ -17,7 +17,7 @@ Attribute VB_Name = "Protocol"
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 '    This program was based on Argentum Online 0.11.6
-'    Copyright (C) 2002 Márquez Pablo Ignacio
+'    Copyright (C) 2002 Mï¿½rquez Pablo Ignacio
 '
 '    Argentum Online is based on Baronsoft's VB6 Online RPG
 '    You can contact the original creator of ORE at aaron@baronsoft.com
@@ -485,7 +485,7 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 ' Invalid Message
         End Select
     #End If
-    ' —————————————————————————————
+    ' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     ' Detect both (a) extra bytes from known packets
     '         and (b) any packet where we had NO handler
     ' In either case, Reader.GetAvailable() > 0
@@ -694,7 +694,7 @@ Public Sub HandleDisconnect()
     'frmMain.lblrefuerzolanzar.Visible = False
     frmMain.cmdMoverHechi(0).visible = False
     frmMain.cmdMoverHechi(1).visible = False
-    QuePestañaInferior = 0
+    QuePestaï¿½aInferior = 0
     frmMain.stabar.visible = True
     frmMain.HpBar.visible = True
     frmMain.manabar.visible = True
@@ -844,7 +844,7 @@ Public Sub HandleDisconnect()
             g_game_state.State = e_state_account_screen
         End If
         If Not FullLogout Then
-            'Si no es un deslogueo completo, envío nuevamente la lista de Pjs.
+            'Si no es un deslogueo completo, envï¿½o nuevamente la lista de Pjs.
             Call connectToLoginServer
         End If
     #ElseIf PYMMO = 0 Then
@@ -1336,7 +1336,7 @@ Private Sub HandleUpdateHP()
     Dim Shield     As Long
     NuevoValor = Reader.ReadInt16()
     Shield = Reader.ReadInt32
-    ' Si perdió vida, mostramos los stats en el frmMain
+    ' Si perdiï¿½ vida, mostramos los stats en el frmMain
     If NuevoValor < UserStats.MinHp Or Shield < UserStats.HpShield Then
         Call frmMain.ShowStats
     End If
@@ -1498,22 +1498,22 @@ End Sub
 ' Handles the NPCHitUser message.
 Private Sub HandleNPCHitUser()
     On Error GoTo HandleNPCHitUser_Err
-    Dim Lugar As Byte, DañoStr As String
+    Dim Lugar As Byte, Daï¿½oStr As String
     Lugar = Reader.ReadInt8()
-    DañoStr = PonerPuntos(Reader.ReadInt16)
+    Daï¿½oStr = PonerPuntos(Reader.ReadInt16)
     Select Case Lugar
         Case bCabeza
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_CABEZA") & DañoStr, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_CABEZA") & Daï¿½oStr, 255, 0, 0, True, False, False)
         Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_BRAZO_IZQ") & DañoStr, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_BRAZO_IZQ") & Daï¿½oStr, 255, 0, 0, True, False, False)
         Case bBrazoDerecho
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_BRAZO_DER") & DañoStr, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_BRAZO_DER") & Daï¿½oStr, 255, 0, 0, True, False, False)
         Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_PIERNA_IZQ") & DañoStr, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_PIERNA_IZQ") & Daï¿½oStr, 255, 0, 0, True, False, False)
         Case bPiernaDerecha
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_PIERNA_DER") & DañoStr, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_PIERNA_DER") & Daï¿½oStr, 255, 0, 0, True, False, False)
         Case bTorso
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_TORSO") & DañoStr, 255, 0, 0, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_GOLPE_TORSO") & Daï¿½oStr, 255, 0, 0, True, False, False)
     End Select
     #If No_Api_Steam = 0 Then
         Call svb_unlock_achivement("Small victory")
@@ -1536,26 +1536,26 @@ Private Sub HandleUserHittedByUser()
     attacker = Left$(charlist(intt).nombre, Pos - 2)
     Dim Lugar As Byte
     Lugar = Reader.ReadInt8
-    Dim DañoStr As String
-    DañoStr = PonerPuntos(Reader.ReadInt16())
+    Dim Daï¿½oStr As String
+    Daï¿½oStr = PonerPuntos(Reader.ReadInt16())
     Select Case Lugar
         Case bCabeza
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_CABEZA") & DañoStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, _
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_CABEZA") & Daï¿½oStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, _
                     False, False)
         Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ") & DañoStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, _
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ") & Daï¿½oStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, _
                     False, False)
         Case bBrazoDerecho
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_BRAZO_DER") & DañoStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, _
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_BRAZO_DER") & Daï¿½oStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, _
                     False, False)
         Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ") & DañoStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, _
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ") & Daï¿½oStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, _
                     False, False)
         Case bPiernaDerecha
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_PIERNA_DER") & DañoStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, _
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_PIERNA_DER") & Daï¿½oStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, _
                     False, False)
         Case bTorso
-            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_TORSO") & DañoStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, _
+            Call AddtoRichTextBox(frmMain.RecTxt, attacker & JsonLanguage.Item("MENSAJE_RECIVE_IMPACTO_TORSO") & Daï¿½oStr & JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, _
                     False, False)
     End Select
     Exit Sub
@@ -1577,26 +1577,26 @@ Private Sub HandleUserHittedUser()
     victim = Left$(charlist(intt).nombre, Pos - 2)
     Dim Lugar As Byte
     Lugar = Reader.ReadInt8()
-    Dim DañoStr As String
-    DañoStr = PonerPuntos(Reader.ReadInt16())
+    Dim Daï¿½oStr As String
+    Daï¿½oStr = PonerPuntos(Reader.ReadInt16())
     Select Case Lugar
         Case bCabeza
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_CABEZA") & DañoStr & _
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_CABEZA") & Daï¿½oStr & _
                     JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, False, False)
         Case bBrazoIzquierdo
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ") & DañoStr & _
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ") & Daï¿½oStr & _
                     JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, False, False)
         Case bBrazoDerecho
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_BRAZO_DER") & DañoStr & _
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_BRAZO_DER") & Daï¿½oStr & _
                     JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, False, False)
         Case bPiernaIzquierda
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ") & DañoStr & _
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ") & Daï¿½oStr & _
                     JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, False, False)
         Case bPiernaDerecha
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_PIERNA_DER") & DañoStr & _
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_PIERNA_DER") & Daï¿½oStr & _
                     JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, False, False)
         Case bTorso
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_TORSO") & DañoStr & _
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_1") & victim & JsonLanguage.Item("MENSAJE_PRODUCE_IMPACTO_TORSO") & Daï¿½oStr & _
                     JsonLanguage.Item("MENSAJE_2"), 255, 0, 0, True, False, False)
     End Select
     Exit Sub
@@ -1635,11 +1635,11 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
     text = ReadField(2, chat, Asc("*"))
     Select Case QueEs
         Case "LOCMSG"
-            ' text = "2082*NombreDelNpc¬OtroValor"
+            ' text = "2082*NombreDelNpcï¿½OtroValor"
             Dim MsgID    As Integer
             Dim extraStr As String
             MsgID = val(ReadField(1, text, Asc("*")))             ' 2082
-            extraStr = ReadField(2, Text, Asc("*"))               ' "Nombre¬OtroValor"
+            extraStr = ReadField(2, Text, Asc("*"))               ' "Nombreï¿½OtroValor"
             chat = Locale_Parse_ServerMessage(MsgID, extraStr)
             copiar = False
             duracion = 20
@@ -1783,7 +1783,7 @@ Private Sub HandleTextOverTile()
                 Index = 1
             Else
                 For Index = 1 To UBound(.DialogEffects)
-                    If .DialogEffects(Index).text = vbNullString Then
+                    If LenB(.DialogEffects(Index).text) = 0 Then
                         Exit For
                     End If
                 Next
@@ -1835,7 +1835,7 @@ Private Sub HandleTextCharDrop()
                 Index = 1
             Else
                 For Index = 1 To UBound(.DialogEffects)
-                    If .DialogEffects(Index).text = vbNullString Then
+                    If LenB(.DialogEffects(Index).text) = 0 Then
                         Exit For
                     End If
                 Next
@@ -1912,7 +1912,7 @@ Private Sub HandleConsoleMessage()
             chat = objname & " " & ElementalTagsToTxtParser(ElementalTags) & ReadField(3, chat, Asc("*"))
         Case "HECINF"
             Hechizo = ReadField(2, chat, Asc("*"))
-            chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & "Descripción: " & HechizoData( _
+            chat = "------------< Informaciï¿½n del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & "Descripciï¿½n: " & HechizoData( _
                     Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData( _
                     Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
         Case "ProMSG"
@@ -2045,7 +2045,7 @@ Private Sub HandleGuildChat()
     Dim messageText As String
     status = Reader.ReadInt8()
     finalChat = Reader.ReadString8()
-    ' Check for localized message format: Msg####¬Nombre
+    ' Check for localized message format: Msg####ï¿½Nombre
     If Left$(finalChat, 3) = "Msg" Then
         prefix = ReadField(1, finalChat, 172)
         finalChat = Locale_Parse_ServerMessage(val(mid$(prefix, 4)), mid$(finalChat, Len(prefix) + 2))
@@ -2087,7 +2087,7 @@ Private Sub HandleShowMessageBox()
     ' Obtener el ID del mensaje desde el servidor
     MessageID = Reader.ReadInt16()
     extra = Reader.ReadString8()
-    ' Obtener el mensaje a partir del archivo de localización usando el ID
+    ' Obtener el mensaje a partir del archivo de localizaciï¿½n usando el ID
     mensaje = Locale_Parse_ServerMessage(MessageID, extra)
     Select Case g_game_state.State()
         Case e_state_gameplay_screen
@@ -2568,7 +2568,7 @@ Private Sub HandleCharacterChange()
             .Escudo = ShieldAnimData(NO_SHIELD)
             .Arma = WeaponAnimData(NO_WEAPON)
         End If
-        ' ==================== ANIMACIÓN / FASE ====================
+        ' ==================== ANIMACIï¿½N / FASE ====================
         If .Idle Then
             ' --- IDLE ---
             If .Navegando = False Or UserNadandoTrajeCaucho = True Then
@@ -2576,7 +2576,7 @@ Private Sub HandleCharacterChange()
                     ' Idle sin anim: parar
                     .Body.Walk(.Heading).started = 0
                 Else
-                    ' Idle con anim: si cambia a IdleBody, preservá fase si venía animando
+                    ' Idle con anim: si cambia a IdleBody, preservï¿½ fase si venï¿½a animando
                     If .Body.IdleBody > 0 Then
                         newGi = BodyData(.Body.IdleBody).Walk(.Heading).GrhIndex
                         If prevWalk.started > 0 And wasMoving Then
@@ -2592,7 +2592,7 @@ Private Sub HandleCharacterChange()
                         End If
                     End If
                 End If
-                ' Arma/Escudo en idle: respetá tu regla
+                ' Arma/Escudo en idle: respetï¿½ tu regla
                 If Not .MovArmaEscudo Then
                     .Arma.WeaponWalk(.Heading).started = 0
                     .Escudo.ShieldWalk(.Heading).started = 0
@@ -2771,7 +2771,7 @@ Private Sub HandlePlayWave()
     cancelLastWave = Reader.ReadInt8()
     Localize = Reader.ReadInt8()
     '=== Determine filename, applying localization if requested ===
-    ' If Localize=1, prepend the user’s language code (e.g. "pt") so that
+    ' If Localize=1, prepend the userï¿½s language code (e.g. "pt") so that
     ' pt_123.wav will be used instead of 123.wav when playing the clip.
     If Localize = 1 And language <> Spanish Then
         Dim langPrefix As String
@@ -2780,7 +2780,7 @@ Private Sub HandlePlayWave()
     Else
         filename = CStr(wave)
     End If
-    '=== Handle special “fog of war” waves: IDs 400–404 only play if MapDat.niebla <> 0 ===
+    '=== Handle special ï¿½fog of warï¿½ waves: IDs 400ï¿½404 only play if MapDat.niebla <> 0 ===
     Select Case wave
         Case 400 To 404
             If MapDat.niebla = 0 Then
@@ -2791,7 +2791,7 @@ Private Sub HandlePlayWave()
     If cancelLastWave <> 0 Then
         ao20audio.StopWav CStr(wave)
         If cancelLastWave = 2 Then
-            Exit Sub   ' Don’t play the new wave if flag=2
+            Exit Sub   ' Donï¿½t play the new wave if flag=2
         End If
     End If
     '=== Play the wave, either with spatial positioning or at default volume ===
@@ -3152,7 +3152,7 @@ Private Sub HandleCharAtaca()
     With charlist(NpcIndex)
 
         ' --- Guardrails: heading ---
-        ' Ajustá estos bounds a tu enum real (muchos AO usan 1..4).
+        ' Ajustï¿½ estos bounds a tu enum real (muchos AO usan 1..4).
         If .Heading < 1 Or .Heading > 4 Then
             Call RegistrarError(9, "Heading invalido: " & .Heading & " (NpcIndex=" & NpcIndex & ")", "Protocol.HandleCharAtaca", Erl)
             Exit Sub
@@ -3182,7 +3182,7 @@ Private Sub HandleCharAtaca()
             End If
         End If
 
-        ' --- resto de tu lógica igual ---
+        ' --- resto de tu lï¿½gica igual ---
         If AnimAttack > 0 Then
             oldWalk = .Body.Walk(.Heading)
             .AnimatingBody = AnimAttack
@@ -3286,10 +3286,10 @@ Private Sub HandleGetInventarioHechizos()
     inventario_o_hechizos = Reader.ReadInt8()
     hechiSel = Reader.ReadInt8()
     scrollSel = Reader.ReadInt8()
-    'Clickeó en inventario
+    'Clickeï¿½ en inventario
     If inventario_o_hechizos = 1 Then
         Call frmMain.inventoryClick
-        'Clickeó en hechizos
+        'Clickeï¿½ en hechizos
     ElseIf inventario_o_hechizos = 2 Then
         Call frmMain.hechizosClick
         hlst.Scroll = scrollSel
@@ -3304,10 +3304,10 @@ Private Sub HandleNotificarClienteCasteo()
     On Error GoTo NotificarClienteCasteo_Err
     Dim value As Byte
     value = Reader.ReadInt8()
-    'Clickeó en inventario
+    'Clickeï¿½ en inventario
     If value = 1 Then
         frmMain.shapexy.BackColor = RGB(0, 170, 0)
-        'Clickeó en hechizos
+        'Clickeï¿½ en hechizos
     Else
         frmMain.shapexy.BackColor = RGB(170, 0, 0)
     End If
@@ -4132,7 +4132,7 @@ Private Sub HandleMeditateToggle()
     End If
     If charindex = UserCharIndex Then
         UserMeditar = (Fx <> 0)
-        If ChatCombate = 1 Then 'Si la pestaña "INFO" esta activada muestra mensajes de meditacion
+        If ChatCombate = 1 Then 'Si la pestaï¿½a "INFO" esta activada muestra mensajes de meditacion
             If UserMeditar Then
                 With FontTypes(FontTypeNames.FONTTYPE_INFO)
                     Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_COMIENZAS_A_MEDITAR"), .red, .green, .blue, .bold, .italic)
@@ -4629,10 +4629,10 @@ Private Sub HandleShowSOSForm()
     Dim FechaHoraDeConsulta As Date
     sosList = Split(Reader.ReadString8(), SEPARATOR)
     For i = 0 To UBound(sosList())
-        nombre = ReadField(1, sosList(i), Asc("Ø"))
-        Consulta = ReadField(2, sosList(i), Asc("Ø"))
-        TipoDeConsulta = ReadField(3, sosList(i), Asc("Ø"))
-        FechaHoraDeConsulta = ReadField(4, sosList(i), Asc("Ø"))
+        nombre = ReadField(1, sosList(i), Asc("ï¿½"))
+        Consulta = ReadField(2, sosList(i), Asc("ï¿½"))
+        TipoDeConsulta = ReadField(3, sosList(i), Asc("ï¿½"))
+        FechaHoraDeConsulta = ReadField(4, sosList(i), Asc("ï¿½"))
         frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ") - " & format(FechaHoraDeConsulta, "dd/MM/yyyy hh:mm AM/PM")
         frmPanelgm.List2.AddItem Consulta
     Next i
@@ -5584,14 +5584,14 @@ Private Sub HandleDoAnimation()
         .Body = BodyData(.AnimatingBody)
         If .Body.Walk(.Heading).started = 0 Or keepStart <> 0 Then
             .Body.Walk(.Heading).started = keepStart
-            ' Hacer que la animación de casteo sea de UNA SOLA pasada.
+            ' Hacer que la animaciï¿½n de casteo sea de UNA SOLA pasada.
             ' Si queda en INFINITE_LOOPS nunca vuelve al idle.
             .Body.Walk(.Heading).Loops = 0
             ' (opcional) evitar que arma/escudo queden loopeando durante el cast
             If .Arma.WeaponWalk(.Heading).GrhIndex <> 0 Then .Arma.WeaponWalk(.Heading).Loops = 0
             If .Escudo.ShieldWalk(.Heading).GrhIndex <> 0 Then .Escudo.ShieldWalk(.Heading).Loops = 0
         End If
-        ' Mantener arma/escudo en fase con el cuerpo (solo si están “apagados”)
+        ' Mantener arma/escudo en fase con el cuerpo (solo si estï¿½n ï¿½apagadosï¿½)
         If .Arma.WeaponWalk(.Heading).started = 0 Then
             .Arma.WeaponWalk(.Heading).started = .Body.Walk(.Heading).started
         End If
@@ -5747,7 +5747,7 @@ Public Sub HandleShopInit()
         ObjShop(i).Name = Reader.ReadString8
     Next i
 
-    ' Ordenar por ObjType y luego por Name (alfabético)
+    ' Ordenar por ObjType y luego por Name (alfabï¿½tico)
     For i = 1 To cant_obj_shop - 1
         For J = i + 1 To cant_obj_shop
     
@@ -6070,7 +6070,7 @@ Public Sub HandleObjQuestListSend()
             subelemento.ListSubItems(1).ForeColor = RGB(255, 10, 10)
     End Select
     FrmQuestInfo.ListViewQuest.Refresh
-    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest está empezada o no.
+    'Determinamos que formulario se muestra, segun si recibimos la informacion y la quest estï¿½ empezada o no.
     FrmQuestInfo.Show vbModeless, GetGameplayForm()
     FrmQuestInfo.Picture = LoadInterface("ventananuevamision.bmp")
     Call FrmQuestInfo.ShowQuest(1)
@@ -6184,7 +6184,7 @@ Private Sub HandleChangeSkinSlot()
     On Error GoTo 0
     Exit Sub
 HandleChangeSkinSlot_Error:
-    Call LogError("Error " & Err.Number & " (" & Err.Description & ") en el procedimiento HandleChangeSkinSlot del módulo Módulo Protocol en la línea: " & Erl())
+    Call LogError("Error " & Err.Number & " (" & Err.Description & ") en el procedimiento HandleChangeSkinSlot del mï¿½dulo Mï¿½dulo Protocol en la lï¿½nea: " & Erl())
 End Sub
 
 Public Sub HandleGuildConfig()

@@ -584,7 +584,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
         frmMapaGrande.Label1.Caption = JsonLanguage.Item("MENSAJE_573")
     End If
     'Formato de mapas optimizado para reducir el espacio que ocupan.
-    'Diseñado y creado por Juan Martín Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
+    'Diseï¿½ado y creado por Juan Martï¿½n Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
     Dim fh           As Integer
     Dim MH           As tMapHeader
     Dim Blqs()       As tDatosBloqueados
@@ -763,7 +763,7 @@ End Sub
 Public Sub CargarMapa(ByVal map As Integer)
     On Error GoTo CargarMapa_Err
     'Formato de mapas optimizado para reducir el espacio que ocupan.
-    'Diseñado y creado por Juan Martín Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
+    'Diseï¿½ado y creado por Juan Martï¿½n Sotuyo Dodero (Maraxus) (juansotuyo@hotmail.com)
     Dim fh           As Integer
     Dim MH           As tMapHeader
     Dim Blqs()       As tDatosBloqueados
@@ -787,7 +787,7 @@ Public Sub CargarMapa(ByVal map As Integer)
     Debug.Assert map <> 0
     #If Compresion = 1 Then
         If Not Extract_File(Maps, App.path & "\..\Recursos\OUTPUT\", "mapa" & map & ".csm", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "No se pudo cargar el mapa " & map & ", el juego se cerrará. Si su personaje se encuentra en un mapa inválido, por favor, avise a un GM."
+            Err.Description = "No se pudo cargar el mapa " & map & ", el juego se cerrarï¿½. Si su personaje se encuentra en un mapa invï¿½lido, por favor, avise a un GM."
             Call MsgBox(Err.Description)
             End
         End If
@@ -1001,7 +1001,7 @@ End Sub
 Public Sub CargarParticulas()
     On Error GoTo CargarParticulas_Err
     'Loads the Particles.ini file to the ComboBox
-    'Edited by Juan Martín Sotuyo Dodero to add speed and life
+    'Edited by Juan Martï¿½n Sotuyo Dodero to add speed and life
     Dim loopC      As Long
     Dim i          As Long
     Dim GrhListing As String
@@ -1010,7 +1010,7 @@ Public Sub CargarParticulas()
     Dim temp       As Integer
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "particles.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de particles.ini!"
+            Err.Description = "ï¿½No se puede cargar el archivo de particles.ini!"
             MsgBox Err.Description
         End If
         StreamFile = Windows_Temp_Dir & "particles.ini"
@@ -1081,7 +1081,7 @@ End Sub
 Public Sub CargarParticulasBinary()
     On Error GoTo CargarParticulasBinary_Err
     'Loads the Particles.ini file to the ComboBox
-    'Edited by Juan Martín Sotuyo Dodero to add speed and life
+    'Edited by Juan Martï¿½n Sotuyo Dodero to add speed and life
     Dim loopC      As Long
     Dim i          As Long
     Dim GrhListing As String
@@ -1093,7 +1093,7 @@ Public Sub CargarParticulasBinary()
     Handle = FreeFile()
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "particles.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de particles.ind!"
+            Err.Description = "ï¿½No se puede cargar el archivo de particles.ind!"
             MsgBox Err.Description
         End If
         StreamFile = Windows_Temp_Dir & "particles.ind"
@@ -1147,7 +1147,7 @@ Public Sub LoadProjectiles()
     Dim ProjectN As Integer
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "ProjectileDef.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de ProjectileDef.dat!"
+            Err.Description = "ï¿½No se puede cargar el archivo de ProjectileDef.dat!"
             MsgBox Err.Description
         End If
         ObjFile = Windows_Temp_Dir & "ProjectileDef.dat"
@@ -1173,7 +1173,7 @@ Public Sub LoadBuffResources()
     Dim EffectCount As Integer
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "Effects.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de ProjectileDef.dat!"
+            Err.Description = "ï¿½No se puede cargar el archivo de ProjectileDef.dat!"
             MsgBox Err.Description
         End If
         ObjFile = Windows_Temp_Dir & "Effects.ini"
@@ -1241,7 +1241,7 @@ Public Sub CargarIndicesOBJ()
     prefix_filename = langPrefix & "_localindex.dat"
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", prefix_filename, Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de " & prefix_filename
+            Err.Description = "ï¿½No se puede cargar el archivo de " & prefix_filename
             MsgBox Err.Description
         End If
         ObjFile = Windows_Temp_Dir & prefix_filename
@@ -1365,7 +1365,7 @@ Public Sub CargarIndicesOBJ()
             .desc = GetLocalizedValue(Leer, "npc" & Npc, "desc", langPrefix)
         End With
         If NpcData(Npc).Name = "" Then
-            NpcData(Npc).Name = "Vacío"
+            NpcData(Npc).Name = "Vacï¿½o"
         End If
         NpcData(Npc).Body = val(Leer.GetValue("npc" & Npc, "Body"))
         NpcData(Npc).exp = val(Leer.GetValue("npc" & Npc, "exp"))
@@ -1504,7 +1504,7 @@ Public Sub Cargarmapsworlddata()
     Dim J       As Byte
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "mapsworlddata.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de mapsworlddata.dat!"
+            Err.Description = "ï¿½No se puede cargar el archivo de mapsworlddata.dat!"
             MsgBox Err.Description
         End If
         MapFile = Windows_Temp_Dir & "mapsworlddata.dat"
@@ -1541,7 +1541,7 @@ Sub CargarMoldes()
     Set Loader = New clsIniManager
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "moldes.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de moldes.ini!"
+            Err.Description = "ï¿½No se puede cargar el archivo de moldes.ini!"
             MsgBox Err.Description
         End If
         Call Loader.Initialize(Windows_Temp_Dir & "moldes.ini")
@@ -1601,7 +1601,7 @@ Sub CargarCabezas()
     n = FreeFile()
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "cabezas.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de Cabezas.ind!"
+            Err.Description = "ï¿½No se puede cargar el archivo de Cabezas.ind!"
             MsgBox Err.Description
         End If
         Open Windows_Temp_Dir & "cabezas.ind" For Binary Access Read As #n
@@ -1643,7 +1643,7 @@ Sub CargarCascos()
     n = FreeFile()
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "cascos.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de Cabezas.ind!"
+            Err.Description = "ï¿½No se puede cargar el archivo de Cabezas.ind!"
             MsgBox Err.Description
         End If
         Open Windows_Temp_Dir & "cascos.ind" For Binary Access Read As #n
@@ -1695,7 +1695,7 @@ Sub CargarCuerpos()
     Set Loader = New clsIniManager
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "cuerpos.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de cuerpos.dat!"
+            Err.Description = "ï¿½No se puede cargar el archivo de cuerpos.dat!"
             MsgBox Err.Description
         End If
         Call Loader.Initialize(Windows_Temp_Dir & "cuerpos.dat")
@@ -1805,7 +1805,7 @@ Sub CargarFxs()
     n = FreeFile()
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "fxs.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de fxs.ind!"
+            Err.Description = "ï¿½No se puede cargar el archivo de fxs.ind!"
             MsgBox Err.Description
         End If
         Open Windows_Temp_Dir & "fxs.ind" For Binary Access Read As #n
@@ -1917,7 +1917,7 @@ Public Function LoadGrhData() As Boolean
     Handle = FreeFile()
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "graficos.ind", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de recurso!"
+            Err.Description = "ï¿½No se puede cargar el archivo de recurso!"
             GoTo ErrorHandler
         End If
         Open Windows_Temp_Dir & "graficos.ind" For Binary Access Read As #Handle
@@ -2008,7 +2008,7 @@ Public Sub LoadGrhIni()
     FileHandle = FreeFile()
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "Graficos.ini", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de recurso!"
+            Err.Description = "ï¿½No se puede cargar el archivo de recurso!"
             GoTo hErr
         End If
         Open Windows_Temp_Dir & "Graficos.ini" For Input As #FileHandle
@@ -2045,7 +2045,7 @@ Public Sub LoadGrhIni()
         ' Leemos la linea actual
         Line Input #FileHandle, CurrentLine
         ' Ignoramos lineas vacias
-        If CurrentLine <> vbNullString Then
+        If LenB(CurrentLine) <> 0 Then
             ' Divimos por el "="
             Fields = Split(CurrentLine, SeparadorClave)
             ' Leemos el numero de Grh (el numero a la derecha de la palabra "Grh")
@@ -2137,7 +2137,7 @@ Sub CargarAnimArmas()
     Dim Arch  As String
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "armas.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de armas.dat!"
+            Err.Description = "ï¿½No se puede cargar el archivo de armas.dat!"
             MsgBox Err.Description
         End If
         Call Loader.Initialize(Windows_Temp_Dir & "armas.dat")
@@ -2215,7 +2215,7 @@ Sub CargarColores()
     Dim archivoC As String
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "colores.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de colores.dat!"
+            Err.Description = "ï¿½No se puede cargar el archivo de colores.dat!"
             MsgBox Err.Description
         End If
         archivoC = Windows_Temp_Dir & "colores.dat"
@@ -2305,7 +2305,7 @@ Sub CargarAnimEscudos()
     Dim Arch  As String
     #If Compresion = 1 Then
         If Not Extract_File(Scripts, App.path & "\..\Recursos\OUTPUT\", "escudos.dat", Windows_Temp_Dir, ResourcesPassword, False) Then
-            Err.Description = "¡No se puede cargar el archivo de escudos.dat!"
+            Err.Description = "ï¿½No se puede cargar el archivo de escudos.dat!"
             MsgBox Err.Description
         End If
         Call Loader.Initialize(Windows_Temp_Dir & "escudos.dat")
@@ -2480,13 +2480,13 @@ Public Sub CargarNPCsMapData()
     Close fh
 End Sub
 
-' Módulo: modMultilenguaje.bas
+' Mï¿½dulo: modMultilenguaje.bas
 Public Function GetLocalizedValue(ByRef Leer As Object, ByVal Section As String, ByVal keyBase As String, ByVal langPrefix As String) As String
     Dim localizedKey As String
     localizedKey = LCase(langPrefix) & "_" & keyBase
     Dim value As String
     value = Leer.GetValue(Section, localizedKey)
-    If value = vbNullString Then
+    If LenB(value) = 0 Then
         value = Leer.GetValue(Section, keyBase)
     End If
     GetLocalizedValue = value

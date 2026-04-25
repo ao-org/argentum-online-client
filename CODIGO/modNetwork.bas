@@ -51,7 +51,7 @@ End Sub
 
 Public Sub Connect(ByVal Address As String, ByVal Service As String)
     frmDebug.add_text_tracebox "Connecting to World Server : " & Address & ":" & Service
-    If (Address = vbNullString Or Service = vbNullString) Then
+    If (LenB(Address) = 0 Or LenB(Service) = 0) Then
         Exit Sub
     End If
     Call Protocol_Writes.Initialize
@@ -62,7 +62,7 @@ End Sub
 
 Public Sub Reconnect(ByVal Address As String, ByVal Service As String)
     frmDebug.add_text_tracebox "Connecting to World Server : " & Address & ":" & Service
-    If (Address = vbNullString Or Service = vbNullString) Then
+    If (LenB(Address) = 0 Or LenB(Service) = 0) Then
         Exit Sub
     End If
     Call Protocol_Writes.Initialize
@@ -245,7 +245,7 @@ On Error GoTo connect_error:
     frmDebug.add_text_tracebox "DPLAY > Connecting to World Server : " & Address & ":" & Service
     
 
-    If (Address = vbNullString Or Service = vbNullString) Then
+    If (LenB(Address) = 0 Or LenB(Service) = 0) Then
         Exit Sub
     End If
     
