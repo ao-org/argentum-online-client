@@ -1001,7 +1001,7 @@ Public Sub Dx8RenderedImgIntoPic(ByRef pic As PictureBox, _
     
     ' Use a unique key for this texture
     Dim textureKey As Integer
-    textureKey = -9999
+    textureKey = 9999
     
     Set Texture = SurfaceDB.GetInterfaceTexture(textureKey, TextureFileName, texWidth, texHeight)
     

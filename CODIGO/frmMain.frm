@@ -46,21 +46,21 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H80000008&
-      Height          =   6555
+      Height          =   8475
       Left            =   720
-      ScaleHeight     =   437
+      ScaleHeight     =   565
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   600
+      ScaleWidth      =   599
       TabIndex        =   45
       Top             =   2880
       Visible         =   0   'False
-      Width           =   9000
+      Width           =   8985
       Begin VB.CommandButton cmdCardViewerAccept 
          Caption         =   "Command3"
          Height          =   615
-         Left            =   7080
+         Left            =   7200
          TabIndex        =   47
-         Top             =   240
+         Top             =   360
          Visible         =   0   'False
          Width           =   1215
       End
@@ -477,7 +477,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1467,7 +1466,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00E0E0E0&
       Height          =   165
       Left            =   9765
-      TabIndex        =   1
+      TabIndex        =   48
       Top             =   45
       Width           =   1125
    End
