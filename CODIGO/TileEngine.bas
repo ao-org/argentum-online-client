@@ -1008,51 +1008,15 @@ Public Sub CreateDx8ImagePoppup(ByRef pic As PictureBox, _
     With picRect
         .Left = 0
         .Top = 0
-        .Bottom = pic.ScaleHeight
         .Right = pic.ScaleWidth
+        .Bottom = pic.ScaleHeight
     End With
     
-    ' Calculate texture coordinates (UV mapping)
-    ' This maps the actual image portion within the power-of-2 texture
-    Dim tu1 As Single, tu2 As Single
-    Dim tv1 As Single, tv2 As Single
-    
-    tu1 = srcX / texWidth
-    tu2 = (srcX + srcWidth) / texWidth
-    tv1 = srcY / texHeight
-    tv2 = (srcY + srcHeight) / texHeight
-    
-    ' Create vertices for a textured quad
-    Dim verts(3) As TYPE_VERTEX
-    
-    ' Top-left
-    verts(0).x = DestX
-    verts(0).y = DestY
-    verts(0).z = 0
-    
-    ' Top-right
-    verts(1).x = DestX + destWidth
-    verts(1).y = DestY
-    verts(1).z = 0
-
-    
-    ' Bottom-right
-    verts(2).x = DestX + destWidth
-    verts(2).y = DestY + destHeight
-    verts(2).z = 0
-
-    
-    ' Bottom-left
-    verts(3).x = DestX
-    verts(3).y = DestY + destHeight
-    verts(3).z = 0
-
-    
-    ' Render to the picturebox
     Call DirectDevice.BeginScene
     Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
-    Call DirectDevice.SetTexture(0, Texture)
-    Call DirectDevice.DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, verts(0), Len(verts(0)))
+    DirectDevice.SetTexture 0, Texture
+    DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_MODULATE
+    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE
     Call DirectDevice.EndScene
     Call DirectDevice.Present(picRect, ByVal 0, pic.hWnd, ByVal 0)
     
