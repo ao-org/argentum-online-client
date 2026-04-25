@@ -989,48 +989,75 @@ Public Sub CreateDx8ImagePoppup(ByRef pic As PictureBox, _
                                          ByVal srcHeight As Long, _
                                          Optional ByVal ClearColor As Long = &H0)
     On Error GoTo CreateDx8ImagePoppup_Err
-    Dim d3dTex        As D3D8Textures
-    Dim srcRect       As RECT
-    Dim dstRect       As RECT
-    Dim picRect       As RECT
-    Dim temp_verts(3) As TYPE_VERTEX
-    Dim di            As Integer
-    Dim dv(3)         As TYPE_VERTEX
-    Dim cx            As Single
-    Dim cy            As Single
-    Dim dH            As Integer
-    Set d3dTex.Texture = SurfaceDB.GetInterfaceTexture(0, TextureFileName, d3dTex.texwidth, d3dTex.texheight)
-    If d3dTex.Texture Is Nothing Then Exit Sub
+    
+    ' Use GetInterfaceTexture to load the card image
+    Dim Texture As Direct3DTexture8
+    Dim texWidth As Long
+    Dim texHeight As Long
+    
+    ' Load the texture - this will handle creating it properly
+    Set Texture = SurfaceDB.GetInterfaceTexture(0, TextureFileName, texWidth, texHeight)
+    
+    If Texture Is Nothing Then
+        Debug.Print "Failed to load card texture: " & TextureFileName
+        Exit Sub
+    End If
+    
+    ' Create the rectangle for the picturebox
+    Dim picRect As RECT
     With picRect
         .Left = 0
         .Top = 0
-        .Right = pic.ScaleWidth
         .Bottom = pic.ScaleHeight
+        .Right = pic.ScaleWidth
     End With
-    With srcRect
-        .Left = srcX
-        .Top = srcY
-        .Right = srcX + srcWidth
-        .Bottom = srcY + srcHeight
-    End With
-    With dstRect
-        .Left = DestX
-        .Top = DestY
-        .Right = DestX + destWidth
-        .Bottom = DestY + destHeight
-    End With
-    Geometry_Create_Box temp_verts(), dstRect, srcRect, COLOR_WHITE, d3dTex.texwidth, d3dTex.texheight, 0
+    
+    ' Calculate texture coordinates (UV mapping)
+    ' This maps the actual image portion within the power-of-2 texture
+    Dim tu1 As Single, tu2 As Single
+    Dim tv1 As Single, tv2 As Single
+    
+    tu1 = srcX / texWidth
+    tu2 = (srcX + srcWidth) / texWidth
+    tv1 = srcY / texHeight
+    tv2 = (srcY + srcHeight) / texHeight
+    
+    ' Create vertices for a textured quad
+    Dim verts(3) As TYPE_VERTEX
+    
+    ' Top-left
+    verts(0).x = DestX
+    verts(0).y = DestY
+    verts(0).z = 0
+    
+    ' Top-right
+    verts(1).x = DestX + destWidth
+    verts(1).y = DestY
+    verts(1).z = 0
+
+    
+    ' Bottom-right
+    verts(2).x = DestX + destWidth
+    verts(2).y = DestY + destHeight
+    verts(2).z = 0
+
+    
+    ' Bottom-left
+    verts(3).x = DestX
+    verts(3).y = DestY + destHeight
+    verts(3).z = 0
+
+    
+    ' Render to the picturebox
     Call DirectDevice.BeginScene
     Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
-    DirectDevice.SetTexture 0, d3dTex.Texture
-    DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
-    ' Draw overlay dots (player + allies) as untextured coloured quads
-    DirectDevice.SetTexture 0, Nothing
-    DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_SELECTARG2
-    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2
+    Call DirectDevice.SetTexture(0, Texture)
+    Call DirectDevice.DrawPrimitiveUP(D3DPT_TRIANGLEFAN, 2, verts(0), Len(verts(0)))
     Call DirectDevice.EndScene
     Call DirectDevice.Present(picRect, ByVal 0, pic.hWnd, ByVal 0)
+    
     Exit Sub
+
 CreateDx8ImagePoppup_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.CreateDx8ImagePoppup", Erl)
     Resume Next

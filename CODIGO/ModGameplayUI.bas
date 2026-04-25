@@ -491,7 +491,9 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
                 Call WriteEquipItem(Slot)
             End If
         Case eObjType.otCollectibleCard
-            Call CreateDx8ImagePoppup(frmMain.CollectibleCardVisor, 0, ObjData(ObjIndex).CollectibleCardImgPathing, 100, 100, 100, 100, 100, 100, 100, 100)
+            frmCollectibleCardViewer.visible = True
+            frmCollectibleCardViewer.CollectibleCardPictureBox.visible = True
+            Call CreateDx8ImagePoppup(frmCollectibleCardViewer.CollectibleCardPictureBox, 0, ObjData(ObjIndex).CollectibleCardImgPathing, 0, 0, 439, 600, 0, 0, 439, 600)
         Case Else
             Call WriteUseItem(Slot)
     End Select
