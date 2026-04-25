@@ -742,11 +742,11 @@ Public Sub HandleDisconnect()
     EntradaX = 1
     Call EraseChar(UserCharIndex, True)
     Call SwitchMap(UserMap)
-    frmMain.personaje(1).visible = False
-    frmMain.personaje(2).visible = False
-    frmMain.personaje(3).visible = False
-    frmMain.personaje(4).visible = False
-    frmMain.personaje(5).visible = False
+    frmMain.HideMinimapDot 1
+    frmMain.HideMinimapDot 2
+    frmMain.HideMinimapDot 3
+    frmMain.HideMinimapDot 4
+    frmMain.HideMinimapDot 5
     UserStats.Clase = 0
     UserStats.Sexo = 0
     UserStats.Raza = 0
@@ -2134,11 +2134,11 @@ Private Sub HandleMostrarCuenta()
         For i = 1 To LastChar
             Call EraseChar(i)
         Next i
-        frmMain.personaje(1).visible = False
-        frmMain.personaje(2).visible = False
-        frmMain.personaje(3).visible = False
-        frmMain.personaje(4).visible = False
-        frmMain.personaje(5).visible = False
+        frmMain.HideMinimapDot 1
+        frmMain.HideMinimapDot 2
+        frmMain.HideMinimapDot 3
+        frmMain.HideMinimapDot 4
+        frmMain.HideMinimapDot 5
     End If
     Exit Sub
 errhandler:
@@ -5476,7 +5476,7 @@ Private Sub HandleUbicacion()
     y = Reader.ReadInt8()
     map = Reader.ReadInt16()
     If x = 0 Then
-        frmMain.personaje(miembro).visible = False
+        frmMain.HideMinimapDot miembro
     Else
         If UserMap = map Then
             frmMain.personaje(miembro).visible = True
