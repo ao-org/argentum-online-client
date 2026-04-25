@@ -1650,7 +1650,12 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
                 Dim headGrh As Long
                 Dim bodyGrh As Long
                 headGrh = HeadData(NpcData(text).Head).Head(3).GrhIndex
-                bodyGrh = GrhData(BodyData(NpcData(text).Body).Walk(3).GrhIndex).Frames(1)
+                If BodyData(NpcData(Text).Body).Walk(3).GrhIndex > 0 Then
+                    bodyGrh = GrhData(BodyData(NpcData(Text).Body).Walk(3).GrhIndex).Frames(1)
+                    Else
+                    bodyGrh = 0
+                End If
+
                 If headGrh = 0 Then
                     Call mostrarCartel(Split(NpcData(text).Name, " <")(0), NpcData(text).desc, bodyGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, _
                             50, 80, bodyGrh, 1)
