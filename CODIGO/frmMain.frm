@@ -335,7 +335,6 @@ Begin VB.Form frmMain
       Width           =   1500
       Begin VB.Shape personaje 
          BackColor       =   &H00FF0000&
-         BackStyle       =   0  'Transparent
          BorderColor     =   &H00FF0000&
          FillColor       =   &H00FF0000&
          FillStyle       =   0  'Solid
@@ -349,7 +348,6 @@ Begin VB.Form frmMain
       End
       Begin VB.Shape personaje 
          BackColor       =   &H00FF00FF&
-         BackStyle       =   0  'Transparent
          BorderColor     =   &H00FF00FF&
          FillColor       =   &H00FF00FF&
          FillStyle       =   0  'Solid
@@ -363,7 +361,6 @@ Begin VB.Form frmMain
       End
       Begin VB.Shape personaje 
          BackColor       =   &H000080FF&
-         BackStyle       =   0  'Transparent
          BorderColor     =   &H000080FF&
          FillColor       =   &H000080FF&
          FillStyle       =   0  'Solid
@@ -377,7 +374,6 @@ Begin VB.Form frmMain
       End
       Begin VB.Shape personaje 
          BackColor       =   &H0000C000&
-         BackStyle       =   0  'Transparent
          BorderColor     =   &H0000C000&
          FillColor       =   &H0000C000&
          FillStyle       =   0  'Solid
@@ -391,7 +387,6 @@ Begin VB.Form frmMain
       End
       Begin VB.Shape personaje 
          BackColor       =   &H0000FFFF&
-         BackStyle       =   0  'Transparent
          BorderColor     =   &H0000FFFF&
          FillColor       =   &H0000FFFF&
          FillStyle       =   0  'Solid
@@ -440,6 +435,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -3854,6 +3850,8 @@ Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVa
     If CenteredMinimap = 0 Then
         personaje(Jugador).Left = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - personaje(Jugador).Width \ 2 - 1
         personaje(Jugador).Top = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
+        personaje(Jugador).visible = True  ' <--- ADD THIS LINE
+        MinimapDots(Jugador).visible = False  ' <--- ADD THIS LINE TOO (hide DirectX dots)
     Else
         ' In centered mode all dots are rendered by DirectX; hide the VB.Shape controls.
         personaje(Jugador).visible = False
