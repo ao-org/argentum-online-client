@@ -193,7 +193,6 @@ Module=Unit_CharValidation; CODIGO\Tests\Unit_CharValidation.bas
 ResFile32="AO20.res"
 Class=clsUIFrame; CODIGO\clsUIFrame.cls
 Class=clsUIMsgBox; CODIGO\clsUIMsgBox.cls
-Form=CODIGO\frmCollectibleCardViewer.frm
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
