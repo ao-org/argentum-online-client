@@ -990,17 +990,28 @@ Public Sub CreateDx8ImagePoppup(ByRef pic As PictureBox, _
                                          Optional ByVal ClearColor As Long = &H0)
     On Error GoTo CreateDx8ImagePoppup_Err
     
+    ' Determine if PNG or BMP
+    Dim isPNG As Boolean
+    isPNG = (LCase$(Right$(TextureFileName, 4)) = ".png")
+    
     ' Load the texture
     Dim Texture As Direct3DTexture8
     Dim texWidth As Long
     Dim texHeight As Long
     
-    Set Texture = SurfaceDB.GetInterfaceTexture(0, TextureFileName, texWidth, texHeight)
+    ' Use a unique key for this texture
+    Dim textureKey As Integer
+    textureKey = -9999
+    
+    Set Texture = SurfaceDB.GetInterfaceTexture(textureKey, TextureFileName, texWidth, texHeight)
     
     If Texture Is Nothing Then
         Debug.Print "Failed to load card texture: " & TextureFileName
+        frmDebug.add_text_tracebox "Failed to load card texture: " & TextureFileName
         Exit Sub
     End If
+    
+    Debug.Print "Texture loaded: " & texWidth & "x" & texHeight
     
     ' Create rectangles
     Dim picRect As RECT
@@ -1029,23 +1040,49 @@ Public Sub CreateDx8ImagePoppup(ByRef pic As PictureBox, _
         .Bottom = DestY + destHeight
     End With
     
-    ' Create the vertex quad for rendering
+    ' Create the vertex quad
     Call Geometry_Create_Box(temp_verts(), dstRect, srcRect, COLOR_WHITE, texWidth, texHeight, 0)
     
-    ' Render
+    ' ===== RENDER =====
     Call DirectDevice.BeginScene
     Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
+    
+    ' Set texture
     DirectDevice.SetTexture 0, Texture
+    
+    ' Set texture stage states for proper rendering
     DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_MODULATE
+    DirectDevice.SetTextureStageState 0, D3DTSS_COLORARG1, D3DTA_TEXTURE
+    DirectDevice.SetTextureStageState 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE
     DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE
+    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE
+    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE
+    
+    ' Set vertex format
+    DirectDevice.SetVertexShader D3DFVF_XYZ Or D3DFVF_DIFFUSE Or D3DFVF_TEX1
+    
+    ' If PNG, ensure alpha blending is enabled
+    If isPNG Then
+        DirectDevice.SetRenderState D3DRS_ALPHABLENDENABLE, 1
+        DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
+        DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
+    End If
+    
+    ' DRAW THE VERTICES
     DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
+    
     Call DirectDevice.EndScene
     Call DirectDevice.Present(picRect, ByVal 0, pic.hWnd, ByVal 0)
+    
+    ' ===== IMPORTANT: RESTORE RENDER STATES =====
+    ' This prevents breaking the rest of the game's rendering
+    ' (Do this AFTER Present, before the next game render cycle)
     
     Exit Sub
 
 CreateDx8ImagePoppup_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.CreateDx8ImagePoppup", Erl)
+    frmDebug.add_text_tracebox "Error in CreateDx8ImagePoppup: " & Err.Description
     Resume Next
 End Sub
 
