@@ -16,13 +16,41 @@ Attribute VB_Name = "ModUtils"
 '
 '
 Option Explicit
+' Usable tile bounds within a single map (shared by minimap rendering and dot projection)
+Public Const MINIMAP_MIN_TILE_X  As Long = 14
+Public Const MINIMAP_MAX_TILE_X  As Long = 87
+Public Const MINIMAP_MIN_TILE_Y  As Long = 11
+Public Const MINIMAP_MAX_TILE_Y  As Long = 90
+Public Const MINIMAP_TILE_COUNT_X As Long = 74  ' MAX_TILE_X - MIN_TILE_X + 1
+Public Const MINIMAP_TILE_COUNT_Y As Long = 80  ' MAX_TILE_Y - MIN_TILE_Y + 1
+
+' Last centered-minimap viewport state -- written by RenderMinimapCentered,
+' read by SetMinimapPosition to project ally dots onto the current view.
+Public MinimapVP_SrcX     As Long   ' viewport top-left X in world-image pixels
+Public MinimapVP_SrcY     As Long   ' viewport top-left Y in world-image pixels
+Public MinimapVP_SrcW     As Long   ' viewport width  in world-image pixels
+Public MinimapVP_SrcH     As Long   ' viewport height in world-image pixels
+Public MinimapVP_DestW As Long  ' minimap control width  in screen pixels
+Public MinimapVP_DestH As Long ' minimap control height in screen pixels
+Public MinimapVP_MapGridX As Long   ' player map grid column in the world image
+Public MinimapVP_MapGridY As Long   ' player map grid row    in the world image
+Public MinimapVP_CellPxW  As Double ' world-image pixel width  of one map cell
+Public MinimapVP_CellPxH  As Double ' world-image pixel height of one map cell
+
+' DirectX-rendered dot per slot (0=player, 1-5=allies) used when CenteredMinimap <> 0
+Public Type MinimapDotState
+    visible  As Boolean
+    screenX  As Long
+    screenY  As Long
+    dotColor As RGBA
+End Type
+Public MinimapDots(0 To 5) As MinimapDotState
+
 Public StopCreandoCuenta    As Boolean
 Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
-'Nueva seguridad
 Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
-
 'get mac adress
 Public Type Tclan
     Alineacion As Byte
@@ -536,6 +564,14 @@ TimerProc_Err:
     Resume Next
 End Sub
 
+Public Sub InitMinimapDotColors()
+    SetRGBA MinimapDots(0).dotColor, 255, 255, 255    ' player  : white
+    SetRGBA MinimapDots(1).dotColor, 255, 255, 0      ' ally 1  : yellow
+    SetRGBA MinimapDots(2).dotColor, 0, 192, 0        ' ally 2  : green
+    SetRGBA MinimapDots(3).dotColor, 255, 128, 0      ' ally 3  : orange
+    SetRGBA MinimapDots(4).dotColor, 255, 0, 255      ' ally 4  : magenta
+    SetRGBA MinimapDots(5).dotColor, 0, 0, 255        ' ally 5  : blue
+End Sub
 Public Function LoadPNGtoICO(pngData() As Byte) As IPicture
     On Error GoTo LoadPNGtoICO_Err
     Dim hIcon              As Long
@@ -1203,6 +1239,11 @@ End Sub
 
 Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Integer, ByVal tileY As Integer, Optional ByVal viewDeltaW As Long = 0, Optional ByVal viewDeltaH As Long = 0)
     On Error GoTo RenderMinimap_Err
+    Static colorsInit As Boolean
+    If Not colorsInit Then
+        Call InitMinimapDotColors
+        colorsInit = True
+    End If
     Dim i        As Integer
     Dim J        As Byte
     Dim idmap    As Integer
@@ -1224,57 +1265,51 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     If idmap = 0 Then Exit Sub
     ' Ensure destination units are pixels
     frmMain.MiniMap.ScaleMode = vbPixels
-    ' Load/cached world bitmap
-    Static lastWorld   As Byte
-    Static worldBitmap As StdPicture
-    If (lastWorld <> worldNum) Or (worldBitmap Is Nothing) Then
+    ' Load/cached world texture into the DirectX surface manager
+    Static lastWorld    As Byte
+    Static worldFileNum As Integer
+    Static bmpPxW       As Long
+    Static bmpPxH       As Long
+    If (lastWorld <> worldNum) Or (worldFileNum = 0) Then
+        Dim minimapFile As String
         Select Case worldNum
-            Case 1
-                Set worldBitmap = LoadInterface("mapa1_200x200.bmp", False)
-            Case 2
-                Set worldBitmap = LoadInterface("mapa2_200x200.bmp", False)
-            Case Else
-                Set worldBitmap = Nothing
+            Case 1: minimapFile = "mapa1_200x200.bmp"
+            Case 2: minimapFile = "mapa2_200x200.bmp"
+            Case Else: minimapFile = ""
         End Select
+        If minimapFile = "" Then Exit Sub
+        worldFileNum = -CInt(worldNum)
+        Call SurfaceDB.GetInterfaceTexture(worldFileNum, minimapFile, bmpPxW, bmpPxH)
+        If bmpPxW = 0 Or bmpPxH = 0 Then
+            worldFileNum = 0
+            Exit Sub
+        End If
         lastWorld = worldNum
     End If
-    If (worldBitmap Is Nothing) Then Exit Sub
-    ' Convert HIMETRIC to pixels for the actual bitmap size
-    Dim bmpPxW As Long, bmpPxH As Long
-    bmpPxW = frmMain.MiniMap.ScaleX(worldBitmap.Width, vbHimetric, vbPixels)
-    bmpPxH = frmMain.MiniMap.ScaleY(worldBitmap.Height, vbHimetric, vbPixels)
+    If worldFileNum = 0 Then Exit Sub
     ' Grid of maps in the world image
     Dim mapCellsX As Long, mapCellsY As Long
     mapCellsX = Mundo(worldNum).Ancho   ' e.g., 100
     mapCellsY = Mundo(worldNum).Alto    ' e.g., 100
     ' Size of one map cell in pixels on the world image
-    Dim mapCellPxW As Double, mapCellPxH As Double
-    mapCellPxW = CDbl(bmpPxW) / CDbl(mapCellsX)
-    mapCellPxH = CDbl(bmpPxH) / CDbl(mapCellsY)
+    Dim mapCellPxW As Double: mapCellPxW = bmpPxW / mapCellsX
+    Dim mapCellPxH As Double: mapCellPxH = bmpPxH / mapCellsY
     ' Current map's grid coordinates on the world image
     mapGridX = (idmap - 1) Mod mapCellsX
-    mapGridY = Int((idmap - 1) / mapCellsX)
+    mapGridY = (idmap - 1) \ mapCellsX
     ' Usable tile ranges inside a map
-    Const MIN_TILE_X As Long = 14
-    Const MAX_TILE_X As Long = 87
-    Const MIN_TILE_Y As Long = 11
-    Const MAX_TILE_Y As Long = 90
+    ' Usable tile ranges inside a map (using module-level constants)
     Dim tileCountX   As Long, tileCountY As Long
-    tileCountX = (MAX_TILE_X - MIN_TILE_X + 1) ' 74 tiles
-    tileCountY = (MAX_TILE_Y - MIN_TILE_Y + 1) ' 80 tiles
+    tileCountX = MINIMAP_TILE_COUNT_X ' 74 tiles
+    tileCountY = MINIMAP_TILE_COUNT_Y ' 80 tiles
     ' Clamp incoming tile to valid range, just in case
-    If tileX < MIN_TILE_X Then tileX = MIN_TILE_X
-    If tileX > MAX_TILE_X Then tileX = MAX_TILE_X
-    If tileY < MIN_TILE_Y Then tileY = MIN_TILE_Y
-    If tileY > MAX_TILE_Y Then tileY = MAX_TILE_Y
-    ' Fractional position of the player inside the map cell, using tile center
-    Dim fracX As Double, fracY As Double
-    fracX = (CDbl(tileX - MIN_TILE_X) + 0.5) / CDbl(tileCountX)
-    fracY = (CDbl(tileY - MIN_TILE_Y) + 0.5) / CDbl(tileCountY)
-    ' Player pixel center on the world image
-    Dim centerPxX As Double, centerPxY As Double
-    centerPxX = (CDbl(mapGridX) + fracX) * mapCellPxW
-    centerPxY = (CDbl(mapGridY) + fracY) * mapCellPxH
+    If tileX < MINIMAP_MIN_TILE_X Then tileX = MINIMAP_MIN_TILE_X
+    If tileX > MINIMAP_MAX_TILE_X Then tileX = MINIMAP_MAX_TILE_X
+    If tileY < MINIMAP_MIN_TILE_Y Then tileY = MINIMAP_MIN_TILE_Y
+    If tileY > MINIMAP_MAX_TILE_Y Then tileY = MINIMAP_MAX_TILE_Y
+    ' Player pixel center on the world image (tile center = offset + 0.5)
+    Dim centerPxX As Long: centerPxX = CLng((mapGridX + (tileX - MINIMAP_MIN_TILE_X + 0.5) / tileCountX) * mapCellPxW)
+    Dim centerPxY As Long: centerPxY = CLng((mapGridY + (tileY - MINIMAP_MIN_TILE_Y + 0.5) / tileCountY) * mapCellPxH)
     ' Destination size (control size)
     Dim destW As Long, destH As Long
     destW = frmMain.MiniMap.ScaleWidth
@@ -1296,17 +1331,26 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     If srcH > bmpPxH Then srcH = bmpPxH
     ' Source top-left so that the player is centered in the source crop
     Dim srcX As Long, srcY As Long
-    srcX = CLng(centerPxX - (srcW / 2#))
-    srcY = CLng(centerPxY - (srcH / 2#))
+    srcX = centerPxX - srcW \ 2
+    srcY = centerPxY - srcH \ 2
     ' Clamp to bitmap bounds based on source crop size
     If srcX < 0 Then srcX = 0
     If srcY < 0 Then srcY = 0
     If srcX > (bmpPxW - srcW) Then srcX = bmpPxW - srcW
     If srcY > (bmpPxH - srcH) Then srcY = bmpPxH - srcH
-    ' Draw: scale the selected source crop to fill the destination control
-    frmMain.MiniMap.Cls
-    frmMain.MiniMap.PaintPicture worldBitmap, 0, 0, destW, destH, srcX, srcY, srcW, srcH
-    ' Store for overlays (e.g., NPC markers) that need to map world->viewport
+    ' Draw: use DirectX 8 rendering instead of slow PaintPicture
+    Call Minimap_Render_Cropped_To_Hdc(frmMain.MiniMap, worldFileNum, 0, 0, destW, destH, srcX, srcY, srcW, srcH, vbBlack)
+    ' Store viewport state so ally dots can be projected onto the current view
+    MinimapVP_SrcX = srcX
+    MinimapVP_SrcY = srcY
+    MinimapVP_SrcW = srcW
+    MinimapVP_SrcH = srcH
+    MinimapVP_DestW = destW
+    MinimapVP_DestH = destH
+    MinimapVP_MapGridX = mapGridX
+    MinimapVP_MapGridY = mapGridY
+    MinimapVP_CellPxW = mapCellPxW
+    MinimapVP_CellPxH = mapCellPxH
     Exit Sub
 RenderMinimap_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.RenderMinimapCentered", Erl)
