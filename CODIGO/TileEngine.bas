@@ -976,7 +976,7 @@ Grh_Render_To_HdcSinBorrar_Err:
     Resume Next
 End Sub
 
-Public Sub CreateDx8ImagePoppup(ByRef pic As PictureBox, _
+Public Sub Dx8RenderedImgIntoPic(ByRef pic As PictureBox, _
                                          ByVal TextureFileNum As Integer, _
                                          ByVal TextureFileName As String, _
                                          ByVal DestX As Long, _
@@ -988,7 +988,7 @@ Public Sub CreateDx8ImagePoppup(ByRef pic As PictureBox, _
                                          ByVal srcWidth As Long, _
                                          ByVal srcHeight As Long, _
                                          Optional ByVal ClearColor As Long = &H0)
-    On Error GoTo CreateDx8ImagePoppup_Err
+    On Error GoTo Dx8RenderedImgIntoPic_Err
     
     ' Determine if PNG or BMP
     Dim isPNG As Boolean
@@ -1080,9 +1080,9 @@ Public Sub CreateDx8ImagePoppup(ByRef pic As PictureBox, _
     
     Exit Sub
 
-CreateDx8ImagePoppup_Err:
-    Call RegistrarError(Err.Number, Err.Description, "TileEngine.CreateDx8ImagePoppup", Erl)
-    frmDebug.add_text_tracebox "Error in CreateDx8ImagePoppup: " & Err.Description
+Dx8RenderedImgIntoPic_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Dx8RenderedImgIntoPic", Erl)
+    frmDebug.add_text_tracebox "Error in Dx8RenderedImgIntoPic: " & Err.Description
     Resume Next
 End Sub
 
