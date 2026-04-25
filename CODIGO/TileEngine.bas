@@ -976,6 +976,68 @@ Grh_Render_To_HdcSinBorrar_Err:
     Resume Next
 End Sub
 
+Public Sub CreateDx8ImagePoppup(ByRef pic As PictureBox, _
+                                         ByVal TextureFileNum As Integer, _
+                                         ByVal TextureFileName As String, _
+                                         ByVal DestX As Long, _
+                                         ByVal DestY As Long, _
+                                         ByVal destWidth As Long, _
+                                         ByVal destHeight As Long, _
+                                         ByVal srcX As Long, _
+                                         ByVal srcY As Long, _
+                                         ByVal srcWidth As Long, _
+                                         ByVal srcHeight As Long, _
+                                         Optional ByVal ClearColor As Long = &H0)
+    On Error GoTo CreateDx8ImagePoppup_Err
+    Dim d3dTex        As D3D8Textures
+    Dim srcRect       As RECT
+    Dim dstRect       As RECT
+    Dim picRect       As RECT
+    Dim temp_verts(3) As TYPE_VERTEX
+    Dim di            As Integer
+    Dim dv(3)         As TYPE_VERTEX
+    Dim cx            As Single
+    Dim cy            As Single
+    Dim dH            As Integer
+    Set d3dTex.Texture = SurfaceDB.GetInterfaceTexture(0, TextureFileName, d3dTex.texwidth, d3dTex.texheight)
+    If d3dTex.Texture Is Nothing Then Exit Sub
+    With picRect
+        .Left = 0
+        .Top = 0
+        .Right = pic.ScaleWidth
+        .Bottom = pic.ScaleHeight
+    End With
+    With srcRect
+        .Left = srcX
+        .Top = srcY
+        .Right = srcX + srcWidth
+        .Bottom = srcY + srcHeight
+    End With
+    With dstRect
+        .Left = DestX
+        .Top = DestY
+        .Right = DestX + destWidth
+        .Bottom = DestY + destHeight
+    End With
+    Geometry_Create_Box temp_verts(), dstRect, srcRect, COLOR_WHITE, d3dTex.texwidth, d3dTex.texheight, 0
+    Call DirectDevice.BeginScene
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
+    DirectDevice.SetTexture 0, d3dTex.Texture
+    DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
+    ' Draw overlay dots (player + allies) as untextured coloured quads
+    DirectDevice.SetTexture 0, Nothing
+    DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_SELECTARG2
+    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2
+    Call DirectDevice.EndScene
+    Call DirectDevice.Present(picRect, ByVal 0, pic.hWnd, ByVal 0)
+    Exit Sub
+CreateDx8ImagePoppup_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.CreateDx8ImagePoppup", Erl)
+    Resume Next
+End Sub
+
+
+
 ' Renders a cropped and scaled region of a texture into a PictureBox using DirectX 8.
 ' TextureFileNum : key previously registered with SurfaceDB.GetInterfaceTexture (e.g. -1, -2)
 ' destX/Y/Width/Height : destination rectangle in the PictureBox (pixels)

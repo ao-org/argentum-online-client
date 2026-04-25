@@ -984,6 +984,29 @@ Begin VB.Form frmMain
       Top             =   2280
       Width           =   11040
    End
+   Begin VB.PictureBox CollectibleCardVisor 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      BorderStyle     =   0  'None
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H80000008&
+      Height          =   9120
+      Left            =   0
+      ScaleHeight     =   608
+      ScaleMode       =   3  'Pixel
+      ScaleWidth      =   736
+      TabIndex        =   46
+      Top             =   2160
+      Width           =   11040
+   End
    Begin VB.Image btnZoomIn 
       Height          =   195
       Left            =   11175

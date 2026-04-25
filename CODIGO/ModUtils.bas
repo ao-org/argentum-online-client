@@ -247,6 +247,7 @@ Public Type ObjDatas
     EarthEssence As Integer
     WindEssence As Integer
     ElementalTags As Long
+    CollectibleCardImgPathing As String
 End Type
 
 Public Type NpcDatas
