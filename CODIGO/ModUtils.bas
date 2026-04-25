@@ -46,14 +46,6 @@ Public Type MinimapDotState
 End Type
 Public MinimapDots(0 To 5) As MinimapDotState
 
-Public Sub InitMinimapDotColors()
-    SetRGBA MinimapDots(0).dotColor, 255, 255, 255    ' player  : white
-    SetRGBA MinimapDots(1).dotColor, 255, 255, 0      ' ally 1  : yellow
-    SetRGBA MinimapDots(2).dotColor, 0, 192, 0        ' ally 2  : green
-    SetRGBA MinimapDots(3).dotColor, 255, 128, 0      ' ally 3  : orange
-    SetRGBA MinimapDots(4).dotColor, 255, 0, 255      ' ally 4  : magenta
-    SetRGBA MinimapDots(5).dotColor, 0, 0, 255        ' ally 5  : blue
-End Sub
 Public StopCreandoCuenta    As Boolean
 Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
@@ -572,6 +564,14 @@ TimerProc_Err:
     Resume Next
 End Sub
 
+Public Sub InitMinimapDotColors()
+    SetRGBA MinimapDots(0).dotColor, 255, 255, 255    ' player  : white
+    SetRGBA MinimapDots(1).dotColor, 255, 255, 0      ' ally 1  : yellow
+    SetRGBA MinimapDots(2).dotColor, 0, 192, 0        ' ally 2  : green
+    SetRGBA MinimapDots(3).dotColor, 255, 128, 0      ' ally 3  : orange
+    SetRGBA MinimapDots(4).dotColor, 255, 0, 255      ' ally 4  : magenta
+    SetRGBA MinimapDots(5).dotColor, 0, 0, 255        ' ally 5  : blue
+End Sub
 Public Function LoadPNGtoICO(pngData() As Byte) As IPicture
     On Error GoTo LoadPNGtoICO_Err
     Dim hIcon              As Long

@@ -341,7 +341,7 @@ Public Function GetInterfaceTexture(ByVal key As Integer, ByVal filename As Stri
     Dim loadResult As Long
     loadResult = LoadInterfaceTexture(filename, tex)
     If loadResult <> D3D_OK Or tex Is Nothing Then
-        frmDebug.add_text_tracebox "Â¡No se pudo cargar la textura de interfaz: " & filename & "!"
+        frmDebug.add_text_tracebox "¡No se pudo cargar la textura de interfaz: " & filename & "!"
         Exit Function
     End If
     ' Query size
@@ -387,7 +387,7 @@ Private Function LoadInterfaceTexture(ByVal filename As String, ByRef Dest As Di
         pngName = LCase$(filename)
         If Right$(pngName, 4) = ".bmp" Then pngName = Left$(pngName, Len(pngName) - 4) & ".png"
         If Not Extract_File_To_Memory(interface, App.path & "\..\Recursos\OUTPUT", pngName, bytArr, ResourcesPassword) Then
-            frmDebug.add_text_tracebox "Â¡No se puede cargar la textura de interfaz: " & pngName & "!"
+            frmDebug.add_text_tracebox "¡No se puede cargar la textura de interfaz: " & pngName & "!"
             Exit Function
         End If
         Set Dest = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, _
@@ -396,7 +396,7 @@ Private Function LoadInterfaceTexture(ByVal filename As String, ByRef Dest As Di
         Dim PathToFile As String
         PathToFile = App.path & "\..\Recursos\interface\" & LCase$(filename)
         If Not FileExist(PathToFile, vbArchive) Then
-            frmDebug.add_text_tracebox "Â¡No se puede cargar la textura de interfaz: " & PathToFile & "!"
+            frmDebug.add_text_tracebox "¡No se puede cargar la textura de interfaz: " & PathToFile & "!"
             Exit Function
         End If
         Set Dest = mD3D.CreateTextureFromFileEx(device, PathToFile, 0, 0, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, 0, ByVal 0, _
