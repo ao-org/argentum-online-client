@@ -43,23 +43,26 @@ End Enum
 Private Const NUM_CURSORS = 7
 Private hndlList(0 To NUM_CURSORS) As IPictureDisp
  
-Public Sub Parse_Form(ByRef aFrm As Form, Optional ByVal cType As CursorType = E_NORMAL)
+Public Sub Parse_Form(ByRef aFrm As Form, Optional ByVal ctype As CursorType = E_NORMAL)
     On Error GoTo Parse_Form_Err
     ' Exit if CursoresGraficos is disabled
     If CursoresGraficos = 0 Then Exit Sub
     Dim aControl  As Control
     Dim lngHandle As Long
     ' Determine the cursor handle based on the type
-    lngHandle = GetCursorHandle(cType)
+    lngHandle = GetCursorHandle(ctype)
     ' Loop through each control on the form
     For Each aControl In aFrm.Controls
-        On Error Resume Next ' Minimal error handling inside loop
-        aControl.MouseIcon = hndlList(cType)
-        aControl.MousePointer = vbCustom
-        On Error GoTo Parse_Form_Err
+        ' Check if the control supports MousePointer property
+        If SupportsMousePointer(aControl) Then
+            On Error Resume Next ' Minimal error handling inside loop
+            aControl.MouseIcon = hndlList(ctype)
+            aControl.MousePointer = vbCustom
+            On Error GoTo Parse_Form_Err
+        End If
     Next
     ' Set the form's mouse properties
-    aFrm.MouseIcon = hndlList(cType)
+    aFrm.MouseIcon = hndlList(ctype)
     aFrm.MousePointer = vbCustom
     Exit Sub
 Parse_Form_Err:
@@ -68,9 +71,17 @@ Parse_Form_Err:
     Resume Next
 End Sub
 
+Private Function SupportsMousePointer(ctrl As Control) As Boolean
+    On Error Resume Next
+    Dim testValue As Integer
+    testValue = ctrl.MousePointer
+    SupportsMousePointer = (Err.Number = 0)
+    On Error GoTo 0
+End Function
+
 ' Helper function to determine the cursor handle based on type
-Private Function GetCursorHandle(ByVal cType As CursorType) As Long
-    Select Case cType
+Private Function GetCursorHandle(ByVal ctype As CursorType) As Long
+    Select Case ctype
         Case E_WAIT
             GetCursorHandle = vbHourglass
         Case E_NORMAL
