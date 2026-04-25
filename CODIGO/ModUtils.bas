@@ -30,8 +30,8 @@ Public MinimapVP_SrcX     As Long   ' viewport top-left X in world-image pixels
 Public MinimapVP_SrcY     As Long   ' viewport top-left Y in world-image pixels
 Public MinimapVP_SrcW     As Long   ' viewport width  in world-image pixels
 Public MinimapVP_SrcH     As Long   ' viewport height in world-image pixels
-Public MinimapVP_DestW    As Long   ' minimap control width  in screen pixels
-Public MinimapVP_DestH    As Long   ' minimap control height in screen pixels
+Public MinimapVP_DestW As Long  ' minimap control width  in screen pixels
+Public MinimapVP_DestH As Long ' minimap control height in screen pixels
 Public MinimapVP_MapGridX As Long   ' player map grid column in the world image
 Public MinimapVP_MapGridY As Long   ' player map grid row    in the world image
 Public MinimapVP_CellPxW  As Double ' world-image pixel width  of one map cell

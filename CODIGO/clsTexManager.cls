@@ -298,7 +298,7 @@ Private Function LoadTexture(ByVal filename As String, ByRef Dest As Direct3DTex
             Exit Function
         End If
         Set Dest = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, _
-                D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
+        D3DX_FILTER_POINT, D3DX_FILTER_POINT, 0, ByVal 0, ByVal 0)
     #Else
         Dim PathToFile As String
         PathToFile = App.path & "\..\Recursos\Graficos\" & LTrim$(filename) & ".png"
@@ -399,8 +399,8 @@ Private Function LoadInterfaceTexture(ByVal filename As String, ByRef Dest As Di
             frmDebug.add_text_tracebox "¡No se puede cargar la textura de interfaz: " & PathToFile & "!"
             Exit Function
         End If
-        Set Dest = mD3D.CreateTextureFromFileEx(device, PathToFile, 0, 0, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, 0, ByVal 0, _
-                ByVal 0)
+        Set dest = mD3D.CreateTextureFromFileEx(device, PathToFile, 0, 0, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, D3DX_FILTER_POINT, D3DX_FILTER_POINT, 0, ByVal 0, _
+        ByVal 0)
     #End If
     Debug.Assert (Not (Dest Is Nothing))
     Exit Function

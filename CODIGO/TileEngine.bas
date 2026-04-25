@@ -1036,7 +1036,7 @@ Public Sub Minimap_Render_Cropped_To_Hdc(ByRef pic As PictureBox, _
         If MinimapDots(di).visible Then
             cx = MinimapDots(di).screenX
             cy = MinimapDots(di).screenY
-            If di = 0 Then dh = 2 Else dh = 1
+            dH = 1
             dv(0).x = cx - dh:     dv(0).y = cy + dh + 1: dv(0).z = 0: dv(0).color = MinimapDots(di).dotColor
             dv(1).x = cx - dh:     dv(1).y = cy - dh:     dv(1).z = 0: dv(1).color = MinimapDots(di).dotColor
             dv(2).x = cx + dh + 1: dv(2).y = cy + dh + 1: dv(2).z = 0: dv(2).color = MinimapDots(di).dotColor
