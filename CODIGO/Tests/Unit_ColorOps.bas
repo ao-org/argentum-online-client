@@ -137,21 +137,26 @@ End Function
 ' Validates: Requirements 2.8
 Private Function test_prop_long_roundtrip() As Boolean
     On Error GoTo Fail
-    Dim iterations As Long: iterations = 0
+    Dim iterations As Long
     Dim i As Long
+    Dim R As Byte
+    Dim G As Byte
+    Dim B As Byte
+    Dim A As Byte
+    Dim c As RGBA
+    Dim lng As Long
+    Dim result As RGBA
+    iterations = 0
     For i = 1 To 120
-        Dim R As Byte: R = CByte(i Mod 256)
-        Dim G As Byte: G = CByte((i * 3) Mod 256)
-        Dim B As Byte: B = CByte((i * 7) Mod 256)
-        Dim A As Byte: A = CByte((i * 11) Mod 256)
+        R = CByte(i Mod 256)
+        G = CByte((i * 3) Mod 256)
+        B = CByte((i * 7) Mod 256)
+        A = CByte((i * 11) Mod 256)
         
-        Dim c As RGBA
         c = RGBA_From_Comp(R, G, B, A)
         
-        Dim lng As Long
         lng = RGBA_2_Long(c)
         
-        Dim result As RGBA
         result = RGBA_From_Long(lng)
         
         If result.R <> R Or result.G <> G Or result.B <> B Or result.A <> A Then

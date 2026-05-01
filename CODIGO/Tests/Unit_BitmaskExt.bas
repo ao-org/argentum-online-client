@@ -77,10 +77,13 @@ End Function
 Private Function test_prop_set_unset_roundtrip() As Boolean
     On Error GoTo Fail
     Dim i As Long
+    Dim bitPos As Long
+    Dim v As Long
+    Dim m As Long
     For i = 1 To 120
-        Dim bitPos As Long: bitPos = (i - 1) Mod 31  ' 0 to 30
-        Dim v As Long: v = 2 ^ bitPos  ' single-bit power-of-2
-        Dim m As Long: m = 0
+        bitPos = (i - 1) Mod 31  ' 0 to 30
+        v = 2 ^ bitPos  ' single-bit power-of-2
+        m = 0
         Call SetMask(m, v)
         Call UnsetMask(m, v)
         If IsSet(m, v) Then

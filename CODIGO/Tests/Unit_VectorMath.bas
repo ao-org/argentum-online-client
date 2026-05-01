@@ -238,16 +238,19 @@ End Function
 ' **Validates: Requirements 1.11**
 Private Function test_prop_sq_vs_len() As Boolean
     On Error GoTo Fail
-    Dim iterations As Long: iterations = 0
+    Dim iterations As Long
     Dim i As Long
+    Dim v As Vector2
+    Dim sqLen As Single
+    Dim vecLen As Single
+    iterations = 0
     For i = 1 To 120
-        Dim v As Vector2
         ' Generate deterministic values from i
         v.x = CSng(i * 1.5 - 90)
         v.y = CSng(i * 0.7 - 42)
-        Dim sqLen As Single: sqLen = VecSqLength(v)
-        Dim len As Single: len = VecLength(v)
-        If Abs(sqLen - len * len) > 0.01 Then
+        sqLen = VecSqLength(v)
+        vecLen = VecLength(v)
+        If Abs(sqLen - vecLen * vecLen) > 0.01 Then
             test_prop_sq_vs_len = False
             Exit Function
         End If
@@ -263,17 +266,19 @@ End Function
 ' **Validates: Requirements 1.12**
 Private Function test_prop_add_sub_roundtrip() As Boolean
     On Error GoTo Fail
-    Dim iterations As Long: iterations = 0
+    Dim iterations As Long
     Dim i As Long
+    Dim a As Vector2
+    Dim b As Vector2
+    Dim roundtrip As Vector2
+    iterations = 0
     For i = 1 To 120
-        Dim a As Vector2, b As Vector2
         ' Generate two Vector2 pairs deterministically from loop index
         a.x = CSng(i * 1.3 - 78)
         a.y = CSng(i * 0.9 - 54)
         b.x = CSng(i * 2.1 - 126)
         b.y = CSng(i * 0.4 - 24)
         ' Round-trip: VSubs(VAdd(a, b), a) should equal b
-        Dim roundtrip As Vector2
         roundtrip = VSubs(VAdd(a, b), a)
         If Abs(roundtrip.x - b.x) > 0.01 Then
             test_prop_add_sub_roundtrip = False
