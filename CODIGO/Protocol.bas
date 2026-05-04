@@ -5720,17 +5720,20 @@ End Sub
 Public Sub HandlePrivilegios()
     On Error GoTo errhandler
     EsGM = Reader.ReadBool
-    If EsGM And charlist(UserCharIndex).priv <> 2 Then
+    If EsGM Then
         frmMain.panelGM.visible = True
         frmMain.createObj.visible = True
         frmMain.btnInvisible.visible = True
         frmMain.btnSpawn.visible = True
-        frmMain.onlines.visible = True
     Else
         frmMain.panelGM.visible = False
         frmMain.createObj.visible = False
         frmMain.btnInvisible.visible = False
         frmMain.btnSpawn.visible = False
+    End If
+    If EsGM And charlist(UserCharIndex).priv <> 2 Then
+        frmMain.onlines.visible = True
+    Else
         frmMain.onlines.visible = False
     End If
     Exit Sub
