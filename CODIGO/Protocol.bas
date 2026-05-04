@@ -4641,8 +4641,10 @@ Private Sub HandleShowSOSForm()
         Consulta = ReadField(2, sosList(i), Asc("Ø"))
         TipoDeConsulta = ReadField(3, sosList(i), Asc("Ø"))
         FechaHoraDeConsulta = ReadField(4, sosList(i), Asc("Ø"))
-        frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ") - " & format(FechaHoraDeConsulta, "dd/MM/yyyy hh:mm AM/PM")
-        frmPanelgm.List2.AddItem Consulta
+        If TipoDeConsulta = "Consulta regular" Or charlist(UserCharIndex).priv <> 2 Then
+            frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ") - " & format(FechaHoraDeConsulta, "dd/MM/yyyy hh:mm AM/PM")
+            frmPanelgm.List2.AddItem Consulta
+        End If
     Next i
     Exit Sub
 errhandler:
@@ -5718,7 +5720,7 @@ End Sub
 Public Sub HandlePrivilegios()
     On Error GoTo errhandler
     EsGM = Reader.ReadBool
-    If EsGM Then
+    If EsGM And charlist(UserCharIndex).priv <> 2 Then
         frmMain.panelGM.visible = True
         frmMain.createObj.visible = True
         frmMain.btnInvisible.visible = True
