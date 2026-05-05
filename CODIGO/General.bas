@@ -1150,11 +1150,12 @@ Public Sub CloseClient()
     ' Allow new instances of the client to be opened
     On Error GoTo CloseClient_Err
     UserSaliendo = True
+    prgRun = False
+    EngineRun = False
     Call SaveConfig
     Call UnloadAntiCheat
     Call PrevInstance.ReleaseInstance
     ao20audio.StopAllPlayback
-    EngineRun = False
     Call General_Set_Mouse_Speed(SensibilidadMouseOriginal)
     Call Resolution.ResetResolution
     Set SurfaceDB = Nothing

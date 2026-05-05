@@ -2306,7 +2306,7 @@ Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
     On Error GoTo Form_QueryUnload_Err
     If prgRun = True Then
         prgRun = False
-        Cancel = 1
+        ' Allow the unload to proceed immediately after stopping the main loop.
     End If
     Exit Sub
 Form_QueryUnload_Err:

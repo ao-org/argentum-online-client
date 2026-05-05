@@ -1684,6 +1684,14 @@ Begin VB.Form frmPanelgm
             Index           =   5
          End
          Begin VB.Menu mnuReload 
+            Caption         =   "Cuerpos"
+            Index           =   9
+         End
+         Begin VB.Menu mnuReload 
+            Caption         =   "Graficos"
+            Index           =   10
+         End
+         Begin VB.Menu mnuReload 
             Caption         =   "NPCs"
             Index           =   6
          End
@@ -2858,6 +2866,23 @@ mnuIP_Click_Err:
     Resume Next
 End Sub
 
+Private Sub mnuReload_Click(Index As Integer)
+    On Error GoTo mnuReload_Click_Err
+    Select Case Index
+        Case 9
+            Call CargarCuerpos
+            MsgBox "Archivo cuerpos.dat recargado.", vbInformation, "PanelGM"
+        Case 10
+            Call LoadGrhIni
+            MsgBox "Archivo Graficos.ini recargado.", vbInformation, "PanelGM"
+        Case Else
+            ' Otros valores de recarga pueden manejarse aquí si es necesario.
+    End Select
+    Exit Sub
+mnuReload_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuReload_Click", Erl)
+    Resume Next
+End Sub
 
 Private Sub MOTD_Click()
     On Error GoTo MOTD_Click_Err
