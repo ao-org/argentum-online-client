@@ -1,0 +1,20 @@
+{
+    "files.encoding": "windows1252",
+    "files.autoGuessEncoding": false,
+    "[vb6]": {
+        "files.encoding": "windows1252"
+    },
+    "files.associations": {
+        "*.bas": "vb6",
+        "*.cls": "vb6",
+        "*.frm": "vb6",
+        "*.vbp": "vb6"
+    },
+    "[json]": {
+        "files.encoding": "windows1252"
+    },
+    "files.eol": "\r\n",
+    "[markdown]": {
+        "files.encoding": "utf8"
+    }
+}

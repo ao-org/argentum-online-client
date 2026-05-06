@@ -11,5 +11,22 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "VB6 Git Ignore Case Pre-commit hook finished."
+
+# Check if any language files are being committed
+LANG_FILES=$(git diff --cached --name-only | grep "^Languages/[1-5]\.json$")
+if [ -n "$LANG_FILES" ]; then
+    if command -v node &> /dev/null; then
+        echo "Language files changed, validating..."
+        node scripts/validate-languages.js
+        if [ $? -ne 0 ]; then
+            echo "Language validation failed. Commit aborted."
+            exit 1
+        fi
+        echo "Language validation passed."
+    else
+        echo "Warning: Node.js not found, skipping language validation. CI will validate on PR."
+    fi
+fi
+
 # If your script passes, allow the commit to proceed
 exit 0

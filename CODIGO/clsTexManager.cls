@@ -30,7 +30,7 @@ Attribute VB_Exposed = False
 '    Argentum 20 - Game Client Program
 '    Copyright (C) ...
 '
-'    clsTexManager — ad-hoc hash table version (no Scripting.Dictionary)
+'    clsTexManager ad-hoc hash table version (no Scripting.Dictionary)
 Option Explicit
 '======================
 ' Hash table parameters
@@ -294,16 +294,16 @@ Private Function LoadTexture(ByVal filename As String, ByRef Dest As Direct3DTex
     Dim bytArr() As Byte
     #If Compresion = 1 Then
         If Not Extract_File_To_Memory(Graphics, App.path & "\..\Recursos\OUTPUT\", LTrim$(filename) & ".png", bytArr, ResourcesPassword) Then
-            frmDebug.add_text_tracebox "¡No se puede cargar el grafico numero " & filename & "!"
+            frmDebug.add_text_tracebox "No se puede cargar el grafico numero " & filename
             Exit Function
         End If
         Set Dest = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, _
-                D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, ByVal 0)
+        D3DX_FILTER_POINT, D3DX_FILTER_POINT, 0, ByVal 0, ByVal 0)
     #Else
         Dim PathToFile As String
         PathToFile = App.path & "\..\Recursos\Graficos\" & LTrim$(filename) & ".png"
         If Not FileExist(PathToFile, vbArchive) Then
-            frmDebug.add_text_tracebox "¡No se puede cargar el grafico numero " & PathToFile & "!"
+            frmDebug.add_text_tracebox "No se puede cargar el grafico numero " & PathToFile
             Exit Function
         End If
         Set Dest = mD3D.CreateTextureFromFileEx(device, PathToFile, 0, 0, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, &HFF000000, ByVal 0, _
@@ -313,6 +313,99 @@ Private Function LoadTexture(ByVal filename As String, ByRef Dest As Direct3DTex
     Exit Function
 LoadTexture_ErrHandler:
     LoadTexture = Err.Number
+End Function
+
+'======================
+' Public: get-or-load interface texture (PNG when Compresion=1, BMP when Compresion=0)
+' Use negative keys (e.g. -1, -2) to avoid collision with regular FileNum range.
+'======================
+Public Function GetInterfaceTexture(ByVal key As Integer, ByVal filename As String, ByRef textwidth As Long, ByRef textheight As Long) As Direct3DTexture8
+    On Error GoTo errhandler
+    Dim lKey As Long: lKey = key
+    Dim B    As Long: B = BucketIndex(lKey)
+    Dim J    As Long
+    ' 1) Cache hit
+    With TexList(B)
+        For J = 1 To .surfaceCount
+            If .SurfaceEntry(J).filename = lKey Then
+                .SurfaceEntry(J).UltimoAcceso = GetTickCount()
+                textwidth = .SurfaceEntry(J).texture_width
+                textheight = .SurfaceEntry(J).texture_height
+                Set GetInterfaceTexture = .SurfaceEntry(J).Texture
+                Exit Function
+            End If
+        Next J
+    End With
+    ' 2) Cache miss: load from interface resources
+    Dim tex        As Direct3DTexture8
+    Dim loadResult As Long
+    loadResult = LoadInterfaceTexture(filename, tex)
+    If loadResult <> D3D_OK Or tex Is Nothing Then
+        frmDebug.add_text_tracebox "¡No se pudo cargar la textura de interfaz: " & filename & "!"
+        Exit Function
+    End If
+    ' Query size
+    Dim desc As D3DSURFACE_DESC
+    Call tex.GetLevelDesc(0, desc)
+    textwidth = desc.Width
+    textheight = desc.Height
+    ' 3) Insert into bucket
+    With TexList(B)
+        .surfaceCount = .surfaceCount + 1
+        If .surfaceCount = 1 Then
+            ReDim .SurfaceEntry(1 To 1) As SURFACE_ENTRY
+        Else
+            ReDim Preserve .SurfaceEntry(1 To .surfaceCount) As SURFACE_ENTRY
+        End If
+        With .SurfaceEntry(.surfaceCount)
+            .filename = lKey
+            .UltimoAcceso = GetTickCount()
+            Set .Texture = tex
+            .texture_width = desc.Width
+            .texture_height = desc.Height
+            .size = desc.size
+        End With
+    End With
+    mTotalTextureCount = mTotalTextureCount + 1
+    mTotalAllocatedBytes = mTotalAllocatedBytes + desc.size
+    Set GetInterfaceTexture = tex
+    Exit Function
+errhandler:
+    Call RegistrarError(Err.Number, Err.Description, "clsTexManager.GetInterfaceTexture", Erl)
+    Resume Next
+End Function
+
+'======================
+' Load interface texture: PNG from compressed archive (Compresion=1) or BMP from disk (Compresion=0)
+'======================
+Private Function LoadInterfaceTexture(ByVal filename As String, ByRef Dest As Direct3DTexture8) As Long
+    On Error GoTo LoadInterfaceTexture_ErrHandler
+    Set Dest = Nothing
+    Dim bytArr() As Byte
+    #If Compresion = 1 Then
+        Dim pngName As String
+        pngName = LCase$(filename)
+        If Right$(pngName, 4) = ".bmp" Then pngName = Left$(pngName, Len(pngName) - 4) & ".png"
+        If Not Extract_File_To_Memory(interface, App.path & "\..\Recursos\OUTPUT", pngName, bytArr, ResourcesPassword) Then
+            frmDebug.add_text_tracebox "¡No se puede cargar la textura de interfaz: " & pngName & "!"
+            Exit Function
+        End If
+        Set Dest = mD3D.CreateTextureFromFileInMemoryEx(device, bytArr(0), UBound(bytArr) + 1, D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, _
+                D3DX_FILTER_LINEAR, D3DX_FILTER_LINEAR, 0, ByVal 0, ByVal 0)
+    #Else
+        Dim PathToFile As String
+        PathToFile = App.path & "\..\Recursos\interface\" & LCase$(filename)
+        If Not FileExist(PathToFile, vbArchive) Then
+            frmDebug.add_text_tracebox "¡No se puede cargar la textura de interfaz: " & PathToFile & "!"
+            Exit Function
+        End If
+        Set dest = mD3D.CreateTextureFromFileEx(device, PathToFile, 0, 0, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, D3DX_FILTER_POINT, D3DX_FILTER_POINT, 0, ByVal 0, _
+        ByVal 0)
+    #End If
+    Debug.Assert (Not (Dest Is Nothing))
+    Exit Function
+LoadInterfaceTexture_ErrHandler:
+    LoadInterfaceTexture = Err.Number
 End Function
 
 '======================
