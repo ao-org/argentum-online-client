@@ -669,6 +669,7 @@ Private Sub Form_Load()
     Call cbRenderNpcs.AddItem(JsonLanguage.Item("MENSAJE_504")) ' Renderizado
     Call cbTutorial.AddItem(JsonLanguage.Item("MENSAJE_505")) ' Desactivado
     Call cbTutorial.AddItem(JsonLanguage.Item("MENSAJE_506")) ' Activado
+    If cbTutorial.ListCount > 0 Then cbTutorial.ListIndex = MostrarTutorial
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_578"))  ' Español
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_579"))  ' Inglés
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_600"))  ' Portugues
@@ -844,11 +845,16 @@ End Sub
 Private Sub cbTutorial_Click()
     If cbTutorial.ListIndex <> MostrarTutorial Then
         MostrarTutorial = cbTutorial.ListIndex
+        Dim i As Long
         If MostrarTutorial Then
-            Dim i As Long
             For i = 1 To UBound(tutorial)
                 Call SaveSetting("TUTORIAL" & i, "Activo", 1)
                 tutorial(i).Activo = 1
+            Next i
+        Else
+            For i = 1 To UBound(tutorial)
+                Call SaveSetting("TUTORIAL" & i, "Activo", 0)
+                tutorial(i).Activo = 0
             Next i
         End If
         Call SaveSetting("INITTUTORIAL", "MostrarTutorial", cbTutorial.ListIndex)
