@@ -1,8 +1,0 @@
-Corrección aplicada
-He ajustado frmOpciones.frm para que:
-
-cbTutorial.ListIndex se inicialice al valor actual de MostrarTutorial cuando se abre el formulario.
-Al seleccionar Desactivado, ahora también se guardan y desactivan todos los tutoriales individuales (tutorial(i).Activo = 0).
-Archivos modificados
-frmOpciones.frm
-Esto debe arreglar el problema visual del combo y hacer que el estado “DESACTIVADO” se aplique realmente.
