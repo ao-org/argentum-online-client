@@ -19,25 +19,74 @@ Option Explicit
 Private Const MAX_COMPROBACIONES As Byte = 4
 Private Declare Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
 Private ContadorMacroClicks(1 To MAX_COMPROBACIONES) As Position
+' Historial de los ultimos tiles absolutos clickeados (coordenada del mapa).
+Private ContadorMacroTilesAbsolutos(1 To MAX_COMPROBACIONES) As Position
+' Historial de tiles relativos al usuario (tile objetivo - posicion del personaje).
+Private ContadorMacroTilesRelativos(1 To MAX_COMPROBACIONES) As Position
 Public LastSentPosX                                  As Integer
 Public LastSentPosY                                  As Integer
 
-Public Function ComprobarPosibleMacro(ByVal mouseX As Integer, ByVal mouseY As Integer) As Boolean
+Public Function ComprobarPosibleMacro(ByVal mouseX As Integer, ByVal mouseY As Integer, Optional ByVal tileX As Integer = -1, Optional ByVal tileY As Integer = -1) As Boolean
     Call CopyMemory(ContadorMacroClicks(2), ContadorMacroClicks(1), Len(ContadorMacroClicks(1)) * (MAX_COMPROBACIONES - 1))
     ContadorMacroClicks(1).x = mouseX
     ContadorMacroClicks(1).y = mouseY
+
+    ' Si recibimos tile valido, tambien registramos el objetivo en coordenadas de mapa
+    ' y en coordenadas relativas al personaje para detectar patron repetitivo aunque se mueva el mouse.
+    If tileX >= 0 And tileY >= 0 Then
+        Call CopyMemory(ContadorMacroTilesAbsolutos(2), ContadorMacroTilesAbsolutos(1), Len(ContadorMacroTilesAbsolutos(1)) * (MAX_COMPROBACIONES - 1))
+        ContadorMacroTilesAbsolutos(1).x = tileX
+        ContadorMacroTilesAbsolutos(1).y = tileY
+
+        Call CopyMemory(ContadorMacroTilesRelativos(2), ContadorMacroTilesRelativos(1), Len(ContadorMacroTilesRelativos(1)) * (MAX_COMPROBACIONES - 1))
+        ContadorMacroTilesRelativos(1).x = tileX - UserPos.x
+        ContadorMacroTilesRelativos(1).y = tileY - UserPos.y
+    End If
+
     Dim i As Byte
+
+    ' Deteccion existente: 4 clicks seguidos en el mismo pixel de mouse.
     For i = 1 To MAX_COMPROBACIONES
         If ContadorMacroClicks(i).x <> mouseX Or ContadorMacroClicks(i).y <> mouseY Then
-            ComprobarPosibleMacro = False
-            Exit Function
+            Exit For
         End If
     Next i
-    ComprobarPosibleMacro = True
-    Call generarLogMacrero
+    If i > MAX_COMPROBACIONES Then
+        ComprobarPosibleMacro = True
+        Call generarLogMacrero
+        Exit Function
+    End If
+
+    ' Nuevo control adicional: 4 clicks seguidos al mismo tile absoluto o al mismo tile relativo al usuario.
+    If tileX >= 0 And tileY >= 0 Then
+        For i = 1 To MAX_COMPROBACIONES
+            If ContadorMacroTilesAbsolutos(i).x <> tileX Or ContadorMacroTilesAbsolutos(i).y <> tileY Then
+                Exit For
+            End If
+        Next i
+        If i > MAX_COMPROBACIONES Then
+            ComprobarPosibleMacro = True
+            Call generarLogMacrero
+            Exit Function
+        End If
+
+        For i = 1 To MAX_COMPROBACIONES
+            If ContadorMacroTilesRelativos(i).x <> (tileX - UserPos.x) Or ContadorMacroTilesRelativos(i).y <> (tileY - UserPos.y) Then
+                Exit For
+            End If
+        Next i
+        If i > MAX_COMPROBACIONES Then
+            ComprobarPosibleMacro = True
+            Call generarLogMacrero
+            Exit Function
+        End If
+    End If
+
+    ComprobarPosibleMacro = False
 End Function
 
 Private Sub generarLogMacrero()
+    ' Mantenemos el mismo tipo de log para no cambiar el protocolo ni la logica del servidor/panel GM.
     Call WriteLogMacroClickHechizo(tMacro.inasistidoPosFija)
 End Sub
 

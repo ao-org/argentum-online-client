@@ -220,7 +220,8 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
                     End If
                     If SendSkill Then
                         If UsingSkill = eSkill.magia Then
-                            If ComprobarPosibleMacro(mouseX, mouseY) Then
+                            ' Pasamos mouse + tile para que el detector combine patron en pantalla y patron en mapa.
+                            If ComprobarPosibleMacro(mouseX, mouseY, tX, tY) Then
                                 Call WriteWorkLeftClick(tX + RandomNumber(-2, 2), tY + RandomNumber(-2, 2), UsingSkill)
                             Else
                                 Call WriteWorkLeftClick(tX, tY, UsingSkill)
