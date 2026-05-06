@@ -4073,20 +4073,41 @@ HandleShowForumForm_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleShowForumForm", Erl)
 End Sub
 
-''
-' Handles the SetInvisible message.
 Private Sub HandleSetInvisible()
     On Error GoTo HandleSetInvisible_Err
+    
     Dim charindex As Integer
-    Dim x         As Byte, y As Byte
+    Dim x As Byte, y As Byte
+    
     charindex = Reader.ReadInt16()
+    
+    ' Validation 1: Check if charindex is within valid bounds
+    If charindex < LBound(charlist) Or charindex > UBound(charlist) Then
+        Call frmDebug.add_text_tracebox("Error HandleSetInvisible, charindex = " & charindex & " invalido")
+        Exit Sub
+    End If
+    
     charlist(charindex).Invisible = Reader.ReadBool()
     charlist(charindex).TimerI = 0
+    
     x = Reader.ReadInt8()
     y = Reader.ReadInt8()
+    
+    ' Validation 2: Check if x and y are within map bounds
+    If x < LBound(MapData, 1) Or x > UBound(MapData, 1) Or _
+       y < LBound(MapData, 2) Or y > UBound(MapData, 2) Then
+        Call frmDebug.add_text_tracebox("Error HandleSetInvisible, charindex = " & charindex & " out of map bounds")
+        Exit Sub
+    End If
+    
     If x + y > 0 Then
         With charlist(charindex)
             If charindex <> UserCharIndex Then
+                ' Validation 3: Check UserCharIndex before using it
+                If UserCharIndex < LBound(charlist) Or UserCharIndex > UBound(charlist) Then
+                    Exit Sub
+                End If
+                
                 If .Invisible Then
                     If Not IsCharVisible(charindex) And General_Distance_Get(x, y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS Then
                         If .clan_index > 0 Then
@@ -4096,16 +4117,33 @@ Private Sub HandleSetInvisible()
                                 End If
                             End If
                         End If
+                        
                         If .Meditating Then Exit Sub
-                        If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+                        
+                        ' Validation 4: Check pos.x and pos.y before using in MapData
+                        If .pos.x >= LBound(MapData, 1) And .pos.x <= UBound(MapData, 1) And _
+                           .pos.y >= LBound(MapData, 2) And .pos.y <= UBound(MapData, 2) Then
+                            If MapData(.pos.x, .pos.y).charindex = charindex Then
+                                MapData(.pos.x, .pos.y).charindex = 0
+                            End If
+                        End If
+                        
                         .MoveOffsetX = 0
                         .MoveOffsetY = 0
                     End If
                 Else
-                    If MapData(.Pos.x, .Pos.y).charindex = charindex Then MapData(.Pos.x, .Pos.y).charindex = 0
+                    ' Validation 5: Check pos.x and pos.y before using in MapData
+                    If .pos.x >= LBound(MapData, 1) And .pos.x <= UBound(MapData, 1) And _
+                       .pos.y >= LBound(MapData, 2) And .pos.y <= UBound(MapData, 2) Then
+                        If MapData(.pos.x, .pos.y).charindex = charindex Then
+                            MapData(.pos.x, .pos.y).charindex = 0
+                        End If
+                    End If
+                    
                     .Pos.x = x
                     .Pos.y = y
                     MapData(x, y).charindex = charindex
+                    
                     If Abs(.MoveOffsetX) > 32 Or Abs(.MoveOffsetY) > 32 Or (.MoveOffsetX <> 0 And .MoveOffsetY <> 0) Then
                         .MoveOffsetX = 0
                         .MoveOffsetY = 0
@@ -4114,7 +4152,9 @@ Private Sub HandleSetInvisible()
             End If
         End With
     End If
+    
     Exit Sub
+    
 HandleSetInvisible_Err:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleSetInvisible", Erl)
 End Sub
