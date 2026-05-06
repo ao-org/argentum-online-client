@@ -376,17 +376,29 @@ End Function
 Public Sub cargarTutoriales()
     Dim CantidadTutoriales As Long
     Dim i                  As Long, J As Long
+    Dim savedMostrarTutorial As String
+    Dim savedActivo As String
     
     TutorialTextBufferLen = val(GetTutorialDataSetting("INITTUTORIAL", "LargoTexto", 16))
     If TutorialTextBufferLen <= 0 Then TutorialTextBufferLen = 100
     
     CantidadTutoriales = val(GetTutorialDataSetting("INITTUTORIAL", "Cantidad"))
-    MostrarTutorial = val(GetTutorialDataSetting("INITTUTORIAL", "MostrarTutorial"))
+    savedMostrarTutorial = GetSetting("INITTUTORIAL", "MostrarTutorial")
+    If savedMostrarTutorial <> "" Then
+        MostrarTutorial = val(savedMostrarTutorial)
+    Else
+        MostrarTutorial = val(GetTutorialDataSetting("INITTUTORIAL", "MostrarTutorial"))
+    End If
     If CantidadTutoriales <= 0 Then Exit Sub
     ReDim tutorial(1 To CantidadTutoriales)
     For i = 1 To CantidadTutoriales
         tutorial(i).Grh = val(GetTutorialDataSetting("TUTORIAL" & i, "Grh"))
-        tutorial(i).Activo = val(GetTutorialDataSetting("TUTORIAL" & i, "Activo"))
+        savedActivo = GetSetting("TUTORIAL" & i, "Activo")
+        If savedActivo <> "" Then
+            tutorial(i).Activo = val(savedActivo)
+        Else
+            tutorial(i).Activo = val(GetTutorialDataSetting("TUTORIAL" & i, "Activo"))
+        End If
         tutorial(i).titulo = GetTutorialDataSetting("TUTORIAL" & i, IIf(language = e_language.English, "en_titulo", "titulo"))
         Dim CantidadTextos As Long
         CantidadTextos = val(GetTutorialDataSetting("TUTORIAL" & i, "Cantidad"))
