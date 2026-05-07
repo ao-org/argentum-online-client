@@ -1584,6 +1584,13 @@ Private Sub StartCustomMap(ByVal mapType As Byte, ByVal Name As String, ByRef ar
             LobbyInfo.MaxPlayers = arguments(1)
             LobbyInfo.MinLevel = arguments(2)
             LobbyInfo.MaxLevel = arguments(3)
+            
+            If argCount >= 4 And ValidNumber(arguments(4), eNumber_Types.ent_Long) Then
+                LobbyInfo.InscriptionFee = arguments(4)
+            Else
+                LobbyInfo.InscriptionFee = 0
+            End If
+                        
             Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
