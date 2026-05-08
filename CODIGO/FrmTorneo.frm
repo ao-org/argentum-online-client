@@ -295,6 +295,75 @@ Begin VB.Form FrmTorneo
          Width           =   870
       End
    End
+   Begin VB.Frame FraBusquedaTesoro 
+      Caption         =   "Busqueda del Tesoro"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   3015
+      Left            =   120
+      TabIndex        =   105
+      Top             =   120
+      Visible         =   0   'False
+      Width           =   4215
+      Begin VB.OptionButton OptBusquedaNPC 
+         Caption         =   "NPC"
+         Height          =   375
+         Left            =   360
+         TabIndex        =   103
+         Top             =   960
+         Width           =   2895
+      End
+      Begin VB.OptionButton OptBusquedaObjeto 
+         Caption         =   "Objeto misterioso"
+         Height          =   375
+         Left            =   360
+         TabIndex        =   107
+         Top             =   480
+         Value           =   -1  'True
+         Width           =   2895
+      End
+      Begin VB.CommandButton cmdCancelarBusqueda 
+         Caption         =   "Cancelar"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   2160
+         TabIndex        =   106
+         Top             =   2280
+         Width           =   990
+      End
+      Begin VB.CommandButton cmdIniciarBusqueda 
+         Caption         =   "Iniciar"
+         BeginProperty Font 
+            Name            =   "Tahoma"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   360
+         Left            =   360
+         TabIndex        =   104
+         Top             =   2280
+         Width           =   1335
+      End
+   End
    Begin VB.Frame FraDeathMach 
       Caption         =   "DeathMach"
       BeginProperty Font 
@@ -1277,6 +1346,8 @@ Private Sub cmdConfigurarE_Click()
             FrmTorneo.Frame1.visible = True
         Case OptAbordaje.value
             FrmTorneo.FraAbordaje.visible = True
+        Case OptBusquedaDe.value
+            FrmTorneo.FraBusquedaTesoro.visible = True
     End Select
 End Sub
 
@@ -1388,4 +1459,20 @@ Private Sub txtValorGarrote_Change()
         Exit Sub
     End If
     Call ParseUserCommand("/configlobby setprice " & Valor)
+End Sub
+
+Private Sub cmdIniciarBusqueda_Click()
+    If OptBusquedaObjeto.value Then
+        Call WriteBusquedaTesoro(0)
+    ElseIf OptBusquedaNPC.value Then
+        Call WriteBusquedaTesoro(2)
+    Else
+        MsgBox "Seleccione un tipo de busqueda.", vbExclamation, "Error"
+    End If
+End Sub
+
+Private Sub cmdCancelarBusqueda_Click()
+    Call WriteBusquedaTesoro(3)
+    FrmTorneo.FraBusquedaTesoro.visible = False
+    FrmTorneo.FraTorneosY.visible = True
 End Sub
