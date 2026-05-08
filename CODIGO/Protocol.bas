@@ -3407,7 +3407,7 @@ Private Sub HandleWorkRequestTarget()
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_MAGIA"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case MarcaDeClan
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_PERSONAJE_A_MARCAR"), 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_NPC_A_MARCAR"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case MarcaDeGM
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_PERSONAJE_A_MARCAR"), 100, 100, 120, 0, 0)
