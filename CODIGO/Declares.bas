@@ -1091,6 +1091,7 @@ Public Enum eTrigger
     VALIDOPUENTE = 17
     NADOCOMBINADO = 18
     CARCEL = 19
+    BLOQ15 = 201
 End Enum
 
 'Server stuff
