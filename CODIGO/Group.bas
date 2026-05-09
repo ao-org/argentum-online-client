@@ -99,7 +99,7 @@ Public Sub RenderGroup()
     If GroupSize < 1 Then Exit Sub
     For i = 0 To GroupSize - 1
         With GroupMembers(i)
-            If .charindex <> UserCharIndex Then
+            If .charindex <> UserCharIndex And .name <> vbNullString Then
                 Call Draw_GrhIndex(GroupBackgroundGrh, .RenderArea.Left - CurrentPivot + gameplay_render_offset.x, .RenderArea.Top + gameplay_render_offset.y)
                 Call Draw_Grh(.Head.Head(E_Heading.south), .RenderArea.Left - HeadOffsetX - CurrentPivot + gameplay_render_offset.x, .RenderArea.Top + 28 + _
                         gameplay_render_offset.y, 1, 0, COLOR_WHITE, False, 0, 0)

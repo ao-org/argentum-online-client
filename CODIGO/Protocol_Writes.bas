@@ -904,6 +904,10 @@ Public Sub WriteDoubleClick(ByVal x As Byte, ByVal y As Byte)
 
     On Error GoTo WriteDoubleClick_Err
 
+    If ShouldBlockAction(eActionRateLimitType.ActionLeftClick) Then
+        Exit Sub
+    End If
+
     Call Writer.WriteInt16(ClientPacketID.eDoubleClick)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)

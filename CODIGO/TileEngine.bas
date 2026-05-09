@@ -976,6 +976,84 @@ Grh_Render_To_HdcSinBorrar_Err:
     Resume Next
 End Sub
 
+' Renders a cropped and scaled region of a texture into a PictureBox using DirectX 8.
+' TextureFileNum : key previously registered with SurfaceDB.GetInterfaceTexture (e.g. -1, -2)
+' destX/Y/Width/Height : destination rectangle in the PictureBox (pixels)
+' srcX/Y/Width/Height  : source crop region inside the texture (pixels)
+' ClearColor           : ARGB colour used to clear the PictureBox before rendering
+Public Sub Minimap_Render_Cropped_To_Hdc(ByRef pic As PictureBox, _
+                                         ByVal TextureFileNum As Integer, _
+                                         ByVal destX As Long, _
+                                         ByVal destY As Long, _
+                                         ByVal destWidth As Long, _
+                                         ByVal destHeight As Long, _
+                                         ByVal srcX As Long, _
+                                         ByVal srcY As Long, _
+                                         ByVal srcWidth As Long, _
+                                         ByVal srcHeight As Long, _
+                                         Optional ByVal ClearColor As Long = &H0)
+    On Error GoTo Minimap_Render_Cropped_To_Hdc_Err
+    Dim d3dTex        As D3D8Textures
+    Dim srcRect       As Rect
+    Dim dstRect       As Rect
+    Dim picRect       As Rect
+    Dim temp_verts(3) As TYPE_VERTEX
+    Dim di            As Integer
+    Dim dv(3)         As TYPE_VERTEX
+    Dim cx            As Single
+    Dim cy            As Single
+    Dim dh            As Integer
+    Set d3dTex.Texture = SurfaceDB.GetInterfaceTexture(TextureFileNum, "", d3dTex.texwidth, d3dTex.texheight)
+    If d3dTex.Texture Is Nothing Then Exit Sub
+    With picRect
+        .Left = 0
+        .Top = 0
+        .Right = pic.ScaleWidth
+        .Bottom = pic.ScaleHeight
+    End With
+    With srcRect
+        .Left = srcX
+        .Top = srcY
+        .Right = srcX + srcWidth
+        .Bottom = srcY + srcHeight
+    End With
+    With dstRect
+        .Left = destX
+        .Top = destY
+        .Right = destX + destWidth
+        .Bottom = destY + destHeight
+    End With
+    Geometry_Create_Box temp_verts(), dstRect, srcRect, COLOR_WHITE, d3dTex.texwidth, d3dTex.texheight, 0
+    Call DirectDevice.BeginScene
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
+    DirectDevice.SetTexture 0, d3dTex.Texture
+    DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
+    ' Draw overlay dots (player + allies) as untextured coloured quads
+    DirectDevice.SetTexture 0, Nothing
+    DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_SELECTARG2
+    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2
+    For di = 0 To 5
+        If MinimapDots(di).visible Then
+            cx = MinimapDots(di).screenX
+            cy = MinimapDots(di).screenY
+            dH = 2
+            dv(0).x = cx - dh:     dv(0).y = cy + dh + 1: dv(0).z = 0: dv(0).color = MinimapDots(di).dotColor
+            dv(1).x = cx - dh:     dv(1).y = cy - dh:     dv(1).z = 0: dv(1).color = MinimapDots(di).dotColor
+            dv(2).x = cx + dh + 1: dv(2).y = cy + dh + 1: dv(2).z = 0: dv(2).color = MinimapDots(di).dotColor
+            dv(3).x = cx + dh + 1: dv(3).y = cy - dh:     dv(3).z = 0: dv(3).color = MinimapDots(di).dotColor
+            DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, dv(0), Len(dv(0))
+        End If
+    Next di
+    DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_MODULATE
+    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE
+    Call DirectDevice.EndScene
+    Call DirectDevice.Present(picRect, ByVal 0, pic.hWnd, ByVal 0)
+    Exit Sub
+Minimap_Render_Cropped_To_Hdc_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Minimap_Render_Cropped_To_Hdc", Erl)
+    Resume Next
+End Sub
+
 Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal GrhIndex As Long) As Boolean
     On Error GoTo HayUserAbajo_Err
     If GrhIndex > 0 Then

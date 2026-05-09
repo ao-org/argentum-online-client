@@ -155,6 +155,14 @@ Begin VB.Form FrmTorneo
       Top             =   120
       Visible         =   0   'False
       Width           =   4215
+      Begin VB.TextBox txtAbordajeCosto 
+         Height          =   375
+         Left            =   1200
+         TabIndex        =   104
+         Text            =   "5000"
+         Top             =   2280
+         Width           =   975
+      End
       Begin VB.CommandButton cmdCancelarAbordaje 
          Caption         =   "Cancelar"
          BeginProperty Font 
@@ -263,6 +271,14 @@ Begin VB.Form FrmTorneo
          TabIndex        =   86
          Top             =   5280
          Width           =   1335
+      End
+      Begin VB.Label CostoAbo 
+         Caption         =   "Costo de Inscripción"
+         Height          =   255
+         Left            =   120
+         TabIndex        =   103
+         Top             =   2040
+         Width           =   1815
       End
       Begin VB.Label lblCantidadAbordaje 
          AutoSize        =   -1  'True
@@ -1305,8 +1321,15 @@ Private Sub cmdCrearElAbordaje_Click()
         MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_MAYOR_MAXIMO"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
         Exit Sub
     End If
+    
+    ' Comprobar que txtAbordajeCosto sea un número válido
+    If Not IsNumeric(txtAbordajeCosto.Text) Or val(txtAbordajeCosto.Text) < 0 Then
+        MsgBox JsonLanguage.Item("MENSAJE_COSTO_PARTIDA_INVALIDO"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
+        Exit Sub
+    End If
+        
     ' Si todas las validaciones pasan, llamar a ParseUserCommand
-    Call ParseUserCommand("/crearevento navalconquest" & " " & txtAbordaje.text & " " & txtAbordajelvlMin.text & " " & txtlvlAbordajeMax.text)
+    Call ParseUserCommand("/crearevento navalconquest" & " " & txtAbordaje.Text & " " & txtAbordajelvlMin.Text & " " & txtlvlAbordajeMax.Text & " " & txtAbordajeCosto.Text)
 End Sub
 
 Private Sub cmdCrearEldeath_Click()

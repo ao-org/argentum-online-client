@@ -742,11 +742,11 @@ Public Sub HandleDisconnect()
     EntradaX = 1
     Call EraseChar(UserCharIndex, True)
     Call SwitchMap(UserMap)
-    frmMain.personaje(1).visible = False
-    frmMain.personaje(2).visible = False
-    frmMain.personaje(3).visible = False
-    frmMain.personaje(4).visible = False
-    frmMain.personaje(5).visible = False
+    frmMain.HideMinimapDot 1
+    frmMain.HideMinimapDot 2
+    frmMain.HideMinimapDot 3
+    frmMain.HideMinimapDot 4
+    frmMain.HideMinimapDot 5
     UserStats.Clase = 0
     UserStats.Sexo = 0
     UserStats.Raza = 0
@@ -2140,11 +2140,11 @@ Private Sub HandleMostrarCuenta()
         For i = 1 To LastChar
             Call EraseChar(i)
         Next i
-        frmMain.personaje(1).visible = False
-        frmMain.personaje(2).visible = False
-        frmMain.personaje(3).visible = False
-        frmMain.personaje(4).visible = False
-        frmMain.personaje(5).visible = False
+        frmMain.HideMinimapDot 1
+        frmMain.HideMinimapDot 2
+        frmMain.HideMinimapDot 3
+        frmMain.HideMinimapDot 4
+        frmMain.HideMinimapDot 5
     End If
     Exit Sub
 errhandler:
@@ -2955,6 +2955,14 @@ End Sub
 Private Sub HandleUpdateGroupInfo()
     On Error GoTo HandleUpdateGroupInfo_Err
     Group.GroupSize = Reader.ReadInt8
+    
+    ' Limpiar el array cuando el grupo se disuelve o tiene solo el líder
+    If Group.GroupSize <= 1 Then
+        Erase Group.GroupMembers
+        Call UpdateRenderArea
+        Exit Sub
+    End If
+    
     Dim i As Integer
     If Group.GroupSize > 1 Then
         ReDim Group.GroupMembers(Group.GroupSize) As t_GroupEntry
@@ -3405,7 +3413,7 @@ Private Sub HandleWorkRequestTarget()
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_MAGIA"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case MarcaDeClan
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_PERSONAJE_A_MARCAR"), 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_NPC_A_MARCAR"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case MarcaDeGM
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_PERSONAJE_A_MARCAR"), 100, 100, 120, 0, 0)
@@ -4639,8 +4647,10 @@ Private Sub HandleShowSOSForm()
         Consulta = ReadField(2, sosList(i), Asc("Ø"))
         TipoDeConsulta = ReadField(3, sosList(i), Asc("Ø"))
         FechaHoraDeConsulta = ReadField(4, sosList(i), Asc("Ø"))
-        frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ") - " & format(FechaHoraDeConsulta, "dd/MM/yyyy hh:mm AM/PM")
-        frmPanelgm.List2.AddItem Consulta
+        If TipoDeConsulta = "Consulta regular" Or charlist(UserCharIndex).priv <> 2 Then
+            frmPanelgm.List1.AddItem nombre & "(" & TipoDeConsulta & ") - " & format(FechaHoraDeConsulta, "dd/MM/yyyy hh:mm AM/PM")
+            frmPanelgm.List2.AddItem Consulta
+        End If
     Next i
     Exit Sub
 errhandler:
@@ -5482,7 +5492,7 @@ Private Sub HandleUbicacion()
     y = Reader.ReadInt8()
     map = Reader.ReadInt16()
     If x = 0 Then
-        frmMain.personaje(miembro).visible = False
+        frmMain.HideMinimapDot miembro
     Else
         If UserMap = map Then
             frmMain.personaje(miembro).visible = True
@@ -5721,12 +5731,15 @@ Public Sub HandlePrivilegios()
         frmMain.createObj.visible = True
         frmMain.btnInvisible.visible = True
         frmMain.btnSpawn.visible = True
-        frmMain.onlines.visible = True
     Else
         frmMain.panelGM.visible = False
         frmMain.createObj.visible = False
         frmMain.btnInvisible.visible = False
         frmMain.btnSpawn.visible = False
+    End If
+    If EsGM And charlist(UserCharIndex).priv <> 2 Then
+        frmMain.onlines.visible = True
+    Else
         frmMain.onlines.visible = False
     End If
     Exit Sub
