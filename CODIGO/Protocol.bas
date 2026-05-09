@@ -1913,8 +1913,8 @@ Private Sub HandleConsoleMessage()
             chat = objname & " " & ElementalTagsToTxtParser(ElementalTags) & ReadField(3, chat, Asc("*"))
         Case "HECINF"
             Hechizo = ReadField(2, chat, Asc("*"))
-            If HechizoData(Hechizo).StaPercentRequerido > 0 Then
-                staminaCost = CStr(HechizoData(Hechizo).StaPercentRequerido) & "% de stamina total."
+            If HechizoData(Hechizo).StaPercentRequired > 0 Then
+                staminaCost = CStr(HechizoData(Hechizo).StaPercentRequired) & "% de stamina total."
             Else
                 staminaCost = HechizoData(Hechizo).StaRequerido & " puntos."
             End If

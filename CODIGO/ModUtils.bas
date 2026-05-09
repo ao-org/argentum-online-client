@@ -263,7 +263,7 @@ Public Type HechizoDatas
     ManaRequerido As Integer
     MinSkill As Byte
     StaRequerido As Integer
-    StaPercentRequerido As Single
+    StaPercentRequired As Single
     IconoIndex As Long
     Cooldown As Long
     IsBindable As Boolean
