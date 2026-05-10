@@ -103,7 +103,7 @@ Begin VB.Form FrmTorneo
          Width           =   3735
       End
       Begin VB.OptionButton OptElDe 
-         Caption         =   "DeathMach"
+         Caption         =   "DeathMatch"
          Height          =   255
          Left            =   240
          TabIndex        =   36
@@ -395,7 +395,7 @@ Begin VB.Form FrmTorneo
          Top             =   4680
          Width           =   3495
       End
-      Begin VB.CommandButton cmdCrearEldeath 
+      Begin VB.CommandButton cmdCrearDeathMatch 
          Caption         =   "Crear el evento"
          BeginProperty Font 
             Name            =   "Tahoma"
@@ -1222,7 +1222,7 @@ Private Sub Form_Load()
     lblSeleccionarEl.Caption = JsonLanguage.Item("MENSAJE_SELECCIONAR_EVENTO") ' Seleccionar el evento a realizar
     OptCapturaDe.Caption = JsonLanguage.Item("MENSAJE_CAPTURA_BANDERA") ' Captura de bandera
     OptMatarCon.Caption = JsonLanguage.Item("MENSAJE_DIA_DEL_GARROTE") ' Día del Garrote
-    OptElDe.Caption = JsonLanguage.Item("MENSAJE_DEATHMATCH") ' DeathMach
+    OptElDe.Caption = JsonLanguage.Item("MENSAJE_DEATHMATCH") ' DeathMatch
     OptTorneo.Caption = JsonLanguage.Item("MENSAJE_TORNEO") ' Torneo
     OptBufones.Caption = JsonLanguage.Item("MENSAJE_BUFONES") ' Bufones
     OptBusquedaDe.Caption = JsonLanguage.Item("MENSAJE_BUSQUEDA_TESORO") ' Búsqueda de tesoro
@@ -1255,7 +1255,7 @@ Private Sub cmdAnunciarEl_Click()
     Call ParseUserCommand("/configlobby open ")
 End Sub
 
-Private Sub cmdAnunciarEldeath_Click()
+Private Sub cmdAnunciarElDeath_Click()
     Call ParseUserCommand("/configlobby open ")
 End Sub
 
@@ -1264,7 +1264,7 @@ Private Sub cmdCancelar_Click()
     FrmTorneo.FraTorneosY.visible = True
 End Sub
 
-Private Sub cmdCancelarDeach_Click()
+Private Sub cmdCancelarDeath_Click()
     FrmTorneo.FraTorneosY.visible = True
     FrmTorneo.FraDeathMach.visible = False
 End Sub
@@ -1332,21 +1332,28 @@ Private Sub cmdCrearElAbordaje_Click()
     Call ParseUserCommand("/crearevento navalconquest" & " " & txtAbordaje.Text & " " & txtAbordajelvlMin.Text & " " & txtlvlAbordajeMax.Text & " " & txtAbordajeCosto.Text)
 End Sub
 
-Private Sub cmdCrearEldeath_Click()
-    ' Verificar que txtMinlvldeath esté entre 1 y 47 y no sea mayor que txtMaxlvldeath
-    If IsNumeric(txtMinlvldeath.text) And CInt(txtMinlvldeath.text) >= 1 And CInt(txtMinlvldeath.text) <= 47 Then
-        ' Verificar que txtMaxlvldeath esté entre 1 y 47 y no sea menor que txtMinlvldeath
-        If IsNumeric(txtMaxlvldeath.text) And CInt(txtMaxlvldeath.text) >= 1 And CInt(txtMaxlvldeath.text) <= 47 And CInt(txtMaxlvldeath.text) >= CInt(txtMinlvldeath.text) Then
-            ' Llamar a la función ParseUserCommand con los valores válidos
-            Call ParseUserCommand("/crearevento deathmatch " & txtPlayerDeath.text & " " & txtMinlvldeath.text & " " & txtMaxlvldeath.text)
-        Else
-            ' Mostrar un mensaje de error si txtMaxlvldeath no cumple con las condiciones
-            MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
-        End If
-    Else
-        ' Mostrar un mensaje de error si txtMinlvldeath no cumple con las condiciones
+Private Sub cmdCrearDeathmatch_Click()
+    If Not IsNumeric(txtMinlvldeath.Text) Or CInt(txtMinlvldeath.Text) < 1 Or CInt(txtMinlvldeath.Text) > 47 Then
         MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
+        Exit Sub
     End If
+    If Not IsNumeric(txtMaxlvldeath.Text) Or CInt(txtMaxlvldeath.Text) < 1 Or CInt(txtMaxlvldeath.Text) > 47 Or CInt(txtMaxlvldeath.Text) < CInt(txtMinlvldeath.Text) Then
+        MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
+        Exit Sub
+    End If
+    If Not IsNumeric(txtPlayerDeath.Text) Or CInt(txtPlayerDeath.Text) < 2 Then
+        MsgBox JsonLanguage.Item("MENSAJE_NUMERO_PAR_PARTICIPANTES"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
+        Exit Sub
+    End If
+    If Not IsNumeric(txtParti.Text) Or val(txtParti.Text) < 0 Then
+        MsgBox JsonLanguage.Item("MENSAJE_COSTO_PARTIDA_INVALIDO"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
+        Exit Sub
+    End If
+    If Not IsNumeric(txtEquipo.Text) Or CInt(txtEquipo.Text) < 1 Then
+        MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
+        Exit Sub
+    End If
+    Call ParseUserCommand("/crearevento deathmatch " & txtPlayerDeath.Text & " " & txtMinlvldeath.Text & " " & txtMaxlvldeath.Text & " " & txtParti.Text & " " & txtEquipo.Text)
 End Sub
 
 Private Sub cmdIniciarAbordaje_Click()
@@ -1357,7 +1364,7 @@ Private Sub cmdIniciarEl_Click()
     Call ParseUserCommand("/configlobby start")
 End Sub
 
-Private Sub cmdIniciarEldeath_Click()
+Private Sub cmdIniciarElDeath_Click()
     Call ParseUserCommand("/configlobby start")
 End Sub
 
