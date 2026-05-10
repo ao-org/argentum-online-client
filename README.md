@@ -64,9 +64,31 @@ Please note this is not free software and you will have to buy your own license 
 
 ### 🧪 Unit Testing
 
-The client includes a built-in unit test suite that validates core modules (Math, Bitmask, Color, MD5, Locale, ArrayList, etc.).
+The client includes a built-in unit test suite that validates core modules. There are currently **17 registered suites** covering Math, Bitmask, Color, MD5, Locale, ArrayList, Encrypt, ValidNumber, QuickSort, IniManager, WorldTime, JSON, NetRoundTrip, Cooldown, and Group.
 
 When compiled with `UNIT_TEST = 1`, the client runs all test suites on startup, writes results to `test_results.txt`, and exits immediately.
+
+#### Test suites
+
+| # | Suite | Module under test | Notes |
+|---|-------|-------------------|-------|
+| 1 | Unit_Math | Matematicas.bas | |
+| 2 | Unit_Bitmask | Bitmask helpers | |
+| 3 | Unit_Color | Graficos_Color.bas | |
+| 4 | Unit_ElapsedTime | modElapsedTime.bas | |
+| 5 | Unit_Locale | Locale.bas | |
+| 6 | Unit_MD5 | MD5 hashing | |
+| 7 | Unit_MathExt | Extended math | |
+| 8 | Unit_ArrayList | ArrayList class | |
+| 9 | Unit_Encrypt | AO20CryptoSys | |
+| 10 | Unit_ValidNumber | Number validation | |
+| 11 | Unit_QuickSort | QuickSort algorithm | |
+| 12 | Unit_IniManager | clsIniManager.cls | |
+| 13 | Unit_WorldTime | modWorldTime.bas | |
+| 14 | Unit_JSON | VBJson/JSON.bas | Property tests: numeric preservation, invalid input |
+| 15 | Unit_NetRoundTrip | clsNetWriter/clsNetReader | Requires `DIRECT_PLAY=1`. Property tests: typed round-trip, sequential ordering |
+| 16 | Unit_Cooldown | clsCooldown/ModCooldown | Property test: initialization stores values |
+| 17 | Unit_Group | Group.bas | Group membership tracking |
 
 #### Compile and run tests from CLI
 

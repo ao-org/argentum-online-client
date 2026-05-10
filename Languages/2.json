@@ -99,6 +99,7 @@
     "MENSAJE_SEGURO_CLAN_ACTIVADO": "Clan lock activated.",
     "MENSAJE_CLICK_DONDE_DESEAS_TRABAJAR": "Click where you want to work...",
     "MENSAJE_SELECCIONA_PERSONAJE_A_MARCAR": "Select the character you want to mark...",
+    "MENSAJE_SELECCIONA_NPC_A_MARCAR": "Select the NPC to mark for your clan.",
     "MENSAJE_SEGURO_RESURRECCION_ACTIVADO": "Resurrection lock activated.",
     "MENSAJE_SEGURO_RESURRECCION_DESACTIVADO": "Resurrection lock deactivated.",
     "MENSAJE_DEJAS_DE_TRABAJAR": "You have stopped working...",
