@@ -11,7 +11,7 @@ Private FailedTestCount As Long
 Private TotalElapsed    As Double
 Private sw              As clsInstrument
 
-Private Const SUITE_COUNT As Long = 27
+Private Const SUITE_COUNT As Long = 28
 
 Public Sub Init()
     TotalTests = 0
@@ -76,6 +76,9 @@ Public Function test_suite() As Boolean
             Case 26: Call Unit_CharValidation.test_suite_char_validation
 #If DIRECT_PLAY = 1 Then
             Case 27: Call Unit_Network.test_suite_network
+#End If
+#If DIRECT_PLAY = 0 Then
+            Case 28: Call Unit_Network_Aurora.test_suite_network_aurora
 #End If
         End Select
     Next i
