@@ -453,13 +453,13 @@ Private Sub btnCrear_Click()
     End If
 
     Select Case cmbTipo.ListIndex
-        Case e_EventType.CaptureTheFlag
+        Case 0
             Settings.ScenearioType = e_EventType.CaptureTheFlag
-        Case e_EventType.NpcHunt
+        Case 1
             Settings.ScenearioType = e_EventType.NpcHunt
-        Case e_EventType.DeathMatch
+        Case 2
             Settings.ScenearioType = e_EventType.DeathMatch
-        Case e_EventType.NavalBattle
+        Case 3
             Settings.ScenearioType = e_EventType.NavalBattle
     End Select
     
