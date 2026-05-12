@@ -379,10 +379,12 @@ Attribute VB_Exposed = False
 
 Private Sub Form_Load()
     On Error GoTo ErrHandler
+    cmbTipo.Clear
     cmbTipo.AddItem JsonLanguage.Item("MENSAJE_EVENTO_CAPTURA")
     cmbTipo.AddItem JsonLanguage.Item("MENSAJE_EVENTO_CACERIA")
     cmbTipo.AddItem JsonLanguage.Item("MENSAJE_EVENTO_DEATHMATCH")
     cmbTipo.AddItem JsonLanguage.Item("MENSAJE_EVENTO_ABORDAJE")
+    cmbEquipos.Clear
     cmbEquipos.AddItem JsonLanguage.Item("MENSAJE_EVENTO_MODALIDAD_RANDOM")
     cmbEquipos.AddItem JsonLanguage.Item("MENSAJE_EVENTO_MODALIDAD_GRUPOS")
     cmbTipo.ListIndex = 0
