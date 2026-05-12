@@ -228,6 +228,14 @@ Begin VB.Form frmPanelgm
          Top             =   2880
          Width           =   255
       End
+      Begin VB.TextBox txtTiempoCarcelMacros 
+         Height          =   285
+         Left            =   240
+         TabIndex        =   106
+         Text            =   "30"
+         Top             =   3120
+         Width           =   375
+      End
       Begin VB.CheckBox chkPaquetesCarcel 
          BackColor       =   &H80000007&
          Height          =   255
@@ -327,6 +335,17 @@ Begin VB.Form frmPanelgm
          TabIndex        =   95
          Top             =   2880
          Width           =   930
+      End
+      Begin VB.Label lblTiempoCarcelMacros 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Min carcel"
+         ForeColor       =   &H80000005&
+         Height          =   195
+         Left            =   720
+         TabIndex        =   107
+         Top             =   3165
+         Width           =   870
       End
       Begin VB.Label lblInasistido 
          AutoSize        =   -1  'True
@@ -3373,12 +3392,41 @@ Public Sub CadenaChat(ByVal chat As String)
 End Sub
 
 Private Sub AplicarSancionMacro(ByVal nombre As String, ByVal mandarCarcel As Boolean)
-    If mandarCarcel Then
-        Call ParseUserCommand("/CARCEL " & nombre & "@uso de programas externos, macros o cheat@30")
+    Dim tiempoCarcel As Integer
+
+    tiempoCarcel = Val(frmPanelgm.txtTiempoCarcelMacros.Text)
+    If tiempoCarcel <= 0 Then tiempoCarcel = 30
+
+    If mandarCarcel And Not EstaUsuarioEnMapa66(nombre) Then
+        Call ParseUserCommand("/CARCEL " & nombre & "@uso de programas externos, macros o cheat@" & tiempoCarcel)
     Else
         Call WriteCerraCliente(nombre)
     End If
 End Sub
+
+Private Function EstaUsuarioEnMapa66(ByVal nombre As String) As Boolean
+    Dim i As Integer
+    Dim nombreChar As String
+    Dim Pos As Integer
+
+    If UserMap <> 66 Then Exit Function
+
+    For i = 1 To LastChar
+        If charlist(i).active = 1 And charlist(i).EsNpc = False Then
+            Pos = InStr(charlist(i).nombre, "<")
+            If Pos = 0 Then
+                nombreChar = Trim$(charlist(i).nombre)
+            Else
+                nombreChar = Trim$(Left$(charlist(i).nombre, Pos - 2))
+            End If
+
+            If UCase$(nombreChar) = UCase$(Trim$(nombre)) Then
+                EstaUsuarioEnMapa66 = True
+                Exit Function
+            End If
+        End If
+    Next i
+End Function
 
 Function GuardarTextoEnArchivo(ByVal Cadena As String, ByVal nombreArchivo As String) As Boolean
     On Error GoTo ErrorHandler
