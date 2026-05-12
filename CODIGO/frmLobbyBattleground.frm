@@ -72,26 +72,33 @@ Dim MouseIndex  As Integer
 Dim Scroll      As Integer
 Const MAX_LIST  As Integer = 6
 Dim LobbyList() As t_LobbyData
+Dim LobbyLoaded As Boolean
 
 Private Sub btnCrear_Click()
-    frmCreateBattleground.Show
     Unload Me
+    frmCreateBattleground.Show
 End Sub
 
 Private Sub Form_Load()
+    LobbyLoaded = False
     ListRefresh
 End Sub
 
 Friend Sub SetLobbyList(ByRef List() As t_LobbyData)
     LobbyList = List
+    LobbyLoaded = True
+    Scroll = 0
+    ListRefresh
 End Sub
 
 Private Sub pEvents_Click()
     On Error GoTo errhandler:
+    If Not LobbyLoaded Then Exit Sub
+    
     Dim Password As String
     If MouseIndex > 0 And MouseIndex <= UBound(LobbyList) Then
         If LobbyList(MouseIndex).IsPrivate Then
-            Password = InputBox(JsonLanguage.Item("MENSAJE_EVENTO_CONTRASEÑA")) ' Este evento tiene contraseña, por favor ingresala:
+            Password = InputBox(JsonLanguage.Item("MENSAJE_EVENTO_CONTRASEÑA"))
             If Len(Password) = 0 Then Exit Sub
         End If
         Call WriteParticipar(LobbyList(MouseIndex).id, Password)
@@ -101,9 +108,12 @@ Private Sub pEvents_Click()
         If Scroll < 0 Then Scroll = 0
     ElseIf MouseIndex = -2 Then
         Scroll = Scroll + 1
-        If Scroll + MAX_LIST > UBound(LobbyList) Then Scroll = UBound(LobbyList) - MAX_LIST
-        If Scroll < 0 Then Scroll = 0
+        Dim maxScroll As Integer
+        maxScroll = UBound(LobbyList) + 1 - MAX_LIST
+        If maxScroll < 0 Then maxScroll = 0
+        If Scroll > maxScroll Then Scroll = maxScroll
     End If
+    ListRefresh
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "frmLobbyBattleground.Click", Erl)
@@ -111,100 +121,98 @@ errhandler:
 End Sub
 
 Private Sub pEvents_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+    If Not LobbyLoaded Then Exit Sub
+    
     Dim i As Integer
+    Dim prevIndex As Integer
+    prevIndex = MouseIndex
     MouseIndex = 0
+    
     For i = 1 To MAX_LIST
-        If x >= 810 And x <= 810 + 70 And y >= i * 45 And y <= 35 + i * 45 Then
-            MouseIndex = i + Scroll
+        If x >= 0 And x <= pEvents.Width And y >= i * 45 And y <= 35 + i * 45 Then
+            If i + Scroll <= UBound(LobbyList) Then
+                MouseIndex = i + Scroll
+            End If
             Exit For
         End If
     Next i
+    
     If x >= pEvents.Width - 15 And x <= pEvents.Width - 5 And y >= 45 And y <= 50 Then
         MouseIndex = -1
     End If
     If x >= pEvents.Width - 15 And x <= pEvents.Width - 5 And y >= pEvents.Height - 15 And y <= pEvents.Height - 10 Then
         MouseIndex = -2
     End If
-    ListRefresh
+    
+    If MouseIndex <> prevIndex Then ListRefresh
 End Sub
 
 Private Sub ListRefresh()
-    On Error GoTo errhandler:
+    On Error GoTo ErrHandler
     Dim OffX As Integer
     Dim Offy As Integer
+
     With pEvents
         pEvents.Cls
         .ForeColor = vbWhite
         .FontSize = 10
         OffX = 10
         Offy = 10
-        .CurrentX = OffX
-        .CurrentY = Offy
-        pEvents.Print "Descripción"
+
+        'encabezados
+        .currentX = OffX: .currentY = Offy: pEvents.Print "Descripción"
         OffX = OffX + 140
-        .CurrentX = OffX
-        .CurrentY = Offy
-        pEvents.Print "Tipo"
+        .currentX = OffX: .currentY = Offy: pEvents.Print "Tipo"
         OffX = OffX + 100
-        .CurrentX = OffX
-        .CurrentY = Offy
-        pEvents.Print "Tamaño de grupos"
+        .currentX = OffX: .currentY = Offy: pEvents.Print "Tamaño de grupos"
         OffX = OffX + 130
-        .CurrentX = OffX
-        .CurrentY = Offy
-        pEvents.Print "Formato de equipos"
+        .currentX = OffX: .currentY = Offy: pEvents.Print "Formato de equipos"
         OffX = OffX + 130
-        .CurrentX = OffX
-        .CurrentY = Offy
-        pEvents.Print "Límite de nivel"
+        .currentX = OffX: .currentY = Offy: pEvents.Print "Límite de nivel"
         OffX = OffX + 130
-        .CurrentX = OffX
-        .CurrentY = Offy
-        pEvents.Print "Jugadores"
+        .currentX = OffX: .currentY = Offy: pEvents.Print "Jugadores"
         OffX = OffX + 100
-        .CurrentX = OffX
-        .CurrentY = Offy
-        pEvents.Print "Valor"
+        .currentX = OffX: .currentY = Offy: pEvents.Print "Valor"
+
         pEvents.Line (0, 40)-(.Width, 40)
+
+        If Not LobbyLoaded Then
+            .currentX = 10: .currentY = 60
+            pEvents.Print "Cargando eventos..."
+            GoTo DrawArrows
+        End If
+        
         Dim i As Integer
         For i = 1 To MAX_LIST
             If i + Scroll > UBound(LobbyList) Then Exit For
-            Offy = Offy + 45
+            Offy = 10 + i * 45
             OffX = 10
-            .CurrentX = OffX
-            .CurrentY = Offy
+            .currentX = OffX: .currentY = Offy
             pEvents.Print LobbyList(i + Scroll).Description
             OffX = OffX + 140
-            .CurrentX = OffX
-            .CurrentY = Offy
+            .currentX = OffX: .currentY = Offy
             pEvents.Print LobbyList(i + Scroll).ScenarioType
             OffX = OffX + 100
-            .CurrentX = OffX
-            .CurrentY = Offy
+            .currentX = OffX: .currentY = Offy
             pEvents.Print LobbyList(i + Scroll).TeamSize
             OffX = OffX + 130
-            .CurrentX = OffX
-            .CurrentY = Offy
+            .currentX = OffX: .currentY = Offy
             Select Case LobbyList(i + Scroll).TeamType
-                Case e_TeamTypes.eRandom
-                    pEvents.Print "Aleatorio"
-                Case e_TeamTypes.ePremade
-                    pEvents.Print "Grupos"
+                Case e_TeamTypes.eRandom: pEvents.Print "Aleatorio"
+                Case e_TeamTypes.ePremade: pEvents.Print "Grupos"
             End Select
             OffX = OffX + 130
-            .CurrentX = OffX
-            .CurrentY = Offy
+            .currentX = OffX: .currentY = Offy
             pEvents.Print LobbyList(i + Scroll).MinLevel & "/" & LobbyList(i + Scroll).MaxLevel
             OffX = OffX + 130
-            .CurrentX = OffX
-            .CurrentY = Offy
+            .currentX = OffX: .currentY = Offy
             pEvents.Print LobbyList(i + Scroll).RegisteredPlayers & "/" & LobbyList(i + Scroll).MaxPlayers
             OffX = OffX + 100
-            .CurrentX = OffX
-            .CurrentY = Offy
+            .currentX = OffX: .currentY = Offy
             pEvents.Print LobbyList(i + Scroll).InscriptionPrice
             OffX = OffX + 80
-            If MouseIndex = i Then
+            
+            If MouseIndex = i + Scroll Then
                 pEvents.ForeColor = RGB(45, 45, 45)
                 pEvents.Line (OffX - 10, Offy - 10)-(OffX + 60, Offy + 25), , BF
                 pEvents.ForeColor = vbWhite
@@ -212,18 +220,20 @@ Private Sub ListRefresh()
             Else
                 pEvents.Line (OffX - 10, Offy - 10)-(OffX + 60, Offy + 25), , B
             End If
-            .CurrentX = OffX
-            .CurrentY = Offy
+            .currentX = OffX: .currentY = Offy
             pEvents.Print IIf(LobbyList(i + Scroll).IsPrivate, "* Ingresar", "Ingresar")
         Next i
-        .ForeColor = vbWhite
-        If MouseIndex = -2 Then .ForeColor = RGB(200, 0, 0)
-        pEvents.Line (pEvents.Width - 15, pEvents.Height - 15)-(pEvents.Width - 15 + 5, pEvents.Height - 15 + 5)
-        pEvents.Line (pEvents.Width - 15 + 5, pEvents.Height - 15 + 5)-(pEvents.Width - 15 + 11, pEvents.Height - 16)
-        .ForeColor = vbWhite
-        If MouseIndex = -1 Then .ForeColor = RGB(200, 0, 0)
-        pEvents.Line (pEvents.Width - 15, 50)-(pEvents.Width - 15 + 5, 50 - 5)
-        pEvents.Line (pEvents.Width - 15 + 5, 50 - 5)-(pEvents.Width - 15 + 11, 51)
+        
+DrawArrows:
+        
+        .ForeColor = IIf(MouseIndex = -2, RGB(200, 0, 0), vbWhite)
+        pEvents.Line (pEvents.Width - 15, pEvents.Height - 15)-(pEvents.Width - 10, pEvents.Height - 10)
+        pEvents.Line (pEvents.Width - 10, pEvents.Height - 10)-(pEvents.Width - 4, pEvents.Height - 15)
+
+        .ForeColor = IIf(MouseIndex = -1, RGB(200, 0, 0), vbWhite)
+        pEvents.Line (pEvents.Width - 15, 50)-(pEvents.Width - 10, 45)
+        pEvents.Line (pEvents.Width - 10, 45)-(pEvents.Width - 4, 50)
+
         .ForeColor = vbWhite
     End With
     Exit Sub
