@@ -832,6 +832,11 @@ Public Enum eObjType
     OtDonador = 50
     OtQuest = 51
     otFishingPool = 52
+    otUsableOntarget = 53
+    otPlants = 54
+    otElementalRune = 55
+    otFactionForgiveness = 56
+    otCollectibleCard = 57
     otCualquiera = 1000
 End Enum
 
