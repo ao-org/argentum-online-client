@@ -669,6 +669,16 @@ Private Sub Form_Load()
     Call cbRenderNpcs.AddItem(JsonLanguage.Item("MENSAJE_504")) ' Renderizado
     Call cbTutorial.AddItem(JsonLanguage.Item("MENSAJE_505")) ' Desactivado
     Call cbTutorial.AddItem(JsonLanguage.Item("MENSAJE_506")) ' Activado
+    If cbTutorial.ListCount > 0 Then
+        Dim tutorialOption As Long
+        If MostrarTutorial Then
+            tutorialOption = 1
+        Else
+            tutorialOption = 0
+        End If
+        If tutorialOption < 0 Or tutorialOption >= cbTutorial.ListCount Then tutorialOption = 0
+        cbTutorial.ListIndex = tutorialOption
+    End If
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_578"))  ' Español
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_579"))  ' Inglés
     Call cbLenguaje.AddItem(JsonLanguage.Item("MENSAJE_600"))  ' Portugues
@@ -844,16 +854,25 @@ End Sub
 Private Sub cbTutorial_Click()
     If cbTutorial.ListIndex <> MostrarTutorial Then
         MostrarTutorial = cbTutorial.ListIndex
-        If MostrarTutorial Then
-            Dim i As Long
+        Dim i As Long
+        Dim activoValue As Long
+        activoValue = IIf(MostrarTutorial, 1, 0)
+        If TutorialesCargados() Then
             For i = 1 To UBound(tutorial)
-                Call SaveSetting("TUTORIAL" & i, "Activo", 1)
-                tutorial(i).Activo = 1
+                Call SaveSetting("TUTORIAL" & i, "Activo", activoValue)
+                tutorial(i).Activo = activoValue
             Next i
         End If
         Call SaveSetting("INITTUTORIAL", "MostrarTutorial", cbTutorial.ListIndex)
     End If
 End Sub
+
+Private Function TutorialesCargados() As Boolean
+    Dim rv As Long
+    On Error Resume Next
+    rv = UBound(tutorial)
+    TutorialesCargados = (Err.Number = 0) And rv >= 0
+End Function
 
 Private Sub cbRenderNpcs_Click()
     If cbRenderNpcs.ListIndex <> npcs_en_render Then
