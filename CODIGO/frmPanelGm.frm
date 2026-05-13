@@ -3392,13 +3392,17 @@ Public Sub CadenaChat(ByVal chat As String)
 End Sub
 
 Private Sub AplicarSancionMacro(ByVal nombre As String, ByVal mandarCarcel As Boolean)
-    Dim tiempoCarcel As Integer
+    Dim tiempoCarcel As Long
 
-    tiempoCarcel = Val(frmPanelgm.txtTiempoCarcelMacros.Text)
-    If tiempoCarcel <= 0 Then tiempoCarcel = 30
+    tiempoCarcel = CLng(val(frmPanelgm.txtTiempoCarcelMacros.Text))
+    If tiempoCarcel <= 0 Then
+        tiempoCarcel = 30
+    ElseIf tiempoCarcel > 600 Then
+        tiempoCarcel = 600
+    End If
 
     If mandarCarcel And Not EstaUsuarioEnMapa66(nombre) Then
-        Call ParseUserCommand("/CARCEL " & nombre & "@uso de programas externos, macros o cheat@" & tiempoCarcel)
+        Call ParseUserCommand("/CARCEL " & nombre & "@Uso de programas externos, Macros o Cheat@" & tiempoCarcel)
     Else
         Call WriteCerraCliente(nombre)
     End If
