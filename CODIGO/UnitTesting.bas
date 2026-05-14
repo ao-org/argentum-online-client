@@ -11,7 +11,7 @@ Private FailedTestCount As Long
 Private TotalElapsed    As Double
 Private sw              As clsInstrument
 
-Private Const SUITE_COUNT As Long = 30
+Private Const SUITE_COUNT As Long = 32
 
 Public Sub Init()
     TotalTests = 0
@@ -78,6 +78,12 @@ Public Function test_suite() As Boolean
             Case 28: Call Unit_ColorOps.test_suite_color_ops
             Case 29: Call Unit_BitmaskExt.test_suite_bitmask_ext
             Case 30: Call Unit_OverlapRect.test_suite_overlap_rect
+#If DIRECT_PLAY = 1 Then
+            Case 31: Call Unit_Network.test_suite_network
+#End If
+#If DIRECT_PLAY = 0 Then
+            Case 32: Call Unit_Network_Aurora.test_suite_network_aurora
+#End If
         End Select
     Next i
     test_suite = (FailedTests = 0)
