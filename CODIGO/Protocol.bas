@@ -1897,6 +1897,7 @@ Private Sub HandleConsoleMessage()
     Dim Hechizo        As Integer
     Dim userName       As String
     Dim Valor          As String
+    Dim staminaCost    As String
     chat = Reader.ReadString8()
     FontIndex = Reader.ReadInt8()
     If ChatGlobal = 0 And FontIndex = FontTypeNames.FONTTYPE_GLOBAL Then Exit Sub
@@ -1912,9 +1913,14 @@ Private Sub HandleConsoleMessage()
             chat = objname & " " & ElementalTagsToTxtParser(ElementalTags) & ReadField(3, chat, Asc("*"))
         Case "HECINF"
             Hechizo = ReadField(2, chat, Asc("*"))
+            If HechizoData(Hechizo).StaPercentRequired > 0 Then
+                staminaCost = CStr(HechizoData(Hechizo).StaPercentRequired) & "% de stamina total."
+            Else
+                staminaCost = HechizoData(Hechizo).StaRequerido & " puntos."
+            End If
             chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & "Descripción: " & HechizoData( _
                     Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData( _
-                    Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
+                    Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & staminaCost
         Case "ProMSG"
             Hechizo = ReadField(2, chat, Asc("*"))
             chat = HechizoData(Hechizo).PropioMsg
@@ -3407,7 +3413,7 @@ Private Sub HandleWorkRequestTarget()
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_TRABAJO_MAGIA"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case MarcaDeClan
-            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_PERSONAJE_A_MARCAR"), 100, 100, 120, 0, 0)
+            Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_NPC_A_MARCAR"), 100, 100, 120, 0, 0)
             Call FormParser.Parse_Form(Frm, E_SHOOT)
         Case MarcaDeGM
             Call AddtoRichTextBox(frmMain.RecTxt, JsonLanguage.Item("MENSAJE_SELECCIONA_PERSONAJE_A_MARCAR"), 100, 100, 120, 0, 0)
