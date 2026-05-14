@@ -69,11 +69,11 @@ Private Function test_valid_trigger_bounds() As Boolean
     Dim okMin As Boolean
     okMin = ValidNumber("0", eNumber_Types.ent_Trigger)
     Dim okMax As Boolean
-    okMax = ValidNumber("99", eNumber_Types.ent_Trigger)
+    okMax = ValidNumber("255", eNumber_Types.ent_Trigger)
     Dim failBelow As Boolean
     failBelow = ValidNumber("-1", eNumber_Types.ent_Trigger)
     Dim failAbove As Boolean
-    failAbove = ValidNumber("100", eNumber_Types.ent_Trigger)
+    failAbove = ValidNumber("256", eNumber_Types.ent_Trigger)
     test_valid_trigger_bounds = (okMin = True And okMax = True And failBelow = False And failAbove = False)
     Exit Function
 Fail:
