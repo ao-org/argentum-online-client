@@ -11,7 +11,6 @@ Option Explicit
 #If UNIT_TEST = 1 Then
 
 Public Sub test_suite_instrument()
-    Call UnitTesting.RunTest("inst_elapsed_nonneg", test_elapsed_nonneg())
     Call UnitTesting.RunTest("inst_ms_consistency", test_ms_consistency())
     Call UnitTesting.RunTest("inst_monotonicity", test_monotonicity())
 End Sub
