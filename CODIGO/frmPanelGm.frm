@@ -2079,8 +2079,12 @@ Private Sub cmdAccion_Click(Index As Integer)
             Call ParseUserCommand("/SKILLS " & nick)
         Case 11 '/CARCEL NICK @ MOTIVO  0.12.1
             tmp = InputBox("¿Minutos a encarcelar? (hasta 60)", "")
-            If tmp > 1 Then
-                Call ParseUserCommand("/CARCEL " & nick & "@encarcelado via panelgm@" & tmp)
+            If IsNumeric(tmp) Then
+                If CLng(tmp) >= 1 And CLng(tmp) <= 60 Then
+                    Call WriteJail(cboListaUsus.text, "encarcelado via panelgm", CLng(tmp))
+                Else
+                    MsgBox JsonLanguage.Item("MENSAJE_TIEMPO_INVALIDO")
+                End If
             Else
                 MsgBox JsonLanguage.Item("MENSAJE_TIEMPO_INVALIDO")
             End If
@@ -2913,8 +2917,9 @@ Private Sub mnuCarcel_Click(Index As Integer)
         Call cmdAccion_Click(11)
         Exit Sub
     End If
-    nick = cboListaUsus.text
-    Call ParseUserCommand("/CARCEL " & nick & "@encarcelado via panelgm@" & Index)
+    If Index >= 1 And Index <= 59 Then
+        Call WriteJail(cboListaUsus.text, "encarcelado via panelgm", Index)
+    End If
     Exit Sub
 mnuCarcel_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.mnuCarcel_Click", Erl)
@@ -3272,7 +3277,7 @@ Public Sub CadenaChat(ByVal chat As String)
             nombre = Trim(nombre)
             If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
             If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroDePaquetes.txt")
-            If frmPanelgm.chkPaquetes.value = 1 Then Call AplicarSancionMacro(nombre, frmPanelgm.chkPaquetesCarcel.value = 1)
+            Call ProcesarAccionMacro(nombre, frmPanelgm.chkPaquetes.value = 1, frmPanelgm.chkPaquetesCarcel.value = 1)
         End If
     End If
     ' Divide la cadena en partes utilizando "Control de macro---> El usuario" como separador
@@ -3295,13 +3300,12 @@ Public Sub CadenaChat(ByVal chat As String)
                 Case InStr(Cadena, "Ocultar") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Ocultar ", "MacroOcultar.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    If frmPanelgm.chkOcultar.value = 1 Then
                         If frmPanelgm.cboListaUsus.text = nombre Then
                             ' Obtener el tiempo actual en milisegundos
                             Dim TiempoActual As Single
                             TiempoActual = Timer
                             If TiempoActual - TiempoAnterior < frmPanelgm.txtSegundos Then
-                                If frmPanelgm.chkOcultar = 1 Then Call AplicarSancionMacro(nombre, frmPanelgm.chkOcultarCarcel.value = 1)
+                                Call ProcesarAccionMacro(nombre, frmPanelgm.chkOcultar.value = 1, frmPanelgm.chkOcultarCarcel.value = 1)
                             End If
                             TiempoAnterior = TiempoActual
                         End If
@@ -3309,18 +3313,18 @@ Public Sub CadenaChat(ByVal chat As String)
                 Case InStr(Cadena, "UseItemU") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem U ", "MacroUseItemU.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    If frmPanelgm.chkUsarItem.value = 1 Then Call AplicarSancionMacro(nombre, frmPanelgm.chkUsarItemCarcel.value = 1)
+                    Call ProcesarAccionMacro(nombre, frmPanelgm.chkUsarItem.value = 1, frmPanelgm.chkUsarItemCarcel.value = 1)
                 Case InStr(Cadena, "UseItem") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem ", "MacroUseItem.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    If frmPanelgm.chkUsarItem.value = 1 Then Call AplicarSancionMacro(nombre, frmPanelgm.chkUsarItemCarcel.value = 1)
+                    Call ProcesarAccionMacro(nombre, frmPanelgm.chkUsarItem.value = 1, frmPanelgm.chkUsarItemCarcel.value = 1)
                 Case InStr(Cadena, "GuildMessage") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de GuildMessage ", "MacroGuildMessage.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                 Case InStr(Cadena, "LeftClick") > 0
                     Resultado = GuardarTextoEnArchivo(nombre & ",Macro de LeftClick ", "MacroLeftClick.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    If frmPanelgm.chkLeftClick.value = 1 Then Call AplicarSancionMacro(nombre, frmPanelgm.chkLeftClickCarcel.value = 1)
+                    Call ProcesarAccionMacro(nombre, frmPanelgm.chkLeftClick.value = 1, frmPanelgm.chkLeftClickCarcel.value = 1)
                 Case InStr(Cadena, "ChangeHeading") > 0
                     Resultado = GuardarTextoEnArchivo(nombre & ",Macro de ChangeHeading ", "MacroChangeHeading.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
@@ -3349,19 +3353,19 @@ Public Sub CadenaChat(ByVal chat As String)
                 Case InStr(Cadena, "Macro de Cordenadas") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Cordenadas", "MacroCoordenadas.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    If frmPanelgm.chkCoordenadas.value = 1 Then Call AplicarSancionMacro(nombre, frmPanelgm.chkCoordenadasCarcel.value = 1)
+                    Call ProcesarAccionMacro(nombre, frmPanelgm.chkCoordenadas.value = 1, frmPanelgm.chkCoordenadasCarcel.value = 1)
                 Case InStr(Cadena, ").") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de click", "MacroDeClick.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    If frmPanelgm.chkClicks.value = 1 Then Call AplicarSancionMacro(nombre, frmPanelgm.chkClicksCarcel.value = 1)
+                    Call ProcesarAccionMacro(nombre, frmPanelgm.chkClicks.value = 1, frmPanelgm.chkClicksCarcel.value = 1)
                 Case InStr(Cadena, "Macro Inasistido") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro Inasistido", "MacroInasistido.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    If frmPanelgm.chkInasistido.value = 1 Then Call AplicarSancionMacro(nombre, frmPanelgm.chkInasistidoCarcel.value = 1)
+                    Call ProcesarAccionMacro(nombre, frmPanelgm.chkInasistido.value = 1, frmPanelgm.chkInasistidoCarcel.value = 1)
                 Case InStr(Cadena, "Macro de Carteleo") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Carteleo", "MacroCarteleo.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    If frmPanelgm.chkCarteleo.value = 1 Then Call AplicarSancionMacro(nombre, frmPanelgm.chkCarteleoCarcel.value = 1)
+                    Call ProcesarAccionMacro(nombre, frmPanelgm.chkCarteleo.value = 1, frmPanelgm.chkCarteleoCarcel.value = 1)
                 Case Else
                     ' Manejar el caso en el que no hay coincidencias
             End Select
@@ -3388,6 +3392,15 @@ Public Sub CadenaChat(ByVal chat As String)
                 End If
             End If
         End If
+    End If
+End Sub
+
+
+Private Sub ProcesarAccionMacro(ByVal nombre As String, ByVal cerrarCliente As Boolean, ByVal mandarCarcel As Boolean)
+    If mandarCarcel Then
+        Call AplicarSancionMacro(nombre, True)
+    ElseIf cerrarCliente Then
+        Call AplicarSancionMacro(nombre, False)
     End If
 End Sub
 
