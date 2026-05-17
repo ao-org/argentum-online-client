@@ -590,7 +590,7 @@ End Sub
 
 Public Sub UpdateMapPos()
     Call frmMain.SetMinimapPosition(0, UserPos.x, UserPos.y)
-    frmMain.Coord.Caption = UserMap & "-" & UserPos.x & "-" & UserPos.y
+    Call frmMain.SetCoordCaption(UserMap & "-" & UserPos.x & "-" & UserPos.y)
     If frmMapaGrande.visible Then
         Call frmMapaGrande.ActualizarPosicionMapa
     End If
