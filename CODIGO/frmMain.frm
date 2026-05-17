@@ -1248,10 +1248,178 @@ Begin VB.Form frmMain
       Top             =   990
       Width           =   465
    End
-   Begin VB.Label Coord 
+   Begin VB.Label CoordOutline1 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
       BackStyle       =   0  'Transparent
+      Caption         =   "000 X:00 Y: 00"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   225
+      Left            =   9705
+      TabIndex        =   14
+      Top             =   195
+      Width           =   1215
+   End
+   Begin VB.Label CoordOutline2 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "000 X:00 Y: 00"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   225
+      Left            =   9720
+      TabIndex        =   14
+      Top             =   195
+      Width           =   1215
+   End
+   Begin VB.Label CoordOutline3 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "000 X:00 Y: 00"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   225
+      Left            =   9735
+      TabIndex        =   14
+      Top             =   195
+      Width           =   1215
+   End
+   Begin VB.Label CoordOutline4 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "000 X:00 Y: 00"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   225
+      Left            =   9705
+      TabIndex        =   14
+      Top             =   210
+      Width           =   1215
+   End
+   Begin VB.Label CoordOutline5 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "000 X:00 Y: 00"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   225
+      Left            =   9735
+      TabIndex        =   14
+      Top             =   210
+      Width           =   1215
+   End
+   Begin VB.Label CoordOutline6 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "000 X:00 Y: 00"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   225
+      Left            =   9705
+      TabIndex        =   14
+      Top             =   225
+      Width           =   1215
+   End
+   Begin VB.Label CoordOutline7 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "000 X:00 Y: 00"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   225
+      Left            =   9720
+      TabIndex        =   14
+      Top             =   225
+      Width           =   1215
+   End
+   Begin VB.Label CoordOutline8 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "000 X:00 Y: 00"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   225
+      Left            =   9735
+      TabIndex        =   14
+      Top             =   225
+      Width           =   1215
+   End
+   Begin VB.Label Coord 
+      Alignment       =   2  'Center
+      AutoSize        =   -1  'True
+      BackStyle        =   0  'Transparent
       Caption         =   "000 X:00 Y: 00"
       BeginProperty Font 
          Name            =   "Calibri"
@@ -3103,6 +3271,50 @@ Private Sub NameMapa_MouseMove(Button As Integer, Shift As Integer, x As Single,
     Exit Sub
 NameMapa_MouseMove_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.NameMapa_MouseMove", Erl)
+    Resume Next
+End Sub
+
+Public Sub SetCoordCaption(ByVal texto As String)
+    On Error GoTo SetCoordCaption_Err
+    CoordOutline1.Caption = texto
+    CoordOutline2.Caption = texto
+    CoordOutline3.Caption = texto
+    CoordOutline4.Caption = texto
+    CoordOutline5.Caption = texto
+    CoordOutline6.Caption = texto
+    CoordOutline7.Caption = texto
+    CoordOutline8.Caption = texto
+    Coord.Caption = texto
+    CoordOutline1.ZOrder 1
+    CoordOutline2.ZOrder 1
+    CoordOutline3.ZOrder 1
+    CoordOutline4.ZOrder 1
+    CoordOutline5.ZOrder 1
+    CoordOutline6.ZOrder 1
+    CoordOutline7.ZOrder 1
+    CoordOutline8.ZOrder 1
+    Coord.ZOrder 0
+    Exit Sub
+SetCoordCaption_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.SetCoordCaption", Erl)
+    Resume Next
+End Sub
+
+Public Sub SetCoordColor(ByVal color As Long)
+    On Error GoTo SetCoordColor_Err
+    Coord.ForeColor = color
+    CoordOutline1.ForeColor = &H00FFFFFF&
+    CoordOutline2.ForeColor = &H00FFFFFF&
+    CoordOutline3.ForeColor = &H00FFFFFF&
+    CoordOutline4.ForeColor = &H00FFFFFF&
+    CoordOutline5.ForeColor = &H00FFFFFF&
+    CoordOutline6.ForeColor = &H00FFFFFF&
+    CoordOutline7.ForeColor = &H00FFFFFF&
+    CoordOutline8.ForeColor = &H00FFFFFF&
+    Coord.ZOrder 0
+    Exit Sub
+SetCoordColor_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.SetCoordColor", Erl)
     Resume Next
 End Sub
 

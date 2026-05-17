@@ -85,7 +85,7 @@ Sub SwitchMap(ByVal map As Integer, Optional ByVal NewResourceMap As Integer = 0
         Call ao20audio.PlayAmbientAudio(map)
     End If
     If MapDat.Seguro = 1 Then
-        frmMain.Coord.ForeColor = RGB(0, 170, 0)
+        Call frmMain.SetCoordColor(RGB(0, 170, 0))
     Else
         If MostrarTutorial And tutorial_index <= 0 And isLogged Then
             If tutorial(e_tutorialIndex.TUTORIAL_ZONA_INSEGURA).Activo = 1 Then
@@ -95,7 +95,7 @@ Sub SwitchMap(ByVal map As Integer, Optional ByVal NewResourceMap As Integer = 0
                         535, 640, 530, 64, 64)
             End If
         End If
-        frmMain.Coord.ForeColor = RGB(170, 0, 0)
+        Call frmMain.SetCoordColor(RGB(170, 0, 0))
     End If
     Exit Sub
 SwitchMap_Err:

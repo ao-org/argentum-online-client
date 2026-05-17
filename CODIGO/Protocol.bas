@@ -2172,9 +2172,9 @@ Private Sub HandleUserCharIndexInServer()
     UpdatePlayerRoof
     lastMove = FrameTime
     If MapDat.Seguro = 1 Then
-        frmMain.Coord.ForeColor = RGB(0, 170, 0)
+        Call frmMain.SetCoordColor(RGB(0, 170, 0))
     Else
-        frmMain.Coord.ForeColor = RGB(170, 0, 0)
+        Call frmMain.SetCoordColor(RGB(170, 0, 0))
     End If
     Call UpdateMapPos
     g_game_state.state = e_state_gameplay_screen
@@ -2449,9 +2449,9 @@ Private Sub HandleForceCharMove()
     Call MoveScreen(direccion)
     Call UpdateMapPos
     If MapDat.Seguro = 1 Then
-        frmMain.Coord.ForeColor = RGB(0, 170, 0)
+        Call frmMain.SetCoordColor(RGB(0, 170, 0))
     Else
-        frmMain.Coord.ForeColor = RGB(170, 0, 0)
+        Call frmMain.SetCoordColor(RGB(170, 0, 0))
     End If
     Call RefreshAllChars
     Exit Sub
