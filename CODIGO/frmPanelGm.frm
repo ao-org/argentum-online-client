@@ -3406,7 +3406,7 @@ Private Sub AplicarSancionMacro(ByVal nombre As String, ByVal cerrarCliente As B
     ElseIf cerrarCliente Then
         Call WriteCerraCliente(nombre)
     Else
-        Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@INFORMACION: Detectamos actividad sospechosa de macro. Esta accion fue registrada.")
+        'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@INFORMACION: Detectamos actividad sospechosa de macro. Esta accion fue registrada.")
     End If
 End Sub
 
