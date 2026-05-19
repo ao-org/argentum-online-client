@@ -3246,6 +3246,7 @@ Public Sub CadenaChat(ByVal chat As String)
     Static UltimaCadena As String
     Static UltimoTiempo As Single
     Dim TiempoActualCadena As Single
+    Dim macroTotalGuardado As Boolean
 
     TiempoActualCadena = Timer
 
@@ -3287,7 +3288,10 @@ Public Sub CadenaChat(ByVal chat As String)
             nombre = Left(nombre, PosicionBarra - 1)
             ' Elimina espacios en blanco al principio y al final del nombre
             nombre = Trim(nombre)
-            If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+            If chkInfoTXT.value = 1 And Not macroTotalGuardado Then
+                Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+                macroTotalGuardado = True
+            End If
             If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroDePaquetes.txt")
             Call AplicarSancionMacro(nombre, frmPanelgm.chkPaquetes.value = 1, frmPanelgm.chkPaquetesCarcel.value = 1)
         End If
@@ -3345,7 +3349,10 @@ Public Sub CadenaChat(ByVal chat As String)
                     ' Manejar el caso en el que no hay coincidencias
             End Select
             If frmPanelgm.chkAutoName.value = 1 Then frmPanelgm.cboListaUsus.text = nombre
-            If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+            If chkInfoTXT.value = 1 And Not macroTotalGuardado Then
+                Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+                macroTotalGuardado = True
+            End If
         End If
     End If
     ' Divide la cadena en partes utilizando "AntiCheat> El usuario" como separador
@@ -3383,7 +3390,10 @@ Public Sub CadenaChat(ByVal chat As String)
                     ' Manejar el caso en el que no hay coincidencias
             End Select
             If frmPanelgm.chkAutoName.value = 1 Then frmPanelgm.cboListaUsus.text = nombre
-            If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+            If chkInfoTXT.value = 1 And Not macroTotalGuardado Then
+                Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+                macroTotalGuardado = True
+            End If
         End If
     End If
 
@@ -3397,7 +3407,10 @@ Public Sub CadenaChat(ByVal chat As String)
                     nombre = Left(nombre, PosicionBarra - 1)
                     nombre = Trim(nombre)
                     If frmPanelgm.chkAutoName.value = 1 Then frmPanelgm.cboListaUsus.text = nombre
-                    If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+                    If chkInfoTXT.value = 1 And Not macroTotalGuardado Then
+                Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+                macroTotalGuardado = True
+            End If
                 End If
             End If
         End If
