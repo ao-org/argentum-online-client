@@ -1980,9 +1980,6 @@ CerrarProceso_Click_Err:
     Resume Next
 End Sub
 
-Private Sub chkAntiCheat_Click()
-End Sub
-
 Private Sub chkVerPanel_Click()
     If chkVerPanel.value = 1 Then
         FraControlMacros.visible = False
