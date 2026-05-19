@@ -676,6 +676,28 @@ Begin VB.Form frmPanelgm
       Value           =   1  'Checked
       Width           =   255
    End
+   Begin VB.CheckBox chkLeerInvisibleSi 
+      BackColor       =   &H00000000&
+      Caption         =   "Leer Invisible SI"
+      ForeColor       =   &H80000005&
+      Height          =   255
+      Left            =   4800
+      TabIndex        =   66
+      Top             =   7080
+      Value           =   1  'Checked
+      Width           =   2175
+   End
+   Begin VB.CheckBox chkLeerInvisibleNo 
+      BackColor       =   &H00000000&
+      Caption         =   "Leer Invisible NO"
+      ForeColor       =   &H80000005&
+      Height          =   255
+      Left            =   4800
+      TabIndex        =   65
+      Top             =   7320
+      Value           =   1  'Checked
+      Width           =   2175
+   End
    Begin VB.CommandButton cmdButtonActualizarListaGms 
       BackColor       =   &H80000018&
       Caption         =   "Actualizar"
@@ -1980,28 +2002,6 @@ CerrarProceso_Click_Err:
     Resume Next
 End Sub
 
-Private Sub chkAntiCheat_Click()
-    If chkAntiCheat.value = 0 Then
-        chkOcultar.value = False
-        chkUsarItem.value = False
-        chkLeftClick.value = False
-        chkPaquetes.value = False
-        chkCoordenadas.value = False
-        chkClicks.value = False
-        chkInasistido.value = False
-        chkCarteleo.value = False
-    Else
-        chkOcultar.value = 1
-        chkUsarItem.value = 1
-        chkLeftClick.value = 1
-        chkPaquetes.value = 1
-        chkCoordenadas.value = 1
-        chkClicks.value = 1
-        chkInasistido.value = 1
-        chkCarteleo.value = 1
-    End If
-End Sub
-
 Private Sub chkVerPanel_Click()
     If chkVerPanel.value = 1 Then
         FraControlMacros.visible = False
@@ -3240,6 +3240,23 @@ Public Sub CadenaChat(ByVal chat As String)
     Dim nombre        As String
     Dim nombreObjetivo As String
     Dim PosicionBarra As Integer
+    Dim cadenaMayus As String
+    Dim esInvisibleSi As Boolean
+    Dim esInvisibleNo As Boolean
+    Static UltimaCadena As String
+    Static UltimoTiempo As Single
+    Dim TiempoActualCadena As Single
+    Dim macroTotalGuardado As Boolean
+
+    TiempoActualCadena = Timer
+
+    If chat = UltimaCadena Then
+        If TiempoActualCadena - UltimoTiempo < 3 Then Exit Sub
+    End If
+
+    UltimaCadena = chat
+    UltimoTiempo = TiempoActualCadena
+
     ' La cadena original
     Cadena = chat
     ' Divide la cadena en partes utilizando "Usuarios trabajando:" como separador
@@ -3257,8 +3274,9 @@ Public Sub CadenaChat(ByVal chat As String)
             cboListaUsus.AddItem Trim(Nombres(i))
         Next i
     End If
-    ' Divide la cadena en partes utilizando "Control de paquetes -> El usuario" como separador
-    partes = Split(Cadena, "Control Paquetes---> El usuario")
+    If chkAntiCheat.value = 1 Then
+        ' Divide la cadena en partes utilizando "Control de paquetes -> El usuario" como separador
+        partes = Split(Cadena, "Control Paquetes---> El usuario")
     ' Verifica si hay al menos dos partes en la matriz resultante
     If UBound(partes) >= 1 Then
         ' La segunda parte (índice 1) contiene el nombre y otros caracteres
@@ -3270,7 +3288,10 @@ Public Sub CadenaChat(ByVal chat As String)
             nombre = Left(nombre, PosicionBarra - 1)
             ' Elimina espacios en blanco al principio y al final del nombre
             nombre = Trim(nombre)
-            If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+            If chkInfoTXT.value = 1 And Not macroTotalGuardado Then
+                Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+                macroTotalGuardado = True
+            End If
             If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroDePaquetes.txt")
             Call AplicarSancionMacro(nombre, frmPanelgm.chkPaquetes.value = 1, frmPanelgm.chkPaquetesCarcel.value = 1)
         End If
@@ -3328,7 +3349,10 @@ Public Sub CadenaChat(ByVal chat As String)
                     ' Manejar el caso en el que no hay coincidencias
             End Select
             If frmPanelgm.chkAutoName.value = 1 Then frmPanelgm.cboListaUsus.text = nombre
-            If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+            If chkInfoTXT.value = 1 And Not macroTotalGuardado Then
+                Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+                macroTotalGuardado = True
+            End If
         End If
     End If
     ' Divide la cadena en partes utilizando "AntiCheat> El usuario" como separador
@@ -3366,11 +3390,40 @@ Public Sub CadenaChat(ByVal chat As String)
                     ' Manejar el caso en el que no hay coincidencias
             End Select
             If frmPanelgm.chkAutoName.value = 1 Then frmPanelgm.cboListaUsus.text = nombre
-            If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+            If chkInfoTXT.value = 1 And Not macroTotalGuardado Then
+                Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+                macroTotalGuardado = True
+            End If
+        End If
+    End If
+
+    Else
+        If InStr(Cadena, "Control Paquetes---> El usuario") > 0 Or InStr(Cadena, "Control de macro---> El usuario") > 0 Then
+            partes = Split(Cadena, "Control de macro---> El usuario")
+            If UBound(partes) >= 1 Then
+                nombre = partes(1)
+                PosicionBarra = InStr(nombre, "|")
+                If PosicionBarra > 0 Then
+                    nombre = Left(nombre, PosicionBarra - 1)
+                    nombre = Trim(nombre)
+                    If frmPanelgm.chkAutoName.value = 1 Then frmPanelgm.cboListaUsus.text = nombre
+                    If chkInfoTXT.value = 1 And Not macroTotalGuardado Then
+                Resultado = GuardarTextoEnArchivo(Cadena, "MacroTotal.txt")
+                macroTotalGuardado = True
+            End If
+                End If
+            End If
         End If
     End If
 
     ' Captura avisos de hechizos para autocompletar el usuario atacante y/o objetivo
+    cadenaMayus = UCase$(Cadena)
+    esInvisibleSi = (InStr(cadenaMayus, "INVISIBLE SI") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD SI") > 0)
+    esInvisibleNo = (InStr(cadenaMayus, "INVISIBLE NO") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD NO") > 0)
+
+    If esInvisibleSi And chkLeerInvisibleSi.value = 0 Then Exit Sub
+    If esInvisibleNo And chkLeerInvisibleNo.value = 0 Then Exit Sub
+
     If InStr(Cadena, "El usuario ") > 0 And InStr(Cadena, " esta lanzando hechizos al Usuario ") > 0 Then
         partes = Split(Cadena, "El usuario ")
         If UBound(partes) >= 1 Then
@@ -3405,8 +3458,6 @@ Private Sub AplicarSancionMacro(ByVal nombre As String, ByVal cerrarCliente As B
         Call ParseUserCommand("/CARCEL " & nombre & "@Uso de programas externos, Macros o Cheat@" & tiempoCarcel)
     ElseIf cerrarCliente Then
         Call WriteCerraCliente(nombre)
-    Else
-        Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@INFORMACION: Detectamos actividad sospechosa de macro. Esta accion fue registrada.")
     End If
 End Sub
 
