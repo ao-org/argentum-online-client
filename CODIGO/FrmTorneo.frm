@@ -1339,9 +1339,7 @@ Private Sub cmdCancelarDeath_Click()
 End Sub
 
 Private Sub cmdCancelarTodos_Click()
-    Call WriteCancelarTorneo
-    Call ParseUserCommand("/configlobby end")
-    Call ParseUserCommand("/cancelarevento")
+    Call WriteCancelarEvento
 End Sub
 
 Private Sub cmdCancelarTorneo_Click()
@@ -1462,6 +1460,7 @@ Private Sub Command3_Click()
 End Sub
 
 Private Sub Command5_Click()
+    Call WriteCancelarEvento
     FrmTorneo.FraCapturaDe.visible = False
     FrmTorneo.FraTorneosY.visible = True
 End Sub
