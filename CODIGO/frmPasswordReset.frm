@@ -73,6 +73,7 @@ Begin VB.Form frmPasswordReset
       ForeColor       =   &H80000005&
       Height          =   300
       Left            =   3090
+      MaxLength       =   32
       TabIndex        =   1
       Top             =   1280
       Visible         =   0   'False
@@ -230,9 +231,38 @@ Private Sub Form_Load()
     #If DEBUGGING = 1 Then
         cmdHaveCode.Caption = "HAVE CODE"
         cmdHaveCode.ForeColor = 1000
+    #Else
+        cmdHaveCode.Caption = "Ya tengo un codigo"
     #End If
 End Sub
 
 Private Sub Image1_Click()
     Unload Me
+End Sub
+
+Private Sub txtCodigo_Change()
+    Static Processing As Boolean
+    Dim I As Long
+    Dim CurrentText As String
+    Dim Sanitized As String
+    Dim CurrentChar As String
+
+    If Processing Then Exit Sub
+
+    Processing = True
+    CurrentText = UCase$(Trim$(Me.txtCodigo.Text))
+
+    For I = 1 To Len(CurrentText)
+        CurrentChar = Mid$(CurrentText, I, 1)
+        If (CurrentChar >= "A" And CurrentChar <= "Z") Or (CurrentChar >= "0" And CurrentChar <= "9") Then
+            Sanitized = Sanitized & CurrentChar
+        End If
+    Next I
+
+    If Me.txtCodigo.Text <> Sanitized Then
+        Me.txtCodigo.Text = Sanitized
+        Me.txtCodigo.SelStart = Len(Me.txtCodigo.Text)
+    End If
+
+    Processing = False
 End Sub
