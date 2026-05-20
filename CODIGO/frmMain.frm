@@ -3303,14 +3303,14 @@ End Sub
 Public Sub SetCoordColor(ByVal color As Long)
     On Error GoTo SetCoordColor_Err
     Coord.ForeColor = color
-    CoordOutline1.ForeColor = &H00FFFFFF&
-    CoordOutline2.ForeColor = &H00FFFFFF&
-    CoordOutline3.ForeColor = &H00FFFFFF&
-    CoordOutline4.ForeColor = &H00FFFFFF&
-    CoordOutline5.ForeColor = color
-    CoordOutline6.ForeColor = color
-    CoordOutline7.ForeColor = color
-    CoordOutline8.ForeColor = color
+    CoordOutline1.ForeColor = RGB(20, 20, 20)
+    CoordOutline2.ForeColor = RGB(20, 20, 20)
+    CoordOutline3.ForeColor = RGB(20, 20, 20)
+    CoordOutline4.ForeColor = RGB(20, 20, 20)
+    CoordOutline5.ForeColor = RGB(20, 20, 20)
+    CoordOutline6.ForeColor = RGB(20, 20, 20)
+    CoordOutline7.ForeColor = RGB(20, 20, 20)
+    CoordOutline8.ForeColor = RGB(20, 20, 20)
     Coord.ZOrder 0
     Exit Sub
 SetCoordColor_Err:
