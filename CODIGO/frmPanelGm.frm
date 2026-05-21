@@ -679,7 +679,7 @@ Begin VB.Form frmPanelgm
    Begin VB.CheckBox chkLeerInvisibleSi 
       BackColor       =   &H00000000&
       Caption         =   "Leer Invisible SI"
-      ForeColor       =   &H80000005&
+      ForeColor       =   &H00FFFFFF&
       Height          =   255
       Left            =   4800
       TabIndex        =   108
@@ -690,7 +690,7 @@ Begin VB.Form frmPanelgm
    Begin VB.CheckBox chkLeerInvisibleNo 
       BackColor       =   &H00000000&
       Caption         =   "Leer Invisible NO"
-      ForeColor       =   &H80000005&
+      ForeColor       =   &H00FFFFFF&
       Height          =   255
       Left            =   4800
       TabIndex        =   109
