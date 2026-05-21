@@ -233,8 +233,8 @@ Begin VB.Form frmPanelgm
          Left            =   240
          TabIndex        =   106
          Text            =   "30"
-         Top             =   3120
-         Width           =   375
+         Top             =   3240
+         Width           =   495
       End
       Begin VB.CheckBox chkPaquetesCarcel 
          BackColor       =   &H80000007&
@@ -342,9 +342,9 @@ Begin VB.Form frmPanelgm
          Caption         =   "Min carcel"
          ForeColor       =   &H80000005&
          Height          =   195
-         Left            =   720
+         Left            =   840
          TabIndex        =   107
-         Top             =   3165
+         Top             =   3240
          Width           =   870
       End
       Begin VB.Label lblInasistido 
@@ -673,7 +673,6 @@ Begin VB.Form frmPanelgm
       Left            =   3240
       TabIndex        =   67
       Top             =   7680
-      Value           =   1  'Checked
       Width           =   255
    End
    Begin VB.CheckBox chkLeerInvisibleSi 
@@ -685,7 +684,7 @@ Begin VB.Form frmPanelgm
       TabIndex        =   108
       Top             =   7080
       Value           =   1  'Checked
-      Width           =   2175
+      Width           =   255
    End
    Begin VB.CheckBox chkLeerInvisibleNo 
       BackColor       =   &H00000000&
@@ -696,7 +695,7 @@ Begin VB.Form frmPanelgm
       TabIndex        =   109
       Top             =   7320
       Value           =   1  'Checked
-      Width           =   2175
+      Width           =   255
    End
    Begin VB.CommandButton cmdButtonActualizarListaGms 
       BackColor       =   &H80000018&
@@ -1261,6 +1260,26 @@ Begin VB.Form frmPanelgm
       TabIndex        =   7
       Top             =   600
       Width           =   4560
+   End
+   Begin VB.Label Label5 
+      BackColor       =   &H80000012&
+      Caption         =   "Leer visible"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   5160
+      TabIndex        =   111
+      Top             =   7320
+      Width           =   1335
+   End
+   Begin VB.Label Label4 
+      BackColor       =   &H80000012&
+      Caption         =   "Leer invisibles"
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   5160
+      TabIndex        =   110
+      Top             =   7080
+      Width           =   1575
    End
    Begin VB.Label Label1 
       BackColor       =   &H00000000&
