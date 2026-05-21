@@ -6,7 +6,7 @@ Begin VB.Form frmPanelgm
    ClientHeight    =   8745
    ClientLeft      =   16095
    ClientTop       =   3480
-   ClientWidth     =   7155
+   ClientWidth     =   7170
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -20,7 +20,7 @@ Begin VB.Form frmPanelgm
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   8745
-   ScaleWidth      =   7155
+   ScaleWidth      =   7170
    ShowInTaskbar   =   0   'False
    Begin VB.Frame MacrosCheat 
       BackColor       =   &H80000007&
@@ -682,7 +682,7 @@ Begin VB.Form frmPanelgm
       ForeColor       =   &H80000005&
       Height          =   255
       Left            =   4800
-      TabIndex        =   66
+      TabIndex        =   108
       Top             =   7080
       Value           =   1  'Checked
       Width           =   2175
@@ -693,7 +693,7 @@ Begin VB.Form frmPanelgm
       ForeColor       =   &H80000005&
       Height          =   255
       Left            =   4800
-      TabIndex        =   65
+      TabIndex        =   109
       Top             =   7320
       Value           =   1  'Checked
       Width           =   2175
@@ -774,7 +774,7 @@ Begin VB.Form frmPanelgm
       Left            =   4800
       Style           =   1  'Graphical
       TabIndex        =   45
-      Top             =   7080
+      Top             =   8040
       Width           =   2295
    End
    Begin VB.CommandButton cmdInseguro 
