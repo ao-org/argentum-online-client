@@ -1139,7 +1139,11 @@ Private Sub HandleCharSwing()
                     0, 0))
         End If
         If EstaPCarea(charindex) Then
-            Call ao20audio.PlayWav(2, False, ao20audio.ComputeCharFxVolume(.Pos), ao20audio.ComputeCharFxPan(.Pos))
+            If .EsNpc Then
+                Call ao20audio.PlayFx(2, False, ao20audio.ComputeNpcFxVolume(.Pos), ao20audio.ComputeCharFxPan(.Pos), , eFxNPC)
+            Else
+                Call ao20audio.PlayWav(2, False, ao20audio.ComputeCharFxVolume(.Pos), ao20audio.ComputeCharFxPan(.Pos))
+            End If
         End If
     End With
     Exit Sub
@@ -2803,7 +2807,11 @@ Private Sub HandlePlayWave()
     '=== Play the wave, either with spatial positioning or at default volume ===
     If srcX = 0 Or srcY = 0 Then
         ' No position provided: play at default volume & center pan
-        ao20audio.PlayWav filename, False, 0, 0
+        If ao20audio.IsNpcFxSound(wave) Then
+            ao20audio.PlayFx filename, False, 0, 0, , eFxNPC
+        Else
+            ao20audio.PlayWav filename, False, 0, 0
+        End If
     Else
         ' Only play if the source position is within audible area
         If EstaEnArea(srcX, srcY) Then
@@ -2811,7 +2819,17 @@ Private Sub HandlePlayWave()
             p.x = srcX
             p.y = srcY
             ' Compute volume & pan based on distance and orientation
-            ao20audio.PlayWav filename, False, ao20audio.ComputeCharFxVolume(p), ao20audio.ComputeCharFxPan(p)
+            Dim sourceCharIndex As Integer
+            Dim sourceIsNpc As Boolean
+            sourceCharIndex = MapData(srcX, srcY).charindex
+            If sourceCharIndex >= LBound(charlist) And sourceCharIndex <= UBound(charlist) Then
+                sourceIsNpc = charlist(sourceCharIndex).EsNpc
+            End If
+            If sourceIsNpc Or ao20audio.IsNpcFxSound(wave) Then
+                ao20audio.PlayFx filename, False, ao20audio.ComputeNpcFxVolume(p), ao20audio.ComputeCharFxPan(p), , eFxNPC
+            Else
+                ao20audio.PlayWav filename, False, ao20audio.ComputeCharFxVolume(p), ao20audio.ComputeCharFxPan(p)
+            End If
         End If
     End If
     Exit Sub
@@ -3267,9 +3285,9 @@ Private Sub HandleCharAtaca()
 
     If charlist(UserCharIndex).Muerto = False Then
         If EstaPCarea(NpcIndex) Then
-            Call ao20audio.PlayWav(CStr(IIf(danio = -1, 2, 10)), False, _
-                ao20audio.ComputeCharFxVolume(charlist(NpcIndex).Pos), _
-                ao20audio.ComputeCharFxPan(charlist(NpcIndex).Pos))
+            Call ao20audio.PlayFx(CStr(IIf(danio = -1, 2, 10)), False, _
+                ao20audio.ComputeNpcFxVolume(charlist(NpcIndex).Pos), _
+                ao20audio.ComputeCharFxPan(charlist(NpcIndex).Pos), , eFxNPC)
         End If
     End If
 

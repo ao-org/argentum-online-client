@@ -280,6 +280,11 @@ Public Type NpcDatas
     Comercia As Integer
     level As Integer
     Amphibian As Boolean
+    Snd1 As Integer
+    Snd2 As Integer
+    Snd3 As Integer
+    SoundOpen As Integer
+    SoundClose As Integer
     QuizaProb As Integer
     DisabledInBattleServer As Integer
 End Type
@@ -2271,6 +2276,7 @@ Public Sub PlayQuestDescAudio(ByVal questIndex As Integer)
     If LenB(audioFile) = 0 Then Exit Sub
 
     audioFile = ResolveLocalizedAudioId(audioFile)
+    If VolFX <= -4000 Then Exit Sub
 
     Call ao20audio.PlayWav(audioFile, False, 0, 0, QUEST_DESC_AUDIO_LABEL)
 End Sub
@@ -2304,6 +2310,7 @@ Public Sub PlayQuestFinalDescAudio(ByVal questIndex As Integer)
     If LenB(audioFile) = 0 Then Exit Sub
 
     audioFile = ResolveLocalizedAudioId(audioFile)
+    If VolFX <= -4000 Then Exit Sub
 
     Call ao20audio.PlayWav(audioFile, False, 0, 0, QUEST_DESC_AUDIO_LABEL)
 End Sub

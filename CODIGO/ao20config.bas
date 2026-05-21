@@ -108,6 +108,7 @@ Sub LoadConfig()
     Call ao20audio.SetMusicVolume(VolMusic)
     Call ao20audio.SetFxVolume(VolFX, eFxGeneral)
     Call ao20audio.SetFxVolume(VolSteps, eFxSteps)
+    Call ao20audio.SetFxVolume(VolAmbient, eFxAmbient)
     'Video
     PantallaCompleta = GetSetting("VIDEO", "PantallaCompleta")
     CursoresGraficos = IIf(RunningInVB, 0, GetSetting("VIDEO", "CursoresGraficos"))

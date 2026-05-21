@@ -1389,6 +1389,11 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).BodyIdle = val(Leer.GetValue("npc" & Npc, "BodyIdle"))
         NpcData(Npc).DisabledInBattleServer = val(Leer.GetValue("npc" & Npc, "DisabledInBattleServer"))
         NpcData(Npc).Amphibian = val(Leer.GetValue("npc" & Npc, "Amphibian")) > 0
+        NpcData(Npc).Snd1 = val(Leer.GetValue("npc" & Npc, "SND1"))
+        NpcData(Npc).Snd2 = val(Leer.GetValue("npc" & Npc, "SND2"))
+        NpcData(Npc).Snd3 = val(Leer.GetValue("npc" & Npc, "SND3"))
+        NpcData(Npc).SoundOpen = val(Leer.GetValue("npc" & Npc, "SoundOpen"))
+        NpcData(Npc).SoundClose = val(Leer.GetValue("npc" & Npc, "SoundClose"))
         If NpcData(Npc).DropCount > 0 Then
             ReDim NpcData(Npc).DropObj(1 To NpcData(Npc).DropCount) As Integer
             ReDim NpcData(Npc).DropChance(1 To NpcData(Npc).DropCount) As Integer

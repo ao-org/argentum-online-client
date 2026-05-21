@@ -50,6 +50,7 @@ Public Enum eFxCategory
     eFxGeneral = 0
     eFxSteps = 1
     eFxAmbient = 2
+    eFxNPC = 3
 End Enum
 Public Const QUEST_DESC_AUDIO_LABEL As String = "quest_desc_audio"
 
@@ -102,6 +103,7 @@ Public Sub SetFxVolume(ByVal NewVolume As Long, Optional ByVal Category As eFxCa
             If AudioEnabled And AmbientEnabled And Not AudioEngine Is Nothing Then
                 Call ao20audio.AudioEngine.ApplyAmbientVolume(NewVolume)
             End If
+
     End Select
     Exit Sub
 
@@ -175,6 +177,10 @@ Public Function PlayFx(ByVal id As String, _
             If AmbientEnabled = 0 Then Exit Function
             effVol = min(CurAmbientVolume, volume)
 
+        Case eFxNPC
+            If FxEnabled = 0 Or CurFxVolume <= -4000 Or volume <= -4000 Then Exit Function
+            effVol = min(CurFxVolume, volume)
+
         Case Else
             If FxEnabled = 0 Then Exit Function
             effVol = min(CurFxVolume, volume)
@@ -202,6 +208,10 @@ Public Sub PlayFxUniqueByLabel(ByVal sndIndex As Integer, _
         Case eFxAmbient
             If AmbientEnabled = 0 Then Exit Sub
             effVol = min(CurAmbientVolume, volume)
+
+        Case eFxNPC
+            If FxEnabled = 0 Or CurFxVolume <= -4000 Or volume <= -4000 Then Exit Sub
+            effVol = min(CurFxVolume, volume)
 
         Case Else
             If FxEnabled = 0 Then Exit Sub
@@ -298,6 +308,35 @@ ComputeCharFxVolumenErr:
     Resume Next
 End Function
 
+Public Function ComputeNpcFxVolume(ByRef Pos As Position) As Long
+    On Error GoTo ComputeNpcFxVolumeErr:
+    Dim total_distance As Integer
+    total_distance = General_Distance_Get(Pos.x, Pos.y, UserPos.x, UserPos.y)
+    ComputeNpcFxVolume = ComputeVolumeByDistance(eFxNPC, total_distance)
+    Exit Function
+ComputeNpcFxVolumeErr:
+    Call RegistrarError(Err.Number, Err.Description, "ComputeNpcFxVolume", Erl)
+    Resume Next
+End Function
+
+Public Function IsNpcFxSound(ByVal SoundId As Integer) As Boolean
+    On Error GoTo IsNpcFxSoundErr
+    Dim i As Long
+    If SoundId <= 0 Then Exit Function
+    For i = LBound(NpcData) To UBound(NpcData)
+        With NpcData(i)
+            If .Snd1 = SoundId Or .Snd2 = SoundId Or .Snd3 = SoundId Or _
+               .SoundOpen = SoundId Or .SoundClose = SoundId Then
+                IsNpcFxSound = True
+                Exit Function
+            End If
+        End With
+    Next i
+    Exit Function
+IsNpcFxSoundErr:
+    IsNpcFxSound = False
+End Function
+
 Public Function ComputeCharFxPan(ByRef Pos As Position) As Long
     On Error GoTo ComputeCharFxPanErr:
     Dim total_distance As Integer, position_sgn As Integer, curr_x As Integer, curr_y As Integer
@@ -354,6 +393,7 @@ Public Function ComputeVolumeByDistance(ByVal category As eFxCategory, ByVal dis
     Select Case category
         Case eFxSteps:   base = VolSteps
         Case eFxAmbient: base = VolAmbient
+        Case eFxNPC:     base = VolFX
         Case Else:       base = VolFX
     End Select
 
