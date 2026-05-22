@@ -3280,10 +3280,10 @@ Public Sub SetCoordCaption(ByVal texto As String)
     CoordOutline2.Caption = texto
     CoordOutline3.Caption = texto
     CoordOutline4.Caption = texto
-    CoordOutline5.Caption = texto
-    CoordOutline6.Caption = texto
-    CoordOutline7.Caption = texto
-    CoordOutline8.Caption = texto
+    CoordOutline5.Caption = vbNullString
+    CoordOutline6.Caption = vbNullString
+    CoordOutline7.Caption = vbNullString
+    CoordOutline8.Caption = vbNullString
     Coord.Caption = texto
     CoordOutline1.ZOrder 1
     CoordOutline2.ZOrder 1
@@ -3303,14 +3303,14 @@ End Sub
 Public Sub SetCoordColor(ByVal color As Long)
     On Error GoTo SetCoordColor_Err
     Coord.ForeColor = color
-    CoordOutline1.ForeColor = &H00FFFFFF&
-    CoordOutline2.ForeColor = &H00FFFFFF&
-    CoordOutline3.ForeColor = &H00FFFFFF&
-    CoordOutline4.ForeColor = &H00FFFFFF&
-    CoordOutline5.ForeColor = &H00FFFFFF&
-    CoordOutline6.ForeColor = &H00FFFFFF&
-    CoordOutline7.ForeColor = &H00FFFFFF&
-    CoordOutline8.ForeColor = &H00FFFFFF&
+    CoordOutline1.ForeColor = RGB(20, 20, 20)
+    CoordOutline2.ForeColor = RGB(20, 20, 20)
+    CoordOutline3.ForeColor = RGB(20, 20, 20)
+    CoordOutline4.ForeColor = RGB(20, 20, 20)
+    CoordOutline5.ForeColor = RGB(20, 20, 20)
+    CoordOutline6.ForeColor = RGB(20, 20, 20)
+    CoordOutline7.ForeColor = RGB(20, 20, 20)
+    CoordOutline8.ForeColor = RGB(20, 20, 20)
     Coord.ZOrder 0
     Exit Sub
 SetCoordColor_Err:
