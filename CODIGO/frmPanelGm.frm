@@ -3112,8 +3112,7 @@ End Sub
 
 Private Sub torneo_cancelar_Click()
     On Error GoTo torneo_cancelar_Click_Err
-    Call WriteCancelarTorneo
-    Call ParseUserCommand("/configlobby end")
+    Call WriteCancelarEvento
     Exit Sub
 torneo_cancelar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmPanelGM.torneo_cancelar_Click", Erl)
