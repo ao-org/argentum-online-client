@@ -1897,6 +1897,7 @@ Private Sub HandleConsoleMessage()
     Dim Hechizo        As Integer
     Dim userName       As String
     Dim Valor          As String
+    Dim staminaCost    As String
     chat = Reader.ReadString8()
     FontIndex = Reader.ReadInt8()
     If ChatGlobal = 0 And FontIndex = FontTypeNames.FONTTYPE_GLOBAL Then Exit Sub
@@ -1912,9 +1913,14 @@ Private Sub HandleConsoleMessage()
             chat = objname & " " & ElementalTagsToTxtParser(ElementalTags) & ReadField(3, chat, Asc("*"))
         Case "HECINF"
             Hechizo = ReadField(2, chat, Asc("*"))
+            If HechizoData(Hechizo).StaPercentRequired > 0 Then
+                staminaCost = CStr(HechizoData(Hechizo).StaPercentRequired) & "% de stamina total."
+            Else
+                staminaCost = HechizoData(Hechizo).StaRequerido & " puntos."
+            End If
             chat = "------------< Información del hechizo >------------" & vbCrLf & "Nombre: " & HechizoData(Hechizo).nombre & vbCrLf & "Descripción: " & HechizoData( _
                     Hechizo).desc & vbCrLf & "Skill requerido: " & HechizoData(Hechizo).MinSkill & " de magia." & vbCrLf & "Mana necesario: " & HechizoData( _
-                    Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & HechizoData(Hechizo).StaRequerido & " puntos."
+                    Hechizo).ManaRequerido & " puntos." & vbCrLf & "Stamina necesaria: " & staminaCost
         Case "ProMSG"
             Hechizo = ReadField(2, chat, Asc("*"))
             chat = HechizoData(Hechizo).PropioMsg
@@ -2166,9 +2172,9 @@ Private Sub HandleUserCharIndexInServer()
     UpdatePlayerRoof
     lastMove = FrameTime
     If MapDat.Seguro = 1 Then
-        frmMain.Coord.ForeColor = RGB(0, 170, 0)
+        Call frmMain.SetCoordColor(RGB(0, 170, 0))
     Else
-        frmMain.Coord.ForeColor = RGB(170, 0, 0)
+        Call frmMain.SetCoordColor(RGB(170, 0, 0))
     End If
     Call UpdateMapPos
     g_game_state.state = e_state_gameplay_screen
@@ -2443,9 +2449,9 @@ Private Sub HandleForceCharMove()
     Call MoveScreen(direccion)
     Call UpdateMapPos
     If MapDat.Seguro = 1 Then
-        frmMain.Coord.ForeColor = RGB(0, 170, 0)
+        Call frmMain.SetCoordColor(RGB(0, 170, 0))
     Else
-        frmMain.Coord.ForeColor = RGB(170, 0, 0)
+        Call frmMain.SetCoordColor(RGB(170, 0, 0))
     End If
     Call RefreshAllChars
     Exit Sub
@@ -3146,9 +3152,12 @@ Private Sub HandleCharAtaca()
         Exit Sub
     End If
 
-    If VictimIndex < LBound(charlist) Or VictimIndex > UBound(charlist) Then
-        Call RegistrarError(9, "VictimIndex fuera de rango: " & VictimIndex, "Protocol.HandleCharAtaca", Erl)
-        Exit Sub
+     ' VictimIndex puede ser 0 en ataques fallidos
+    If VictimIndex <> 0 Then
+        If VictimIndex < LBound(charlist) Or VictimIndex > UBound(charlist) Then
+            Call RegistrarError(9, "VictimIndex fuera de rango: " & VictimIndex, "Protocol.HandleCharAtaca", Erl)
+            Exit Sub
+        End If
     End If
 
     ' Si UserCharIndex puede ser 0/no seteado:
@@ -3252,10 +3261,12 @@ Private Sub HandleCharAtaca()
 
     End With
 
-    ' --- Guardrails: victim access ---
-    If danio > 0 Then
-        If charlist(VictimIndex).Navegando = 0 Then
-            Call SetCharacterFx(VictimIndex, 14, 0)
+  ' --- Guardrails: victim access ---
+    If danio > 0 And VictimIndex > 0 Then
+        If VictimIndex >= LBound(charlist) And VictimIndex <= UBound(charlist) Then
+            If charlist(VictimIndex).Navegando = 0 Then
+                Call SetCharacterFx(VictimIndex, 14, 0)
+            End If
         End If
     End If
 

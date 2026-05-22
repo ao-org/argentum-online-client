@@ -1591,6 +1591,12 @@ Private Sub StartCustomMap(ByVal mapType As Byte, ByVal Name As String, ByRef ar
                 LobbyInfo.InscriptionFee = 0
             End If
                         
+            If argCount >= 5 And ValidNumber(arguments(5), eNumber_Types.ent_Long) Then
+                LobbyInfo.TeamSize = arguments(5)
+            Else
+                LobbyInfo.TeamSize = 1
+            End If
+                        
             Call WriteStartLobby(0, LobbyInfo, "", "")
         Else
             'No es numerico
@@ -1879,7 +1885,7 @@ Public Function ValidNumber(ByVal Numero As String, ByVal TIPO As eNumber_Types)
             Maximo = 2147483647
         Case eNumber_Types.ent_Trigger
             Minimo = 0
-            Maximo = 99
+            Maximo = 255
     End Select
     If val(Numero) >= Minimo And val(Numero) <= Maximo Then ValidNumber = True
     Exit Function

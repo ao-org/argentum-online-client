@@ -2,7 +2,7 @@ VERSION 5.00
 Begin VB.Form frmCreateBattleground 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Crear Battleground"
-   ClientHeight    =   5745
+   ClientHeight    =   6255
    ClientLeft      =   45
    ClientTop       =   390
    ClientWidth     =   6075
@@ -28,7 +28,7 @@ Begin VB.Form frmCreateBattleground
       Height          =   495
       Left            =   4680
       TabIndex        =   21
-      Top             =   5160
+      Top             =   5670
       Width           =   1215
    End
    Begin VB.TextBox tSize 
@@ -144,6 +144,16 @@ Begin VB.Form frmCreateBattleground
       TabIndex        =   1
       Top             =   1080
       Width           =   3255
+   End
+   Begin VB.TextBox tRoundAmount 
+      Alignment       =   2  'Center
+      Height          =   285
+      Left            =   2640
+      MaxLength       =   3
+      TabIndex        =   23
+      Text            =   "1"
+      Top             =   4920
+      Width           =   495
    End
    Begin VB.Label lblDivisible 
       Caption         =   "El límite de jugadores debe ser divisible por el tamaño"
@@ -342,6 +352,24 @@ Begin VB.Form frmCreateBattleground
       Top             =   1080
       Width           =   2415
    End
+   Begin VB.Label lblRoundAmount 
+      Alignment       =   1  'Right Justify
+      Caption         =   "Cantidad de rondas"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Left            =   120
+      TabIndex        =   24
+      Top             =   4920
+      Width           =   2415
+   End
 End
 Attribute VB_Name = "frmCreateBattleground"
 Attribute VB_GlobalNameSpace = False
@@ -350,12 +378,15 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 Private Sub Form_Load()
-    cmbTipo.List(0) = JsonLanguage.Item("MENSAJE_EVENTO_CAPTURA")
-    cmbTipo.List(1) = JsonLanguage.Item("MENSAJE_EVENTO_CACERIA")
-    cmbTipo.List(2) = JsonLanguage.Item("MENSAJE_EVENTO_DEATHMATCH")
-    cmbTipo.List(3) = JsonLanguage.Item("MENSAJE_EVENTO_ABORDAJE")
-    cmbEquipos.List(0) = JsonLanguage.Item("MENSAJE_EVENTO_MODALIDAD_RANDOM")
-    cmbEquipos.List(1) = JsonLanguage.Item("MENSAJE_EVENTO_MODALIDAD_GRUPOS")
+    On Error GoTo ErrHandler
+    cmbTipo.Clear
+    cmbTipo.AddItem JsonLanguage.Item("MENSAJE_EVENTO_CAPTURA")
+    cmbTipo.AddItem JsonLanguage.Item("MENSAJE_EVENTO_CACERIA")
+    cmbTipo.AddItem JsonLanguage.Item("MENSAJE_EVENTO_DEATHMATCH")
+    cmbTipo.AddItem JsonLanguage.Item("MENSAJE_EVENTO_ABORDAJE")
+    cmbEquipos.Clear
+    cmbEquipos.AddItem JsonLanguage.Item("MENSAJE_EVENTO_MODALIDAD_RANDOM")
+    cmbEquipos.AddItem JsonLanguage.Item("MENSAJE_EVENTO_MODALIDAD_GRUPOS")
     cmbTipo.ListIndex = 0
     cmbEquipos.ListIndex = 0
     tMinLvl.text = 1
@@ -364,22 +395,30 @@ Private Sub Form_Load()
     tMinPlayers.text = 2
     tSize.text = 1
     tCosto.text = 0
+    tRoundAmount.Text = 1
+    Exit Sub
+ErrHandler:
+    Call RegistrarError(Err.Number, Err.Description, "frmCreateBattleGround.Form_Load", Erl)
+    Resume Next
 End Sub
 
 Private Sub btnCrear_Click()
-    On Error GoTo errhandler:
+    On Error GoTo ErrHandler
     Dim Settings As t_NewScenearioSettings
+    
     If Len(tName.text) < 3 Then
         Call MsgBox(JsonLanguage.Item("MENSAJE_NOMBRE_PARTIDA_CORTO"), vbExclamation)
         tName.SetFocus
         Exit Sub
     End If
+    
     Settings.InscriptionFee = val(tCosto.text)
     If Settings.InscriptionFee < 0 Or Settings.InscriptionFee > 10000000 Then
         Call MsgBox(JsonLanguage.Item("MENSAJE_COSTO_PARTIDA_INVALIDO"), vbExclamation)
         tCosto.SetFocus
         Exit Sub
     End If
+    
     Settings.MinLevel = val(tMinLvl.text)
     Settings.MaxLevel = val(tMaxLvl.text)
     If Settings.MinLevel > Settings.MaxLevel Or Settings.MinLevel > 47 Or Settings.MinLevel < 1 Or Settings.MaxLevel > 47 Or Settings.MaxLevel < 1 Then
@@ -387,35 +426,52 @@ Private Sub btnCrear_Click()
         tMinLvl.SetFocus
         Exit Sub
     End If
+    
     Settings.MinPlayers = val(tMinPlayers.text)
     Settings.MaxPlayers = val(tMaxPlayers.text)
-    If Settings.MinPlayers > Settings.MaxPlayers Or Settings.MinPlayers > 40 Or Settings.MinPlayers < 2 Or Settings.MaxPlayers > 40 Or Settings.MaxPlayers < 2 Then
+    If Settings.MinPlayers > Settings.MaxPlayers Or Settings.MinPlayers > 32 Or Settings.MinPlayers < 2 Or Settings.MaxPlayers > 32 Or Settings.MaxPlayers < 2 Then
         Call MsgBox(JsonLanguage.Item("MENSAJE_LIMITES_JUGADORES_INVALIDOS"), vbExclamation)
         tMinPlayers.SetFocus
         Exit Sub
     End If
+    
     Settings.TeamSize = val(tSize.text)
+    If Settings.TeamSize < 1 Or Settings.TeamSize > Settings.MaxPlayers Then
+        Call MsgBox(JsonLanguage.Item("MENSAJE_LIMITE_JUGADORES_DIVISIBLE"), vbExclamation)
+        tSize.SetFocus
+        Exit Sub
+    End If
     If Settings.MinPlayers Mod Settings.TeamSize <> 0 Or Settings.MaxPlayers Mod Settings.TeamSize <> 0 Then
         Call MsgBox(JsonLanguage.Item("MENSAJE_LIMITE_JUGADORES_DIVISIBLE"), vbExclamation)
         tSize.SetFocus
         Exit Sub
     End If
+    
+    Settings.RoundAmount = val(tRoundAmount.Text)
+    If Settings.RoundAmount < 1 Or Settings.RoundAmount > 255 Then
+        Call MsgBox(JsonLanguage.Item("MENSAJE_RONDAS_INVALIDO"), vbExclamation)
+        tRoundAmount.SetFocus
+        Exit Sub
+    End If
+
     Select Case cmbTipo.ListIndex
-        Case e_EventType.CaptureTheFlag - 1
+        Case 0
             Settings.ScenearioType = e_EventType.CaptureTheFlag
-        Case e_EventType.NpcHunt - 1
+        Case 1
             Settings.ScenearioType = e_EventType.NpcHunt
-        Case e_EventType.DeathMatch - 1
+        Case 2
             Settings.ScenearioType = e_EventType.DeathMatch
-        Case e_EventType.NavalBattle - 1
+        Case 3
             Settings.ScenearioType = e_EventType.NavalBattle
     End Select
+    
     Select Case cmbEquipos.ListIndex
         Case e_TeamTypes.ePremade
             Settings.TeamType = e_TeamTypes.ePremade
         Case e_TeamTypes.eRandom
             Settings.TeamType = e_TeamTypes.eRandom
     End Select
+    
     Call WriteStartLobby(1, Settings, tName.text, tPassword.text)
     Unload Me
     Exit Sub
@@ -435,93 +491,68 @@ End Sub
 
 Private Sub tMaxLvl_Change()
     Dim value As Long
-    If tMaxLvl.text = "" Then
-        tMaxLvl.text = "1"
-    End If
-    If Not IsNumeric(tMaxLvl.text) Then
-        tMaxLvl.text = "1"
-    End If
+    If tMaxLvl.Text = "" Or Not IsNumeric(tMaxLvl.Text) Then tMaxLvl.Text = "1"
     value = CLng(tMaxLvl.text)
-    If value > 47 Then
-        tMaxLvl.text = "47"
-    End If
-    If value < 1 Then
-        tMaxLvl.text = "1"
-    End If
-    If value < CLng(tMinLvl.text) Then
-        tMaxLvl.text = tMinLvl.text
-    End If
+    If value > 47 Then tMaxLvl.Text = "47"
+    If value < 1 Then tMaxLvl.Text = "1"
+    If value < CLng(tMinLvl.Text) Then tMaxLvl.Text = tMinLvl.Text
+    Call ActualizarDivisible
 End Sub
 
 Private Sub tMinLvl_Change()
     Dim value As Long
-    If tMinLvl.text = "" Then
-        tMinLvl.text = "1"
-    End If
-    If Not IsNumeric(tMinLvl.text) Then
-        tMinLvl.text = "1"
-    End If
+    If tMinLvl.Text = "" Or Not IsNumeric(tMinLvl.Text) Then tMinLvl.Text = "1"
     value = CLng(tMinLvl.text)
-    If value > 47 Then
-        tMinLvl.text = "47"
-    End If
-    If value < 1 Then
-        tMinLvl.text = "1"
-    End If
+    If value > 47 Then tMinLvl.Text = "47"
+    If value < 1 Then tMinLvl.Text = "1"
 End Sub
 
 Private Sub tMaxPlayers_Change()
     Dim value As Long
-    If tMaxPlayers.text = "" Then
-        tMaxPlayers.text = "1"
-    End If
-    If Not IsNumeric(tMaxPlayers.text) Then
-        tMaxPlayers.text = "1"
-    End If
+    If tMaxPlayers.Text = "" Or Not IsNumeric(tMaxPlayers.Text) Then tMaxPlayers.Text = "2"
     value = CLng(tMaxPlayers.text)
-    If value > 32 Then
-        tMaxPlayers.text = "32"
-    End If
-    If value < 2 Then
-        tMaxPlayers.text = "2"
-    End If
-    If value < CLng(tMinPlayers.text) Then
-        tMaxPlayers.text = tMinPlayers.text
-    End If
+    If value > 32 Then tMaxPlayers.Text = "32"
+    If value < 2 Then tMaxPlayers.Text = "2"
+    If value < CLng(tMinPlayers.Text) Then tMaxPlayers.Text = tMinPlayers.Text
+    Call ActualizarDivisible
 End Sub
 
 Private Sub tMinPlayers_Change()
     Dim value As Long
-    If tMinPlayers.text = "" Then
-        tMinPlayers.text = "1"
-    End If
-    If Not IsNumeric(tMinPlayers.text) Then
-        tMinPlayers.text = "1"
-    End If
+    If tMinPlayers.Text = "" Or Not IsNumeric(tMinPlayers.Text) Then tMinPlayers.Text = "2"
     value = CLng(tMinPlayers.text)
-    If value > 32 Then
-        tMinPlayers.text = "32"
-    End If
-    If value < 2 Then
-        tMinPlayers.text = "2"
-    End If
+    If value > 32 Then tMinPlayers.Text = "32"
+    If value < 2 Then tMinPlayers.Text = "2"
+    Call ActualizarDivisible
 End Sub
 
 Private Sub tSize_Change()
     Dim value As Long
-    If tSize.text = "" Then
-        tSize.text = "1"
-    End If
-    If Not IsNumeric(tSize.text) Then
-        tSize.text = "1"
-    End If
+    If tSize.Text = "" Or Not IsNumeric(tSize.Text) Then tSize.Text = "1"
     value = CLng(tSize.text)
-    If (cmbEquipos.ListIndex = 1) Then
-        If value <= 1 Then
-            tSize.text = "2"
-        End If
+    If value < 1 Then tSize.Text = "1"
+    If IsNumeric(tMaxPlayers.Text) Then
+        If value > CLng(tMaxPlayers.Text) Then tSize.Text = tMaxPlayers.Text
     End If
-    lblDivisible.visible = value Mod CLng(tMaxPlayers.text) <> 0 Or value Mod CLng(tMaxPlayers.text) <> 0
+    If cmbEquipos.ListIndex = 1 And value <= 1 Then tSize.Text = "2"
+    Call ActualizarDivisible
+End Sub
+
+Private Sub tRoundAmount_Change()
+    Dim value As Long
+    If tRoundAmount.Text = "" Or Not IsNumeric(tRoundAmount.Text) Then tRoundAmount.Text = "1"
+    value = CLng(tRoundAmount.Text)
+    If value > 255 Then tRoundAmount.Text = "255"
+    If value < 1 Then tRoundAmount.Text = "1"
+End Sub
+
+Private Sub ActualizarDivisible()
+    If Not IsNumeric(tSize.Text) Or Not IsNumeric(tMaxPlayers.Text) Or Not IsNumeric(tMinPlayers.Text) Then Exit Sub
+    Dim sz As Long, mn As Long, mX As Long
+    sz = CLng(tSize.Text)
+    mn = CLng(tMinPlayers.Text)
+    mX = CLng(tMaxPlayers.Text)
+    lblDivisible.visible = (sz > 0) And (mn Mod sz <> 0 Or mX Mod sz <> 0)
 End Sub
 
 Private Sub tMinPlayers_LostFocus()
@@ -544,12 +575,13 @@ Private Sub tMaxLvl_LostFocus()
     Call tMaxLvl_Change
 End Sub
 
+Private Sub tRoundAmount_LostFocus()
+    Call tRoundAmount_Change
+End Sub
+
 Private Sub cmbEquipos_LostFocus()
     Dim value As Long
     value = CLng(tSize.text)
-    If (cmbEquipos.ListIndex = 1) Then
-        If value <= 1 Then
-            tSize.text = "2"
-        End If
-    End If
+    If cmbEquipos.ListIndex = 1 And value <= 1 Then tSize.Text = "2"
+    Call ActualizarDivisible
 End Sub
