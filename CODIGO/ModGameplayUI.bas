@@ -490,6 +490,12 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
             If Not Equipped Then
                 Call WriteEquipItem(Slot)
             End If
+        Case eObjType.otCollectibleCard
+            frmMain.CollectibleCardViewer.ZOrder (0)
+            frmMain.CollectibleCardViewer.visible = True
+            frmMain.cmdCardViewerAccept.visible = True
+            frmMain.cmdCardViewerClose.visible = True
+            Call Dx8RenderedImgIntoPic(frmMain.CollectibleCardViewer, 0, ObjData(ObjIndex).CollectibleCardImgPathing, 0, 0, 439, 600, 0, 0, 439, 600)
         Case Else
             Call WriteUseItem(Slot)
     End Select

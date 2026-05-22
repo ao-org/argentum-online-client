@@ -952,6 +952,121 @@ Grh_Render_To_Hdc_Err:
     Resume Next
 End Sub
 
+Public Sub Grh_Render_Texture_To_Hdc(ByRef pic As PictureBox, _
+                                     ByRef texture As Direct3DTexture8, _
+                                     ByVal textureWidth As Long, _
+                                     ByVal textureHeight As Long, _
+                                     ByVal screen_x As Integer, _
+                                     ByVal screen_y As Integer, _
+                                     Optional ByVal alpha As Boolean = False, _
+                                     Optional ByVal ClearColor As Long = &O0)
+    On Error GoTo Grh_Render_Texture_To_Hdc_Err
+
+    If texture Is Nothing Then Exit Sub
+
+    Static Picture As RECT
+
+    With Picture
+        .Left = 0
+        .Top = 0
+        .Bottom = pic.ScaleHeight
+        .Right = pic.ScaleWidth
+    End With
+
+    Call DirectDevice.BeginScene
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
+
+    Call Device_Box_Texture_Render(texture, _
+                                   screen_x, _
+                                   screen_y, _
+                                   textureWidth, _
+                                   textureHeight, _
+                                   textureWidth, _
+                                   textureHeight, _
+                                   COLOR_WHITE, _
+                                   0, _
+                                   0, _
+                                   alpha, _
+                                   0)
+
+    Call DirectDevice.EndScene
+    Call DirectDevice.Present(Picture, ByVal 0, pic.hWnd, ByVal 0)
+
+    Exit Sub
+
+Grh_Render_Texture_To_Hdc_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Grh_Render_Texture_To_Hdc", Erl)
+    Resume Next
+End Sub
+
+Public Sub Device_Box_Texture_Render(ByRef texture As Direct3DTexture8, _
+                                     ByVal dest_x As Integer, _
+                                     ByVal dest_y As Integer, _
+                                     ByVal src_width As Integer, _
+                                     ByVal src_height As Integer, _
+                                     ByVal textureWidth As Long, _
+                                     ByVal textureHeight As Long, _
+                                     ByRef Color() As RGBA, _
+                                     ByVal src_x As Integer, _
+                                     ByVal src_y As Integer, _
+                                     Optional ByVal alpha_blend As Boolean = False, _
+                                     Optional ByVal angle As Single = 0)
+    On Error GoTo Device_Box_Texture_Render_Err
+
+    If texture Is Nothing Then Exit Sub
+    If src_width <= 0 Or src_height <= 0 Then Exit Sub
+    If textureWidth <= 0 Or textureHeight <= 0 Then Exit Sub
+
+    Static src_rect      As RECT
+    Static dest_rect     As RECT
+    Static temp_verts(3) As TYPE_VERTEX
+
+    With src_rect
+        .Bottom = src_y + src_height
+        .Left = src_x
+        .Right = src_x + src_width
+        .Top = src_y
+    End With
+
+    With dest_rect
+        .Bottom = dest_y + src_height
+        .Left = dest_x
+        .Right = dest_x + src_width
+        .Top = dest_y
+    End With
+
+    Call Geometry_Create_Box(temp_verts(), _
+                             dest_rect, _
+                             src_rect, _
+                             Color(), _
+                             textureWidth, _
+                             textureHeight, _
+                             angle)
+
+    Call DirectDevice.SetTexture(0, texture)
+
+    If alpha_blend Then
+        Call DirectDevice.SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE)
+        Call DirectDevice.SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE)
+    End If
+
+    Call DirectDevice.DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0)))
+
+    If alpha_blend Then
+        Call DirectDevice.SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA)
+        Call DirectDevice.SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA)
+    End If
+
+    Call DirectDevice.SetRenderState(D3DRS_ALPHABLENDENABLE, 1)
+    Call DirectDevice.SetRenderState(D3DRS_ALPHATESTENABLE, 1)
+
+    Exit Sub
+
+Device_Box_Texture_Render_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.Device_Box_Texture_Render", Erl)
+    Resume Next
+End Sub
+
 Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, _
                                       ByVal GrhIndex As Long, _
                                       ByVal screen_x As Integer, _
@@ -977,6 +1092,113 @@ Grh_Render_To_HdcSinBorrar_Err:
     Resume Next
 End Sub
 
+Public Sub Dx8RenderedImgIntoPic(ByRef pic As PictureBox, _
+                                         ByVal TextureFileNum As Integer, _
+                                         ByVal TextureFileName As String, _
+                                         ByVal DestX As Long, _
+                                         ByVal DestY As Long, _
+                                         ByVal destWidth As Long, _
+                                         ByVal destHeight As Long, _
+                                         ByVal srcX As Long, _
+                                         ByVal srcY As Long, _
+                                         ByVal srcWidth As Long, _
+                                         ByVal srcHeight As Long, _
+                                         Optional ByVal ClearColor As Long = &H0)
+    On Error GoTo Dx8RenderedImgIntoPic_Err
+    
+    ' Determine if PNG or BMP
+    Dim isPNG As Boolean
+    isPNG = (LCase$(Right$(TextureFileName, 4)) = ".png")
+    
+    ' Load the texture
+    Dim Texture As Direct3DTexture8
+    Dim texWidth As Long
+    Dim texHeight As Long
+    
+    Set texture = SurfaceDB.GetInterfaceTexture(TextureFileName, texwidth, texheight)
+    If Texture Is Nothing Then
+        Debug.Print "Failed to load card texture: " & TextureFileName
+        frmDebug.add_text_tracebox "Failed to load card texture: " & TextureFileName
+        Exit Sub
+    End If
+    
+    Debug.Print "Texture loaded: " & texWidth & "x" & texHeight
+    
+    ' Create rectangles
+    Dim picRect As RECT
+    Dim srcRect As RECT
+    Dim dstRect As RECT
+    Dim temp_verts(3) As TYPE_VERTEX
+    
+    With picRect
+        .Left = 0
+        .Top = 0
+        .Right = pic.ScaleWidth
+        .Bottom = pic.ScaleHeight
+    End With
+    
+    With srcRect
+        .Left = srcX
+        .Top = srcY
+        .Right = srcX + srcWidth
+        .Bottom = srcY + srcHeight
+    End With
+    
+    With dstRect
+        .Left = DestX
+        .Top = DestY
+        .Right = DestX + destWidth
+        .Bottom = DestY + destHeight
+    End With
+    
+    ' Create the vertex quad
+    Call Geometry_Create_Box(temp_verts(), dstRect, srcRect, COLOR_WHITE, texWidth, texHeight, 0)
+    
+    ' ===== RENDER =====
+    Call DirectDevice.BeginScene
+    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
+    
+    ' Set texture
+    DirectDevice.SetTexture 0, Texture
+    
+    ' Set texture stage states for proper rendering
+    DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_MODULATE
+    DirectDevice.SetTextureStageState 0, D3DTSS_COLORARG1, D3DTA_TEXTURE
+    DirectDevice.SetTextureStageState 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE
+    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE
+    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE
+    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE
+    
+    ' Set vertex format
+    DirectDevice.SetVertexShader D3DFVF_XYZ Or D3DFVF_DIFFUSE Or D3DFVF_TEX1
+    
+    ' If PNG, ensure alpha blending is enabled
+    If isPNG Then
+        DirectDevice.SetRenderState D3DRS_ALPHABLENDENABLE, 1
+        DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
+        DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
+    End If
+    
+    ' DRAW THE VERTICES
+    DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
+    
+    Call DirectDevice.EndScene
+    Call DirectDevice.Present(picRect, ByVal 0, pic.hWnd, ByVal 0)
+    
+    ' ===== IMPORTANT: RESTORE RENDER STATES =====
+    ' This prevents breaking the rest of the game's rendering
+    ' (Do this AFTER Present, before the next game render cycle)
+    
+    Exit Sub
+
+Dx8RenderedImgIntoPic_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Dx8RenderedImgIntoPic", Erl)
+    frmDebug.add_text_tracebox "Error in Dx8RenderedImgIntoPic: " & Err.Description
+    Resume Next
+End Sub
+
+
+
 ' Renders a cropped and scaled region of a texture into a PictureBox using DirectX 8.
 ' TextureFileNum : key previously registered with SurfaceDB.GetInterfaceTexture (e.g. -1, -2)
 ' destX/Y/Width/Height : destination rectangle in the PictureBox (pixels)
@@ -984,6 +1206,7 @@ End Sub
 ' ClearColor           : ARGB colour used to clear the PictureBox before rendering
 Public Sub Minimap_Render_Cropped_To_Hdc(ByRef pic As PictureBox, _
                                          ByVal TextureFileNum As Integer, _
+                                         ByVal filename As String, _
                                          ByVal destX As Long, _
                                          ByVal destY As Long, _
                                          ByVal destWidth As Long, _
@@ -1004,7 +1227,7 @@ Public Sub Minimap_Render_Cropped_To_Hdc(ByRef pic As PictureBox, _
     Dim cx            As Single
     Dim cy            As Single
     Dim dh            As Integer
-    Set d3dTex.Texture = SurfaceDB.GetInterfaceTexture(TextureFileNum, "", d3dTex.texwidth, d3dTex.texheight)
+    Set d3dTex.texture = SurfaceDB.GetInterfaceTexture(filename, d3dTex.texwidth, d3dTex.texheight)
     If d3dTex.Texture Is Nothing Then Exit Sub
     With picRect
         .Left = 0

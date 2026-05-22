@@ -247,6 +247,7 @@ Public Type ObjDatas
     EarthEssence As Integer
     WindEssence As Integer
     ElementalTags As Long
+    CollectibleCardImgPathing As String
 End Type
 
 Public Type NpcDatas
@@ -1271,7 +1272,6 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     Static worldFileNum As Integer
     Static bmpPxW       As Long
     Static bmpPxH       As Long
-    If (lastWorld <> worldNum) Or (worldFileNum = 0) Then
         Dim minimapFile As String
         Select Case worldNum
             Case 1: minimapFile = "mapa1_200x200.bmp"
@@ -1280,13 +1280,12 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
         End Select
         If minimapFile = "" Then Exit Sub
         worldFileNum = -CInt(worldNum)
-        Call SurfaceDB.GetInterfaceTexture(worldFileNum, minimapFile, bmpPxW, bmpPxH)
+        Call SurfaceDB.GetInterfaceTexture(minimapFile, bmpPxW, bmpPxH)
         If bmpPxW = 0 Or bmpPxH = 0 Then
             worldFileNum = 0
             Exit Sub
         End If
         lastWorld = worldNum
-    End If
     If worldFileNum = 0 Then Exit Sub
     ' Grid of maps in the world image
     Dim mapCellsX As Long, mapCellsY As Long
@@ -1340,7 +1339,7 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     If srcX > (bmpPxW - srcW) Then srcX = bmpPxW - srcW
     If srcY > (bmpPxH - srcH) Then srcY = bmpPxH - srcH
     ' Draw: use DirectX 8 rendering instead of slow PaintPicture
-    Call Minimap_Render_Cropped_To_Hdc(frmMain.MiniMap, worldFileNum, 0, 0, destW, destH, srcX, srcY, srcW, srcH, vbBlack)
+    Call Minimap_Render_Cropped_To_Hdc(frmMain.MiniMap, worldFileNum, minimapFile, 0, 0, destW, destH, srcX, srcY, srcW, srcH, vbBlack)
     ' Store viewport state so ally dots can be projected onto the current view
     MinimapVP_SrcX = srcX
     MinimapVP_SrcY = srcY
