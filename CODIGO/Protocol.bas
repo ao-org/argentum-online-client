@@ -3152,9 +3152,12 @@ Private Sub HandleCharAtaca()
         Exit Sub
     End If
 
-    If VictimIndex < LBound(charlist) Or VictimIndex > UBound(charlist) Then
-        Call RegistrarError(9, "VictimIndex fuera de rango: " & VictimIndex, "Protocol.HandleCharAtaca", Erl)
-        Exit Sub
+     ' VictimIndex puede ser 0 en ataques fallidos
+    If VictimIndex <> 0 Then
+        If VictimIndex < LBound(charlist) Or VictimIndex > UBound(charlist) Then
+            Call RegistrarError(9, "VictimIndex fuera de rango: " & VictimIndex, "Protocol.HandleCharAtaca", Erl)
+            Exit Sub
+        End If
     End If
 
     ' Si UserCharIndex puede ser 0/no seteado:
@@ -3258,10 +3261,12 @@ Private Sub HandleCharAtaca()
 
     End With
 
-    ' --- Guardrails: victim access ---
-    If danio > 0 Then
-        If charlist(VictimIndex).Navegando = 0 Then
-            Call SetCharacterFx(VictimIndex, 14, 0)
+  ' --- Guardrails: victim access ---
+    If danio > 0 And VictimIndex > 0 Then
+        If VictimIndex >= LBound(charlist) And VictimIndex <= UBound(charlist) Then
+            If charlist(VictimIndex).Navegando = 0 Then
+                Call SetCharacterFx(VictimIndex, 14, 0)
+            End If
         End If
     End If
 
