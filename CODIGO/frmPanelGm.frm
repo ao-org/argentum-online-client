@@ -3252,15 +3252,30 @@ Private Sub mnuConsulta_Click()
     End If
 End Sub
 
+
+Public Function DebeMostrarMensaje(ByVal Cadena As String) As Boolean
+    Dim cadenaMayus As String
+
+    DebeMostrarMensaje = True
+
+    cadenaMayus = UCase$(Cadena)
+
+    If (InStr(cadenaMayus, "INVISIBLE SI") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD SI") > 0) Then
+        If chkLeerInvisibleSi.value = 0 Then DebeMostrarMensaje = False
+        Exit Function
+    End If
+
+    If (InStr(cadenaMayus, "INVISIBLE NO") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD NO") > 0) Then
+        If chkLeerInvisibleNo.value = 0 Then DebeMostrarMensaje = False
+    End If
+End Function
+
 Public Sub CadenaChat(ByVal chat As String)
     Dim Cadena        As String
     Dim partes()      As String
     Dim nombre        As String
     Dim nombreObjetivo As String
     Dim PosicionBarra As Integer
-    Dim cadenaMayus As String
-    Dim esInvisibleSi As Boolean
-    Dim esInvisibleNo As Boolean
     Static UltimaCadena As String
     Static UltimoTiempo As Single
     Dim TiempoActualCadena As Single
@@ -3435,12 +3450,7 @@ Public Sub CadenaChat(ByVal chat As String)
     End If
 
     ' Captura avisos de hechizos para autocompletar el usuario atacante y/o objetivo
-    cadenaMayus = UCase$(Cadena)
-    esInvisibleSi = (InStr(cadenaMayus, "INVISIBLE SI") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD SI") > 0)
-    esInvisibleNo = (InStr(cadenaMayus, "INVISIBLE NO") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD NO") > 0)
-
-    If esInvisibleSi And chkLeerInvisibleSi.value = 0 Then Exit Sub
-    If esInvisibleNo And chkLeerInvisibleNo.value = 0 Then Exit Sub
+    If Not DebeMostrarMensaje(Cadena) Then Exit Sub
 
     If InStr(Cadena, "El usuario ") > 0 And InStr(Cadena, " esta lanzando hechizos al Usuario ") > 0 Then
         partes = Split(Cadena, "El usuario ")
