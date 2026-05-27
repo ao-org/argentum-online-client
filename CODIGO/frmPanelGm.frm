@@ -3252,6 +3252,29 @@ Private Sub mnuConsulta_Click()
     End If
 End Sub
 
+
+Private Function DebeAplicarSancionMacroPorTimestamp(ByVal Cadena As String) As Boolean
+    Static UltimoTimestampSancionado As String
+    Dim partesTimestamp() As String
+    Dim timestampActual As String
+
+    partesTimestamp = Split(Cadena, " Control")
+    timestampActual = Trim$(partesTimestamp(0))
+
+    If LenB(timestampActual) = 0 Then
+        DebeAplicarSancionMacroPorTimestamp = True
+        Exit Function
+    End If
+
+    If StrComp(UltimoTimestampSancionado, timestampActual, vbTextCompare) = 0 Then
+        DebeAplicarSancionMacroPorTimestamp = False
+        Exit Function
+    End If
+
+    UltimoTimestampSancionado = timestampActual
+    DebeAplicarSancionMacroPorTimestamp = True
+End Function
+
 Public Sub CadenaChat(ByVal chat As String)
     Dim Cadena        As String
     Dim partes()      As String
@@ -3329,6 +3352,8 @@ Public Sub CadenaChat(ByVal chat As String)
             nombre = Trim(nombre)
             ' Declarar TiempoAnterior como Static fuera de la función
             Static TiempoAnterior As Single
+            Dim aplicarSancionPorTimestamp As Boolean
+            aplicarSancionPorTimestamp = DebeAplicarSancionMacroPorTimestamp(Cadena)
             ' Verificar si la cadena contiene ciertos textos utilizando Select Case
             Select Case True
                 Case InStr(Cadena, "Ocultar") > 0
@@ -3340,7 +3365,9 @@ Public Sub CadenaChat(ByVal chat As String)
                             Dim TiempoActual As Single
                             TiempoActual = Timer
                             If TiempoActual - TiempoAnterior < frmPanelgm.txtSegundos Then
-                                Call AplicarSancionMacro(nombre, frmPanelgm.chkOcultar.value = 1, frmPanelgm.chkOcultarCarcel.value = 1)
+                                If aplicarSancionPorTimestamp Then
+                                    Call AplicarSancionMacro(nombre, frmPanelgm.chkOcultar.value = 1, frmPanelgm.chkOcultarCarcel.value = 1)
+                                End If
                             End If
                             TiempoAnterior = TiempoActual
                         End If
@@ -3348,18 +3375,18 @@ Public Sub CadenaChat(ByVal chat As String)
                 Case InStr(Cadena, "UseItemU") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem U ", "MacroUseItemU.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    Call AplicarSancionMacro(nombre, frmPanelgm.chkUsarItem.value = 1, frmPanelgm.chkUsarItemCarcel.value = 1)
+                    If aplicarSancionPorTimestamp Then Call AplicarSancionMacro(nombre, frmPanelgm.chkUsarItem.value = 1, frmPanelgm.chkUsarItemCarcel.value = 1)
                 Case InStr(Cadena, "UseItem") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem ", "MacroUseItem.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    Call AplicarSancionMacro(nombre, frmPanelgm.chkUsarItem.value = 1, frmPanelgm.chkUsarItemCarcel.value = 1)
+                    If aplicarSancionPorTimestamp Then Call AplicarSancionMacro(nombre, frmPanelgm.chkUsarItem.value = 1, frmPanelgm.chkUsarItemCarcel.value = 1)
                 Case InStr(Cadena, "GuildMessage") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de GuildMessage ", "MacroGuildMessage.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                 Case InStr(Cadena, "LeftClick") > 0
                     Resultado = GuardarTextoEnArchivo(nombre & ",Macro de LeftClick ", "MacroLeftClick.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    Call AplicarSancionMacro(nombre, frmPanelgm.chkLeftClick.value = 1, frmPanelgm.chkLeftClickCarcel.value = 1)
+                    If aplicarSancionPorTimestamp Then Call AplicarSancionMacro(nombre, frmPanelgm.chkLeftClick.value = 1, frmPanelgm.chkLeftClickCarcel.value = 1)
                 Case InStr(Cadena, "ChangeHeading") > 0
                     Resultado = GuardarTextoEnArchivo(nombre & ",Macro de ChangeHeading ", "MacroChangeHeading.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
