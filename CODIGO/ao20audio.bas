@@ -319,7 +319,7 @@ Dim i As Long
 If SoundId <= 0 Then Exit Function
 For i = LBound(NpcData) To UBound(NpcData)
     With NpcData(i)
-        If .Snd1 = SoundId Or .Snd3 = SoundId Or _
+            If .Snd1 = SoundId Or .Snd3 = SoundId Or _
            .SoundOpen = SoundId Or .SoundClose = SoundId Then
             IsNpcFxSound = True
             Exit Function
