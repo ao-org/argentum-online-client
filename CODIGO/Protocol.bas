@@ -1945,6 +1945,10 @@ Private Sub HandleConsoleMessage()
             extra = ReadField(3, chat, Asc("*"))
             chat = Locale_Parse_ServerMessage(id, extra)
     End Select
+    If EsGM Then
+        If Not frmPanelgm.DebeMostrarMensaje(chat) Then Exit Sub
+    End If
+
     If InStr(1, chat, "~") Then
         str = ReadField(2, chat, 126)
         If val(str) > 255 Then
