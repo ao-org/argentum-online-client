@@ -37,6 +37,24 @@ Public Function ComprobarPosibleMacro(ByVal mouseX As Integer, ByVal mouseY As I
     Call generarLogMacrero
 End Function
 
+Public Function CoincideObjetivoHechizoConMouse(ByVal objetivoX As Byte, ByVal objetivoY As Byte) As Boolean
+    ' Recalcula el tile del cursor al confirmar el hechizo para no depender del ultimo frame renderizado.
+    Dim mouseTileX As Byte
+    Dim mouseTileY As Byte
+
+    ' Rechaza acciones dirigidas cuando el cursor real no se encuentra dentro del render.
+    If mouseX < 0 Or mouseX > frmMain.renderer.ScaleWidth Then Exit Function
+    If mouseY < 0 Or mouseY > frmMain.renderer.ScaleHeight Then Exit Function
+
+    Call ConvertCPtoTP(mouseX, mouseY, mouseTileX, mouseTileY)
+
+    ' Solo permite enviar el hechizo cuando su objetivo coincide con el tile real del cursor.
+    CoincideObjetivoHechizoConMouse = (mouseTileX = objetivoX And mouseTileY = objetivoY)
+
+    ' Informa al servidor la diferencia de coordenadas para que pueda registrar el intento sospechoso.
+    If Not CoincideObjetivoHechizoConMouse Then Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
+End Function
+
 Private Sub generarLogMacrero()
     Call WriteLogMacroClickHechizo(tMacro.inasistidoPosFija)
 End Sub
