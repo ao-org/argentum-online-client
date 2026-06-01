@@ -49,34 +49,7 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
     #End If
     Dim PacketId As Long
     PacketId = Reader.ReadInt16
-    #If REMOTE_CLOSE = 1 Then
-        Select Case PacketId
-            Case ServerPacketID.eConnected
-                Call HandleConnected
-                Call SaveStringInFile("Authenticated with server OK", "remote_debug.txt")
-            Case ServerPacketID.elogged
-                frmDebug.add_text_tracebox "Logged"
-                Dim res As Boolean
-                res = Reader.ReadBool
-                Call SaveStringInFile("Logged with character " & CharacterRemote, "remote_debug.txt")
-                InitiateShutdownProcess = True
-                ShutdownProcessTimer.start
-            Case ServerPacketID.eLocaleMsg
-                Dim chat      As String
-                Dim FontIndex As Integer
-                Dim str       As String
-                PacketId = Reader.ReadInt16()
-                chat = Reader.ReadString8()
-                FontIndex = Reader.ReadInt8()
-                Call SaveStringInFile(chat, "remote_debug.txt")
-            Case Else
-                'don't care, just consume
-                Do While (message.GetAvailable() > 0)
-                    PacketId = Reader.ReadInt8
-                Loop
-        End Select
-    #Else
-        Select Case PacketId
+    Select Case PacketId
             Case ServerPacketID.eConnected
                 Call HandleConnected
             Case ServerPacketID.elogged
@@ -484,7 +457,6 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
             Case Else
                 ' Invalid Message
         End Select
-    #End If
     ' —————————————————————————————
     ' Detect both (a) extra bytes from known packets
     '         and (b) any packet where we had NO handler
@@ -515,7 +487,7 @@ Private Sub HandleConnected()
             Debug.Assert values(i) = i
         Next i
     #End If
-    #If REMOTE_CLOSE = 0 And FPSFLAG = 1 Then
+    #If FPSFLAG = 1 Then
         frmMain.ShowFPS.enabled = True
     #End If
     #If DIRECT_PLAY = 0 Then
