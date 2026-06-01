@@ -17,7 +17,10 @@ Attribute VB_Name = "ModTaehcitna"
 '
 Option Explicit
 Private Const MAX_COMPROBACIONES As Byte = 4
+' Obtiene una muestra independiente del cursor desde Windows para no confiar en coordenadas cacheadas.
 Private Declare Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
+' Convierte la muestra global de Windows a coordenadas locales del control de render.
+Private Declare Function ScreenToClient Lib "user32" (ByVal hWnd As Long, lpPoint As POINTAPI) As Long
 Private ContadorMacroClicks(1 To MAX_COMPROBACIONES) As Position
 Public LastSentPosX                                  As Integer
 Public LastSentPosY                                  As Integer
@@ -38,15 +41,21 @@ Public Function ComprobarPosibleMacro(ByVal mouseX As Integer, ByVal mouseY As I
 End Function
 
 Public Function CoincideObjetivoHechizoConMouse(ByVal objetivoX As Byte, ByVal objetivoY As Byte) As Boolean
-    ' Recalcula el tile del cursor al confirmar el hechizo para no depender del ultimo frame renderizado.
+    ' Toma la posicion real del cursor desde Windows para no confiar en valores modificables del cliente.
+    Dim cursorReal As POINTAPI
     Dim mouseTileX As Byte
     Dim mouseTileY As Byte
 
-    ' Rechaza acciones dirigidas cuando el cursor real no se encuentra dentro del render.
-    If mouseX < 0 Or mouseX > frmMain.renderer.ScaleWidth Then Exit Function
-    If mouseY < 0 Or mouseY > frmMain.renderer.ScaleHeight Then Exit Function
+    ' Rechaza el envio si Windows no puede informar o convertir la posicion actual del cursor.
+    If GetCursorPos(cursorReal) = 0 Then Exit Function
+    If ScreenToClient(frmMain.renderer.hWnd, cursorReal) = 0 Then Exit Function
 
-    Call ConvertCPtoTP(mouseX, mouseY, mouseTileX, mouseTileY)
+    ' Rechaza acciones dirigidas cuando el cursor real no se encuentra dentro del render.
+    If cursorReal.x < 0 Or cursorReal.x > frmMain.renderer.ScaleWidth Then Exit Function
+    If cursorReal.y < 0 Or cursorReal.y > frmMain.renderer.ScaleHeight Then Exit Function
+
+    ' Convierte exclusivamente la muestra independiente del cursor al tile real señalado.
+    Call ConvertCPtoTP(cursorReal.x, cursorReal.y, mouseTileX, mouseTileY)
 
     ' Solo permite enviar el hechizo cuando su objetivo coincide con el tile real del cursor.
     CoincideObjetivoHechizoConMouse = (mouseTileX = objetivoX And mouseTileY = objetivoY)
