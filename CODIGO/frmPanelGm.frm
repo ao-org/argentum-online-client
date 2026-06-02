@@ -3260,12 +3260,12 @@ Public Function DebeMostrarMensaje(ByVal Cadena As String) As Boolean
 
     cadenaMayus = UCase$(Cadena)
 
-    If (InStr(cadenaMayus, "INVISIBLE SI") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD SI") > 0) Then
+    If (InStr(cadenaMayus, "INVISIBLE SI") > 0 Or InStr(cadenaMayus, "INVISIBLE: SI") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD SI") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD: SI") > 0) Then
         If chkLeerInvisibleSi.value = 0 Then DebeMostrarMensaje = False
         Exit Function
     End If
 
-    If (InStr(cadenaMayus, "INVISIBLE NO") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD NO") > 0) Then
+    If (InStr(cadenaMayus, "INVISIBLE NO") > 0 Or InStr(cadenaMayus, "INVISIBLE: NO") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD NO") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD: NO") > 0) Then
         If chkLeerInvisibleNo.value = 0 Then DebeMostrarMensaje = False
     End If
 End Function
