@@ -42,27 +42,22 @@ Public CurrentLoginServerIndex As Integer
    
 Public Sub DoLogin(ByVal Account As String, ByVal Password As String, ByVal storeCredentials As Boolean)
     On Error GoTo DoLogin_Err
-    #If REMOTE_CLOSE = 1 Then
-        ModAuth.LoginOperation = e_operation.Authenticate
-        Call LoginOrConnect(E_MODO.IngresandoConCuenta)
-    #Else
-        If IntervaloPermiteConectar Then
-            CuentaEmail = Account
-            CuentaPassword = Password
-            If storeCredentials Then
-                CuentaRecordada.nombre = CuentaEmail
-                CuentaRecordada.Password = CuentaPassword
-                Call GuardarCuenta(CuentaEmail, CuentaPassword)
-            Else
-                ' Reseteamos los datos de cuenta guardados
-                Call GuardarCuenta(vbNullString, vbNullString)
-            End If
-            If CheckUserDataLoged() = True Then
-                ModAuth.LoginOperation = e_operation.Authenticate
-                Call LoginOrConnect(E_MODO.IngresandoConCuenta)
-            End If
+    If IntervaloPermiteConectar Then
+        CuentaEmail = Account
+        CuentaPassword = Password
+        If storeCredentials Then
+            CuentaRecordada.nombre = CuentaEmail
+            CuentaRecordada.Password = CuentaPassword
+            Call GuardarCuenta(CuentaEmail, CuentaPassword)
+        Else
+            ' Reseteamos los datos de cuenta guardados
+            Call GuardarCuenta(vbNullString, vbNullString)
         End If
-    #End If
+        If CheckUserDataLoged() = True Then
+            ModAuth.LoginOperation = e_operation.Authenticate
+            Call LoginOrConnect(E_MODO.IngresandoConCuenta)
+        End If
+    End If
     Exit Sub
 DoLogin_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModLogin.DoLogin", Erl)
@@ -469,11 +464,7 @@ Public Sub LoginCharacter(ByVal Name As String)
         ModAuth.LoginOperation = e_operation.Authenticate
         Call LoginOrConnect(E_MODO.Normal)
         
-        #If REMOTE_CLOSE = 0 Then
-            frmConnecting.Show False, frmConnect
-        #Else
-            Call SaveStringInFile("LoginCharacter: " & Name, "remote_debug.txt")
-        #End If
+        frmConnecting.Show False, frmConnect
     #End If
     Exit Sub
 LogearPersonaje_Err:
@@ -546,12 +537,10 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
     Const WSAENETUNREACH     As Long = 10051
     Const WSAEHOSTUNREACH    As Long = 10065
 
-    #If REMOTE_CLOSE = 0 Then
+    frmConnect.MousePointer = 1
+    frmMain.ShowFPS.enabled = False
 
-        frmConnect.MousePointer = 1
-        frmMain.ShowFPS.enabled = False
-
-        Select Case Error
+    Select Case Error
 
             '----------------------------------------------------------
             ' SERVER REFUSED CONNECTION (immediate failure)
@@ -629,14 +618,8 @@ Public Sub OnClientDisconnect(ByVal Error As Long)
 
                 Exit Sub
 
-        End Select
+    End Select
 
-    #Else
-
-        frmDebug.add_text_tracebox "OnClientDisconnect " & Error
-        Call SaveStringInFile("OnClientDisconnect " & Error, "remote_debug.txt")
-        prgRun = False
-    #End If
     Exit Sub
 OnClientDisconnect_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModLogin.OnClientDisconnect", Erl)

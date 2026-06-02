@@ -862,9 +862,7 @@ Public Sub connectToLoginServer()
     frmConnect.AuthSocket.RemotePort = PuertoDelServidorLogin
     frmDebug.add_text_tracebox "Servidor de Login " & IPdelServidorLogin & ":" & PuertoDelServidorLogin
     frmConnect.AuthSocket.Connect
-    #If REMOTE_CLOSE = 0 Then
-        Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CONECTANDO_SERVIDOR"), True, False)
-    #End If
+    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CONECTANDO_SERVIDOR"), True, False)
     SessionOpened = False
     Auth_state = e_state.Idle
 End Sub
@@ -906,14 +904,9 @@ Public Sub HandlePCList(ByVal BytesTotal As Long)
     frmConnect.AuthSocket.GetData encrypted_list, packet_size - 4
     Dim decrypted_list As String
     decrypted_list = AO20CryptoSysWrapper.Decrypt(ByteArrayToHex(public_key), cnvStringFromHexStr(cnvToHex(encrypted_list)))
-    #If REMOTE_CLOSE = 0 Then
-        Call FillAccountData(decrypted_list)
-    #End If
+    Call FillAccountData(decrypted_list)
     Call DebugPrint("Decrypted_list: " & decrypted_list, 255, 255, 255, False)
     Auth_state = e_state.AccountLogged
-    #If REMOTE_CLOSE = 1 Then
-        LoginCharacter (CharacterRemote)
-    #End If
 End Sub
 
 Public Sub HandleAccountLogin(ByVal BytesTotal As Long)
@@ -932,51 +925,28 @@ Public Sub HandleAccountLogin(ByVal BytesTotal As Long)
     Else
         frmDebug.add_text_tracebox "LOGIN-ERROR"
         frmConnect.AuthSocket.GetData data, vbByte, 4
-        #If REMOTE_CLOSE = 0 Then
-            Select Case MakeInt(data(3), data(2))
-                Case 1
-                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_INVALIDO"), False, False)
-                Case 4
-                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_CONECTADO"), False, False)
-                    If Not FullLogout Then
-                        Call SendAccountLoginRequest
-                    End If
-                Case 5
-                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CONTRASENA_INVALIDA"), False, False)
-                Case 6
-                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_BANEADO"), False, False)
-                Case 7
-                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_SERVIDOR_MAX_USUARIOS"), False, False)
-                Case 9
-                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CUENTA_NO_ACTIVADA"), False, False)
-                Case 66
-                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_ACTIVO_PATRON"), False, False)
-                Case Else
-                    Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_ACTUALIZAR_JUEGO"), False, False)
-            End Select
-        End If
-    #Else
         Select Case MakeInt(data(3), data(2))
             Case 1
-                Call SaveStringInFile("MENSAJEBOX_USUARIO_INVALIDO", "remote_debug.txt")
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_INVALIDO"), False, False)
             Case 4
-                Call SaveStringInFile("MENSAJEBOX_USUARIO_CONECTADO", "remote_debug.txt")
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_CONECTADO"), False, False)
+                If Not FullLogout Then
+                    Call SendAccountLoginRequest
+                End If
             Case 5
-                Call SaveStringInFile("MENSAJEBOX_CONTRASENA_INVALIDA", "remote_debug.txt")
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CONTRASENA_INVALIDA"), False, False)
             Case 6
-                Call SaveStringInFile("MENSAJEBOX_USUARIO_BANEADO", "remote_debug.txt")
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_USUARIO_BANEADO"), False, False)
             Case 7
-                Call SaveStringInFile("MENSAJEBOX_SERVIDOR_MAX_USUARIOS", "remote_debug.txt")
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_SERVIDOR_MAX_USUARIOS"), False, False)
             Case 9
-                Call SaveStringInFile("MENSAJEBOX_CUENTA_NO_ACTIVADA", "remote_debug.txt")
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_CUENTA_NO_ACTIVADA"), False, False)
             Case 66
-                Call SaveStringInFile("MENSAJEBOX_ACTIVO_PATRON", "remote_debug.txt")
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_ACTIVO_PATRON"), False, False)
             Case Else
-                Call SaveStringInFile("MENSAJEBOX_ACTUALIZAR_JUEGO", "remote_debug.txt")
+                Call TextoAlAsistente(JsonLanguage.Item("MENSAJEBOX_ACTUALIZAR_JUEGO"), False, False)
         End Select
-        prgRun = False
     End If
-#End If
 End Sub
 
 Public Sub GotoPasswordReset()

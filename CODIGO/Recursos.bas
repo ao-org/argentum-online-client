@@ -2380,32 +2380,30 @@ CargarAnimEscudos_Err:
 End Sub
 
 Sub LoadFonts()
-    #If REMOTE_CLOSE = 0 Then
-        If LoadFont("Cardo.ttf") Then
-            frmMain.NombrePJ.font.Name = "Cardo"
-        End If
-        If LoadFont("Alegreya Sans AO.ttf") Then
-            Dim CurControl As Control
-            Dim Middle     As Integer
-            For Each CurControl In frmMain.Controls
-                If CurControl.Name <> "NombrePJ" Then
-                    Select Case TypeName(CurControl)
-                        Case "Label"
-                            CurControl.font.Name = "Alegreya Sans AO"
-                            ' Centrar texto verticalmente
-                            If Not CurControl.AutoSize Then
-                                Middle = Fix(CurControl.Top + CurControl.Height * 0.5)
-                                CurControl.AutoSize = True
-                                CurControl.Top = Fix(Middle - CurControl.Height * 0.5)
-                            End If
-                        Case "RichTextBox", "ListBox"
-                            CurControl.font.Name = "Alegreya Sans AO"
-                    End Select
-                End If
-            Next
-            Call SelLineSpacing(frmMain.RecTxt, 5, 22)
-        End If
-    #End If
+    If LoadFont("Cardo.ttf") Then
+        frmMain.NombrePJ.font.Name = "Cardo"
+    End If
+    If LoadFont("Alegreya Sans AO.ttf") Then
+        Dim CurControl As Control
+        Dim Middle     As Integer
+        For Each CurControl In frmMain.Controls
+            If CurControl.Name <> "NombrePJ" Then
+                Select Case TypeName(CurControl)
+                    Case "Label"
+                        CurControl.font.Name = "Alegreya Sans AO"
+                        ' Centrar texto verticalmente
+                        If Not CurControl.AutoSize Then
+                            Middle = Fix(CurControl.Top + CurControl.Height * 0.5)
+                            CurControl.AutoSize = True
+                            CurControl.Top = Fix(Middle - CurControl.Height * 0.5)
+                        End If
+                    Case "RichTextBox", "ListBox"
+                        CurControl.font.Name = "Alegreya Sans AO"
+                End Select
+            End If
+        Next
+        Call SelLineSpacing(frmMain.RecTxt, 5, 22)
+    End If
     #If PYMMO = 1 Then
         Dim arr() As Byte
         ReDim arr(1 To 16) As Byte
