@@ -1959,44 +1959,6 @@ Public Function IsCharVisible(ByVal charindex As Integer) As Boolean
     End If
 End Function
 
-#If REMOTE_CLOSE = 1 Then
-Public Sub bot_main_loop()
-On Error GoTo Start_Err
-    Call Fonts.LoadFonts
-    prgRun = True
-    InitiateShutdownProcess = False
-    Dim countdown As Integer
-    countdown = 60
-    Do While prgRun
-        DoEvents
-        Call modNetwork.Poll
-        DoEvents
-        If InitiateShutdownProcess Then
-            If countdown > 0 And ShutdownProcessTimer.ElapsedSeconds > 5 Then
-                ShutdownProcessTimer.start
-                Call WriteGlobalMessage("WARNING: The server is going to close in " & countdown & " seconds for scheduled maintainance. Please disconnect from the game!!!")
-                frmDebug.add_text_tracebox "WARNING: The server is going to close in " & countdown & " seconds for scheduled maintainance. Please disconnect from the game!!!"
-                Call SaveStringInFile("WARNING: The server is going to close in " & countdown & " seconds for scheduled maintainance. Please disconnect from the game!!!", "remote_debug.txt")
-                countdown = countdown - 5
-            ElseIf countdown = 0 Then
-                Call WriteFeatureEnable("SGRACEFULLY", 1)
-                Call SaveStringInFile("Sent request to shutdown to the server", "remote_debug.txt")
-                countdown = -1
-            ElseIf countdown < 0 Then
-
-            End If
-            
-        End If
-    Loop
-
-    Exit Sub
-
-Start_Err:
-    Call RegistrarError(Err.Number, Err.Description, "engine.Start", Erl)
-    Resume Next
-    
-End Sub
-#End If
 
 Public Sub start()
     On Error GoTo Start_Err
