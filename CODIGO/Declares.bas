@@ -508,7 +508,6 @@ Public TransferCharname     As String
 Public TransferCharNewOwner As String
 Public CuentaPassword       As String
 Public CuentaEmail          As String
-Public CharacterRemote      As String
 Public NamePj(1 To 8)       As String
 Public ValidationCode       As String
 'Objetos públicos
@@ -1111,10 +1110,6 @@ Public IPdelServidor          As String
 Public PuertoDelServidor      As String
 Public IPdelServidorLogin     As String
 Public PuertoDelServidorLogin As String
-#If REMOTE_CLOSE = 1 Then
-    Public InitiateShutdownProcess As Boolean
-    Public ShutdownProcessTimer    As New clsInstrument
-#End If
 '
 '********** FUNCIONES API ***********
 '

@@ -3608,6 +3608,10 @@ End Sub
 
 Private Sub renderer_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo renderer_MouseDown_Err
+    ' Sincroniza el tile objetivo con la posicion exacta del cursor al comenzar el click dentro del render.
+    mouseX = x
+    mouseY = y
+    Call ConvertCPtoTP(mouseX, mouseY, tX, tY)
     If SendTxt.visible Then SendTxt.SetFocus
     MouseBoton = Button
     MouseShift = Shift
