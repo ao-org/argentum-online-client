@@ -5487,7 +5487,6 @@ End Sub
 
 Private Sub HandleViajarForm()
     On Error GoTo HandleViajarForm_Err
-    Dim Dest     As String
     Dim DestCant As Byte
     Dim i        As Byte
     Dim tempdest As String
@@ -5496,20 +5495,14 @@ Private Sub HandleViajarForm()
     ReDim Destinos(1 To DestCant) As Tdestino
     For i = 1 To DestCant
         tempdest = Reader.ReadString8()
-        Destinos(i).CityDest = ReadField(1, tempdest, Asc("-"))
-        Destinos(i).costo = ReadField(2, tempdest, Asc("-"))
-        FrmViajes.List1.AddItem ListaCiudades(Destinos(i).CityDest) & " - " & Destinos(i).costo & " monedas"
+        Dim sepPos As Integer
+        sepPos = InStrRev(tempdest, "-")
+        Destinos(i).CityDest = CStr(Left(tempdest, sepPos - 1))
+        Destinos(i).costo = CLng(mid(tempdest, sepPos + 1))
+        FrmViajes.List1.AddItem Destinos(i).CityDest & " - " & Destinos(i).costo & " monedas"
     Next i
     Call Establecer_Borde(FrmViajes.List1, FrmViajes, COLOR_AZUL, 0, 0)
     ViajarInterface = Reader.ReadInt8()
-    FrmViajes.Picture = LoadInterface("viajes" & ViajarInterface & ".bmp")
-    If ViajarInterface = 1 Then
-        FrmViajes.Image1.Top = 4690
-        FrmViajes.Image1.Left = 3810
-    Else
-        FrmViajes.Image1.Top = 4680
-        FrmViajes.Image1.Left = 3840
-    End If
     FrmViajes.Show , GetGameplayForm()
     Exit Sub
 HandleViajarForm_Err:
