@@ -19,7 +19,7 @@ Option Explicit
 Private arrLocale_SMG() As String
 
 Public Type Tdestino
-    CityDest As Byte
+    CityDest As String
     costo As Long
 End Type
 
