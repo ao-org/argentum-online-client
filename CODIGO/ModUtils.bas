@@ -282,6 +282,9 @@ Public Type NpcDatas
     Amphibian As Boolean
     QuizaProb As Integer
     DisabledInBattleServer As Integer
+    Snd1 As Integer
+    Snd2 As Integer
+    Snd3 As Integer
 End Type
 
 Public Type HechizoDatas
@@ -2181,6 +2184,23 @@ Public Function GetQuestDescForUI(ByVal questIndex As Integer) As String
     GetQuestDescForUI = QuestList(questIndex).desc
 End Function
 
+Public Function WaveIsNpcHitSound(ByVal wave As Integer) As Boolean
+    Dim i As Integer
+
+    On Error GoTo WaveIsNpcHitSound_Err
+    WaveIsNpcHitSound = False
+    If wave = 0 Then Exit Function
+
+    For i = LBound(NpcData) To UBound(NpcData)
+        If NpcData(i).Snd1 = wave Or NpcData(i).Snd2 = wave Or NpcData(i).Snd3 = wave Then
+            WaveIsNpcHitSound = True
+            Exit Function
+        End If
+    Next i
+    Exit Function
+WaveIsNpcHitSound_Err:
+    Resume Next
+End Function
 
 Public Sub StopQuestDescAudio()
     Call ao20audio.StopAllWavsMatchingLabel(QUEST_DESC_AUDIO_LABEL)
@@ -2267,6 +2287,8 @@ Public Sub PlayQuestDescAudio(ByVal questIndex As Integer)
 
     Call StopQuestDescAudio
 
+    If ao20audio.DisableQuestNpcSound Then Exit Sub
+
     audioFile = Trim$(QuestList(questIndex).DescAudio)
     If LenB(audioFile) = 0 Then Exit Sub
 
@@ -2299,6 +2321,8 @@ Public Sub PlayQuestFinalDescAudio(ByVal questIndex As Integer)
     If questIndex < LBound(QuestList) Or questIndex > UBound(QuestList) Then Exit Sub
 
     Call StopQuestDescAudio
+
+    If ao20audio.DisableQuestNpcSound Then Exit Sub
 
     audioFile = Trim$(QuestList(questIndex).DescFinalAudio)
     If LenB(audioFile) = 0 Then Exit Sub

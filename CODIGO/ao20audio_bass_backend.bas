@@ -54,19 +54,16 @@ Public Function InitBassAudio(ByVal hWndOwner As Long) As Boolean
 
     If BASS_Init(BASS_DEFAULT_DEVICE, BASS_DEFAULT_FREQ, BASS_INIT_DEFAULT, hWndOwner, 0) = 0 Then
         m_LastBassError = BASS_ErrorGetCode()
-        frmDebug.add_text_tracebox "BASS_Init failed. Error: " & m_LastBassError
         InitBassAudio = False
         Exit Function
     End If
 
     m_BassInitialized = True
-    frmDebug.add_text_tracebox "BASS backend initialized"
     InitBassAudio = True
     Exit Function
 
 InitBassAudio_Err:
     m_LastBassError = Err.Number
-    frmDebug.add_text_tracebox "InitBassAudio exception: " & Err.Description
     InitBassAudio = False
 End Function
 
@@ -74,7 +71,6 @@ Public Sub BassBackend_StopMusic()
     On Error GoTo BassBackend_StopMusic_Err
 
     If m_CurrentMusicStream <> 0 Then
-        frmDebug.add_text_tracebox "BASS stopping current music stream " & m_CurrentMusicStream
         Call BASS_ChannelStop(m_CurrentMusicStream)
         Call BASS_StreamFree(m_CurrentMusicStream)
         m_CurrentMusicStream = 0
@@ -82,7 +78,7 @@ Public Sub BassBackend_StopMusic()
 
     Exit Sub
 BassBackend_StopMusic_Err:
-    frmDebug.add_text_tracebox "BassBackend_StopMusic exception: " & Err.Description
+    ' Exception suppressed
 End Sub
 
 Public Sub ShutdownBassAudio()
@@ -93,14 +89,13 @@ Public Sub ShutdownBassAudio()
     If m_BassInitialized Then
         Call BASS_Free
         m_BassInitialized = False
-        frmDebug.add_text_tracebox "BASS backend freed"
     End If
 
     m_LastBassError = 0
     Exit Sub
 
 ShutdownBassAudio_Err:
-    frmDebug.add_text_tracebox "ShutdownBassAudio exception: " & Err.Description
+    ' Exception suppressed
 End Sub
 
 Public Function BassBackend_PlayOgg(ByVal FilePath As String, ByVal looping As Boolean, ByVal volume As Long) As Long
@@ -110,12 +105,10 @@ Public Function BassBackend_PlayOgg(ByVal FilePath As String, ByVal looping As B
     BassBackend_PlayOgg = 1
 
     If LenB(FilePath) = 0 Then
-        frmDebug.add_text_tracebox "BassBackend_PlayOgg missing path"
         Exit Function
     End If
 
     If Not FileExist(FilePath, vbArchive) Then
-        frmDebug.add_text_tracebox "BassBackend_PlayOgg file not found: " & FilePath
         BassBackend_PlayOgg = 2
         Exit Function
     End If
@@ -139,7 +132,6 @@ Public Function BassBackend_PlayOgg(ByVal FilePath As String, ByVal looping As B
     
     If m_CurrentMusicStream = 0 Then
         m_LastBassError = BASS_ErrorGetCode()
-        frmDebug.add_text_tracebox "BASS_StreamCreateFile failed. Error: " & m_LastBassError & " Path: " & FilePath
         BassBackend_PlayOgg = m_LastBassError
         Exit Function
     End If
@@ -148,7 +140,6 @@ Public Function BassBackend_PlayOgg(ByVal FilePath As String, ByVal looping As B
 
     If BASS_ChannelPlay(m_CurrentMusicStream, 0) = 0 Then
         m_LastBassError = BASS_ErrorGetCode()
-        frmDebug.add_text_tracebox "BASS_ChannelPlay failed. Error: " & m_LastBassError
         Call BASS_StreamFree(m_CurrentMusicStream)
         m_CurrentMusicStream = 0
         BassBackend_PlayOgg = m_LastBassError
@@ -159,7 +150,6 @@ Public Function BassBackend_PlayOgg(ByVal FilePath As String, ByVal looping As B
     Exit Function
 
 BassBackend_PlayOgg_Err:
-    frmDebug.add_text_tracebox "BassBackend_PlayOgg exception: " & Err.Description
     BassBackend_PlayOgg = Err.Number
 End Function
 
@@ -172,7 +162,7 @@ Public Sub BassBackend_SetMusicVolume(ByVal volume As Long)
     Exit Sub
 
 BassBackend_SetMusicVolume_Err:
-    frmDebug.add_text_tracebox "BassBackend_SetMusicVolume exception: " & Err.Description
+    ' Exception suppressed
 End Sub
 
 

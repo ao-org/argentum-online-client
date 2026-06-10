@@ -1387,6 +1387,9 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).BodyOnWaterIdle = val(Leer.GetValue("npc" & Npc, "BodyOnWaterIdle"))
         NpcData(Npc).BodyOnLand = val(Leer.GetValue("npc" & Npc, "Body"))
         NpcData(Npc).BodyIdle = val(Leer.GetValue("npc" & Npc, "BodyIdle"))
+        NpcData(Npc).Snd1 = val(Leer.GetValue("npc" & Npc, "Snd1"))
+        NpcData(Npc).Snd2 = val(Leer.GetValue("npc" & Npc, "Snd2"))
+        NpcData(Npc).Snd3 = val(Leer.GetValue("npc" & Npc, "Snd3"))
         NpcData(Npc).DisabledInBattleServer = val(Leer.GetValue("npc" & Npc, "DisabledInBattleServer"))
         NpcData(Npc).Amphibian = val(Leer.GetValue("npc" & Npc, "Amphibian")) > 0
         If NpcData(Npc).DropCount > 0 Then
@@ -1407,6 +1410,18 @@ Public Sub CargarIndicesOBJ()
                 End If
             Next loopC
         End If
+        ' Fallback: if Snd fields are missing in the localized index, try the main Dat/npcs.dat
+        If NpcData(Npc).Snd1 = 0 And FileExist(App.path & "\..\Recursos\Dat\npcs.dat", vbNormal) Then
+            On Error Resume Next
+            Dim npcsPath As String
+            npcsPath = App.path & "\..\Recursos\Dat\npcs.dat"
+            Dim nReader As New clsIniManager
+            Call nReader.Initialize(npcsPath)
+            If NpcData(Npc).Snd1 = 0 Then NpcData(Npc).Snd1 = Val(nReader.GetValue("NPC" & Npc, "SND1"))
+            If NpcData(Npc).Snd2 = 0 Then NpcData(Npc).Snd2 = Val(nReader.GetValue("NPC" & Npc, "SND2"))
+            If NpcData(Npc).Snd3 = 0 Then NpcData(Npc).Snd3 = Val(nReader.GetValue("NPC" & Npc, "SND3"))
+            ' fallback applied silently
+        End If
         
         ' Leer NroItems y sus Obj()
         aux = val(Leer.GetValue("npc" & Npc, "NROITEMS"))
@@ -1420,6 +1435,7 @@ Public Sub CargarIndicesOBJ()
             Next loopC
         End If
     Next Npc
+    On Error Resume Next
     langPrefix = GetLanguagePrefix(language)
     For Hechizo = 1 To NumHechizos
         DoEvents

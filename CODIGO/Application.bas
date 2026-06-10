@@ -58,8 +58,6 @@ Public Sub RegistrarError(ByVal Numero As Long, ByVal Descripcion As String, ByV
     Print #File, "Fecha y Hora: " & Date$ & "-" & Time$
     Print #File, vbNullString
     Close #File
-    frmDebug.add_text_tracebox "Error: " & Numero & vbNewLine & "Descripcion: " & Descripcion & vbNewLine & "Componente: " & Componente & vbNewLine & "Linea: " & Linea & _
-            vbNewLine & "Fecha y Hora: " & Date$ & "-" & Time$ & vbNewLine
     Exit Sub
 RegistrarError_Err:
     Call RegistrarError(Err.Number, Err.Description, "ES.RegistrarError", Erl)

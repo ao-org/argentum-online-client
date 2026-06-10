@@ -146,20 +146,11 @@ Private Function PlayOgg(ByVal fileName As String, Optional ByVal looping As Boo
     If LenB(fileName) = 0 Then Exit Function
 
     If Not ResolveOggFilePath(fileName, pathToFile) Then
-        #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayOgg missing file: " & filename
-        #End If
         Exit Function
     End If
 
     PlayOgg = BassBackend_PlayOgg(pathToFile, looping, volume)
-    #If DEBUG_AUDIO = 1 Then
-    If PlayOgg = 0 Then
-        frmDebug.add_text_tracebox "PlayOgg started: " & fileName
-    Else
-        frmDebug.add_text_tracebox "PlayOgg failed. Error: " & PlayOgg
-    End If
-    #End If
+    ' PlayOgg start/stop info removed
 End Function
 
 ' Active music state tracks what is currently playing across both music
@@ -172,7 +163,6 @@ Private Sub ClearActiveMusicState()
     mMusicBackend = mbNone
     mMusicIsActive = False
     mCurrentMidiId = 0
-    frmDebug.add_text_tracebox "Music state cleared"
 End Sub
 
 Private Sub SetActiveMusicState(ByVal fileName As String, ByVal backend As eMusicBackend, ByVal looping As Boolean, ByVal volume As Long)
@@ -215,8 +205,6 @@ End Function
 Private Sub StopAllMusicBackends()
     On Error Resume Next
 
-    frmDebug.add_text_tracebox "StopAllMusicBackends begin. Current backend: " & CStr(mMusicBackend)
-
     Call BassBackend_StopMusic
 
     Dim i As Integer
@@ -230,7 +218,6 @@ Private Sub StopAllMusicBackends()
     Next i
 
     Call ClearActiveMusicState
-    frmDebug.add_text_tracebox "StopAllMusicBackends complete"
 End Sub
 
 Public Function StopMusic() As Long
@@ -273,54 +260,44 @@ Public Function PlayMusic(ByVal fileName As String, Optional ByVal looping As Bo
 
     PlayMusic = -1
     If LenB(fileName) = 0 Then
-        frmDebug.add_text_tracebox "PlayMusic invalid request: empty filename"
         Exit Function
     End If
 
     If mAudioSuspended Then
-        #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayMusic ignored because audio is suspended"
-        #End If
         PlayMusic = 0
         Exit Function
     End If
 
     backend = DetermineMusicBackendFromFile(fileName, midiId)
     If backend = mbNone Then
-        frmDebug.add_text_tracebox "PlayMusic unknown extension or invalid request: " & fileName
         Exit Function
     End If
 
     If IsSameMusicRequest(fileName, backend, looping) Then
-        frmDebug.add_text_tracebox "PlayMusic same track request ignored: " & fileName
         Call SetMusicVolume(volume)
         PlayMusic = 0
         Exit Function
     End If
 
     If mMusicIsActive Then
-        frmDebug.add_text_tracebox "PlayMusic backend switch: " & CStr(mMusicBackend) & " -> " & CStr(backend)
     End If
     Call StopAllMusicBackends
 
     Select Case backend
         Case mbBassOgg
             #If ENABLE_BASS = 1 Then
-                frmDebug.add_text_tracebox "PlayMusic selected backend: BASS/OGG"
                 PlayMusic = PlayOgg(fileName, looping, volume)
             #Else
-                frmDebug.add_text_tracebox "PlayMusic .ogg ignored because ENABLE_BASS=0"
+                PlayMusic = -1
                 PlayMusic = -1
             #End If
         Case mbDirectMusicMidi
-            frmDebug.add_text_tracebox "PlayMusic selected backend: DirectMusic/MIDI"
             PlayMusic = PlayMidi(midiId, looping, volume)
     End Select
 
     If PlayMusic = 0 Then
         Call SetActiveMusicState(fileName, backend, looping, volume)
     Else
-        frmDebug.add_text_tracebox "PlayMusic start failed: " & fileName
     End If
 End Function
 
@@ -352,11 +329,10 @@ Public Sub PauseAllAudio()
         End With
     Next i
 
-    frmDebug.add_text_tracebox "Audio paused due to focus loss/minimize"
+    ' audio paused
     Exit Sub
-
 PauseAllAudio_Error:
-    frmDebug.add_text_tracebox "PauseAllAudio exception: " & Err.Description
+    ' exception suppressed
 End Sub
 
 Public Sub ResumeAllAudio()
@@ -384,11 +360,9 @@ Public Sub ResumeAllAudio()
     End If
 
     mAudioSuspended = False
-    frmDebug.add_text_tracebox "Audio resumed on focus gain/restore"
     Exit Sub
-
 ResumeAllAudio_Error:
-    frmDebug.add_text_tracebox "ResumeAllAudio exception: " & Err.Description
+    ' exception suppressed
     mAudioSuspended = False
 End Sub
 
@@ -407,14 +381,12 @@ Private Function InitSoundEngine(hWnd As Long) As Long
     Set mDirectSoundEnum = mDirectX.GetDSEnum
     If Err.Number <> 0 Then
         Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_ENUM"), vbCritical, App.title)
-        frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
         InitSoundEngine = Err.Number
         Exit Function
     End If
     Set mDirectSound = DirectX.DirectSoundCreate(mDirectSoundEnum.GetGuid(1))
     If Err.Number <> 0 Then
         Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_CREAR"), vbCritical, App.title)
-        frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
         InitSoundEngine = Err.Number
         Exit Function
     End If
@@ -429,14 +401,12 @@ Private Function InitMusicEngine(dx8 As DirectX8, hWnd As Long) As Long
         Set .directMusicLoader = dx8.DirectMusicLoaderCreate
         If Err.Number <> 0 Then
             Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_MUSIC"), vbCritical, App.title)
-            frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
             InitMusicEngine = Err.Number
             Exit Function
         End If
         Set .directMusicPerformance = dx8.DirectMusicPerformanceCreate
         If Err.Number <> 0 Then
             Call MsgBox(JsonLanguage.Item("MENSAJEBOX_FATAL_ERROR_DIRECTX_MUSIC_PERFORMANCE"), vbCritical, App.title)
-            frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
             InitMusicEngine = Err.Number
             Exit Function
         Else
@@ -455,20 +425,16 @@ Public Function Init(ByRef dx8 As DirectX8, ByVal hWnd As Long) As Long
     Set mDirectX = dx8
     Init = InitSoundEngine(hWnd)
     If Init <> 0 Then
-        frmDebug.add_text_tracebox "InitSoundEngine() failed with code " & Init
         Exit Function
     End If
     Init = InitMusicEngine(dx8, hWnd)
     If Init <> 0 Then
-        frmDebug.add_text_tracebox "InitSoundEngine() failed with code " & Init
         Exit Function
     End If
     #If ENABLE_BASS = 1 Then
         If Not InitBassAudio(hWnd) Then
-            frmDebug.add_text_tracebox "BASS backend unavailable, OGG disabled. Error: " & BassBackend_GetLastError
         End If
     #Else
-        frmDebug.add_text_tracebox "BASS backend disabled by compilation define ENABLE_BASS=0"
     #End If
     Init = 0
 End Function
@@ -497,7 +463,7 @@ Private Function LoadMidi(ByRef track As MidiTrack, ByVal file_str As String, Op
     LoadMidi = True
     Exit Function
 Error_Handl:
-    frmDebug.add_text_tracebox "error al cargar musica"
+    ' error suppressed
 End Function
 
 ' Legacy WAV loader used by DirectSound fallback (and ambient). This remains
@@ -635,18 +601,12 @@ Private Function GetCompressedSfxSample(ByVal Name As String, ByVal fullPath As 
     If i > 0 Then
         If mCompressedSfx(i).SampleHandle <> 0 Then
             GetCompressedSfxSample = mCompressedSfx(i).SampleHandle
-            #If DEBUG_AUDIO = 1 Then
-                frmDebug.add_text_tracebox "PlayWav OGG cache hit: " & Name
-            #End If
             Exit Function
         End If
     End If
 
     sampleHandle = BASS_SampleLoad(0, StrPtr(fullPath), 0, 0, 32, BASS_UNICODE Or BASS_SAMPLE_OVER_POS)
     If sampleHandle = 0 Then
-        #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayWav OGG sample load failed: " & Name & " Error: " & BASS_ErrorGetCode()
-        #End If
         Exit Function
     End If
 
@@ -664,14 +624,12 @@ Private Function GetCompressedSfxSample(ByVal Name As String, ByVal fullPath As 
     mCompressedSfx(i).FullPath = fullPath
     mCompressedSfx(i).SampleHandle = sampleHandle
 
-    #If DEBUG_AUDIO = 1 Then
-        frmDebug.add_text_tracebox "PlayWav OGG sample cached: " & Name
-    #End If
+    ' OGG sample cached (silent)
     GetCompressedSfxSample = sampleHandle
     Exit Function
 
 GetCompressedSfxSample_Error:
-    frmDebug.add_text_tracebox "GetCompressedSfxSample exception: " & Err.Description
+    ' exception suppressed
 End Function
 
 Private Sub CleanupDeadCompressedChannels()
@@ -692,9 +650,7 @@ Private Sub CleanupDeadCompressedChannels()
                     mActiveCompressedChannels(writeIndex) = mActiveCompressedChannels(i)
                 End If
             Else
-                #If DEBUG_AUDIO = 1 Then
-                    frmDebug.add_text_tracebox "PlayWav OGG cleaned stale channel: " & mActiveCompressedChannels(i).Name
-                #End If
+                ' cleaned stale channel
             End If
         End If
     Next i
@@ -709,7 +665,7 @@ Private Sub CleanupDeadCompressedChannels()
     Exit Sub
 
 CleanupDeadCompressedChannels_Error:
-    frmDebug.add_text_tracebox "CleanupDeadCompressedChannels exception: " & Err.Description
+    ' exception suppressed
 End Sub
 
 Private Sub RegisterActiveCompressedChannel(ByVal channelHandle As Long, ByVal Name As String, ByVal label As String, ByVal looping As Boolean)
@@ -733,13 +689,11 @@ Private Sub RegisterActiveCompressedChannel(ByVal channelHandle As Long, ByVal N
         .Looping = looping
     End With
 
-    #If DEBUG_AUDIO = 1 Then
-        frmDebug.add_text_tracebox "PlayWav OGG channel registered: " & Name & " label: " & label & " looping: " & CStr(looping)
-    #End If
+    ' PlayWav OGG channel registered (silent)
     Exit Sub
 
 RegisterActiveCompressedChannel_Error:
-    frmDebug.add_text_tracebox "RegisterActiveCompressedChannel exception: " & Err.Description
+    ' exception suppressed
 End Sub
 
 ' Compressed SFX playback uses BASS samples + per-play channels.
@@ -774,10 +728,6 @@ Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As Strin
     channelHandle = BASS_SampleGetChannel(sampleHandle, 0)
     If channelHandle = 0 Then
         PlayCompressedSfx = BASS_ErrorGetCode()
-        #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayWav OGG sample channel failed: " & Name & " Error: " & BASS_ErrorGetCode()
-
-        #End If
         Exit Function
     End If
 
@@ -788,9 +738,6 @@ Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As Strin
 
     If BASS_ChannelPlay(channelHandle, 1) = 0 Then
         PlayCompressedSfx = BASS_ErrorGetCode()
-        #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayWav OGG play failed: " & Name & " Error: " & PlayCompressedSfx
-        #End If
         Exit Function
     End If
 
@@ -799,7 +746,7 @@ Private Function PlayCompressedSfx(ByVal Name As String, ByVal fullPath As Strin
     Exit Function
 
 PlayCompressedSfx_Error:
-    frmDebug.add_text_tracebox "PlayCompressedSfx exception: " & Err.Description
+    ' exception suppressed
 End Function
 
 ' Cached compressed SFX are long-lived for runtime reuse and explicitly freed
@@ -821,13 +768,11 @@ Private Sub FreeCompressedSfxCache()
 
     Erase mCompressedSfx
     mCompressedSfxCount = 0
-    #If DEBUG_AUDIO = 1 Then
-        frmDebug.add_text_tracebox "Compressed OGG SFX cache cleared"
-    #End If
+' Compressed OGG SFX cache cleared
     Exit Sub
 
 FreeCompressedSfxCache_Error:
-    frmDebug.add_text_tracebox "FreeCompressedSfxCache exception: " & Err.Description
+    ' exception suppressed
 End Sub
 
 Private Sub StopAllActiveCompressedChannels()
@@ -849,7 +794,7 @@ Private Sub StopAllActiveCompressedChannels()
     Exit Sub
 
 StopAllActiveCompressedChannels_Error:
-    frmDebug.add_text_tracebox "StopAllActiveCompressedChannels exception: " & Err.Description
+    ' exception suppressed
 End Sub
 
 Private Function StartPlaying(ByRef Buffer As DirectSoundSecondaryBuffer8, ByVal flags As CONST_DSBPLAYFLAGS, ByVal volume As Long, ByVal pan As Long) As Long
@@ -1017,9 +962,6 @@ Public Function PlayAmbient(ByVal id As Integer, Optional ByVal looping As Boole
     PlayAmbient = -1
 
     If mAudioSuspended Then
-        #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayAmbient ignored because audio is suspended"
-        #End If
         PlayAmbient = 0
         Exit Function
     End If
@@ -1038,9 +980,7 @@ Public Function PlayAmbient(ByVal id As Integer, Optional ByVal looping As Boole
     End If
     Dim tid As Integer
     tid = UBound(mAudioTracks)
-    #If DEBUG_AUDIO = 1 Then
-        frmDebug.add_text_tracebox "PlayAmbient, track " & tid & " id: " & id
-    #End If
+    ' PlayAmbient info suppressed
     With mAudioTracks(tid)
         .Name = id
         Set .Buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(id))
@@ -1068,28 +1008,20 @@ Public Function PlayWav(ByVal prefix_sound_id As String, _
     Dim sound_id As Integer
 
     If mAudioSuspended Then
-        #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayWav ignored because audio is suspended"
-        #End If
+        PlayWav = 0
+        Exit Function
+    End If
+
+    If ao20audio.DisableNpcHitSound And ao20audio.IsNpcHitSoundId(prefix_sound_id) Then
         PlayWav = 0
         Exit Function
     End If
     #If ENABLE_BASS = 1 Then
         oggPath = ResolveOggSfxPath(prefix_sound_id)
+        ' PlayWav entry info suppressed
         If LenB(oggPath) > 0 Then
-            #If DEBUG_AUDIO = 1 Then
-                frmDebug.add_text_tracebox "PlayWav using OGG sample: " & prefix_sound_id
-            #End If
             PlayWav = PlayCompressedSfx(prefix_sound_id, oggPath, looping, volume, pan, label)
             If PlayWav = 0 Then Exit Function
-            #If DEBUG_AUDIO = 1 Then
-                frmDebug.add_text_tracebox "PlayWav OGG failed, fallback to WAV: " & prefix_sound_id
-            #End If
-        Else
-            #If DEBUG_AUDIO = 1 Then
-                frmDebug.add_text_tracebox "PlayWav fallback to WAV: " & prefix_sound_id
-            #End If
-            
         End If
     #End If
 
@@ -1137,9 +1069,6 @@ Public Sub PlayFxUniqueByLabel(ByVal sndIndex As Integer, ByVal looping As Boole
     Dim channelHandle As Long
 
     If mAudioSuspended Then
-        #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayFxUnique ignored because audio is suspended"
-        #End If
         Exit Sub
     End If
 
@@ -1158,9 +1087,7 @@ Public Sub PlayFxUniqueByLabel(ByVal sndIndex As Integer, ByVal looping As Boole
             If Not .Buffer Is Nothing Then
                 .Buffer.SetVolume volume
                 .Buffer.SetPan pan
-                #If DEBUG_AUDIO = 1 Then
-                    frmDebug.add_text_tracebox "PlayFxUnique update: " & label
-                #End If
+                ' PlayFxUnique update suppressed
             End If
         End With
         Exit Sub
@@ -1172,22 +1099,16 @@ Public Sub PlayFxUniqueByLabel(ByVal sndIndex As Integer, ByVal looping As Boole
         ' Do not restart to avoid overlap/retrigger artifacts.
         Call BASS_ChannelSetAttribute(channelHandle, BASS_ATTRIB_VOL, ConvertFxVolumeToBass(volume))
         Call BASS_ChannelSetAttribute(channelHandle, BASS_ATTRIB_PAN, ConvertFxPanToBass(pan))
-        #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayFxUnique update: " & label
-        #End If
         Exit Sub
     End If
 
     ' Label is not active in either backend: start a fresh instance and register
     ' label through PlayWav/PlayCompressedSfx normal tracking path.
-    #If DEBUG_AUDIO = 1 Then
-        frmDebug.add_text_tracebox "PlayFxUnique start: " & label
-    #End If
     Call PlayWav(CStr(sndIndex), looping, volume, pan, label)
     Exit Sub
 
 PlayFxUniqueByLabel_Error:
-    frmDebug.add_text_tracebox "PlayFxUniqueByLabel exception: " & Err.Description
+    ' exception suppressed
 End Sub
 
 Public Function RemoveFirstThreeIfUnderscore(ByVal s As String) As String
@@ -1217,9 +1138,6 @@ Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean 
     If (id <= 0) Then Exit Function
 
     If mAudioSuspended Then
-        #If DEBUG_AUDIO = 1 Then
-            frmDebug.add_text_tracebox "PlayMidi ignored because audio is suspended"
-        #End If
         PlayMidi = 0
         Exit Function
     End If
@@ -1227,14 +1145,12 @@ Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean 
     ' Some legacy code paths still call PlayMidi directly.
     ' Keep it idempotent (same-track + same-loop request does not restart).
     If mMusicIsActive And mMusicBackend = mbDirectMusicMidi And mCurrentMidiId = id And mMusicLooping = looping Then
-        frmDebug.add_text_tracebox "PlayMidi same track request ignored: " & CStr(id) & ".mid"
         Call SetMusicVolume(volume)
         PlayMidi = 0
         Exit Function
     End If
 
     If mMusicIsActive Then
-        frmDebug.add_text_tracebox "PlayMidi backend switch: " & CStr(mMusicBackend) & " -> " & CStr(mbDirectMusicMidi)
         Call StopAllMusicBackends
     End If
 
@@ -1254,10 +1170,9 @@ Public Function PlayMidi(ByVal id As Integer, Optional ByVal looping As Boolean 
     PlayMidi = 0
     mCurrentMidiId = id
     Call SetActiveMusicState(Trim$(id_as_str) & ".mid", mbDirectMusicMidi, looping, volume)
-    frmDebug.add_text_tracebox "PlayMidi started: " & Trim$(id_as_str) & ".mid"
     Exit Function
 PlayMidi_Error_Handl:
-    frmDebug.add_text_tracebox "PlayMidi failed for id: " & CStr(id)
+    ' exception suppressed
 End Function
 
 Public Function StopAllWavsMatchingLabel(ByVal label As String) As Long

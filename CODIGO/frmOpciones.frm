@@ -266,6 +266,40 @@ Begin VB.Form frmOpciones
          Top             =   2715
          Width           =   255
       End
+      Begin VB.Image chkDisableNpcHitSound
+         Height          =   255
+         Left            =   255
+         Top             =   3000
+         Width           =   255
+      End
+      Begin VB.Label lblDisableNpcHitSound
+         AutoSize        =  -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Desactivar Sonido de Golpe de NPC"
+         ForeColor       =   &H00FFFFFF&
+         Height          =   315
+         Left            =   615
+         TabIndex        =   40
+         Top             =   3000
+         Width           =   4650
+      End
+      Begin VB.Image chkDisableQuestNpcSound
+         Height          =   255
+         Left            =   255
+         Top             =   3300
+         Width           =   255
+      End
+      Begin VB.Label lblDisableQuestNpcSound
+         AutoSize        =  -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Desactivar Sonido de Quest de NPC"
+         ForeColor       =   &H00FFFFFF&
+         Height          =   315
+         Left            =   615
+         TabIndex        =   41
+         Top             =   3300
+         Width           =   4650
+      End
       Begin VB.Image chko 
          Height          =   255
          Index           =   2
@@ -628,6 +662,39 @@ Private Sub chkSteps_MouseUp(Button As Integer, Shift As Integer, x As Single, y
     Exit Sub
 chkSteps_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkSteps_MouseUp", Erl)
+    Resume Next
+End Sub
+
+Private Sub chkDisableNpcHitSound_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error GoTo chkDisableNpcHitSound_MouseUp_Err
+    Call ao20audio.PlayWav(SND_CLICK)
+    If ao20audio.DisableNpcHitSound = 0 Then
+        ao20audio.DisableNpcHitSound = 1
+        chkDisableNpcHitSound.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        ao20audio.DisableNpcHitSound = 0
+        chkDisableNpcHitSound.Picture = Nothing
+    End If
+    Exit Sub
+chkDisableNpcHitSound_MouseUp_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkDisableNpcHitSound_MouseUp", Erl)
+    Resume Next
+End Sub
+
+Private Sub chkDisableQuestNpcSound_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+    On Error GoTo chkDisableQuestNpcSound_MouseUp_Err
+    Call ao20audio.PlayWav(SND_CLICK)
+    If ao20audio.DisableQuestNpcSound = 0 Then
+        ao20audio.DisableQuestNpcSound = 1
+        chkDisableQuestNpcSound.Picture = LoadInterface("check-amarillo.bmp")
+    Else
+        ao20audio.DisableQuestNpcSound = 0
+        chkDisableQuestNpcSound.Picture = Nothing
+        Call StopQuestDescAudio
+    End If
+    Exit Sub
+chkDisableQuestNpcSound_MouseUp_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmOpciones.chkDisableQuestNpcSound_MouseUp", Erl)
     Resume Next
 End Sub
 
@@ -1312,6 +1379,16 @@ Public Sub Init()
         chkSteps.Picture = Nothing
     Else
         chkSteps.Picture = LoadInterface("check-amarillo.bmp")
+    End If
+    If ao20audio.DisableNpcHitSound = 0 Then
+        chkDisableNpcHitSound.Picture = Nothing
+    Else
+        chkDisableNpcHitSound.Picture = LoadInterface("check-amarillo.bmp")
+    End If
+    If ao20audio.DisableQuestNpcSound = 0 Then
+        chkDisableQuestNpcSound.Picture = Nothing
+    Else
+        chkDisableQuestNpcSound.Picture = LoadInterface("check-amarillo.bmp")
     End If
     If FPSFLAG = 1 Then
         chkFps.Picture = LoadInterface("check-amarillo.bmp")

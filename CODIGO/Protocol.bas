@@ -2769,6 +2769,12 @@ Private Sub HandlePlayWave()
                 Exit Sub   ' Skip playing these if fog is disabled
             End If
     End Select
+
+    '=== Disable NPC hit sounds if the player has opted out ===
+    If ao20audio.DisableNpcHitSound And WaveIsNpcHitSound(wave) Then
+        Exit Sub
+    End If
+
     '=== Cancel previous wave if requested ===
     If cancelLastWave <> 0 Then
         ao20audio.StopWav CStr(wave)

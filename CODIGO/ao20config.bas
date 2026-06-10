@@ -22,6 +22,8 @@ Public Const OPTION_FX_ENABLED                As String = "Fx"
 Public Const OPTION_FX_STEPS_ENABLED          As String = "Steps"
 Public Const OPTION_AMBIENT_ENABLED           As String = "AmbientEnabled"
 Public Const OPTION_INVERTLR_CHANNELS_ENABLED As String = "InverLRChannels"
+Public Const OPTION_DISABLE_NPC_HIT_SOUND      As String = "DisableNpcHitSound"
+Public Const OPTION_DISABLE_QUEST_AUDIO       As String = "DisableQuestNpcSound"
 Public X_OFFSET                               As Integer
 Public Y_OFFSET                               As Integer
 Public EQUIPMENT_CARACTER                     As String
@@ -45,6 +47,8 @@ Sub SaveConfig()
     Call SaveSetting("AUDIO", OPTION_AMBIENT_ENABLED, AmbientEnabled)
     Call SaveSetting("AUDIO", OPTION_INVERTLR_CHANNELS_ENABLED, InvertirSonido)
     Call SaveSetting("AUDIO", OPTION_FX_STEPS_ENABLED, FxStepsEnabled)
+    Call SaveSetting("AUDIO", OPTION_DISABLE_NPC_HIT_SOUND, ao20audio.DisableNpcHitSound)
+    Call SaveSetting("AUDIO", OPTION_DISABLE_QUEST_AUDIO, ao20audio.DisableQuestNpcSound)
     Call SaveSetting("AUDIO", "VolMusic", VolMusic)
     Call SaveSetting("AUDIO", "Volfx", VolFX)
     Call SaveSetting("AUDIO", "VolSteps", VolSteps)
@@ -99,6 +103,8 @@ Sub LoadConfig()
     FxStepsEnabled = GetSettingAsByte("AUDIO", OPTION_FX_STEPS_ENABLED, 1)
     AmbientEnabled = GetSettingAsByte("AUDIO", OPTION_AMBIENT_ENABLED, 1)
     InvertirSonido = GetSettingAsByte("AUDIO", OPTION_INVERTLR_CHANNELS_ENABLED, 1)
+    ao20audio.DisableNpcHitSound = GetSettingAsByte("AUDIO", OPTION_DISABLE_NPC_HIT_SOUND, 0)
+    ao20audio.DisableQuestNpcSound = GetSettingAsByte("AUDIO", OPTION_DISABLE_QUEST_AUDIO, 0)
     'Musica y Sonido - Volumen
     VolMusicFadding = VolMusic
     VolMusic = val(GetSetting("AUDIO", "VolMusic"))

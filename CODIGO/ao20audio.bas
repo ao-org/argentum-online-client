@@ -40,6 +40,8 @@ Public FxEnabled               As Byte
 Public AudioEnabled            As Byte
 Public AmbientEnabled          As Byte
 Public FxStepsEnabled          As Byte
+Public DisableNpcHitSound       As Byte
+Public DisableQuestNpcSound     As Byte
 Private CurMusicVolume         As Long
 Private CurAmbientVolume       As Long
 Private CurFxVolume            As Long
@@ -60,7 +62,6 @@ Public Sub PlayRandomOggSong(ByVal maxTrack As Integer, Optional ByVal looping A
     track = Int(Rnd * maxTrack) + 1
     filename = "ost_" & CStr(track) & ".ogg"
 
-    frmDebug.add_text_tracebox "Playing random OGG track: " & filename
     Call ao20audio.PlayMusic(filename, looping)
 End Sub
 
@@ -69,15 +70,13 @@ Public Sub CreateAudioEngine(ByVal hWnd As Long, ByRef dx8 As DirectX8, ByRef re
     If AudioEnabled Then
         Set AudioEngine = New clsAudioEngine
         Call AudioEngine.Init(dx8, hWnd)
-        frmDebug.add_text_tracebox "Audio Engine OK"
         Exit Sub
     Else
-        frmDebug.add_text_tracebox "Warning Audio Disabled"
+        ' Audio disabled
     End If
     Exit Sub
 AudioEngineInitErr:
     Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_CREACION_ENGINE_AUDIO"), vbCritical, "Argentum20")
-    frmDebug.add_text_tracebox "Error Number Returned: " & Err.Number
     End
 End Sub
 
@@ -146,6 +145,33 @@ Public Function PlayAmbientWav(ByVal id As Integer, Optional ByVal looping As Bo
     End If
 End Function
 
+Public Function IsNpcHitSoundId(ByVal id As String) As Boolean
+    Dim waveId As String
+    Dim wave As Integer
+    Dim i As Integer
+
+    If ao20audio.DisableNpcHitSound = 0 Then Exit Function
+    waveId = Trim$(id)
+    If LenB(waveId) = 0 Then Exit Function
+
+    If InStr(waveId, "_") > 0 Then
+        waveId = AudioEngine.RemoveFirstThreeIfUnderscore(waveId)
+    End If
+
+    ' Debug traces removed
+
+    If Not IsNumeric(waveId) Then Exit Function
+    wave = CInt(waveId)
+    If wave = 0 Then Exit Function
+
+    For i = LBound(NpcData) To UBound(NpcData)
+        If NpcData(i).Snd1 = wave Or NpcData(i).Snd2 = wave Then
+            IsNpcHitSoundId = True
+            Exit Function
+        End If
+    Next i
+End Function
+
 Public Function PlayWav(ByVal id As String, _
                         Optional ByVal looping As Boolean = False, _
                         Optional ByVal volume As Long = 0, _
@@ -153,6 +179,7 @@ Public Function PlayWav(ByVal id As String, _
                         Optional ByVal label As String = "") As Long
     PlayWav = -1
     If AudioEnabled And FxEnabled And Not AudioEngine Is Nothing Then
+        If ao20audio.IsNpcHitSoundId(id) Then Exit Function
         PlayWav = ao20audio.AudioEngine.PlayWav(id, looping, min(CurFxVolume, volume), pan, label)
     End If
 End Function
@@ -180,6 +207,7 @@ Public Function PlayFx(ByVal id As String, _
             effVol = min(CurFxVolume, volume)
     End Select
 
+    If ao20audio.IsNpcHitSoundId(id) Then Exit Function
     PlayFx = AudioEngine.PlayWav(id, looping, effVol, pan, label)
 End Function
 
