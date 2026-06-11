@@ -2192,7 +2192,7 @@ Public Function WaveIsNpcHitSound(ByVal wave As Integer) As Boolean
     If wave = 0 Then Exit Function
 
     For i = LBound(NpcData) To UBound(NpcData)
-        If NpcData(i).Snd1 = wave Or NpcData(i).Snd2 = wave Or NpcData(i).Snd3 = wave Then
+        If NpcData(i).Snd1 = wave Or NpcData(i).Snd2 = wave Then
             WaveIsNpcHitSound = True
             Exit Function
         End If
