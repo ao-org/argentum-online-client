@@ -595,8 +595,6 @@ Public ClanName               As String
 Public Site                   As String
 Public UserCiego              As Boolean
 Public UserEstupido           As Boolean
-Public NoRes                  As Boolean 'no cambiar la resolucion
-Public Launcher               As Boolean '¿Habrio desde el Launcher?
 Public AmbientalesBufferIndex As Long
 Public RainBufferIndex        As Long
 Public FogataBufferIndex      As Long

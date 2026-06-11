@@ -22,7 +22,7 @@ Private Declare Function svb_install_minidump_handler Lib "steam_vb.dll" (ByVal 
 Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 Private Declare Function svb_retlong Lib "steam_vb.dll" (ByVal Number As Long) As Long
 Public Declare Function svb_unlock_achivement Lib "steam_vb.dll" (ByVal Name As String) As Long
-
+Public BattleserverTag As Boolean
 Public bSkins As Boolean
 
 Private Type Position
@@ -731,10 +731,41 @@ Public Sub SaveStringInFile(ByVal Cadena As String, ByVal nombreArchivo As Strin
 ErrorHandler:
 End Sub
 
+Public Sub CommandLineParser()
+    On Error GoTo CommandLineParser_Err
+    Dim rawArgs As String
+    rawArgs = command$
+    
+    If Trim(rawArgs) = "" Then
+        Debug.Print "No arguments were passed."
+        Exit Sub
+    End If
+    
+    Dim argList() As String
+    argList = Split(rawArgs, " ")
+    
+    Dim i As Integer
+    For i = 0 To UBound(argList)
+        Select Case argList(i)
+            Case "-battleserver"
+                BattleserverTag = True
+        
+            Case Else
+                Debug.Print "invalid arguement passed"
+        End Select
+    Next i
+    Exit Sub
+CommandLineParser_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Mod_General.CommandLineParser", Erl)
+    Resume Next
+End Sub
+
+
+
 
 Sub Main()
     On Error GoTo Main_Err
-
+    Call CommandLineParser
     #If UNIT_TEST = 1 Then
         On Error GoTo UnitTest_Err
         Call UnitTesting.Init
@@ -748,10 +779,9 @@ UnitTest_Err:
         Call UnitTesting.RunTestError("FATAL", Err.Description)
         Resume UnitTest_Done
     #End If
-
+    
     debug_tools.Init
     frmDebug.add_text_tracebox debug_tools.BuildFlags
-    
     'Must be at the top to make sure te resources password is loaded before we attempt to load anything
     'TODO: Remove the PASSWORD, it's useless and slow and remove the call to DoCrypt_Data bytArr, Passwd
     'Moving forward use only dycryptosys API Decompress_Data_B bytArr, InfoHead.lngFileSizeUncompressed
@@ -965,26 +995,6 @@ CMSValidateChar__Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.CMSValidateChar_", Erl)
     Resume Next
 End Function
-
-Public Sub LeerLineaComandos()
-    On Error GoTo LeerLineaComandos_Err
-    Dim t() As String
-    Dim i   As Long
-    'Parseo los comandos
-    t = Split(command, " ")
-    For i = LBound(t) To UBound(t)
-        Select Case UCase$(t(i))
-            Case "/LAUNCHER" 'no cambiar la resolucion
-                Launcher = True
-            Case "/NORES" 'no cambiar la resolucion
-                NoRes = True
-        End Select
-    Next i
-    Exit Sub
-LeerLineaComandos_Err:
-    Call RegistrarError(Err.Number, Err.Description, "Mod_General.LeerLineaComandos", Erl)
-    Resume Next
-End Sub
 
 Private Sub InicializarNombres()
     'Inicializa los nombres de razas, ciudades, clases, skills, atributos, etc.
