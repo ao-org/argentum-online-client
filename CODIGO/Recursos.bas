@@ -1356,6 +1356,14 @@ Public Sub CargarIndicesOBJ()
     Next Obj
     Dim aux   As String
     Dim loopC As Byte
+    ' Inicializar reader de npcs.dat una sola vez antes del loop (fallback para SND1/SND2/SND3)
+    Dim nReader As clsIniManager
+    Dim npcsPath As String
+    npcsPath = App.path & "\..\Recursos\Dat\npcs.dat"
+    If FileExist(npcsPath, vbNormal) Then
+        Set nReader = New clsIniManager
+        Call nReader.Initialize(npcsPath)
+    End If
     For Npc = 1 To NumNpcs
         DoEvents
         NpcData(Npc).NoMapInfo = val(Leer.GetValue("npc" & Npc, "NoMapInfo"))
@@ -1410,17 +1418,11 @@ Public Sub CargarIndicesOBJ()
                 End If
             Next loopC
         End If
-        ' Fallback: if Snd fields are missing in the localized index, try the main Dat/npcs.dat
-        If NpcData(Npc).Snd1 = 0 And FileExist(App.path & "\..\Recursos\Dat\npcs.dat", vbNormal) Then
-            On Error Resume Next
-            Dim npcsPath As String
-            npcsPath = App.path & "\..\Recursos\Dat\npcs.dat"
-            Dim nReader As New clsIniManager
-            Call nReader.Initialize(npcsPath)
-            If NpcData(Npc).Snd1 = 0 Then NpcData(Npc).Snd1 = Val(nReader.GetValue("NPC" & Npc, "SND1"))
-            If NpcData(Npc).Snd2 = 0 Then NpcData(Npc).Snd2 = Val(nReader.GetValue("NPC" & Npc, "SND2"))
-            If NpcData(Npc).Snd3 = 0 Then NpcData(Npc).Snd3 = Val(nReader.GetValue("NPC" & Npc, "SND3"))
-            ' fallback applied silently
+        ' Fallback: si Snd1/2/3 no estaban en el index, leerlos de npcs.dat (reader ya inicializado)
+        If NpcData(Npc).Snd1 = 0 And Not (nReader Is Nothing) Then
+            NpcData(Npc).Snd1 = Val(nReader.GetValue("NPC" & Npc, "SND1"))
+            NpcData(Npc).Snd2 = Val(nReader.GetValue("NPC" & Npc, "SND2"))
+            NpcData(Npc).Snd3 = Val(nReader.GetValue("NPC" & Npc, "SND3"))
         End If
         
         ' Leer NroItems y sus Obj()
