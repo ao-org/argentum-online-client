@@ -62,7 +62,6 @@ Private bResChange   As Boolean
 Private Declare Function EnumDisplaySettings Lib "user32" Alias "EnumDisplaySettingsA" (ByVal lpszDeviceName As Long, ByVal iModeNum As Long, lptypDevMode As Any) As Boolean
 Private Declare Function ChangeDisplaySettings Lib "user32" Alias "ChangeDisplaySettingsA" (lptypDevMode As Any, ByVal dwFlags As Long) As Long
 
-'TODO : Change this to not depend on any external public variable using args instead!
 Public Sub SetResolution()
     On Error GoTo SetResolution_Err
     'Changes the display resolution if needed.
@@ -73,7 +72,7 @@ Public Sub SetResolution()
     lRes = EnumDisplaySettings(0, ENUM_CURRENT_SETTINGS, MidevM)
     oldResWidth = screen.Width \ screen.TwipsPerPixelX
     oldResHeight = screen.Height \ screen.TwipsPerPixelY
-    If NoRes And Not PantallaCompleta Then
+    If Not PantallaCompleta Then
         CambiarResolucion = (oldResWidth <= 1024 Or oldResHeight <= 768)
     Else
         CambiarResolucion = (oldResWidth <> 1024 Or oldResHeight <> 768)

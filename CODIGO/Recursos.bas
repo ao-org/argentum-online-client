@@ -718,9 +718,9 @@ Sub CargarDatosMapa(ByVal map As Integer)
                         GoTo cont
                     End If
                     If NpcData(NPCs(i).NpcIndex).DisabledInBattleServer = 1 Then
-                        #If BATTLESERVER = 1 Then
+                        If CasualTag Then
                             GoTo cont
-                        #End If
+                        End If
                         NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
                     Else
                         NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
@@ -1365,7 +1365,7 @@ Public Sub CargarIndicesOBJ()
             .desc = GetLocalizedValue(Leer, "npc" & Npc, "desc", langPrefix)
         End With
         If NpcData(Npc).Name = "" Then
-            NpcData(Npc).Name = "Vacío"
+            NpcData(Npc).name = "Vacío"
         End If
         NpcData(Npc).Body = val(Leer.GetValue("npc" & Npc, "Body"))
         NpcData(Npc).exp = val(Leer.GetValue("npc" & Npc, "exp"))
