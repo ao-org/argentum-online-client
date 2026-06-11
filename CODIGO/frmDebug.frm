@@ -64,11 +64,7 @@ End Sub
 
 Public Sub add_text_tracebox(ByVal s As String)
     On Error Resume Next
-    ' Ensure the debug form is visible so traces are observable during runs
-    If Not Me.Visible Then
-        Me.Show
-        Me.ZOrder 0
-    End If
+    If Not Me.Visible Then Exit Sub  ' si no estÃ¡ visible, no hacer nada
     With Me.TraceBox
         Me.TraceBox.text = Me.TraceBox.text & s & vbCrLf
         Me.TraceBox.SelStart = Len(Me.TraceBox.text)
