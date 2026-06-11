@@ -221,7 +221,7 @@ Public Sub SetActiveEnvironment(ByVal environment As String)
     If Not EnsureServerSettingsLoaded() Then Exit Sub
 
     #If Developer = 0 And DEBUGGING = 0 Then
-        If Not BattleserverTag Then
+        If Not CasualTag Then
             environment = "Production"
         Else
             environment = "Casual"

@@ -718,7 +718,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
                         GoTo cont
                     End If
                     If NpcData(NPCs(i).NpcIndex).DisabledInBattleServer = 1 Then
-                        If BattleserverTag Then
+                        If CasualTag Then
                             GoTo cont
                         End If
                         NpcWorlds(NPCs(i).NpcIndex) = NpcWorlds(NPCs(i).NpcIndex) + 1
