@@ -1934,6 +1934,7 @@ Private Const MAX_GM_MSG = 300
 Dim reason                      As Long
 Private MisMSG(0 To MAX_GM_MSG) As String
 Private Apunt(0 To MAX_GM_MSG)  As Integer
+Private UltimoTimestampMacroSancionado As String
 
 Public Sub CrearGMmSg(nick As String, msg As String)
     On Error GoTo CrearGMmSg_Err
@@ -3253,6 +3254,35 @@ Private Sub mnuConsulta_Click()
 End Sub
 
 
+Private Function ObtenerTimestampMacro(ByVal Cadena As String) As String
+    Dim partesTimestamp() As String
+
+    partesTimestamp = Split(Cadena, " Control")
+    ObtenerTimestampMacro = Trim$(partesTimestamp(0))
+End Function
+
+Private Function DebeAplicarSancionMacroPorTimestamp(ByVal Cadena As String) As Boolean
+    Dim timestampActual As String
+
+    timestampActual = ObtenerTimestampMacro(Cadena)
+
+    If LenB(timestampActual) = 0 Then
+        DebeAplicarSancionMacroPorTimestamp = True
+        Exit Function
+    End If
+
+    DebeAplicarSancionMacroPorTimestamp = (StrComp(UltimoTimestampMacroSancionado, timestampActual, vbTextCompare) <> 0)
+End Function
+
+Private Sub RegistrarTimestampSancionadoMacro(ByVal Cadena As String)
+    Dim timestampActual As String
+
+    timestampActual = ObtenerTimestampMacro(Cadena)
+    If LenB(timestampActual) = 0 Then Exit Sub
+
+    UltimoTimestampMacroSancionado = timestampActual
+End Sub
+
 Public Function DebeMostrarMensaje(ByVal Cadena As String) As Boolean
     Dim cadenaMayus As String
 
@@ -3260,12 +3290,12 @@ Public Function DebeMostrarMensaje(ByVal Cadena As String) As Boolean
 
     cadenaMayus = UCase$(Cadena)
 
-    If (InStr(cadenaMayus, "INVISIBLE SI") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD SI") > 0) Then
+    If (InStr(cadenaMayus, "INVISIBLE SI") > 0 Or InStr(cadenaMayus, "INVISIBLE: SI") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD SI") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD: SI") > 0) Then
         If chkLeerInvisibleSi.value = 0 Then DebeMostrarMensaje = False
         Exit Function
     End If
 
-    If (InStr(cadenaMayus, "INVISIBLE NO") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD NO") > 0) Then
+    If (InStr(cadenaMayus, "INVISIBLE NO") > 0 Or InStr(cadenaMayus, "INVISIBLE: NO") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD NO") > 0 Or InStr(cadenaMayus, "INVISIBILIDAD: NO") > 0) Then
         If chkLeerInvisibleNo.value = 0 Then DebeMostrarMensaje = False
     End If
 End Function
@@ -3355,7 +3385,10 @@ Public Sub CadenaChat(ByVal chat As String)
                             Dim TiempoActual As Single
                             TiempoActual = Timer
                             If TiempoActual - TiempoAnterior < frmPanelgm.txtSegundos Then
-                                Call AplicarSancionMacro(nombre, frmPanelgm.chkOcultar.value = 1, frmPanelgm.chkOcultarCarcel.value = 1)
+                                If DebeAplicarSancionMacroPorTimestamp(Cadena) Then
+                                    Call AplicarSancionMacro(nombre, frmPanelgm.chkOcultar.value = 1, frmPanelgm.chkOcultarCarcel.value = 1)
+                                    Call RegistrarTimestampSancionadoMacro(Cadena)
+                                End If
                             End If
                             TiempoAnterior = TiempoActual
                         End If
@@ -3363,18 +3396,27 @@ Public Sub CadenaChat(ByVal chat As String)
                 Case InStr(Cadena, "UseItemU") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem U ", "MacroUseItemU.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    Call AplicarSancionMacro(nombre, frmPanelgm.chkUsarItem.value = 1, frmPanelgm.chkUsarItemCarcel.value = 1)
+                    If DebeAplicarSancionMacroPorTimestamp(Cadena) Then
+                        Call AplicarSancionMacro(nombre, frmPanelgm.chkUsarItem.value = 1, frmPanelgm.chkUsarItemCarcel.value = 1)
+                        Call RegistrarTimestampSancionadoMacro(Cadena)
+                    End If
                 Case InStr(Cadena, "UseItem") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de UsarItem ", "MacroUseItem.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    Call AplicarSancionMacro(nombre, frmPanelgm.chkUsarItem.value = 1, frmPanelgm.chkUsarItemCarcel.value = 1)
+                    If DebeAplicarSancionMacroPorTimestamp(Cadena) Then
+                        Call AplicarSancionMacro(nombre, frmPanelgm.chkUsarItem.value = 1, frmPanelgm.chkUsarItemCarcel.value = 1)
+                        Call RegistrarTimestampSancionadoMacro(Cadena)
+                    End If
                 Case InStr(Cadena, "GuildMessage") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de GuildMessage ", "MacroGuildMessage.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
                 Case InStr(Cadena, "LeftClick") > 0
                     Resultado = GuardarTextoEnArchivo(nombre & ",Macro de LeftClick ", "MacroLeftClick.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    Call AplicarSancionMacro(nombre, frmPanelgm.chkLeftClick.value = 1, frmPanelgm.chkLeftClickCarcel.value = 1)
+                    If DebeAplicarSancionMacroPorTimestamp(Cadena) Then
+                        Call AplicarSancionMacro(nombre, frmPanelgm.chkLeftClick.value = 1, frmPanelgm.chkLeftClickCarcel.value = 1)
+                        Call RegistrarTimestampSancionadoMacro(Cadena)
+                    End If
                 Case InStr(Cadena, "ChangeHeading") > 0
                     Resultado = GuardarTextoEnArchivo(nombre & ",Macro de ChangeHeading ", "MacroChangeHeading.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
