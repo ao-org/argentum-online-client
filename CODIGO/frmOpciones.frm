@@ -687,10 +687,10 @@ Private Sub chkDisableQuestNpcSound_MouseUp(Button As Integer, Shift As Integer,
     If ao20audio.DisableQuestNpcSound = 0 Then
         ao20audio.DisableQuestNpcSound = 1
         chkDisableQuestNpcSound.Picture = LoadInterface("check-amarillo.bmp")
+        Call StopQuestDescAudio
     Else
         ao20audio.DisableQuestNpcSound = 0
         chkDisableQuestNpcSound.Picture = Nothing
-        Call StopQuestDescAudio
     End If
     Exit Sub
 chkDisableQuestNpcSound_MouseUp_Err:

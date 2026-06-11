@@ -1437,7 +1437,6 @@ Public Sub CargarIndicesOBJ()
             Next loopC
         End If
     Next Npc
-    On Error Resume Next
     langPrefix = GetLanguagePrefix(language)
     For Hechizo = 1 To NumHechizos
         DoEvents
