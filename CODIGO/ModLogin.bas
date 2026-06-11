@@ -83,6 +83,8 @@ Public Sub SetActiveServer(ByVal IP As String, ByVal port As String)
         #If PYMMO = 1 Then
                 #If DEBUGGING = 0 Then
                     'When not in DEVELOPER mode we read the ip and port from the list
+                    
+                    
                     Call SetActiveEnvironment("Production")
                 #Else
                     'Staging, set the ip and port for pymmo
@@ -219,7 +221,11 @@ Public Sub SetActiveEnvironment(ByVal environment As String)
     If Not EnsureServerSettingsLoaded() Then Exit Sub
 
     #If Developer = 0 And DEBUGGING = 0 Then
-        environment = "Production"
+        If Not BattleserverTag Then
+            environment = "Production"
+        Else
+            environment = "Casual"
+        End If
     #End If
 
     ' Build server vectors (only once per environment inside this helper)

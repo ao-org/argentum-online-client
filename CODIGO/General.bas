@@ -22,7 +22,7 @@ Private Declare Function svb_install_minidump_handler Lib "steam_vb.dll" (ByVal 
 Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 Private Declare Function svb_retlong Lib "steam_vb.dll" (ByVal Number As Long) As Long
 Public Declare Function svb_unlock_achivement Lib "steam_vb.dll" (ByVal Name As String) As Long
-Public BattleserverTag As Boolean
+Public CasualTag As Boolean
 Public bSkins As Boolean
 
 Private Type Position
@@ -747,8 +747,8 @@ Public Sub CommandLineParser()
     Dim i As Integer
     For i = 0 To UBound(argList)
         Select Case argList(i)
-            Case "-battleserver"
-                BattleserverTag = True
+            Case "-casual"
+                CasualTag = True
         
             Case Else
                 Debug.Print "invalid arguement passed"
