@@ -19,14 +19,15 @@ Begin VB.Form FrmLogear
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
-   Begin VB.ListBox lstSteamBranch 
+   Begin VB.ComboBox cmbSteamBranch 
       BackColor       =   &H00031413&
       ForeColor       =   &H00C0C0C0&
-      Height          =   255
+      Height          =   315
       Left            =   720
       TabIndex        =   7
-      Top             =   720
-      Width           =   1815
+      Text            =   "Steam Branch"
+      Top             =   600
+      Width           =   1095
    End
    Begin VB.TextBox txtPort 
       BackColor       =   &H80000001&
@@ -301,13 +302,14 @@ Private Sub Form_Load()
     #End If
     
     
-    Call lstSteamBranch.Clear
-    lstSteamBranch.AddItem ("Hardcore")
-    lstSteamBranch.AddItem ("Battleserver")
+    Call cmbSteamBranch.Clear
+    cmbSteamBranch.AddItem ("Hardcore")
+    
+    cmbSteamBranch.AddItem ("Battleserver")
     If Steam_GetCurrentBetaName = "" Then
-    lstSteamBranch.ListIndex = 0
-        Else
-    lstSteamBranch.ListIndex = 1
+        cmbSteamBranch.ListIndex = 0
+    Else
+        cmbSteamBranch.ListIndex = 1
     End If
     
     
@@ -363,11 +365,24 @@ chkRecordar_Click_Err:
     Resume Next
 End Sub
 
-
-
-Private Sub lstSteamBranch_Click()
-    Call Steam_SetActiveBeta(lstSteamBranch.Text)
+Private Sub cmbSteamBranch_Click()
+    Dim CurrentBeta As String
+    CurrentBeta = Steam_GetCurrentBetaName
+    Select Case CurrentBeta
+        Case ""
+            If cmbSteamBranch.Text <> "Hardcore" Then
+                Call Steam_SetActiveBeta(cmbSteamBranch.Text)
+            End If
+        Case "battleserver"
+            If cmbSteamBranch.Text <> "Battleserver" Then
+                Call Steam_SetActiveBeta(cmbSteamBranch.Text)
+            End If
+        Case Else
+            Call Steam_SetActiveBeta(cmbSteamBranch.Text)
+    End Select
 End Sub
+
+
 
 Private Sub NameTxt_KeyDown(KeyCode As Integer, Shift As Integer)
     On Error GoTo NameTxt_KeyDown_Err
