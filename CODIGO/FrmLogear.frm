@@ -367,25 +367,27 @@ End Sub
 
 Private Sub cmbSteamBranch_Click()
     Dim CurrentBeta As String
+    Dim DidVersionChange As Boolean
+    DidBranchChange = False
     CurrentBeta = Steam_GetCurrentBetaName
     Select Case CurrentBeta
         Case ""
             If cmbSteamBranch.Text <> "Hardcore" Then
-                If MsgBox("Client be will reset, are you sure?", vbYesNo) = vbYes Then
-                    Call Steam_SetActiveBeta(cmbSteamBranch.Text)
-                    End
-                End If
+                DidBranchChange = True
             End If
         Case "battleserver"
             If cmbSteamBranch.Text <> "Battleserver" Then
-                If MsgBox("Client be will reset, are you sure?", vbYesNo) = vbYes Then
-                    Call Steam_SetActiveBeta(cmbSteamBranch.Text)
-                    End
-                End If
+                DidBranchChange = True
             End If
         Case Else
-            Call Steam_SetActiveBeta(cmbSteamBranch.Text)
+            DidBranchChange = False
     End Select
+    If DidBranchChange Then
+        If MsgBox("Client be will reset, are you sure?", vbYesNo) = vbYes Then
+            Call Steam_SetActiveBeta(cmbSteamBranch.Text)
+            End
+        End If
+    End If
 End Sub
 
 
