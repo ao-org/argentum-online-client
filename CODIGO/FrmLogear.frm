@@ -371,11 +371,17 @@ Private Sub cmbSteamBranch_Click()
     Select Case CurrentBeta
         Case ""
             If cmbSteamBranch.Text <> "Hardcore" Then
-                Call Steam_SetActiveBeta(cmbSteamBranch.Text)
+                If MsgBox("Client be will reset, are you sure?", vbYesNo) = vbYes Then
+                    Call Steam_SetActiveBeta(cmbSteamBranch.Text)
+                    End
+                End If
             End If
         Case "battleserver"
             If cmbSteamBranch.Text <> "Battleserver" Then
-                Call Steam_SetActiveBeta(cmbSteamBranch.Text)
+                If MsgBox("Client be will reset, are you sure?", vbYesNo) = vbYes Then
+                    Call Steam_SetActiveBeta(cmbSteamBranch.Text)
+                    End
+                End If
             End If
         Case Else
             Call Steam_SetActiveBeta(cmbSteamBranch.Text)
