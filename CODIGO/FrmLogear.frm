@@ -19,6 +19,15 @@ Begin VB.Form FrmLogear
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
+   Begin VB.ListBox lstSteamBranch 
+      BackColor       =   &H00031413&
+      ForeColor       =   &H00C0C0C0&
+      Height          =   255
+      Left            =   720
+      TabIndex        =   7
+      Top             =   720
+      Width           =   1815
+   End
    Begin VB.TextBox txtPort 
       BackColor       =   &H80000001&
       BorderStyle     =   0  'None
@@ -283,12 +292,25 @@ Private Sub Form_Load()
     Call CargarCuentasGuardadas
     Call Aplicar_Transparencia(Me.hWnd, 240)
     Me.Picture = LoadInterface("ventanaconectar.bmp")
+    
     #If Developer = 1 Then
         txtPort.visible = True
         txtIp.visible = True
         lblPort.visible = True
         lblIp.visible = True
     #End If
+    
+    
+    Call lstSteamBranch.Clear
+    lstSteamBranch.AddItem ("Hardcore")
+    lstSteamBranch.AddItem ("Battleserver")
+    If Steam_GetCurrentBetaName = "" Then
+    lstSteamBranch.ListIndex = 0
+        Else
+    lstSteamBranch.ListIndex = 1
+    End If
+    
+    
     Me.PasswordTxt.visible = True
     Call loadButtons
     Call SetActiveServer(txtIp.text, txtPort.text)
@@ -339,6 +361,12 @@ Private Sub chkRecordar_Click()
 chkRecordar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.chkRecordar_Click", Erl)
     Resume Next
+End Sub
+
+
+
+Private Sub lstSteamBranch_Click()
+    Call Steam_SetActiveBeta(lstSteamBranch.Text)
 End Sub
 
 Private Sub NameTxt_KeyDown(KeyCode As Integer, Shift As Integer)
