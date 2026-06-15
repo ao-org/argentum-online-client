@@ -1092,8 +1092,7 @@ Grh_Render_To_HdcSinBorrar_Err:
     Resume Next
 End Sub
 
-Public Sub Dx8RenderedImgIntoPic(ByRef pic As PictureBox, _
-                                         ByVal TextureFileNum As Integer, _
+Public Sub DrawCollectibleCard(ByRef pic As PictureBox, _
                                          ByVal TextureFileName As String, _
                                          ByVal DestX As Long, _
                                          ByVal DestY As Long, _
@@ -1104,7 +1103,7 @@ Public Sub Dx8RenderedImgIntoPic(ByRef pic As PictureBox, _
                                          ByVal srcWidth As Long, _
                                          ByVal srcHeight As Long, _
                                          Optional ByVal ClearColor As Long = &H0)
-    On Error GoTo Dx8RenderedImgIntoPic_Err
+    On Error GoTo DrawCollectibleCard_Err
     
     ' Determine if PNG or BMP
     Dim isPNG As Boolean
@@ -1151,49 +1150,18 @@ Public Sub Dx8RenderedImgIntoPic(ByRef pic As PictureBox, _
         .Bottom = DestY + destHeight
     End With
     
-    ' Create the vertex quad
-    Call Geometry_Create_Box(temp_verts(), dstRect, srcRect, COLOR_WHITE, texWidth, texHeight, 0)
+    Call Engine_BeginScene
     
-    ' ===== RENDER =====
-    Call DirectDevice.BeginScene
-    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
+    Call Batch_Textured_Box_File(0, 0, picRect.Right, picRect.Bottom, srcRect.Left, srcRect.Top, TextureFileName, COLOR_WHITE, False, 0, 1, 1)
     
-    ' Set texture
-    DirectDevice.SetTexture 0, Texture
+    Call Engine_EndScene(picRect, pic.hWnd)
     
-    ' Set texture stage states for proper rendering
-    DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_MODULATE
-    DirectDevice.SetTextureStageState 0, D3DTSS_COLORARG1, D3DTA_TEXTURE
-    DirectDevice.SetTextureStageState 0, D3DTSS_COLORARG2, D3DTA_DIFFUSE
-    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE
-    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE
-    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE
-    
-    ' Set vertex format
-    DirectDevice.SetVertexShader D3DFVF_XYZ Or D3DFVF_DIFFUSE Or D3DFVF_TEX1
-    
-    ' If PNG, ensure alpha blending is enabled
-    If isPNG Then
-        DirectDevice.SetRenderState D3DRS_ALPHABLENDENABLE, 1
-        DirectDevice.SetRenderState D3DRS_SRCBLEND, D3DBLEND_SRCALPHA
-        DirectDevice.SetRenderState D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA
-    End If
-    
-    ' DRAW THE VERTICES
-    DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
-    
-    Call DirectDevice.EndScene
-    Call DirectDevice.Present(picRect, ByVal 0, pic.hWnd, ByVal 0)
-    
-    ' ===== IMPORTANT: RESTORE RENDER STATES =====
-    ' This prevents breaking the rest of the game's rendering
-    ' (Do this AFTER Present, before the next game render cycle)
-    
+
     Exit Sub
 
-Dx8RenderedImgIntoPic_Err:
-    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Dx8RenderedImgIntoPic", Erl)
-    frmDebug.add_text_tracebox "Error in Dx8RenderedImgIntoPic: " & Err.Description
+DrawCollectibleCard_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.DrawCollectibleCard", Erl)
+    frmDebug.add_text_tracebox "Error in DrawCollectibleCard: " & Err.Description
     Resume Next
 End Sub
 

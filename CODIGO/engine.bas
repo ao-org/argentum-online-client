@@ -1068,6 +1068,38 @@ Batch_Textured_Box_Err:
     Resume Next
 End Sub
 
+Public Sub Batch_Textured_Box_File(ByVal x As Long, _
+                              ByVal y As Long, _
+                              ByVal Width As Integer, _
+                              ByVal Height As Integer, _
+                              ByVal sX As Integer, _
+                              ByVal sY As Integer, _
+                              ByVal tex As String, _
+                              ByRef Color() As RGBA, _
+                              Optional ByVal alpha As Boolean = False, _
+                              Optional ByVal angle As Single = 0, _
+                              Optional ByVal ScaleX As Single = 1!, _
+                              Optional ByVal ScaleY As Single = 1!)
+    On Error GoTo Batch_Textured_Box_Err
+    Dim Texture      As Direct3DTexture8
+    Dim TextureWidth As Long, TextureHeight As Long
+    Set Texture = SurfaceDB.GetTexture(tex, TextureWidth, TextureHeight)
+    With SpriteBatch
+        Call .SetTexture(Texture)
+        Call .SetAlpha(alpha)
+        If TextureWidth <> 0 And TextureHeight <> 0 Then
+            Call .Draw(x, y, Width * ScaleX, Height * ScaleY, Color, (sX + 0.25) / TextureWidth, (sY + 0.25) / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / _
+                    TextureHeight, angle)
+        Else
+            Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, Color, , , , , angle)
+        End If
+    End With
+    Exit Sub
+Batch_Textured_Box_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.Batch_Textured_Box", Erl)
+    Resume Next
+End Sub
+
 Public Sub Batch_Textured_Box_Advance(ByVal x As Long, _
                                       ByVal y As Long, _
                                       ByVal Width As Integer, _
