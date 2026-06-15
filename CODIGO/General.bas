@@ -22,6 +22,9 @@ Private Declare Function svb_install_minidump_handler Lib "steam_vb.dll" (ByVal 
 Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 Private Declare Function svb_retlong Lib "steam_vb.dll" (ByVal Number As Long) As Long
 Public Declare Function svb_unlock_achivement Lib "steam_vb.dll" (ByVal Name As String) As Long
+Private Declare Function svb_get_current_beta_name Lib "steam_vb.dll" (ByVal buffer As String, ByVal bufferSize As Long) As Long
+Private Declare Function svb_set_active_beta Lib "steam_vb.dll" (ByVal betaName As String) As Long
+
 
 Public bSkins As Boolean
 
@@ -731,47 +734,6 @@ Public Sub SaveStringInFile(ByVal Cadena As String, ByVal nombreArchivo As Strin
 ErrorHandler:
 End Sub
 
-Sub parse_cmd_line_args()
-    #If REMOTE_CLOSE = 1 Then
-        Call Application.DeleteFile("remote_debug.txt")
-        IPdelServidorLogin = "127.0.0.1"
-        PuertoDelServidorLogin = 4000
-        IPdelServidor = IPdelServidorLogin
-        PuertoDelServidor = 6501
-        CuentaEmail = "some@yahoo.com.ar"
-        CuentaPassword = "secret"
-        CharacterRemote = "rolo"
-        Dim sArgs() As String
-        Dim iLoop   As Integer
-        sArgs = Split(command$, " ")
-        For iLoop = 0 To UBound(sArgs)
-            frmDebug.add_text_tracebox sArgs(iLoop)
-            Dim value() As String
-            value = Split(sArgs(iLoop), "=")
-            If value(0) = "account" Then
-                CuentaEmail = value(1)
-            ElseIf value(0) = "password" Then
-                CuentaPassword = value(1)
-            ElseIf value(0) = "serverip" Then
-                IPdelServidorLogin = value(1)
-                IPdelServidor = value(1)
-            ElseIf value(0) = "lport" Then
-                PuertoDelServidorLogin = value(1)
-            ElseIf value(0) = "gport" Then
-                PuertoDelServidor = value(1)
-            ElseIf value(0) = "pc" Then
-                CharacterRemote = value(1)
-            End If
-        Next
-        Call SaveStringInFile("Using IPdelServidorLogin: " & IPdelServidorLogin, "remote_debug.txt")
-        Call SaveStringInFile("Using PuertoDelServidorLogin: " & PuertoDelServidorLogin, "remote_debug.txt")
-        Call SaveStringInFile("Using IPdelServidor: " & IPdelServidor, "remote_debug.txt")
-        Call SaveStringInFile("Using PuertoDelServidor: " & PuertoDelServidor, "remote_debug.txt")
-        Call SaveStringInFile("Using CuentaEmail: " & CuentaEmail, "remote_debug.txt")
-        Call SaveStringInFile("Using CuentaPassword: " & CuentaPassword, "remote_debug.txt")
-        Call SaveStringInFile("Using CharacterRemote: " & CharacterRemote, "remote_debug.txt")
-    #End If
-End Sub
 
 Sub Main()
     On Error GoTo Main_Err
@@ -793,17 +755,10 @@ UnitTest_Err:
     debug_tools.Init
     frmDebug.add_text_tracebox debug_tools.BuildFlags
     
-    Call parse_cmd_line_args
     'Must be at the top to make sure te resources password is loaded before we attempt to load anything
     'TODO: Remove the PASSWORD, it's useless and slow and remove the call to DoCrypt_Data bytArr, Passwd
     'Moving forward use only dycryptosys API Decompress_Data_B bytArr, InfoHead.lngFileSizeUncompressed
     Call CheckResources
-    #If REMOTE_CLOSE Then
-        Call Recursos.LoadFonts
-        Call DoLogin("", "", False)
-        Call bot_main_loop
-        End
-    #End If
     Call Application.DeleteFile(ao20config.GetErrorLogFilename())
     Call LoadConfig
     Call SetLanguageApplication
@@ -1517,3 +1472,41 @@ Public Function GetLocalizedFilename(ByVal language As e_language, ByVal filenam
     End Select
     GetLocalizedFilename = localizedName
 End Function
+
+
+Public Function Steam_GetCurrentBetaName() As String
+    On Error GoTo Steam_GetCurrentBetaName_Err
+    
+    Dim buffer As String
+    buffer = Space$(128)
+    
+    If svb_get_current_beta_name(buffer, 128) <> 0 Then
+        ' Extract string up to null terminator
+        Dim nullPos As Long
+        nullPos = InStr(buffer, vbNullChar)
+        
+        If nullPos > 1 Then
+            Steam_GetCurrentBetaName = Left$(buffer, nullPos - 1)
+        Else
+            Steam_GetCurrentBetaName = vbNullString ' Default branch
+        End If
+    Else
+        Steam_GetCurrentBetaName = vbNullString
+    End If
+    
+    Exit Function
+Steam_GetCurrentBetaName_Err:
+    Steam_GetCurrentBetaName = vbNullString
+End Function
+
+
+Public Function Steam_SetActiveBeta(ByVal betaName As String) As Boolean
+    On Error GoTo Steam_SetActiveBeta_Err
+    If betaName = "Hardcore" Then betaName = vbNullString
+    Steam_SetActiveBeta = (svb_set_active_beta(betaName) <> 0)
+    
+    Exit Function
+Steam_SetActiveBeta_Err:
+    Steam_SetActiveBeta = False
+End Function
+

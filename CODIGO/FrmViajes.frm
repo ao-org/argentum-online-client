@@ -1,13 +1,11 @@
 VERSION 5.00
 Begin VB.Form FrmViajes 
-   Appearance      =   0  'Flat
-   BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   Caption         =   "Form1"
-   ClientHeight    =   5580
+   Caption         =   "Formulario de Viaje"
+   ClientHeight    =   4425
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   6510
+   ClientWidth     =   4485
    BeginProperty Font 
       Name            =   "Tahoma"
       Size            =   8.25
@@ -18,10 +16,12 @@ Begin VB.Form FrmViajes
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   5580
-   ScaleWidth      =   6510
+   MaxButton       =   0   'False
+   MinButton       =   0   'False
+   ScaleHeight     =   4425
+   ScaleWidth      =   4485
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
+   StartUpPosition =   1  'CenterOwner
    Begin VB.ListBox List1 
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
@@ -35,24 +35,23 @@ Begin VB.Form FrmViajes
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   1080
-      Left            =   360
+      Height          =   1920
+      Left            =   720
       TabIndex        =   0
-      Top             =   1630
-      Width           =   2490
+      Top             =   1080
+      Width           =   3090
    End
-   Begin VB.Image Image2 
-      Height          =   2580
-      Left            =   4320
-      Top             =   1560
-      Width           =   1515
+   Begin VB.Image cmdViajar 
+      Height          =   495
+      Left            =   1250
+      Top             =   3695
+      Width           =   2055
    End
-   Begin VB.Image Image1 
-      Height          =   570
-      Left            =   3840
-      Tag             =   "0"
-      Top             =   4680
-      Width           =   1890
+   Begin VB.Image cmdCerrar 
+      Height          =   375
+      Left            =   4000
+      Top             =   0
+      Width           =   375
    End
    Begin VB.Label Label2 
       BackStyle       =   0  'Transparent
@@ -93,6 +92,18 @@ Attribute VB_Exposed = False
 '    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '
 '
+Option Explicit
+Private cBtnClose As clsGraphicalButton
+Private cBtnTravel As clsGraphicalButton
+Private Sub loadButtons()
+    Set cBtnClose = New clsGraphicalButton
+    Set cBtnTravel = New clsGraphicalButton
+    Call cBtnClose.Initialize(cmdCerrar, "boton-cerrar-default.bmp", "boton-cerrar-over.bmp", "boton-cerrar-off.bmp", Me)
+    Call cBtnTravel.Initialize(cmdViajar, "boton-viajar-default.bmp", "boton-viajar-over.bmp", "boton-viajar-off.bmp", Me)
+End Sub
+Private Sub cmdCerrar_Click()
+    Unload Me
+End Sub
 Private Sub Form_KeyPress(KeyAscii As Integer)
     On Error GoTo Form_KeyPress_Err
     If (KeyAscii = 27) Then
@@ -107,47 +118,33 @@ End Sub
 Private Sub Form_Load()
     On Error GoTo Form_Load_Err
     Call FormParser.Parse_Form(Me)
+    Me.Picture = LoadInterface("ventanaviajes.bmp")
+    Call Aplicar_Transparencia(Me.hWnd, 240)
+    Call loadButtons
     Exit Sub
 Form_Load_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmViajes.Form_Load", Erl)
     Resume Next
 End Sub
 
-Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    On Error GoTo Form_MouseMove_Err
-    If Image1.Tag = "1" Then
-        Image1.Picture = Nothing
-        Image2.Picture = Nothing
-        Image1.Tag = "0"
-    End If
-    Exit Sub
-Form_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "FrmViajes.Form_MouseMove", Erl)
-    Resume Next
-End Sub
-
-Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
-    On Error GoTo Image1_MouseMove_Err
-    If Image1.Tag = "0" Then
-        Image1.Picture = LoadInterface("viajarhover" & ViajarInterface & ".bmp")
-        Image2.Picture = LoadInterface("viaje" & ViajarInterface & "ok.bmp")
-        Image1.Tag = "1"
-    End If
-    Exit Sub
-Image1_MouseMove_Err:
-    Call RegistrarError(Err.Number, Err.Description, "FrmViajes.Image1_MouseMove", Erl)
-    Resume Next
-End Sub
-
-Private Sub Image1_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-    On Error GoTo Image1_MouseUp_Err
+Private Sub cmdViajar_Click()
+    On Error GoTo cmdViajar_Click_Err
     Dim destino As Byte
     destino = List1.ListIndex + 1
     If destino <= 0 Then Exit Sub
     Unload Me
-    Call WriteCompletarViaje(Destinos(destino).CityDest, Destinos(destino).costo)
+    Call WriteCompletarViaje(destino, Destinos(destino).costo)
     Exit Sub
-Image1_MouseUp_Err:
-    Call RegistrarError(Err.Number, Err.Description, "FrmViajes.Image1_MouseUp", Erl)
+cmdViajar_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "FrmViajes.cmdViajar_Click", Erl)
+    Resume Next
+End Sub
+
+Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+On Error GoTo Form_MouseMove_Err
+    Call MoverForm(Me.hWnd)
+    Exit Sub
+Form_MouseMove_Err:
+    Call RegistrarError(Err.Number, Err.Description, "FrmViajes.Form_MouseMove", Erl)
     Resume Next
 End Sub

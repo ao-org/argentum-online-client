@@ -49,34 +49,7 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
     #End If
     Dim PacketId As Long
     PacketId = Reader.ReadInt16
-    #If REMOTE_CLOSE = 1 Then
-        Select Case PacketId
-            Case ServerPacketID.eConnected
-                Call HandleConnected
-                Call SaveStringInFile("Authenticated with server OK", "remote_debug.txt")
-            Case ServerPacketID.elogged
-                frmDebug.add_text_tracebox "Logged"
-                Dim res As Boolean
-                res = Reader.ReadBool
-                Call SaveStringInFile("Logged with character " & CharacterRemote, "remote_debug.txt")
-                InitiateShutdownProcess = True
-                ShutdownProcessTimer.start
-            Case ServerPacketID.eLocaleMsg
-                Dim chat      As String
-                Dim FontIndex As Integer
-                Dim str       As String
-                PacketId = Reader.ReadInt16()
-                chat = Reader.ReadString8()
-                FontIndex = Reader.ReadInt8()
-                Call SaveStringInFile(chat, "remote_debug.txt")
-            Case Else
-                'don't care, just consume
-                Do While (message.GetAvailable() > 0)
-                    PacketId = Reader.ReadInt8
-                Loop
-        End Select
-    #Else
-        Select Case PacketId
+    Select Case PacketId
             Case ServerPacketID.eConnected
                 Call HandleConnected
             Case ServerPacketID.elogged
@@ -484,7 +457,6 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
             Case Else
                 ' Invalid Message
         End Select
-    #End If
     ' —————————————————————————————
     ' Detect both (a) extra bytes from known packets
     '         and (b) any packet where we had NO handler
@@ -515,7 +487,7 @@ Private Sub HandleConnected()
             Debug.Assert values(i) = i
         Next i
     #End If
-    #If REMOTE_CLOSE = 0 And FPSFLAG = 1 Then
+    #If FPSFLAG = 1 Then
         frmMain.ShowFPS.enabled = True
     #End If
     #If DIRECT_PLAY = 0 Then
@@ -1945,6 +1917,10 @@ Private Sub HandleConsoleMessage()
             extra = ReadField(3, chat, Asc("*"))
             chat = Locale_Parse_ServerMessage(id, extra)
     End Select
+    If EsGM Then
+        If Not frmPanelgm.DebeMostrarMensaje(chat) Then Exit Sub
+    End If
+
     If InStr(1, chat, "~") Then
         str = ReadField(2, chat, 126)
         If val(str) > 255 Then
@@ -5511,7 +5487,6 @@ End Sub
 
 Private Sub HandleViajarForm()
     On Error GoTo HandleViajarForm_Err
-    Dim Dest     As String
     Dim DestCant As Byte
     Dim i        As Byte
     Dim tempdest As String
@@ -5520,20 +5495,14 @@ Private Sub HandleViajarForm()
     ReDim Destinos(1 To DestCant) As Tdestino
     For i = 1 To DestCant
         tempdest = Reader.ReadString8()
-        Destinos(i).CityDest = ReadField(1, tempdest, Asc("-"))
-        Destinos(i).costo = ReadField(2, tempdest, Asc("-"))
-        FrmViajes.List1.AddItem ListaCiudades(Destinos(i).CityDest) & " - " & Destinos(i).costo & " monedas"
+        Dim sepPos As Integer
+        sepPos = InStrRev(tempdest, "-")
+        Destinos(i).CityDest = CStr(Left(tempdest, sepPos - 1))
+        Destinos(i).costo = CLng(mid(tempdest, sepPos + 1))
+        FrmViajes.List1.AddItem Destinos(i).CityDest & " - " & Destinos(i).costo & " monedas"
     Next i
     Call Establecer_Borde(FrmViajes.List1, FrmViajes, COLOR_AZUL, 0, 0)
     ViajarInterface = Reader.ReadInt8()
-    FrmViajes.Picture = LoadInterface("viajes" & ViajarInterface & ".bmp")
-    If ViajarInterface = 1 Then
-        FrmViajes.Image1.Top = 4690
-        FrmViajes.Image1.Left = 3810
-    Else
-        FrmViajes.Image1.Top = 4680
-        FrmViajes.Image1.Left = 3840
-    End If
     FrmViajes.Show , GetGameplayForm()
     Exit Sub
 HandleViajarForm_Err:

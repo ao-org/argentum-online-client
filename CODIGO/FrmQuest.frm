@@ -346,6 +346,14 @@ Form_Load_Err:
     Resume Next
 End Sub
 
+Private Sub Form_Unload(Cancel As Integer)
+    On Error GoTo Form_Unload_Err
+    Call StopQuestDescAudio
+    Exit Sub
+Form_Unload_Err:
+    Call RegistrarError(Err.Number, Err.Description, "FrmQuests.Form_Unload", Erl)
+    Resume Next
+End Sub
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
     On Error GoTo Form_MouseMove_Err
     MoverForm Me.hWnd
