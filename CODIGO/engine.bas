@@ -1074,7 +1074,7 @@ Public Sub Batch_Textured_Box_File(ByVal x As Long, _
                               ByVal Height As Integer, _
                               ByVal sX As Integer, _
                               ByVal sY As Integer, _
-                              ByVal tex As String, _
+                              ByVal filename As String, _
                               ByRef Color() As RGBA, _
                               Optional ByVal alpha As Boolean = False, _
                               Optional ByVal angle As Single = 0, _
@@ -1083,7 +1083,7 @@ Public Sub Batch_Textured_Box_File(ByVal x As Long, _
     On Error GoTo Batch_Textured_Box_Err
     Dim Texture      As Direct3DTexture8
     Dim TextureWidth As Long, TextureHeight As Long
-    Set Texture = SurfaceDB.GetTexture(tex, TextureWidth, TextureHeight)
+    Set Texture = SurfaceDB.GetInterfaceTexture(filename, TextureWidth, TextureHeight)
     With SpriteBatch
         Call .SetTexture(Texture)
         Call .SetAlpha(alpha)

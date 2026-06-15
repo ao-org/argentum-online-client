@@ -1122,39 +1122,21 @@ Public Sub DrawCollectibleCard(ByRef pic As PictureBox, _
     End If
     
     Debug.Print "Texture loaded: " & texWidth & "x" & texHeight
+
+    Dim DestRect As RECT
     
-    ' Create rectangles
-    Dim picRect As RECT
-    Dim srcRect As RECT
-    Dim dstRect As RECT
-    Dim temp_verts(3) As TYPE_VERTEX
-    
-    With picRect
+    With DestRect
         .Left = 0
         .Top = 0
-        .Right = pic.ScaleWidth
-        .Bottom = pic.ScaleHeight
-    End With
-    
-    With srcRect
-        .Left = srcX
-        .Top = srcY
-        .Right = srcX + srcWidth
-        .Bottom = srcY + srcHeight
-    End With
-    
-    With dstRect
-        .Left = DestX
-        .Top = DestY
-        .Right = DestX + destWidth
-        .Bottom = DestY + destHeight
+        .Right = texWidth
+        .Bottom = texHeight
     End With
     
     Call Engine_BeginScene
     
-    Call Batch_Textured_Box_File(0, 0, picRect.Right, picRect.Bottom, srcRect.Left, srcRect.Top, TextureFileName, COLOR_WHITE, False, 0, 1, 1)
+    Call Batch_Textured_Box_File(DestX, DestY, texWidth, texHeight, srcX, srcY, TextureFileName, COLOR_WHITE, False, 0, 1, 1)
     
-    Call Engine_EndScene(picRect, pic.hWnd)
+    Call Engine_EndScene(DestRect, pic.hWnd)
     
 
     Exit Sub
