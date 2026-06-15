@@ -46,32 +46,34 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H80000008&
-      Height          =   8475
-      Left            =   720
-      ScaleHeight     =   565
-      ScaleMode       =   3  'Pixel
-      ScaleWidth      =   599
+      Height          =   9000
+      Left            =   2280
+      ScaleHeight     =   600
+      ScaleMode       =   0  'User
+      ScaleWidth      =   321.738
       TabIndex        =   45
-      Top             =   2880
+      Top             =   2400
       Visible         =   0   'False
-      Width           =   8985
+      Width           =   6585
       Begin VB.CommandButton cmdCardViewerAccept 
-         Caption         =   "Command3"
-         Height          =   615
-         Left            =   7200
+         Caption         =   "Accept"
+         Height          =   375
+         Left            =   3360
+         Style           =   1  'Graphical
          TabIndex        =   47
-         Top             =   360
+         Top             =   8640
          Visible         =   0   'False
-         Width           =   1215
+         Width           =   3255
       End
       Begin VB.CommandButton cmdCardViewerClose 
-         Caption         =   "Command2"
-         Height          =   495
-         Left            =   240
+         Caption         =   "Cancel"
+         Height          =   375
+         Left            =   0
+         Style           =   1  'Graphical
          TabIndex        =   46
-         Top             =   120
+         Top             =   8640
          Visible         =   0   'False
-         Width           =   1335
+         Width           =   3255
       End
    End
    Begin VB.PictureBox shapexy 
@@ -477,6 +479,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1306,7 +1309,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9705
-      TabIndex        =   14
+      TabIndex        =   49
       Top             =   195
       Width           =   1215
    End
@@ -1327,7 +1330,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9720
-      TabIndex        =   14
+      TabIndex        =   50
       Top             =   195
       Width           =   1215
    End
@@ -1348,7 +1351,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9735
-      TabIndex        =   14
+      TabIndex        =   51
       Top             =   195
       Width           =   1215
    End
@@ -1369,7 +1372,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9705
-      TabIndex        =   14
+      TabIndex        =   52
       Top             =   210
       Width           =   1215
    End
@@ -1390,7 +1393,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9735
-      TabIndex        =   14
+      TabIndex        =   53
       Top             =   210
       Width           =   1215
    End
@@ -1411,7 +1414,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9705
-      TabIndex        =   14
+      TabIndex        =   54
       Top             =   225
       Width           =   1215
    End
@@ -1432,7 +1435,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9720
-      TabIndex        =   14
+      TabIndex        =   55
       Top             =   225
       Width           =   1215
    End
@@ -1453,14 +1456,14 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9735
-      TabIndex        =   14
+      TabIndex        =   56
       Top             =   225
       Width           =   1215
    End
    Begin VB.Label Coord 
       Alignment       =   2  'Center
       AutoSize        =   -1  'True
-      BackStyle        =   0  'Transparent
+      BackStyle       =   0  'Transparent
       Caption         =   "000 X:00 Y: 00"
       BeginProperty Font 
          Name            =   "Calibri"

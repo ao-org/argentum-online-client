@@ -495,7 +495,7 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
             frmMain.CollectibleCardViewer.visible = True
             frmMain.cmdCardViewerAccept.visible = True
             frmMain.cmdCardViewerClose.visible = True
-            Call DrawCollectibleCard(frmMain.CollectibleCardViewer, ObjData(ObjIndex).CollectibleCardImgPathing, 0, 0, 439, 600, 0, 0, 439, 600)
+            Call DrawCollectibleCard(frmMain.CollectibleCardViewer, ObjData(ObjIndex).CollectibleCardImgPathing, 0, 0, 439, 600, 0, 0, frmMain.CollectibleCardViewer.Width, frmMain.CollectibleCardViewer.Height)
         Case Else
             Call WriteUseItem(Slot)
     End Select
