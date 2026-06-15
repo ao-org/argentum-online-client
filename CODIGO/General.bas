@@ -22,6 +22,9 @@ Private Declare Function svb_install_minidump_handler Lib "steam_vb.dll" (ByVal 
 Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 Private Declare Function svb_retlong Lib "steam_vb.dll" (ByVal Number As Long) As Long
 Public Declare Function svb_unlock_achivement Lib "steam_vb.dll" (ByVal Name As String) As Long
+Private Declare Function svb_get_current_beta_name Lib "steam_vb.dll" (ByVal buffer As String, ByVal bufferSize As Long) As Long
+Private Declare Function svb_set_active_beta Lib "steam_vb.dll" (ByVal betaName As String) As Long
+
 
 Public bSkins As Boolean
 
@@ -1469,3 +1472,41 @@ Public Function GetLocalizedFilename(ByVal language As e_language, ByVal filenam
     End Select
     GetLocalizedFilename = localizedName
 End Function
+
+
+Public Function Steam_GetCurrentBetaName() As String
+    On Error GoTo Steam_GetCurrentBetaName_Err
+    
+    Dim buffer As String
+    buffer = Space$(128)
+    
+    If svb_get_current_beta_name(buffer, 128) <> 0 Then
+        ' Extract string up to null terminator
+        Dim nullPos As Long
+        nullPos = InStr(buffer, vbNullChar)
+        
+        If nullPos > 1 Then
+            Steam_GetCurrentBetaName = Left$(buffer, nullPos - 1)
+        Else
+            Steam_GetCurrentBetaName = vbNullString ' Default branch
+        End If
+    Else
+        Steam_GetCurrentBetaName = vbNullString
+    End If
+    
+    Exit Function
+Steam_GetCurrentBetaName_Err:
+    Steam_GetCurrentBetaName = vbNullString
+End Function
+
+
+Public Function Steam_SetActiveBeta(ByVal betaName As String) As Boolean
+    On Error GoTo Steam_SetActiveBeta_Err
+    If betaName = "Hardcore" Then betaName = vbNullString
+    Steam_SetActiveBeta = (svb_set_active_beta(betaName) <> 0)
+    
+    Exit Function
+Steam_SetActiveBeta_Err:
+    Steam_SetActiveBeta = False
+End Function
+
