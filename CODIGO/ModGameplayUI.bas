@@ -221,7 +221,7 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
                     If SendSkill Then
                         If UsingSkill = eSkill.magia Then
                             ' Bloquea el envio si el tile objetivo no coincide con la posicion real del cursor.
-                            If CoincideObjetivoHechizoConMouse(tX, tY) Then
+                            If CoincideObjetivoHechizoConMouse(tX, tY, mouseX, mouseY) Then
                                 If ComprobarPosibleMacro(mouseX, mouseY) Then
                                     Call WriteWorkLeftClick(tX + RandomNumber(-2, 2), tY + RandomNumber(-2, 2), UsingSkill)
                                 Else
@@ -568,8 +568,8 @@ End Function
 Public Sub UseSpell(ByVal SpellSlot As Byte, ByVal SpellName As String)
     If pausa Then Exit Sub
     TempTick = GetTickCount And &H7FFFFFFF
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Lanzar Then
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
+    If Not iClickTick = 0 Then
+        Call RegistrarPosibleMacroCoordenadasPorClickRapido(TempTick - iClickTick, LastMacroButton, tMacroButton.Lanzar, IntervaloEntreClicks)
     End If
     iClickTick = TempTick
     LastMacroButton = tMacroButton.Lanzar
@@ -639,8 +639,8 @@ End Sub
 Public Sub SelectInventoryTab()
     ActiveInventoryTab = eInventory
     TempTick = GetTickCount And &H7FFFFFFF
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Inventario Then
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
+    If Not iClickTick = 0 Then
+        Call RegistrarPosibleMacroCoordenadasPorClickRapido(TempTick - iClickTick, LastMacroButton, tMacroButton.Inventario, IntervaloEntreClicks)
     End If
     iClickTick = TempTick
     LastMacroButton = tMacroButton.Inventario
@@ -652,8 +652,8 @@ End Sub
 Public Sub SelectSpellTab()
     ActiveInventoryTab = eSpellList
     TempTick = GetTickCount And &H7FFFFFFF
-    If TempTick - iClickTick < IntervaloEntreClicks And Not iClickTick = 0 And LastMacroButton <> tMacroButton.Hechizos Then
-        Call WriteLogMacroClickHechizo(tMacro.Coordenadas)
+    If Not iClickTick = 0 Then
+        Call RegistrarPosibleMacroCoordenadasPorClickRapido(TempTick - iClickTick, LastMacroButton, tMacroButton.Hechizos, IntervaloEntreClicks)
     End If
     iClickTick = TempTick
     LastMacroButton = tMacroButton.Hechizos
