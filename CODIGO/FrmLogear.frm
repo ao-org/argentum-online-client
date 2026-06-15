@@ -371,7 +371,7 @@ Private Sub cmbSteamBranch_Click()
     DidBranchChange = False
     CurrentBeta = Steam_GetCurrentBetaName
     Select Case CurrentBeta
-        Case ""
+        Case vbNullString
             If cmbSteamBranch.Text <> "Hardcore" Then
                 DidBranchChange = True
             End If

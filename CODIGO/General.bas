@@ -1488,21 +1488,21 @@ Public Function Steam_GetCurrentBetaName() As String
         If nullPos > 1 Then
             Steam_GetCurrentBetaName = Left$(buffer, nullPos - 1)
         Else
-            Steam_GetCurrentBetaName = ""  ' Default branch
+            Steam_GetCurrentBetaName = vbNullString ' Default branch
         End If
     Else
-        Steam_GetCurrentBetaName = ""
+        Steam_GetCurrentBetaName = vbNullString
     End If
     
     Exit Function
 Steam_GetCurrentBetaName_Err:
-    Steam_GetCurrentBetaName = ""
+    Steam_GetCurrentBetaName = vbNullString
 End Function
 
 
 Public Function Steam_SetActiveBeta(ByVal betaName As String) As Boolean
     On Error GoTo Steam_SetActiveBeta_Err
-    
+    If betaName = "Hardcore" Then betaName = vbNullString
     Steam_SetActiveBeta = (svb_set_active_beta(betaName) <> 0)
     
     Exit Function
