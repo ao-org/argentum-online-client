@@ -367,7 +367,7 @@ End Sub
 
 Private Sub cmbSteamBranch_Click()
     Dim CurrentBeta As String
-    Dim DidVersionChange As Boolean
+    Dim DidBranchChange As Boolean
     DidBranchChange = False
     CurrentBeta = Steam_GetCurrentBetaName
     Select Case CurrentBeta
