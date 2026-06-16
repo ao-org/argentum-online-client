@@ -26,6 +26,8 @@ Attribute VB_Name = "ModGameplayUI"
 '
 '
 
+Global G_LastSelectedSlot As Integer
+
 Public Sub SetupGameplayUI()
     frmMain.shapexy.Left = 1200
     frmMain.shapexy.Top = 1200
@@ -494,6 +496,7 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
                 Call WriteEquipItem(Slot)
             End If
         Case eObjType.otCollectibleCard
+            G_LastSelectedSlot = Slot
             frmMain.CollectibleCardViewer.ZOrder (0)
             frmMain.CollectibleCardViewer.visible = True
             frmMain.cmdCardViewerAccept.visible = True

@@ -479,7 +479,6 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
-      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2
@@ -1938,6 +1937,7 @@ Private Sub cmdCardViewerAccept_Click()
     frmMain.CollectibleCardViewer.visible = False
     frmMain.cmdCardViewerAccept.visible = False
     frmMain.cmdCardViewerClose.visible = False
+    Call WriteUseItem(G_LastSelectedSlot)
 End Sub
 
 Private Sub cmdCardViewerClose_Click()
