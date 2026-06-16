@@ -466,6 +466,7 @@ End Sub
 Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByVal ObjIndex As Integer)
     Dim ObjType As Byte
     ObjType = ObjData(ObjIndex).ObjType
+    G_LastSelectedSlot = Slot
     Select Case ObjType
         Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otAnillos, eObjType.otManchas
             If Not Equipped Then
@@ -496,7 +497,6 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
                 Call WriteEquipItem(Slot)
             End If
         Case eObjType.otCollectibleCard
-            G_LastSelectedSlot = Slot
             frmMain.CollectibleCardViewer.ZOrder (0)
             frmMain.CollectibleCardViewer.visible = True
             frmMain.cmdCardViewerAccept.visible = True

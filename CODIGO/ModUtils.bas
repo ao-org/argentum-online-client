@@ -1339,8 +1339,15 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     If srcX > (bmpPxW - srcW) Then srcX = bmpPxW - srcW
     If srcY > (bmpPxH - srcH) Then srcY = bmpPxH - srcH
     ' Draw: use DirectX 8 rendering instead of slow PaintPicture
-    Call Minimap_Render_Cropped_To_Hdc(frmMain.MiniMap, worldFileNum, minimapFile, 0, 0, destW, destH, srcX, srcY, srcW, srcH, vbBlack)
-    ' Store viewport state so ally dots can be projected onto the current view
+    
+    Dim DestRect As RECT
+    
+    
+    DestRect.Bottom = srcH
+    DestRect.Right = srcW
+    DestRect.Left = 0
+    DestRect.Top = 0
+    
     MinimapVP_SrcX = srcX
     MinimapVP_SrcY = srcY
     MinimapVP_SrcW = srcW
@@ -1351,6 +1358,13 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     MinimapVP_MapGridY = mapGridY
     MinimapVP_CellPxW = mapCellPxW
     MinimapVP_CellPxH = mapCellPxH
+    
+    Call Engine_BeginScene
+    
+    Call Batch_Textured_Box_File(0, 0, srcW, srcH, srcX, srcY, minimapFile, COLOR_WHITE, False, 0, 1, 1)
+    
+    Call Engine_EndScene(DestRect, frmMain.MiniMap.hWnd)
+    
     Exit Sub
 RenderMinimap_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.RenderMinimapCentered", Erl)
