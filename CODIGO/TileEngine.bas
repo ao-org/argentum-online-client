@@ -952,53 +952,6 @@ Grh_Render_To_Hdc_Err:
     Resume Next
 End Sub
 
-Public Sub Grh_Render_Texture_To_Hdc(ByRef pic As PictureBox, _
-                                     ByRef texture As Direct3DTexture8, _
-                                     ByVal textureWidth As Long, _
-                                     ByVal textureHeight As Long, _
-                                     ByVal screen_x As Integer, _
-                                     ByVal screen_y As Integer, _
-                                     Optional ByVal alpha As Boolean = False, _
-                                     Optional ByVal ClearColor As Long = &O0)
-    On Error GoTo Grh_Render_Texture_To_Hdc_Err
-
-    If texture Is Nothing Then Exit Sub
-
-    Static Picture As RECT
-
-    With Picture
-        .Left = 0
-        .Top = 0
-        .Bottom = pic.ScaleHeight
-        .Right = pic.ScaleWidth
-    End With
-
-    Call DirectDevice.BeginScene
-    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
-
-    Call Device_Box_Texture_Render(texture, _
-                                   screen_x, _
-                                   screen_y, _
-                                   textureWidth, _
-                                   textureHeight, _
-                                   textureWidth, _
-                                   textureHeight, _
-                                   COLOR_WHITE, _
-                                   0, _
-                                   0, _
-                                   alpha, _
-                                   0)
-
-    Call DirectDevice.EndScene
-    Call DirectDevice.Present(Picture, ByVal 0, pic.hWnd, ByVal 0)
-
-    Exit Sub
-
-Grh_Render_Texture_To_Hdc_Err:
-    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Grh_Render_Texture_To_Hdc", Erl)
-    Resume Next
-End Sub
-
 Public Sub Device_Box_Texture_Render(ByRef texture As Direct3DTexture8, _
                                      ByVal dest_x As Integer, _
                                      ByVal dest_y As Integer, _
