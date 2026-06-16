@@ -1080,7 +1080,7 @@ Public Sub Batch_Textured_Box_File(ByVal x As Long, _
                               Optional ByVal angle As Single = 0, _
                               Optional ByVal ScaleX As Single = 1!, _
                               Optional ByVal ScaleY As Single = 1!)
-    On Error GoTo Batch_Textured_Box_Err
+    On Error GoTo Batch_Textured_Box_File_Err
     Dim Texture      As Direct3DTexture8
     Dim TextureWidth As Long, TextureHeight As Long
     Set Texture = SurfaceDB.GetInterfaceTexture(filename, TextureWidth, TextureHeight)
@@ -1095,8 +1095,8 @@ Public Sub Batch_Textured_Box_File(ByVal x As Long, _
         End If
     End With
     Exit Sub
-Batch_Textured_Box_Err:
-    Call RegistrarError(Err.Number, Err.Description, "engine.Batch_Textured_Box", Erl)
+Batch_Textured_Box_File_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.Batch_Textured_Box_File", Erl)
     Resume Next
 End Sub
 

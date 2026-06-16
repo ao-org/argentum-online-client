@@ -1343,8 +1343,8 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     Dim DestRect As RECT
     
     
-    DestRect.Bottom = srcH
-    DestRect.Right = srcW
+    DestRect.Bottom = destH
+    DestRect.Right = destW
     DestRect.Left = 0
     DestRect.Top = 0
     
@@ -1361,7 +1361,7 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     
     Call Engine_BeginScene
     
-    Call Batch_Textured_Box_File(0, 0, srcW, srcH, srcX, srcY, minimapFile, COLOR_WHITE, False, 0, 1, 1)
+    Call Batch_Textured_Box_File(0, 0, srcW, srcH, srcX, srcY, minimapFile, COLOR_WHITE, False, 0, CSng(destW) / CSng(srcW), CSng(destH) / CSng(srcH))
     
     Call Engine_EndScene(DestRect, frmMain.MiniMap.hWnd)
     
