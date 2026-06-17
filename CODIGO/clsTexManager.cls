@@ -317,8 +317,8 @@ LoadTexture_ErrHandler:
 End Function
 
 '======================
-' Public: get-or-load interface texture (PNG when Compresion=1, BMP when Compresion=0)
-' Use negative keys (e.g. -1, -2) to avoid collision with regular FileNum range.
+ ' Public: get-or-load interface texture by filename (case-insensitive)
+ ' PNG when Compresion=1, BMP when Compresion=0
 '======================
 Public Function GetInterfaceTexture(ByVal filename As String, ByRef textwidth As Long, ByRef textheight As Long) As Direct3DTexture8
     Debug.Print "called getintefacetexture with " & filename
