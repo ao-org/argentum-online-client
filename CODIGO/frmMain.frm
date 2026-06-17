@@ -47,7 +47,6 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H80000008&
       Height          =   9000
-      Left            =   2280
       Left            =   120
       ScaleHeight     =   600
       ScaleMode       =   0  'User
