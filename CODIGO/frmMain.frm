@@ -2429,7 +2429,7 @@ Private Sub Second_Timer()
         If Discord_IsConnected Then
         Call Discord_RunCallbacks
         End If
-    End If
+    #End If
 End Sub
 
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
