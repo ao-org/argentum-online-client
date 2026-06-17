@@ -2426,7 +2426,9 @@ End Sub
 Private Sub Second_Timer()
     If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
     #If No_Api_Discord = 0 Then
+        If Discord_IsConnected Then
         Call Discord_RunCallbacks
+        End If
     End If
 End Sub
 
@@ -2491,7 +2493,9 @@ Private Sub Form_Unload(Cancel As Integer)
         Call svb_shutdown_steam
     #End If
     #If No_Api_Discord = 0 Then
+        If Discord_IsConnected Then
         Call Discord_Shutdown
+        End if
     #End If
     Call DisableURLDetect
     Call ao20audio.PauseAllAudio
@@ -4166,7 +4170,8 @@ Public Sub UpdateStatsLayout()
     Call frmMain.UpdateGoldState
     
      #If No_Api_Discord = 0 Then
-        If UserCharIndex > 0 Then
+
+        If UserCharIndex > 0 And Discord_IsConnected Then
             Call Discord_Update(IIf(charlist(UserCharIndex).clan <> vbNullString, JsonLanguage.Item("LABEL_CHATMODE_CLAN") & ": " & charlist(UserCharIndex).clan, JsonLanguage.Item("LABEL_CHATMODE_CLAN") & ": -"), _
                charlist(UserCharIndex).nombre & " - " & JsonLanguage.Item("MENSAJE_NIVEL_CLASE") & " " & UserStats.Lvl & " " & "(" & lblPorcLvl.Caption & ")" & " - " & CharStatusToString(charlist(UserCharIndex).status), _
                DISCORD_ARGENTUM_ONLINE_LOGO, _
@@ -4174,6 +4179,7 @@ Public Sub UpdateStatsLayout()
                DISCORD_CIRCLE_MINIATURE, _
                DISCORD_PLAYING_STRING)
         End If
+
     #End If
     
     
