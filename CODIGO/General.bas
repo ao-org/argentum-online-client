@@ -17,12 +17,12 @@ Attribute VB_Name = "Mod_General"
 '
 Option Explicit
 Private Declare Function SetDllDirectory Lib "kernel32" Alias "SetDllDirectoryA" (ByVal path As String) As Long
-Private Declare Function svb_init_steam Lib "steam_vb.dll" (ByVal appid As Long) As Long
-Private Declare Function svb_install_minidump_handler Lib "steam_vb.dll" (ByVal appid As Long, ByVal version As String, ByVal description As String, ByVal flags As Long) As Long
+Private Declare Function svb_init_steam Lib "steam_vb.dll" (ByVal appId As Long) As Long
+Private Declare Function svb_install_minidump_handler Lib "steam_vb.dll" (ByVal appId As Long, ByVal Version As String, ByVal Description As String, ByVal flags As Long) As Long
 Private Declare Sub svb_run_callbacks Lib "steam_vb.dll" ()
 Private Declare Function svb_retlong Lib "steam_vb.dll" (ByVal Number As Long) As Long
-Public Declare Function svb_unlock_achivement Lib "steam_vb.dll" (ByVal Name As String) As Long
-Private Declare Function svb_get_current_beta_name Lib "steam_vb.dll" (ByVal buffer As String, ByVal bufferSize As Long) As Long
+Public Declare Function svb_unlock_achivement Lib "steam_vb.dll" (ByVal name As String) As Long
+Private Declare Function svb_get_current_beta_name Lib "steam_vb.dll" (ByVal Buffer As String, ByVal bufferSize As Long) As Long
 Private Declare Function svb_set_active_beta Lib "steam_vb.dll" (ByVal betaName As String) As Long
 
 
@@ -102,7 +102,7 @@ Private tSI As SCROLLINFO
 Public Declare Function GetScrollInfo Lib "user32" (ByVal hWnd As Long, ByVal n As Long, ByRef lpScrollInfo As SCROLLINFO) As Long
 Public Declare Function GetScrollPos Lib "user32" (ByVal hWnd As Long, ByVal nBar As Long) As Long
 'Api SendMessage
-Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As Any) As Long
+Public Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lparam As Any) As Long
 Public Const MAX_TAB_STOPS = 32&
 
 Public Type PARAFORMAT2
@@ -192,7 +192,7 @@ RandomNumber_Err:
 End Function
 
 Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, _
-                      ByVal text As String, _
+                      ByVal Text As String, _
                       Optional ByVal red As Integer = -1, _
                       Optional ByVal green As Integer, _
                       Optional ByVal blue As Integer, _
@@ -212,26 +212,26 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, _
     Dim bUrl     As Boolean
     Dim sMax     As Long
     Dim sPos     As Long
-    Dim Pos      As Long
+    Dim pos      As Long
     Dim ret      As Long
     Dim bHoldBar As Boolean
     Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
     With RichTextBox
-        If Len(.text) > 20000 Then
+        If Len(.Text) > 20000 Then
             'Get rid of first line
-            .text = vbNullString
-            .SelStart = InStr(1, .text, vbCrLf) + 1
-            .SelLength = Len(.text) - .SelStart + 2
+            .Text = vbNullString
+            .SelStart = InStr(1, .Text, vbCrLf) + 1
+            .SelLength = Len(.Text) - .SelStart + 2
             .TextRTF = .SelRTF
         End If
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
         ret = GetScrollInfo(.hWnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
-        Pos = tSI.nTrackPos
+        pos = tSI.nTrackPos
         Call GetScrollInfo(.hWnd, SB_VERT, tSI)
         bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
-        .SelStart = Len(.text)
+        .SelStart = Len(.Text)
         .SelLength = 0
         .SelBold = bold
         .SelItalic = italic
@@ -240,8 +240,8 @@ Sub AddtoRichTextBox2(ByRef RichTextBox As RichTextBox, _
         ' 2 = Right
         .SelAlignment = Alignment
         If Not red = -1 Then .SelColor = RGB(red, green, blue)
-        If bCrLf And Len(.text) > 0 Then text = vbCrLf & text
-        .SelText = text
+        If bCrLf And Len(.Text) > 0 Then Text = vbCrLf & Text
+        .SelText = Text
         ' Esto arregla el bug de las letras superponiendose la consola del frmMain
         If Not (RichTextBox = frmMain.RecTxt) Then
             RichTextBox.Refresh
@@ -257,7 +257,7 @@ AddtoRichTextBox2_Err:
 End Sub
 
 Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, _
-                     ByVal text As String, _
+                     ByVal Text As String, _
                      Optional ByVal red As Integer = -1, _
                      Optional ByVal green As Integer, _
                      Optional ByVal blue As Integer, _
@@ -268,32 +268,32 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, _
     Dim bUrl     As Boolean
     Dim sMax     As Long
     Dim sPos     As Long
-    Dim Pos      As Long
+    Dim pos      As Long
     Dim ret      As Long
     Dim bHoldBar As Boolean
     Call EnableURLDetect(frmMain.RecTxt.hWnd, frmMain.hWnd)
     With RichTextBox
-        If Len(.text) > 20000 Then
-            .text = vbNullString
-            .SelStart = InStr(1, .text, vbCrLf) + 1
-            .SelLength = Len(.text) - .SelStart + 2
+        If Len(.Text) > 20000 Then
+            .Text = vbNullString
+            .SelStart = InStr(1, .Text, vbCrLf) + 1
+            .SelLength = Len(.Text) - .SelStart + 2
             .TextRTF = .SelRTF
         End If
         tSI.cbSize = Len(tSI)
         tSI.fMask = SIF_TRACKPOS Or SIF_RANGE Or SIF_PAGE
         ret = GetScrollInfo(.hWnd, SB_VERT, tSI)
         sMax = tSI.nMax - tSI.nPage + 1
-        Pos = tSI.nTrackPos
+        pos = tSI.nTrackPos
         Call GetScrollInfo(.hWnd, SB_VERT, tSI)
         bHoldBar = ((((tSI.nMax) - tSI.nPage) > tSI.nTrackPos) And tSI.nPage > 0)
-        .SelStart = Len(.text)
+        .SelStart = Len(.Text)
         .SelLength = 0
         .SelBold = bold
         .SelItalic = italic
         If Not red = -1 Then .SelColor = RGB(red, green, blue)
         bCrLf = True
-        If bCrLf And Len(.text) > 0 Then text = vbCrLf & text
-        .SelText = text
+        If bCrLf And Len(.Text) > 0 Then Text = vbCrLf & Text
+        .SelText = Text
         If bHoldBar Then
             Call SendMessage(.hWnd, WM_VSCROLL, SB_THUMBPOSITION + &H10000 * tSI.nTrackPos, Nothing)
         End If
@@ -336,12 +336,12 @@ Public Sub RefreshAllChars()
         If charlist(loopC).active = 1 Then
             If charlist(loopC).Invisible Then
                 If Not ((charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(loopC).clan_index = 0 Or charlist(loopC).clan_index <> charlist(UserCharIndex).clan_index) And Not _
-                        charlist(loopC).Navegando) And Not (General_Distance_Get(charlist(loopC).Pos.x, charlist(loopC).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And _
+                        charlist(loopC).Navegando) And Not (General_Distance_Get(charlist(loopC).pos.x, charlist(loopC).pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And _
                         charlist(loopC).dialog_life = 0 And charlist(loopC).FxCount = 0 And charlist(loopC).particle_count = 0) Then
-                    MapData(charlist(loopC).Pos.x, charlist(loopC).Pos.y).charindex = loopC
+                    MapData(charlist(loopC).pos.x, charlist(loopC).pos.y).charindex = loopC
                 End If
             Else
-                MapData(charlist(loopC).Pos.x, charlist(loopC).Pos.y).charindex = loopC
+                MapData(charlist(loopC).pos.x, charlist(loopC).pos.y).charindex = loopC
             End If
         End If
     Next loopC
@@ -481,7 +481,7 @@ Sub SetConnected()
     'Set Connected
     On Error GoTo SetConnected_Err
     Connected = True
-    Call frmConnect.AuthSocket.Close
+    Call frmConnect.AuthSocket.close
     Call ModGameplayUI.SetupGameplayUI
     Seguido = False
     CharindexSeguido = 0
@@ -564,18 +564,18 @@ Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
             End If
             If WriteWalk(Heading) Then 'We only walk if we are not meditating or resting
                 Moviendose = True
-                Call MainTimer.Restart(TimersIndex.Walk)
+                Call MainTimer.restart(TimersIndex.Walk)
                 Call Char_Move_by_Head(UserCharIndex, Heading)
                 Call MoveScreen(Heading)
                 Call checkTutorial
                 Dim i As Integer
                 For i = 1 To LastChar
                     If charlist(i).Invisible And Not EsGM And Not charlist(i).Meditating Then
-                        If MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(i).clan_index = 0 Or charlist( _
+                        If MapData(charlist(i).pos.x, charlist(i).pos.y).charindex = i And (charlist(UserCharIndex).clan_nivel < cfgGuildLevelSeeInvisible Or charlist(i).clan_index = 0 Or charlist( _
                                 i).clan_index <> charlist(UserCharIndex).clan_index) And Not charlist(i).Navegando Then
-                            If General_Distance_Get(charlist(i).Pos.x, charlist(i).Pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist( _
+                            If General_Distance_Get(charlist(i).pos.x, charlist(i).pos.y, UserPos.x, UserPos.y) > DISTANCIA_ENVIO_DATOS And charlist(i).dialog_life = 0 And charlist( _
                                     i).FxCount = 0 And charlist(i).particle_count = 0 Then
-                                MapData(charlist(i).Pos.x, charlist(i).Pos.y).charindex = 0
+                                MapData(charlist(i).pos.x, charlist(i).pos.y).charindex = 0
                             End If
                         End If
                     End If
@@ -609,25 +609,25 @@ End Sub
 
 Public Sub AddMovementToKeysMovementPressedQueue()
     On Error GoTo AddMovementToKeysMovementPressedQueue_Err
-    If BindKeys(14).KeyCode <> 0 And GetKeyState(BindKeys(14).KeyCode) < 0 Then
-        If keysMovementPressedQueue.itemExist(BindKeys(14).KeyCode) = False Then keysMovementPressedQueue.Add (BindKeys(14).KeyCode) ' Agrega la tecla al arraylist
+    If BindKeys(14).keyCode <> 0 And GetKeyState(BindKeys(14).keyCode) < 0 Then
+        If keysMovementPressedQueue.itemExist(BindKeys(14).keyCode) = False Then keysMovementPressedQueue.Add (BindKeys(14).keyCode) ' Agrega la tecla al arraylist
     Else
-        If keysMovementPressedQueue.itemExist(BindKeys(14).KeyCode) Then keysMovementPressedQueue.Remove (BindKeys(14).KeyCode) ' Remueve la tecla que teniamos presionada
+        If keysMovementPressedQueue.itemExist(BindKeys(14).keyCode) Then keysMovementPressedQueue.Remove (BindKeys(14).keyCode) ' Remueve la tecla que teniamos presionada
     End If
-    If BindKeys(15).KeyCode <> 0 And GetKeyState(BindKeys(15).KeyCode) < 0 Then
-        If keysMovementPressedQueue.itemExist(BindKeys(15).KeyCode) = False Then keysMovementPressedQueue.Add (BindKeys(15).KeyCode) ' Agrega la tecla al arraylist
+    If BindKeys(15).keyCode <> 0 And GetKeyState(BindKeys(15).keyCode) < 0 Then
+        If keysMovementPressedQueue.itemExist(BindKeys(15).keyCode) = False Then keysMovementPressedQueue.Add (BindKeys(15).keyCode) ' Agrega la tecla al arraylist
     Else
-        If keysMovementPressedQueue.itemExist(BindKeys(15).KeyCode) Then keysMovementPressedQueue.Remove (BindKeys(15).KeyCode) ' Remueve la tecla que teniamos presionada
+        If keysMovementPressedQueue.itemExist(BindKeys(15).keyCode) Then keysMovementPressedQueue.Remove (BindKeys(15).keyCode) ' Remueve la tecla que teniamos presionada
     End If
-    If BindKeys(16).KeyCode <> 0 And GetKeyState(BindKeys(16).KeyCode) < 0 Then
-        If keysMovementPressedQueue.itemExist(BindKeys(16).KeyCode) = False Then keysMovementPressedQueue.Add (BindKeys(16).KeyCode) ' Agrega la tecla al arraylist
+    If BindKeys(16).keyCode <> 0 And GetKeyState(BindKeys(16).keyCode) < 0 Then
+        If keysMovementPressedQueue.itemExist(BindKeys(16).keyCode) = False Then keysMovementPressedQueue.Add (BindKeys(16).keyCode) ' Agrega la tecla al arraylist
     Else
-        If keysMovementPressedQueue.itemExist(BindKeys(16).KeyCode) Then keysMovementPressedQueue.Remove (BindKeys(16).KeyCode) ' Remueve la tecla que teniamos presionada
+        If keysMovementPressedQueue.itemExist(BindKeys(16).keyCode) Then keysMovementPressedQueue.Remove (BindKeys(16).keyCode) ' Remueve la tecla que teniamos presionada
     End If
-    If BindKeys(17).KeyCode <> 0 And GetKeyState(BindKeys(17).KeyCode) < 0 Then
-        If keysMovementPressedQueue.itemExist(BindKeys(17).KeyCode) = False Then keysMovementPressedQueue.Add (BindKeys(17).KeyCode) ' Agrega la tecla al arraylist
+    If BindKeys(17).keyCode <> 0 And GetKeyState(BindKeys(17).keyCode) < 0 Then
+        If keysMovementPressedQueue.itemExist(BindKeys(17).keyCode) = False Then keysMovementPressedQueue.Add (BindKeys(17).keyCode) ' Agrega la tecla al arraylist
     Else
-        If keysMovementPressedQueue.itemExist(BindKeys(17).KeyCode) Then keysMovementPressedQueue.Remove (BindKeys(17).KeyCode) ' Remueve la tecla que teniamos presionada
+        If keysMovementPressedQueue.itemExist(BindKeys(17).keyCode) Then keysMovementPressedQueue.Remove (BindKeys(17).keyCode) ' Remueve la tecla que teniamos presionada
     End If
     Exit Sub
 AddMovementToKeysMovementPressedQueue_Err:
@@ -651,16 +651,16 @@ Sub Check_Keys()
                     ' Prevenimos teclas sin asignar... Te deja moviendo para siempre
                 Case 0: Exit Sub
                     'Move Up
-                Case BindKeys(14).KeyCode
+                Case BindKeys(14).keyCode
                     Call MoveTo(E_Heading.NORTH, UserEstupido)
                     'Move Right
-                Case BindKeys(17).KeyCode
+                Case BindKeys(17).keyCode
                     Call MoveTo(E_Heading.EAST, UserEstupido)
                     'Move down
-                Case BindKeys(15).KeyCode
+                Case BindKeys(15).keyCode
                     Call MoveTo(E_Heading.south, UserEstupido)
                     'Move left
-                Case BindKeys(16).KeyCode
+                Case BindKeys(16).keyCode
                     Call MoveTo(E_Heading.WEST, UserEstupido)
             End Select
         End If
@@ -671,7 +671,7 @@ Check_Keys_Err:
     Resume Next
 End Sub
 
-Function ReadField(ByVal Pos As Integer, ByRef text As String, ByVal SepASCII As Byte) As String
+Function ReadField(ByVal pos As Integer, ByRef Text As String, ByVal SepASCII As Byte) As String
     On Error GoTo ReadField_Err
     'Gets a field from a delimited string
     Dim i          As Long
@@ -679,14 +679,14 @@ Function ReadField(ByVal Pos As Integer, ByRef text As String, ByVal SepASCII As
     Dim CurrentPos As Long
     Dim delimiter  As String * 1
     delimiter = Chr$(SepASCII)
-    For i = 1 To Pos
+    For i = 1 To pos
         LastPos = CurrentPos
-        CurrentPos = InStr(LastPos + 1, text, delimiter, vbBinaryCompare)
+        CurrentPos = InStr(LastPos + 1, Text, delimiter, vbBinaryCompare)
     Next i
     If CurrentPos = 0 Then
-        ReadField = mid$(text, LastPos + 1, Len(text) - LastPos)
+        ReadField = mid$(Text, LastPos + 1, Len(Text) - LastPos)
     Else
-        ReadField = mid$(text, LastPos + 1, CurrentPos - LastPos - 1)
+        ReadField = mid$(Text, LastPos + 1, CurrentPos - LastPos - 1)
     End If
     Exit Function
 ReadField_Err:
@@ -694,17 +694,17 @@ ReadField_Err:
     Resume Next
 End Function
 
-Function FieldCount(ByRef text As String, ByVal SepASCII As Byte) As Long
+Function FieldCount(ByRef Text As String, ByVal SepASCII As Byte) As Long
     On Error GoTo FieldCount_Err
     'Gets the number of fields in a delimited string
     Dim count     As Long
     Dim curPos    As Long
     Dim delimiter As String * 1
-    If LenB(text) = 0 Then Exit Function
+    If LenB(Text) = 0 Then Exit Function
     delimiter = Chr$(SepASCII)
     curPos = 0
     Do
-        curPos = InStr(curPos + 1, text, delimiter)
+        curPos = InStr(curPos + 1, Text, delimiter)
         count = count + 1
     Loop While curPos <> 0
     FieldCount = count
@@ -714,9 +714,9 @@ FieldCount_Err:
     Resume Next
 End Function
 
-Function FileExist(ByVal File As String, ByVal FileType As VbFileAttribute) As Boolean
+Function FileExist(ByVal file As String, ByVal filetype As VbFileAttribute) As Boolean
     On Error GoTo FileExist_Err
-    FileExist = (dir$(File, FileType) <> "")
+    FileExist = (dir$(file, filetype) <> "")
     Exit Function
 FileExist_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.FileExist", Erl)
@@ -744,6 +744,7 @@ Sub Main()
         Else
             If Discord_IsConnected Then
                 Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), DISCORD_ARGENTUM_ONLINE_LOGO, DISCORD_TITLE, DISCORD_CIRCLE_MINIATURE, DISCORD_PLAYING_STRING)
+                Call Discord_RunCallbacks
             End If
         End If
     #End If
@@ -755,7 +756,7 @@ Sub Main()
         suite_passed_ok = UnitTesting.test_suite()
 UnitTest_Done:
         On Error GoTo Main_Err
-        Call UnitTesting.WriteResultsToFile(App.Path & "\test_results.txt")
+        Call UnitTesting.WriteResultsToFile(App.path & "\test_results.txt")
         End
 UnitTest_Err:
         Call UnitTesting.RunTestError("FATAL", Err.Description)
@@ -799,11 +800,11 @@ UnitTest_Err:
             frmDebug.add_text_tracebox "Init Steam " & steam_init_result
 
             If steam_init_result <> 0 Then
-                Dim version As String
+                Dim Version As String
                 Dim minidump_result As Long
 
-                version = App.Major & "." & App.Minor & "." & App.Revision
-                minidump_result = svb_install_minidump_handler(1956740, version, "Argentum Online crash handler", 0)
+                Version = App.Major & "." & App.Minor & "." & App.Revision
+                minidump_result = svb_install_minidump_handler(1956740, Version, "Argentum Online crash handler", 0)
                 frmDebug.add_text_tracebox "Minidump handler " & minidump_result
             End If
         #End If
@@ -866,7 +867,7 @@ End Sub
 Public Sub RegisterCom()
     On Error GoTo Com_Err:
     If MsgBox(JsonLanguage.Item("MENSAJEBOX_COMPONENTES_FALTANTES"), vbYesNo) = vbYes Then
-        If System.ShellExecuteEx("regcom.bat", App.path) Then
+        If system.ShellExecuteEx("regcom.bat", App.path) Then
             Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ARCHIVOS_COM_REGISTRADOS"), vbOKOnly, "Info")
         Else
             Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ARCHIVOS_COM_NO_REGISTRADOS"), vbOKOnly, "Error")
@@ -901,23 +902,23 @@ Public Function randomMap() As Integer
     End Select
 End Function
 
-Sub WriteVar(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
+Sub WriteVar(ByVal file As String, ByVal Main As String, ByVal Var As String, ByVal value As String)
     'Writes a var to a text file
     On Error GoTo WriteVar_Err
-    writeprivateprofilestring Main, Var, value, File
+    writeprivateprofilestring Main, Var, value, file
     Exit Sub
 WriteVar_Err:
     Call RegistrarError(Err.Number, Err.Description, "Mod_General.WriteVar", Erl)
     Resume Next
 End Sub
 
-Function GetVar(ByVal File As String, ByVal Main As String, ByVal Var As String, Optional ByVal BufferLen As Long = 100) As String
+Function GetVar(ByVal file As String, ByVal Main As String, ByVal Var As String, Optional ByVal BufferLen As Long = 100) As String
     On Error GoTo GetVar_Err
     'Gets a Var from a text file
     Dim sSpaces As String ' This will hold the input that the program will retrieve
     If BufferLen <= 0 Then BufferLen = 100
     sSpaces = Space$(BufferLen)
-    getprivateprofilestring Main, Var, vbNullString, sSpaces, Len(sSpaces), File
+    getprivateprofilestring Main, Var, vbNullString, sSpaces, Len(sSpaces), file
     GetVar = RTrim$(sSpaces)
     If Len(GetVar) > 0 Then
         GetVar = Left$(GetVar, Len(GetVar) - 1)
@@ -928,10 +929,10 @@ GetVar_Err:
     Resume Next
 End Function
 
-Function GetVarOrDefault(ByVal File As String, ByVal Main As String, ByVal Var As String, ByVal DefaultValue As String) As String
+Function GetVarOrDefault(ByVal file As String, ByVal Main As String, ByVal Var As String, ByVal DefaultValue As String) As String
     On Error GoTo GetVarOrDefault_Err
     'Gets a Var from a text file and if empty returns default value
-    GetVarOrDefault = GetVar(File, Main, Var)
+    GetVarOrDefault = GetVar(file, Main, Var)
     If GetVarOrDefault = vbNullString Then
         GetVarOrDefault = DefaultValue
     End If
@@ -1146,7 +1147,7 @@ CloseClient_Err:
     Resume Next
 End Sub
 
-Public Function General_Field_Read(ByVal field_pos As Long, ByVal text As String, ByVal delimiter As String) As String
+Public Function General_Field_Read(ByVal field_pos As Long, ByVal Text As String, ByVal delimiter As String) As String
     On Error GoTo General_Field_Read_Err
     'Gets a field from a delimited string
     Dim i          As Long
@@ -1156,12 +1157,12 @@ Public Function General_Field_Read(ByVal field_pos As Long, ByVal text As String
     CurrentPos = 0
     For i = 1 To field_pos
         LastPos = CurrentPos
-        CurrentPos = InStr(LastPos + 1, text, delimiter, vbBinaryCompare)
+        CurrentPos = InStr(LastPos + 1, Text, delimiter, vbBinaryCompare)
     Next i
     If CurrentPos = 0 Then
-        General_Field_Read = mid$(text, LastPos + 1, Len(text) - LastPos)
+        General_Field_Read = mid$(Text, LastPos + 1, Len(Text) - LastPos)
     Else
-        General_Field_Read = mid$(text, LastPos + 1, CurrentPos - LastPos - 1)
+        General_Field_Read = mid$(Text, LastPos + 1, CurrentPos - LastPos - 1)
     End If
     Exit Function
 General_Field_Read_Err:
@@ -1169,18 +1170,18 @@ General_Field_Read_Err:
     Resume Next
 End Function
 
-Public Function General_Field_Count(ByVal text As String, ByVal delimiter As Byte) As Long
+Public Function General_Field_Count(ByVal Text As String, ByVal delimiter As Byte) As Long
     On Error GoTo General_Field_Count_Err
     'Count the number of fields in a delimited string
     'If string is empty there aren't any fields
-    If Len(text) = 0 Then
+    If Len(Text) = 0 Then
         Exit Function
     End If
     Dim i        As Long
     Dim FieldNum As Long
     FieldNum = 0
-    For i = 1 To Len(text)
-        If delimiter = CByte(Asc(mid$(text, i, 1))) Then
+    For i = 1 To Len(Text)
+        If delimiter = CByte(Asc(mid$(Text, i, 1))) Then
             FieldNum = FieldNum + 1
         End If
     Next i
@@ -1213,12 +1214,12 @@ General_Get_Elapsed_Time_Err:
     Resume Next
 End Function
 
-Public Function max(ByVal A As Variant, ByVal B As Variant) As Variant
+Public Function max(ByVal A As Variant, ByVal b As Variant) As Variant
     On Error GoTo max_Err
-    If A > B Then
+    If A > b Then
         max = A
     Else
-        max = B
+        max = b
     End If
     Exit Function
 max_Err:
@@ -1226,12 +1227,12 @@ max_Err:
     Resume Next
 End Function
 
-Public Function min(ByVal A As Double, ByVal B As Double) As Variant
+Public Function min(ByVal A As Double, ByVal b As Double) As Variant
     On Error GoTo min_Err
-    If A < B Then
+    If A < b Then
         min = A
     Else
-        min = B
+        min = b
     End If
     Exit Function
 min_Err:
@@ -1286,19 +1287,19 @@ Public Function LoadInterface(filename As String, Optional Localize As Boolean =
         #End If
     End If
     Exit Function
-errhandler:
+ErrHandler:
     frmDebug.add_text_tracebox "Error loading interface bitmap: " & filename
 End Function
 
 Public Function LoadMinimap(ByVal map As Integer) As IPicture
-    On Error GoTo errhandler
+    On Error GoTo ErrHandler
     #If Compresion = 1 Then
         Set LoadMinimap = General_Load_Minimap_From_Resource_Ex("mapa" & map & ".bmp", ResourcesPassword)
     #Else
         Set LoadMinimap = LoadPicture(App.path & "/../Recursos/Minimapas/Mapa" & map & ".bmp")
     #End If
     Exit Function
-errhandler:
+ErrHandler:
     frmDebug.add_text_tracebox "Error loading minimap: " & map & ".bmp"
 End Function
 
@@ -1347,11 +1348,11 @@ End Function
 
 Public Sub CheckResources()
     Dim data(1 To 200) As Byte
-    Dim Handle         As Integer
-    Handle = FreeFile
-    Open App.path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #Handle
-    Get #Handle, , data
-    Close #Handle
+    Dim handle         As Integer
+    handle = FreeFile
+    Open App.path & "/../Recursos/OUTPUT/AO.bin" For Binary Access Read As #handle
+    Get #handle, , data
+    Close #handle
     Dim Length As Integer
     Length = data(UBound(data)) + data(UBound(data) - 1) * 256
     Dim i As Integer
@@ -1487,16 +1488,16 @@ End Function
 Public Function Steam_GetCurrentBetaName() As String
     On Error GoTo Steam_GetCurrentBetaName_Err
     
-    Dim buffer As String
-    buffer = Space$(128)
+    Dim Buffer As String
+    Buffer = Space$(128)
     
-    If svb_get_current_beta_name(buffer, 128) <> 0 Then
+    If svb_get_current_beta_name(Buffer, 128) <> 0 Then
         ' Extract string up to null terminator
         Dim nullPos As Long
-        nullPos = InStr(buffer, vbNullChar)
+        nullPos = InStr(Buffer, vbNullChar)
         
         If nullPos > 1 Then
-            Steam_GetCurrentBetaName = Left$(buffer, nullPos - 1)
+            Steam_GetCurrentBetaName = Left$(Buffer, nullPos - 1)
         Else
             Steam_GetCurrentBetaName = vbNullString ' Default branch
         End If
