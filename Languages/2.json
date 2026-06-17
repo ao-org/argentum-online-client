@@ -776,5 +776,13 @@
     "MSG_ALIAS_ALREADY_TAKEN": "The alias is already in use.",
     "MSG_ALIAS_INVALID": "Invalid alias, (between 3 and 30 alphanumeric characters)",
     "MSG_CONFIRM_EMPTY_RENAME": "Are you sure you want to remove your character's alias?",
-    "MSG_ALIAS_PRESENT": "You cannot transfer or delete a character that has an alias. Please remove the alias before performing this action."
+    "MSG_ALIAS_PRESENT": "You cannot transfer or delete a character that has an alias. Please remove the alias before performing this action.",
+    "MSG_ACCOUNT_SCREEN": "Selecting account...",
+    "MSG_LOGIN_SCREEN": "On Character Selection Screen",
+    "MSG_GULFAS_JOKE1": "Praising Gulfas",
+    "MSG_GULFAS_JOKE2": "Talking to Gulfas",
+    "MSG_GULFAS_JOKE3": "Disappointing Gulfas",
+    "MSG_GULFAS_JOKE4": "Insulting Gulfas",
+    "MSG_GULFAS_JOKE5": "Challenging Gulfas",
+    "MSG_GULFAS_JOKE6": "Mocking Gulfas"
 }
