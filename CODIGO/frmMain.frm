@@ -983,6 +983,11 @@ Begin VB.Form frmMain
       TabIndex        =   4
       Top             =   2280
       Width           =   11040
+      Begin VB.Timer Discord 
+         Interval        =   250
+         Left            =   7920
+         Top             =   120
+      End
    End
    Begin VB.Image btnZoomIn 
       Height          =   195
@@ -2139,6 +2144,14 @@ Private Sub createObj_Click()
     Call OpenCreateObjectMenu
 End Sub
 
+Private Sub Discord_Timer()
+    #If No_Api_Discord = 0 Then
+        If Discord_IsConnected Then
+        Call Discord_RunCallbacks
+        End If
+    #End If
+End Sub
+
 Private Sub dobleclick_Timer()
     Static segundo As Long
     segundo = segundo + 1
@@ -2425,11 +2438,6 @@ End Sub
 
 Private Sub Second_Timer()
     If Not DialogosClanes Is Nothing Then DialogosClanes.PassTimer
-    #If No_Api_Discord = 0 Then
-        If Discord_IsConnected Then
-        Call Discord_RunCallbacks
-        End If
-    #End If
 End Sub
 
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
