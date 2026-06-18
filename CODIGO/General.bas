@@ -738,17 +738,6 @@ End Sub
 Sub Main()
     On Error GoTo Main_Err
     
-    #If No_Api_Discord = 0 Then
-        If Not Discord_Initialize(DISCORD_API_ID) Then
-            Debug.Print Discord_GetLastError()
-        Else
-            If Discord_IsConnected Then
-                Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), DISCORD_ARGENTUM_ONLINE_LOGO, DISCORD_TITLE, DISCORD_CIRCLE_MINIATURE, DISCORD_PLAYING_STRING)
-                Call Discord_RunCallbacks
-            End If
-        End If
-    #End If
-
     #If UNIT_TEST = 1 Then
         On Error GoTo UnitTest_Err
         Call UnitTesting.Init
@@ -817,6 +806,18 @@ UnitTest_Err:
     #End If
     
     Windows_Temp_Dir = General_Get_Temp_Dir
+    
+    #If No_Api_Discord = 0 Then
+        If Not Discord_Initialize(DISCORD_API_ID) Then
+            Debug.Print Discord_GetLastError()
+        Else
+            If Discord_IsConnected Then
+                Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), DISCORD_ARGENTUM_ONLINE_LOGO, DISCORD_TITLE, DISCORD_CIRCLE_MINIATURE, DISCORD_PLAYING_STRING)
+                Call Discord_RunCallbacks
+            End If
+        End If
+    #End If
+    
     Call initPacketControl
     Call SetNpcsRenderText
     Call cargarTutoriales
