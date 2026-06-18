@@ -44,7 +44,7 @@ Public Declare Function UpdatePresence Lib "DiscordRichPresenceVB6.dll" _
 ' startTime:   Unix timestamp in seconds (use 0 to clear)
 ' Returns: 1 on success, 0 on failure
 Public Declare Function SetTimestamp Lib "DiscordRichPresenceVB6.dll" _
-    (ByVal startTime As Currency) As Long
+    (ByVal startTime As Double) As Long
 
 ' Set party size information (current/max players)
 ' Returns: 1 on success, 0 on failure
@@ -121,7 +121,7 @@ End Function
 ' This starts the "elapsed" timer from NOW
 Public Function Discord_SetStartTime() As Boolean
     Dim Result As Long
-    Dim startTime As Currency
+    Dim startTime As Double
     
     startTime = GetUnixTimestamp()
     Result = SetTimestamp(startTime)
@@ -130,7 +130,7 @@ End Function
 
 ' Set a specific timestamp (advanced usage)
 ' Pass a Unix timestamp in seconds
-Public Function Discord_SetTimestamp(ByVal unixTimestamp As Currency) As Boolean
+Public Function Discord_SetTimestamp(ByVal unixTimestamp As Double) As Boolean
     Dim Result As Long
     Result = SetTimestamp(unixTimestamp)
     Discord_SetTimestamp = (Result = 1)
