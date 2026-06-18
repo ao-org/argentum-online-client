@@ -344,7 +344,7 @@ Private Sub cmdIngresar_Click()
     Call DoLogin(NameTxt.text, PasswordTxt.text, chkRecordar.Tag = "1")
     #If No_Api_Discord = 0 Then
     If Discord_IsConnected Then
-        Call Discord_Update("...", JsonLanguage.Item("MSG_LOGIN_SCREEN"), DISCORD_ARGENTUM_ONLINE_LOGO, DISCORD_TITLE, DISCORD_CIRCLE_MINIATURE, DISCORD_PLAYING_STRING)
+        'Call Discord_Update("...", JsonLanguage.Item("MSG_LOGIN_SCREEN"), DISCORD_ARGENTUM_ONLINE_LOGO, DISCORD_TITLE, DISCORD_CIRCLE_MINIATURE, DISCORD_PLAYING_STRING)
     End If
     #End If
     Exit Sub

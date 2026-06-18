@@ -827,7 +827,7 @@ Public Sub HandleDisconnect()
     
     #If No_Api_Discord = 0 Then
         If Discord_IsConnected Then
-        Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), DISCORD_ARGENTUM_ONLINE_LOGO, DISCORD_TITLE, DISCORD_CIRCLE_MINIATURE, DISCORD_PLAYING_STRING)
+            'Call Discord_Update(JsonLanguage.Item(CStr("MSG_GULFAS_JOKE" & RandomNumber(1, 6))), JsonLanguage.Item("MSG_ACCOUNT_SCREEN"), DISCORD_ARGENTUM_ONLINE_LOGO, DISCORD_TITLE, DISCORD_CIRCLE_MINIATURE, DISCORD_PLAYING_STRING)
         End If
     #End If
     
