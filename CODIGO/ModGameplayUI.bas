@@ -220,13 +220,10 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
                     End If
                     If SendSkill Then
                         If UsingSkill = eSkill.magia Then
-                            ' Bloquea el envio si el tile objetivo no coincide con la posicion real del cursor.
-                            If CoincideObjetivoHechizoConMouse(tX, tY) Then
-                                If ComprobarPosibleMacro(mouseX, mouseY) Then
-                                    Call WriteWorkLeftClick(tX + RandomNumber(-2, 2), tY + RandomNumber(-2, 2), UsingSkill)
-                                Else
-                                    Call WriteWorkLeftClick(tX, tY, UsingSkill)
-                                End If
+                            If ComprobarPosibleMacro(mouseX, mouseY) Then
+                                Call WriteWorkLeftClick(tX + RandomNumber(-2, 2), tY + RandomNumber(-2, 2), UsingSkill)
+                            Else
+                                Call WriteWorkLeftClick(tX, tY, UsingSkill)
                             End If
                         Else
                             Call WriteWorkLeftClick(tX, tY, UsingSkill)
