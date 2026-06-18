@@ -1,4 +1,3 @@
-Attribute VB_Name = "ModDiscord"
 Attribute VB_Name = "modDiscord"
 
 '*****************************************************************************
@@ -8,7 +7,7 @@ Attribute VB_Name = "modDiscord"
 ' DiscordRichPresenceVB6.dll
 '
 ' Usage:
-'   1. Copy DiscordRichPresenceVB6.dll and discord-rpc.dll to your application folder
+'   1. Copy DiscordRichPresenceVB6.dll and discord_game_sdk.dll to your application folder
 '   2. Add this module to your VB6 project
 '   3. Call Discord_Initialize with your Application ID
 '   4. Call Discord_Update to update presence
@@ -165,9 +164,13 @@ End Sub
 
 ' Check if Discord is connected
 Public Function Discord_IsConnected() As Boolean
+    On Error GoTo ErrHandler
     Dim Result As Long
     Result = IsDiscordInitialized()
     Discord_IsConnected = (Result = 1)
+    Exit Function
+ErrHandler:
+    Discord_IsConnected = False
 End Function
 
 ' Get current Unix timestamp (seconds since 1970-01-01)

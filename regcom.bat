@@ -28,5 +28,5 @@ REGSVR32 /s %SystemRoot%\SysWOW64\RICHTX32.OCX
 copy "!mypath!DiscordRichPresenceVB6.dll" %SystemRoot%\SysWOW64
 REGSVR32 /s %SystemRoot%\SysWOW64\DiscordRichPresenceVB6.dll
 
-copy "!mypath!discord_game_sdk.dll" %SystemRoot%\SysWOW64
-REGSVR32 /s %SystemRoot%\SysWOW64\discord_game_sdk.dll
+if exist "!mypath!discord_game_sdk.dll" copy "!mypath!discord_game_sdk.dll" %SystemRoot%\SysWOW64
+REM discord_game_sdk.dll is not a COM server; do not register with REGSVR32
