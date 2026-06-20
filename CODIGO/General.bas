@@ -765,6 +765,8 @@ UnitTest_Err:
     Call Frmcarga.Show
     Set FormParser = New clsCursor
     Call FormParser.Init
+    'SetDllDirectory must be called before ValidateResources because GetCrc32 is in AOACClient.dll
+    SetDllDirectory App.path
     If Not ValidateResources Then
         Call MsgBox(JsonLanguage.Item("MENSAJEBOX_RECURSOS_INVALIDOS"), vbApplicationModal + vbInformation + vbOKOnly, JsonLanguage.Item("MENSAJEBOX_TITULO_RECURSOS_INVALIDOS"))
         End
