@@ -4063,7 +4063,6 @@ Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVa
         personaje(Jugador).Left = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - personaje(Jugador).Width \ 2 - 1
         personaje(Jugador).Top = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - personaje(Jugador).Height \ 2 - 1
         personaje(Jugador).visible = True  ' <--- ADD THIS LINE
-        MinimapDots(Jugador).visible = False  ' <--- ADD THIS LINE TOO (hide DirectX dots)
     Else
         ' In centered mode all dots are rendered by DirectX; hide the VB.Shape controls.
         personaje(Jugador).visible = False
@@ -4072,7 +4071,6 @@ Public Sub SetMinimapPosition(ByVal Jugador As Integer, ByVal x As Integer, ByVa
             ' Player dot is always centred in the viewport
             MinimapDots(0).screenX = MinimapVP_DestW \ 2
             MinimapDots(0).screenY = MinimapVP_DestH \ 2
-            Call RenderMinimapCentered(UserMap, x, y, CenteredMinimapZoom, CenteredMinimapZoom)
         Else
             ' Project ally tile position onto the current centered viewport.
             ' Protocol already ensures the ally is on the same map as the player.
@@ -4319,7 +4317,6 @@ Private Sub ApplyMinimapZoom(ByVal Delta As Integer)
 
     CenteredMinimapZoom = NewZoom
 
-    Call RenderMinimapCentered(UserMap, UserPos.X, UserPos.Y, CenteredMinimapZoom, CenteredMinimapZoom)
     Exit Sub
     
 ApplyMinimapZoom_Err:
