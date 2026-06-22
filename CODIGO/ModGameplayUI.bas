@@ -26,6 +26,9 @@ Attribute VB_Name = "ModGameplayUI"
 '
 '
 
+Global G_LastSelectedSlot As Integer
+Global G_LasSelectedObjIndex As Integer
+
 Public Sub SetupGameplayUI()
     frmMain.shapexy.Left = 1200
     frmMain.shapexy.Top = 1200
@@ -461,6 +464,8 @@ End Sub
 Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByVal ObjIndex As Integer)
     Dim ObjType As Byte
     ObjType = ObjData(ObjIndex).ObjType
+    G_LastSelectedSlot = Slot
+    G_LasSelectedObjIndex = ObjIndex
     Select Case ObjType
         Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otAnillos, eObjType.otManchas
             If Not Equipped Then
@@ -490,6 +495,8 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
             If Not Equipped Then
                 Call WriteEquipItem(Slot)
             End If
+        Case eObjType.otCollectibleCard
+            frmCollectibleCard.visible = True
         Case Else
             Call WriteUseItem(Slot)
     End Select

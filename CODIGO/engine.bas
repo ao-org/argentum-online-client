@@ -1068,6 +1068,38 @@ Batch_Textured_Box_Err:
     Resume Next
 End Sub
 
+Public Sub Batch_Textured_Box_File(ByVal x As Long, _
+                              ByVal y As Long, _
+                              ByVal Width As Integer, _
+                              ByVal Height As Integer, _
+                              ByVal sX As Integer, _
+                              ByVal sY As Integer, _
+                              ByVal filename As String, _
+                              ByRef Color() As RGBA, _
+                              Optional ByVal alpha As Boolean = False, _
+                              Optional ByVal angle As Single = 0, _
+                              Optional ByVal ScaleX As Single = 1!, _
+                              Optional ByVal ScaleY As Single = 1!)
+    On Error GoTo Batch_Textured_Box_File_Err
+    Dim Texture      As Direct3DTexture8
+    Dim TextureWidth As Long, TextureHeight As Long
+    Set Texture = SurfaceDB.GetInterfaceTexture(filename, TextureWidth, TextureHeight)
+    With SpriteBatch
+        Call .SetTexture(Texture)
+        Call .SetAlpha(alpha)
+        If TextureWidth <> 0 And TextureHeight <> 0 Then
+            Call .Draw(x, y, Width * ScaleX, Height * ScaleY, Color, (sX + 0.25) / TextureWidth, (sY + 0.25) / TextureHeight, (sX + Width) / TextureWidth, (sY + Height) / _
+                    TextureHeight, angle)
+        Else
+            Call .Draw(x, y, TextureWidth * ScaleX, TextureHeight * ScaleY, Color, , , , , angle)
+        End If
+    End With
+    Exit Sub
+Batch_Textured_Box_File_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.Batch_Textured_Box_File", Erl)
+    Resume Next
+End Sub
+
 Public Sub Batch_Textured_Box_Advance(ByVal x As Long, _
                                       ByVal y As Long, _
                                       ByVal Width As Integer, _
@@ -1996,6 +2028,10 @@ Public Sub start()
                         DrawInventoryUserComercio
                         DrawInventoryOtherComercio
                     End If
+                    If frmCollectibleCard.visible Then
+                        Call DrawCollectibleCard
+                    End If
+                    
                     'Utilizo un boolean, para evitar utilizar la propiedad .visible de los formularios, ya que aparentemente instancia el form y baja la performance.
                     If bSkins Then
                         DrawInventorySkins
