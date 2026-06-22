@@ -283,6 +283,7 @@ Public Type NpcDatas
     Amphibian As Boolean
     QuizaProb As Integer
     DisabledInBattleServer As Integer
+    NpcFaceGrh As Long
 End Type
 
 Public Type HechizoDatas

@@ -1619,18 +1619,33 @@ Private Sub HandleChatOverHeadImpl(ByVal chat As String, _
             chat = NpcData(text).desc
             copiar = False
             If npcs_en_render And tutorial_index <= 0 Then
-                Dim headGrh As Long
-                Dim bodyGrh As Long
-                headGrh = HeadData(NpcData(text).Head).Head(3).GrhIndex
-                bodyGrh = GrhData(BodyData(NpcData(text).Body).Walk(3).GrhIndex).Frames(1)
-                If headGrh = 0 Then
-                    Call mostrarCartel(Split(NpcData(text).Name, " <")(0), NpcData(text).desc, bodyGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, _
-                            50, 80, bodyGrh, 1)
+                Dim npcFaceGrh As Long
+                Dim useNpcFaceGrh As Boolean
+                npcFaceGrh = NpcData(text).NpcFaceGrh
+                If npcFaceGrh > 0 Then
+                    If npcFaceGrh <= MaxGrh Then
+                        useNpcFaceGrh = GrhData(npcFaceGrh).NumFrames > 0 And _
+                                GrhData(npcFaceGrh).pixelWidth > 0 And _
+                                GrhData(npcFaceGrh).pixelHeight > 0
+                    End If
+                End If
+                If useNpcFaceGrh Then
+                    Call mostrarCartel(Split(NpcData(text).Name, " <")(0), NpcData(text).desc, npcFaceGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 145, 479, 145, 535, 5, 477, _
+                            GrhData(npcFaceGrh).pixelWidth, GrhData(npcFaceGrh).pixelHeight)
                 Else
-                    Dim HeadOffsetY As Integer
-                    HeadOffsetY = CInt(BodyData(NpcData(text).Body).HeadOffset.y) - 30
-                    Call mostrarCartel(Split(NpcData(text).Name, " <")(0), NpcData(text).desc, headGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, _
-                            50, 100, bodyGrh, HeadOffsetY)
+                    Dim headGrh As Long
+                    Dim bodyGrh As Long
+                    headGrh = HeadData(NpcData(text).Head).Head(3).GrhIndex
+                    bodyGrh = GrhData(BodyData(NpcData(text).Body).Walk(3).GrhIndex).Frames(1)
+                    If headGrh = 0 Then
+                        Call mostrarCartel(Split(NpcData(text).Name, " <")(0), NpcData(text).desc, bodyGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, _
+                                50, 80, bodyGrh, 1)
+                    Else
+                        Dim HeadOffsetY As Integer
+                        HeadOffsetY = CInt(BodyData(NpcData(text).Body).HeadOffset.y) - 30
+                        Call mostrarCartel(Split(NpcData(text).Name, " <")(0), NpcData(text).desc, headGrh, 200 + 30 * Len(chat), &H164B8A, , , True, 100, 479, 100, 535, 20, 500, _
+                                50, 100, bodyGrh, HeadOffsetY)
+                    End If
                 End If
             End If
         Case "PMAG"
