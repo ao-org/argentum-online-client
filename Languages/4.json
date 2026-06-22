@@ -776,5 +776,7 @@
   "MSG_ALIAS_ALREADY_TAKEN": "L'alias est déjà utilisé.",
   "MSG_ALIAS_INVALID": "Alias invalide, (entre 3 et 30 caractères alphanumériques)",
   "MSG_CONFIRM_EMPTY_RENAME": "Êtes-vous sûr de vouloir supprimer l'alias de votre personnage ?",
-  "MSG_ALIAS_PRESENT": "Vous ne pouvez pas transférer ou supprimer un personnage qui a un alias. Veuillez supprimer l'alias avant de réaliser cette action."
+  "MSG_ALIAS_PRESENT": "Vous ne pouvez pas transférer ou supprimer un personnage qui a un alias. Veuillez supprimer l'alias avant de réaliser cette action.",
+  "MSG_ADD_TO_ALBUM_COLLECTION" : "Ajouter à la collection",
+  "CAPTION_CARD_VIEWER" : "Visualiseur de cartes"
 }

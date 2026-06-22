@@ -1,5 +1,6 @@
 VERSION 5.00
 Begin VB.Form frmCollectibleCard 
+   AutoRedraw      =   -1  'True
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Card Viewer"
    ClientHeight    =   8970
@@ -54,4 +55,6 @@ End Sub
 
 Private Sub Form_Load()
     Me.Move (screen.Width - Me.Width) \ 2, (screen.Height - Me.Height) \ 2
+    cmdAccept.Caption = JsonLanguage.Item("MSG_ADD_TO_ALBUM_COLLECTION")
+    frmCollectibleCard.Caption = JsonLanguage.Item("CAPTION_CARD_VIEWER")
 End Sub
