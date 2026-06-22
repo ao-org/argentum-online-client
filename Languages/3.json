@@ -776,5 +776,13 @@
   "MSG_ALIAS_ALREADY_TAKEN": "O alias já está em uso.",
   "MSG_ALIAS_INVALID": "Alias inválido, (entre 3 e 30 caracteres alfanuméricos)",
   "MSG_CONFIRM_EMPTY_RENAME": "Tem certeza de que deseja remover o alias do seu personagem?",
-  "MSG_ALIAS_PRESENT": "Você não pode transferir ou excluir um personagem que tenha alias. Por favor, remova o alias antes de realizar esta ação."
+  "MSG_ALIAS_PRESENT": "Você não pode transferir ou excluir um personagem que tenha alias. Por favor, remova o alias antes de realizar esta ação.",
+  "MSG_ACCOUNT_SCREEN": "A selecionar conta...",
+  "MSG_LOGIN_SCREEN": "No ecrã de seleção de personagens",
+   "MSG_GULFAS_JOKE1": "Elogiando Gulfas",
+  "MSG_GULFAS_JOKE2": "À conversa com Gulfas",
+  "MSG_GULFAS_JOKE3": "Desiludir Gulfas",
+  "MSG_GULFAS_JOKE4": "Insultando Gulfas",
+  "MSG_GULFAS_JOKE5": "Desafiando Gulfas",
+  "MSG_GULFAS_JOKE6": "Gozar com Gulfas"
 }

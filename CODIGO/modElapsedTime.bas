@@ -2,7 +2,7 @@ Attribute VB_Name = "modElapsedTime"
 ' === modTicksMasked.bas ===
 Option Explicit
 
-Private Declare Function timeGetTime Lib "winmm.dll" () As Long
+Public Declare Function timeGetTime Lib "winmm.dll" () As Long
 
 Private Const TICKS32 As Double = 4294967296#
 
