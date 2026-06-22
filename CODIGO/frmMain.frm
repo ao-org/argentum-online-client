@@ -32,53 +32,6 @@ Begin VB.Form frmMain
    ScaleWidth      =   1332
    StartUpPosition =   2  'CenterScreen
    Visible         =   0   'False
-   Begin VB.PictureBox CollectibleCardViewer 
-      Appearance      =   0  'Flat
-      AutoRedraw      =   -1  'True
-      AutoSize        =   -1  'True
-      BackColor       =   &H00000000&
-      BorderStyle     =   0  'None
-      DrawStyle       =   5  'Transparent
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H80000008&
-      Height          =   9000
-      Left            =   120
-      ScaleHeight     =   600
-      ScaleMode       =   0  'User
-      ScaleWidth      =   321.738
-      TabIndex        =   45
-      Top             =   2400
-      Visible         =   0   'False
-      Width           =   6585
-      Begin VB.CommandButton cmdCardViewerAccept 
-         Caption         =   "Accept"
-         Height          =   375
-         Left            =   3360
-         Style           =   1  'Graphical
-         TabIndex        =   47
-         Top             =   8640
-         Visible         =   0   'False
-         Width           =   3255
-      End
-      Begin VB.CommandButton cmdCardViewerClose 
-         Caption         =   "Cancel"
-         Height          =   375
-         Left            =   0
-         Style           =   1  'Graphical
-         TabIndex        =   46
-         Top             =   8640
-         Visible         =   0   'False
-         Width           =   3255
-      End
-   End
    Begin VB.PictureBox shapexy 
       Appearance      =   0  'Flat
       AutoSize        =   -1  'True
@@ -1312,7 +1265,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9705
-      TabIndex        =   49
+      TabIndex        =   46
       Top             =   195
       Width           =   1215
    End
@@ -1333,7 +1286,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9720
-      TabIndex        =   50
+      TabIndex        =   47
       Top             =   195
       Width           =   1215
    End
@@ -1354,7 +1307,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9735
-      TabIndex        =   51
+      TabIndex        =   48
       Top             =   195
       Width           =   1215
    End
@@ -1375,7 +1328,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9705
-      TabIndex        =   52
+      TabIndex        =   49
       Top             =   210
       Width           =   1215
    End
@@ -1396,7 +1349,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9735
-      TabIndex        =   53
+      TabIndex        =   50
       Top             =   210
       Width           =   1215
    End
@@ -1417,7 +1370,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9705
-      TabIndex        =   54
+      TabIndex        =   51
       Top             =   225
       Width           =   1215
    End
@@ -1438,7 +1391,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9720
-      TabIndex        =   55
+      TabIndex        =   52
       Top             =   225
       Width           =   1215
    End
@@ -1459,7 +1412,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   225
       Left            =   9735
-      TabIndex        =   56
+      TabIndex        =   53
       Top             =   225
       Width           =   1215
    End
@@ -1640,7 +1593,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00E0E0E0&
       Height          =   165
       Left            =   9765
-      TabIndex        =   48
+      TabIndex        =   45
       Top             =   45
       Width           =   1125
    End
@@ -1935,19 +1888,6 @@ Private Sub clanimg_MouseUp(Button As Integer, Shift As Integer, x As Single, y 
 clanimg_MouseUp_Err:
     Call RegistrarError(Err.Number, Err.Description, "frmMain.clanimg_MouseUp", Erl)
     Resume Next
-End Sub
-
-Private Sub cmdCardViewerAccept_Click()
-    frmMain.CollectibleCardViewer.visible = False
-    frmMain.cmdCardViewerAccept.visible = False
-    frmMain.cmdCardViewerClose.visible = False
-    Call WriteUseItem(G_LastSelectedSlot)
-End Sub
-
-Private Sub cmdCardViewerClose_Click()
-    frmMain.CollectibleCardViewer.visible = False
-    frmMain.cmdCardViewerAccept.visible = False
-    frmMain.cmdCardViewerClose.visible = False
 End Sub
 
 Private Sub cmdlanzar_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)

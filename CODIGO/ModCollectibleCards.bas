@@ -2,7 +2,7 @@ Attribute VB_Name = "ModCollectibleCards"
 Option Explicit
 
 Public Sub DrawCollectibleCard()
-    Call CollectibleCardRender(frmMain.CollectibleCardViewer, ObjData(G_LasSelectedObjIndex).CollectibleCardImgPathing, 0, 0, 439, 600, 0, 0, frmMain.CollectibleCardViewer.Width, frmMain.CollectibleCardViewer.Height)
+    Call CollectibleCardRender(frmCollectibleCard.picCollectibleCard, ObjData(G_LasSelectedObjIndex).CollectibleCardImgPathing, 0, 0, 439, 600, 0, 0, frmCollectibleCard.picCollectibleCard.Width, frmCollectibleCard.picCollectibleCard.Height)
 End Sub
 
 Public Sub CollectibleCardRender(ByRef pic As PictureBox, _

@@ -496,9 +496,7 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
                 Call WriteEquipItem(Slot)
             End If
         Case eObjType.otCollectibleCard
-            frmMain.CollectibleCardViewer.visible = True
-            frmMain.cmdCardViewerAccept.visible = True
-            frmMain.cmdCardViewerClose.visible = True
+            frmCollectibleCard.visible = True
         Case Else
             Call WriteUseItem(Slot)
     End Select

@@ -2028,7 +2028,7 @@ Public Sub start()
                         DrawInventoryUserComercio
                         DrawInventoryOtherComercio
                     End If
-                    If frmMain.CollectibleCardViewer.visible Then
+                    If frmCollectibleCard.visible Then
                         Call DrawCollectibleCard
                     End If
                     
