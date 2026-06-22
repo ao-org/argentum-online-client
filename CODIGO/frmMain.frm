@@ -34,8 +34,11 @@ Begin VB.Form frmMain
    Visible         =   0   'False
    Begin VB.PictureBox CollectibleCardViewer 
       Appearance      =   0  'Flat
+      AutoRedraw      =   -1  'True
+      AutoSize        =   -1  'True
       BackColor       =   &H00000000&
       BorderStyle     =   0  'None
+      DrawStyle       =   5  'Transparent
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   8.25
@@ -479,6 +482,7 @@ Begin VB.Form frmMain
       _Version        =   393217
       BackColor       =   0
       BorderStyle     =   0
+      Enabled         =   -1  'True
       HideSelection   =   0   'False
       ReadOnly        =   -1  'True
       ScrollBars      =   2

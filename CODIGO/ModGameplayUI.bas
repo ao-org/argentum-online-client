@@ -27,6 +27,7 @@ Attribute VB_Name = "ModGameplayUI"
 '
 
 Global G_LastSelectedSlot As Integer
+Global G_LasSelectedObjIndex As Integer
 
 Public Sub SetupGameplayUI()
     frmMain.shapexy.Left = 1200
@@ -464,6 +465,7 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
     Dim ObjType As Byte
     ObjType = ObjData(ObjIndex).ObjType
     G_LastSelectedSlot = Slot
+    G_LasSelectedObjIndex = ObjIndex
     Select Case ObjType
         Case eObjType.otArmadura, eObjType.otESCUDO, eObjType.otmagicos, eObjType.otFlechas, eObjType.otCASCO, eObjType.otAnillos, eObjType.otManchas
             If Not Equipped Then
@@ -494,11 +496,9 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
                 Call WriteEquipItem(Slot)
             End If
         Case eObjType.otCollectibleCard
-            frmMain.CollectibleCardViewer.ZOrder (0)
             frmMain.CollectibleCardViewer.visible = True
             frmMain.cmdCardViewerAccept.visible = True
             frmMain.cmdCardViewerClose.visible = True
-            Call DrawCollectibleCard(frmMain.CollectibleCardViewer, ObjData(ObjIndex).CollectibleCardImgPathing, 0, 0, 439, 600, 0, 0, frmMain.CollectibleCardViewer.Width, frmMain.CollectibleCardViewer.Height)
         Case Else
             Call WriteUseItem(Slot)
     End Select

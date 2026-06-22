@@ -2028,6 +2028,10 @@ Public Sub start()
                         DrawInventoryUserComercio
                         DrawInventoryOtherComercio
                     End If
+                    If frmMain.CollectibleCardViewer.visible Then
+                        Call DrawCollectibleCard
+                    End If
+                    
                     'Utilizo un boolean, para evitar utilizar la propiedad .visible de los formularios, ya que aparentemente instancia el form y baja la performance.
                     If bSkins Then
                         DrawInventorySkins

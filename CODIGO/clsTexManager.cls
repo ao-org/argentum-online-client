@@ -321,7 +321,6 @@ End Function
  ' PNG when Compresion=1, BMP when Compresion=0
 '======================
 Public Function GetInterfaceTexture(ByVal filename As String, ByRef textwidth As Long, ByRef textheight As Long) As Direct3DTexture8
-    Debug.Print "called getintefacetexture with " & filename
     On Error GoTo errhandler
     Debug.Assert LenB(filename) <> 0
     Dim lKey As Long: lKey = InterfaceTextureKeyFromFilename(filename)
