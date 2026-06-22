@@ -952,6 +952,74 @@ Grh_Render_To_Hdc_Err:
     Resume Next
 End Sub
 
+Public Sub Device_Box_Texture_Render(ByRef texture As Direct3DTexture8, _
+                                     ByVal dest_x As Integer, _
+                                     ByVal dest_y As Integer, _
+                                     ByVal src_width As Integer, _
+                                     ByVal src_height As Integer, _
+                                     ByVal textureWidth As Long, _
+                                     ByVal textureHeight As Long, _
+                                     ByRef Color() As RGBA, _
+                                     ByVal src_x As Integer, _
+                                     ByVal src_y As Integer, _
+                                     Optional ByVal alpha_blend As Boolean = False, _
+                                     Optional ByVal angle As Single = 0)
+    On Error GoTo Device_Box_Texture_Render_Err
+
+    If texture Is Nothing Then Exit Sub
+    If src_width <= 0 Or src_height <= 0 Then Exit Sub
+    If textureWidth <= 0 Or textureHeight <= 0 Then Exit Sub
+
+    Static src_rect      As RECT
+    Static dest_rect     As RECT
+    Static temp_verts(3) As TYPE_VERTEX
+
+    With src_rect
+        .Bottom = src_y + src_height
+        .Left = src_x
+        .Right = src_x + src_width
+        .Top = src_y
+    End With
+
+    With dest_rect
+        .Bottom = dest_y + src_height
+        .Left = dest_x
+        .Right = dest_x + src_width
+        .Top = dest_y
+    End With
+
+    Call Geometry_Create_Box(temp_verts(), _
+                             dest_rect, _
+                             src_rect, _
+                             Color(), _
+                             textureWidth, _
+                             textureHeight, _
+                             angle)
+
+    Call DirectDevice.SetTexture(0, texture)
+
+    If alpha_blend Then
+        Call DirectDevice.SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE)
+        Call DirectDevice.SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE)
+    End If
+
+    Call DirectDevice.DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0)))
+
+    If alpha_blend Then
+        Call DirectDevice.SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA)
+        Call DirectDevice.SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA)
+    End If
+
+    Call DirectDevice.SetRenderState(D3DRS_ALPHABLENDENABLE, 1)
+    Call DirectDevice.SetRenderState(D3DRS_ALPHATESTENABLE, 1)
+
+    Exit Sub
+
+Device_Box_Texture_Render_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.Device_Box_Texture_Render", Erl)
+    Resume Next
+End Sub
+
 Public Sub Grh_Render_To_HdcSinBorrar(ByRef pic As PictureBox, _
                                       ByVal GrhIndex As Long, _
                                       ByVal screen_x As Integer, _
@@ -977,83 +1045,9 @@ Grh_Render_To_HdcSinBorrar_Err:
     Resume Next
 End Sub
 
-' Renders a cropped and scaled region of a texture into a PictureBox using DirectX 8.
-' TextureFileNum : key previously registered with SurfaceDB.GetInterfaceTexture (e.g. -1, -2)
-' destX/Y/Width/Height : destination rectangle in the PictureBox (pixels)
-' srcX/Y/Width/Height  : source crop region inside the texture (pixels)
-' ClearColor           : ARGB colour used to clear the PictureBox before rendering
-Public Sub Minimap_Render_Cropped_To_Hdc(ByRef pic As PictureBox, _
-                                         ByVal TextureFileNum As Integer, _
-                                         ByVal destX As Long, _
-                                         ByVal destY As Long, _
-                                         ByVal destWidth As Long, _
-                                         ByVal destHeight As Long, _
-                                         ByVal srcX As Long, _
-                                         ByVal srcY As Long, _
-                                         ByVal srcWidth As Long, _
-                                         ByVal srcHeight As Long, _
-                                         Optional ByVal ClearColor As Long = &H0)
-    On Error GoTo Minimap_Render_Cropped_To_Hdc_Err
-    Dim d3dTex        As D3D8Textures
-    Dim srcRect       As Rect
-    Dim dstRect       As Rect
-    Dim picRect       As Rect
-    Dim temp_verts(3) As TYPE_VERTEX
-    Dim di            As Integer
-    Dim dv(3)         As TYPE_VERTEX
-    Dim cx            As Single
-    Dim cy            As Single
-    Dim dh            As Integer
-    Set d3dTex.Texture = SurfaceDB.GetInterfaceTexture(TextureFileNum, "", d3dTex.texwidth, d3dTex.texheight)
-    If d3dTex.Texture Is Nothing Then Exit Sub
-    With picRect
-        .Left = 0
-        .Top = 0
-        .Right = pic.ScaleWidth
-        .Bottom = pic.ScaleHeight
-    End With
-    With srcRect
-        .Left = srcX
-        .Top = srcY
-        .Right = srcX + srcWidth
-        .Bottom = srcY + srcHeight
-    End With
-    With dstRect
-        .Left = destX
-        .Top = destY
-        .Right = destX + destWidth
-        .Bottom = destY + destHeight
-    End With
-    Geometry_Create_Box temp_verts(), dstRect, srcRect, COLOR_WHITE, d3dTex.texwidth, d3dTex.texheight, 0
-    Call DirectDevice.BeginScene
-    Call DirectDevice.Clear(0, ByVal 0, D3DCLEAR_TARGET, ClearColor, 1#, 0)
-    DirectDevice.SetTexture 0, d3dTex.Texture
-    DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, temp_verts(0), Len(temp_verts(0))
-    ' Draw overlay dots (player + allies) as untextured coloured quads
-    DirectDevice.SetTexture 0, Nothing
-    DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_SELECTARG2
-    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2
-    For di = 0 To 5
-        If MinimapDots(di).visible Then
-            cx = MinimapDots(di).screenX
-            cy = MinimapDots(di).screenY
-            dH = 2
-            dv(0).x = cx - dh:     dv(0).y = cy + dh + 1: dv(0).z = 0: dv(0).color = MinimapDots(di).dotColor
-            dv(1).x = cx - dh:     dv(1).y = cy - dh:     dv(1).z = 0: dv(1).color = MinimapDots(di).dotColor
-            dv(2).x = cx + dh + 1: dv(2).y = cy + dh + 1: dv(2).z = 0: dv(2).color = MinimapDots(di).dotColor
-            dv(3).x = cx + dh + 1: dv(3).y = cy - dh:     dv(3).z = 0: dv(3).color = MinimapDots(di).dotColor
-            DirectDevice.DrawPrimitiveUP D3DPT_TRIANGLESTRIP, 2, dv(0), Len(dv(0))
-        End If
-    Next di
-    DirectDevice.SetTextureStageState 0, D3DTSS_COLOROP, D3DTOP_MODULATE
-    DirectDevice.SetTextureStageState 0, D3DTSS_ALPHAOP, D3DTOP_MODULATE
-    Call DirectDevice.EndScene
-    Call DirectDevice.Present(picRect, ByVal 0, pic.hWnd, ByVal 0)
-    Exit Sub
-Minimap_Render_Cropped_To_Hdc_Err:
-    Call RegistrarError(Err.Number, Err.Description, "TileEngine.Minimap_Render_Cropped_To_Hdc", Erl)
-    Resume Next
-End Sub
+
+
+
 
 Function HayUserAbajo(ByVal x As Integer, ByVal y As Integer, ByVal GrhIndex As Long) As Boolean
     On Error GoTo HayUserAbajo_Err

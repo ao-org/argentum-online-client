@@ -247,6 +247,7 @@ Public Type ObjDatas
     EarthEssence As Integer
     WindEssence As Integer
     ElementalTags As Long
+    CollectibleCardImgPathing As String
 End Type
 
 Public Type NpcDatas
@@ -282,6 +283,7 @@ Public Type NpcDatas
     Amphibian As Boolean
     QuizaProb As Integer
     DisabledInBattleServer As Integer
+    NpcFaceGrh As Long
 End Type
 
 Public Type HechizoDatas
@@ -1271,7 +1273,6 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     Static worldFileNum As Integer
     Static bmpPxW       As Long
     Static bmpPxH       As Long
-    If (lastWorld <> worldNum) Or (worldFileNum = 0) Then
         Dim minimapFile As String
         Select Case worldNum
             Case 1: minimapFile = "mapa1_200x200.bmp"
@@ -1280,13 +1281,12 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
         End Select
         If minimapFile = "" Then Exit Sub
         worldFileNum = -CInt(worldNum)
-        Call SurfaceDB.GetInterfaceTexture(worldFileNum, minimapFile, bmpPxW, bmpPxH)
+        Call SurfaceDB.GetInterfaceTexture(minimapFile, bmpPxW, bmpPxH)
         If bmpPxW = 0 Or bmpPxH = 0 Then
             worldFileNum = 0
             Exit Sub
         End If
         lastWorld = worldNum
-    End If
     If worldFileNum = 0 Then Exit Sub
     ' Grid of maps in the world image
     Dim mapCellsX As Long, mapCellsY As Long
@@ -1340,8 +1340,15 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     If srcX > (bmpPxW - srcW) Then srcX = bmpPxW - srcW
     If srcY > (bmpPxH - srcH) Then srcY = bmpPxH - srcH
     ' Draw: use DirectX 8 rendering instead of slow PaintPicture
-    Call Minimap_Render_Cropped_To_Hdc(frmMain.MiniMap, worldFileNum, 0, 0, destW, destH, srcX, srcY, srcW, srcH, vbBlack)
-    ' Store viewport state so ally dots can be projected onto the current view
+    
+    Dim DestRect As RECT
+    
+    
+    DestRect.Bottom = destH
+    DestRect.Right = destW
+    DestRect.Left = 0
+    DestRect.Top = 0
+    
     MinimapVP_SrcX = srcX
     MinimapVP_SrcY = srcY
     MinimapVP_SrcW = srcW
@@ -1352,6 +1359,13 @@ Public Sub RenderMinimapCentered(ByVal currentMap As Integer, ByVal tileX As Int
     MinimapVP_MapGridY = mapGridY
     MinimapVP_CellPxW = mapCellPxW
     MinimapVP_CellPxH = mapCellPxH
+    
+    Call Engine_BeginScene
+    
+    Call Batch_Textured_Box_File(0, 0, srcW, srcH, srcX, srcY, minimapFile, COLOR_WHITE, False, 0, CSng(destW) / CSng(srcW), CSng(destH) / CSng(srcH))
+    
+    Call Engine_EndScene(DestRect, frmMain.MiniMap.hWnd)
+    
     Exit Sub
 RenderMinimap_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModUtils.RenderMinimapCentered", Erl)

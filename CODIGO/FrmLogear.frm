@@ -19,6 +19,16 @@ Begin VB.Form FrmLogear
    ScaleMode       =   3  'Pixel
    ScaleWidth      =   356
    ShowInTaskbar   =   0   'False
+   Begin VB.ComboBox cmbSteamBranch 
+      BackColor       =   &H00031413&
+      ForeColor       =   &H00C0C0C0&
+      Height          =   315
+      Left            =   720
+      TabIndex        =   7
+      Text            =   "Steam Branch"
+      Top             =   600
+      Width           =   1095
+   End
    Begin VB.TextBox txtPort 
       BackColor       =   &H80000001&
       BorderStyle     =   0  'None
@@ -283,12 +293,26 @@ Private Sub Form_Load()
     Call CargarCuentasGuardadas
     Call Aplicar_Transparencia(Me.hWnd, 240)
     Me.Picture = LoadInterface("ventanaconectar.bmp")
+    
     #If Developer = 1 Then
         txtPort.visible = True
         txtIp.visible = True
         lblPort.visible = True
         lblIp.visible = True
     #End If
+    
+    
+    Call cmbSteamBranch.Clear
+    cmbSteamBranch.AddItem ("Hardcore")
+    
+    cmbSteamBranch.AddItem ("Battleserver")
+    If Steam_GetCurrentBetaName = "" Then
+        cmbSteamBranch.ListIndex = 0
+    Else
+        cmbSteamBranch.ListIndex = 1
+    End If
+    
+    
     Me.PasswordTxt.visible = True
     Call loadButtons
     Call SetActiveServer(txtIp.text, txtPort.text)
@@ -340,6 +364,33 @@ chkRecordar_Click_Err:
     Call RegistrarError(Err.Number, Err.Description, "FrmLogear.chkRecordar_Click", Erl)
     Resume Next
 End Sub
+
+Private Sub cmbSteamBranch_Click()
+    Dim CurrentBeta As String
+    Dim DidBranchChange As Boolean
+    DidBranchChange = False
+    CurrentBeta = Steam_GetCurrentBetaName
+    Select Case CurrentBeta
+        Case vbNullString
+            If cmbSteamBranch.Text <> "Hardcore" Then
+                DidBranchChange = True
+            End If
+        Case "battleserver"
+            If cmbSteamBranch.Text <> "Battleserver" Then
+                DidBranchChange = True
+            End If
+        Case Else
+            DidBranchChange = False
+    End Select
+    If DidBranchChange Then
+        If MsgBox("Client be will reset, are you sure?", vbYesNo) = vbYes Then
+            Call Steam_SetActiveBeta(cmbSteamBranch.Text)
+            End
+        End If
+    End If
+End Sub
+
+
 
 Private Sub NameTxt_KeyDown(KeyCode As Integer, Shift As Integer)
     On Error GoTo NameTxt_KeyDown_Err

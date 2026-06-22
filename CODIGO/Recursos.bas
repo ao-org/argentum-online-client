@@ -1280,6 +1280,7 @@ Public Sub CargarIndicesOBJ()
             .info = GetLocalizedValue(Leer, "OBJ" & Obj, "Info", langPrefix)
             .Texto = GetLocalizedValue(Leer, "OBJ" & Obj, "Texto", langPrefix)
         End With
+        ObjData(Obj).CollectibleCardImgPathing = Leer.GetValue("OBJ" & Obj, "CollectibleCardImgPathing")
         ObjData(Obj).MinDef = val(Leer.GetValue("OBJ" & Obj, "MinDef"))
         ObjData(Obj).MaxDef = val(Leer.GetValue("OBJ" & Obj, "MaxDef"))
         ObjData(Obj).MinHit = val(Leer.GetValue("OBJ" & Obj, "MinHit"))
@@ -1388,6 +1389,7 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).BodyOnLand = val(Leer.GetValue("npc" & Npc, "Body"))
         NpcData(Npc).BodyIdle = val(Leer.GetValue("npc" & Npc, "BodyIdle"))
         NpcData(Npc).DisabledInBattleServer = val(Leer.GetValue("npc" & Npc, "DisabledInBattleServer"))
+        NpcData(Npc).NpcFaceGrh = val(Leer.GetValue("npc" & Npc, "NpcFaceGrh"))
         NpcData(Npc).Amphibian = val(Leer.GetValue("npc" & Npc, "Amphibian")) > 0
         If NpcData(Npc).DropCount > 0 Then
             ReDim NpcData(Npc).DropObj(1 To NpcData(Npc).DropCount) As Integer

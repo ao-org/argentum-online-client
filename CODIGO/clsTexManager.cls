@@ -41,7 +41,8 @@ Private Const HASH_TABLE_SIZE As Long = 1024   ' Power of two preferred (fast AN
 ' Entry & bucket layout
 '======================
 Private Type SURFACE_ENTRY
-    filename        As Long
+    filename        As String
+    cacheKey        As Long
     UltimoAcceso    As Long
     texture_width   As Long
     texture_height  As Long
@@ -316,18 +317,20 @@ LoadTexture_ErrHandler:
 End Function
 
 '======================
-' Public: get-or-load interface texture (PNG when Compresion=1, BMP when Compresion=0)
-' Use negative keys (e.g. -1, -2) to avoid collision with regular FileNum range.
+ ' Public: get-or-load interface texture by filename (case-insensitive)
+ ' PNG when Compresion=1, BMP when Compresion=0
 '======================
-Public Function GetInterfaceTexture(ByVal key As Integer, ByVal filename As String, ByRef textwidth As Long, ByRef textheight As Long) As Direct3DTexture8
+Public Function GetInterfaceTexture(ByVal filename As String, ByRef textwidth As Long, ByRef textheight As Long) As Direct3DTexture8
     On Error GoTo errhandler
-    Dim lKey As Long: lKey = key
+    Debug.Assert LenB(filename) <> 0
+    Dim lKey As Long: lKey = InterfaceTextureKeyFromFilename(filename)
     Dim B    As Long: B = BucketIndex(lKey)
     Dim J    As Long
     ' 1) Cache hit
     With TexList(B)
         For J = 1 To .surfaceCount
-            If .SurfaceEntry(J).filename = lKey Then
+        If .SurfaceEntry(j).cacheKey = lKey _
+           And .SurfaceEntry(j).filename = LCase$(Trim$(filename)) Then
                 .SurfaceEntry(J).UltimoAcceso = GetTickCount()
                 textwidth = .SurfaceEntry(J).texture_width
                 textheight = .SurfaceEntry(J).texture_height
@@ -358,7 +361,8 @@ Public Function GetInterfaceTexture(ByVal key As Integer, ByVal filename As Stri
             ReDim Preserve .SurfaceEntry(1 To .surfaceCount) As SURFACE_ENTRY
         End If
         With .SurfaceEntry(.surfaceCount)
-            .filename = lKey
+            .filename = LCase$(Trim$(filename))
+            .cacheKey = lKey
             .UltimoAcceso = GetTickCount()
             Set .Texture = tex
             .texture_width = desc.Width
@@ -420,3 +424,38 @@ Public Function CreateTexture(ByVal Width As Long, ByVal Height As Long) As Dire
 errhandler:
     frmDebug.add_text_tracebox "Failed to generate texture, " & Err.Description
 End Function
+
+Private Function InterfaceTextureKeyFromFilename(ByVal filename As String) As Long
+    On Error GoTo ErrHandler
+
+    Dim normalizedFilename As String
+
+    normalizedFilename = LCase$(Trim$(filename))
+
+    If LenB(normalizedFilename) = 0 Then
+        Call RegistrarError(0, _
+                            "Empty filename passed to InterfaceTextureKeyFromFilename", _
+                            "clsTexManager.InterfaceTextureKeyFromFilename", _
+                            Erl)
+
+        Exit Function
+    End If
+
+    InterfaceTextureKeyFromFilename = crcString(normalizedFilename)
+
+    If InterfaceTextureKeyFromFilename = 0 Then
+        Call RegistrarError(0, _
+                            "crcString returned 0 for filename: " & normalizedFilename, _
+                            "clsTexManager.InterfaceTextureKeyFromFilename", _
+                            Erl)
+    End If
+
+    Exit Function
+
+ErrHandler:
+    Call RegistrarError(Err.Number, _
+                        Err.Description & " Filename: " & filename, _
+                        "clsTexManager.InterfaceTextureKeyFromFilename", _
+                        Erl)
+End Function
+
