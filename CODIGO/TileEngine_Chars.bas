@@ -70,10 +70,36 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .scrollDirectionY = 0
         .MoveOffsetX = 0
         .MoveOffsetY = 0
+        .IdleClickActive = False
+        .IdleClickReturnBody = 0
     End With
     Exit Sub
 ResetCharInfo_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.ResetCharInfo", Erl)
+    Resume Next
+End Sub
+
+Public Sub TriggerNpcBodyIdleClick(ByVal TileX As Byte, ByVal TileY As Byte)
+    On Error GoTo TriggerNpcBodyIdleClick_Err
+    Dim charindex As Integer
+    charindex = MapData(TileX, TileY).charindex
+    If charindex = 0 And TileY < MaxYBorder Then charindex = MapData(TileX, TileY + 1).charindex
+    If charindex <= 0 Then Exit Sub
+    If charindex > UBound(charlist) Then Exit Sub
+    With charlist(charindex)
+        If Not .EsNpc Then Exit Sub
+        If .Movement <> 1 Then Exit Sub
+        If .BodyIdle <= 0 Then Exit Sub
+        If .BodyIdle > UBound(BodyData) Then Exit Sub
+        .IdleClickActive = True
+        .IdleClickReturnBody = IIf(.BodyOnLand > 0, .BodyOnLand, .iBody)
+        .Body = BodyData(.BodyIdle)
+        .Body.Walk(.Heading).Loops = IIf(.BodyIdleClickLoops > 0, .BodyIdleClickLoops - 1, 0)
+        .Body.Walk(.Heading).started = FrameTime
+    End With
+    Exit Sub
+TriggerNpcBodyIdleClick_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Chars.TriggerNpcBodyIdleClick", Erl)
     Resume Next
 End Sub
 

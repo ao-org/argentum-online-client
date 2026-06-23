@@ -1337,8 +1337,17 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
     Dim terrainHeight    As Integer
     With charlist(charindex)
         If .Heading = 0 Then Exit Sub
+        If .IdleClickActive Then
+            If .Body.Walk(.Heading).started = 0 Then
+                .IdleClickActive = False
+                If .IdleClickReturnBody > 0 Then
+                    .Body = BodyData(.IdleClickReturnBody)
+                    .iBody = .IdleClickReturnBody
+                End If
+            End If
+        End If
         ' --- ESTADO IDLE AL COMIENZO DEL FRAME ---
-        If Not .Moving And Not .TranslationActive And .Idle And .scrollDirectionX = 0 And .scrollDirectionY = 0 And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
+        If Not .IdleClickActive And Not .Moving And Not .TranslationActive And .Idle And .scrollDirectionX = 0 And .scrollDirectionY = 0 And .MoveOffsetX = 0 And .MoveOffsetY = 0 Then
             If .Body.AnimateOnIdle = 0 Then
                 ' Quieto SIN animación: congelar la serie de walk en frame estético
                 .Body.Walk(.Heading).Loops = 0

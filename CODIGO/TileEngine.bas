@@ -284,6 +284,10 @@ Public Type Char
     DontBlockTile As Boolean
     BodyOnLand As Integer
     BodyIdle As Integer
+    Movement As Byte
+    BodyIdleClickLoops As Byte
+    IdleClickActive As Boolean
+    IdleClickReturnBody As Integer
     BodyOnWater As Integer
     BodyOnWaterIdle As Integer
     AnimAtaque2 As Integer

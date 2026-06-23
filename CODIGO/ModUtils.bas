@@ -256,6 +256,8 @@ Public Type NpcDatas
     Body As Integer
     BodyOnLand As Integer
     BodyIdle As Integer
+    Movement As Byte
+    BodyIdleClickLoops As Byte
     BodyOnWater As Integer
     BodyOnWaterIdle As Integer
     LandAttackAnimation As Integer

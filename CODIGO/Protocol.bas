@@ -2290,6 +2290,8 @@ Private Sub HandleCharacterCreate()
         .AnimAtaque1 = NpcData(.NpcNumber).LandAttackAnimation
         .BodyOnLand = NpcData(.NpcNumber).Body
         .BodyIdle = NpcData(.NpcNumber).BodyIdle
+        .Movement = NpcData(.NpcNumber).Movement
+        .BodyIdleClickLoops = NpcData(.NpcNumber).BodyIdleClickLoops
         .BodyOnWaterIdle = NpcData(.NpcNumber).BodyOnWaterIdle
         .BodyOnWater = NpcData(.NpcNumber).BodyOnWater
         .AnimAtaque2 = NpcData(.NpcNumber).WaterAttackAnimation
