@@ -582,7 +582,6 @@ Private Sub chkCenteredMinimap_Click()
         CenteredMinimap = 1
         Call DibujarMiniMapa
         chkCenteredMiniMap.Picture = LoadInterface("check-amarillo.bmp")
-        Call RenderMinimapCentered(UserMap, UserPos.x, UserPos.y, CenteredMinimapZoom, CenteredMinimapZoom)
     Else
         CenteredMinimap = 0
         Call DibujarMiniMapa
