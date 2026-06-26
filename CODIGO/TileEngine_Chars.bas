@@ -70,6 +70,10 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .scrollDirectionY = 0
         .MoveOffsetX = 0
         .MoveOffsetY = 0
+        .BodyIdleChangeInterval = 0
+        .BodyIdleLastChange = 0
+        .BodyIdleUsingIdle = False
+        .Movement = 0
     End With
     Exit Sub
 ResetCharInfo_Err:
@@ -238,6 +242,8 @@ Public Sub Char_Move_by_Head(ByVal charindex As Integer, ByVal nHeading As E_Hea
             .Body = BodyData(.BodyOnWater)
             .AnimatingBody = 0
         End If
+        .BodyIdleLastChange = FrameTime
+        .BodyIdleUsingIdle = False
         .Idle = False
         ' --- Si cambia de dirección mientras ya está moviéndose, preservamos fase
         If .Moving And (newHeading <> oldHeading) Then
@@ -327,6 +333,8 @@ Public Sub TranslateCharacterToPos(ByVal charindex As Integer, ByVal NewX As Int
             Call EraseChar(charindex)
         End If
         .Moving = False
+        .BodyIdleLastChange = FrameTime
+        .BodyIdleUsingIdle = False
         .TranslationActive = True
         .TranslationTime = TranslationTime
         .TranslationStartTime = FrameTime
@@ -383,6 +391,8 @@ Public Sub Char_Move_by_Pos(ByVal charindex As Integer, ByVal nX As Integer, ByV
         .scrollDirectionX = Sgn(addx)
         .scrollDirectionY = Sgn(addy)
         .LastStep = FrameTime
+        .BodyIdleLastChange = FrameTime
+        .BodyIdleUsingIdle = False
         .Idle = False
         If IsAmphibianOverWater(charindex) Then
             .Body = BodyData(.BodyOnWater)

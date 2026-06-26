@@ -1388,6 +1388,8 @@ Public Sub CargarIndicesOBJ()
         NpcData(Npc).BodyOnWaterIdle = val(Leer.GetValue("npc" & Npc, "BodyOnWaterIdle"))
         NpcData(Npc).BodyOnLand = val(Leer.GetValue("npc" & Npc, "Body"))
         NpcData(Npc).BodyIdle = val(Leer.GetValue("npc" & Npc, "BodyIdle"))
+        NpcData(Npc).Movement = val(Leer.GetValue("npc" & Npc, "Movement"))
+        NpcData(Npc).BodyIdleChangeInterval = val(Leer.GetValue("npc" & Npc, "CambioAIdle"))
         NpcData(Npc).DisabledInBattleServer = val(Leer.GetValue("npc" & Npc, "DisabledInBattleServer"))
         NpcData(Npc).NpcFaceGrh = val(Leer.GetValue("npc" & Npc, "NpcFaceGrh"))
         NpcData(Npc).Amphibian = val(Leer.GetValue("npc" & Npc, "Amphibian")) > 0

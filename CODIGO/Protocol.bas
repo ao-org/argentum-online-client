@@ -2293,6 +2293,10 @@ Private Sub HandleCharacterCreate()
         .BodyOnWaterIdle = NpcData(.NpcNumber).BodyOnWaterIdle
         .BodyOnWater = NpcData(.NpcNumber).BodyOnWater
         .AnimAtaque2 = NpcData(.NpcNumber).WaterAttackAnimation
+        .Movement = NpcData(.NpcNumber).Movement
+        .BodyIdleChangeInterval = NpcData(.NpcNumber).BodyIdleChangeInterval
+        .BodyIdleLastChange = FrameTime
+        .BodyIdleUsingIdle = False
         If Backpack > 0 Then
             .Backpack = BodyData(Backpack)
             .tmpBackPack = Backpack
@@ -2469,10 +2473,15 @@ Private Sub HandleCharacterChange()
         Dim newGi            As Long
         Dim flags            As Byte
         Dim wasNavegando     As Boolean: wasNavegando = .Navegando
+        Dim wasIdle          As Boolean: wasIdle = .Idle
         ' ============================================
         flags = Reader.ReadInt8()
         .Idle = (flags And &O1)
         .Navegando = (flags And &O2)
+        If .Moving Or .TranslationActive Or (Not wasIdle And .Idle) Then
+            .BodyIdleLastChange = FrameTime
+            .BodyIdleUsingIdle = False
+        End If
         ' Navigation ended: stop the persistent sailing loop label.
         If wasNavegando And Not .Navegando Then
             Call ao20audio.StopAllWavsMatchingLabel("sailing_" & CStr(charindex))
@@ -2495,7 +2504,15 @@ Private Sub HandleCharacterChange()
                     If .Idle Then
                         If .BodyOnLand > 0 Then
                             If .BodyIdle > 0 Then
-                                .Body = BodyData(.BodyIdle)
+                                If .BodyIdleChangeInterval > 0 Then
+                                    If .BodyIdleUsingIdle Then
+                                        .Body = BodyData(.BodyIdle)
+                                    Else
+                                        .Body = BodyData(.BodyOnLand)
+                                    End If
+                                Else
+                                    .Body = BodyData(.BodyIdle)
+                                End If
                                 .iBody = .BodyOnLand
                             Else
                                 .Body = BodyData(TempInt)
@@ -2506,7 +2523,11 @@ Private Sub HandleCharacterChange()
                             .iBody = TempInt
                         End If
                     Else
-                        .Body = BodyData(.BodyOnLand)
+                        If .BodyIdleChangeInterval > 0 And .BodyIdle > 0 And .BodyIdleUsingIdle Then
+                            .Body = BodyData(.BodyIdle)
+                        Else
+                            .Body = BodyData(.BodyOnLand)
+                        End If
                         .iBody = .BodyOnLand
                     End If
                 End If
