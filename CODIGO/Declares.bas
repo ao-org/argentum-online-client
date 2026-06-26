@@ -690,7 +690,7 @@ Public Const FLAG_AGUA               As Integer = &H20
 Public Const FLAG_ARBOL              As Integer = &H40
 Public Const FLAG_COSTA              As Integer = &H80
 Public Const FLAG_LAVA               As Integer = &H100
-Public Const PRIMER_TRIGGER_TECHO    As Byte = 19
+Public Const PRIMER_TRIGGER_TECHO    As Byte = 60
 Public Const FOgata                  As Integer = 1521
 Public Const INV_FLAG_AGUA           As Single = 1 / FLAG_AGUA
 Public Const INV_FLAG_LAVA           As Single = 1 / FLAG_LAVA
@@ -792,7 +792,7 @@ Public Enum eObjType
     otContenedores = 7
     otCarteles = 8
     otLlaves = 9
-    otForos = 10
+    otCastleSpawner = 10
     otPociones = 11
     otBebidas = 13
     otLeña = 14
