@@ -497,6 +497,8 @@ Public Sub UserOrEquipItem(ByVal Slot As Integer, ByVal Equipped As Boolean, ByV
             End If
         Case eObjType.otCollectibleCard
             frmCollectibleCard.visible = True
+        Case eObjType.otCastleSpawner
+            Call WriteUseItem(Slot)
         Case Else
             Call WriteUseItem(Slot)
     End Select
