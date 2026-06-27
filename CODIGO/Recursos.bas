@@ -337,26 +337,27 @@ Public Sub InitFontTypes()
         .blue = 27
     End With
     With FontTypes(FontTypeNames.FONTTYPE_CONSEJO)
-        .red = 66
-        .green = 201
+        .red = 120
+        .green = 220
         .blue = 255
         .bold = 1
     End With
     With FontTypes(FontTypeNames.FONTTYPE_CONSEJOCAOS)
-        .red = 255
-        .green = 102
-        .blue = 102
+        .red = 160
+        .green = 15
+        .blue = 0
         .bold = 1
     End With
     With FontTypes(FontTypeNames.FONTTYPE_CONSEJOVesA)
-        .red = 31
-        .green = 139
-        .blue = 139
+        .red = 120
+        .green = 220
+        .blue = 255
         .bold = 1
     End With
     With FontTypes(FontTypeNames.FONTTYPE_CONSEJOCAOSVesA)
-        .red = 189
-        .green = 0
+        .red = 160
+        .green = 15
+        .blue = 0
         .bold = 1
     End With
     With FontTypes(FontTypeNames.FONTTYPE_CENTINELA)
@@ -382,25 +383,27 @@ Public Sub InitFontTypes()
         .bold = 1
     End With
     With FontTypes(FontTypeNames.FONTTYPE_CITIZEN)
-        .red = 6
-        .green = 128
+        .red = 0
+        .green = 130
         .blue = 255
         .bold = 1
     End With
     With FontTypes(FontTypeNames.FONTTYPE_CITIZEN_ARMADA)
-        .red = 60
-        .green = 163
+        .red = 0
+        .green = 100
         .blue = 255
         .bold = 1
     End With
     With FontTypes(FontTypeNames.FONTTYPE_CRIMINAL)
-        .red = 255
+        .red = 240
+        .green = 75
+        .blue = 70
         .bold = 1
     End With
     With FontTypes(FontTypeNames.FONTTYPE_CRIMINAL_CAOS)
         .red = 255
-        .green = 51
-        .blue = 51
+        .green = 0
+        .blue = 0
         .bold = 1
     End With
     With FontTypes(FontTypeNames.FONTTYPE_EXP)
