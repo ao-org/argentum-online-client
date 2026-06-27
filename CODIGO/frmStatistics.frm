@@ -433,18 +433,24 @@ Public Sub Iniciar_Labels()
         Atri(i).Caption = UserAtributos(i)
     Next
     Select Case UserEstadisticas.Alineacion
-        Case 0
+        Case 0  ' Criminal
             Label6(9).Caption = JsonLanguage.Item("MENSAJE_ESTADO_CRIMINAL")
-            Label6(9).ForeColor = RGB(255, 0, 0)
-        Case 1
+            Label6(9).ForeColor = RGB(240, 75, 70)
+        Case 1  ' Ciudadano
             Label6(9).Caption = JsonLanguage.Item("MENSAJE_ESTADO_CIUDADANO")
-            Label6(9).ForeColor = RGB(0, 128, 255)
-        Case 2
+            Label6(9).ForeColor = RGB(0, 130, 255)
+        Case 2  ' Legión
             Label6(9).Caption = JsonLanguage.Item("MENSAJE_ESTADO_CAOS")
-            Label6(9).ForeColor = RGB(128, 0, 0)
-        Case 3
+            Label6(9).ForeColor = RGB(255, 0, 0)
+        Case 3  ' Armada
             Label6(9).Caption = JsonLanguage.Item("MENSAJE_ESTADO_ARMADA")
-            Label6(9).ForeColor = RGB(33, 133, 132)
+            Label6(9).ForeColor = RGB(0, 100, 255)
+        Case 4  ' Consejo
+            Label6(9).Caption = JsonLanguage.Item("MENSAJE_ESTADO_CONSEJO")
+            Label6(9).ForeColor = RGB(120, 220, 255)
+        Case 5  ' Concilio
+            Label6(9).Caption = JsonLanguage.Item("MENSAJE_ESTADO_CONCILIO")
+            Label6(9).ForeColor = RGB(160, 15, 0)
         Case Else
             Label6(9).Caption = JsonLanguage.Item("MENSAJE_ERROR_DESCONOCIDO")
     End Select
