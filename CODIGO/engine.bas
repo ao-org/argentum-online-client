@@ -1860,6 +1860,10 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call RGBAList(color, 255, 0, 0, IIf(.Invisible, 160, 255))
                 Case eTipoUsuario.Legend
                     Call RGBAList(color, 255, 255, 0, IIf(.Invisible, 120, 255))
+                Case eTipoUsuario.Noble
+                    Call RGBAList(color, 138, 43, 226, IIf(.Invisible, 120, 255)) ' Purple
+                Case eTipoUsuario.Emperador
+                    Call RGBAList(color, 255, 215, 0, IIf(.Invisible, 120, 255)) ' Gold
             End Select
             Dim txt_width As Long
             If .alias <> vbNullString Then

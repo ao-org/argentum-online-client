@@ -142,7 +142,7 @@ Public Function EsObjetoFijo(ByVal x As Integer, ByVal y As Integer) As Boolean
     ObjIndex = MapData(x, y).OBJInfo.ObjIndex
     Dim ObjType As eObjType
     ObjType = ObjData(ObjIndex).ObjType
-    EsObjetoFijo = ObjType = eObjType.otForos Or ObjType = eObjType.otCarteles Or ObjType = eObjType.otArboles Or ObjType = eObjType.otYacimiento Or ObjType = _
+    EsObjetoFijo = ObjType = eObjType.otCarteles Or ObjType = eObjType.otArboles Or ObjType = eObjType.otYacimiento Or ObjType = _
             eObjType.OtDecoraciones
     Exit Function
 EsObjetoFijo_Err:

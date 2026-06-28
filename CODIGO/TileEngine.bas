@@ -166,6 +166,8 @@ Public Enum eTipoUsuario
     aventurero
     heroe
     Legend
+    Noble
+    Emperador
 End Enum
 
 Public Type tMascota

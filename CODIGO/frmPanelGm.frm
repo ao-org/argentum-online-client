@@ -3379,7 +3379,7 @@ Public Sub CadenaChat(ByVal chat As String)
                 Case InStr(Cadena, "Ocultar") > 0
                     If chkInfoTXT.value = 1 Then Resultado = GuardarTextoEnArchivo(nombre & ",Macro de Ocultar ", "MacroOcultar.txt")
                     'Call ParseUserCommand("/MENSAJEINFORMACION " & nombre & "@" & "INFORMACION: Le recordamos que el uso de macros o programas externos está estrictamente prohibido y puede resultar en sanciones.")
-                    If frmPanelgm.chkOcultar.value = 1 Then
+                    If frmPanelgm.chkOcultar.value = 1 Or frmPanelgm.chkOcultarCarcel.value = 1 Then
                         If frmPanelgm.cboListaUsus.text = nombre Then
                             ' Obtener el tiempo actual en milisegundos
                             Dim TiempoActual As Single
@@ -3524,8 +3524,10 @@ Private Sub AplicarSancionMacro(ByVal nombre As String, ByVal cerrarCliente As B
         tiempoCarcel = 600
     End If
 
-    If mandarCarcel And Not EstaUsuarioEnMapa66(nombre) Then
-        Call ParseUserCommand("/CARCEL " & nombre & "@Uso de programas externos, Macros o Cheat@" & tiempoCarcel)
+    If mandarCarcel Then
+        If Not EstaUsuarioEnMapa66(nombre) Then
+            Call ParseUserCommand("/CARCEL " & nombre & "@Uso de programas externos, Macros o Cheat@" & tiempoCarcel)
+        End If
     ElseIf cerrarCliente Then
         Call WriteCerraCliente(nombre)
     End If
