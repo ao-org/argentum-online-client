@@ -354,6 +354,10 @@ Public Function HandleIncomingData(ByVal message As Network.Reader) As Boolean
                 Call HandleDatosGrupo
             Case ServerPacketID.eubicacion
                 Call HandleUbicacion
+            Case ServerPacketID.eUbicacionFaccion
+                Call HandleUbicacionFaccion
+            Case ServerPacketID.eUserFaccion
+                Call HandleUserFaccion
             Case ServerPacketID.eArmaMov
                 Call HandleArmaMov
             Case ServerPacketID.eEscudoMov
@@ -1381,6 +1385,10 @@ Private Sub HandleChangeMap()
     If frmGoliath.visible Then Unload frmGoliath
     If FrmViajes.visible Then Unload FrmViajes
     If frmCantidad.visible Then Unload frmCantidad
+    Dim s As Integer
+    For s = 0 To 19
+        frmMain.HideFaccionDot s
+    Next s
     Call SwitchMap(UserMap, ResourceMap)
     Exit Sub
 HandleChangeMap_Err:
@@ -6305,3 +6313,35 @@ End Sub
     End Sub
 
 #End If
+
+Private Sub HandleUserFaccion()
+    On Error GoTo HandleUserFaccion_Err
+    UserFaccion = reader.ReadInt8()
+    Exit Sub
+HandleUserFaccion_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUserFaccion", Erl)
+End Sub
+
+Private Sub HandleUbicacionFaccion()
+    On Error GoTo HandleUbicacionFaccion_Err
+    Dim Slot As Byte
+    Dim x    As Byte
+    Dim y    As Byte
+    Dim map  As Integer
+    Slot = reader.ReadInt8()
+    x = reader.ReadInt8()
+    y = reader.ReadInt8()
+    map = reader.ReadInt16()
+    If x = 0 Then
+        frmMain.HideFaccionDot Slot
+    Else
+        If UserMap = map Then
+            Call frmMain.SetFaccionDotPosition(Slot, x, y)
+        Else
+            frmMain.HideFaccionDot Slot
+        End If
+    End If
+    Exit Sub
+HandleUbicacionFaccion_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleUbicacionFaccion", Erl)
+End Sub

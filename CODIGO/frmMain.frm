@@ -410,6 +410,266 @@ Begin VB.Form frmMain
          Top             =   750
          Width           =   75
       End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   19
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   18
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   17
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   16
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   15
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   14
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   13
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   12
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   11
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   10
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   9
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   8
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   7
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   6
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   5
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   4
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   3
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   2
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   1
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
+      Begin VB.Shape faccion 
+         BackColor       =   &H000000C0&
+         BackStyle       =   1  'Opaque
+         BorderColor     =   &H00FFFFFF&
+         FillColor       =   &H0000FFFF&
+         Height          =   75
+         Index           =   0
+         Left            =   9600
+         Shape           =   3  'Circle
+         Top             =   750
+         Visible         =   0   'False
+         Width           =   75
+      End
    End
    Begin VB.Timer macrotrabajo 
       Enabled         =   0   'False
@@ -4087,6 +4347,55 @@ End Sub
 Public Sub HideMinimapDot(ByVal Jugador As Integer)
     personaje(Jugador).visible = False
     MinimapDots(Jugador).visible = False
+End Sub
+
+Private Function GetFaccionDotColor() As RGBA
+    Dim c As RGBA
+    If UserFaccion = e_Facciones.armada Or UserFaccion = e_Facciones.consejo Then
+        c.R = 0:   c.G = 100: c.b = 255: c.A = 255  ' azul
+    Else
+        c.R = 255: c.G = 128: c.b = 0:   c.A = 255  ' naranja
+    End If
+    GetFaccionDotColor = c
+End Function
+
+Public Sub SetFaccionDotPosition(ByVal Slot As Integer, ByVal x As Integer, ByVal y As Integer)
+    If CenteredMinimap = 0 Then
+        Dim colorVB As Long
+        If UserFaccion = e_Facciones.armada Or UserFaccion = e_Facciones.consejo Then
+            colorVB = RGB(0, 100, 255)    ' azul
+        Else
+            colorVB = RGB(255, 128, 0)    ' naranja
+        End If
+        faccion(Slot).FillColor = colorVB
+        faccion(Slot).BackColor = colorVB
+        faccion(Slot).BorderColor = colorVB
+        faccion(Slot).Left = (x - HalfWindowTileWidth - 2) * (100 / (100 - 2 * HalfWindowTileWidth - 4)) - faccion(Slot).Width \ 2 - 1
+        faccion(Slot).top = (y - HalfWindowTileHeight - 1) * (100 / (100 - 2 * HalfWindowTileHeight - 2)) - faccion(Slot).Height \ 2 - 1
+        faccion(Slot).visible = True
+        FaccionDots(Slot).visible = False
+    Else
+        faccion(Slot).visible = False
+        FaccionDots(Slot).visible = True
+        FaccionDots(Slot).dotColor = GetFaccionDotColor()
+        If MinimapVP_SrcW > 0 And MinimapVP_SrcH > 0 Then
+            Dim allyPxX As Long
+            Dim allyPxY As Long
+            allyPxX = CLng((MinimapVP_MapGridX + (x - MINIMAP_MIN_TILE_X + 0.5) / MINIMAP_TILE_COUNT_X) * MinimapVP_CellPxW)
+            allyPxY = CLng((MinimapVP_MapGridY + (y - MINIMAP_MIN_TILE_Y + 0.5) / MINIMAP_TILE_COUNT_Y) * MinimapVP_CellPxH)
+            FaccionDots(Slot).screenX = CLng((allyPxX - MinimapVP_SrcX) * MinimapVP_DestW / MinimapVP_SrcW)
+            FaccionDots(Slot).screenY = CLng((allyPxY - MinimapVP_SrcY) * MinimapVP_DestH / MinimapVP_SrcH)
+        End If
+    End If
+End Sub
+
+Public Sub HideFaccionDot(ByVal Slot As Integer)
+    faccion(Slot).visible = False
+    faccion(Slot).Left = 0
+    faccion(Slot).top = 0
+    FaccionDots(Slot).visible = False
+    FaccionDots(Slot).screenX = 0
+    FaccionDots(Slot).screenY = 0
 End Sub
 
 Private Sub imgDeleteItem_Click()
