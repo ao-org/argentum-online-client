@@ -285,7 +285,7 @@ Sub RenderScreen(ByVal center_x As Integer, _
                                 End If
                             End If
                         Case eObjType.otPuertas, eObjType.otCarteles, eObjType.otYacimiento, eObjType.OtCorreo, eObjType.otYunque, _
-                                eObjType.otFragua, eObjType.OtDecoraciones
+                                eObjType.otFragua, eObjType.OtDecoraciones, eObjType.otCastleSpawner
                             ' Objetos grandes (menos árboles)
                             Call Draw_Grh(.ObjGrh, screenX, screenY, 1, 1, .light_value, False, x, y)
                             'Case Else
