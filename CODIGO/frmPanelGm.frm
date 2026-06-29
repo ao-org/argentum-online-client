@@ -29,14 +29,6 @@ Begin VB.Form frmPanelgm
       TabIndex        =   75
       Top             =   1440
       Width           =   2295
-      Begin VB.TextBox txtSegundos 
-         Height          =   285
-         Left            =   1320
-         TabIndex        =   86
-         Text            =   "1.5"
-         Top             =   650
-         Width           =   375
-      End
       Begin VB.CheckBox chkCoordenadas 
          BackColor       =   &H80000007&
          Caption         =   "Coordenadas"
