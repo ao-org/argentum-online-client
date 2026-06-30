@@ -48,19 +48,7 @@ Sub SwitchMap(ByVal map As Integer, Optional ByVal NewResourceMap As Integer = 0
     CurMap = map
     
     
-    If ao20audio.MusicEnabled Then
-            If UserCharIndex > 0 Then
-                With charlist(UserCharIndex)
-                    Dim new_music As Integer
-                    new_music = MapData(.Pos.x, .Pos.y).zone.Musica
-                    If new_music > 0 Then
-                        Call ao20audio.PlayMidi(new_music, True)
-                    Else
-                        Call ao20audio.PlayMidi(MapDat.music_numberLow, True)
-                    End If
-                End With
-            End If
-    End If
+    Call PlayCurrentMapMusic
     
     Dim HaveAudio As Boolean
     If bRain Then
@@ -100,6 +88,45 @@ Sub SwitchMap(ByVal map As Integer, Optional ByVal NewResourceMap As Integer = 0
     Exit Sub
 SwitchMap_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.SwitchMap", Erl)
+    Resume Next
+End Sub
+
+Public Sub PlayCurrentMapMusic()
+    On Error GoTo PlayCurrentMapMusic_Err
+
+    If ao20audio.MusicEnabled Then
+        Dim resolvedMusicId As Integer
+        Dim usedFallback As Boolean
+
+        resolvedMusicId = 0
+        usedFallback = True
+
+        If UserCharIndex > 0 Then
+            With charlist(UserCharIndex)
+                resolvedMusicId = MapData(.Pos.x, .Pos.y).zone.Musica
+                If resolvedMusicId > 0 Then
+                    usedFallback = False
+                End If
+            End With
+        End If
+
+        If usedFallback Then
+            resolvedMusicId = MapDat.music_numberLow
+        End If
+
+        #If DEBUG_AUDIO = 1 Then
+            frmDebug.add_text_tracebox "Map music resolve: map=" & CStr(CurMap) & _
+                                       " musicId=" & CStr(resolvedMusicId) & _
+                                       " ogg=ost_" & CStr(resolvedMusicId) & ".ogg" & _
+                                       " fallbackMapDat=" & CStr(usedFallback)
+        #End If
+
+        Call ao20audio.PlayMapMusic(resolvedMusicId)
+    End If
+
+    Exit Sub
+PlayCurrentMapMusic_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.PlayCurrentMapMusic", Erl)
     Resume Next
 End Sub
 
