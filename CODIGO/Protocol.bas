@@ -2168,6 +2168,7 @@ Private Sub HandleUserCharIndexInServer()
         Call frmMain.SetCoordColor(RGB(170, 0, 0))
     End If
     Call UpdateMapPos
+    Call PlayCurrentMapMusic
     g_game_state.state = e_state_gameplay_screen
     Exit Sub
 HandleUserCharIndexInServer_Err:
@@ -2347,6 +2348,9 @@ Private Sub HandleCharacterCreate()
         End If
     End With
     Call RefreshAllChars
+    If charindex = UserCharIndex Then
+        Call PlayCurrentMapMusic
+    End If
     Exit Sub
 errhandler:
     Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleCharacterCreate", Erl)

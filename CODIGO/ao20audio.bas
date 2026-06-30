@@ -64,6 +64,18 @@ Public Sub PlayRandomOggSong(ByVal maxTrack As Integer, Optional ByVal looping A
     Call ao20audio.PlayMusic(filename, looping)
 End Sub
 
+Public Sub PlayMapMusic(ByVal musicId As Integer)
+    Dim filename As String
+
+    If musicId <= 0 Then
+        Call ao20audio.StopMusic
+        Exit Sub
+    End If
+
+    filename = "ost_" & CStr(musicId) & ".ogg"
+    Call ao20audio.PlayMusic(filename, True)
+End Sub
+
 Public Sub CreateAudioEngine(ByVal hWnd As Long, ByRef dx8 As DirectX8, ByRef renderer As clsAudioEngine)
     On Error GoTo AudioEngineInitErr:
     If AudioEnabled Then
