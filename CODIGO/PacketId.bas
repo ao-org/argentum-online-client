@@ -148,6 +148,8 @@ Public Enum ServerPacketID
     eShowPregunta
     eDatosGrupo
     eubicacion
+    eUbicacionFaccion
+    eUserFaccion
     eArmaMov
     eEscudoMov
     eViajarForm

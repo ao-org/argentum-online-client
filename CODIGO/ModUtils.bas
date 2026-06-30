@@ -37,6 +37,27 @@ Public MinimapVP_MapGridY As Long   ' player map grid row    in the world image
 Public MinimapVP_CellPxW  As Double ' world-image pixel width  of one map cell
 Public MinimapVP_CellPxH  As Double ' world-image pixel height of one map cell
 
+' DirectX-rendered dot per slot (0=player, 1-5=allies) used when CenteredMinimap <> 0
+Public Type MinimapDotState
+    visible  As Boolean
+    screenX  As Long
+    screenY  As Long
+    dotColor As RGBA
+End Type
+
+Public MinimapDots(0 To 5) As MinimapDotState
+
+Public Enum e_Facciones
+    Criminal = 0
+    Ciudadano = 1
+    caos = 2
+    armada = 3
+    Concilio = 4
+    Consejo = 5
+End Enum
+
+Public UserFaccion As e_Facciones
+Public FaccionDots(0 To 19) As MinimapDotState
 Public StopCreandoCuenta    As Boolean
 Public Const DegreeToRadian As Single = 0.01745329251994 'Pi / 180
 Public Const RadianToDegree As Single = 57.2958279087977 '180 / Pi
