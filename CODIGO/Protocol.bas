@@ -2477,7 +2477,7 @@ Private Sub HandleCharacterChange()
         flags = Reader.ReadInt8()
         .Idle = (flags And &O1)
         .Navegando = (flags And &O2)
-        If .Moving Or .TranslationActive Or (Not wasIdle And .Idle) Then
+        If .Moving Or .TranslationActive Or (Not wasIdle And .Idle) Or (wasIdle And Not .Idle) Then
             .BodyIdleLastChange = FrameTime
             .BodyIdleUsingIdle = False
         End If
