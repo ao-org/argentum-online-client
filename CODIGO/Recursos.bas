@@ -272,9 +272,6 @@ Public Sub CargarRecursos()
     Call CargarColores
     Call CargarCrafteo
     Call InitEngineSprites
-    If CenteredMinimap <> 0 Then
-        Call RenderMinimapCentered(1, 50, 50, CenteredMinimapZoom, CenteredMinimapZoom)
-    End If
     Exit Sub
 CargarRecursos_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarRecursos", Erl)

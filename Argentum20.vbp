@@ -212,6 +212,7 @@ Class=clsUIFrame; CODIGO\clsUIFrame.cls
 Class=clsUIMsgBox; CODIGO\clsUIMsgBox.cls
 Module=ModCollectibleCards; CODIGO\ModCollectibleCards.bas
 Form=CODIGO\frmCollectibleCard.frm
+Module=ModMinimap; CODIGO\ModMinimap.bas
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
