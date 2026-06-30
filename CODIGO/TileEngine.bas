@@ -289,7 +289,6 @@ Public Type Char
     BodyOnWater As Integer
     BodyOnWaterIdle As Integer
     AnimAtaque2 As Integer
-    Movement As Byte
     BodyIdleChangeInterval As Long
     BodyIdleLastChange As Long
     BodyIdleUsingIdle As Boolean

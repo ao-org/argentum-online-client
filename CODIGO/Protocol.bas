@@ -2293,7 +2293,6 @@ Private Sub HandleCharacterCreate()
         .BodyOnWaterIdle = NpcData(.NpcNumber).BodyOnWaterIdle
         .BodyOnWater = NpcData(.NpcNumber).BodyOnWater
         .AnimAtaque2 = NpcData(.NpcNumber).WaterAttackAnimation
-        .Movement = NpcData(.NpcNumber).Movement
         .BodyIdleChangeInterval = NpcData(.NpcNumber).BodyIdleChangeInterval
         .BodyIdleLastChange = FrameTime
         .BodyIdleUsingIdle = False

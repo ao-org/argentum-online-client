@@ -73,7 +73,6 @@ Public Sub ResetCharInfo(ByVal charindex As Integer)
         .BodyIdleChangeInterval = 0
         .BodyIdleLastChange = 0
         .BodyIdleUsingIdle = False
-        .Movement = 0
     End With
     Exit Sub
 ResetCharInfo_Err:
