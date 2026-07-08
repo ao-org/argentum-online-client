@@ -3302,6 +3302,17 @@ WriteCrearEvento_Err:
     '</EhFooter>
 End Sub
 
+Public Sub WriteModifyCastleWhiteList(ByVal command As String)
+    On Error GoTo WriteModifyCastleWhiteList_Err
+    Call Writer.WriteInt16(ClientPacketID.eModifyCastleWhiteList)
+    Call Writer.WriteString8(command)
+    Call modNetwork.send(Writer)
+    Exit Sub
+WriteModifyCastleWhiteList_Err:
+    Call Writer.Clear
+    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteModifyCastleWhiteList", Erl)
+End Sub
+
 ''
 ' Writes the "KillNPC" message to the outgoing data buffer.
 '
