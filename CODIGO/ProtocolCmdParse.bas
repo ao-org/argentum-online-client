@@ -626,12 +626,33 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 Call WriteKillNPC
             Case "/CASTLE"
                 If notNullArguments Then
-                    tmpArr = Split(ArgumentosRaw, " ")
+                    Dim CastleArguments As String
+                    Dim Action          As String
+                    Dim CharacterName   As String
+
+                    CastleArguments = Trim$(ArgumentosRaw)
+                    CastleArguments = NormalizeCommandSpaces(CastleArguments)
+                    tmpArr = Split(CastleArguments, " ", 3)
+
                     If UBound(tmpArr) = 1 Then
-                        Call WriteModifyCastleWhiteList(tmpArr(0) & " " & tmpArr(1))
+                        Action = UCase$(Trim$(tmpArr(0)))
+                        CharacterName = Trim$(tmpArr(1))
+
+                        If (Action = "ADD" Or Action = "REMOVE") And LenB(CharacterName) <> 0 Then
+                            ' Client-side UX check only. Server must enforce castle ownership / Patreon authorization.
+                            If IsCastleWhiteListEligible() Then
+                                Call WriteModifyCastleWhiteList(Action & " " & CharacterName)
+                            Else
+                                Call ShowConsoleMsg("Este comando está disponible solo para Patreons con castillo.")
+                            End If
+                        Else
+                            Call ShowConsoleMsg("Uso: /CASTLE ADD <personaje> o /CASTLE REMOVE <personaje>")
+                        End If
                     Else
-                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
+                        Call ShowConsoleMsg("Uso: /CASTLE ADD <personaje> o /CASTLE REMOVE <personaje>")
                     End If
+                Else
+                    Call ShowConsoleMsg("Uso: /CASTLE ADD <personaje> o /CASTLE REMOVE <personaje>")
                 End If
                 
             Case "/ADVERTENCIA", "/WARNING"
@@ -1970,4 +1991,33 @@ Private Function AEMAILSplit(ByRef text As String) As String()
 AEMAILSplit_Err:
     Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.AEMAILSplit", Erl)
     Resume Next
+End Function
+
+Private Function NormalizeCommandSpaces(ByVal text As String) As String
+    On Error GoTo NormalizeCommandSpaces_Err
+
+    text = Trim$(text)
+    Do While InStr(1, text, "  ") > 0
+        text = Replace$(text, "  ", " ")
+    Loop
+
+    NormalizeCommandSpaces = text
+    Exit Function
+NormalizeCommandSpaces_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.NormalizeCommandSpaces", Erl)
+End Function
+
+Private Function IsCastleWhiteListEligible() As Boolean
+    On Error GoTo IsCastleWhiteListEligible_Err
+
+    If UserCharIndex < LBound(charlist) Or UserCharIndex > UBound(charlist) Then Exit Function
+
+    Select Case charlist(UserCharIndex).tipoUsuario
+        Case eTipoUsuario.Noble, eTipoUsuario.Emperador
+            IsCastleWhiteListEligible = True
+    End Select
+
+    Exit Function
+IsCastleWhiteListEligible_Err:
+    Call RegistrarError(Err.Number, Err.Description, "ProtocolCmdParse.IsCastleWhiteListEligible", Erl)
 End Function
