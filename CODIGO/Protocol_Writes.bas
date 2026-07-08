@@ -3304,6 +3304,12 @@ End Sub
 
 Public Sub WriteModifyCastleWhiteList(ByVal command As String)
     On Error GoTo WriteModifyCastleWhiteList_Err
+
+    command = Trim$(command)
+    If LenB(command) = 0 Then Exit Sub
+    If Len(command) > 255 Then Exit Sub
+    If HasControlCharacters(command) Then Exit Sub
+
     Call Writer.WriteInt16(ClientPacketID.eModifyCastleWhiteList)
     Call Writer.WriteString8(command)
     Call modNetwork.send(Writer)
@@ -3312,6 +3318,26 @@ WriteModifyCastleWhiteList_Err:
     Call Writer.Clear
     Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.WriteModifyCastleWhiteList", Erl)
 End Sub
+
+Private Function HasControlCharacters(ByVal value As String) As Boolean
+    On Error GoTo HasControlCharacters_Err
+
+    Dim i         As Long
+    Dim charCode  As Integer
+
+    For i = 1 To Len(value)
+        charCode = AscW(Mid$(value, i, 1))
+        If (charCode >= 0 And charCode < 32) Or charCode = 127 Then
+            HasControlCharacters = True
+            Exit Function
+        End If
+    Next i
+
+    Exit Function
+HasControlCharacters_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Argentum20.Protocol_Writes.HasControlCharacters", Erl)
+    HasControlCharacters = True
+End Function
 
 ''
 ' Writes the "KillNPC" message to the outgoing data buffer.
