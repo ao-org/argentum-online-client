@@ -624,6 +624,16 @@ Public Sub ParseUserCommand(ByVal RawCommand As String)
                 End If
             Case "/RMATA"
                 Call WriteKillNPC
+            Case "/CASTLE"
+                If notNullArguments Then
+                    tmpArr = Split(ArgumentosRaw, " ")
+                    If UBound(tmpArr) = 1 Then
+                        Call WriteModifyCastleWhiteList(tmpArr(0) & " " & tmpArr(1))
+                    Else
+                        Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_FALTAN_PARAMETROS_UTILICE"))
+                    End If
+                End If
+                
             Case "/ADVERTENCIA", "/WARNING"
                 If notNullArguments Then
                     tmpArr = Split(ArgumentosRaw, "@", 2)

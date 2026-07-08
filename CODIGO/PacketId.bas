@@ -528,6 +528,7 @@ Public Enum ClientPacketID
     eStartAutomatedAction
     ePetFollowAll
     eAntiMacroMessage
+    eModifyCastleWhiteList
     eMaxPacket
     [PacketCount]
 End Enum
