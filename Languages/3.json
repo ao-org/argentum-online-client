@@ -588,6 +588,7 @@
   "DAMAGE": "Dano: ",
   "DEFENSE": "Defesa: ",
   "EMPTY_LABEL": "(Vazio)",
+  "BINDABLE_SUFFIX": " (B)",
   "MENSAJE_ARMADA": "[Armada Real]",
   "MENSAJE_LEGION": "[Legião Obscura]",
   "MENSAJE_CONSEJO": "[Conselho Real]",

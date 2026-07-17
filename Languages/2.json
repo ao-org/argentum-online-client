@@ -588,6 +588,7 @@
     "DAMAGE": "Damage: ",
     "DEFENSE": "Defense: ",
 	"EMPTY_LABEL": "(Empty)",
+	"BINDABLE_SUFFIX": " (B)",
 	"MENSAJE_ARMADA": "[Royal Guard]",
     "MENSAJE_LEGION": "[Dark Legion]",
     "MENSAJE_CONSEJO": "[Royal Council]",

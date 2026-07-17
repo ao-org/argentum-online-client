@@ -2367,6 +2367,7 @@ Private Sub picHechiz_MouseDown(Button As Integer, Shift As Integer, x As Single
             Else
                 gDragState.DragSlot = 0
                 gDragState.DragIndex = 0
+                gDragState.active = False
             End If
         End If
         If Seguido = 1 Then
