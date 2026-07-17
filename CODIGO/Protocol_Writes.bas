@@ -334,13 +334,16 @@ Public Sub WriteTalk(ByVal chat As String)
             Exit Sub
         End If
     End If
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_Talk + 1
     Call Writer.WriteInt16(ClientPacketID.eTalk)
     Call Writer.WriteString8(chat)
-    packetCounters.TS_Talk = packetCounters.TS_Talk + 1
-    Call Writer.WriteInt32(packetCounters.TS_Talk)
-    Call modNetwork.send(Writer)
-    If ShouldRateLimitTalk(chat) Then
-        Call MarkActionSent(ActionTalk)
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_Talk = nextCounter
+        If ShouldRateLimitTalk(chat) Then
+            Call MarkActionSent(ActionTalk)
+        End If
     End If
     '<EhFooter>
     Exit Sub
@@ -399,13 +402,16 @@ End Sub
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
 Public Function WriteWalk(ByVal Heading As E_Heading) As Boolean
     On Error GoTo WriteWalk_Err
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_Walk + 1
     Call Writer.WriteInt16(ClientPacketID.eWalk)
     Call Writer.WriteInt8(Heading)
-    packetCounters.TS_Walk = packetCounters.TS_Walk + 1
-    Call Writer.WriteInt32(packetCounters.TS_Walk)
-    Call modNetwork.send(Writer)
-    Call MarkActionSent(ActionWalk)
-    WriteWalk = True
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_Walk = nextCounter
+        Call MarkActionSent(ActionWalk)
+        WriteWalk = True
+    End If
     Exit Function
 WriteWalk_Err:
     Call Writer.Clear
@@ -441,13 +447,16 @@ Public Function WriteAttack() As Boolean
     If ShouldBlockAction(eActionRateLimitType.ActionAttack) Then
         Exit Function
     End If
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_Attack + 1
     Call Writer.WriteInt16(ClientPacketID.eAttack)
-    packetCounters.TS_Attack = packetCounters.TS_Attack + 1
-    Call Writer.WriteInt32(packetCounters.TS_Attack)
-    Call modNetwork.send(Writer)
-    Call MarkActionSent(ActionAttack)
-    Call StartAttackCooldownVisual
-    WriteAttack = True
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_Attack = nextCounter
+        Call MarkActionSent(ActionAttack)
+        Call StartAttackCooldownVisual
+        WriteAttack = True
+    End If
     '<EhFooter>
     Exit Function
 WriteAttack_Err:
@@ -756,12 +765,15 @@ Public Sub WriteDrop(ByVal Slot As Byte, ByVal Amount As Long)
     '<EhHeader>
     On Error GoTo WriteDrop_Err
     '</EhHeader>
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_Drop + 1
     Call Writer.WriteInt16(ClientPacketID.eDrop)
     Call Writer.WriteInt8(Slot)
     Call Writer.WriteInt32(Amount)
-    packetCounters.TS_Drop = packetCounters.TS_Drop + 1
-    Call Writer.WriteInt32(packetCounters.TS_Drop)
-    Call modNetwork.send(Writer)
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_Drop = nextCounter
+    End If
     '<EhFooter>
     Exit Sub
 WriteDrop_Err:
@@ -779,13 +791,14 @@ Public Sub WriteCastSpell(ByVal Slot As Byte)
     '<EhHeader>
     On Error GoTo WriteCastSpell_Err
     '</EhHeader>
-    ' Dim arr() As Byte
-    ' Dim packet_crc As Long
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_CastSpell + 1
     Call Writer.WriteInt16(ClientPacketID.eCastSpell)
     Call Writer.WriteInt8(Slot)
-    packetCounters.TS_CastSpell = packetCounters.TS_CastSpell + 1
-    Call Writer.WriteInt32(packetCounters.TS_CastSpell)
-    Call modNetwork.send(Writer)
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_CastSpell = nextCounter   ' <-- solo se confirma si el paquete realmente se mandó
+    End If
     '<EhFooter>
     Exit Sub
 WriteCastSpell_Err:
@@ -878,14 +891,16 @@ Public Sub WriteLeftClick(ByVal x As Byte, ByVal y As Byte)
     If ShouldBlockAction(eActionRateLimitType.ActionLeftClick) Then
         Exit Sub
     End If
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_LeftClick + 1
     Call Writer.WriteInt16(ClientPacketID.eLeftClick)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
-    packetCounters.TS_LeftClick = packetCounters.TS_LeftClick + 1
-    'frmdebug.add_text_tracebox packetCounters.TS_LeftClick
-    Call Writer.WriteInt32(packetCounters.TS_LeftClick)
-    Call modNetwork.send(Writer)
-    Call MarkActionSent(ActionLeftClick)
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_LeftClick = nextCounter
+        Call MarkActionSent(ActionLeftClick)
+    End If
     '<EhFooter>
     Exit Sub
 WriteLeftClick_Err:
@@ -935,13 +950,16 @@ Public Sub WriteWork(ByVal Skill As eSkill)
             Exit Sub
         End If
     End If
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_Work + 1
     Call Writer.WriteInt16(ClientPacketID.eWork)
     Call Writer.WriteInt8(Skill)
-    packetCounters.TS_Work = packetCounters.TS_Work + 1
-    Call Writer.WriteInt32(packetCounters.TS_Work)
-    Call modNetwork.send(Writer)
-    If Skill = eSkill.Ocultarse Then
-        Call MarkActionSent(ActionHideSkill)
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_Work = nextCounter
+        If Skill = eSkill.Ocultarse Then
+            Call MarkActionSent(ActionHideSkill)
+        End If
     End If
     '<EhFooter>
     Exit Sub
@@ -981,14 +999,17 @@ Public Function WriteUseItem(ByVal Slot As Byte, Optional ByVal IgnoreRateLimit 
     If Not IgnoreRateLimit And ShouldBlockAction(eActionRateLimitType.ActionUseItem) Then
         Exit Function
     End If
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_UseItem + 1
     Call Writer.WriteInt16(ClientPacketID.eUseItem)
     Call Writer.WriteInt8(Slot)
     Call Writer.WriteInt8(ActiveInventoryTab = eInventory)
-    packetCounters.TS_UseItem = packetCounters.TS_UseItem + 1
-    Call Writer.WriteInt32(packetCounters.TS_UseItem)
-    Call modNetwork.send(Writer)
-    If Not IgnoreRateLimit Then Call MarkActionSent(ActionUseItem)
-    WriteUseItem = True
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_UseItem = nextCounter
+        If Not IgnoreRateLimit Then Call MarkActionSent(ActionUseItem)
+        WriteUseItem = True
+    End If
     '<EhFooter>
     Exit Function
 WriteUseItem_Err:
@@ -1009,13 +1030,16 @@ Public Function WriteUseItemU(ByVal Slot As Byte, Optional ByVal IgnoreRateLimit
     If Not IgnoreRateLimit And ShouldBlockAction(eActionRateLimitType.ActionUseItemU) Then
         Exit Function
     End If
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_UseItemU + 1
     Call Writer.WriteInt16(ClientPacketID.eUseItemU)
     Call Writer.WriteInt8(Slot)
-    packetCounters.TS_UseItemU = packetCounters.TS_UseItemU + 1
-    Call Writer.WriteInt32(packetCounters.TS_UseItemU)
-    Call modNetwork.send(Writer)
-    If Not IgnoreRateLimit Then Call MarkActionSent(ActionUseItemU)
-    WriteUseItemU = True
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_UseItemU = nextCounter
+        If Not IgnoreRateLimit Then Call MarkActionSent(ActionUseItemU)
+        WriteUseItemU = True
+    End If
     '<EhFooter>
     Exit Function
 WriteUseItemU_Err:
@@ -1147,19 +1171,22 @@ Public Function WriteWorkLeftClick(ByVal x As Byte, ByVal y As Byte, ByVal Skill
             Exit Function
         End If
     End If
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_WorkLeftClick + 1
     Call Writer.WriteInt16(ClientPacketID.eWorkLeftClick)
     Call Writer.WriteInt8(x)
     Call Writer.WriteInt8(y)
     Call Writer.WriteInt8(Skill)
-    packetCounters.TS_WorkLeftClick = packetCounters.TS_WorkLeftClick + 1
-    Call Writer.WriteInt32(packetCounters.TS_WorkLeftClick)
-    Call modNetwork.send(Writer)
-    If Skill = eSkill.magia Then
-        Call MarkActionSent(ActionWorkLeftClick)
-    ElseIf Skill = eSkill.Proyectiles Then
-        Call MarkActionSent(ActionProjectileWorkLeftClick)
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_WorkLeftClick = nextCounter
+        If Skill = eSkill.magia Then
+            Call MarkActionSent(ActionWorkLeftClick)
+        ElseIf Skill = eSkill.Proyectiles Then
+            Call MarkActionSent(ActionProjectileWorkLeftClick)
+        End If
+        WriteWorkLeftClick = True
     End If
-    WriteWorkLeftClick = True
     '<EhFooter>
     Exit Function
 WriteWorkLeftClick_Err:
@@ -1234,7 +1261,10 @@ End Sub
 Public Sub WriteEquipItem(ByVal Slot As Byte, Optional ByVal bSkin As Boolean = False, Optional ByVal eSkinType As eObjType)
 
  On Error GoTo WriteEquipItem_Err
-    
+
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_EquipItem + 1
+
     Call Writer.WriteInt16(ClientPacketID.eEquipItem)
     Call Writer.WriteInt8(Slot)
     Call Writer.WriteBool(bSkin)
@@ -1243,10 +1273,11 @@ Public Sub WriteEquipItem(ByVal Slot As Byte, Optional ByVal bSkin As Boolean = 
         Call Writer.WriteInt8(eSkinType)
     End If
 
-    packetCounters.TS_EquipItem = packetCounters.TS_EquipItem + 1
-    Call Writer.WriteInt32(packetCounters.TS_EquipItem)
+    Call Writer.WriteInt32(nextCounter)
 
-    Call modNetwork.send(Writer)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_EquipItem = nextCounter
+    End If
 
  Exit Sub
 
@@ -1265,11 +1296,14 @@ Public Sub WriteChangeHeading(ByVal Heading As E_Heading)
     '<EhHeader>
     On Error GoTo WriteChangeHeading_Err
     '</EhHeader>
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_ChangeHeading + 1
     Call Writer.WriteInt16(ClientPacketID.eChangeHeading)
     Call Writer.WriteInt8(Heading)
-    packetCounters.TS_ChangeHeading = packetCounters.TS_ChangeHeading + 1
-    Call Writer.WriteInt32(packetCounters.TS_ChangeHeading)
-    Call modNetwork.send(Writer)
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_ChangeHeading = nextCounter
+    End If
     '<EhFooter>
     Exit Sub
 WriteChangeHeading_Err:
@@ -2387,11 +2421,14 @@ Public Sub WriteGuildMessage(ByVal message As String)
     '<EhHeader>
     On Error GoTo WriteGuildMessage_Err
     '</EhHeader>
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_GuildMessage + 1
     Call Writer.WriteInt16(ClientPacketID.eGuildMessage)
     Call Writer.WriteString8(message)
-    packetCounters.TS_GuildMessage = packetCounters.TS_GuildMessage + 1
-    Call Writer.WriteInt32(packetCounters.TS_GuildMessage)
-    Call modNetwork.send(Writer)
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_GuildMessage = nextCounter
+    End If
     '<EhFooter>
     Exit Sub
 WriteGuildMessage_Err:
@@ -5168,12 +5205,15 @@ Public Sub WriteQuestionGM(ByVal Consulta As String, ByVal TipoDeConsulta As Str
     '<EhHeader>
     On Error GoTo WriteQuestionGM_Err
     '</EhHeader>
+    Dim nextCounter As Long
+    nextCounter = packetCounters.TS_QuestionGM + 1
     Call Writer.WriteInt16(ClientPacketID.eQuestionGM)
     Call Writer.WriteString8(Consulta)
     Call Writer.WriteString8(TipoDeConsulta)
-    packetCounters.TS_QuestionGM = packetCounters.TS_QuestionGM + 1
-    Call Writer.WriteInt32(packetCounters.TS_QuestionGM)
-    Call modNetwork.send(Writer)
+    Call Writer.WriteInt32(nextCounter)
+    If modNetwork.send(Writer) Then
+        packetCounters.TS_QuestionGM = nextCounter
+    End If
     '<EhFooter>
     Exit Sub
 WriteQuestionGM_Err:

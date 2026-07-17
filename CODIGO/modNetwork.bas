@@ -86,12 +86,13 @@ Public Sub Poll()
     Call Client.Poll
 End Sub
 
-Public Sub send(ByVal Buffer As Network.Writer)
+Public Function send(ByVal buffer As Network.Writer) As Boolean
     If (Connected) Then
         Call Client.send(False, Buffer)
+        send = True
     End If
     Call Buffer.Clear
-End Sub
+End Function
 
 
 #If PYMMO = 1 Then
