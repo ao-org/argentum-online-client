@@ -90,3 +90,13 @@ PrintToConsole_Err:
     Call RegistrarError(Err.Number, Err.Description, "ModClient.PrintToConsole", Erl)
     Resume Next
 End Sub
+
+Public Sub ActualizarColorCoordenadas()
+    If MapDat.Seguro = 1 Then
+        Call frmMain.SetCoordColor(RGB(0, 170, 0))      ' verde: seguro
+    ElseIf MapaActualNoDrop Then
+        Call frmMain.SetCoordColor(RGB(230, 190, 0))    ' dorado: nodrop
+    Else
+        Call frmMain.SetCoordColor(RGB(170, 0, 0))      ' rojo: inseguro
+    End If
+End Sub

@@ -95,6 +95,7 @@ Public FormParser                       As clsCursor
 Public HoraMundo                        As Long
 Public EsGM                             As Boolean
 Public MapInfoEspeciales                As String
+Public MapaActualNoDrop                 As Boolean
 Public LLamadaDeclanMapa                As Integer
 Public LLamadaDeclanX                   As Byte
 Public LLamadaDeclanY                   As Byte

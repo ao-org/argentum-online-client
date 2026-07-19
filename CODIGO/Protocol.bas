@@ -1369,6 +1369,7 @@ Private Sub HandleChangeMap()
     On Error GoTo HandleChangeMap_Err
     UserMap = Reader.ReadInt16()
     ResourceMap = Reader.ReadInt16()
+    MapaActualNoDrop = (reader.ReadInt8() = 1)
     If frmComerciar.visible Then Unload frmComerciar
     If frmBancoObj.visible Then Unload frmBancoObj
     If frmEstadisticas.visible Then Unload frmEstadisticas
@@ -2162,11 +2163,7 @@ Private Sub HandleUserCharIndexInServer()
     'Are we under a roof?
     UpdatePlayerRoof
     lastMove = FrameTime
-    If MapDat.Seguro = 1 Then
-        Call frmMain.SetCoordColor(RGB(0, 170, 0))
-    Else
-        Call frmMain.SetCoordColor(RGB(170, 0, 0))
-    End If
+    Call ActualizarColorCoordenadas
     Call UpdateMapPos
     Call PlayCurrentMapMusic
     g_game_state.state = e_state_gameplay_screen
@@ -2446,11 +2443,7 @@ Private Sub HandleForceCharMove()
     Call Char_Move_by_Head(UserCharIndex, direccion)
     Call MoveScreen(direccion)
     Call UpdateMapPos
-    If MapDat.Seguro = 1 Then
-        Call frmMain.SetCoordColor(RGB(0, 170, 0))
-    Else
-        Call frmMain.SetCoordColor(RGB(170, 0, 0))
-    End If
+    Call ActualizarColorCoordenadas
     Call RefreshAllChars
     Exit Sub
 HandleForceCharMove_Err:
