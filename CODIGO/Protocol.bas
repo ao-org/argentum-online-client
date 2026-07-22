@@ -3572,16 +3572,21 @@ Private Sub HandleChangeSpellSlot()
     Dim Index      As Integer
     Dim Cooldown   As Integer
     Dim IsBindable As Boolean
+    Dim DisplayName As String
     Slot = Reader.ReadInt8()
     UserHechizos(Slot) = Reader.ReadInt16()
     Index = Reader.ReadInt16()
     IsBindable = Reader.ReadBool()
     If Index >= 0 Then
         HechizoData(Index).IsBindable = IsBindable
+        DisplayName = HechizoData(index).nombre
+        If IsBindable Then
+            DisplayName = DisplayName & JsonLanguage.Item("BINDABLE_SUFFIX")
+        End If
         If Slot <= hlst.ListCount Then
-            hlst.List(Slot - 1) = HechizoData(Index).nombre
+            hlst.List(Slot - 1) = DisplayName
         Else
-            Call hlst.AddItem(HechizoData(Index).nombre)
+            Call hlst.AddItem(DisplayName)
             hlst.Scroll = LastScroll
         End If
     Else
