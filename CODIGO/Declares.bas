@@ -45,7 +45,7 @@ Public cfgGuildLevelSeeInvisible As Byte
 Public cfgGuildLevelSafe As Byte
 Public cfgGuildLevelShowHPBar As Byte
 Public cfgMaxGuildLevel As Byte
-Public cfgGuildMembersByLevel(1 To 7) As Byte
+Public cfgGuildMembersByLevel() As Byte
 
 Public Enum tMacroButton
     Inventario = 1
