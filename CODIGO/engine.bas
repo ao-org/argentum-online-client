@@ -1647,7 +1647,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 End If
             End If
             If UserCharIndex > 0 Then
-                If (verVidaClan And Not .Invisible) Or dibujaMiembroClan Or charlist(UserCharIndex).priv = 5 Then
+                If (verVidaClan And Not .Invisible) Or charlist(UserCharIndex).priv = 5 Then
                     OffsetYname = 8
                     OffsetYClan = 8
                     Call DibujarVidaChar(charindex, PixelOffsetX, PixelOffsetY, OffsetYname, OffsetYClan)
@@ -2013,7 +2013,7 @@ Public Sub DibujarVidaChar(ByVal charindex As Integer, ByVal PixelOffsetX As Int
             OffsetYname = 12
             OffsetYClan = 12
             Engine_Draw_Box PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + 38 + .Body.BodyOffset.y, 33, 4, RGBA_From_Comp(10, 10, 10)
-            Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.y, PixelOffsetY + 38 + .Body.BodyOffset.y, .UserMinMAN / .UserMaxMAN * 31, 3, RGBA_From_Comp(0, 100, 255)
+            Engine_Draw_Box PixelOffsetX + 1 + .Body.BodyOffset.X, PixelOffsetY + 38 + .Body.BodyOffset.Y, .UserMinMAN / .UserMaxMAN * 31, 3, RGBA_From_Comp(0, 100, 255)
         End If
     End With
 End Sub
