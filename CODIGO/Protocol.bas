@@ -4302,26 +4302,15 @@ Private Sub HandleGuildNews()
             .porciento = JsonLanguage.Item("MENSAJE_CLAN_NIVEL_MAXIMO")
             .expcount = JsonLanguage.Item("MENSAJE_CLAN_NIVEL_MAXIMO")
         End If
-        '.expne = "Experiencia necesaria: " & expne
-        Select Case ClanNivel
-            Case 1
-                .beneficios = JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(1)
-            Case 2
-                .beneficios = JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(2)
-            Case 3
-                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(3)
-            Case 4
-                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(4)
-            Case 5
-                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA") _
-                        & vbCrLf & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(5)
-            Case 6
-                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA") _
-                        & vbCrLf & JsonLanguage.Item("MENSAJE_VERSE_INVISIBLE") & vbCrLf & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(6)
-            Case 7
-                .beneficios = JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA") _
-                        & vbCrLf & JsonLanguage.Item("MENSAJE_VERSE_INVISIBLE") & vbCrLf & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(7)
-        End Select
+        
+        Dim beneficiosTxt As String
+        beneficiosTxt = vbNullString
+        If ClanNivel >= cfgGuildLevelCallSupport Then beneficiosTxt = beneficiosTxt & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & vbCrLf
+        If ClanNivel >= cfgGuildLevelSafe Then beneficiosTxt = beneficiosTxt & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & vbCrLf
+        If ClanNivel >= cfgGuildLevelShowHPBar Then beneficiosTxt = beneficiosTxt & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA") & vbCrLf
+        If ClanNivel >= cfgGuildLevelSeeInvisible Then beneficiosTxt = beneficiosTxt & JsonLanguage.Item("MENSAJE_VERSE_INVISIBLE") & vbCrLf
+        beneficiosTxt = beneficiosTxt & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(ClanNivel)
+        .beneficios = beneficiosTxt
     End With
     frmGuildNews.Show vbModeless, GetGameplayForm()
     Exit Sub
@@ -4480,31 +4469,14 @@ Private Sub HandleGuildLeaderInfo()
         End If
         Dim Padding As String
         Padding = Space$(18)
-        Select Case Nivel
-            Case 1
-                .beneficios = Padding & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(1)
-                .maxMiembros = cfgGuildMembersByLevel(1)
-            Case 2
-                .beneficios = Padding & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(2)
-                .maxMiembros = cfgGuildMembersByLevel(2)
-            Case 3
-                .beneficios = Padding & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(3) & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA")
-                .maxMiembros = cfgGuildMembersByLevel(3)
-            Case 4
-                .beneficios = Padding & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(4) & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN")
-                .maxMiembros = cfgGuildMembersByLevel(4)
-            Case 5
-                .beneficios = Padding & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(5) & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & " / " & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA")
-                .maxMiembros = cfgGuildMembersByLevel(5)
-            Case 6
-                .beneficios = Padding & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(6) & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & " / " & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA") _
-                        & " / " & JsonLanguage.Item("MENSAJE_VERSE_INVISIBLE")
-                .maxMiembros = cfgGuildMembersByLevel(6)
-            Case 7
-            .beneficios = Padding & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(7) & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA") & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN") & " / " & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA") _
-                        & " / " & JsonLanguage.Item("MENSAJE_VERSE_INVISIBLE")
-            .maxMiembros = cfgGuildMembersByLevel(7)
-        End Select
+        Dim beneficiosTxt As String
+        beneficiosTxt = Padding & JsonLanguage.Item("MENSAJE_BENEFICIOS_MAX_MIEMBROS") & cfgGuildMembersByLevel(Nivel)
+        If Nivel >= cfgGuildLevelCallSupport Then beneficiosTxt = beneficiosTxt & " / " & JsonLanguage.Item("MENSAJE_PEDIR_AYUDA")
+        If Nivel >= cfgGuildLevelSafe Then beneficiosTxt = beneficiosTxt & " / " & JsonLanguage.Item("MENSAJE_SEGURO_CLAN")
+        If Nivel >= cfgGuildLevelShowHPBar Then beneficiosTxt = beneficiosTxt & " / " & JsonLanguage.Item("MENSAJE_VER_VIDA_MANA")
+        If Nivel >= cfgGuildLevelSeeInvisible Then beneficiosTxt = beneficiosTxt & " / " & JsonLanguage.Item("MENSAJE_VERSE_INVISIBLE")
+        .beneficios = beneficiosTxt
+        .maxMiembros = cfgGuildMembersByLevel(Nivel)
         .Show , GetGameplayForm()
     End With
     Exit Sub
