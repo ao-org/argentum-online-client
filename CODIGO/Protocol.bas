@@ -5128,6 +5128,11 @@ Private Sub HandleQuestDetails()
     Dim cantidadobjs As Integer
     Dim obindex As Integer
     Dim requirements As String
+    Dim DropSourceCount As Byte
+    Dim k As Integer
+    Dim dropStr As String
+    Dim dropNpc As Integer
+    Dim dropProb As Integer
     FrmQuests.ListView2.ListItems.Clear
     FrmQuests.ListView1.ListItems.Clear
     FrmQuests.ListView1.ColumnHeaders(2).Width = 780 'Agrando el ancho de la columna para que entre la cantidad de npcs correctamente
@@ -5200,6 +5205,19 @@ Private Sub HandleQuestDetails()
             subelemento.SubItems(1) = AmountHave & "/" & cantidadobj
             subelemento.SubItems(2) = ObjIndex
             subelemento.SubItems(3) = 1
+
+            ' Drop sources (NPC + probabilidad) para este objetivo de tipo item
+            DropSourceCount = reader.ReadInt8
+            dropStr = ""
+            For k = 1 To DropSourceCount
+                dropNpc = reader.ReadInt16
+                dropProb = reader.ReadInt16
+                If k > 1 Then dropStr = dropStr & ", "
+                If dropProb > 0 Then
+                    dropStr = dropStr & NpcData(dropNpc).Name & " (" & format(100 / dropProb, "0.##") & "%)"
+                End If
+            Next k
+            subelemento.SubItems(4) = dropStr
         Next i
     End If
     tmpByte = Reader.ReadInt8 'Hay Spells
@@ -5214,7 +5232,7 @@ Private Sub HandleQuestDetails()
         Next i
     End If
     
-    Dim RequiredSkill, RequiredValue As Byte
+    Dim RequiredSkill As Byte, RequiredValue As Byte
     RequiredSkill = Reader.ReadInt8
     RequiredValue = Reader.ReadInt8
     If RequiredSkill > 0 Then
@@ -5324,6 +5342,8 @@ Public Sub HandleNpcQuestListSend()
     Dim Repetible          As Boolean
     Dim subelemento        As ListItem
     Dim RequiredClassCount As Byte
+    Dim DropSourceCount    As Byte
+    Dim k                  As Integer
 
     FrmQuestInfo.ListView2.ListItems.Clear
     FrmQuestInfo.ListView1.ListItems.Clear
@@ -5379,12 +5399,27 @@ Public Sub HandleNpcQuestListSend()
         requiredObjCount = Reader.ReadInt8
         If requiredObjCount > 0 Then
             ReDim QuestList(QuestIndex).RequiredOBJ(1 To requiredObjCount)
+            ReDim QuestList(questIndex).RequiredOBJDropSources(1 To requiredObjCount)
             For i = 1 To requiredObjCount
                 QuestList(QuestIndex).RequiredOBJ(i).Amount = Reader.ReadInt16
                 QuestList(QuestIndex).RequiredOBJ(i).ObjIndex = Reader.ReadInt16
+
+                ' Drop sources (NPC + probabilidad) para este objetivo de tipo item
+                DropSourceCount = reader.ReadInt8
+                QuestList(questIndex).RequiredOBJDropSources(i).count = DropSourceCount
+                If DropSourceCount > 0 Then
+                    ReDim QuestList(questIndex).RequiredOBJDropSources(i).Sources(1 To DropSourceCount)
+                    For k = 1 To DropSourceCount
+                        QuestList(questIndex).RequiredOBJDropSources(i).Sources(k).NpcNumber = reader.ReadInt16
+                        QuestList(questIndex).RequiredOBJDropSources(i).Sources(k).Probabilidad = reader.ReadInt16
+                    Next k
+                Else
+                    ReDim QuestList(questIndex).RequiredOBJDropSources(i).Sources(0)
+                End If
             Next i
         Else
             ReDim QuestList(QuestIndex).RequiredOBJ(0)
+            ReDim QuestList(questIndex).RequiredOBJDropSources(0)
         End If
 
         requiredSpellCount = Reader.ReadInt8
@@ -6017,6 +6052,8 @@ Public Sub HandleObjQuestListSend()
     Dim CantidadQuest  As Byte
     Dim Repetible      As Boolean
     Dim subelemento    As ListItem
+    Dim DropSourceCount As Byte
+    Dim k              As Integer
     FrmQuestInfo.ListView2.ListItems.Clear
     FrmQuestInfo.ListView1.ListItems.Clear
     QuestIndex = Reader.ReadInt16
@@ -6043,12 +6080,27 @@ Public Sub HandleObjQuestListSend()
     tmpByte = Reader.ReadInt8
     If tmpByte Then 'Hay OBJs
         ReDim QuestList(QuestIndex).RequiredOBJ(1 To tmpByte)
+        ReDim QuestList(questIndex).RequiredOBJDropSources(1 To tmpByte)
         For i = 1 To tmpByte
             QuestList(QuestIndex).RequiredOBJ(i).Amount = Reader.ReadInt16
             QuestList(QuestIndex).RequiredOBJ(i).ObjIndex = Reader.ReadInt16
+
+            ' Drop sources (NPC + probabilidad) para este objetivo de tipo item
+            DropSourceCount = reader.ReadInt8
+            QuestList(questIndex).RequiredOBJDropSources(i).count = DropSourceCount
+            If DropSourceCount > 0 Then
+                ReDim QuestList(questIndex).RequiredOBJDropSources(i).Sources(1 To DropSourceCount)
+                For k = 1 To DropSourceCount
+                    QuestList(questIndex).RequiredOBJDropSources(i).Sources(k).NpcNumber = reader.ReadInt16
+                    QuestList(questIndex).RequiredOBJDropSources(i).Sources(k).Probabilidad = reader.ReadInt16
+                Next k
+            Else
+                ReDim QuestList(questIndex).RequiredOBJDropSources(i).Sources(0)
+            End If
         Next i
     Else
         ReDim QuestList(QuestIndex).RequiredOBJ(0)
+        ReDim QuestList(questIndex).RequiredOBJDropSources(0)
     End If
     tmpByte = Reader.ReadInt8 ' required spells
     If tmpByte Then
@@ -6108,7 +6160,7 @@ Public Sub HandleObjQuestListSend()
     Call FrmQuestInfo.ShowQuest(1)
     Exit Sub
 errhandler:
-    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleNpcQuestListSend", Erl)
+    Call RegistrarError(Err.Number, Err.Description, "Protocol.HandleObjQuestListSend", Erl)
 End Sub
 
 Public Sub HandleDebugDataResponse()

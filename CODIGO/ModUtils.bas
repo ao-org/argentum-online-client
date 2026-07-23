@@ -121,6 +121,16 @@ Public Type t_QuestSkill
     RequiredValue As Byte
 End Type
 
+Public Type t_DropQuestSource
+    NpcNumber As Integer
+    Probabilidad As Integer
+End Type
+
+Public Type t_QuestDropSourceList
+    Count As Byte
+    Sources() As t_DropQuestSource
+End Type
+
 Public Type tQuest
     nombre As String
     desc As String
@@ -134,6 +144,7 @@ Public Type tQuest
     RequiredQuest As Integer
     LimitLevel As Byte
     RequiredOBJ() As Obj
+    RequiredOBJDropSources() As t_QuestDropSourceList
     RequiredNPC() As tQuestNpc
     RequiredSpellList() As Integer
     RequiredSkill As t_QuestSkill

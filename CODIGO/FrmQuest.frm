@@ -269,10 +269,10 @@ Begin VB.Form FrmQuests
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   525
+      Height          =   700
       Left            =   7320
       TabIndex        =   7
-      Top             =   5040
+      Top             =   5020
       Width           =   2205
    End
    Begin VB.Image Image1 
@@ -339,6 +339,7 @@ Private Sub Form_Load()
     Me.Picture = LoadInterface("ventanadetallemision.bmp")
     lblRepetible.Caption = JsonLanguage.Item("MENSAJE_MISION_REPETIBLE")
     ListView2.ColumnHeaders.Add , , "typeReward", 0
+    ListView1.ColumnHeaders.Add , , "DropSources", 0
     Call Aplicar_Transparencia(Me.hWnd, 240)
     Exit Sub
 Form_Load_Err:
@@ -466,7 +467,10 @@ Public Sub ListView1_Click()
             x = (PlayerView.ScaleWidth - GrhData(ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex).pixelWidth) / 2
             y = (PlayerView.ScaleHeight - GrhData(ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex).pixelHeight) / 2
             Call Grh_Render_To_Hdc(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False, RGB(11, 11, 11))
-            npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
+            npclbl.Caption = ""
+            If ListView1.SelectedItem.SubItems(4) <> "" Then
+                npclbl.Caption = JsonLanguage.Item("MENSAJE_QUEST_DROPEADO_POR") & ": " & ListView1.SelectedItem.SubItems(4)
+            End If
         Else
             x = (PlayerView.ScaleWidth - GrhData(HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex).pixelWidth) / 2
             y = (PlayerView.ScaleHeight - GrhData(HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex).pixelHeight) / 2

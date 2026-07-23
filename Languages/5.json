@@ -778,5 +778,6 @@
   "MSG_CONFIRM_EMPTY_RENAME": "Sei sicuro di voler eliminare l'alias del tuo personaggio?",
   "MSG_ALIAS_PRESENT": "Non puoi trasferire o eliminare un personaggio che ha un alias. Per favore, elimina l'alias prima di eseguire questa azione.",
   "MSG_ADD_TO_ALBUM_COLLECTION" : "Aggiungi alla collezione",
-  "CAPTION_CARD_VIEWER" : "Visualizzatore di carte"
+  "CAPTION_CARD_VIEWER" : "Visualizzatore di carte",
+  "MENSAJE_QUEST_DROPEADO_POR": "Droppato da"
 }
