@@ -126,7 +126,8 @@ Private Function BucketIndex(ByVal key As Long) As Long
 End Function
 
 Private Sub EvictEntry(ByVal bucket As Long, ByVal idx As Long)
-    Dim sz As Long, id As Long
+    Dim sz As Long
+    Dim id As String
     Dim k  As Long
     With TexList(bucket).SurfaceEntry(idx)
         id = .filename
@@ -134,7 +135,7 @@ Private Sub EvictEntry(ByVal bucket As Long, ByVal idx As Long)
         On Error Resume Next
         Set .Texture = Nothing
         On Error GoTo 0
-        .filename = 0
+        .filename = vbNullString
         .texture_width = 0
         .texture_height = 0
         .size = 0
