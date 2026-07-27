@@ -325,13 +325,13 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H00000000&
       Height          =   1500
-      Left            =   9576
+      Left            =   9720
       ScaleHeight     =   100
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   100
       TabIndex        =   1
       ToolTipText     =   "Tu posicion en el mapa, click para mas info."
-      Top             =   600
+      Top             =   960
       Width           =   1500
       Begin VB.Shape personaje 
          BackColor       =   &H00FF0000&
@@ -424,7 +424,7 @@ Begin VB.Form frmMain
    End
    Begin RichTextLib.RichTextBox RecTxt 
       Height          =   1275
-      Left            =   240
+      Left            =   360
       TabIndex        =   5
       TabStop         =   0   'False
       ToolTipText     =   "Mensajes del servidor"
@@ -983,6 +983,33 @@ Begin VB.Form frmMain
       TabIndex        =   3
       Top             =   2280
       Width           =   11040
+   End
+   Begin VB.Label lblExpPerHour 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "Restante:99999"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
+      Height          =   255
+      Left            =   11580
+      TabIndex        =   54
+      Top             =   1545
+      Visible         =   0   'False
+      Width           =   3540
+   End
+   Begin VB.Image btnExpPerHour 
+      Height          =   225
+      Left            =   13860
+      Top             =   1245
+      Width           =   255
    End
    Begin VB.Image btnZoomIn 
       Height          =   195
@@ -1545,10 +1572,10 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H000040C0&
       Height          =   450
-      Left            =   1350
+      Left            =   15
       TabIndex        =   4
       ToolTipText     =   "Numero de usuarios online"
-      Top             =   0
+      Top             =   15
       Visible         =   0   'False
       Width           =   1665
    End
@@ -1759,9 +1786,67 @@ Private cBotonTotalExp     As clsGraphicalButton
 Private cBotonExpRemaining As clsGraphicalButton
 Private cBotonPercentageTwoDecimals As clsGraphicalButton
 Private cBotonPercentageFourDecimals As clsGraphicalButton
+Private cBotonExpPerHour As clsGraphicalButton
 Private cBotonZoomIn       As clsGraphicalButton
 Private cBotonZoomOut      As clsGraphicalButton
 Private mMainFormHasFocus   As Boolean
+' Manual Exp/Hour measurement
+Private MeasuringExp As Boolean
+Private MeasureStartExp As Long
+Private MeasureStartTick As Long
+
+Private Sub btnExpPerHour_Click()
+    On Error GoTo btnExpPerHour_Click_Err
+    
+    Call ChangeExperienceDisplayMode(btnExpPerHour)
+    
+    If Not MeasuringExp Then
+        ' === INICIAR MEDICIÓN ===
+        MeasuringExp = True
+        MeasureStartExp = UserStats.exp
+        MeasureStartTick = GetTickCount() And &H7FFFFFFF
+        
+        If Not lblExpPerHour Is Nothing Then
+            lblExpPerHour.Caption = "Midiendo... (click para detener)"
+            lblExpPerHour.ToolTipText = "Experiencia inicial: " & format$(MeasureStartExp, "#,##0")
+        End If
+    Else
+        ' === DETENER Y CALCULAR ===
+        MeasuringExp = False
+        
+        Dim nowTick As Long
+        nowTick = GetTickCount() And &H7FFFFFFF
+        
+        Dim elapsedMs As Long
+        elapsedMs = nowTick - MeasureStartTick
+        
+        Dim rate As Double
+        If elapsedMs > 1000 Then
+            Dim gained As Long
+            gained = UserStats.exp - MeasureStartExp
+            If gained < 0 Then gained = 0
+            
+            Dim hours As Double
+            hours = elapsedMs / 3600000#
+            rate = gained / hours
+        Else
+            rate = 0
+        End If
+        
+        If Not lblExpPerHour Is Nothing Then
+            lblExpPerHour.Caption = "Resultado: " & FormatLargeExpNumber(rate) & "/h"
+            lblExpPerHour.ToolTipText = "Exp ganada: " & format$(UserStats.exp - MeasureStartExp, "#,##0") & vbCrLf & _
+                                        "Tiempo: " & format$(elapsedMs / 1000, "0.0") & " segundos" & vbCrLf & _
+                                        "Rate: " & format$(rate, "#,##0") & " exp/hora"
+        End If
+    End If
+    
+    Exit Sub
+btnExpPerHour_Click_Err:
+    Call RegistrarError(Err.Number, Err.Description, "frmMain.btnExpPerHour_Click", Erl)
+    Resume Next
+End Sub
+
 Private Sub btnInvisible_Click()
     On Error GoTo btnInvisible_Click_Err
     Call ParseUserCommand("/INVISIBLE")
@@ -1781,6 +1866,7 @@ Private Sub loadButtons()
     Set cBotonExpRemaining = New clsGraphicalButton
     Set cBotonPercentageTwoDecimals = New clsGraphicalButton
     Set cBotonPercentageFourDecimals = New clsGraphicalButton
+    Set cBotonExpPerHour = New clsGraphicalButton
     Set cBotonZoomIn = New clsGraphicalButton
     Set cBotonZoomOut = New clsGraphicalButton
     Call cBotonEliminarItem.Initialize(imgDeleteItem, "boton-borrar-item-default.bmp", "boton-borrar-item-over.bmp", "boton-borrar-item-off.bmp", Me)
@@ -1791,6 +1877,7 @@ Private Sub loadButtons()
     Call cBotonExpRemaining.Initialize(btnExpRemaining, "boton-exprestante-default.bmp", "boton-exprestante-over.bmp", "boton-exprestante-off.bmp", Me)
     Call cBotonPercentageTwoDecimals.Initialize(btnExp, "boton-expdosdecimales-default.bmp", "boton-expdosdecimales-over.bmp", "boton-expdosdecimales-off.bmp", Me)
     Call cBotonPercentageFourDecimals.Initialize(btnExp2, "boton-expcuatrodecimales-default.bmp", "boton-expcuatrodecimales-over.bmp", "boton-expcuatrodecimales-off.bmp", Me)
+    Call cBotonExpPerHour.Initialize(btnExpPerHour, "boton-expcuatrodecimales-default.bmp", "boton-expcuatrodecimales-over.bmp", "boton-expcuatrodecimales-off.bmp", Me)
     Call cBotonZoomIn.Initialize(btnZoomIn, "boton-zoomin-default.bmp", "boton-zoomin-over.bmp", "boton-zoomin-off.bmp", Me)
     Call cBotonZoomOut.Initialize(btnZoomOut, "boton-zoomout-default.bmp", "boton-zoomout-over.bmp", "boton-zoomout-off.bmp", Me)
 End Sub
@@ -4284,6 +4371,16 @@ Private Sub ChangeExperienceDisplayMode(ByVal btn As Image)
             frmMain.expRemaining.visible = False
             frmMain.exp.visible = False
             frmMain.lblPorcLvl2.visible = True
+            
+        Case "btnExpPerHour"
+            frmMain.lblPorcLvl.visible = False
+            frmMain.lblPorcLvl2.visible = False
+            frmMain.exp.visible = False
+            frmMain.expRemaining.visible = False
+            
+            If Not lblExpPerHour Is Nothing Then
+                frmMain.lblExpPerHour.visible = True
+            End If
     End Select
     Exit Sub
     
@@ -4298,6 +4395,7 @@ Private Sub InitToolTipText()
     frmMain.btnTotalExp.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_TOTAL")
     frmMain.btnExp2.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_PORCENTAJE2")
     frmMain.btnExpRemaining.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_RESTANTE")
+    frmMain.btnExpPerHour.ToolTipText = JsonLanguage.Item("TOOLTIP_EXP_PERHOUR")
     Exit Sub
     
 InitToolTipText_Err:
@@ -4324,3 +4422,16 @@ ApplyMinimapZoom_Err:
     Resume Next
 End Sub
 
+Private Function FormatLargeExpNumber(ByVal num As Double) As String
+    On Error GoTo FormatLargeExpNumber_Err
+    Select Case num
+        Case Is >= 1000000: FormatLargeExpNumber = format$(num / 1000000, "0.0") & "M"
+        Case Is >= 10000:   FormatLargeExpNumber = format$(num / 1000, "0.0") & "k"
+        Case Is >= 1000:    FormatLargeExpNumber = format$(num / 1000, "0.0") & "k"
+        Case Is > 0:        FormatLargeExpNumber = format$(num, "#,##0")
+        Case Else:          FormatLargeExpNumber = "0"
+    End Select
+    Exit Function
+FormatLargeExpNumber_Err:
+    FormatLargeExpNumber = "?"
+End Function
