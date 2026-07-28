@@ -467,6 +467,14 @@ Public Sub ListView1_Click()
             y = (PlayerView.ScaleHeight - GrhData(ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex).pixelHeight) / 2
             Call Grh_Render_To_Hdc(PlayerView, ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex, x, y, False, RGB(11, 11, 11))
             npclbl.Caption = ObjData(ListView1.SelectedItem.SubItems(2)).Name & " (" & ListView1.SelectedItem.SubItems(1) & ")"
+        ElseIf ListView1.SelectedItem.SubItems(3) = 3 Then
+            ' Objetivo de kill por estado: no tiene sprite propio, solo texto.
+            PlayerView.Cls
+            npclbl.Caption = ListView1.SelectedItem.text & " (" & ListView1.SelectedItem.SubItems(1) & ")"
+        ElseIf ListView1.SelectedItem.SubItems(3) = 4 Then
+            ' Objetivo de puntaje de facción: no tiene sprite propio, solo texto.
+            PlayerView.Cls
+            npclbl.Caption = ListView1.SelectedItem.text & " (" & ListView1.SelectedItem.SubItems(1) & ")"
         Else
             x = (PlayerView.ScaleWidth - GrhData(HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex).pixelWidth) / 2
             y = (PlayerView.ScaleHeight - GrhData(HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex).pixelHeight) / 2

@@ -467,6 +467,16 @@ Public Sub ListView1_Click()
             y = (PlayerView.ScaleHeight - GrhData(HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex).pixelHeight) / 2
             Call Grh_Render_To_Hdc(PlayerView, HechizoData(ListView1.SelectedItem.SubItems(2)).IconoIndex, x, y, False, RGB(11, 11, 11))
             npclbl.Caption = HechizoData(ListView1.SelectedItem.SubItems(2)).nombre & " (" & ListView1.SelectedItem.SubItems(1) & ")"
+        ElseIf ListView1.SelectedItem.SubItems(3) = 3 Then
+            ' Objetivo de kill por estado (ciuda/crimi/armada/caos/lideres): no tiene sprite propio, solo texto.
+            PlayerView.BackColor = RGB(11, 11, 11)
+            PlayerView.Cls
+            npclbl.Caption = ListView1.SelectedItem.text & " (" & ListView1.SelectedItem.SubItems(1) & ")"
+        ElseIf ListView1.SelectedItem.SubItems(3) = 4 Then
+            ' Objetivo de puntaje de facción: no tiene sprite propio, solo texto.
+            PlayerView.BackColor = RGB(11, 11, 11)
+            PlayerView.Cls
+            npclbl.Caption = ListView1.SelectedItem.text & " (" & ListView1.SelectedItem.SubItems(1) & ")"
         Else
             x = (PlayerView.ScaleWidth - GrhData(ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex).pixelWidth) / 2
             y = (PlayerView.ScaleHeight - GrhData(ObjData(ListView1.SelectedItem.SubItems(2)).GrhIndex).pixelHeight) / 2
@@ -593,6 +603,20 @@ Private Sub ListViewQuest_ItemClick(ByVal Item As MSComctlLib.ListItem)
             subelemento.SubItems(2) = QuestList(QuestIndex).RequiredSpellList(i)
             subelemento.SubItems(3) = 2
         Next i
+        If QuestList(QuestIndex).RequiredKillsCount > 0 Then
+            For i = 1 To QuestList(QuestIndex).RequiredKillsCount
+                Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , GetQuestKillTargetName(QuestList(QuestIndex).RequiredKill(i).TargetType))
+                subelemento.SubItems(1) = QuestList(QuestIndex).RequiredKill(i).Amount
+                subelemento.SubItems(2) = QuestList(QuestIndex).RequiredKill(i).TargetType
+                subelemento.SubItems(3) = 3
+            Next i
+        End If
+        If QuestList(QuestIndex).RequiredFactionScore > 0 Then
+            Set subelemento = FrmQuestInfo.ListView1.ListItems.Add(, , JsonLanguage.Item("MENSAJE_QUEST_PUNTAJE_FACCION"))
+            subelemento.SubItems(1) = QuestList(QuestIndex).RequiredFactionScore
+            subelemento.SubItems(2) = 0
+            subelemento.SubItems(3) = 4
+        End If
         If QuestList(QuestIndex).RewardGLD <> 0 Then
             Set subelemento = FrmQuestInfo.ListView2.ListItems.Add(, , "Oro")
             subelemento.SubItems(1) = BeautifyBigNumber(QuestList(QuestIndex).RewardGLD)

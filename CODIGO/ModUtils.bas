@@ -121,6 +121,11 @@ Public Type t_QuestSkill
     RequiredValue As Byte
 End Type
 
+Public Type tQuestKillReq
+    TargetType As Integer
+    Amount As Integer
+End Type
+
 Public Type tQuest
     nombre As String
     desc As String
@@ -137,6 +142,9 @@ Public Type tQuest
     RequiredNPC() As tQuestNpc
     RequiredSpellList() As Integer
     RequiredSkill As t_QuestSkill
+    RequiredKill() As tQuestKillReq
+    RequiredKillsCount As Byte
+    RequiredFactionScore As Long
     RewardGLD As Long
     RewardEXP As Long
     RewardOBJ() As Obj
@@ -2132,3 +2140,20 @@ Public Sub PlayQuestFinalDescAudio(ByVal questIndex As Integer)
 
     Call ao20audio.PlayWav(audioFile, False, 0, 0, QUEST_DESC_AUDIO_LABEL)
 End Sub
+
+Public Function GetQuestKillTargetName(ByVal TargetType As Byte) As String
+    Select Case TargetType
+        Case 1
+            GetQuestKillTargetName = JsonLanguage.Item("MENSAJE_QUEST_KILL_CIUDADANO")
+        Case 2
+            GetQuestKillTargetName = JsonLanguage.Item("MENSAJE_QUEST_KILL_CRIMINAL")
+        Case 3
+            GetQuestKillTargetName = JsonLanguage.Item("MENSAJE_QUEST_KILL_ARMADA")
+        Case 4
+            GetQuestKillTargetName = JsonLanguage.Item("MENSAJE_QUEST_KILL_CAOS")
+        Case 5
+            GetQuestKillTargetName = JsonLanguage.Item("MENSAJE_QUEST_KILL_LIDER_ARMADA")
+        Case 6
+            GetQuestKillTargetName = JsonLanguage.Item("MENSAJE_QUEST_KILL_LIDER_CAOS")
+    End Select
+End Function

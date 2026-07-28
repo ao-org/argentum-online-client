@@ -5220,6 +5220,45 @@ Private Sub HandleQuestDetails()
     If RequiredSkill > 0 Then
         requirements = requirements & SkillsNames(RequiredSkill) & ": " & RequiredValue & vbCrLf
     End If
+
+    'Kills requeridos por estado (ciuda/crimi/armada/caos/lideres)
+    Dim requiredKillsCount As Byte
+    Dim KillTargetType As Byte
+    Dim KillAmountRequired As Integer
+    Dim KillsHave As Integer
+    requiredKillsCount = reader.ReadInt8
+    If requiredKillsCount Then
+        For i = 1 To requiredKillsCount
+            KillTargetType = reader.ReadInt8
+            KillAmountRequired = reader.ReadInt16
+            KillsHave = reader.ReadInt16
+            Set subelemento = FrmQuests.ListView1.ListItems.Add(, , GetQuestKillTargetName(KillTargetType))
+            If KillsHave < KillAmountRequired Then
+                subelemento.SubItems(1) = KillsHave & "/" & KillAmountRequired
+            Else
+                subelemento.SubItems(1) = "OK"
+            End If
+            subelemento.SubItems(2) = KillTargetType
+            subelemento.SubItems(3) = 3
+        Next i
+    End If
+
+    'Puntaje de facción requerido (delta desde que se aceptó la quest)
+    Dim RequiredFactionScore As Long
+    Dim FactionScoreHave As Long
+    RequiredFactionScore = reader.ReadInt32
+    If RequiredFactionScore > 0 Then
+        FactionScoreHave = reader.ReadInt32
+        Set subelemento = FrmQuests.ListView1.ListItems.Add(, , JsonLanguage.Item("MENSAJE_QUEST_PUNTAJE_FACCION"))
+        If FactionScoreHave < RequiredFactionScore Then
+            subelemento.SubItems(1) = FactionScoreHave & "/" & RequiredFactionScore
+        Else
+            subelemento.SubItems(1) = "OK"
+        End If
+        subelemento.SubItems(2) = 0
+        subelemento.SubItems(3) = 4
+    End If
+
     tmpStr = tmpStr & vbCrLf & JsonLanguage.Item("MENSAJE_RECOMPENSAS") & vbCrLf
     Dim tmplong As Long
     tmplong = Reader.ReadInt32
@@ -5315,6 +5354,7 @@ Public Sub HandleNpcQuestListSend()
     Dim requiredNpcCount   As Byte
     Dim requiredObjCount   As Byte
     Dim requiredSpellCount As Byte
+    Dim requiredKillsCount As Byte
     Dim rewardObjCount     As Byte
     Dim i                  As Integer
     Dim J                  As Byte
@@ -5399,6 +5439,20 @@ Public Sub HandleNpcQuestListSend()
 
         QuestList(QuestIndex).RequiredSkill.SkillType = Reader.ReadInt8
         QuestList(QuestIndex).RequiredSkill.RequiredValue = Reader.ReadInt8
+
+        requiredKillsCount = reader.ReadInt8
+        QuestList(questIndex).requiredKillsCount = requiredKillsCount
+        If requiredKillsCount > 0 Then
+            ReDim QuestList(questIndex).RequiredKill(1 To requiredKillsCount)
+            For i = 1 To requiredKillsCount
+                QuestList(questIndex).RequiredKill(i).TargetType = reader.ReadInt8
+                QuestList(questIndex).RequiredKill(i).Amount = reader.ReadInt16
+            Next i
+        Else
+            ReDim QuestList(questIndex).RequiredKill(0)
+        End If
+
+        QuestList(questIndex).RequiredFactionScore = reader.ReadInt32
 
         QuestList(QuestIndex).RewardGLD = Reader.ReadInt32
         QuestList(QuestIndex).RewardEXP = Reader.ReadInt32
