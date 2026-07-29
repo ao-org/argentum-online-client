@@ -91,7 +91,7 @@ PrintToConsole_Err:
     Resume Next
 End Sub
 
-Public Sub ActualizarColorCoordenadas()
+Public Sub UpdateCoordinatesColor()
     If MapDat.Seguro = 1 Then
         Call frmMain.SetCoordColor(RGB(0, 170, 0))      ' verde: seguro
     ElseIf MapaActualNoDrop Then

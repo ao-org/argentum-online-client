@@ -72,7 +72,7 @@ Sub SwitchMap(ByVal map As Integer, Optional ByVal NewResourceMap As Integer = 0
     If Not HaveAudio Then
         Call ao20audio.PlayAmbientAudio(map)
     End If
-    Call ActualizarColorCoordenadas
+    Call UpdateCoordinatesColor
     If MapDat.Seguro <> 1 Then
         If MostrarTutorial And tutorial_index <= 0 And isLogged Then
             If tutorial(e_tutorialIndex.TUTORIAL_ZONA_INSEGURA).Activo = 1 Then
