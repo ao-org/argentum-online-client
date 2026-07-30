@@ -1652,6 +1652,8 @@ Private Sub CreateEventCmd(ByRef arguments() As String, ByVal argCount As Intege
             Call StartCustomMap(3, eType, arguments, argCount)
         ElseIf eType = "NAVALCONQUEST" Then
             Call StartCustomMap(4, eType, arguments, argCount)
+        ElseIf eType = "ROOMRUSH" Then
+            Call StartCustomMap(5, eType, arguments, argCount)
         Else
             Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_INVALID_EVENT_TYPE"))
         End If

@@ -110,6 +110,14 @@ Begin VB.Form FrmTorneo
          Top             =   1440
          Width           =   3855
       End
+      Begin VB.OptionButton OptRoomRush 
+         Caption         =   "Room Rush"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   110
+         Top             =   3240
+         Width           =   3735
+      End
       Begin VB.CommandButton cmdConfigurarE 
          Caption         =   "Configurar e Iniciar"
          BeginProperty Font 
@@ -571,6 +579,141 @@ Begin VB.Form FrmTorneo
          TabIndex        =   59
          Top             =   1440
          Width           =   1845
+      End
+   End
+   Begin VB.Frame FraRoomRush 
+      Caption         =   "Room Rush"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   6015
+      Left            =   120
+      TabIndex        =   111
+      Top             =   120
+      Visible         =   0   'False
+      Width           =   4215
+      Begin VB.TextBox txtRoomRushEquipo 
+         Height          =   285
+         Left            =   1680
+         TabIndex        =   112
+         Text            =   "1"
+         Top             =   600
+         Width           =   975
+      End
+      Begin VB.TextBox txtRoomRushNivelMin 
+         Height          =   285
+         Left            =   1680
+         TabIndex        =   113
+         Text            =   "1"
+         Top             =   960
+         Width           =   975
+      End
+      Begin VB.TextBox txtRoomRushNivelMax 
+         Height          =   285
+         Left            =   1680
+         TabIndex        =   114
+         Text            =   "47"
+         Top             =   1320
+         Width           =   975
+      End
+      Begin VB.TextBox txtRoomRushCosto 
+         Height          =   285
+         Left            =   1680
+         TabIndex        =   115
+         Text            =   "0"
+         Top             =   1680
+         Width           =   975
+      End
+      Begin VB.CommandButton cmdCrearRoomRush 
+         Caption         =   "Crear el evento"
+         Height          =   360
+         Left            =   360
+         Style           =   1  'Graphical
+         TabIndex        =   116
+         Top             =   3960
+         Width           =   3495
+      End
+      Begin VB.CommandButton cmdAnunciarRoomRush 
+         Caption         =   "Anunciar el evento"
+         Height          =   360
+         Left            =   360
+         Style           =   1  'Graphical
+         TabIndex        =   117
+         Top             =   4320
+         Width           =   3495
+      End
+      Begin VB.CommandButton cmdIniciarRoomRush 
+         Caption         =   "Iniciar el Evento"
+         Height          =   360
+         Left            =   360
+         Style           =   1  'Graphical
+         TabIndex        =   118
+         Top             =   4680
+         Width           =   3495
+      End
+      Begin VB.CommandButton cmdVerAnotadosRoomRush 
+         Caption         =   "Ver Anotados"
+         Height          =   360
+         Left            =   360
+         Style           =   1  'Graphical
+         TabIndex        =   119
+         Top             =   5280
+         Width           =   1335
+      End
+      Begin VB.CommandButton cmdCancelarRoomRush 
+         Caption         =   "Cancelar"
+         Height          =   360
+         Left            =   2880
+         Style           =   1  'Graphical
+         TabIndex        =   120
+         Top             =   5280
+         Width           =   990
+      End
+      Begin VB.Label lblRoomRushEquipo 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Jugadores por equipo (1-3)"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   121
+         Top             =   600
+         Width           =   1845
+      End
+      Begin VB.Label lblRoomRushNivelMin 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nivel Minimo"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   122
+         Top             =   960
+         Width           =   870
+      End
+      Begin VB.Label lblRoomRushNivelMax 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Nivel Maximo"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   123
+         Top             =   1320
+         Width           =   930
+      End
+      Begin VB.Label lblRoomRushCosto 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Costo de Inscripcion"
+         Height          =   195
+         Left            =   120
+         TabIndex        =   124
+         Top             =   1680
+         Width           =   1815
       End
    End
    Begin VB.Frame FraCapturaDe 
@@ -1296,6 +1439,7 @@ Private Sub Form_Load()
     OptBufones.Caption = JsonLanguage.Item("MENSAJE_BUFONES") ' Bufones
     OptBusquedaDe.Caption = JsonLanguage.Item("MENSAJE_BUSQUEDA_TESORO") ' Búsqueda de tesoro
     OptAbordaje.Caption = JsonLanguage.Item("MENSAJE_ABORDAJE") ' Abordaje
+    OptRoomRush.Caption = JsonLanguage.Item("MENSAJE_EVENTO_ROOMRUSH") ' Room Rush
     cmdConfigurarE.Caption = JsonLanguage.Item("MENSAJE_CONFIGURAR_INICIAR") ' Configurar e Iniciar
     cmdCancelarTodos.Caption = JsonLanguage.Item("MENSAJE_CANCELAR_LOBBY") ' Cancelar todos los eventos con Lobby
 End Sub
@@ -1362,6 +1506,8 @@ Private Sub cmdConfigurarE_Click()
             FrmTorneo.FraAbordaje.visible = True
         Case OptBusquedaDe.value
             FrmTorneo.FraBusquedaTesoro.visible = True
+        Case OptRoomRush.value
+            FrmTorneo.FraRoomRush.visible = True
     End Select
 End Sub
 
@@ -1505,3 +1651,54 @@ Private Sub cmdCancelarBusqueda_Click()
     FrmTorneo.FraBusquedaTesoro.visible = False
     FrmTorneo.FraTorneosY.visible = True
 End Sub
+
+Private Sub cmdCrearRoomRush_Click()
+    ' Validar tamaño de equipo: 1, 2 o 3 jugadores por carril
+    If Not IsNumeric(txtRoomRushEquipo.text) Or CInt(txtRoomRushEquipo.text) < 1 Or CInt(txtRoomRushEquipo.text) > 3 Then
+        MsgBox "El tamaño de equipo debe ser 1, 2 o 3.", vbExclamation, "Error"
+        Exit Sub
+    End If
+    ' Validar nivel mínimo
+    If Not IsNumeric(txtRoomRushNivelMin.text) Or CInt(txtRoomRushNivelMin.text) < 1 Or CInt(txtRoomRushNivelMin.text) > 47 Then
+        MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MINIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
+        Exit Sub
+    End If
+    ' Validar nivel máximo
+    If Not IsNumeric(txtRoomRushNivelMax.text) Or CInt(txtRoomRushNivelMax.text) < 1 Or CInt(txtRoomRushNivelMax.text) > 47 _
+            Or CInt(txtRoomRushNivelMax.text) < CInt(txtRoomRushNivelMin.text) Then
+        MsgBox JsonLanguage.Item("MENSAJE_NIVEL_MAXIMO_ERROR"), vbExclamation, JsonLanguage.Item("MENSAJE_TITULO_ERROR")
+        Exit Sub
+    End If
+    ' Validar costo de inscripción
+    If Not IsNumeric(txtRoomRushCosto.text) Or val(txtRoomRushCosto.text) < 0 Then
+        MsgBox JsonLanguage.Item("MENSAJE_COSTO_PARTIDA_INVALIDO"), vbExclamation, JsonLanguage.Item("TITULO_ERROR")
+        Exit Sub
+    End If
+
+    Const CANTIDAD_CARRILES As Integer = 5
+    Dim teamSize As Integer
+    Dim maxPlayers As Integer
+    teamSize = CInt(txtRoomRushEquipo.text)
+    maxPlayers = teamSize * CANTIDAD_CARRILES
+
+    Call ParseUserCommand("/crearevento roomrush " & maxPlayers & " " & txtRoomRushNivelMin.text & " " & txtRoomRushNivelMax.text & " " & txtRoomRushCosto.text & " " & teamSize)
+End Sub
+
+Private Sub cmdAnunciarRoomRush_Click()
+    Call ParseUserCommand("/configlobby open ")
+End Sub
+
+Private Sub cmdIniciarRoomRush_Click()
+    Call ParseUserCommand("/configlobby start")
+End Sub
+
+Private Sub cmdVerAnotadosRoomRush_Click()
+    Call ParseUserCommand("/configlobby list")
+End Sub
+
+Private Sub cmdCancelarRoomRush_Click()
+    Call WriteCancelarEvento
+    FrmTorneo.FraRoomRush.visible = False
+    FrmTorneo.FraTorneosY.visible = True
+End Sub
+
