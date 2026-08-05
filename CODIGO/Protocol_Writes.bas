@@ -462,6 +462,8 @@ Public Sub WritePickUp()
     On Error GoTo WritePickUp_Err
     '</EhHeader>
     Call Writer.WriteInt16(ClientPacketID.ePickUp)
+    Call Writer.WriteInt8(UserPos.x)
+    Call Writer.WriteInt8(UserPos.y)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
@@ -758,6 +760,8 @@ Public Sub WriteDrop(ByVal Slot As Byte, ByVal Amount As Long)
     Call Writer.WriteInt32(Amount)
     packetCounters.TS_Drop = packetCounters.TS_Drop + 1
     Call Writer.WriteInt32(packetCounters.TS_Drop)
+    Call Writer.WriteInt8(UserPos.x)
+    Call Writer.WriteInt8(UserPos.y)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
