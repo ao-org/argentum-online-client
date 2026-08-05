@@ -132,8 +132,6 @@
     "MENSAJEBOX_ADVERTENCIA": "ArgentumOnline - Advertencia",
     "MENSAJEBOX_ERROR_FORMATO_LINEA": "Error en el formato de la línea ",
     "MENSAJEBOX_TITULO_RECURSOS_INVALIDOS": "Recursos inválidos.",
-    "MENSAJEBOX_ERROR_CLIENTE_COMPROBAR": "Error al comprobar el cliente del juego, por favor reinstale y vuelva a intentar.",
-    "MENSAJEBOX_TITULO_CLIENTE_CORROMPIDO": "Cliente corrompido",
     "MENSAJEBOX_CAMBIOS_SKILLPOINTS": "Realizó cambios en sus skillpoints ¿desea guardar antes de salir?",
     "MENSAJEBOX_NUEVA_VERSION": "¡Nueva versión disponible! Se abrirá el lanzador para que puedas actualizar.",
     "MENSAJEBOX_RESETEAR_PERSONAJE": "¿Está seguro que desea resetear el personaje? Los items que no sean depositados se perderán.",

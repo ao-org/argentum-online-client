@@ -170,7 +170,6 @@ End Sub
 '   Int8   app_major
 '   Int8   app_minor
 '   Int8   app_revision
-'   String8 md5
 '
 Public Sub WriteLoginExistingChar()
     On Error GoTo WriteLoginExistingChar_Err
@@ -191,7 +190,6 @@ Public Sub WriteLoginExistingChar()
     Call Writer.WriteInt8(App.Major)
     Call Writer.WriteInt8(App.Minor)
     Call Writer.WriteInt8(App.Revision)
-    Call Writer.WriteString8(CheckMD5)
 
     Call modNetwork.send(Writer)
     Exit Sub
@@ -219,7 +217,6 @@ Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal 
     Call Writer.WriteInt8(App.Major)
     Call Writer.WriteInt8(App.Minor)
     Call Writer.WriteInt8(App.Revision)
-    Call Writer.WriteString8(CheckMD5)
     Call Writer.WriteInt8(Race)
     Call Writer.WriteInt8(Gender)
     Call Writer.WriteInt8(Class)

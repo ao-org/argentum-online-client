@@ -812,7 +812,6 @@ UnitTest_Err:
     Call SetNpcsRenderText
     Call cargarTutoriales
     Call InitializeEffectArrays
-    CheckMD5 = GetMd5
     SessionOpened = False
     Call Load(frmConnect)
     Call Load(FrmLogear)
@@ -1327,15 +1326,6 @@ RunningInVB_Err:
     Resume Next
 End Function
 
-
-Public Function GetMd5() As String
-    On Error GoTo Handler
-    GetMd5 = MD5File(App.path & "\Argentum.exe")
-    Exit Function
-Handler:
-    Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_CLIENTE_COMPROBAR"), vbOKOnly, JsonLanguage.Item("MENSAJEBOX_TITULO_CLIENTE_CORROMPIDO"))
-    End
-End Function
 
 Public Sub CheckResources()
     Dim data(1 To 200) As Byte
