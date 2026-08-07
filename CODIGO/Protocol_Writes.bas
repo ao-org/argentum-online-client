@@ -464,6 +464,7 @@ Public Sub WritePickUp()
     Call Writer.WriteInt16(ClientPacketID.ePickUp)
     Call Writer.WriteInt8(UserPos.x)
     Call Writer.WriteInt8(UserPos.y)
+    Call Writer.WriteInt8(0)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
