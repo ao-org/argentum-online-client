@@ -1042,6 +1042,10 @@ Public Function PlayAmbient(ByVal id As Integer, Optional ByVal looping As Boole
         frmDebug.add_text_tracebox "PlayAmbient, track " & tid & " id: " & id
     #End If
     With mAudioTracks(tid)
+        If Not .buffer Is Nothing Then
+            .buffer.Stop
+            .buffer.SetCurrentPosition 0
+        End If
         .Name = id
         Set .Buffer = mDirectSound.DuplicateSoundBuffer(ByVal mBuffer(id))
         Call StartPlaying(.Buffer, IIf(looping, DSBPLAY_LOOPING, DSBPLAY_DEFAULT), volume, pan)
