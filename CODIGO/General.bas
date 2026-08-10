@@ -529,8 +529,20 @@ Sub ResetContadores()
     packetCounters.TS_ChangeHeading = 0
 End Sub
 
+Public Function IsMovementBlocked() As Boolean
+    IsMovementBlocked = _
+        frmComerciar.visible _
+        Or frmBancoObj.visible _
+        Or frmBancoCuenta.visible _
+        Or frmCrafteo.visible _
+        Or frmComerciarUsu.visible
+End Function
+
 Sub MoveTo(ByVal Heading As E_Heading, ByVal Dumb As Boolean)
     On Error GoTo MoveTo_Err
+    
+    If IsMovementBlocked() Then Exit Sub
+    
     If Dumb Then
         If RandomNumber(1, 100) < 50 Then
             Dim newHeading As E_Heading
