@@ -2383,7 +2383,7 @@ CargarAnimEscudos_Err:
 End Sub
 
 Sub LoadFonts()
-    If LoadFont("Cardo.ttf") Then
+    If LoadFont("Cardo-Regular.ttf") Then
         frmMain.NombrePJ.font.Name = "Cardo"
     End If
     If LoadFont("Alegreya Sans AO.ttf") Then
@@ -2436,9 +2436,11 @@ End Sub
 
 Function LoadFont(Name As String) As Boolean
     Static YaMostreError As Boolean
-    LoadFont = AddFontResourceEx(App.path & "\..\Recursos\OUTPUT\" & Name, FR_PRIVATE, 0&) <> 0
+    Dim FontPath As String
+    FontPath = App.path & "\..\Recursos\OUTPUT\" & Name
+    LoadFont = AddFontResourceEx(FontPath, FR_PRIVATE, 0&) <> 0
     If Not YaMostreError And Not LoadFont Then
-        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_FUENTES"), vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ERROR_CARGA"))
+        Call MsgBox(JsonLanguage.Item("MENSAJEBOX_ERROR_FUENTES") & vbCrLf & vbCrLf & "Font: " & Name & vbCrLf & "Path: " & FontPath, vbOKOnly, JsonLanguage.Item("MENSAJEBOX_ERROR_CARGA"))
         YaMostreError = True
     End If
 End Function
