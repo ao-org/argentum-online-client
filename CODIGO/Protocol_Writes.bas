@@ -170,7 +170,6 @@ End Sub
 '   Int8   app_major
 '   Int8   app_minor
 '   Int8   app_revision
-'   String8 md5
 '
 Public Sub WriteLoginExistingChar()
     On Error GoTo WriteLoginExistingChar_Err
@@ -191,7 +190,6 @@ Public Sub WriteLoginExistingChar()
     Call Writer.WriteInt8(App.Major)
     Call Writer.WriteInt8(App.Minor)
     Call Writer.WriteInt8(App.Revision)
-    Call Writer.WriteString8(CheckMD5)
 
     Call modNetwork.send(Writer)
     Exit Sub
@@ -219,12 +217,11 @@ Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal 
     Call Writer.WriteInt8(App.Major)
     Call Writer.WriteInt8(App.Minor)
     Call Writer.WriteInt8(App.Revision)
-    Call Writer.WriteString8(CheckMD5)
     Call Writer.WriteInt8(Race)
     Call Writer.WriteInt8(Gender)
     Call Writer.WriteInt8(Class)
     Call Writer.WriteInt16(Head)
-    Call Writer.WriteInt8(HomeCity)
+    Call Writer.WriteInt8(CHARACTER_CREATION_HOME_FORGAT)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
@@ -307,7 +304,7 @@ Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal 
 116     Call Writer.WriteInt(Gender)
 118     Call Writer.WriteInt(Class)
 120     Call Writer.WriteInt(Head)
-122     Call Writer.WriteInt(HomeCity)
+122     Call Writer.WriteInt(CHARACTER_CREATION_HOME_FORGAT)
     
 130     Call modNetwork.send(Writer)
         '<EhFooter>
@@ -465,6 +462,9 @@ Public Sub WritePickUp()
     On Error GoTo WritePickUp_Err
     '</EhHeader>
     Call Writer.WriteInt16(ClientPacketID.ePickUp)
+    Call Writer.WriteInt8(UserPos.x)
+    Call Writer.WriteInt8(UserPos.y)
+    Call Writer.WriteInt8(0)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
@@ -761,6 +761,8 @@ Public Sub WriteDrop(ByVal Slot As Byte, ByVal Amount As Long)
     Call Writer.WriteInt32(Amount)
     packetCounters.TS_Drop = packetCounters.TS_Drop + 1
     Call Writer.WriteInt32(packetCounters.TS_Drop)
+    Call Writer.WriteInt8(UserPos.x)
+    Call Writer.WriteInt8(UserPos.y)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
