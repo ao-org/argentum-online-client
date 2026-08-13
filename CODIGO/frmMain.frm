@@ -1751,6 +1751,8 @@ Private Declare Sub SetWindowPos _
 Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hWnd As Long, ByVal wMsg As Long, ByVal wParam As Long, lParam As String) As Long
 Private Const EM_GETLINE = &HC4
 Private Const EM_LINELENGTH = &HC1
+Private Const EM_LINEINDEX = &HBB
+Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
 Private cBotonEliminarItem As clsGraphicalButton
 Private cBotonAjustes      As clsGraphicalButton
 Private cBotonManual       As clsGraphicalButton
@@ -3455,14 +3457,23 @@ Private Sub RecTxt_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
     If Button = 1 Then
         Dim strBuffer      As String
         Dim lngLength      As Long
-        Dim intCurrentLine As Integer
+        Dim lngCharIndex   As Long
+        Dim ret            As Long
+        Dim intCurrentLine As Long
+
         intCurrentLine = RecTxt.GetLineFromChar(RecTxt.SelStart)
-        'get line length
-        lngLength = SendMessage(RecTxt.hWnd, EM_LINELENGTH, intCurrentLine, 0)
-        'resize buffer
-        strBuffer = Space(lngLength)
-        'get line text
-        Call SendMessage(RecTxt.hWnd, EM_GETLINE, intCurrentLine, ByVal strBuffer)
+        lngCharIndex = SendMessage(RecTxt.hWnd, EM_LINEINDEX, intCurrentLine, ByVal "")
+        lngLength = SendMessage(RecTxt.hWnd, EM_LINELENGTH, lngCharIndex, ByVal "")
+
+        If lngLength <= 0 Then Exit Sub
+
+        strBuffer = Space(lngLength + 2)
+        Call CopyMemory(ByVal strBuffer, lngLength, 2)
+
+        ret = SendMessage(RecTxt.hWnd, EM_GETLINE, intCurrentLine, ByVal strBuffer)
+        If ret <= 0 Then Exit Sub
+        strBuffer = Left$(strBuffer, ret)
+
         Dim partea       As String
         Dim destinatario As String
         destinatario = SuperMid(strBuffer, "[", "]", False)
