@@ -221,7 +221,7 @@ Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal 
     Call Writer.WriteInt8(Gender)
     Call Writer.WriteInt8(Class)
     Call Writer.WriteInt16(Head)
-    Call Writer.WriteInt8(HomeCity)
+    Call Writer.WriteInt8(CHARACTER_CREATION_HOME_FORGAT)
     Call modNetwork.send(Writer)
     '<EhFooter>
     Exit Sub
@@ -304,7 +304,7 @@ Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal 
 116     Call Writer.WriteInt(Gender)
 118     Call Writer.WriteInt(Class)
 120     Call Writer.WriteInt(Head)
-122     Call Writer.WriteInt(HomeCity)
+122     Call Writer.WriteInt(CHARACTER_CREATION_HOME_FORGAT)
     
 130     Call modNetwork.send(Writer)
         '<EhFooter>
