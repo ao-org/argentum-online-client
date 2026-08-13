@@ -16,6 +16,7 @@ Begin VB.Form frmCrearPersonaje
    StartUpPosition =   2  'CenterScreen
    Begin VB.ComboBox lstHogar 
       BackColor       =   &H00000000&
+      Enabled         =   0   'False
       BeginProperty Font 
          Name            =   "MS Sans Serif"
          Size            =   8.25
@@ -30,7 +31,9 @@ Begin VB.Form frmCrearPersonaje
       Left            =   13680
       Style           =   2  'Dropdown List
       TabIndex        =   29
+      TabStop         =   0   'False
       Top             =   5640
+      Visible         =   0   'False
       Width           =   1785
    End
    Begin VB.ComboBox cabeza 
@@ -861,7 +864,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
         UserStats.Raza = lstRaza.ListIndex + 1
         UserStats.Sexo = lstGenero.ListIndex + 1
         UserStats.Clase = lstProfesion.ListIndex + 1
-        UserStats.Hogar = lstHogar.ListIndex + 1
+        UserStats.Hogar = CHARACTER_CREATION_HOME_FORGAT
         UserAtributos(1) = val(lbFuerza.Caption) + val(modfuerza.Caption)
         UserAtributos(2) = val(lbAgilidad.Caption) + val(modAgilidad.Caption)
         UserAtributos(3) = val(lbInteligencia.Caption) + val(modInteligencia.Caption)

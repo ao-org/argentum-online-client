@@ -583,7 +583,7 @@ Private Sub lstArmas_Click()
                     List2.AddItem tmpTexts(i)
                 End If
             Next i
-            desc.Caption = "Golpe: " & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MinHit & "/" & ObjData(ArmasHerrero(lstArmas.ListIndex).Index).MaxHit
+            desc.Caption = "Golpe: " & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MinHit & "/" & ObjData(ArmasHerrero(lstArmas.ListIndex + 1).Index).MaxHit
         Case 2
             Call Grh_Render_To_Hdc(picture1, ObjData(ArmadurasHerrero(lstArmas.ListIndex).Index).GrhIndex, 0, 0)
             tmpTexts = AddMaterialNames((ArmadurasHerrero(lstArmas.ListIndex).Index))

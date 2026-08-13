@@ -51,7 +51,6 @@ End Type
 
 Public ListaClanes  As Boolean
 Public ClanesList() As Tclan
-Public CheckMD5     As String
 Public intro        As Byte
 Public InviCounter  As Integer
 Public DrogaCounter As Integer
@@ -627,10 +626,10 @@ Sub IniciarCrearPj()
     Next i
     frmCrearPersonaje.lstRaza.ListIndex = 0
     frmCrearPersonaje.lstHogar.Clear
-    For i = LBound(ListaCiudades()) To UBound(ListaCiudades())
-        frmCrearPersonaje.lstHogar.AddItem ListaCiudades(i)
-    Next i
+    frmCrearPersonaje.lstHogar.AddItem ListaCiudades(eCiudad.cForgat)
     frmCrearPersonaje.lstHogar.ListIndex = 0
+    frmCrearPersonaje.lstHogar.enabled = False
+    UserStats.Hogar = CHARACTER_CREATION_HOME_FORGAT
     frmCrearPersonaje.lstProfesion.Clear
     For i = LBound(ListaClases()) To UBound(ListaClases())
         frmCrearPersonaje.lstProfesion.AddItem ListaClases(i)

@@ -463,14 +463,6 @@ End Sub
                         frmCrearPersonaje.lstGenero.ListIndex = frmCrearPersonaje.lstGenero.ListIndex - 1
                     End If
                 End If
-                ' Hogar inicial
-                ' Shugar: Arreglo los botones para seleccionar el hogar inicial.
-                If x > 416 And x < 433 And y > 323 And y < 338 Then
-                    Call Rotacion_boton_adelante_ciudades
-                End If
-                If x > 297 And x < 314 And y > 321 And y < 340 Then
-                    Call Rotacion_boton_atras_ciudades
-                End If
                 If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
                     Call ao20audio.PlayWav(SND_CLICK)
                     AlphaNiebla = 25
@@ -494,7 +486,7 @@ End Sub
                     UserStats.Raza = frmCrearPersonaje.lstRaza.ListIndex + 1
                     UserStats.Sexo = frmCrearPersonaje.lstGenero.ListIndex + 1
                     UserStats.Clase = frmCrearPersonaje.lstProfesion.ListIndex + 1
-                    UserStats.Hogar = frmCrearPersonaje.lstHogar.ListIndex + 1
+                    UserStats.Hogar = CHARACTER_CREATION_HOME_FORGAT
                     If frmCrearPersonaje.CheckData() Then
                         UserPassword = CuentaPassword
                         StopCreandoCuenta = True
@@ -765,23 +757,6 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
 
             End If
             
-            ' Hogar inicial
-            ' Shugar: Arreglo los botones para seleccionar el hogar inicial.
-            
-            If x > 416 And x < 433 And y > 323 And y < 338 Then
-            
-                Call Rotacion_boton_adelante_ciudades
-
-            End If
-            
-            
-            If x > 297 And x < 314 And y > 321 And y < 340 Then
-                
-                Call Rotacion_boton_atras_ciudades
-                
-            End If
-
-            
             If x >= 289 And x < 289 + 160 And y >= 525 And y < 525 + 37 Then 'Boton > Volver
                 Call ao20audio.PlayWav(SND_CLICK)
                 'UserMap = 323
@@ -817,7 +792,7 @@ Private Sub render_MouseUp(Button As Integer, Shift As Integer, x As Single, y A
                 UserStats.Raza = frmCrearPersonaje.lstRaza.ListIndex + 1
                 UserStats.Sexo = frmCrearPersonaje.lstGenero.ListIndex + 1
                 UserStats.Clase = frmCrearPersonaje.lstProfesion.ListIndex + 1
-                UserStats.Hogar = frmCrearPersonaje.lstHogar.ListIndex + 1
+                UserStats.Hogar = CHARACTER_CREATION_HOME_FORGAT
                
                 If frmCrearPersonaje.CheckData() Then
                     UserPassword = CuentaPassword
@@ -1077,28 +1052,6 @@ Private Sub Rotacion_boton_atras_clase()
             frmCrearPersonaje.lstProfesion.ListIndex = eClass.Hunter - 1
         Case eClass.Trabajador - 1
             frmCrearPersonaje.lstProfesion.ListIndex = eClass.Warrior - 1
-    End Select
-End Sub
-
-Private Sub Rotacion_boton_adelante_ciudades()
-    Select Case frmCrearPersonaje.lstHogar.ListIndex
-        Case eCiudad.cUllathorpe - 1
-            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cNix - 1
-        Case eCiudad.cNix - 1
-            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cArghal - 1
-        Case eCiudad.cArghal - 1
-            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cUllathorpe - 1
-    End Select
-End Sub
-
-Private Sub Rotacion_boton_atras_ciudades()
-    Select Case frmCrearPersonaje.lstHogar.ListIndex
-        Case eCiudad.cUllathorpe - 1
-            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cArghal - 1
-        Case eCiudad.cArghal - 1
-            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cNix - 1
-        Case eCiudad.cNix - 1
-            frmCrearPersonaje.lstHogar.ListIndex = eCiudad.cUllathorpe - 1
     End Select
 End Sub
 
