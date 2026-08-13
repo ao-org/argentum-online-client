@@ -247,7 +247,7 @@ Public Sub OnClick(ByVal MouseButton As Long, ByVal MouseShift As Long)
     ElseIf MouseAction = e_MouseAction.eInteract Then
         Call WriteDoubleClick(tX, tY)
     ElseIf MouseAction = e_MouseAction.eAttack Then
-        If UserDescansar Or UserMeditar Then Exit Sub
+        If UserDescansar Then Exit Sub
         If MainTimer.Check(TimersIndex.CastAttack, False) Then
             If WriteAttack() Then
                 Call MainTimer.Restart(TimersIndex.AttackSpell)

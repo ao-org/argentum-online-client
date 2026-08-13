@@ -494,7 +494,7 @@ Public Sub CreateCharacter(ByVal Name As String, ByVal Race As Integer, ByVal Ge
     UserStats.Sexo = Gender
     UserStats.Clase = Class
     MiCabeza = Head
-    UserStats.Hogar = HomeCity
+    UserStats.Hogar = CHARACTER_CREATION_HOME_FORGAT
     #If PYMMO = 1 Then
         Call modNetwork.Connect(IPdelServidor, PuertoDelServidor)
         Call LoginOrConnect(E_MODO.CrearNuevoPj)

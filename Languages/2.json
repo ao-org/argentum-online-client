@@ -132,8 +132,6 @@
     "MENSAJEBOX_ADVERTENCIA": "Argentum20 - Warning",
     "MENSAJEBOX_ERROR_FORMATO_LINEA": "Error in the format of line ",
     "MENSAJEBOX_TITULO_RECURSOS_INVALIDOS": "Invalid resources.",
-    "MENSAJEBOX_ERROR_CLIENTE_COMPROBAR": "Error checking the game client, please reinstall and try again.",
-    "MENSAJEBOX_TITULO_CLIENTE_CORROMPIDO": "Corrupted client",
     "MENSAJEBOX_CAMBIOS_SKILLPOINTS": "You made changes to your skill points. Do you want to save before exiting?",
     "MENSAJEBOX_NUEVA_VERSION": "New version available! The launcher will open so you can update.",
     "MENSAJEBOX_RESETEAR_PERSONAJE": "Are you sure you want to reset the character? Items not deposited will be lost.",
