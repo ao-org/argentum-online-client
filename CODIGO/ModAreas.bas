@@ -22,8 +22,15 @@ Public MaxLimiteX      As Integer
 Public MinLimiteY      As Integer
 Public MaxLimiteY      As Integer
 Private Const AREA_DIM As Byte = 12
-Private Const AREA_RADIUS_X As Byte = 1
-Private Const AREA_RADIUS_Y As Byte = 1
+#If PYMMO = 1 Then
+    ' Keep the client-side culling window aligned with the server area
+    ' window so AreaChanged does not delete entities the server still sends.
+    Private Const AREA_RADIUS_X As Byte = 4
+    Private Const AREA_RADIUS_Y As Byte = 3
+#Else
+    Private Const AREA_RADIUS_X As Byte = 1
+    Private Const AREA_RADIUS_Y As Byte = 1
+#End If
 Private Const AREA_TILE_WIDTH As Integer = AREA_DIM * (AREA_RADIUS_X * 2 + 1)
 Private Const AREA_TILE_HEIGHT As Integer = AREA_DIM * (AREA_RADIUS_Y * 2 + 1)
 
