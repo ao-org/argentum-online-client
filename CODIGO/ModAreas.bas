@@ -21,15 +21,15 @@ Public MinLimiteX      As Integer
 Public MaxLimiteX      As Integer
 Public MinLimiteY      As Integer
 Public MaxLimiteY      As Integer
-Private Const AREA_DIM As Byte = 12
+Private Const AREA_DIM As Integer = 12
 #If PYMMO = 1 Then
     ' Keep the client-side culling window aligned with the server area
     ' window so AreaChanged does not delete entities the server still sends.
-    Private Const AREA_RADIUS_X As Byte = 4
-    Private Const AREA_RADIUS_Y As Byte = 3
+    Private Const AREA_RADIUS_X As Integer = 4
+    Private Const AREA_RADIUS_Y As Integer = 3
 #Else
-    Private Const AREA_RADIUS_X As Byte = 1
-    Private Const AREA_RADIUS_Y As Byte = 1
+    Private Const AREA_RADIUS_X As Integer = 1
+    Private Const AREA_RADIUS_Y As Integer = 1
 #End If
 Private Const AREA_TILE_WIDTH As Integer = AREA_DIM * (AREA_RADIUS_X * 2 + 1)
 Private Const AREA_TILE_HEIGHT As Integer = AREA_DIM * (AREA_RADIUS_Y * 2 + 1)
@@ -37,10 +37,14 @@ Private Const AREA_TILE_HEIGHT As Integer = AREA_DIM * (AREA_RADIUS_Y * 2 + 1)
 Public Sub CambioDeArea(ByVal x As Byte, ByVal y As Byte)
     On Error GoTo CambioDeArea_Err
     Dim loopX As Long, loopY As Long
-    MinLimiteX = (x \ AREA_DIM - AREA_RADIUS_X) * AREA_DIM
+    MinLimiteX = ((CLng(x) \ AREA_DIM) - AREA_RADIUS_X) * AREA_DIM
     MaxLimiteX = MinLimiteX + AREA_TILE_WIDTH - 1
-    MinLimiteY = (y \ AREA_DIM - AREA_RADIUS_Y) * AREA_DIM
+    MinLimiteY = ((CLng(y) \ AREA_DIM) - AREA_RADIUS_Y) * AREA_DIM
     MaxLimiteY = MinLimiteY + AREA_TILE_HEIGHT - 1
+    If MinLimiteX < 1 Then MinLimiteX = 1
+    If MinLimiteY < 1 Then MinLimiteY = 1
+    If MaxLimiteX > 100 Then MaxLimiteX = 100
+    If MaxLimiteY > 100 Then MaxLimiteY = 100
     For loopX = 1 To 100
         For loopY = 1 To 100
             If (loopY < MinLimiteY) Or (loopY > MaxLimiteY) Or (loopX < MinLimiteX) Or (loopX > MaxLimiteX) Then
