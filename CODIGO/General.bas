@@ -1002,6 +1002,15 @@ LeerLineaComandos_Err:
     Resume Next
 End Sub
 
+Public Function ClassMaskFromIndex(ByVal ClassIndex As Byte) As e_Class
+    On Error GoTo ClassMaskFromIndex_Err
+    If ClassIndex < 1 Or ClassIndex > NUMCLASES Then Exit Function
+    ClassMaskFromIndex = CLng(2 ^ (ClassIndex - 1))
+    Exit Function
+ClassMaskFromIndex_Err:
+    Call RegistrarError(Err.Number, Err.Description, "General.ClassMaskFromIndex", Erl)
+End Function
+
 Private Sub InicializarNombres()
     'Inicializa los nombres de razas, ciudades, clases, skills, atributos, etc.
     On Error GoTo InicializarNombres_Err
@@ -1023,18 +1032,18 @@ Private Sub InicializarNombres()
     ListaCiudades(eCiudad.cLindos) = "Lindos"
     ListaCiudades(eCiudad.cArghal) = "Arghal"
     ListaCiudades(eCiudad.cForgat) = "Forgat"
-    ListaClases(eClass.Mage) = JsonLanguage.Item("MENSAJE_CLASE_MAGO")
-    ListaClases(eClass.Cleric) = JsonLanguage.Item("MENSAJE_CLASE_CLERIGO")
-    ListaClases(eClass.Warrior) = JsonLanguage.Item("MENSAJE_CLASE_GUERRERO")
-    ListaClases(eClass.Assasin) = JsonLanguage.Item("MENSAJE_CLASE_ASESINO")
-    ListaClases(eClass.Bard) = JsonLanguage.Item("MENSAJE_CLASE_BARDO")
-    ListaClases(eClass.Druid) = JsonLanguage.Item("MENSAJE_CLASE_DRUIDA")
-    ListaClases(eClass.paladin) = JsonLanguage.Item("MENSAJE_CLASE_PALADIN")
-    ListaClases(eClass.Hunter) = JsonLanguage.Item("MENSAJE_CLASE_CAZADOR")
-    ListaClases(eClass.Trabajador) = JsonLanguage.Item("MENSAJE_CLASE_TRABAJADOR")
-    ListaClases(eClass.Pirat) = JsonLanguage.Item("MENSAJE_CLASE_PIRATA")
-    ListaClases(eClass.Thief) = JsonLanguage.Item("MENSAJE_CLASE_LADRON")
-    ListaClases(eClass.Bandit) = JsonLanguage.Item("MENSAJE_CLASE_BANDIDO")
+    ListaClases(e_Class.Mage) = JsonLanguage.Item("MENSAJE_CLASE_MAGO")
+    ListaClases(e_Class.Cleric) = JsonLanguage.Item("MENSAJE_CLASE_CLERIGO")
+    ListaClases(e_Class.Warrior) = JsonLanguage.Item("MENSAJE_CLASE_GUERRERO")
+    ListaClases(e_Class.Assasin) = JsonLanguage.Item("MENSAJE_CLASE_ASESINO")
+    ListaClases(e_Class.Bard) = JsonLanguage.Item("MENSAJE_CLASE_BARDO")
+    ListaClases(e_Class.Druid) = JsonLanguage.Item("MENSAJE_CLASE_DRUIDA")
+    ListaClases(e_Class.paladin) = JsonLanguage.Item("MENSAJE_CLASE_PALADIN")
+    ListaClases(e_Class.Hunter) = JsonLanguage.Item("MENSAJE_CLASE_CAZADOR")
+    ListaClases(e_Class.Trabajador) = JsonLanguage.Item("MENSAJE_CLASE_TRABAJADOR")
+    ListaClases(e_Class.Pirat) = JsonLanguage.Item("MENSAJE_CLASE_PIRATA")
+    ListaClases(e_Class.Thief) = JsonLanguage.Item("MENSAJE_CLASE_LADRON")
+    ListaClases(e_Class.Bandit) = JsonLanguage.Item("MENSAJE_CLASE_BANDIDO")
     SkillsNames(eSkill.magia) = JsonLanguage.Item("MENSAJE_SKILL_MAGIA")
     SkillsNames(eSkill.Robar) = JsonLanguage.Item("MENSAJE_SKILL_ROBAR")
     SkillsNames(eSkill.Tacticas) = JsonLanguage.Item("MENSAJE_SKILL_TACTICAS")

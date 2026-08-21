@@ -218,18 +218,19 @@ Public Enum e_InfoTxts2
 End Enum
 
 Public Enum e_Class
-    Mage = 1    'Mago
-    Cleric = 2     'Clérigo
-    Warrior = 3   'Guerrero
-    Assasin = 4  'Asesino
-    Bard = 5      'Bardo
-    Druid = 6     'Druida
-    paladin = 7   'Paladín
-    Hunter = 8    'Cazador
-    Worker = 9 'Trabajador
-    Pirat = 10     'Pirata
-    Thief = 11     'Ladron
-    Bandit = 12    'Bandido
+    Mage = &H1
+    Cleric = &H2
+    Warrior = &H4
+    Assasin = &H8
+    Bard = &H10
+    Druid = &H20
+    Paladin = &H40
+    Hunter = &H80
+    Trabajador = &H100
+    Pirat = &H200
+    Thief = &H400
+    Bandit = &H800
+    AllClasses = &HFFF
 End Enum
 
 Public Enum e_Race
@@ -935,7 +936,7 @@ Public Type t_UserStats
     GLD As Long
     OroPorNivel As Long
     Lvl As Integer
-    Clase As Byte
+    Clase As e_Class
     Sexo As Byte
     Raza As Byte
     Hogar As Byte
@@ -1007,7 +1008,7 @@ Public UserAtributos(1 To NUMATRIBUTOS)  As Byte
 Public AtributosNames(1 To NUMATRIBUTOS) As String
 Public ListaRazas(1 To NUMRAZAS)         As String
 Public ListaRazasEs                      As New Dictionary
-Public ListaClases(1 To NUMCLASES)       As String
+Public ListaClases(1 To e_Class.Bandit)  As String
 Public SkillPoints                       As Integer
 Public Alocados                          As Integer
 Public flags()                           As Integer

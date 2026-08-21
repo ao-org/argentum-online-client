@@ -205,7 +205,7 @@ End Sub
 ' Writes the "LoginNewChar" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As Integer, ByVal Head As Integer, ByVal HomeCity As Integer)
+Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As e_Class, ByVal Head As Integer, ByVal HomeCity As Integer)
     '<EhHeader>
     On Error GoTo WriteLoginNewChar_Err
     '</EhHeader>
@@ -219,7 +219,7 @@ Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal 
     Call Writer.WriteInt8(App.Revision)
     Call Writer.WriteInt8(Race)
     Call Writer.WriteInt8(Gender)
-    Call Writer.WriteInt8(Class)
+    Call Writer.WriteInt32(Class)
     Call Writer.WriteInt16(Head)
     Call Writer.WriteInt8(CHARACTER_CREATION_HOME_FORGAT)
     Call modNetwork.send(Writer)
@@ -293,7 +293,7 @@ End Sub
 ' Writes the "LoginNewChar" message to the outgoing data buffer.
 '
 ' @remarks  The data is not actually sent until the buffer is properly flushed.
-Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As Integer, ByVal Head As Integer, ByVal HomeCity As Integer)
+Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As e_Class, ByVal Head As Integer, ByVal HomeCity As Integer)
         '<EhHeader>
         On Error GoTo WriteLoginNewChar_Err
         '</EhHeader>
@@ -302,7 +302,7 @@ Public Sub WriteLoginNewChar(ByVal Name As String, ByVal Race As Integer, ByVal 
 104     Call Writer.WriteString8(Name)
 114     Call Writer.WriteInt(Race)
 116     Call Writer.WriteInt(Gender)
-118     Call Writer.WriteInt(Class)
+118     Call Writer.WriteInt32(Class)
 120     Call Writer.WriteInt(Head)
 122     Call Writer.WriteInt(CHARACTER_CREATION_HOME_FORGAT)
     

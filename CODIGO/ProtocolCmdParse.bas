@@ -1666,29 +1666,29 @@ Private Sub ConfigLobbyClass(ByRef arguments() As String, ByVal argCount As Inte
         Dim eType As String
         eType = Trim$(UCase$(arguments(1)))
         If eType = "MAGE" Or eType = "MAGO" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 1)
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, e_Class.Mage)
         ElseIf eType = "CLERIC" Or eType = "CLERIGO" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 2)
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, e_Class.Cleric)
         ElseIf eType = "WARRIOR" Or eType = "GUERRERO" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 3)
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, e_Class.Warrior)
         ElseIf eType = "ASSASIN" Or eType = "ASESINO" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 4)
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, e_Class.Assasin)
         ElseIf eType = "BARD" Or eType = "BARDO" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 5)
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, e_Class.Bard)
         ElseIf eType = "DRUID" Or eType = "DRUIDA" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 6)
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, e_Class.Druid)
         ElseIf eType = "PALADIN" Or eType = "PALADIN" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 7)
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, e_Class.Paladin)
         ElseIf eType = "HUNTER" Or eType = "CAZADOR" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 8)
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, e_Class.Hunter)
         ElseIf eType = "WORKER" Or eType = "TRABAJADOR" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 9)
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, e_Class.Trabajador)
         ElseIf eType = "PIRATE" Or eType = "PIRATA" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 10)
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, e_Class.Pirat)
         ElseIf eType = "THIEF" Or eType = "LADRON" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 11)
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, e_Class.Thief)
         ElseIf eType = "BANDIT" Or eType = "BANDIDO" Then
-            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, 12)
+            Call WriteLobbyCommand(e_LobbyCommandId.eSetClassLimit, e_Class.Bandit)
         End If
     Else
         Call ShowConsoleMsg(JsonLanguage.Item("MENSAJE_VALOR_INCORRECTO_UTILICE"))

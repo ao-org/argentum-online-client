@@ -3379,7 +3379,7 @@ Private Sub HandleUpdateUserStats()
     #End If
     UserStats.PasarNivel = Reader.ReadInt32()
     UserStats.exp = Reader.ReadInt32()
-    UserStats.Clase = Reader.ReadInt8()
+    UserStats.Clase = Reader.ReadInt32()
     If UserStats.MinHp = 0 Then
         UserStats.estado = 1
         charlist(UserCharIndex).Invisible = False
@@ -4027,7 +4027,7 @@ Private Sub HandleMiniStats()
         .CriminalesMatados = Reader.ReadInt32()
         .Alineacion = Reader.ReadInt8()
         .NpcsMatados = Reader.ReadInt32()
-        .Clase = ListaClases(Reader.ReadInt8())
+        .Clase = ListaClases(Reader.ReadInt32())
         .PenaCarcel = Reader.ReadInt32()
         .VecesQueMoriste = Reader.ReadInt32()
         .Genero = Reader.ReadInt8()
@@ -4396,7 +4396,7 @@ Private Sub HandleCharacterInfo()
         End If
         .nombre.Caption = JsonLanguage.Item("MENSAJE_NOMBRE") & ": " & Reader.ReadString8()
         .Raza.Caption = JsonLanguage.Item("MENSAJE_RAZA") & ": " & ListaRazas(Reader.ReadInt8())
-        .Clase.Caption = JsonLanguage.Item("MENSAJE_CLASE") & ": " & ListaClases(Reader.ReadInt8())
+        .Clase.Caption = JsonLanguage.Item("MENSAJE_CLASE") & ": " & ListaClases(Reader.ReadInt32())
         .Nivel.Caption = JsonLanguage.Item("MENSAJE_NIVEL") & ": " & Reader.ReadInt8()
         .oro.Caption = JsonLanguage.Item("MENSAJE_ORO") & ": " & Reader.ReadInt32()
         .Banco.Caption = JsonLanguage.Item("MENSAJE_BANCO") & ": " & Reader.ReadInt32()
@@ -5121,7 +5121,7 @@ Private Sub HandleQuestDetails()
     Dim QuestIndex     As Integer
     Dim RequiredLevel As Byte
     Dim LimitLevel As Byte
-    Dim RequiredClass() As Byte
+    Dim RequiredClass() As Long
     Dim RequiredClassesCount As Byte
     Dim RequiredQuest As Integer
     Dim subelemento As ListItem
@@ -5148,7 +5148,7 @@ Private Sub HandleQuestDetails()
     If RequiredClassesCount > 0 Then
         ReDim RequiredClass(1 To RequiredClassesCount)
         For i = 1 To RequiredClassesCount
-            RequiredClass(i) = Reader.ReadInt8
+            RequiredClass(i) = Reader.ReadInt32
         Next i
     End If
     RequiredQuest = Reader.ReadInt16
@@ -5349,7 +5349,7 @@ Public Sub HandleNpcQuestListSend()
         If RequiredClassCount > 0 Then
             ReDim QuestList(QuestIndex).RequiredClass(1 To RequiredClassCount)
             For i = 1 To RequiredClassCount
-                QuestList(QuestIndex).RequiredClass(i) = Reader.ReadInt8
+                QuestList(QuestIndex).RequiredClass(i) = Reader.ReadInt32
             Next i
         Else
             ReDim QuestList(QuestIndex).requiredClass(0)
@@ -6268,7 +6268,7 @@ End Sub
             Pjs(ii).nombre = Reader.ReadString8
             Pjs(ii).Body = Reader.ReadInt
             Pjs(ii).Head = Reader.ReadInt
-            Pjs(ii).Clase = Reader.ReadInt
+            Pjs(ii).Clase = Reader.ReadInt32
             Pjs(ii).Mapa = Reader.ReadInt
             Pjs(ii).PosX = Reader.ReadInt
             Pjs(ii).PosY = Reader.ReadInt

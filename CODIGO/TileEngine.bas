@@ -852,7 +852,7 @@ Function LegalPos(ByVal x As Integer, ByVal y As Integer, ByVal Heading As E_Hea
         Exit Function
     End If
     If MapData(x, y).Trigger = WORKERONLY Then
-        If Not UserStats.Clase = Trabajador Then Exit Function
+        If Not UserStats.Clase = e_Class.Trabajador Then Exit Function
     End If
     If MapData(x, y).Trigger = eTrigger.BLOQ15 Then Exit Function
     If UserNadando And MapData(x, y).Trigger = DETALLEAGUA Then

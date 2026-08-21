@@ -488,7 +488,7 @@ Public Sub ShowScharSelection()
     Call connectToLoginServer
 End Sub
 
-Public Sub CreateCharacter(ByVal Name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As Integer, ByVal Head As Integer, ByVal HomeCity As Integer)
+Public Sub CreateCharacter(ByVal Name As String, ByVal Race As Integer, ByVal Gender As Integer, ByVal Class As e_Class, ByVal Head As Integer, ByVal HomeCity As Integer)
     userName = Name
     UserStats.Raza = Race
     UserStats.Sexo = Gender

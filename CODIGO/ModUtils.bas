@@ -128,7 +128,7 @@ Public Type tQuest
     NextQuest As String
     DescFinal As String
     RequiredLevel As Integer
-    RequiredClass() As Byte
+    RequiredClass() As Long
     RequiredClassesCount As Byte
     RequiredQuest As Integer
     LimitLevel As Byte
@@ -397,7 +397,7 @@ Type UserCuentaPJS
     Body As Integer
     Head As Integer
     Criminal As Byte
-    Clase As Byte
+    Clase As e_Class
     NameMapa As String
     LetraColor As RGBA
     Arma As Integer
@@ -631,8 +631,8 @@ Sub IniciarCrearPj()
     frmCrearPersonaje.lstHogar.enabled = False
     UserStats.Hogar = CHARACTER_CREATION_HOME_FORGAT
     frmCrearPersonaje.lstProfesion.Clear
-    For i = LBound(ListaClases()) To UBound(ListaClases())
-        frmCrearPersonaje.lstProfesion.AddItem ListaClases(i)
+    For i = 1 To NUMCLASES
+        frmCrearPersonaje.lstProfesion.AddItem ListaClases(ClassMaskFromIndex(i))
     Next i
     frmCrearPersonaje.lstProfesion.ListIndex = 0
     MiCabeza = val(frmCrearPersonaje.Cabeza.List(1))
@@ -1537,7 +1537,7 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
     level = SplitServerFields(i)
     i = i + 1
     Elo = SplitServerFields(i)
-    Select Case CByte(CharClass)
+    Select Case CLng(CharClass)
         Case e_Class.Mage
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_MAGO")
         Case e_Class.Cleric
@@ -1554,7 +1554,7 @@ Public Function UserInTileToTxtParser(ByRef Fields() As String)
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_PALADIN")
         Case e_Class.Hunter
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_CAZADOR")
-        Case e_Class.Worker
+        Case e_Class.Trabajador
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_TRABAJADOR")
         Case e_Class.Pirat
             CharClass = JsonLanguage.Item("MENSAJE_CLASE_PIRATA")
@@ -1891,8 +1891,8 @@ End Function
 
 Public Function ClassesToTxtParser(ByRef Fields() As String)
     On Error GoTo ClassesToTxtParser_Err
-    Dim ClassNumber As Integer
-    ClassNumber = CInt(Fields(0))
+    Dim ClassNumber As e_Class
+    ClassNumber = CLng(Fields(0))
     Select Case ClassNumber
         Case e_Class.Mage
             Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_MAGO"))
@@ -1910,7 +1910,7 @@ Public Function ClassesToTxtParser(ByRef Fields() As String)
             Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_PALADIN"))
         Case e_Class.Hunter
             Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_CAZADOR"))
-        Case e_Class.Worker
+        Case e_Class.Trabajador
             Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_TRABAJADOR"))
         Case e_Class.Pirat
             Fields(0) = CStr(JsonLanguage.Item("MENSAJE_CLASE_PIRATA"))
