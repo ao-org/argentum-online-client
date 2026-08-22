@@ -263,8 +263,10 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, _
                      Optional ByVal blue As Integer, _
                      Optional ByVal bold As Boolean = False, _
                      Optional ByVal italic As Boolean = False, _
-                     Optional ByVal bCrLf As Boolean = False)
+                     Optional ByVal bCrLf As Boolean = False, _
+                     Optional ByVal Channel As e_TextChannel = TEXTCHANNEL_SYSTEM)
     On Error GoTo AddtoRichTextBox_Err
+    ' Channel is intentionally ignored until a versioned packet carries it.
     Dim bUrl     As Boolean
     Dim sMax     As Long
     Dim sPos     As Long
