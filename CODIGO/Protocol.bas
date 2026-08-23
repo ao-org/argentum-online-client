@@ -1870,6 +1870,7 @@ End Sub
 Private Sub HandleConsoleMessage()
     On Error GoTo errhandler
     Dim chat           As String
+    Dim Channel        As e_TextChannel
     Dim FontIndex      As Integer
     Dim str            As String
     Dim R              As Byte
@@ -1886,6 +1887,7 @@ Private Sub HandleConsoleMessage()
     Dim Valor          As String
     Dim staminaCost    As String
     chat = Reader.ReadString8()
+    Channel = Reader.ReadInt8()
     FontIndex = Reader.ReadInt8()
     If ChatGlobal = 0 And FontIndex = FontTypeNames.FONTTYPE_GLOBAL Then Exit Sub
     QueEs = ReadField(1, chat, Asc("*"))
@@ -1955,10 +1957,10 @@ Private Sub HandleConsoleMessage()
         Else
             B = val(str)
         End If
-        Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), R, G, B, val(ReadField(5, chat, 126)) <> 0, val(ReadField(6, chat, 126)) <> 0)
+        Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), R, G, B, val(ReadField(5, chat, 126)) <> 0, val(ReadField(6, chat, 126)) <> 0, False, Channel)
     Else
         With FontTypes(FontIndex)
-            Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
+            Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic, False, Channel)
             If EsGM Then
                 Call frmPanelgm.CadenaChat(chat)
             End If
@@ -1991,6 +1993,7 @@ End Sub
 Private Sub HandleLocaleMsg()
     On Error GoTo errhandler
     Dim chat      As String
+    Dim Channel   As e_TextChannel
     Dim FontIndex As Integer
     Dim str       As String
     Dim R         As Byte
@@ -1999,6 +2002,7 @@ Private Sub HandleLocaleMsg()
     Dim id        As Integer
     id = Reader.ReadInt16()
     chat = Reader.ReadString8()
+    Channel = Reader.ReadInt8()
     FontIndex = Reader.ReadInt8()
     chat = Locale_Parse_ServerMessage(id, chat)
     If InStr(1, chat, "~") Then
@@ -2020,10 +2024,10 @@ Private Sub HandleLocaleMsg()
         Else
             B = val(str)
         End If
-        Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), R, G, B, val(ReadField(5, chat, 126)) <> 0, val(ReadField(6, chat, 126)) <> 0)
+        Call AddtoRichTextBox(frmMain.RecTxt, Left$(chat, InStr(1, chat, "~") - 1), R, G, B, val(ReadField(5, chat, 126)) <> 0, val(ReadField(6, chat, 126)) <> 0, False, Channel)
     Else
         With FontTypes(FontIndex)
-            Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic)
+            Call AddtoRichTextBox(frmMain.RecTxt, chat, .red, .green, .blue, .bold, .italic, False, Channel)
         End With
     End If
     Exit Sub
