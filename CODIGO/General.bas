@@ -266,7 +266,7 @@ Sub AddtoRichTextBox(ByRef RichTextBox As RichTextBox, _
                      Optional ByVal bCrLf As Boolean = False, _
                      Optional ByVal Channel As e_TextChannel = TEXTCHANNEL_SYSTEM)
     On Error GoTo AddtoRichTextBox_Err
-    ' Channel is intentionally ignored until a versioned packet carries it.
+    ' Channel defaults to SYSTEM for legacy packets that do not carry the field.
     Dim bUrl     As Boolean
     Dim sMax     As Long
     Dim sPos     As Long

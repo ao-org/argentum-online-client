@@ -1887,8 +1887,8 @@ Private Sub HandleConsoleMessage()
     Dim Valor          As String
     Dim staminaCost    As String
     chat = Reader.ReadString8()
-    Channel = Reader.ReadInt8()
     FontIndex = Reader.ReadInt8()
+    If Reader.GetAvailable() > 0 Then Channel = Reader.ReadInt8()
     If ChatGlobal = 0 And FontIndex = FontTypeNames.FONTTYPE_GLOBAL Then Exit Sub
     QueEs = ReadField(1, chat, Asc("*"))
     Select Case QueEs
@@ -2002,8 +2002,8 @@ Private Sub HandleLocaleMsg()
     Dim id        As Integer
     id = Reader.ReadInt16()
     chat = Reader.ReadString8()
-    Channel = Reader.ReadInt8()
     FontIndex = Reader.ReadInt8()
+    If Reader.GetAvailable() > 0 Then Channel = Reader.ReadInt8()
     chat = Locale_Parse_ServerMessage(id, chat)
     If InStr(1, chat, "~") Then
         str = ReadField(2, chat, 126)
