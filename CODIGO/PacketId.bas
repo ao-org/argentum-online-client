@@ -209,6 +209,7 @@ Public Enum ServerPacketID
     eGuildConfig
     eShowPickUpObj
     eRemortState
+    eRemortResult
     eMaxPacket
     [PacketCount]
 End Enum
@@ -531,6 +532,7 @@ Public Enum ClientPacketID
     eAntiMacroMessage
     eModifyCastleWhiteList
     eHooClientCapabilities
+    eRequestRemort
     eMaxPacket
     [PacketCount]
 End Enum
