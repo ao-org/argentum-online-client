@@ -78,6 +78,24 @@ Public Enum FontTypeNames
     [FONTTYPE_MAX]
 End Enum
 
+' Semantic destination reserved for the future channel-aware text interface.
+Public Enum e_TextChannel
+    TEXTCHANNEL_SYSTEM = 0
+    TEXTCHANNEL_COMBAT
+    TEXTCHANNEL_QUEST
+    TEXTCHANNEL_PROGRESSION
+    TEXTCHANNEL_ECONOMY
+    TEXTCHANNEL_EVENT
+    TEXTCHANNEL_GROUP
+    TEXTCHANNEL_GUILD
+    TEXTCHANNEL_FACTION
+    TEXTCHANNEL_NEARBY
+    TEXTCHANNEL_WHISPER
+    TEXTCHANNEL_GLOBAL
+    TEXTCHANNEL_SERVER_STAFF
+    TEXTCHANNEL_MAX
+End Enum
+
 Public FontTypes([FONTTYPE_MAX] - 1) As tFont
 ' *********************************************************
 ' FIN - FUENTES
