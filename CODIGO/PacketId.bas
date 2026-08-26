@@ -210,6 +210,7 @@ Public Enum ServerPacketID
     eShowPickUpObj
     eRemortState
     eRemortResult
+    eHooTargetedSpellCastResult
     eMaxPacket
     [PacketCount]
 End Enum
@@ -533,6 +534,7 @@ Public Enum ClientPacketID
     eModifyCastleWhiteList
     eHooClientCapabilities
     eRequestRemort
+    eHooTargetedSpellCast
     eMaxPacket
     [PacketCount]
 End Enum
