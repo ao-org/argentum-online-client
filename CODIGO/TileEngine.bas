@@ -275,6 +275,7 @@ Public Type Char
     group_index As Integer
     clan_index As Integer
     clan_nivel As Byte
+    clan_alineacion As eClanType
     tipoUsuario As eTipoUsuario
     Team As Byte
     banderaIndex As Byte

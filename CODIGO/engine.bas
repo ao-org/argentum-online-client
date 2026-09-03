@@ -40,6 +40,11 @@ Public LucesRedondas      As clsLucesRedondas
 Public LucesCuadradas     As clsLucesCuadradas
 Public Cheat_X            As Integer
 Public Cheat_Y            As Integer
+
+Private Const INDICE_COLOR_CLAN_NEUTRAL   As Byte = 48
+Private Const INDICE_COLOR_CLAN_CIUDADANO As Byte = 49
+Private Const INDICE_COLOR_CLAN_CRIMINAL  As Byte = 50
+
 ''
 ' Maximum number of dialogs that can exist.
 Public Const MAX_DIALOGS  As Byte = 100
@@ -1825,6 +1830,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     Call Draw_Grh(flag, PixelOffsetX + 1 + .Body.BodyOffset.x, PixelOffsetY - 45 + .Body.BodyOffset.y, 1, 0, color, True, 0, 0, 0)
                 End If
                 If (UserCharIndex > LBound(charlist) And UserCharIndex < UBound(charlist)) Then
+                    Dim NameColorTagClan(3) As RGBA
                     If (.clan_index = charlist(UserCharIndex).clan_index And charindex <> UserCharIndex And .EsNpc = False And .Team <= 0) Or (charindex = UserCharIndex And _
                             .Invisible) Then
                         'Seteo color de nombre del clan solo si es de mi clan
@@ -1834,6 +1840,10 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                         Call SetRGBA(NameColorClan(3), 255, 255, 0, 255)
                         Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + _
                                 OffsetYClan - Engine_Text_Height(line, True), NameColorClan, 1, False, 0, IIf(.Invisible, 160, 255)
+                    ElseIf .clan_index > 0 And GetClanTagColor(.clan_alineacion, NameColorTagClan) Then
+                        'Clan con alineacion Neutral/Ciudadana/Criminal: color propio de tag, independiente del status del jugador
+                        Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + _
+                                OffsetYClan - Engine_Text_Height(line, True), NameColorTagClan, 1, False, 0, IIf(.Invisible, 160, 255)
                     Else
                         Engine_Text_Render line, PixelOffsetX + 16 - CInt(Engine_Text_Width(line, True) / 2) + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y + 42 + _
                                 OffsetYClan - Engine_Text_Height(line, True), NameColor, 1, False, 0, IIf(.Invisible, 160, 255)
@@ -3854,4 +3864,25 @@ AddPickUpEffect_Err:
     Call RegistrarError(Err.Number, Err.Description, "engine.AddPickUpEffect", Erl)
     Resume Next
 End Sub
+
+Private Function GetClanTagColor(ByVal ClanAlineacion As eClanType, ByRef colorOut() As RGBA) As Boolean
+    On Error GoTo GetClanTagColor_Err
+    Dim indiceColor As Byte
+    Select Case ClanAlineacion
+        Case eClanType.ct_Neutral
+            indiceColor = INDICE_COLOR_CLAN_NEUTRAL
+        Case eClanType.ct_Ciudadana
+            indiceColor = INDICE_COLOR_CLAN_CIUDADANO
+        Case eClanType.ct_Criminal
+            indiceColor = INDICE_COLOR_CLAN_CRIMINAL
+        Case Else
+            GetClanTagColor = False
+            Exit Function
+    End Select
+    Call RGBAList(colorOut, ColoresPJ(indiceColor).R, ColoresPJ(indiceColor).G, ColoresPJ(indiceColor).b)
+    GetClanTagColor = True
+    Exit Function
+GetClanTagColor_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.GetClanTagColor", Erl)
+End Function
 
