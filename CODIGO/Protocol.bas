@@ -2278,7 +2278,6 @@ Private Sub HandleCharacterCreate()
         .group_index = Reader.ReadInt16()
         .clan_index = Reader.ReadInt16()
         .clan_nivel = Reader.ReadInt8()
-        .clan_alineacion = reader.ReadInt8()
         .UserMinHp = Reader.ReadInt32()
         .UserMaxHp = Reader.ReadInt32()
         .UserMinMAN = Reader.ReadInt32()
@@ -2293,6 +2292,11 @@ Private Sub HandleCharacterCreate()
         .Team = Reader.ReadInt8()
         .banderaIndex = Reader.ReadInt8()
         .NpcNumber = Reader.ReadInt16()
+        If reader.GetAvailable() > 0 Then
+            .clan_alineacion = reader.ReadInt8()
+        Else
+            .clan_alineacion = eClanType.ct_Neutral
+        End If
         .AnimAtaque1 = NpcData(.NpcNumber).LandAttackAnimation
         .BodyOnLand = NpcData(.NpcNumber).Body
         .BodyIdle = NpcData(.NpcNumber).BodyIdle
