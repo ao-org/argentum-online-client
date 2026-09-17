@@ -186,6 +186,42 @@ LightRender_Err:
     Resume Next
 End Sub
 
+Public Function Light_ShadowDirectionX(ByVal map_x As Long, ByVal map_y As Long) As Single
+    Dim i As Long
+    Dim distance As Long
+    Dim nearestDistance As Long
+    Light_ShadowDirectionX = 32767!
+    nearestDistance = 2147483647
+    For i = 1 To NumLights
+        If light_list(i).active Then
+            distance = Abs(map_x - light_list(i).map_x) + Abs(map_y - light_list(i).map_y)
+            If distance < nearestDistance And distance <= light_list(i).range * 2 Then
+                If Shadow_LocalDirectionX(light_list(i).map_x, light_list(i).map_y, map_x, map_y, light_list(i).range) <> 0 Then
+                    Light_ShadowDirectionX = Shadow_LocalDirectionX(light_list(i).map_x, light_list(i).map_y, map_x, map_y, light_list(i).range)
+                    nearestDistance = distance
+                End If
+            End If
+        End If
+    Next i
+End Function
+
+Public Function Light_ShadowDepth(ByVal map_x As Long, ByVal map_y As Long) As Single
+    Dim i As Long
+    Dim distance As Long
+    Dim nearestDistance As Long
+    Light_ShadowDepth = 32767!
+    nearestDistance = 2147483647
+    For i = 1 To NumLights
+        If light_list(i).active Then
+            distance = Abs(map_x - light_list(i).map_x) + Abs(map_y - light_list(i).map_y)
+            If distance < nearestDistance And distance <= light_list(i).range * 2 Then
+                Light_ShadowDepth = Shadow_LocalDepth(light_list(i).map_x, light_list(i).map_y, map_x, map_y, light_list(i).range)
+                nearestDistance = distance
+            End If
+        End If
+    Next i
+End Function
+
 Public Sub LightRenderAll(ByVal MinX As Long, ByVal MinY As Long, ByVal MaxX As Long, ByVal MaxY As Long)
     On Error GoTo LightRenderAll_Err
     Dim i As Long

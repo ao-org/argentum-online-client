@@ -1193,6 +1193,36 @@ Batch_Textured_Box_Shadow_Err:
     Resume Next
 End Sub
 
+Public Sub Batch_Textured_Box_ShadowShear(ByVal x As Long, _
+                                          ByVal y As Long, _
+                                          ByVal Width As Integer, _
+                                          ByVal Height As Integer, _
+                                          ByVal sX As Integer, _
+                                          ByVal sY As Integer, _
+                                          ByVal tex As Long, _
+                                          ByRef Color() As RGBA, _
+                                          ByVal PivotY As Single, _
+                                          ByVal DirectionX As Single, _
+                                          ByVal DirectionY As Single)
+    On Error GoTo Batch_Textured_Box_ShadowShear_Err
+    Dim Texture As Direct3DTexture8
+    Dim TextureWidth As Long
+    Dim TextureHeight As Long
+    Set Texture = SurfaceDB.GetTexture(tex, TextureWidth, TextureHeight)
+    With SpriteBatch
+        Call .SetTexture(Texture)
+        Call .SetAlpha(False)
+        If TextureWidth <> 0 And TextureHeight <> 0 Then
+            Call .DrawShadowShear(x, y, Width, Height, Color, (sX + 0.25) / TextureWidth, (sY + 0.25) / TextureHeight, _
+                    (sX + Width) / TextureWidth, (sY + Height) / TextureHeight, PivotY, DirectionX, DirectionY)
+        End If
+    End With
+    Exit Sub
+Batch_Textured_Box_ShadowShear_Err:
+    Call RegistrarError(Err.Number, Err.Description, "engine.Batch_Textured_Box_ShadowShear", Erl)
+    Resume Next
+End Sub
+
 Public Sub Device_Box_Textured_Render(ByVal GrhIndex As Long, _
                                       ByVal dest_x As Integer, _
                                       ByVal dest_y As Integer, _
@@ -1718,7 +1748,9 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                     ' Reflejo
                     PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, color, 0, , True
                     ' Sombra
-                    PresentComposedTexture PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, color, 0, True
+                        Call PresentComposedShadowShear(PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, color, _
+                            ComposedTextureHeight - 32 + Shadow_BodyPivot(.Body.ShadowOffset.y, _
+                            GrhData(.Body.Walk(.Heading).GrhIndex).pixelHeight), Shadow_DirectionForTile(x, y), Shadow_DepthForTile(x, y))
                     If LenB(.Body_Aura) <> 0 And .Body_Aura <> "0" Then Call Renderizar_Aura(.Body_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + _
                             .Body.BodyOffset.y, x, y, charindex)
                     If LenB(.Head_Aura) <> 0 And .Head_Aura <> "0" Then Call Renderizar_Aura(.Head_Aura, PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + OffArma + _
@@ -1757,7 +1789,7 @@ Sub Char_Render(ByVal charindex As Long, ByVal PixelOffsetX As Integer, ByVal Pi
                 ' Si no, solo dibujamos body
             Else
                 If Not .Invisible Then
-                    Call Draw_Sombra(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, False, x, y, , .Body.ShadowOffset.x, .Body.ShadowOffset.y)
+                    Call Draw_Sombra(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, False, x, y, , .Body.ShadowOffset.x, .Body.ShadowOffset.y, True)
                 End If
                 Call Draw_Grh(.Body.Walk(.Heading), PixelOffsetX + .Body.BodyOffset.x, PixelOffsetY + .Body.BodyOffset.y, 1, 1, Color, False, x, y)
             End If

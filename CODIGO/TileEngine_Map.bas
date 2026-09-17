@@ -237,7 +237,8 @@ Public Sub Draw_Sombra(ByRef Grh As Grh, _
                        Optional ByVal map_y As Byte = 1, _
                        Optional ByVal angle As Single, _
                        Optional ByVal ShadowOffsetX = 0, _
-                       Optional ByVal ShadowOffsetY = 0)
+                       Optional ByVal ShadowOffsetY = 0, _
+                       Optional ByVal UseShadowShear As Boolean = False)
     On Error GoTo Draw_Sombra_Err
     If Grh.GrhIndex = 0 Or Grh.GrhIndex > MaxGrh Then Exit Sub
     Dim CurrentFrame As Integer
@@ -269,8 +270,14 @@ Public Sub Draw_Sombra(ByRef Grh As Grh, _
         End If
     End If
     If Not OverlapRect(RenderCullingRect, x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight) Then Exit Sub
-    Call Batch_Textured_Box_Shadow(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, _
-            GrhData(CurrentGrhIndex).FileNum, MapData(map_x, map_y).light_value, ShadowOffsetX, ShadowOffsetY)
+    If UseShadowShear Then
+        Call Batch_Textured_Box_ShadowShear(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, _
+                GrhData(CurrentGrhIndex).FileNum, MapData(map_x, map_y).light_value, Shadow_BodyPivot(ShadowOffsetY, GrhData(CurrentGrhIndex).pixelHeight), _
+                Shadow_DirectionForTile(map_x, map_y), Shadow_DepthForTile(map_x, map_y))
+    Else
+        Call Batch_Textured_Box_Shadow(x, y, GrhData(CurrentGrhIndex).pixelWidth, GrhData(CurrentGrhIndex).pixelHeight, GrhData(CurrentGrhIndex).sX, GrhData(CurrentGrhIndex).sY, _
+                GrhData(CurrentGrhIndex).FileNum, MapData(map_x, map_y).light_value, ShadowOffsetX, ShadowOffsetY)
+    End If
     Exit Sub
 Draw_Sombra_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine_Map.Draw_Sombra", Erl)

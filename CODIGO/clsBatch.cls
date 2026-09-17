@@ -372,6 +372,63 @@ DrawShadow_Err:
     Resume Next
 End Sub
 
+Friend Sub DrawShadowShear(ByVal x As Long, _
+                            ByVal y As Long, _
+                            ByVal Width As Long, _
+                            ByVal Height As Long, _
+                            ByRef ColorLight() As RGBA, _
+                            Optional ByVal Tx1 As Single = 0, _
+                            Optional ByVal Ty1 As Single = 0, _
+                            Optional ByVal Tx2 As Single = 1, _
+                            Optional ByVal Ty2 As Single = 1, _
+                            Optional ByVal PivotY As Single = -1, _
+                            Optional ByVal DirectionX As Single = 0, _
+                            Optional ByVal DirectionY As Single = 16)
+    On Error GoTo DrawShadowShear_Err
+    Dim color(3) As RGBA
+    Dim i As Integer
+    For i = 0 To 3
+        color(i).A = (0.2126 * ColorLight(i).R + 0.7152 * ColorLight(i).G + 0.0722 * ColorLight(i).B) ^ 2 * 0.000625
+        If color(i).A < SHADOW_MIN_ALPHA Then color(i).A = SHADOW_MIN_ALPHA
+    Next i
+    If PivotY < 0 Then PivotY = Height - 1
+    Dim projection As ShadowProjectionData
+    projection = Shadow_Project(x, Width, Height, PivotY, DirectionX, DirectionY)
+    m_Data(m_Position).x = projection.BaseLeftX
+    m_Data(m_Position).y = y + projection.BaseY
+    m_Data(m_Position).z = 0
+    m_Data(m_Position).color = color(0)
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty1 + (Ty2 - Ty1) * projection.SourceBottomV
+    m_Position = m_Position + 1
+    m_Data(m_Position).x = projection.TopLeftX
+    m_Data(m_Position).y = y + projection.TopY
+    m_Data(m_Position).z = 0
+    m_Data(m_Position).color = color(1)
+    m_Data(m_Position).tX = Tx1
+    m_Data(m_Position).tY = Ty1
+    m_Position = m_Position + 1
+    m_Data(m_Position).x = projection.BaseRightX
+    m_Data(m_Position).y = y + projection.BaseY
+    m_Data(m_Position).z = 0
+    m_Data(m_Position).color = color(2)
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty1 + (Ty2 - Ty1) * projection.SourceBottomV
+    m_Position = m_Position + 1
+    m_Data(m_Position).x = projection.TopRightX
+    m_Data(m_Position).y = y + projection.TopY
+    m_Data(m_Position).z = 0
+    m_Data(m_Position).color = color(3)
+    m_Data(m_Position).tX = Tx2
+    m_Data(m_Position).tY = Ty1
+    m_Position = m_Position + 1
+    If m_Position >= UBound(m_Data) Then Call Flush
+    Exit Sub
+DrawShadowShear_Err:
+    Call RegistrarError(Err.Number, Err.Description, "clsBatch.DrawShadowShear", Erl)
+    Resume Next
+End Sub
+
 Friend Sub DrawReflection(ByVal x As Long, _
                           ByVal y As Long, _
                           ByVal Width As Long, _
