@@ -3080,7 +3080,7 @@ Public Sub RenderAccountCharacters()
                 Draw_Grh BodyData(Body).Walk(3), x + 15, y + 10, 1, 1, COLOR_WHITE
             End If
             enBarca = Body = 84 Or Body = 85 Or Body = 86 Or Body = 87 Or Body = 1263 Or Body = 1264 Or Body = 1265 Or Body = 1266 Or Body = 1267 Or Body = 1268 Or Body = 1269 _
-                    Or Body = 1270 Or Body = 1271 Or Body = 1272 Or Body = 1273 Or Body = 1274
+                    Or Body = 1270 Or Body = 1271 Or Body = 1272 Or Body = 1273 Or Body = 1274 Or Body = 4596
             If (Pjs(i).Head <> 0) And Not enBarca Then
                 Draw_Grh HeadData(Pjs(i).Head).Head(3), x + 15, y - notY + BodyData(Pjs(i).Body).HeadOffset.y + 10, 1, 0, COLOR_WHITE
             End If
