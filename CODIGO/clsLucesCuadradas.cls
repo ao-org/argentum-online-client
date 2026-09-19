@@ -58,6 +58,42 @@ Light_Remove_Err:
     Resume Next
 End Function
 
+Public Function Light_ShadowDirectionX(ByVal map_x As Long, ByVal map_y As Long) As Single
+    Dim i As Long
+    Dim distance As Long
+    Dim nearestDistance As Long
+    Light_ShadowDirectionX = 32767!
+    nearestDistance = 2147483647
+    For i = 1 To light_last
+        If light_list(i).active Then
+            distance = Abs(map_x - light_list(i).map_x) + Abs(map_y - light_list(i).map_y)
+            If distance < nearestDistance And distance <= light_list(i).range * 2 Then
+                If Shadow_LocalDirectionX(light_list(i).map_x, light_list(i).map_y, map_x, map_y, light_list(i).range) <> 0 Then
+                    Light_ShadowDirectionX = Shadow_LocalDirectionX(light_list(i).map_x, light_list(i).map_y, map_x, map_y, light_list(i).range)
+                    nearestDistance = distance
+                End If
+            End If
+        End If
+    Next i
+End Function
+
+Public Function Light_ShadowDepth(ByVal map_x As Long, ByVal map_y As Long) As Single
+    Dim i As Long
+    Dim distance As Long
+    Dim nearestDistance As Long
+    Light_ShadowDepth = 32767!
+    nearestDistance = 2147483647
+    For i = 1 To light_last
+        If light_list(i).active Then
+            distance = Abs(map_x - light_list(i).map_x) + Abs(map_y - light_list(i).map_y)
+            If distance < nearestDistance And distance <= light_list(i).range * 2 Then
+                Light_ShadowDepth = Shadow_LocalDepth(light_list(i).map_x, light_list(i).map_y, map_x, map_y, light_list(i).range)
+                nearestDistance = distance
+            End If
+        End If
+    Next i
+End Function
+
 Friend Function Light_Color_Value_Get(ByVal light_index As Long, ByRef color_value As RGBA) As Boolean
     On Error GoTo Light_Color_Value_Get_Err
     'Make sure it's a legal index

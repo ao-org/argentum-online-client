@@ -276,6 +276,27 @@ PresentComposedTexture_Err:
     Resume Next
 End Sub
 
+Public Sub PresentComposedShadowShear(ByVal x As Integer, _
+                                      ByVal y As Integer, _
+                                      ByRef light_value() As RGBA, _
+                                      ByVal pivotY As Single, _
+                                      Optional ByVal directionX As Single = 0, _
+                                      Optional ByVal directionY As Single = 16)
+    On Error GoTo PresentComposedShadowShear_Err
+    x = x - ComposedTextureWidth \ 2 + 16
+    y = y - ComposedTextureHeight + 32
+    If Not OverlapRect(RenderCullingRect, x, y, ComposedTextureWidth, ComposedTextureHeight) Then Exit Sub
+    With SpriteBatch
+        Call .SetTexture(ComposedTexture)
+        Call .SetAlpha(False)
+        Call .DrawShadowShear(x, y, ComposedTextureWidth, ComposedTextureHeight, light_value, , , , , pivotY, directionX, directionY)
+    End With
+    Exit Sub
+PresentComposedShadowShear_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Graficos_Utilidades.PresentComposedShadowShear", Erl)
+    Resume Next
+End Sub
+
 Public Function EaseBreathing(ByVal t As Single) As Single
     On Error GoTo EaseBreathing_Err
     If t < 0.25 Then

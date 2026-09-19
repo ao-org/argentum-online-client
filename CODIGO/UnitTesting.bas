@@ -11,7 +11,7 @@ Private FailedTestCount As Long
 Private TotalElapsed    As Double
 Private sw              As clsInstrument
 
-Private Const SUITE_COUNT As Long = 32
+Private Const SUITE_COUNT As Long = 33
 
 Public Sub Init()
     TotalTests = 0
@@ -84,6 +84,7 @@ Public Function test_suite() As Boolean
 #If DIRECT_PLAY = 0 Then
             Case 32: Call Unit_Network_Aurora.test_suite_network_aurora
 #End If
+            Case 33: Call Unit_ShadowProjection.test_suite_shadow_projection
         End Select
     Next i
     test_suite = (FailedTests = 0)
