@@ -2292,6 +2292,11 @@ Private Sub HandleCharacterCreate()
         .Team = Reader.ReadInt8()
         .banderaIndex = Reader.ReadInt8()
         .NpcNumber = Reader.ReadInt16()
+        If reader.GetAvailable() > 0 Then
+            .clan_alineacion = reader.ReadInt8()
+        Else
+            .clan_alineacion = eClanType.ct_Neutral
+        End If
         .AnimAtaque1 = NpcData(.NpcNumber).LandAttackAnimation
         .BodyOnLand = NpcData(.NpcNumber).Body
         .BodyIdle = NpcData(.NpcNumber).BodyIdle
