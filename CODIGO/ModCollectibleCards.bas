@@ -2,7 +2,7 @@ Attribute VB_Name = "ModCollectibleCards"
 Option Explicit
 
 Public Sub DrawCollectibleCard()
-    Call CollectibleCardRender(frmCollectibleCard.picCollectibleCard, ObjData(G_LasSelectedObjIndex).CollectibleCardImgPathing, 0, 0, 439, 600, 0, 0, frmCollectibleCard.picCollectibleCard.Width, frmCollectibleCard.picCollectibleCard.Height)
+    Call CollectibleCardRender(frmCollectibleCard.picCollectibleCard, ObjData(G_LasSelectedObjIndex).CollectibleCardImgPathing, 0, 0, 439, 600, 0, 0, 439, 600)
 End Sub
 
 Public Sub CollectibleCardRender(ByRef pic As PictureBox, _
@@ -18,11 +18,11 @@ Public Sub CollectibleCardRender(ByRef pic As PictureBox, _
                                          Optional ByVal ClearColor As Long = &H0)
     On Error GoTo CollectibleCardRender_Err
     
-    ' Determine if PNG or BMP
-    Dim isPNG As Boolean
-    isPNG = (LCase$(Right$(TextureFileName, 4)) = ".png")
-    
-    ' Load the texture
+    If LenB(Trim$(TextureFileName)) = 0 Then
+        frmDebug.add_text_tracebox "Card texture path is empty"
+        Exit Sub
+    End If
+
     Dim Texture As Direct3DTexture8
     Dim texwidth As Long
     Dim texheight As Long
@@ -39,13 +39,14 @@ Public Sub CollectibleCardRender(ByRef pic As PictureBox, _
     With DestRect
         .Left = 0
         .Top = 0
-        .Right = texwidth
-        .Bottom = texheight
+        .Right = destWidth
+        .Bottom = destHeight
     End With
     
     Call Engine_BeginScene
     
-    Call Batch_Textured_Box_File(DestX, DestY, texwidth, texheight, srcX, srcY, TextureFileName, COLOR_WHITE, False, 0, 1, 1)
+    Call Batch_Textured_Box_File(DestX, DestY, destWidth, destHeight, srcX, srcY, TextureFileName, COLOR_WHITE, False, 0, _
+                                 CSng(destWidth) / CSng(srcWidth), CSng(destHeight) / CSng(srcHeight))
     
     Call Engine_EndScene(DestRect, pic.hWnd)
     
