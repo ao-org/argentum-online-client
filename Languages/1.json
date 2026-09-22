@@ -1,4 +1,12 @@
 {	
+        "MENSAJE_PERSONAJE_NO_VALIDO": "PERSONAJE NO VALIDO",
+        "MENSAJE_OBJETOS_INVENTARIO_FALTANTES": "Inventario:",
+       "MENSAJE_OBJETOS_BANCO_FALTANTES": "Banco:",
+        "MENSAJE_SLOTS_INVENTARIO_INVALIDOS": "Slots invalidos del inventario:",
+        "MENSAJE_SLOTS_BANCO_INVALIDOS": "Slots invalidos de la banca:",
+        "MENSAJE_OBJETO_INVALIDO_FORMATO": "Slot ¬1 - OBJ¬2",
+        "MENSAJE_SLOT_INVALIDO_FORMATO": "Slot invalido: ¬1",
+        "MENSAJE_ENVIAR_TICKET_ADMIN": "Envia ticket al Administrador.",
     "MENSAJE_MISION_REPETIBLE": "Misión repetible",
 	"MENSAJE_NOMBRE_PERSONAJE_INVALIDO": "Nombre de personaje inválido.",
 	"MENSAJE_TITULO_MISION": "Misión",

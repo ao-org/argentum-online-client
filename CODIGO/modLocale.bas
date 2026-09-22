@@ -30,6 +30,14 @@ Public Function Locale_Parse_ServerMessage(ByVal bytHeader As Integer, Optional 
     Dim Fields()  As String
     Dim strLocale As String
     Dim i         As Long
+    If bytHeader = 2266 Then
+        If Left$(strExtra, 13) = "CHAR_INVALID|" Then
+            Locale_Parse_ServerMessage = Locale_Parse_InvalidCharacter(strExtra)
+        Else
+            Locale_Parse_ServerMessage = strExtra
+        End If
+        Exit Function
+    End If
     strLocale = Locale_SMG(bytHeader)
     ' Manejo del caso especial del NPC
     Call HandleNpcName(bytHeader, strExtra)
@@ -78,6 +86,59 @@ Locale_Parse_ServerMessage_Err:
     Resume Next
 End Function
 
+Private Function Locale_Parse_InvalidCharacter(ByVal payload As String) As String
+    Dim sections() As String
+    Dim sectionData() As String
+    Dim sectionName As String
+    Dim messageText As String
+    Dim i As Long
+
+    sections = Split(Mid$(payload, 14), "|")
+    messageText = JsonLanguage.Item("MENSAJE_PERSONAJE_NO_VALIDO")
+
+    For i = 0 To UBound(sections) - 1 Step 2
+        sectionName = sections(i)
+        sectionData = Split(sections(i + 1), ";")
+        Select Case sectionName
+            Case "INV"
+                Call AppendInvalidCharacterObjects(messageText, sectionData, "MENSAJE_OBJETOS_INVENTARIO_FALTANTES")
+            Case "BANK"
+                Call AppendInvalidCharacterObjects(messageText, sectionData, "MENSAJE_OBJETOS_BANCO_FALTANTES")
+            ' INV_SLOTS / BANK_SLOTS: ya quedan en el log del server, no se muestran al jugador.
+        End Select
+    Next i
+
+    Locale_Parse_InvalidCharacter = messageText & vbCrLf & JsonLanguage.Item("MENSAJE_ENVIAR_TICKET_ADMIN")
+End Function
+
+Private Sub AppendInvalidCharacterObjects(ByRef messageText As String, ByRef objectData() As String, ByVal labelKey As String)
+    Dim objectParts() As String
+    Dim ids As String
+    Dim i As Long
+
+    For i = LBound(objectData) To UBound(objectData)
+        If LenB(objectData(i)) Then
+            objectParts = Split(objectData(i), ":")
+            If UBound(objectParts) = 1 Then
+                If LenB(ids) Then ids = ids & ", "
+                ids = ids & objectParts(1)  ' solo el item_id, descartamos el slot
+            End If
+        End If
+    Next i
+
+    If LenB(ids) Then messageText = messageText & vbCrLf & JsonLanguage.Item(labelKey) & " " & ids
+End Sub
+Private Sub AppendInvalidCharacterSlots(ByRef messageText As String, ByRef slotData() As String, ByVal labelKey As String)
+    Dim i As Long
+
+    messageText = messageText & vbCrLf & JsonLanguage.Item(labelKey)
+    For i = LBound(slotData) To UBound(slotData)
+        If LenB(slotData(i)) Then
+            messageText = messageText & vbCrLf & Replace(JsonLanguage.Item("MENSAJE_SLOT_INVALIDO_FORMATO"), "¬1", slotData(i))
+        End If
+    Next i
+End Sub
+
 ' Manejar el nombre del NPC para los casos especiales
 Private Sub HandleNpcName(ByVal bytHeader As Integer, ByRef strExtra As String)
     Dim NpcName           As String
@@ -92,10 +153,10 @@ Private Sub HandleNpcName(ByVal bytHeader As Integer, ByRef strExtra As String)
             If Len(NpcName) > 0 Then
                 strExtra = NpcName
             End If
-            Exit For
         End If
     Next
 End Sub
+
 
 Public Function General_Get_Line_Count(ByVal filename As String) As Long
     On Error GoTo ErrorHandler
@@ -123,6 +184,7 @@ Public Function Integer_To_String(ByVal Var As Integer) As String
         temp = "0" & temp
     Wend
     'Convertimos a string
+
     Integer_To_String = Chr$(val("&H" & Left$(temp, 2))) & Chr$(val("&H" & Right$(temp, 2)))
     Exit Function
 ErrorHandler:
@@ -137,6 +199,7 @@ Public Function String_To_Integer(ByRef str As String, ByVal start As Integer) A
     Dim temp_str As String
     'Asergurarse sea válido
     If Len(str) < start - 1 Or Len(str) = 0 Then Exit Function
+
     'Convertimos a hexa el valor ascii del segundo byte
     temp_str = hex$(Asc(mid$(str, start + 1, 1)))
     'Nos aseguramos tenga 2 bytes (los ceros a la izquierda cuentan por ser el segundo byte)

@@ -1,4 +1,12 @@
 {	
+        "MENSAJE_PERSONAJE_NO_VALIDO": "INVALID CHARACTER",
+        "MENSAJE_OBJETOS_INVENTARIO_FALTANTES": "Inventario:",
+        "MENSAJE_OBJETOS_BANCO_FALTANTES": "Bank:",
+        "MENSAJE_SLOTS_INVENTARIO_INVALIDOS": "Invalid inventory slots:",
+        "MENSAJE_SLOTS_BANCO_INVALIDOS": "Invalid bank slots:",
+        "MENSAJE_OBJETO_INVALIDO_FORMATO": "Slot ¬1 - OBJ¬2",
+        "MENSAJE_SLOT_INVALIDO_FORMATO": "Invalid slot: ¬1",
+        "MENSAJE_ENVIAR_TICKET_ADMIN": "Send a ticket to an Administrator.",
     "MENSAJE_MISION_REPETIBLE": "Repeatable mission",
 	"MENSAJE_NOMBRE_PERSONAJE_INVALIDO": "Invalid character name.",
 	"MENSAJE_TITULO_MISION": "Mission",
