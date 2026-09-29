@@ -212,6 +212,9 @@ Public Enum ServerPacketID
     eRemortResult
     eHooTargetedSpellCastResult
     eHooHouseDoorActionResult
+    ' Keep this feature's wire IDs stable without declaring other feature packets.
+    eHooGuildState = eHooHouseDoorActionResult + 4
+    eHooGuildProfile = eHooHouseDoorActionResult + 5
     eMaxPacket
     [PacketCount]
 End Enum
