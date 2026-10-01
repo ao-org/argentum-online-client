@@ -107,6 +107,9 @@ Public FontTypes([FONTTYPE_MAX] - 1) As tFont
 'The only current map
 Public ResourcesPassword             As String
 
+Private Const CSM_LAYER_2B_SIGNATURE As Long = &H31423257
+Private Const CSM_LAYER_2B_MAX_RECORDS As Long = 10000
+
 Private Type tMapHeader
     NumeroBloqueados As Long
     NumeroLayers(1 To 4) As Long
@@ -778,6 +781,55 @@ CargarDatosMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarDatosMapa", Erl)
 End Sub
 
+Private Sub LoadLayer2BExtension(ByVal fileHandle As Integer)
+    On Error GoTo LoadLayer2BExtension_Err
+
+    Dim signature       As Long
+    Dim recordCount     As Long
+    Dim layerEntry      As tDatosGrh
+    Dim recordIndex     As Long
+    Dim invalidRecord   As Boolean
+
+    If LOF(fileHandle) - Loc(fileHandle) < 8 Then Exit Sub
+
+    Get #fileHandle, , signature
+    If signature <> CSM_LAYER_2B_SIGNATURE Then Exit Sub
+
+    Get #fileHandle, , recordCount
+    If recordCount < 0 Or recordCount > CSM_LAYER_2B_MAX_RECORDS Then
+        Call RegistrarError(5, "Cantidad invalida de registros Capa 2B: " & recordCount, "Recursos.LoadLayer2BExtension", Erl)
+        Exit Sub
+    End If
+
+    If LOF(fileHandle) - Loc(fileHandle) < recordCount * 8 Then
+        Call RegistrarError(5, "Extension Capa 2B truncada. Registros declarados: " & recordCount, "Recursos.LoadLayer2BExtension", Erl)
+        Exit Sub
+    End If
+
+    For recordIndex = 1 To recordCount
+        Get #fileHandle, , layerEntry
+        If layerEntry.x >= 1 And layerEntry.x <= 100 _
+                And layerEntry.y >= 1 And layerEntry.y <= 100 _
+                And layerEntry.GrhIndex > 0 And layerEntry.GrhIndex <= UBound(GrhData) Then
+            With MapData(layerEntry.x, layerEntry.y).Graphic2B
+                .GrhIndex = layerEntry.GrhIndex
+                Call InitGrh(MapData(layerEntry.x, layerEntry.y).Graphic2B, .GrhIndex)
+            End With
+            HayLayer2B = True
+        Else
+            invalidRecord = True
+        End If
+    Next recordIndex
+
+    If invalidRecord Then
+        Call RegistrarError(5, "La extension Capa 2B contiene coordenadas o GRH invalidos.", "Recursos.LoadLayer2BExtension", Erl)
+    End If
+    Exit Sub
+
+LoadLayer2BExtension_Err:
+    Call RegistrarError(Err.Number, Err.Description, "Recursos.LoadLayer2BExtension", Erl)
+End Sub
+
 Public Sub CargarMapa(ByVal map As Integer)
     On Error GoTo CargarMapa_Err
     'Formato de mapas optimizado para reducir el espacio que ocupan.
@@ -794,6 +846,8 @@ Public Sub CargarMapa(ByVal map As Integer)
     Dim Luces()      As tDatosLuces
     Dim Particulas() As tDatosParticulas
     Dim Objetos()    As tDatosObjs
+    Dim NPCs()       As tDatosNPC
+    Dim TEs()        As tDatosTE
     Dim LBoundRoof   As Integer, UBoundRoof As Integer
     Dim i            As Long
     Dim J            As Long
@@ -827,6 +881,7 @@ Public Sub CargarMapa(ByVal map As Integer)
     Call LucesCuadradas.Light_Remove_All
     Call LucesRedondas.Delete_All_LigthRound(False)
     Call Graficos_Particulas.Particle_Group_Remove_All
+    HayLayer2B = False
     HayLayer4 = False
     If UserPos.x = 0 Then UserPos.x = 10
     If UserPos.y = 0 Then UserPos.y = 10
@@ -976,6 +1031,17 @@ Public Sub CargarMapa(ByVal map As Integer)
                 Call InitGrh(MapData(Objetos(i).x, Objetos(i).y).ObjGrh, MapData(Objetos(i).x, Objetos(i).y).ObjGrh.GrhIndex)
             Next i
         End If
+        ' El cliente no usa NPC ni traslados del CSM, pero debe avanzar
+        ' sobre esas secciones clasicas para encontrar la extension W2B1.
+        If .NumeroNPCs > 0 Then
+            ReDim NPCs(1 To .NumeroNPCs)
+            Get #fh, , NPCs
+        End If
+        If .NumeroTE > 0 Then
+            ReDim TEs(1 To .NumeroTE)
+            Get #fh, , TEs
+        End If
+        Call LoadLayer2BExtension(fh)
     End With
     Close fh
     '
