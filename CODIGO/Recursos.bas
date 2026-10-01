@@ -815,6 +815,9 @@ Private Sub LoadLayer2BExtension(ByVal fileHandle As Integer)
                 .GrhIndex = layerEntry.GrhIndex
                 Call InitGrh(MapData(layerEntry.x, layerEntry.y).Graphic2B, .GrhIndex)
             End With
+            ' Capa 2B comparte la condicion de paso de Capa 2: un puente
+            ' grafico sobre agua debe poder recorrerse.
+            MapData(layerEntry.x, layerEntry.y).Blocked = MapData(layerEntry.x, layerEntry.y).Blocked Or FLAG_COSTA
             HayLayer2B = True
         Else
             invalidRecord = True
