@@ -421,7 +421,7 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
         ScreenY = ScreenY + 1
     Next y
     
-    If HayLayer2 Then
+    If HayLayer2 Or HayLayer2B Then
         ScreenY = minYOffset - TileBufferSize
 
         For y = minY To MaxY
@@ -435,7 +435,8 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
                     If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
                         Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, ColorCiego, , x, y)
                     End If
-
+                    If MapData(x, y).Graphic2B.GrhIndex <> 0 Then
+                        Call Draw_Grh(MapData(x, y).Graphic2B, (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, ColorCiego, , x, y)
 
                     End If
               
@@ -449,20 +450,6 @@ Sub RenderScreenCiego(ByVal tilex As Integer, ByVal tiley As Integer, ByVal Pixe
 
     End If
     
-    If HayLayer2B Then
-        ScreenY = minYOffset - TileBufferSize
-        For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSize
-            For x = minX To MaxX
-                If MapData(x, y).Graphic2B.GrhIndex <> 0 Then
-                    Call Draw_Grh(MapData(x, y).Graphic2B, (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, ColorCiego, , x, y)
-                End If
-                ScreenX = ScreenX + 1
-            Next x
-            ScreenY = ScreenY + 1
-        Next y
-    End If
-
     ScreenY = minYOffset - TileBufferSize
 
     For y = minY To MaxY
@@ -858,7 +845,7 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
         
     Next y
     
-    If HayLayer2 Then
+    If HayLayer2 Or HayLayer2B Then
         ScreenY = minYOffset - TileBufferSize
 
         For y = minY To MaxY ' el -8 lo agrego
@@ -872,7 +859,8 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
                     If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
                         Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
                     End If
-
+                    If MapData(x, y).Graphic2B.GrhIndex <> 0 Then
+                        Call Draw_Grh(MapData(x, y).Graphic2B, (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
 
                     End If
               
@@ -886,20 +874,6 @@ Sub RenderScreen(ByVal tilex As Integer, ByVal tiley As Integer, ByVal PixelOffs
 
     End If
     
-    If HayLayer2B Then
-        ScreenY = minYOffset - TileBufferSize
-        For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSize
-            For x = minX To MaxX
-                If MapData(x, y).Graphic2B.GrhIndex <> 0 Then
-                    Call Draw_Grh(MapData(x, y).Graphic2B, (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
-                End If
-                ScreenX = ScreenX + 1
-            Next x
-            ScreenY = ScreenY + 1
-        Next y
-    End If
-
     ScreenY = minYOffset - TileBufferSize
 
     For y = minY To MaxY
@@ -2755,7 +2729,7 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         ScreenY = ScreenY + 1
     Next y
     
-    If HayLayer2 Then
+    If HayLayer2 Or HayLayer2B Then
         ScreenY = minYOffset - TileBufferSize
 
         For y = minY To MaxY
@@ -2769,7 +2743,8 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
                     If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
                         Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
                     End If
-
+                    If MapData(x, y).Graphic2B.GrhIndex <> 0 Then
+                        Call Draw_Grh(MapData(x, y).Graphic2B, (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
 
                     End If
               
@@ -2783,20 +2758,6 @@ Public Sub RenderConnect(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     End If
     
-    If HayLayer2B Then
-        ScreenY = minYOffset - TileBufferSize
-        For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSize
-            For x = minX To MaxX
-                If MapData(x, y).Graphic2B.GrhIndex <> 0 Then
-                    Call Draw_Grh(MapData(x, y).Graphic2B, (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
-                End If
-                ScreenX = ScreenX + 1
-            Next x
-            ScreenY = ScreenY + 1
-        Next y
-    End If
-
     ScreenY = minYOffset - TileBufferSize
 
     For y = minY To MaxY
@@ -3172,7 +3133,7 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
         ScreenY = ScreenY + 1
     Next y
     
-    If HayLayer2 Then
+    If HayLayer2 Or HayLayer2B Then
         ScreenY = minYOffset - TileBufferSize
 
         For y = minY To MaxY
@@ -3186,7 +3147,8 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
                     If MapData(x, y).Graphic(2).GrhIndex <> 0 Then
                         Call Draw_Grh(MapData(x, y).Graphic(2), (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
                     End If
-
+                    If MapData(x, y).Graphic2B.GrhIndex <> 0 Then
+                        Call Draw_Grh(MapData(x, y).Graphic2B, (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
 
                     End If
               
@@ -3200,20 +3162,6 @@ Public Sub RenderCrearPJ(ByVal tilex As Integer, ByVal tiley As Integer, ByVal P
 
     End If
     
-    If HayLayer2B Then
-        ScreenY = minYOffset - TileBufferSize
-        For y = minY To MaxY
-            ScreenX = minXOffset - TileBufferSize
-            For x = minX To MaxX
-                If MapData(x, y).Graphic2B.GrhIndex <> 0 Then
-                    Call Draw_Grh(MapData(x, y).Graphic2B, (ScreenX * 32 + PixelOffsetX), (ScreenY * 32 + PixelOffsetY), 1, 1, MapData(x, y).light_value(), , x, y)
-                End If
-                ScreenX = ScreenX + 1
-            Next x
-            ScreenY = ScreenY + 1
-        Next y
-    End If
-
     ScreenY = minYOffset - TileBufferSize
 
     For y = minY To MaxY

@@ -148,29 +148,15 @@ Sub RenderScreen(ByVal center_x As Integer, _
                 If .Graphic(2).GrhIndex <> 0 Then
                     Call Draw_Grh(.Graphic(2), screenX, screenY, 1, 1, .light_value, , x, y)
                 End If
-
+                ' Capa 2B: siempre debajo de objetos, usuarios, NPC y Capa 3.
+                If .Graphic2B.GrhIndex <> 0 Then
+                    Call Draw_Grh(.Graphic2B, screenX, screenY, 1, 1, .light_value, , x, y)
+                End If
             End With
             screenX = screenX + TilePixelWidth
         Next x
         screenY = screenY + TilePixelHeight
     Next y
-    ' Capa 2B necesita una pasada completa posterior a Capa 2. Si se dibuja
-    ' tile por tile, los GRH grandes de Capa 2 de filas siguientes la tapan.
-    If HayLayer2B Then
-        screenY = StartBufferedY
-        For y = MinBufferedY To MaxBufferedY
-            screenX = StartBufferedX
-            For x = MinBufferedX To MaxBufferedX
-                With MapData(x, y)
-                    If .Graphic2B.GrhIndex <> 0 Then
-                        Call Draw_Grh(.Graphic2B, screenX, screenY, 1, 1, .light_value, , x, y)
-                    End If
-                End With
-                screenX = screenX + TilePixelWidth
-            Next x
-            screenY = screenY + TilePixelHeight
-        Next y
-    End If
     Dim grhSpellArea As Grh
     grhSpellArea.GrhIndex = 20058
     Dim temp_color(3) As RGBA
