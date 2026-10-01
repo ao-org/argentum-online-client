@@ -338,7 +338,6 @@ Public Type MapBlock
     FxCount As Integer
     FxList() As Grh
     Graphic(1 To 4) As Grh
-    Graphic2B As Grh
     charindex As Integer
     ObjGrh As Grh
     GrhBlend As Single
