@@ -2,6 +2,7 @@
 
 Please consider supporting our work on [Patreon](https://www.patreon.com/nolandstudios). Your support helps us continue developing and maintaining projects like this one. Every contribution makes a significant impact!
 
+
 ## 🐲 Argentum Online Client 🧙‍♂️
 
 Welcome to the source code repository for the Argentum Online Client. To fully utilize this client, you will need the corresponding server and assets:
