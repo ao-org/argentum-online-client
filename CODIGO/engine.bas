@@ -483,6 +483,12 @@ Public Sub Draw_Grh(ByRef Grh As Grh, _
     End If
     With GrhData(CurrentGrhIndex)
         If Not OverlapRect(RenderCullingRect, x, y, .pixelWidth, .pixelHeight) Then Exit Sub
+        #If UNIT_TEST = 1 Then
+            If Unit_MapLayers.CaptureWalkableDraws Then
+                Call Unit_MapLayers.RecordWalkableDraw(CurrentGrhIndex, x, y, .pixelWidth, .pixelHeight)
+                Exit Sub
+            End If
+        #End If
         If .Tx2 = 0 And .FileNum > 0 Then
             Dim Texture      As Direct3DTexture8
             Dim TextureWidth As Long, TextureHeight As Long

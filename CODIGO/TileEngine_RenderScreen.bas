@@ -30,6 +30,30 @@ Public Const hotkey_arrow_posx = 200 + 36 * 5 - 26
 Public Const hotkey_arrow_posy = 10
 Public Const GRH_HOTKEY_ARROW_HIDE = 19204
 Public Const GRH_HOTKEY_ARROW_SHOW = 19205
+Public Sub RenderWalkableMapLayers(ByVal minX As Integer, ByVal maxX As Integer, _
+                                   ByVal minY As Integer, ByVal maxY As Integer, _
+                                   ByVal startX As Integer, ByVal startY As Integer)
+    Dim layer As Long, x As Integer, y As Integer
+    Dim screenX As Integer, screenY As Integer
+    ' Finish the whole lower pass before the next: multi-tile sprites overlap
+    ' graphics rooted at earlier tiles, including bridges on layer 3.
+    For layer = 2 To 3
+        screenY = startY
+        For y = minY To maxY
+            screenX = startX
+            For x = minX To maxX
+                With MapData(x, y)
+                    If .Graphic(layer).GrhIndex <> 0 Then
+                        Call Draw_Grh(.Graphic(layer), screenX, screenY, 1, 1, .light_value, , x, y)
+                    End If
+                End With
+                screenX = screenX + TilePixelWidth
+            Next x
+            screenY = screenY + TilePixelHeight
+        Next y
+    Next layer
+End Sub
+
 Sub RenderScreen(ByVal center_x As Integer, _
                  ByVal center_y As Integer, _
                  ByVal PixelOffsetX As Integer, _
@@ -139,23 +163,7 @@ Sub RenderScreen(ByVal center_x As Integer, _
     Call SpriteBatch.EndPrecalculated
     ' Layers 2 and 3: walkable overlays below objects and characters
     Call DirectDevice.SetRenderState(D3DRS_ALPHATESTENABLE, True) ' Para no pisar los reflejos
-    screenY = StartBufferedY
-    For y = MinBufferedY To MaxBufferedY
-        screenX = StartBufferedX
-        For x = MinBufferedX To MaxBufferedX
-            With MapData(x, y)
-                ' Layer 2 *********************************
-                If .Graphic(2).GrhIndex <> 0 Then
-                    Call Draw_Grh(.Graphic(2), screenX, screenY, 1, 1, .light_value, , x, y)
-                End If
-                If .Graphic(3).GrhIndex <> 0 Then
-                    Call Draw_Grh(.Graphic(3), screenX, screenY, 1, 1, .light_value, , x, y)
-                End If
-            End With
-            screenX = screenX + TilePixelWidth
-        Next x
-        screenY = screenY + TilePixelHeight
-    Next y
+    Call RenderWalkableMapLayers(MinBufferedX, MaxBufferedX, MinBufferedY, MaxBufferedY, StartBufferedX, StartBufferedY)
     Dim grhSpellArea As Grh
     grhSpellArea.GrhIndex = 20058
     Dim temp_color(3) As RGBA
