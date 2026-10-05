@@ -686,6 +686,7 @@ Public Const MAX_NPC_INVENTORY_SLOTS As Byte = 36
 Public Const MAXHECHI                As Byte = 150
 Public Const MAXSKILLPOINTS          As Byte = 100
 Public Const FLAGORO                 As Integer = 200
+Public Const MAP_LAYER_COUNT         As Long = 5
 Public Const FLAG_AGUA               As Integer = &H20
 Public Const FLAG_ARBOL              As Integer = &H40
 Public Const FLAG_COSTA              As Integer = &H80

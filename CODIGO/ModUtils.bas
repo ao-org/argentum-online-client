@@ -90,7 +90,7 @@ Public Enum FXSound
     MP_SOUND = 150
 End Enum
 
-Public HayLayer4      As Boolean
+Public HayLayer5      As Boolean
 Public CantPartLLuvia As Integer
 Public MeteoIndex     As Integer
 'Dropeo

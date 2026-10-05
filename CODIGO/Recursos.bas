@@ -107,9 +107,11 @@ Public FontTypes([FONTTYPE_MAX] - 1) As tFont
 'The only current map
 Public ResourcesPassword             As String
 
+Private Const CSM_FIVE_LAYER_SIGNATURE As Long = &H324C3557
+
 Private Type tMapHeader
     NumeroBloqueados As Long
-    NumeroLayers(1 To 4) As Long
+    NumeroLayers(1 To MAP_LAYER_COUNT) As Long
     NumeroTriggers As Long
     NumeroLuces As Long
     NumeroParticulas As Long
@@ -594,6 +596,79 @@ CargarPasos_Err:
     Resume Next
 End Sub
 
+Private Sub ReadCsmHeader(ByVal fh As Integer, ByRef header As tMapHeader)
+    Dim signatureOrBlocked As Long
+    Dim layer As Long
+    Get #fh, , signatureOrBlocked
+    If signatureOrBlocked = CSM_FIVE_LAYER_SIGNATURE Then
+        Get #fh, , header
+    Else
+        ' Legacy files have no signature and four layers; insert an empty third.
+        header.NumeroBloqueados = signatureOrBlocked
+        header.NumeroLayers(3) = 0
+        For layer = 1 To 4
+            If layer <= 2 Then
+                Get #fh, , header.NumeroLayers(layer)
+            Else
+                Get #fh, , header.NumeroLayers(layer + 1)
+            End If
+        Next layer
+        Get #fh, , header.NumeroTriggers
+        Get #fh, , header.NumeroLuces
+        Get #fh, , header.NumeroParticulas
+        Get #fh, , header.NumeroNPCs
+        Get #fh, , header.NumeroOBJs
+        Get #fh, , header.NumeroTE
+    End If
+    If header.NumeroBloqueados < 0 Or header.NumeroBloqueados > 10000 Then
+        Err.Raise 5, "Recursos.ReadCsmHeader", "Invalid CSM blocked tile count."
+    End If
+    For layer = 1 To MAP_LAYER_COUNT
+        If header.NumeroLayers(layer) < 0 Or header.NumeroLayers(layer) > 10000 Then
+            Err.Raise 5, "Recursos.ReadCsmHeader", "Invalid CSM graphics count."
+        End If
+    Next layer
+End Sub
+
+Private Sub ReadMapGraphics(ByVal fh As Integer, ByRef header As tMapHeader)
+    Dim graphics() As tDatosGrh
+    Dim layer As Long, i As Long, x As Integer, y As Integer
+    HayLayer5 = header.NumeroLayers(5) > 0
+    For layer = 1 To MAP_LAYER_COUNT
+        If header.NumeroLayers(layer) > 0 Then
+            ReDim graphics(1 To header.NumeroLayers(layer))
+            Get #fh, , graphics
+            For i = 1 To header.NumeroLayers(layer)
+                x = graphics(i).x
+                y = graphics(i).y
+                If x < XMinMapSize Or x > XMaxMapSize Or y < YMinMapSize Or y > YMaxMapSize Then
+                    Err.Raise 5, "Recursos.ReadMapGraphics", "CSM graphic outside map bounds."
+                End If
+                With MapData(x, y)
+                    .Graphic(layer).GrhIndex = graphics(i).GrhIndex
+                    Call InitGrh(.Graphic(layer), .Graphic(layer).GrhIndex)
+                    Select Case layer
+                        Case 1
+                            .Graphic(1).x = x * TilePixelWidth
+                            .Graphic(1).y = y * TilePixelHeight
+                            If HayAgua(x, y) Then
+                                .Blocked = .Blocked Or FLAG_AGUA
+                            ElseIf HayLava(x, y) Then
+                                .Blocked = .Blocked Or FLAG_LAVA
+                            End If
+                        Case 2, 3
+                            If .Graphic(layer).GrhIndex > 0 Then .Blocked = .Blocked Or FLAG_COSTA
+                        Case 4
+                            If TileEngineHelper.IsIndexTree(.Graphic(4).GrhIndex) Then
+                                .Blocked = .Blocked Or FLAG_ARBOL
+                            End If
+                    End Select
+                End With
+            Next i
+        End If
+    Next layer
+End Sub
+
 Sub CargarDatosMapa(ByVal map As Integer)
     On Error GoTo CargarDatosMapa_Err
     If Len(NameMaps(map).desc) <> 0 Then
@@ -607,10 +682,8 @@ Sub CargarDatosMapa(ByVal map As Integer)
     Dim MH           As tMapHeader
     Dim Blqs()       As tDatosBloqueados
     Dim MapRoute     As String
-    Dim L1()         As tDatosGrh
-    Dim L2()         As tDatosGrh
-    Dim L3()         As tDatosGrh
-    Dim L4()         As tDatosGrh
+    Dim graphics()   As tDatosGrh
+    Dim layer        As Long
     Dim Triggers()   As tDatosTrigger
     Dim Luces()      As tDatosLuces
     Dim Particulas() As tDatosParticulas
@@ -631,7 +704,7 @@ Sub CargarDatosMapa(ByVal map As Integer)
     #End If
     fh = FreeFile
     Open MapRoute For Binary As fh
-    Get #fh, , MH
+    Call ReadCsmHeader(fh, MH)
     Get #fh, , MapSize
     Get #fh, , MapDat
     With MapSize
@@ -645,41 +718,12 @@ Sub CargarDatosMapa(ByVal map As Integer)
                     'MapData(Blqs(i).X, Blqs(i).Y).Blocked = 1
                 Next i
             End If
-            'Cargamos Layer 1
-            If .NumeroLayers(1) > 0 Then
-                ReDim L1(1 To .NumeroLayers(1))
-                Get #fh, , L1
-                For i = 1 To .NumeroLayers(1)
-                    ' MapData(L1(i).X, L1(i).Y).Graphic(1).grhindex = L1(i).grhindex
-                    '  InitGrh MapData(L1(i).X, L1(i).Y).Graphic(1), MapData(L1(i).X, L1(i).Y).Graphic(1).grhindex
-                    ' Call Map_Grh_Set(L2(i).x, L2(i).y, L2(i).GrhIndex, 2)
-                Next i
-            End If
-            If .NumeroLayers(2) > 0 Then
-                ReDim L2(1 To .NumeroLayers(2))
-                Get #fh, , L2
-                For i = 1 To .NumeroLayers(2)
-                    '   MapData(L2(i).X, L2(i).Y).Graphic(2).grhindex = L2(i).grhindex
-                    '  InitGrh MapData(L2(i).X, L2(i).Y).Graphic(2), MapData(L2(i).X, L2(i).Y).Graphic(2).grhindex
-                Next i
-            End If
-            If .NumeroLayers(3) > 0 Then
-                ReDim L3(1 To .NumeroLayers(3))
-                Get #fh, , L3
-                For i = 1 To .NumeroLayers(3)
-                    '  MapData(L3(i).X, L3(i).Y).Graphic(3).grhindex = L3(i).grhindex
-                    ' InitGrh MapData(L3(i).X, L3(i).Y).Graphic(3), MapData(L3(i).X, L3(i).Y).Graphic(3).grhindex
-                Next i
-            End If
-            If .NumeroLayers(4) > 0 Then
-                ReDim L4(1 To .NumeroLayers(4))
-                Get #fh, , L4
-                For i = 1 To .NumeroLayers(4)
-                    '   MapData(L4(i).X, L4(i).Y).Graphic(4).grhindex = L4(i).grhindex
-                    '   MapData(L4(i).X, L4(i).Y).GrhBlend = 255
-                    '   InitGrh MapData(L4(i).X, L4(i).Y).Graphic(4), MapData(L4(i).X, L4(i).Y).Graphic(4).grhindex
-                Next i
-            End If
+            For layer = 1 To MAP_LAYER_COUNT
+                If .NumeroLayers(layer) > 0 Then
+                    ReDim graphics(1 To .NumeroLayers(layer))
+                    Get #fh, , graphics
+                End If
+            Next layer
             If .NumeroTriggers > 0 Then
                 ReDim Triggers(1 To .NumeroTriggers)
                 Get #fh, , Triggers
@@ -776,6 +820,7 @@ cont:
     Exit Sub
 CargarDatosMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarDatosMapa", Erl)
+    If fh <> 0 Then Close #fh
 End Sub
 
 Public Sub CargarMapa(ByVal map As Integer)
@@ -786,10 +831,6 @@ Public Sub CargarMapa(ByVal map As Integer)
     Dim MH           As tMapHeader
     Dim Blqs()       As tDatosBloqueados
     Dim MapRoute     As String
-    Dim L1()         As tDatosGrh
-    Dim L2()         As tDatosGrh
-    Dim L3()         As tDatosGrh
-    Dim L4()         As tDatosGrh
     Dim Triggers()   As tDatosTrigger
     Dim Luces()      As tDatosLuces
     Dim Particulas() As tDatosParticulas
@@ -814,20 +855,20 @@ Public Sub CargarMapa(ByVal map As Integer)
         MapRoute = App.path & "\..\Recursos\Mapas\mapa" & map & ".csm"
     #End If
     'Limpiamos los efectos remantentes del mapa.
-    For x = 1 To 100
-        For y = 1 To 100
+    For y = 1 To 100
+        For x = 1 To 100
             With MapData(x, y)
                 Call SetRGBA(.light_value(0), 0, 0, 0)
                 Call SetRGBA(.light_value(1), 0, 0, 0)
                 Call SetRGBA(.light_value(2), 0, 0, 0)
                 Call SetRGBA(.light_value(3), 0, 0, 0)
             End With
-        Next y
-    Next x
+        Next x
+    Next y
     Call LucesCuadradas.Light_Remove_All
     Call LucesRedondas.Delete_All_LigthRound(False)
     Call Graficos_Particulas.Particle_Group_Remove_All
-    HayLayer4 = False
+    HayLayer5 = False
     If UserPos.x = 0 Then UserPos.x = 10
     If UserPos.y = 0 Then UserPos.y = 10
     MapData(UserPos.x, UserPos.y).charindex = 0
@@ -838,13 +879,13 @@ Public Sub CargarMapa(ByVal map As Integer)
     Next i
     fh = FreeFile
     Open MapRoute For Binary As fh
-    Get #fh, , MH
+    Call ReadCsmHeader(fh, MH)
     Get #fh, , MapSize
     Get #fh, , MapDat
     ReDim MapData(1 To 100, 1 To 100)
     UpdateLights = True
-    For x = 1 To 100
-        For y = 1 To 100
+    For y = 1 To 100
+        For x = 1 To 100
             With MapData(x, y)
                 .light_value(0) = global_light
                 .light_value(1) = global_light
@@ -852,8 +893,8 @@ Public Sub CargarMapa(ByVal map As Integer)
                 .light_value(3) = global_light
                 ReDim .DialogEffects(0)
             End With
-        Next y
-    Next x
+        Next x
+    Next y
     ' Get #fh, , L1
     With MH
         'Cargamos Bloqueos
@@ -864,61 +905,7 @@ Public Sub CargarMapa(ByVal map As Integer)
                 MapData(Blqs(i).x, Blqs(i).y).Blocked = Blqs(i).lados
             Next i
         End If
-        'Cargamos Layer 1
-        If .NumeroLayers(1) > 0 Then
-            ReDim L1(1 To .NumeroLayers(1))
-            Get #fh, , L1
-            For i = 1 To .NumeroLayers(1)
-                x = L1(i).x
-                y = L1(i).y
-                With MapData(x, y)
-                    .Graphic(1).GrhIndex = L1(i).GrhIndex
-                    ' Precalculate position
-                    .Graphic(1).x = x * TilePixelWidth
-                    .Graphic(1).y = y * TilePixelHeight
-                    InitGrh .Graphic(1), .Graphic(1).GrhIndex
-                    If HayAgua(x, y) Then
-                        .Blocked = .Blocked Or FLAG_AGUA
-                    ElseIf HayLava(x, y) Then
-                        .Blocked = .Blocked Or FLAG_LAVA
-                    End If
-                End With
-            Next i
-        End If
-        'Cargamos Layer 2
-        If .NumeroLayers(2) > 0 Then
-            ReDim L2(1 To .NumeroLayers(2))
-            Get #fh, , L2
-            For i = 1 To .NumeroLayers(2)
-                x = L2(i).x
-                y = L2(i).y
-                MapData(x, y).Graphic(2).GrhIndex = L2(i).GrhIndex
-                InitGrh MapData(x, y).Graphic(2), MapData(x, y).Graphic(2).GrhIndex
-                MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_COSTA
-            Next i
-        End If
-        If .NumeroLayers(3) > 0 Then
-            ReDim L3(1 To .NumeroLayers(3))
-            Get #fh, , L3
-            For i = 1 To .NumeroLayers(3)
-                x = L3(i).x
-                y = L3(i).y
-                MapData(x, y).Graphic(3).GrhIndex = L3(i).GrhIndex
-                InitGrh MapData(x, y).Graphic(3), MapData(x, y).Graphic(3).GrhIndex
-                If TileEngine.TileEngineHelper.IsIndexTree(L3(i).GrhIndex) Then
-                    MapData(x, y).Blocked = MapData(x, y).Blocked Or FLAG_ARBOL
-                End If
-            Next i
-        End If
-        If .NumeroLayers(4) > 0 Then
-            HayLayer4 = True
-            ReDim L4(1 To .NumeroLayers(4))
-            Get #fh, , L4
-            For i = 1 To .NumeroLayers(4)
-                MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex = L4(i).GrhIndex
-                InitGrh MapData(L4(i).x, L4(i).y).Graphic(4), MapData(L4(i).x, L4(i).y).Graphic(4).GrhIndex
-            Next i
-        End If
+        Call ReadMapGraphics(fh, MH)
         If .NumeroTriggers > 0 Then
             ReDim Triggers(1 To .NumeroTriggers)
             Get #fh, , Triggers
@@ -1013,7 +1000,7 @@ Public Sub CargarMapa(ByVal map As Integer)
     Exit Sub
 CargarMapa_Err:
     Call RegistrarError(Err.Number, Err.Description, "Recursos.CargarMapa", Erl)
-    Resume Next
+    If fh <> 0 Then Close #fh
 End Sub
 
 Public Sub CargarParticulas()
@@ -2530,3 +2517,120 @@ Public Function GetLanguagePrefix(ByVal language As e_language) As String
             GetLanguagePrefix = "en"
     End Select
 End Function
+
+#If UNIT_TEST = 1 Then
+Public Function TestCsmLayers(ByVal legacy As Boolean, ByVal overlayLayer As Long) As Boolean
+    On Error GoTo Fail
+    Dim fh As Integer, fixture As String, layer As Long, count As Long
+    Dim expected(1 To MAP_LAYER_COUNT) As Long
+    Dim header As tMapHeader, loaded As tMapHeader, graphic As tDatosGrh
+    Dim marker As Long, actualMarker As Long, savedMaxGrh As Long
+    savedMaxGrh = MaxGrh
+    MaxGrh = 0 ' No texture loading in this binary parser test.
+    expected(1) = 1505
+    If overlayLayer > 0 Then
+        expected(overlayLayer) = 12682
+    Else
+        expected(2) = 12682
+        If Not legacy Then expected(3) = 12683
+        expected(4) = 643
+        expected(5) = 1070
+    End If
+    For layer = 1 To MAP_LAYER_COUNT
+        If expected(layer) > 0 Then header.NumeroLayers(layer) = 1
+    Next layer
+    fixture = App.Path & "\test_five_layers.csm"
+    If Len(Dir$(fixture)) > 0 Then Kill fixture
+    fh = FreeFile
+    Open fixture For Binary As #fh
+    If legacy Then
+        Put #fh, , header.NumeroBloqueados
+        For layer = 1 To MAP_LAYER_COUNT
+            If layer <> 3 Then Put #fh, , header.NumeroLayers(layer)
+        Next layer
+        count = 0
+        For layer = 1 To 6
+            Put #fh, , count
+        Next layer
+    Else
+        Put #fh, , CSM_FIVE_LAYER_SIGNATURE
+        Put #fh, , header
+    End If
+    graphic.x = 50
+    graphic.y = 50
+    For layer = 1 To MAP_LAYER_COUNT
+        If expected(layer) > 0 Then
+            graphic.GrhIndex = expected(layer)
+            Put #fh, , graphic
+        End If
+    Next layer
+    marker = &H12345678
+    Put #fh, , marker
+    Close #fh
+    Open fixture For Binary As #fh
+    Call ReadCsmHeader(fh, loaded)
+    ReDim MapData(1 To 100, 1 To 100)
+    Call ReadMapGraphics(fh, loaded)
+    Get #fh, , actualMarker
+    Close #fh
+    fh = 0
+    TestCsmLayers = actualMarker = marker
+    For layer = 1 To MAP_LAYER_COUNT
+        TestCsmLayers = TestCsmLayers And MapData(50, 50).Graphic(layer).GrhIndex = expected(layer)
+    Next layer
+    If overlayLayer > 0 Then
+        MinXBorder = 1: MaxXBorder = 100: MinYBorder = 1: MaxYBorder = 100
+        UserNavegando = False: UserNadando = False: UserMontado = False
+        TestCsmLayers = TestCsmLayers And (MapData(50, 50).Blocked And FLAG_COSTA) <> 0
+        TestCsmLayers = TestCsmLayers And LegalPos(50, 50, E_Heading.NORTH)
+        MapData(50, 50).Blocked = MapData(50, 50).Blocked Or 15
+        TestCsmLayers = TestCsmLayers And Not LegalPos(50, 50, E_Heading.NORTH)
+    Else
+        TestCsmLayers = TestCsmLayers And HayLayer5 And (MapData(50, 50).Blocked And FLAG_ARBOL) <> 0
+    End If
+    MaxGrh = savedMaxGrh
+    Kill fixture
+    Exit Function
+Fail:
+    MaxGrh = savedMaxGrh
+    If fh <> 0 Then Close #fh
+    If Len(Dir$(fixture)) > 0 Then Kill fixture
+End Function
+
+Public Function TestInstalledCsmMaps(ByVal folder As String) As Boolean
+    On Error GoTo Fail
+    Dim fh As Integer, filename As String, count As Long, savedMaxGrh As Long
+    Dim header As tMapHeader, size As tMapSize, metadata As tMapDat
+    Dim blocked() As tDatosBloqueados, tailBytes As Long
+    savedMaxGrh = MaxGrh
+    MaxGrh = 0
+    filename = Dir$(folder & "\*.csm")
+    Do While Len(filename) > 0
+        fh = FreeFile
+        Open folder & "\" & filename For Binary As #fh
+        Call ReadCsmHeader(fh, header)
+        Get #fh, , size
+        Get #fh, , metadata
+        If header.NumeroBloqueados > 0 Then
+            ReDim blocked(1 To header.NumeroBloqueados)
+            Get #fh, , blocked
+        End If
+        ReDim MapData(1 To 100, 1 To 100)
+        Call ReadMapGraphics(fh, header)
+        tailBytes = header.NumeroTriggers * 6 + header.NumeroParticulas * 8 + header.NumeroLuces * 9 + _
+                    header.NumeroOBJs * 8 + header.NumeroNPCs * 6 + header.NumeroTE * 10
+        If Seek(fh) - 1 + tailBytes <> LOF(fh) Then Err.Raise 5, , "CSM sections are misaligned: " & filename
+        Close #fh
+        fh = 0
+        count = count + 1
+        filename = Dir$()
+    Loop
+    MaxGrh = savedMaxGrh
+    TestInstalledCsmMaps = count > 0
+    Exit Function
+Fail:
+    MaxGrh = savedMaxGrh
+    If fh <> 0 Then Close #fh
+    Call UnitTesting.RunTestError("maplayers_resource_parse", filename & ": " & Err.Description)
+End Function
+#End If

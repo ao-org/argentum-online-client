@@ -337,7 +337,7 @@ Public Type MapBlock
     FxIndex As Byte
     FxCount As Integer
     FxList() As Grh
-    Graphic(1 To 4) As Grh
+    Graphic(1 To MAP_LAYER_COUNT) As Grh
     charindex As Integer
     ObjGrh As Grh
     GrhBlend As Single
@@ -632,7 +632,7 @@ Sub DoPasosFx(ByVal charindex As Integer)
                 Exit Sub
             ElseIf MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex > 0 Then
                 Dim FileNum As Long: FileNum = GrhData(MapData(.Pos.x, .Pos.y).Graphic(1).GrhIndex).FileNum
-                TerrenoDePaso = GetTerrenoDePaso(FileNum, MapData(.Pos.x, .Pos.y).Graphic(2).GrhIndex)
+                TerrenoDePaso = GetTerrenoDePaso(FileNum, GetWalkableOverlayGraphic(.Pos.x, .Pos.y))
                 If .Speeding > 1.2 And TerrenoDePaso = CONST_PISO Then
                     TerrenoDePaso = CONST_CABALLO
                 End If
@@ -669,6 +669,20 @@ DoPasosInvi_Err:
     Call RegistrarError(Err.Number, Err.Description, "TileEngine.DoPasosInvi", Erl)
     Resume Next
 End Sub
+
+Public Function GetWalkableOverlayGraphic(ByVal x As Integer, ByVal y As Integer) As Long
+    On Error GoTo GetWalkableOverlayGraphic_Err
+    With MapData(x, y)
+        If .Graphic(3).GrhIndex > 0 Then
+            GetWalkableOverlayGraphic = .Graphic(3).GrhIndex
+        Else
+            GetWalkableOverlayGraphic = .Graphic(2).GrhIndex
+        End If
+    End With
+    Exit Function
+GetWalkableOverlayGraphic_Err:
+    Call RegistrarError(Err.Number, Err.Description, "TileEngine.GetWalkableOverlayGraphic", Erl)
+End Function
 
 Public Function GetTerrenoDePaso(ByVal TerrainFileNum As Integer, ByVal Layer2Grh As Long) As TipoPaso
     On Error GoTo GetTerrenoDePaso_Err
@@ -1154,7 +1168,7 @@ End Function
 
 Public Function GetTerrainHeight(x As Byte, y As Byte) As Integer
     With MapData(x, y)
-        Select Case .Graphic(2).GrhIndex
+        Select Case GetWalkableOverlayGraphic(x, y)
             Case 12682
                 GetTerrainHeight = 5
             Case 12683

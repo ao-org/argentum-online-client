@@ -137,7 +137,7 @@ Sub RenderScreen(ByVal center_x As Integer, _
         Next x
     Next y
     Call SpriteBatch.EndPrecalculated
-    ' Layer 2 & small objects loop
+    ' Layers 2 and 3: walkable overlays below objects and characters
     Call DirectDevice.SetRenderState(D3DRS_ALPHATESTENABLE, True) ' Para no pisar los reflejos
     screenY = StartBufferedY
     For y = MinBufferedY To MaxBufferedY
@@ -147,6 +147,9 @@ Sub RenderScreen(ByVal center_x As Integer, _
                 ' Layer 2 *********************************
                 If .Graphic(2).GrhIndex <> 0 Then
                     Call Draw_Grh(.Graphic(2), screenX, screenY, 1, 1, .light_value, , x, y)
+                End If
+                If .Graphic(3).GrhIndex <> 0 Then
+                    Call Draw_Grh(.Graphic(3), screenX, screenY, 1, 1, .light_value, , x, y)
                 End If
             End With
             screenX = screenX + TilePixelWidth
@@ -182,7 +185,7 @@ Sub RenderScreen(ByVal center_x As Integer, _
                             Call Draw_Grh(.ObjGrh, screenX, screenY, 1, 1, .light_value)
                         Case Else
                             ' Objetos en el suelo (items, decorativos, etc)
-                            If ((.Blocked And FLAG_AGUA) <> 0) And .Graphic(2).GrhIndex = 0 Then
+                            If ((.Blocked And FLAG_AGUA) <> 0) And GetWalkableOverlayGraphic(x, y) = 0 Then
                                 object_angle = (object_angle + (timerElapsedTime * 0.002))
                                 .light_value(1).A = 85
                                 .light_value(3).A = 85
@@ -202,7 +205,7 @@ Sub RenderScreen(ByVal center_x As Integer, _
         screenY = screenY + TilePixelHeight
     Next y
     Call DirectDevice.SetRenderState(D3DRS_ALPHATESTENABLE, False)
-    '  Layer 3 & chars
+    '  Layer 4 & chars
     screenY = StartBufferedY
     For y = MinBufferedY To MaxBufferedY
         screenX = StartBufferedX
@@ -249,7 +252,7 @@ Sub RenderScreen(ByVal center_x As Integer, _
             End With
             screenX = screenX + TilePixelWidth
         Next x
-        ' Recorremos de nuevo esta fila para dibujar objetos grandes y capa 3 encima de chars
+        ' Recorremos de nuevo esta fila para dibujar objetos grandes y capa 4 encima de chars
         screenX = StartBufferedX
         For x = MinBufferedX To MaxBufferedX
             With MapData(x, y)
@@ -292,10 +295,10 @@ Sub RenderScreen(ByVal center_x As Integer, _
                             '    Call Draw_Grh(.ObjGrh, ScreenX, ScreenY, 1, 1, .light_value, False, x, y)
                     End Select
                 End If
-                'Layer 3 **********************************
-                If .Graphic(3).GrhIndex <> 0 Then
+                'Layer 4 **********************************
+                If .Graphic(4).GrhIndex <> 0 Then
                     If (.Blocked And FLAG_ARBOL) <> 0 Then
-                        ' Call Draw_Sombra(.Graphic(3), ScreenX, ScreenY, 1, 1, False, x, y)
+                        ' Call Draw_Sombra(.Graphic(4), ScreenX, ScreenY, 1, 1, False, x, y)
                         ' Debajo del arbol
                         If Abs(UserPos.x - x) <= 3 And (Abs(UserPos.y - y)) < 12 And (Abs(UserPos.y) < y) Then
                             If .ArbolAlphaTimer <= 0 Then
@@ -304,10 +307,10 @@ Sub RenderScreen(ByVal center_x As Integer, _
                             DeltaTime = FrameTime - .ArbolAlphaTimer
                             Call Copy_RGBAList_WithAlpha(TempColor, .light_value, IIf(DeltaTime > ARBOL_ALPHA_TIME, ARBOL_MIN_ALPHA, 255 - DeltaTime / ARBOL_ALPHA_TIME * (255 - _
                                     ARBOL_MIN_ALPHA)))
-                            Call Draw_Grh(.Graphic(3), screenX, screenY, 1, 1, TempColor, False, x, y)
+                            Call Draw_Grh(.Graphic(4), screenX, screenY, 1, 1, TempColor, False, x, y)
                         Else    ' Lejos del arbol
                             If .ArbolAlphaTimer = 0 Then
-                                Call Draw_Grh(.Graphic(3), screenX, screenY, 1, 1, .light_value, False, x, y)
+                                Call Draw_Grh(.Graphic(4), screenX, screenY, 1, 1, .light_value, False, x, y)
                             Else
                                 If .ArbolAlphaTimer > 0 Then
                                     .ArbolAlphaTimer = -lastMove
@@ -315,18 +318,18 @@ Sub RenderScreen(ByVal center_x As Integer, _
                                 DeltaTime = FrameTime + .ArbolAlphaTimer
                                 If DeltaTime > ARBOL_ALPHA_TIME Then
                                     .ArbolAlphaTimer = 0
-                                    Call Draw_Grh(.Graphic(3), screenX, screenY, 1, 1, .light_value, False, x, y)
+                                    Call Draw_Grh(.Graphic(4), screenX, screenY, 1, 1, .light_value, False, x, y)
                                 Else
                                     Call Copy_RGBAList_WithAlpha(TempColor, .light_value, ARBOL_MIN_ALPHA + DeltaTime * (255 - ARBOL_MIN_ALPHA) / ARBOL_ALPHA_TIME)
-                                    Call Draw_Grh(.Graphic(3), screenX, screenY, 1, 1, TempColor, False, x, y)
+                                    Call Draw_Grh(.Graphic(4), screenX, screenY, 1, 1, TempColor, False, x, y)
                                 End If
                             End If
                         End If
                     Else
-                        If AgregarSombra(.Graphic(3).GrhIndex) Then
-                            Call Draw_Sombra(.Graphic(3), screenX, screenY, 1, 1, False, x, y)
+                        If AgregarSombra(.Graphic(4).GrhIndex) Then
+                            Call Draw_Sombra(.Graphic(4), screenX, screenY, 1, 1, False, x, y)
                         End If
-                        Call Draw_Grh(.Graphic(3), screenX, screenY, 1, 1, .light_value, False, x, y)
+                        Call Draw_Grh(.Graphic(4), screenX, screenY, 1, 1, .light_value, False, x, y)
                     End If
                 End If
             End With
@@ -381,8 +384,8 @@ Sub RenderScreen(ByVal center_x As Integer, _
             Index = Index + 1
         End If
     Loop
-    ' Layer 4 loop
-    If HayLayer4 Then
+    ' Layer 5 loop
+    If HayLayer5 Then
         ' Actualizo techos
         Dim Trigger As eTrigger
         For Trigger = LBound(RoofsLight) To UBound(RoofsLight)
@@ -404,14 +407,14 @@ Sub RenderScreen(ByVal center_x As Integer, _
             screenX = StartBufferedX
             For x = MinBufferedX To MaxBufferedX
                 With MapData(x, y)
-                    ' Layer 4 - roofs *******************************
-                    If .Graphic(4).GrhIndex Then
+                    ' Layer 5 - roofs *******************************
+                    If .Graphic(5).GrhIndex Then
                         Trigger = NearRoof(x, y)
                         If Trigger Then
                             Call Copy_RGBAList_WithAlpha(TempColor, .light_value, RoofsLight(Trigger))
-                            Call Draw_Grh(.Graphic(4), screenX, screenY, 1, 1, TempColor, , x, y)
+                            Call Draw_Grh(.Graphic(5), screenX, screenY, 1, 1, TempColor, , x, y)
                         Else
-                            Call Draw_Grh(.Graphic(4), screenX, screenY, 1, 1, .light_value, , x, y)
+                            Call Draw_Grh(.Graphic(5), screenX, screenY, 1, 1, .light_value, , x, y)
                         End If
                     End If
                     '******************************************
