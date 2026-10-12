@@ -1,3 +1,11 @@
+## VB6 client: end of life
+
+**The VB6 client has reached end of life and is no longer supported.** The final supported client release is [v5.6.64](https://github.com/ao-org/argentum-online-client/releases/tag/v5.6.64), commit `bde488d3dcdd26ab97ee2235c2e489c07481a69f`, preserved under the [`vb6-final`](https://github.com/ao-org/argentum-online-client/tree/vb6-final) tag.
+
+**The [VB6 server](https://github.com/ao-org/argentum-online-server) remains in active development.** This end-of-life notice applies only to the client. The server baseline preserved alongside the final client release is [v5.6.76](https://github.com/ao-org/argentum-online-server/releases/tag/v5.6.76), commit `16546f49f55c72a298e81ce8b2a2a0b15b00d85c`, also tagged [`vb6-final`](https://github.com/ao-org/argentum-online-server/tree/vb6-final).
+
+The client build and development instructions below are retained for historical reference.
+
 ## ⚔️ Support Us on Patreon
 
 Please consider supporting our work on [Patreon](https://www.patreon.com/nolandstudios). Your support helps us continue developing and maintaining projects like this one. Every contribution makes a significant impact!
