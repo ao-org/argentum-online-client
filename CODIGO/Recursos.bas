@@ -2597,17 +2597,83 @@ Fail:
     If Len(Dir$(fixture)) > 0 Then Kill fixture
 End Function
 
+Private Function ValidCsmEnd(ByVal fh As Integer, ByVal sectionEnd As Long, ByVal legacy As Boolean) As Boolean
+    Dim signature As Long, count As Long, i As Long, graphic As tDatosGrh
+    If sectionEnd = LOF(fh) Then
+        ValidCsmEnd = True
+        Exit Function
+    End If
+    ' Older four-layer resources can append W2B1 bridge graphics. The runtime
+    ' ignores this extension; validate its structure instead of accepting any tail.
+    If Not legacy Or sectionEnd < 0 Or sectionEnd > LOF(fh) - 8 Then Exit Function
+    Seek #fh, sectionEnd + 1
+    Get #fh, , signature
+    Get #fh, , count
+    If signature <> &H31423257 Then Exit Function ' W2B1, little-endian.
+    If count < 0 Or count > 10000 Then Exit Function
+    If sectionEnd + 8 + count * 8 <> LOF(fh) Then Exit Function
+    For i = 1 To count
+        Get #fh, , graphic
+        If graphic.x < 1 Or graphic.x > 100 Or graphic.y < 1 Or graphic.y > 100 Then Exit Function
+        If graphic.grhIndex <= 0 Then Exit Function
+    Next i
+    ValidCsmEnd = True
+End Function
+
+Public Function TestCsmTrailer(ByVal scenario As Long) As Boolean
+    On Error GoTo Fail
+    Dim fh As Integer, fixture As String, signature As Long, count As Long
+    Dim graphic As tDatosGrh, marker As Long, legacy As Boolean, expected As Boolean
+    signature = &H31423257
+    count = 1
+    legacy = True
+    expected = scenario <= 1
+    graphic.x = 50: graphic.y = 50: graphic.grhIndex = 12682
+    Select Case scenario
+        Case 2: signature = &H12345678
+        Case 3: count = 2
+        Case 4: count = -1
+        Case 5: graphic.x = 101
+        Case 6: graphic.grhIndex = 0
+        Case 7: legacy = False
+        Case 8: count = 10001
+    End Select
+    fixture = App.path & "\test_csm_trailer.bin"
+    If Len(dir$(fixture)) > 0 Then Kill fixture
+    fh = FreeFile
+    Open fixture For Binary As #fh
+    Put #fh, , marker
+    If scenario <> 0 Then
+        Put #fh, , signature
+        Put #fh, , count
+        Put #fh, , graphic
+        If scenario = 9 Then Put #fh, , marker
+    End If
+    TestCsmTrailer = ValidCsmEnd(fh, 4, legacy) = expected
+    Close #fh
+    fh = 0
+    Kill fixture
+    Exit Function
+Fail:
+    If fh <> 0 Then Close #fh
+    If Len(fixture) > 0 Then
+        If Len(dir$(fixture)) > 0 Then Kill fixture
+    End If
+End Function
+
 Public Function TestInstalledCsmMaps(ByVal folder As String) As Boolean
     On Error GoTo Fail
     Dim fh As Integer, filename As String, count As Long, savedMaxGrh As Long
     Dim header As tMapHeader, size As tMapSize, metadata As tMapDat
-    Dim blocked() As tDatosBloqueados, tailBytes As Long
+    Dim blocked() As tDatosBloqueados, tailBytes As Long, signature As Long
     savedMaxGrh = MaxGrh
     MaxGrh = 0
     filename = Dir$(folder & "\*.csm")
     Do While Len(filename) > 0
         fh = FreeFile
         Open folder & "\" & filename For Binary As #fh
+        Get #fh, , signature
+        Seek #fh, 1
         Call ReadCsmHeader(fh, header)
         Get #fh, , size
         Get #fh, , metadata
@@ -2619,7 +2685,9 @@ Public Function TestInstalledCsmMaps(ByVal folder As String) As Boolean
         Call ReadMapGraphics(fh, header)
         tailBytes = header.NumeroTriggers * 6 + header.NumeroParticulas * 8 + header.NumeroLuces * 9 + _
                     header.NumeroOBJs * 8 + header.NumeroNPCs * 6 + header.NumeroTE * 10
-        If Seek(fh) - 1 + tailBytes <> LOF(fh) Then Err.Raise 5, , "CSM sections are misaligned: " & filename
+        If Not ValidCsmEnd(fh, seek(fh) - 1 + tailBytes, signature <> CSM_FIVE_LAYER_SIGNATURE) Then
+            Err.Raise 5, , "CSM sections are misaligned: " & filename
+        End If
         Close #fh
         fh = 0
         count = count + 1
